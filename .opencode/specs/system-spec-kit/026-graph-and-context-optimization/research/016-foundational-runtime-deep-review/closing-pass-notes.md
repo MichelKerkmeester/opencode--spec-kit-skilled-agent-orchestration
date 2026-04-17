@@ -143,7 +143,7 @@ When the per-memory linking pipeline throws for a specific memory, the handler f
 
 This is a **scope-widening amplifier** of R7-002 ("soft-fail + stale-row linking") that was noted but not audited in §8.2. It is NOT a silent-corruption finding; it's a resource-use finding. Operator sees "warn: incremental pipeline failed for memory #N" and the whole-corpus run quietly runs in the background.
 
-**CP-003 [P2] NEW.** `entity-linker.ts:1131-1133` catches per-memory linking failure and falls back to `runEntityLinking(db)` (whole-corpus scan) with no rate-limit or same-session deduplication. Under rapid per-memory failures, the fallback compounds into repeated whole-corpus passes. Fix: gate the fallback on "has this fallback fired in this session recently?" or limit to three retries before returning empty. Phase 018+ candidate; not a Phase 017 blocker.
+**CP-003 [P2] NEW.** `entity-linker.ts:1131-1133` catches per-memory linking failure and falls back to `runEntityLinking(db)` (whole-corpus scan) with no rate-limit or same-session deduplication. Under rapid per-memory failures, the fallback compounds into repeated whole-corpus passes. Fix: gate the fallback on "has this fallback fired in this session recently?" or limit to three retries before returning empty. Phase 017+ candidate; not a Phase 017 blocker.
 
 **Verdict:** One new P2 finding (CP-003). Not a correctness issue; a resilience-pattern amplification issue. No data corruption; just potential CPU/edge-density amplification under repeated failure.
 
@@ -164,7 +164,7 @@ This is a **scope-widening amplifier** of R7-002 ("soft-fail + stale-row linking
 
 **`advisory_stale` flag propagation confirmed.** Line 2327: `reconResult.assistiveRecommendation.advisory_stale = true` is set on the chunked save path. This is the T-RCB assistive-inside-tx work landed (R36-002, R37-003 remediation). Consumers see a typed `advisory_stale: true` rather than a silently-stale recommendation.
 
-**Verdict:** No new findings. Timeline is correct; M13 applied; T-RCB assistive lane correctly wires the `advisory_stale` signal. §8.2 OQ on "real timeline between reconsolidation planning and `writeTransaction` acquisition under load" remains measurable-but-not-measured — Phase 018 load-measurement task was already parked.
+**Verdict:** No new findings. Timeline is correct; M13 applied; T-RCB assistive lane correctly wires the `advisory_stale` signal. §8.2 OQ on "real timeline between reconsolidation planning and `writeTransaction` acquisition under load" remains measurable-but-not-measured — Phase 017 load-measurement task was already parked.
 
 ---
 
@@ -340,7 +340,7 @@ The bridge layer at `.opencode/skill/mcp-code-mode/mcp_server/index.ts:127-156` 
 
 ---
 
-## New findings summary (to hand off to Phase 017 residual or Phase 018)
+## New findings summary (to hand off to Phase 017 residual or Phase 017)
 
 All four new findings are P2 severity, additive, and do NOT block any current P0 composite remediation already landed. They are not covered by existing structural refactors S1-S7 (they live in slightly different files or fall just outside scope boundaries).
 
@@ -348,7 +348,7 @@ All four new findings are P2 severity, additive, and do NOT block any current P0
 | -- | -------- | ---------- | --------- | --------------------- |
 | CP-001 | P2 | `handlers/code-graph/context.ts:97-105` | Inherits R3-002 readiness fail-open; T-CGQ-01 only touched `query.ts`. | ~2h quick-win. Apply the same `status: 'error'` path used in the query handler post-T-CGQ-01. |
 | CP-002 | P2 | `lib/search/graph-lifecycle.ts:489-596` | `onIndex()` returns `{ skipped: true }` across 5 conditions with no `reason` field; latent twin of R8-001 on the lifecycle surface (M13 scope missed). | ~3h. Add `skipReason` enum; wire into `post-insert.ts` graphLifecycle consumer. |
-| CP-003 | P2 | `lib/search/entity-linker.ts:1131-1133` | Per-memory linking failure escalates to whole-corpus rerun with no rate-limit; scope-widening amplifier of R7-002. | Phase 018 candidate. Add fallback rate-limit or exhaustion count. |
+| CP-003 | P2 | `lib/search/entity-linker.ts:1131-1133` | Per-memory linking failure escalates to whole-corpus rerun with no rate-limit; scope-widening amplifier of R7-002. | Phase 017 candidate. Add fallback rate-limit or exhaustion count. |
 | CP-004 | P2 | `command/spec_kit/assets/spec_kit_complete_confirm.yaml:514,520,539` | Untyped boolean DSL (`folder_state == populated-folder`) left in place; T-YML-CMP-01 only touched `_auto` variant. | ~1h. Extend T-YML-CMP-01 or add T-YML-CMP-02 to the confirm variant. Quick-win-sized. |
 
 ### Open questions closed by this closing pass
@@ -360,7 +360,7 @@ All four new findings are P2 severity, additive, and do NOT block any current P0
 | "`onIndex()` `skipped: true` — same semantics as `post-insert.ts` booleans?" | **Answered: YES.** Five distinct conditions collapse; captured as CP-002. |
 | "Does `executeMerge()` CAS also check governance scope?" | **Answered: YES.** `hasPredecessorChanged()` → `hasScopeRetagged()` ensures scope re-check inside transaction. Post-T-RCB remediation now consistent across merge and conflict. |
 | "Cross-memory or per-memory stale-entity blast radius for entity-linker?" | **Answered: Per-memory failure escalates to whole-corpus.** Captured as CP-003 (blast-radius amplifier). |
-| "Real timeline between reconsolidation planning and `writeTransaction` acquisition under load?" | Still OPEN for real-load measurement. Code review confirms the timeline is correct (reconsolidation pre-lock); measurement remains a Phase 018 parked task. |
+| "Real timeline between reconsolidation planning and `writeTransaction` acquisition under load?" | Still OPEN for real-load measurement. Code review confirms the timeline is correct (reconsolidation pre-lock); measurement remains a Phase 017 parked task. |
 | "Can a crafted `producer` string with `]` or newline break `[PROVENANCE:]` marker?" | **Answered: NO.** T-GSH-01 resolved + adversarial regression at `hook-session-start.vitest.ts:99`. |
 | "Does `compact-inject.ts` use the same unlocked `updateState()` pattern?" | **Answered: It uses the new TYPED pattern post-T-HST-09.** `updateResult.persisted` is consumed; both paths abort on persist failure. |
 | "Shared event schema for `intake_triggered` / `intake_completed`, or each asset emits independently?" | Not in T-PRE-04 scope; FINAL §8.3 and T-YML-PLN-03 cover. |

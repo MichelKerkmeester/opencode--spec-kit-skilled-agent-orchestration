@@ -149,5 +149,40 @@
   "started_at": "2026-04-16T16:12:22Z",
   "completed_at": "2026-04-16T18:59:11Z",
   "final_synthesis_completed_at": "2026-04-16T19:17:00Z",
-  "metadata_backfilled_at": "2026-04-16T20:00:00Z"
+  "metadata_backfilled_at": "2026-04-16T20:00:00Z",
+  "continuation": {
+    "segment_2": {
+      "topic": "Deep-dive on deep-review findings from 2026-04-17T120827Z session (review-report.md, 7 iterations, converged 0.0923). 10 P1 + 18 P2 across 3 clusters (A scope-normalization, B canonical-save-surface, C ASCII-only sanitization) + 4 standalones. Validate Cluster B infrastructure gap reach, R6-P1-001 sibling-asymmetry recurrence, P0 escalation scenarios. Produce prioritized Phase 017 remediation plan.",
+      "started_at": "2026-04-17T11:27:20Z",
+      "iteration_range": "51-57",
+      "iteration_cap_extended_to": 57,
+      "max_iterations_this_segment": 7,
+      "convergence_threshold": 0.05,
+      "execution_mode": "PARALLEL_OPUS_SUBAGENT_WAVES",
+      "dispatched_by": "Task tool @general / Opus 4.7 (claude-opus-4-7) / waves of 3 per CLAUDE.md concurrency feedback",
+      "worker_model": "opus",
+      "dimensions": ["root-cause", "remediation-feasibility", "blast-radius", "cross-cutting-coverage"],
+      "input_sources": {
+        "reviewReport": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/016-foundational-runtime-deep-review/review-report.md",
+        "reviewIterations": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/016-foundational-runtime-deep-review/iterations/",
+        "priorResearchPacket": "research/016-foundational-runtime-deep-review/ (iterations 1-50, FINAL-synthesis-and-review.md)",
+        "phase017Commits": "afbb3bc7f..HEAD (27 fix(016) commits)",
+        "phaseSpec": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review/"
+      },
+      "key_questions": {
+        "KQ-51-1": "Does the Cluster B infrastructure gap extend to other canonical-save surfaces not yet audited (graph-metadata.json.derived, implementation-summary.md._memory.continuity, checklist.md CHK evidence)?",
+        "KQ-51-2": "Does the R6-P1-001 sibling-asymmetry pattern recur in code-graph tool family (scan.ts, status.ts), memory_* handlers, or session_resume variants?",
+        "KQ-51-3": "Can any P1 escalate to P0 under expanded attack scenarios (multi-UID, non-POSIX, MCP transport-layer injection, supply-chain)?",
+        "KQ-51-4": "What cross-cluster dependencies among Cluster A/B/C should inform Phase 017 task ordering?",
+        "KQ-51-5": "Do P2 findings (god function, missing assertNever, duplicate transaction blocks, malformed evidence markers) mask latent P1-class risks?"
+      },
+      "non_goals": [
+        "Re-auditing the 4 P0 composites (A/B/C/D) — already verified in review iter 5",
+        "Expanding scope beyond 24 focus files + 9 regression tests from review manifest",
+        "Implementing fixes — research only; remediation belongs to Phase 017",
+        "Reviewing Phase 016 seams (Phase 015/016) — covered by segment_1 iterations 1-50",
+        "Second-guessing 0 P0 / 10 P1 / 18 P2 severity triage — iter 6 adversarial self-check validated"
+      ]
+    }
+  }
 }

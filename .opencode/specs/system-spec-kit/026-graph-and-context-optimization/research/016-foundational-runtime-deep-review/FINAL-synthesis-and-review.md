@@ -1207,16 +1207,16 @@ Note: Quick wins (§6.1) can be opportunistically picked up by anyone between st
 
 **Wall-clock = 10 weeks.** Engineers 1, 2, 3 run roughly parallel tracks. Support track handles Domain 5 catch-up, open-question resolution, and test-coverage backfill. The plan is tight but feasible; it assumes no major refactors beyond those in §6.
 
-### 7.6 What this plan does NOT fix (parked for Phase 018+)
+### 7.6 What this plan does NOT fix (parked for Phase 017+)
 
-- **Gemini lane cross-audit.** Only spot-checked in Phase 016; Phase 018 should do a dedicated Gemini parity audit.
+- **Gemini lane cross-audit.** Only spot-checked in Phase 016; Phase 017 should do a dedicated Gemini parity audit.
 - **Context handler readiness fail-open.** `handlers/code-graph/context.ts` hinted at same pattern as `query.ts` but not fully audited.
 - **Entity-linker cross-memory blast radius.** R7-002 flagged stale-row linking after soft-fail; cross-memory scope not investigated.
 - **Shared payload marker sanitization.** R10-002 identified prompt-injection risk via unescaped `[PROVENANCE:]` interpolation; exploitability not confirmed. If the fix is bounded, add to Phase 017 as quick-win; otherwise park.
 - **Handover-state routing enum.** Prose-defined `handover_state` vocabulary never audited.
 - **`opencode.json` + `.utcp_config.json` naming contracts.** Stringly-typed MCP namespace pattern (`{manual_name}.{manual_name}_{tool_name}`) never audited.
 - **`generate-context.js` trigger-phrase surface.** Memory category / triggers / scope fields feed semantic search; never audited for schema validation.
-- **Real-load concurrency measurement.** Seven interleavings characterized; actual production frequencies not measured. Phase 017 structural fixes work regardless of frequency, but Phase 018 measurement would refine test harness priorities.
+- **Real-load concurrency measurement.** Seven interleavings characterized; actual production frequencies not measured. Phase 017 structural fixes work regardless of frequency, but Phase 017 measurement would refine test harness priorities.
 
 ---
 

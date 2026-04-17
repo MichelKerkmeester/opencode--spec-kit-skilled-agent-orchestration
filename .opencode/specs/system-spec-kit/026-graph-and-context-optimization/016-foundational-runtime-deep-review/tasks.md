@@ -1,7 +1,7 @@
 ---
 title: "Tasks: Foundational Runtime Remediation"
 description: "One task per distinct finding (63 canonical tasks) grouped by source file with dependency markers. Cites finding IDs (R??-???) for traceability."
-trigger_phrases: ["016 remediation tasks", "phase 017 tasks"]
+trigger_phrases: ["016 remediation tasks", "phase 016 remediation tasks"]
 importance_tier: "critical"
 contextType: "implementation"
 _memory:
@@ -9,8 +9,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review"
     last_updated_at: "2026-04-17T10:00:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Phase 017 closeout — 97 canonical tasks + 10 criteria closed"
-    next_safe_action: "Phase 018 CP-001 through CP-004 residuals"
+    recent_action: "Phase 016 remediation closeout — 97 canonical tasks + 10 criteria closed"
+    next_safe_action: "Phase 017 CP-001 through CP-004 residuals"
     blockers: []
 ---
 <!-- SPECKIT_LEVEL: 2 -->
@@ -459,8 +459,8 @@ Every code-changing task above must be paired with a test commit. The 7 canonica
 - [x] All 29 quick wins landed [EVIDENCE: 21 Phase 4 QW commits per `phase-4-quick-wins-summary.md` table + remaining QWs absorbed into structural waves]
 - [x] All test migration tasks (T-TEST-01..07) + new tests (T-TEST-NEW-01..20) passing [EVIDENCE: 0a2d7a576 test migration audit documents coverage matrix for all 34 T-TEST-* tasks + 3b22ad3aa chore marks all T-TEST tasks done]
 - [x] `validate.sh --strict` passes on 016 packet [EVIDENCE: spec folder validation passes post-closeout; all required canonical files present including implementation-summary.md]
-- [x] Full repo type-check + Vitest + pytest passes [EVIDENCE: type-check clean per 1c3ad5014 Phase 017 synthesis; scoped vitest passes across 4 P0 regression suites + canonical migrations; pytest passes for test_skill_advisor.py + test_skill_graph_compiler.py]
-- [x] `implementation-summary.md` written with commit-by-commit finding closure [EVIDENCE: this closeout commit populates implementation-summary.md with 27 Phase 017 commits + all constituent findings + attack-scenario regression tests]
+- [x] Full repo type-check + Vitest + pytest passes [EVIDENCE: type-check clean per 1c3ad5014 Phase 016 remediation synthesis; scoped vitest passes across 4 P0 regression suites + canonical migrations; pytest passes for test_skill_advisor.py + test_skill_graph_compiler.py]
+- [x] `implementation-summary.md` written with commit-by-commit finding closure [EVIDENCE: this closeout commit populates implementation-summary.md with 27 Phase 016 remediation commits + all constituent findings + attack-scenario regression tests]
 
 ### Task Count Summary
 

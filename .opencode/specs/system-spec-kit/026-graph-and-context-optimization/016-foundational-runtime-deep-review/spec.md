@@ -16,7 +16,7 @@ _memory:
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
-# Feature Specification: Foundational Runtime Remediation (Phase 016 → Phase 017 Charter)
+# Feature Specification: Foundational Runtime Remediation (Phase 016 → Phase 016 remediation Charter)
 
 ---
 
@@ -112,9 +112,9 @@ Additional in-scope files (each with 1–3 distinct findings):
 
 ### Out of Scope
 
-- **Remediation of Domain-5 test-coverage gaps not catalogued** — see Phase 017 Week 1 closing-pass in `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §8.2.
-- **Real-load concurrency frequency measurement** — structural fixes work regardless; measurement deferred to Phase 018.
-- **Gemini lane cross-audit** — spot-checked only; dedicated Gemini parity audit deferred to Phase 018.
+- **Remediation of Domain-5 test-coverage gaps not catalogued** — see Phase 016 remediation Week 1 closing-pass in `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §8.2.
+- **Real-load concurrency frequency measurement** — structural fixes work regardless; measurement deferred to Phase 017.
+- **Gemini lane cross-audit** — spot-checked only; dedicated Gemini parity audit deferred to Phase 017.
 - **Handover-state routing enum** — prose `handover_state` vocabulary never audited; deferred.
 - **`opencode.json` / `.utcp_config.json` naming contracts** — stringly-typed MCP namespace pattern never audited; deferred.
 - **`generate-context.js` trigger-phrase surface** — memory category/triggers/scope fields never audited; deferred.
@@ -253,7 +253,7 @@ Constituent findings: R41-004 + R45-004 + R46-003 + R50-002. Dev/CI isolation cu
 |----|-------------|---------------------|------------------|
 | REQ-013 | Shared payload marker sanitization | Escape provenance fields in `[PROVENANCE:]` wrapper; reject `]` or newline in `producer` string | R10-002 |
 | REQ-014 | Gemini compact-recovery symmetry | Gemini wrapper forwards `payloadContract.provenance` to match Claude | R10-001 |
-| REQ-015 | Domain-5 test coverage catch-up | 5-iteration dedicated pass during Phase 017 Week 1 producing regression-harness inventory | — (cross-cutting) |
+| REQ-015 | Domain-5 test coverage catch-up | 5-iteration dedicated pass during Phase 016 remediation Week 1 producing regression-harness inventory | — (cross-cutting) |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -293,12 +293,12 @@ Constituent findings: R41-004 + R45-004 + R46-003 + R50-002. Dev/CI isolation cu
 |------|------|--------|------------|
 | Risk | **Test suite codifies degraded contracts.** 7 test files explicitly assert the collapsed/fail-open behavior; any structural fix without simultaneous test migration will break CI. | **HIGH — blocks remediation work** | Every code change MUST identify corresponding test updates. Migration effort is ~15% of refactor time (~2100 LOC of test changes). See §7 "Test-Suite Migration Mandate" below. |
 | Risk | Remediation of one P0 candidate masks the next. E.g., fixing R21-002 (unvalidated parse) in isolation hides R36-001 (torn read) because the parse failure was masking the read race. | Medium | Structural refactors bundle constituent findings (S2 addresses all of P0-A's 10 findings together). Do not land partial fixes for P0 candidates. |
-| Risk | HookState schema-version migration breaks already-quiesced state files. | Medium | Open question resolution during Phase 017 Week 1. If breaks exist, add A3 migration step that reads legacy → writes current schema. Otherwise, reject mismatched-version state with distinct `schema_mismatch` reason rather than crash. |
+| Risk | HookState schema-version migration breaks already-quiesced state files. | Medium | Open question resolution during Phase 016 remediation Week 1. If breaks exist, add A3 migration step that reads legacy → writes current schema. Otherwise, reject mismatched-version state with distinct `schema_mismatch` reason rather than crash. |
 | Risk | Regression tests that codify degraded contracts may be intentional compatibility shims, not oversights. Delete-and-replace would break legitimate compatibility. | Medium | Resolve before starting S1/S2/S3: review each test's original PR message and commit log for compatibility intent. Default assumption: oversight unless evidence otherwise. |
 | Risk | Concurrent writer surface at runtime is characterized (7 interleavings) but not measured. Structural fixes work regardless of frequency, but test harness priorities may miss the actual high-frequency cases. | Low | 2-day measurement pass before S1/S2 (optional; fixes sound either way). |
 | Risk | Phase 015 remediation may have modified H6/H7 files concurrently with this research. | Low | Verify current-state of `reconsolidation-bridge.ts` and `post-insert.ts` against findings-registry line numbers before S1/S2/M13 starts. |
-| Dependency | `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` must remain the authoritative source throughout implementation. | High | Treat it as read-only during Phase 017. Any new findings discovered during implementation get appended to `implementation-summary.md` with cross-reference; do not amend the synthesis. |
-| Dependency | `/spec_kit:deep-review` pipeline used for closing-pass audits of the 11 untouched files (see `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §8.2). | Medium | Gate: at Phase 017 Week 1, run a 5-iteration closing-pass on the 11 untouched files before starting P0-A/B/C remediation, to avoid discovering new P1/P2 findings mid-refactor. |
+| Dependency | `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` must remain the authoritative source throughout implementation. | High | Treat it as read-only during Phase 016 remediation. Any new findings discovered during implementation get appended to `implementation-summary.md` with cross-reference; do not amend the synthesis. |
+| Dependency | `/spec_kit:deep-review` pipeline used for closing-pass audits of the 11 untouched files (see `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §8.2). | Medium | Gate: at Phase 016 remediation Week 1, run a 5-iteration closing-pass on the 11 untouched files before starting P0-A/B/C remediation, to avoid discovering new P1/P2 findings mid-refactor. |
 | Dependency | Copilot concurrency cap (3 per account) for parallel deep-review dispatches during remediation validation. | Low | Plan dispatch schedule accordingly; use per-iter delta files to avoid shared-write races. |
 
 ### Test-Suite Migration Mandate
@@ -333,7 +333,7 @@ Every code change in this remediation MUST identify its corresponding test updat
 - Gate 3 false-positive + false-negative regression battery (S5)
 - YAML `when:` predicate typed-grammar violation (R42-001, R43-002, R44-003, S7)
 
-**Total migration effort: ~2100 LOC at ~300 LOC/day = ~7 engineer-days of pure test work.** Distributed across weeks 4–9 of the Phase 017 week-by-week plan (`plan.md` §4).
+**Total migration effort: ~2100 LOC at ~300 LOC/day = ~7 engineer-days of pure test work.** Distributed across weeks 4–9 of the Phase 016 remediation week-by-week plan (`plan.md` §4).
 <!-- /ANCHOR:risks -->
 
 ---
@@ -372,7 +372,7 @@ Every code change in this remediation MUST identify its corresponding test updat
 
 - **Legacy graph-metadata still on disk at time of S3 rollout.** Migration path: on first read after S3 deploys, propagate `migrated: true`; downstream ranking penalizes until human review re-authors. Do NOT automatically upgrade legacy to current schema.
 - **HookState files in-flight during S2 deploy.** Migration path: reject unrecognised `schemaVersion` with quarantine-to-`.bad`; do NOT silently accept. Acceptance: no silent schema drift.
-- **Concurrent Phase 017 engineer commits.** Guarantee: every commit cites finding IDs. Engineer 1, 2, 3 tracks should not touch the same files concurrently (§7.5 week-by-week plan).
+- **Concurrent Phase 016 remediation engineer commits.** Guarantee: every commit cites finding IDs. Engineer 1, 2, 3 tracks should not touch the same files concurrently (§7.5 week-by-week plan).
 
 ### Error Scenarios
 
@@ -405,14 +405,14 @@ Every code change in this remediation MUST identify its corresponding test updat
 <!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
-Four questions remain unanswered from the research and must resolve during Phase 017 Week 1:
+Four questions remain unanswered from the research and must resolve during Phase 016 remediation Week 1:
 
 1. **Does `command-spec-kit` enforce Gate 3 independently of skill routing?** (Determines whether Watch-P1 becomes P0-E.) Resolve via code inspection of the `command-spec-kit` dispatcher plus live repro: invoke `/spec_kit:deep-research` → `command-spec-kit` bridge and observe whether spec-folder creation occurs.
 2. **Are the existing regression tests that encode degraded contracts intentional compatibility shims or oversights?** (Determines whether test migration is clean delete-and-replace or requires compatibility shims.) Resolve via git log + PR message archaeology for each of the 7 test files in §7.
 3. **Can `HookState` gain a `schemaVersion` field without breaking already-quiesced state files?** (Determines whether A3 needs a migration step.) Resolve by scanning `/tmp` on reference machines for existing HookState files and attempting schema-upgrade dry-run.
 4. **Full enumeration of `/spec_kit:*` subcommands needing bridge entries?** (Determines scope of S4/A0.) Enumerate via `grep` over `command/spec_kit/` and feature catalog. Initial set: `plan`, `complete`, `implement`, `deep-research`, `deep-review`, `resume`.
 
-Additional open questions (not blocking Phase 017 start):
+Additional open questions (not blocking Phase 016 remediation start):
 
 5. Does `setLastGitHead()` on partial-persistence success block later stale detection? (`ensure-ready.ts`)
 6. Does `handlers/code-graph/context.ts` inherit readiness-fail-open from `code_graph_query`?

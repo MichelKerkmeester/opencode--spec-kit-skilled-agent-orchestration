@@ -1,7 +1,7 @@
 ---
 title: "Verification Checklist: Foundational Runtime Remediation"
-description: "Phase 017 verification for 63 findings. Every item includes acceptance evidence. P0 blocks; P1 must complete or defer; P2 optional."
-trigger_phrases: ["016 remediation checklist", "phase 017 checklist"]
+description: "Phase 016 remediation verification for 63 findings. Every item includes acceptance evidence. P0 blocks; P1 must complete or defer; P2 optional."
+trigger_phrases: ["016 remediation checklist", "phase 016 remediation checklist"]
 importance_tier: "critical"
 contextType: "implementation"
 _memory:
@@ -9,8 +9,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review"
     last_updated_at: "2026-04-17T10:00:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Phase 017 closeout — 176 CHK items verified"
-    next_safe_action: "Phase 018 CP-001 through CP-004 residuals"
+    recent_action: "Phase 016 remediation closeout — 176 CHK items verified"
+    next_safe_action: "Phase 017 CP-001 through CP-004 residuals"
     blockers: []
 ---
 <!-- SPECKIT_LEVEL: 2 -->
@@ -37,7 +37,7 @@ _memory:
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-Preflight verification items (Week 1 of Phase 017).
+Preflight verification items (Week 1 of Phase 016 remediation).
 
 - [x] CHK-PRE-001 [P0] Phase 016 research complete (50 iterations) — [EVIDENCE: inspection of `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` and 50 iteration files; (verified)]
 - [x] CHK-PRE-002 [P0] Findings registry structured — [EVIDENCE: `findings-registry.json` exists with JSON schema validation; (verified)]
@@ -339,10 +339,10 @@ Items establishing that the remediation closes known trust-boundary and injectio
 
 ### Post-Remediation Verification
 
-Runs at the very end of Phase 017, before declaring the 016 packet complete:
+Runs at the very end of Phase 016 remediation, before declaring the 016 packet complete:
 
 - [x] CHK-VERIFY-01 [P0] `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review --strict` exits 0 — verified by CI run [EVIDENCE: spec folder validation passes; implementation-summary.md populated in this closeout commit]
-- [x] CHK-VERIFY-02 [P0] Full TypeScript type-check passes — verified by `tsc --noEmit` exits 0 [EVIDENCE: type-check runs clean across P0-A/B/C/D composites + S4/S5/S6/S7 structural refactors per 1c3ad5014 Phase 017 Phase 1 synthesis]
+- [x] CHK-VERIFY-02 [P0] Full TypeScript type-check passes — verified by `tsc --noEmit` exits 0 [EVIDENCE: type-check runs clean across P0-A/B/C/D composites + S4/S5/S6/S7 structural refactors per 1c3ad5014 Phase 016 remediation Phase 1 synthesis]
 - [x] CHK-VERIFY-03 [P0] Full Vitest suite passes — verified by `vitest run` exits 0 with zero failures [EVIDENCE: scoped vitest runs pass across 4 P0 regression suites + canonical test migrations per 0a2d7a576 test migration audit]
 - [x] CHK-VERIFY-04 [P0] Python test suite passes — verified by `pytest` exits 0 [EVIDENCE: `test_skill_advisor.py` + `test_skill_graph_compiler.py` pass per e009eda0c S4 + ef5c093e8 T-SGC-04 + 0a2d7a576]
 - [x] CHK-VERIFY-05 [P0] `skill_graph_compiler.py --validate-only` emits zero new warnings — verified by CI log diff [EVIDENCE: 7261c3337 T-SGC-01 compiler hard-errors on topology violations; clean compile post-remediation]
@@ -367,8 +367,8 @@ Runs at the very end of Phase 017, before declaring the 016 packet complete:
 - [x] CHK-DOC-02 [P1] Parent 026 spec.md updated with 016 entry (completion status, links) — verified by diff [EVIDENCE: parent packet graph-metadata.json + description.json reflect 016 completion]
 - [x] CHK-DOC-03 [P1] `description.json` status updated to `implemented` (from `ready_for_implementation` during implementation, from `planning` pre-Stage-2) — verified by JSON inspection [EVIDENCE: description.json status reflects implemented state]
 - [x] CHK-DOC-04 [P1] `graph-metadata.json` status reflects final state — verified by JSON inspection [EVIDENCE: graph-metadata.json tracks final 016 implementation state]
-- [x] CHK-DOC-05 [P2] Review findings archived in appropriate subfolder — verified by file tree inspection [EVIDENCE: closing-pass-notes.md under research/016-foundational-runtime-deep-review/; Phase 017 synthesis files under packet root]
-- [x] CHK-DOC-06 [P1] Cross-references from systemic-themes narrative (if created) to `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §5 — verified by inspection [EVIDENCE: `phase-017-p0-composites-summary.md` §4 cross-references FINAL §5 systemic anti-patterns]
+- [x] CHK-DOC-05 [P2] Review findings archived in appropriate subfolder — verified by file tree inspection [EVIDENCE: closing-pass-notes.md under research/016-foundational-runtime-deep-review/; Phase 016 remediation synthesis files under packet root]
+- [x] CHK-DOC-06 [P1] Cross-references from systemic-themes narrative (if created) to `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §5 — verified by inspection [EVIDENCE: `phase-016-remediation-p0-composites-summary.md` §4 cross-references FINAL §5 systemic anti-patterns]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -401,7 +401,7 @@ Runs at the very end of Phase 017, before declaring the 016 packet complete:
 
 **P0 verification items total: 67** (P0-composite + P0 within P1 + P0 within test + post-remediation P0). All 67 verified with evidence before claiming 016 remediation done.
 
-**Verification Date**: 2026-04-17 (Phase 017 remediation complete; closeout + implementation-summary.md populated)
+**Verification Date**: 2026-04-17 (Phase 016 remediation remediation complete; closeout + implementation-summary.md populated)
 
 ### Cross-References
 
@@ -411,7 +411,7 @@ Runs at the very end of Phase 017, before declaring the 016 packet complete:
 - **Authoritative Research**: `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md`
 - **Findings Registry**: `../research/016-foundational-runtime-deep-review/findings-registry.json`
 - **Phase 4 QW Synthesis**: `phase-4-quick-wins-summary.md`
-- **Phase 1 P0 Synthesis**: `phase-017-p0-composites-summary.md`
+- **Phase 1 P0 Synthesis**: `phase-016-remediation-p0-composites-summary.md`
 - **Closing-pass Notes**: `../research/016-foundational-runtime-deep-review/closing-pass-notes.md`
 - **Preflight OQ Resolution**: `preflight-oq-resolution.md`
 <!-- /ANCHOR:summary -->

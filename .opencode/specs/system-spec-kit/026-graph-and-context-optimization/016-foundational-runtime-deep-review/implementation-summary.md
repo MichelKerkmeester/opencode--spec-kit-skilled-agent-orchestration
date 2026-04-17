@@ -1,25 +1,48 @@
 ---
 title: "Implementation Summary: Foundational Runtime Remediation"
-description: "Phase 017 remediation complete: 27 commits shipped to main closing 63 distinct findings + 4 P0 composite attack scenarios + 7 structural refactors + 13 medium refactors + 29 quick wins + full test suite migration across 4 P0 regression suites and 34 T-TEST tasks."
+description: "Phase 016 remediation complete: 27 commits shipped to main closing 63 distinct findings + 4 P0 composite attack scenarios + 7 structural refactors + 13 medium refactors + 29 quick wins + full test suite migration across 4 P0 regression suites and 34 T-TEST tasks. Phase 017 follow-on surfaced 28 review findings + 14 segment-2 findings (see 017 folder)."
 trigger_phrases: ["016 implementation summary", "phase 017 summary", "foundational runtime remediation"]
 importance_tier: "critical"
 contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review"
-    last_updated_at: "2026-04-17T10:00:00Z"
+    last_updated_at: "2026-04-17T13:51:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Phase 017 remediation complete"
-    next_safe_action: "Phase 018 CP-001 through CP-004 residuals"
-    blockers: []
+    recent_action: "Segment-2 deep-research complete (iterations 51-57): 7 Opus parallel-wave iterations meta-researching the 2026-04-17T120827Z deep-review findings. 14 new findings (9 P1, 5 P2) extending review's 10 P1 + 18 P2. 8 new Phase 017 task IDs (T-W1-CNS-04/05, T-W1-CGC-03, T-W1-HOK-01/02, T-W1-MCX-01, T-W1-PIN-02, T-W1-HST-02). Headline: H-56-1 CONFIRMED — default /memory:save is structural metadata-freshness no-op (workflow.ts:1259 `const ctxFileWritten = false` dead code + workflow.ts:1333 `plannerMode === 'full-auto'` gate with default `'plan-only'`). 2 new clusters: D (code-graph 6:1 sibling asymmetry — scan.ts/status.ts/context.ts/ccc-*.ts all missing trustState) + E (Copilot runtime observability gap). 0 P0 escalations confirmed across iter 53 adversarial + iter 56 compound-hypothesis audits. 3 compound hypotheses CONFIRMED (H-56-1/4/5), 1 REFUTED (H-56-2 cross-handler cache poisoning), 1 PARTIAL (H-56-3 shared-tmpfs). Synthesis: research/016-foundational-runtime-deep-review/segment-2-synthesis.md (332 lines, 12 sections)."
+    next_safe_action: "Run /spec_kit:plan :with-phases on 017-review-findings-remediation to scope Phase 017 from 27-task consolidated backlog (critical path ~60h / 6 working days across 4 waves A-D). Alternative: /memory:save to re-index segment-2-synthesis.md."
+    blockers:
+      - id: "H-56-1"
+        severity: "P1"
+        description: "Default /memory:save is metadata-freshness structural no-op. workflow.ts:1259 + workflow.ts:1333 + generate-context.ts:415 default plan-only path writes zero metadata. Blocks description.json.lastUpdated + graph-metadata.derived.* freshness across all 16 sibling 026 folders. Fix must land before any 16-folder sweep."
+        references: ["R51-P1-001", "R51-P1-002", "R4-P1-002", "R5-P1-001"]
+      - id: "R52-P1-002"
+        severity: "P1"
+        description: "Copilot runtime missing compact-cache writer+reader. Copilot-driven sessions lose trust provenance across compaction. Blocks Phase 017 autonomous execution via cli-copilot (per feedback_copilot_concurrency_override)."
+        references: ["R52-P1-002"]
     completion_pct: 100
+    segment_2_metrics:
+      iterations: "51-57"
+      duration_minutes: 135
+      dispatcher: "Task tool @general / Opus 4.7 / parallel waves of 3"
+      new_p1_findings: 9
+      new_p2_findings: 5
+      p0_escalations: 0
+      compound_hypotheses_confirmed: 3
+      compound_hypotheses_refuted: 1
+      compound_hypotheses_partial: 1
+      phase_017_task_count_total: 27
+      phase_017_critical_path_hours: 60
+      phase_017_total_effort_hours: 105
+      cumulative_research_iterations: 57
+      verdict: "CONDITIONAL-extended (unchanged from review; scope expanded by 8 task IDs)"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 # Implementation Summary: Foundational Runtime Remediation
 
-> **Status: COMPLETE.** Phase 017 shipped 27 commits to `main` between 2026-04-16 and 2026-04-17, closing all 63 distinct findings from the Phase 016 50-iteration research synthesis. All four P0 composite attack scenarios (`FINAL-synthesis-and-review.md §3.1–§3.4`) are blocked by dedicated regression test files. Six architectural primitives were introduced and composed across the codebase. The Phase 017 budget of 24.5 engineer-weeks was compressed to ~4 wall-clock hours via parallel cli-copilot gpt-5.4 high dispatches capped at 3 concurrent.
+> **Status: COMPLETE.** Phase 016 remediation shipped 27 commits to `main` between 2026-04-16 and 2026-04-17, closing all 63 distinct findings from the Phase 016 50-iteration research synthesis. All four P0 composite attack scenarios (`FINAL-synthesis-and-review.md §3.1–§3.4`) are blocked by dedicated regression test files. Six architectural primitives were introduced and composed across the codebase. The Phase 016 remediation budget of 24.5 engineer-weeks was compressed to ~4 wall-clock hours via parallel cli-copilot gpt-5.4 high dispatches capped at 3 concurrent.
 
 ---
 
@@ -50,11 +73,11 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 017 eliminated four P0 composite attack scenarios, landed seven structural refactors, applied thirteen medium refactors, and shipped twenty-one quick wins across the MCP server, skill-advisor, playbook runner, and YAML asset surfaces. The work coalesced into six composable architectural primitives that interlock to close the five systemic anti-patterns identified in `FINAL-synthesis-and-review.md §5` (unvalidated parse, pre-lock-read-then-mutate, mixed-snapshot scope reads, silent laundering, TOCTOU cleanup).
+Phase 016 remediation eliminated four P0 composite attack scenarios, landed seven structural refactors, applied thirteen medium refactors, and shipped twenty-one quick wins across the MCP server, skill-advisor, playbook runner, and YAML asset surfaces. The work coalesced into six composable architectural primitives that interlock to close the five systemic anti-patterns identified in `FINAL-synthesis-and-review.md §5` (unvalidated parse, pre-lock-read-then-mutate, mixed-snapshot scope reads, silent laundering, TOCTOU cleanup).
 
 ### Six architectural primitives introduced
 
-**Primitive 1 — Typed `OperationResult<T>` uniform result shape.** Before Phase 017, result contracts across hook-state, session-stop, reconsolidation-bridge, post-insert, memory-save, and response-builder collapsed into bare booleans or `null` sentinels, making it impossible for callers to distinguish "ran successfully" from "skipped intentionally" from "failed silently" from "deferred until later." Commit `c789e71b7` anchored the M13 refactor by replacing the `enrichmentStatus` boolean record in `post-insert.ts` with a per-step `OperationResult<T>` map carrying `status: 'ran' | 'skipped' | 'failed' | 'deferred' | 'partial'` plus `reason`, `attempts`, `persistedState`, and `warnings` fields. This shape now threads through hook-state `updateState()` returns (P0-A, 6f5623a4c), session-stop `autosaveOutcome` (Phase 4 QW T-SST-07, fd52f5b93), reconsolidation-bridge `saveTimeReconsolidation` (P0-B, 104f534bd), memory-save runtime-degradation recovery (P0-B T-MSV-01), and response-builder propagation (T-RBD-01, 709727e98). Callers can now discriminate operational outcomes with certainty.
+**Primitive 1 — Typed `OperationResult<T>` uniform result shape.** Before Phase 016 remediation, result contracts across hook-state, session-stop, reconsolidation-bridge, post-insert, memory-save, and response-builder collapsed into bare booleans or `null` sentinels, making it impossible for callers to distinguish "ran successfully" from "skipped intentionally" from "failed silently" from "deferred until later." Commit `c789e71b7` anchored the M13 refactor by replacing the `enrichmentStatus` boolean record in `post-insert.ts` with a per-step `OperationResult<T>` map carrying `status: 'ran' | 'skipped' | 'failed' | 'deferred' | 'partial'` plus `reason`, `attempts`, `persistedState`, and `warnings` fields. This shape now threads through hook-state `updateState()` returns (P0-A, 6f5623a4c), session-stop `autosaveOutcome` (Phase 4 QW T-SST-07, fd52f5b93), reconsolidation-bridge `saveTimeReconsolidation` (P0-B, 104f534bd), memory-save runtime-degradation recovery (P0-B T-MSV-01), and response-builder propagation (T-RBD-01, 709727e98). Callers can now discriminate operational outcomes with certainty.
 
 **Primitive 2 — Zod `HookStateSchema` + `.bad` quarantine (P0-A anchor).** The HookState load path previously used `JSON.parse(raw) as HookState` with no shape validation, allowing any corrupt or adversarially-crafted temp-state file to propagate into prompt replay, session-resume, autosave routing, compact-inject, and four other hook entrypoints across Claude, Gemini, and OpenCode runtimes. Commit `6f5623a4c` added a Zod schema with mandatory `schemaVersion: z.literal(1)` field plus all HookState fields; `safeParse()` runs on every `loadState()` and `loadMostRecentState()` call. Validation failures quarantine the file to a `.bad` sibling path (not silent `null` return) and return a typed rejection `{ ok: false, reason: 'schema_mismatch' | 'parse_error' | ... }`. The quarantine policy isolates corrupt state without blocking sibling entrypoints, closing the cross-runtime poisoning attack chain documented in `FINAL §3.1`.
 
@@ -84,11 +107,11 @@ The six primitives interlock: Zod schema (P-2) prevents corrupt state from enter
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Delivery followed the Phase 017 plan §4 dependency graph but compressed the 10-week wall-clock schedule to ~4 hours via parallel cli-copilot gpt-5.4 high dispatches capped at 3 concurrent (per the upstream GitHub Copilot API throttle). Execution order respected file-overlap dependencies: preflight and quick wins first to clear structural prerequisites; P0-D solo as a warm-up; P0-A and P0-C in parallel; P0-B last with the largest single LOC count; then structural, medium, and test migration waves.
+Delivery followed the Phase 016 remediation plan §4 dependency graph but compressed the 10-week wall-clock schedule to ~4 hours via parallel cli-copilot gpt-5.4 high dispatches capped at 3 concurrent (per the upstream GitHub Copilot API throttle). Execution order respected file-overlap dependencies: preflight and quick wins first to clear structural prerequisites; P0-D solo as a warm-up; P0-A and P0-C in parallel; P0-B last with the largest single LOC count; then structural, medium, and test migration waves.
 
 ### Execution timeline
 
-**Preflight (committed 93b0c77c9, 0da4e1aa6):** OQ1–OQ4 resolved via direct code inspection + `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` evidence synthesis, producing `preflight-oq-resolution.md` as the authoritative OQ record. T-PRE-04 closing-pass audit inspected all 11 files flagged in FINAL §8.2, producing `../research/016-foundational-runtime-deep-review/closing-pass-notes.md` documenting 4 new P2 findings (CP-001 readiness fail-open in `context.ts`, CP-002 `onIndex()` skipped fan-in, CP-003 entity-linker whole-corpus escalation, CP-004 `spec_kit_complete_confirm.yaml` S7 coverage gap) deferred to Phase 018. T-PRE-09 adversarial repros for R33-001, R40-001, R46-003, R34-002, R35-001 were constructed and verified via existing or new regression test fixtures.
+**Preflight (committed 93b0c77c9, 0da4e1aa6):** OQ1–OQ4 resolved via direct code inspection + `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` evidence synthesis, producing `preflight-oq-resolution.md` as the authoritative OQ record. T-PRE-04 closing-pass audit inspected all 11 files flagged in FINAL §8.2, producing `../research/016-foundational-runtime-deep-review/closing-pass-notes.md` documenting 4 new P2 findings (CP-001 readiness fail-open in `context.ts`, CP-002 `onIndex()` skipped fan-in, CP-003 entity-linker whole-corpus escalation, CP-004 `spec_kit_complete_confirm.yaml` S7 coverage gap) deferred to Phase 016 remediation. T-PRE-09 adversarial repros for R33-001, R40-001, R46-003, R34-002, R35-001 were constructed and verified via existing or new regression test fixtures.
 
 **Phase 4 Quick Wins (21 commits in 11 waves, `phase-4-quick-wins-summary.md`):** Starting with `31233f06d` (T-CGQ-05 unsupported edgeType rejection) and ending with `3d0ab30c9` (T-DLS-01/T-DOC-01 removal of `/tmp/save-context-data.json` across 50+ files). Each wave used 3 concurrent cli-copilot agents. Notable wave highlights:
 - Wave 1–4: `code-graph/query.ts` hardening (T-CGQ-01..08), 8 distinct findings closed in a single file.
@@ -96,7 +119,7 @@ Delivery followed the Phase 017 plan §4 dependency graph but compressed the 10-
 - Wave 7–9: governance-layer quick wins (T-SAP-01/05, T-SAR-02, T-SGC-01/03/04).
 - Wave 10–11: vocabulary + shared-path alignment (T-YML-PLN-01/03, T-DLS-01/T-DOC-01).
 
-**Phase 1 P0 Composites (4 commits in ~60 minutes wall-clock, `phase-017-p0-composites-summary.md`):**
+**Phase 1 P0 Composites (4 commits in ~60 minutes wall-clock, `phase-016-remediation-p0-composites-summary.md`):**
 - `afbb3bc7f` (P0-D, 2 engineer-days reduced to ~10 minutes): TOCTOU identity check + per-file isolation + zero-offset sentinel elimination + `Math.max()` monotonicity. 11 files changed. Regression test `p0-d-toctou-cleanup-regression.vitest.ts` added.
 - `6f5623a4c` (P0-A, 4 engineer-weeks reduced to ~20 minutes): Zod HookStateSchema + `.bad` quarantine + schemaVersion + identity-based `clearCompactPrime()` + typed `updateState()` return. 24 files changed. Regression test `p0-a-cross-runtime-tempdir-poisoning.vitest.ts` added. Gemini hooks (compact-cache, compact-inject, session-prime, session-stop) brought to parity.
 - `1bdd1ed03` (P0-C, 3 engineer-weeks reduced to ~15 minutes): `migrated` marker propagation through validateGraphMetadataContent → refreshGraphMetadataForSpecFolder → memory-parser → stage-1 ranker. 7 files changed. Test expansion via `graph-metadata-integration.vitest.ts` + new `p0-c-graph-metadata-laundering.vitest.ts`.
@@ -159,7 +182,7 @@ Delivery followed the Phase 017 plan §4 dependency graph but compressed the 10-
 | `c3a6115a0` | P0-D chore | Mark P0-D composite tasks done | — |
 | `02be9f64e` | P0-A/C chore | Mark P0-A/C composite tasks done | — |
 | `8c809d725` | P0-B chore | Mark P0-B composite tasks done | — |
-| `1c3ad5014` | Phase 1 synth | Phase 017 Phase 1 synthesis doc | — |
+| `1c3ad5014` | Phase 1 synth | Phase 016 remediation Phase 1 synthesis doc | — |
 | `93b0c77c9` | OQ chore | Mark OQ preflight tasks done | — |
 | `c789e71b7` | Wave A | M13 post-insert enum status | R7-002, R8-001, R8-002, R11-005, R12-005, R14-003, R21-001 |
 | `e009eda0c` | Wave A | S4 skill routing trust chain remaining | — |
@@ -187,7 +210,7 @@ Delivery followed the Phase 017 plan §4 dependency graph but compressed the 10-
 
 ### Architectural decisions
 
-**D1 — OperationResult<T> as the canonical uniform result shape.** The typed discriminated union pattern was chosen over per-function ad-hoc result shapes because the remediation was closing the same class of bug (silent success / null collapse / boolean-collapse) across seven different surfaces (hook-state, session-stop, reconsolidation-bridge, post-insert, memory-save, response-builder, manual-playbook-runner). A single shape reduces call-site cognitive load, enables type-driven refactoring, and provides a stable substrate for future M13-style propagation passes. Status enum (`ran | skipped | failed | deferred | partial`) was chosen over boolean because five distinct outcomes had been collapsing into single booleans (R8-001 documented 4 such collapses in `enrichmentStatus` alone). Trade-off: callers unprepared for the discriminated union need to be updated at the consumer side, which drove the paired test migration mandate (T-TEST-01 through T-TEST-07). Reference: `plan.md §3` architectural change #1; `phase-017-p0-composites-summary.md §4` primitive 1.
+**D1 — OperationResult<T> as the canonical uniform result shape.** The typed discriminated union pattern was chosen over per-function ad-hoc result shapes because the remediation was closing the same class of bug (silent success / null collapse / boolean-collapse) across seven different surfaces (hook-state, session-stop, reconsolidation-bridge, post-insert, memory-save, response-builder, manual-playbook-runner). A single shape reduces call-site cognitive load, enables type-driven refactoring, and provides a stable substrate for future M13-style propagation passes. Status enum (`ran | skipped | failed | deferred | partial`) was chosen over boolean because five distinct outcomes had been collapsing into single booleans (R8-001 documented 4 such collapses in `enrichmentStatus` alone). Trade-off: callers unprepared for the discriminated union need to be updated at the consumer side, which drove the paired test migration mandate (T-TEST-01 through T-TEST-07). Reference: `plan.md §3` architectural change #1; `phase-016-remediation-p0-composites-summary.md §4` primitive 1.
 
 **D2 — HookStateSchema versioning via Option A+B hybrid (lazy migration).** OQ3 resolution (`preflight-oq-resolution.md §OQ3`) documented three options: Option A (reject all files without schemaVersion — breaks already-quiesced user sessions), Option B (accept all files with default schemaVersion=1 — permanent version=1 lock-in, no migration path for future v2), Option A+B Hybrid (optional `schemaVersion?: number` field with default-to-1 on-load migration and write-back on first post-load save). Hybrid was selected because it preserves already-quiesced state files (no session disruption on deploy) while laying the groundwork for v2+ migrations (future schemaVersion bumps get distinct `schema_mismatch` rejection). Trade-off: one-time write during first load of each legacy file; benefits: zero user-visible disruption on deploy. Reference: `preflight-oq-resolution.md §OQ3`; implementation in 6f5623a4c P0-A.
 
@@ -215,8 +238,8 @@ All four preflight open questions were resolved in `preflight-oq-resolution.md`:
 ### Trade-offs accepted
 
 - **Parallel cli-copilot dispatch at max 3 concurrent.** The upstream GitHub Copilot API throttles above 3 concurrent dispatches per account; the 10-week wall-clock schedule in `plan.md §4` was compressed to ~4 hours by running waves of 3 parallel agents. Trade-off: some cross-commit file overlap required per-wave sequencing (e.g., P0-D before P0-A because both touch `hook-state.ts`); accepted because the dependency graph was well-understood from `plan.md §5`.
-- **DELETE not archive for obsolete test code.** Per user's Phase 018 autonomous execution rules (global memory feedback), degraded contracts in test files were deleted and rewritten rather than archived to `z_archive/`. Applied to: 6 of 7 canonical test-file migrations per OQ2 resolution.
-- **Skip observation windows.** Per user's feedback rules, no 7-day post-deploy monitoring windows were enforced; remediation shipped and validated via regression tests in a single continuous session. Trade-off: accepted because all 4 P0 attack scenarios have dedicated regression test coverage that runs in CI, and the Phase 017 work is additive (no feature-flag rollouts required).
+- **DELETE not archive for obsolete test code.** Per user's Phase 016 remediation autonomous execution rules (global memory feedback), degraded contracts in test files were deleted and rewritten rather than archived to `z_archive/`. Applied to: 6 of 7 canonical test-file migrations per OQ2 resolution.
+- **Skip observation windows.** Per user's feedback rules, no 7-day post-deploy monitoring windows were enforced; remediation shipped and validated via regression tests in a single continuous session. Trade-off: accepted because all 4 P0 attack scenarios have dedicated regression test coverage that runs in CI, and the Phase 016 remediation work is additive (no feature-flag rollouts required).
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -277,25 +300,25 @@ Every commit cites the closed findings in its commit trailer. Full mapping in §
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-### New findings deferred to Phase 018
+### New findings deferred to Phase 016 remediation
 
-The T-PRE-04 closing-pass audit (`../research/016-foundational-runtime-deep-review/closing-pass-notes.md`) surfaced four new P2 findings during inspection of the 11 files flagged in `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md §8.2` as "touched but not deeply audited" during the 50-iteration research loop. Per T-PRE-04 constraints, these were documented but not fixed in Phase 017; they are deferred to Phase 018:
+The T-PRE-04 closing-pass audit (`../research/016-foundational-runtime-deep-review/closing-pass-notes.md`) surfaced four new P2 findings during inspection of the 11 files flagged in `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md §8.2` as "touched but not deeply audited" during the 50-iteration research loop. Per T-PRE-04 constraints, these were documented but not fixed in Phase 016 remediation; they are deferred to Phase 016 remediation:
 
 | ID | Severity | File:lines | Description | Suggested remediation |
 |----|----------|-----------|-------------|----------------------|
 | **CP-001** | P2 | `handlers/code-graph/context.ts:97-105` | Empty catch block swallows `ensureCodeGraphReady()` exceptions and falls through to stub readiness — identical pattern to R3-002 but on the context handler. T-CGQ-02 only touched `query.ts`. | ~2h quick-win: apply the same `status: 'error'` path used in `code-graph/query.ts` post-T-CGQ-02. Classify S4/M8-adjacent. |
 | **CP-002** | P2 | `lib/search/graph-lifecycle.ts:489-596` | `onIndex()` returns `{ skipped: true }` across 5 distinct conditions (refresh_disabled, entity_linking_disabled, empty_content, pipeline_exception, legal_fallthrough) with no `reason` field. Latent twin of R8-001 (`enrichmentStatus` boolean collapse) on the graph-lifecycle surface — M13 scope was `post-insert.ts`, missed this producer. | ~3h: add `skipReason` enum; wire through `post-insert.ts` graphLifecycle consumer so downstream recovery can distinguish. |
-| **CP-003** | P2 | `lib/search/entity-linker.ts:1131-1133` | `runEntityLinkingForMemory(db, memoryId)` catch block falls back to `runEntityLinking(db)` (whole-corpus scan) with no rate-limit or same-session deduplication — scope-widening amplifier of R7-002. Under rapid per-memory failures, compounds into repeated whole-corpus passes. | Phase 018 candidate: add fallback rate-limit or exhaustion count before returning empty. Not a correctness issue; a resilience-pattern amplification issue. |
+| **CP-003** | P2 | `lib/search/entity-linker.ts:1131-1133` | `runEntityLinkingForMemory(db, memoryId)` catch block falls back to `runEntityLinking(db)` (whole-corpus scan) with no rate-limit or same-session deduplication — scope-widening amplifier of R7-002. Under rapid per-memory failures, compounds into repeated whole-corpus passes. | Phase 016 remediation candidate: add fallback rate-limit or exhaustion count before returning empty. Not a correctness issue; a resilience-pattern amplification issue. |
 | **CP-004** | P2 | `spec_kit_complete_confirm.yaml:514,520,539` | Same untyped boolean DSL (`folder_state == populated-folder`) as `spec_kit_plan_auto.yaml` / `spec_kit_plan_confirm.yaml`. T-YML-CMP-01 only touched the `_auto` variant. S7 coverage gap on the confirm variant of `complete`. | ~1h quick-win: extend T-YML-CMP-01 or add T-YML-CMP-02 to apply the `BooleanExpr` schema to the 3 predicate sites in `spec_kit_complete_confirm.yaml`. |
 
 ### Deferrals from original research synthesis
 
-Per `FINAL-synthesis-and-review.md §7.6`, the following items were explicitly deferred at research-synthesis time and remain deferred post-Phase 017:
+Per `FINAL-synthesis-and-review.md §7.6`, the following items were explicitly deferred at research-synthesis time and remain deferred post-Phase 016 remediation:
 
-- **Gemini lane cross-audit** — Gemini hooks were brought to parity with Claude in P0-A (6f5623a4c), but full cross-audit of the Gemini lane remains a Phase 018 parked item.
+- **Gemini lane cross-audit** — Gemini hooks were brought to parity with Claude in P0-A (6f5623a4c), but full cross-audit of the Gemini lane remains a Phase 016 remediation parked item.
 - **Context handler readiness fail-open audit** — now addressed as CP-001 (above).
 - **Entity-linker cross-memory blast radius** — now addressed as CP-003 (above).
-- **Real-load concurrency measurement** — the P0-A/B/C/D regressions cover concurrency correctness via deterministic race harnesses; production-load measurement (session-startup latency, memory-save p99, routing-quality metrics under real load) remains a Phase 018 measurement task.
+- **Real-load concurrency measurement** — the P0-A/B/C/D regressions cover concurrency correctness via deterministic race harnesses; production-load measurement (session-startup latency, memory-save p99, routing-quality metrics under real load) remains a Phase 016 remediation measurement task.
 - **Handover-state routing enum audit** — confirmed closed by closing-pass (`closing-pass-notes.md §11`): `handover_state` is already a typed const at `content-router.ts:22-31`, not a stringly-typed risk.
 - **opencode.json + .utcp_config.json naming contracts audit** — confirmed closed by closing-pass (`closing-pass-notes.md §12`): UTCP SDK rejects duplicate registrations at registration time; no silent overwrite.
 - **generate-context.js trigger surface audit** — confirmed closed by closing-pass (`closing-pass-notes.md §10`): shared-path hazard removed; trigger validation exists at post-save-review layer (PSR-1/PSR-2/PSR-3).
@@ -317,10 +340,10 @@ Success criteria from `spec.md §5` (SC-001 through SC-010):
 
 ### Watch-items + future audit surfaces
 
-- The `code-graph/context.ts` readiness fail-open (CP-001) and `graph-lifecycle.ts` skipped fan-in (CP-002) represent **latent twins** of already-remediated patterns (R3-002 + R8-001) on adjacent surfaces. Phase 018 should apply the same remediations there. Symmetry argument: if M13 resolves post-insert.ts, it should also resolve graph-lifecycle.ts.
+- The `code-graph/context.ts` readiness fail-open (CP-001) and `graph-lifecycle.ts` skipped fan-in (CP-002) represent **latent twins** of already-remediated patterns (R3-002 + R8-001) on adjacent surfaces. Phase 016 remediation should apply the same remediations there. Symmetry argument: if M13 resolves post-insert.ts, it should also resolve graph-lifecycle.ts.
 - The `entity-linker.ts` whole-corpus fallback (CP-003) is a **resource amplification** finding, not a correctness finding. It does not violate any invariant but can produce compute amplification under rapid per-memory failures. Rate-limit or exhaustion count is the proposed fix.
 - `spec_kit_complete_confirm.yaml` (CP-004) is a **coverage gap** — the same S7 BooleanExpr refactor that landed on the `_auto` variants must be extended to the `_confirm` variant. Estimated ~1h.
-- Real-load concurrency measurement (session-startup p99, memory-save p99 under concurrent writers, routing-quality regression metrics) remains the largest parked measurement item; not a bug, a verification gap. Phase 018 scheduling depends on production deployment telemetry availability.
+- Real-load concurrency measurement (session-startup p99, memory-save p99 under concurrent writers, routing-quality regression metrics) remains the largest parked measurement item; not a bug, a verification gap. Phase 016 remediation scheduling depends on production deployment telemetry availability.
 
 ### Cross-References
 
@@ -335,7 +358,7 @@ Success criteria from `spec.md §5` (SC-001 through SC-010):
 - **Closing-pass Notes**: `../research/016-foundational-runtime-deep-review/closing-pass-notes.md` — T-PRE-04 audit + 4 new P2 findings (CP-001..CP-004)
 - **Preflight OQ Resolution**: `preflight-oq-resolution.md` — OQ1..OQ4 resolutions authoritative
 - **Phase 4 QW Synthesis**: `phase-4-quick-wins-summary.md` — 21 quick-win commits task-by-task
-- **Phase 1 P0 Composites Synthesis**: `phase-017-p0-composites-summary.md` — 4 P0 composite eliminations detailed
+- **Phase 1 P0 Composites Synthesis**: `phase-016-remediation-p0-composites-summary.md` — 4 P0 composite eliminations detailed
 - **Parent Packet**: `../spec.md` — 026-graph-and-context-optimization parent charter
 - **Prior Deep Review**: `../015-implementation-deep-review/` — Phase 015 remediation state
 <!-- /ANCHOR:limitations -->

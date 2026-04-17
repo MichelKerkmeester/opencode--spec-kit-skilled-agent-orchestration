@@ -1,11 +1,11 @@
 ---
-title: "Phase 017 Phase 1 Synthesis — P0 Composites Eliminated"
+title: "Phase 016 remediation Phase 1 Synthesis — P0 Composites Eliminated"
 description: "Synthesis of Phase 1 completion: 4 P0 composite candidates eliminated across 4 commits, 27 constituent findings closed, ~3134 net insertions across 52 files."
 contextType: "implementation"
 importance_tier: "high"
 ---
 
-# Phase 017 Phase 1 Synthesis — P0 Composites Eliminated
+# Phase 016 remediation Phase 1 Synthesis — P0 Composites Eliminated
 
 **Date:** 2026-04-16
 **Agents:** cli-copilot gpt-5.4 high (max 3 concurrent)
@@ -15,7 +15,7 @@ importance_tier: "high"
 
 ## 1. Executive Summary
 
-Phase 1 of the Phase 017 foundational runtime remediation closed all four P0 composite candidates in a single parallel cli-copilot wave lasting approximately 60 minutes of wall-clock work. The execution order followed the dependency graph from `plan.md §4`: P0-D launched solo first (smallest, most isolated, highest operational frequency), then P0-A and P0-C ran in parallel (overlapping files but additive changes), and P0-B landed last as the largest single workstream.
+Phase 1 of the Phase 016 remediation foundational runtime remediation closed all four P0 composite candidates in a single parallel cli-copilot wave lasting approximately 60 minutes of wall-clock work. The execution order followed the dependency graph from `plan.md §4`: P0-D launched solo first (smallest, most isolated, highest operational frequency), then P0-A and P0-C ran in parallel (overlapping files but additive changes), and P0-B landed last as the largest single workstream.
 
 Four fix commits shipped, each co-authored by GitHub Copilot (gpt-5.4 high):
 

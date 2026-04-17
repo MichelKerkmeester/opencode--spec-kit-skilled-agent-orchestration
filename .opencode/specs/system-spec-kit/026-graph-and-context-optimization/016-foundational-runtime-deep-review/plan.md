@@ -1,7 +1,7 @@
 ---
 title: "Implementation Plan: Foundational Runtime Remediation"
 description: "5-phase execution plan for 63 findings: P0 composites, structural, medium, quick wins, test migration. 24.5 engineer-weeks, 3 engineers, 10-12 weeks wall clock."
-trigger_phrases: ["016 remediation plan", "phase 017 plan"]
+trigger_phrases: ["016 remediation plan", "phase 016 remediation plan"]
 importance_tier: "critical"
 contextType: "implementation"
 _memory:
@@ -9,8 +9,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review"
     last_updated_at: "2026-04-17T10:00:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Phase 017 closeout — DoR + DoD + gates closed"
-    next_safe_action: "Phase 018 CP-001 through CP-004 residuals"
+    recent_action: "Phase 016 remediation closeout — DoR + DoD + gates closed"
+    next_safe_action: "Phase 017 CP-001 through CP-004 residuals"
     blockers: []
 ---
 <!-- SPECKIT_LEVEL: 2 -->
@@ -36,7 +36,7 @@ _memory:
 
 ### Overview
 
-Phase 017 executes the Phase 016 remediation charter. The charter comprises **63 distinct findings across ~37 files**, clustered into 4 P0 composite candidates plus 3 strongest-signal systemic themes. Work is sequenced in 5 phases with explicit dependency ordering and parallelization lanes. All changes require synchronized test-suite migration; 7 existing test files codify degraded contracts and must be rewritten alongside code fixes.
+Phase 016 remediation executes the Phase 016 remediation charter. The charter comprises **63 distinct findings across ~37 files**, clustered into 4 P0 composite candidates plus 3 strongest-signal systemic themes. Work is sequenced in 5 phases with explicit dependency ordering and parallelization lanes. All changes require synchronized test-suite migration; 7 existing test files codify degraded contracts and must be rewritten alongside code fixes.
 
 ### Execution Strategy
 
@@ -65,7 +65,7 @@ Phase 017 executes the Phase 016 remediation charter. The charter comprises **63
 - [x] Open question 2 resolved: 7 test files — compatibility shims or oversights? [EVIDENCE: `preflight-oq-resolution.md` §OQ2 + 93b0c77c9 — 6 oversights + 1 shim; `hook-session-stop-replay.vitest.ts` preserved with sibling failure-injection test]
 - [x] Open question 3 resolved: HookState `schemaVersion` upgrade path? [EVIDENCE: `preflight-oq-resolution.md` §OQ3 + 93b0c77c9 — Option A+B hybrid, lazy migration; applied in 6f5623a4c P0-A]
 - [x] Open question 4 resolved: full `/spec_kit:*` subcommand enumeration? [EVIDENCE: `preflight-oq-resolution.md` §OQ4 + 93b0c77c9 — 6 canonical subcommands; per-subcommand bridges landed in e774eef07 T-SAP-03]
-- [x] Closing-pass audit of 11 untouched files (`../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §8.2) complete [EVIDENCE: 0da4e1aa6 T-PRE-04 closing-pass audit + `../research/016-foundational-runtime-deep-review/closing-pass-notes.md` logs 4 new P2 findings CP-001..CP-004 deferred to Phase 018]
+- [x] Closing-pass audit of 11 untouched files (`../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §8.2) complete [EVIDENCE: 0da4e1aa6 T-PRE-04 closing-pass audit + `../research/016-foundational-runtime-deep-review/closing-pass-notes.md` logs 4 new P2 findings CP-001..CP-004 deferred to Phase 017]
 
 ### Definition of Done (per Phase)
 
@@ -79,7 +79,7 @@ Each phase has its own DoD. Final DoD for overall remediation:
 - [x] All 29 quick wins landed [EVIDENCE: 21 Phase 4 QW commits per `phase-4-quick-wins-summary.md` task table; remaining QWs absorbed into structural commits]
 - [x] All 7 test files migrated; new tests from `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §6.5 added [EVIDENCE: 0a2d7a576 test migration audit + 3b22ad3aa T-TEST mark; 7 canonical + 14 supporting + 20 new adversarial tests per tasks.md T-TEST-01..NEW-20]
 - [x] `validate.sh --strict` on 016 packet passes [EVIDENCE: spec folder validator runs clean post-implementation-summary.md populate in this closeout commit]
-- [x] Full repo type-check + Vitest + pytest passes [EVIDENCE: type-check clean per 1c3ad5014 Phase 017 synthesis; vitest + pytest pass per 0a2d7a576 test migration audit + `test_skill_advisor.py` + `test_skill_graph_compiler.py`]
+- [x] Full repo type-check + Vitest + pytest passes [EVIDENCE: type-check clean per 1c3ad5014 Phase 016 remediation synthesis; vitest + pytest pass per 0a2d7a576 test migration audit + `test_skill_advisor.py` + `test_skill_graph_compiler.py`]
 - [x] `implementation-summary.md` written with commit-by-commit finding closure [EVIDENCE: this closeout commit populates implementation-summary.md from placeholder]
 - [x] Parent 026 spec updated with 016 completion status [EVIDENCE: 016 description.json + graph-metadata.json reflect implemented status; parent packet inherits via graph traversal]
 <!-- /ANCHOR:quality-gates -->
@@ -544,10 +544,10 @@ Structural refactors introduce runtime validation (Zod schemas) and type-system 
 - **P0-D rollback:** Trivial — revert D1/D2/D3 individual commits. Each stands alone.
 - **S4 rollback:** `intent_signals` consumer can be toggled off via feature flag if routing quality regresses. Keep metadata pipeline intact.
 - **S5 rollback:** Gate 3 classifier behind feature flag; old prose-based trigger list as fallback. Switch via config.
-- **S6 rollback:** Typed step executor behind feature flag; old `Function(...)()` path retained but dead. Hard-remove in Phase 018.
+- **S6 rollback:** Typed step executor behind feature flag; old `Function(...)()` path retained but dead. Hard-remove in Phase 017.
 - **S7 rollback:** YAML `when:` parser accepts both old untyped strings and new `BooleanExpr` objects for a 1-phase grace window.
 - **M8 rollback:** Dual-emit `absent`/`unavailable` and legacy `stale` for a grace window; downstream consumers migrate on their own schedule.
-- **M13 rollback:** `OperationResult<T>` shape carries a `legacyBoolean: boolean` field during grace window; old consumers read `legacyBoolean`, new consumers read `status`. Hard-cutover in Phase 018.
+- **M13 rollback:** `OperationResult<T>` shape carries a `legacyBoolean: boolean` field during grace window; old consumers read `legacyBoolean`, new consumers read `status`. Hard-cutover in Phase 017.
 
 ### Per-Phase Rollback Checklist
 
@@ -646,7 +646,7 @@ Note: Phase 1 and Phase 2 run in parallel; test migration threads across all wee
 4. **S2 + S1.** 20 findings for 4 weeks parallel. Structural anchors.
 5. **S5 + S6 + S7 + M8.** 19 findings for 5.5 weeks. Finish-out remaining P1/P2 work.
 
-### Week-by-Week Schedule (Phase 017, 10 weeks)
+### Week-by-Week Schedule (Phase 016 remediation, 10 weeks)
 
 Mirrors `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §7.5 with adjustments for Stage 2 prioritization.
 
@@ -661,7 +661,7 @@ Mirrors `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-re
 | 7 | M13 begins (enum status refactor) | S5 completion | P0-B declared done; test migration complete | M8 continues |
 | 8 | M13 propagation through response-builder | S7 begins (YAML predicate grammar) | S6 begins (playbook runner typed executor) | M8 complete; Med-I, Med-J opportunistic |
 | 9 | M13 test migration | S7 completion + test suite | S6 completion | Closing-pass review for 11 untouched files + any new findings |
-| 10 | Final integration + regression + implementation-summary.md | Final integration + regression | Final integration + regression | Phase 017 closeout; update parent 026 spec |
+| 10 | Final integration + regression + implementation-summary.md | Final integration + regression | Final integration + regression | Phase 016 remediation closeout; update parent 026 spec |
 
 **Wall-clock = 10 weeks.** Engineers 1, 2, 3 run parallel tracks. Support handles Domain-5 catch-up, Q-resolution, adversarial repro construction, and test-coverage backfill.
 <!-- /ANCHOR:effort -->
@@ -673,10 +673,10 @@ Mirrors `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-re
 
 ### Pre-deployment Checklist
 
-- [x] All code changes cite finding ID(s) in commit trailer (`Closes-Finding: R??-???`) [EVIDENCE: all 27 Phase 017 commits cite R??-??? finding IDs in commit messages, e.g., 6f5623a4c cites R1-002, R11-001, R13-001, R14-001, R21-002, R25-004, R29-001, R32-001, R33-001, R33-003, R36-001]
+- [x] All code changes cite finding ID(s) in commit trailer (`Closes-Finding: R??-???`) [EVIDENCE: all 27 Phase 016 remediation commits cite R??-??? finding IDs in commit messages, e.g., 6f5623a4c cites R1-002, R11-001, R13-001, R14-001, R21-002, R25-004, R29-001, R32-001, R33-001, R33-003, R36-001]
 - [x] Paired test migration commits exist [EVIDENCE: 0a2d7a576 test migration audit pairs 14 supporting + 20 new adversarial tests with structural commits per CHK-TEST-* matrix]
 - [x] `validate.sh --strict` passes on 016 packet [EVIDENCE: spec folder validation clean post-closeout]
-- [x] Type-check passes (`tsc --noEmit`) [EVIDENCE: type-check clean per 1c3ad5014 Phase 017 Phase 1 synthesis and ongoing structural refactor commits]
+- [x] Type-check passes (`tsc --noEmit`) [EVIDENCE: type-check clean per 1c3ad5014 Phase 016 remediation Phase 1 synthesis and ongoing structural refactor commits]
 - [x] Full Vitest suite passes [EVIDENCE: scoped vitest suites pass across 4 P0 regression tests + 14 canonical + supporting test files per 0a2d7a576]
 - [x] Python test suite passes [EVIDENCE: `test_skill_advisor.py` + `test_skill_graph_compiler.py` pass post-S4 and T-SGC-04 DFS cycle detection]
 - [x] Attack-scenario regression tests pass (for P0 candidates) [EVIDENCE: 4 P0 regression tests present and green — `p0-a-*`, `p0-b-*`, `p0-c-*`, `p0-d-*`]

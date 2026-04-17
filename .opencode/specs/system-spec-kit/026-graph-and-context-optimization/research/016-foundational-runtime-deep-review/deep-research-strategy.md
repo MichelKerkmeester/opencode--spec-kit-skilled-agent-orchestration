@@ -234,3 +234,70 @@ After iteration 50, the synthesis chain produced:
 6. Phase-017 kickoff plan with 4-month timeline and 24.5 engineer-week effort budget.
 
 This strategy file documents the research design; the research **output** lives in `research.md`, `findings-registry.json`, and `FINAL-synthesis-and-review.md`.
+
+---
+
+## SEGMENT 2 — Continuation (iterations 51-57)
+
+**Started:** 2026-04-17T11:27:20Z
+**Dispatcher:** Task tool @general / Opus 4.7 / parallel waves of 3
+**Input source:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/016-foundational-runtime-deep-review/review-report.md` (9-section deep-review of Phase 017 remediation, converged iter 6 at 0.0923)
+
+### Continuation topic
+
+Deep-dive on the 28 findings (10 P1 + 18 P2) surfaced in the 2026-04-17T120827Z deep-review of Phase 016/017 remediation. Investigates 3 root-cause clusters (A scope-normalization drift, B canonical-save-surface hygiene, C ASCII-only sanitization) + 4 standalone P1s to produce a prioritized Phase 017 remediation plan with cross-cluster dependencies.
+
+### Relationship to segment 1
+
+Segment 1 (iters 1-50) investigated Phase 015's under-audited runtime seams and produced 137 raw findings consolidated to `FINAL-synthesis-and-review.md`. Those findings fed Phase 017's 27-commit remediation. Segment 2 now meta-audits that remediation via the deep-review report, closing the loop: seams → fixes → review → validation.
+
+### Segment-2 key questions
+
+- [ ] **KQ-51-1 (root-cause + cross-cutting-coverage):** Does the Cluster B infrastructure gap (`generate-context.js` never writes `description.json.lastUpdated`, no active git hooks, no evidence-marker linter, no manual-dispatch bypass tracking) extend to other canonical-save surfaces not yet audited — `graph-metadata.json.derived.*`, `implementation-summary.md._memory.continuity`, `checklist.md` CHK evidence, `tasks.md` EVIDENCE citations?
+- [ ] **KQ-51-2 (cross-cutting-coverage):** Does the R6-P1-001 sibling-asymmetry pattern (context.ts missing `trustState`+`canonicalReadiness`+`lastPersistedAt` hardening that sibling `query.ts` received in T-CGQ-09/10/11/12) recur elsewhere — in the code-graph tool family (`scan.ts`, `status.ts`), in `memory_*` handlers, or in `session_resume` variants?
+- [ ] **KQ-51-3 (blast-radius):** Can any P1 finding escalate to P0 under expanded attack scenarios — multi-UID (shared-host, CI runner, NFS), non-POSIX (Windows, eCryptfs), MCP transport-layer injection, or supply-chain (malicious npm dependency in @deep-review chain)?
+- [ ] **KQ-51-4 (remediation-feasibility):** What are the cross-cluster dependencies among Cluster A (scope-normalization), B (canonical-save), C (ASCII-only) remediation tasks that should inform Phase 017 task ordering? Is there a critical path where one cluster's fix depends on another?
+- [ ] **KQ-51-5 (root-cause):** Do any P2 findings (god function `runPostInsertEnrichment` 243 LOC, missing `assertNever` exhaustiveness across 7+ typed unions, duplicate `executeConflict` transaction blocks, 170/179 malformed evidence markers) mask latent P1-class risks under specific code-paths — e.g. does missing `assertNever` hide a runtime fall-through that silently swallows enrichment failures?
+
+### Segment-2 non-goals
+
+- Re-auditing the 4 P0 composites (A/B/C/D) — already verified in review iter 5 with genuine regression test coverage
+- Expanding scope beyond the 24 focus files + 9 regression tests from the review manifest
+- Implementing fixes — this is research only; remediation belongs to Phase 017
+- Re-investigating Phase 016 seams — covered exhaustively in segment 1 (iters 1-50 + FINAL-synthesis)
+- Second-guessing the 0 P0 / 10 P1 / 18 P2 severity triage — iteration 6 adversarial self-check validated
+
+### Segment-2 stop conditions
+
+- `newInfoRatio < 0.05` sustained for 3-iteration rolling window
+- All 5 key questions (KQ-51-1..5) answered with evidence citations
+- 7 iterations reached (max for this segment — total cap 57)
+- P0 escalation confirmed via KQ-51-3 (triggers override → halt for remediation planning)
+- 3 consecutive iterations with zero new findings on any dimension
+
+### Segment-2 iteration plan (parallel Opus waves)
+
+**Wave 1 (iterations 51-53, parallel):**
+- Iter 51: KQ-51-1 — audit canonical-save infrastructure extension + 0/16 sibling staleness root-cause
+- Iter 52: KQ-51-2 — sibling-asymmetry pattern recurrence across code-graph + memory handlers + session_resume
+- Iter 53: KQ-51-3 — P1→P0 escalation under expanded attack scenarios (multi-UID, non-POSIX, MCP injection, supply-chain)
+
+**Wave 2 (iterations 54-56, parallel):**
+- Iter 54: KQ-51-4 — cross-cluster dependency mapping + Phase 017 task ordering critical path
+- Iter 55: KQ-51-5 — P2 masking latent P1 (god function, missing assertNever, duplicate txn blocks, evidence markers)
+- Iter 56: Compound-hypothesis testing across all 10 P1s (multi-finding attack chains beyond review iter 6 self-check)
+
+**Wave 3 (iteration 57, solo synthesis):**
+- Iter 57: Phase 017 task backlog validation (effort estimates, acceptance criteria feasibility, cross-cluster ordering consolidation)
+
+### Segment-2 next focus
+
+**Iteration 51 (Wave 1 kickoff) — Dimension: root-cause + cross-cutting-coverage (KQ-51-1)**
+
+Audit the Cluster B infrastructure gap at its source. For each of `generate-context.js` and the 9 dist memory scripts under `scripts/dist/memory/`, enumerate which canonical-save fields are written vs missed: `description.json.lastUpdated`, `description.json.status`, `description.json.completenessScore`, `graph-metadata.json.derived.last_save_at`, `graph-metadata.json.derived.completeness_score`, `implementation-summary.md._memory.continuity`, `checklist.md` CHK evidence closers, `tasks.md` EVIDENCE citations.
+
+Cross-reference the grep-zero evidence from R4-P1-002 with the 16/16 sibling staleness from R5-P1-001. Identify any additional canonical-save surfaces (beyond the 4 already named) that share the "no auto-refresh" architectural gap.
+
+Secondary pressure-test (ride-along KQ-51-5): audit the 7+ typed unions (`OnIndexSkipReason`, `EnrichmentStepStatus`, `EnrichmentSkipReason`, `EnrichmentFailureReason`, `ConflictAbortStatus`, `HookStateLoadFailureReason`, `SharedPayloadTrustState`, `TriggerCategory`) for consumers that silently swallow unknown variants — could missing `assertNever` hide a P1-class silent-failure in the enrichment pipeline?
+
+Target 3-5 evidence-backed findings; aim for 1 KQ-51-1 resolution signal and 1 KQ-51-5 signal.
