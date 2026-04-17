@@ -79,8 +79,12 @@ async function main(): Promise<void> {
 
   // --finalize mode: manual cleanup of stale session states
   if (process.argv.includes('--finalize')) {
-    const removed = cleanStaleStates(FINALIZE_MAX_AGE_MS);
-    hookLog('info', 'gemini:session-stop', `Finalize: cleaned ${removed} stale state file(s) older than 24h`);
+    const cleanup = cleanStaleStates(FINALIZE_MAX_AGE_MS);
+    hookLog(
+      'info',
+      'gemini:session-stop',
+      `Finalize: cleaned ${cleanup.removed} stale state file(s) older than 24h; skipped ${cleanup.skipped}`,
+    );
     return;
   }
 

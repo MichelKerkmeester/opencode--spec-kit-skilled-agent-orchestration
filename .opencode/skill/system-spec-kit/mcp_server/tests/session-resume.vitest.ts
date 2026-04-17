@@ -6,7 +6,7 @@ import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { loadMostRecentStateMock } = vi.hoisted(() => ({
-  loadMostRecentStateMock: vi.fn(() => null),
+  loadMostRecentStateMock: vi.fn(() => ({ states: [], errors: [] })),
 }));
 
 vi.mock('../lib/code-graph/code-graph-db.js', () => ({
@@ -119,11 +119,11 @@ function buildTranscriptFingerprint(transcriptPath: string): { fingerprint: stri
 const workspacesToRemove: string[] = [];
 let originalCwd = process.cwd();
 
-beforeEach(() => {
-  vi.clearAllMocks();
-  loadMostRecentStateMock.mockReturnValue(null);
-  originalCwd = process.cwd();
-});
+  beforeEach(() => {
+    vi.clearAllMocks();
+    loadMostRecentStateMock.mockReturnValue({ states: [], errors: [] });
+    originalCwd = process.cwd();
+  });
 
 afterEach(() => {
   process.chdir(originalCwd);
@@ -173,25 +173,28 @@ describe('session-resume handler', () => {
       process.chdir(workspacePath);
 
       loadMostRecentStateMock.mockReturnValue({
-        lastSpecFolder: specFolder,
-        updatedAt: '2026-04-11T12:30:00Z',
-        sessionSummary: {
-          text: 'Gate D work is active',
-          extractedAt: new Date().toISOString(),
-        },
-        producerMetadata: {
-          lastClaudeTurnAt: '2026-04-11T12:00:00Z',
-          transcript: {
-            path: transcriptPath,
-            fingerprint: transcriptIdentity.fingerprint,
-            sizeBytes: transcriptIdentity.sizeBytes,
-            modifiedAt: transcriptIdentity.modifiedAt,
+        states: [{
+          lastSpecFolder: specFolder,
+          updatedAt: '2026-04-11T12:30:00Z',
+          sessionSummary: {
+            text: 'Gate D work is active',
+            extractedAt: new Date().toISOString(),
           },
-          cacheTokens: {
-            cacheCreationInputTokens: 12,
-            cacheReadInputTokens: 6,
+          producerMetadata: {
+            lastClaudeTurnAt: '2026-04-11T12:00:00Z',
+            transcript: {
+              path: transcriptPath,
+              fingerprint: transcriptIdentity.fingerprint,
+              sizeBytes: transcriptIdentity.sizeBytes,
+              modifiedAt: transcriptIdentity.modifiedAt,
+            },
+            cacheTokens: {
+              cacheCreationInputTokens: 12,
+              cacheReadInputTokens: 6,
+            },
           },
-        },
+        }],
+        errors: [],
       });
 
       const result = await handleSessionResume({});

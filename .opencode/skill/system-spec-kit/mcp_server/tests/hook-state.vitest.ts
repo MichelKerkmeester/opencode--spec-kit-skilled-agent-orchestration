@@ -4,7 +4,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import fs, { mkdirSync, rmSync, existsSync, statSync, utimesSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { createHash } from 'node:crypto';
 import {
   getProjectHash,
@@ -227,8 +227,9 @@ describe('hook state management', () => {
         utimesSync(mismatchedPath, mismatchedTime, mismatchedTime);
 
         const state = loadMostRecentState({ scope: { specFolder: 'specs/matching' } });
-        expect(state?.claudeSessionId).toBe(matchingSessionId);
-        expect(state?.lastSpecFolder).toBe('specs/matching');
+        expect(state.errors).toEqual([]);
+        expect(state.states[0]?.claudeSessionId).toBe(matchingSessionId);
+        expect(state.states[0]?.lastSpecFolder).toBe('specs/matching');
 
         try { rmSync(matchingPath); } catch { /* ok */ }
         try { rmSync(mismatchedPath); } catch { /* ok */ }
@@ -239,7 +240,7 @@ describe('hook state management', () => {
     });
 
     it('fails closed when the caller cannot prove scope', () => {
-      expect(loadMostRecentState()).toBeNull();
+      expect(loadMostRecentState()).toEqual({ states: [], errors: [] });
     });
 
     it('returns null when the newest state is older than 24 hours', () => {
@@ -270,8 +271,93 @@ describe('hook state management', () => {
 
         expect(loadMostRecentState({
           scope: { specFolder: 'specs/stale', claudeSessionId: staleSessionId },
-        })).toBeNull();
+        })).toEqual({ states: [], errors: [] });
         try { rmSync(stalePath); } catch { /* ok */ }
+      } finally {
+        process.chdir(originalCwd);
+        rmSync(projectCwd, { recursive: true, force: true });
+      }
+    });
+
+    it('skips malformed sibling files instead of aborting the whole scan', () => {
+      const originalCwd = process.cwd();
+      const projectCwd = join(tmpdir(), `speckit-poison-pill-state-${Date.now()}`);
+      mkdirSync(projectCwd, { recursive: true });
+
+      try {
+        process.chdir(projectCwd);
+        ensureStateDir();
+        const matchingSessionId = 'matching-session';
+        const validState: HookState = {
+          claudeSessionId: matchingSessionId,
+          speckitSessionId: 'sk-valid',
+          lastSpecFolder: 'specs/matching',
+          sessionSummary: { text: 'Valid sibling survives', extractedAt: new Date().toISOString() },
+          pendingCompactPrime: null,
+          producerMetadata: null,
+          metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+
+        saveState(matchingSessionId, validState);
+        const invalidPath = join(dirname(getStatePath(matchingSessionId)), 'poison-pill.json');
+        fs.writeFileSync(invalidPath, '{not-valid-json', 'utf-8');
+
+        const result = loadMostRecentState({ scope: { specFolder: 'specs/matching' } });
+        expect(result.states).toHaveLength(1);
+        expect(result.states[0]?.claudeSessionId).toBe(matchingSessionId);
+        expect(result.errors).toHaveLength(1);
+        expect(result.errors[0]?.path).toBe(invalidPath);
+        expect(result.errors[0]?.reason.length).toBeGreaterThan(0);
+
+        try { rmSync(getStatePath(matchingSessionId)); } catch { /* ok */ }
+        try { rmSync(invalidPath); } catch { /* ok */ }
+      } finally {
+        process.chdir(originalCwd);
+        rmSync(projectCwd, { recursive: true, force: true });
+      }
+    });
+  });
+
+  describe('cleanStaleStates', () => {
+    it('returns removed, skipped, and errors when one stale entry cannot be unlinked', () => {
+      const originalCwd = process.cwd();
+      const projectCwd = join(tmpdir(), `speckit-clean-state-${Date.now()}`);
+      mkdirSync(projectCwd, { recursive: true });
+
+      try {
+        process.chdir(projectCwd);
+        ensureStateDir();
+        const staleSessionId = 'stale-cleanup-session';
+        const staleState: HookState = {
+          claudeSessionId: staleSessionId,
+          speckitSessionId: 'sk-clean',
+          lastSpecFolder: 'specs/cleanup',
+          sessionSummary: null,
+          pendingCompactPrime: null,
+          producerMetadata: null,
+          metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+
+        saveState(staleSessionId, staleState);
+        const stalePath = getStatePath(staleSessionId);
+        const blockedPath = join(dirname(stalePath), 'blocked.json');
+        mkdirSync(blockedPath, { recursive: true });
+        const staleTime = new Date(Date.now() - 26 * 60 * 60 * 1000);
+        utimesSync(stalePath, staleTime, staleTime);
+        utimesSync(blockedPath, staleTime, staleTime);
+
+        const result = cleanStaleStates(24 * 60 * 60 * 1000);
+        expect(result.removed).toBe(1);
+        expect(result.skipped).toBe(1);
+        expect(result.errors).toHaveLength(1);
+        expect(result.errors[0]?.path).toBe(blockedPath);
+        expect(result.errors[0]?.reason.length).toBeGreaterThan(0);
+        expect(existsSync(stalePath)).toBe(false);
+        expect(existsSync(blockedPath)).toBe(true);
       } finally {
         process.chdir(originalCwd);
         rmSync(projectCwd, { recursive: true, force: true });

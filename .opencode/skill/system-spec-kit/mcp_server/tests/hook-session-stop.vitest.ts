@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import fs, { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { ensureStateDir, loadState, updateState } from '../hooks/claude/hook-state.js';
@@ -265,5 +265,87 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
 
     expect(ioFailedResult.retargetReason).toBe('transcript_io_failed');
     expect(loadState('io-failed-retarget')?.lastSpecFolder).toBe(currentSpecFolder);
+  });
+
+  it('keeps transcript offsets monotonic when later writes carry an older offset', () => {
+    updateState('offset-monotonic-session', {
+      metrics: {
+        estimatedPromptTokens: 10,
+        estimatedCompletionTokens: 5,
+        lastTranscriptOffset: 4096,
+      },
+    });
+
+    const state = updateState('offset-monotonic-session', {
+      metrics: {
+        estimatedPromptTokens: 20,
+        estimatedCompletionTokens: 10,
+        lastTranscriptOffset: 128,
+      },
+    });
+
+    expect(state.metrics.estimatedPromptTokens).toBe(20);
+    expect(state.metrics.lastTranscriptOffset).toBe(4096);
+  });
+
+  it('never persists a transient zero transcript offset during stop-hook token snapshot writes', async () => {
+    const transcriptPath = join(sandboxRoot!, 'offset-sentinel-transcript.jsonl');
+    const transcriptLine = JSON.stringify({
+      type: 'assistant',
+      message: {
+        role: 'assistant',
+        model: 'claude-sonnet',
+        usage: {
+          input_tokens: 120,
+          output_tokens: 45,
+          cache_creation_input_tokens: 10,
+          cache_read_input_tokens: 5,
+        },
+      },
+    });
+    const transcriptText = `${transcriptLine}\n`;
+    writeFileSync(transcriptPath, transcriptText, 'utf-8');
+    updateState('offset-sentinel-session', {
+      lastSpecFolder: 'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review',
+      metrics: {
+        estimatedPromptTokens: 1,
+        estimatedCompletionTokens: 1,
+        lastTranscriptOffset: 0,
+      },
+    });
+
+    const persistedOffsets: number[] = [];
+    const originalWriteFileSync = fs.writeFileSync.bind(fs);
+
+    const writeSpy = vi.spyOn(fs, 'writeFileSync').mockImplementation((...args: Parameters<typeof fs.writeFileSync>) => {
+      const [filePath, data] = args;
+      if (typeof filePath === 'string' && filePath.includes('.tmp-') && typeof data === 'string') {
+        const parsed = JSON.parse(data) as { metrics?: { lastTranscriptOffset?: number } };
+        if (typeof parsed.metrics?.lastTranscriptOffset === 'number') {
+          persistedOffsets.push(parsed.metrics.lastTranscriptOffset);
+        }
+      }
+      return originalWriteFileSync(...args);
+    });
+
+    try {
+      const result = await processStopHook(
+        {
+          session_id: 'offset-sentinel-session',
+          stop_hook_active: true,
+          transcript_path: transcriptPath,
+        },
+        { autosaveMode: 'disabled' },
+      );
+
+      const finalState = loadState('offset-sentinel-session');
+      expect(result.parsedMessageCount).toBe(1);
+      expect(result.producerMetadataWritten).toBe(true);
+      expect(persistedOffsets.length).toBeGreaterThan(0);
+      expect(persistedOffsets).not.toContain(0);
+      expect(finalState?.metrics.lastTranscriptOffset).toBe(Buffer.byteLength(transcriptText, 'utf-8'));
+    } finally {
+      writeSpy.mockRestore();
+    }
   });
 });

@@ -181,7 +181,7 @@ function buildSessionContinuity(stateScope?: HookStateScope): string | null {
     return null;
   }
 
-  const state = loadMostRecentState({ scope: stateScope });
+  const state = loadMostRecentState({ scope: stateScope }).states[0] ?? null;
   if (!state) {
     return null;
   }

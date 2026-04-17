@@ -27,17 +27,20 @@ vi.mock('../lib/code-graph/ensure-ready.js', () => ({
 
 vi.mock('../hooks/claude/hook-state.js', () => ({
   loadMostRecentState: vi.fn(() => ({
-    claudeSessionId: 'recent-session',
-    speckitSessionId: 'speckit-session',
-    lastSpecFolder: 'system-spec-kit/024-compact-code-graph/027-opencode-structural-priming',
-    sessionSummary: {
-      text: 'Aligned structural bootstrap contract across auto-prime and session_* handlers.',
-      extractedAt: '2026-04-02T10:01:00.000Z',
-    },
-    pendingCompactPrime: null,
-    metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
-    createdAt: '2026-04-02T10:00:00.000Z',
-    updatedAt: '2026-04-02T10:01:00.000Z',
+    states: [{
+      claudeSessionId: 'recent-session',
+      speckitSessionId: 'speckit-session',
+      lastSpecFolder: 'system-spec-kit/024-compact-code-graph/027-opencode-structural-priming',
+      sessionSummary: {
+        text: 'Aligned structural bootstrap contract across auto-prime and session_* handlers.',
+        extractedAt: '2026-04-02T10:01:00.000Z',
+      },
+      pendingCompactPrime: null,
+      metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
+      createdAt: '2026-04-02T10:00:00.000Z',
+      updatedAt: '2026-04-02T10:01:00.000Z',
+    }],
+    errors: [],
   })),
 }));
 
@@ -154,7 +157,7 @@ describe('startup-brief', () => {
     vi.mocked(graphDb.getStats).mockImplementationOnce(() => {
       throw new Error('DB unavailable');
     });
-    vi.mocked(hookState.loadMostRecentState).mockReturnValueOnce(null);
+    vi.mocked(hookState.loadMostRecentState).mockReturnValueOnce({ states: [], errors: [] });
 
     const brief = buildStartupBrief();
     expect(brief.graphState).toBe('missing');

@@ -5,7 +5,7 @@
 import * as crypto from 'node:crypto';
 import fs from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import {
   mkdirSync, readFileSync,
   readdirSync, statSync, unlinkSync,
@@ -54,6 +54,22 @@ let tempCounter = 0;
 export interface HookStateScope {
   specFolder?: string;
   claudeSessionId?: string;
+}
+
+export interface HookStateFileError {
+  path: string;
+  reason: string;
+}
+
+export interface LoadMostRecentStateResult {
+  states: HookState[];
+  errors: HookStateFileError[];
+}
+
+export interface CleanStaleStatesResult {
+  removed: number;
+  skipped: number;
+  errors: HookStateFileError[];
 }
 
 /** SHA-256 hash of cwd, first 12 chars */
@@ -105,15 +121,15 @@ function matchesScope(state: HookState, scope: HookStateScope): boolean {
 
 /**
  * Load the most recently updated hook state file for this project.
- * Returns null when no matching state exists, when the newest matching state is
- * older than maxAgeMs, or when the caller cannot prove scope.
+ * Returns matching states in newest-first order and isolates per-file errors
+ * so one poisoned sibling does not mask valid state.
  */
 export function loadMostRecentState(
   options: {
     maxAgeMs?: number;
     scope?: HookStateScope;
   } = {},
-): HookState | null {
+): LoadMostRecentStateResult {
   const maxAgeMs = options.maxAgeMs ?? MAX_RECENT_STATE_AGE_MS;
   const scope = options.scope;
   const hasScope = Boolean(scope?.specFolder || scope?.claudeSessionId);
@@ -127,44 +143,48 @@ export function loadMostRecentState(
         reason: 'scope_unknown_fail_closed',
       }),
     );
-    return null;
+    return { states: [], errors: [] };
   }
 
   try {
     const dir = getStateDir();
     const candidates = readdirSync(dir).filter((file) => file.endsWith('.json'));
     if (candidates.length === 0) {
-      return null;
+      return { states: [], errors: [] };
     }
 
-    let newestState: HookState | null = null;
-    let newestMtimeMs = -1;
+    const matchingStates: Array<{ state: HookState; mtimeMs: number }> = [];
+    const errors: HookStateFileError[] = [];
     for (const file of candidates) {
       const filePath = join(dir, file);
-      const mtimeMs = statSync(filePath).mtimeMs;
-      if (Date.now() - mtimeMs > maxAgeMs) {
-        continue;
-      }
+      try {
+        const mtimeMs = statSync(filePath).mtimeMs;
+        if (Date.now() - mtimeMs > maxAgeMs) {
+          continue;
+        }
 
-      const raw = readFileSync(filePath, 'utf-8');
-      const state = JSON.parse(raw) as HookState;
-      if (!matchesScope(state, scope!)) {
-        continue;
-      }
+        const raw = readFileSync(filePath, 'utf-8');
+        const state = JSON.parse(raw) as HookState;
+        if (!matchesScope(state, scope!)) {
+          continue;
+        }
 
-      if (mtimeMs > newestMtimeMs) {
-        newestMtimeMs = mtimeMs;
-        newestState = state;
+        matchingStates.push({ state, mtimeMs });
+      } catch (error: unknown) {
+        errors.push({
+          path: filePath,
+          reason: error instanceof Error ? error.message : String(error),
+        });
       }
     }
 
-    if (!newestState) {
-      return null;
-    }
-
-    return newestState;
+    matchingStates.sort((left, right) => right.mtimeMs - left.mtimeMs);
+    return {
+      states: matchingStates.map(({ state }) => state),
+      errors,
+    };
   } catch {
-    return null;
+    return { states: [], errors: [] };
   }
 }
 
@@ -223,6 +243,12 @@ export function readAndClearCompactPrime(sessionId: string): HookState['pendingC
 export function updateState(sessionId: string, patch: Partial<HookState>): HookState {
   const existing = loadState(sessionId);
   const now = new Date().toISOString();
+  const existingMetrics = existing?.metrics ?? {
+    estimatedPromptTokens: 0,
+    estimatedCompletionTokens: 0,
+    lastTranscriptOffset: 0,
+  };
+  const patchMetrics = patch.metrics;
   const state: HookState = {
     claudeSessionId: sessionId,
     speckitSessionId: null,
@@ -230,11 +256,20 @@ export function updateState(sessionId: string, patch: Partial<HookState>): HookS
     sessionSummary: null,
     pendingCompactPrime: null,
     producerMetadata: null,
-    metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
     createdAt: now,
     updatedAt: now,
     ...existing,
     ...patch,
+    metrics: patchMetrics
+      ? {
+        ...existingMetrics,
+        ...patchMetrics,
+        lastTranscriptOffset: Math.max(
+          existingMetrics.lastTranscriptOffset ?? 0,
+          patchMetrics.lastTranscriptOffset ?? 0,
+        ),
+      }
+      : existingMetrics,
   };
   if (!saveState(sessionId, state)) {
     hookLog('warn', 'state', `State update was not persisted for session ${sessionId}`);
@@ -242,8 +277,33 @@ export function updateState(sessionId: string, patch: Partial<HookState>): HookS
   return state;
 }
 
-/** Remove state files older than maxAgeMs. Returns count removed. */
-export function cleanStaleStates(maxAgeMs: number): number {
+function appendCleanupSkip(
+  result: CleanStaleStatesResult,
+  filePath: string,
+  reason: string,
+): void {
+  result.skipped += 1;
+  result.errors.push({ path: filePath, reason });
+  hookLog('warn', 'state', JSON.stringify({
+    event: 'clean_stale_states_skipped',
+    file: basename(filePath),
+    path: filePath,
+    reason,
+  }));
+}
+
+function isSameFileIdentity(previous: fs.Stats, current: fs.Stats): boolean {
+  return previous.dev === current.dev && previous.ino === current.ino;
+}
+
+/** Remove stale state files with per-file isolation and a pre-delete identity check. */
+export function cleanStaleStates(maxAgeMs: number): CleanStaleStatesResult {
+  const result: CleanStaleStatesResult = {
+    removed: 0,
+    skipped: 0,
+    errors: [],
+  };
+
   let removed = 0;
   try {
     const dir = getStateDir();
@@ -252,14 +312,35 @@ export function cleanStaleStates(maxAgeMs: number): number {
     for (const file of files) {
       if (!file.endsWith('.json')) continue;
       const filePath = join(dir, file);
-      const stat = statSync(filePath);
-      if (stat.mtimeMs < cutoff) {
+      try {
+        const stat = statSync(filePath);
+        if (stat.mtimeMs >= cutoff) {
+          continue;
+        }
+
+        let descriptor: number | null = null;
+        try {
+          descriptor = fs.openSync(filePath, 'r');
+          const liveStat = fs.fstatSync(descriptor);
+          if (!isSameFileIdentity(stat, liveStat)) {
+            appendCleanupSkip(result, filePath, 'identity_changed_before_cleanup');
+            continue;
+          }
+        } finally {
+          if (descriptor !== null) {
+            fs.closeSync(descriptor);
+          }
+        }
+
         unlinkSync(filePath);
         removed++;
+      } catch (error: unknown) {
+        appendCleanupSkip(result, filePath, error instanceof Error ? error.message : String(error));
       }
     }
   } catch {
     // Directory may not exist yet
   }
-  return removed;
+  result.removed = removed;
+  return result;
 }

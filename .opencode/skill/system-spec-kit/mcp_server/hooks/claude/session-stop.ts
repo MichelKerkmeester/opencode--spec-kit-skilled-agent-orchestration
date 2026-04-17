@@ -218,6 +218,7 @@ function storeTokenSnapshot(
   sessionId: string,
   usage: { promptTokens: number; completionTokens: number; totalTokens: number; model: string | null },
   cost: number,
+  lastTranscriptOffset: number,
 ): void {
   const state = loadState(sessionId);
   if (!state) return;
@@ -226,7 +227,7 @@ function storeTokenSnapshot(
     metrics: {
       estimatedPromptTokens: usage.promptTokens,
       estimatedCompletionTokens: usage.completionTokens,
-      lastTranscriptOffset: 0,
+      lastTranscriptOffset,
     },
   });
 
@@ -299,7 +300,7 @@ export async function processStopHook(
       parsedMessageCount = usage.messageCount;
       if (usage.messageCount > 0) {
         const cost = estimateCost(usage);
-        storeTokenSnapshot(sessionId, usage, cost);
+        storeTokenSnapshot(sessionId, usage, cost, newOffset);
 
         // Update offset for incremental parsing on next stop and carry forward
         // producer metadata needed by later continuity packets.
@@ -383,8 +384,12 @@ async function main(): Promise<void> {
 
   // --finalize mode: manual cleanup of stale session states
   if (process.argv.includes('--finalize')) {
-    const removed = cleanStaleStates(FINALIZE_MAX_AGE_MS);
-    hookLog('info', 'session-stop', `Finalize: cleaned ${removed} stale state file(s) older than 24h`);
+    const cleanup = cleanStaleStates(FINALIZE_MAX_AGE_MS);
+    hookLog(
+      'info',
+      'session-stop',
+      `Finalize: cleaned ${cleanup.removed} stale state file(s) older than 24h; skipped ${cleanup.skipped}`,
+    );
     return;
   }
 

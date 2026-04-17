@@ -5,7 +5,7 @@ import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { loadMostRecentStateMock } = vi.hoisted(() => ({
-  loadMostRecentStateMock: vi.fn(() => null),
+  loadMostRecentStateMock: vi.fn(() => ({ states: [], errors: [] })),
 }));
 
 vi.mock('../lib/code-graph/code-graph-db.js', () => ({

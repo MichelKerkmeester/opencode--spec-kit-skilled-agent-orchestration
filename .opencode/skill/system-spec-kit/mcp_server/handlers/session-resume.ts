@@ -355,13 +355,15 @@ export function getCachedSessionSummaryDecision(
   } = {},
 ): CachedSessionSummaryDecision {
   const candidate = buildCachedSessionSummaryCandidate(
-    options.state ?? loadMostRecentState({
-      maxAgeMs: options.maxAgeMs,
-      scope: {
-        specFolder: options.specFolder,
-        claudeSessionId: options.claudeSessionId,
-      },
-    }),
+    options.state ?? (
+      loadMostRecentState({
+        maxAgeMs: options.maxAgeMs,
+        scope: {
+          specFolder: options.specFolder,
+          claudeSessionId: options.claudeSessionId,
+        },
+      }).states[0] ?? null
+    ),
   );
   return evaluateCachedSessionSummaryCandidate(candidate, options);
 }
