@@ -599,6 +599,53 @@ description: Fixture helper for routing tests
     except Exception as exc:
         fail_test("T243-SA-015: conflict penalty only applies on mutual declaration", str(exc))
 
+    # T243-SA-016: T-TEST-NEW-09 / R46-001 — `/spec_kit:deep-research` must route
+    # to `sk-deep-research`, NOT collapse to the generic `command-spec-kit`. The
+    # owning-skill signal was lost for slash subcommands before T-SAP-03 /
+    # skill_advisor.py line 1312 fix; this regression pins the subcommand map.
+    try:
+        failures = []
+        # Multi-prompt check: the slash command alone AND typical phrasing that
+        # includes the slash marker. Both must prefer sk-deep-research.
+        for prompt in [
+            "/spec_kit:deep-research",
+            "run /spec_kit:deep-research on packet 016",
+            "kick off /spec_kit:deep-research :auto for the foundational runtime",
+        ]:
+            recs = advisor.analyze_prompt(
+                prompt=prompt,
+                confidence_threshold=0.5,
+                uncertainty_threshold=1.0,
+                confidence_only=True,
+                show_rejections=True,
+            )
+            by_skill = {r.get("skill"): r for r in recs if isinstance(r, dict)}
+            dr = by_skill.get("sk-deep-research")
+            cmd = by_skill.get("command-spec-kit")
+            # sk-deep-research MUST be present as a recommendation. command-spec-kit
+            # may also appear, but sk-deep-research must rank at least as high
+            # (higher confidence OR equal with sk-deep-research listed first).
+            if dr is None:
+                failures.append(f"{prompt!r}: sk-deep-research missing from recs")
+                continue
+            if cmd is not None:
+                dr_conf = float(dr.get("confidence", 0.0))
+                cmd_conf = float(cmd.get("confidence", 0.0))
+                if dr_conf + 1e-9 < cmd_conf:
+                    failures.append(f"{prompt!r}: sk-deep-research={dr_conf:.2f} < command-spec-kit={cmd_conf:.2f}")
+        if not failures:
+            ok("T243-SA-016: /spec_kit:deep-research routes to sk-deep-research (not command-spec-kit)")
+        else:
+            fail_test(
+                "T243-SA-016: /spec_kit:deep-research routes to sk-deep-research (not command-spec-kit)",
+                "; ".join(failures),
+            )
+    except Exception as exc:
+        fail_test(
+            "T243-SA-016: /spec_kit:deep-research routes to sk-deep-research (not command-spec-kit)",
+            str(exc),
+        )
+
 
 # ───────────────────────────────────────────────────────────────
 # 3. BENCH HARNESS TESTS
