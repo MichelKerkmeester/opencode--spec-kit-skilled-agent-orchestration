@@ -6,7 +6,8 @@
 import { buildContext, type ContextArgs, type QueryMode } from '../../lib/code-graph/code-graph-context.js';
 import type { CodeGraphSeed } from '../../lib/code-graph/seed-resolver.js';
 import { ensureCodeGraphReady, type ReadyResult } from '../../lib/code-graph/ensure-ready.js';
-import { getLastDetectorProvenance } from '../../lib/code-graph/code-graph-db.js';
+import * as graphDb from '../../lib/code-graph/code-graph-db.js';
+import { buildReadinessBlock } from '../../lib/code-graph/readiness-contract.js';
 
 export interface ContextHandlerArgs {
   input?: string;
@@ -92,6 +93,7 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
     inlineIndexPerformed: false,
     reason: 'readiness check not run',
   };
+  let readinessCheckCrashed = false;
 
   try {
     // Auto-trigger: ensure graph is fresh before querying
@@ -101,7 +103,13 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
         allowInlineFullScan: false,
       });
     } catch {
-      // Non-blocking: continue with potentially stale data
+      readinessCheckCrashed = true;
+      readiness = {
+        freshness: 'empty' as const,
+        action: 'none' as const,
+        inlineIndexPerformed: false,
+        reason: 'readiness_check_crashed',
+      };
     }
 
     const queryMode = (['neighborhood', 'outline', 'impact'].includes(args.queryMode ?? '')
@@ -165,6 +173,14 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
     };
 
     const result = buildContext(contextArgs);
+    const readinessBlock = readinessCheckCrashed
+      ? {
+        ...buildReadinessBlock(readiness),
+        reason: 'readiness_check_crashed',
+        trustState: 'unavailable' as const,
+      }
+      : buildReadinessBlock(readiness);
+    const lastPersistedAt = graphDb.getStats().lastScanTimestamp;
 
     return {
       content: [{
@@ -175,7 +191,10 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
             queryMode: result.queryMode,
             combinedSummary: result.combinedSummary,
             nextActions: result.nextActions,
-            readiness,
+            readiness: readinessBlock,
+            canonicalReadiness: readinessBlock.canonicalReadiness,
+            trustState: readinessBlock.trustState,
+            lastPersistedAt,
             anchors: result.resolvedAnchors.map(a => ({
               file: a.filePath,
               line: a.startLine,
@@ -188,7 +207,7 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
             textBrief: result.textBrief,
             metadata: result.metadata,
             graphMetadata: {
-              detectorProvenance: getLastDetectorProvenance() ?? 'unknown',
+              detectorProvenance: graphDb.getLastDetectorProvenance() ?? 'unknown',
             },
           },
         }, null, 2),

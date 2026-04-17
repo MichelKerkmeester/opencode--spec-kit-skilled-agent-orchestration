@@ -5,12 +5,25 @@
 
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
+import * as graphDb from '../../lib/code-graph/code-graph-db.js';
+import { canonicalReadinessFromFreshness } from '../../lib/code-graph/readiness-contract.js';
 
 export interface FeedbackArgs {
   query: string;
   resultFile?: string;
   rating: 'helpful' | 'not_helpful' | 'partial';
   comment?: string;
+}
+
+function buildUnavailableReadiness(reason: string) {
+  return {
+    freshness: 'empty' as const,
+    action: 'none' as const,
+    inlineIndexPerformed: false,
+    reason,
+    canonicalReadiness: canonicalReadinessFromFreshness('empty'),
+    trustState: 'unavailable' as const,
+  };
 }
 
 /** Handle ccc_feedback tool call */
@@ -41,6 +54,8 @@ export async function handleCccFeedback(args: FeedbackArgs): Promise<{ content: 
       rating: args.rating,
       comment: args.comment ?? null,
     };
+    const readiness = buildUnavailableReadiness('readiness_not_applicable');
+    const lastPersistedAt = graphDb.getStats().lastScanTimestamp;
 
     appendFileSync(feedbackPath, JSON.stringify(entry) + '\n', 'utf-8');
 
@@ -53,6 +68,10 @@ export async function handleCccFeedback(args: FeedbackArgs): Promise<{ content: 
             recorded: true,
             feedbackFile: feedbackPath,
             entry,
+            readiness,
+            canonicalReadiness: readiness.canonicalReadiness,
+            trustState: readiness.trustState,
+            lastPersistedAt,
           },
         }, null, 2),
       }],

@@ -5,12 +5,23 @@
 
 import * as graphDb from '../../lib/code-graph/code-graph-db.js';
 import { getGraphFreshness } from '../../lib/code-graph/ensure-ready.js';
+import { buildReadinessBlock } from '../../lib/code-graph/readiness-contract.js';
 
 /** Handle code_graph_status tool call */
 export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: string; text: string }> }> {
   try {
     const stats = graphDb.getStats();
     const freshness = getGraphFreshness(process.cwd());
+    const readinessBlock = buildReadinessBlock({
+      freshness,
+      action: 'none',
+      inlineIndexPerformed: false,
+      reason: freshness === 'fresh'
+        ? 'status probe reports graph is ready'
+        : freshness === 'stale'
+          ? 'status probe reports graph is stale'
+          : 'status probe reports graph is missing',
+    });
 
     return {
       content: [{
@@ -22,7 +33,11 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
             totalNodes: stats.totalNodes,
             totalEdges: stats.totalEdges,
             freshness,
+            readiness: readinessBlock,
+            canonicalReadiness: readinessBlock.canonicalReadiness,
+            trustState: readinessBlock.trustState,
             lastScanAt: stats.lastScanTimestamp,
+            lastPersistedAt: stats.lastScanTimestamp,
             lastGitHead: stats.lastGitHead,
             dbFileSize: stats.dbFileSize,
             schemaVersion: stats.schemaVersion,

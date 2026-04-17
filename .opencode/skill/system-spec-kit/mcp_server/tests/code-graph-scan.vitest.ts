@@ -16,6 +16,7 @@ const mocks = vi.hoisted(() => ({
   replaceEdgesMock: vi.fn(),
   removeFileMock: vi.fn(),
   getTrackedFilesMock: vi.fn(),
+  getStatsMock: vi.fn(),
 }));
 
 vi.mock('node:child_process', () => ({
@@ -43,6 +44,7 @@ vi.mock('../lib/code-graph/code-graph-db.js', () => ({
   replaceEdges: mocks.replaceEdgesMock,
   removeFile: mocks.removeFileMock,
   getTrackedFiles: mocks.getTrackedFilesMock,
+  getStats: mocks.getStatsMock,
 }));
 
 import { handleCodeGraphScan } from '../handlers/code-graph/scan.js';
@@ -58,6 +60,9 @@ describe('handleCodeGraphScan', () => {
     mocks.realpathSyncMock.mockImplementation((path: string) => path);
     mocks.upsertFileMock.mockReturnValue(1);
     mocks.getTrackedFilesMock.mockReturnValue(['/workspace/removed.ts']);
+    mocks.getStatsMock.mockReturnValue({
+      lastScanTimestamp: '2026-04-17T00:00:00.000Z',
+    });
     mocks.indexFilesMock.mockResolvedValue([{
       filePath: '/workspace/current.ts',
       language: 'typescript',
@@ -87,6 +92,9 @@ describe('handleCodeGraphScan', () => {
         fullReindexTriggered: boolean;
         currentGitHead: string | null;
         previousGitHead: string | null;
+        canonicalReadiness: string;
+        trustState: string;
+        lastPersistedAt: string | null;
         detectorProvenanceSummary: {
           dominant: string;
           counts: Record<string, number>;
@@ -100,6 +108,9 @@ describe('handleCodeGraphScan', () => {
     expect(payload.data.fullReindexTriggered).toBe(true);
     expect(payload.data.previousGitHead).toBe('old-head');
     expect(payload.data.currentGitHead).toBe('new-head');
+    expect(payload.data.canonicalReadiness).toBe('ready');
+    expect(payload.data.trustState).toBe('live');
+    expect(payload.data.lastPersistedAt).toBe('2026-04-17T00:00:00.000Z');
     expect(mocks.execSyncMock).toHaveBeenCalledWith('git rev-parse HEAD', expect.objectContaining({
       cwd: process.cwd(),
       encoding: 'utf-8',

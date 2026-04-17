@@ -6,9 +6,22 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
+import * as graphDb from '../../lib/code-graph/code-graph-db.js';
+import { canonicalReadinessFromFreshness } from '../../lib/code-graph/readiness-contract.js';
 
 export interface ReindexArgs {
   full?: boolean;
+}
+
+function buildUnavailableReadiness(reason: string) {
+  return {
+    freshness: 'empty' as const,
+    action: 'none' as const,
+    inlineIndexPerformed: false,
+    reason,
+    canonicalReadiness: canonicalReadinessFromFreshness('empty'),
+    trustState: 'unavailable' as const,
+  };
 }
 
 /** Handle ccc_reindex tool call */
@@ -41,6 +54,8 @@ export async function handleCccReindex(args: ReindexArgs): Promise<{ content: Ar
       });
 
       const durationMs = Date.now() - startTime;
+      const readiness = buildUnavailableReadiness('readiness_not_applicable');
+      const lastPersistedAt = graphDb.getStats().lastScanTimestamp;
 
       return {
         content: [{
@@ -51,6 +66,10 @@ export async function handleCccReindex(args: ReindexArgs): Promise<{ content: Ar
               mode: args.full ? 'full' : 'incremental',
               durationMs,
               output: output.slice(0, 2000),
+              readiness,
+              canonicalReadiness: readiness.canonicalReadiness,
+              trustState: readiness.trustState,
+              lastPersistedAt,
             },
           }, null, 2),
         }],

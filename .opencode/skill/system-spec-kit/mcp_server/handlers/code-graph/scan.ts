@@ -9,6 +9,7 @@ import { resolve, sep } from 'node:path';
 import { getDefaultConfig, type DetectorProvenance, type CodeEdge } from '../../lib/code-graph/indexer-types.js';
 import { indexFiles } from '../../lib/code-graph/structural-indexer.js';
 import * as graphDb from '../../lib/code-graph/code-graph-db.js';
+import { buildReadinessBlock } from '../../lib/code-graph/readiness-contract.js';
 
 export interface ScanArgs {
   rootDir?: string;
@@ -258,11 +259,29 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     detectorProvenanceSummary,
     graphEdgeEnrichmentSummary,
   };
+  const lastPersistedAt = graphDb.getStats().lastScanTimestamp;
+  const readinessBlock = buildReadinessBlock({
+    freshness: lastPersistedAt ? 'fresh' : 'empty',
+    action: fullReindexTriggered || !effectiveIncremental ? 'full_scan' : 'selective_reindex',
+    inlineIndexPerformed: true,
+    reason: lastPersistedAt
+      ? 'scan completed and persisted current graph state'
+      : 'scan completed but no graph data was persisted',
+  });
 
   return {
     content: [{
       type: 'text',
-      text: JSON.stringify({ status: 'ok', data: scanResult }, null, 2),
+      text: JSON.stringify({
+        status: 'ok',
+        data: {
+          ...scanResult,
+          readiness: readinessBlock,
+          canonicalReadiness: readinessBlock.canonicalReadiness,
+          trustState: readinessBlock.trustState,
+          lastPersistedAt,
+        },
+      }, null, 2),
     }],
   };
 }

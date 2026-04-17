@@ -3,6 +3,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({
   buildContext: vi.fn(),
   getLastDetectorProvenance: vi.fn(() => 'structured'),
+  getStats: vi.fn(() => ({
+    lastScanTimestamp: '2026-04-17T00:00:00.000Z',
+  })),
   ensureCodeGraphReady: vi.fn(async () => ({
     freshness: 'fresh',
     action: 'none',
@@ -21,6 +24,7 @@ vi.mock('../lib/code-graph/ensure-ready.js', () => ({
 
 vi.mock('../lib/code-graph/code-graph-db.js', () => ({
   getLastDetectorProvenance: mocks.getLastDetectorProvenance,
+  getStats: mocks.getStats,
 }));
 
 import { handleCodeGraphContext } from '../handlers/code-graph/context.js';
@@ -61,7 +65,12 @@ describe('code-graph-context handler', () => {
       action: 'none',
       inlineIndexPerformed: false,
       reason: 'ok',
+      canonicalReadiness: 'ready',
+      trustState: 'live',
     });
+    expect(parsed.data.canonicalReadiness).toBe('ready');
+    expect(parsed.data.trustState).toBe('live');
+    expect(parsed.data.lastPersistedAt).toBe('2026-04-17T00:00:00.000Z');
     expect(parsed.data.graphMetadata).toEqual({
       detectorProvenance: 'structured',
     });

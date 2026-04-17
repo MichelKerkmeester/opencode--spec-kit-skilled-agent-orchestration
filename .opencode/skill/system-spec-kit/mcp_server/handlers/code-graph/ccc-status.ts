@@ -5,6 +5,19 @@
 
 import { existsSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
+import * as graphDb from '../../lib/code-graph/code-graph-db.js';
+import { canonicalReadinessFromFreshness } from '../../lib/code-graph/readiness-contract.js';
+
+function buildUnavailableReadiness(reason: string) {
+  return {
+    freshness: 'empty' as const,
+    action: 'none' as const,
+    inlineIndexPerformed: false,
+    reason,
+    canonicalReadiness: canonicalReadinessFromFreshness('empty'),
+    trustState: 'unavailable' as const,
+  };
+}
 
 /** Handle ccc_status tool call */
 export async function handleCccStatus(): Promise<{ content: Array<{ type: string; text: string }> }> {
@@ -21,6 +34,8 @@ export async function handleCccStatus(): Promise<{ content: Array<{ type: string
       indexExists = true;
       try { indexSize = statSync(indexDir).size; } catch { /* ok */ }
     }
+    const readiness = buildUnavailableReadiness('readiness_not_applicable');
+    const lastPersistedAt = graphDb.getStats().lastScanTimestamp;
 
     return {
       content: [{
@@ -32,6 +47,10 @@ export async function handleCccStatus(): Promise<{ content: Array<{ type: string
             binaryPath: cccBin,
             indexExists,
             indexSize,
+            readiness,
+            canonicalReadiness: readiness.canonicalReadiness,
+            trustState: readiness.trustState,
+            lastPersistedAt,
             recommendation: !available
               ? 'Install CocoIndex: bash .opencode/skill/mcp-coco-index/scripts/install.sh'
               : !indexExists
