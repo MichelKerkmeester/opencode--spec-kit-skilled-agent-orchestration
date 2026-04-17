@@ -169,14 +169,14 @@ Top-2 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D1, D2
 
 Top-3 file by distinct-issue count. Primary workstream: S1 (P0-B).
 
-- [ ] T-RCB-01 [P1] R6-001: Assistive reconsolidation gated by planner/full-auto switch; default OFF despite docs "default ON" → align assistive-default docs with runtime switch (`reconsolidation-bridge.ts:66-73,243-255,446-454`) [Phase 3 Med-C]
+- [x] T-RCB-01 [P1] R6-001: Assistive reconsolidation gated by planner/full-auto switch; default OFF despite docs "default ON" → align assistive-default docs with runtime switch (`reconsolidation-bridge.ts:66-73,243-255,446-454`) [Phase 3 Med-C]
 - [x] T-RCB-02 [P1] R6-002: `ASSISTIVE_AUTO_MERGE_THRESHOLD` promises auto-merge; runtime only logs and falls through → rename threshold OR implement auto-merge [Phase 3 Med-C, QW-equivalent]
-- [ ] T-RCB-03 [P1] R13-004: Any thrown error (checkpoint, reconsolidate, similarity, conflict store) caught and falls through to normal create without structured warning → emit typed `OperationResult` with `failed` status + reason (`reconsolidation-bridge.ts:261-270,438-442`) [B:T-PIN-M13]
-- [ ] T-RCB-04 [P1] R31-003 + R35-001 (dedup): `executeConflict()` has no predecessor-version or scope recheck; merge defends, conflict does not; two concurrent saves can both supersede same predecessor, forking lineage → predecessor CAS (B1 from S1) (`reconsolidation-bridge.ts:282-295` + `reconsolidation.ts:467-508`) — Phase 1d / B1
-- [ ] T-RCB-05 [P1] R32-003: Scope-retag between filter and commit not re-checked at conflict/merge → re-check scope inside writer transaction (part of B1/B3) (`reconsolidation-bridge.ts:270-306`) — Phase 1d
-- [ ] T-RCB-06 [P1] R34-002: Complement path: stale-search duplicate window between `runReconsolidationIfEnabled` and `writeTransaction` → move complement decision inside writer transaction or re-run search (B2 from S1) (`reconsolidation-bridge.ts:261-306`) — Phase 1d / B2 [B:T-RCB-04]
-- [ ] T-RCB-07 [P1] R39-002 + R40-002 (dedup): Governed scope filter reads each candidate's row individually outside any transaction; mixed-snapshot candidate universe → batched scope reads or wrap in transaction (B3/M6 from S1) (`reconsolidation-bridge.ts:203-237,282-306`) — Phase 1d / B3
-- [ ] T-RCB-08 [P2] R36-002 + R37-003 (dedup): Assistive reconsolidation recommendation built from pre-transaction snapshot; can be stale on delivery → re-run assistive search inside transaction OR flag `advisory_stale: true` (B4 from S1) (`reconsolidation-bridge.ts:453-501`; `memory-save.ts:2159-2170,2250-2304`) — Phase 1d / B4 [B:T-RCB-07]
+- [x] T-RCB-03 [P1] R13-004: Any thrown error (checkpoint, reconsolidate, similarity, conflict store) caught and falls through to normal create without structured warning → emit typed `OperationResult` with `failed` status + reason (`reconsolidation-bridge.ts:261-270,438-442`) [B:T-PIN-M13]
+- [x] T-RCB-04 [P1] R31-003 + R35-001 (dedup): `executeConflict()` has no predecessor-version or scope recheck; merge defends, conflict does not; two concurrent saves can both supersede same predecessor, forking lineage → predecessor CAS (B1 from S1) (`reconsolidation-bridge.ts:282-295` + `reconsolidation.ts:467-508`) — Phase 1d / B1
+- [x] T-RCB-05 [P1] R32-003: Scope-retag between filter and commit not re-checked at conflict/merge → re-check scope inside writer transaction (part of B1/B3) (`reconsolidation-bridge.ts:270-306`) — Phase 1d
+- [x] T-RCB-06 [P1] R34-002: Complement path: stale-search duplicate window between `runReconsolidationIfEnabled` and `writeTransaction` → move complement decision inside writer transaction or re-run search (B2 from S1) (`reconsolidation-bridge.ts:261-306`) — Phase 1d / B2 [B:T-RCB-04]
+- [x] T-RCB-07 [P1] R39-002 + R40-002 (dedup): Governed scope filter reads each candidate's row individually outside any transaction; mixed-snapshot candidate universe → batched scope reads or wrap in transaction (B3/M6 from S1) (`reconsolidation-bridge.ts:203-237,282-306`) — Phase 1d / B3
+- [x] T-RCB-08 [P2] R36-002 + R37-003 (dedup): Assistive reconsolidation recommendation built from pre-transaction snapshot; can be stale on delivery → re-run assistive search inside transaction OR flag `advisory_stale: true` (B4 from S1) (`reconsolidation-bridge.ts:453-501`; `memory-save.ts:2159-2170,2250-2304`) — Phase 1d / B4 [B:T-RCB-07]
 - [ ] T-RCB-09 [P2] R11-004 + R12-003 (dedup): Scope-filtered reconsolidation candidates vanish silently; limit-pre-filter can starve in-scope candidates → structured warning `{ code: 'scope_filter_suppressed_candidates', candidates: [...] }` (B5 from S1) (`reconsolidation-bridge.ts:283-295`) — Phase 1d / B5
 - [ ] T-RCB-10 [P2] R16-002: Malformed vector-search rows coerced into sentinel values → reject malformed rows in `reconsolidation-bridge` (`reconsolidation-bridge.ts:295-305`) [Phase 3 Med-G]
 - [ ] T-RCB-11 [P2] R19-002: Assistive reconsolidation failures fall open to ordinary save; no machine-readable signal → surface as structured failure (`reconsolidation-bridge.ts:453-511,514-518`) [Phase 3 Med-H]
@@ -189,8 +189,8 @@ Top-3 file by distinct-issue count. Primary workstream: S1 (P0-B).
 
 Primary workstream: S1 (P0-B). Paired with T-RCB-04, T-RCB-05, T-RCB-06.
 
-- [ ] T-RCN-01 [P1] R31-003 + R35-001 counterpart in storage layer: `executeConflict()` `UPDATE ... WHERE id = ?` without CAS → add `content_hash` + `is_deprecated = FALSE` guard; return `'conflict_stale_predecessor'` outcome when predecessor changed (`reconsolidation.ts:467-508`) — Phase 1d / B1
-- [ ] T-RCN-02 [P1] R34-002 counterpart in storage layer: complement insert logic needs re-check against duplicates inside transaction (`reconsolidation.ts:599-694`) — Phase 1d / B2
+- [x] T-RCN-01 [P1] R31-003 + R35-001 counterpart in storage layer: `executeConflict()` `UPDATE ... WHERE id = ?` without CAS → add `content_hash` + `is_deprecated = FALSE` guard; return `'conflict_stale_predecessor'` outcome when predecessor changed (`reconsolidation.ts:467-508`) — Phase 1d / B1
+- [x] T-RCN-02 [P1] R34-002 counterpart in storage layer: complement insert logic needs re-check against duplicates inside transaction (`reconsolidation.ts:599-694`) — Phase 1d / B2
 <!-- /ANCHOR:group-rcn -->
 
 ---
@@ -330,8 +330,8 @@ Primary workstream: S2 (P0-A) + M8.
 
 Primary workstream: M13 + S1.
 
-- [ ] T-MSV-01 [P1] R24-001: `runEnrichmentBackfill` advertised before enrichment runs; only deferred case gets typed recovery → all runtime-degradation branches get typed recovery via `OperationResult<T>` (`memory-save.ts:1616-1678,2362-2384`) [B:T-PIN-02]
-- [ ] T-MSV-02 [P1] R34-002 orchestrator side: Complement duplicate window orchestrated at memory-save; paired with T-RCB-06 (`memory-save.ts:2159-2171,2250-2304`) — Phase 1d / B2 [B:T-RCB-06]
+- [x] T-MSV-01 [P1] R24-001: `runEnrichmentBackfill` advertised before enrichment runs; only deferred case gets typed recovery → all runtime-degradation branches get typed recovery via `OperationResult<T>` (`memory-save.ts:1616-1678,2362-2384`) [B:T-PIN-02]
+- [x] T-MSV-02 [P1] R34-002 orchestrator side: Complement duplicate window orchestrated at memory-save; paired with T-RCB-06 (`memory-save.ts:2159-2171,2250-2304`) — Phase 1d / B2 [B:T-RCB-06]
 - [x] T-RBD-01 [P1] R21-001: `memory_save` response collapses post-insert truth further than `post-insert.ts` does → propagate typed `OperationResult<T>` through response (`response-builder.ts:311-322,569-573`) — Phase 3 M13 [B:T-PIN-02]
 <!-- /ANCHOR:group-msv-rbd -->
 
