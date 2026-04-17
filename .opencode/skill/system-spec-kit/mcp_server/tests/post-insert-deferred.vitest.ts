@@ -1,11 +1,14 @@
 // Migrated as part of 016 remediation — see FINAL-synthesis-and-review.md §6.3 for rationale.
 // T-TEST-01 (M13): enrichmentStatus migrated from boolean record to per-step OperationResult.
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { clearBudget } from '../lib/enrichment/retry-budget.js';
 
 describe('post-insert deferred enrichment reporting', () => {
   afterEach(() => {
+    clearBudget();
     vi.doUnmock('../handlers/memory-crud-utils');
     vi.doUnmock('../handlers/memory-crud-utils.js');
+    vi.doUnmock('../handlers/causal-links-processor.js');
     vi.doUnmock('../lib/search/search-flags');
     vi.doUnmock('../lib/search/search-flags.js');
     vi.resetModules();
@@ -375,5 +378,65 @@ describe('post-insert deferred enrichment reporting', () => {
     });
     // Linker must not have been called.
     expect(runLinkerMock).not.toHaveBeenCalled();
+  });
+
+  it('stops scheduling runEnrichmentBackfill after the unresolved causal-link retry budget is exhausted', async () => {
+    vi.doMock('../handlers/causal-links-processor.js', () => ({
+      processCausalLinks: vi.fn(() => ({
+        processed: 1,
+        inserted: 0,
+        resolved: 0,
+        unresolved: [{ type: 'memory', reference: 'missing-target' }],
+        errors: [],
+      })),
+    }));
+    vi.doMock('../lib/search/search-flags', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('../lib/search/search-flags')>();
+      return {
+        ...actual,
+        isAutoEntitiesEnabled: vi.fn(() => false),
+        isEntityLinkingEnabled: vi.fn(() => false),
+        isMemorySummariesEnabled: vi.fn(() => false),
+        isPostInsertEnrichmentEnabled: vi.fn(() => true),
+        isGraphRefreshEnabled: vi.fn(() => false),
+      };
+    });
+    vi.doMock('../lib/search/search-flags.js', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('../lib/search/search-flags.js')>();
+      return {
+        ...actual,
+        isAutoEntitiesEnabled: vi.fn(() => false),
+        isEntityLinkingEnabled: vi.fn(() => false),
+        isMemorySummariesEnabled: vi.fn(() => false),
+        isPostInsertEnrichmentEnabled: vi.fn(() => true),
+        isGraphRefreshEnabled: vi.fn(() => false),
+      };
+    });
+
+    const { runPostInsertEnrichment } = await import('../handlers/save/post-insert.js');
+    const parsed = {
+      content: 'Repeated unresolved causal links.',
+      hasCausalLinks: true,
+      causalLinks: [{ relation: 'supports', targetRef: 'missing-target' }],
+      qualityScore: 0.8,
+    } as never;
+
+    const first = await runPostInsertEnrichment({} as never, 404, parsed);
+    const second = await runPostInsertEnrichment({} as never, 404, parsed);
+    const third = await runPostInsertEnrichment({} as never, 404, parsed);
+    const fourth = await runPostInsertEnrichment({} as never, 404, parsed);
+
+    expect(first.executionStatus).toMatchObject({
+      status: 'partial',
+      reason: 'enrichment_step_partial',
+      followUpAction: 'runEnrichmentBackfill',
+    });
+    expect(second.executionStatus.followUpAction).toBe('runEnrichmentBackfill');
+    expect(third.executionStatus.followUpAction).toBe('runEnrichmentBackfill');
+    expect(fourth.executionStatus).toMatchObject({
+      status: 'partial',
+      reason: 'enrichment_step_partial',
+    });
+    expect(fourth.executionStatus.followUpAction).toBeUndefined();
   });
 });

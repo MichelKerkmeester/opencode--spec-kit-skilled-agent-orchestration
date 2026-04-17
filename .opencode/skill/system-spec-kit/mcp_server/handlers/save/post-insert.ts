@@ -21,6 +21,7 @@ import {
 import { generateAndStoreSummary } from '../../lib/search/memory-summaries.js';
 import { runEntityLinkingForMemory } from '../../lib/search/entity-linker.js';
 import { onIndex, isGraphRefreshEnabled } from '../../lib/search/graph-lifecycle.js';
+import { clearBudget, recordFailure, shouldRetry, type RetryBudgetEntry } from '../../lib/enrichment/retry-budget.js';
 import { toErrorMessage } from '../../utils/index.js';
 
 // Feature catalog: Memory indexing (memory_save)
@@ -146,6 +147,8 @@ export async function runPostInsertEnrichment(
 
   // CAUSAL LINKS PROCESSING
   let causalLinksResult: CausalLinksResult | null = null;
+  let causalLinksRetryEntry: RetryBudgetEntry | null = null;
+  let causalLinksShouldRetry = true;
   if (parsed.hasCausalLinks && parsed.causalLinks) {
     try {
       causalLinksResult = processCausalLinks(database, id, parsed.causalLinks);
@@ -167,6 +170,10 @@ export async function runPostInsertEnrichment(
         const reason: EnrichmentFailureReason = causalLinksResult.errors.length > 0
           ? 'partial_causal_link_errors'
           : 'partial_causal_link_unresolved';
+        if (reason === 'partial_causal_link_unresolved') {
+          causalLinksShouldRetry = shouldRetry(id, 'causal_links', reason);
+          causalLinksRetryEntry = recordFailure(id, 'causal_links', reason);
+        }
         enrichmentStatus.causalLinks = { status: 'partial', reason, warnings };
       } else {
         enrichmentStatus.causalLinks = { status: 'ran' };
@@ -348,12 +355,34 @@ export async function runPostInsertEnrichment(
     .filter(([, step]) => step.status === 'partial')
     .map(([name]) => name);
 
+  const causalLinkRetryExhausted = enrichmentStatus.causalLinks.status === 'partial'
+    && enrichmentStatus.causalLinks.reason === 'partial_causal_link_unresolved'
+    && !causalLinksShouldRetry;
+  if (causalLinkRetryExhausted) {
+    const attempts = causalLinksRetryEntry?.attempts ?? 'unknown';
+    console.warn(
+      `[memory-save] Retry budget exhausted for memory #${id} step=causal_links reason=partial_causal_link_unresolved attempts=${attempts}`,
+    );
+  }
+  const shouldScheduleBackfill = failedSteps.length > 0
+    || partialSteps.some((step) => step !== 'causalLinks')
+    || (
+      enrichmentStatus.causalLinks.status === 'partial'
+      && enrichmentStatus.causalLinks.reason !== 'partial_causal_link_unresolved'
+    )
+    || (
+      enrichmentStatus.causalLinks.status === 'partial'
+      && enrichmentStatus.causalLinks.reason === 'partial_causal_link_unresolved'
+      && !causalLinkRetryExhausted
+    );
+  const followUpAction = shouldScheduleBackfill ? 'runEnrichmentBackfill' : undefined;
+
   let executionStatus: PostInsertExecutionStatus;
   if (failedSteps.length > 0) {
     executionStatus = {
       status: 'failed',
       reason: 'enrichment_step_failed',
-      followUpAction: 'runEnrichmentBackfill',
+      ...(followUpAction ? { followUpAction } : {}),
       failedSteps,
       ...(partialSteps.length > 0 ? { partialSteps } : {}),
     };
@@ -361,10 +390,11 @@ export async function runPostInsertEnrichment(
     executionStatus = {
       status: 'partial',
       reason: 'enrichment_step_partial',
-      followUpAction: 'runEnrichmentBackfill',
+      ...(followUpAction ? { followUpAction } : {}),
       partialSteps,
     };
   } else {
+    clearBudget(id);
     executionStatus = { status: 'ran' };
   }
 
