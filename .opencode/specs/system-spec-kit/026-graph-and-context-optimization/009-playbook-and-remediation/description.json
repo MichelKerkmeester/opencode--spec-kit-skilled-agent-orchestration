@@ -1,6 +1,42 @@
 {
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation",
+  "specId": "009",
+  "folderSlug": "playbook-and-remediation",
   "title": "Playbook and Remediation",
-  "description": "Coordination parent for playbook follow-on work and remediation phases promoted out of the old 006 continuity refactor lane.",
   "type": "coordination-parent",
-  "lastUpdated": "2026-04-17T15:45:19.000Z"
+  "description": "Coordination parent for playbook follow-on work and remediation phases. The primary child packet repairs the Phase 014 documentation scaffold after prompt-field rewrite work already landed in the manual testing playbook corpus, restoring the required Level 2 anchors, missing task and checklist files, and the real playbook index references while keeping the work scoped to packet documentation rather than the playbook content itself.",
+  "trigger_phrases": [
+    "playbook prompt rewrite",
+    "manual testing playbook repair",
+    "level 2 packet template restoration",
+    "playbook scaffold alignment",
+    "prompt field documentation",
+    "spec packet integrity",
+    "playbook index reconciliation",
+    "documentation normalization",
+    "phase 014 repair packet",
+    "playbook corpus reference-only"
+  ],
+  "keywords": [
+    "playbook documentation",
+    "prompt fields",
+    "manual testing scenarios",
+    "level 2 structure",
+    "packet repair",
+    "template compliance",
+    "validator integration",
+    "documentation audit",
+    "playbook corpus",
+    "scenario documentation",
+    "spec folder repair",
+    "reference integrity",
+    "checklist restoration"
+  ],
+  "lastUpdated": "2026-04-17T18:43:49.606Z",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

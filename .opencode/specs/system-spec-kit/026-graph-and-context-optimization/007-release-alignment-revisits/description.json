@@ -1,6 +1,43 @@
 {
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits",
+  "specId": "007",
+  "folderSlug": "release-alignment-revisits",
   "title": "Release Alignment Revisits",
-  "description": "Coordination parent for the three release-alignment revisit packets promoted out of the old 006 continuity refactor lane.",
   "type": "coordination-parent",
-  "lastUpdated": "2026-04-17T15:45:19.000Z"
+  "description": "Coordination parent for the three release-alignment revisit packets promoted from the legacy continuity refactor lane. This packet re-anchors 63 existing SKILL guide, reference, template, and MCP documentation files to the Phase 018 continuity contract, retiring pre-018 save and recovery language while preserving legitimate archive-status guidance, packet lifecycle language, and generated-artifact references as supporting outputs instead of primary context surfaces.",
+  "trigger_phrases": [
+    "phase 018 continuity revisit",
+    "release-alignment documentation parity",
+    "system-spec-kit skill guide update",
+    "canonical save path alignment",
+    "handover memory continuity ladder",
+    "active memory state normalization",
+    "deprecated archive guidance cleanup",
+    "phase 018 doc surface refresh",
+    "resume ladder documentation",
+    "supporting artifact demotion"
+  ],
+  "keywords": [
+    "continuity-contract verification",
+    "phase-018 alignment",
+    "skill documentation",
+    "reference surfaces",
+    "template modernization",
+    "active continuity states",
+    "generated artifacts",
+    "save recovery language",
+    "manual session continuity",
+    "packet lifecycle documentation",
+    "drift detection",
+    "doc validation",
+    "archive guidance",
+    "resume workflow"
+  ],
+  "lastUpdated": "2026-04-17T18:43:49.606Z",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

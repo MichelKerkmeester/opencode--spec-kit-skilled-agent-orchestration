@@ -1,17 +1,38 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review",
-  "description": "Remediation Plan: 120-Iteration Deep Review Findings",
-  "keywords": [
-    "remediation",
-    "plan",
-    "120-iteration",
-    "deep",
-    "review",
-    "findings"
-  ],
-  "lastUpdated": "2026-04-17T14:42:34.267Z",
   "specId": "015",
   "folderSlug": "implementation-deep-review",
+  "title": "120-Iteration Deep Review Findings",
+  "description": "Remediation specification for 243 deduplicated findings synthesized from the merged 120-iteration deep review across packets 009, 010, 012, and 014. The packet is organized around 11 workstreams, with the governed save-time reconsolidation scope leak treated as the release-blocking P0, followed by sequential hardening workstreams and then batch-automatable correctness, security, and test-quality remediations once the scope-boundary foundations are in place.",
+  "trigger_phrases": [
+    "deep review remediation",
+    "243 finding remediation",
+    "p0 reconsolidation scope fix",
+    "path-boundary hardening",
+    "governance validation",
+    "research findings closure",
+    "implementation quality verification",
+    "blocking issue resolution",
+    "11 workstream remediation",
+    "scope boundary fix"
+  ],
+  "keywords": [
+    "deep review findings",
+    "remediation workstreams",
+    "p0 blocker",
+    "scope boundary validation",
+    "path escaping defense",
+    "governance hardening",
+    "error handling",
+    "test quality",
+    "security validation",
+    "data integrity",
+    "verification gates",
+    "reconsolidation",
+    "workstream planning",
+    "release blocker"
+  ],
+  "lastUpdated": "2026-04-17T18:43:49.606Z",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"
