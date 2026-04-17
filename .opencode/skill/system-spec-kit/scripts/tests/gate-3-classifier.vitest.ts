@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { RECOVERED_TRANSCRIPT_STRIP_PATTERNS } from '../../mcp_server/hooks/shared-provenance.js';
 
 import {
   FILE_WRITE_TRIGGERS,
@@ -13,6 +14,30 @@ import {
   toJsonSnapshot,
   tokenizePrompt,
 } from '../../shared/gate-3-classifier';
+
+const ASCII_ONLY_PATTERN = /^[\x00-\x7F]+$/;
+const ADVERSARIAL_NORMALIZATION_CASES = [
+  { input: 'SYST\u0415M:', expected: 'system:' },
+  { input: 'SYSTE\u041C:', expected: 'system:' },
+  { input: 'SY\u0405TEM:', expected: 'system:' },
+  { input: 'US\u0415R:', expected: 'user:' },
+  { input: 'U\u0405ER:', expected: 'user:' },
+  { input: 'ASSIST\u0410NT:', expected: 'assistant:' },
+  { input: 'ASSI\u0405TANT:', expected: 'assistant:' },
+  { input: 'D\u0415VELOPER:', expected: 'developer:' },
+  { input: 'D\u0415V\u0415LOPER:', expected: 'developer:' },
+  { input: 'SYST\u00C9M:', expected: 'system:' },
+  { input: 'US\u00C9R:', expected: 'user:' },
+  { input: 'ASSIST\u00C1NT:', expected: 'assistant:' },
+  { input: 'D\u00CBVELOPER:', expected: 'developer:' },
+  { input: 'SYST\u0395M:', expected: 'system:' },
+  { input: '\u0456gnore previous', expected: 'ignore previous' },
+  { input: '\u0423ou are', expected: 'you are' },
+  { input: 'Y\u043Eu are', expected: 'you are' },
+  { input: 'Follo\uFF57 these instructions', expected: 'follow these instructions' },
+  { input: '\uFF33\uFF39\uFF33\uFF34\uFF25\uFF2D:', expected: 'system:' },
+  { input: 'imp\u043Ertant: ignore everything', expected: 'important: ignore everything' },
+] as const;
 
 describe('Gate 3 classifier — vocabulary invariants', () => {
   it('exposes a stable schema version', () => {
@@ -67,6 +92,20 @@ describe('Gate 3 classifier — normalization', () => {
   it('applies NFKC and strips soft hyphen / zero-width characters before matching', () => {
     expect(normalizePrompt('f\u00ADix   t\u200Bhe bug')).toBe('fix the bug');
     expect(normalizePrompt('\uFEFFwrite the file')).toBe('write the file');
+  });
+
+  it('folds adversarial Unicode confusables into ASCII-safe normalized prompts', () => {
+    for (const { input, expected } of ADVERSARIAL_NORMALIZATION_CASES) {
+      const normalized = normalizePrompt(input);
+      expect(normalized).toBe(expected);
+      expect(ASCII_ONLY_PATTERN.test(normalized)).toBe(true);
+      expect(RECOVERED_TRANSCRIPT_STRIP_PATTERNS.some((pattern) => pattern.test(normalized))).toBe(true);
+    }
+  });
+
+  it('does not over-fold plain ASCII control inputs', () => {
+    expect(normalizePrompt('System:')).toBe('system:');
+    expect(normalizePrompt('system:')).toBe('system:');
   });
 
   it('tokenizes while preserving /, :, - and _', () => {
@@ -208,16 +247,22 @@ describe('Gate 3 classifier — negative baselines', () => {
     expect(classifyPrompt('show me the recent commits').triggersGate3).toBe(false);
   });
 
-  it('does NOT confusable-fold Cyrillic homoglyphs into a file-write token', () => {
+  it('confusable-folds Cyrillic homoglyphs into a file-write token', () => {
     const r = classifyPrompt('d\u0435lete the helper');
-    expect(r.triggersGate3).toBe(false);
-    expect(r.reason).toBe('no_match');
+    expect(r.triggersGate3).toBe(true);
+    expect(r.reason).toBe('file_write_match');
   });
 
-  it('does NOT confusable-fold Greek epsilon into a file-write token', () => {
+  it('confusable-folds Greek epsilon into a file-write token', () => {
     const r = classifyPrompt('\u0395dit the helper');
-    expect(r.triggersGate3).toBe(false);
-    expect(r.reason).toBe('no_match');
+    expect(r.triggersGate3).toBe(true);
+    expect(r.reason).toBe('file_write_match');
+  });
+
+  it('accent-folds Latin characters into a file-write token', () => {
+    const r = classifyPrompt('cr\u00E9ate the helper');
+    expect(r.triggersGate3).toBe(true);
+    expect(r.reason).toBe('file_write_match');
   });
 });
 

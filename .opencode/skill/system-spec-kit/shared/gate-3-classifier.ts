@@ -12,6 +12,7 @@
 // ---------------------------------------------------------------
 
 import { assertNever } from '../mcp_server/lib/utils/exhaustiveness.js';
+import { foldUnicodeConfusablesToAscii } from '../mcp_server/hooks/shared-provenance.js';
 
 // ---------------------------------------------------------------
 // 1. TRIGGER SCHEMA
@@ -145,9 +146,7 @@ export const GATE_3_VOCABULARY = Object.freeze({
  * preserve `/` and `:` so command forms like `/spec_kit:resume` survive.
  */
 export function normalizePrompt(prompt: string): string {
-  return prompt
-    .normalize('NFKC')
-    .replace(/[\u00AD\u200B-\u200F\uFEFF]/g, '')
+  return foldUnicodeConfusablesToAscii(prompt)
     .toLowerCase()
     .replace(/\s+/g, ' ')
     .trim();

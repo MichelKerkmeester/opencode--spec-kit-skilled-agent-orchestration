@@ -30,12 +30,55 @@ export const RECOVERED_TRANSCRIPT_STRIP_PATTERNS: readonly RegExp[] = [
   /^\s*<(?:\/)?(?:system|developer|assistant|user|instructions?)\b/i,
 ];
 
+const RECOVERED_PAYLOAD_HIDDEN_CHAR_PATTERN = /[\u00AD\u200B-\u200F\uFEFF]/g;
+const RECOVERED_PAYLOAD_COMBINING_MARK_PATTERN = /\p{M}/gu;
+const RECOVERED_PAYLOAD_CONFUSABLE_REPLACEMENTS = Object.freeze([
+  [/\u0410/g, 'A'],
+  [/\u0430/g, 'a'],
+  [/\u0412/g, 'B'],
+  [/\u0432/g, 'v'],
+  [/\u0421/g, 'C'],
+  [/\u0441/g, 'c'],
+  [/\u0395|\u0415/g, 'E'],
+  [/\u03B5|\u0435/g, 'e'],
+  [/\u041D/g, 'H'],
+  [/\u043D/g, 'h'],
+  [/\u0406/g, 'I'],
+  [/\u0456/g, 'i'],
+  [/\u041A/g, 'K'],
+  [/\u043A/g, 'k'],
+  [/\u041C/g, 'M'],
+  [/\u043C/g, 'm'],
+  [/\u041E/g, 'O'],
+  [/\u043E/g, 'o'],
+  [/\u0420/g, 'P'],
+  [/\u0440/g, 'p'],
+  [/\u0405/g, 'S'],
+  [/\u0455/g, 's'],
+  [/\u0422/g, 'T'],
+  [/\u0442/g, 't'],
+  [/\u0425/g, 'X'],
+  [/\u0445/g, 'x'],
+  [/\u0423/g, 'Y'],
+  [/\u0443/g, 'y'],
+] as const);
+
 function normalizeRecoveredPayloadLine(line: string): string {
-  return line.normalize('NFKC').replace(/[\u00AD\u200B-\u200F\uFEFF]/g, '');
+  return line.normalize('NFKC').replace(RECOVERED_PAYLOAD_HIDDEN_CHAR_PATTERN, '');
 }
 
-function normalizeRecoveredPayloadLineForMatching(line: string): string {
-  return line.replace(/[\u0395\u03B5]/g, (char) => (char === '\u0395' ? 'E' : 'e'));
+export function foldUnicodeConfusablesToAscii(value: string): string {
+  let normalized = normalizeRecoveredPayloadLine(value)
+    .normalize('NFD')
+    .replace(RECOVERED_PAYLOAD_COMBINING_MARK_PATTERN, '');
+  for (const [pattern, replacement] of RECOVERED_PAYLOAD_CONFUSABLE_REPLACEMENTS) {
+    normalized = normalized.replace(pattern, replacement);
+  }
+  return normalized;
+}
+
+export function normalizeRecoveredPayloadLineForMatching(line: string): string {
+  return foldUnicodeConfusablesToAscii(line);
 }
 
 /** URL-escape a provenance field value so forged markers cannot break out of the marker line. */

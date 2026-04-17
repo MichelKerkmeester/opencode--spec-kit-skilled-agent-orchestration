@@ -29,6 +29,7 @@ import * as graphDb from './code-graph-db.js';
 import type { ReadyResult } from './ensure-ready.js';
 import type { StructuralReadiness } from './ops-hardening.js';
 import type { SharedPayloadTrustState } from '../context/shared-payload.js';
+import { assertNever } from '../utils/exhaustiveness.js';
 
 // Re-export the surface types that downstream consumers (query.ts
 // and its Wave B siblings) need so they can import everything
@@ -68,6 +69,8 @@ export function canonicalReadinessFromFreshness(
       return 'stale';
     case 'empty':
       return 'missing';
+    default:
+      return assertNever(freshness, 'graph-freshness');
   }
 }
 
@@ -97,6 +100,8 @@ export function queryTrustStateFromFreshness(
       return 'stale';
     case 'empty':
       return 'absent';
+    default:
+      return assertNever(freshness, 'graph-freshness');
   }
 }
 
