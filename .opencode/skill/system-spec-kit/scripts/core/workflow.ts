@@ -1254,10 +1254,15 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   const writtenFiles: string[] = [];
   log('   Skipping legacy [spec]/memory/*.md writes');
 
-  // RC-6 fix: Check if the primary context file was actually written (it may
-  // Have been skipped as a duplicate). Guard downstream operations accordingly.
-  const ctxFileWritten = false;
-  // Update per-folder description.json memory tracking (only if file was written)
+  // T-CNS-01 (Phase 017 Wave A, H-56-1 fix): the legacy RC-6 stub hard-coded
+  // ctxFileWritten = false, which silently disabled the description.json
+  // memorySequence + lastUpdated update block on every canonical save.
+  // Post-v3.4.1.0 the legacy [spec]/memory/*.md artifact is intentionally not
+  // written (see duplicateExistingFilename above), so there is no duplicate
+  // condition to guard against — the description.json tracking must run on
+  // every canonical save to keep lastUpdated / memorySequence fresh.
+  const ctxFileWritten = true;
+  // Update per-folder description.json memory tracking (runs on every canonical save)
   if (ctxFileWritten) {
     try {
       const descApiModule = await tryImportMcpApi('@spec-kit/mcp-server/api');
@@ -1304,6 +1309,12 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
             ...(sequenceSnapshot.memoryNameHistory || []).slice(-19),
             rawCtxFilename,
           ];
+          // T-CNS-01 (Phase 017 Wave A, H-56-1 fix): bump lastUpdated on every
+          // canonical save so metadata-freshness consumers (graph readiness,
+          // staleness detectors, /memory:search ranking) see a live timestamp.
+          // Pre-017: this field was never written by the canonical-save path —
+          // R4-P1-002 grep over scripts/dist/memory/*.js returned zero matches.
+          sequenceSnapshot.lastUpdated = new Date().toISOString();
           savePFD(sequenceSnapshot, specFolderAbsolute);
 
           const verified = loadPFD(specFolderAbsolute);
@@ -1330,7 +1341,16 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     log('   Context file was a duplicate — skipping description tracking');
   }
 
-  const shouldRunExplicitSaveFollowUps = options.plannerMode === 'full-auto';
+  // T-W1-CNS-04 (Phase 017 Wave A, H-56-1 fix): previously gated on
+  // options.plannerMode === 'full-auto', which made the default plan-only
+  // /memory:save a structural no-op for graph-metadata.json (last_save_at
+  // never advanced, Step 11.5 spec-doc reindex was deferred indefinitely,
+  // post-save quality review was skipped). The compound with T-CNS-01's
+  // dead ctxFileWritten stub produced H-56-1 (default canonical save wrote
+  // zero metadata). Lifted unconditional so every canonical save refreshes
+  // graph metadata, re-indexes touched spec docs, and runs the post-save
+  // quality review regardless of planner mode.
+  const shouldRunExplicitSaveFollowUps = true;
   if (shouldRunExplicitSaveFollowUps) {
     try {
       const graphApiModule = await tryImportMcpApi('@spec-kit/mcp-server/api/indexing');
