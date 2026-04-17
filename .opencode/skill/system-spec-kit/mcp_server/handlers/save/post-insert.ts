@@ -20,8 +20,9 @@ import {
 } from '../../lib/extraction/entity-extractor.js';
 import { generateAndStoreSummary } from '../../lib/search/memory-summaries.js';
 import { runEntityLinkingForMemory } from '../../lib/search/entity-linker.js';
-import { onIndex, isGraphRefreshEnabled } from '../../lib/search/graph-lifecycle.js';
+import { onIndex, isGraphRefreshEnabled, type OnIndexSkipReason } from '../../lib/search/graph-lifecycle.js';
 import { clearBudget, recordFailure, shouldRetry, type RetryBudgetEntry } from '../../lib/enrichment/retry-budget.js';
+import { assertNever } from '../../lib/utils/exhaustiveness.js';
 import { toErrorMessage } from '../../utils/index.js';
 
 // Feature catalog: Memory indexing (memory_save)
@@ -102,16 +103,85 @@ export interface PostInsertEnrichmentOptions {
   plannerMode?: SavePlannerMode;
 }
 
+const ON_INDEX_SKIP_REASON_TO_ENRICHMENT_SKIP_REASON = {
+  graph_refresh_disabled: 'graph_refresh_disabled',
+  entity_linking_disabled: 'entity_linking_disabled',
+  empty_content: 'empty_content',
+  onindex_exception: 'graph_lifecycle_no_op',
+} satisfies Record<OnIndexSkipReason, EnrichmentSkipReason>;
+
 export function shouldRunPostInsertEnrichment(plannerMode: SavePlannerMode = 'plan-only'): boolean {
   return plannerMode === 'full-auto' || isPostInsertEnrichmentEnabled();
 }
 
+function normalizeEnrichmentSkipReason(reason: EnrichmentSkipReason): EnrichmentSkipReason {
+  switch (reason) {
+    case 'feature_disabled':
+    case 'nothing_to_do':
+    case 'planner_first_mode':
+    case 'density_guard':
+    case 'graph_lifecycle_no_op':
+    case 'graph_refresh_disabled':
+    case 'entity_linking_disabled':
+    case 'empty_content':
+    case 'extraction_not_ran':
+    case 'summary_not_stored':
+      return reason;
+    default:
+      return assertNever(reason, 'enrichment-skip-reason');
+  }
+}
+
+function normalizeEnrichmentFailureReason(reason: EnrichmentFailureReason): EnrichmentFailureReason {
+  switch (reason) {
+    case 'causal_links_exception':
+    case 'entity_extraction_exception':
+    case 'summary_exception':
+    case 'entity_linking_exception':
+    case 'graph_lifecycle_exception':
+    case 'partial_causal_link_unresolved':
+    case 'partial_causal_link_errors':
+      return reason;
+    default:
+      return assertNever(reason, 'enrichment-failure-reason');
+  }
+}
+
 function makeSkipped(reason: EnrichmentSkipReason): EnrichmentStepResult {
-  return { status: 'skipped', reason };
+  return { status: 'skipped', reason: normalizeEnrichmentSkipReason(reason) };
 }
 
 function makeDeferred(): EnrichmentStepResult {
-  return { status: 'deferred', reason: 'planner_first_mode' };
+  return { status: 'deferred', reason: normalizeEnrichmentSkipReason('planner_first_mode') };
+}
+
+function makeFailed(reason: EnrichmentFailureReason, warnings?: string[]): EnrichmentStepResult {
+  return {
+    status: 'failed',
+    reason: normalizeEnrichmentFailureReason(reason),
+    ...(warnings && warnings.length > 0 ? { warnings } : {}),
+  };
+}
+
+function resolveGraphLifecycleSkipReason(skipReason: unknown): EnrichmentSkipReason {
+  if (skipReason === undefined || skipReason === null) {
+    return normalizeEnrichmentSkipReason('graph_lifecycle_no_op');
+  }
+  if (typeof skipReason === 'string' && Object.prototype.hasOwnProperty.call(ON_INDEX_SKIP_REASON_TO_ENRICHMENT_SKIP_REASON, skipReason)) {
+    return normalizeEnrichmentSkipReason(
+      ON_INDEX_SKIP_REASON_TO_ENRICHMENT_SKIP_REASON[skipReason as OnIndexSkipReason],
+    );
+  }
+  if (typeof skipReason === 'string') {
+    console.warn(
+      `[memory-save] ${JSON.stringify({
+        event: 'unmapped_onindex_skip_reason',
+        skipReason,
+      })}`,
+    );
+    return normalizeEnrichmentSkipReason('graph_lifecycle_no_op');
+  }
+  return assertNever(skipReason as never, 'onindex-skip-reason');
 }
 
 /**
@@ -181,11 +251,7 @@ export async function runPostInsertEnrichment(
     } catch (causal_err: unknown) {
       const message = toErrorMessage(causal_err);
       console.warn(`[memory-save] Causal links processing failed: ${message}`);
-      enrichmentStatus.causalLinks = {
-        status: 'failed',
-        reason: 'causal_links_exception',
-        warnings: [message],
-      };
+      enrichmentStatus.causalLinks = makeFailed('causal_links_exception', [message]);
     }
   } else {
     // No causal links to process — explicit skip with reason, not a silent success.
@@ -208,11 +274,7 @@ export async function runPostInsertEnrichment(
     } catch (entityErr: unknown) {
       const message = toErrorMessage(entityErr);
       console.warn(`[memory-save] R10 entity extraction failed: ${message}`);
-      enrichmentStatus.entityExtraction = {
-        status: 'failed',
-        reason: 'entity_extraction_exception',
-        warnings: [message],
-      };
+      enrichmentStatus.entityExtraction = makeFailed('entity_extraction_exception', [message]);
     }
   } else {
     enrichmentStatus.entityExtraction = makeSkipped('feature_disabled');
@@ -237,11 +299,7 @@ export async function runPostInsertEnrichment(
     } catch (summaryErr: unknown) {
       const message = toErrorMessage(summaryErr);
       console.warn(`[memory-save] R8 summary generation failed: ${message}`);
-      enrichmentStatus.summaries = {
-        status: 'failed',
-        reason: 'summary_exception',
-        warnings: [message],
-      };
+      enrichmentStatus.summaries = makeFailed('summary_exception', [message]);
     }
   } else {
     enrichmentStatus.summaries = makeSkipped('feature_disabled');
@@ -281,11 +339,7 @@ export async function runPostInsertEnrichment(
       } catch (linkErr: unknown) {
         const message = toErrorMessage(linkErr);
         console.warn(`[memory-save] S5 entity linking failed: ${message}`);
-        enrichmentStatus.entityLinking = {
-          status: 'failed',
-          reason: 'entity_linking_exception',
-          warnings: [message],
-        };
+        enrichmentStatus.entityLinking = makeFailed('entity_linking_exception', [message]);
       }
     }
   } else {
@@ -306,21 +360,16 @@ export async function runPostInsertEnrichment(
         qualityScore: typeof parsed.qualityScore === 'number' ? parsed.qualityScore : 0,
       });
       if (indexResult.skipped) {
-        const reasonMap: Record<string, EnrichmentSkipReason> = {
-          graph_refresh_disabled: 'graph_refresh_disabled',
-          entity_linking_disabled: 'entity_linking_disabled',
-          empty_content: 'empty_content',
-        };
         if (indexResult.skipReason === 'onindex_exception') {
           // onIndex caught an internal exception — surface as failed, not skipped.
-          enrichmentStatus.graphLifecycle = {
-            status: 'failed',
-            reason: 'graph_lifecycle_exception',
-            warnings: ['onIndex internal exception; see logs for details'],
-          };
+          enrichmentStatus.graphLifecycle = makeFailed(
+            'graph_lifecycle_exception',
+            ['onIndex internal exception; see logs for details'],
+          );
         } else {
-          const mapped = indexResult.skipReason ? reasonMap[indexResult.skipReason] : undefined;
-          enrichmentStatus.graphLifecycle = makeSkipped(mapped ?? 'graph_lifecycle_no_op');
+          enrichmentStatus.graphLifecycle = makeSkipped(
+            resolveGraphLifecycleSkipReason(indexResult.skipReason),
+          );
         }
       } else {
         if (indexResult.edgesCreated > 0) {
@@ -334,11 +383,7 @@ export async function runPostInsertEnrichment(
     } catch (glErr: unknown) {
       const message = toErrorMessage(glErr);
       console.warn(`[memory-save] D3 graph-lifecycle enrichment failed: ${message}`);
-      enrichmentStatus.graphLifecycle = {
-        status: 'failed',
-        reason: 'graph_lifecycle_exception',
-        warnings: [message],
-      };
+      enrichmentStatus.graphLifecycle = makeFailed('graph_lifecycle_exception', [message]);
     }
   } else {
     enrichmentStatus.graphLifecycle = makeSkipped('feature_disabled');

@@ -4,6 +4,8 @@
 // Phase 030 / Phase 1: common payload and provenance envelope
 // shared by startup, recovery, and compaction surfaces.
 
+import { assertNever } from '../utils/exhaustiveness.js';
+
 export const SHARED_PAYLOAD_KIND_VALUES = [
   'startup',
   'resume',
@@ -46,7 +48,19 @@ export function assertSharedPayloadTrustState(value: unknown): SharedPayloadTrus
       `Invalid shared payload trust state: expected one of ${SHARED_PAYLOAD_TRUST_STATE_VALUES.join(', ')}`,
     );
   }
-  return value;
+  switch (value) {
+    case 'live':
+    case 'cached':
+    case 'stale':
+    case 'absent':
+    case 'unavailable':
+    case 'imported':
+    case 'rebuilt':
+    case 'rehomed':
+      return value;
+    default:
+      return assertNever(value, 'shared-payload-trust-state');
+  }
 }
 
 export const SHARED_PAYLOAD_CERTAINTY_VALUES = [
@@ -653,6 +667,8 @@ export function trustStateFromGraphState(
       return 'absent';
     case 'error':
       return 'unavailable';
+    default:
+      return assertNever(graphState, 'graph-state');
   }
 }
 
@@ -666,6 +682,8 @@ export function trustStateFromStructuralStatus(
       return 'stale';
     case 'missing':
       return 'absent';
+    default:
+      return assertNever(status, 'structural-status');
   }
 }
 

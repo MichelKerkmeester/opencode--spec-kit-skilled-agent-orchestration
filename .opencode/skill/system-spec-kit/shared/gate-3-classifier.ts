@@ -11,6 +11,8 @@
 // but the authoritative list of tokens lives here.
 // ---------------------------------------------------------------
 
+import { assertNever } from '../mcp_server/lib/utils/exhaustiveness.js';
+
 // ---------------------------------------------------------------
 // 1. TRIGGER SCHEMA
 // ---------------------------------------------------------------
@@ -253,15 +255,30 @@ export interface Gate3VocabularySnapshot {
 
 export const GATE_3_SCHEMA_VERSION = '1.0.0';
 
+function getEntriesForCategory(category: TriggerCategory): readonly TriggerEntry[] {
+  switch (category) {
+    case 'file_write':
+      return FILE_WRITE_TRIGGERS;
+    case 'memory_save':
+      return MEMORY_SAVE_TRIGGERS;
+    case 'resume':
+      return RESUME_TRIGGERS;
+    case 'read_only':
+      return READ_ONLY_DISQUALIFIERS;
+    default:
+      return assertNever(category, 'trigger-category');
+  }
+}
+
 /** Return the vocabulary as a plain JSON snapshot. */
 export function toJsonSnapshot(): Gate3VocabularySnapshot {
   const pick = (entries: readonly TriggerEntry[]) =>
     entries.map(({ pattern, kind }) => ({ pattern, kind }));
   return {
     version: GATE_3_SCHEMA_VERSION,
-    fileWrite: pick(FILE_WRITE_TRIGGERS),
-    memorySave: pick(MEMORY_SAVE_TRIGGERS),
-    resume: pick(RESUME_TRIGGERS),
-    readOnlyDisqualifier: pick(READ_ONLY_DISQUALIFIERS),
+    fileWrite: pick(getEntriesForCategory('file_write')),
+    memorySave: pick(getEntriesForCategory('memory_save')),
+    resume: pick(getEntriesForCategory('resume')),
+    readOnlyDisqualifier: pick(getEntriesForCategory('read_only')),
   };
 }

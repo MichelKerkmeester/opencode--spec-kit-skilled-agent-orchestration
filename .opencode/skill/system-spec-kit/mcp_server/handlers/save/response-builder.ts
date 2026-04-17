@@ -8,6 +8,7 @@ import * as predictionErrorGate from '../../lib/cognitive/prediction-error-gate.
 import * as retryManager from '../../lib/providers/retry-manager.js';
 import { runConsolidationCycleIfEnabled } from '../../lib/storage/consolidation.js';
 import { createMCPErrorResponse, createMCPSuccessResponse } from '../../lib/response/envelope.js';
+import { assertNever } from '../../lib/utils/exhaustiveness.js';
 import { requireDb, toErrorMessage } from '../../utils/index.js';
 
 import { appendMutationLedgerSafe } from '../memory-crud-utils.js';
@@ -83,6 +84,40 @@ interface BuildPlannerResponseParams {
   planner: PlannerResponseEnvelope;
 }
 
+function groupEnrichmentStepEntries(
+  stepEntries: Array<[keyof EnrichmentStatus, EnrichmentStatus[keyof EnrichmentStatus]]>,
+): {
+  failed: Array<[keyof EnrichmentStatus, EnrichmentStatus[keyof EnrichmentStatus]]>;
+  partial: Array<[keyof EnrichmentStatus, EnrichmentStatus[keyof EnrichmentStatus]]>;
+  deferred: Array<[keyof EnrichmentStatus, EnrichmentStatus[keyof EnrichmentStatus]]>;
+} {
+  const failed: Array<[keyof EnrichmentStatus, EnrichmentStatus[keyof EnrichmentStatus]]> = [];
+  const partial: Array<[keyof EnrichmentStatus, EnrichmentStatus[keyof EnrichmentStatus]]> = [];
+  const deferred: Array<[keyof EnrichmentStatus, EnrichmentStatus[keyof EnrichmentStatus]]> = [];
+
+  for (const entry of stepEntries) {
+    const [, step] = entry;
+    switch (step.status) {
+      case 'failed':
+        failed.push(entry);
+        break;
+      case 'partial':
+        partial.push(entry);
+        break;
+      case 'deferred':
+        deferred.push(entry);
+        break;
+      case 'ran':
+      case 'skipped':
+        break;
+      default:
+        assertNever(step.status, 'enrichment-step-status');
+    }
+  }
+
+  return { failed, partial, deferred };
+}
+
 function buildAssistiveReviewDescription(
   recommendation: Pick<
     AssistiveRecommendation,
@@ -148,9 +183,11 @@ function buildPostInsertEnrichmentResult(
       ]>
     : [];
 
-  const failedSteps = stepEntries.filter(([, step]) => step.status === 'failed');
-  const partialSteps = stepEntries.filter(([, step]) => step.status === 'partial');
-  const deferredSteps = stepEntries.filter(([, step]) => step.status === 'deferred');
+  const {
+    failed: failedSteps,
+    partial: partialSteps,
+    deferred: deferredSteps,
+  } = groupEnrichmentStepEntries(stepEntries);
 
   // T-RBD-03 / T-RBD-01 (commit 709727e98): this MCP response rollup intentionally
   // diverges from post-insert.ts. Clients need the postInsertEnrichment block to keep

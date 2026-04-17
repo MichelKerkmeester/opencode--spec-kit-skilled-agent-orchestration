@@ -19,6 +19,7 @@ import * as bm25Index from '../search/bm25-index.js';
 import { clear_search_cache } from '../search/vector-index-aliases.js';
 import { refresh_interference_scores_for_folder } from '../search/vector-index-store.js';
 import { getCanonicalPathKey } from '../utils/canonical-path.js';
+import { assertNever } from '../utils/exhaustiveness.js';
 import { delete_memory_from_database } from '../search/vector-index-mutations.js';
 import { recordLineageTransition } from './lineage-state.js';
 import {
@@ -954,9 +955,18 @@ function buildConflictAbortResult(
   newMemory: NewMemoryData,
   status: ConflictAbortStatus,
 ): ConflictAbortedResult {
+  const normalizedStatus = (() => {
+    switch (status) {
+      case 'conflict_stale_predecessor':
+      case 'scope_retagged':
+        return status;
+      default:
+        return assertNever(status, 'conflict-abort-status');
+    }
+  })();
   return {
     action: 'conflict',
-    status,
+    status: normalizedStatus,
     existingMemoryId: existingMemory.id,
     newMemoryId: newMemory.id ?? 0,
     causalEdgeId: null,

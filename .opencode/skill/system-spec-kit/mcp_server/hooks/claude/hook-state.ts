@@ -16,6 +16,7 @@ import {
 import { z } from 'zod';
 
 import { hookLog } from './shared.js';
+import { assertNever } from '../../lib/utils/exhaustiveness.js';
 import type { SharedPayloadEnvelope } from '../../lib/context/shared-payload.js';
 
 export const CURRENT_HOOK_STATE_SCHEMA_VERSION = 1 as const;
@@ -464,22 +465,35 @@ function matchesScope(state: PersistedHookState, scope: HookStateScope): boolean
 }
 
 function deriveMostRecentFailureReason(errors: HookStateFileError[]): HookStateLoadFailureReason {
-  if (errors.some((error) => error.reason === 'schema_mismatch')) {
-    return 'schema_mismatch';
+  const getPriority = (reason: HookStateLoadFailureReason): number => {
+    switch (reason) {
+      case 'schema_mismatch':
+        return 0;
+      case 'parse_error':
+        return 1;
+      case 'invalid_state':
+        return 2;
+      case 'mtime_changed':
+        return 3;
+      case 'read_error':
+        return 4;
+      case 'not_found':
+        return 5;
+      case 'scope_unknown_fail_closed':
+        return Number.POSITIVE_INFINITY;
+      default:
+        return assertNever(reason, 'hook-state-load-failure-reason');
+    }
+  };
+
+  let bestReason: HookStateLoadFailureReason = 'not_found';
+  for (const error of errors) {
+    if (getPriority(error.reason) < getPriority(bestReason)) {
+      bestReason = error.reason;
+    }
   }
-  if (errors.some((error) => error.reason === 'parse_error')) {
-    return 'parse_error';
-  }
-  if (errors.some((error) => error.reason === 'invalid_state')) {
-    return 'invalid_state';
-  }
-  if (errors.some((error) => error.reason === 'mtime_changed')) {
-    return 'mtime_changed';
-  }
-  if (errors.some((error) => error.reason === 'read_error')) {
-    return 'read_error';
-  }
-  return 'not_found';
+
+  return bestReason;
 }
 
 /**
