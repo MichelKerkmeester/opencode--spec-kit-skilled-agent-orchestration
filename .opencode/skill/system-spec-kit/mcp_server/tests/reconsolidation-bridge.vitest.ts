@@ -405,4 +405,55 @@ describe('Reconsolidation Bridge', () => {
       ]),
     );
   });
+
+  it('surfaces stale-predecessor conflicts as typed failed save-time reconsolidation results', async () => {
+    bridgeMocks.reconsolidate.mockResolvedValue({
+      action: 'conflict',
+      status: 'conflict_stale_predecessor',
+      existingMemoryId: 55,
+      newMemoryId: 0,
+      causalEdgeId: null,
+      similarity: 0.82,
+    });
+
+    const result = await runReconsolidationIfEnabled(
+      {} as any,
+      {
+        title: 'Incoming conflict memory',
+        content: 'Incoming conflict memory body',
+        specFolder: 'test-spec',
+        triggerPhrases: ['conflict'],
+        importanceTier: 'normal',
+        contentHash: 'hash-conflict-stale',
+        contextType: 'general',
+        memoryType: 'memory',
+        memoryTypeSource: 'test',
+        documentType: 'memory',
+        qualityScore: 1,
+        qualityFlags: [],
+      } as any,
+      '/tmp/test-memory.md',
+      false,
+      new Float32Array([0.1, 0.2, 0.3]),
+      undefined,
+      { plannerMode: 'full-auto' },
+    );
+
+    expect(result.earlyReturn).toBeNull();
+    expect(result.saveTimeReconsolidation).toMatchObject({
+      status: 'failed',
+      reason: 'conflict_stale_predecessor',
+      persistedState: {
+        kind: 'conflict',
+        existingMemoryId: 55,
+        candidateMemoryIds: [55],
+      },
+    });
+    expect(result.warnings).toEqual(
+      expect.arrayContaining([
+        'TM-06: Conflict reconsolidation aborted: conflict_stale_predecessor',
+      ]),
+    );
+    expect(bridgeMocks.appendMutationLedgerSafe).not.toHaveBeenCalled();
+  });
 });

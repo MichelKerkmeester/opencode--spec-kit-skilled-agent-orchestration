@@ -2120,6 +2120,83 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(indexChunkedMemoryFileSpy).not.toHaveBeenCalled();
     });
 
+    it('aborts the create path when save-time reconsolidation returns a typed failure', async () => {
+      const handlerSource = fs.readFileSync(path.resolve(__dirname, '../handlers/memory-save.ts'), 'utf8');
+      expect(handlerSource).toContain("if (reconResult.saveTimeReconsolidation.status === 'failed')");
+
+      const createMemoryRecordSpy = vi.fn(() => 778);
+      const runReconsolidationIfEnabledSpy = vi.fn(async () => ({
+        earlyReturn: null,
+        warnings: ['TM-06 bridge warning'],
+        saveTimeReconsolidation: {
+          status: 'failed',
+          reason: 'conflict_stale_predecessor',
+          persistedState: {
+            kind: 'conflict',
+            candidateMemoryIds: [55],
+          },
+        },
+      }));
+
+      const indexMemoryFile = async () => {
+        const reconsolidation = await runReconsolidationIfEnabledSpy();
+        if (reconsolidation.saveTimeReconsolidation.status === 'failed') {
+          return {
+            status: 'error' as const,
+            saveTimeReconsolidation: reconsolidation.saveTimeReconsolidation,
+          };
+        }
+        createMemoryRecordSpy();
+        return { status: 'indexed' as const };
+      };
+
+      const result = await indexMemoryFile();
+
+      expect(result).toMatchObject({
+        status: 'error',
+        saveTimeReconsolidation: {
+          status: 'failed',
+          reason: 'conflict_stale_predecessor',
+          persistedState: {
+            kind: 'conflict',
+            candidateMemoryIds: [55],
+          },
+        },
+      });
+      expect(createMemoryRecordSpy).not.toHaveBeenCalled();
+    });
+
+    it('marks assistive recommendations stale after the save commits', () => {
+      const handlerSource = fs.readFileSync(path.resolve(__dirname, '../handlers/memory-save.ts'), 'utf8');
+      expect(handlerSource).toContain('reconResult.assistiveRecommendation.advisory_stale = true;');
+      expect(handlerSource).toContain('reconResult.saveTimeReconsolidation.persistedState.advisory_stale = true;');
+
+      const reconResult = {
+        assistiveRecommendation: {
+          olderMemoryId: 12,
+          newerMemoryId: null,
+          similarity: 0.91,
+          action: 'review',
+          classification: 'complement',
+          recommendedAt: Date.now(),
+        },
+        saveTimeReconsolidation: {
+          status: 'ran' as const,
+          persistedState: {
+            kind: 'create' as const,
+          },
+        },
+      };
+
+      reconResult.assistiveRecommendation.advisory_stale = true;
+      if (reconResult.saveTimeReconsolidation.persistedState) {
+        reconResult.saveTimeReconsolidation.persistedState.advisory_stale = true;
+      }
+
+      expect(reconResult.assistiveRecommendation.advisory_stale).toBe(true);
+      expect(reconResult.saveTimeReconsolidation.persistedState.advisory_stale).toBe(true);
+    });
+
     it('persists quality-loop trigger phrase fixes into downstream save inputs', async () => {
       const runQualityGateMock = vi.fn(() => ({ pass: true, warnOnly: false, reasons: [], layers: {} }));
       const checkExistingRowMock = vi.fn(() => null);

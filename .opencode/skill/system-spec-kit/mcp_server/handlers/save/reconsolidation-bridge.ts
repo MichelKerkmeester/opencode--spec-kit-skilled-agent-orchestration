@@ -30,6 +30,8 @@ import { buildScopePostInsertMetadata } from './create-record.js';
 import type {
   AssistiveRecommendation,
   IndexResult,
+  ReconsolidationFailureReason,
+  ReconsolidationOperationResult,
   ReconWarningList,
 } from './types.js';
 export type { AssistiveClassification, AssistiveRecommendation } from './types.js';
@@ -43,6 +45,39 @@ const RECONSOLIDATION_SCOPE_FIELDS = [
 
 type RequestedScopeKey = typeof RECONSOLIDATION_SCOPE_FIELDS[number][1];
 type RequestedScope = Record<RequestedScopeKey, string | null>;
+
+interface StoredScopeSnapshot {
+  id: number;
+  tenant_id: string | null;
+  user_id: string | null;
+  agent_id: string | null;
+  session_id: string | null;
+  content_hash: string | null;
+  updated_at: string | null;
+  importance_tier: string | null;
+}
+
+export interface ScopeFilteredSearchResult {
+  candidates: ReconsolidationResultCandidate[];
+  suppressedCandidateIds: number[];
+}
+
+export interface ReconsolidationResultCandidate extends Record<string, unknown> {
+  id: number;
+  file_path: string;
+  title: string | null;
+  content_text: string | null;
+  similarity: number;
+  spec_folder: string;
+  importance_weight?: number;
+  content_hash?: string | null;
+  updated_at?: string | null;
+  importance_tier?: string | null;
+  tenant_id?: string | null;
+  user_id?: string | null;
+  agent_id?: string | null;
+  session_id?: string | null;
+}
 
 // Feature catalog: Reconsolidation-on-save
 // Feature catalog: Memory indexing (memory_save)
@@ -142,6 +177,7 @@ export interface ReconsolidationBridgeResult {
   /** Populated when SPECKIT_ASSISTIVE_RECONSOLIDATION is enabled and a
    *  borderline pair is detected (review tier). */
   assistiveRecommendation?: AssistiveRecommendation | null;
+  saveTimeReconsolidation: ReconsolidationOperationResult;
 }
 
 export interface ReconsolidationBridgeOptions {
@@ -183,7 +219,7 @@ function normalizeScopeValue(value: unknown): string | null {
   return normalized.length > 0 ? normalized : null;
 }
 
-function getRequestedScope(scope?: {
+export function getRequestedScope(scope?: {
   tenantId?: string | null;
   userId?: string | null;
   agentId?: string | null;
@@ -201,40 +237,161 @@ function hasGovernedScope(requestedScope: RequestedScope): boolean {
   return Object.values(requestedScope).some((value) => value !== null);
 }
 
-function readStoredScope(
+function extractCandidateId(candidate: Record<string, unknown>): number | null {
+  return typeof candidate.id === 'number' && Number.isFinite(candidate.id) && candidate.id > 0
+    ? candidate.id
+    : null;
+}
+
+function readStoredScopeBatch(
   database: BetterSqlite3.Database,
-  memoryId: number,
-): Record<string, unknown> | null {
-  if (memoryId <= 0 || typeof database.prepare !== 'function') {
-    return null;
+  memoryIds: readonly number[],
+): Map<number, StoredScopeSnapshot> {
+  if (memoryIds.length === 0 || typeof database.prepare !== 'function') {
+    return new Map();
   }
 
-  const storedScope = database.prepare(`
-    SELECT tenant_id, user_id, agent_id, session_id
+  const placeholders = memoryIds.map(() => '?').join(', ');
+  const rows = database.prepare(`
+    SELECT
+      id,
+      tenant_id,
+      user_id,
+      agent_id,
+      session_id,
+      content_hash,
+      updated_at,
+      importance_tier
     FROM memory_index
-    WHERE id = ?
-  `).get(memoryId) as Record<string, unknown> | undefined;
-  return storedScope ?? null;
+    WHERE id IN (${placeholders})
+  `).all(...memoryIds) as StoredScopeSnapshot[];
+
+  return new Map(rows.map((row) => [row.id, row]));
 }
 
 function candidateMatchesRequestedScope(
-  database: BetterSqlite3.Database,
-  candidate: Record<string, unknown>,
+  scopeSource: Record<string, unknown>,
   requestedScope: RequestedScope,
 ): boolean {
-  const requiresGovernedLookup = hasGovernedScope(requestedScope);
-  const candidateId = typeof candidate.id === 'number' ? candidate.id : 0;
-  const scopeSource = requiresGovernedLookup
-    ? readStoredScope(database, candidateId)
-    : candidate;
-
-  if (!scopeSource) {
-    return false;
-  }
-
   return RECONSOLIDATION_SCOPE_FIELDS.every(([column, key]) => (
     normalizeScopeValue(scopeSource[column]) === requestedScope[key]
   ));
+}
+
+function mapScopeFilteredCandidate(
+  candidate: Record<string, unknown>,
+  parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
+  storedScope?: StoredScopeSnapshot,
+): ReconsolidationResultCandidate {
+  const similarity = typeof candidate.similarity === 'number' ? candidate.similarity : 0;
+  return {
+    id: typeof candidate.id === 'number' ? candidate.id : 0,
+    file_path: typeof candidate.file_path === 'string' ? candidate.file_path : '',
+    title: typeof candidate.title === 'string' ? candidate.title : null,
+    content_text: typeof candidate.content_text === 'string'
+      ? candidate.content_text
+      : (typeof candidate.content === 'string' ? candidate.content : null),
+    similarity: similarity > 1 ? similarity / 100 : similarity,
+    spec_folder: parsed.specFolder,
+    importance_weight: typeof candidate.importance_weight === 'number'
+      ? candidate.importance_weight
+      : 0.5,
+    content_hash: normalizeScopeValue(storedScope?.content_hash),
+    updated_at: normalizeScopeValue(storedScope?.updated_at),
+    importance_tier: normalizeScopeValue(storedScope?.importance_tier),
+    tenant_id: normalizeScopeValue(storedScope?.tenant_id),
+    user_id: normalizeScopeValue(storedScope?.user_id),
+    agent_id: normalizeScopeValue(storedScope?.agent_id),
+    session_id: normalizeScopeValue(storedScope?.session_id),
+  };
+}
+
+export function findScopeFilteredCandidates(args: {
+  database: BetterSqlite3.Database;
+  embedding: Float32Array;
+  parsed: ReturnType<typeof memoryParser.parseMemoryFile>;
+  requestedScope: RequestedScope;
+  limit: number;
+  minSimilarity: number;
+  overfetchMultiplier?: number;
+}): ScopeFilteredSearchResult {
+  const rawCandidates = vectorIndex.vectorSearch(args.embedding, {
+    limit: args.limit * (args.overfetchMultiplier ?? 1),
+    specFolder: args.parsed.specFolder,
+    minSimilarity: args.minSimilarity,
+    includeConstitutional: false,
+  });
+
+  const candidateIds = rawCandidates
+    .map((candidate) => extractCandidateId(candidate as Record<string, unknown>))
+    .filter((candidateId): candidateId is number => candidateId != null);
+  const scopeRows = hasGovernedScope(args.requestedScope)
+    ? readStoredScopeBatch(args.database, candidateIds)
+    : new Map<number, StoredScopeSnapshot>();
+
+  const candidates: ReconsolidationResultCandidate[] = [];
+  const suppressedCandidateIds: number[] = [];
+
+  for (const rawCandidate of rawCandidates as Array<Record<string, unknown>>) {
+    const candidateId = extractCandidateId(rawCandidate);
+    const scopeSource = hasGovernedScope(args.requestedScope)
+      ? (candidateId != null ? scopeRows.get(candidateId) : null)
+      : rawCandidate;
+
+    if (!scopeSource) {
+      if (candidateId != null) {
+        suppressedCandidateIds.push(candidateId);
+      }
+      continue;
+    }
+
+    if (!candidateMatchesRequestedScope(scopeSource as Record<string, unknown>, args.requestedScope)) {
+      if (candidateId != null) {
+        suppressedCandidateIds.push(candidateId);
+      }
+      continue;
+    }
+
+    candidates.push(mapScopeFilteredCandidate(rawCandidate, args.parsed, scopeRows.get(candidateId ?? -1)));
+    if (candidates.length >= args.limit) {
+      break;
+    }
+  }
+
+  return {
+    candidates,
+    suppressedCandidateIds,
+  };
+}
+
+function buildReconsolidationFailureResult(
+  reason: ReconsolidationFailureReason,
+  warnings: string[],
+  persistedState?: ReconsolidationOperationResult['persistedState'],
+): ReconsolidationOperationResult {
+  return {
+    status: 'failed',
+    reason,
+    ...(warnings.length > 0 ? { warnings } : {}),
+    ...(persistedState ? { persistedState } : {}),
+  };
+}
+
+function mapReconsolidationFailureReason(error: unknown): ReconsolidationFailureReason {
+  const message = toErrorMessage(error);
+  if (message.includes('checkpoint')) {
+    return 'checkpoint_failed';
+  }
+  if (message.includes('conflict_stale_predecessor')) {
+    return 'conflict_stale_predecessor';
+  }
+  if (message.includes('scope_retagged')) {
+    return 'scope_retagged';
+  }
+  if (message.includes('similarity')) {
+    return 'similarity_failed';
+  }
+  return 'conflict_failed';
 }
 
 /**
@@ -255,18 +412,30 @@ export async function runReconsolidationIfEnabled(
   const plannerMode = options.plannerMode ?? 'plan-only';
   const allowSaveTimeReconsolidation = plannerMode === 'full-auto' || isSaveReconsolidationEnabled();
   const requestedScope = getRequestedScope(scope);
+  let saveTimeReconsolidation: ReconsolidationOperationResult = {
+    status: allowSaveTimeReconsolidation ? 'ran' : 'skipped',
+    persistedState: {
+      kind: allowSaveTimeReconsolidation ? 'create' : 'complement',
+    },
+  };
 
   // T-04: search-flags.ts is the canonical caller-visible opt-in gate.
   // Reconsolidation.ts keeps an internal guard as a defensive fallback for
   // Direct callers and future entry points.
   if (!force && allowSaveTimeReconsolidation && embedding) {
+    let similarityFailureMessage: string | null = null;
     try {
       const hasCheckpoint = hasReconsolidationCheckpoint(database, parsed.specFolder);
       if (!hasCheckpoint) {
         const reconMsg = 'TM-06: reconsolidation skipped — create checkpoint "pre-reconsolidation" first';
         console.warn(`[memory-save] ${reconMsg}`);
         reconWarnings.push(reconMsg);
-        // Continue normal create path without reconsolidation.
+        saveTimeReconsolidation = {
+          status: 'skipped',
+          reason: 'checkpoint_missing',
+          warnings: [reconMsg],
+          persistedState: { kind: 'create' },
+        };
       } else {
         const reconResult: ReconsolidationResult | null = await reconsolidate(
           {
@@ -281,29 +450,21 @@ export async function runReconsolidationIfEnabled(
           database,
           {
             findSimilar: (emb, opts) => {
-              const searchEmb = emb instanceof Float32Array ? emb : new Float32Array(emb as number[]);
-              const results = vectorIndex.vectorSearch(searchEmb, {
-                limit: (opts.limit ?? 3) * 3, // Over-fetch for post-scope-filter
-                specFolder: opts.specFolder,
-                minSimilarity: 50,
-                includeConstitutional: false,
-              });
-              // Fail closed: reconsolidation can only consider candidates whose
-              // stored governance scope exactly matches the incoming save scope.
-              const scopeFiltered = results.filter((r: Record<string, unknown>) => (
-                candidateMatchesRequestedScope(database, r, requestedScope)
-              )).slice(0, opts.limit ?? 3);
-              return scopeFiltered.map((r: Record<string, unknown>) => ({
-                id: typeof r.id === 'number' ? r.id : 0,
-                file_path: typeof r.file_path === 'string' ? r.file_path : '',
-                title: typeof r.title === 'string' ? r.title : null,
-                content_text: typeof r.content_text === 'string' ? r.content_text : (typeof r.content === 'string' ? r.content : null),
-                similarity: (typeof r.similarity === 'number' ? r.similarity : 0) / 100,
-                spec_folder: parsed.specFolder,
-                importance_weight: typeof r.importance_weight === 'number'
-                  ? r.importance_weight
-                  : 0.5,
-              }));
+              try {
+                const searchEmb = emb instanceof Float32Array ? emb : new Float32Array(emb as number[]);
+                return findScopeFilteredCandidates({
+                  database,
+                  embedding: searchEmb,
+                  parsed,
+                  requestedScope,
+                  limit: opts.limit ?? 3,
+                  minSimilarity: 50,
+                  overfetchMultiplier: 3,
+                }).candidates;
+              } catch (error: unknown) {
+                similarityFailureMessage = toErrorMessage(error);
+                throw error;
+              }
             },
             storeMemory: (memory) => {
               const importanceWeight = calculateDocumentWeight(filePath, parsed.documentType);
@@ -392,6 +553,49 @@ export async function runReconsolidationIfEnabled(
           }
         );
 
+        if (similarityFailureMessage) {
+          const warning = `TM-06: Reconsolidation similarity search failed: ${similarityFailureMessage}`;
+          reconWarnings.push(warning);
+          return {
+            earlyReturn: null,
+            warnings: reconWarnings,
+            saveTimeReconsolidation: buildReconsolidationFailureResult(
+              'similarity_failed',
+              [warning],
+              { kind: 'create' },
+            ),
+          };
+        }
+
+        if (
+          reconResult &&
+          reconResult.action === 'conflict' &&
+          'status' in reconResult
+        ) {
+          const failureReason =
+            reconResult.status === 'scope_retagged'
+              ? 'scope_retagged'
+              : 'conflict_stale_predecessor';
+          const failureWarnings = [
+            ...reconWarnings,
+            ...(reconResult.warnings ?? []),
+            `TM-06: Conflict reconsolidation aborted: ${reconResult.status}`,
+          ];
+          return {
+            earlyReturn: null,
+            warnings: failureWarnings,
+            saveTimeReconsolidation: buildReconsolidationFailureResult(
+              failureReason,
+              failureWarnings,
+              {
+                kind: 'conflict',
+                existingMemoryId: reconResult.existingMemoryId,
+                candidateMemoryIds: [reconResult.existingMemoryId],
+              },
+            ),
+          };
+        }
+
         if (reconResult && reconResult.action !== 'complement') {
           // Reconsolidation handled the memory (merge or conflict) — skip normal CREATE path
           console.error(`[memory-save] TM-06: Reconsolidation ${reconResult.action} for ${path.basename(filePath)}`);
@@ -432,14 +636,40 @@ export async function runReconsolidationIfEnabled(
               warnings: earlyReturnWarnings.length > 0 ? earlyReturnWarnings : undefined,
             },
             warnings: reconWarnings,
+            saveTimeReconsolidation: {
+              status: 'ran',
+              ...(reconResult.warnings?.length ? { warnings: reconResult.warnings } : {}),
+              persistedState: {
+                kind: reconResult.action,
+                id: reconId,
+                existingMemoryId: reconResult.existingMemoryId,
+              },
+            },
           };
         }
+        saveTimeReconsolidation = {
+          status: 'ran',
+          persistedState: {
+            kind: reconResult?.action === 'complement' ? 'complement' : 'create',
+            id: reconResult?.newMemoryId,
+          },
+        };
         // ReconResult is null or complement — fall through to normal CREATE path
       }
     } catch (reconErr: unknown) {
       const message = toErrorMessage(reconErr);
-      console.warn(`[memory-save] TM-06: Reconsolidation error (proceeding with normal save): ${message}`);
-      // Reconsolidation errors must not block saves
+      const warning = `[memory-save] TM-06: Reconsolidation error: ${message}`;
+      console.warn(warning);
+      reconWarnings.push(warning);
+      return {
+        earlyReturn: null,
+        warnings: reconWarnings,
+        saveTimeReconsolidation: buildReconsolidationFailureResult(
+          mapReconsolidationFailureReason(reconErr),
+          [warning],
+          { kind: 'create' },
+        ),
+      };
     }
   }
 
@@ -455,15 +685,14 @@ export async function runReconsolidationIfEnabled(
     try {
       // Find the top similar memory using the existing vector search
       const searchEmb = embedding instanceof Float32Array ? embedding : new Float32Array(embedding as number[]);
-      const candidateResults = vectorIndex.vectorSearch(searchEmb, {
+      const scopedCandidates = findScopeFilteredCandidates({
+        database,
+        embedding: searchEmb,
+        parsed,
+        requestedScope,
         limit: 3,
-        specFolder: parsed.specFolder,
-        minSimilarity: Math.round(ASSISTIVE_REVIEW_THRESHOLD * 100), // convert to 0-100 scale
-        includeConstitutional: false,
-      });
-      const scopedCandidates = candidateResults.filter((candidate: Record<string, unknown>) => (
-        candidateMatchesRequestedScope(database, candidate, requestedScope)
-      ));
+        minSimilarity: Math.round(ASSISTIVE_REVIEW_THRESHOLD * 100),
+      }).candidates;
 
       if (scopedCandidates.length > 0) {
         const top = scopedCandidates[0] as Record<string, unknown>;
@@ -516,5 +745,6 @@ export async function runReconsolidationIfEnabled(
     earlyReturn: null,
     warnings: reconWarnings,
     assistiveRecommendation,
+    saveTimeReconsolidation,
   };
 }

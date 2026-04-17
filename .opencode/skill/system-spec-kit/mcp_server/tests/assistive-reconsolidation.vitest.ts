@@ -195,6 +195,24 @@ describe('Assistive Reconsolidation — logAssistiveRecommendation', () => {
     expect(msg).toContain('complement');
     warnSpy.mockRestore();
   });
+
+  it('preserves advisory_stale markers for committed recommendations', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const rec: AssistiveRecommendation = {
+      olderMemoryId: 30,
+      newerMemoryId: 31,
+      similarity: 0.91,
+      classification: 'supersede',
+      recommendedAt: Date.now(),
+      advisory_stale: true,
+    };
+
+    logAssistiveRecommendation(rec);
+
+    expect(rec.advisory_stale).toBe(true);
+    expect(warnSpy).toHaveBeenCalledOnce();
+    warnSpy.mockRestore();
+  });
 });
 
 /* ───────────────────────────────────────────────────────────────

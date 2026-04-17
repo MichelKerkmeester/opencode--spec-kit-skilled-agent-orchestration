@@ -26,6 +26,7 @@ import type {
   PlannerRouteTarget,
   PlannerProposedEdit,
   ReconWarningList,
+  ReconsolidationOperationResult,
 } from './types.js';
 import type { EnrichmentStatus, PostInsertExecutionStatus } from './post-insert.js';
 import { MEMORY_SUFFICIENCY_REJECTION_CODE } from '@spec-kit/shared/parsing/memory-sufficiency';
@@ -63,6 +64,7 @@ interface BuildIndexResultParams {
   causalLinksResult: CausalLinksResult | null;
   enrichmentStatus?: EnrichmentStatus;
   enrichmentExecutionStatus?: PostInsertExecutionStatus;
+  saveTimeReconsolidation?: ReconsolidationOperationResult;
   filePath: string;
   routeCategory?: IndexResult['routeCategory'];
   mergeMode?: IndexResult['mergeMode'];
@@ -222,6 +224,7 @@ export function buildIndexResult({
   causalLinksResult,
   enrichmentStatus,
   enrichmentExecutionStatus,
+  saveTimeReconsolidation,
   filePath,
   routeCategory,
   mergeMode,
@@ -281,6 +284,7 @@ export function buildIndexResult({
     ...(mergeMode ? { mergeMode } : {}),
     ...(targetDocPath ? { targetDocPath } : {}),
     ...(targetAnchorId ? { targetAnchorId } : {}),
+    ...(saveTimeReconsolidation ? { saveTimeReconsolidation } : {}),
   };
   if (!ledgerRecorded) {
     result.warnings = result.warnings || [];
@@ -602,6 +606,13 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
     response.postInsertEnrichment = result.postInsertEnrichment;
     if (result.postInsertEnrichment.status === 'deferred') {
       hints.push('Post-insert enrichment was deferred; runEnrichmentBackfill when immediate graph/search freshness matters');
+    }
+  }
+
+  if (result.saveTimeReconsolidation) {
+    response.saveTimeReconsolidation = result.saveTimeReconsolidation;
+    if (result.saveTimeReconsolidation.status === 'failed' && result.saveTimeReconsolidation.reason) {
+      hints.push(`Save-time reconsolidation failed: ${result.saveTimeReconsolidation.reason}`);
     }
   }
 

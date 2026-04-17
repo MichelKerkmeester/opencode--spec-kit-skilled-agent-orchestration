@@ -34,6 +34,7 @@ import * as preflight from '../lib/validation/preflight.js';
 import { requireDb } from '../utils/index.js';
 import type { MCPResponse } from './types.js';
 import { createAppendOnlyMemoryRecord, recordLineageVersion } from '../lib/storage/lineage-state.js';
+import { determineAction } from '../lib/storage/reconsolidation.js';
 import * as causalEdges from '../lib/storage/causal-edges.js';
 
 import { runQualityGate, isQualityGateEnabled } from '../lib/validation/save-quality-gate.js';
@@ -93,7 +94,11 @@ import type {
 import { checkExistingRow, checkContentHashDedup } from './save/dedup.js';
 import { generateOrCacheEmbedding, persistPendingEmbeddingCacheWrite } from './save/embedding-pipeline.js';
 import { evaluateAndApplyPeDecision } from './save/pe-orchestration.js';
-import { runReconsolidationIfEnabled } from './save/reconsolidation-bridge.js';
+import {
+  findScopeFilteredCandidates,
+  getRequestedScope,
+  runReconsolidationIfEnabled,
+} from './save/reconsolidation-bridge.js';
 import { runPostInsertEnrichmentIfEnabled } from './save/post-insert.js';
 import {
   buildIndexResult,
@@ -105,6 +110,10 @@ import {
   serializePlannerProposedEdit,
   serializePlannerRouteTarget,
 } from './save/response-builder.js';
+import type {
+  ReconsolidationFailureReason,
+  ReconsolidationOperationState,
+} from './save/types.js';
 import { atomicIndexMemory } from './save/atomic-index-memory.js';
 import { createMCPErrorResponse } from '../lib/response/envelope.js';
 import {
@@ -497,6 +506,53 @@ function appendResultWarning<T extends Record<string, unknown>>(result: T, warni
   warnings.push(warning);
   r.warnings = warnings;
   return result;
+}
+
+class SaveTimeReconsolidationAbort extends Error {
+  readonly result: {
+    status: 'failed';
+    reason: ReconsolidationFailureReason;
+    warnings?: string[];
+    persistedState?: ReconsolidationOperationState;
+  };
+
+  constructor(result: SaveTimeReconsolidationAbort['result']) {
+    super(result.reason);
+    this.name = 'SaveTimeReconsolidationAbort';
+    this.result = result;
+  }
+}
+
+function buildSaveTimeReconsolidationFailureResult(args: {
+  parsed: ReturnType<typeof memoryParser.parseMemoryFile>;
+  validation: { warnings: string[] };
+  reconWarnings: string[];
+  failure: SaveTimeReconsolidationAbort['result'];
+  message?: string;
+}): IndexResult {
+  const warnings = [
+    ...args.validation.warnings,
+    ...args.reconWarnings,
+    ...(args.failure.warnings ?? []),
+  ];
+
+  return {
+    status: 'error',
+    id: 0,
+    specFolder: args.parsed.specFolder,
+    title: args.parsed.title ?? '',
+    triggerPhrases: args.parsed.triggerPhrases,
+    contextType: args.parsed.contextType,
+    importanceTier: args.parsed.importanceTier,
+    memoryType: args.parsed.memoryType,
+    memoryTypeSource: args.parsed.memoryTypeSource,
+    qualityScore: args.parsed.qualityScore,
+    qualityFlags: args.parsed.qualityFlags,
+    warnings,
+    error: args.message ?? `Save-time reconsolidation failed: ${args.failure.reason}`,
+    message: args.message ?? `Save-time reconsolidation failed: ${args.failure.reason}`,
+    saveTimeReconsolidation: args.failure,
+  };
 }
 
 function recordCrossPathPeSupersedes(
@@ -2157,6 +2213,10 @@ async function processPreparedMemory(
     let reconResult: Awaited<ReturnType<typeof runReconsolidationIfEnabled>> = {
       earlyReturn: null,
       warnings: [],
+      saveTimeReconsolidation: {
+        status: 'skipped',
+        persistedState: { kind: 'create' },
+      },
     };
 
     // T028/T029: complete async reconsolidation planning before chunking or
@@ -2172,6 +2232,23 @@ async function processPreparedMemory(
       { plannerMode },
     );
     if (reconResult.earlyReturn) return reconResult.earlyReturn;
+    if (reconResult.saveTimeReconsolidation.status === 'failed') {
+      return buildSaveTimeReconsolidationFailureResult({
+        parsed: routedParsed,
+        validation,
+        reconWarnings: reconResult.warnings,
+        failure: {
+          status: 'failed',
+          reason: reconResult.saveTimeReconsolidation.reason ?? 'conflict_failed',
+          ...(reconResult.saveTimeReconsolidation.warnings
+            ? { warnings: reconResult.saveTimeReconsolidation.warnings }
+            : {}),
+          ...(reconResult.saveTimeReconsolidation.persistedState
+            ? { persistedState: reconResult.saveTimeReconsolidation.persistedState }
+            : {}),
+        },
+      });
+    }
 
     if (shouldChunkContent) {
       console.error(`[memory-save] File exceeds chunking threshold (${routedParsed.content.length} chars), using chunked indexing`);
@@ -2246,6 +2323,11 @@ async function processPreparedMemory(
           : [];
         chunkedResult.warnings = [...existingWarnings, ...reconResult.warnings];
       }
+      if (reconResult.assistiveRecommendation) {
+        reconResult.assistiveRecommendation.advisory_stale = true;
+        chunkedResult.assistiveRecommendation = reconResult.assistiveRecommendation;
+      }
+      chunkedResult.saveTimeReconsolidation = reconResult.saveTimeReconsolidation;
 
       return appendResultWarning(chunkedResult, finalizeWarning);
     }
@@ -2273,7 +2355,37 @@ async function processPreparedMemory(
       return dupResult;
     }
 
+    const requestedScope = getRequestedScope(scope);
     const writeTransaction = database.transaction((): number => {
+      if (embedding) {
+        const complementRecheck = findScopeFilteredCandidates({
+          database,
+          embedding,
+          parsed: routedParsed,
+          requestedScope,
+          limit: 1,
+          minSimilarity: 50,
+          overfetchMultiplier: 3,
+        });
+        const topCandidate = complementRecheck.candidates[0];
+        if (topCandidate) {
+          const transactionalAction = determineAction(topCandidate.similarity);
+          if (transactionalAction !== 'complement') {
+            throw new SaveTimeReconsolidationAbort({
+              status: 'failed',
+              reason: 'candidate_changed',
+              warnings: [
+                `Transactional reconsolidation blocked create after ${transactionalAction} candidate #${topCandidate.id} appeared before commit.`,
+              ],
+              persistedState: {
+                kind: transactionalAction,
+                candidateMemoryIds: [topCandidate.id],
+              },
+            });
+          }
+        }
+      }
+
       // CREATE NEW MEMORY
       existing = findSamePathExistingMemory(
         database,
@@ -2329,7 +2441,21 @@ async function processPreparedMemory(
       return memoryId;
     });
 
-    const id: number = writeTransaction.immediate();
+    let id: number;
+    try {
+      id = writeTransaction.immediate();
+    } catch (error: unknown) {
+      if (error instanceof SaveTimeReconsolidationAbort) {
+        return buildSaveTimeReconsolidationFailureResult({
+          parsed: routedParsed,
+          validation,
+          reconWarnings: reconResult.warnings,
+          failure: error.result,
+          message: `Save aborted before commit: ${error.result.reason}`,
+        });
+      }
+      throw error;
+    }
 
     if (shouldPersistFinalizedFile && finalizedFileContent) {
       try {
@@ -2369,6 +2495,13 @@ async function processPreparedMemory(
     { plannerMode },
   );
 
+    if (reconResult.assistiveRecommendation) {
+      reconResult.assistiveRecommendation.advisory_stale = true;
+      if (reconResult.saveTimeReconsolidation.persistedState) {
+        reconResult.saveTimeReconsolidation.persistedState.advisory_stale = true;
+      }
+    }
+
     // BUILD RESULT
     return appendResultWarning(buildIndexResult({
       database,
@@ -2384,6 +2517,7 @@ async function processPreparedMemory(
       causalLinksResult,
       enrichmentStatus,
       enrichmentExecutionStatus: executionStatus,
+      saveTimeReconsolidation: reconResult.saveTimeReconsolidation,
       filePath: routedFilePath,
       routeCategory: routing.routeAs ?? recordIdentity.routeAs ?? undefined,
       mergeMode: routing.mergeModeHint,

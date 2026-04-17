@@ -104,6 +104,7 @@ export interface AssistiveRecommendation {
   newerMemoryId: number | null;
   classification: AssistiveClassification;
   recommendedAt: number;
+  advisory_stale?: boolean;
 }
 
 export type ReconWarningList = string[] & {
@@ -116,6 +117,30 @@ export interface OperationResult<TState> {
   status: OperationStatus;
   warnings?: string[];
   persistedState?: TState;
+}
+
+export type ReconsolidationOutcomeKind = 'merge' | 'conflict' | 'complement' | 'create' | 'review';
+
+export type ReconsolidationFailureReason =
+  | 'assistive_failed'
+  | 'candidate_changed'
+  | 'checkpoint_failed'
+  | 'checkpoint_missing'
+  | 'conflict_failed'
+  | 'conflict_stale_predecessor'
+  | 'scope_retagged'
+  | 'similarity_failed';
+
+export interface ReconsolidationOperationState {
+  kind: ReconsolidationOutcomeKind;
+  id?: number;
+  existingMemoryId?: number;
+  candidateMemoryIds?: number[];
+  advisory_stale?: boolean;
+}
+
+export interface ReconsolidationOperationResult extends OperationResult<ReconsolidationOperationState> {
+  reason?: ReconsolidationFailureReason;
 }
 
 export interface PostInsertOperationResult extends OperationResult<EnrichmentStatus> {
@@ -145,6 +170,7 @@ export interface IndexResult extends Record<string, unknown> {
   retrievability?: number;
   causalLinks?: Record<string, unknown>;
   postInsertEnrichment?: PostInsertOperationResult;
+  saveTimeReconsolidation?: ReconsolidationOperationResult;
   message?: string;
   success?: boolean;
   error?: string;

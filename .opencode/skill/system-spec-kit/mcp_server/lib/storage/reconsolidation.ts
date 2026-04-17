@@ -94,6 +94,18 @@ export interface ConflictResult {
   warnings?: string[];
 }
 
+export type ConflictAbortStatus = 'conflict_stale_predecessor' | 'scope_retagged';
+
+export interface ConflictAbortedResult {
+  action: 'conflict';
+  status: ConflictAbortStatus;
+  existingMemoryId: number;
+  newMemoryId: number;
+  causalEdgeId: null;
+  similarity: number;
+  warnings?: string[];
+}
+
 /** Result of a complement (new) operation */
 export interface ComplementResult {
   action: 'complement';
@@ -107,7 +119,12 @@ export interface ComplementResult {
 }
 
 /** Combined reconsolidation result */
-export type ReconsolidationResult = MergeResult | MergeAbortedResult | ConflictResult | ComplementResult;
+export type ReconsolidationResult =
+  | MergeResult
+  | MergeAbortedResult
+  | ConflictResult
+  | ConflictAbortedResult
+  | ComplementResult;
 
 /** Callback for finding similar memories by embedding */
 type FindSimilarFn = (
@@ -468,29 +485,54 @@ export function executeConflict(
   existingMemory: SimilarMemory,
   newMemory: NewMemoryData,
   db: Database.Database
-): ConflictResult {
+): ConflictResult | ConflictAbortedResult {
   try {
     // Add causal 'supersedes' edge only when caller provides a distinct new ID.
     // Prevent self-referential supersedes edges (source == target).
     let edgeId: number | null = null;
+    const baselineRow = db.prepare('SELECT * FROM memory_index WHERE id = ?').get(existingMemory.id) as Record<string, unknown> | undefined;
+    if (!baselineRow || isArchivedRow(baselineRow)) {
+      return buildConflictAbortResult(existingMemory, newMemory, 'conflict_stale_predecessor');
+    }
+    const predecessorSnapshot = capturePredecessorSnapshot(existingMemory, baselineRow);
     const hasDistinctNewId =
       typeof newMemory.id === 'number' &&
       Number.isFinite(newMemory.id) &&
       newMemory.id !== existingMemory.id;
 
     if (hasDistinctNewId) {
+      let abortStatus: ConflictAbortStatus | null = null;
       // Atomic transaction: deprecate + edge must succeed or fail together.
       // Without this, a failed insertEdge leaves an orphaned deprecation.
       db.transaction(() => {
+        const currentRow = db.prepare('SELECT * FROM memory_index WHERE id = ?').get(existingMemory.id) as Record<string, unknown> | undefined;
+        if (!currentRow || isArchivedRow(currentRow)) {
+          abortStatus = 'conflict_stale_predecessor';
+          return;
+        }
+        if (hasScopeRetagged(predecessorSnapshot, currentRow)) {
+          abortStatus = 'scope_retagged';
+          return;
+        }
+        if (hasPredecessorChanged(predecessorSnapshot, currentRow)) {
+          abortStatus = 'conflict_stale_predecessor';
+          return;
+        }
+
         const updateResult = db.prepare(`
           UPDATE memory_index
           SET importance_tier = 'deprecated',
               updated_at = datetime('now')
-          WHERE id = ?
-        `).run(existingMemory.id) as { changes: number };
+          WHERE id = @id
+            AND importance_tier != 'deprecated'
+            AND ((content_hash = @contentHash) OR (content_hash IS NULL AND @contentHash IS NULL))
+        `).run({
+          id: existingMemory.id,
+          contentHash: predecessorSnapshot.contentHash,
+        }) as { changes: number };
 
         if (updateResult.changes === 0) {
-          console.warn('[reconsolidation] Deprecate target not found, skipping edge insert');
+          abortStatus = 'conflict_stale_predecessor';
           return;
         }
 
@@ -506,18 +548,49 @@ export function executeConflict(
           );
         }
       })();
+      if (abortStatus) {
+        return buildConflictAbortResult(existingMemory, newMemory, abortStatus);
+      }
     } else {
       // Atomic transaction: content + embedding + hash update together.
       const updatedHash = createHash('sha256').update(newMemory.content, 'utf-8').digest('hex');
+      let abortStatus: ConflictAbortStatus | null = null;
       db.transaction(() => {
-        db.prepare(`
+        const currentRow = db.prepare('SELECT * FROM memory_index WHERE id = ?').get(existingMemory.id) as Record<string, unknown> | undefined;
+        if (!currentRow || isArchivedRow(currentRow)) {
+          abortStatus = 'conflict_stale_predecessor';
+          return;
+        }
+        if (hasScopeRetagged(predecessorSnapshot, currentRow)) {
+          abortStatus = 'scope_retagged';
+          return;
+        }
+        if (hasPredecessorChanged(predecessorSnapshot, currentRow)) {
+          abortStatus = 'conflict_stale_predecessor';
+          return;
+        }
+
+        const updateResult = db.prepare(`
           UPDATE memory_index
           SET content_text = ?,
               title = ?,
               content_hash = ?,
               updated_at = datetime('now')
           WHERE id = ?
-        `).run(newMemory.content, newMemory.title, updatedHash, existingMemory.id);
+            AND importance_tier != 'deprecated'
+            AND ((content_hash = ?) OR (content_hash IS NULL AND ? IS NULL))
+        `).run(
+          newMemory.content,
+          newMemory.title,
+          updatedHash,
+          existingMemory.id,
+          predecessorSnapshot.contentHash,
+          predecessorSnapshot.contentHash,
+        ) as { changes: number };
+        if (updateResult.changes === 0) {
+          abortStatus = 'conflict_stale_predecessor';
+          return;
+        }
 
         if (newMemory.embedding) {
           const buffer = embeddingToBuffer(newMemory.embedding);
@@ -526,6 +599,9 @@ export function executeConflict(
           ).run(buffer, existingMemory.id);
         }
       })();
+      if (abortStatus) {
+        return buildConflictAbortResult(existingMemory, newMemory, abortStatus);
+      }
     }
 
     return {
@@ -803,19 +879,55 @@ function getOptionalNumber(row: Record<string, unknown>, key: string): number | 
   return typeof value === 'number' && Number.isFinite(value) ? value : undefined;
 }
 
-function capturePredecessorVersion(row: Record<string, unknown>): { contentHash: string | null; updatedAt: string | null } {
+interface PredecessorSnapshot {
+  contentHash: string | null;
+  updatedAt: string | null;
+  importanceTier: string | null;
+  tenantId: string | null;
+  userId: string | null;
+  agentId: string | null;
+  sessionId: string | null;
+}
+
+function capturePredecessorVersion(row: Record<string, unknown>): PredecessorSnapshot {
+  const rawContentHash = row.content_hash;
   return {
-    contentHash: getOptionalString(row, 'content_hash') ?? null,
+    contentHash: typeof rawContentHash === 'string' ? rawContentHash : null,
     updatedAt: getOptionalString(row, 'updated_at') ?? null,
+    importanceTier: getOptionalString(row, 'importance_tier') ?? null,
+    tenantId: getOptionalString(row, 'tenant_id') ?? null,
+    userId: getOptionalString(row, 'user_id') ?? null,
+    agentId: getOptionalString(row, 'agent_id') ?? null,
+    sessionId: getOptionalString(row, 'session_id') ?? null,
   };
 }
 
-function hasPredecessorChanged(
-  snapshot: { contentHash: string | null; updatedAt: string | null },
-  currentRow: Record<string, unknown>,
-): boolean {
-  return snapshot.contentHash !== (getOptionalString(currentRow, 'content_hash') ?? null)
-    || snapshot.updatedAt !== (getOptionalString(currentRow, 'updated_at') ?? null);
+function capturePredecessorSnapshot(
+  row: Record<string, unknown>,
+  fallbackRow?: Record<string, unknown>,
+): PredecessorSnapshot {
+  if (!fallbackRow) {
+    return capturePredecessorVersion(row);
+  }
+  return capturePredecessorVersion({
+    ...fallbackRow,
+    ...row,
+  });
+}
+
+function hasScopeRetagged(snapshot: PredecessorSnapshot, currentRow: Record<string, unknown>): boolean {
+  return snapshot.tenantId !== (getOptionalString(currentRow, 'tenant_id') ?? null)
+    || snapshot.userId !== (getOptionalString(currentRow, 'user_id') ?? null)
+    || snapshot.agentId !== (getOptionalString(currentRow, 'agent_id') ?? null)
+    || snapshot.sessionId !== (getOptionalString(currentRow, 'session_id') ?? null);
+}
+
+function hasPredecessorChanged(snapshot: PredecessorSnapshot, currentRow: Record<string, unknown>): boolean {
+  const currentContentHash = typeof currentRow.content_hash === 'string' ? currentRow.content_hash : null;
+  return snapshot.contentHash !== currentContentHash
+    || snapshot.updatedAt !== (getOptionalString(currentRow, 'updated_at') ?? null)
+    || snapshot.importanceTier !== (getOptionalString(currentRow, 'importance_tier') ?? null)
+    || hasScopeRetagged(snapshot, currentRow);
 }
 
 function isArchivedRow(row: Record<string, unknown>): boolean {
@@ -833,6 +945,21 @@ function buildMergeAbortResult(
     status,
     existingMemoryId: existingMemory.id,
     newMemoryId: newMemory.id ?? 0,
+    similarity: existingMemory.similarity,
+  };
+}
+
+function buildConflictAbortResult(
+  existingMemory: SimilarMemory,
+  newMemory: NewMemoryData,
+  status: ConflictAbortStatus,
+): ConflictAbortedResult {
+  return {
+    action: 'conflict',
+    status,
+    existingMemoryId: existingMemory.id,
+    newMemoryId: newMemory.id ?? 0,
+    causalEdgeId: null,
     similarity: existingMemory.similarity,
   };
 }

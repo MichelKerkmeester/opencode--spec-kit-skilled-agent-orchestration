@@ -190,6 +190,7 @@ describe('Gate D regression reconsolidation', () => {
       classification: 'complement',
     });
     expect(reviewResult.assistiveRecommendation?.similarity).toBeCloseTo(0.959, 6);
+    expect(reviewResult.assistiveRecommendation?.advisory_stale).toBeUndefined();
     expect(reviewResult.warnings).toHaveLength(0);
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('assistive recommendation'),
