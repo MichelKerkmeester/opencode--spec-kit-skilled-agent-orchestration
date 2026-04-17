@@ -1,6 +1,9 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Shared Hook Utilities
 // ───────────────────────────────────────────────────────────────
+// Keep the provenance re-exports in lockstep with hooks/gemini/shared.ts.
+// Copilot imports these helpers straight from ../shared-provenance.js, so
+// drift in any one runtime silently forks the recovered-payload contract.
 
 /** Timeout for hook scripts — must stay under 2s hard cap */
 export const HOOK_TIMEOUT_MS = 1800;

@@ -3,6 +3,9 @@
 // ───────────────────────────────────────────────────────────────
 // Gemini-specific stdin/stdout handling. Reuses core helpers from
 // ../claude/shared.js for budget, logging, and formatting.
+// Keep the provenance re-exports below identical to Claude's surface.
+// Copilot imports the same helpers straight from ../shared-provenance.js, so
+// any local divergence here would create cross-runtime drift that tests must catch.
 
 import { hookLog } from '../claude/shared.js';
 
