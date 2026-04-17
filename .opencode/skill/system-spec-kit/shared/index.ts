@@ -166,6 +166,28 @@ export {
 } from './trigger-extractor.js';
 
 // ---------------------------------------------------------------
+// 6b. GATE 3 CLASSIFIER MODULE
+// ---------------------------------------------------------------
+export {
+  FILE_WRITE_TRIGGERS,
+  MEMORY_SAVE_TRIGGERS,
+  RESUME_TRIGGERS,
+  READ_ONLY_DISQUALIFIERS,
+  GATE_3_VOCABULARY,
+  GATE_3_SCHEMA_VERSION,
+  classifyPrompt,
+  matchesEntry,
+  normalizePrompt,
+  tokenizePrompt,
+  toJsonSnapshot,
+  type TriggerCategory,
+  type MatchKind,
+  type TriggerEntry,
+  type ClassificationResult,
+  type Gate3VocabularySnapshot,
+} from './gate-3-classifier.js';
+
+// ---------------------------------------------------------------
 // 7. DATABASE CONFIG
 // ---------------------------------------------------------------
 export { DB_PATH } from './paths.js';

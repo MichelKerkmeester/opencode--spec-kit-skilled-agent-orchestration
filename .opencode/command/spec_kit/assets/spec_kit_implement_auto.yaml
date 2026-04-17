@@ -22,6 +22,7 @@ operating_mode:
 gate_3_compliance:
   status: ENFORCED_VIA_PHASES
   mechanism: "Phase 1-3 blocking gates in implement.md"
+  machine_contract: ".opencode/skill/system-spec-kit/shared/gate-3-classifier.ts (classifyPrompt)"
   standard_question: "Spec Folder (required): A) Existing | B) New | C) Update related | D) Skip | E) Phase folder"
   first_message_protocol: "If FIRST message requests implementation, ask spec folder FIRST"
   failure_pattern_19:

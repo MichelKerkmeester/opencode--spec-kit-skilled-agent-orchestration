@@ -128,7 +128,11 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 
 #### GATE 3: SPEC FOLDER QUESTION [HARD] BLOCK - PRIORITY GATE
 - **Overrides Gates 1-2:** If file modification detected → ask Gate 3 BEFORE any analysis/tool calls
-- **Triggers:** rename, move, delete, create, add, remove, update, change, modify, edit, fix, refactor, implement, build, write, generate, configure, analyze, decompose, phase - or any task resulting in file changes
+- **Machine contract:** `.opencode/skill/system-spec-kit/shared/gate-3-classifier.ts` (`classifyPrompt()`). The prose lists below are human-readable; the classifier module is authoritative for runtimes that call it.
+- **Positive triggers (write actions):** create, add, remove, delete, rename, move, update, change, modify, edit, fix, refactor, implement, build, write, generate, configure
+- **Positive triggers (continuity writes):** `save context`, `save memory`, `/memory:save`, `/spec_kit:resume`, `resume iteration`, `resume deep research`, `resume deep review`, `continue iteration` (these produce `description.json` / `graph-metadata.json` / continuity frontmatter / `iteration-NNN.md` writes)
+- **Read-only disqualifiers:** `review`, `audit`, `inspect`, `analyze`, `explain` — suppress Gate 3 when they appear ALONE (e.g. "review the decomposition phase"). Do NOT suppress when a continuity-write trigger is also present.
+- **Note:** tokens `analyze`, `decompose`, `phase` are NOT positive triggers; they false-positive on read-only review prompts.
 - **Options:** A) Existing | B) New | C) Update related | D) Skip | E) Phase folder (e.g., `specs/NNN-name/001-phase/`)
 - **DO NOT** use Read/Edit/Write/Bash (except Gate Actions) before asking. ASK FIRST, wait for response, THEN proceed
 - **Session persistence:** Once the user answers Gate 3 in a conversation, that answer applies for the ENTIRE session. Do NOT re-ask on subsequent messages unless the user explicitly starts a completely different task/feature. Follow-up messages, implementation steps, and phase transitions within the same task reuse the original answer.

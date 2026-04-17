@@ -86,6 +86,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 4. Search for prior work (background):
    - memory_context({ input: feature_description OR "planning", mode: "focused", includeContent: true })
    > Gate 1 trigger matching handled at agent level (AGENTS.md).
+   > Gate 3 spec-folder trigger classification is typed: `.opencode/skill/system-spec-kit/shared/gate-3-classifier.ts` (`classifyPrompt()`). Invocations of `/spec_kit:plan` are already inside a write flow, so Gate 3 is pre-answered by command dispatch — no extra inference needed here.
    - Store: prior_work_found = [yes/no], prior_work_count = [N]
 
 5. Memory loading question needed ONLY if user selects A or C for spec folder AND memory/ has files.
