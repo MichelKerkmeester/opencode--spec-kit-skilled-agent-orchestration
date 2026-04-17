@@ -107,10 +107,10 @@ Every task below maps to a phase in `plan.md` §4. The mapping is:
 - [x] T-PRE-02 Findings registry structured (findings-registry.json)
 - [x] T-PRE-03 P0 composite candidates identified and constituent findings mapped
 - [ ] T-PRE-04 [P0] Closing-pass audit of 11 untouched files (FINAL §8.2): `ensure-ready.ts`, `code-graph/context.ts`, `graph-lifecycle.ts`, `reconsolidation.ts:executeMerge`, `entity-linker.ts`, `memory-save.ts` timeline, `hooks/claude/shared.ts` producer-string exploit, `hooks/claude/compact-inject.ts`, three additional command YAMLs, `generate-context.js` trigger surface, handover-state enum, `opencode.json` + `.utcp_config.json` naming
-- [ ] T-PRE-05 [P0] Resolve OQ1: does `command-spec-kit` enforce Gate 3 independently of skill routing? (Determines Watch-P1 upgrade.)
-- [ ] T-PRE-06 [P0] Resolve OQ2: are the 7 degraded-contract test files intentional compatibility shims or oversights? (Gates S1/S2/S3.)
-- [ ] T-PRE-07 [P0] Resolve OQ3: can HookState gain schemaVersion without breaking already-quiesced state files? (Gates T-HST-M2.)
-- [ ] T-PRE-08 [P0] Resolve OQ4: full enumeration of `/spec_kit:*` subcommands needing bridge entries. (Gates T-SAP-05.)
+- [x] T-PRE-05 [P0] Resolve OQ1: does `command-spec-kit` enforce Gate 3 independently of skill routing? (Determines Watch-P1 upgrade.)
+- [x] T-PRE-06 [P0] Resolve OQ2: are the 7 degraded-contract test files intentional compatibility shims or oversights? (Gates S1/S2/S3.)
+- [x] T-PRE-07 [P0] Resolve OQ3: can HookState gain schemaVersion without breaking already-quiesced state files? (Gates T-HST-M2.)
+- [x] T-PRE-08 [P0] Resolve OQ4: full enumeration of `/spec_kit:*` subcommands needing bridge entries. (Gates T-SAP-05.)
 - [ ] T-PRE-09 [P1] Construct §8.3 adversarial repros: R33-001 compact-prime identity race; R40-001 cleanup TOCTOU; R46-003 adversarial lastJobId; R34-002 complement duplicate window; R35-001 conflict fork
 <!-- /ANCHOR:preflight -->
 
