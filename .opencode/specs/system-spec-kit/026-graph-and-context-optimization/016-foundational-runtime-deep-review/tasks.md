@@ -428,9 +428,9 @@ Primary workstream: QW #10 + S5.
 Top-10 file by distinct-issue count. Primary workstream: S7.
 
 - [x] T-YML-PLN-01 [P2] R41-001: Autonomous plan workflow uses `populated` while canonical contract uses `populated-folder`; interpreter-dependent string comparison → align vocabulary (`spec_kit_plan_auto.yaml:338-355,371-372`; `intake-contract.md:66-77,217-222`) [QW #26]
-- [ ] T-YML-PLN-02 [P2] R42-001 + R43-002 + R44-003 (dedup): `intake_only == TRUE` / `folder_state == populated` as quoted string expressions; no mechanical grammar contract → `BooleanExpr` typed schema (M11 from S7) (`spec_kit_plan_auto.yaml:375-392`; `spec_kit_plan_confirm.yaml:400-416`) — Phase 2 S7 / M11
+- [x] T-YML-PLN-02 [P2] R42-001 + R43-002 + R44-003 (dedup): `intake_only == TRUE` / `folder_state == populated` as quoted string expressions; no mechanical grammar contract → `BooleanExpr` typed schema (M11 from S7) (`spec_kit_plan_auto.yaml:375-392`; `spec_kit_plan_confirm.yaml:400-416`) — Phase 2 S7 / M11
 - [x] T-YML-PLN-03 [P2] R47-002: `/spec_kit:plan` maintains two-vocabulary state machine: local `folder_state` classifier → canonical `start_state`; top-level docs collapse → mark boundary with explicit comments; emit both fields (S7) (`spec_kit_plan_auto.yaml:337-373`; `spec_kit_plan_confirm.yaml:360-398`; `intake-contract.md:39-49,56-76`; `SKILL.md:563,931`; `README.md:624-626`) [QW #28]
-- [ ] T-YML-PLN-04 [P2] R48-002 + R49-002 (dedup): `when:` field overloaded as executable predicate AND prose timing note within same asset → separate `when:` (predicate) from `after:` (prose timing) (S7) (`spec_kit_plan_auto.yaml:354-391,548-555`; `spec_kit_plan_confirm.yaml:372-416,606-612`) — Phase 2 S7
+- [x] T-YML-PLN-04 [P2] R48-002 + R49-002 (dedup): `when:` field overloaded as executable predicate AND prose timing note within same asset → separate `when:` (predicate) from `after:` (prose timing) (S7) (`spec_kit_plan_auto.yaml:354-391,548-555`; `spec_kit_plan_confirm.yaml:372-416,606-612`) — Phase 2 S7
 <!-- /ANCHOR:group-yml-pln -->
 
 ---
@@ -440,8 +440,8 @@ Top-10 file by distinct-issue count. Primary workstream: S7.
 
 Primary workstream: S5 + S7.
 
-- [ ] T-YML-CMP-01 [P2] R48-002 extension in `spec_kit_complete_auto.yaml:465-483,1008-1012` — paired with T-YML-PLN-04 (S7)
-- [ ] T-YML-DPR-01 [P1] R50-001 orchestrator side: `spec_kit_deep-research_auto.yaml:159-167,521-526` — `resume` is a tested write flow producing `iteration-NNN.md` + JSONL appends; paired with T-DOC-03 Gate 3 trigger addition (S5)
+- [x] T-YML-CMP-01 [P2] R48-002 extension in `spec_kit_complete_auto.yaml:465-483,1008-1012` — paired with T-YML-PLN-04 (S7)
+- [x] T-YML-DPR-01 [P1] R50-001 orchestrator side: `spec_kit_deep-research_auto.yaml:159-167,521-526` — `resume` is a tested write flow producing `iteration-NNN.md` + JSONL appends; paired with T-DOC-03 Gate 3 trigger addition (S5)
 <!-- /ANCHOR:group-yml-cmp-dpr -->
 
 <!-- /ANCHOR:phase-2 -->
