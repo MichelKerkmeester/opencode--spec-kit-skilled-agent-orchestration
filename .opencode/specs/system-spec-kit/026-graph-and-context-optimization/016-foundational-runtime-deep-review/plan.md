@@ -407,12 +407,7 @@ Plus additional tests requiring updates (not primary codification but affected):
 - R49-003 arbitrary-length dependency cycle
 - R42-001/R43-002/R44-003 YAML `when:` predicate grammar violation
 
-<!-- /ANCHOR:phases -->
-
----
-
-<!-- ANCHOR:dependency-graph -->
-## 5. DEPENDENCY GRAPH
+### Dependency Graph
 
 ```
 Week 1 (Preflight + Quick Wins)
@@ -493,12 +488,12 @@ Phase 5 (Test Migration): every structural commit includes paired test migration
 - **Engineer 2** track: Week 1 QW + P0-C M7 (Weeks 1–2) → S3/P0-C completion (Weeks 2–4) → S5 Gate 3 (Weeks 5–7) → Support + final integration.
 - **Engineer 3** track: Week 1 QW #1–6 + S4/A0–A2 (Weeks 1–4) → S4 completion (Week 5) → P0-B S1 with Eng 2 (Weeks 5–7) → S6/S7 (Weeks 7–9).
 - **Support track** (rotating): Domain-5 test catch-up, Watch-P1 resolution, adversarial repro construction for FINAL §8.3 items, M8 vocabulary migration, Med-A..Med-J fill-in.
-<!-- /ANCHOR:dependency-graph -->
+<!-- /ANCHOR:phases -->
 
 ---
 
 <!-- ANCHOR:testing -->
-## 6. TESTING STRATEGY
+## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools | Frequency |
 |-----------|-------|-------|-----------|
@@ -522,7 +517,7 @@ Phase 5 (Test Migration): every structural commit includes paired test migration
 ---
 
 <!-- ANCHOR:dependencies -->
-## 7. DEPENDENCIES
+## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
@@ -539,7 +534,7 @@ Phase 5 (Test Migration): every structural commit includes paired test migration
 ---
 
 <!-- ANCHOR:rollback -->
-## 8. ROLLBACK PLAN
+## 7. ROLLBACK PLAN
 
 Structural refactors introduce runtime validation (Zod schemas) and type-system changes that cannot be partially applied. Rollback strategy per workstream:
 
@@ -650,12 +645,8 @@ Note: Phase 1 and Phase 2 run in parallel; test migration threads across all wee
 3. **S4 + S3.** 15 findings for 2 weeks parallel. Independent of M13 and each other.
 4. **S2 + S1.** 20 findings for 4 weeks parallel. Structural anchors.
 5. **S5 + S6 + S7 + M8.** 19 findings for 5.5 weeks. Finish-out remaining P1/P2 work.
-<!-- /ANCHOR:effort -->
 
----
-
-<!-- ANCHOR:weekly-plan -->
-## L2: WEEK-BY-WEEK SCHEDULE (Phase 017, 10 weeks)
+### Week-by-Week Schedule (Phase 017, 10 weeks)
 
 Mirrors `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §7.5 with adjustments for Stage 2 prioritization.
 
@@ -673,7 +664,7 @@ Mirrors `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-re
 | 10 | Final integration + regression + implementation-summary.md | Final integration + regression | Final integration + regression | Phase 017 closeout; update parent 026 spec |
 
 **Wall-clock = 10 weeks.** Engineers 1, 2, 3 run parallel tracks. Support handles Domain-5 catch-up, Q-resolution, adversarial repro construction, and test-coverage backfill.
-<!-- /ANCHOR:weekly-plan -->
+<!-- /ANCHOR:effort -->
 
 ---
 

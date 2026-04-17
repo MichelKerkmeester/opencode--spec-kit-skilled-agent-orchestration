@@ -59,7 +59,6 @@ P0 Composite + P1/P2 Finding Closure verification.
 
 All items below constitute code-quality verification: every finding closure is verified with concrete evidence (test file / grep / type-check / manual repro / inspection). The structure is P0-composite first, then per-finding P1/P2 closures.
 
-<!-- ANCHOR:p0-composite -->
 ### P0 Composite Candidates — Elimination Verification
 
 ### P0-A: Cross-runtime tempdir control-plane poisoning
@@ -97,11 +96,9 @@ All items below constitute code-quality verification: every finding closure is v
 - [x] CHK-P0-D-03 [P0] R37-001: Transient `lastTranscriptOffset: 0` sentinel eliminated — verified by `T-TEST-NEW-04` (two-stop overlap test) in `p0-d-toctou-cleanup-regression.vitest.ts` [EVIDENCE: afbb3bc7f)
 - [x] CHK-P0-D-04 [P0] R33-002: `Math.max()` monotonicity guard on `lastTranscriptOffset` in `updateState()` — verified by offset-regression-blocked test in `p0-d-toctou-cleanup-regression.vitest.ts` [EVIDENCE: afbb3bc7f)
 - [x] CHK-P0-D-05 [P0] P0-D attack scenario (`FINAL §3.4`, all 4 steps) blocked — verified by `p0-d-toctou-cleanup-regression.vitest.ts` constructing the full attack chain [EVIDENCE: afbb3bc7f)
-<!-- /ANCHOR:p0-composite -->
 
 ---
 
-<!-- ANCHOR:p1-findings -->
 ### P1 Findings — Closure Verification (~37 items)
 
 Each P1 finding must be individually closed with evidence. Organized by source file:
@@ -184,11 +181,9 @@ Each P1 finding must be individually closed with evidence. Organized by source f
 - [x] CHK-P1-40 [P1] R46-002: `conflicts_with` reciprocity check in `validate_edge_symmetry()` — verified by `T-TEST-NEW-10` [EVIDENCE: f6f23ecad T-SGC-03 conflicts_with reciprocity + e009eda0c T-SAP-04)
 - [x] CHK-P1-41 [P1] R49-003: Arbitrary-length cycle detection — verified by `T-TEST-NEW-18` [EVIDENCE: ef5c093e8 T-SGC-04 DFS color-marking arbitrary-length depends_on cycle detection)
 - [x] CHK-P1-42 [P1] R50-001: Gate 3 triggers on `resume deep research` — verified by `T-TEST-NEW-17` [EVIDENCE: 1af23e10a S5 Gate 3 typed classifier + save/resume trigger completion T-DOC-03)
-<!-- /ANCHOR:p1-findings -->
 
 ---
 
-<!-- ANCHOR:p2-findings -->
 ### P2 Findings — Closure Verification (~30 items)
 
 P2 findings may be deferred with documented reason. Default expectation is closure within the 10-week schedule.
@@ -269,7 +264,6 @@ P2 findings may be deferred with documented reason. Default expectation is closu
 ### P2 reconciliation / escape hatches
 
 - [x] CHK-P2-41 [P2] R10-002: Provenance escaping in `[PROVENANCE:]` wrapper (REQ-013) — verified by adversarial test with `]` / newline / bracket in `producer` [EVIDENCE: 9891d45d1 T-GSH-01 escape provenance fields + adversarial regression at `hook-session-start.vitest.ts:99`)
-<!-- /ANCHOR:p2-findings -->
 
 ---
 
@@ -284,7 +278,6 @@ Test migration + new adversarial tests verification.
 
 Test-related verification items. Every code change in the Code Quality section must be paired with a test commit; the canonical 7 test files plus 20 new adversarial tests live here.
 
-<!-- ANCHOR:test-migration-checklist -->
 ### Test Migration Verification (7 canonical + supporting)
 
 - [x] CHK-TEST-01 [P0] `post-insert-deferred.vitest.ts` migrated from all-true booleans to enum `'deferred'` — verified by diff review + tests pass [EVIDENCE: c789e71b7 M13 refactor + 0a2d7a576 test migration audit + 3b22ad3aa T-TEST mark)
@@ -324,7 +317,6 @@ Test-related verification items. Every code change in the Code Quality section m
 - [x] CHK-TEST-NEW-18 [P1] Arbitrary-length dependency cycle fails validate — verified by `test_skill_graph_compiler.py::test_long_cycle` [EVIDENCE: ef5c093e8 T-SGC-04 + 0a2d7a576)
 - [x] CHK-TEST-NEW-19 [P1] YAML `when:` grammar rejects untyped string literals — verified by asset-predicate suite [EVIDENCE: f9478670c S7 T-YML-PLN-02 + 0a2d7a576)
 - [x] CHK-TEST-NEW-20 [P1] Gate 3 true-positive `implement`/`rename` regardless of context — verified by `gate-3-classifier.vitest.ts::test_implement_rename` [EVIDENCE: 1af23e10a S5 T-DOC-02 + 0a2d7a576)
-<!-- /ANCHOR:test-migration-checklist -->
 
 ---
 
@@ -344,11 +336,7 @@ Items establishing that the remediation closes known trust-boundary and injectio
 - [x] CHK-SEC-03 [P1] R10-002: Provenance fields escaped in `[PROVENANCE:]` wrapper — verified by adversarial test with `]` / newline / bracket in `producer` at `hook-session-start.vitest.ts:99` [EVIDENCE: 9891d45d1 T-GSH-01 escape hook provenance fields)
 - [x] CHK-SEC-04 [P0] R21-002: HookState runtime validation blocks drifted/malicious state from reaching prompt text — verified by Zod schema + quarantine test (CHK-P0-A-01) [EVIDENCE: 6f5623a4c P0-A composite Zod HookStateSchema + .bad quarantine)
 - [x] CHK-SEC-05 [P1] R41-004: Markdown-sourced `Function(...)()` eval surface eliminated — verified by CHK-SEC-01 grep [EVIDENCE: 2fa4a5e71 T-MPR-RUN-01)
-<!-- /ANCHOR:security -->
 
----
-
-<!-- ANCHOR:post-remediation -->
 ### Post-Remediation Verification
 
 Runs at the very end of Phase 017, before declaring the 016 packet complete:
@@ -368,7 +356,7 @@ Runs at the very end of Phase 017, before declaring the 016 packet complete:
 - [x] CHK-VERIFY-13 [P1] Every finding in `findings-registry.json` has either (a) a `closing_commit_sha` field populated, or (b) a `deferred_reason` string — verified by script check (could be a tiny `jq` one-liner) [EVIDENCE: all 63 findings mapped to commits across Phase 4 QW (21 commits) + Phase 1 P0 composites (4 commits) + Wave A/B/C (7 commits); no deferrals required)
 - [x] CHK-VERIFY-14 [P0] `implementation-summary.md` written with commit-by-commit finding closure and list of attack-scenario tests — verified by file existence + content inspection [EVIDENCE: this closeout commit populates implementation-summary.md from placeholder to full 400-700 LOC narrative)
 - [x] CHK-VERIFY-15 [P1] Parent 026 `spec.md` updated with 016 completion status — verified by diff [EVIDENCE: parent packet tracks 016 via graph-metadata.json status field; 016 description.json carries implemented status)
-<!-- /ANCHOR:post-remediation -->
+<!-- /ANCHOR:security -->
 
 ---
 
@@ -414,11 +402,7 @@ Runs at the very end of Phase 017, before declaring the 016 packet complete:
 **P0 verification items total: 67** (P0-composite + P0 within P1 + P0 within test + post-remediation P0). All 67 verified with evidence before claiming 016 remediation done.
 
 **Verification Date**: 2026-04-17 (Phase 017 remediation complete; closeout + implementation-summary.md populated)
-<!-- /ANCHOR:summary -->
 
----
-
-<!-- ANCHOR:cross-refs -->
 ### Cross-References
 
 - **Specification**: `spec.md`
@@ -430,6 +414,4 @@ Runs at the very end of Phase 017, before declaring the 016 packet complete:
 - **Phase 1 P0 Synthesis**: `phase-017-p0-composites-summary.md`
 - **Closing-pass Notes**: `../research/016-foundational-runtime-deep-review/closing-pass-notes.md`
 - **Preflight OQ Resolution**: `preflight-oq-resolution.md`
-<!-- /ANCHOR:cross-refs -->
-</content>
-</invoke>
+<!-- /ANCHOR:summary -->

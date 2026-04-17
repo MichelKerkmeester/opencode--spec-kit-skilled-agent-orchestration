@@ -70,12 +70,7 @@ _memory:
 | YML-CMP | `command/spec_kit/assets/spec_kit_complete_auto.yaml` |
 | YML-DPR | `command/spec_kit/assets/spec_kit_deep-research_auto.yaml` |
 | DOC-RT | `AGENTS.md` / `CLAUDE.md` / `CODEX.md` / `GEMINI.md` runtime root docs |
-<!-- /ANCHOR:notation -->
-
----
-
-<!-- ANCHOR:phase-progress -->
-## Phase Progress
+### Phase Progress
 
 Every task below maps to a phase in `plan.md` §4. The mapping is:
 
@@ -96,12 +91,14 @@ Every task below maps to a phase in `plan.md` §4. The mapping is:
 | Phase 5 | Test migration | T-TEST-01 through T-TEST-07 + T-TEST-NEW-01 through T-TEST-NEW-18 |
 
 **Completion invariant:** every canonical task (T-XXX-NN, total ~63) must be either `[x]` or marked with a documented deferral rationale.
-<!-- /ANCHOR:phase-progress -->
+<!-- /ANCHOR:notation -->
 
 ---
 
-<!-- ANCHOR:preflight -->
-## Phase 0: Preflight (Week 1)
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+### Phase 0: Preflight (Week 1)
 
 - [x] T-PRE-01 Phase 016 research complete (50 iterations, FINAL-synthesis-and-review.md) [EVIDENCE: d72a523ec3 Phase 016 research complete (50 iterations + FINAL synthesis); (verified)]
 - [x] T-PRE-02 Findings registry structured (findings-registry.json) [EVIDENCE: d72a523ec3 findings-registry.json structured per 50-iter synthesis; (verified)]
@@ -112,16 +109,11 @@ Every task below maps to a phase in `plan.md` §4. The mapping is:
 - [x] T-PRE-07 [P0] Resolve OQ3: can HookState gain schemaVersion without breaking already-quiesced state files? (Gates T-HST-M2.) [EVIDENCE: 93b0c77c9 OQ preflight resolution (T-PRE-05/06/07/08); (verified)]
 - [x] T-PRE-08 [P0] Resolve OQ4: full enumeration of `/spec_kit:*` subcommands needing bridge entries. (Gates T-SAP-05.) [EVIDENCE: 93b0c77c9 OQ preflight resolution (T-PRE-05/06/07/08); (verified)]
 - [x] T-PRE-09 [P1] Construct §8.3 adversarial repros: R33-001 compact-prime identity race; R40-001 cleanup TOCTOU; R46-003 adversarial lastJobId; R34-002 complement duplicate window; R35-001 conflict fork [EVIDENCE: 0da4e1aa6 T-PRE-04 closing-pass audit + T-PRE-09 adversarial repro verification; (verified)]
-<!-- /ANCHOR:preflight -->
 
----
-
-<!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+### P0 Composite Eliminations — File-Grouped Tasks
 
 **P0 Composite Eliminations — file-grouped tasks.** This phase covers all P0 composite candidate eliminations. Tasks are grouped by source file for clarity, but all groups within this section collectively constitute Phase 1 of `plan.md` §4.
 
-<!-- ANCHOR:group-sst -->
 ### Group: `mcp_server/hooks/claude/session-stop.ts` (10 distinct findings)
 
 Top-1 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D4, D5).
@@ -139,11 +131,8 @@ Top-1 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D4, D5
 - [x] T-SST-11 [P1] R37-002: Stale `currentSpecFolder` preference suppresses legitimate packet retarget when another writer advanced target → refresh `stateBeforeStop.lastSpecFolder` before `detectSpecFolder()` OR change "prefer currentSpecFolder" rule (M4 from S2) (`session-stop.ts:128-145,244-246,281-296,340-369`) — Phase 1b / M4 [EVIDENCE: 6371149cf S2-M3 session-stop atomic state + M4 retarget refresh; (verified)]
 - [x] T-SST-12 [P1] R33-003 consumer side: Failed `saveState` does not abort autosave → consume `updateState()` typed return and abort autosave on `persisted: false` (paired with T-HST-08) (`session-stop.ts:60-67,119-125,261-309`) — Phase 1b / A8 [EVIDENCE: 6371149cf S2-M3 session-stop atomic state + M4 retarget refresh; (verified)]
 
-<!-- /ANCHOR:group-sst -->
-
 ---
 
-<!-- ANCHOR:group-hst -->
 ### Group: `mcp_server/hooks/claude/hook-state.ts` (9 distinct findings)
 
 Top-2 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D1, D2, D3, D5).
@@ -160,11 +149,8 @@ Top-2 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D1, D2
 - [x] T-HST-10 [P2] R4-003: Recent-state authority based on filesystem mtime, not `state.updatedAt` → rank by `updatedAt` field (`hook-state.ts:142-155`) [EVIDENCE: e774eef07 scattered medium refactors (updatedAt ranking); (verified)]
 - [x] T-HST-11 [P0-D] [P] T-SST-06 counterpart: `Math.max()` offset monotonicity guard in `updateState()` (`hook-state.ts:221-241`) — Phase 1a / QW #9 [EVIDENCE: afbb3bc7f P0-D TOCTOU cleanup composite (Math.max monotonicity in updateState); (verified)]
 
-<!-- /ANCHOR:group-hst -->
-
 ---
 
-<!-- ANCHOR:group-rcb -->
 ### Group: `mcp_server/handlers/save/reconsolidation-bridge.ts` (8 distinct findings)
 
 Top-3 file by distinct-issue count. Primary workstream: S1 (P0-B).
@@ -180,22 +166,18 @@ Top-3 file by distinct-issue count. Primary workstream: S1 (P0-B).
 - [x] T-RCB-09 [P2] R11-004 + R12-003 (dedup): Scope-filtered reconsolidation candidates vanish silently; limit-pre-filter can starve in-scope candidates → structured warning `{ code: 'scope_filter_suppressed_candidates', candidates: [...] }` (B5 from S1) (`reconsolidation-bridge.ts:283-295`) — Phase 1d / B5 [EVIDENCE: e774eef07 scattered medium refactors; (verified)]
 - [x] T-RCB-10 [P2] R16-002: Malformed vector-search rows coerced into sentinel values → reject malformed rows in `reconsolidation-bridge` (`reconsolidation-bridge.ts:295-305`) [Phase 3 Med-G] [EVIDENCE: e774eef07 scattered medium refactors; (verified)]
 - [x] T-RCB-11 [P2] R19-002: Assistive reconsolidation failures fall open to ordinary save; no machine-readable signal → surface as structured failure (`reconsolidation-bridge.ts:453-511,514-518`) [Phase 3 Med-H] [EVIDENCE: e774eef07 scattered medium refactors; (verified)]
-<!-- /ANCHOR:group-rcb -->
 
 ---
 
-<!-- ANCHOR:group-rcn -->
 ### Group: `mcp_server/lib/storage/reconsolidation.ts` (3 distinct findings, coupled to RCB)
 
 Primary workstream: S1 (P0-B). Paired with T-RCB-04, T-RCB-05, T-RCB-06.
 
 - [x] T-RCN-01 [P1] R31-003 + R35-001 counterpart in storage layer: `executeConflict()` `UPDATE ... WHERE id = ?` without CAS → add `content_hash` + `is_deprecated = FALSE` guard; return `'conflict_stale_predecessor'` outcome when predecessor changed (`reconsolidation.ts:467-508`) — Phase 1d / B1 [EVIDENCE: 104f534bd P0-B transactional reconsolidation composite; (verified)]
 - [x] T-RCN-02 [P1] R34-002 counterpart in storage layer: complement insert logic needs re-check against duplicates inside transaction (`reconsolidation.ts:599-694`) — Phase 1d / B2 [EVIDENCE: 104f534bd P0-B transactional reconsolidation composite; (verified)]
-<!-- /ANCHOR:group-rcn -->
 
 ---
 
-<!-- ANCHOR:group-pin -->
 ### Group: `mcp_server/handlers/save/post-insert.ts` (6 distinct findings)
 
 Top-4 file by distinct-issue count. Primary workstream: M13 (enum status refactor).
@@ -208,11 +190,9 @@ Top-4 file by distinct-issue count. Primary workstream: M13 (enum status refacto
 - [x] T-PIN-06 [P2] R12-005 (dedup of R14-004): `entityLinking.skippedByDensityGuard` collapsed into success → `skipped` status with `reason: 'density_guard'` (`post-insert.ts:159-173`) [B:T-PIN-02] [EVIDENCE: c789e71b7 M13 post-insert enum status refactor; (verified)]
 - [x] T-PIN-07 [P2] R17-002: Exception-driven enrichment failures still report `executionStatus=ran` → `failed` status with exception reason (`post-insert.ts:106-109,126-129,148-151,174-177,201-214`) [B:T-PIN-02] [EVIDENCE: e774eef07 scattered medium refactors; (verified)]
 - [x] T-PIN-08 [P1] R27-001: `graphLifecycle=true` even when `onIndex` returns `skipped:true`; `runEnrichmentBackfill` can't unblock → propagate underlying skip reason (`post-insert.ts:187-200`) [B:T-PIN-02] [EVIDENCE: e774eef07 scattered medium refactors; (verified)]
-<!-- /ANCHOR:group-pin -->
 
 ---
 
-<!-- ANCHOR:group-cgq -->
 ### Group: `mcp_server/handlers/code-graph/query.ts` (6 distinct findings)
 
 Top-5 file by distinct-issue count. Primary workstream: Quick wins + M8 cascades.
@@ -229,11 +209,9 @@ Top-5 file by distinct-issue count. Primary workstream: Quick wins + M8 cascades
 - [x] T-CGQ-10 [P2] R19-001: Transitive traversal silently degrades dangling nodes into ok with null metadata → surface as corruption (paired with T-CGQ-08) (`code-graph/query.ts:127-166,417-436`) [Phase 3 Med-H] [EVIDENCE: 175ad87c9 M8 trust-state vocabulary expansion; (verified)]
 - [x] T-CGQ-11 [P1] R22-001 + R23-001 (dedup): Self-contradictory success payload (readiness `empty` + `detectorProvenance: structured`); query exposes `empty` readiness while bootstrap canonicalizes same condition as `missing` → align vocabulary via M8 (`code-graph/query.ts:61-83,94-99,319-364,551-564`) [B:T-SHP-01] [EVIDENCE: 175ad87c9 M8 trust-state vocabulary expansion; (verified)]
 - [x] T-CGQ-12 [P1] R27-002: Routing still recommends `code_graph_query` despite readiness-fail-open gap → update routing recommendations in `context-server.ts:801-816` [B:T-CGQ-02] [EVIDENCE: 175ad87c9 M8 trust-state vocabulary expansion; (verified)]
-<!-- /ANCHOR:group-cgq -->
 
 ---
 
-<!-- ANCHOR:group-gmp -->
 ### Group: `mcp_server/lib/graph/graph-metadata-parser.ts` (4 distinct findings)
 
 Top-9 file by distinct-issue count. Primary workstream: S3 (P0-C).
@@ -243,17 +221,14 @@ Top-9 file by distinct-issue count. Primary workstream: S3 (P0-C).
 - [x] T-GMP-03 [P2] R18-002: Legacy fallback discards original current-schema validation errors → preserve original validation errors in diagnostic set (C2 from S3) (`graph-metadata-parser.ts:228-242`) — Phase 1c / C2 [EVIDENCE: 1bdd1ed03 P0-C graph-metadata laundering composite (C2); (verified)]
 - [x] T-GMP-04 [P2] R20-002: Legacy fallback fabricates `created_at`/`last_save_at` via `new Date().toISOString()` → preserve original timestamps when available; emit migrated marker when fabricating (paired with T-GMP-01) (`graph-metadata-parser.ts:167-205,223-233`) — Phase 1c [EVIDENCE: 1bdd1ed03 P0-C graph-metadata laundering composite (timestamps); (verified)]
 - [x] T-GMP-05 [P2] R31-004 + R32-004 (dedup): `process.pid + Date.now()` temp path collides at ms precision → unique temp filenames via `.tmp-<pid>-<counter>-<random>` (`graph-metadata-parser.ts:969-989`) [QW #15] [EVIDENCE: 6fd8d5b21 T-GMP-05 unique temp filename (Wave 1); (verified)]
-<!-- /ANCHOR:group-gmp -->
 
 ---
 
-<!-- ANCHOR:group-mpr -->
 ### Group: `mcp_server/lib/parsing/memory-parser.ts` (1 distinct finding)
 
 Primary workstream: S3 (P0-C).
 
 - [x] T-MPR-01 [P1] R22-002: Fallback-recovered `graph-metadata` gets `qualityScore: 1`, +0.12 packet boost → propagate `migrated` flag; penalize (not boost) `migrated=true` rows in stage-1 ranking (C5 from S3) (`memory-parser.ts:293-330`) — Phase 1c / C5 [B:T-GMP-01] [EVIDENCE: 1bdd1ed03 P0-C graph-metadata laundering composite (C5 ranking penalty); (verified)]
-<!-- /ANCHOR:group-mpr -->
 
 <!-- /ANCHOR:phase-1 -->
 
@@ -268,49 +243,40 @@ Structural workstreams addressing governance-layer findings. Runs in parallel wi
 
 ---
 
-<!-- ANCHOR:group-shp -->
 ### Group: `mcp_server/lib/context/shared-payload.ts` (2 distinct findings)
 
 Primary workstream: M8 (trust-state vocabulary).
 
 - [x] T-SHP-01 [P1] R9-001: `trustStateFromGraphState()` / `trustStateFromStructuralStatus()` collapse `missing` + `empty` into `stale` → introduce `absent`/`unavailable` distinct from `stale`; migrate producers (M8) (`shared-payload.ts:592-601`) — Phase 3 M8 [EVIDENCE: 175ad87c9 M8 trust-state vocabulary expansion; (verified)]
 - [x] T-SHP-02 [P2] R9-002: `coerceSharedPayloadEnvelope()` is shape-only, not contract-level → runtime validation of `SharedPayloadKind`/`producer` (`shared-payload.ts:598-601`) [QW #18] [EVIDENCE: 12c808af7 T-SHP-02 runtime validation for SharedPayloadKind (Wave 1); (verified)]
-<!-- /ANCHOR:group-shp -->
 
 ---
 
-<!-- ANCHOR:group-oct -->
 ### Group: `mcp_server/lib/context/opencode-transport.ts` (1 distinct finding, coupled to SHP)
 
 Primary workstream: M8.
 
 - [x] T-OCT-01 [P1] R30-002: OpenCode transport drops richer structural truth; renders only collapsed provenance label → migrate to `absent`/`unavailable` vocabulary; render distinct axes (M8 consumer side) (`opencode-transport.ts:64-71,98-149`) — Phase 3 M8 [B:T-SHP-01] [EVIDENCE: 06fc57129 T-OCT-01 surface structural availability axes (Wave 8); (verified)]
-<!-- /ANCHOR:group-oct -->
 
 ---
 
-<!-- ANCHOR:group-sbr -->
 ### Group: `mcp_server/lib/code-graph/startup-brief.ts` (1 distinct finding after dedup)
 
 Primary workstream: S2 (P0-A).
 
 - [x] T-SBR-01 [P1] R1-001 (+ R2-001 + R4-001 dedup): `buildSessionContinuity()` calls `loadMostRecentState()` with no scope; hook-state rejects scope-less calls → scope the continuity call, or fix `loadMostRecentState` to not reject scope-less (`startup-brief.ts:179-192`) — Phase 1b / S2 [EVIDENCE: 18b48c346 T-SBR-01 scope startup continuity lookup (Wave 7); (verified)]
-<!-- /ANCHOR:group-sbr -->
 
 ---
 
-<!-- ANCHOR:group-enr -->
 ### Group: `mcp_server/lib/code-graph/ensure-ready.ts` (2 distinct findings)
 
 Primary workstream: Phase 3 Med-A, Med-B.
 
 - [x] T-ENR-01 [P1] R5-001: Successful inline refresh still reports pre-refresh freshness → refresh readiness/freshness reports after inline reindex completes (`ensure-ready.ts:283-317`) [Phase 3 Med-A] [EVIDENCE: bbedc83ab T-ENR-01 refresh ensure-ready post-index readiness (Wave 5); (verified)]
 - [x] T-ENR-02 [P1] R5-002: Partial persistence failures silently treated as successful refresh (file_mtime_ms written before node/edge failure) → don't write mtime until nodes+edges persist (`ensure-ready.ts:183-217`) [Phase 3 Med-B] [EVIDENCE: e774eef07 scattered medium refactors; (verified)]
-<!-- /ANCHOR:group-enr -->
 
 ---
 
-<!-- ANCHOR:group-sbs-srs-shs -->
 ### Group: `session-bootstrap.ts` / `session-resume.ts` / `session-health.ts` (4 distinct findings)
 
 Primary workstream: S2 (P0-A) + M8.
@@ -321,11 +287,9 @@ Primary workstream: S2 (P0-A) + M8.
 - [x] T-SRS-03 [P2] R38-001 extension: `session-resume.ts:348-366` has same all-or-nothing scan; inherits T-HST-03 fix [B:T-HST-03] [EVIDENCE: e774eef07 scattered medium refactors; (verified)]
 - [x] T-SHS-01 [P2] R26-002: `session_health` doesn't attach section-level `structuralTrust` axes → add structural-trust section (QW #19) (`session-health.ts:136-166`) [QW #19] [EVIDENCE: 3b7afe891 T-SHS-01 attach structuralTrust axis (Wave 2); (verified)]
 - [x] T-SRS-04 [P2] R29-002: Claude startup collapses all rejection reasons into same "no cached continuity" state → distinct reason codes per M1/M2 (`session-prime.ts:130-143`) [B:T-HST-01, T-HST-02] [EVIDENCE: e774eef07 scattered medium refactors; (verified)]
-<!-- /ANCHOR:group-sbs-srs-shs -->
 
 ---
 
-<!-- ANCHOR:group-msv-rbd -->
 ### Group: `mcp_server/handlers/memory-save.ts` + `response-builder.ts` (2 distinct findings)
 
 Primary workstream: M13 + S1.
@@ -333,22 +297,18 @@ Primary workstream: M13 + S1.
 - [x] T-MSV-01 [P1] R24-001: `runEnrichmentBackfill` advertised before enrichment runs; only deferred case gets typed recovery → all runtime-degradation branches get typed recovery via `OperationResult<T>` (`memory-save.ts:1616-1678,2362-2384`) [B:T-PIN-02] [EVIDENCE: 104f534bd P0-B transactional reconsolidation composite; (verified)]
 - [x] T-MSV-02 [P1] R34-002 orchestrator side: Complement duplicate window orchestrated at memory-save; paired with T-RCB-06 (`memory-save.ts:2159-2171,2250-2304`) — Phase 1d / B2 [B:T-RCB-06] [EVIDENCE: 104f534bd P0-B transactional reconsolidation composite; (verified)]
 - [x] T-RBD-01 [P1] R21-001: `memory_save` response collapses post-insert truth further than `post-insert.ts` does → propagate typed `OperationResult<T>` through response (`response-builder.ts:311-322,569-573`) — Phase 3 M13 [B:T-PIN-02] [EVIDENCE: 709727e98 T-RBD-01 preserve post-insert enrichment truth (Wave 9); (verified)]
-<!-- /ANCHOR:group-msv-rbd -->
 
 ---
 
-<!-- ANCHOR:group-gsh-gsp -->
 ### Group: `hooks/claude/shared.ts` + `hooks/gemini/session-prime.ts` (2 distinct findings)
 
 Primary workstream: Phase 3 Med.
 
 - [x] T-GSH-01 [P2] R10-002: Wrapper interpolates provenance directly into `[PROVENANCE:]` without escaping → escape provenance fields; adversarial test for `]`/newline in `producer` (`hooks/claude/shared.ts:109-123`) [Phase 3 Med-J; REQ-013] [B:T-HST-01] [EVIDENCE: 9891d45d1 T-GSH-01 escape hook provenance fields (Wave 5); (verified)]
 - [x] T-GSP-01 [P1] R10-001: Gemini compact-recovery drops cached provenance entirely; Claude preserves it → Gemini wrapper forwards `payloadContract.provenance` (`hooks/gemini/session-prime.ts:55-68`) [Phase 3 Med-I; REQ-014] [EVIDENCE: ba7414e34 T-GSP-01 preserve Gemini compact provenance (Wave 6); (verified)]
-<!-- /ANCHOR:group-gsh-gsp -->
 
 ---
 
-<!-- ANCHOR:group-sap -->
 ### Group: `skill/skill-advisor/scripts/skill_advisor.py` (5 distinct findings)
 
 Top-6 file by distinct-issue count. Primary workstream: S4.
@@ -358,22 +318,18 @@ Top-6 file by distinct-issue count. Primary workstream: S4.
 - [x] T-SAP-03 [P1] R46-001: `COMMAND_BRIDGES` registers only `/spec_kit` prefix; all `/spec_kit:*` subcommands collapse to `command-spec-kit` at `kind_priority=2` → per-subcommand bridges (A0 from S4) (`skill_advisor.py:980-1021,1404-1410,1647,1741-1768`) — Phase 2 S4 / QW #2 [B:T-PRE-08] [EVIDENCE: e774eef07 scattered medium refactors (T-SAP-03); (verified)]
 - [x] T-SAP-04 [P1] R46-002: `validate_edge_symmetry()` never inspects `conflicts_with` edges; unilateral metadata edit silently creates bilateral runtime penalty → reciprocity check (paired with T-SGC-03) (A4 from S4) (`skill_advisor.py:141-187,321-339`) — Phase 2 S4 [EVIDENCE: e009eda0c S4 skill routing trust chain; (verified)]
 - [x] T-SAP-05 [P1] R41-003: Skill-graph topology checks advisory-only; `--validate-only` returns success for graphs violating routing invariants → promote to hard errors (paired with T-SGC-02) (`skill_advisor.py:203-265`) [QW #27] [EVIDENCE: 0bccad3e8 T-SAP-05 topology hard errors (Wave 4); (verified)]
-<!-- /ANCHOR:group-sap -->
 
 ---
 
-<!-- ANCHOR:group-sar -->
 ### Group: `skill_advisor_runtime.py` (3 distinct findings)
 
 Primary workstream: S4.
 
 - [x] T-SAR-01 [P2] R42-002: Skill-routing authority split across two unsynchronized inventories: SKILL.md discovery vs compiled graph; `health_check()` returns ok even when inventories disagree → inventory comparison in health_check (A5 cascade) (`skill_advisor_runtime.py:93-97,165-203`) — Phase 2 S4 [EVIDENCE: e009eda0c S4 skill routing trust chain; (verified)]
 - [x] T-SAR-02 [P2] R44-002: `parse_frontmatter_fast()` stores only `key: value` scalar lines; `<!-- Keywords: ... -->` comment blocks stripped before routing → capture comment blocks (A1 from S4) (`skill_advisor_runtime.py:161-203`) — Phase 2 S4 / QW #3 [EVIDENCE: 9e2a7fdd6 T-SAR-02 capture Keywords HTML comment blocks (Wave 3); (verified)]
-<!-- /ANCHOR:group-sar -->
 
 ---
 
-<!-- ANCHOR:group-sgc -->
 ### Group: `skill_graph_compiler.py` (4 distinct findings)
 
 Top-8 file by distinct-issue count. Primary workstream: S4.
@@ -382,11 +338,9 @@ Top-8 file by distinct-issue count. Primary workstream: S4.
 - [x] T-SGC-02 [P1] R45-003: Topology warning state non-durable: ZERO-EDGE WARNINGS emitted then dropped from serialized graph; `health_check()` returns `status: ok` after warnings → serialize warning payloads into compiled graph; expose in `health_check()` (A5 from S4) (`skill_graph_compiler.py:559-568,630-663`) — Phase 2 S4 / QW #4 [EVIDENCE: e009eda0c S4 skill routing trust chain (T-SGC-02 warning serialization); (verified)]
 - [x] T-SGC-03 [P1] R46-002 counterpart in compiler: `validate_edge_symmetry()` must inspect `conflicts_with` edges → reciprocity check (paired with T-SAP-04) (`skill_graph_compiler.py:272-319,501-568,630-663`) [QW #5] [EVIDENCE: f6f23ecad T-SGC-03 conflicts_with reciprocity (Wave 10); (verified)]
 - [x] T-SGC-04 [P1] R49-003: `validate_dependency_cycles()` only detects two-node reciprocal cycles; longer `depends_on` loops pass `--validate-only` → arbitrary-length cycle detection (Tarjan SCC or DFS color-marking) (`skill_graph_compiler.py:437-472,623-663`) [QW #6] [EVIDENCE: ef5c093e8 T-SGC-04 arbitrary-length cycle detection (Wave 10); (verified)]
-<!-- /ANCHOR:group-sgc -->
 
 ---
 
-<!-- ANCHOR:group-mpr-run -->
 ### Group: `manual-playbook-runner.ts` (4 distinct findings)
 
 Top-7 file by distinct-issue count. Primary workstream: S6.
@@ -396,21 +350,17 @@ Top-7 file by distinct-issue count. Primary workstream: S6.
 - [x] T-MPR-RUN-03 [P1] R45-004: `parseScenarioDefinition()` returns null on parse failure; `main()` filters nulls before coverage count; 10/291 active scenario files unparseable 2026-04-16 → `parsedCount == filteredCount` assertion; emit named warning on drop (`manual-playbook-runner.ts:245-271,1203-1217`) [QW #7] [EVIDENCE: b927ac203 T-MPR-RUN-03 assert parsedCount==filteredCount (Wave 10); (verified)]
 - [x] T-MPR-RUN-04 [P1] R46-003: `parsedStepArgs()` routes brace-prefixed text to `evaluateObjectLiteral()`; `substitutePlaceholders()` injects `runtimeState.lastJobId` from prior handler payloads into `Function(...)` string → typed schema-validated arg parser (paired with T-MPR-RUN-01) (`manual-playbook-runner.ts:181-194,427-445,930-943,1112-1117`) — Phase 2 S6 [EVIDENCE: 1bf322ece S6 playbook runner isolation; (verified)]
 - [x] T-MPR-RUN-05 [P2] R50-002: Live corpus contains two incompatible argument dialects for same tool family (`memory_ingest_status({jobId})` vs `memory_ingest_status({ jobId:"<job-id>" })`); shorthand form depends on undefined JS scoping → reject shorthand dialect; add schema validation (`manual-playbook-runner.ts:438-445,544-548,612-616`) [Phase 2 S6] [EVIDENCE: 1bf322ece S6 playbook runner isolation; (verified)]
-<!-- /ANCHOR:group-mpr-run -->
 
 ---
 
-<!-- ANCHOR:group-dls -->
 ### Group: `data-loader.ts` + command YAMLs + runtime root docs (shared-path hazard)
 
 Primary workstream: QW #10, #11.
 
 - [x] T-DLS-01 [P2] R31-005 + R32-005 (dedup): `/tmp/save-context-data.json` documented shared handoff path; parallel runtime sessions overwrite each other → remove from 4 command surfaces + 4 runtime root docs + `data-loader.ts` `NO_DATA_FILE` error text (`data-loader.ts:59-111` + `.opencode/command/memory/save.md`, `.opencode/command/spec_kit/deep-research.md`, `.opencode/command/spec_kit/deep-review.md` + `generate-context.ts:61-82`) [QW #10, #11] [EVIDENCE: 3d0ab30c9 T-DLS-01/T-DOC-01 remove /tmp/save-context-data.json; (verified)]
-<!-- /ANCHOR:group-dls -->
 
 ---
 
-<!-- ANCHOR:group-doc-rt -->
 ### Group: runtime root docs `AGENTS.md` / `CLAUDE.md` / `CODEX.md` / `GEMINI.md` (3 distinct findings across root docs)
 
 Primary workstream: QW #10 + S5.
@@ -418,11 +368,9 @@ Primary workstream: QW #10 + S5.
 - [x] T-DOC-01 [P2] R35-003: All four runtime root docs prescribe shared `/tmp/save-context-data.json` → remove (paired with T-DLS-01) (`AGENTS.md:205-207`; `CLAUDE.md:152-155`; `CODEX.md:205-207`; `GEMINI.md:205-207`) [QW #10] [EVIDENCE: 3d0ab30c9 T-DLS-01/T-DOC-01 remove /tmp/save-context-data.json; (verified)]
 - [x] T-DOC-02 [P2] R41-002 + R45-001 + R47-001 (dedup): Gate 3 trigger list is prose English word list; different runtimes can classify same request differently; trigger list includes `analyze`, `decompose`, `phase` tokens that false-positive on read-only review prompts → extract into shared module / JSON schema; read-only disqualifier tokens (S5 core) (`AGENTS.md:182-186`; `plan.md:86-89`; `complete.md:74-77`; `002-confirm-mode-checkpointed-review.md:26-32`) — Phase 2 S5 / M10 — shared classifier landed at `.opencode/skill/system-spec-kit/shared/gate-3-classifier.ts`; AGENTS/CLAUDE/GEMINI/CODEX + plan.md/complete.md + implement YAML asset blocks cite it; 29-case vitest suite in `scripts/tests/gate-3-classifier.vitest.ts` [EVIDENCE: 1af23e10a S5 Gate 3 typed classifier; (verified)]
 - [x] T-DOC-03 [P2] R48-001 + R49-001 + R50-001 (dedup): Gate 3 trigger list false-negatives for `save context`, `save memory`, `/memory:save`, `resume` even though same file declares `MEMORY SAVE RULE` and deep-research `resume` produces writes → add save/resume/continue trigger phrases (S5) (`AGENTS.md:138-145,182-204`) — Phase 2 S5 — `MEMORY_SAVE_TRIGGERS` + `RESUME_TRIGGERS` now codify `save context`, `save memory`, `/memory:save`, `/spec_kit:resume`, `resume iteration`, `resume deep research`, `resume deep review`, `continue iteration`; runtime docs reflect them as positive triggers. [EVIDENCE: 1af23e10a S5 Gate 3 typed classifier + save/resume trigger completion; (verified)]
-<!-- /ANCHOR:group-doc-rt -->
 
 ---
 
-<!-- ANCHOR:group-yml-pln -->
 ### Group: `command/spec_kit/assets/spec_kit_plan_{auto,confirm}.yaml` (4 distinct findings)
 
 Top-10 file by distinct-issue count. Primary workstream: S7.
@@ -431,18 +379,15 @@ Top-10 file by distinct-issue count. Primary workstream: S7.
 - [x] T-YML-PLN-02 [P2] R42-001 + R43-002 + R44-003 (dedup): `intake_only == TRUE` / `folder_state == populated` as quoted string expressions; no mechanical grammar contract → `BooleanExpr` typed schema (M11 from S7) (`spec_kit_plan_auto.yaml:375-392`; `spec_kit_plan_confirm.yaml:400-416`) — Phase 2 S7 / M11 [EVIDENCE: f9478670c S7 YAML predicate grammar; (verified)]
 - [x] T-YML-PLN-03 [P2] R47-002: `/spec_kit:plan` maintains two-vocabulary state machine: local `folder_state` classifier → canonical `start_state`; top-level docs collapse → mark boundary with explicit comments; emit both fields (S7) (`spec_kit_plan_auto.yaml:337-373`; `spec_kit_plan_confirm.yaml:360-398`; `intake-contract.md:39-49,56-76`; `SKILL.md:563,931`; `README.md:624-626`) [QW #28] [EVIDENCE: 23e5b5749 T-YML-PLN-03 folder_state/start_state boundary; (verified)]
 - [x] T-YML-PLN-04 [P2] R48-002 + R49-002 (dedup): `when:` field overloaded as executable predicate AND prose timing note within same asset → separate `when:` (predicate) from `after:` (prose timing) (S7) (`spec_kit_plan_auto.yaml:354-391,548-555`; `spec_kit_plan_confirm.yaml:372-416,606-612`) — Phase 2 S7 [EVIDENCE: f9478670c S7 YAML predicate grammar (when/after separation); (verified)]
-<!-- /ANCHOR:group-yml-pln -->
 
 ---
 
-<!-- ANCHOR:group-yml-cmp-dpr -->
 ### Group: other command YAMLs (2 distinct findings)
 
 Primary workstream: S5 + S7.
 
 - [x] T-YML-CMP-01 [P2] R48-002 extension in `spec_kit_complete_auto.yaml:465-483,1008-1012` — paired with T-YML-PLN-04 (S7) [EVIDENCE: f9478670c S7 YAML predicate grammar; (verified)]
 - [x] T-YML-DPR-01 [P1] R50-001 orchestrator side: `spec_kit_deep-research_auto.yaml:159-167,521-526` — `resume` is a tested write flow producing iteration-NNN.md + JSONL appends; paired with T-DOC-03 Gate 3 trigger addition (S5) [EVIDENCE: f9478670c S7 YAML predicate grammar; (verified)]
-<!-- /ANCHOR:group-yml-cmp-dpr -->
 
 <!-- /ANCHOR:phase-2 -->
 
@@ -455,7 +400,6 @@ Primary workstream: S5 + S7.
 
 Medium-track refactors for trust-state vocabulary expansion, enum status propagation, and discrete medium items scattered across files. Runs Weeks 6-9. Individual medium items are inlined in the groups above (SHP, OCT, SBR, ENR, SBS-SRS-SHS, MSV-RBD, GSH-GSP) and cross-referenced by their "[Phase 3 Med-*]" tags. No new tasks are introduced here; the anchor exists as an organizational pointer.
 
-<!-- ANCHOR:test-migration -->
 ### Test Suite Migration (Phase 5)
 
 Every code-changing task above must be paired with a test commit. The 7 canonical test files that codify degraded contracts:
@@ -500,7 +444,6 @@ Every code-changing task above must be paired with a test commit. The 7 canonica
 - [x] T-TEST-NEW-18 [P1] Arbitrary-length `depends_on` cycle fails `--validate-only` (R49-003, S4) [T-SGC-04] [EVIDENCE: 0a2d7a576 test migration audit + 3b22ad3aa mark T-TEST done; (verified)]
 - [x] T-TEST-NEW-19 [P1] YAML `when:` predicate with `true`/`false` lowercase or `True`/`False` titlecase does NOT match `TRUE`/`FALSE` contract (R42-001, R43-002, R44-003, S7) [T-YML-PLN-02] [EVIDENCE: 0a2d7a576 test migration audit + 3b22ad3aa mark T-TEST done; (verified)]
 - [x] T-TEST-NEW-20 [P1] `implement` / `rename` prompts trigger Gate 3 regardless of context (regression for false negatives) [T-DOC-02] [EVIDENCE: 0a2d7a576 test migration audit + 3b22ad3aa mark T-TEST done; (verified)]
-<!-- /ANCHOR:test-migration -->
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -519,7 +462,6 @@ Every code-changing task above must be paired with a test commit. The 7 canonica
 - [x] Full repo type-check + Vitest + pytest passes [EVIDENCE: type-check clean per 1c3ad5014 Phase 017 synthesis; scoped vitest passes across 4 P0 regression suites + canonical migrations; pytest passes for test_skill_advisor.py + test_skill_graph_compiler.py)
 - [x] `implementation-summary.md` written with commit-by-commit finding closure [EVIDENCE: this closeout commit populates implementation-summary.md with 27 Phase 017 commits + all constituent findings + attack-scenario regression tests)
 
-<!-- ANCHOR:task-summary -->
 ### Task Count Summary
 
 | Category | Count | Coverage |
@@ -554,7 +496,6 @@ Every code-changing task above must be paired with a test commit. The 7 canonica
 | **Total canonical task count** | **~147** | Covers all 63 distinct findings plus test migrations and preflight |
 
 Note: the task count exceeds 63 because (a) some dedup clusters are implemented via multiple coordinated tasks across files, (b) test migration is tracked as distinct tasks, (c) new adversarial tests are tracked separately.
-<!-- /ANCHOR:task-summary -->
 <!-- /ANCHOR:completion -->
 
 ---

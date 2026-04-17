@@ -272,6 +272,16 @@ Constituent findings: R41-004 + R45-004 + R46-003 + R50-002. Dev/CI isolation cu
 - **SC-009**: `memory_save` / `session_bootstrap` / `session_resume` / `session_health` responses expose distinct state vocabulary (`live`, `stale`, `absent`, `unavailable`) with no self-contradictory field pairs (regression for R30-001).
 - **SC-010**: Manual attack-scenario reproduction for each P0 candidate (§8.3 of `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md`) is constructed and confirmed to now fail (i.e., the attack is prevented).
 
+### Acceptance Scenarios
+
+**Given** the 4 P0 composite candidates (P0-A cross-runtime tempdir poisoning, P0-B reconsolidation conflict/complement duplication, P0-C graph-metadata laundering, P0-D TOCTOU cleanup) have landed structural fixes (S2, S1, S3, and D1–D5 respectively), **when** the corresponding adversarial attack-scenario regression tests (`p0-a-*.vitest.ts`, `p0-b-*.vitest.ts`, `p0-c-*.vitest.ts`, `p0-d-*.vitest.ts`) run, **then** every step in each attack chain is blocked and the tests pass green on CI.
+
+**Given** prior Phase 016 commits (Wave A quick wins, Wave B structural refactors, Wave C medium refactors, Phase 4 test migrations) are already on main, **when** this remediation's remaining structural + test commits land on the same main branch, **then** the full repository Vitest suite, Python test suite (`test_skill_advisor.py`, `test_skill_graph_compiler.py`), and the 14 canonical + 20 adversarial tests enumerated in `checklist.md` CHK-TEST-* all pass without regressing previously-green tests.
+
+**Given** the Phase 016 remediation is declared complete, **when** `tsc --noEmit` and `skill_graph_compiler.py --validate-only` run over the full repository, **then** both exit 0 with zero new errors or warnings beyond the pre-remediation baseline, and all `OperationResult<T>` / `TrustState` / `HookStateSchema` / `BooleanExpr` type usages compile without `any` escape hatches.
+
+**Given** every Phase 016 code commit carries a `Closes-Finding: R??-???` trailer citing finding IDs from `../research/016-foundational-runtime-deep-review/findings-registry.json`, **when** `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review --strict` runs, **then** spec/plan/tasks/checklist/implementation-summary remain internally consistent (strict pass: 0 errors, 0 warnings), every completed checklist item retains its `[EVIDENCE: ...]` citation, and the finding-to-commit mapping in `implementation-summary.md` is exhaustive for all 63 distinct findings.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -290,12 +300,8 @@ Constituent findings: R41-004 + R45-004 + R46-003 + R50-002. Dev/CI isolation cu
 | Dependency | `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` must remain the authoritative source throughout implementation. | High | Treat it as read-only during Phase 017. Any new findings discovered during implementation get appended to `implementation-summary.md` with cross-reference; do not amend the synthesis. |
 | Dependency | `/spec_kit:deep-review` pipeline used for closing-pass audits of the 11 untouched files (see `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §8.2). | Medium | Gate: at Phase 017 Week 1, run a 5-iteration closing-pass on the 11 untouched files before starting P0-A/B/C remediation, to avoid discovering new P1/P2 findings mid-refactor. |
 | Dependency | Copilot concurrency cap (3 per account) for parallel deep-review dispatches during remediation validation. | Low | Plan dispatch schedule accordingly; use per-iter delta files to avoid shared-write races. |
-<!-- /ANCHOR:risks -->
 
----
-
-<!-- ANCHOR:test-migration -->
-## 7. TEST-SUITE MIGRATION MANDATE
+### Test-Suite Migration Mandate
 
 Every code change in this remediation MUST identify its corresponding test updates in the same commit (or an immediately-following commit with a cross-reference). Seven existing test files codify the degraded contract and must be rewritten alongside their structural fix:
 
@@ -328,7 +334,7 @@ Every code change in this remediation MUST identify its corresponding test updat
 - YAML `when:` predicate typed-grammar violation (R42-001, R43-002, R44-003, S7)
 
 **Total migration effort: ~2100 LOC at ~300 LOC/day = ~7 engineer-days of pure test work.** Distributed across weeks 4–9 of the Phase 017 week-by-week plan (`plan.md` §4).
-<!-- /ANCHOR:test-migration -->
+<!-- /ANCHOR:risks -->
 
 ---
 
@@ -419,12 +425,8 @@ Additional open questions (not blocking Phase 017 start):
 13. Does `.opencode/skill/system-spec-kit/references/intake-contract.md` define `folderState` as valid synonym for `startState`, or is `.opencode/skill/system-spec-kit/SKILL.md` / `.opencode/skill/system-spec-kit/README.md` usage undocumented drift?
 
 See `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §8.4 for full question list with file:line references.
-<!-- /ANCHOR:questions -->
 
----
-
-<!-- ANCHOR:cross-cutting -->
-## 11. CROSS-CUTTING SYSTEMIC THEMES
+### Cross-Cutting Systemic Themes
 
 The 63 distinct findings distribute across 5 architectural anti-patterns plus a 10-item cross-file anti-pattern roster. The five strongest signals (per `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §5):
 
@@ -439,12 +441,8 @@ The 63 distinct findings distribute across 5 architectural anti-patterns plus a 
 5. **§5.7 Deterministic / shared temp path under concurrency.** Files: `hook-state.ts`, `graph-metadata-parser.ts`, command YAMLs, runtime root docs, `data-loader.ts`. Architectural fix: remove `/tmp/save-context-data.json` from 4 surfaces + unique temp suffix. ~1 day (mostly doc editing).
 
 Full 10-item cross-file anti-pattern roster and 16-item reinforcement-chain map in `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §5.5 and §5.6.
-<!-- /ANCHOR:cross-cutting -->
 
----
-
-<!-- ANCHOR:related -->
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Canonical Research Source**: `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` (1537 lines, Opus 4.7 synthesis)
 - **Structured Finding Inventory**: `../research/016-foundational-runtime-deep-review/findings-registry.json`
@@ -457,4 +455,4 @@ Full 10-item cross-file anti-pattern roster and 16-item reinforcement-chain map 
 - **Verification Checklist**: `checklist.md`
 - **Prior Deep Review**: `../015-implementation-deep-review/`
 - **Parent 026 Spec**: `../spec.md`
-<!-- /ANCHOR:related -->
+<!-- /ANCHOR:questions -->

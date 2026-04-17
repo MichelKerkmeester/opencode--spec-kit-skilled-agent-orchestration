@@ -321,11 +321,7 @@ Success criteria from `spec.md §5` (SC-001 through SC-010):
 - The `entity-linker.ts` whole-corpus fallback (CP-003) is a **resource amplification** finding, not a correctness finding. It does not violate any invariant but can produce compute amplification under rapid per-memory failures. Rate-limit or exhaustion count is the proposed fix.
 - `spec_kit_complete_confirm.yaml` (CP-004) is a **coverage gap** — the same S7 BooleanExpr refactor that landed on the `_auto` variants must be extended to the `_confirm` variant. Estimated ~1h.
 - Real-load concurrency measurement (session-startup p99, memory-save p99 under concurrent writers, routing-quality regression metrics) remains the largest parked measurement item; not a bug, a verification gap. Phase 018 scheduling depends on production deployment telemetry availability.
-<!-- /ANCHOR:limitations -->
 
----
-
-<!-- ANCHOR:cross-refs -->
 ### Cross-References
 
 - **Specification**: `spec.md` — 63 findings registry + 4 P0 composite candidates + 10 success criteria
@@ -342,6 +338,4 @@ Success criteria from `spec.md §5` (SC-001 through SC-010):
 - **Phase 1 P0 Composites Synthesis**: `phase-017-p0-composites-summary.md` — 4 P0 composite eliminations detailed
 - **Parent Packet**: `../spec.md` — 026-graph-and-context-optimization parent charter
 - **Prior Deep Review**: `../015-implementation-deep-review/` — Phase 015 remediation state
-<!-- /ANCHOR:cross-refs -->
-</content>
-</invoke>
+<!-- /ANCHOR:limitations -->

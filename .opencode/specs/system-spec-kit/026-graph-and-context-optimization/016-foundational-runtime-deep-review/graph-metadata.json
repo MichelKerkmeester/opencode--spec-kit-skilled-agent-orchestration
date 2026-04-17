@@ -1,187 +1,172 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review",
-  "status": "research_complete_remediation_ready",
-  "kind": "remediation",
-  "level": 2,
-  "lastUpdated": "2026-04-16T21:45:00Z",
-  "priority": "P0",
-  "blockers": [],
-  "trigger_phrases": [
-    "foundational runtime deep review",
-    "foundational runtime remediation",
-    "016 remediation charter",
-    "016 remediation",
-    "phase 016 remediation",
-    "phase 017 kickoff",
-    "phase 017 plan",
-    "p0 composite elimination",
-    "p0 composite candidates",
-    "cross-runtime tempdir poisoning",
-    "hook-state overhaul",
-    "transactional reconsolidation",
-    "graph-metadata laundering",
-    "graph-metadata migration",
-    "toctou cleanup",
-    "skill routing trust chain",
-    "gate 3 typed classifier",
-    "operation result enum",
-    "trust state vocabulary",
-    "when predicate grammar",
-    "playbook runner isolation",
-    "test suite migration",
-    "success shaped envelope",
-    "pre-transaction snapshot",
-    "governance signal amnesia",
-    "silent fail-open",
-    "contract drift",
-    "hidden semantics",
-    "runtime seams",
-    "findings registry",
-    "final synthesis and review",
-    "R21-002 hook-state",
-    "R31-003 executeConflict",
-    "R35-001 conflict fork",
-    "R34-002 complement duplicate",
-    "R21-003 refresh graph-metadata",
-    "R40-001 cleanup toctou",
-    "R46-001 command bridges",
-    "R43-001 intent_signals"
-  ],
-  "keywords": [
-    "remediation-ready",
-    "p0-composite-fixes",
-    "foundational-runtime",
-    "hook-state",
-    "session-stop",
-    "reconsolidation-bridge",
-    "graph-metadata-parser",
-    "skill-advisor",
-    "manual-playbook-runner",
-    "spec-kit-plan-yaml",
-    "operation-result",
-    "trust-state-vocabulary",
-    "gate-3",
-    "code-graph-query"
-  ],
-  "key_files": [
-    "spec.md",
-    "plan.md",
-    "tasks.md",
-    "checklist.md",
-    "description.json",
-    "graph-metadata.json",
-    "../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md",
-    "../research/016-foundational-runtime-deep-review/findings-registry.json",
-    "../research/016-foundational-runtime-deep-review/research.md",
-    "../research/016-foundational-runtime-deep-review/deep-research-config.json",
-    "../research/016-foundational-runtime-deep-review/deep-research-strategy.md",
-    "../research/016-foundational-runtime-deep-review/deep-research-state.jsonl",
-    "../research/016-foundational-runtime-deep-review/deep-research-dashboard.md",
-    "../research/016-foundational-runtime-deep-review/interim-synthesis-32-iterations.md",
-    "../research/016-foundational-runtime-deep-review/interim-synthesis-38-iterations.md",
-    "../research/016-foundational-runtime-deep-review/interim-synthesis-41-iterations.md",
-    "../research/016-foundational-runtime-deep-review/interim-synthesis-44-iterations.md",
-    "../research/016-foundational-runtime-deep-review/interim-synthesis-47-iterations.md"
-  ],
-  "research_summary": {
-    "iterations": 50,
-    "raw_findings": 129,
-    "distinct_findings": 63,
-    "files_affected": 37,
-    "p0_composite_candidates": 4,
-    "p0_watch_priorities": 2,
-    "p1_distinct": 33,
-    "p2_distinct": 30,
-    "synthesis_author": "claude-opus-4.7",
-    "synthesis_date": "2026-04-16",
-    "domains_covered": [
-      "Foundational seams (iter 1-10)",
-      "Silent fail-open patterns (iter 11-20, D1)",
-      "State contract honesty (iter 21-30, D2)",
-      "Concurrency and write coordination (iter 31-40, D3)",
-      "Stringly-typed governance (iter 41-50, D4)"
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "foundational runtime deep review",
+      "foundational runtime remediation",
+      "016 remediation charter",
+      "016 remediation",
+      "phase 016 remediation",
+      "phase 017 kickoff",
+      "phase 017 plan",
+      "p0 composite elimination",
+      "p0 composite candidates",
+      "cross-runtime tempdir poisoning",
+      "hook-state overhaul",
+      "transactional reconsolidation",
+      "graph-metadata laundering",
+      "graph-metadata migration",
+      "toctou cleanup",
+      "skill routing trust chain",
+      "gate 3 typed classifier",
+      "operation result enum",
+      "trust state vocabulary",
+      "when predicate grammar",
+      "playbook runner isolation",
+      "test suite migration",
+      "success shaped envelope",
+      "pre-transaction snapshot",
+      "governance signal amnesia",
+      "silent fail-open",
+      "contract drift",
+      "hidden semantics",
+      "runtime seams",
+      "findings registry",
+      "final synthesis and review"
     ],
-    "domain_5_status": "deferred to Phase 017 Week 1 catch-up pass"
-  },
-  "remediation_scope": {
-    "structural_refactors": [
-      {"id": "S1", "name": "Transactional reconsolidation", "effort": "2w", "engineers": 2, "addresses": "P0-B"},
-      {"id": "S2", "name": "HookState schema versioning + runtime validation + unique temp paths + CAS in updateState", "effort": "2w", "engineers": 1, "addresses": "P0-A"},
-      {"id": "S3", "name": "Graph-metadata migration propagation", "effort": "1w", "engineers": 1, "addresses": "P0-C"},
-      {"id": "S4", "name": "Skill routing trust-chain", "effort": "1w", "engineers": 1, "addresses": "Watch-P1, signal amnesia"},
-      {"id": "S5", "name": "Gate 3 typed intent classifier", "effort": "1.5w", "engineers": 1, "addresses": "trigger-list drift"},
-      {"id": "S6", "name": "Playbook runner trust-boundary isolation", "effort": "1.5w", "engineers": 1, "addresses": "Watch-P2"},
-      {"id": "S7", "name": "when: YAML predicate typed grammar", "effort": "1.5w", "engineers": 1, "addresses": "governance DSL"}
+    "key_topics": [
+      "remediation-ready",
+      "p0-composite-fixes",
+      "foundational-runtime",
+      "hook-state",
+      "session-stop",
+      "reconsolidation-bridge",
+      "graph-metadata-parser",
+      "skill-advisor",
+      "manual-playbook-runner",
+      "spec-kit-plan-yaml",
+      "operation-result",
+      "trust-state-vocabulary",
+      "gate-3",
+      "code-graph-query"
     ],
-    "medium_refactors": [
-      {"id": "M1", "name": "Zod HookStateSchema", "effort": "3d", "subsumedBy": "S2"},
-      {"id": "M2", "name": "schemaVersion field + migration", "effort": "2d", "subsumedBy": "S2"},
-      {"id": "M3", "name": "Collapse three stop-hook writes", "effort": "2d", "subsumedBy": "S2"},
-      {"id": "M4", "name": "Refresh lastSpecFolder before detect", "effort": "1d", "subsumedBy": "S2"},
-      {"id": "M5", "name": "Predecessor CAS in executeConflict", "effort": "3d", "subsumedBy": "S1"},
-      {"id": "M6", "name": "Batched scope reads", "effort": "2d", "subsumedBy": "S1"},
-      {"id": "M7", "name": "validateGraphMetadataContent migrated flag", "effort": "3d", "subsumedBy": "S3"},
-      {"id": "M8", "name": "Trust-state vocabulary expansion (absent, unavailable)", "effort": "4d", "engineers": 1, "addresses": "R9-001, R26-001, R30-001, R30-002"},
-      {"id": "M9", "name": "Function eval replacement", "effort": "4d", "subsumedBy": "S6"},
-      {"id": "M10", "name": "Gate 3 shared module", "effort": "4d", "subsumedBy": "S5"},
-      {"id": "M11", "name": "BooleanExpr schema", "effort": "4d", "subsumedBy": "S7"},
-      {"id": "M12", "name": "Disambiguation tier", "effort": "2d", "subsumedBy": "S4"},
-      {"id": "M13", "name": "OperationResult enum status refactor", "effort": "5d", "engineers": 1, "addresses": "R8-001 + ~9 more"}
+    "importance_tier": "critical",
+    "status": "implemented",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "description.json",
+      "graph-metadata.json",
+      "preflight-oq-resolution.md",
+      "phase-017-p0-composites-summary.md",
+      "phase-4-quick-wins-summary.md",
+      "../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md",
+      "../research/016-foundational-runtime-deep-review/findings-registry.json",
+      "../research/016-foundational-runtime-deep-review/research.md",
+      "../research/016-foundational-runtime-deep-review/closing-pass-notes.md"
     ],
-    "quick_wins_count": 29,
-    "quick_wins_effort": "1 engineer-week"
-  },
-  "test_migration": {
-    "canonical_files_count": 7,
-    "supporting_files_count": 7,
-    "new_adversarial_tests_count": 20,
-    "total_effort": "7 engineer-days",
-    "total_loc": "~2100",
-    "canonical_files": [
-      "post-insert-deferred.vitest.ts",
-      "structural-contract.vitest.ts",
-      "graph-metadata-schema.vitest.ts",
-      "code-graph-query-handler.vitest.ts",
-      "handler-memory-save.vitest.ts",
-      "hook-session-stop-replay.vitest.ts",
-      "opencode-transport.vitest.ts"
-    ]
-  },
-  "phase_017_plan": {
-    "wall_clock_weeks": 10,
-    "engineer_weeks": 24.5,
-    "engineers": 3,
-    "week_by_week": "see plan.md §L2 WEEK-BY-WEEK SCHEDULE",
-    "week_1": "Preflight + Quick Wins + P0-D solo + open-question resolution + closing-pass audit",
-    "week_2_4": "P0-A (S2) + P0-C (S3) + S4 in parallel",
-    "week_5_7": "P0-B (S1) + S5",
-    "week_7_9": "S6 + S7 + M8 + M13",
-    "week_10": "Final integration + regression + implementation-summary"
-  },
-  "open_questions": [
-    "OQ1: Does command-spec-kit enforce Gate 3 independently of skill routing? (Watch-P1 upgrade)",
-    "OQ2: Are regression tests encoding degraded contracts intentional compatibility shims or oversights?",
-    "OQ3: Can HookState gain schemaVersion without breaking already-quiesced state files?",
-    "OQ4: Full enumeration of /spec_kit:* subcommands needing bridge entries?"
-  ],
-  "prior_candidate_summary_archived": {
-    "description": "Pre-research HIGH/MEDIUM/LOW review candidate list (19 total) kept for historical traceability. Research has now mapped these candidates onto the canonical finding registry.",
-    "candidates": [
-      { "id": "H1", "priority": "HIGH", "phase": "002", "file": "mcp_server/hooks/claude/session-stop.ts", "status": "research-complete-10-findings" },
-      { "id": "H2", "priority": "HIGH", "phase": "002", "file": "mcp_server/hooks/claude/hook-state.ts", "status": "research-complete-9-findings" },
-      { "id": "H3", "priority": "HIGH", "phase": "005", "file": "mcp_server/lib/context/shared-payload.ts", "status": "research-complete-2-findings" },
-      { "id": "H4", "priority": "HIGH", "phase": "008", "file": "mcp_server/lib/graph/graph-metadata-parser.ts", "status": "research-complete-4-findings" },
-      { "id": "H5", "priority": "HIGH", "phase": "010", "file": "shared/algorithms/adaptive-fusion.ts", "status": "not-audited-in-50-iter-pass" },
-      { "id": "H6", "priority": "HIGH", "phase": "014", "file": "mcp_server/handlers/save/reconsolidation-bridge.ts", "status": "research-complete-8-findings" },
-      { "id": "H7", "priority": "HIGH", "phase": "014", "file": "mcp_server/handlers/save/post-insert.ts", "status": "research-complete-6-findings" },
-      { "id": "M1", "priority": "MEDIUM", "phase": "003", "file": "scripts/core/post-save-review.ts", "status": "not-audited-in-50-iter-pass" },
-      { "id": "M2", "priority": "MEDIUM", "phase": "003", "file": "scripts/lib/trigger-phrase-sanitizer.ts", "status": "not-audited-in-50-iter-pass" },
-      { "id": "M3", "priority": "MEDIUM", "phase": "005", "file": "mcp_server/handlers/code-graph/query.ts", "status": "research-complete-6-findings" },
-      { "id": "M4", "priority": "MEDIUM", "phase": "008", "file": "scripts/graph/backfill-graph-metadata.ts", "status": "not-audited-in-50-iter-pass" },
-      { "id": "M5", "priority": "MEDIUM", "phase": "011", "file": "skill-advisor/scripts/skill_advisor.py", "status": "research-complete-5-findings" },
-      { "id": "M6", "priority": "MEDIUM", "phase": "011", "file": "skill-advisor/scripts/skill_graph_compiler.py", "status": "research-complete-4-findings" },
-      { "id": "M7", "priority": "MEDIUM", "phase": "012", "file": "command/spec_kit/assets/spec_kit_plan_auto.yaml", "status": "research-complete-4-findings" },
-      { "id": "M8", "priority": "MEDIUM", "phase": "015", "file": "015-implementation-deep-review/implementation-summary.md", "status": "research-pass-done-subsumed-by-domain-4" }
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "hook-state.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-stop.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts",
+        "source": "derived"
+      },
+      {
+        "name": "reconsolidation-bridge.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata-parser.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "code",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 016 Foundational Runtime Deep Review",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "P0 Composite Candidates",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Findings Registry",
+        "kind": "proper_noun",
+        "path": "../research/016-foundational-runtime-deep-review/findings-registry.json",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "63 distinct findings across 37 files; 4 P0 composite candidates eliminated via S1/S2/S3 + D1-D5; structural refactors S4/S5/S6/S7 + medium M8/M13 landed; 7 canonical + 14 supporting + 20 new adversarial tests migrated; Phase 017 remediation complete.",
+    "created_at": "2026-04-16T17:25:00Z",
+    "last_save_at": "2026-04-17T11:20:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
     ]
   }
 }
