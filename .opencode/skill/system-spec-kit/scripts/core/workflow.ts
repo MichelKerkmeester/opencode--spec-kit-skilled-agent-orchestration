@@ -92,6 +92,10 @@ import {
   matchesAlignmentTarget,
   applyThinningToFileChanges,
 } from './alignment-validator';
+import {
+  hasResearchIterationDirectories,
+  runBackfillResearchMetadata,
+} from '../memory/backfill-research-metadata';
 
 // ───────────────────────────────────────────────────────────────
 // 0. HELPERS
@@ -1367,6 +1371,25 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       log(`   ${graphRefreshResult.created ? 'Created' : 'Refreshed'} ${path.basename(graphRefreshResult.filePath)}`);
     } catch (graphErr: unknown) {
       throw new Error(`[workflow] graph-metadata refresh failed: ${graphErr instanceof Error ? graphErr.message : String(graphErr)}`);
+    }
+
+    if (hasResearchIterationDirectories(validatedSpecFolderPath)) {
+      const researchBackfillSummary = runBackfillResearchMetadata({
+        specFolderPath: validatedSpecFolderPath,
+        dryRun: false,
+      });
+      if (researchBackfillSummary.failed > 0) {
+        const firstFailure = researchBackfillSummary.failures[0];
+        throw new Error(
+          `[workflow] research metadata backfill failed: ${firstFailure?.directory ?? 'unknown'} — ${firstFailure?.error ?? 'unknown error'}`,
+        );
+      }
+      log(
+        '   Research iteration metadata backfill'
+        + `: ${researchBackfillSummary.descriptionCreated} description.json`
+        + `, ${researchBackfillSummary.graphCreated} graph-metadata.json`
+        + `, ${researchBackfillSummary.unchanged} unchanged`,
+      );
     }
   } else {
     log('   Deferred graph metadata refresh to explicit follow-up');
