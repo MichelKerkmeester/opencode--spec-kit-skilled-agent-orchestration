@@ -1,28 +1,51 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Retry Budget
+// ───────────────────────────────────────────────────────────────
+
+// ───────────────────────────────────────────────────────────────
+// 1. TYPE DEFINITIONS
+// ───────────────────────────────────────────────────────────────
+
+/** Failure-tracking entry for a single enrichment step and retry reason. */
 export interface RetryBudgetEntry {
-  memoryId: number;
-  step: string;
-  reason: string;
-  attempts: number;
-  firstFailedAt: string;
-  lastFailedAt: string;
+  readonly memoryId: number;
+  readonly step: string;
+  readonly reason: string;
+  readonly attempts: number;
+  readonly firstFailedAt: string;
+  readonly lastFailedAt: string;
 }
 
-const MAX_RETRIES = 3;
-const budget = new Map<string, RetryBudgetEntry>();
+// ───────────────────────────────────────────────────────────────
+// 2. CONSTANTS & STATE
+// ───────────────────────────────────────────────────────────────
 
-function key(memoryId: number, step: string, reason: string): string {
+const MAX_RETRIES = 3;
+const retryBudget = new Map<string, RetryBudgetEntry>();
+
+// ───────────────────────────────────────────────────────────────
+// 3. HELPERS
+// ───────────────────────────────────────────────────────────────
+
+function buildRetryBudgetKey(memoryId: number, step: string, reason: string): string {
   return `${memoryId}::${step}::${reason}`;
 }
 
+// ───────────────────────────────────────────────────────────────
+// 4. EXPORTS
+// ───────────────────────────────────────────────────────────────
+
+/** Return whether the retry budget still permits another attempt. */
 export function shouldRetry(memoryId: number, step: string, reason: string): boolean {
-  const entry = budget.get(key(memoryId, step, reason));
+  const entry = retryBudget.get(buildRetryBudgetKey(memoryId, step, reason));
   return !entry || entry.attempts < MAX_RETRIES;
 }
 
+/** Record a failed enrichment attempt and return the updated budget entry. */
 export function recordFailure(memoryId: number, step: string, reason: string): RetryBudgetEntry {
-  const budgetKey = key(memoryId, step, reason);
+  const budgetKey = buildRetryBudgetKey(memoryId, step, reason);
   const now = new Date().toISOString();
-  const existing = budget.get(budgetKey);
+  const existing = retryBudget.get(budgetKey);
   const entry: RetryBudgetEntry = existing
     ? {
         ...existing,
@@ -37,23 +60,25 @@ export function recordFailure(memoryId: number, step: string, reason: string): R
         firstFailedAt: now,
         lastFailedAt: now,
       };
-  budget.set(budgetKey, entry);
+  retryBudget.set(budgetKey, entry);
   return entry;
 }
 
+/** Clear all retry state, or only the entries for one memory when provided. */
 export function clearBudget(memoryId?: number): void {
   if (memoryId === undefined) {
-    budget.clear();
+    retryBudget.clear();
     return;
   }
 
-  for (const budgetKey of budget.keys()) {
+  for (const budgetKey of retryBudget.keys()) {
     if (budgetKey.startsWith(`${memoryId}::`)) {
-      budget.delete(budgetKey);
+      retryBudget.delete(budgetKey);
     }
   }
 }
 
+/** Expose the current retry-budget size for diagnostics and tests. */
 export function getBudgetSize(): number {
-  return budget.size;
+  return retryBudget.size;
 }

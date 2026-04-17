@@ -55,17 +55,18 @@ const COMPACT_FEEDBACK_GUARDS = [
   /\bauto-recovered\b/i,
 ] as const;
 
+/** Parsed JSON payload from the Copilot compact-cache hook stdin channel. */
 export interface CopilotHookInput {
-  session_id?: string;
-  sessionId?: string;
-  transcript_path?: string;
-  transcriptPath?: string;
-  cwd?: string;
-  hook_event_name?: string;
-  timestamp?: string;
-  source?: string;
-  trigger?: 'manual' | 'auto' | string;
-  [key: string]: unknown;
+  readonly session_id?: string;
+  readonly sessionId?: string;
+  readonly transcript_path?: string;
+  readonly transcriptPath?: string;
+  readonly cwd?: string;
+  readonly hook_event_name?: string;
+  readonly timestamp?: string;
+  readonly source?: string;
+  readonly trigger?: 'manual' | 'auto' | string;
+  readonly [key: string]: unknown;
 }
 
 async function parseCopilotStdin(): Promise<CopilotHookInput | null> {
@@ -90,7 +91,7 @@ function tailFile(filePath: string, lines: number): string[] {
     const content = readFileSync(filePath, 'utf-8');
     const allLines = content.split('\n');
     return allLines.slice(Math.max(0, allLines.length - lines));
-  } catch {
+  } catch (_error: unknown) {
     return [];
   }
 }
@@ -191,7 +192,17 @@ function readTranscriptPath(input: CopilotHookInput): string | undefined {
       : undefined;
 }
 
-export function cacheCompactContext(input: CopilotHookInput | null): { sessionId: string; payload: string; persisted: boolean } | null {
+/**
+ * Build and persist a fallback compact-context cache for one Copilot session.
+ *
+ * @param input - Parsed hook input from stdin
+ * @returns Persisted cache metadata, or null when no valid input was supplied
+ */
+export function cacheCompactContext(input: CopilotHookInput | null): {
+  sessionId: string;
+  payload: string;
+  persisted: boolean;
+} | null {
   if (!input) {
     hookLog('warn', 'copilot:compact-cache', 'No stdin input received');
     return null;

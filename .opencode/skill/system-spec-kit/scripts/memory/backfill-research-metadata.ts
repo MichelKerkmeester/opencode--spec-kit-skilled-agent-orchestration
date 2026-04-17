@@ -24,25 +24,25 @@ const DESCRIPTION_FILENAME = 'description.json';
 const GRAPH_METADATA_FILENAME = 'graph-metadata.json';
 
 export interface ResearchMetadataBackfillOptions {
-  specFolderPath: string;
-  dryRun?: boolean;
-  now?: string;
+  readonly specFolderPath: string;
+  readonly dryRun?: boolean;
+  readonly now?: string;
 }
 
 export interface ResearchMetadataBackfillFailure {
-  directory: string;
-  error: string;
+  readonly directory: string;
+  readonly error: string;
 }
 
 export interface ResearchMetadataBackfillSummary {
-  specFolderPath: string;
-  dryRun: boolean;
-  iterationDirectories: string[];
-  descriptionCreated: number;
-  graphCreated: number;
-  unchanged: number;
-  failed: number;
-  failures: ResearchMetadataBackfillFailure[];
+  readonly specFolderPath: string;
+  readonly dryRun: boolean;
+  readonly iterationDirectories: string[];
+  readonly descriptionCreated: number;
+  readonly graphCreated: number;
+  readonly unchanged: number;
+  readonly failed: number;
+  readonly failures: ResearchMetadataBackfillFailure[];
 }
 
 interface CliOptions {
@@ -111,12 +111,13 @@ function writeGraphMetadataFile(filePath: string, content: string): void {
   } finally {
     try {
       fs.unlinkSync(tempPath);
-    } catch {
+    } catch (_error: unknown) {
       // Temp file already renamed or never created.
     }
   }
 }
 
+/** Find research iteration directories beneath a spec folder. */
 export function collectResearchIterationDirectories(
   specFolderPath: string,
   failures: ResearchMetadataBackfillFailure[] = [],
@@ -156,10 +157,12 @@ export function collectResearchIterationDirectories(
   return Array.from(discovered).sort();
 }
 
+/** Return whether a spec folder contains any research iteration directories. */
 export function hasResearchIterationDirectories(specFolderPath: string): boolean {
   return collectResearchIterationDirectories(specFolderPath).length > 0;
 }
 
+/** Create missing research-iteration description and graph metadata files. */
 export function runBackfillResearchMetadata(
   options: ResearchMetadataBackfillOptions,
 ): ResearchMetadataBackfillSummary {

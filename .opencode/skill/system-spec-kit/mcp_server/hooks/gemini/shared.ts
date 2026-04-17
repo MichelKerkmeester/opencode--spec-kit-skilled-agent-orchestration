@@ -17,22 +17,22 @@ export {
 
 /** Parsed JSON from Gemini CLI hook stdin */
 export interface GeminiHookInput {
-  session_id?: string;
-  transcript_path?: string;
-  cwd?: string;
-  hook_event_name?: string;
-  timestamp?: string;
+  readonly session_id?: string;
+  readonly transcript_path?: string;
+  readonly cwd?: string;
+  readonly hook_event_name?: string;
+  readonly timestamp?: string;
   // SessionStart fields (Gemini has startup/resume/clear; no native compact source)
-  source?: 'startup' | 'resume' | 'clear' | string;
+  readonly source?: 'startup' | 'resume' | 'clear' | string;
   // PreCompress fields
-  trigger?: 'manual' | 'auto';
+  readonly trigger?: 'manual' | 'auto';
   // AfterAgent fields
-  prompt?: string;
-  prompt_response?: string;
-  stop_hook_active?: boolean;
+  readonly prompt?: string;
+  readonly prompt_response?: string;
+  readonly stop_hook_active?: boolean;
   // SessionEnd fields
-  reason?: string;
-  [key: string]: unknown;
+  readonly reason?: string;
+  readonly [key: string]: unknown;
 }
 
 /**
@@ -43,11 +43,11 @@ export interface GeminiHookInput {
  * systemMessage (displayed to stderr, not injected into conversation).
  */
 export interface GeminiHookOutput {
-  decision?: 'allow' | 'block' | 'deny';
-  systemMessage?: string;
-  hookSpecificOutput?: {
-    additionalContext?: string;
-    [key: string]: unknown;
+  readonly decision?: 'allow' | 'block' | 'deny';
+  readonly systemMessage?: string;
+  readonly hookSpecificOutput?: {
+    readonly additionalContext?: string;
+    readonly [key: string]: unknown;
   };
 }
 

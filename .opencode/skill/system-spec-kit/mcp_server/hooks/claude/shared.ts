@@ -11,20 +11,20 @@ export const SESSION_PRIME_TOKEN_BUDGET = 2000;
 
 /** Parsed JSON from Claude Code hook stdin */
 export interface HookInput {
-  session_id?: string;
-  transcript_path?: string;
-  trigger?: 'auto' | 'manual';
-  source?: 'startup' | 'resume' | 'clear' | 'compact';
-  custom_instructions?: string;
-  stop_hook_active?: boolean;
-  last_assistant_message?: string;
-  [key: string]: unknown;
+  readonly session_id?: string;
+  readonly transcript_path?: string;
+  readonly trigger?: 'auto' | 'manual';
+  readonly source?: 'startup' | 'resume' | 'clear' | 'compact';
+  readonly custom_instructions?: string;
+  readonly stop_hook_active?: boolean;
+  readonly last_assistant_message?: string;
+  readonly [key: string]: unknown;
 }
 
 /** A titled section for hook stdout output */
 export interface OutputSection {
-  title: string;
-  content: string;
+  readonly title: string;
+  readonly content: string;
 }
 
 /** Require a non-empty session_id for any hook that touches shared temp-state. */

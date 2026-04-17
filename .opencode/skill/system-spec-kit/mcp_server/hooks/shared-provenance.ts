@@ -12,9 +12,9 @@
 
 /** Optional metadata describing who produced a cached payload and how it was recovered. */
 export interface RecoveredCompactMetadata {
-  producer?: string;
-  trustState?: string;
-  sourceSurface?: string;
+  readonly producer?: string;
+  readonly trustState?: string;
+  readonly sourceSurface?: string;
 }
 
 /**

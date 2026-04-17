@@ -16,9 +16,9 @@ const FRONTMATTER_RE = /^(?:\uFEFF)?(?:\s*<!--[\s\S]*?-->\s*)*---\s*\r?\n([\s\S]
 type ResultStatus = 'pass' | 'warn' | 'fail';
 
 export interface ContinuityFreshnessResult {
-  rule: 'CONTINUITY_FRESHNESS';
-  status: ResultStatus;
-  code:
+  readonly rule: 'CONTINUITY_FRESHNESS';
+  readonly status: ResultStatus;
+  readonly code:
     | 'fresh'
     | 'stale'
     | 'clock_drift'
@@ -28,11 +28,11 @@ export interface ContinuityFreshnessResult {
     | 'missing_graph_timestamp'
     | 'invalid_timestamp'
     | 'invalid_frontmatter';
-  message: string;
-  details: string[];
-  continuityTimestamp?: string;
-  graphTimestamp?: string;
-  deltaMs?: number;
+  readonly message: string;
+  readonly details: string[];
+  readonly continuityTimestamp?: string;
+  readonly graphTimestamp?: string;
+  readonly deltaMs?: number;
 }
 
 interface CliOptions {
@@ -144,7 +144,15 @@ function buildFail(message: string, details: string[] = []): ContinuityFreshness
   };
 }
 
-export function validateContinuityFreshness(folderPath: string): ContinuityFreshnessResult {
+/**
+ * Validate that packet continuity metadata stays close to graph-metadata save time.
+ *
+ * @param folderPath - Spec folder to validate
+ * @returns Structured pass/warn/fail result for validate.sh bridging
+ */
+export function validateContinuityFreshness(
+  folderPath: string,
+): ContinuityFreshnessResult {
   const specFolderPath = path.resolve(folderPath);
   const implementationSummaryPath = path.join(specFolderPath, 'implementation-summary.md');
   const graphMetadataPath = path.join(specFolderPath, 'graph-metadata.json');

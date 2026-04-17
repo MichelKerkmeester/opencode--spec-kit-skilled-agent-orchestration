@@ -37,6 +37,12 @@ export type { ReadyResult } from './ensure-ready.js';
 export type { StructuralReadiness } from './ops-hardening.js';
 export type { SharedPayloadTrustState } from '../context/shared-payload.js';
 
+/** Readiness payload shared by code-graph handler responses. */
+export interface CodeGraphReadinessBlock extends ReadyResult {
+  readonly canonicalReadiness: StructuralReadiness;
+  readonly trustState: SharedPayloadTrustState;
+}
+
 /**
  * Map ensure-ready `GraphFreshness` onto the canonical
  * ops-hardening `StructuralReadiness` vocabulary. The canonical
@@ -136,7 +142,9 @@ export function buildQueryGraphMetadata(
  *
  * Origin: M8 / T-CGQ-11.
  */
-export function buildReadinessBlock(readiness: ReadyResult) {
+export function buildReadinessBlock(
+  readiness: ReadyResult,
+): CodeGraphReadinessBlock {
   return {
     ...readiness,
     canonicalReadiness: canonicalReadinessFromFreshness(readiness.freshness),

@@ -15,13 +15,13 @@ import {
 type ResultStatus = 'pass' | 'warn';
 
 export interface EvidenceMarkerLintResult {
-  rule: 'EVIDENCE_MARKER_LINT';
-  status: ResultStatus;
-  code: 'clean' | 'invalid_markers';
-  message: string;
-  details: string[];
-  malformed: number;
-  unclosed: number;
+  readonly rule: 'EVIDENCE_MARKER_LINT';
+  readonly status: ResultStatus;
+  readonly code: 'clean' | 'invalid_markers';
+  readonly message: string;
+  readonly details: string[];
+  readonly malformed: number;
+  readonly unclosed: number;
 }
 
 interface CliOptions {
@@ -79,7 +79,15 @@ function formatMarkerDetail(folderPath: string, marker: Marker): string {
   return `${relativePath}:${marker.line}:${marker.col + 1} ${marker.status} ${rawPreview}`;
 }
 
-export async function lintEvidenceMarkers(folderPath: string): Promise<EvidenceMarkerLintResult> {
+/**
+ * Lint evidence markers within a spec folder using the audit parser.
+ *
+ * @param folderPath - Spec folder to scan
+ * @returns Structured pass/warn result for validate.sh bridging
+ */
+export async function lintEvidenceMarkers(
+  folderPath: string,
+): Promise<EvidenceMarkerLintResult> {
   const resolvedFolder = path.resolve(folderPath);
   const auditResult = await auditFolder(resolvedFolder, { rewrap: false });
   const invalidMarkers = auditResult.markers.filter((marker) => marker.status !== 'ok');

@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 
 // ───────────────────────────────────────────────────────────────
-// 1. WORKFLOW
+// 1. IMPORTS
 // ───────────────────────────────────────────────────────────────
 // Main workflow orchestrator -- coordinates data loading, extraction, rendering, and file output
 // Node stdlib
@@ -98,7 +98,7 @@ import {
 } from '../memory/backfill-research-metadata';
 
 // ───────────────────────────────────────────────────────────────
-// 0. HELPERS
+// 2. HELPERS
 // ───────────────────────────────────────────────────────────────
 
 // Phase 004 T011: Trigger phrase filter — suppresses path fragments, short tokens, and shingle subsets
@@ -268,7 +268,7 @@ function consumeWorkflowRetryManagerLoadError(): string | null {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 1. INTERFACES
+// 3. INTERFACES
 // ───────────────────────────────────────────────────────────────
 
 /** Configuration options for the memory generation workflow. */
@@ -325,7 +325,7 @@ export interface WorkflowResult {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 2. WORKFLOW RUN LOCK
+// 4. WORKFLOW RUN LOCK
 // ───────────────────────────────────────────────────────────────
 
 let workflowRunQueue: Promise<void> = Promise.resolve();
@@ -455,7 +455,7 @@ async function withWorkflowRunLock<TResult>(operation: () => Promise<TResult>): 
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. CAPTURED-SESSION ENRICHMENT
+// 5. CAPTURED-SESSION ENRICHMENT
 // ───────────────────────────────────────────────────────────────
 
 async function enrichCapturedSessionData(
@@ -583,7 +583,7 @@ async function enrichCapturedSessionData(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. MAIN WORKFLOW
+// 6. MAIN WORKFLOW
 // ───────────────────────────────────────────────────────────────
 
 /**
@@ -1579,7 +1579,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. EXPORTS
+// 7. EXPORTS
 // ───────────────────────────────────────────────────────────────
 
 export { stripWorkflowHtmlOutsideCodeFences } from './content-cleaner';

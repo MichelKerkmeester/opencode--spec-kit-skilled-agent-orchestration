@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// ---------------------------------------------------------------
-// MODULE: Evidence Marker Audit (v2 — bracket-depth parser)
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
+// MODULE: Evidence Marker Audit
+// ───────────────────────────────────────────────────────────────
 // ───────────────────────────────────────────────────────────────
 // 1. EVIDENCE MARKER AUDIT
 // ───────────────────────────────────────────────────────────────
@@ -51,6 +51,7 @@ import * as path from 'node:path';
    2. TYPES
 ------------------------------------------------------------------*/
 
+/** Terminal state for one parsed evidence marker. */
 export type MarkerStatus = 'ok' | 'malformed' | 'unclosed';
 
 export interface Marker {
@@ -74,6 +75,7 @@ export interface Marker {
   closerOffset?: number;
 }
 
+/** Aggregated audit result for one folder scan. */
 export interface FolderAuditResult {
   folder: string;
   filesScanned: number;
@@ -328,6 +330,7 @@ export function parseMarkers(content: string, filePath: string): Marker[] {
    4. FILE AUDIT
 ------------------------------------------------------------------*/
 
+/** Audit one markdown file and return all parsed evidence markers. */
 export async function auditFile(filePath: string): Promise<Marker[]> {
   const content = await fs.readFile(filePath, 'utf8');
   return parseMarkers(content, filePath);
@@ -352,7 +355,11 @@ async function collectMarkdownFiles(folderPath: string): Promise<string[]> {
   return results;
 }
 
-export async function auditFolder(folderPath: string, opts: { rewrap: boolean }): Promise<FolderAuditResult> {
+/** Audit every markdown file in a folder tree, with optional malformed-marker rewrap. */
+export async function auditFolder(
+  folderPath: string,
+  opts: { rewrap: boolean },
+): Promise<FolderAuditResult> {
   const files = await collectMarkdownFiles(folderPath);
   const allMarkers: Marker[] = [];
   for (const f of files) {
@@ -408,7 +415,7 @@ async function pathExists(p: string): Promise<boolean> {
   try {
     await fs.access(p);
     return true;
-  } catch {
+  } catch (_error: unknown) {
     return false;
   }
 }
