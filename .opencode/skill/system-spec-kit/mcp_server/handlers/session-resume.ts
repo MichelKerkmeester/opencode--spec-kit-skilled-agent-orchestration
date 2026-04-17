@@ -3,6 +3,10 @@
 // ───────────────────────────────────────────────────────────────
 // Phase 020: Composite MCP tool that merges memory resume context,
 // code graph status, and CocoIndex availability into a single call.
+// T-SRS-BND-01 (R2-P1-001): bind public session_resume sessionId input to the
+// MCP transport caller context before cached-session lookups can consume it.
+// Default mode is strict rejection; MCP_SESSION_RESUME_AUTH_MODE=permissive
+// logs mismatches for staged canary rollout instead of rejecting immediately.
 
 import { createHash } from 'node:crypto';
 import { statSync } from 'node:fs';
@@ -30,6 +34,7 @@ import {
   buildCodeGraphOpsContract,
   type CodeGraphOpsContract,
 } from '../lib/code-graph/ops-hardening.js';
+import { getCallerContext } from '../lib/context/caller-context.js';
 import { loadMatchingStates, type HookProducerMetadata, type HookState } from '../hooks/claude/hook-state.js';
 import { buildResumeLadder } from '../lib/resume/resume-ladder.js';
 import type { MCPResponse } from '@spec-kit/shared/types';
@@ -40,6 +45,7 @@ import type { MCPResponse } from '@spec-kit/shared/types';
 
 export const CACHED_SESSION_SUMMARY_SCHEMA_VERSION = 1;
 export const CACHED_SESSION_SUMMARY_MAX_AGE_MS = 30 * 60 * 1000;
+const SESSION_RESUME_AUTH_PERMISSIVE = process.env.MCP_SESSION_RESUME_AUTH_MODE === 'permissive';
 
 export interface CachedSessionSummaryCandidate {
   schemaVersion: number;
@@ -441,6 +447,22 @@ export function logCachedSummaryDecision(
 
 /** Handle session_resume tool call — composite resume with memory + graph + cocoindex */
 export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPResponse> {
+  const callerCtx = getCallerContext();
+  const requestedSessionId = typeof args.sessionId === 'string' && args.sessionId.trim().length > 0
+    ? args.sessionId
+    : null;
+
+  // T-SRS-BND-01: reject mismatched sessionId to prevent cross-session cached-summary leakage.
+  // Permissive mode logs a warning instead of rejecting so canary sessions can verify rollout.
+  if (requestedSessionId && callerCtx?.sessionId && requestedSessionId !== callerCtx.sessionId) {
+    const message = `Session-ID mismatch: args.sessionId='${requestedSessionId}' vs callerContext.sessionId='${callerCtx.sessionId}'`;
+    if (SESSION_RESUME_AUTH_PERMISSIVE) {
+      console.warn(`[session-resume] ${message} (permissive mode — allowing)`);
+    } else {
+      throw new Error(`${message} — rejecting cross-session resume`);
+    }
+  }
+
   // F052: Record memory recovery metric for session_resume
   recordMetricEvent({ kind: 'memory_recovery' });
 
@@ -452,7 +474,7 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     specFolder: args.specFolder,
     // Advanced targeted recovery selector: expose sessionId publicly for
     // operators, but keep default guidance focused on specFolder/bootstrap.
-    claudeSessionId: typeof args.sessionId === 'string' ? args.sessionId : undefined,
+    claudeSessionId: requestedSessionId ?? undefined,
   });
   const scopeFallback = !args.specFolder && cachedSummaryDecision.status === 'accepted'
     ? cachedSummaryDecision.cachedSummary?.lastSpecFolder ?? null
