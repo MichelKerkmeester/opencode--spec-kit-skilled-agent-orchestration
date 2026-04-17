@@ -3,7 +3,7 @@
 Generated: 2026-04-16
 Model: Opus 4.7 (1M context)
 Gates: CHK-PRE-005 through CHK-PRE-008 in `checklist.md`
-Source of truth: `FINAL-synthesis-and-review.md` (50-iteration Phase 016 synthesis) + direct code inspection.
+Source of truth: `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` (50-iteration Phase 016 synthesis) + direct code inspection.
 
 ## Summary
 
@@ -121,7 +121,7 @@ What R46-001 DOES break: when the user's prompt like "run deep-research iteratio
 
 **Watch-P1 upgrade decision: DO NOT UPGRADE to P0-E.**
 
-The Watch-P1 upgrade trigger in `FINAL-synthesis-and-review.md` §3.5 is: "`command-spec-kit` proceeds into spec-folder creation when invoked via bridge". This premise is false: the bridge never proceeds into anything. The risk Domain-4 was surfacing is about R46-001 (subcommand information loss during skill recommendation), not about Gate 3 bypass. Keep Watch-P1 as P1; remediate via S4/A0 (T-SAP-03 — per-subcommand bridges) as already scoped.
+The Watch-P1 upgrade trigger in `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §3.5 is: "`command-spec-kit` proceeds into spec-folder creation when invoked via bridge". This premise is false: the bridge never proceeds into anything. The risk Domain-4 was surfacing is about R46-001 (subcommand information loss during skill recommendation), not about Gate 3 bypass. Keep Watch-P1 as P1; remediate via S4/A0 (T-SAP-03 — per-subcommand bridges) as already scoped.
 
 **Implication for `checklist.md` CHK-VERIFY-11:**
 - Route (a) applies: "confirmed non-P0 with `command-spec-kit` Gate 3 evidence" — the evidence is this document + §3.5 above.
@@ -145,7 +145,7 @@ For each of the 7 files:
 2. Check git blame for the most recent commit touching the file.
 3. Read the commit message for "shim", "compat", "temporary", or "TODO" hints.
 4. Inspect whether FINAL-synthesis-and-review.md §6.5 flags this specific assertion range.
-5. Search sibling `decision-record.md` files for references.
+5. Search sibling decision-record.md files for references.
 
 ### Per-file findings
 
@@ -484,7 +484,7 @@ export function saveState(sessionId: string, state: HookState): boolean {
 - Zero session disruption during rollout; migration is write-once per file on first access.
 
 **Unblocks:**
-- `CHK-PRE-007`: resolved. Decision recorded above; should be mirrored in `../../decision-record.md` as an ADR before T-HST-02 implementation starts.
+- `CHK-PRE-007`: resolved. Decision recorded above; should be mirrored in `../decision-record.md` as an ADR before T-HST-02 implementation starts.
 - `T-PRE-07`: resolved.
 - `T-HST-02` (M2 from S2): no longer blocked on OQ3. Implementation can proceed with the snippet above as the starting sketch.
 
@@ -724,7 +724,7 @@ Blocked on OQ4 (CHK-PRE-008) — Skill routing S4 starts:
 
 - **Research source of truth:** `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md`
 - **Findings registry:** `../research/016-foundational-runtime-deep-review/findings-registry.json`
-- **Parent 026 spec:** `../../spec.md`
+- **Parent 026 spec:** `../spec.md`
 - **Spec:** `./spec.md`
 - **Plan:** `./plan.md`
 - **Tasks:** `./tasks.md`

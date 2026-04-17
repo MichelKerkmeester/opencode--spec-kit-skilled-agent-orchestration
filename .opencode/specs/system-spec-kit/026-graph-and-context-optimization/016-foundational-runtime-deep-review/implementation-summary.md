@@ -326,7 +326,7 @@ Success criteria from `spec.md §5` (SC-001 through SC-010):
 ---
 
 <!-- ANCHOR:cross-refs -->
-## Cross-References
+### Cross-References
 
 - **Specification**: `spec.md` — 63 findings registry + 4 P0 composite candidates + 10 success criteria
 - **Plan**: `plan.md` — 5-phase execution plan, dependency graph, weekly schedule, rollback strategy

@@ -44,7 +44,7 @@ The entire Phase 1 work was sequenced to respect file-overlap dependencies: P0-D
 | Files changed | 52 across 4 composite commits |
 | Findings closed | 27 constituent findings (P0-A: 11, P0-B: 11, P0-C: 7, P0-D: 5; several shared across composites per `spec.md §3` constituent maps) |
 | New test files | 4 regression test files (`p0-d-*`, `p0-a-*`, `p0-c-*` via graph-metadata-integration expansion, `p0-b-*`) |
-| Attack scenarios blocked | 4 (§3.x in `FINAL-synthesis-and-review.md`) |
+| Attack scenarios blocked | 4 (§3.x in `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md`) |
 | Execution time (wall-clock) | ~60 minutes parallel cli-copilot gpt-5.4 high |
 | Architectural primitives introduced | 6 (typed OperationResult, Zod schema + .bad quarantine, predecessor CAS, batched snapshot reads, mtime re-read TOCTOU guard, migrated marker + penalty) |
 
@@ -78,7 +78,7 @@ Phase 1 does NOT address the remaining remediation work:
 
 **Commit:** `afbb3bc7f` | **Tasks closed:** T-SST-05, T-SST-06, T-HST-03, T-HST-04, T-HST-05
 
-**Attack scenario (from `FINAL-synthesis-and-review.md` §3.4):**
+**Attack scenario (from `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §3.4):**
 A routine `--finalize` cleanup sweep overlapping with a live session write can (1) delete the freshly-written session state because `cleanStaleStates()` performs a stat-then-unlink across a live rename window, (2) make the next `loadMostRecentState()` return `null` for all consumers because the entire directory loop was wrapped in a single try/catch, (3) re-parse transcript from offset 0 because the next stop hook sees `lastTranscriptOffset: 0` sentinel from an intermediate incomplete write, and (4) compound via overlap-induced offset regression without a monotonicity guard. Triggered by normal maintenance, not abnormal concurrent load.
 
 **Before / after behavior:**
@@ -110,7 +110,7 @@ A routine `--finalize` cleanup sweep overlapping with a live session write can (
 
 **Commit:** `6f5623a4c` | **Tasks closed:** T-SST-01, T-SST-02, T-SST-03, T-SST-04, T-HST-01, T-HST-02, T-HST-07, T-HST-08, T-HST-09, T-SRS-02 (+ Gemini hook parity)
 
-**Attack scenario (from `FINAL-synthesis-and-review.md` §3.1):**
+**Attack scenario (from `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §3.1):**
 A single corrupt or concurrently-replaced HookState temp file simultaneously poisons all five hook entrypoints (Claude session-stop, Claude compact-inject, Gemini session-prime, Gemini session-stop, OpenCode). The 10-step chain includes: (1) unvalidated JSON.parse injects forged provenance into Claude prompt replay, (2) Gemini startup misroutes continuity, (3) transcript re-parsing with duplicate token counts, (4) cached-summary schema guard bypassed because `schemaVersion` was fabricated from a constant, (5) one stop-hook's summary paired with another's packet target without CAS, (6) autosave proceeds after known `saveState` failure, (7) fresh precompact payload silently deleted by older consumer's `clearCompactPrime()`, (8) freshness from one generation with content from another (torn read), (9) all sibling recovery suppressed when one file transiently unreadable, (10) `cleanStaleStates()` partial sweep returned as complete.
 
 **Before / after behavior:**
@@ -150,7 +150,7 @@ A single corrupt or concurrently-replaced HookState temp file simultaneously poi
 
 **Commit:** `1bdd1ed03` | **Tasks closed:** T-GMP-01, T-GMP-02, T-GMP-03, T-GMP-04, T-MPR-01
 
-**Attack scenario (from `FINAL-synthesis-and-review.md` §3.3):**
+**Attack scenario (from `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §3.3):**
 A malformed modern `graph-metadata.json` (6-step chain): (1) gets accepted as legacy with `ok: true` and no migration marker, (2) gets fabricated `created_at` / `last_save_at` via `new Date().toISOString()` erasing original timestamp evidence, (3) gets reinterpreted through `deriveStatus()` as `planned` or `complete` when `readDoc()` collapses I/O failure into `null`, (4) gets rewritten as canonical current JSON by `refreshGraphMetadataForSpecFolder()` erasing the corruption evidence at the persistence layer, (5) gets `qualityScore: 1` and empty `qualityFlags: []` through the memory-parser fallback path, (6) gets +0.12 packet-search boost in stage-1 candidate generation — outranking legitimate spec docs with the original corruption signal fully erased.
 
 **Before / after behavior:**
@@ -183,7 +183,7 @@ A malformed modern `graph-metadata.json` (6-step chain): (1) gets accepted as le
 
 **Commit:** `104f534bd` | **Tasks closed:** T-RCB-01, T-RCB-03, T-RCB-04, T-RCB-05, T-RCB-06, T-RCB-07, T-RCB-08, T-RCN-01, T-RCN-02, T-MSV-01, T-MSV-02
 
-**Attack scenario (from `FINAL-synthesis-and-review.md` §3.2):**
+**Attack scenario (from `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §3.2):**
 Two concurrent governed `memory_save` requests against overlapping candidates: (1) fork lineage because `insertSupersedesEdge()` deduplicates only by `(source_id, target_id, relation)` — `executeConflict()` runs `UPDATE ... WHERE id = ?` without a version or scope recheck, allowing both requests to supersede the same predecessor, (2) deprecate a predecessor already superseded by the first request, (3) insert duplicate complement rows because `runReconsolidationIfEnabled()` runs vector search + scope filter before the writer transaction — a second concurrent save finds the same near-duplicate in the pre-transaction window, (4) admit or exclude candidates with mixed-source snapshots because `readStoredScope()` issues a fresh per-candidate `SELECT` outside any transaction producing a mixed-snapshot universe, (5) generate stale assistive recommendations from a second pre-transaction search that differs from the planning snapshot.
 
 **Before / after behavior:**
@@ -396,6 +396,6 @@ Twenty new adversarial tests (T-TEST-NEW-01 through T-TEST-NEW-20) cover the rem
 
 ---
 
-*Generated 2026-04-16 from git log `afbb3bc7f..8c809d725` (4 fix commits + 2 chore commits). Source documents: `spec.md`, `plan.md`, `tasks.md`, `phase-4-quick-wins-summary.md`, `preflight-oq-resolution.md`, `FINAL-synthesis-and-review.md`.*
+*Generated 2026-04-16 from git log `afbb3bc7f..8c809d725` (4 fix commits + 2 chore commits). Source documents: `spec.md`, `plan.md`, `tasks.md`, `phase-4-quick-wins-summary.md`, `preflight-oq-resolution.md`, `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md`.*
 
 *Next doc: `implementation-summary.md` — to be authored after all phases complete per spec.md §3 Level 2 template requirement.*
