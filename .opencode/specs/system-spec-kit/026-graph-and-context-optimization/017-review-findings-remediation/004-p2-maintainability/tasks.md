@@ -21,7 +21,7 @@ _memory:
 <!-- ANCHOR:notation -->
 ## Notation
 
-**Legend**: `[ ]` pending • `[x]` complete • `[~]` in progress • `[!]` blocked
+**Legend**: pending • complete • in progress • blocked
 **Effort**: S=≤2h • M=2-8h • L=≥1 day
 **Severity**: All Wave D tasks are P2 (maintainability suggestion — non-blocking)
 **Task ID scheme**:
@@ -39,7 +39,7 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Cluster D1 — Typing Hardening (2 tasks, 10h)
 
-### T-EXH-01 — [x] assertNever helper + 8 union applications
+### T-EXH-01 — [x] assertNever helper + 8 union applications [EVIDENCE: 787bf4f88]
 
 **Severity**: P2 | **Effort**: L (8h) | **Cluster**: D1
 **Files**:
@@ -69,9 +69,9 @@ _memory:
 - [x] `npx tsc --noEmit` passes post each union
 - [x] Trivial unit test asserts `assertNever` throws
 
-**Evidence**: `[EVIDENCE: 787bf4f88 D1 exhaustiveness helper, union guards, and regression tests landed]`
+**Evidence**: [EVIDENCE: 787bf4f88]
 
-### T-W1-PIN-02 — [x] OnIndexSkipReason satisfies clause + warn-log
+### T-W1-PIN-02 — [x] OnIndexSkipReason satisfies clause + warn-log [EVIDENCE: 787bf4f88]
 
 **Severity**: P2 | **Effort**: S (2h) | **Cluster**: D1
 **Files**: `mcp_server/handlers/save/post-insert.ts:302-316`
@@ -89,7 +89,7 @@ _memory:
 - [x] `npx tsc --noEmit` passes
 - [x] Existing vitest on post-insert.ts unchanged
 
-**Evidence**: `[EVIDENCE: 787bf4f88 D1 typed lookup map and unmapped-variant warning landed]`
+**Evidence**: [EVIDENCE: 787bf4f88]
 
 ---
 
@@ -98,7 +98,7 @@ _memory:
 <!-- ANCHOR:phase-2 -->
 ## Cluster D2 — Extraction Refactors (2 tasks, 14h)
 
-### T-PIN-GOD-01 — [x] Extract runEnrichmentStep helper
+### T-PIN-GOD-01 — [x] Extract runEnrichmentStep helper [EVIDENCE: 0ac9cdcba]
 
 **Severity**: P2 | **Effort**: L (8h) | **Cluster**: D2
 **Files**: `mcp_server/handlers/save/post-insert.ts:133-376`
@@ -129,9 +129,9 @@ _memory:
 - [x] Diff review confirms zero runtime-semantic change
 - [x] `npx tsc --noEmit` passes
 
-**Evidence**: `[EVIDENCE: 0ac9cdcba D2 enrichment-step extraction and focused helper coverage landed]`
+**Evidence**: [EVIDENCE: 0ac9cdcba]
 
-### T-RCB-DUP-01 — [x] Extract runAtomicReconsolidationTxn
+### T-RCB-DUP-01 — [x] Extract runAtomicReconsolidationTxn [EVIDENCE: 0ac9cdcba]
 
 **Severity**: P2 | **Effort**: M (6h) | **Cluster**: D2
 **Files**: `mcp_server/lib/storage/reconsolidation.ts:507-600`
@@ -155,7 +155,7 @@ _memory:
 - [x] Diff review confirms identical predecessor-snapshot handoff
 - [x] `npx tsc --noEmit` passes
 
-**Evidence**: `[EVIDENCE: 0ac9cdcba D2 reconsolidation transaction extraction and fixture coverage landed]`
+**Evidence**: [EVIDENCE: 0ac9cdcba]
 
 ---
 
@@ -164,7 +164,7 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Cluster D3 — Typed Predicate + Docs (2 tasks, 6h)
 
-### T-YML-CP4-01 — [x] Canonical YAML timing-note fix for CP-004
+### T-YML-CP4-01 — [x] Canonical YAML timing-note fix for CP-004 [EVIDENCE: b26514cbc]
 
 **Severity**: P2 | **Effort**: M (4h) | **Cluster**: D3
 **Files**: `.opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml:1099`
@@ -184,9 +184,9 @@ _memory:
 - [x] Asset-level regression confirms `post_save_indexing` no longer stores prose under `when:`
 - [x] No OTHER prose `when:` clauses touched in this PR
 
-**Evidence**: `[EVIDENCE: final D3 commit updates spec_kit_complete_confirm.yaml and shared/predicates/boolean-expr.test.ts]`
+**Evidence**: [EVIDENCE: b26514cbc]
 
-### T-W1-HST-02 — [x] Docker deployment note (`-v /tmp:/tmp` anti-pattern)
+### T-W1-HST-02 — [x] Docker deployment note (`-v /tmp:/tmp` anti-pattern) [EVIDENCE: b26514cbc]
 
 **Severity**: P2 (advisory) | **Effort**: S (2h) | **Cluster**: D3
 **Files**: `DEPLOYMENT.md`
@@ -204,7 +204,7 @@ _memory:
 - [x] Cites R53-P1w-001 and the segment-2 synthesis context
 - [x] Advisory note stays doc-only, with no `getuid()` code change folded into this wave
 
-**Evidence**: `[EVIDENCE: final D3 commit creates DEPLOYMENT.md at repo root]`
+**Evidence**: [EVIDENCE: b26514cbc]
 
 ---
 
@@ -284,10 +284,10 @@ The following P2 findings are tracked but explicitly NOT in Wave D scope. They r
 
 | Cluster | Tasks | Total effort | Status |
 |---------|-------|--------------|--------|
-| Cluster D1 (typing hardening) | 2 | 10h | pending |
-| Cluster D2 (extraction refactors) | 2 | 14h | pending |
-| Cluster D3 (typed predicate + docs) | 2 | 6h | pending |
-| **Scheduled total** | **6** | **~30h** | **0/6 complete** |
+| Cluster D1 (typing hardening) | 2 | 10h | complete |
+| Cluster D2 (extraction refactors) | 2 | 14h | complete |
+| Cluster D3 (typed predicate + docs) | 2 | 6h | complete |
+| **Scheduled total** | **6** | **~30h** | **37/37 complete** |
 | Parking lot (deferred) | 3 findings | — | tracked only |
 
 **Effort budget envelope**: ~40h (30h scheduled work + ~10h review/integration buffer).

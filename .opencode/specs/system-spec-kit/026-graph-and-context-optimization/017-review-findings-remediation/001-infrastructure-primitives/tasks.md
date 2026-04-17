@@ -27,7 +27,7 @@ _memory:
 <!-- ANCHOR:notation -->
 ## Notation
 
-**Legend**: `[ ]` pending • `[x]` complete • `[~]` in progress • `[!]` blocked
+**Legend**: pending • complete • in progress • blocked
 **Effort**: S=≤2h • M=2-8h • L=≥1 day
 **Severity**: P0 (blocker) • P1 (required) • P2 (suggestion)
 **Task ID scheme**:
@@ -48,7 +48,7 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Wave A Tasks (5 tasks, ~20h) [PHASE 1 — CRITICAL PATH]
 
-### T-CNS-01 — [ ] Canonical save writes description.json.lastUpdated
+### T-CNS-01 — [x] Canonical save writes description.json.lastUpdated [EVIDENCE: aaf0f49a8]
 
 **Severity**: P1 | **Effort**: M (4h) | **Group**: G1 (merged PR with T-W1-CNS-04)
 **Files**: `.opencode/skill/system-spec-kit/scripts/core/workflow.ts:1259, 1261-1331`
@@ -64,18 +64,18 @@ _memory:
 4. Preserve existing field order and all adjacent field writes.
 
 **Acceptance**:
-- [ ] Vitest asserts `description.json.lastUpdated` updated on successive saves with monotonic advancement
-- [ ] Manual test: `/memory:save` on test folder sets `lastUpdated` to current time (within 1s tolerance)
-- [ ] `grep 'ctxFileWritten = false' scripts/core/workflow.ts` returns no match
-- [ ] `grep "'lastUpdated'" scripts/dist/memory/*.js` confirms presence post-build (reverses R4-P1-002's zero-grep)
+- Verified: Vitest asserts `description.json.lastUpdated` updated on successive saves with monotonic advancement [EVIDENCE: aaf0f49a8]
+- Verified: Manual test: `/memory:save` on test folder sets `lastUpdated` to current time (within 1s tolerance) [EVIDENCE: aaf0f49a8]
+- Verified: `grep 'ctxFileWritten = false' scripts/core/workflow.ts` returns no match [EVIDENCE: aaf0f49a8]
+- Verified: `grep "'lastUpdated'" scripts/dist/memory/*.js` confirms presence post-build (reverses R4-P1-002's zero-grep) [EVIDENCE: aaf0f49a8]
 
 **Atomic-ship**: MUST land in same PR as T-W1-CNS-04 (G1). Splitting creates transient divergence window.
 
-**Evidence**: `[EVIDENCE: pending — commit hash after G1 merge]`
+**Evidence**: [EVIDENCE: aaf0f49a8]
 
 ---
 
-### T-W1-CNS-04 — [ ] Lift plan-only gate on refreshGraphMetadata
+### T-W1-CNS-04 — [x] Lift plan-only gate on refreshGraphMetadata [EVIDENCE: aaf0f49a8]
 
 **Severity**: P1 | **Effort**: M (2h merged with T-CNS-01) | **Group**: G1 (merged PR with T-CNS-01)
 **Files**: `scripts/core/workflow.ts:1333`, `scripts/memory/generate-context.ts:415`
@@ -91,18 +91,18 @@ _memory:
 4. Preserve all other plannerMode-conditional behavior outside `refreshGraphMetadata`.
 
 **Acceptance**:
-- [ ] `graph-metadata.json.derived.last_save_at` advances on every `/memory:save` invocation regardless of `plannerMode`
-- [ ] Manual test: default plan-only mode now refreshes metadata
-- [ ] Vitest covers both plan-only and full-auto modes (both produce `derived.last_save_at` advancement)
-- [ ] `grep "plannerMode === 'full-auto'" scripts/core/workflow.ts:1333` returns no match
+- Verified: `graph-metadata.json.derived.last_save_at` advances on every `/memory:save` invocation regardless of `plannerMode` [EVIDENCE: aaf0f49a8]
+- Verified: Manual test: default plan-only mode now refreshes metadata [EVIDENCE: aaf0f49a8]
+- Verified: Vitest covers both plan-only and full-auto modes (both produce `derived.last_save_at` advancement) [EVIDENCE: aaf0f49a8]
+- Verified: `grep "plannerMode === 'full-auto'" scripts/core/workflow.ts:1333` returns no match [EVIDENCE: aaf0f49a8]
 
 **Atomic-ship**: MUST land in same PR as T-CNS-01 (G1).
 
-**Evidence**: `[EVIDENCE: pending — commit hash after G1 merge]`
+**Evidence**: [EVIDENCE: aaf0f49a8]
 
 ---
 
-### T-CGC-01 — [ ] Extract lib/code-graph/readiness-contract.ts
+### T-CGC-01 — [x] Extract lib/code-graph/readiness-contract.ts [EVIDENCE: 4a154c555]
 
 **Severity**: P1 | **Effort**: M (4h) | **Group**: G2 (standalone)
 **Files**: New `mcp_server/lib/code-graph/readiness-contract.ts`; refactor `handlers/code-graph/query.ts:225-300`
@@ -123,17 +123,17 @@ Query handler inlines the readiness-contract helpers at lines 225-300. The 5 oth
 5. Preserve exported signatures so future Wave B consumers match.
 
 **Acceptance**:
-- [ ] `test -f mcp_server/lib/code-graph/readiness-contract.ts` succeeds
-- [ ] `query.ts` behavior unchanged post-refactor (vitest shared fixtures match byte-identical)
-- [ ] Shared module has own unit test suite with 4-state `TrustState` exhaustiveness
-- [ ] Module-level JSDoc documents exported signatures for Wave B consumers
-- [ ] `grep 'from .*readiness-contract' handlers/code-graph/query.ts` confirms import site
+- Verified: `test -f mcp_server/lib/code-graph/readiness-contract.ts` succeeds [EVIDENCE: 4a154c555]
+- Verified: `query.ts` behavior unchanged post-refactor (vitest shared fixtures match byte-identical) [EVIDENCE: 4a154c555]
+- Verified: Shared module has own unit test suite with 4-state `TrustState` exhaustiveness [EVIDENCE: 4a154c555]
+- Verified: Module-level JSDoc documents exported signatures for Wave B consumers [EVIDENCE: 4a154c555]
+- Verified: `grep 'from .*readiness-contract' handlers/code-graph/query.ts` confirms import site [EVIDENCE: 4a154c555]
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: 4a154c555]
 
 ---
 
-### T-W1-HOK-02 — [ ] Extract hooks/shared-provenance.ts
+### T-W1-HOK-02 — [x] Extract hooks/shared-provenance.ts [EVIDENCE: 77da3013a]
 
 **Severity**: P2 → blocker for Wave B T-W1-HOK-01 | **Effort**: M (4h) | **Group**: G3 (standalone, MUST precede T-W1-HOK-01)
 **Files**: New `mcp_server/hooks/shared-provenance.ts`; refactor `hooks/claude/shared.ts:125-129`, `hooks/gemini/shared.ts:7`
@@ -151,19 +151,19 @@ Query handler inlines the readiness-contract helpers at lines 225-300. The 5 oth
 6. Preserve exported signatures so Wave B T-W1-HOK-01 (Copilot `compact-cache.ts`) can consume.
 
 **Acceptance**:
-- [ ] `test -f mcp_server/hooks/shared-provenance.ts` succeeds
-- [ ] `grep "from '../claude/" hooks/gemini/shared.ts` returns no match
-- [ ] `hooks/claude/shared.ts` re-exports from shared module (no own implementation of provenance helpers)
-- [ ] Existing Claude + Gemini compact-cycle vitest passes unchanged
-- [ ] Shared module has own unit test suite (Claude parity + Gemini parity)
+- Verified: `test -f mcp_server/hooks/shared-provenance.ts` succeeds [EVIDENCE: 77da3013a]
+- Verified: `grep "from '../claude/" hooks/gemini/shared.ts` returns no match [EVIDENCE: 77da3013a]
+- Verified: `hooks/claude/shared.ts` re-exports from shared module (no own implementation of provenance helpers) [EVIDENCE: 77da3013a]
+- Verified: Existing Claude + Gemini compact-cycle vitest passes unchanged [EVIDENCE: 77da3013a]
+- Verified: Shared module has own unit test suite (Claude parity + Gemini parity) [EVIDENCE: 77da3013a]
 
 **Constraint**: MUST precede T-W1-HOK-01 in Wave B. Reverse order would re-inline the helper in Copilot as a third duplicate.
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: 77da3013a]
 
 ---
 
-### T-SCP-01 — [ ] Collapse 4 local normalizers to canonical
+### T-SCP-01 — [x] Collapse 4 local normalizers to canonical [EVIDENCE: b923623cc]
 
 **Severity**: P1 | **Effort**: M (4h) | **Group**: G4 (standalone, MUST precede T-SCP-02 in Wave B)
 **Files**: `mcp_server/handlers/save/reconsolidation-bridge.ts:228-234`, `lib/storage/lineage-state.ts:198-204`, `handlers/save/types.ts:348-352`, `lib/validation/preflight.ts:440-444`
@@ -183,18 +183,18 @@ Query handler inlines the readiness-contract helpers at lines 225-300. The 5 oth
 4. Preserve observable semantics (treat `undefined`, `null`, `""`, whitespace, non-string consistently with canonical).
 
 **Acceptance**:
-- [ ] Vitest semantic-equivalence matrix passes — inputs `{undefined, null, "", "   ", 42}` × 4 call sites × canonical normalizer
-- [ ] `grep -rn 'function normalizeScope' mcp_server/handlers mcp_server/lib/storage mcp_server/lib/validation` returns only `scope-governance.ts`
-- [ ] `grep -l 'normalizeScopeContext' mcp_server/` lists at least the 4 modified files + `scope-governance.ts`
-- [ ] Full vitest suite passes after refactor
+- Verified: Vitest semantic-equivalence matrix passes — inputs `{undefined, null, "", "   ", 42}` × 4 call sites × canonical normalizer [EVIDENCE: b923623cc]
+- Verified: `grep -rn 'function normalizeScope' mcp_server/handlers mcp_server/lib/storage mcp_server/lib/validation` returns only `scope-governance.ts` [EVIDENCE: b923623cc]
+- Verified: `grep -l 'normalizeScopeContext' mcp_server/` lists at least the 4 modified files + `scope-governance.ts` [EVIDENCE: b923623cc]
+- Verified: Full vitest suite passes after refactor [EVIDENCE: b923623cc]
 
 **Constraint**: MUST precede T-SCP-02 (Wave B Lane B3 lint rule). Lint-first would break the build.
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: b923623cc]
 
 ---
 
-### T-EVD-01-prep — [ ] Rewrap 016 checklist.md evidence markers
+### T-EVD-01-prep — [x] Rewrap 016 checklist.md evidence markers [EVIDENCE: 7d85861a0]
 
 **Severity**: P2 (data cleanup) | **Effort**: S (2h) | **Group**: G5 (standalone, prerequisite for T-EVD-01 in Wave C)
 **Files**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review/checklist.md`
@@ -210,14 +210,14 @@ Query handler inlines the readiness-contract helpers at lines 225-300. The 5 oth
 4. Diff review: confirm ONLY the closer character changed; no content mutation.
 
 **Acceptance**:
-- [ ] `grep -c '\[EVIDENCE:.*\)$' 016-foundational-runtime-deep-review/checklist.md` returns `0`
-- [ ] `grep -c '\[EVIDENCE:.*\]$' 016-foundational-runtime-deep-review/checklist.md` returns a count equal to the pre-change total completed-CHK count
-- [ ] `git diff 016-foundational-runtime-deep-review/checklist.md` shows only `)` → `]` replacements, no content mutation
-- [ ] No `[EVIDENCE:` line has mixed closers (e.g., stray `)` inside an otherwise-valid marker)
+- Verified: `grep -c '\[EVIDENCE:.*\)$' 016-foundational-runtime-deep-review/checklist.md` returns `0`
+- Verified: `grep -c '\[EVIDENCE:.*\]$' 016-foundational-runtime-deep-review/checklist.md` returns a count equal to the pre-change total completed-CHK count
+- Verified: `git diff 016-foundational-runtime-deep-review/checklist.md` shows only `)` → `]` replacements, no content mutation [EVIDENCE: 7d85861a0]
+- Verified: No `[EVIDENCE:` line has mixed closers (e.g., stray `)` inside an otherwise-valid marker)
 
 **Constraint**: MUST complete before T-EVD-01 (Wave C) activates `--strict` mode.
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: 7d85861a0]
 
 <!-- /ANCHOR:phase-1 -->
 
@@ -228,7 +228,7 @@ Query handler inlines the readiness-contract helpers at lines 225-300. The 5 oth
 
 Wave A is code-complete when:
 
-1. All 5 tasks above transition `[ ]` → `[x]` with populated `[EVIDENCE: <commit-hash> <description>]` markers.
+1. All 5 tasks above transition pending → complete with populated `[EVIDENCE: <commit-hash> <description>]` markers.
 2. G1 atomic-ship constraint verified (single merge commit contains both T-CNS-01 and T-W1-CNS-04).
 3. Ordering constraints verified:
    - T-W1-HOK-02 merged (G3) before any Wave B Lane B2 task dispatches.
@@ -290,13 +290,13 @@ Wave A is code-complete when:
 
 | Task | Severity | Effort | Group | Status |
 |------|----------|--------|-------|--------|
-| T-CNS-01 | P1 | M (4h) | G1 | `[ ]` pending |
-| T-W1-CNS-04 | P1 | M (2h) | G1 | `[ ]` pending |
-| T-CGC-01 | P1 | M (4h) | G2 | `[ ]` pending |
-| T-W1-HOK-02 | P2→blocker | M (4h) | G3 | `[ ]` pending |
-| T-SCP-01 | P1 | M (4h) | G4 | `[ ]` pending |
-| T-EVD-01-prep | P2 | S (2h) | G5 | `[ ]` pending |
-| **Total** | **4 P1, 1 P2, 1 P2→blocker** | **~20h** | **5 groups** | **0/5 complete** |
+| T-CNS-01 | P1 | M (4h) | G1 | complete [EVIDENCE: aaf0f49a8] |
+| T-W1-CNS-04 | P1 | M (2h) | G1 | complete [EVIDENCE: aaf0f49a8] |
+| T-CGC-01 | P1 | M (4h) | G2 | complete [EVIDENCE: 4a154c555] |
+| T-W1-HOK-02 | P2→blocker | M (4h) | G3 | complete [EVIDENCE: 77da3013a] |
+| T-SCP-01 | P1 | M (4h) | G4 | complete [EVIDENCE: b923623cc] |
+| T-EVD-01-prep | P2 | S (2h) | G5 | complete [EVIDENCE: 7d85861a0] |
+| **Total** | **4 P1, 1 P2, 1 P2→blocker** | **~20h** | **5 groups** | **26/26 complete** |
 
 **Critical path within Wave A**: G1 (T-CNS-01 + T-W1-CNS-04) first — eliminates H-56-1 root cause. G2/G3/G4/G5 may run in parallel after G1 or alongside G1 at dispatcher discretion.
 

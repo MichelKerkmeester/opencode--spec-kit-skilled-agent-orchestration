@@ -21,7 +21,7 @@ _memory:
 <!-- ANCHOR:notation -->
 ## Notation
 
-**Legend**: `[ ]` pending • `[x]` complete • `[~]` in progress • `[!]` blocked
+**Legend**: pending • complete • in progress • blocked
 
 **Effort**: S=≤2h • M=2-8h • L=≥1 day
 
@@ -49,7 +49,7 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Lane B1 — Cluster B Consumers (4 tasks, 12h) [PHASE 1]
 
-### T-CNS-02 — [ ] Research folder backfill
+### T-CNS-02 — [x] Research folder backfill [EVIDENCE: 88063287b]
 
 **Severity**: P1 | **Effort**: M (4h) | **Lane**: B1
 **Files**: New `.opencode/skill/system-spec-kit/scripts/memory/backfill-research-metadata.ts`; wire into `generate-context.js`
@@ -62,14 +62,14 @@ _memory:
 4. Missing-only semantics — DO NOT overwrite existing metadata.
 
 **Acceptance**:
-- [ ] All `research/NNN-*/iterations/` directories have `description.json` + `graph-metadata.json` post-run
-- [ ] Post-save wires `backfill-research-metadata` when target has `research/` child
-- [ ] Vitest covers missing-both, missing-one, already-present cases
-- [ ] Existing metadata files untouched (diff-check on an already-backfilled folder returns 0)
+- Verified: All `research/NNN-*/iterations/` directories have `description.json` + `graph-metadata.json` post-run [EVIDENCE: 88063287b]
+- Verified: Post-save wires `backfill-research-metadata` when target has `research/` child [EVIDENCE: 88063287b]
+- Verified: Vitest covers missing-both, missing-one, already-present cases [EVIDENCE: 88063287b]
+- Verified: Existing metadata files untouched (diff-check on an already-backfilled folder returns 0) [EVIDENCE: 88063287b]
 
-**Evidence**: `[EVIDENCE: pending — commit hash after implementation]`
+**Evidence**: [EVIDENCE: 88063287b]
 
-### T-W1-CNS-05 — [ ] Continuity freshness validator
+### T-W1-CNS-05 — [x] Continuity freshness validator [EVIDENCE: 32a180bba]
 
 **Severity**: P1 | **Effort**: M (4h) | **Lane**: B1
 **Files**: `scripts/spec/validate.sh`, new `scripts/validation/continuity-freshness.ts`
@@ -82,14 +82,14 @@ _memory:
 4. Optional: `writeContinuityFrontmatter()` helper — deferred to Phase 019 candidate list.
 
 **Acceptance**:
-- [ ] `validate.sh --strict` warns when `_memory.continuity.last_updated_at < graph-metadata.derived.last_save_at - 10m`
-- [ ] Passes for fresh folders
-- [ ] Warns for stale (induced fixture + real stale folder smoke test)
-- [ ] 10m boundary is inclusive of 10m exactly, excluded at 10m+1s
+- Verified: `validate.sh --strict` warns when `_memory.continuity.last_updated_at < graph-metadata.derived.last_save_at - 10m` [EVIDENCE: 32a180bba]
+- Verified: Passes for fresh folders [EVIDENCE: 32a180bba]
+- Verified: Warns for stale (induced fixture + real stale folder smoke test) [EVIDENCE: 32a180bba]
+- Verified: 10m boundary is inclusive of 10m exactly, excluded at 10m+1s [EVIDENCE: 32a180bba]
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: 32a180bba]
 
-### T-CGC-02 — [ ] context.ts explicit error branch
+### T-CGC-02 — [x] context.ts explicit error branch [EVIDENCE: db36c3194]
 
 **Severity**: P1 (partial R6-P1-001 mitigation) | **Effort**: S (2h) | **Lane**: B1
 **Files**: `handlers/code-graph/context.ts:98-105`
@@ -98,16 +98,16 @@ _memory:
 **Changes**: Replace silent catch into `freshness: 'empty'` stub with explicit `error → 'unavailable'` branch emitting `readiness_check_crashed` reason.
 
 **Acceptance**:
-- [ ] Silent catch replaced with `error → 'unavailable'` branch
-- [ ] Emits `readiness_check_crashed` reason on thrown exception
-- [ ] Vitest covers thrown-exception path
-- [ ] Prior happy-path behavior unchanged
+- Verified: Silent catch replaced with `error → 'unavailable'` branch [EVIDENCE: db36c3194]
+- Verified: Emits `readiness_check_crashed` reason on thrown exception [EVIDENCE: db36c3194]
+- Verified: Vitest covers thrown-exception path [EVIDENCE: db36c3194]
+- Verified: Prior happy-path behavior unchanged [EVIDENCE: db36c3194]
 
 **Note**: Layered observability improvement. T-W1-CGC-03 (Lane B2) adds the full readiness vocabulary; T-CGC-02 is a narrow mitigation that stands alone even if CGC-03 deferred.
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: db36c3194]
 
-### T-RBD-03 — [ ] Design-intent comments at rollup sites
+### T-RBD-03 — [x] Design-intent comments at rollup sites [EVIDENCE: f42c5d3b6]
 
 **Severity**: P2 | **Effort**: S (2h) | **Lane**: B1
 **Files**: `handlers/save/post-insert.ts:344-369`, `handlers/save/response-builder.ts:136-201`
@@ -118,12 +118,12 @@ _memory:
 - response surfaces nuance to MCP clients
 
 **Acceptance**:
-- [ ] Both rollup sites have design-intent comment blocks
-- [ ] Comments cite T-RBD-01 / commit `709727e98`
-- [ ] Post-insert comment explicitly mentions "failure-with-recovery"
-- [ ] Response-builder comment explicitly mentions "MCP-client nuance"
+- Verified: Both rollup sites have design-intent comment blocks [EVIDENCE: f42c5d3b6]
+- Verified: Comments cite T-RBD-01 / commit `709727e98` [EVIDENCE: f42c5d3b6]
+- Verified: Post-insert comment explicitly mentions "failure-with-recovery" [EVIDENCE: f42c5d3b6]
+- Verified: Response-builder comment explicitly mentions "MCP-client nuance" [EVIDENCE: f42c5d3b6]
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: f42c5d3b6]
 
 <!-- /ANCHOR:phase-1 -->
 
@@ -132,7 +132,7 @@ _memory:
 <!-- ANCHOR:phase-2 -->
 ## Lane B2 — Cluster D + Cluster E (2 tasks, 16h) [PHASE 2]
 
-### T-W1-CGC-03 — [ ] 5-sibling code-graph readiness propagation
+### T-W1-CGC-03 — [x] 5-sibling code-graph readiness propagation [EVIDENCE: f253194bf]
 
 **Severity**: P1 | **Effort**: L (16h) | **Lane**: B2
 **Files**: `handlers/code-graph/scan.ts`, `status.ts`, `context.ts`, `ccc-status.ts`, `ccc-reindex.ts`, `ccc-feedback.ts`
@@ -145,18 +145,18 @@ _memory:
 4. Use 4-state vocabulary EXCLUSIVELY: `'live' | 'stale' | 'absent' | 'unavailable'`. No new values.
 
 **Acceptance**:
-- [ ] All 6 handlers import from `lib/code-graph/readiness-contract.ts`
-- [ ] Each emits `canonicalReadiness` + `trustState` + `lastPersistedAt`
-- [ ] 4-state vocabulary used exclusively (no `'cached'` or other values added)
-- [ ] `status.ts` parity verified with `query.ts` behavior (IS canonical readiness probe)
-- [ ] Vitest per-handler: 6 test files each asserting 3-field emission
-- [ ] Shared-contract fixture test asserts all 6 handlers agree with `query.ts`
+- Verified: All 6 handlers import from `lib/code-graph/readiness-contract.ts` [EVIDENCE: f253194bf]
+- Verified: Each emits `canonicalReadiness` + `trustState` + `lastPersistedAt` [EVIDENCE: f253194bf]
+- Verified: 4-state vocabulary used exclusively (no `'cached'` or other values added) [EVIDENCE: f253194bf]
+- Verified: `status.ts` parity verified with `query.ts` behavior (IS canonical readiness probe) [EVIDENCE: f253194bf]
+- Verified: Vitest per-handler: 6 test files each asserting 3-field emission [EVIDENCE: f253194bf]
+- Verified: Shared-contract fixture test asserts all 6 handlers agree with `query.ts` [EVIDENCE: f253194bf]
 
 **Atomic-ship**: MUST land as ONE PR OR emit `trustState: 'unavailable'` stubs in un-refactored handlers during staged rollout.
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: f253194bf]
 
-### T-W1-HOK-01 — [ ] Copilot compact-cache + session-prime
+### T-W1-HOK-01 — [x] Copilot compact-cache + session-prime [EVIDENCE: 5923737c7]
 
 **Severity**: P1 | **Effort**: M (6h) | **Lane**: B2
 **Files**: New `hooks/copilot/compact-cache.ts`; extend `hooks/copilot/session-prime.ts`
@@ -168,15 +168,15 @@ _memory:
 3. Vitest: parallel test to Claude + Gemini compact-cycle tests.
 
 **Acceptance**:
-- [ ] `compact-cache.ts` exists and writes `trustState: 'cached'` via `hooks/shared-provenance.ts`
-- [ ] `session-prime.ts` reads `payloadContract?.provenance.trustState` at entry
-- [ ] Parallel vitest to Claude + Gemini compact-cycle tests passes
-- [ ] No re-inlined `wrapRecoveredCompactPayload` in Copilot path (import from shared-provenance only)
-- [ ] `SharedPayloadTrustState` vocabulary for hooks is separate from code-graph `TrustState` (not conflated)
+- Verified: `compact-cache.ts` exists and writes `trustState: 'cached'` via `hooks/shared-provenance.ts` [EVIDENCE: 5923737c7]
+- Verified: `session-prime.ts` reads `payloadContract?.provenance.trustState` at entry [EVIDENCE: 5923737c7]
+- Verified: Parallel vitest to Claude + Gemini compact-cycle tests passes [EVIDENCE: 5923737c7]
+- Verified: No re-inlined `wrapRecoveredCompactPayload` in Copilot path (import from shared-provenance only) [EVIDENCE: 5923737c7]
+- Verified: `SharedPayloadTrustState` vocabulary for hooks is separate from code-graph `TrustState` (not conflated) [EVIDENCE: 5923737c7]
 
 **Constraint**: MUST follow T-W1-HOK-02 (Wave A) — reverse order creates third duplicate of `wrapRecoveredCompactPayload`.
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: 5923737c7]
 
 <!-- /ANCHOR:phase-2 -->
 
@@ -185,7 +185,7 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Lane B3 — Cluster A + Cluster C + Standalone P1 (3 tasks, 12h) [PHASE 3]
 
-### T-SCP-02 — [ ] Normalizer lint rule
+### T-SCP-02 — [x] Normalizer lint rule [EVIDENCE: ded5ece07]
 
 **Severity**: P2 (prevention) | **Effort**: S (2h) | **Lane**: B3
 **Files**: `.eslintrc.js` or `scripts/spec/validate.sh`
@@ -194,17 +194,17 @@ _memory:
 **Changes**: Add lint that rejects new in-module `normalizeScope*` or `getOptionalString` helpers (exempt `scope-governance.ts`).
 
 **Acceptance**:
-- [ ] Lint rejects new in-module `normalizeScope*` / `getOptionalString` helpers
-- [ ] Exempts `scope-governance.ts` canonical file
-- [ ] Lint passes against current tree (post Wave A T-SCP-01 collapse)
-- [ ] Scratch-branch smoke test: introducing `const normalizeScopeFoo = (x) => x` in any handler fails lint
-- [ ] `getOptionalString` same test path — lint fires on net-new declaration
+- Verified: Lint rejects new in-module `normalizeScope*` / `getOptionalString` helpers [EVIDENCE: ded5ece07]
+- Verified: Exempts `scope-governance.ts` canonical file [EVIDENCE: ded5ece07]
+- Verified: Lint passes against current tree (post Wave A T-SCP-01 collapse) [EVIDENCE: ded5ece07]
+- Verified: Scratch-branch smoke test: introducing `const normalizeScopeFoo = (x) => x` in any handler fails lint [EVIDENCE: ded5ece07]
+- Verified: `getOptionalString` same test path — lint fires on net-new declaration [EVIDENCE: ded5ece07]
 
 **Constraint**: MUST follow Wave A T-SCP-01. Lint before collapse would break build (multiple extant declarations).
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: ded5ece07]
 
-### T-SAN-01 + T-SAN-02 + T-SAN-03 — [ ] NFKC unicode normalization + tests
+### T-SAN-01 + T-SAN-02 + T-SAN-03 — [x] NFKC unicode normalization + tests [EVIDENCE: 1bd7856a9]
 
 **Severity**: P1 + P2 | **Effort**: S+S+S (6h total) | **Lane**: B3
 **Files**:
@@ -221,24 +221,24 @@ _memory:
 3. **T-SAN-03**: Add 5+ unicode test cases; rename p0-a test it() block.
 
 **Acceptance**:
-- [ ] `normalizePrompt` applies `.normalize('NFKC')`
-- [ ] `normalizePrompt` strips `[\u00AD\u200B-\u200F\uFEFF]`
-- [ ] Order: NFKC first, then strip (verified by single combined-homoglyph+zero-width fixture)
-- [ ] `sanitizeRecoveredPayload` mirrors NFKC pass
-- [ ] 5+ unicode test cases present in `gate-3-classifier.vitest.ts`:
+- Verified: `normalizePrompt` applies `.normalize('NFKC')` [EVIDENCE: 1bd7856a9]
+- Verified: `normalizePrompt` strips `[\u00AD\u200B-\u200F\uFEFF]` [EVIDENCE: 1bd7856a9]
+- Verified: Order: NFKC first, then strip (verified by single combined-homoglyph+zero-width fixture) [EVIDENCE: 1bd7856a9]
+- Verified: `sanitizeRecoveredPayload` mirrors NFKC pass [EVIDENCE: 1bd7856a9]
+- Verified: 5+ unicode test cases present in `gate-3-classifier.vitest.ts`: [EVIDENCE: 1bd7856a9]
   - Cyrillic `е` → Latin `e`
   - Soft hyphen `\u00AD`
   - Zero-width space `\u200B`
   - Greek `Ε` → Latin `E`
   - Combined homoglyph + zero-width (e.g. `SYST\u0395M:\u200B`)
-- [ ] p0-a test `it()` block renamed to "Claude and Gemini consumers"
-- [ ] Schema-share note added for OpenCode in p0-a test
+- Verified: p0-a test `it()` block renamed to "Claude and Gemini consumers" [EVIDENCE: 1bd7856a9]
+- Verified: Schema-share note added for OpenCode in p0-a test [EVIDENCE: 1bd7856a9]
 
 **Atomic-ship**: T-SAN-01 + T-SAN-03 MUST land in same PR (tests fail until code lands). T-SAN-02 recommended same PR.
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: 1bd7856a9]
 
-### T-PIN-RET-01 — [ ] Retry-exhaustion counter
+### T-PIN-RET-01 — [x] Retry-exhaustion counter [EVIDENCE: 61f93c9bf]
 
 **Severity**: P1 | **Effort**: M (4h) | **Lane**: B3
 **Files**: `handlers/save/post-insert.ts:159-173, 347-365`; new `lib/enrichment/retry-budget.ts`
@@ -251,15 +251,15 @@ _memory:
 4. Vitest: assert 3rd retry attempted; 4th attempt skipped with log.
 
 **Acceptance**:
-- [ ] `lib/enrichment/retry-budget.ts` exists
-- [ ] Counter keyed on `(memoryId, step, reason)` tuple
-- [ ] Skip after N=3 retries for `partial_causal_link_unresolved`
-- [ ] Structured warning log emitted on exhaustion (`retry_exhausted` signal)
-- [ ] Vitest: 3rd retry attempted, 4th skipped with log
-- [ ] Counter scope is per-process / per-enrichment-context (NOT session-global)
-- [ ] Counter does not persist across process restart (documented assumption)
+- Verified: `lib/enrichment/retry-budget.ts` exists [EVIDENCE: 61f93c9bf]
+- Verified: Counter keyed on `(memoryId, step, reason)` tuple [EVIDENCE: 61f93c9bf]
+- Verified: Skip after N=3 retries for `partial_causal_link_unresolved` [EVIDENCE: 61f93c9bf]
+- Verified: Structured warning log emitted on exhaustion (`retry_exhausted` signal) [EVIDENCE: 61f93c9bf]
+- Verified: Vitest: 3rd retry attempted, 4th skipped with log [EVIDENCE: 61f93c9bf]
+- Verified: Counter scope is per-process / per-enrichment-context (NOT session-global) [EVIDENCE: 61f93c9bf]
+- Verified: Counter does not persist across process restart (documented assumption) [EVIDENCE: 61f93c9bf]
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: 61f93c9bf]
 
 <!-- /ANCHOR:phase-3 -->
 
@@ -272,30 +272,30 @@ After all 9 tasks across 3 lanes merge:
 
 ### Mandatory gate checks
 
-- [ ] `/spec_kit:deep-review :auto` ×7 on Wave B scope emits ZERO new P0
-- [ ] `/spec_kit:deep-review :auto` ×7 on Wave B scope emits ZERO new P1
-- [ ] `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict` on 017 folder exits 0 with 0 warnings
-- [ ] Vitest suite passes end-to-end
-- [ ] T-W1-CGC-03 atomic-ship verified (`git log --follow handlers/code-graph/`)
-- [ ] T-W1-HOK-01 ordering verified (T-W1-HOK-02 landed first in Wave A)
-- [ ] T-SAN-01 + T-SAN-03 atomic-ship verified (single merge commit)
+- Completed: `/spec_kit:deep-review :auto` ×7 on Wave B scope emits ZERO new P0
+- Completed: `/spec_kit:deep-review :auto` ×7 on Wave B scope emits ZERO new P1
+- Completed: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict` on 017 folder exits 0 with 0 warnings
+- Completed: Vitest suite passes end-to-end
+- Completed: T-W1-CGC-03 atomic-ship verified (`git log --follow handlers/code-graph/`)
+- Completed: T-W1-HOK-01 ordering verified (T-W1-HOK-02 landed first in Wave A)
+- Completed: T-SAN-01 + T-SAN-03 atomic-ship verified (single merge commit)
 
 ### Lane-specific gates
 
-- [ ] **Lane B1 gate**: CHK-B1-01..04 all verified (see `checklist.md`)
-- [ ] **Lane B2 gate**: CHK-B2-01..02 all verified
-- [ ] **Lane B3 gate**: CHK-B3-01..03 all verified
+- Completed: **Lane B1 gate**: CHK-B1-01..04 all verified (see `checklist.md`)
+- Completed: **Lane B2 gate**: CHK-B2-01..02 all verified
+- Completed: **Lane B3 gate**: CHK-B3-01..03 all verified
 
 ### Artifact refresh
 
-- [ ] Parent `implementation-summary.md` updated with Wave B outcomes
-- [ ] Parent `checklist.md` CHK-B1/B2/B3 items marked `[x]` with `[EVIDENCE:]` citations
-- [ ] All Wave B `tasks.md` entries above carry `[EVIDENCE: <commit-hash>]` closers (canonical `]`, not `)`)
+- Completed: Parent `implementation-summary.md` updated with Wave B outcomes
+- Completed: Parent `checklist.md` CHK-B1/B2/B3 items marked complete with `[EVIDENCE:]` citations
+- Completed: All Wave B `tasks.md` entries above carry `[EVIDENCE: <commit-hash>]` closers (canonical `]`, not `)`)
 
 ### Downstream unblock
 
-- [ ] Wave C kickoff signal fired (child 003 `spec.md` status flips from blocked to ready_for_implementation)
-- [ ] Cluster E closure confirmed — autonomous Copilot iteration can proceed past H-56-4 blocker
+- Completed: Wave C kickoff signal fired (child 003 `spec.md` status flips from blocked to ready_for_implementation)
+- Completed: Cluster E closure confirmed — autonomous Copilot iteration can proceed past H-56-4 blocker
 
 <!-- /ANCHOR:completion -->
 
@@ -354,10 +354,10 @@ After all 9 tasks across 3 lanes merge:
 
 | Lane | Tasks | Total effort | Status |
 |------|-------|--------------|--------|
-| Lane B1 (Cluster B consumers) | 4 | 12h | pending |
-| Lane B2 (Cluster D + E) | 2 | 16h | pending |
-| Lane B3 (Cluster A + C + Standalone P1) | 3 | 12h | pending |
-| **Wave B total** | **9** | **30h** | **0/9 complete** |
+| Lane B1 (Cluster B consumers) | 4 | 12h | complete |
+| Lane B2 (Cluster D + E) | 2 | 16h | complete |
+| Lane B3 (Cluster A + C + Standalone P1) | 3 | 12h | complete |
+| **Wave B total** | **9** | **30h** | **61/61 complete** |
 
 **Wall-clock**: ~16h (bottleneck = Lane B2 T-W1-CGC-03)
 

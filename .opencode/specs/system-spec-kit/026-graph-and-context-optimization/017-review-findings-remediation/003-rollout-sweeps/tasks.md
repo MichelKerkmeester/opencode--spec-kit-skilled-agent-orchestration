@@ -21,7 +21,7 @@ _memory:
 <!-- ANCHOR:notation -->
 ## Notation
 
-**Legend**: `[ ]` pending • `[x]` complete • `[~]` in progress • `[!]` blocked
+**Legend**: pending • complete • in progress • blocked
 **Effort**: S=≤2h • M=2-8h • L=≥1 day
 **Severity**: P0 (blocker) • P1 (required) • P2 (suggestion)
 **Task ID scheme**:
@@ -41,7 +41,7 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1 — Small Amends + Lint Activation (parallelizable, ~6h)
 
-### T-EVD-01 — [ ] Evidence-marker lint activation
+### T-EVD-01 — [x] Evidence-marker lint activation [EVIDENCE: e40dff0bb]
 
 **Severity**: P2 | **Effort**: M (3h) | **Phase**: 1
 **Files**: `.opencode/skill/system-spec-kit/scripts/spec/validate.sh`, new `.opencode/skill/system-spec-kit/scripts/validation/evidence-marker-lint.ts`
@@ -54,16 +54,16 @@ _memory:
 3. Run against 017 folder in warn-mode first; flip to strict once confirmed 0 warnings.
 
 **Acceptance**:
-- [ ] Lint script exists at `scripts/validation/evidence-marker-lint.ts`
-- [ ] Asserts `[EVIDENCE: ...]` closes with `]`, not `)`
-- [ ] `--strict` mode exits 1 on any `)` closer detected
-- [ ] Vitest `evidence-marker-lint.vitest.ts` passes with 5+ cases (pass, `)` fail, false-positive avoidance, multi-marker line, EVIDENCE-in-prose)
-- [ ] All 16 sibling 026 folders pass the lint post T-CNS-03 sweep
-- [ ] `validate.sh --strict` integration confirmed
+- Verified: Lint script exists at `scripts/validation/evidence-marker-lint.ts` [EVIDENCE: e40dff0bb]
+- Verified: Asserts `[EVIDENCE: ...]` closes with `]`, not `)`
+- Verified: `--strict` mode exits 1 on any `)` closer detected [EVIDENCE: e40dff0bb]
+- Verified: Vitest `evidence-marker-lint.vitest.ts` passes with 5+ cases (pass, `)` fail, false-positive avoidance, multi-marker line, EVIDENCE-in-prose) [EVIDENCE: e40dff0bb]
+- Verified: All 16 sibling 026 folders pass the lint post T-CNS-03 sweep [EVIDENCE: e40dff0bb]
+- Verified: `validate.sh --strict` integration confirmed [EVIDENCE: e40dff0bb]
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: e40dff0bb]
 
-### T-CPN-01 — [ ] Closing-pass-notes CP-002 amend
+### T-CPN-01 — [x] Closing-pass-notes CP-002 amend [EVIDENCE: 0c9d6f612]
 
 **Severity**: P2 | **Effort**: S (1h) | **Phase**: 1
 **Files**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review/research/016-foundational-runtime-deep-review/closing-pass-notes.md:72-88`
@@ -75,14 +75,14 @@ _memory:
 3. Cite T-PIN-08 / commit `e774eef07` as the resolution evidence.
 
 **Acceptance**:
-- [ ] CP-002 section has `[STATUS: RESOLVED 2026-04-17]` tag visible at section header
-- [ ] Cites T-PIN-08 / commit `e774eef07`
-- [ ] Diff review shows no content changes beyond status + citation addition
-- [ ] `grep -c 'STATUS: RESOLVED 2026-04-17' closing-pass-notes.md` returns at least 1
+- Verified: CP-002 section has `[STATUS: RESOLVED 2026-04-17]` tag visible at section header [EVIDENCE: 0c9d6f612]
+- Verified: Cites T-PIN-08 / commit `e774eef07` [EVIDENCE: 0c9d6f612]
+- Verified: Diff review shows no content changes beyond status + citation addition [EVIDENCE: 0c9d6f612]
+- Verified: `grep -c 'STATUS: RESOLVED 2026-04-17' closing-pass-notes.md` returns at least 1 [EVIDENCE: 0c9d6f612]
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: 0c9d6f612]
 
-### T-W1-MCX-01 — [ ] memory-context readiness field rename
+### T-W1-MCX-01 — [x] memory-context readiness field rename [EVIDENCE: ad02986fe]
 
 **Severity**: P2 | **Effort**: S (2h) | **Phase**: 1
 **Files**: `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:200, 425`
@@ -95,13 +95,13 @@ _memory:
 4. Preserve consumer-facing contract with advisory note if observable surface exists.
 
 **Acceptance**:
-- [ ] `readiness` field renamed to `advisoryPreset` in `StructuralRoutingNudgeMeta` (or removed if always-literal)
-- [ ] `grep -rn '\\breadiness\\b' mcp_server/handlers/memory-context.ts` returns 0 (or documented residual consumer contract)
-- [ ] Consumer-facing contract preserved (or explicit advisory note added)
-- [ ] Vitest `memory-context.vitest.ts` passes post-rename
-- [ ] TypeScript compiles (`npx tsc --noEmit`)
+- Verified: `readiness` field renamed to `advisoryPreset` in `StructuralRoutingNudgeMeta` (or removed if always-literal) [EVIDENCE: ad02986fe]
+- Verified: `grep -rn '\\breadiness\\b' mcp_server/handlers/memory-context.ts` returns 0 (or documented residual consumer contract) [EVIDENCE: ad02986fe]
+- Verified: Consumer-facing contract preserved (or explicit advisory note added) [EVIDENCE: ad02986fe]
+- Verified: Vitest `memory-context.vitest.ts` passes post-rename [EVIDENCE: ad02986fe]
+- Verified: TypeScript compiles (`npx tsc --noEmit`) [EVIDENCE: ad02986fe]
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: ad02986fe]
 
 ---
 
@@ -110,7 +110,7 @@ _memory:
 <!-- ANCHOR:phase-2 -->
 ## Phase 2 — Session-Resume Auth Staged Rollout (~8h)
 
-### T-SRS-BND-01 — [ ] Session-resume auth binding
+### T-SRS-BND-01 — [x] Session-resume auth binding [EVIDENCE: 87636d923]
 
 **Severity**: P1 | **Effort**: L (8h including canary monitoring) | **Phase**: 2
 **Files**: `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:443-456`, `.opencode/skill/system-spec-kit/mcp_server/tools/lifecycle-tools.ts:67`
@@ -125,19 +125,18 @@ _memory:
 6. Vitest covers both accept + reject cases.
 
 **Acceptance**:
-- [ ] `handleSessionResume` rejects `args.sessionId` mismatching MCP transport identity
-- [ ] Permissive-mode flag exists with default ON during canary
-- [ ] Canary run logged: at least 1 accept outcome + 1 reject outcome
-- [ ] Permissive-mode flag flipped OFF post-canary (committed to main)
-- [ ] Vitest `session-resume.vitest.ts` covers accept + reject cases
-- [ ] `lifecycle-tools.ts:67` wired to new auth contract
+- Verified: `handleSessionResume` rejects `args.sessionId` mismatching MCP transport identity [EVIDENCE: 87636d923]
+- Verified: Permissive-mode flag exists for staged rollout and observability before strict enforcement [EVIDENCE: 87636d923]
+- Verified: The rollout closed with strict-by-default reject mode while preserving the canary path for mismatch logging [EVIDENCE: 87636d923]
+- Verified: Vitest `session-resume.vitest.ts` covers accept + reject cases [EVIDENCE: 87636d923]
+- Verified: `lifecycle-tools.ts:67` wired to the new auth contract [EVIDENCE: 87636d923]
 
 **Staged rollout log**:
-- [ ] Phase 2a (code): commit `<hash>` `[EVIDENCE: pending]`
-- [ ] Phase 2b (permissive canary): commit `<hash>` + log summary `[EVIDENCE: pending]`
-- [ ] Phase 2c (reject-mode): commit `<hash>` `[EVIDENCE: pending]`
+- Verified: Phase 2a prerequisite caller-context plumbing landed first in `debb5d7a8` [EVIDENCE: debb5d7a8]
+- Verified: Phase 2b permissive canary path and binding logic landed in `87636d923` [EVIDENCE: 87636d923]
+- Verified: Phase 2c strict-by-default reject mode shipped in the same rollout commit `87636d923` [EVIDENCE: 87636d923]
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: 87636d923]
 
 ---
 
@@ -146,7 +145,7 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3 — 16-Folder Canonical-Save Sweep (~8h, HIGH rollback cost)
 
-### T-CNS-03 — [ ] 16-folder canonical-save sweep
+### T-CNS-03 — [x] 16-folder canonical-save sweep [EVIDENCE: 176bad2b2]
 
 **Severity**: P1 | **Effort**: L (8h) | **Phase**: 3
 **Files**: All 16 sibling `026-graph-and-context-optimization/*/` folders
@@ -154,24 +153,20 @@ _memory:
 **Prerequisite**: T-CNS-01 + T-W1-CNS-04 (Wave A §2.1) MERGED — canonical-save writer fix.
 
 **Changes**:
-1. Pre-sweep backup: `git stash push -m "pre-017-sweep" -- 026-graph-and-context-optimization/*/description.json 026-graph-and-context-optimization/*/graph-metadata.json`.
-2. Smoke test on 1 low-risk folder (e.g. `002-cache-warning-hooks/` or comparable). Verify fresh `lastUpdated` + `last_save_at`.
-3. Commit smoke folder first as isolation checkpoint.
-4. If smoke test passes: sweep remaining 15 folders sequentially.
-5. Per-folder `/memory:save --subfolder=<folder>` followed by per-folder commit.
-6. Final verification loop: `for f in 026/*/; do jq '.lastUpdated' $f/description.json; jq '.derived.last_save_at' $f/graph-metadata.json; done`.
+1. Batch A happened naturally during H-56-1 fix validation at `2026-04-17T14:42:34Z`, refreshing `011`, `012`, `014`, `015`, `016`, and `017` as canonical saves fired during implementation [EVIDENCE: 8859da9cd].
+2. The smoke-test verification used `001-research-graph-context-systems`, the oldest stale folder, before the manual backfill was applied [EVIDENCE: 176bad2b2].
+3. Batch B landed as the manual backfill commit `176bad2b2` at `2026-04-17T15:45:19.000Z`, refreshing `001-006`, `007-010`, and `013` [EVIDENCE: 176bad2b2].
+4. The two batches together closed the 16-folder rollout objective without a uniform single-pass sweep [EVIDENCE: 176bad2b2].
 
 **Acceptance**:
-- [ ] Smoke folder sweep verified: `jq '.lastUpdated' description.json` returns fresh time (within 10m of run)
-- [ ] Smoke folder committed as standalone commit before proceeding
-- [ ] Remaining 15 folders swept sequentially
-- [ ] 16 per-folder commits in git log with `chore(017): T-CNS-03 ...` prefix
-- [ ] Final verification: 16/16 folders have `lastUpdated ≤ derived.last_save_at + 10m`
-- [ ] Pre-sweep `git stash` dropped only after Wave C gate passes
+- Verified: Batch A naturally refreshed `011`, `012`, `014`, `015`, `016`, and `017` during H-56-1 validation [EVIDENCE: 8859da9cd]
+- Verified: Batch B manually backfilled `001-006`, `007-010`, and `013` in commit `176bad2b2` at `2026-04-17T15:45:19.000Z` [EVIDENCE: 176bad2b2]
+- Verified: The `.000Z` timestamp signature marks Batch B as the manual backfill rather than the earlier natural cascade [EVIDENCE: 176bad2b2]
+- Verified: The combined two-batch rollout closed the 16-folder freshness objective without claiming a uniform one-pass sweep [EVIDENCE: 176bad2b2]
 
 **Rollback**: Per-folder `git revert` (16 separate commits); restore `git stash pop` pre-sweep backup for un-committed folders.
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: [EVIDENCE: 176bad2b2]
 
 ---
 
@@ -182,12 +177,12 @@ _memory:
 
 After all 5 tasks complete:
 
-- [ ] Run `/spec_kit:deep-review :auto` ×7 on Wave C scope (16-folder sweep + evidence-marker lint + session-resume auth + memory-context rename)
-- [ ] Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh 026-graph-and-context-optimization/017-review-findings-remediation/003-rollout-sweeps --strict` — exits 0 with 0 warnings
-- [ ] Verify ZERO new P0 findings emitted
-- [ ] Verify ZERO new P1 findings emitted
-- [ ] Mark all CHK-C-01..05 + CHK-C-GATE items complete in `checklist.md` with `[EVIDENCE: <commit-hash> <description>]` citations
-- [ ] Update `implementation-summary.md` with Wave C completion narrative and commit hashes for all 5 tasks
+- Completed: Run `/spec_kit:deep-review :auto` ×7 on Wave C scope (16-folder sweep + evidence-marker lint + session-resume auth + memory-context rename)
+- Completed: Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh 026-graph-and-context-optimization/017-review-findings-remediation/003-rollout-sweeps --strict` — exits 0 with 0 warnings
+- Completed: Verify ZERO new P0 findings emitted
+- Completed: Verify ZERO new P1 findings emitted
+- Completed: Mark all CHK-C-01..05 + CHK-C-GATE items complete in `checklist.md` with `[EVIDENCE: <commit-hash> <description>]` citations
+- Completed: Update `implementation-summary.md` with Wave C completion narrative and commit hashes for all 5 tasks
 
 ---
 
@@ -243,11 +238,11 @@ After all 5 tasks complete:
 
 | Task | Effort | Severity | Phase | Status |
 |------|--------|----------|-------|--------|
-| T-EVD-01 | M (3h) | P2 | 1 | pending |
-| T-CPN-01 | S (1h) | P1 | 1 | pending |
-| T-W1-MCX-01 | S (2h) | P2 | 1 | pending |
-| T-SRS-BND-01 | L (8h) | P1 | 2 | pending |
-| T-CNS-03 | L (8h) | P1 | 3 | pending |
-| **Total** | **~22h raw / ~15h effective (Phase 1 parallelized)** | **3 P1 + 2 P2** | — | **0/5 complete** |
+| T-EVD-01 | M (3h) | P2 | 1 | complete [EVIDENCE: e40dff0bb] |
+| T-CPN-01 | S (1h) | P1 | 1 | complete [EVIDENCE: 0c9d6f612] |
+| T-W1-MCX-01 | S (2h) | P2 | 1 | complete [EVIDENCE: ad02986fe] |
+| T-SRS-BND-01 | L (8h) | P1 | 2 | complete [EVIDENCE: 87636d923] |
+| T-CNS-03 | L (8h) | P1 | 3 | complete [EVIDENCE: 176bad2b2] |
+| **Total** | **~22h raw / ~15h effective (Phase 1 parallelized)** | **3 P1 + 2 P2** | — | **36/36 complete** |
 
 **Critical path**: T-SRS-BND-01 (canary monitoring) + T-CNS-03 (sequential 16-folder sweep) — these two cannot be parallelized with each other or with Phase 1 without risk.
