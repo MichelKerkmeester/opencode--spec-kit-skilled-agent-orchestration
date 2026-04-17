@@ -6,6 +6,15 @@
 
 import { hookLog } from '../claude/shared.js';
 
+// Re-export shared provenance helpers so Gemini-side modules can
+// import them without reaching into ../claude/shared.js (T-W1-HOK-02).
+export {
+  escapeProvenanceField,
+  sanitizeRecoveredPayload,
+  wrapRecoveredCompactPayload,
+  type RecoveredCompactMetadata,
+} from '../shared-provenance.js';
+
 /** Parsed JSON from Gemini CLI hook stdin */
 export interface GeminiHookInput {
   session_id?: string;

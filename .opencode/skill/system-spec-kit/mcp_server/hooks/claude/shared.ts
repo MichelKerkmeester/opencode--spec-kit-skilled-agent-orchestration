@@ -97,44 +97,16 @@ export function truncateToTokenBudget(text: string, maxTokens: number): string {
   return text.slice(0, maxChars) + '\n[...truncated to fit token budget]';
 }
 
-const RECOVERED_TRANSCRIPT_STRIP_PATTERNS = [
-  /^\s*(?:system|developer|assistant|user)\s*:/i,
-  /^\s*\[(?:system|developer|assistant|user)\]\s*:/i,
-  /^\s*(?:you are\b|important:|follow(?: these)? instructions\b|ignore (?:all|previous)|system prompt\b|developer note\b|role:|policy:)/i,
-  /^\s*#{1,6}\s*(?:system|developer|assistant|user|instructions?|prompt)\b/i,
-  /^\s*<(?:\/)?(?:system|developer|assistant|user|instructions?)\b/i,
-];
-
-function escapeProvenanceField(value: unknown, fallback: string): string {
-  return encodeURIComponent(typeof value === 'string' ? value : fallback);
-}
-
-/** Remove obvious system-instruction lines from recovered transcript text */
-export function sanitizeRecoveredPayload(payload: string): string {
-  return payload
-    .split(/\r?\n/)
-    .filter((line) => !RECOVERED_TRANSCRIPT_STRIP_PATTERNS.some((pattern) => pattern.test(line)))
-    .join('\n')
-    .trim();
-}
-
-/** Add explicit provenance markers around recovered compact context */
-export function wrapRecoveredCompactPayload(
-  payload: string,
-  cachedAt: string,
-  metadata?: { producer?: string; trustState?: string; sourceSurface?: string },
-): string {
-  const sanitizedPayload = sanitizeRecoveredPayload(payload);
-  const provenanceLine = metadata
-    ? `[PROVENANCE: producer=${escapeProvenanceField(metadata.producer, 'hook-cache')}; trustState=${escapeProvenanceField(metadata.trustState, 'cached')}; sourceSurface=${escapeProvenanceField(metadata.sourceSurface, 'compact')}]`
-    : null;
-  return [
-    `[SOURCE: hook-cache, cachedAt: ${cachedAt}]`,
-    ...(provenanceLine ? [provenanceLine] : []),
-    sanitizedPayload,
-    '[/SOURCE]',
-  ].join('\n');
-}
+// Provenance helpers (escapeProvenanceField, sanitizeRecoveredPayload,
+// wrapRecoveredCompactPayload) live in ../shared-provenance.ts so they
+// can be consumed by Claude, Gemini, and Copilot runtimes without
+// transitive coupling to this Claude-specific module (T-W1-HOK-02).
+export {
+  escapeProvenanceField,
+  sanitizeRecoveredPayload,
+  wrapRecoveredCompactPayload,
+  type RecoveredCompactMetadata,
+} from '../shared-provenance.js';
 
 /** Calculate pressure-adjusted budget based on context window usage */
 export function calculatePressureAdjustedBudget(
