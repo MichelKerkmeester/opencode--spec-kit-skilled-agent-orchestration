@@ -1,5 +1,6 @@
 {
   "title": "Playbook and Remediation",
   "description": "Coordination parent for playbook follow-on work and remediation phases promoted out of the old 006 continuity refactor lane.",
-  "type": "coordination-parent"
+  "type": "coordination-parent",
+  "lastUpdated": "2026-04-17T15:45:19.000Z"
 }
