@@ -1,7 +1,21 @@
 # ─────────────────────────────────────────────────────────────────
 # DEEP RESEARCH: AUTONOMOUS DEEP RESEARCH LOOP (AUTO MODE)
 # ─────────────────────────────────────────────────────────────────
-# DEEP RESEARCH: AUTONOMOUS DEEP RESEARCH LOOP (AUTO MODE)
+# YAML PREDICATE GRAMMAR CONTRACT (S7 / M11):
+# - This asset does not currently use typed BooleanExpr predicates under
+#   `when:`; flow control is branch-label-driven (`on_resume`, `on_fresh`,
+#   `on_restart`, etc.). Retain the existing shape.
+# - `after:` carries prose timing / narrative notes if needed; `when:` in
+#   this file is reserved for future typed predicates and must NOT carry
+#   free-form narrative prose.
+# - See `.opencode/skill/system-spec-kit/shared/predicates/boolean-expr.ts`
+#   for the canonical BooleanExpr grammar.
+#
+# GATE 3 CLASSIFICATION (T-YML-DPR-01 / paired with T-DOC-03 R50-001):
+# - `resume` is a tested WRITE-PATH that produces `iteration-NNN.md` files
+#   and JSONL state-log appends. The workflow classifies resume as
+#   write-path below (see `gate3_classification` fields) so Gate 3 trigger
+#   extraction can surface resume correctly rather than false-negative.
 # ─────────────────────────────────────────────────────────────────
 role: Deep Research Loop Manager
 purpose: Iterative deep research with convergence detection
@@ -162,6 +176,10 @@ workflow:
         outputs:
           - session_state: "fresh | resume | completed-session | invalid-state"
         on_resume:
+          # T-YML-DPR-01 / R50-001: Resume is a WRITE-PATH. Produces `iteration-NNN.md` + JSONL appends.
+          # Paired with T-DOC-03 Gate 3 trigger addition (resume, save context, save memory, /memory:save).
+          gate3_classification: write-path
+          gate3_rationale: "resume produces iteration-NNN.md writes and JSONL state-log appends"
           log: "Auto-resume: state artifacts are complete and consistent. Continue the same lineage (sessionId unchanged, generation unchanged, no archive)."
           append_jsonl: '{"type":"event","event":"resumed","mode":"research","sessionId":"{session_id}","parentSessionId":"{session_id}","lineageMode":"resume","continuedFromRun":{iteration_count},"generation":{generation},"archivedPath":null,"timestamp":"{ISO_8601_NOW}"}'
           skip_to: phase_loop

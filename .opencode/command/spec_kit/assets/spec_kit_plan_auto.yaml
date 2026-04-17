@@ -1,6 +1,18 @@
 # ─────────────────────────────────────────────────────────────────
 # SMART SPECKIT: PLAN WORKFLOW (AUTONOMOUS MODE)
 # ─────────────────────────────────────────────────────────────────
+# YAML PREDICATE GRAMMAR CONTRACT (S7 / M11):
+# - `when:` fields that gate branch logic use the typed BooleanExpr form
+#   `{ field, op, value }` defined by
+#   `.opencode/skill/system-spec-kit/shared/predicates/boolean-expr.ts`.
+# - Legacy string literals (e.g. `intake_only == TRUE`) are preserved under
+#   `when_legacy_literal` as diagnostic aides during migration; they must
+#   stay mechanically equivalent to the typed form.
+# - `after:` carries prose timing / narrative notes that previously bled
+#   into `when:`. `after:` is never evaluated as a predicate.
+# - Operators permitted: ==, !=, in, not_in. Boolean literals must match
+#   the uppercase TRUE/FALSE contract (regression: T-TEST-NEW-19).
+# ─────────────────────────────────────────────────────────────────
 role: Expert Developer using Smart SpecKit for autonomous planning
 purpose: Spec-driven planning with autonomous execution through step 7
 action: Run SpecKit from spec to planning with continuous self-validation
@@ -355,7 +367,12 @@ workflow:
       - spec_path: "{spec_folder}"
       - start_state: "canonical intake-contract state: empty-folder | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
     on_trigger:
-      when: "folder_state != populated-folder"
+      # Typed predicate (T-YML-PLN-02 / M11 BooleanExpr); legacy string literal preserved for backwards compatibility.
+      when:
+        field: folder_state
+        op: "!="
+        value: populated-folder
+      when_legacy_literal: "folder_state != populated-folder"
       inline_start_intake:
         execution_mode: "{execution_mode}"
         prompt_mode: "single_consolidated_prompt"
@@ -376,7 +393,12 @@ workflow:
       emit_event_after_bind: intake_completed
       payload_after_bind: '{"event":"intake_completed","folderState":"{folder_state}","startState":"{start_state}","specPath":"{spec_path}","selectedLevel":"{selected_level}","repairMode":"{repair_mode}","timestamp":"{ISO_8601_NOW}"}'
     on_skip:
-      when: "folder_state == populated-folder"
+      # Typed predicate (T-YML-PLN-02 / M11 BooleanExpr); legacy string literal preserved for backwards compatibility.
+      when:
+        field: folder_state
+        op: "=="
+        value: populated-folder
+      when_legacy_literal: "folder_state == populated-folder"
       note: "Healthy folder detected. Skip shared intake-contract execution (`.opencode/skill/system-spec-kit/references/intake-contract.md` §2-§5) and keep the existing `/plan` setup behavior unchanged."
 
   step_0.6_intake_only_gate:
@@ -384,7 +406,12 @@ workflow:
     trigger_flag: "--intake-only"
     bound_variable: intake_only
     halt_condition:
-      when: "intake_only == TRUE"
+      # Typed predicate (T-YML-PLN-02 / M11 BooleanExpr); legacy string literal preserved for backwards compatibility.
+      when:
+        field: intake_only
+        op: "=="
+        value: true
+      when_legacy_literal: "intake_only == TRUE"
       behavior: "Emit success summary, set STATUS=OK, and STOP the workflow before step_1_request_analysis is reached. Steps 1-7 MUST NOT execute."
       success_summary_fields:
         - spec_path
@@ -395,7 +422,12 @@ workflow:
       message: "Intake-only mode complete. Published trio at {spec_path}: spec.md, description.json, graph-metadata.json. Planning Steps 1-7 bypassed. Run /spec_kit:plan (without --intake-only) to resume planning."
       exit_status: OK
     continue_condition:
-      when: "intake_only == FALSE"
+      # Typed predicate (T-YML-PLN-02 / M11 BooleanExpr); legacy string literal preserved for backwards compatibility.
+      when:
+        field: intake_only
+        op: "=="
+        value: false
+      when_legacy_literal: "intake_only == FALSE"
       behavior: "Proceed to step_1_request_analysis and execute the normal 7-step planning workflow."
 
   step_1_request_analysis:
@@ -559,7 +591,8 @@ workflow:
       mcp_tool: memory_save
       invocation: 'memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
       critical_note: "Then index via memory_save or memory_index_scan. Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
-      when: "Immediately after the canonical spec document is refreshed on disk"
+      # Narrative timing moved from `when:` to `after:` (T-YML-PLN-04 — separates predicate-`when:` from prose-`after:`).
+      after: "Immediately after the canonical spec document is refreshed on disk"
     anchor_requirements:
       enforcement: MANDATORY
       minimum_anchors: 2

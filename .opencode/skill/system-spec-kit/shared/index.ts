@@ -259,3 +259,22 @@ export {
   predict,
   extractFeatureVector,
 } from './ranking/learned-combiner.js';
+
+// ---------------------------------------------------------------
+// 12. YAML PREDICATE GRAMMAR (S7 / M11)
+// ---------------------------------------------------------------
+export {
+  parseBooleanExprString,
+  validateBooleanExpr,
+  parseWhenField,
+  evaluateBooleanExpr,
+  findProseBleed,
+} from './predicates/boolean-expr.js';
+export type {
+  BooleanExpr,
+  BooleanExprOp,
+  BooleanExprValue,
+  ParsedBooleanExpr,
+  ValidatedBooleanExpr,
+  WhenFieldDiagnostic,
+} from './predicates/boolean-expr.js';

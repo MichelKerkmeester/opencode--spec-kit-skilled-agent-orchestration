@@ -1,6 +1,18 @@
 # ─────────────────────────────────────────────────────────────────
 # SMART SPECKIT: COMPLETE WORKFLOW (AUTONOMOUS MODE)
 # ─────────────────────────────────────────────────────────────────
+# YAML PREDICATE GRAMMAR CONTRACT (S7 / M11):
+# - `when:` fields that gate branch logic use the typed BooleanExpr form
+#   `{ field, op, value }` defined by
+#   `.opencode/skill/system-spec-kit/shared/predicates/boolean-expr.ts`.
+# - Legacy string literals (e.g. `folder_state == populated-folder`) are
+#   preserved under `when_legacy_literal` as diagnostic aides during
+#   migration; they must stay mechanically equivalent to the typed form.
+# - `after:` carries prose timing / narrative notes that previously bled
+#   into `when:`. `after:` is never evaluated as a predicate.
+# - Operators permitted: ==, !=, in, not_in. Boolean literals must match
+#   the uppercase TRUE/FALSE contract (regression: T-TEST-NEW-19).
+# ─────────────────────────────────────────────────────────────────
 role: Expert Developer using Smart SpecKit autonomously
 purpose: Spec-driven development with mandatory compliance and autonomous execution
 action: Run full SpecKit from spec to implementation with continuous validation
@@ -462,7 +474,12 @@ workflow:
       - spec_path: "{spec_folder}"
       - start_state: "empty-folder | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
     on_trigger:
-      when: "folder_state != populated-folder"
+      # Typed predicate (T-YML-CMP-01 / M11 BooleanExpr); legacy string literal preserved for backwards compatibility.
+      when:
+        field: folder_state
+        op: "!="
+        value: populated-folder
+      when_legacy_literal: "folder_state != populated-folder"
       inline_start_intake:
         execution_mode: "{execution_mode}"
         prompt_mode: "single_consolidated_prompt"
@@ -480,7 +497,12 @@ workflow:
       emit_event_after_bind: intake_completed
       payload_after_bind: '{"event":"intake_completed","folderState":"{folder_state}","startState":"{start_state}","specPath":"{spec_path}","selectedLevel":"{selected_level}","repairMode":"{repair_mode}","timestamp":"{ISO_8601_NOW}"}'
     on_skip:
-      when: "folder_state == populated-folder"
+      # Typed predicate (T-YML-CMP-01 / M11 BooleanExpr); legacy string literal preserved for backwards compatibility.
+      when:
+        field: folder_state
+        op: "=="
+        value: populated-folder
+      when_legacy_literal: "folder_state == populated-folder"
       note: "Healthy folder detected. Skip shared intake-contract execution (`.opencode/skill/system-spec-kit/references/intake-contract.md` §2-§5) and keep the existing `/complete` setup behavior unchanged."
 
   step_1_request_analysis:
@@ -713,7 +735,9 @@ workflow:
     level_2_verification: [checklist.md]
     level_3_full: [decision-record.md]
     decision_records:
-      when: significant_technical_decision_needs_documentation
+      # Narrative trigger label (T-YML-CMP-01 / S7): moved from `when:` because this is a
+      # content-generation trigger tag, not a mechanical BooleanExpr predicate.
+      trigger_reason: significant_technical_decision_needs_documentation
       template: .opencode/skill/system-spec-kit/templates/level_3/decision-record.md
       inline_scaffold_key: decision_record_md
     template: .opencode/skill/system-spec-kit/templates/level_2/plan.md
@@ -956,7 +980,9 @@ workflow:
       inline_scaffold_key: implementation_summary_md
       writing_rule: "Embed template_compliance.inline_scaffolds.implementation_summary_md in the prompt before writing implementation-summary.md."
     nested_changelog:
-      when:
+      # Narrative preconditions (T-YML-CMP-01 / S7): moved from `when:` because these are
+      # human-readable folder-shape criteria, not mechanical BooleanExpr predicates.
+      applies_when:
       - "Spec folder is a spec root under specs/ or .opencode/specs/"
       - "Spec folder is a phase child under a parent spec folder"
       generator:
@@ -1009,7 +1035,8 @@ workflow:
       mcp_tool: memory_save
       invocation: 'memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
       critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
-      when: "Immediately after the canonical spec document is refreshed on disk"
+      # Narrative timing moved from `when:` to `after:` (T-YML-CMP-01 — separates predicate-`when:` from prose-`after:`).
+      after: "Immediately after the canonical spec document is refreshed on disk"
 
     anchor_requirements:
       enforcement: MANDATORY
