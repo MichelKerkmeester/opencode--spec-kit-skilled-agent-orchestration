@@ -392,10 +392,10 @@ Top-8 file by distinct-issue count. Primary workstream: S4.
 Top-7 file by distinct-issue count. Primary workstream: S6.
 
 - [x] T-MPR-RUN-01 [P1] R41-004: Markdown → `Function(...)()` eval with no sandbox; documentation drift can become arbitrary Node-side execution → typed step executor replacing `Function(...)()` (M9 from S6) (`manual-playbook-runner.ts:224-246,251-317,438-445`) — Phase 2 S6
-- [ ] T-MPR-RUN-02 [P2] R42-003: Automation eligibility governed by filename substrings + prose-shaped command parsing → explicit `automatable: boolean` field on scenario metadata (S6/C1) (`manual-playbook-runner.ts:319-375,983-1016`)
+- [x] T-MPR-RUN-02 [P2] R42-003: Automation eligibility governed by filename substrings + prose-shaped command parsing → explicit `automatable: boolean` field on scenario metadata (S6/C1) (`manual-playbook-runner.ts:319-375,983-1016`)
 - [x] T-MPR-RUN-03 [P1] R45-004: `parseScenarioDefinition()` returns null on parse failure; `main()` filters nulls before coverage count; 10/291 active scenario files unparseable 2026-04-16 → `parsedCount == filteredCount` assertion; emit named warning on drop (`manual-playbook-runner.ts:245-271,1203-1217`) [QW #7]
-- [ ] T-MPR-RUN-04 [P1] R46-003: `parsedStepArgs()` routes brace-prefixed text to `evaluateObjectLiteral()`; `substitutePlaceholders()` injects `runtimeState.lastJobId` from prior handler payloads into `Function(...)` string → typed schema-validated arg parser (paired with T-MPR-RUN-01) (`manual-playbook-runner.ts:181-194,427-445,930-943,1112-1117`) — Phase 2 S6
-- [ ] T-MPR-RUN-05 [P2] R50-002: Live corpus contains two incompatible argument dialects for same tool family (`memory_ingest_status({jobId})` vs `memory_ingest_status({ jobId:"<job-id>" })`); shorthand form depends on undefined JS scoping → reject shorthand dialect; add schema validation (`manual-playbook-runner.ts:438-445,544-548,612-616`) [Phase 2 S6]
+- [x] T-MPR-RUN-04 [P1] R46-003: `parsedStepArgs()` routes brace-prefixed text to `evaluateObjectLiteral()`; `substitutePlaceholders()` injects `runtimeState.lastJobId` from prior handler payloads into `Function(...)` string → typed schema-validated arg parser (paired with T-MPR-RUN-01) (`manual-playbook-runner.ts:181-194,427-445,930-943,1112-1117`) — Phase 2 S6
+- [x] T-MPR-RUN-05 [P2] R50-002: Live corpus contains two incompatible argument dialects for same tool family (`memory_ingest_status({jobId})` vs `memory_ingest_status({ jobId:"<job-id>" })`); shorthand form depends on undefined JS scoping → reject shorthand dialect; add schema validation (`manual-playbook-runner.ts:438-445,544-548,612-616`) [Phase 2 S6]
 <!-- /ANCHOR:group-mpr-run -->
 
 ---
