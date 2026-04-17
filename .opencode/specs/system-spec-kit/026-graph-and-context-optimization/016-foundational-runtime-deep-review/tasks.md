@@ -134,10 +134,10 @@ Top-1 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D4, D5
 - [x] T-SST-06 [P0-D] [P] R33-002: Overlapping stop hooks can regress `lastTranscriptOffset` backwards; `Math.max()` monotonicity guard in `updateState()` (also lands in T-HST group) (`session-stop.ts:119-125,244-268`) — Phase 1a / QW #9
 - [x] T-SST-07 [P1] R39-001: Autosave outcome (ran/skipped/failed) never surfaced in `SessionStopProcessResult`; add `autosaveOutcome` field (`session-stop.ts:60-67,108-117,299-318`) — Phase 1a / QW #22
 - [x] T-SST-08 [P1] R15-001, R15-002, R15-003: Transcript-driven retargeting silently rewrites autosave destination; 50 KB tail window can hide real active packet; transcript I/O failure collapsed into "ambiguous" → emit retarget-reason field; configurable tail window; distinguish I/O vs ambiguity (`session-stop.ts:61-77,281-309,294-295,340-378`) [Phase 3 Med-F]
-- [ ] T-SST-09 [P1] R20-001: `buildProducerMetadata()` re-stats live transcript; metadata describes later state than parsed one → snapshot transcript stat before producer metadata builds (`session-stop.ts:199-218,248-268`) [Phase 3 Med-E]
-- [ ] T-SST-10 [P1] R31-002 + R32-002 (dedup): Multiple `recordStateUpdate()` + final disk reload in `runContextAutosave()` create torn-state autosave window → collapse three writes into single atomic patch (M3 from S2) (`session-stop.ts:60-67,119-125,244-246,261-268,281-289,302-309`) — Phase 1b / M3
-- [ ] T-SST-11 [P1] R37-002: Stale `currentSpecFolder` preference suppresses legitimate packet retarget when another writer advanced target → refresh `stateBeforeStop.lastSpecFolder` before `detectSpecFolder()` OR change "prefer currentSpecFolder" rule (M4 from S2) (`session-stop.ts:128-145,244-246,281-296,340-369`) — Phase 1b / M4
-- [ ] T-SST-12 [P1] R33-003 consumer side: Failed `saveState` does not abort autosave → consume `updateState()` typed return and abort autosave on `persisted: false` (paired with T-HST-08) (`session-stop.ts:60-67,119-125,261-309`) — Phase 1b / A8
+- [x] T-SST-09 [P1] R20-001: `buildProducerMetadata()` re-stats live transcript; metadata describes later state than parsed one → snapshot transcript stat before producer metadata builds (`session-stop.ts:199-218,248-268`) [Phase 3 Med-E]
+- [x] T-SST-10 [P1] R31-002 + R32-002 (dedup): Multiple `recordStateUpdate()` + final disk reload in `runContextAutosave()` create torn-state autosave window → collapse three writes into single atomic patch (M3 from S2) (`session-stop.ts:60-67,119-125,244-246,261-268,281-289,302-309`) — Phase 1b / M3
+- [x] T-SST-11 [P1] R37-002: Stale `currentSpecFolder` preference suppresses legitimate packet retarget when another writer advanced target → refresh `stateBeforeStop.lastSpecFolder` before `detectSpecFolder()` OR change "prefer currentSpecFolder" rule (M4 from S2) (`session-stop.ts:128-145,244-246,281-296,340-369`) — Phase 1b / M4
+- [x] T-SST-12 [P1] R33-003 consumer side: Failed `saveState` does not abort autosave → consume `updateState()` typed return and abort autosave on `persisted: false` (paired with T-HST-08) (`session-stop.ts:60-67,119-125,261-309`) — Phase 1b / A8
 
 <!-- /ANCHOR:group-sst -->
 
@@ -200,12 +200,12 @@ Primary workstream: S1 (P0-B). Paired with T-RCB-04, T-RCB-05, T-RCB-06.
 
 Top-4 file by distinct-issue count. Primary workstream: M13 (enum status refactor).
 
-- [ ] T-PIN-01 [P1] R7-002: Entity extraction soft-fails but flag set `true`; linking runs on stale rows → gate entity linking on successful extraction (via `OperationResult<T>`) (`post-insert.ts:116-125,159-173`) — Phase 3 M13
-- [ ] T-PIN-02 [P1] R8-001: `enrichmentStatus = true` for four different outcomes (success, feature-disabled skip, "nothing to do" skip, full deferral) → replace with `OperationResult<T>` map (M13 canonical fix) (`post-insert.ts:86-213,223-238`) — Phase 3 M13 (anchor)
-- [ ] T-PIN-03 [P1] R8-002: Entity linking gated only by feature flags, not successful extraction → gate on `extraction.status == 'ran'` (`post-insert.ts:116-129,157-181`) [B:T-PIN-02]
-- [ ] T-PIN-04 [P1] R14-003 (dedup of R12-004): Partial causal-link failures normalized into successful enrichment → propagate `partial` status (`post-insert.ts:94-113`) [B:T-PIN-02]
-- [ ] T-PIN-05 [P2] R11-005: `summary`/`graphLifecycle` no-ops normalized to `true` → `skipped` status with reason (`post-insert.ts:136-147,187-200`) [B:T-PIN-02]
-- [ ] T-PIN-06 [P2] R12-005 (dedup of R14-004): `entityLinking.skippedByDensityGuard` collapsed into success → `skipped` status with `reason: 'density_guard'` (`post-insert.ts:159-173`) [B:T-PIN-02]
+- [x] T-PIN-01 [P1] R7-002: Entity extraction soft-fails but flag set `true`; linking runs on stale rows → gate entity linking on successful extraction (via `OperationResult<T>`) (`post-insert.ts:116-125,159-173`) — Phase 3 M13
+- [x] T-PIN-02 [P1] R8-001: `enrichmentStatus = true` for four different outcomes (success, feature-disabled skip, "nothing to do" skip, full deferral) → replace with `OperationResult<T>` map (M13 canonical fix) (`post-insert.ts:86-213,223-238`) — Phase 3 M13 (anchor)
+- [x] T-PIN-03 [P1] R8-002: Entity linking gated only by feature flags, not successful extraction → gate on `extraction.status == 'ran'` (`post-insert.ts:116-129,157-181`) [B:T-PIN-02]
+- [x] T-PIN-04 [P1] R14-003 (dedup of R12-004): Partial causal-link failures normalized into successful enrichment → propagate `partial` status (`post-insert.ts:94-113`) [B:T-PIN-02]
+- [x] T-PIN-05 [P2] R11-005: `summary`/`graphLifecycle` no-ops normalized to `true` → `skipped` status with reason (`post-insert.ts:136-147,187-200`) [B:T-PIN-02]
+- [x] T-PIN-06 [P2] R12-005 (dedup of R14-004): `entityLinking.skippedByDensityGuard` collapsed into success → `skipped` status with `reason: 'density_guard'` (`post-insert.ts:159-173`) [B:T-PIN-02]
 - [ ] T-PIN-07 [P2] R17-002: Exception-driven enrichment failures still report `executionStatus=ran` → `failed` status with exception reason (`post-insert.ts:106-109,126-129,148-151,174-177,201-214`) [B:T-PIN-02]
 - [ ] T-PIN-08 [P1] R27-001: `graphLifecycle=true` even when `onIndex` returns `skipped:true`; `runEnrichmentBackfill` can't unblock → propagate underlying skip reason (`post-insert.ts:187-200`) [B:T-PIN-02]
 <!-- /ANCHOR:group-pin -->
@@ -354,9 +354,9 @@ Primary workstream: Phase 3 Med.
 Top-6 file by distinct-issue count. Primary workstream: S4.
 
 - [x] T-SAP-01 [P1] R43-001 + R44-001 (dedup): Live skill router does not consume per-skill `intent_signals`/`derived.trigger_phrases`; `signals` map populated but has no consumer in `analyze_request()` → wire signals into scoring (A2 from S4) (`skill_advisor.py:105-116,140-152,180-187,1669-1694`) — Phase 2 S4 / QW #1
-- [ ] T-SAP-02 [P2] R45-002: Deep-research prompts containing `audit`/`review` tokens score within 0.02 of `sk-code-review`; no ranking-stability test → disambiguation tier for deep-research vs review (A2b from S4) (`skill_advisor.py:568-577,771-813,1669-1694`) [B:T-SAP-01]
+- [x] T-SAP-02 [P2] R45-002: Deep-research prompts containing `audit`/`review` tokens score within 0.02 of `sk-code-review`; no ranking-stability test → disambiguation tier for deep-research vs review (A2b from S4) (`skill_advisor.py:568-577,771-813,1669-1694`) [B:T-SAP-01]
 - [ ] T-SAP-03 [P1] R46-001: `COMMAND_BRIDGES` registers only `/spec_kit` prefix; all `/spec_kit:*` subcommands collapse to `command-spec-kit` at `kind_priority=2` → per-subcommand bridges (A0 from S4) (`skill_advisor.py:980-1021,1404-1410,1647,1741-1768`) — Phase 2 S4 / QW #2 [B:T-PRE-08]
-- [ ] T-SAP-04 [P1] R46-002: `validate_edge_symmetry()` never inspects `conflicts_with` edges; unilateral metadata edit silently creates bilateral runtime penalty → reciprocity check (paired with T-SGC-03) (A4 from S4) (`skill_advisor.py:141-187,321-339`) — Phase 2 S4
+- [x] T-SAP-04 [P1] R46-002: `validate_edge_symmetry()` never inspects `conflicts_with` edges; unilateral metadata edit silently creates bilateral runtime penalty → reciprocity check (paired with T-SGC-03) (A4 from S4) (`skill_advisor.py:141-187,321-339`) — Phase 2 S4
 - [x] T-SAP-05 [P1] R41-003: Skill-graph topology checks advisory-only; `--validate-only` returns success for graphs violating routing invariants → promote to hard errors (paired with T-SGC-02) (`skill_advisor.py:203-265`) [QW #27]
 <!-- /ANCHOR:group-sap -->
 
@@ -367,7 +367,7 @@ Top-6 file by distinct-issue count. Primary workstream: S4.
 
 Primary workstream: S4.
 
-- [ ] T-SAR-01 [P2] R42-002: Skill-routing authority split across two unsynchronized inventories: SKILL.md discovery vs compiled graph; `health_check()` returns ok even when inventories disagree → inventory comparison in health_check (A5 cascade) (`skill_advisor_runtime.py:93-97,165-203`) — Phase 2 S4
+- [x] T-SAR-01 [P2] R42-002: Skill-routing authority split across two unsynchronized inventories: SKILL.md discovery vs compiled graph; `health_check()` returns ok even when inventories disagree → inventory comparison in health_check (A5 cascade) (`skill_advisor_runtime.py:93-97,165-203`) — Phase 2 S4
 - [x] T-SAR-02 [P2] R44-002: `parse_frontmatter_fast()` stores only `key: value` scalar lines; `<!-- Keywords: ... -->` comment blocks stripped before routing → capture comment blocks (A1 from S4) (`skill_advisor_runtime.py:161-203`) — Phase 2 S4 / QW #3
 <!-- /ANCHOR:group-sar -->
 
@@ -379,7 +379,7 @@ Primary workstream: S4.
 Top-8 file by distinct-issue count. Primary workstream: S4.
 
 - [x] T-SGC-01 [P1] R41-003 counterpart in compiler: topology check exit code → hard-error on violations (paired with T-SAP-05) (`skill_graph_compiler.py:272-353,630-663`) [QW #27]
-- [ ] T-SGC-02 [P1] R45-003: Topology warning state non-durable: ZERO-EDGE WARNINGS emitted then dropped from serialized graph; `health_check()` returns `status: ok` after warnings → serialize warning payloads into compiled graph; expose in `health_check()` (A5 from S4) (`skill_graph_compiler.py:559-568,630-663`) — Phase 2 S4 / QW #4
+- [x] T-SGC-02 [P1] R45-003: Topology warning state non-durable: ZERO-EDGE WARNINGS emitted then dropped from serialized graph; `health_check()` returns `status: ok` after warnings → serialize warning payloads into compiled graph; expose in `health_check()` (A5 from S4) (`skill_graph_compiler.py:559-568,630-663`) — Phase 2 S4 / QW #4
 - [x] T-SGC-03 [P1] R46-002 counterpart in compiler: `validate_edge_symmetry()` must inspect `conflicts_with` edges → reciprocity check (paired with T-SAP-04) (`skill_graph_compiler.py:272-319,501-568,630-663`) [QW #5]
 - [x] T-SGC-04 [P1] R49-003: `validate_dependency_cycles()` only detects two-node reciprocal cycles; longer `depends_on` loops pass `--validate-only` → arbitrary-length cycle detection (Tarjan SCC or DFS color-marking) (`skill_graph_compiler.py:437-472,623-663`) [QW #6]
 <!-- /ANCHOR:group-sgc -->
