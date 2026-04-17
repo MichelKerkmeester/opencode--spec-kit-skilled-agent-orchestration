@@ -8,6 +8,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { refreshGraphMetadata } from '../api/indexing.js';
 import { processCausalLinks } from '../handlers/causal-links-processor.js';
 import { findGraphMetadataFiles } from '../handlers/memory-index-discovery.js';
+import { GRAPH_METADATA_MIGRATED_QUALITY_FLAG } from '../lib/graph/graph-metadata-schema.js';
 import { parseMemoryContent } from '../lib/parsing/memory-parser.js';
 import { __testables as stage1Testables } from '../lib/search/pipeline/stage1-candidate-gen.js';
 import { serializeGraphMetadata, type GraphMetadata } from '../api';
@@ -136,7 +137,7 @@ describe('graph metadata integration', () => {
     ]));
   });
 
-  it('boosts graph_metadata candidates for packet-oriented queries', () => {
+  it('boosts clean graph_metadata candidates for packet-oriented queries', () => {
     const boosted = stage1Testables.boostGraphMetadataCandidates(
       [
         { id: 1, score: 0.4, document_type: 'graph_metadata' },
@@ -147,6 +148,24 @@ describe('graph metadata integration', () => {
 
     expect(boosted[0]?.score).toBeGreaterThan(0.4);
     expect(boosted[1]?.score).toBe(0.4);
+  });
+
+  it('penalizes migrated graph_metadata candidates for packet-oriented queries', () => {
+    const reranked = stage1Testables.boostGraphMetadataCandidates(
+      [
+        {
+          id: 1,
+          score: 0.4,
+          document_type: 'graph_metadata',
+          quality_flags: JSON.stringify([GRAPH_METADATA_MIGRATED_QUALITY_FLAG]),
+        },
+        { id: 2, score: 0.4, document_type: 'spec' },
+      ] as any,
+      'resume packet dependencies and key files',
+    );
+
+    expect(reranked[0]?.score).toBeLessThan(0.4);
+    expect(reranked[1]?.score).toBe(0.4);
   });
 
   it('parses description.json into an indexable packet row', () => {

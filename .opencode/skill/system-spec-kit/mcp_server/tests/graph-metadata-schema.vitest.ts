@@ -239,11 +239,37 @@ describe('graph metadata schema and parser', () => {
     ].join('\n'));
 
     expect(validation.ok).toBe(true);
-    expect(validation.metadata?.packet_id).toBe('system-spec-kit/999-legacy-packet');
-    expect(validation.metadata?.parent_id).toBe('system-spec-kit/998-parent');
-    expect(validation.metadata?.manual.depends_on[0]?.packet_id).toBe('system-spec-kit/010-foundation');
-    expect(validation.metadata?.manual.supersedes[0]?.packet_id).toBe('system-spec-kit/009-older');
-    expect(validation.metadata?.manual.related_to[0]?.packet_id).toBe('system-spec-kit/011-peer');
+    if (!validation.ok) {
+      throw new Error('Expected migrated validation result');
+    }
+
+    expect(validation.migrated).toBe(true);
+    expect(validation.migrationSource).toBe('legacy');
+    expect(validation.preservedErrors.length).toBeGreaterThan(0);
+    expect(validation.metadata.packet_id).toBe('system-spec-kit/999-legacy-packet');
+    expect(validation.metadata.parent_id).toBe('system-spec-kit/998-parent');
+    expect(validation.metadata.migrated).toBe(true);
+    expect(validation.metadata.migration_source).toBe('legacy');
+    expect(validation.metadata.manual.depends_on[0]?.packet_id).toBe('system-spec-kit/010-foundation');
+    expect(validation.metadata.manual.supersedes[0]?.packet_id).toBe('system-spec-kit/009-older');
+    expect(validation.metadata.manual.related_to[0]?.packet_id).toBe('system-spec-kit/011-peer');
+  });
+
+  it('preserves current-schema validation errors when legacy fallback also fails', () => {
+    const validation = validateGraphMetadataContent(JSON.stringify({
+      schema_version: 2,
+      packet_id: 'system-spec-kit/999-bad-packet',
+      parent_id: null,
+      children_ids: [],
+      manual: createEmptyGraphMetadataManual(),
+      derived: {},
+    }));
+
+    expect(validation.ok).toBe(false);
+    expect(validation.errors).toEqual(expect.arrayContaining([
+      expect.stringContaining('current schema'),
+      expect.stringContaining('legacy fallback'),
+    ]));
   });
 
   it('derives complete status when implementation-summary exists and checklist items are all checked', () => {
@@ -291,6 +317,30 @@ describe('graph metadata schema and parser', () => {
     const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
 
     expect(metadata.derived.status).toBe('complete');
+  });
+
+  it('derives unknown status when a canonical doc is unreadable', () => {
+    const specFolder = createSpecFolder({
+      specStatus: null,
+      planStatus: null,
+      implementationSummaryStatus: null,
+      includeChecklist: true,
+    });
+    const originalReadFileSync = fs.readFileSync.bind(fs);
+
+    vi.spyOn(fs, 'readFileSync').mockImplementation((...args: Parameters<typeof fs.readFileSync>) => {
+      const [filePath] = args;
+      if (typeof filePath === 'string' && filePath.endsWith('checklist.md')) {
+        const error = new Error('permission denied') as NodeJS.ErrnoException;
+        error.code = 'EACCES';
+        throw error;
+      }
+      return originalReadFileSync(...args);
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+
+    expect(metadata.derived.status).toBe('unknown');
   });
 
   it('keeps explicit frontmatter status ahead of checklist-aware fallback logic', () => {

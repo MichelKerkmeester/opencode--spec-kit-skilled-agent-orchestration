@@ -7,6 +7,8 @@ import { z } from 'zod';
 export const GRAPH_METADATA_SCHEMA_VERSION = 1 as const;
 export const GRAPH_METADATA_DOCUMENT_TYPE = 'graph_metadata' as const;
 export const GRAPH_METADATA_FILENAME = 'graph-metadata.json' as const;
+export const GRAPH_METADATA_MIGRATED_QUALITY_FLAG = 'graph_metadata_migrated' as const;
+export type GraphMetadataMigrationSource = 'legacy';
 
 export const packetReferenceSchema = z.object({
   packet_id: z.string().min(1),
@@ -49,6 +51,8 @@ export const graphMetadataSchema = z.object({
   spec_folder: z.string().min(1),
   parent_id: z.string().min(1).nullable(),
   children_ids: z.array(z.string().min(1)),
+  migrated: z.boolean().optional(),
+  migration_source: z.literal('legacy').optional(),
   manual: graphMetadataManualSchema,
   derived: graphMetadataDerivedSchema,
 });

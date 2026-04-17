@@ -47,6 +47,7 @@ import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers.js';
 import { filterRowsByScope } from '../../governance/scope-governance.js';
 import { withTimeout } from '../../errors/core.js';
+import { GRAPH_METADATA_MIGRATED_QUALITY_FLAG } from '../../graph/graph-metadata-schema.js';
 import { computeBackfillQualityScore } from '../../validation/save-quality-gate.js';
 import {
   isMultiFacet,
@@ -203,6 +204,36 @@ function readFiniteScoreMap(value: unknown): Record<string, number> {
   return normalized;
 }
 
+function readQualityFlags(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value.filter((entry): entry is string => typeof entry === 'string' && entry.length > 0);
+  }
+  if (typeof value !== 'string' || value.trim().length === 0) {
+    return [];
+  }
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    if (Array.isArray(parsed)) {
+      return parsed.filter((entry): entry is string => typeof entry === 'string' && entry.length > 0);
+    }
+  } catch {
+    // Fall back to comma-delimited parsing for legacy callers/tests.
+  }
+  return value
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter((entry) => entry.length > 0);
+}
+
+function isMigratedGraphMetadataCandidate(row: PipelineRow): boolean {
+  const migratedValue = row.migrated ?? row.is_migrated ?? row.metadata_migrated;
+  if (migratedValue === true || migratedValue === 1 || migratedValue === '1' || migratedValue === 'true') {
+    return true;
+  }
+  const qualityFlags = readQualityFlags(row.quality_flags ?? row.qualityFlags);
+  return qualityFlags.includes(GRAPH_METADATA_MIGRATED_QUALITY_FLAG);
+}
+
 function mergeScoreMaps(...maps: Array<Record<string, number>>): Record<string, number> {
   const merged: Record<string, number> = {};
   for (const map of maps) {
@@ -272,15 +303,17 @@ function boostGraphMetadataCandidates(
     }
 
     const currentScore = resolveEffectiveScore(row);
-    const boosted = Math.min(1, currentScore + 0.12);
+    const adjustedScore = isMigratedGraphMetadataCandidate(row)
+      ? Math.max(0, currentScore - 0.12)
+      : Math.min(1, currentScore + 0.12);
     const sourceScores = getCandidateSourceScores(row);
     return {
       ...row,
-      score: boosted,
-      rrfScore: boosted,
+      score: adjustedScore,
+      rrfScore: adjustedScore,
       sourceScores: {
         ...sourceScores,
-        graph_metadata: Math.max(sourceScores.graph_metadata ?? 0, boosted),
+        graph_metadata: adjustedScore,
       },
     };
   });

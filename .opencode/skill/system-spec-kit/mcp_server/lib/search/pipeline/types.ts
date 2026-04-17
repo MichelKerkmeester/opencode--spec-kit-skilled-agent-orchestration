@@ -38,6 +38,8 @@ export interface PipelineRow extends Record<string, unknown> {
   contentSource?: 'reassembled_chunks' | 'file_read_fallback';
   precomputedContent?: string;
   quality_score?: number;
+  quality_flags?: string | string[] | null;
+  qualityFlags?: string | string[] | null;
   importance_weight?: number;
   rrfScore?: number;
   intentAdjustedScore?: number;

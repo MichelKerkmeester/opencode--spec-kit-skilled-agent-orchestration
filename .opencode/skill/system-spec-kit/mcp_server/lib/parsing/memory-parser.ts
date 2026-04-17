@@ -27,6 +27,7 @@ import {
   packetReferencesToCausalLinks,
   validateGraphMetadataContent,
 } from '../graph/graph-metadata-parser.js';
+import { GRAPH_METADATA_MIGRATED_QUALITY_FLAG } from '../graph/graph-metadata-schema.js';
 
 export { getCanonicalPathKey };
 
@@ -292,7 +293,7 @@ export function parseMemoryContent(
 
   if (documentType === 'graph_metadata') {
     const validation = validateGraphMetadataContent(content);
-    if (!validation.ok || !validation.metadata) {
+    if (!validation.ok) {
       throw new Error(`Invalid graph metadata content for ${filePath}: ${validation.errors.join('; ')}`);
     }
 
@@ -327,7 +328,7 @@ export function parseMemoryContent(
       hasCausalLinks: hasCausalLinks(causalLinks),
       documentType,
       qualityScore: 1,
-      qualityFlags: [],
+      qualityFlags: validation.migrated ? [GRAPH_METADATA_MIGRATED_QUALITY_FLAG] : [],
     };
   }
 
@@ -1094,4 +1095,3 @@ export function validateParsedMemory(parsed: ParsedMemory): ParsedMemoryValidati
     warnings,
   };
 }
-

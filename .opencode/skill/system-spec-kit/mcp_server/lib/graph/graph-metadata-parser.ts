@@ -23,6 +23,7 @@ import {
   graphMetadataSchema,
   type GraphMetadata,
   type GraphMetadataDerived,
+  type GraphMetadataMigrationSource,
   type GraphMetadataManual,
   type PacketReference,
 } from './graph-metadata-schema.js';
@@ -72,11 +73,27 @@ interface ParsedSpecDoc {
   status: string | null;
 }
 
-export interface GraphMetadataValidationResult {
-  ok: boolean;
-  metadata: GraphMetadata | null;
-  errors: string[];
-}
+type GraphMetadataValidationError = string;
+
+type GraphMetadataValidationSuccess =
+  | { ok: true; metadata: GraphMetadata; migrated: false; errors: [] }
+  | {
+    ok: true;
+    metadata: GraphMetadata;
+    migrated: true;
+    migrationSource: GraphMetadataMigrationSource;
+    preservedErrors: GraphMetadataValidationError[];
+    errors: [];
+  };
+
+type GraphMetadataValidationFailure = {
+  ok: false;
+  errors: GraphMetadataValidationError[];
+};
+
+export type GraphMetadataValidationResult =
+  | GraphMetadataValidationSuccess
+  | GraphMetadataValidationFailure;
 
 export interface GraphMetadataRefreshOptions {
   now?: Date | string;
@@ -87,6 +104,21 @@ export interface GraphMetadataRefreshResult {
   filePath: string;
   metadata: GraphMetadata;
   created: boolean;
+}
+
+type GraphMetadataDocReadResult =
+  | { status: 'found'; content: string }
+  | { status: 'missing' }
+  | { status: 'unknown'; error: string };
+
+interface CollectedPacketDocs {
+  docs: ParsedSpecDoc[];
+  availability: Map<string, GraphMetadataDocReadResult['status']>;
+}
+
+interface LegacyGraphMetadataParseResult {
+  metadata: GraphMetadata;
+  fabricatedFields: string[];
 }
 
 function toIsoString(value?: Date | string | null): string {
@@ -109,8 +141,10 @@ function parseDelimitedValues(raw: string | null | undefined): string[] {
   }
 
   return raw
+    .replace(/^\[/, '')
+    .replace(/\]$/, '')
     .split(',')
-    .map((value) => value.trim())
+    .map((value) => value.trim().replace(/^['"]+|['"]+$/g, '').replace(/,$/, '').trim())
     .filter(Boolean);
 }
 
@@ -140,7 +174,50 @@ function normalizeDerivedStatus(status: string | null | undefined): string | nul
   }
 }
 
-function parseLegacyGraphMetadataContent(content: string): GraphMetadata | null {
+function normalizeLegacyKey(raw: string): string {
+  return raw
+    .replace(/^['"]+|['"]+$/g, '')
+    .replace(/[{},]/g, '')
+    .trim()
+    .toLowerCase()
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ');
+}
+
+function readLegacyValue(values: Map<string, string>, aliases: string[]): string | null {
+  for (const alias of aliases) {
+    const value = values.get(alias);
+    if (value && value.length > 0) {
+      return value;
+    }
+  }
+  return null;
+}
+
+function readLegacyTimestamp(
+  values: Map<string, string>,
+  aliases: string[],
+  fallback: string,
+): { value: string; fabricated: boolean } {
+  const rawValue = readLegacyValue(values, aliases);
+  if (rawValue && ISO_DATE_RE.test(rawValue)) {
+    return { value: rawValue, fabricated: false };
+  }
+  return { value: fallback, fabricated: true };
+}
+
+function applyMigrationMarker(
+  metadata: GraphMetadata,
+  migrationSource: GraphMetadataMigrationSource,
+): GraphMetadata {
+  return graphMetadataSchema.parse({
+    ...metadata,
+    migrated: true,
+    migration_source: migrationSource,
+  });
+}
+
+function parseLegacyGraphMetadataContent(content: string): LegacyGraphMetadataParseResult | null {
   const lines = content
     .split(/\r?\n/)
     .map((line) => line.trim())
@@ -152,28 +229,40 @@ function parseLegacyGraphMetadataContent(content: string): GraphMetadata | null 
     if (separatorIndex <= 0) {
       continue;
     }
-    const key = line.slice(0, separatorIndex).trim().toLowerCase();
-    const value = line.slice(separatorIndex + 1).trim();
+    const key = normalizeLegacyKey(line.slice(0, separatorIndex));
+    const value = line
+      .slice(separatorIndex + 1)
+      .trim()
+      .replace(/^[\[{]+/, '')
+      .replace(/[\]}]+$/, '')
+      .replace(/,$/, '')
+      .replace(/^['"]+|['"]+$/g, '')
+      .trim();
     if (!key || !value) {
       continue;
     }
     values.set(key, value);
   }
 
-  const packetId = values.get('packet');
-  const specFolder = values.get('spec folder');
+  const packetId = readLegacyValue(values, ['packet', 'packet id']);
+  const specFolder = readLegacyValue(values, ['spec folder']);
   if (!packetId || !specFolder) {
     return null;
   }
 
   const nowIso = new Date().toISOString();
-  const summary = values.get('summary') ?? '';
-  const keyTopics = parseDelimitedValues(values.get('key topics'));
+  const createdAt = readLegacyTimestamp(values, ['created at'], nowIso);
+  const lastSaveAt = readLegacyTimestamp(values, ['last save at'], nowIso);
+  const lastAccessedAt = readLegacyValue(values, ['last accessed at']);
+  const summary = readLegacyValue(values, ['summary', 'causal summary']) ?? '';
+  const keyTopics = parseDelimitedValues(readLegacyValue(values, ['key topics']));
+  const triggerPhrasesFromLegacy = parseDelimitedValues(readLegacyValue(values, ['trigger phrases']));
   const triggerPhrases = Array.from(new Set([
+    ...triggerPhrasesFromLegacy,
     ...keyTopics,
     ...extractKeywords(`${packetId} ${specFolder} ${summary}`).slice(0, 8),
   ]));
-  const sourceDocs = parseDelimitedValues(values.get('source docs'));
+  const sourceDocs = parseDelimitedValues(readLegacyValue(values, ['source docs']));
   const toPacketReferences = (raw: string | undefined): PacketReference[] => {
     return parseDelimitedValues(raw).map((packet) => ({
       packet_id: packet,
@@ -183,29 +272,35 @@ function parseLegacyGraphMetadataContent(content: string): GraphMetadata | null 
   };
 
   return {
-    schema_version: GRAPH_METADATA_SCHEMA_VERSION,
-    packet_id: packetId,
-    spec_folder: specFolder,
-    parent_id: values.get('parent') ?? null,
-    children_ids: parseDelimitedValues(values.get('children')),
-    manual: {
-      depends_on: toPacketReferences(values.get('depends on')),
-      supersedes: toPacketReferences(values.get('supersedes')),
-      related_to: toPacketReferences(values.get('related to')),
-    },
-    derived: {
-      trigger_phrases: triggerPhrases.length > 0 ? triggerPhrases : [packetId, specFolder],
-      key_topics: keyTopics,
-      importance_tier: values.get('importance tier') ?? 'normal',
-      status: normalizeDerivedStatus(values.get('status')) ?? 'planned',
-      key_files: parseDelimitedValues(values.get('key files')),
-      entities: [],
-      causal_summary: summary,
-      created_at: nowIso,
-      last_save_at: nowIso,
-      last_accessed_at: null,
-      source_docs: sourceDocs,
-    },
+    metadata: graphMetadataSchema.parse({
+      schema_version: GRAPH_METADATA_SCHEMA_VERSION,
+      packet_id: packetId,
+      spec_folder: specFolder,
+      parent_id: readLegacyValue(values, ['parent', 'parent id']) ?? null,
+      children_ids: parseDelimitedValues(readLegacyValue(values, ['children', 'children ids'])),
+      manual: {
+        depends_on: toPacketReferences(readLegacyValue(values, ['depends on']) ?? undefined),
+        supersedes: toPacketReferences(readLegacyValue(values, ['supersedes']) ?? undefined),
+        related_to: toPacketReferences(readLegacyValue(values, ['related to']) ?? undefined),
+      },
+      derived: {
+        trigger_phrases: triggerPhrases.length > 0 ? triggerPhrases : [packetId, specFolder],
+        key_topics: keyTopics,
+        importance_tier: readLegacyValue(values, ['importance tier']) ?? 'normal',
+        status: normalizeDerivedStatus(readLegacyValue(values, ['status'])) ?? 'planned',
+        key_files: parseDelimitedValues(readLegacyValue(values, ['key files'])),
+        entities: [],
+        causal_summary: summary,
+        created_at: createdAt.value,
+        last_save_at: lastSaveAt.value,
+        last_accessed_at: lastAccessedAt && ISO_DATE_RE.test(lastAccessedAt) ? lastAccessedAt : null,
+        source_docs: sourceDocs,
+      },
+    }),
+    fabricatedFields: [
+      ...(createdAt.fabricated ? ['created_at'] : []),
+      ...(lastSaveAt.fabricated ? ['last_save_at'] : []),
+    ],
   };
 }
 
@@ -214,6 +309,17 @@ function formatZodError(error: ZodError): string[] {
     const location = issue.path.length > 0 ? issue.path.join('.') : 'root';
     return `${location}: ${issue.message}`;
   });
+}
+
+function formatValidationErrors(error: unknown): string[] {
+  if (error instanceof ZodError) {
+    return formatZodError(error);
+  }
+  return [error instanceof Error ? error.message : String(error)];
+}
+
+function prefixValidationErrors(prefix: string, errors: string[]): string[] {
+  return errors.map((error) => `${prefix}: ${error}`);
 }
 
 /**
@@ -226,32 +332,49 @@ export function validateGraphMetadataContent(content: string): GraphMetadataVali
   try {
     const parsed = parseJsonObject(content);
     const metadata = graphMetadataSchema.parse(parsed);
-    return { ok: true, metadata, errors: [] };
+    if (metadata.migrated === true) {
+      return {
+        ok: true,
+        metadata,
+        migrated: true,
+        migrationSource: metadata.migration_source ?? 'legacy',
+        preservedErrors: [],
+        errors: [],
+      };
+    }
+    return { ok: true, metadata, migrated: false, errors: [] };
   } catch (error: unknown) {
+    const originalErrors = formatValidationErrors(error);
     const legacyMetadata = parseLegacyGraphMetadataContent(content);
     if (legacyMetadata) {
       try {
-        const metadata = graphMetadataSchema.parse(legacyMetadata);
-        return { ok: true, metadata, errors: [] };
+        const migrationSource: GraphMetadataMigrationSource = 'legacy';
+        const metadata = applyMigrationMarker(legacyMetadata.metadata, migrationSource);
+        return {
+          ok: true,
+          metadata,
+          migrated: true,
+          migrationSource,
+          preservedErrors: originalErrors,
+          errors: [],
+        };
       } catch (legacyError: unknown) {
-        if (legacyError instanceof ZodError) {
-          return { ok: false, metadata: null, errors: formatZodError(legacyError) };
-        }
         return {
           ok: false,
-          metadata: null,
-          errors: [legacyError instanceof Error ? legacyError.message : String(legacyError)],
+          errors: [
+            ...prefixValidationErrors('current schema', originalErrors),
+            ...prefixValidationErrors('legacy fallback', formatValidationErrors(legacyError)),
+          ],
         };
       }
     }
 
-    if (error instanceof ZodError) {
-      return { ok: false, metadata: null, errors: formatZodError(error) };
-    }
     return {
       ok: false,
-      metadata: null,
-      errors: [error instanceof Error ? error.message : String(error)],
+      errors: [
+        ...prefixValidationErrors('current schema', originalErrors),
+        'legacy fallback: content could not be parsed as legacy graph metadata',
+      ],
     };
   }
 }
@@ -271,7 +394,7 @@ export function loadGraphMetadata(filePath: string): GraphMetadata | null {
 
   const content = fs.readFileSync(resolvedPath, 'utf-8');
   const validation = validateGraphMetadataContent(content);
-  if (!validation.ok || !validation.metadata) {
+  if (!validation.ok) {
     const detail = validation.errors.join('; ') || 'unknown validation error';
     throw new Error(`Invalid graph metadata at ${resolvedPath}: ${detail}`);
   }
@@ -279,11 +402,20 @@ export function loadGraphMetadata(filePath: string): GraphMetadata | null {
   return validation.metadata;
 }
 
-function readDoc(filePath: string): string | null {
+function readDoc(filePath: string): GraphMetadataDocReadResult {
   try {
-    return fs.readFileSync(filePath, 'utf-8');
-  } catch {
-    return null;
+    return { status: 'found', content: fs.readFileSync(filePath, 'utf-8') };
+  } catch (error: unknown) {
+    const errorCode = typeof error === 'object' && error && 'code' in error
+      ? String((error as NodeJS.ErrnoException).code)
+      : null;
+    if (errorCode === 'ENOENT') {
+      return { status: 'missing' };
+    }
+    return {
+      status: 'unknown',
+      error: error instanceof Error ? error.message : String(error),
+    };
   }
 }
 
@@ -456,27 +588,29 @@ function keepKeyFile(candidate: string): boolean {
   return true;
 }
 
-function collectPacketDocs(specFolderPath: string): ParsedSpecDoc[] {
+function collectPacketDocs(specFolderPath: string): CollectedPacketDocs {
   const docs: ParsedSpecDoc[] = [];
+  const availability = new Map<string, GraphMetadataDocReadResult['status']>();
   for (const relativePath of CANONICAL_PACKET_DOCS) {
     const filePath = path.join(specFolderPath, relativePath);
-    const content = readDoc(filePath);
-    if (!content) {
+    const readResult = readDoc(filePath);
+    availability.set(relativePath.replace(/\\/g, '/'), readResult.status);
+    if (readResult.status !== 'found') {
       continue;
     }
 
     docs.push({
       relativePath: relativePath.replace(/\\/g, '/'),
-      content,
-      title: extractTitle(content),
-      description: extractFrontmatterScalar(content, 'description'),
-      triggerPhrases: extractFrontmatterArray(content, 'trigger_phrases'),
-      importanceTier: extractFrontmatterScalar(content, 'importance_tier'),
-      status: normalizeDerivedStatus(extractFrontmatterScalar(content, 'status')),
+      content: readResult.content,
+      title: extractTitle(readResult.content),
+      description: extractFrontmatterScalar(readResult.content, 'description'),
+      triggerPhrases: extractFrontmatterArray(readResult.content, 'trigger_phrases'),
+      importanceTier: extractFrontmatterScalar(readResult.content, 'importance_tier'),
+      status: normalizeDerivedStatus(extractFrontmatterScalar(readResult.content, 'status')),
     });
   }
 
-  return docs;
+  return { docs, availability };
 }
 
 function resolveSpecFolderPath(specFolderPath: string): string {
@@ -830,12 +964,23 @@ function deriveCausalSummary(docs: ParsedSpecDoc[]): string {
   );
 }
 
-function deriveStatus(docs: ParsedSpecDoc[], override?: string | null): string {
+function deriveStatus(
+  docs: ParsedSpecDoc[],
+  availability: Map<string, GraphMetadataDocReadResult['status']>,
+  override?: string | null,
+): string {
   const normalizedOverride = normalizeDerivedStatus(override);
   if (normalizedOverride) {
     return normalizedOverride;
   }
 
+  const rankedPaths = [
+    'implementation-summary.md',
+    'checklist.md',
+    'tasks.md',
+    'plan.md',
+    'spec.md',
+  ];
   const ranked = [
     docs.find((doc) => doc.relativePath === 'implementation-summary.md')?.status,
     docs.find((doc) => doc.relativePath === 'checklist.md')?.status,
@@ -846,6 +991,10 @@ function deriveStatus(docs: ParsedSpecDoc[], override?: string | null): string {
   const frontmatterStatus = normalizeDerivedStatus(selectFirstValue(ranked, ''));
   if (frontmatterStatus) {
     return frontmatterStatus;
+  }
+
+  if (rankedPaths.some((relativePath) => availability.get(relativePath) === 'unknown')) {
+    return 'unknown';
   }
 
   const implementationSummaryDoc = docs.find((doc) => doc.relativePath === 'implementation-summary.md');
@@ -895,7 +1044,8 @@ export function deriveGraphMetadata(
   options: GraphMetadataRefreshOptions = {},
 ): GraphMetadata {
   const nowIso = toIsoString(options.now);
-  const docs = collectPacketDocs(specFolderPath);
+  const collectedDocs = collectPacketDocs(specFolderPath);
+  const docs = collectedDocs.docs;
   const specFolder = resolveSpecFolderPath(specFolderPath);
   const packetId = specFolder;
   const triggerPhrases = normalizeUnique(docs.flatMap((doc) => doc.triggerPhrases)).slice(0, 12);
@@ -909,7 +1059,7 @@ export function deriveGraphMetadata(
     trigger_phrases: triggerPhrases,
     key_topics: keyTopics,
     importance_tier: deriveImportanceTier(docs),
-    status: deriveStatus(docs, options.statusOverride),
+    status: deriveStatus(docs, collectedDocs.availability, options.statusOverride),
     key_files: keyFiles,
     entities,
     causal_summary: causalSummary,
@@ -925,6 +1075,8 @@ export function deriveGraphMetadata(
     spec_folder: specFolder,
     parent_id: resolveParentId(specFolder),
     children_ids: resolveChildrenIds(specFolderPath, specFolder),
+    migrated: existing?.migrated ?? undefined,
+    migration_source: existing?.migration_source ?? undefined,
     manual: existing?.manual ?? createEmptyGraphMetadataManual(),
     derived,
   });
@@ -943,6 +1095,8 @@ export function mergeGraphMetadata(
 ): GraphMetadata {
   return graphMetadataSchema.parse({
     ...refreshed,
+    migrated: existing?.migrated ?? refreshed.migrated,
+    migration_source: existing?.migration_source ?? refreshed.migration_source,
     manual: existing?.manual ?? createEmptyGraphMetadataManual(),
     derived: {
       ...refreshed.derived,
@@ -1053,6 +1207,10 @@ export function graphMetadataToIndexableText(metadata: GraphMetadata): string {
   if (metadata.parent_id) {
     lines.push(`Parent: ${metadata.parent_id}`);
   }
+  if (metadata.migrated) {
+    lines.push('Migrated: true');
+    lines.push(`Migration Source: ${metadata.migration_source ?? 'legacy'}`);
+  }
   if (metadata.children_ids.length > 0) {
     lines.push(`Children: ${metadata.children_ids.join(', ')}`);
   }
@@ -1096,6 +1254,8 @@ export function packetReferencesToCausalLinks(manual: GraphMetadataManual): Reco
 }
 
 export const __testables = {
+  readDoc,
+  deriveStatus,
   keepKeyFile,
   evaluateChecklistCompletion,
   resolveKeyFileCandidate,
