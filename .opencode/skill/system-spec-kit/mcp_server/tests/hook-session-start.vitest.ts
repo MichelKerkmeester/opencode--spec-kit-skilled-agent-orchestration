@@ -249,7 +249,7 @@ describe('session-prime hook', () => {
       const sections = handleStartup({ session_id: testSessionId });
 
       expect(sections[0]?.title).toBe('Session Context');
-      expect(sections[0]?.content).toContain('startup summary only (resume on demand)');
+      expect(sections[0]?.content).toContain('cached continuity rejected: no cached summary');
       expect(sections[0]?.content).toContain('- Code Graph: unavailable');
       expect(sections.map((section) => section.title)).not.toContain('Session Continuity');
     });

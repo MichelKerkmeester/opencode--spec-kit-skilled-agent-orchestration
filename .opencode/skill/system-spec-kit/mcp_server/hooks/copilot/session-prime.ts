@@ -3,13 +3,36 @@
 // MODULE: Copilot SessionStart Hook — Session Prime
 // ───────────────────────────────────────────────────────────────
 // GitHub Copilot CLI surfaces sessionStart hook output as an
-// informational banner. We keep this hook read-only and emit the
-// same startup summary shape used by the Claude/Gemini session-prime
-// hooks so operators see consistent context across CLIs.
+// informational banner. This hook preserves the existing startup
+// summary while also recovering cached compact payloads when Copilot
+// session wrappers forward a compact source event.
+
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import {
+  clearCompactPrime,
+  ensureStateDir,
+  loadState,
+  readCompactPrime,
+  type HookStateCompactPrimeIdentity,
+} from '../claude/hook-state.js';
+import { wrapRecoveredCompactPayload } from '../shared-provenance.js';
+
+const CACHE_TTL_MS = 30 * 60 * 1000;
+const IS_CLI_ENTRY = process.argv[1]
+  ? resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+  : false;
 
 type StartupBrief = {
   startupSurface: string;
 };
+
+export interface CopilotHookInput {
+  session_id?: string;
+  sessionId?: string;
+  source?: 'startup' | 'resume' | 'clear' | 'compact' | string;
+  [key: string]: unknown;
+}
 
 let buildStartupBrief: (() => StartupBrief) | null = null;
 try {
@@ -19,18 +42,41 @@ try {
   // Startup brief builder unavailable — fall back to a minimal banner.
 }
 
-async function drainStdin(): Promise<void> {
-  for await (const _chunk of process.stdin) {
-    // Copilot passes JSON context on stdin. Drain it fully so the
-    // hook cannot block the runtime on an unread pipe.
+async function parseCopilotStdin(): Promise<CopilotHookInput | null> {
+  try {
+    const chunks: Buffer[] = [];
+    for await (const chunk of process.stdin) {
+      chunks.push(chunk as Buffer);
+    }
+    const raw = Buffer.concat(chunks).toString('utf-8').trim();
+    if (!raw) {
+      return null;
+    }
+    return JSON.parse(raw) as CopilotHookInput;
+  } catch (err: unknown) {
+    process.stderr.write(`[copilot:session-prime] Failed to parse stdin: ${err instanceof Error ? err.message : String(err)}\n`);
+    return null;
   }
 }
 
-function fallbackBanner(): string {
+function readSessionId(input: CopilotHookInput | null): string | null {
+  if (!input) {
+    return null;
+  }
+  if (typeof input.session_id === 'string' && input.session_id.trim().length > 0) {
+    return input.session_id;
+  }
+  if (typeof input.sessionId === 'string' && input.sessionId.trim().length > 0) {
+    return input.sessionId;
+  }
+  return null;
+}
+
+function fallbackBanner(memoryLine = 'startup summary unavailable'): string {
   return [
     'Session context received. Current state:',
     '',
-    '- Memory: startup summary unavailable',
+    `- Memory: ${memoryLine}`,
     '- Code Graph: unavailable',
     '- CocoIndex: unknown',
     '',
@@ -38,8 +84,58 @@ function fallbackBanner(): string {
   ].join('\n');
 }
 
-async function main(): Promise<void> {
-  await drainStdin();
+function readCompactPrimeIdentity(sessionId: string): HookStateCompactPrimeIdentity | null {
+  const pendingCompactPrime = readCompactPrime(sessionId);
+  if (!pendingCompactPrime) {
+    return null;
+  }
+  return {
+    cachedAt: pendingCompactPrime.cachedAt,
+    opaqueId: pendingCompactPrime.opaqueId ?? null,
+  };
+}
+
+export function handleCompact(sessionId: string): string {
+  const stateResult = loadState(sessionId);
+  const state = stateResult.ok ? stateResult.state : null;
+  const pendingCompactPrime = readCompactPrime(sessionId);
+  if (!pendingCompactPrime) {
+    return [
+      'Context Recovery',
+      'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+    ].join('\n\n');
+  }
+
+  const { payload, cachedAt } = pendingCompactPrime;
+  const cachedAtMs = new Date(cachedAt).getTime();
+  const cacheAgeMs = Date.now() - cachedAtMs;
+  if (Number.isNaN(cachedAtMs) || cacheAgeMs >= CACHE_TTL_MS) {
+    return [
+      'Context Recovery',
+      'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+    ].join('\n\n');
+  }
+
+  const wrappedPayload = wrapRecoveredCompactPayload(payload, cachedAt, {
+    producer: pendingCompactPrime.payloadContract?.provenance.producer,
+    trustState: pendingCompactPrime.payloadContract?.provenance.trustState,
+    sourceSurface: pendingCompactPrime.payloadContract?.provenance.sourceSurface,
+  });
+
+  const sections = [
+    'Recovered Context (Post-Compression)',
+    wrappedPayload,
+    '',
+    'Recovery Instructions',
+    'Context was compacted and auto-recovered from the cached compact brief. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+  ];
+  if (state?.lastSpecFolder) {
+    sections.push('', 'Active Spec Folder', `Last active: ${state.lastSpecFolder}`);
+  }
+  return sections.join('\n');
+}
+
+function buildStartupBanner(): string {
   let startupBrief: StartupBrief | null = null;
   try {
     startupBrief = buildStartupBrief ? buildStartupBrief() : null;
@@ -51,11 +147,31 @@ async function main(): Promise<void> {
   } else if (!startupBrief?.startupSurface) {
     process.stderr.write('[copilot:session-prime] WARNING: startupBrief missing or empty — possible startup-brief regression\n');
   }
-  process.stdout.write((startupBrief?.startupSurface ?? fallbackBanner()) + '\n');
+  return startupBrief?.startupSurface ?? fallbackBanner();
 }
 
-main().catch((error: unknown) => {
-  const message = error instanceof Error ? error.message : String(error);
-  process.stderr.write(`[copilot:session-prime] ${message}\n`);
-  process.exit(0);
-});
+async function main(): Promise<void> {
+  ensureStateDir();
+  const input = await parseCopilotStdin();
+  const source = input?.source ?? 'startup';
+  const sessionId = readSessionId(input);
+  const compactIdentity = source === 'compact' && sessionId
+    ? readCompactPrimeIdentity(sessionId)
+    : null;
+  const output = source === 'compact' && sessionId
+    ? handleCompact(sessionId)
+    : buildStartupBanner();
+
+  process.stdout.write(`${output}\n`);
+  if (source === 'compact' && sessionId) {
+    clearCompactPrime(sessionId, compactIdentity ?? undefined);
+  }
+}
+
+if (IS_CLI_ENTRY) {
+  main().catch((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
+    process.stderr.write(`[copilot:session-prime] ${message}\n`);
+    process.exit(0);
+  });
+}
