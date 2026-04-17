@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet_id": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/004-p2-maintainability",
-  "parent_id": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation",
   "kind": "maintainability",
   "level": 2,
   "title": "Phase 017 Wave D — P2 Maintainability (Deferrable)",

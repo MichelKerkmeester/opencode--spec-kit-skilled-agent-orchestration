@@ -50,7 +50,7 @@ Commit `0ac9cdcba` pulled the repeated enrichment error-handling into `runEnrich
 
 ### D3 YAML and deployment docs
 
-The final cluster moved `post_save_indexing` in `spec_kit_complete_confirm.yaml` from a prose `when:` string to the canonical `after:` field, which is what the BooleanExpr grammar expects for narrative timing notes. Root `DEPLOYMENT.md` now documents the `-v /tmp:/tmp` anti-pattern, Copilot concurrency limits, AsyncLocalStorage caller context, and strict-by-default session-resume auth.
+Commit `b26514cbc` closed both D3 tasks: it moved `post_save_indexing` in `spec_kit_complete_confirm.yaml` from a prose `when:` string to the canonical `after:` field, and it published the root `DEPLOYMENT.md` warning about the `-v /tmp:/tmp` anti-pattern. That same commit also documented Copilot concurrency limits, AsyncLocalStorage caller context, and strict-by-default session-resume auth in the deployment guidance.
 
 ### Files Changed
 

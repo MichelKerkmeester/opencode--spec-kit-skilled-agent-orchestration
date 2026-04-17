@@ -192,6 +192,31 @@ Post-insert.ts was the one shared file across B1 (T-RBD-03 design comments on ro
 
 ---
 
+## Unattributed Support + Finalization Commits
+
+These commits landed during Phase 017 but were not tied to one child-wave task row, so they stay tracked here as packet-level support and delivery evidence.
+
+### Support commits
+
+- `8541e2e3c` — packet scaffold for the parent and four child phase folders.
+- `8859da9cd` — H-56-1 cascade refresh across the 026 tree while the canonical-save fix was being exercised in live packet work.
+- `fc06d2023` — Phase 018→017 rename cleanup plus the segment-2 research artifact landing that stabilized the packet naming and source references.
+
+### Finalization commits
+
+- `b308333d2` — initial `v3.4.0.2` changelog draft plus the parent Phase 017 implementation summary.
+- `2185eb10f` — sk-doc alignment sweep across the Phase 017 artifacts and adjacent policy-facing docs.
+- `9ebd9b41c` — per-wave implementation summaries plus the 026 root packet refresh.
+- `95d2e80b9` — feature catalog and manual testing playbook entries for the Phase 017 surfaces.
+- `6637c86f5` — changelog restyle to match the v3.4.0.1 presentation format.
+
+### Post-push follow-ups
+
+- `48fc7db91` — sk-code-opencode standards alignment pass across the shipped Phase 017 files.
+- `a3200d1bd` — post-push normalizer-lint false-positive fix excluding `dist/` and `node_modules/`.
+
+---
+
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
