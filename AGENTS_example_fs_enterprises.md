@@ -200,7 +200,7 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 3. Parse request → Check confidence AND uncertainty (see §4)
 4. **Dual-threshold:** confidence ≥ 0.70 AND uncertainty ≤ 0.35 → PROCEED. Either fails → INVESTIGATE (max 3 iterations) → ESCALATE. Simple: <40% ASK | 40-69% CAUTION | ≥70% PASS
 
-> Gate 1 is SOFT — if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
+> Gate 1 is SOFT - if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
 
 ####  GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
 1. A) Run: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "[request]" --threshold 0.8`
@@ -209,13 +209,17 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 - Output: `SKILL ROUTING: [result]` or `SKILL ROUTING: User directed → [name]`
 - Skip: trivial queries only (greetings, single-line questions)
 
-#### GATE 3: SPEC FOLDER QUESTION [HARD] BLOCK — PRIORITY GATE
+#### GATE 3: SPEC FOLDER QUESTION [HARD] BLOCK - PRIORITY GATE
 - **Overrides Gates 1-2:** If file modification detected → ask Gate 3 BEFORE any analysis/tool calls
-- **Triggers:** rename, move, delete, create, add, remove, update, change, modify, edit, fix, refactor, implement, build, write, generate, configure, analyze, decompose, phase — or any task resulting in file changes
+- **Machine contract:** `.opencode/skill/system-spec-kit/shared/gate-3-classifier.ts` (`classifyPrompt()`). The prose lists below are human-readable; the classifier module is authoritative for runtimes that call it.
+- **Positive triggers (write actions):** create, add, remove, delete, rename, move, update, change, modify, edit, fix, refactor, implement, build, write, generate, configure
+- **Positive triggers (continuity writes):** `save context`, `save memory`, `/memory:save`, `/spec_kit:resume`, `resume iteration`, `resume deep research`, `resume deep review`, `continue iteration` (these produce `description.json` / `graph-metadata.json` / continuity frontmatter / `iteration-NNN.md` writes)
+- **Read-only disqualifiers:** `review`, `audit`, `inspect`, `analyze`, `explain` — suppress Gate 3 when they appear ALONE (e.g. "review the decomposition phase"). Do NOT suppress when a continuity-write trigger is also present.
+- **Note:** tokens `analyze`, `decompose`, `phase` are NOT positive triggers; they false-positive on read-only review prompts.
 - **Options:** A) Existing | B) New | C) Update related | D) Skip | E) Phase folder (e.g., `specs/NNN-name/001-phase/`)
 - **DO NOT** use Read/Edit/Write/Bash (except Gate Actions) before asking. ASK FIRST, wait for response, THEN proceed
 - **Session persistence:** Once the user answers Gate 3 in a conversation, that answer applies for the ENTIRE session. Do NOT re-ask on subsequent messages unless the user explicitly starts a completely different task/feature. Follow-up messages, implementation steps, and phase transitions within the same task reuse the original answer.
-- **Re-ask ONLY when:** the user says "new task" / "different feature" / explicitly names a different spec folder, OR the user asks you to re-ask
+- **Re-ask ONLY when:** the user says "new task" / "different feature" / explicitly names a different spec folder, OR the user asks you to re-ask.
 
 #### GATE 4: SKILL-OWNED WORKFLOW ENFORCEMENT [HARD] BLOCK
 Trigger phrases: "deep-research", "deep-review", "iterations", ":auto" suffix, "convergence", "autoresearch", "research loop", "review loop", iterative investigation/audit at scale (>5 iterations).
@@ -225,22 +229,16 @@ Trigger phrases: "deep-research", "deep-review", "iterations", ":auto" suffix, "
 - Deep review → `/spec_kit:deep-review :auto`
 
 **FORBIDDEN** (these lose skill-owned state, convergence detection, delta tracking, and auditability):
-- Custom bash dispatchers or parallel drivers for iterations
-- Direct cli-copilot / cli-codex / cli-gemini / cli-claude-code invocation inside a loop
 - Manually managing iteration state in `/tmp` or anywhere outside the skill's `research/` or `review/` folder
 - Skipping the state machine: `deep-research-state.jsonl`, `deep-research-config.json`, `deltas/`, `prompts/`, `logs/`
 - Using the `@deep-research` or `@deep-review` agent directly via Task tool for iteration loops — only the command-owned YAML workflow may dispatch these
-
-**Rationale:** `sk-deep-research` and `sk-deep-review` own append-only state, convergence detectors, per-iteration deltas, dispatch invariants (iteration+delta both required), and the reducer (`reduce-state.cjs`). Bypassing them loses: audit trail, convergence signals, deduplication, dispatcher accountability, lifecycle events (new/resume/restart).
-
 **If the user specifies the executor CLI** (e.g. "use cli-copilot gpt-5.4 high"), that is the HOW — it still runs INSIDE the skill's workflow. Never let the executor name override the skill-owned route.
-
 **Tiebreaker for skill advisor ambiguity:** When `command-spec-kit` matches alongside `cli-*` for iteration phrases, `command-spec-kit` wins. The CLI executor is a tool inside the command's workflow, not a replacement for it.
 
 #### CONSOLIDATED QUESTION PROTOCOL
-When multiple inputs are needed, consolidate into a SINGLE prompt — never split across messages. Include only applicable questions; omit when pre-determined.
-- **Round-trip optimization** — Only 1 user interaction needed for setup
-- **First Message Protocol** — ALL questions asked BEFORE any analysis or tool calls
+When multiple inputs are needed, consolidate into a SINGLE prompt - never split across messages. Include only applicable questions; omit when pre-determined.
+- **Round-trip optimization** - Only 1 user interaction needed for setup
+- **First Message Protocol** - ALL questions asked BEFORE any analysis or tool calls
 - **Violation:** Multiple separate prompts → STOP, apologize, re-present as single prompt
 - **Bypass phrases:** "skip context" / "fresh start" / "skip memory" / [skip] for memory loading; Level 1 tasks skip completion verification
 
@@ -249,14 +247,14 @@ When multiple inputs are needed, consolidate into a SINGLE prompt — never spli
 ### 🔒 POST-EXECUTION RULES
 
 #### MEMORY SAVE RULE [HARD] BLOCK
-Trigger: "save context", "save memory", `/memory:save`, memory file creation
+Trigger: "save context", "save memory", `/memory:save`
 - If spec folder established at Gate 3 → USE IT (don't re-ask). Carry-over applies ONLY to memory saves
 - If NO folder and Gate 3 never answered → HARD BLOCK → Ask user
-- **Script:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
-  - AI composes structured JSON with session context, writes to `/tmp/save-context-data-<session-id>.json`, passes that session-scoped path as first arg. Alternatively use `--json '<inline-json>'` or `--stdin`. The AI has strictly better information about its own session than any DB extraction.
-  - Subfolder: `003-parent/121-child` or bare `121-child` (auto-searches parents)
-- **Indexing:** For immediate MCP visibility after save: `memory_index_scan({ specFolder })` or `memory_save()`
-- **Violation:** Write tool on `memory/` path → DELETE and re-run via script
+- **Full save (DB + embeddings + graph):** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
+  - AI composes structured JSON with session context, writes to `/tmp/save-context-data.json`, passes as first arg. Alternatively use `--json '<inline-json>'` or `--stdin`.
+  - Also refreshes `graph-metadata.json` and `description.json` for the spec folder.
+- **Quick continuity update:** AI may directly edit `_memory.continuity` YAML frontmatter blocks in `implementation-summary.md` without running generate-context.js (per ADR-004). The resume ladder only reads continuity from `implementation-summary.md`.
+- **Indexing:** For immediate MCP visibility after save: `memory_index_scan({ specFolder })` or `memory_save()
 - **Post-Save Review:** After `generate-context.js` completes, check the POST-SAVE QUALITY REVIEW output.
   - **HIGH** issues: MUST manually patch via Edit tool (fix title, trigger_phrases, importance_tier)
   - **MEDIUM** issues: patch when practical

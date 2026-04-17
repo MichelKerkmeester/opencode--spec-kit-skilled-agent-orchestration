@@ -199,16 +199,10 @@ Trigger phrases: "deep-research", "deep-review", "iterations", ":auto" suffix, "
 - Deep review → `/spec_kit:deep-review :auto`
 
 **FORBIDDEN** (these lose skill-owned state, convergence detection, delta tracking, and auditability):
-- Custom bash dispatchers or parallel drivers for iterations
-- Direct cli-copilot / cli-codex / cli-gemini / cli-claude-code invocation inside a loop
 - Manually managing iteration state in `/tmp` or anywhere outside the skill's `research/` or `review/` folder
 - Skipping the state machine: `deep-research-state.jsonl`, `deep-research-config.json`, `deltas/`, `prompts/`, `logs/`
 - Using the `@deep-research` or `@deep-review` agent directly via Task tool for iteration loops — only the command-owned YAML workflow may dispatch these
-
-**Rationale:** `sk-deep-research` and `sk-deep-review` own append-only state, convergence detectors, per-iteration deltas, dispatch invariants (iteration+delta both required), and the reducer (`reduce-state.cjs`). Bypassing them loses: audit trail, convergence signals, deduplication, dispatcher accountability, lifecycle events (new/resume/restart).
-
 **If the user specifies the executor CLI** (e.g. "use cli-copilot gpt-5.4 high"), that is the HOW — it still runs INSIDE the skill's workflow. Never let the executor name override the skill-owned route.
-
 **Tiebreaker for skill advisor ambiguity:** When `command-spec-kit` matches alongside `cli-*` for iteration phrases, `command-spec-kit` wins. The CLI executor is a tool inside the command's workflow, not a replacement for it.
 
 #### CONSOLIDATED QUESTION PROTOCOL
@@ -223,15 +217,14 @@ When multiple inputs are needed, consolidate into a SINGLE prompt - never split 
 ### 🔒 POST-EXECUTION RULES
 
 #### MEMORY SAVE RULE [HARD] BLOCK
-Trigger: "save context", "save memory", `/memory:save`, continuity update
+Trigger: "save context", "save memory", `/memory:save`
 - If spec folder established at Gate 3 → USE IT (don't re-ask). Carry-over applies ONLY to memory saves
 - If NO folder and Gate 3 never answered → HARD BLOCK → Ask user
 - **Full save (DB + embeddings + graph):** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
-  - AI composes structured JSON with session context, writes to `/tmp/save-context-data-<session-id>.json`, passes as first arg. Alternatively use `--json '<inline-json>'` or `--stdin`.
+  - AI composes structured JSON with session context, writes to `/tmp/save-context-data.json`, passes as first arg. Alternatively use `--json '<inline-json>'` or `--stdin`.
   - Also refreshes `graph-metadata.json` and `description.json` for the spec folder.
 - **Quick continuity update:** AI may directly edit `_memory.continuity` YAML frontmatter blocks in `implementation-summary.md` without running generate-context.js (per ADR-004). The resume ladder only reads continuity from `implementation-summary.md`.
-- **Indexing:** For immediate MCP visibility after save: `memory_index_scan({ specFolder })` or `memory_save()`
-- **Violation:** Creating standalone `.md` files in a `memory/` directory → those directories no longer exist. All continuity lives in spec doc frontmatter + `graph-metadata.json`.
+- **Indexing:** For immediate MCP visibility after save: `memory_index_scan({ specFolder })` or `memory_save()
 - **Post-Save Review:** After `generate-context.js` completes, check the POST-SAVE QUALITY REVIEW output.
   - **HIGH** issues: MUST manually patch via Edit tool (fix title, trigger_phrases, importance_tier)
   - **MEDIUM** issues: patch when practical
