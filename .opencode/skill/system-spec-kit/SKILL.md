@@ -499,6 +499,7 @@ specs/007-auth-system/
 **Manual context save (MANDATORY workflow):**
 - Trigger: `/memory:save`, "save context", or "save memory"
 - **MUST use:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
+- Default `/memory:save` is no longer a metadata no-op. Every canonical save refreshes `description.json.lastUpdated` plus `graph-metadata.json` derived fields.
 - Canonical saves via `generate-context.js` also refresh `graph-metadata.json` derived fields in the spec folder.
 - Derived graph metadata now follows the parser contract:
   - `status` is normalized to lowercase and falls back to `implementation-summary.md` presence plus checklist completion when explicit status is absent.
@@ -541,6 +542,7 @@ Explicit CLI targets update the selected root-spec or phase packet. The canonica
 Canonical routed saves use the live 8-category content router: `narrative_progress`, `narrative_delivery`, `decision`, `handover_state`, `research_finding`, `task_update`, `metadata_only`, and `drop`. Tier 3 LLM routing is part of the live save handler by default: when `LLM_REFORMULATION_ENDPOINT` is reachable and returns a usable decision, it participates automatically; otherwise saves stay on Tier 1/Tier 2 routing with safe fallback or refusal. Delivery routing now keys off sequencing, gating, rollout, and verification language, handover stays reserved for stop-state and resume instructions, and hard transcript/tool telemetry still routes to `drop`. `routeAs` may force a category and preserve the natural decision for audit, while `packet_kind` is derived from spec metadata first with parent-phase fallback only when metadata is silent. See [save_workflow.md](./references/memory/save_workflow.md) for the detailed routing contract.
 
 For manual corpus repair, `scripts/dist/graph/backfill-graph-metadata.js` is inclusive by default and refreshes all packet folders, including `z_archive/` and `z_future/`. Use `--active-only` only when you intentionally want to skip archived trees.
+For research trees, `scripts/memory/backfill-research-metadata.ts` fills in missing `description.json` and `graph-metadata.json` files under `research/*/iterations/` without rewriting folders that are already complete.
 
 **Canonical Continuity Shape:**
 ```markdown
@@ -718,6 +720,8 @@ Automated validation of spec folder contents via `validate.sh`.
 4. For code changes, run alignment verifier: `python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit`
 5. Exit 0 from both checks → Proceed with completion claim
 
+`validate.sh --strict` now layers in `scripts/validation/continuity-freshness.ts` and `scripts/validation/evidence-marker-lint.ts`. Use `scripts/validation/evidence-marker-audit.ts` when a packet needs a bracket-depth repair sweep before strict validation is rerun.
+
 **Full documentation:** See [validation_rules.md](./references/validation/validation_rules.md) for all rules, configuration, and troubleshooting.
 
 ---
@@ -736,7 +740,9 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 
 **Claude lifecycle flow:** PreCompact → cache → SessionStart(compact) → inject cached context. On startup, the shared startup snapshot covers memory continuity, code-graph state, CocoIndex availability, and an explicit note that later structural reads may differ if the repo state changed. On resume, the runtime loads prior session state.
 
-**Cross-runtime handling:** Claude and Gemini use SessionStart hook scripts. OpenCode has a transport/plugin implementation, but operationally should still be treated as bootstrap-first when startup surfacing is unavailable. Codex remains bootstrap-based through its session-start agent bootstrap (not a native SessionStart hook). Copilot startup context depends on local hook configuration or wrapper wiring when present. Use `session_bootstrap()` for fresh start or after `/clear`, `session_resume()` for reconnect-style recovery when bootstrap is unnecessary, and `session_health()` only to re-check drift or readiness mid-session.
+**Cross-runtime handling:** Claude and Gemini use SessionStart hook scripts. OpenCode has a transport/plugin implementation, but operationally should still be treated as bootstrap-first when startup surfacing is unavailable. Codex remains bootstrap-based through its session-start agent bootstrap (not a native SessionStart hook). Copilot startup context depends on local hook configuration or wrapper wiring when present, and now has compact-cache parity through `hooks/copilot/compact-cache.ts` plus the shared recovered-payload wrapper in `hooks/shared-provenance.ts`. Use `session_bootstrap()` for fresh start or after `/clear`, `session_resume()` for reconnect-style recovery when bootstrap is unnecessary, and `session_health()` only to re-check drift or readiness mid-session.
+
+`session_resume()` auth now binds `args.sessionId` to the transport-layer caller identity from `lib/context/caller-context.ts` (`getCallerContext()` inside handlers). Default mode is strict rejection for mismatches; `MCP_SESSION_RESUME_AUTH_MODE=permissive` is the canary override.
 
 **Token budgets:** Compaction injection: 4000 tokens. Session priming: 2000 tokens. Hook timeout: 1800ms (<2s hard cap).
 
@@ -764,6 +770,8 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 **Edge types:** CONTAINS, CALLS, IMPORTS, EXPORTS, EXTENDS, IMPLEMENTS, DECORATES, OVERRIDES, TYPE_OF.
 
 **Read-path freshness:** Startup and bootstrap surfaces report graph freshness without mutating the index. Bounded inline refresh happens on structural read paths when stale sets are small; otherwise callers receive `readiness` guidance to run `code_graph_scan`.
+
+`lib/code-graph/readiness-contract.ts` is now the shared readiness source for query, scan, status, context, and CCC handlers. Its readiness blocks project onto the canonical `SharedPayloadTrustState` type instead of introducing a new local trust-state enum.
 
 **Query routing:** Structural queries (callers, imports, deps) -> `code_graph_query`. Semantic/concept queries -> CocoIndex (`mcp__cocoindex_code__search`). Session/memory queries -> `memory_context`.
 

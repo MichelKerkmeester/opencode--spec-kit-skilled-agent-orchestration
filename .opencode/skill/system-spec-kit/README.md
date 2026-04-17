@@ -92,8 +92,8 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | **Spec Kit Memory MCP**       | 51-tool MCP server providing persistent semantic memory, graph intelligence, graph-first routing, and session orchestration across sessions, models and tools                                                 |
 | **Startup / Recovery Surfaces** | `/spec_kit:resume` is the canonical operator-facing recovery surface. Under the hood, startup and recovery rebuild active context from `handover.md`, then `_memory.continuity`, then canonical spec docs |
 | **Code Graph**                | Structural code analysis: tree-sitter WASM indexer + SQLite storage via 4 core graph tools, with adjacent `session_*` and `ccc_*` helpers for readiness, recovery, and semantic follow-up                 |
-| **Session Continuity**        | `generate-context.js` updates the canonical continuity surfaces for a spec folder so `/spec_kit:resume` can rebuild the next session from packet-local sources                                              |
-| **Validation Scripts**        | 20-rule validation, completeness checks and placeholder detection for spec folders                                                                                                                             |
+| **Session Continuity**        | `generate-context.js` updates canonical continuity surfaces and refreshes packet metadata on every `/memory:save` invocation so `/spec_kit:resume` can rebuild the next session from packet-local sources     |
+| **Validation Scripts**        | 20-rule validation, continuity freshness checks, and strict EVIDENCE-marker linting for spec folders                                                                                                          |
 | **Phase Decomposition**       | Parent/child spec folder structure for multi-session, multi-phase work                                                                                                                                         |
 | **Constitutional Memory**     | Always-surface rules with a 3.0x boost that never decay -- like pinned notes that show up in every search                                                                                                      |
 | **Shared Memory**             | Controlled knowledge sharing with deny-by-default access for teams and multi-agent setups                                                                                                                      |
@@ -166,6 +166,8 @@ Or use the command shorthand:
 ```text
 /memory:save 042-my-feature
 ```
+
+Every canonical save now refreshes `description.json.lastUpdated` and `graph-metadata.json.derived.*`, so the default `/memory:save` path is no longer a metadata no-op.
 
 ### Resume Work From a Previous Session
 
@@ -263,7 +265,7 @@ specs/<###-feature-name>/
 └── scratch/                     # Temporary workspace files (gitignored)
 ```
 
-`generate-context.js` updates the packet's continuity state for `/spec_kit:resume`; recovery then rebuilds context from `handover.md`, `_memory.continuity`, and the packet docs.
+`generate-context.js` updates the packet's continuity state for `/spec_kit:resume`, refreshes `description.json.lastUpdated`, and rewrites `graph-metadata.json` derived fields on every canonical save; recovery then rebuilds context from `handover.md`, `_memory.continuity`, and the packet docs.
 
 #### Checklist Priority System (Level 2+)
 
@@ -297,7 +299,7 @@ Use `create.sh --phase` to create a parent with its first child in one step. Run
 
 #### Validation
 
-The `validate.sh` script runs 20 rules against a spec folder and reports what passes and what needs fixing. Rules check for required files, template compliance, placeholder detection, anchor markers and cross-reference consistency.
+The `validate.sh` script runs 20 rules against a spec folder and reports what passes and what needs fixing. Rules check for required files, template compliance, placeholder detection, anchor markers and cross-reference consistency. In strict flows, the validation surface now includes `_memory.continuity` freshness checks plus strict `EVIDENCE` marker linting, with the bracket-depth audit script available for repair sweeps before rerunning validation.
 
 | Exit Code | Meaning        | Action                              |
 | --------- | -------------- | ----------------------------------- |
@@ -537,6 +539,7 @@ The `scripts/memory/` directory contains 10 scripts for the memory system:
 | ----------------------------- | ----------------------------------------------------------- |
 | `generate-context.ts`         | Source for the runtime memory-save entrypoint `scripts/dist/memory/generate-context.js` |
 | `backfill-frontmatter.ts`     | Add missing frontmatter to existing generated context artifacts |
+| `backfill-research-metadata.ts` | Backfill missing `description.json` and `graph-metadata.json` files under `research/*/iterations/` |
 | `rank-memories.ts`            | Rank memories by relevance for a query                      |
 | `reindex-embeddings.ts`       | Rebuild embedding vectors for stored memories               |
 | `cleanup-orphaned-vectors.ts` | Remove vector entries with no matching memory               |
@@ -546,6 +549,16 @@ The `scripts/memory/` directory contains 10 scripts for the memory system:
 | `fix-memory-h1.mjs`           | Fix heading levels in older generated context artifacts     |
 
 TypeScript sources compile to `scripts/dist/`. The runtime entry point for memory saves is `scripts/dist/memory/generate-context.js`.
+
+#### Validation Helper Scripts
+
+The `scripts/validation/` directory contains focused helpers that support `validate.sh` and one-off remediation work:
+
+| Script                        | Purpose                                                                 |
+| ----------------------------- | ----------------------------------------------------------------------- |
+| `continuity-freshness.ts`     | Warn when `_memory.continuity.last_updated_at` lags `graph-metadata.json` |
+| `evidence-marker-audit.ts`    | Bracket-depth audit and optional rewrap pass for malformed `EVIDENCE` markers |
+| `evidence-marker-lint.ts`     | Strict wrapper used by validation to fail on malformed or unclosed markers |
 
 #### Template Composition
 
@@ -1051,6 +1064,8 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 | [`references/config/environment_variables.md`](./references/config/environment_variables.md)     | Full environment variable reference                                                                  |
 | [`references/workflows/rollback_runbook.md`](./references/workflows/rollback_runbook.md)         | Feature-flag rollback and smoke-test procedures                                                      |
 | [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md)                     | Complete catalog of 291 features across 22 categories                                                |
+| [`../../../DEPLOYMENT.md`](../../../DEPLOYMENT.md)                                               | Deployment notes, Docker anti-patterns, Copilot runtime notes, and session-resume auth rollout flag |
+| [`../../changelog/01--system-spec-kit/v3.4.0.2.md`](../../changelog/01--system-spec-kit/v3.4.0.2.md) | Phase 017 release changelog for the H-56-1 fix and runtime-parity follow-ups                         |
 
 ### Cross-Skill Alignment
 
@@ -1081,4 +1096,4 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 
 ---
 
-_Documentation version: 3.0 | Last updated: 2026-04-12 | Skill version: 3.3.1.0_
+_Documentation version: 3.0 | Last updated: 2026-04-17 | Skill version: 3.3.1.0_

@@ -332,6 +332,8 @@ For the full spec folder workflow, template architecture (CORE + ADDENDUM v2.2),
 
 The Memory Engine is a local-first cognitive memory system built as an MCP server. `generate-context.js` updates canonical packet continuity and may emit supporting generated context artifacts inside the spec folder. Canonical continuity lives in the spec packet itself: use `/spec_kit:resume` as the recovery surface, then rebuild context in this order: `handover.md` -> `_memory.continuity` -> canonical spec docs. The MCP server indexes those packet-local sources with vector embeddings, BM25 and FTS5 full-text search, and `memory_match_triggers()` can still surface relevant prior context automatically when deeper retrieval is needed.
 
+Phase 017 tightened that flow in two places: `/memory:save` now refreshes packet metadata on every invocation, and `session_resume` now binds `args.sessionId` to transport caller context by default, with `MCP_SESSION_RESUME_AUTH_MODE=permissive` available for rollout canaries. Copilot also now shares the same compact-cache provenance path as Claude and Gemini.
+
 The memory engine now includes the packet-024 compact code graph and session lifecycle surfaces alongside hybrid retrieval. 
 
 The full MCP API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
@@ -1238,11 +1240,13 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 - **[→ Spec Kit README](.opencode/skill/system-spec-kit/README.md)** - Spec folder workflow, CORE + ADDENDUM v2.2 template set, validation rules
 - **[→ MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md)** - Memory and code-graph API reference (47 tools, 7 layers)
 - **[→ Install Guide](.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md)** - MCP server setup, embedding providers
+- **[→ Deployment Notes](DEPLOYMENT.md)** - Docker anti-patterns, Copilot notes, and session-resume auth flag
 - **[→ Architecture](.opencode/skill/system-spec-kit/ARCHITECTURE.md)** - API boundary contract
 - **[→ sk-doc Skill](.opencode/skill/sk-doc/SKILL.md)** - Documentation standards, DQI scoring
 - **[→ Skills Index](.opencode/skill/README.md)** - All 21 skills with invocation patterns
 - **[→ Feature Catalog](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** - 291-entry technical reference
 - **[→ Feature Catalog (Simple Terms)](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)** - Plain-language companion
+- **[→ Phase 017 Changelog](.opencode/changelog/01--system-spec-kit/v3.4.0.2.md)** - Release notes for H-56-1, session-resume auth binding, and Copilot parity
 - **[→ Enterprise Example](AGENTS_example_fs_enterprises.md)** - Example AGENTS.md for full-stack enterprise
 
 **External Resources:**
@@ -1254,4 +1258,4 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.2 | Last updated: 2026-04-12 | Framework: 12 agents, 21 skills, 23 commands, 60 MCP tools (51 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*
+*Documentation version: 4.2 | Last updated: 2026-04-17 | Framework: 12 agents, 21 skills, 23 commands, 60 MCP tools (51 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*

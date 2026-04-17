@@ -48,6 +48,8 @@ Spec Kit Memory is a Model Context Protocol (MCP) server that gives AI assistant
 
 The server works across sessions, models and tools. Switch from Claude to GPT to Gemini and back. The memory stays the same because it lives in a database on your machine, not inside any AI's context window.
 
+Phase 017 also hardened the runtime edges: code-graph handlers now share one readiness contract, session-resume auth binds to transport caller context by default, and Copilot compact-cache uses the same provenance-wrapped recovery path as Claude and Gemini.
+
 ### Key Numbers
 
 | What | Count | Details |
@@ -89,7 +91,7 @@ The memory system exposes 47 MCP tools through 4 memory slash commands plus the 
 | `/memory:search` | Search, retrieve and analyze knowledge | 13 tools |
 | `/memory:learn` | Create always-surface rules (constitutional memories) | 6 tools |
 | `/memory:manage` | Database maintenance, checkpoints, and bulk ingestion | 19 primary tools + 1 helper |
-| `/memory:save` | Update packet continuity and supporting generated context artifacts | 4 tools |
+| `/memory:save` | Update packet continuity, refresh packet metadata on every invocation, and emit supporting generated context artifacts | 4 tools |
 | `/spec_kit:resume` | Canonical operator-facing recovery surface for an interrupted spec-folder session; rebuilds active context from `handover.md`, then `_memory.continuity`, then packet docs | Broad helper surface for packet recovery |
 
 ### Requirements
@@ -529,6 +531,8 @@ The code graph system provides structural code analysis via tree-sitter AST pars
 
 **Read-path readiness:** `ensureCodeGraphReady()` runs automatically inside `code_graph_query` and `code_graph_context`. It checks graph freshness, returns a `readiness` block, and performs bounded inline selective reindex only when the stale set is small enough to repair safely on the read path. Empty graphs, large stale sets, and other full-scan cases remain explicit `code_graph_scan` work.
 
+**Shared readiness contract:** `lib/code-graph/readiness-contract.ts` now owns the shared readiness helpers used by query, scan, status, context, and CCC handlers. Read-path trust labels project onto the canonical `SharedPayloadTrustState` vocabulary instead of a new local enum.
+
 **Startup/recovery surfaces:** `session_resume`, `session_bootstrap`, and the startup brief now report freshness-aware graph status instead of count-only health. Startup surfaces are intentionally non-mutating snapshots, so later structural reads may still differ if repo state changes.
 
 **Query routing:** Structural queries (callers, imports, dependencies) go to `code_graph_query`. Semantic and concept queries go to CocoIndex (`mcp__cocoindex_code__search`). Session and memory queries go to `memory_context`.
@@ -584,7 +588,7 @@ The smart entry point. You describe what you need and it figures out the best wa
 
 ##### `session_resume`
 
-Resume session with combined memory, code graph and CocoIndex status in a single call. Use when you want the detailed merged resume payload directly. The response carries freshness-aware code-graph status (`fresh`, `stale`, `empty`, `error`) instead of count-only health. For the canonical first-call recovery path on session start or after `/clear`, prefer `session_bootstrap`, and for operator-facing packet recovery prefer `/spec_kit:resume`, which reconstructs context from `handover.md`, then `_memory.continuity`, then packet docs.
+Resume session with combined memory, code graph and CocoIndex status in a single call. Use when you want the detailed merged resume payload directly. The response carries freshness-aware code-graph status (`fresh`, `stale`, `empty`, `error`) instead of count-only health. Session-resume auth now binds `args.sessionId` to the transport caller context from `lib/context/caller-context.ts`; mismatches are rejected by default, with `MCP_SESSION_RESUME_AUTH_MODE=permissive` available for canary rollout. For the canonical first-call recovery path on session start or after `/clear`, prefer `session_bootstrap`, and for operator-facing packet recovery prefer `/spec_kit:resume`, which reconstructs context from `handover.md`, then `_memory.continuity`, then packet docs.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1175,6 +1179,17 @@ mcp_server/
 | `api/index.ts` | Stable external import surface for eval, indexing, search, provider, and discovery helpers. |
 | `INSTALL_GUIDE.md` | Step-by-step installation with embedding providers and environment variables. |
 
+### Notable Phase 017 Modules
+
+| Module | What It Does |
+|--------|--------------|
+| `lib/code-graph/readiness-contract.ts` | Shared readiness helpers for code-graph handlers, including canonical readiness and trust-state projections |
+| `lib/context/caller-context.ts` | AsyncLocalStorage-based caller identity for transport-bound handler auth and audit metadata |
+| `hooks/shared-provenance.ts` | Shared recovered-payload sanitization and provenance wrapping for Claude, Gemini, and Copilot |
+| `hooks/copilot/compact-cache.ts` | Copilot compact-cache producer so Copilot matches Claude/Gemini recovery behavior |
+| `lib/enrichment/retry-budget.ts` | Retry exhaustion budget that stops repeated post-insert enrichment failures from looping forever |
+| `lib/utils/exhaustiveness.ts` | `assertNever` helper for exhaustive union handling in typed runtime code |
+
 ### 7-Layer Tool Architecture
 
 Tools are organized into layers based on what they do. Lower layers handle everyday operations. Higher layers handle specialized tasks.
@@ -1228,6 +1243,7 @@ The full source of truth lives in `../references/config/environment_variables.md
 | `SPECKIT_DYNAMIC_INIT` | `true` | Inject live startup memory/index summary into MCP init |
 | `SPECKIT_CONTEXT_HEADERS` | `true` | Prepend contextual tree headers to markdown results |
 | `SPECKIT_FILE_WATCHER` | `false` | Enable chokidar-based auto re-indexing |
+| `MCP_SESSION_RESUME_AUTH_MODE` | `strict` | Session-resume auth binding mode: `strict` rejects caller/session mismatches, `permissive` logs and continues |
 | `SPEC_KIT_BATCH_SIZE` | `5` | Batch size for `memory_index_scan` |
 | `SPEC_KIT_BATCH_DELAY_MS` | `100` | Delay between scan batches in milliseconds |
 
@@ -1287,7 +1303,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 }
 ```
 
-**What happens**: The packet's canonical continuity surfaces are updated, the spec-folder docs are reindexed, and `/spec_kit:resume` can recover that work from `handover.md`, `_memory.continuity`, and packet docs on the next session.
+**What happens**: The packet's canonical continuity surfaces are updated, `description.json.lastUpdated` and `graph-metadata.json` derived fields refresh on the same save, the spec-folder docs are reindexed, and `/spec_kit:resume` can recover that work from `handover.md`, `_memory.continuity`, and packet docs on the next session.
 
 ---
 
@@ -1629,6 +1645,8 @@ Set the flag to `false` or `0` in your environment, restart the server and the p
 | [../feature_catalog/FEATURE_CATALOG.md](../feature_catalog/FEATURE_CATALOG.md) | Complete feature inventory: 22 categories, 291 features with code references |
 | [../references/config/environment_variables.md](../references/config/environment_variables.md) | All environment variables with types, defaults and examples |
 | [../references/workflows/rollback_runbook.md](../references/workflows/rollback_runbook.md) | Feature flag rollback procedure |
+| [../../../DEPLOYMENT.md](../../../DEPLOYMENT.md) | Deployment notes, Docker anti-patterns, Copilot runtime notes, and session-resume auth rollout guidance |
+| [../../../changelog/01--system-spec-kit/v3.4.0.2.md](../../../changelog/01--system-spec-kit/v3.4.0.2.md) | Phase 017 release changelog covering H-56-1, caller-context auth binding, and Copilot parity |
 
 ### External Resources
 
@@ -1643,4 +1661,4 @@ Set the flag to `false` or `0` in your environment, restart the server and the p
 
 ---
 
-*Documentation version: 3.0 | Last updated: 2026-03-25 | Server version: @spec-kit/mcp-server*
+*Documentation version: 3.0 | Last updated: 2026-04-17 | Server version: @spec-kit/mcp-server*
