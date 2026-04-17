@@ -421,6 +421,11 @@ function resolveCallerPid(metadata: Record<string, unknown>): number | undefined
 function buildCallerContext(extra: unknown): MCPCallerContext {
   const metadata = isRecord(extra) ? { ...extra } : {};
   return {
+    // Under stdio, the MCP SDK never gives us a real transport session ID and
+    // leaves the field empty (@modelcontextprotocol/sdk/dist/esm/shared/protocol.js:280-316).
+    // That makes stdio session binding advisory-only, not vulnerable: the server
+    // and caller share a single-UID subprocess boundary. HTTP/WS transports still
+    // carry validated server-generated session IDs that the auth guard enforces.
     sessionId: typeof metadata.sessionId === 'string' ? metadata.sessionId : null,
     transport: 'stdio',
     connectedAt: transportConnectedAt ?? new Date().toISOString(),

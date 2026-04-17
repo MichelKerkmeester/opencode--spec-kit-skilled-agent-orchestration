@@ -452,8 +452,11 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     ? args.sessionId
     : null;
 
-  // T-SRS-BND-01: reject mismatched sessionId to prevent cross-session cached-summary leakage.
-  // Permissive mode logs a warning instead of rejecting so canary sessions can verify rollout.
+  // T-SRS-BND-01: under stdio, callerCtx.sessionId is vacuous because the MCP SDK
+  // hard-codes an empty transport session field for stdio
+  // (@modelcontextprotocol/sdk/dist/esm/shared/protocol.js:280-316). That is not a
+  // security hole because stdio runs as a single-UID subprocess with no cross-trust
+  // boundary; HTTP/WS callers still carry server-generated session IDs and hit this guard.
   if (requestedSessionId && callerCtx?.sessionId && requestedSessionId !== callerCtx.sessionId) {
     const message = `Session-ID mismatch: args.sessionId='${requestedSessionId}' vs callerContext.sessionId='${callerCtx.sessionId}'`;
     if (SESSION_RESUME_AUTH_PERMISSIVE) {
@@ -474,7 +477,7 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     specFolder: args.specFolder,
     // Advanced targeted recovery selector: expose sessionId publicly for
     // operators, but keep default guidance focused on specFolder/bootstrap.
-    claudeSessionId: requestedSessionId ?? undefined,
+    claudeSessionId: requestedSessionId ?? callerCtx?.sessionId ?? undefined,
   });
   const scopeFallback = !args.specFolder && cachedSummaryDecision.status === 'accepted'
     ? cachedSummaryDecision.cachedSummary?.lastSpecFolder ?? null

@@ -216,7 +216,7 @@ describe('session-resume auth binding', () => {
 
     const parsed = JSON.parse(result.content[0].text);
     expect(parsed.status).toBe('ok');
-    expectLatestScopeClauses(undefined);
+    expectLatestScopeClauses('transport-session');
   });
 
   it('logs a warning and proceeds in permissive mode on mismatch', async () => {
@@ -255,7 +255,7 @@ describe('session-resume auth binding', () => {
 
     const parsed = JSON.parse(result.content[0].text);
     expect(parsed.status).toBe('ok');
-    expectLatestScopeClauses(undefined);
+    expectLatestScopeClauses('transport-session');
   });
 
   it('treats an empty string sessionId as not provided', async () => {
@@ -266,6 +266,6 @@ describe('session-resume auth binding', () => {
 
     const parsed = JSON.parse(result.content[0].text);
     expect(parsed.status).toBe('ok');
-    expectLatestScopeClauses(undefined);
+    expectLatestScopeClauses('transport-session');
   });
 });
