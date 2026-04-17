@@ -22,6 +22,7 @@ import type * as memoryParser from '../../lib/parsing/memory-parser.js';
 import { toErrorMessage } from '../../utils/index.js';
 
 import { recordHistory } from '../../lib/storage/history.js';
+import { normalizeScopeValue } from '../../lib/governance/scope-governance.js';
 import { appendMutationLedgerSafe } from '../memory-crud-utils.js';
 import { calculateDocumentWeight, isSpecDocumentType } from '../pe-gating.js';
 import { detectSpecLevelFromParsed } from '../handler-utils.js';
@@ -225,13 +226,11 @@ function repairBm25Document(args: {
   }
 }
 
-function normalizeScopeValue(value: unknown): string | null {
-  if (typeof value !== 'string') {
-    return null;
-  }
-  const normalized = value.trim();
-  return normalized.length > 0 ? normalized : null;
-}
+// T-SCP-01 (R1-P1-001, R4-P1-001): local normalizer collapsed into the
+// canonical `normalizeScopeValue` export from `lib/governance/scope-governance`.
+// Return shape preserved as `string | null` so downstream null-specific
+// narrowing (RequestedScope = Record<_, string | null>, `hasGovernedScope`'s
+// `!== null`, `candidateMatchesRequestedScope` strict-equality) is unaffected.
 
 export function getRequestedScope(scope?: {
   tenantId?: string | null;

@@ -2,6 +2,7 @@
 // MODULE: Types
 // ───────────────────────────────────────────────────────────────
 import { buildMutationHookFeedback } from '../../hooks/mutation-feedback.js';
+import { normalizeScopeValue } from '../../lib/governance/scope-governance.js';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser.js';
 import type { SavePlannerMode } from '../../lib/search/search-flags.js';
 import type { EnrichmentStatus, PostInsertExecutionStatus } from './post-insert.js';
@@ -345,8 +346,10 @@ export interface MemoryScopeMatch {
   sessionId?: string | null;
 }
 
-export function normalizeScopeMatchValue(value?: string | null): string | null {
-  if (typeof value !== 'string') return null;
-  const normalized = value.trim();
-  return normalized.length > 0 ? normalized : null;
-}
+// T-SCP-01 (R1-P1-001, R4-P1-001): local normalizer collapsed into the
+// canonical `normalizeScopeValue` from `lib/governance/scope-governance`.
+// Preserved as a re-export under the original name so consumers in
+// `create-record.ts` / `dedup.ts` remain unchanged. Callers only use truthy
+// narrowing (`value ? {...} : {}`) so null/undefined semantics are equivalent.
+export const normalizeScopeMatchValue = (value?: string | null): string | null =>
+  normalizeScopeValue(value);

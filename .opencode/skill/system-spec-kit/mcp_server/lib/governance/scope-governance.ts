@@ -139,6 +139,25 @@ function normalizeId(value: unknown): string | undefined {
   return trimmed.length > 0 ? trimmed : undefined;
 }
 
+/**
+ * T-SCP-01 (R1-P1-001, R4-P1-001): canonical single-string scope normalizer.
+ *
+ * Returns `string | null` to preserve the historical semantics of four local
+ * copies collapsed here (reconsolidation-bridge, lineage-state, save/types,
+ * preflight). Callers that perform null-specific narrowing (e.g. `=== null`,
+ * `!== null`) continue to work unchanged. `normalizeScopeContext` above uses
+ * `string | undefined` for structural scope objects; this helper is the
+ * single-field companion used when callers need a null-valued placeholder.
+ *
+ * @param value - Arbitrary input (string, null, undefined, other).
+ * @returns Trimmed non-empty string, or `null` for blank/non-string input.
+ */
+export function normalizeScopeValue(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
 function normalizeIsoTimestamp(value: unknown): string | undefined {
   if (typeof value !== 'string' || value.trim().length === 0) return undefined;
   const date = new Date(value);

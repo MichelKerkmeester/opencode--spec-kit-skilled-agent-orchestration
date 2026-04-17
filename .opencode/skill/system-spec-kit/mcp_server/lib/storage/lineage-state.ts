@@ -9,6 +9,7 @@ import type Database from 'better-sqlite3';
 import * as bm25Index from '../search/bm25-index.js';
 import * as embeddingsProvider from '../providers/embeddings.js';
 import { getCanonicalPathKey } from '../utils/canonical-path.js';
+import { normalizeScopeValue } from '../governance/scope-governance.js';
 import { ensureLineageTables } from '../search/vector-index-schema.js';
 import { get_embedding_dim, refresh_interference_scores_for_folder, sqlite_vec_available } from '../search/vector-index-store.js';
 import { to_embedding_buffer } from '../search/vector-index-types.js';
@@ -195,13 +196,10 @@ function getSafeHistoryEvents(database: Database.Database, memoryId: number): Hi
   }
 }
 
-function normalizeScopeValue(value: unknown): string | null {
-  if (typeof value !== 'string') {
-    return null;
-  }
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
-}
+// T-SCP-01 (R1-P1-001, R4-P1-001): local normalizer collapsed into the
+// canonical `normalizeScopeValue` from `lib/governance/scope-governance`.
+// Return shape preserved as `string | null` — the downstream `!= null` filter
+// at `scopeTuple` tolerates both null and undefined, so semantics are identical.
 
 function buildScopePrefix(row: MemoryIndexRow): string | null {
   const scopeTuple = [
