@@ -59,6 +59,7 @@ import {
   recordToolCall,
 } from './hooks/index.js';
 import { primeSessionIfNeeded } from './hooks/memory-surface.js';
+import { runWithCallerContext, type MCPCallerContext } from './lib/context/caller-context.js';
 
 // Architecture
 import { getTokenBudget } from './lib/architecture/layer-definitions.js';
@@ -409,6 +410,23 @@ function runAfterToolCallbacks(tool: string, callId: string, result: unknown): v
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function resolveCallerPid(metadata: Record<string, unknown>): number | undefined {
+  return typeof metadata.pid === 'number' && Number.isFinite(metadata.pid)
+    ? metadata.pid
+    : undefined;
+}
+
+function buildCallerContext(extra: unknown): MCPCallerContext {
+  const metadata = isRecord(extra) ? { ...extra } : {};
+  return {
+    sessionId: typeof metadata.sessionId === 'string' ? metadata.sessionId : null,
+    transport: 'stdio',
+    connectedAt: transportConnectedAt ?? new Date().toISOString(),
+    callerPid: resolveCallerPid(metadata),
+    metadata,
+  };
 }
 
 function looksLikeGraphableFilePath(value: string): boolean {
@@ -898,6 +916,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
   const args: Record<string, unknown> = requestParams.arguments ?? {};
   const callId = resolveToolCallId(request as { id?: unknown });
   const sessionTrackingId = resolveSessionTrackingId(args, _extra);
+  const callerContext = buildCallerContext(_extra);
   if (sessionTrackingId) lastKnownSessionId = sessionTrackingId;
 
   try {
@@ -982,7 +1001,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     }
 
     // T303: Dispatch to tool modules
-    const result = await dispatchTool(name, args) as ToolCallResponse | null;
+    const result = await runWithCallerContext(
+      callerContext,
+      async () => dispatchTool(name, args),
+    ) as ToolCallResponse | null;
     if (!result) {
       throw new Error(`Unknown tool: ${name}`);
     }
@@ -1524,6 +1546,7 @@ async function startSkillGraphWatcher(): Promise<void> {
 let shuttingDown = false;
 // P1-09 FIX: Hoist transport to module scope so shutdown handlers can close it
 let transport: StdioServerTransport | null = null;
+let transportConnectedAt: string | null = null;
 // P1-11 FIX: Module-level guard to avoid redundant initializeDb() calls per tool invocation
 let dbInitialized = false;
 let fileWatcher: FSWatcher | null = null;
@@ -1583,6 +1606,7 @@ async function fatalShutdown(reason: string, exitCode: number): Promise<void> {
       if (transport) {
         transport.close();
         transport = null;
+        transportConnectedAt = null;
       }
     });
   })();
@@ -2082,6 +2106,7 @@ async function main(): Promise<void> {
     }
   }
 
+  transportConnectedAt = new Date().toISOString();
   transport = new StdioServerTransport();
   await server.connect(transport);
   console.error('[context-server] Context MCP server running on stdio');
