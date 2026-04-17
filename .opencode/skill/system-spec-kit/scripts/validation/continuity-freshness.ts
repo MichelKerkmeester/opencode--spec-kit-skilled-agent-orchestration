@@ -26,6 +26,7 @@ export interface ContinuityFreshnessResult {
     | 'missing_frontmatter'
     | 'missing_graph_metadata'
     | 'missing_graph_timestamp'
+    | 'invalid_graph_metadata'
     | 'invalid_timestamp'
     | 'invalid_frontmatter';
   readonly message: string;
@@ -134,11 +135,15 @@ function buildWarn(
   };
 }
 
-function buildFail(message: string, details: string[] = []): ContinuityFreshnessResult {
+function buildFail(
+  code: Extract<ContinuityFreshnessResult['code'], 'invalid_graph_metadata'>,
+  message: string,
+  details: string[] = [],
+): ContinuityFreshnessResult {
   return {
     rule: 'CONTINUITY_FRESHNESS',
     status: 'fail',
-    code: 'invalid_frontmatter',
+    code,
     message,
     details,
   };
@@ -192,6 +197,7 @@ export function validateContinuityFreshness(
   const graphTimestampResult = readGraphMetadataTimestamp(graphMetadataPath);
   if (graphTimestampResult.error) {
     return buildFail(
+      'invalid_graph_metadata',
       'Continuity freshness could not load graph-metadata.json',
       [graphTimestampResult.error],
     );

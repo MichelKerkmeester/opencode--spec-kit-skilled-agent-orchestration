@@ -38,11 +38,11 @@ export interface ResearchMetadataBackfillSummary {
   readonly specFolderPath: string;
   readonly dryRun: boolean;
   readonly iterationDirectories: string[];
-  readonly descriptionCreated: number;
-  readonly graphCreated: number;
-  readonly unchanged: number;
-  readonly failed: number;
-  readonly failures: ResearchMetadataBackfillFailure[];
+  descriptionCreated: number;
+  graphCreated: number;
+  unchanged: number;
+  failed: number;
+  failures: ResearchMetadataBackfillFailure[];
 }
 
 interface CliOptions {
@@ -109,11 +109,7 @@ function writeGraphMetadataFile(filePath: string, content: string): void {
     fs.writeFileSync(tempPath, content, 'utf-8');
     fs.renameSync(tempPath, filePath);
   } finally {
-    try {
-      fs.unlinkSync(tempPath);
-    } catch (_error: unknown) {
-      // Temp file already renamed or never created.
-    }
+    fs.rmSync(tempPath, { force: true });
   }
 }
 

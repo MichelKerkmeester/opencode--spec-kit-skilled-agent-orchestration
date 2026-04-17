@@ -136,6 +136,18 @@ describe('continuity-freshness', () => {
     expect(result.code).toBe('missing_graph_metadata');
   });
 
+  it('fails with a distinct code when graph metadata is unreadable JSON', () => {
+    const root = makeWorkspace();
+    const specFolder = createSpecFolder(root, '923a-continuity-invalid-graph');
+    writeImplementationSummary(specFolder, '2026-04-17T12:00:00Z');
+    fs.writeFileSync(path.join(specFolder, 'graph-metadata.json'), '{invalid json', 'utf-8');
+
+    const result = validateContinuityFreshness(specFolder);
+
+    expect(result.status).toBe('fail');
+    expect(result.code).toBe('invalid_graph_metadata');
+  });
+
   it('treats continuity newer than graph metadata as benign clock drift', () => {
     const root = makeWorkspace();
     const specFolder = createSpecFolder(root, '924-continuity-clock-drift');
