@@ -87,6 +87,8 @@ M13 enum status refactor was scoped to `post-insert.ts` (T-PIN-01 through T-PIN-
 
 **Verdict:** One new P2 finding (CP-002). Symmetry argument: if M13 resolves post-insert.ts, it should also resolve graph-lifecycle.ts.
 
+**Resolved later (2026-04-17):** Commit `e774eef07` (T-PIN-08 scattered medium refactors) added typed `OnIndexSkipReason` values to `graph-lifecycle.ts:onIndex()` and propagated them through the post-insert graphLifecycle consumer. CP-002 remains documented here as part of the closing-pass audit trail, but it is no longer an open residual item.
+
 ---
 
 ## 4. `mcp_server/lib/storage/reconsolidation.ts:executeMerge()` — governance-scope CAS

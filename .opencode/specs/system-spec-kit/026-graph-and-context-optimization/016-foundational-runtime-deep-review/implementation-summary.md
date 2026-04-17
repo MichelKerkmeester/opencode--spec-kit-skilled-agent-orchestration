@@ -311,6 +311,8 @@ The T-PRE-04 closing-pass audit (`../research/016-foundational-runtime-deep-revi
 | **CP-003** | P2 | `lib/search/entity-linker.ts:1131-1133` | `runEntityLinkingForMemory(db, memoryId)` catch block falls back to `runEntityLinking(db)` (whole-corpus scan) with no rate-limit or same-session deduplication — scope-widening amplifier of R7-002. Under rapid per-memory failures, compounds into repeated whole-corpus passes. | Phase 016 remediation candidate: add fallback rate-limit or exhaustion count before returning empty. Not a correctness issue; a resilience-pattern amplification issue. |
 | **CP-004** | P2 | `spec_kit_complete_confirm.yaml:514,520,539` | Same untyped boolean DSL (`folder_state == populated-folder`) as `spec_kit_plan_auto.yaml` / `spec_kit_plan_confirm.yaml`. T-YML-CMP-01 only touched the `_auto` variant. S7 coverage gap on the confirm variant of `complete`. | ~1h quick-win: extend T-YML-CMP-01 or add T-YML-CMP-02 to apply the `BooleanExpr` schema to the 3 predicate sites in `spec_kit_complete_confirm.yaml`. |
 
+**CP-002 RESOLVED (2026-04-17):** Closing-pass finding CP-002 (`graph-lifecycle.ts:onIndex()` skip-reason collapse) was fully resolved by commit `e774eef07` (T-PIN-08 scattered medium refactors). This audit-trail note remains for historical continuity, but CP-002 is no longer an open Phase 017 residual.
+
 ### Deferrals from original research synthesis
 
 Per `FINAL-synthesis-and-review.md §7.6`, the following items were explicitly deferred at research-synthesis time and remain deferred post-Phase 016 remediation:
