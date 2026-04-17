@@ -11,9 +11,11 @@ import {
   attachStructuralTrustFields,
   type EdgeEvidenceClass,
   type HotFileBreadcrumb,
-  type SharedPayloadTrustState,
 } from '../../lib/context/shared-payload.js';
-import type { StructuralReadiness } from '../../lib/code-graph/ops-hardening.js';
+import {
+  buildQueryGraphMetadata,
+  buildReadinessBlock,
+} from '../../lib/code-graph/readiness-contract.js';
 
 export interface QueryArgs {
   operation: 'outline' | 'calls_from' | 'calls_to' | 'imports_from' | 'imports_to' | 'blast_radius';
@@ -217,69 +219,13 @@ function buildQueryStructuralTrust(readiness: ReadyResult) {
   } as const;
 }
 
-// M8 / T-CGQ-11 (R22-001, R23-001): align query-level readiness vocabulary
-// with session_bootstrap / session_resume. Canonical readiness uses the
-// ops-hardening StructuralReadiness contract ('ready' | 'stale' | 'missing')
-// so consumers see one vocabulary. The expanded trust state adds 'absent'
-// for 'empty'/'missing' graphs so queries don't masquerade as 'stale'.
-function canonicalReadinessFromFreshness(
-  freshness: ReadyResult['freshness'],
-): StructuralReadiness {
-  switch (freshness) {
-    case 'fresh':
-      return 'ready';
-    case 'stale':
-      return 'stale';
-    case 'empty':
-      return 'missing';
-  }
-}
-
-function queryTrustStateFromFreshness(
-  freshness: ReadyResult['freshness'],
-): SharedPayloadTrustState {
-  switch (freshness) {
-    case 'fresh':
-      return 'live';
-    case 'stale':
-      return 'stale';
-    case 'empty':
-      return 'absent';
-  }
-}
-
-// M8 / T-CGQ-09 (R18-001, R20-003): compute query-level detector provenance
-// from the last-persisted scan instead of silently surfacing a global
-// snapshot. The value is still the last persisted provenance but we emit
-// it alongside a lastPersistedAt breadcrumb so consumers can correlate the
-// provenance with a scan moment, and we omit the field entirely when no
-// scan has occurred (empty graph) rather than reporting 'unknown'.
-function buildQueryGraphMetadata(readiness: ReadyResult): Record<string, unknown> | undefined {
-  if (readiness.freshness === 'empty') {
-    return undefined;
-  }
-
-  const detectorProvenance = graphDb.getLastDetectorProvenance();
-  if (!detectorProvenance) {
-    return undefined;
-  }
-
-  return {
-    detectorProvenance,
-    detectorProvenanceSource: 'last-persisted-scan',
-  };
-}
-
-// M8 / T-CGQ-11: emit a readiness block with the canonical vocabulary
-// alongside the raw ensure-ready freshness so existing consumers keep
-// working while new consumers can key off canonicalReadiness + trustState.
-function buildReadinessBlock(readiness: ReadyResult) {
-  return {
-    ...readiness,
-    canonicalReadiness: canonicalReadinessFromFreshness(readiness.freshness),
-    trustState: queryTrustStateFromFreshness(readiness.freshness),
-  };
-}
+// Phase 017 / T-CGC-01: readiness helpers extracted to
+// lib/code-graph/readiness-contract.ts so the 6 sibling
+// code-graph handlers (scan, status, context, ccc-status,
+// ccc-reindex, ccc-feedback) can share one vocabulary — see
+// T-W1-CGC-03 (Wave B) for the propagation task. See that module
+// for M8 / T-CGQ-09 / T-CGQ-11 origin notes (R18-001, R20-003,
+// R22-001, R23-001).
 
 function buildGraphQueryPayload<T extends Record<string, unknown>>(
   payload: T,
