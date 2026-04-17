@@ -72,18 +72,16 @@ Per Explore pre-implementation audit: no external consumers read this field dire
 
 Resolves R52-P2-002.
 
-### T-CNS-03 — 16-folder canonical-save sweep (commit `176bad2b2`)
+### T-CNS-03 — 16-folder canonical-save sweep (two-batch reality; commit `176bad2b2`)
 
-One-time `lastUpdated` refresh across 11 previously-stale/missing 026-tree folders:
-- 001-research-graph-context-systems, 002-cache-warning-hooks, 003-memory-quality-remediation
-- 004-agent-execution-guardrails, 005-code-graph-upgrades, 006-continuity-refactor-gates
-- 007-release-alignment-revisits, 008-cleanup-and-audit (both previously MISSING field)
-- 009-playbook-and-remediation, 010-search-and-routing-tuning (both previously MISSING field)
-- 013-advisor-phrase-booster-tailoring
+The rollout did **not** happen as one uniform 16-folder sweep. It landed in two batches separated by just over an hour:
 
-Combined with the H-56-1 cascade (commit `8859da9cd`) which already refreshed 011, 012, 014, 015, 016, 017 during implementation, all 17 sibling 026-tree folders now have fresh `description.json.lastUpdated`. Going forward, every `/memory:save` invocation maintains freshness automatically (Wave A `aaf0f49a8`).
+- **Batch A — natural cascade during H-56-1 fix validation** (`8859da9cd`, ~`2026-04-17T14:42:34Z`): `011`, `012`, `014`, `015`, `016`, and `017` refreshed while canonical saves were being exercised during the writer fix.
+- **Batch B — manual backfill commit** (`176bad2b2`, `2026-04-17T15:45:19.000Z`): `001-006`, `007-010`, and `013` were refreshed in one explicit catch-up commit. The `.000Z` timestamp signature is the easiest way to spot this manual pass in the ledger.
 
-**Smoke-tested** on `001-research-graph-context-systems` (4-day-stale, oldest folder) → successful fresh update → proceeded sweep on remaining 10 folders via jq loop.
+Together the two batches closed the intended 16-folder objective, and all 17 sibling 026-tree folders ended Phase 017 with fresh `description.json.lastUpdated`. Going forward, every `/memory:save` invocation maintains freshness automatically (Wave A `aaf0f49a8`).
+
+**Smoke-tested** on `001-research-graph-context-systems` (4-day-stale, oldest folder) before the manual backfill committed the remaining stale set.
 
 **Implementation note**: Per-folder jq refresh used rather than full canonical-save regen to avoid rich-content overwrite risk observed in 016/017 auto-gen template (which writes minimal template when invoked via generate-description.js).
 
