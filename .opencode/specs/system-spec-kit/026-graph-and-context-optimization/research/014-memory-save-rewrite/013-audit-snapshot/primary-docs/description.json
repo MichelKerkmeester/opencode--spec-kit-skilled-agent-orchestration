@@ -1,5 +1,5 @@
 {
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-memory-folder-deprecation-audit",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite/013-audit-snapshot/primary-docs",
   "description": "Feature Specification: [spec]/memory/ Folder Deprecation Audit",
   "keywords": [
     "feature",
@@ -10,14 +10,15 @@
     "deprecation",
     "audit"
   ],
-  "lastUpdated": "2026-04-14T17:11:40.158Z",
-  "specId": "013",
-  "folderSlug": "memory-folder-deprecation-audit",
+  "lastUpdated": "2026-04-17T14:42:34.367Z",
+  "specId": "",
+  "folderSlug": "primary-docs",
   "parentChain": [
-    ".opencode",
-    "specs",
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "research",
+    "014-memory-save-rewrite",
+    "013-audit-snapshot"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

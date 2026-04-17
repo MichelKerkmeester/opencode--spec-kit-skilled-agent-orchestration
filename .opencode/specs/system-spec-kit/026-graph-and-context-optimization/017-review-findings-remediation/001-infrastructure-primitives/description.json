@@ -1,0 +1,192 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/001-infrastructure-primitives",
+  "description": "Phase 017 Wave A child packet: infrastructure primitives (~20h, CRITICAL PATH). 5 tasks: T-CNS-01 + T-W1-CNS-04 (canonical save metadata writer, merged PR, 6h, eliminates H-56-1 root cause), T-CGC-01 (extract lib/code-graph/readiness-contract.ts, 4h, prereq for Wave B T-W1-CGC-03), T-W1-HOK-02 (extract hooks/shared-provenance.ts, 4h, prereq for Wave B T-W1-HOK-01 — breaks Gemini→Claude transitive import R52-P2-001), T-SCP-01 (collapse 4 local normalizers to canonical, 4h, resolves R1-P1-001 + R4-P1-001 compound), T-EVD-01-prep (rewrap 016 checklist.md evidence markers ')' → ']', 2h, prereq for Wave C T-EVD-01 strict mode). Blocks all downstream Wave B/C/D work. Atomic-ship: G1 (T-CNS-01 + T-W1-CNS-04) MUST land as single PR. Gate: /spec_kit:deep-review :auto ×7 emits ZERO new P0/P1.",
+  "keywords": [
+    "phase-017-wave-a",
+    "infrastructure-primitives",
+    "wave-a-critical-path",
+    "t-cns-01",
+    "t-w1-cns-04",
+    "canonical-save-metadata-writer",
+    "workflow-ts-ctxfilewritten-fix",
+    "workflow-ts-plan-only-gate-lift",
+    "description-json-lastupdated",
+    "graph-metadata-derived-last-save-at",
+    "t-cgc-01",
+    "readiness-contract-extract",
+    "lib-code-graph-readiness-contract",
+    "trust-state-four-state",
+    "t-w1-hok-02",
+    "shared-provenance-extract",
+    "hooks-shared-provenance",
+    "claude-gemini-transitive-import-break",
+    "t-scp-01",
+    "normalize-scope-context-collapse",
+    "scope-governance-canonical",
+    "reconsolidation-bridge-normalizer",
+    "lineage-state-normalizer",
+    "save-types-normalizer",
+    "preflight-normalizer",
+    "t-evd-01-prep",
+    "016-checklist-evidence-rewrap",
+    "h-56-1-canonical-save-paralysis",
+    "r4-p1-002",
+    "r51-p1-001",
+    "r51-p1-002",
+    "r56-p1-upgrade-001",
+    "r6-p1-001-prereq",
+    "r52-p2-001",
+    "r1-p1-001-compound",
+    "r4-p1-001-compound",
+    "r3-p2-002-data-side",
+    "atomic-ship-g1",
+    "atomic-ship-merged-pr",
+    "wave-a-gate-deep-review-x7",
+    "cli-codex-primary-dispatcher",
+    "cli-copilot-fallback-three-concurrent",
+    "six-hour-merged-pr",
+    "twenty-hour-wave-a-total",
+    "child-phase-001-of-four"
+  ],
+  "lastUpdated": "2026-04-17T14:45:00Z",
+  "specId": "001",
+  "folderSlug": "infrastructure-primitives",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "017-review-findings-remediation"
+  ],
+  "kind": "remediation",
+  "level": 2,
+  "status": "ready_for_implementation",
+  "phaseStage": "stage-1-spec-complete",
+  "parentPacket": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation",
+  "childPhasePosition": {
+    "wave": "A",
+    "position": 1,
+    "total_waves": 4,
+    "critical_path": true
+  },
+  "scope": [
+    {
+      "task_id": "T-CNS-01",
+      "title": "Canonical save writes description.json.lastUpdated",
+      "severity": "P1",
+      "effort_hours": 4,
+      "atomic_group": "G1",
+      "resolves": ["R4-P1-002", "R51-P1-001", "R3-P2-001 (partial)", "R5-P1-001 (partial)"]
+    },
+    {
+      "task_id": "T-W1-CNS-04",
+      "title": "Lift plan-only gate on refreshGraphMetadata",
+      "severity": "P1",
+      "effort_hours": 2,
+      "atomic_group": "G1",
+      "resolves": ["R51-P1-002", "R56-P1-upgrade-001 (H-56-1 headline)"]
+    },
+    {
+      "task_id": "T-CGC-01",
+      "title": "Extract lib/code-graph/readiness-contract.ts",
+      "severity": "P1",
+      "effort_hours": 4,
+      "atomic_group": "G2",
+      "resolves": ["R6-P1-001 (prereq for T-W1-CGC-03)"]
+    },
+    {
+      "task_id": "T-W1-HOK-02",
+      "title": "Extract hooks/shared-provenance.ts",
+      "severity": "P2-blocker",
+      "effort_hours": 4,
+      "atomic_group": "G3",
+      "resolves": ["R52-P2-001 (prereq for T-W1-HOK-01)"]
+    },
+    {
+      "task_id": "T-SCP-01",
+      "title": "Collapse 4 local normalizers to canonical",
+      "severity": "P1",
+      "effort_hours": 4,
+      "atomic_group": "G4",
+      "resolves": ["R1-P1-001", "R4-P1-001 (compound)"]
+    },
+    {
+      "task_id": "T-EVD-01-prep",
+      "title": "Rewrap 016 checklist.md evidence markers",
+      "severity": "P2",
+      "effort_hours": 2,
+      "atomic_group": "G5",
+      "resolves": ["R3-P2-002 (data side)"]
+    }
+  ],
+  "effortBudget": {
+    "total_hours": 20,
+    "critical_path_hours": 20,
+    "working_days": 2.5,
+    "parallel_engineers_optimal": 1
+  },
+  "atomicShipGroups": {
+    "G1": {
+      "tasks": ["T-CNS-01", "T-W1-CNS-04"],
+      "constraint": "single PR mandatory — splitting creates transient divergence window"
+    },
+    "G2": {
+      "tasks": ["T-CGC-01"],
+      "constraint": "standalone; unblocks Wave B T-W1-CGC-03"
+    },
+    "G3": {
+      "tasks": ["T-W1-HOK-02"],
+      "constraint": "standalone; MUST precede Wave B T-W1-HOK-01"
+    },
+    "G4": {
+      "tasks": ["T-SCP-01"],
+      "constraint": "standalone; MUST precede Wave B T-SCP-02 lint"
+    },
+    "G5": {
+      "tasks": ["T-EVD-01-prep"],
+      "constraint": "standalone; MUST precede Wave C T-EVD-01 --strict activation"
+    }
+  },
+  "blockingFindings": {
+    "H-56-1": {
+      "severity": "P1",
+      "title": "Default /memory:save is structural metadata-freshness no-op",
+      "tasks_in_this_phase": ["T-CNS-01", "T-W1-CNS-04"],
+      "atomic_ship": true,
+      "resolution_location": "G1 merged PR"
+    }
+  },
+  "qualityGates": {
+    "per_task": [
+      "npx tsc --noEmit exits 0",
+      "task-specific vitest passes",
+      "validate.sh --strict on 017 folder exits 0"
+    ],
+    "wave_complete": [
+      "/spec_kit:deep-review :auto ×7 on Wave A scope emits ZERO new P0, ZERO new P1",
+      "full vitest suite green on main",
+      "validate.sh --strict on 017 folder exits 0 with 0 warnings",
+      "all 5 atomic-ship groups merged",
+      "all 8 CHK-A-* items verified with evidence"
+    ]
+  },
+  "downstreamUnblocks": {
+    "wave_b_lane_b1": ["T-CNS-02", "T-W1-CNS-05", "T-CGC-02", "T-RBD-03"],
+    "wave_b_lane_b2": ["T-W1-CGC-03", "T-W1-HOK-01"],
+    "wave_b_lane_b3": ["T-SCP-02", "T-SAN-01", "T-SAN-02", "T-SAN-03", "T-PIN-RET-01"],
+    "wave_c": ["T-EVD-01", "T-CNS-03", "T-CPN-01", "T-W1-MCX-01", "T-SRS-BND-01"]
+  },
+  "sourceDocuments": {
+    "parent_spec": "../spec.md",
+    "parent_plan": "../plan.md (§2 Wave A)",
+    "parent_tasks": "../tasks.md (Wave A section / PHASE 1 anchor)",
+    "parent_checklist": "../checklist.md (CHK-A-01..08)",
+    "reviewReport": "../../016-foundational-runtime-deep-review/review/016-foundational-runtime-deep-review/review-report.md",
+    "segment2Synthesis": "../../016-foundational-runtime-deep-review/research/016-foundational-runtime-deep-review/segment-2-synthesis.md",
+    "findingsRegistrySegment2": "../../016-foundational-runtime-deep-review/research/016-foundational-runtime-deep-review/findings-registry-segment-2.json"
+  },
+  "operatorConstraints": {
+    "feedback_phase_018_autonomous": "DELETE not archive; dispatch deep-review ×7 per gate; cli-codex primary + cli-copilot fallback",
+    "feedback_copilot_concurrency_override": "3-concurrent cap on cli-copilot",
+    "feedback_stop_over_confirming": "skip A/B/C/D menus when obvious",
+    "feedback_worktree_cleanliness_not_a_blocker": "dirty-state baseline accepted"
+  }
+}

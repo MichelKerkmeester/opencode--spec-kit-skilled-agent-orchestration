@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "packet_id": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/004-p2-maintainability",
+  "parent_id": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation",
+  "kind": "maintainability",
+  "level": 2,
+  "title": "Phase 017 Wave D — P2 Maintainability (Deferrable)",
+  "manual": {
+    "depends_on": [],
+    "optionally_after": [
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/001-infrastructure-primitives",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/002-cluster-consumers",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/003-rollout-sweeps"
+    ],
+    "blocks": [],
+    "related": [
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review"
+    ],
+    "deferrable": true,
+    "criticalPath": false,
+    "notes": "Wave D has NO strict dependencies on Waves A/B/C (sibling children 001/002/003). Preferred ordering: land after A/B/C for cleaner PR history, but each Wave D task is independently schedulable in parallel with Phase 018 or later."
+  },
+  "derived": {
+    "status": "ready_for_implementation",
+    "statusSource": "description.json.status",
+    "hasImplementationSummary": false,
+    "hasChecklist": true,
+    "checklistCompletionRatio": 0.0,
+    "childPackets": [],
+    "taskCount": 6,
+    "parkingLotCount": 3,
+    "effortHours": 40,
+    "effortScheduledHours": 30,
+    "waveLabel": "Wave D",
+    "gateProfile": "light-x3-deep-review",
+    "last_save_at": "2026-04-17T14:45:00Z",
+    "last_save_by": "claude-opus-4.7"
+  },
+  "tags": [
+    "phase-017",
+    "wave-d",
+    "p2-maintainability",
+    "deferrable",
+    "off-critical-path",
+    "refactor",
+    "typing-hardening",
+    "docs",
+    "parking-lot-tracking"
+  ],
+  "resolves": [
+    "R4-P2-001",
+    "R4-P2-002",
+    "R4-P2-003",
+    "R51-P2-001",
+    "R53-P1w-001",
+    "CP-004"
+  ],
+  "parkingLot": [
+    "R55-P2-002",
+    "R55-P2-003",
+    "R55-P2-004"
+  ],
+  "files_touched": [
+    "mcp_server/lib/utils/assert-never.ts",
+    "mcp_server/handlers/save/post-insert.ts",
+    "mcp_server/lib/storage/reconsolidation.ts",
+    ".opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml",
+    ".opencode/skill/system-spec-kit/README.md"
+  ]
+}

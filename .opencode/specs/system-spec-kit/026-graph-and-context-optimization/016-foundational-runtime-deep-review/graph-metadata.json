@@ -157,7 +157,7 @@
         "source": "derived"
       }
     ],
-    "causal_summary": "63 distinct findings across 37 files; 4 P0 composite candidates eliminated via S1/S2/S3 + D1-D5; structural refactors S4/S5/S6/S7 + medium M8/M13 landed; 7 canonical + 14 supporting + 20 new adversarial tests migrated; Phase 017 remediation complete.",
+    "causal_summary": "63 distinct findings across 37 files; 4 P0 composite candidates eliminated via S1/S2/S3 + D1-D5; structural refactors S4/S5/S6/S7 + medium M8/M13 landed; 7 canonical + 14 supporting + 20 new adversarial tests migrated; Phase 016 remediation complete.",
     "created_at": "2026-04-16T17:25:00Z",
     "last_save_at": "2026-04-17T11:20:00Z",
     "last_accessed_at": null,

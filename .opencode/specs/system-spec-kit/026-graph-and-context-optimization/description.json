@@ -8,12 +8,11 @@
     "context",
     "optimization"
   ],
-  "lastUpdated": "2026-04-13T10:39:18.666Z",
+  "lastUpdated": "2026-04-17T14:42:34.107Z",
   "specId": "026",
   "folderSlug": "graph-and-context-optimization",
   "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "system-spec-kit"
   ],
   "memorySequence": 4,
   "memoryNameHistory": [

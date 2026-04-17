@@ -1,0 +1,116 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/002-cluster-consumers",
+  "description": "Phase 017 Wave B child packet: 9 tasks / 30h across 3 parallel lanes consuming Wave A primitives. Lane B1 (Cluster B consumers, 12h, 4 tasks): T-CNS-02 research folder backfill, T-W1-CNS-05 continuity freshness validator, T-CGC-02 context.ts explicit error branch, T-RBD-03 design-intent comments. Lane B2 (Cluster D + Cluster E, 16h, 2 tasks): T-W1-CGC-03 5-sibling code-graph readiness propagation (atomic-ship or stub rollout), T-W1-HOK-01 Copilot compact-cache + session-prime (depends Wave A T-W1-HOK-02). Lane B3 (Cluster A + C + Standalone P1, 12h, 3 tasks): T-SCP-02 normalizer lint rule, T-SAN-01 + T-SAN-02 + T-SAN-03 NFKC unicode normalization + tests, T-PIN-RET-01 retry-exhaustion counter. Resolves FC-3 (research iteration folders metadata), FC-4 (6 code-graph handlers readiness vocabulary), FC-5 (Copilot compact-cache wiring), FC-6 (NFKC Gate 3 hardening), FC-8 (partial_causal_link_unresolved retry-exhaustion). Wave B gate: /spec_kit:deep-review :auto ×7 + validate.sh --strict on 017 folder.",
+  "keywords": [
+    "phase-017-wave-b",
+    "cluster-consumers-wave-b",
+    "lane-b1-cluster-b-consumers",
+    "lane-b2-cluster-d-e",
+    "lane-b3-cluster-a-c-standalone-p1",
+    "t-cns-02-research-folder-backfill",
+    "t-w1-cns-05-continuity-freshness-validator",
+    "t-cgc-02-context-ts-explicit-error-branch",
+    "t-rbd-03-design-intent-comments",
+    "t-w1-cgc-03-readiness-propagation",
+    "t-w1-hok-01-copilot-compact-cache",
+    "t-scp-02-normalizer-lint-rule",
+    "t-san-01-gate-3-nfkc",
+    "t-san-02-sanitize-recovered-payload-nfkc",
+    "t-san-03-unicode-tests",
+    "t-pin-ret-01-retry-exhaustion-counter",
+    "atomic-ship-t-w1-cgc-03",
+    "atomic-ship-t-san-01-t-san-03",
+    "code-graph-sibling-asymmetry-resolution",
+    "copilot-observability-gap-resolution",
+    "r3-p1-002-research-folders-invisible",
+    "r51-p1-003-continuity-freshness-gap",
+    "r6-p1-001-context-ts-silent-catch-partial",
+    "r52-p1-001-code-graph-sibling-propagation",
+    "r52-p1-002-copilot-compact-cache-absent",
+    "r56-p1-new-002-compound-h-56-4",
+    "r56-p1-new-003-compound-h-56-5",
+    "r2-p1-002-gate-3-homoglyph-bypass",
+    "r4-p1-001-normalizer-prevention",
+    "r1-p1-002-partial-causal-retry-exhaustion",
+    "r6-p2-001-rollup-design-intent",
+    "r2-p2-001-sanitize-payload-nfkc",
+    "fc-3-research-iteration-metadata",
+    "fc-4-code-graph-readiness-vocabulary",
+    "fc-5-copilot-compact-cache-wiring",
+    "fc-6-nfkc-gate-3-hardening",
+    "fc-8-retry-exhaustion-counter",
+    "wave-b-gate-chk-b",
+    "parallel-three-lane-execution",
+    "thirty-hour-effort-budget",
+    "depends-wave-a-merged"
+  ],
+  "lastUpdated": "2026-04-17T14:41:00Z",
+  "specId": "002",
+  "folderSlug": "cluster-consumers",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "017-review-findings-remediation"
+  ],
+  "parentPacket": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation",
+  "kind": "remediation",
+  "level": 2,
+  "status": "ready_for_implementation",
+  "phaseStage": "stage-1-spec-complete",
+  "wave": "B",
+  "waveScope": {
+    "totalTasks": 9,
+    "totalEffortHours": 30,
+    "wallClockHours": 16,
+    "parallelLanes": 3,
+    "lanes": {
+      "B1": {
+        "name": "Cluster B consumers",
+        "tasks": ["T-CNS-02", "T-W1-CNS-05", "T-CGC-02", "T-RBD-03"],
+        "effort_hours": 12,
+        "resolves_findings": ["R3-P1-002", "R51-P1-003", "R6-P1-001-partial", "R6-P2-001", "R56-P1-NEW-003"]
+      },
+      "B2": {
+        "name": "Cluster D + Cluster E",
+        "tasks": ["T-W1-CGC-03", "T-W1-HOK-01"],
+        "effort_hours": 16,
+        "critical_path_within_wave": true,
+        "atomic_ship_required": ["T-W1-CGC-03"],
+        "resolves_findings": ["R52-P1-001", "R52-P1-002", "R56-P1-NEW-002"]
+      },
+      "B3": {
+        "name": "Cluster A + Cluster C + Standalone P1",
+        "tasks": ["T-SCP-02", "T-SAN-01", "T-SAN-02", "T-SAN-03", "T-PIN-RET-01"],
+        "effort_hours": 12,
+        "atomic_ship_required": ["T-SAN-01 + T-SAN-03"],
+        "resolves_findings": ["R4-P1-001-prevention", "R2-P1-002", "R2-P2-001", "R3-P2-003", "R5-P2-001", "R1-P1-002"]
+      }
+    },
+    "functionalRequirements": {
+      "FC-3": "Research iteration folders have metadata OR are flagged auto-invisible (T-CNS-02)",
+      "FC-4": "6 code-graph handlers emit 3-field readiness vocabulary (T-W1-CGC-03)",
+      "FC-5": "hooks/copilot/compact-cache.ts exists + session-prime reads trustState (T-W1-HOK-01)",
+      "FC-6": "normalizePrompt applies NFKC + zero-width stripping (T-SAN-01)",
+      "FC-8": "partial_causal_link_unresolved retry-exhaustion counter (T-PIN-RET-01)"
+    },
+    "dependsOnWaveA": [
+      "T-CGC-01 readiness-contract.ts module (consumed by T-W1-CGC-03)",
+      "T-W1-HOK-02 shared-provenance.ts module (consumed by T-W1-HOK-01)",
+      "T-SCP-01 scope-governance.ts canonical collapsed (anchor for T-SCP-02 lint)",
+      "T-CNS-01 + T-W1-CNS-04 workflow.ts metadata writer active (hook point for T-CNS-02)"
+    ]
+  },
+  "qualityGate": {
+    "requirement": "/spec_kit:deep-review :auto ×7 on Wave B scope emits ZERO new P0, ZERO new P1",
+    "validator": "bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict on 017 folder exits 0 with 0 warnings",
+    "atomic_ship_verifications": [
+      "T-W1-CGC-03 single PR OR staged trustState: 'unavailable' stubs",
+      "T-SAN-01 + T-SAN-03 single merge commit",
+      "T-W1-HOK-01 lands AFTER T-W1-HOK-02 (Wave A)"
+    ]
+  },
+  "downstreamDependents": [
+    "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/003-rollout-sweeps",
+    "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/004-p2-maintainability"
+  ]
+}

@@ -9,9 +9,9 @@
     "planner-first",
     "default"
   ],
-  "lastUpdated": "2026-04-15T16:45:28.858Z",
+  "lastUpdated": "2026-04-17T14:42:34.256Z",
   "specId": "014",
-  "folderSlug": "memory-save-planner-first-default",
+  "folderSlug": "memory-save-rewrite",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"

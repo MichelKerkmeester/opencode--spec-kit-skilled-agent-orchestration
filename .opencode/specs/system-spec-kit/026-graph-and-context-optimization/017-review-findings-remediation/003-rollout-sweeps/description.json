@@ -1,0 +1,133 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/003-rollout-sweeps",
+  "description": "Phase 017 Wave C child: 5 tree-wide rollout and sweep tasks (~15h / 2 days). Activates evidence-marker lint in strict mode (T-EVD-01), runs 16-folder canonical-save sweep with per-folder commits (T-CNS-03), amends stale closing-pass-notes CP-002 (T-CPN-01), renames memory-context `readiness` field to `advisoryPreset` (T-W1-MCX-01), and binds session-resume auth to MCP transport identity with permissive-mode canary (T-SRS-BND-01). HIGH rollback cost on 16-folder sweep mitigated by 1-folder smoke test and pre-sweep git stash. Depends on Wave A (`../001-infrastructure-primitives/`) and Wave B (`../002-cluster-consumers/`) merged; blocks Wave D (`../004-p2-maintainability/`) ship gate.",
+  "keywords": [
+    "phase-017-wave-c",
+    "wave-c-rollout-sweeps",
+    "t-evd-01-evidence-marker-lint",
+    "t-cns-03-sixteen-folder-sweep",
+    "t-cpn-01-cp-002-amend",
+    "t-w1-mcx-01-memory-context-rename",
+    "t-srs-bnd-01-session-resume-auth",
+    "staged-rollout-canary",
+    "permissive-mode-flag",
+    "per-folder-commit-strategy",
+    "pre-sweep-git-stash",
+    "smoke-test-folder",
+    "strict-mode-activation",
+    "evidence-marker-canonical-closer",
+    "r5-p1-001-tree-freshness",
+    "r3-p2-002-evidence-tool-side",
+    "r3-p1-001-cp-002-stale",
+    "r52-p2-002-readiness-field-rename",
+    "r2-p1-001-session-resume-auth",
+    "mcp-transport-identity",
+    "canonical-save-tree-refresh",
+    "sixteen-sibling-folders",
+    "high-rollback-cost",
+    "phase-c1-parallel-track",
+    "phase-c2-staged-rollout",
+    "phase-c3-sequential-sweep",
+    "chk-c-01-evd-lint",
+    "chk-c-02-sweep",
+    "chk-c-03-cpn-amend",
+    "chk-c-04-mcx-rename",
+    "chk-c-05-srs-auth",
+    "chk-c-gate-wave-c"
+  ],
+  "lastUpdated": "2026-04-17T14:41:00Z",
+  "specId": "003",
+  "folderSlug": "rollout-sweeps",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "017-review-findings-remediation"
+  ],
+  "parentPacket": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation",
+  "kind": "remediation",
+  "level": 2,
+  "status": "ready_for_implementation",
+  "phaseStage": "stage-1-spec-complete",
+  "waveScope": {
+    "wave": "C",
+    "name": "Rollout + Sweeps",
+    "effort_hours": 15,
+    "working_days": 2,
+    "task_count": 5,
+    "parallelizable_phase": "Phase 1 (T-EVD-01 + T-CPN-01 + T-W1-MCX-01)",
+    "serial_phases": ["Phase 2 (T-SRS-BND-01 staged rollout)", "Phase 3 (T-CNS-03 16-folder sweep)"],
+    "depends_on_waves": ["A", "B"],
+    "blocks_waves": ["D"]
+  },
+  "taskInventory": {
+    "T-EVD-01": {
+      "severity": "P2",
+      "effort": "M (3h)",
+      "phase": 1,
+      "resolves": ["R3-P2-002 (tool side)"],
+      "prerequisite": "T-EVD-01-prep (Wave A §2.5)"
+    },
+    "T-CNS-03": {
+      "severity": "P1",
+      "effort": "L (8h)",
+      "phase": 3,
+      "resolves": ["R5-P1-001", "R3-P2-001 (data side)"],
+      "rollback_cost": "HIGH",
+      "mitigation": "1-folder smoke test + per-folder commit + pre-sweep git stash",
+      "prerequisite": "T-CNS-01 + T-W1-CNS-04 (Wave A §2.1) merged"
+    },
+    "T-CPN-01": {
+      "severity": "P1",
+      "effort": "S (1h)",
+      "phase": 1,
+      "resolves": ["R3-P1-001"]
+    },
+    "T-W1-MCX-01": {
+      "severity": "P2",
+      "effort": "S (2h)",
+      "phase": 1,
+      "resolves": ["R52-P2-002"]
+    },
+    "T-SRS-BND-01": {
+      "severity": "P1",
+      "effort": "L (8h including canary monitoring)",
+      "phase": 2,
+      "resolves": ["R2-P1-001"],
+      "staged_rollout": true,
+      "canary_required": true
+    }
+  },
+  "functionalRequirementsOwned": {
+    "FC-2": "All 16 sibling folders have description.json.lastUpdated within 10m of graph-metadata.derived.last_save_at (T-CNS-03)",
+    "FC-7": "handleSessionResume binds args.sessionId to MCP transport identity (T-SRS-BND-01)"
+  },
+  "rolloutHazards": [
+    {
+      "hazard": "T-CNS-03 corrupts critical folder mid-sweep",
+      "mitigation": "1-folder smoke test + per-folder commit + pre-sweep git stash"
+    },
+    {
+      "hazard": "T-SRS-BND-01 blocks legitimate session-resume flows",
+      "mitigation": "Permissive-mode flag + canary verification before reject-mode flip"
+    },
+    {
+      "hazard": "T-EVD-01 strict mode fails on un-rewrapped folder",
+      "mitigation": "Warn-mode activation first; verify T-EVD-01-prep coverage"
+    }
+  ],
+  "parentReference": {
+    "spec": "../spec.md",
+    "plan": "../plan.md §4 Wave C",
+    "tasks": "../tasks.md Wave C section",
+    "checklist": "../checklist.md CHK-C-01..05 + CHK-C-GATE"
+  },
+  "siblings": {
+    "dependencies": [
+      "../001-infrastructure-primitives",
+      "../002-cluster-consumers"
+    ],
+    "blocks": [
+      "../004-p2-maintainability"
+    ]
+  }
+}

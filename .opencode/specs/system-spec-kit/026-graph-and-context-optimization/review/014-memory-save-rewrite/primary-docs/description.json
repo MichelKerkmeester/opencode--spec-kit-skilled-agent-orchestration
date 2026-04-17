@@ -1,5 +1,5 @@
 {
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-save-flow-planner-first-trim",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/review/014-memory-save-rewrite/primary-docs",
   "description": "Feature Specification: Save Flow Planner-First Trim",
   "keywords": [
     "feature",
@@ -9,14 +9,14 @@
     "planner-first",
     "trim"
   ],
-  "lastUpdated": "2026-04-15T06:01:24.873Z",
-  "specId": "015",
-  "folderSlug": "save-flow-planner-first-trim",
+  "lastUpdated": "2026-04-17T14:42:34.376Z",
+  "specId": "",
+  "folderSlug": "primary-docs",
   "parentChain": [
-    ".opencode",
-    "specs",
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "review",
+    "014-memory-save-rewrite"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

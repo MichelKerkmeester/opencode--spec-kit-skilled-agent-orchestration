@@ -9,9 +9,9 @@
     "middleware",
     "cleanup"
   ],
-  "lastUpdated": "2026-04-15T16:45:25.714Z",
+  "lastUpdated": "2026-04-17T14:42:34.242Z",
   "specId": "012",
-  "folderSlug": "canonical-intake-and-middleware-cleanup",
+  "folderSlug": "command-graph-consolidation",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"

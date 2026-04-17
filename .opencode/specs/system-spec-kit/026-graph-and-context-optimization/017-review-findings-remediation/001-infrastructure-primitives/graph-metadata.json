@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/001-infrastructure-primitives",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/001-infrastructure-primitives",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/002-cluster-consumers",
+      "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/003-rollout-sweeps",
+      "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/004-p2-maintainability",
+      "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 017 wave a",
+      "017 wave a infrastructure primitives",
+      "wave a critical path",
+      "wave a infrastructure",
+      "017 infrastructure primitives",
+      "child phase 001 infrastructure",
+      "t-cns-01",
+      "t-w1-cns-04",
+      "t-cns-01 t-w1-cns-04 merged pr",
+      "canonical save metadata writer",
+      "workflow.ts ctxfilewritten fix",
+      "workflow.ts plan-only gate lift",
+      "description.json lastupdated writer",
+      "graph-metadata.json derived last_save_at refresh",
+      "t-cgc-01",
+      "readiness-contract extract",
+      "lib code-graph readiness-contract",
+      "4-state trust state",
+      "t-w1-hok-02",
+      "shared-provenance extract",
+      "hooks shared-provenance",
+      "claude gemini transitive import break",
+      "r52-p2-001 fix",
+      "t-scp-01",
+      "normalize scope context collapse",
+      "normalizer collapse wave a",
+      "r1-p1-001 r4-p1-001 compound",
+      "t-evd-01-prep",
+      "016 checklist evidence rewrap prep",
+      "evidence marker rewrap 170",
+      "h-56-1 canonical save paralysis",
+      "wave a gate deep review x7",
+      "atomic ship g1 merged pr",
+      "wave a unblocks wave b",
+      "cli-codex primary wave a"
+    ],
+    "key_topics": [
+      "phase-017-wave-a",
+      "infrastructure-primitives",
+      "wave-a-critical-path",
+      "canonical-save-metadata-writer",
+      "workflow-ts-fix",
+      "readiness-contract-extract",
+      "shared-provenance-extract",
+      "normalizer-collapse",
+      "016-checklist-evidence-rewrap",
+      "h-56-1-root-cause",
+      "atomic-ship-g1",
+      "wave-a-gate",
+      "trust-state-vocabulary",
+      "scope-governance-canonical",
+      "child-phase-001"
+    ],
+    "importance_tier": "critical",
+    "status": "ready_for_implementation",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "description.json",
+      "graph-metadata.json"
+    ],
+    "entities": [
+      "T-CNS-01",
+      "T-W1-CNS-04",
+      "T-CGC-01",
+      "T-W1-HOK-02",
+      "T-SCP-01",
+      "T-EVD-01-prep",
+      "H-56-1",
+      "R4-P1-002",
+      "R51-P1-001",
+      "R51-P1-002",
+      "R56-P1-upgrade-001",
+      "R6-P1-001",
+      "R52-P2-001",
+      "R1-P1-001",
+      "R4-P1-001",
+      "R3-P2-002"
+    ],
+    "causal_summary": "Wave A child phase of Phase 017 remediation. Lands 5 infrastructure primitives (~20h, CRITICAL PATH) that unblock Waves B/C/D. G1 merged PR (T-CNS-01 + T-W1-CNS-04) eliminates H-56-1 canonical-save paralysis root cause. G2 extracts readiness-contract.ts for Wave B consumers. G3 extracts shared-provenance.ts for Copilot compact-cache in Wave B. G4 collapses 4 local scope normalizers to canonical. G5 rewraps 016 checklist.md evidence markers for Wave C lint activation. Gate: /spec_kit:deep-review :auto ×7 emits ZERO new P0/P1.",
+    "created_at": "2026-04-17T14:45:00Z",
+    "last_save_at": "2026-04-17T14:45:00Z",
+    "last_accessed_at": "2026-04-17T14:45:00Z",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "completeness_score": 0.85,
+    "doc_presence": {
+      "spec_md": true,
+      "plan_md": true,
+      "tasks_md": true,
+      "checklist_md": true,
+      "implementation_summary_md": false,
+      "decision_record_md": false,
+      "description_json": true,
+      "graph_metadata_json": true
+    },
+    "task_counts": {
+      "total": 5,
+      "pending": 5,
+      "in_progress": 0,
+      "completed": 0
+    },
+    "finding_crosswalk": {
+      "review_p1": 3,
+      "review_p2": 1,
+      "segment2_p1": 2,
+      "segment2_p2": 1,
+      "compound_hypotheses": 1,
+      "p0_escalations": 0
+    },
+    "atomic_ship_groups": {
+      "G1": {
+        "tasks": ["T-CNS-01", "T-W1-CNS-04"],
+        "single_pr_required": true,
+        "rationale": "splitting creates transient divergence window where description.json updates but graph-metadata.json lags"
+      },
+      "G2": {
+        "tasks": ["T-CGC-01"],
+        "single_pr_required": false,
+        "ordering_constraint": "unblocks Wave B T-W1-CGC-03"
+      },
+      "G3": {
+        "tasks": ["T-W1-HOK-02"],
+        "single_pr_required": false,
+        "ordering_constraint": "must precede Wave B T-W1-HOK-01 (reverse re-inlines helper as third duplicate)"
+      },
+      "G4": {
+        "tasks": ["T-SCP-01"],
+        "single_pr_required": false,
+        "ordering_constraint": "must precede Wave B T-SCP-02 lint (lint-first breaks build)"
+      },
+      "G5": {
+        "tasks": ["T-EVD-01-prep"],
+        "single_pr_required": false,
+        "ordering_constraint": "must precede Wave C T-EVD-01 --strict (else 170-warning storm)"
+      }
+    },
+    "downstream_unblocks": [
+      "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/002-cluster-consumers",
+      "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/003-rollout-sweeps"
+    ],
+    "wave_gate": {
+      "protocol": "/spec_kit:deep-review :auto ×7",
+      "success_criteria": "ZERO new P0, ZERO new P1 introduced by Wave A",
+      "failure_action": "halt Wave B dispatch; execute rollback per plan.md §7"
+    }
+  }
+}

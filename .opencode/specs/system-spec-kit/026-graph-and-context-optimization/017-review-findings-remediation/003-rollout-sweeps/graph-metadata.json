@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/003-rollout-sweeps",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/003-rollout-sweeps",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/001-infrastructure-primitives",
+      "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/002-cluster-consumers"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/004-p2-maintainability"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 017 wave c",
+      "017 rollout sweeps",
+      "wave c rollout",
+      "t-evd-01",
+      "t-evd-01 evidence-marker lint",
+      "t-cns-03",
+      "t-cns-03 sixteen-folder sweep",
+      "t-cpn-01",
+      "t-cpn-01 cp-002 amend",
+      "t-w1-mcx-01",
+      "t-w1-mcx-01 memory-context rename",
+      "t-srs-bnd-01",
+      "t-srs-bnd-01 session-resume auth",
+      "staged rollout canary",
+      "permissive-mode flag",
+      "per-folder commit sweep",
+      "pre-sweep git stash",
+      "smoke test folder",
+      "strict mode activation",
+      "evidence marker canonical closer",
+      "r5-p1-001 tree freshness",
+      "r3-p2-002 evidence tool side",
+      "r3-p1-001 cp-002 stale",
+      "r52-p2-002 readiness rename",
+      "r2-p1-001 session resume auth",
+      "mcp transport identity",
+      "canonical save tree refresh",
+      "sixteen sibling folders",
+      "chk-c-01 evidence lint",
+      "chk-c-02 sweep",
+      "chk-c-03 cpn amend",
+      "chk-c-04 mcx rename",
+      "chk-c-05 srs auth",
+      "chk-c-gate wave c"
+    ],
+    "key_topics": [
+      "phase-017-wave-c",
+      "rollout-sweeps",
+      "t-evd-01-lint-activation",
+      "t-cns-03-sixteen-folder-sweep",
+      "t-srs-bnd-01-staged-auth-rollout",
+      "t-cpn-01-closing-pass-notes-amend",
+      "t-w1-mcx-01-memory-context-rename",
+      "canonical-save-tree-refresh",
+      "permissive-mode-canary",
+      "per-folder-commit-strategy",
+      "high-rollback-cost-mitigation",
+      "strict-mode-lint",
+      "evidence-marker-canonical-closer",
+      "mcp-transport-identity-binding",
+      "fc-2-tree-freshness",
+      "fc-7-session-resume-auth"
+    ],
+    "importance_tier": "critical",
+    "status": "ready_for_implementation",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "description.json",
+      "graph-metadata.json"
+    ],
+    "entities": [
+      "T-EVD-01",
+      "T-CNS-03",
+      "T-CPN-01",
+      "T-W1-MCX-01",
+      "T-SRS-BND-01",
+      "R5-P1-001",
+      "R3-P2-002",
+      "R3-P1-001",
+      "R52-P2-002",
+      "R2-P1-001",
+      "R3-P2-001",
+      "FC-2",
+      "FC-7",
+      "CHK-C-01",
+      "CHK-C-02",
+      "CHK-C-03",
+      "CHK-C-04",
+      "CHK-C-05",
+      "CHK-C-GATE"
+    ],
+    "causal_summary": "Wave C closes 5 rollout tasks: evidence-marker lint activation (T-EVD-01), 16-folder canonical-save sweep (T-CNS-03 with HIGH rollback cost mitigated by smoke test + per-folder commits + pre-sweep stash), closing-pass-notes CP-002 amend (T-CPN-01), memory-context readiness rename (T-W1-MCX-01), and session-resume auth binding with staged canary (T-SRS-BND-01). Depends on Waves A + B merged; blocks Wave D. Satisfies parent FC-2 (tree freshness) + FC-7 (session-resume auth).",
+    "created_at": "2026-04-17T14:41:00Z",
+    "last_save_at": "2026-04-17T14:41:00Z",
+    "last_accessed_at": "2026-04-17T14:41:00Z",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "completeness_score": 0.8,
+    "doc_presence": {
+      "spec_md": true,
+      "plan_md": true,
+      "tasks_md": true,
+      "checklist_md": true,
+      "implementation_summary_md": false,
+      "decision_record_md": false
+    },
+    "task_counts": {
+      "total": 5,
+      "pending": 5,
+      "in_progress": 0,
+      "completed": 0
+    },
+    "finding_crosswalk": {
+      "p1_resolved": 3,
+      "p2_resolved": 2,
+      "functional_requirements_owned": ["FC-2", "FC-7"],
+      "review_tasks": 4,
+      "segment2_tasks": 1
+    }
+  }
+}

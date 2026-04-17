@@ -1,127 +1,23 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review",
-  "description": "Remediation charter for 63 distinct findings from the 50-iteration Phase 016 Opus 4.7 deep-research synthesis. Four P0 composite candidates (A: cross-runtime tempdir control-plane poisoning, B: reconsolidation conflict + complement duplicate/corruption window, C: graph-metadata laundering + packet-search boost, D: TOCTOU cleanup erasing fresh state) plus 7 structural refactors, 13 medium refactors, 29 quick wins, and 7 test-suite migrations. Effort budget 24.5 engineer-weeks over 10 weeks wall-clock with 3 engineers. Ready for Phase 017 implementation.",
+  "description": "Feature Specification: Foundational Runtime Remediation (Phase 016 → Phase 016 remediation Charter)",
   "keywords": [
-    "remediation-ready",
-    "p0-composite-fixes",
-    "foundational-runtime",
-    "phase-017-charter",
-    "hook-state-overhaul",
-    "transactional-reconsolidation",
-    "graph-metadata-laundering",
-    "toctou-cleanup",
-    "skill-routing-trust-chain",
-    "gate-3-typed-classifier",
-    "operation-result-enum",
-    "trust-state-vocabulary",
-    "when-predicate-grammar",
-    "playbook-runner-isolation",
-    "test-suite-migration",
-    "success-shaped-envelope",
-    "pre-transaction-snapshot",
-    "governance-signal-amnesia",
-    "contract-drift",
-    "hidden-semantics",
-    "silent-fail-open",
-    "cross-runtime-poisoning",
-    "hook-state",
-    "session-stop",
-    "reconsolidation-bridge",
-    "graph-metadata-parser",
-    "post-insert",
-    "code-graph-query",
-    "skill-advisor",
-    "manual-playbook-runner",
-    "spec-kit-plan-yaml"
+    "feature",
+    "specification",
+    "foundational",
+    "runtime",
+    "remediation",
+    "phase",
+    "016",
+    "charter"
   ],
-  "lastUpdated": "2026-04-16T21:45:00Z",
+  "lastUpdated": "2026-04-17T14:42:34.283Z",
   "specId": "016",
   "folderSlug": "foundational-runtime-deep-review",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"
   ],
-  "kind": "remediation",
-  "level": 2,
-  "status": "ready_for_implementation",
-  "phaseStage": "stage-2-planning-complete",
-  "remediationScope": {
-    "distinctFindings": 63,
-    "rawFindings": 129,
-    "filesAffected": 37,
-    "p0Composites": 4,
-    "p0WatchPriority": 2,
-    "p1Distinct": 33,
-    "p2Distinct": 30,
-    "structuralRefactors": 7,
-    "mediumRefactors": 13,
-    "quickWins": 29,
-    "testFilesMigration": 7,
-    "newAdversarialTests": 20,
-    "effortBudget": "24.5 engineer-weeks",
-    "wallClock": "10-12 weeks with 3 engineers"
-  },
-  "p0Candidates": [
-    {
-      "id": "P0-A",
-      "name": "Cross-runtime tempdir control-plane poisoning",
-      "constituentFindings": ["R21-002", "R25-004", "R28-001", "R29-001", "R31-001", "R33-001", "R33-003", "R36-001", "R38-001", "R38-002"],
-      "primaryFiles": ["hooks/claude/hook-state.ts", "hooks/claude/session-stop.ts"],
-      "workstream": "S2",
-      "estimatedEffort": "4 engineer-weeks"
-    },
-    {
-      "id": "P0-B",
-      "name": "Reconsolidation conflict + complement duplicate/corruption window",
-      "constituentFindings": ["R31-003", "R32-003", "R34-002", "R35-001", "R36-002", "R37-003", "R39-002", "R40-002"],
-      "primaryFiles": ["handlers/save/reconsolidation-bridge.ts", "lib/storage/reconsolidation.ts"],
-      "workstream": "S1",
-      "estimatedEffort": "4 engineer-weeks (2 engineers parallel)"
-    },
-    {
-      "id": "P0-C",
-      "name": "Graph-metadata laundering + packet-search boost",
-      "constituentFindings": ["R11-002", "R13-002", "R18-002", "R20-002", "R21-003", "R22-002", "R23-002", "R25-003"],
-      "primaryFiles": ["lib/graph/graph-metadata-parser.ts", "lib/parsing/memory-parser.ts"],
-      "workstream": "S3",
-      "estimatedEffort": "3 engineer-weeks"
-    },
-    {
-      "id": "P0-D",
-      "name": "TOCTOU cleanup erasing fresh state under live session load",
-      "constituentFindings": ["R33-002", "R37-001", "R38-001", "R38-002", "R40-001"],
-      "primaryFiles": ["hooks/claude/hook-state.ts", "hooks/claude/session-stop.ts"],
-      "workstream": "D1-D5 quick-win stack",
-      "estimatedEffort": "2 engineer-days"
-    }
-  ],
-  "watchPriorities": [
-    {
-      "id": "Watch-P1",
-      "name": "Domain-4 routing misdirection chain",
-      "constituentFindings": ["R46-001", "R43-001", "R44-001", "R42-002", "R41-003", "R46-002"],
-      "upgradeTrigger": "command-spec-kit proceeds into spec-folder creation when invoked via bridge with /spec_kit:deep-research intent"
-    },
-    {
-      "id": "Watch-P2",
-      "name": "Playbook runner Function(...) trust-boundary expansion",
-      "constituentFindings": ["R41-004", "R45-004", "R46-003", "R50-002"],
-      "upgradeTrigger": "external payload influence reaches runtimeState.lastJobId"
-    }
-  ],
-  "authoritativeSources": {
-    "finalSynthesis": "../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md",
-    "findingsRegistry": "../research/016-foundational-runtime-deep-review/findings-registry.json",
-    "researchNarrative": "../research/016-foundational-runtime-deep-review/research.md",
-    "iterationEvidence": "../research/016-foundational-runtime-deep-review/iterations/iteration-{001..050}.md",
-    "interimSyntheses": "../research/016-foundational-runtime-deep-review/interim-synthesis-{32,38,41,44,47}-iterations.md",
-    "researchState": "../research/016-foundational-runtime-deep-review/deep-research-{config.json,state.jsonl,strategy.md,dashboard.md}"
-  },
-  "targetPhases": ["002", "003", "005", "008", "010", "011", "012", "014", "015"],
-  "openQuestions": [
-    "OQ1: Does command-spec-kit enforce Gate 3 independently of skill routing? (Determines Watch-P1 upgrade to P0-E.)",
-    "OQ2: Are regression tests encoding degraded contracts intentional compatibility shims or oversights?",
-    "OQ3: Can HookState gain schemaVersion without breaking already-quiesced state files?",
-    "OQ4: Full enumeration of /spec_kit:* subcommands needing bridge entries?"
-  ]
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

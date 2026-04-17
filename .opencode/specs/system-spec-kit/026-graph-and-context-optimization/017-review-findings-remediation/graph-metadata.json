@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/001-infrastructure-primitives",
+    "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/002-cluster-consumers",
+    "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/003-rollout-sweeps",
+    "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/004-p2-maintainability"
+  ],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 017 remediation",
+      "017 review findings remediation",
+      "017 phase 017 plan",
+      "review findings remediation",
+      "h-56-1 canonical save fix",
+      "h-56-4 copilot observability fix",
+      "h-56-5 research folders backfill",
+      "cluster d code-graph asymmetry",
+      "cluster e copilot observability",
+      "cluster b canonical save remediation",
+      "workflow.ts dead code fix",
+      "workflow.ts plan-only gate fix",
+      "description.json lastUpdated writer",
+      "graph-metadata.json derived refresh",
+      "code-graph readiness contract extract",
+      "copilot compact cache",
+      "hooks shared provenance extract",
+      "nfkc unicode normalization",
+      "gate 3 classifier fix",
+      "sanitize recovered payload nfkc",
+      "session resume auth binding",
+      "retry exhaustion counter",
+      "normalize scope context collapse",
+      "sixteen folder canonical sweep",
+      "evidence marker lint activation",
+      "continuity freshness validator",
+      "research folder backfill",
+      "scan status ccc handlers readiness",
+      "compound hypothesis h-56",
+      "phase 017 wave a infrastructure",
+      "phase 017 wave b consumers",
+      "phase 017 wave c rollout",
+      "phase 017 wave d maintainability",
+      "t-cns-01",
+      "t-w1-cns-04",
+      "t-cgc-01",
+      "t-w1-cgc-03",
+      "t-w1-hok-01",
+      "t-w1-hok-02",
+      "t-scp-01",
+      "t-san-01",
+      "t-pin-ret-01",
+      "t-srs-bnd-01",
+      "conditional extended verdict"
+    ],
+    "key_topics": [
+      "phase-017-remediation",
+      "h-56-1-canonical-save-paralysis",
+      "cluster-b-canonical-save",
+      "cluster-d-code-graph-asymmetry",
+      "cluster-e-copilot-observability",
+      "workflow-ts-fix",
+      "readiness-contract-extract",
+      "trust-state-vocabulary",
+      "copilot-compact-cache",
+      "shared-provenance-hooks",
+      "nfkc-sanitization",
+      "session-resume-auth",
+      "normalize-scope-context",
+      "retry-exhaustion",
+      "atomic-ship-constraints",
+      "four-wave-execution",
+      "critical-path-planning"
+    ],
+    "importance_tier": "critical",
+    "status": "ready_for_implementation",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "description.json",
+      "graph-metadata.json"
+    ],
+    "entities": [],
+    "causal_summary": "Consolidates deep-review findings (10 P1 + 18 P2) with segment-2 research findings (9 P1 + 5 P2) into a 27-task Phase 017 remediation plan. Dominant finding H-56-1: default /memory:save is structural metadata-freshness no-op. Two new clusters: D (code-graph 6:1 sibling asymmetry), E (Copilot runtime observability gap).",
+    "created_at": "2026-04-17T14:04:00Z",
+    "last_save_at": "2026-04-17T14:20:00Z",
+    "last_accessed_at": "2026-04-17T14:20:00Z",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "completeness_score": 0.85,
+    "doc_presence": {
+      "spec_md": true,
+      "plan_md": true,
+      "tasks_md": true,
+      "checklist_md": true,
+      "implementation_summary_md": true,
+      "decision_record_md": false
+    },
+    "task_counts": {
+      "total": 27,
+      "pending": 27,
+      "in_progress": 0,
+      "completed": 0
+    },
+    "finding_crosswalk": {
+      "review_p1": 10,
+      "review_p2": 18,
+      "segment2_p1": 9,
+      "segment2_p2": 5,
+      "compound_hypotheses": 5,
+      "p0_escalations": 0
+    }
+  }
+}
