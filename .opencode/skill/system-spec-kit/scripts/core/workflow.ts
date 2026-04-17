@@ -335,6 +335,8 @@ const WORKFLOW_MODULE_DIR = __dirname;
 const WORKFLOW_LOCK_DIR = path.resolve(WORKFLOW_MODULE_DIR, '../../.workflow-lock');
 const WORKFLOW_LOCK_OWNER_PATH = path.join(WORKFLOW_LOCK_DIR, 'owner.json');
 const LEGACY_LOCK_STALE_MS = 5_000;
+const SAVE_PFD_LOCK_NAME = '.savePFD.lock';
+const SAVE_PFD_LOCK_STALE_MS = 5_000;
 
 interface WorkflowLockOwner {
   pid: number;
@@ -451,6 +453,69 @@ async function withWorkflowRunLock<TResult>(operation: () => Promise<TResult>): 
       releaseFilesystemLock();
     }
     releaseCurrentRun();
+  }
+}
+
+function isSavePfdLockStale(lockPath: string): boolean {
+  try {
+    const lockStats = fsSync.statSync(lockPath);
+    return (Date.now() - lockStats.mtimeMs) >= SAVE_PFD_LOCK_STALE_MS;
+  } catch (_err: unknown) {
+    return true;
+  }
+}
+
+async function acquireSavePfdLock(folderPath: string): Promise<boolean> {
+  const lockPath = path.join(folderPath, SAVE_PFD_LOCK_NAME);
+  const MAX_TOTAL_MS = 5_000;
+  let waited = 0;
+  let delay = 25;
+
+  while (waited < MAX_TOTAL_MS) {
+    try {
+      const lockFd = fsSync.openSync(lockPath, 'wx');
+      try {
+        fsSync.writeFileSync(lockFd, JSON.stringify({
+          pid: process.pid,
+          acquiredAt: new Date().toISOString(),
+        }, null, 2), 'utf8');
+      } finally {
+        fsSync.closeSync(lockFd);
+      }
+      return true;
+    } catch (err: unknown) {
+      if ((err as NodeJS.ErrnoException).code !== 'EEXIST') {
+        return false;
+      }
+      if (isSavePfdLockStale(lockPath)) {
+        fsSync.rmSync(lockPath, { force: true });
+        continue;
+      }
+      await new Promise<void>((resolve) => setTimeout(resolve, delay));
+      waited += delay;
+      delay = Math.min(delay * 2, 250);
+    }
+  }
+
+  console.warn(`[workflow] ${SAVE_PFD_LOCK_NAME} acquisition timed out for ${folderPath}; proceeding without folder lock.`);
+  return false;
+}
+
+function releaseSavePfdLock(folderPath: string): void {
+  fsSync.rmSync(path.join(folderPath, SAVE_PFD_LOCK_NAME), { force: true });
+}
+
+async function withSavePfdLock<TResult>(
+  folderPath: string,
+  operation: () => Promise<TResult>,
+): Promise<TResult> {
+  const lockAcquired = await acquireSavePfdLock(folderPath);
+  try {
+    return await operation();
+  } finally {
+    if (lockAcquired) {
+      releaseSavePfdLock(folderPath);
+    }
   }
 }
 
@@ -1273,27 +1338,31 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       if (!descApiModule) throw new Error('MCP server API unavailable for description update');
       const { loadPerFolderDescription: loadPFD, savePerFolderDescription: savePFD, generatePerFolderDescription: genPFD } = descApiModule;
       const specFolderAbsolute = path.resolve(specFolder);
-      let existing = loadPFD(specFolderAbsolute);
+      await withSavePfdLock(specFolderAbsolute, async () => {
+        let existing = loadPFD(specFolderAbsolute);
 
-      // F-36: Regenerate missing/corrupt description.json from spec.md + path structure
-      if (!existing) {
-        const specsBaseDirs = Array.from(new Set([
-          ...getSpecsDirectories(),
-          path.join(CONFIG.PROJECT_ROOT, 'specs'),
-          path.join(CONFIG.PROJECT_ROOT, '.opencode', 'specs'),
-        ]));
-        for (const base of specsBaseDirs) {
-          const regenerated = genPFD(specFolderAbsolute, path.resolve(base));
-          if (regenerated) {
-            savePFD(regenerated, specFolderAbsolute);
-            existing = regenerated;
-            log('   Regenerated missing description.json');
-            break;
+        // F-36: Regenerate missing/corrupt description.json from spec.md + path structure
+        if (!existing) {
+          const specsBaseDirs = Array.from(new Set([
+            ...getSpecsDirectories(),
+            path.join(CONFIG.PROJECT_ROOT, 'specs'),
+            path.join(CONFIG.PROJECT_ROOT, '.opencode', 'specs'),
+          ]));
+          for (const base of specsBaseDirs) {
+            const regenerated = genPFD(specFolderAbsolute, path.resolve(base));
+            if (regenerated) {
+              savePFD(regenerated, specFolderAbsolute);
+              existing = regenerated;
+              log('   Regenerated missing description.json');
+              break;
+            }
           }
         }
-      }
 
-      if (existing) {
+        if (!existing) {
+          return;
+        }
+
         const MAX_MEMORY_SEQUENCE_RETRIES = 3;
         const MEMORY_SEQUENCE_RETRY_DELAY_MS = 25;
         let memorySequenceUpdated = false;
@@ -1336,7 +1405,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         if (!memorySequenceUpdated) {
           console.warn('[workflow] memorySequence update could not be confirmed after 3 attempts; continuing');
         }
-      }
+      });
     } catch (descErr: unknown) {
       // F-34: Log error instead of silently swallowing
       console.warn(`[workflow] description.json tracking error: ${descErr instanceof Error ? descErr.message : String(descErr)}`);
