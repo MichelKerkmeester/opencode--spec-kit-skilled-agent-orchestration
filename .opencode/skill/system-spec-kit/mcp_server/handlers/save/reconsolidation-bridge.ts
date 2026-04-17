@@ -60,6 +60,20 @@ interface StoredScopeSnapshot {
 export interface ScopeFilteredSearchResult {
   candidates: ReconsolidationResultCandidate[];
   suppressedCandidateIds: number[];
+  /**
+   * T-RCB-10 (R16-002): vector-search rows rejected as malformed — missing
+   * id, file_path, or similarity.  Reported separately from scope-suppressed
+   * ids so callers can distinguish data-integrity failures from ordinary
+   * scope mismatches.
+   */
+  malformedCandidateCount: number;
+  /**
+   * T-RCB-09 (R12-003): original vector-search row count before scope/malformed
+   * filtering trimmed the set.  When `rawCandidateCount > 0 && candidates.length === 0`,
+   * the limit-pre-filter window or scope filter has starved otherwise-relevant
+   * candidates.
+   */
+  rawCandidateCount: number;
 }
 
 export interface ReconsolidationResultCandidate extends Record<string, unknown> {
@@ -278,20 +292,40 @@ function candidateMatchesRequestedScope(
   ));
 }
 
+/**
+ * T-RCB-10 (R16-002): reject malformed vector-search rows instead of coercing
+ * them into sentinel values.  A valid candidate must carry a positive integer
+ * `id`, a non-empty `file_path`, and a finite numeric `similarity`.  Returning
+ * `null` from this mapper tells `findScopeFilteredCandidates` to drop (and
+ * report) the row rather than substitute a plausible-looking placeholder.
+ */
 function mapScopeFilteredCandidate(
   candidate: Record<string, unknown>,
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
   storedScope?: StoredScopeSnapshot,
-): ReconsolidationResultCandidate {
-  const similarity = typeof candidate.similarity === 'number' ? candidate.similarity : 0;
+): ReconsolidationResultCandidate | null {
+  const id = typeof candidate.id === 'number' && Number.isInteger(candidate.id) && candidate.id > 0
+    ? candidate.id
+    : null;
+  const filePath = typeof candidate.file_path === 'string' && candidate.file_path.length > 0
+    ? candidate.file_path
+    : null;
+  const similarityRaw = typeof candidate.similarity === 'number' && Number.isFinite(candidate.similarity)
+    ? candidate.similarity
+    : null;
+
+  if (id === null || filePath === null || similarityRaw === null) {
+    return null;
+  }
+
   return {
-    id: typeof candidate.id === 'number' ? candidate.id : 0,
-    file_path: typeof candidate.file_path === 'string' ? candidate.file_path : '',
+    id,
+    file_path: filePath,
     title: typeof candidate.title === 'string' ? candidate.title : null,
     content_text: typeof candidate.content_text === 'string'
       ? candidate.content_text
       : (typeof candidate.content === 'string' ? candidate.content : null),
-    similarity: similarity > 1 ? similarity / 100 : similarity,
+    similarity: similarityRaw > 1 ? similarityRaw / 100 : similarityRaw,
     spec_folder: parsed.specFolder,
     importance_weight: typeof candidate.importance_weight === 'number'
       ? candidate.importance_weight
@@ -331,6 +365,7 @@ export function findScopeFilteredCandidates(args: {
 
   const candidates: ReconsolidationResultCandidate[] = [];
   const suppressedCandidateIds: number[] = [];
+  let malformedCandidateCount = 0;
 
   for (const rawCandidate of rawCandidates as Array<Record<string, unknown>>) {
     const candidateId = extractCandidateId(rawCandidate);
@@ -352,7 +387,14 @@ export function findScopeFilteredCandidates(args: {
       continue;
     }
 
-    candidates.push(mapScopeFilteredCandidate(rawCandidate, args.parsed, scopeRows.get(candidateId ?? -1)));
+    const mapped = mapScopeFilteredCandidate(rawCandidate, args.parsed, scopeRows.get(candidateId ?? -1));
+    if (mapped === null) {
+      // T-RCB-10 (R16-002): reject rather than sentinel-substitute.
+      malformedCandidateCount += 1;
+      continue;
+    }
+
+    candidates.push(mapped);
     if (candidates.length >= args.limit) {
       break;
     }
@@ -361,7 +403,50 @@ export function findScopeFilteredCandidates(args: {
   return {
     candidates,
     suppressedCandidateIds,
+    malformedCandidateCount,
+    rawCandidateCount: rawCandidates.length,
   };
+}
+
+/**
+ * T-RCB-09 (R11-004, R12-003): append a structured `scope_filter_suppressed_candidates`
+ * warning to the shared recon warning carrier when the scope filter or overfetch window
+ * silently drops in-scope candidates.  The plain-text warning remains for human
+ * readability; the structured entry is what automation keys on.
+ */
+function recordScopeFilterSuppressionWarnings(
+  searchResult: ScopeFilteredSearchResult,
+  reconWarnings: ReconWarningList,
+  contextLabel: string,
+): void {
+  const { candidates, suppressedCandidateIds, malformedCandidateCount, rawCandidateCount } = searchResult;
+  const starved = rawCandidateCount > 0 && candidates.length === 0;
+  const suppressedInScope = suppressedCandidateIds.length > 0 && candidates.length === 0;
+
+  if (suppressedCandidateIds.length > 0 || starved || suppressedInScope) {
+    if (!reconWarnings.structuredWarnings) {
+      reconWarnings.structuredWarnings = [];
+    }
+    reconWarnings.structuredWarnings.push({
+      code: 'scope_filter_suppressed_candidates',
+      candidates: [...suppressedCandidateIds],
+      message:
+        `Scope filter dropped ${suppressedCandidateIds.length} candidate(s)` +
+        (starved ? ` with no in-scope matches surviving (raw=${rawCandidateCount})` : '') +
+        ` during ${contextLabel}.`,
+    });
+    reconWarnings.push(
+      `[memory-save] ${contextLabel}: scope-filtered ${suppressedCandidateIds.length} candidate(s)` +
+      (starved ? ` (all ${rawCandidateCount} raw candidates suppressed)` : '') +
+      '.',
+    );
+  }
+
+  if (malformedCandidateCount > 0) {
+    reconWarnings.push(
+      `[memory-save] ${contextLabel}: rejected ${malformedCandidateCount} malformed vector-search row(s).`,
+    );
+  }
 }
 
 function buildReconsolidationFailureResult(
@@ -452,7 +537,7 @@ export async function runReconsolidationIfEnabled(
             findSimilar: (emb, opts) => {
               try {
                 const searchEmb = emb instanceof Float32Array ? emb : new Float32Array(emb as number[]);
-                return findScopeFilteredCandidates({
+                const searchResult = findScopeFilteredCandidates({
                   database,
                   embedding: searchEmb,
                   parsed,
@@ -460,7 +545,15 @@ export async function runReconsolidationIfEnabled(
                   limit: opts.limit ?? 3,
                   minSimilarity: 50,
                   overfetchMultiplier: 3,
-                }).candidates;
+                });
+                // T-RCB-09/10 (R11-004, R12-003, R16-002): surface scope-filter
+                // suppression + malformed-row rejection as structured warnings.
+                recordScopeFilterSuppressionWarnings(
+                  searchResult,
+                  reconWarnings,
+                  'save-time reconsolidation candidate lookup',
+                );
+                return searchResult.candidates;
               } catch (error: unknown) {
                 similarityFailureMessage = toErrorMessage(error);
                 throw error;
@@ -685,14 +778,22 @@ export async function runReconsolidationIfEnabled(
     try {
       // Find the top similar memory using the existing vector search
       const searchEmb = embedding instanceof Float32Array ? embedding : new Float32Array(embedding as number[]);
-      const scopedCandidates = findScopeFilteredCandidates({
+      const assistiveSearchResult = findScopeFilteredCandidates({
         database,
         embedding: searchEmb,
         parsed,
         requestedScope,
         limit: 3,
         minSimilarity: Math.round(ASSISTIVE_REVIEW_THRESHOLD * 100),
-      }).candidates;
+      });
+      // T-RCB-09/10 (R11-004, R12-003, R16-002): surface assistive-lookup
+      // scope-filter suppression and malformed rows alongside the save path.
+      recordScopeFilterSuppressionWarnings(
+        assistiveSearchResult,
+        reconWarnings,
+        'assistive reconsolidation candidate lookup',
+      );
+      const scopedCandidates = assistiveSearchResult.candidates;
 
       if (scopedCandidates.length > 0) {
         const top = scopedCandidates[0] as Record<string, unknown>;
@@ -733,11 +834,23 @@ export async function runReconsolidationIfEnabled(
         // 'keep_separate' → no action, fall through to normal save
       }
     } catch (assistiveErr: unknown) {
+      // T-RCB-11 (R19-002): do not silently fall open. Surface assistive failures
+      // as a structured warning + machine-readable status on the save-time recon
+      // result so callers can route to remediation.  The ordinary save still
+      // proceeds (assistive is advisory), but the failure is now auditable.
       const message = toErrorMessage(assistiveErr);
+      const assistiveWarning = `[memory-save] Assistive reconsolidation error: ${message}`;
       console.warn(
         `[reconsolidation-bridge] assistive reconsolidation error (proceeding with normal save): ${message}`
       );
-      // Errors must not block saves
+      reconWarnings.push(assistiveWarning);
+      const priorWarnings = saveTimeReconsolidation.warnings ?? [];
+      saveTimeReconsolidation = {
+        ...saveTimeReconsolidation,
+        status: 'partial',
+        reason: 'assistive_failed',
+        warnings: [...priorWarnings, assistiveWarning],
+      };
     }
   }
 

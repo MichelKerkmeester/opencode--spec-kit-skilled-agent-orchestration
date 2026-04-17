@@ -102,11 +102,48 @@ function readCompactPrimeIdentity(sessionId: string): { cachedAt: string; opaque
   };
 }
 
-function buildFallbackStartupSurface(hasCachedContinuity: boolean): string {
+/**
+ * T-SRS-04 (R29-002): map rejection reasons to distinct short-form status labels
+ * so startup surface no longer collapses schema-mismatch, transcript-identity-
+ * mismatch, stale-summary, and ordinary missing-state into the same "startup
+ * summary only" string.  Depends on T-HST-01/02 (HookState schema-version
+ * plumbing from P0-A) which guarantees the upstream rejection reason is
+ * actually populated with the right discriminator.
+ */
+function describeMemoryStatus(
+  hasCachedContinuity: boolean,
+  rejectionReason: string | null,
+): string {
+  if (hasCachedContinuity) {
+    return 'session continuity available';
+  }
+  if (!rejectionReason) {
+    return 'startup summary only (resume on demand)';
+  }
+  const reasonMap: Record<string, string> = {
+    missing_state: 'startup summary only (no cached continuity; resume on demand)',
+    schema_mismatch: 'startup summary only (cached continuity rejected: schema version mismatch)',
+    missing_summary: 'startup summary only (cached continuity rejected: missing session summary)',
+    missing_producer_metadata: 'startup summary only (cached continuity rejected: producer metadata missing)',
+    missing_required_fields: 'startup summary only (cached continuity rejected: required fields missing)',
+    transcript_unreadable: 'startup summary only (cached continuity rejected: transcript unreadable)',
+    transcript_identity_mismatch: 'startup summary only (cached continuity rejected: transcript identity mismatch)',
+    stale_summary: 'startup summary only (cached continuity rejected: stale summary)',
+    summary_precedes_producer_turn: 'startup summary only (cached continuity rejected: summary predates latest producer turn)',
+    scope_mismatch: 'startup summary only (cached continuity rejected: scope mismatch)',
+    unknown_scope: 'startup summary only (cached continuity rejected: scope unknown)',
+  };
+  return reasonMap[rejectionReason] ?? `startup summary only (cached continuity rejected: ${rejectionReason})`;
+}
+
+function buildFallbackStartupSurface(
+  hasCachedContinuity: boolean,
+  rejectionReason: string | null = null,
+): string {
   return [
     'Session context received. Current state:',
     '',
-    `- Memory: ${hasCachedContinuity ? 'session continuity available' : 'startup summary only (resume on demand)'}`,
+    `- Memory: ${describeMemoryStatus(hasCachedContinuity, rejectionReason)}`,
     '- Code Graph: unavailable',
     '- CocoIndex: unknown',
     '',
@@ -114,10 +151,14 @@ function buildFallbackStartupSurface(hasCachedContinuity: boolean): string {
   ].join('\n');
 }
 
-function rewriteStartupMemoryLine(startupSurface: string, hasCachedContinuity: boolean): string {
+function rewriteStartupMemoryLine(
+  startupSurface: string,
+  hasCachedContinuity: boolean,
+  rejectionReason: string | null = null,
+): string {
   return startupSurface.replace(
     /^- Memory: .*$/m,
-    `- Memory: ${hasCachedContinuity ? 'session continuity available' : 'startup summary only (resume on demand)'}`,
+    `- Memory: ${describeMemoryStatus(hasCachedContinuity, rejectionReason)}`,
   );
 }
 
@@ -156,9 +197,15 @@ export function handleStartup(
   const sessionContinuity = cachedSummaryDecision.status === 'accepted'
     ? cachedSummaryDecision.cachedSummary?.startupHint ?? null
     : null;
+  // T-SRS-04 (R29-002): forward the rejection reason so the startup surface can
+  // differentiate schema_mismatch / transcript_identity_mismatch / stale_summary
+  // / missing_state instead of collapsing them all into "startup summary only".
+  const rejectionReason = cachedSummaryDecision.status === 'rejected'
+    ? cachedSummaryDecision.reason
+    : null;
   const startupSurface = startupBrief?.startupSurface
-    ? rewriteStartupMemoryLine(startupBrief.startupSurface, Boolean(sessionContinuity))
-    : buildFallbackStartupSurface(Boolean(sessionContinuity));
+    ? rewriteStartupMemoryLine(startupBrief.startupSurface, Boolean(sessionContinuity), rejectionReason)
+    : buildFallbackStartupSurface(Boolean(sessionContinuity), rejectionReason);
   const sections: OutputSection[] = [
     {
       title: 'Session Context',

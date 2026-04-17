@@ -126,6 +126,19 @@ export type LoadMostRecentStateResult =
     errors: HookStateFileError[];
   };
 
+/**
+ * T-SRS-03 (R38-001 extension): return ALL matching states (newest-first)
+ * so consumers can fall back candidate-by-candidate rather than treating the
+ * single newest as an all-or-nothing result.  Mirrors the per-file isolation
+ * pattern P0-D landed in `loadMostRecentState()`.
+ */
+export interface LoadMatchingStatesResult {
+  states: Array<{ state: PersistedHookState; path: string; updatedAtMs: number; mtimeMs: number }>;
+  errors: HookStateFileError[];
+  reason?: HookStateLoadFailureReason;
+  detail?: string;
+}
+
 export interface CleanStaleStatesResult {
   removed: number;
   skipped: number;
@@ -470,6 +483,116 @@ function deriveMostRecentFailureReason(errors: HookStateFileError[]): HookStateL
 }
 
 /**
+ * T-SRS-03 (R38-001 extension): expose every matching state newest-first so
+ * consumers (e.g. `getCachedSessionSummaryDecision`) can retry per-candidate
+ * instead of failing when the single newest state happens to fail a later
+ * fidelity gate.  This is the shared scan used by `loadMostRecentState`; we
+ * factor it out so both single-candidate and multi-candidate consumers share
+ * the same per-file isolation logic.
+ */
+export function loadMatchingStates(
+  options: {
+    maxAgeMs?: number;
+    scope?: HookStateScope;
+  } = {},
+): LoadMatchingStatesResult {
+  const maxAgeMs = options.maxAgeMs ?? MAX_RECENT_STATE_AGE_MS;
+  const scope = options.scope;
+  const hasScope = Boolean(scope?.specFolder || scope?.claudeSessionId);
+
+  if (!hasScope) {
+    hookLog(
+      'warn',
+      'state',
+      JSON.stringify({
+        event: 'load_matching_states_rejected',
+        reason: 'scope_unknown_fail_closed',
+      }),
+    );
+    return {
+      states: [],
+      errors: [],
+      reason: 'scope_unknown_fail_closed',
+      detail: 'Matching-state lookup requires a specFolder or claudeSessionId scope.',
+    };
+  }
+
+  try {
+    const dir = getStateDir();
+    const candidates = readdirSync(dir).filter((file) => file.endsWith('.json'));
+    if (candidates.length === 0) {
+      return { states: [], errors: [], reason: 'not_found' };
+    }
+
+    const matchingStates: LoadMatchingStatesResult['states'] = [];
+    const errors: HookStateFileError[] = [];
+    for (const file of candidates) {
+      const filePath = join(dir, file);
+      let mtimeMs: number;
+      try {
+        mtimeMs = statSync(filePath).mtimeMs;
+      } catch (error: unknown) {
+        errors.push({
+          path: filePath,
+          reason: 'read_error',
+          detail: error instanceof Error ? error.message : String(error),
+        });
+        continue;
+      }
+
+      if (Date.now() - mtimeMs > maxAgeMs) {
+        continue;
+      }
+
+      const stateResult = readStateFile(filePath);
+      if (!stateResult.ok) {
+        errors.push({
+          path: filePath,
+          reason: stateResult.reason,
+          detail: stateResult.detail,
+          quarantinedPath: stateResult.quarantinedPath,
+        });
+        continue;
+      }
+      if (!matchesScope(stateResult.state, scope!)) {
+        continue;
+      }
+
+      const updatedAtParsed = Date.parse(stateResult.state.updatedAt);
+      const updatedAtMs = Number.isFinite(updatedAtParsed) ? updatedAtParsed : mtimeMs;
+
+      matchingStates.push({
+        state: stateResult.state,
+        path: filePath,
+        updatedAtMs,
+        mtimeMs,
+      });
+    }
+
+    // Same primary/tiebreak ordering as loadMostRecentState.
+    matchingStates.sort((left, right) => {
+      if (right.updatedAtMs !== left.updatedAtMs) {
+        return right.updatedAtMs - left.updatedAtMs;
+      }
+      return right.mtimeMs - left.mtimeMs;
+    });
+
+    if (matchingStates.length === 0) {
+      return {
+        states: [],
+        errors,
+        reason: deriveMostRecentFailureReason(errors),
+        detail: errors[0]?.detail,
+      };
+    }
+
+    return { states: matchingStates, errors };
+  } catch {
+    return { states: [], errors: [], reason: 'not_found' };
+  }
+}
+
+/**
  * Load the most recently updated hook state file for this project.
  * Returns the newest matching state and isolates per-file errors so
  * one poisoned sibling does not mask valid state.
@@ -508,7 +631,16 @@ export function loadMostRecentState(
       return { ok: false, reason: 'not_found', errors: [] };
     }
 
-    const matchingStates: Array<{ state: PersistedHookState; path: string; mtimeMs: number }> = [];
+    // T-HST-10 (R4-003): rank by logical `state.updatedAt` rather than filesystem `mtimeMs`.
+    // Touch-based operations (backup, rsync --times, fs-level restore) can bump mtime without
+    // reflecting a newer logical session update. `updatedAt` is the authoritative write-time
+    // marker persisted by `persistState()` and is therefore stable across filesystem touches.
+    const matchingStates: Array<{
+      state: PersistedHookState;
+      path: string;
+      mtimeMs: number;
+      updatedAtMs: number;
+    }> = [];
     const errors: HookStateFileError[] = [];
     for (const file of candidates) {
       const filePath = join(dir, file);
@@ -542,14 +674,26 @@ export function loadMostRecentState(
         continue;
       }
 
+      // Fall back to mtime when `updatedAt` is unparseable (e.g. drift from out-of-band writes).
+      const updatedAtParsed = Date.parse(stateResult.state.updatedAt);
+      const updatedAtMs = Number.isFinite(updatedAtParsed) ? updatedAtParsed : mtimeMs;
+
       matchingStates.push({
         state: stateResult.state,
         path: filePath,
         mtimeMs,
+        updatedAtMs,
       });
     }
 
-    matchingStates.sort((left, right) => right.mtimeMs - left.mtimeMs);
+    // Primary sort: logical `updatedAt`; tiebreak on `mtimeMs` to keep ordering deterministic
+    // when two states share the same ISO timestamp.
+    matchingStates.sort((left, right) => {
+      if (right.updatedAtMs !== left.updatedAtMs) {
+        return right.updatedAtMs - left.updatedAtMs;
+      }
+      return right.mtimeMs - left.mtimeMs;
+    });
     const newest = matchingStates[0];
     if (!newest) {
       return {

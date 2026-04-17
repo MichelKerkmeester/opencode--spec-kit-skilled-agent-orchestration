@@ -258,7 +258,14 @@ export function setLastGraphEdgeEnrichmentSummary(
   setMetadata('last_graph_edge_enrichment_summary', JSON.stringify(summary));
 }
 
-/** Insert or update a file record, returning the file ID */
+/**
+ * Insert or update a file record, returning the file ID.
+ *
+ * T-ENR-02 (R5-002): `options.fileMtimeMs` lets callers stage a placeholder
+ * mtime (e.g. `0`) during multi-step structural persistence so `isFileStale()`
+ * continues flagging the file as stale until nodes + edges have landed.
+ * When omitted, the current on-disk mtime is used (original behavior).
+ */
 export function upsertFile(
   filePath: string,
   language: string,
@@ -267,10 +274,13 @@ export function upsertFile(
   edgeCount: number,
   parseHealth: string,
   parseDurationMs: number,
+  options?: { fileMtimeMs?: number },
 ): number {
   const d = getDb();
   const now = new Date().toISOString();
-  const fileMtimeMs = getCurrentFileMtimeMs(filePath) ?? 0;
+  const fileMtimeMs = options?.fileMtimeMs !== undefined
+    ? options.fileMtimeMs
+    : (getCurrentFileMtimeMs(filePath) ?? 0);
 
   const existing = d.prepare('SELECT id FROM code_files WHERE file_path = ?').get(filePath) as { id: number } | undefined;
   if (existing) {

@@ -195,20 +195,40 @@ async function indexWithTimeout(config: IndexerConfig, timeoutMs: number): Promi
     ]);
 
     // Persist results to DB
+    // T-ENR-02 (R5-002): don't write `file_mtime_ms` until both nodes AND edges
+    // have persisted successfully.  Previously, `upsertFile` ran first and
+    // committed the fresh mtime even when `replaceNodes` / `replaceEdges`
+    // subsequently threw — leaving the file marked "fresh" while its structural
+    // rows were stale or missing.  Now we stage structural rows first under a
+    // transient `upsertFile(..., mtime=0)` pass that carries zeros, then
+    // finalize with the real mtime only after edges land.
     let persistedDetectorProvenance: ReturnType<typeof graphDb.getLastDetectorProvenance> = null;
     for (const result of results) {
       try {
+        // Stage 1: create/update row with mtime=0 placeholder.  Downstream
+        // `isFileStale()` compares against the on-disk mtime, so a 0 value
+        // keeps the file flagged stale until Stage 3 completes.
         const fileId = graphDb.upsertFile(
           result.filePath, result.language, result.contentHash,
           result.nodes.length, result.edges.length,
           result.parseHealth, result.parseDurationMs,
+          { fileMtimeMs: 0 },
         );
+        // Stage 2: persist structural rows.  Any throw here skips the Stage 3
+        // finalize, leaving the file marked stale for the next pass to retry.
         graphDb.replaceNodes(fileId, result.nodes);
         const sourceIds = result.nodes.map(n => n.symbolId);
         graphDb.replaceEdges(sourceIds, result.edges);
+        // Stage 3: now that nodes + edges persisted, commit the real mtime.
+        graphDb.upsertFile(
+          result.filePath, result.language, result.contentHash,
+          result.nodes.length, result.edges.length,
+          result.parseHealth, result.parseDurationMs,
+        );
         persistedDetectorProvenance ??= result.detectorProvenance;
       } catch {
-        // Best-effort: skip files that fail to persist
+        // Best-effort: skip files that fail to persist.  File remains stale
+        // (mtime=0 from Stage 1) so the next scan will retry structural rows.
       }
     }
 

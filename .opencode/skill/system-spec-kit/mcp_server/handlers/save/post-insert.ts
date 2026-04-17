@@ -46,6 +46,9 @@ export type EnrichmentSkipReason =
   | 'planner_first_mode'
   | 'density_guard'
   | 'graph_lifecycle_no_op'
+  | 'graph_refresh_disabled'
+  | 'entity_linking_disabled'
+  | 'empty_content'
   | 'extraction_not_ran'
   | 'summary_not_stored';
 
@@ -72,10 +75,20 @@ export interface EnrichmentStatus {
   graphLifecycle: EnrichmentStepResult;
 }
 
+export type PostInsertExecutionReason =
+  | 'planner-first-mode'
+  | 'enrichment_step_failed'
+  | 'enrichment_step_partial';
+
 export interface PostInsertExecutionStatus {
-  status: 'ran' | 'deferred';
-  reason?: 'planner-first-mode';
+  // T-PIN-07 (R17-002): an exception-driven step failure must NOT be reported
+  // as `ran`.  When any step reports `failed`, execution status rolls up to
+  // `failed`; when any step reports `partial`, it rolls up to `partial`.
+  status: 'ran' | 'deferred' | 'failed' | 'partial';
+  reason?: PostInsertExecutionReason;
   followUpAction?: 'runEnrichmentBackfill';
+  failedSteps?: Array<keyof EnrichmentStatus>;
+  partialSteps?: Array<keyof EnrichmentStatus>;
 }
 
 export interface PostInsertEnrichmentResult {
@@ -276,13 +289,32 @@ export async function runPostInsertEnrichment(
   // Runs last; relies on entity extraction having completed above.
   // Gated via isGraphRefreshEnabled() OR SPECKIT_ENTITY_LINKING (any active graph flag).
   // T-PIN-05 (R11-005): distinguish "onIndex ran" from "onIndex returned skipped:true".
+  // T-PIN-08 (R27-001): propagate the underlying onIndex skip reason rather than
+  // collapsing every skip into `graph_lifecycle_no_op`; backfill can now key on
+  // the specific reason (graph_refresh_disabled / entity_linking_disabled /
+  // empty_content / onindex_exception) to decide whether to retry.
   if (isGraphRefreshEnabled() || isEntityLinkingEnabled()) {
     try {
       const indexResult = onIndex(database, id, parsed.content, {
         qualityScore: typeof parsed.qualityScore === 'number' ? parsed.qualityScore : 0,
       });
       if (indexResult.skipped) {
-        enrichmentStatus.graphLifecycle = makeSkipped('graph_lifecycle_no_op');
+        const reasonMap: Record<string, EnrichmentSkipReason> = {
+          graph_refresh_disabled: 'graph_refresh_disabled',
+          entity_linking_disabled: 'entity_linking_disabled',
+          empty_content: 'empty_content',
+        };
+        if (indexResult.skipReason === 'onindex_exception') {
+          // onIndex caught an internal exception — surface as failed, not skipped.
+          enrichmentStatus.graphLifecycle = {
+            status: 'failed',
+            reason: 'graph_lifecycle_exception',
+            warnings: ['onIndex internal exception; see logs for details'],
+          };
+        } else {
+          const mapped = indexResult.skipReason ? reasonMap[indexResult.skipReason] : undefined;
+          enrichmentStatus.graphLifecycle = makeSkipped(mapped ?? 'graph_lifecycle_no_op');
+        }
       } else {
         if (indexResult.edgesCreated > 0) {
           console.error(`[graph-lifecycle] Created ${indexResult.edgesCreated} typed edges for memory #${id}`);
@@ -305,10 +337,41 @@ export async function runPostInsertEnrichment(
     enrichmentStatus.graphLifecycle = makeSkipped('feature_disabled');
   }
 
+  // T-PIN-07 (R17-002): roll up per-step outcomes into the executionStatus so
+  // an enrichment_step_failed never presents as ordinary success.  `runEnrichmentBackfill`
+  // can then key on `failedSteps` + `partialSteps` rather than re-scanning the entire
+  // enrichmentStatus tree.
+  const failedSteps = (Object.entries(enrichmentStatus) as Array<[keyof EnrichmentStatus, EnrichmentStepResult]>)
+    .filter(([, step]) => step.status === 'failed')
+    .map(([name]) => name);
+  const partialSteps = (Object.entries(enrichmentStatus) as Array<[keyof EnrichmentStatus, EnrichmentStepResult]>)
+    .filter(([, step]) => step.status === 'partial')
+    .map(([name]) => name);
+
+  let executionStatus: PostInsertExecutionStatus;
+  if (failedSteps.length > 0) {
+    executionStatus = {
+      status: 'failed',
+      reason: 'enrichment_step_failed',
+      followUpAction: 'runEnrichmentBackfill',
+      failedSteps,
+      ...(partialSteps.length > 0 ? { partialSteps } : {}),
+    };
+  } else if (partialSteps.length > 0) {
+    executionStatus = {
+      status: 'partial',
+      reason: 'enrichment_step_partial',
+      followUpAction: 'runEnrichmentBackfill',
+      partialSteps,
+    };
+  } else {
+    executionStatus = { status: 'ran' };
+  }
+
   return {
     causalLinksResult,
     enrichmentStatus,
-    executionStatus: { status: 'ran' },
+    executionStatus,
   };
 }
 

@@ -107,8 +107,24 @@ export interface AssistiveRecommendation {
   advisory_stale?: boolean;
 }
 
+/**
+ * T-RCB-09 (R11-004, R12-003): structured warning surfaced when the scope
+ * filter or overfetch window dropped otherwise-relevant vector-search
+ * candidates.  Emitted alongside plain string warnings so downstream
+ * consumers can mechanically distinguish silent starvation from regular
+ * scope mismatches.
+ */
+export interface ScopeFilterSuppressedCandidatesWarning {
+  code: 'scope_filter_suppressed_candidates';
+  candidates: number[];
+  message?: string;
+}
+
+export type ReconStructuredWarning = ScopeFilterSuppressedCandidatesWarning;
+
 export type ReconWarningList = string[] & {
   assistiveRecommendation?: AssistiveRecommendation | null;
+  structuredWarnings?: ReconStructuredWarning[];
 };
 
 export type OperationStatus = 'ran' | 'skipped' | 'failed' | 'deferred' | 'partial';

@@ -5,9 +5,36 @@ import path from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { loadMostRecentStateMock } = vi.hoisted(() => ({
-  loadMostRecentStateMock: vi.fn(() => ({ ok: false, reason: 'not_found', errors: [] })),
-}));
+// T-SRS-03: session-resume.getCachedSessionSummaryDecision now uses
+// loadMatchingStates instead of loadMostRecentState to enable per-candidate
+// retry.  The existing fixtures supply a single state via loadMostRecentStateMock;
+// we translate that into a loadMatchingStates shape for the handler.
+const { loadMostRecentStateMock, loadMatchingStatesMock } = vi.hoisted(() => {
+  const loadMostRecentStateMock = vi.fn(() => ({ ok: false, reason: 'not_found', errors: [] }));
+  const loadMatchingStatesMock = vi.fn(() => {
+    const recent = loadMostRecentStateMock();
+    if (recent.ok) {
+      const updatedAtParsed = Date.parse(recent.state.updatedAt);
+      const updatedAtMs = Number.isFinite(updatedAtParsed) ? updatedAtParsed : 0;
+      return {
+        states: [{
+          state: recent.state,
+          path: recent.path,
+          updatedAtMs,
+          mtimeMs: updatedAtMs,
+        }],
+        errors: recent.errors ?? [],
+      };
+    }
+    return {
+      states: [],
+      errors: recent.errors ?? [],
+      ...(recent.reason ? { reason: recent.reason } : {}),
+      ...(recent.detail ? { detail: recent.detail } : {}),
+    };
+  });
+  return { loadMostRecentStateMock, loadMatchingStatesMock };
+});
 
 vi.mock('../lib/code-graph/code-graph-db.js', () => ({
   getStats: vi.fn(() => ({
@@ -39,6 +66,7 @@ vi.mock('../lib/session/context-metrics.js', () => ({
 
 vi.mock('../hooks/claude/hook-state.js', () => ({
   loadMostRecentState: loadMostRecentStateMock,
+  loadMatchingStates: loadMatchingStatesMock,
 }));
 
 import { getCachedSessionSummaryDecision, handleSessionResume } from '../handlers/session-resume.js';

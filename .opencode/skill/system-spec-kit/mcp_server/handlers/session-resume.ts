@@ -30,7 +30,7 @@ import {
   buildCodeGraphOpsContract,
   type CodeGraphOpsContract,
 } from '../lib/code-graph/ops-hardening.js';
-import { loadMostRecentState, type HookProducerMetadata, type HookState } from '../hooks/claude/hook-state.js';
+import { loadMatchingStates, type HookProducerMetadata, type HookState } from '../hooks/claude/hook-state.js';
 import { buildResumeLadder } from '../lib/resume/resume-ladder.js';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
@@ -354,21 +354,32 @@ export function getCachedSessionSummaryDecision(
     state?: HookState | null;
   } = {},
 ): CachedSessionSummaryDecision {
-  const stateResult = options.state
-    ? { ok: true as const, state: options.state }
-    : loadMostRecentState({
-      maxAgeMs: options.maxAgeMs,
-      scope: {
-        specFolder: options.specFolder,
-        claudeSessionId: options.claudeSessionId,
-      },
-    });
-  if (!stateResult.ok) {
-    if (stateResult.reason === 'schema_mismatch') {
+  // Caller supplied a specific state — evaluate it directly (test + explicit-state paths).
+  if (options.state) {
+    const candidate = buildCachedSessionSummaryCandidate(options.state);
+    return evaluateCachedSessionSummaryCandidate(candidate, options);
+  }
+
+  // T-SRS-03 (R38-001 extension): retry candidate-by-candidate rather than
+  // treating the single newest state as all-or-nothing.  Mirrors the per-file
+  // isolation P0-D landed in loadMostRecentState but extends it to the fidelity/
+  // freshness evaluation layer — if the newest state has a schema mismatch,
+  // missing transcript fingerprint, or stale summary, fall back to the next
+  // candidate before giving up.
+  const matching = loadMatchingStates({
+    maxAgeMs: options.maxAgeMs,
+    scope: {
+      specFolder: options.specFolder,
+      claudeSessionId: options.claudeSessionId,
+    },
+  });
+
+  if (matching.states.length === 0) {
+    if (matching.reason === 'schema_mismatch') {
       return rejectCachedSummary(
         'fidelity',
         'schema_mismatch',
-        stateResult.detail ?? 'Cached hook state schema version was rejected before session-resume could consume it.',
+        matching.detail ?? 'Cached hook state schema version was rejected before session-resume could consume it.',
       );
     }
     return rejectCachedSummary(
@@ -377,8 +388,24 @@ export function getCachedSessionSummaryDecision(
       'No recent hook state was available for cached continuity reuse.',
     );
   }
-  const candidate = buildCachedSessionSummaryCandidate(stateResult.state);
-  return evaluateCachedSessionSummaryCandidate(candidate, options);
+
+  let lastDecision: CachedSessionSummaryDecision | null = null;
+  for (const entry of matching.states) {
+    const candidate = buildCachedSessionSummaryCandidate(entry.state);
+    const decision = evaluateCachedSessionSummaryCandidate(candidate, options);
+    if (decision.status === 'accepted') {
+      return decision;
+    }
+    lastDecision = decision;
+  }
+
+  // All candidates rejected — surface the most informative rejection (from the
+  // newest state, which is the canonical authoritative snapshot).
+  return lastDecision ?? rejectCachedSummary(
+    'fidelity',
+    'missing_state',
+    'No recent hook state was available for cached continuity reuse.',
+  );
 }
 
 export function applyCachedSummaryAdditively<T extends Record<string, unknown>>(

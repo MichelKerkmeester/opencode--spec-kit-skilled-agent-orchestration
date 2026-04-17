@@ -120,11 +120,23 @@ export interface GraphRefreshResult {
   skipped: boolean;
 }
 
+/**
+ * T-PIN-08 (R27-001): machine-readable reason emitted when `onIndex` skips
+ * enrichment.  Consumers (post-insert, runEnrichmentBackfill) key on this to
+ * decide whether the skip is remediable.
+ */
+export type OnIndexSkipReason =
+  | 'graph_refresh_disabled'
+  | 'entity_linking_disabled'
+  | 'empty_content'
+  | 'onindex_exception';
+
 /** Result returned by onIndex(). */
 export interface OnIndexResult {
   edgesCreated: number;
   llmBackfillScheduled: boolean;
   skipped: boolean;
+  skipReason?: OnIndexSkipReason;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -492,24 +504,27 @@ export function onIndex(
   content: string,
   options?: { qualityScore?: number; llmBackfillThreshold?: number },
 ): OnIndexResult {
-  const skippedResult: OnIndexResult = {
+  // T-PIN-08 (R27-001): build a typed skipped result so consumers can route
+  // on reason rather than the collapsed boolean.
+  const buildSkipped = (skipReason: OnIndexSkipReason): OnIndexResult => ({
     edgesCreated: 0,
     llmBackfillScheduled: false,
     skipped: true,
-  };
+    skipReason,
+  });
 
   if (isGraphRefreshDisabled()) {
-    return skippedResult;
+    return buildSkipped('graph_refresh_disabled');
   }
 
   // Guard: only run when entity linking is enabled (reuse SPECKIT_ENTITY_LINKING)
   const entityLinkingRaw = process.env.SPECKIT_ENTITY_LINKING?.toLowerCase().trim();
   if (entityLinkingRaw === 'false' || entityLinkingRaw === '0') {
-    return skippedResult;
+    return buildSkipped('entity_linking_disabled');
   }
 
   if (!content || content.trim().length === 0) {
-    return skippedResult;
+    return buildSkipped('empty_content');
   }
 
   try {
@@ -591,7 +606,7 @@ export function onIndex(
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     logger.warn('onIndex failed — enrichment skipped', { message });
-    return skippedResult;
+    return buildSkipped('onindex_exception');
   }
 }
 

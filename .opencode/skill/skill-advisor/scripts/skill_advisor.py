@@ -1307,9 +1307,54 @@ DEFAULT_CONFIDENCE_THRESHOLD = 0.8
 DEFAULT_UNCERTAINTY_THRESHOLD = 0.35
 
 COMMAND_BRIDGES = {
+    # ─────────────────────────────────────────────────────────────────
+    # T-SAP-03 (R46-001): per-subcommand bridges for /spec_kit family.
+    # Previously all /spec_kit:* subcommands collapsed to `command-spec-kit`
+    # at `kind_priority=2`, so `/spec_kit:deep-research` lost its owning-skill
+    # signal (should route to `sk-deep-research`, not `command-spec-kit`).
+    # Dict insertion order IS iteration order in Python 3.7+, so the specific
+    # subcommand markers MUST appear BEFORE the deprecated generic bridge —
+    # `detect_explicit_command_intent()` returns on the first marker match.
+    # Execution-mode suffixes (:auto, :confirm, :with-phases, :with-research)
+    # are substring-matched inside each bridge and do NOT need separate entries.
+    # ─────────────────────────────────────────────────────────────────
+    "command-spec-kit-plan": {
+        "description": "Run the SpecKit 8-step planning workflow using /spec_kit:plan.",
+        "slash_markers": ["/spec_kit:plan", "spec_kit:plan"],
+        "owning_skill": "system-spec-kit",
+    },
+    "command-spec-kit-complete": {
+        "description": "Run the full SpecKit 14+ step lifecycle using /spec_kit:complete.",
+        "slash_markers": ["/spec_kit:complete", "spec_kit:complete"],
+        "owning_skill": "system-spec-kit",
+    },
+    "command-spec-kit-implement": {
+        "description": "Run the SpecKit 9-step implementation workflow using /spec_kit:implement.",
+        "slash_markers": ["/spec_kit:implement", "spec_kit:implement"],
+        "owning_skill": "system-spec-kit",
+    },
+    "command-spec-kit-deep-research": {
+        "description": "Run the autonomous deep-research loop using /spec_kit:deep-research.",
+        "slash_markers": ["/spec_kit:deep-research", "spec_kit:deep-research"],
+        "owning_skill": "sk-deep-research",
+    },
+    "command-spec-kit-deep-review": {
+        "description": "Run the autonomous deep-review loop using /spec_kit:deep-review.",
+        "slash_markers": ["/spec_kit:deep-review", "spec_kit:deep-review"],
+        "owning_skill": "sk-deep-review",
+    },
+    "command-spec-kit-resume": {
+        "description": "Resume an existing spec folder using /spec_kit:resume.",
+        "slash_markers": ["/spec_kit:resume", "spec_kit:resume"],
+        "owning_skill": "system-spec-kit",
+    },
+    # Legacy bridge retained for 1-release compatibility; deprecated.
+    # MUST come AFTER the per-subcommand bridges so specific markers win.
     "command-spec-kit": {
-        "description": "Create specifications and plans using /spec_kit slash command for new features or complex changes.",
+        "description": "[DEPRECATED: use per-subcommand bridges] /spec_kit slash-command family; routes generic /spec_kit or spec_kit: prompts without a specific subcommand.",
         "slash_markers": ["/spec_kit", "spec_kit:"],
+        "deprecated": True,
+        "owning_skill": "system-spec-kit",
     },
     "command-memory-save": {
         "description": "Save conversation context to memory using /memory:save.",
