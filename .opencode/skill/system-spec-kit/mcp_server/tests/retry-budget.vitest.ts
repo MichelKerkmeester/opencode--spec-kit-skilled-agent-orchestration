@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
+  clearAllBudgets,
   clearBudget,
   getBudgetSize,
   recordFailure,
@@ -9,7 +10,7 @@ import {
 
 describe('retry budget', () => {
   afterEach(() => {
-    clearBudget();
+    clearAllBudgets();
   });
 
   it('allows the first attempt for a fresh key', () => {
@@ -77,11 +78,11 @@ describe('retry budget', () => {
     expect(shouldRetry(52, 'causal_links', 'partial_causal_link_unresolved')).toBe(true);
   });
 
-  it('clearBudget() removes every entry', () => {
+  it('clearAllBudgets() removes every entry', () => {
     recordFailure(61, 'causal_links', 'partial_causal_link_unresolved');
     recordFailure(62, 'entity_linking', 'density_guard');
 
-    clearBudget();
+    clearAllBudgets();
 
     expect(getBudgetSize()).toBe(0);
     expect(shouldRetry(61, 'causal_links', 'partial_causal_link_unresolved')).toBe(true);

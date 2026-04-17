@@ -45,8 +45,12 @@ const RECOVERED_MARKER_PREFIXES = wrapRecoveredCompactPayload(
     if (line.startsWith('[PROVENANCE:')) {
       return '[PROVENANCE:';
     }
-    return line;
+      return line;
   });
+
+if (RECOVERED_MARKER_PREFIXES.length < 3) {
+  throw new Error('[speckit-hook:copilot] wrapper format regression: expected >=3 marker prefixes, got ' + RECOVERED_MARKER_PREFIXES.length);
+}
 
 const COMPACT_FEEDBACK_GUARDS = [
   ...RECOVERED_MARKER_PREFIXES.map((prefix) => new RegExp(`^\\s*${prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i')),

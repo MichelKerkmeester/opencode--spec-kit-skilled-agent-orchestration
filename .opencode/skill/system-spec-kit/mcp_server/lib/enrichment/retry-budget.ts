@@ -2,6 +2,15 @@
 // MODULE: Retry Budget
 // ───────────────────────────────────────────────────────────────
 
+/**
+ * Tracks per-memory enrichment retry state for the current Node.js process only.
+ *
+ * @invariant ephemeral — budget entries do not persist across process restarts.
+ * AsyncLocalStorage caller-context is request-scoped while this Map is process-scoped;
+ * both are wiped on restart, so no retry carry-over survives a crash or fresh boot.
+ * C4 (iter 5) documents that shared expectation explicitly for recovery analysis.
+ */
+
 // ───────────────────────────────────────────────────────────────
 // 1. TYPE DEFINITIONS
 // ───────────────────────────────────────────────────────────────
@@ -64,18 +73,19 @@ export function recordFailure(memoryId: number, step: string, reason: string): R
   return entry;
 }
 
-/** Clear all retry state, or only the entries for one memory when provided. */
-export function clearBudget(memoryId?: number): void {
-  if (memoryId === undefined) {
-    retryBudget.clear();
-    return;
-  }
-
+/** Clear retry state for a single memory ID. */
+export function clearBudget(memoryId: number): void {
   for (const budgetKey of retryBudget.keys()) {
-    if (budgetKey.startsWith(`${memoryId}::`)) {
+    const entry = retryBudget.get(budgetKey);
+    if (entry?.memoryId === memoryId) {
       retryBudget.delete(budgetKey);
     }
   }
+}
+
+/** Clear every retry budget entry in the current process. */
+export function clearAllBudgets(): void {
+  retryBudget.clear();
 }
 
 /** Expose the current retry-budget size for diagnostics and tests. */
