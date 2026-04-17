@@ -70,7 +70,7 @@ export interface CachedSessionSummaryDecision {
   reason:
     | 'accepted'
     | 'missing_state'
-    | 'schema_version_mismatch'
+    | 'schema_mismatch'
     | 'missing_summary'
     | 'missing_producer_metadata'
     | 'missing_required_fields'
@@ -179,7 +179,7 @@ export function buildCachedSessionSummaryCandidate(
   }
 
   return {
-    schemaVersion: CACHED_SESSION_SUMMARY_SCHEMA_VERSION,
+    schemaVersion: state.schemaVersion ?? CACHED_SESSION_SUMMARY_SCHEMA_VERSION,
     lastSpecFolder: state.lastSpecFolder,
     summaryText: state.sessionSummary?.text ?? null,
     extractedAt: state.sessionSummary?.extractedAt ?? null,
@@ -203,7 +203,7 @@ export function evaluateCachedSessionSummaryCandidate(
   if (candidate.schemaVersion !== CACHED_SESSION_SUMMARY_SCHEMA_VERSION) {
     return rejectCachedSummary(
       'fidelity',
-      'schema_version_mismatch',
+      'schema_mismatch',
       `Expected schema version ${CACHED_SESSION_SUMMARY_SCHEMA_VERSION} but received ${String(candidate.schemaVersion)}.`,
     );
   }
@@ -354,17 +354,30 @@ export function getCachedSessionSummaryDecision(
     state?: HookState | null;
   } = {},
 ): CachedSessionSummaryDecision {
-  const candidate = buildCachedSessionSummaryCandidate(
-    options.state ?? (
-      loadMostRecentState({
-        maxAgeMs: options.maxAgeMs,
-        scope: {
-          specFolder: options.specFolder,
-          claudeSessionId: options.claudeSessionId,
-        },
-      }).states[0] ?? null
-    ),
-  );
+  const stateResult = options.state
+    ? { ok: true as const, state: options.state }
+    : loadMostRecentState({
+      maxAgeMs: options.maxAgeMs,
+      scope: {
+        specFolder: options.specFolder,
+        claudeSessionId: options.claudeSessionId,
+      },
+    });
+  if (!stateResult.ok) {
+    if (stateResult.reason === 'schema_mismatch') {
+      return rejectCachedSummary(
+        'fidelity',
+        'schema_mismatch',
+        stateResult.detail ?? 'Cached hook state schema version was rejected before session-resume could consume it.',
+      );
+    }
+    return rejectCachedSummary(
+      'fidelity',
+      'missing_state',
+      'No recent hook state was available for cached continuity reuse.',
+    );
+  }
+  const candidate = buildCachedSessionSummaryCandidate(stateResult.state);
   return evaluateCachedSessionSummaryCandidate(candidate, options);
 }
 

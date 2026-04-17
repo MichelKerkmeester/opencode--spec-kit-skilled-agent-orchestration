@@ -2,8 +2,13 @@
 // TEST: Hook-State Token Persistence
 // ───────────────────────────────────────────────────────────────
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { ensureStateDir, updateState, loadState, getStatePath } from '../hooks/claude/hook-state.js';
+import { ensureStateDir, updateState, loadState, getStatePath, type PersistedHookState } from '../hooks/claude/hook-state.js';
 import { rmSync } from 'node:fs';
+
+function loadPersistedState(sessionId: string): PersistedHookState | null {
+  const result = loadState(sessionId);
+  return result.ok ? result.state : null;
+}
 
 describe('hook-state token persistence', () => {
   const sessionId = 'test-snapshot-store';
@@ -15,7 +20,7 @@ describe('hook-state token persistence', () => {
     updateState(sessionId, {
       metrics: { estimatedPromptTokens: 5000, estimatedCompletionTokens: 2000, lastTranscriptOffset: 1024 },
     });
-    const state = loadState(sessionId);
+    const state = loadPersistedState(sessionId);
     expect(state).not.toBeNull();
     expect(state!.metrics.estimatedPromptTokens).toBe(5000);
     expect(state!.metrics.estimatedCompletionTokens).toBe(2000);
@@ -29,7 +34,7 @@ describe('hook-state token persistence', () => {
     updateState(sessionId, {
       metrics: { estimatedPromptTokens: 3000, estimatedCompletionTokens: 1500, lastTranscriptOffset: 2048 },
     });
-    const state = loadState(sessionId);
+    const state = loadPersistedState(sessionId);
     expect(state!.metrics.estimatedPromptTokens).toBe(3000);
     expect(state!.metrics.lastTranscriptOffset).toBe(2048);
   });
@@ -39,7 +44,7 @@ describe('hook-state token persistence', () => {
     updateState(sessionId, {
       metrics: { estimatedPromptTokens: 100, estimatedCompletionTokens: 50, lastTranscriptOffset: 512 },
     });
-    const state = loadState(sessionId);
+    const state = loadPersistedState(sessionId);
     expect(state!.lastSpecFolder).toBe('specs/test');
     expect(state!.metrics.estimatedPromptTokens).toBe(100);
   });

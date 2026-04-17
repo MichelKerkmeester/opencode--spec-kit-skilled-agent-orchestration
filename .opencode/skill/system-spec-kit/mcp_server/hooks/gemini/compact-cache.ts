@@ -12,7 +12,7 @@
 import { readFileSync } from 'node:fs';
 import {
   hookLog, truncateToTokenBudget,
-  withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET,
+  withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET, getRequiredSessionId,
 } from '../claude/shared.js';
 import { ensureStateDir, updateState } from '../claude/hook-state.js';
 import { parseGeminiStdin } from './shared.js';
@@ -125,7 +125,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const sessionId = input.session_id ?? 'unknown';
+  const sessionId = getRequiredSessionId(input.session_id, 'gemini:compact-cache');
   hookLog('info', 'gemini:compact-cache', `PreCompress triggered for session ${sessionId} (trigger: ${input.trigger ?? 'unknown'})`);
 
   let transcriptLines: string[] = [];
@@ -155,7 +155,7 @@ async function main(): Promise<void> {
     ],
   });
 
-  updateState(sessionId, {
+  const updateResult = updateState(sessionId, {
     pendingCompactPrime: {
       payload,
       cachedAt: new Date().toISOString(),
@@ -180,6 +180,10 @@ async function main(): Promise<void> {
       }),
     },
   });
+  if (!updateResult.persisted) {
+    hookLog('warn', 'gemini:compact-cache', `Compact context cache was not persisted for session ${sessionId}`);
+    return;
+  }
 
   hookLog('info', 'gemini:compact-cache', `Cached compact context (${payload.length} chars) for session ${sessionId}`);
 }

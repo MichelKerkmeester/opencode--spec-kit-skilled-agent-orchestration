@@ -10,7 +10,7 @@ import {
   ensureStateDir,
   getStatePath,
   loadState,
-  type HookState,
+  type PersistedHookState,
 } from '../../hooks/claude/hook-state.js';
 import {
   processStopHook,
@@ -20,7 +20,7 @@ import type { HookInput } from '../../hooks/claude/shared.js';
 
 export interface StopReplayRunResult {
   process: SessionStopProcessResult;
-  state: HookState | null;
+  state: PersistedHookState | null;
   statePath: string;
   stateDir: string;
   stateFileCount: number;
@@ -98,7 +98,8 @@ export function createStopReplaySandbox(
 
         const statePath = getStatePath(sessionId);
         const stateDir = dirname(statePath);
-        const state = loadState(sessionId);
+        const stateResult = loadState(sessionId);
+        const state = stateResult.ok ? stateResult.state : null;
         const stateFileCount = readdirSync(stateDir).filter((file) => file.endsWith('.json')).length;
 
         return {

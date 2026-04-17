@@ -1,35 +1,51 @@
 // ───────────────────────────────────────────────────────────────
 // TEST: Hook State Management
 // ───────────────────────────────────────────────────────────────
-import { describe, it, expect, afterEach, vi } from 'vitest';
-import fs, { mkdirSync, rmSync, existsSync, statSync, utimesSync } from 'node:fs';
+
+import { createHash } from 'node:crypto';
+import fs, {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  utimesSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { createHash } from 'node:crypto';
+
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
 import {
+  CURRENT_HOOK_STATE_SCHEMA_VERSION,
+  cleanStaleStates,
+  ensureStateDir,
   getProjectHash,
   getStatePath,
-  ensureStateDir,
-  loadState,
   loadMostRecentState,
+  loadState,
   saveState,
   updateState,
-  cleanStaleStates,
   type HookState,
+  type PersistedHookState,
 } from '../hooks/claude/hook-state.js';
+
+function unwrapState(sessionId: string): PersistedHookState | null {
+  const result = loadState(sessionId);
+  return result.ok ? result.state : null;
+}
 
 describe('hook state management', () => {
   const testSessionId = 'test-session-123';
 
   afterEach(() => {
     vi.restoreAllMocks();
-    // Clean up test state files
     try {
-      const statePath = getStatePath(testSessionId);
-      if (existsSync(statePath)) {
-        rmSync(statePath);
-      }
-    } catch { /* ok */ }
+      rmSync(getStatePath(testSessionId));
+    } catch {
+      // ok
+    }
   });
 
   describe('getProjectHash', () => {
@@ -45,17 +61,17 @@ describe('hook state management', () => {
 
   describe('getStatePath', () => {
     it('returns a .json file path', () => {
-      const path = getStatePath('session-abc');
-      expect(path).toContain('.json');
-      expect(path).toContain('speckit-claude-hooks');
+      const filePath = getStatePath('session-abc');
+      expect(filePath).toContain('.json');
+      expect(filePath).toContain('speckit-claude-hooks');
     });
 
     it('hashes session ids into fixed-length filenames', () => {
       const sessionId = 'ses/sion/../bad';
-      const path = getStatePath(sessionId);
-      expect(path).not.toContain('..');
-      expect(path).toMatch(/[a-f0-9]{16}\.json$/);
-      expect(path).toContain(createHash('sha256').update(sessionId).digest('hex').slice(0, 16));
+      const filePath = getStatePath(sessionId);
+      expect(filePath).not.toContain('..');
+      expect(filePath).toMatch(/[a-f0-9]{16}\.json$/);
+      expect(filePath).toContain(createHash('sha256').update(sessionId).digest('hex').slice(0, 16));
     });
   });
 
@@ -85,8 +101,11 @@ describe('hook state management', () => {
   });
 
   describe('loadState / saveState', () => {
-    it('returns null for non-existent session', () => {
-      expect(loadState('non-existent-session')).toBeNull();
+    it('returns a typed not_found result for a missing session', () => {
+      expect(loadState('non-existent-session')).toMatchObject({
+        ok: false,
+        reason: 'not_found',
+      });
     });
 
     it('saves and loads state correctly', () => {
@@ -102,13 +121,68 @@ describe('hook state management', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      saveState(testSessionId, state);
+
+      expect(saveState(testSessionId, state)).toBe(true);
+
       const loaded = loadState(testSessionId);
-      expect(loaded).not.toBeNull();
-      expect(loaded!.claudeSessionId).toBe(testSessionId);
-      expect(loaded!.speckitSessionId).toBe('sk-123');
-      expect(loaded!.lastSpecFolder).toBe('specs/test');
+      expect(loaded.ok).toBe(true);
+      expect(loaded).toMatchObject({
+        ok: true,
+        migrated: false,
+      });
+      if (!loaded.ok) {
+        throw new Error('expected saved hook state to load');
+      }
+      expect(loaded.state.schemaVersion).toBe(CURRENT_HOOK_STATE_SCHEMA_VERSION);
+      expect(loaded.state.claudeSessionId).toBe(testSessionId);
+      expect(loaded.state.speckitSessionId).toBe('sk-123');
+      expect(loaded.state.lastSpecFolder).toBe('specs/test');
       expect(statSync(getStatePath(testSessionId)).mode & 0o777).toBe(0o600);
+    });
+
+    it('quarantines parse failures to a .bad sibling', () => {
+      ensureStateDir();
+      const statePath = getStatePath(testSessionId);
+      const quarantinedPath = `${statePath}.bad`;
+      writeFileSync(statePath, '{not-valid-json', 'utf-8');
+
+      const loaded = loadState(testSessionId);
+      expect(loaded).toMatchObject({
+        ok: false,
+        reason: 'parse_error',
+        path: statePath,
+        quarantinedPath,
+      });
+      expect(existsSync(statePath)).toBe(false);
+      expect(existsSync(quarantinedPath)).toBe(true);
+    });
+
+    it('rejects schema mismatches and quarantines them', () => {
+      ensureStateDir();
+      const statePath = getStatePath(testSessionId);
+      const quarantinedPath = `${statePath}.bad`;
+      writeFileSync(statePath, JSON.stringify({
+        schemaVersion: 999,
+        claudeSessionId: testSessionId,
+        speckitSessionId: null,
+        lastSpecFolder: 'specs/test',
+        sessionSummary: null,
+        pendingCompactPrime: null,
+        producerMetadata: null,
+        metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }), 'utf-8');
+
+      const loaded = loadState(testSessionId);
+      expect(loaded).toMatchObject({
+        ok: false,
+        reason: 'schema_mismatch',
+        path: statePath,
+        quarantinedPath,
+      });
+      expect(existsSync(statePath)).toBe(false);
+      expect(existsSync(quarantinedPath)).toBe(true);
     });
 
     it('uses unique temp paths for overlapping writes to the same session', () => {
@@ -136,7 +210,6 @@ describe('hook state management', () => {
 
       vi.spyOn(fs, 'writeFileSync').mockImplementation((...args: Parameters<typeof fs.writeFileSync>) => {
         const [filePath] = args;
-
         if (typeof filePath === 'string' && filePath.includes('.tmp-')) {
           tempPaths.push(filePath);
           originalWriteFileSync(...args);
@@ -158,7 +231,7 @@ describe('hook state management', () => {
       expect(counterMatches[0]).not.toBeNull();
       expect(counterMatches[1]).not.toBeNull();
       expect(new Set(counterMatches.map((match) => match?.[1])).size).toBe(2);
-      expect(loadState(concurrentSessionId)?.lastSpecFolder).toBe('specs/a');
+      expect(unwrapState(concurrentSessionId)?.lastSpecFolder).toBe('specs/a');
 
       try {
         rmSync(getStatePath(concurrentSessionId));
@@ -169,23 +242,36 @@ describe('hook state management', () => {
   });
 
   describe('updateState', () => {
-    it('creates new state if none exists', () => {
+    it('returns merged + persisted metadata when creating a new state', () => {
       ensureStateDir();
-      const state = updateState('new-session', { lastSpecFolder: 'specs/new' });
-      expect(state.lastSpecFolder).toBe('specs/new');
-      expect(state.claudeSessionId).toBe('new-session');
-      expect(state.speckitSessionId).toBeNull();
-      expect(state.producerMetadata).toBeNull();
-      // Clean up
-      try { rmSync(getStatePath('new-session')); } catch { /* ok */ }
+      const result = updateState('new-session', { lastSpecFolder: 'specs/new' });
+      expect(result).toMatchObject({
+        ok: true,
+        persisted: true,
+        path: getStatePath('new-session'),
+      });
+      expect(result.merged.lastSpecFolder).toBe('specs/new');
+      expect(result.merged.claudeSessionId).toBe('new-session');
+      expect(result.merged.speckitSessionId).toBeNull();
+      expect(result.merged.producerMetadata).toBeNull();
+      try {
+        rmSync(getStatePath('new-session'));
+      } catch {
+        // ok
+      }
     });
 
-    it('merges patch into existing state', () => {
+    it('merges patch fields without pretending durability failed writes succeeded', () => {
       ensureStateDir();
       updateState(testSessionId, { lastSpecFolder: 'specs/first' });
-      const updated = updateState(testSessionId, { pendingCompactPrime: { payload: 'test', cachedAt: new Date().toISOString() } });
-      expect(updated.lastSpecFolder).toBe('specs/first');
-      expect(updated.pendingCompactPrime).not.toBeNull();
+      const updated = updateState(testSessionId, {
+        pendingCompactPrime: { payload: 'test', cachedAt: new Date().toISOString() },
+      });
+
+      expect(updated.ok).toBe(true);
+      expect(updated.persisted).toBe(true);
+      expect(updated.merged.lastSpecFolder).toBe('specs/first');
+      expect(updated.merged.pendingCompactPrime).not.toBeNull();
     });
   });
 
@@ -227,9 +313,13 @@ describe('hook state management', () => {
         utimesSync(mismatchedPath, mismatchedTime, mismatchedTime);
 
         const state = loadMostRecentState({ scope: { specFolder: 'specs/matching' } });
+        expect(state.ok).toBe(true);
+        if (!state.ok) {
+          throw new Error('expected scoped hook state to be found');
+        }
         expect(state.errors).toEqual([]);
-        expect(state.states[0]?.claudeSessionId).toBe(matchingSessionId);
-        expect(state.states[0]?.lastSpecFolder).toBe('specs/matching');
+        expect(state.state.claudeSessionId).toBe(matchingSessionId);
+        expect(state.state.lastSpecFolder).toBe('specs/matching');
 
         try { rmSync(matchingPath); } catch { /* ok */ }
         try { rmSync(mismatchedPath); } catch { /* ok */ }
@@ -240,10 +330,14 @@ describe('hook state management', () => {
     });
 
     it('fails closed when the caller cannot prove scope', () => {
-      expect(loadMostRecentState()).toEqual({ states: [], errors: [] });
+      expect(loadMostRecentState()).toMatchObject({
+        ok: false,
+        reason: 'scope_unknown_fail_closed',
+        errors: [],
+      });
     });
 
-    it('returns null when the newest state is older than 24 hours', () => {
+    it('returns not_found when the newest state is older than 24 hours', () => {
       const originalCwd = process.cwd();
       const projectCwd = join(tmpdir(), `speckit-stale-state-${Date.now()}`);
       mkdirSync(projectCwd, { recursive: true });
@@ -271,7 +365,11 @@ describe('hook state management', () => {
 
         expect(loadMostRecentState({
           scope: { specFolder: 'specs/stale', claudeSessionId: staleSessionId },
-        })).toEqual({ states: [], errors: [] });
+        })).toMatchObject({
+          ok: false,
+          reason: 'not_found',
+          errors: [],
+        });
         try { rmSync(stalePath); } catch { /* ok */ }
       } finally {
         process.chdir(originalCwd);
@@ -279,7 +377,7 @@ describe('hook state management', () => {
       }
     });
 
-    it('skips malformed sibling files instead of aborting the whole scan', () => {
+    it('quarantines malformed sibling files instead of aborting the whole scan', () => {
       const originalCwd = process.cwd();
       const projectCwd = join(tmpdir(), `speckit-poison-pill-state-${Date.now()}`);
       mkdirSync(projectCwd, { recursive: true });
@@ -302,17 +400,24 @@ describe('hook state management', () => {
 
         saveState(matchingSessionId, validState);
         const invalidPath = join(dirname(getStatePath(matchingSessionId)), 'poison-pill.json');
-        fs.writeFileSync(invalidPath, '{not-valid-json', 'utf-8');
+        writeFileSync(invalidPath, '{not-valid-json', 'utf-8');
 
         const result = loadMostRecentState({ scope: { specFolder: 'specs/matching' } });
-        expect(result.states).toHaveLength(1);
-        expect(result.states[0]?.claudeSessionId).toBe(matchingSessionId);
-        expect(result.errors).toHaveLength(1);
-        expect(result.errors[0]?.path).toBe(invalidPath);
-        expect(result.errors[0]?.reason.length).toBeGreaterThan(0);
+        expect(result.ok).toBe(true);
+        if (!result.ok) {
+          throw new Error('expected valid sibling to survive poisoned scan');
+        }
+        expect(result.state.claudeSessionId).toBe(matchingSessionId);
+        expect(result.errors).toContainEqual({
+          path: invalidPath,
+          reason: 'parse_error',
+          detail: expect.any(String),
+          quarantinedPath: `${invalidPath}.bad`,
+        });
+        expect(existsSync(invalidPath)).toBe(false);
+        expect(existsSync(`${invalidPath}.bad`)).toBe(true);
 
         try { rmSync(getStatePath(matchingSessionId)); } catch { /* ok */ }
-        try { rmSync(invalidPath); } catch { /* ok */ }
       } finally {
         process.chdir(originalCwd);
         rmSync(projectCwd, { recursive: true, force: true });
@@ -353,9 +458,11 @@ describe('hook state management', () => {
         const result = cleanStaleStates(24 * 60 * 60 * 1000);
         expect(result.removed).toBe(1);
         expect(result.skipped).toBe(1);
-        expect(result.errors).toHaveLength(1);
-        expect(result.errors[0]?.path).toBe(blockedPath);
-        expect(result.errors[0]?.reason.length).toBeGreaterThan(0);
+        expect(result.errors).toContainEqual({
+          path: blockedPath,
+          reason: 'read_error',
+          detail: expect.any(String),
+        });
         expect(existsSync(stalePath)).toBe(false);
         expect(existsSync(blockedPath)).toBe(true);
       } finally {

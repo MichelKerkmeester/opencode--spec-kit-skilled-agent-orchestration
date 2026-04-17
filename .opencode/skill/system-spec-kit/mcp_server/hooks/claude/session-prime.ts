@@ -11,6 +11,7 @@ import {
   parseHookStdin, hookLog, formatHookOutput, truncateToTokenBudget,
   withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET, SESSION_PRIME_TOKEN_BUDGET,
   calculatePressureAdjustedBudget, sanitizeRecoveredPayload, wrapRecoveredCompactPayload,
+  getRequiredSessionId,
   type HookInput,
   type OutputSection,
 } from './shared.js';
@@ -41,7 +42,8 @@ try {
 
 /** Handle source=compact: inject cached PreCompact payload (from 3-source merger) */
 function handleCompact(sessionId: string): OutputSection[] {
-  const state = loadState(sessionId);
+  const stateResult = loadState(sessionId);
+  const state = stateResult.ok ? stateResult.state : null;
   const pendingCompactPrime = readCompactPrime(sessionId);
   if (!pendingCompactPrime) {
     hookLog('warn', 'session-prime', `No cached compact payload for session ${sessionId}`);
@@ -87,6 +89,17 @@ function handleCompact(sessionId: string): OutputSection[] {
   }
 
   return sections;
+}
+
+function readCompactPrimeIdentity(sessionId: string): { cachedAt: string; opaqueId?: string | null } | null {
+  const pendingCompactPrime = readCompactPrime(sessionId);
+  if (!pendingCompactPrime) {
+    return null;
+  }
+  return {
+    cachedAt: pendingCompactPrime.cachedAt,
+    opaqueId: pendingCompactPrime.opaqueId ?? null,
+  };
 }
 
 function buildFallbackStartupSurface(hasCachedContinuity: boolean): string {
@@ -192,7 +205,8 @@ export function handleStartup(
 
 /** Handle source=resume: load resume context for continued session */
 function handleResume(sessionId: string): OutputSection[] {
-  const state = loadState(sessionId);
+  const stateResult = loadState(sessionId);
+  const state = stateResult.ok ? stateResult.state : null;
   const sections: OutputSection[] = [];
 
   if (state?.lastSpecFolder) {
@@ -242,15 +256,17 @@ async function main(): Promise<void> {
     return;
   }
 
-  const sessionId = input.session_id ?? 'unknown';
+  const sessionId = getRequiredSessionId(input.session_id, 'session-prime');
   const source = input.source ?? 'startup';
   hookLog('info', 'session-prime', `SessionStart triggered (source: ${source}, session: ${sessionId})`);
 
   let sections: OutputSection[];
   let budget: number;
+  let compactIdentity: { cachedAt: string; opaqueId?: string | null } | null = null;
 
   switch (source) {
     case 'compact':
+      compactIdentity = readCompactPrimeIdentity(sessionId);
       sections = handleCompact(sessionId);
       budget = COMPACTION_TOKEN_BUDGET;
       break;
@@ -288,7 +304,7 @@ async function main(): Promise<void> {
   // output was handed off, so compact recovery cannot be dropped early.
   await writeHookOutput(output);
   if (source === 'compact') {
-    clearCompactPrime(sessionId);
+    clearCompactPrime(sessionId, compactIdentity ?? undefined);
   }
   hookLog('info', 'session-prime', `Output ${output.length} chars for source=${source}`);
 }

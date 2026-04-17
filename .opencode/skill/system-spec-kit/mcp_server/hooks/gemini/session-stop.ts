@@ -13,7 +13,7 @@
 
 import { readFileSync, statSync } from 'node:fs';
 import {
-  hookLog, withTimeout, HOOK_TIMEOUT_MS,
+  hookLog, withTimeout, HOOK_TIMEOUT_MS, getRequiredSessionId,
 } from '../claude/shared.js';
 import { ensureStateDir, updateState, cleanStaleStates } from '../claude/hook-state.js';
 import { parseGeminiStdin } from './shared.js';
@@ -94,14 +94,17 @@ async function main(): Promise<void> {
     return;
   }
 
-  const sessionId = input.session_id ?? 'unknown';
+  const sessionId = getRequiredSessionId(input.session_id, 'gemini:session-stop');
   hookLog('info', 'gemini:session-stop', `SessionEnd hook fired for session ${sessionId} (reason: ${input.reason ?? 'unknown'})`);
 
   // Auto-detect spec folder from transcript
   if (input.transcript_path) {
     const detectedSpec = detectSpecFolder(input.transcript_path);
     if (detectedSpec) {
-      updateState(sessionId, { lastSpecFolder: detectedSpec });
+      const updateResult = updateState(sessionId, { lastSpecFolder: detectedSpec });
+      if (!updateResult.persisted) {
+        hookLog('warn', 'gemini:session-stop', `Failed to persist detected spec folder for session ${sessionId}`);
+      }
       hookLog('info', 'gemini:session-stop', `Auto-detected spec folder: ${detectedSpec}`);
     }
   }
@@ -109,9 +112,12 @@ async function main(): Promise<void> {
   // Extract session summary from prompt_response if available (AfterAgent context)
   if (input.prompt_response && typeof input.prompt_response === 'string') {
     const text = extractSessionSummary(input.prompt_response);
-    updateState(sessionId, {
+    const updateResult = updateState(sessionId, {
       sessionSummary: { text, extractedAt: new Date().toISOString() },
     });
+    if (!updateResult.persisted) {
+      hookLog('warn', 'gemini:session-stop', `Failed to persist session summary for session ${sessionId}`);
+    }
     hookLog('info', 'gemini:session-stop', `Session summary extracted (${text.length} chars)`);
   }
 

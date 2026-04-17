@@ -6,7 +6,7 @@ import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { loadMostRecentStateMock } = vi.hoisted(() => ({
-  loadMostRecentStateMock: vi.fn(() => ({ states: [], errors: [] })),
+  loadMostRecentStateMock: vi.fn(() => ({ ok: false, reason: 'not_found', errors: [] })),
 }));
 
 vi.mock('../lib/code-graph/code-graph-db.js', () => ({
@@ -41,7 +41,7 @@ vi.mock('../hooks/claude/hook-state.js', () => ({
   loadMostRecentState: loadMostRecentStateMock,
 }));
 
-import { handleSessionResume } from '../handlers/session-resume.js';
+import { getCachedSessionSummaryDecision, handleSessionResume } from '../handlers/session-resume.js';
 import * as graphDb from '../lib/code-graph/code-graph-db.js';
 import { getGraphFreshness } from '../lib/code-graph/ensure-ready.js';
 import { computeQualityScore, recordBootstrapEvent } from '../lib/session/context-metrics.js';
@@ -121,7 +121,7 @@ let originalCwd = process.cwd();
 
   beforeEach(() => {
     vi.clearAllMocks();
-    loadMostRecentStateMock.mockReturnValue({ states: [], errors: [] });
+    loadMostRecentStateMock.mockReturnValue({ ok: false, reason: 'not_found', errors: [] });
     originalCwd = process.cwd();
   });
 
@@ -173,7 +173,12 @@ describe('session-resume handler', () => {
       process.chdir(workspacePath);
 
       loadMostRecentStateMock.mockReturnValue({
-        states: [{
+        ok: true,
+        path: '/tmp/mock-state.json',
+        state: {
+          schemaVersion: 1,
+          claudeSessionId: 'cached-session',
+          speckitSessionId: null,
           lastSpecFolder: specFolder,
           updatedAt: '2026-04-11T12:30:00Z',
           sessionSummary: {
@@ -193,7 +198,14 @@ describe('session-resume handler', () => {
               cacheReadInputTokens: 6,
             },
           },
-        }],
+          pendingCompactPrime: null,
+          metrics: {
+            estimatedPromptTokens: 0,
+            estimatedCompletionTokens: 0,
+            lastTranscriptOffset: 0,
+          },
+          createdAt: '2026-04-11T12:00:00Z',
+        },
         errors: [],
       });
 
@@ -210,6 +222,24 @@ describe('session-resume handler', () => {
     } finally {
       warnSpy.mockRestore();
     }
+  });
+
+  it('maps hook-state schema mismatches to the cached-summary rejection path', () => {
+    loadMostRecentStateMock.mockReturnValue({
+      ok: false,
+      reason: 'schema_mismatch',
+      detail: 'Expected schema version 1 but received 2.',
+      errors: [],
+    });
+
+    const decision = getCachedSessionSummaryDecision({ claudeSessionId: 'bad-session' });
+
+    expect(decision).toMatchObject({
+      status: 'rejected',
+      category: 'fidelity',
+      reason: 'schema_mismatch',
+      detail: 'Expected schema version 1 but received 2.',
+    });
   });
 
   it('still returns ladder-backed memory in minimal mode while adding session quality', async () => {

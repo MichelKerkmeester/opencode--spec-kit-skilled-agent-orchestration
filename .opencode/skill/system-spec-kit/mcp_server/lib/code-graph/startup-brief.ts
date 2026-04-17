@@ -181,10 +181,11 @@ function buildSessionContinuity(stateScope?: HookStateScope): string | null {
     return null;
   }
 
-  const state = loadMostRecentState({ scope: stateScope }).states[0] ?? null;
-  if (!state) {
+  const stateResult = loadMostRecentState({ scope: stateScope });
+  if (!stateResult.ok) {
     return null;
   }
+  const state = stateResult.state;
 
   const parts: string[] = [];
   if (state.lastSpecFolder) {

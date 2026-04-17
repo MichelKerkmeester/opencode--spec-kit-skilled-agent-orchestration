@@ -27,6 +27,15 @@ export interface OutputSection {
   content: string;
 }
 
+/** Require a non-empty session_id for any hook that touches shared temp-state. */
+export function getRequiredSessionId(sessionId: unknown, surface: string): string {
+  const normalized = typeof sessionId === 'string' ? sessionId.trim() : '';
+  if (normalized.length === 0) {
+    throw new Error(`${surface} hook payload missing required session_id`);
+  }
+  return normalized;
+}
+
 /** Read and parse JSON from stdin. Returns null on failure. */
 export async function parseHookStdin(): Promise<HookInput | null> {
   try {

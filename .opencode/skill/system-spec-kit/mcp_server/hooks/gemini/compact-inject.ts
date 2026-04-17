@@ -15,7 +15,7 @@
 import {
   hookLog, truncateToTokenBudget,
   withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET,
-  sanitizeRecoveredPayload, wrapRecoveredCompactPayload,
+  sanitizeRecoveredPayload, wrapRecoveredCompactPayload, getRequiredSessionId,
 } from '../claude/shared.js';
 import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from '../claude/hook-state.js';
 import { parseGeminiStdin, formatGeminiOutput } from './shared.js';
@@ -31,7 +31,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const sessionId = input.session_id ?? 'unknown';
+  const sessionId = getRequiredSessionId(input.session_id, 'gemini:compact-inject');
 
   // One-shot: only inject if there's a pending compact payload
   const pendingCompactPrime = readCompactPrime(sessionId);
@@ -54,7 +54,8 @@ async function main(): Promise<void> {
 
   hookLog('info', 'gemini:compact-inject', `Injecting cached compact brief (${sanitizedPayload.length} chars, cached at ${cachedAt})`);
 
-  const state = loadState(sessionId);
+  const stateResult = loadState(sessionId);
+  const state = stateResult.ok ? stateResult.state : null;
   const sections: string[] = [
     '## Recovered Context (Post-Compression)',
     wrappedPayload,
@@ -72,7 +73,10 @@ async function main(): Promise<void> {
   process.stdout.write(output);
 
   // Clear compact payload only AFTER stdout write succeeds
-  clearCompactPrime(sessionId);
+  clearCompactPrime(sessionId, {
+    cachedAt: pendingCompactPrime.cachedAt,
+    opaqueId: pendingCompactPrime.opaqueId ?? null,
+  });
 
   hookLog('info', 'gemini:compact-inject', `Injected ${rawOutput.length} chars for session ${sessionId}`);
 }

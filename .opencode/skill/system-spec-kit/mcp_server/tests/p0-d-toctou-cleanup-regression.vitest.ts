@@ -104,15 +104,20 @@ describe.sequential('P0-D TOCTOU cleanup regression', () => {
       expect(cleanup.errors).toEqual([
         {
           path: statePath,
-          reason: 'identity_changed_before_cleanup',
+          reason: 'read_error',
+          detail: 'identity_changed_before_cleanup',
         },
       ]);
       expect(logLines.join('')).toContain('clean_stale_states_skipped');
       expect(logLines.join('')).toContain('identity_changed_before_cleanup');
       expect(existsSync(statePath)).toBe(true);
+      expect(recovered.ok).toBe(true);
+      if (!recovered.ok) {
+        throw new Error('expected fresh replacement state to survive cleanup');
+      }
       expect(recovered.errors).toEqual([]);
-      expect(recovered.states[0]?.sessionSummary?.text).toBe('fresh state survives finalize');
-      expect(recovered.states[0]?.metrics.lastTranscriptOffset).toBe(2048);
+      expect(recovered.state.sessionSummary?.text).toBe('fresh state survives finalize');
+      expect(recovered.state.metrics.lastTranscriptOffset).toBe(2048);
     } finally {
       openSpy.mockRestore();
       stderrSpy.mockRestore();

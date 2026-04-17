@@ -19,6 +19,7 @@ import {
   hookLog, formatHookOutput, truncateToTokenBudget,
   wrapRecoveredCompactPayload,
   withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET, SESSION_PRIME_TOKEN_BUDGET,
+  getRequiredSessionId,
   type OutputSection,
 } from '../claude/shared.js';
 import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from '../claude/hook-state.js';
@@ -47,7 +48,8 @@ try {
 
 /** Handle source=compact (post-compress): inject cached PreCompress payload */
 export function handleCompact(sessionId: string): OutputSection[] {
-  const state = loadState(sessionId);
+  const stateResult = loadState(sessionId);
+  const state = stateResult.ok ? stateResult.state : null;
   const pendingCompactPrime = readCompactPrime(sessionId);
   if (!pendingCompactPrime) {
     hookLog('warn', 'gemini:session-prime', `No cached compact payload for session ${sessionId}`);
@@ -91,6 +93,17 @@ export function handleCompact(sessionId: string): OutputSection[] {
   }
 
   return sections;
+}
+
+function readCompactPrimeIdentity(sessionId: string): { cachedAt: string; opaqueId?: string | null } | null {
+  const pendingCompactPrime = readCompactPrime(sessionId);
+  if (!pendingCompactPrime) {
+    return null;
+  }
+  return {
+    cachedAt: pendingCompactPrime.cachedAt,
+    opaqueId: pendingCompactPrime.opaqueId ?? null,
+  };
 }
 
 /** Handle source=startup: prime new session with tool overview */
@@ -164,7 +177,8 @@ function handleStartup(sessionId?: string): OutputSection[] {
 
 /** Handle source=resume: load resume context */
 function handleResume(sessionId: string): OutputSection[] {
-  const state = loadState(sessionId);
+  const stateResult = loadState(sessionId);
+  const state = stateResult.ok ? stateResult.state : null;
 
   if (state?.lastSpecFolder) {
     return [{
@@ -196,17 +210,19 @@ async function main(): Promise<void> {
     return;
   }
 
-  const sessionId = input.session_id ?? 'unknown';
+  const sessionId = getRequiredSessionId(input.session_id, 'gemini:session-prime');
   const source = input.source ?? 'startup';
   hookLog('info', 'gemini:session-prime', `SessionStart triggered (source: ${source}, session: ${sessionId})`);
 
   let sections: OutputSection[];
   let budget: number;
+  let compactIdentity: { cachedAt: string; opaqueId?: string | null } | null = null;
 
   switch (source) {
     case 'compact':
       // Gemini doesn't have a native compact source, but we handle it
       // in case BeforeAgent injects a one-shot compact recovery
+      compactIdentity = readCompactPrimeIdentity(sessionId);
       sections = handleCompact(sessionId);
       budget = COMPACTION_TOKEN_BUDGET;
       break;
@@ -234,7 +250,7 @@ async function main(): Promise<void> {
   const output = formatGeminiOutput(rawOutput);
   process.stdout.write(output);
   if (source === 'compact') {
-    clearCompactPrime(sessionId);
+    clearCompactPrime(sessionId, compactIdentity ?? undefined);
   }
   hookLog('info', 'gemini:session-prime', `Output ${rawOutput.length} chars for source=${source}`);
 }

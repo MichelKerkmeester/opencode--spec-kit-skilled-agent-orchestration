@@ -83,6 +83,7 @@ export {
 export {
   GRAPH_METADATA_DOCUMENT_TYPE,
   GRAPH_METADATA_FILENAME,
+  GRAPH_METADATA_MIGRATED_QUALITY_FLAG,
   GRAPH_METADATA_SCHEMA_VERSION,
   createEmptyGraphMetadataManual,
   graphMetadataSchema,
@@ -92,6 +93,7 @@ export {
 export type {
   GraphMetadata,
   GraphMetadataDerived,
+  GraphMetadataMigrationSource,
   GraphMetadataManual,
   GraphEntityReference,
   PacketReference,
@@ -107,6 +109,7 @@ export {
   graphMetadataToIndexableText,
   packetReferencesToCausalLinks,
 } from '../lib/graph/graph-metadata-parser.js';
+export type { GraphMetadataValidationResult } from '../lib/graph/graph-metadata-parser.js';
 
 // --- Performance benchmarking support (used by scripts/evals) ---
 export * as sessionBoost from '../lib/search/session-boost.js';

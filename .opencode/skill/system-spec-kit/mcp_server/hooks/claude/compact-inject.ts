@@ -11,7 +11,7 @@ import { performance } from 'node:perf_hooks';
 import { readFileSync } from 'node:fs';
 import {
   parseHookStdin, hookLog, truncateToTokenBudget,
-  withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET,
+  withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET, getRequiredSessionId,
 } from './shared.js';
 import { ensureStateDir, updateState } from './hook-state.js';
 import { mergeCompactBrief } from '../../lib/code-graph/compact-merger.js';
@@ -375,7 +375,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const sessionId = input.session_id ?? 'unknown';
+  const sessionId = getRequiredSessionId(input.session_id, 'compact-inject');
   hookLog('info', 'compact-inject', `PreCompact triggered for session ${sessionId} (trigger: ${input.trigger ?? 'unknown'})`);
 
   let transcriptLines: string[] = [];
@@ -390,7 +390,7 @@ async function main(): Promise<void> {
     const mergedContext = await buildMergedContext(transcriptLines);
     payload = truncateToTokenBudget(mergedContext, COMPACTION_TOKEN_BUDGET);
     const payloadContract = await buildMergedPayloadContract(transcriptLines);
-    updateState(sessionId, {
+    const updateResult = updateState(sessionId, {
       pendingCompactPrime: {
         payload,
         cachedAt: new Date().toISOString(),
@@ -405,6 +405,10 @@ async function main(): Promise<void> {
         },
       },
     });
+    if (!updateResult.persisted) {
+      hookLog('warn', 'compact-inject', `Compact context cache was not persisted for session ${sessionId}`);
+      return;
+    }
     hookLog('info', 'compact-inject', `Cached compact context (${payload.length} chars) for session ${sessionId}`);
     return;
   } catch (err: unknown) {
@@ -413,13 +417,17 @@ async function main(): Promise<void> {
     payload = truncateToTokenBudget(rawContext, COMPACTION_TOKEN_BUDGET);
   }
 
-  updateState(sessionId, {
+  const updateResult = updateState(sessionId, {
     pendingCompactPrime: {
       payload,
       cachedAt: new Date().toISOString(),
       payloadContract: null,
     },
   });
+  if (!updateResult.persisted) {
+    hookLog('warn', 'compact-inject', `Legacy compact context cache was not persisted for session ${sessionId}`);
+    return;
+  }
 
   hookLog('info', 'compact-inject', `Cached compact context (${payload.length} chars) for session ${sessionId}`);
 }

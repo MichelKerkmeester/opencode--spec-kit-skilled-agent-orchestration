@@ -7,69 +7,141 @@ import fs from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, join } from 'node:path';
 import {
-  mkdirSync, readFileSync,
-  readdirSync, statSync, unlinkSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  statSync,
+  unlinkSync,
 } from 'node:fs';
+import { z } from 'zod';
+
 import { hookLog } from './shared.js';
 import type { SharedPayloadEnvelope } from '../../lib/context/shared-payload.js';
 
-/** Per-session hook state persisted to temp directory */
-export interface HookProducerMetadata {
-  lastClaudeTurnAt: string | null;
-  transcript: {
-    path: string;
-    fingerprint: string;
-    sizeBytes: number;
-    modifiedAt: string;
-  } | null;
-  cacheTokens: {
-    cacheCreationInputTokens: number;
-    cacheReadInputTokens: number;
-  } | null;
-}
-
-export interface HookState {
-  claudeSessionId: string;
-  speckitSessionId: string | null;
-  lastSpecFolder: string | null;
-  sessionSummary: { text: string; extractedAt: string } | null;
-  pendingCompactPrime: {
-    payload: string;
-    cachedAt: string;
-    payloadContract?: SharedPayloadEnvelope | null;
-  } | null;
-  producerMetadata: HookProducerMetadata | null;
-  metrics: {
-    estimatedPromptTokens: number;
-    estimatedCompletionTokens: number;
-    lastTranscriptOffset: number;
-  };
-  createdAt: string;
-  updatedAt: string;
-}
+export const CURRENT_HOOK_STATE_SCHEMA_VERSION = 1 as const;
 
 const MAX_RECENT_STATE_AGE_MS = 24 * 60 * 60 * 1000;
+const QUARANTINE_SUFFIX = '.bad';
+
 let tempCounter = 0;
+
+const SharedPayloadEnvelopeSchema = z.custom<SharedPayloadEnvelope>(
+  (value) => value !== null && typeof value === 'object',
+  { message: 'Expected shared payload envelope object' },
+);
+
+const HookProducerMetadataSchema = z.object({
+  lastClaudeTurnAt: z.string().nullable(),
+  transcript: z.object({
+    path: z.string().min(1),
+    fingerprint: z.string().min(1),
+    sizeBytes: z.number().finite().nonnegative(),
+    modifiedAt: z.string().min(1),
+  }).nullable(),
+  cacheTokens: z.object({
+    cacheCreationInputTokens: z.number().finite().nonnegative(),
+    cacheReadInputTokens: z.number().finite().nonnegative(),
+  }).nullable(),
+});
+
+const PendingCompactPrimeSchema = z.object({
+  payload: z.string(),
+  cachedAt: z.string().min(1),
+  opaqueId: z.string().min(1).optional(),
+  payloadContract: SharedPayloadEnvelopeSchema.nullable().optional(),
+});
+
+export const HookStateSchema = z.object({
+  schemaVersion: z.literal(CURRENT_HOOK_STATE_SCHEMA_VERSION).optional().default(CURRENT_HOOK_STATE_SCHEMA_VERSION),
+  claudeSessionId: z.string().min(1),
+  speckitSessionId: z.string().min(1).nullable(),
+  lastSpecFolder: z.string().min(1).nullable(),
+  sessionSummary: z.object({
+    text: z.string().min(1),
+    extractedAt: z.string().min(1),
+  }).nullable(),
+  pendingCompactPrime: PendingCompactPrimeSchema.nullable(),
+  producerMetadata: HookProducerMetadataSchema.nullable(),
+  metrics: z.object({
+    estimatedPromptTokens: z.number().finite().nonnegative(),
+    estimatedCompletionTokens: z.number().finite().nonnegative(),
+    lastTranscriptOffset: z.number().int().nonnegative(),
+  }),
+  createdAt: z.string().min(1),
+  updatedAt: z.string().min(1),
+});
+
+export type HookProducerMetadata = z.output<typeof HookProducerMetadataSchema>;
+export type HookState = z.input<typeof HookStateSchema>;
+export type PersistedHookState = z.output<typeof HookStateSchema>;
 
 export interface HookStateScope {
   specFolder?: string;
   claudeSessionId?: string;
 }
 
+export type HookStateLoadFailureReason =
+  | 'not_found'
+  | 'parse_error'
+  | 'invalid_state'
+  | 'schema_mismatch'
+  | 'read_error'
+  | 'mtime_changed'
+  | 'scope_unknown_fail_closed';
+
 export interface HookStateFileError {
   path: string;
-  reason: string;
+  reason: HookStateLoadFailureReason;
+  detail?: string;
+  quarantinedPath?: string;
 }
 
-export interface LoadMostRecentStateResult {
-  states: HookState[];
-  errors: HookStateFileError[];
-}
+export type HookStateLoadResult =
+  | {
+    ok: true;
+    state: PersistedHookState;
+    path: string;
+    migrated: boolean;
+    persisted: boolean;
+  }
+  | {
+    ok: false;
+    reason: HookStateLoadFailureReason;
+    path: string;
+    detail: string;
+    quarantinedPath?: string;
+  };
+
+export type LoadMostRecentStateResult =
+  | {
+    ok: true;
+    state: PersistedHookState;
+    path: string;
+    errors: HookStateFileError[];
+  }
+  | {
+    ok: false;
+    reason: HookStateLoadFailureReason;
+    detail?: string;
+    errors: HookStateFileError[];
+  };
 
 export interface CleanStaleStatesResult {
   removed: number;
   skipped: number;
   errors: HookStateFileError[];
+}
+
+export interface HookStateUpdateResult {
+  ok: boolean;
+  merged: PersistedHookState;
+  persisted: boolean;
+  path: string;
+}
+
+export interface HookStateCompactPrimeIdentity {
+  cachedAt: string;
+  opaqueId?: string | null;
 }
 
 /** SHA-256 hash of cwd, first 12 chars */
@@ -97,17 +169,276 @@ export function ensureStateDir(): void {
   }
 }
 
-/** Load state for a session. Returns null if not found. */
-export function loadState(sessionId: string): HookState | null {
-  try {
-    const raw = readFileSync(getStatePath(sessionId), 'utf-8');
-    return JSON.parse(raw) as HookState;
-  } catch {
+function normalizePendingCompactPrime(
+  pendingCompactPrime: PersistedHookState['pendingCompactPrime'],
+  previousPendingCompactPrime: PersistedHookState['pendingCompactPrime'] = null,
+): PersistedHookState['pendingCompactPrime'] {
+  if (!pendingCompactPrime) {
     return null;
+  }
+
+  if (pendingCompactPrime.opaqueId) {
+    return pendingCompactPrime;
+  }
+
+  if (
+    previousPendingCompactPrime
+    && previousPendingCompactPrime.cachedAt === pendingCompactPrime.cachedAt
+    && previousPendingCompactPrime.payload === pendingCompactPrime.payload
+  ) {
+    return previousPendingCompactPrime;
+  }
+
+  return {
+    ...pendingCompactPrime,
+    opaqueId: crypto.randomUUID(),
+  };
+}
+
+function prepareStateForPersist(
+  sessionId: string,
+  state: Partial<HookState>,
+  existing: PersistedHookState | null = null,
+): PersistedHookState {
+  const now = new Date().toISOString();
+  const existingMetrics = existing?.metrics ?? {
+    estimatedPromptTokens: 0,
+    estimatedCompletionTokens: 0,
+    lastTranscriptOffset: 0,
+  };
+  const {
+    schemaVersion: _ignoredSchemaVersion,
+    claudeSessionId: _ignoredSessionId,
+    metrics: patchMetrics,
+    createdAt: patchCreatedAt,
+    updatedAt: _ignoredUpdatedAt,
+    ...restState
+  } = state;
+  const candidate = {
+    speckitSessionId: null,
+    lastSpecFolder: null,
+    sessionSummary: null,
+    pendingCompactPrime: null,
+    producerMetadata: null,
+    ...existing,
+    ...restState,
+    schemaVersion: CURRENT_HOOK_STATE_SCHEMA_VERSION,
+    claudeSessionId: sessionId,
+    metrics: patchMetrics
+      ? {
+        ...existingMetrics,
+        ...patchMetrics,
+        lastTranscriptOffset: Math.max(
+          existingMetrics.lastTranscriptOffset ?? 0,
+          patchMetrics.lastTranscriptOffset ?? 0,
+        ),
+      }
+      : existingMetrics,
+    createdAt: existing?.createdAt ?? patchCreatedAt ?? now,
+    updatedAt: existing?.updatedAt ?? now,
+  };
+  const parsed = HookStateSchema.parse(candidate);
+  return {
+    ...parsed,
+    pendingCompactPrime: normalizePendingCompactPrime(
+      parsed.pendingCompactPrime,
+      existing?.pendingCompactPrime ?? null,
+    ),
+  };
+}
+
+function persistState(
+  sessionId: string,
+  state: PersistedHookState,
+): { persisted: boolean; written: PersistedHookState; path: string } {
+  const filePath = getStatePath(sessionId);
+  const tmpPath = `${filePath}.tmp-${process.pid}-${tempCounter++}-${crypto.randomBytes(4).toString('hex')}`;
+  const written: PersistedHookState = {
+    ...state,
+    updatedAt: new Date().toISOString(),
+  };
+
+  try {
+    fs.writeFileSync(tmpPath, JSON.stringify(written, null, 2), {
+      encoding: 'utf-8',
+      mode: 0o600,
+    });
+    fs.renameSync(tmpPath, filePath);
+    return { persisted: true, written, path: filePath };
+  } catch (err: unknown) {
+    hookLog('error', 'state', `Failed to save state: ${err instanceof Error ? err.message : String(err)}`);
+    try {
+      if (fs.existsSync(tmpPath)) {
+        fs.rmSync(tmpPath, { force: true });
+      }
+    } catch {
+      // Ignore temp cleanup failures after a write failure.
+    }
+    return { persisted: false, written, path: filePath };
   }
 }
 
-function matchesScope(state: HookState, scope: HookStateScope): boolean {
+/** Save state atomically (write to .tmp then rename) */
+export function saveState(sessionId: string, state: HookState): boolean {
+  const prepared = prepareStateForPersist(sessionId, state);
+  return persistState(sessionId, prepared).persisted;
+}
+
+// Quarantine unreadable or drifted state beside the source file so later hooks skip the poison pill.
+function quarantineStateFile(filePath: string): string | undefined {
+  const quarantinePath = `${filePath}${QUARANTINE_SUFFIX}`;
+  try {
+    fs.rmSync(quarantinePath, { force: true });
+  } catch {
+    // Best effort overwrite of prior quarantine artifact.
+  }
+
+  try {
+    fs.renameSync(filePath, quarantinePath);
+    hookLog('warn', 'state', `Quarantined invalid hook state at ${quarantinePath}`);
+    return quarantinePath;
+  } catch (error: unknown) {
+    hookLog('warn', 'state', `Failed to quarantine invalid hook state ${filePath}: ${error instanceof Error ? error.message : String(error)}`);
+    return undefined;
+  }
+}
+
+function describeSchemaFailure(error: z.ZodError): string {
+  return error.issues
+    .map((issue) => `${issue.path.join('.') || '<root>'}: ${issue.message}`)
+    .join('; ');
+}
+
+function parseLoadedState(
+  filePath: string,
+  parsedValue: unknown,
+): Omit<Extract<HookStateLoadResult, { ok: true }>, 'path'> | Omit<Extract<HookStateLoadResult, { ok: false }>, 'path'> {
+  const schemaVersion = (
+    typeof parsedValue === 'object'
+    && parsedValue !== null
+    && 'schemaVersion' in parsedValue
+  )
+    ? (parsedValue as { schemaVersion?: unknown }).schemaVersion
+    : undefined;
+  const parsed = HookStateSchema.safeParse(parsedValue);
+  if (!parsed.success) {
+    const reason: HookStateLoadFailureReason = (
+      typeof schemaVersion === 'number'
+      && schemaVersion !== CURRENT_HOOK_STATE_SCHEMA_VERSION
+    )
+      ? 'schema_mismatch'
+      : 'invalid_state';
+    return {
+      ok: false,
+      reason,
+      detail: describeSchemaFailure(parsed.error),
+      quarantinedPath: quarantineStateFile(filePath),
+    };
+  }
+
+  const requiresOpaqueIdMigration = Boolean(
+    parsed.data.pendingCompactPrime
+    && parsed.data.pendingCompactPrime.opaqueId === undefined,
+  );
+  const state: PersistedHookState = {
+    ...parsed.data,
+    pendingCompactPrime: normalizePendingCompactPrime(parsed.data.pendingCompactPrime),
+  };
+  const migrated = schemaVersion === undefined || requiresOpaqueIdMigration;
+  if (!migrated) {
+    return {
+      ok: true,
+      state,
+      migrated: false,
+      persisted: true,
+    };
+  }
+
+  const migrationWrite = persistState(state.claudeSessionId, state);
+  if (!migrationWrite.persisted) {
+    hookLog('warn', 'state', `Lazy migration write-back failed for session ${state.claudeSessionId}`);
+  }
+  return {
+    ok: true,
+    state: migrationWrite.written,
+    migrated: true,
+    persisted: migrationWrite.persisted,
+  };
+}
+
+function readStateFile(filePath: string): HookStateLoadResult {
+  let initialStat: fs.Stats;
+  try {
+    initialStat = statSync(filePath);
+  } catch (error: unknown) {
+    const maybeErr = error as NodeJS.ErrnoException;
+    return {
+      ok: false,
+      reason: maybeErr?.code === 'ENOENT' ? 'not_found' : 'read_error',
+      path: filePath,
+      detail: error instanceof Error ? error.message : String(error),
+    };
+  }
+
+  let raw: string;
+  try {
+    raw = readFileSync(filePath, 'utf-8');
+  } catch (error: unknown) {
+    const maybeErr = error as NodeJS.ErrnoException;
+    return {
+      ok: false,
+      reason: maybeErr?.code === 'ENOENT' ? 'not_found' : 'read_error',
+      path: filePath,
+      detail: error instanceof Error ? error.message : String(error),
+    };
+  }
+
+  try {
+    const afterReadStat = statSync(filePath);
+    if (initialStat.mtimeMs !== afterReadStat.mtimeMs) {
+      return {
+        ok: false,
+        reason: 'mtime_changed',
+        path: filePath,
+        detail: 'State file changed during read; discarding candidate.',
+      };
+    }
+  } catch (error: unknown) {
+    const maybeErr = error as NodeJS.ErrnoException;
+    return {
+      ok: false,
+      reason: maybeErr?.code === 'ENOENT' ? 'not_found' : 'read_error',
+      path: filePath,
+      detail: error instanceof Error ? error.message : String(error),
+    };
+  }
+
+  let parsedValue: unknown;
+  try {
+    parsedValue = JSON.parse(raw);
+  } catch (error: unknown) {
+    return {
+      ok: false,
+      reason: 'parse_error',
+      path: filePath,
+      detail: error instanceof Error ? error.message : String(error),
+      quarantinedPath: quarantineStateFile(filePath),
+    };
+  }
+
+  const parsed = parseLoadedState(filePath, parsedValue);
+  return {
+    ...parsed,
+    path: filePath,
+  };
+}
+
+/** Load state for a session. */
+export function loadState(sessionId: string): HookStateLoadResult {
+  return readStateFile(getStatePath(sessionId));
+}
+
+function matchesScope(state: PersistedHookState, scope: HookStateScope): boolean {
   if (scope.specFolder && state.lastSpecFolder !== scope.specFolder) {
     return false;
   }
@@ -119,10 +450,29 @@ function matchesScope(state: HookState, scope: HookStateScope): boolean {
   return true;
 }
 
+function deriveMostRecentFailureReason(errors: HookStateFileError[]): HookStateLoadFailureReason {
+  if (errors.some((error) => error.reason === 'schema_mismatch')) {
+    return 'schema_mismatch';
+  }
+  if (errors.some((error) => error.reason === 'parse_error')) {
+    return 'parse_error';
+  }
+  if (errors.some((error) => error.reason === 'invalid_state')) {
+    return 'invalid_state';
+  }
+  if (errors.some((error) => error.reason === 'mtime_changed')) {
+    return 'mtime_changed';
+  }
+  if (errors.some((error) => error.reason === 'read_error')) {
+    return 'read_error';
+  }
+  return 'not_found';
+}
+
 /**
  * Load the most recently updated hook state file for this project.
- * Returns matching states in newest-first order and isolates per-file errors
- * so one poisoned sibling does not mask valid state.
+ * Returns the newest matching state and isolates per-file errors so
+ * one poisoned sibling does not mask valid state.
  */
 export function loadMostRecentState(
   options: {
@@ -143,87 +493,122 @@ export function loadMostRecentState(
         reason: 'scope_unknown_fail_closed',
       }),
     );
-    return { states: [], errors: [] };
+    return {
+      ok: false,
+      reason: 'scope_unknown_fail_closed',
+      detail: 'Most-recent state lookup requires a specFolder or claudeSessionId scope.',
+      errors: [],
+    };
   }
 
   try {
     const dir = getStateDir();
     const candidates = readdirSync(dir).filter((file) => file.endsWith('.json'));
     if (candidates.length === 0) {
-      return { states: [], errors: [] };
+      return { ok: false, reason: 'not_found', errors: [] };
     }
 
-    const matchingStates: Array<{ state: HookState; mtimeMs: number }> = [];
+    const matchingStates: Array<{ state: PersistedHookState; path: string; mtimeMs: number }> = [];
     const errors: HookStateFileError[] = [];
     for (const file of candidates) {
       const filePath = join(dir, file);
+      let mtimeMs: number;
       try {
-        const mtimeMs = statSync(filePath).mtimeMs;
-        if (Date.now() - mtimeMs > maxAgeMs) {
-          continue;
-        }
-
-        const raw = readFileSync(filePath, 'utf-8');
-        const state = JSON.parse(raw) as HookState;
-        if (!matchesScope(state, scope!)) {
-          continue;
-        }
-
-        matchingStates.push({ state, mtimeMs });
+        mtimeMs = statSync(filePath).mtimeMs;
       } catch (error: unknown) {
         errors.push({
           path: filePath,
-          reason: error instanceof Error ? error.message : String(error),
+          reason: 'read_error',
+          detail: error instanceof Error ? error.message : String(error),
         });
+        continue;
       }
+
+      if (Date.now() - mtimeMs > maxAgeMs) {
+        continue;
+      }
+
+      const stateResult = readStateFile(filePath);
+      if (!stateResult.ok) {
+        errors.push({
+          path: filePath,
+          reason: stateResult.reason,
+          detail: stateResult.detail,
+          quarantinedPath: stateResult.quarantinedPath,
+        });
+        continue;
+      }
+      if (!matchesScope(stateResult.state, scope!)) {
+        continue;
+      }
+
+      matchingStates.push({
+        state: stateResult.state,
+        path: filePath,
+        mtimeMs,
+      });
     }
 
     matchingStates.sort((left, right) => right.mtimeMs - left.mtimeMs);
+    const newest = matchingStates[0];
+    if (!newest) {
+      return {
+        ok: false,
+        reason: deriveMostRecentFailureReason(errors),
+        detail: errors[0]?.detail,
+        errors,
+      };
+    }
+
     return {
-      states: matchingStates.map(({ state }) => state),
+      ok: true,
+      state: newest.state,
+      path: newest.path,
       errors,
     };
   } catch {
-    return { states: [], errors: [] };
-  }
-}
-
-/** Save state atomically (write to .tmp then rename) */
-export function saveState(sessionId: string, state: HookState): boolean {
-  const filePath = getStatePath(sessionId);
-  const tmpPath = `${filePath}.tmp-${process.pid}-${tempCounter++}-${crypto.randomBytes(4).toString('hex')}`;
-  try {
-    state.updatedAt = new Date().toISOString();
-    fs.writeFileSync(tmpPath, JSON.stringify(state, null, 2), { encoding: 'utf-8', mode: 0o600 });
-    fs.renameSync(tmpPath, filePath);
-    return true;
-  } catch (err: unknown) {
-    hookLog('error', 'state', `Failed to save state: ${err instanceof Error ? err.message : String(err)}`);
-    return false;
+    return { ok: false, reason: 'not_found', errors: [] };
   }
 }
 
 /** Read pending compact prime without clearing it from state */
-export function readCompactPrime(sessionId: string): HookState['pendingCompactPrime'] {
-  const state = loadState(sessionId);
-  return state?.pendingCompactPrime ?? null;
+export function readCompactPrime(sessionId: string): PersistedHookState['pendingCompactPrime'] {
+  const stateResult = loadState(sessionId);
+  return stateResult.ok ? stateResult.state.pendingCompactPrime ?? null : null;
+}
+
+function matchesCompactPrimeIdentity(
+  pendingCompactPrime: PersistedHookState['pendingCompactPrime'],
+  expectedIdentity?: HookStateCompactPrimeIdentity,
+): boolean {
+  if (!pendingCompactPrime || !expectedIdentity) {
+    return true;
+  }
+  if (expectedIdentity.opaqueId && pendingCompactPrime.opaqueId) {
+    return pendingCompactPrime.opaqueId === expectedIdentity.opaqueId;
+  }
+  return pendingCompactPrime.cachedAt === expectedIdentity.cachedAt;
 }
 
 /** Clear pending compact prime from state (call after stdout write confirmed) */
-export function clearCompactPrime(sessionId: string): void {
-  const state = loadState(sessionId);
-  if (!state || !state.pendingCompactPrime) {
-    return;
+export function clearCompactPrime(
+  sessionId: string,
+  expectedIdentity?: HookStateCompactPrimeIdentity,
+): HookStateUpdateResult | null {
+  const stateResult = loadState(sessionId);
+  if (!stateResult.ok || !stateResult.state.pendingCompactPrime) {
+    return null;
+  }
+  if (!matchesCompactPrimeIdentity(stateResult.state.pendingCompactPrime, expectedIdentity)) {
+    hookLog('info', 'state', `Skipped clearing compact payload for session ${sessionId} because the cached payload changed`);
+    return null;
   }
 
-  const nextState: HookState = {
-    ...state,
-    pendingCompactPrime: null,
-  };
-
-  if (!saveState(sessionId, nextState)) {
+  const nextState = updateState(sessionId, { pendingCompactPrime: null });
+  if (!nextState.persisted) {
     hookLog('warn', 'state', `Failed to clear pending compact payload for session ${sessionId}`);
   }
+  return nextState;
 }
 
 /**
@@ -231,50 +616,35 @@ export function clearCompactPrime(sessionId: string): void {
  * @deprecated Use readCompactPrime() + clearCompactPrime() to avoid data loss
  * if the process crashes between clear and stdout write.
  */
-export function readAndClearCompactPrime(sessionId: string): HookState['pendingCompactPrime'] {
+export function readAndClearCompactPrime(sessionId: string): PersistedHookState['pendingCompactPrime'] {
   const prime = readCompactPrime(sessionId);
   if (prime) {
-    clearCompactPrime(sessionId);
+    clearCompactPrime(sessionId, {
+      cachedAt: prime.cachedAt,
+      opaqueId: prime.opaqueId ?? null,
+    });
   }
   return prime;
 }
 
 /** Load, merge patch, save, and return updated state */
-export function updateState(sessionId: string, patch: Partial<HookState>): HookState {
-  const existing = loadState(sessionId);
-  const now = new Date().toISOString();
-  const existingMetrics = existing?.metrics ?? {
-    estimatedPromptTokens: 0,
-    estimatedCompletionTokens: 0,
-    lastTranscriptOffset: 0,
-  };
-  const patchMetrics = patch.metrics;
-  const state: HookState = {
-    claudeSessionId: sessionId,
-    speckitSessionId: null,
-    lastSpecFolder: null,
-    sessionSummary: null,
-    pendingCompactPrime: null,
-    producerMetadata: null,
-    createdAt: now,
-    updatedAt: now,
-    ...existing,
-    ...patch,
-    metrics: patchMetrics
-      ? {
-        ...existingMetrics,
-        ...patchMetrics,
-        lastTranscriptOffset: Math.max(
-          existingMetrics.lastTranscriptOffset ?? 0,
-          patchMetrics.lastTranscriptOffset ?? 0,
-        ),
-      }
-      : existingMetrics,
-  };
-  if (!saveState(sessionId, state)) {
+export function updateState(
+  sessionId: string,
+  patch: Partial<HookState>,
+): HookStateUpdateResult {
+  const existingResult = loadState(sessionId);
+  const existing = existingResult.ok ? existingResult.state : null;
+  const merged = prepareStateForPersist(sessionId, patch, existing);
+  const writeResult = persistState(sessionId, merged);
+  if (!writeResult.persisted) {
     hookLog('warn', 'state', `State update was not persisted for session ${sessionId}`);
   }
-  return state;
+  return {
+    ok: writeResult.persisted,
+    merged: writeResult.written,
+    persisted: writeResult.persisted,
+    path: writeResult.path,
+  };
 }
 
 function appendCleanupSkip(
@@ -283,7 +653,11 @@ function appendCleanupSkip(
   reason: string,
 ): void {
   result.skipped += 1;
-  result.errors.push({ path: filePath, reason });
+  result.errors.push({
+    path: filePath,
+    reason: 'read_error',
+    detail: reason,
+  });
   hookLog('warn', 'state', JSON.stringify({
     event: 'clean_stale_states_skipped',
     file: basename(filePath),

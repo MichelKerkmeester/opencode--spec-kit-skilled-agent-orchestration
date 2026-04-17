@@ -5,8 +5,13 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ensureStateDir, loadState, updateState, getStatePath } from '../hooks/claude/hook-state.js';
+import { ensureStateDir, loadState, updateState, getStatePath, type PersistedHookState } from '../hooks/claude/hook-state.js';
 import { truncateToTokenBudget, COMPACTION_TOKEN_BUDGET } from '../hooks/claude/shared.js';
+
+function loadPersistedState(sessionId: string): PersistedHookState | null {
+  const result = loadState(sessionId);
+  return result.ok ? result.state : null;
+}
 
 describe('precompact hook', () => {
   const testSessionId = 'test-precompact';
@@ -29,7 +34,7 @@ describe('precompact hook', () => {
         },
       });
 
-      const state = loadState(testSessionId);
+      const state = loadPersistedState(testSessionId);
       expect(state).not.toBeNull();
       expect(state!.pendingCompactPrime).not.toBeNull();
       expect(state!.pendingCompactPrime!.payload).toBe(payload);
@@ -43,7 +48,7 @@ describe('precompact hook', () => {
         pendingCompactPrime: { payload: 'new', cachedAt: new Date().toISOString() },
       });
 
-      const state = loadState(testSessionId);
+      const state = loadPersistedState(testSessionId);
       expect(state!.pendingCompactPrime!.payload).toBe('new');
     });
   });

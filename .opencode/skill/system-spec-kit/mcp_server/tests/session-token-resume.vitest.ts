@@ -2,8 +2,13 @@
 // TEST: Hook-State Session Resume
 // ───────────────────────────────────────────────────────────────
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { ensureStateDir, updateState, loadState, getStatePath } from '../hooks/claude/hook-state.js';
+import { ensureStateDir, updateState, loadState, getStatePath, type PersistedHookState } from '../hooks/claude/hook-state.js';
 import { rmSync } from 'node:fs';
+
+function loadPersistedState(sessionId: string): PersistedHookState | null {
+  const result = loadState(sessionId);
+  return result.ok ? result.state : null;
+}
 
 describe('hook-state session resume', () => {
   const sessionId = 'test-resume-session';
@@ -16,7 +21,7 @@ describe('hook-state session resume', () => {
       lastSpecFolder: 'specs/024-compact-code-graph',
       metrics: { estimatedPromptTokens: 10000, estimatedCompletionTokens: 5000, lastTranscriptOffset: 4096 },
     });
-    const state = loadState(sessionId);
+    const state = loadPersistedState(sessionId);
     expect(state).not.toBeNull();
     expect(state!.lastSpecFolder).toBe('specs/024-compact-code-graph');
     expect(state!.metrics.estimatedPromptTokens).toBe(10000);
@@ -26,7 +31,7 @@ describe('hook-state session resume', () => {
 
   it('handles missing session gracefully', () => {
     const state = loadState('nonexistent-session');
-    expect(state).toBeNull();
+    expect(state).toMatchObject({ ok: false, reason: 'not_found' });
   });
 
   it('preserves compact prime across resume', () => {
@@ -34,7 +39,7 @@ describe('hook-state session resume', () => {
       pendingCompactPrime: { payload: 'test context', cachedAt: new Date().toISOString() },
       lastSpecFolder: 'specs/test',
     });
-    const state = loadState(sessionId);
+    const state = loadPersistedState(sessionId);
     expect(state!.pendingCompactPrime!.payload).toBe('test context');
     expect(state!.lastSpecFolder).toBe('specs/test');
   });
@@ -42,7 +47,7 @@ describe('hook-state session resume', () => {
   it('session ID is preserved across updates', () => {
     updateState(sessionId, { lastSpecFolder: 'specs/a' });
     updateState(sessionId, { lastSpecFolder: 'specs/b' });
-    const state = loadState(sessionId);
+    const state = loadPersistedState(sessionId);
     expect(state!.claudeSessionId).toBe(sessionId);
     expect(state!.lastSpecFolder).toBe('specs/b');
   });

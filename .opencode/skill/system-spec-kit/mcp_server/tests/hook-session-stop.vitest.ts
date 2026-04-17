@@ -2,8 +2,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import fs, { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { ensureStateDir, loadState, updateState } from '../hooks/claude/hook-state.js';
+import { ensureStateDir, loadState, updateState, type PersistedHookState } from '../hooks/claude/hook-state.js';
 import { detectSpecFolder, processStopHook } from '../hooks/claude/session-stop.js';
+
+function loadPersistedState(sessionId: string): PersistedHookState | null {
+  const result = loadState(sessionId);
+  return result.ok ? result.state : null;
+}
 
 describe('Claude session-stop spec folder detection', () => {
   let tempDir: string | null = null;
@@ -199,6 +204,12 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
     expect(result.producerMetadataWritten).toBe(false);
   });
 
+  it('rejects stop-hook payloads that omit session_id instead of collapsing into a shared bucket', async () => {
+    await expect(processStopHook({ stop_hook_active: true }, { autosaveMode: 'disabled' })).rejects.toThrow(
+      'session-stop hook payload missing required session_id',
+    );
+  });
+
   it('surfaces the retarget reason when transcript evidence points to a different packet', async () => {
     const transcriptPath = join(sandboxRoot!, 'retarget-transcript.jsonl');
     const previousSpecFolder = 'specs/system-spec-kit/024-compact-code-graph/029-review-remediation';
@@ -225,7 +236,7 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
     expect(result.autosaveMode).toBe('disabled');
     expect(result.autosaveOutcome).toBe('skipped');
     expect(result.retargetReason).toBe('detected_different_packet');
-    expect(loadState('retarget-different-packet')?.lastSpecFolder).toBe(nextSpecFolder);
+    expect(loadPersistedState('retarget-different-packet')?.lastSpecFolder).toBe(nextSpecFolder);
   });
 
   it('distinguishes ambiguous transcript evidence from transcript I/O failures', async () => {
@@ -251,7 +262,7 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
     );
 
     expect(ambiguousResult.retargetReason).toBe('ambiguous_transcript');
-    expect(loadState('ambiguous-retarget')?.lastSpecFolder).toBe(currentSpecFolder);
+    expect(loadPersistedState('ambiguous-retarget')?.lastSpecFolder).toBe(currentSpecFolder);
 
     updateState('io-failed-retarget', { lastSpecFolder: currentSpecFolder });
     const ioFailedResult = await processStopHook(
@@ -264,7 +275,7 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
     );
 
     expect(ioFailedResult.retargetReason).toBe('transcript_io_failed');
-    expect(loadState('io-failed-retarget')?.lastSpecFolder).toBe(currentSpecFolder);
+    expect(loadPersistedState('io-failed-retarget')?.lastSpecFolder).toBe(currentSpecFolder);
   });
 
   it('keeps transcript offsets monotonic when later writes carry an older offset', () => {
@@ -284,8 +295,8 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
       },
     });
 
-    expect(state.metrics.estimatedPromptTokens).toBe(20);
-    expect(state.metrics.lastTranscriptOffset).toBe(4096);
+    expect(state.merged.metrics.estimatedPromptTokens).toBe(20);
+    expect(state.merged.metrics.lastTranscriptOffset).toBe(4096);
   });
 
   it('never persists a transient zero transcript offset during stop-hook token snapshot writes', async () => {
@@ -338,9 +349,17 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
         { autosaveMode: 'disabled' },
       );
 
-      const finalState = loadState('offset-sentinel-session');
+      const finalState = loadPersistedState('offset-sentinel-session');
       expect(result.parsedMessageCount).toBe(1);
       expect(result.producerMetadataWritten).toBe(true);
+      expect(result.transcriptOutcome).toMatchObject({
+        status: 'ran',
+        value: {
+          parsedMessageCount: 1,
+          lastTranscriptOffset: Buffer.byteLength(transcriptText, 'utf-8'),
+        },
+      });
+      expect(result.producerMetadataOutcome.status).toBe('ran');
       expect(persistedOffsets.length).toBeGreaterThan(0);
       expect(persistedOffsets).not.toContain(0);
       expect(finalState?.metrics.lastTranscriptOffset).toBe(Buffer.byteLength(transcriptText, 'utf-8'));

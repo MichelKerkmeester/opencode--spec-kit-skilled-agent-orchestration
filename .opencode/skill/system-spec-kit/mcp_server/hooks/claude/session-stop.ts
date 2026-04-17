@@ -11,12 +11,12 @@ import { openSync, fstatSync, readSync, closeSync, statSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  parseHookStdin, hookLog, withTimeout, HOOK_TIMEOUT_MS,
+  parseHookStdin, hookLog, withTimeout, HOOK_TIMEOUT_MS, getRequiredSessionId,
   type HookInput,
 } from './shared.js';
 import {
   ensureStateDir, loadState, updateState, cleanStaleStates, getStatePath,
-  type HookState, type HookProducerMetadata,
+  type HookState, type HookProducerMetadata, type HookStateUpdateResult,
 } from './hook-state.js';
 import { parseTranscript, estimateCost, type TranscriptUsage } from './claude-transcript.js';
 
@@ -83,7 +83,11 @@ interface SpecFolderDetectionResult {
 }
 
 function runContextAutosave(sessionId: string): SessionStopAutosaveOutcome {
-  const state = loadState(sessionId);
+  const stateResult = loadState(sessionId);
+  if (!stateResult.ok) {
+    return stateResult.reason === 'not_found' ? 'skipped' : 'failed';
+  }
+  const state = stateResult.state;
   const specFolder = state?.lastSpecFolder?.trim();
   const summary = state?.sessionSummary?.text?.trim();
 
@@ -135,6 +139,13 @@ export interface SessionStopProcessOptions {
   autosaveMode?: 'enabled' | 'disabled';
 }
 
+export interface OperationResult<T = void> {
+  status: 'ran' | 'skipped' | 'failed' | 'deferred';
+  reason?: string;
+  detail?: string;
+  value?: T;
+}
+
 export interface SessionStopProcessResult {
   touchedPaths: string[];
   parsedMessageCount: number;
@@ -142,15 +153,20 @@ export interface SessionStopProcessResult {
   autosaveOutcome: SessionStopAutosaveOutcome;
   retargetReason: SessionStopRetargetReason;
   producerMetadataWritten: boolean;
+  transcriptOutcome: OperationResult<{ parsedMessageCount: number; lastTranscriptOffset: number }>;
+  producerMetadataOutcome: OperationResult<HookProducerMetadata>;
 }
 
 function recordStateUpdate(
   sessionId: string,
   patch: Partial<HookState>,
   touchedPaths: Set<string>,
-): void {
-  updateState(sessionId, patch);
-  touchedPaths.add(getStatePath(sessionId));
+): HookStateUpdateResult {
+  const updateResult = updateState(sessionId, patch);
+  if (updateResult.persisted) {
+    touchedPaths.add(updateResult.path);
+  }
+  return updateResult;
 }
 
 function selectDetectedSpecFolder(
@@ -213,24 +229,11 @@ function extractSessionSummary(message: string): string {
   return slice + '...';
 }
 
-/** Store a token snapshot in the hook state (lightweight alternative to SQLite) */
-function storeTokenSnapshot(
-  sessionId: string,
+/** Log token snapshot details after transcript parsing succeeds. */
+function logTokenSnapshot(
   usage: { promptTokens: number; completionTokens: number; totalTokens: number; model: string | null },
   cost: number,
-  lastTranscriptOffset: number,
 ): void {
-  const state = loadState(sessionId);
-  if (!state) return;
-
-  updateState(sessionId, {
-    metrics: {
-      estimatedPromptTokens: usage.promptTokens,
-      estimatedCompletionTokens: usage.completionTokens,
-      lastTranscriptOffset,
-    },
-  });
-
   hookLog('info', 'session-stop', `Token snapshot: ${usage.totalTokens} total (${usage.model ?? 'unknown'}), est. $${cost}`);
 }
 
@@ -269,6 +272,15 @@ export async function processStopHook(
   let producerMetadataWritten = false;
   let autosaveOutcome: SessionStopAutosaveOutcome = 'skipped';
   let retargetReason: SessionStopRetargetReason = null;
+  let stateWriteFailed = false;
+  let transcriptOutcome: OperationResult<{ parsedMessageCount: number; lastTranscriptOffset: number }> = {
+    status: 'skipped',
+    reason: 'no_transcript_path',
+  };
+  let producerMetadataOutcome: OperationResult<HookProducerMetadata> = {
+    status: 'skipped',
+    reason: 'no_transcript_path',
+  };
 
   // Guard: only run if stop hook is actively being processed
   if (input.stop_hook_active === false) {
@@ -280,14 +292,17 @@ export async function processStopHook(
       autosaveOutcome,
       retargetReason,
       producerMetadataWritten,
+      transcriptOutcome,
+      producerMetadataOutcome,
     };
   }
 
-  const sessionId = input.session_id ?? 'unknown';
+  const sessionId = getRequiredSessionId(input.session_id, 'session-stop');
   hookLog('info', 'session-stop', `Stop hook fired for session ${sessionId}`);
 
   // Parse transcript for token usage
-  const stateBeforeStop = loadState(sessionId);
+  const stateBeforeStopResult = loadState(sessionId);
+  const stateBeforeStop = stateBeforeStopResult.ok ? stateBeforeStopResult.state : null;
   if (input.transcript_path) {
     const startOffset = stateBeforeStop?.metrics?.lastTranscriptOffset ?? 0;
 
@@ -300,25 +315,73 @@ export async function processStopHook(
       parsedMessageCount = usage.messageCount;
       if (usage.messageCount > 0) {
         const cost = estimateCost(usage);
-        storeTokenSnapshot(sessionId, usage, cost, newOffset);
+        logTokenSnapshot(usage, cost);
+        transcriptOutcome = {
+          status: 'ran',
+          value: {
+            parsedMessageCount: usage.messageCount,
+            lastTranscriptOffset: newOffset,
+          },
+        };
 
-        // Update offset for incremental parsing on next stop and carry forward
-        // producer metadata needed by later continuity packets.
-        recordStateUpdate(sessionId, {
+        let producerMetadata: HookProducerMetadata | null = null;
+        try {
+          producerMetadata = buildProducerMetadata(input.transcript_path as string, usage);
+          producerMetadataOutcome = {
+            status: 'ran',
+            value: producerMetadata,
+          };
+        } catch (err: unknown) {
+          producerMetadataOutcome = {
+            status: 'failed',
+            reason: 'producer_metadata_failed',
+            detail: err instanceof Error ? err.message : String(err),
+          };
+          hookLog('warn', 'session-stop', `Producer metadata build failed: ${producerMetadataOutcome.detail}`);
+        }
+
+        const patch: Partial<HookState> = {
           metrics: {
             estimatedPromptTokens: usage.promptTokens,
             estimatedCompletionTokens: usage.completionTokens,
             lastTranscriptOffset: newOffset,
           },
-          producerMetadata: buildProducerMetadata(input.transcript_path as string, usage),
-        }, touchedPaths);
-        producerMetadataWritten = true;
+        };
+        if (producerMetadata) {
+          patch.producerMetadata = producerMetadata;
+        }
+        const updateResult = recordStateUpdate(sessionId, patch, touchedPaths);
+        if (!updateResult.persisted) {
+          stateWriteFailed = true;
+        } else if (producerMetadata) {
+          producerMetadataWritten = true;
+        }
 
         hookLog('info', 'session-stop',
           `Parsed ${usage.messageCount} messages: ${usage.promptTokens} prompt + ${usage.completionTokens} completion = ${usage.totalTokens} total tokens`);
+      } else {
+        transcriptOutcome = {
+          status: 'skipped',
+          reason: 'no_new_messages',
+        };
+        producerMetadataOutcome = {
+          status: 'skipped',
+          reason: 'no_new_messages',
+        };
       }
     } catch (err: unknown) {
-      hookLog('warn', 'session-stop', `Transcript parsing failed: ${err instanceof Error ? err.message : String(err)}`);
+      const detail = err instanceof Error ? err.message : String(err);
+      transcriptOutcome = {
+        status: 'failed',
+        reason: 'transcript_parse_failed',
+        detail,
+      };
+      producerMetadataOutcome = {
+        status: 'failed',
+        reason: 'transcript_parse_failed',
+        detail,
+      };
+      hookLog('warn', 'session-stop', `Transcript parsing failed: ${detail}`);
     }
   }
 
@@ -329,7 +392,8 @@ export async function processStopHook(
       stateBeforeStop?.lastSpecFolder ?? null,
     );
     if (!stateBeforeStop?.lastSpecFolder && detectedSpec.specFolder) {
-      recordStateUpdate(sessionId, { lastSpecFolder: detectedSpec.specFolder }, touchedPaths);
+      const updateResult = recordStateUpdate(sessionId, { lastSpecFolder: detectedSpec.specFolder }, touchedPaths);
+      stateWriteFailed = stateWriteFailed || !updateResult.persisted;
       retargetReason = 'no_previous_packet';
       hookLog('info', 'session-stop', `Auto-detected spec folder: ${detectedSpec.specFolder}`);
     } else if (stateBeforeStop?.lastSpecFolder && detectedSpec.specFolder === stateBeforeStop.lastSpecFolder) {
@@ -340,7 +404,8 @@ export async function processStopHook(
       && detectedSpec.specFolder !== stateBeforeStop.lastSpecFolder
     ) {
       retargetReason = 'detected_different_packet';
-      recordStateUpdate(sessionId, { lastSpecFolder: detectedSpec.specFolder }, touchedPaths);
+      const updateResult = recordStateUpdate(sessionId, { lastSpecFolder: detectedSpec.specFolder }, touchedPaths);
+      stateWriteFailed = stateWriteFailed || !updateResult.persisted;
       hookLog(
         'info',
         'session-stop',
@@ -358,14 +423,15 @@ export async function processStopHook(
   // Extract session summary from last assistant message
   if (input.last_assistant_message) {
     const text = extractSessionSummary(input.last_assistant_message);
-    recordStateUpdate(sessionId, {
+    const updateResult = recordStateUpdate(sessionId, {
       sessionSummary: { text, extractedAt: new Date().toISOString() },
     }, touchedPaths);
+    stateWriteFailed = stateWriteFailed || !updateResult.persisted;
     hookLog('info', 'session-stop', `Session summary extracted (${text.length} chars)`);
   }
 
   if (autosaveMode === 'enabled') {
-    autosaveOutcome = runContextAutosave(sessionId);
+    autosaveOutcome = stateWriteFailed ? 'failed' : runContextAutosave(sessionId);
   }
 
   hookLog('info', 'session-stop', `Session ${sessionId} stop processing complete`);
@@ -376,6 +442,8 @@ export async function processStopHook(
     autosaveOutcome,
     retargetReason,
     producerMetadataWritten,
+    transcriptOutcome,
+    producerMetadataOutcome,
   };
 }
 

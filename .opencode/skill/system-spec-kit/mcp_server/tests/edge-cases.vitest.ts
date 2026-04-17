@@ -119,8 +119,10 @@ describe('edge-cases: concurrent sessions', () => {
     updateState('session-A', { lastSpecFolder: '/specs/a/' });
     updateState('session-B', { lastSpecFolder: '/specs/b/' });
 
-    const stateA = loadState('session-A');
-    const stateB = loadState('session-B');
+    const stateAResult = loadState('session-A');
+    const stateBResult = loadState('session-B');
+    const stateA = stateAResult.ok ? stateAResult.state : null;
+    const stateB = stateBResult.ok ? stateBResult.state : null;
 
     expect(stateA?.lastSpecFolder).toBe('/specs/a/');
     expect(stateB?.lastSpecFolder).toBe('/specs/b/');
@@ -139,7 +141,8 @@ describe('edge-cases: expired cache', () => {
       },
     });
 
-    const state = loadState('session-expired');
+    const stateResult = loadState('session-expired');
+    const state = stateResult.ok ? stateResult.state : null;
     expect(state?.pendingCompactPrime?.payload).toBe('old context');
     expect(state?.pendingCompactPrime?.cachedAt).toBe('2020-01-01T00:00:00.000Z');
   });
