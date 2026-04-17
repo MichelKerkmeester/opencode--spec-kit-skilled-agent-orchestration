@@ -76,4 +76,26 @@ describe('code-graph-context handler', () => {
     });
     expect(parsed.data.combinedSummary).toBe('summary');
   });
+
+  it('surfaces readiness crash details when ensureCodeGraphReady throws', async () => {
+    mocks.ensureCodeGraphReady.mockRejectedValueOnce(new Error('db locked'));
+
+    const result = await handleCodeGraphContext({
+      subject: 'SomeSymbol',
+      queryMode: 'neighborhood',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.data.readiness).toEqual({
+      freshness: 'empty',
+      action: 'none',
+      inlineIndexPerformed: false,
+      reason: 'readiness_check_crashed',
+      error: 'db locked',
+      canonicalReadiness: 'missing',
+      trustState: 'unavailable',
+    });
+    expect(parsed.data.canonicalReadiness).toBe('missing');
+    expect(parsed.data.trustState).toBe('unavailable');
+  });
 });

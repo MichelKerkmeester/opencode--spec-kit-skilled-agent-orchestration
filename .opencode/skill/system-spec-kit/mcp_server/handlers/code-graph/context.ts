@@ -43,6 +43,8 @@ interface NormalizedSeedSource {
   symbolName?: string;
 }
 
+type ContextReadiness = ReadyResult & { error?: string };
+
 function resolveSeedSource(args: ContextHandlerArgs, anchor: {
   filePath: string;
   startLine: number;
@@ -87,7 +89,7 @@ function resolveSeedSource(args: ContextHandlerArgs, anchor: {
 
 /** Handle code_graph_context tool call */
 export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<{ content: Array<{ type: string; text: string }> }> {
-  let readiness: ReadyResult = {
+  let readiness: ContextReadiness = {
     freshness: 'empty' as const,
     action: 'none' as const,
     inlineIndexPerformed: false,
@@ -102,13 +104,14 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
         allowInlineIndex: true,
         allowInlineFullScan: false,
       });
-    } catch {
+    } catch (err: unknown) {
       readinessCheckCrashed = true;
       readiness = {
         freshness: 'empty' as const,
         action: 'none' as const,
         inlineIndexPerformed: false,
         reason: 'readiness_check_crashed',
+        error: err instanceof Error ? err.message : String(err),
       };
     }
 
