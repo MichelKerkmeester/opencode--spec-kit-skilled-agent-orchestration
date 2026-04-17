@@ -7,7 +7,7 @@
 
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { openSync, fstatSync, readSync, closeSync, statSync } from 'node:fs';
+import { openSync, fstatSync, readSync, closeSync, statSync, type Stats } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -15,8 +15,8 @@ import {
   type HookInput,
 } from './shared.js';
 import {
-  ensureStateDir, loadState, updateState, cleanStaleStates, getStatePath,
-  type HookState, type HookProducerMetadata, type HookStateUpdateResult,
+  ensureStateDir, loadState, updateState, cleanStaleStates,
+  type HookState, type HookProducerMetadata, type PersistedHookState,
 } from './hook-state.js';
 import { parseTranscript, estimateCost, type TranscriptUsage } from './claude-transcript.js';
 
@@ -82,14 +82,21 @@ interface SpecFolderDetectionResult {
   reason: SpecFolderDetectionReason;
 }
 
-function runContextAutosave(sessionId: string): SessionStopAutosaveOutcome {
-  const stateResult = loadState(sessionId);
-  if (!stateResult.ok) {
-    return stateResult.reason === 'not_found' ? 'skipped' : 'failed';
-  }
-  const state = stateResult.state;
-  const specFolder = state?.lastSpecFolder?.trim();
-  const summary = state?.sessionSummary?.text?.trim();
+/**
+ * Run context autosave using the in-memory merged state returned by the
+ * single atomic `updateState()` call.
+ *
+ * T-SST-10 (R31-002/R32-002): Autosave reads from the merged state carried
+ * in-process — NOT from a fresh disk reload. A disk reload here would
+ * create a torn-state window where interleaved writers could re-compose
+ * fields between the stop hook's atomic write and the autosave spawn.
+ */
+function runContextAutosave(
+  sessionId: string,
+  state: PersistedHookState,
+): SessionStopAutosaveOutcome {
+  const specFolder = state.lastSpecFolder?.trim();
+  const summary = state.sessionSummary?.text?.trim();
 
   if (!specFolder || !summary) {
     return 'skipped';
@@ -155,18 +162,6 @@ export interface SessionStopProcessResult {
   producerMetadataWritten: boolean;
   transcriptOutcome: OperationResult<{ parsedMessageCount: number; lastTranscriptOffset: number }>;
   producerMetadataOutcome: OperationResult<HookProducerMetadata>;
-}
-
-function recordStateUpdate(
-  sessionId: string,
-  patch: Partial<HookState>,
-  touchedPaths: Set<string>,
-): HookStateUpdateResult {
-  const updateResult = updateState(sessionId, patch);
-  if (updateResult.persisted) {
-    touchedPaths.add(updateResult.path);
-  }
-  return updateResult;
 }
 
 function selectDetectedSpecFolder(
@@ -237,11 +232,19 @@ function logTokenSnapshot(
   hookLog('info', 'session-stop', `Token snapshot: ${usage.totalTokens} total (${usage.model ?? 'unknown'}), est. $${cost}`);
 }
 
+/**
+ * Build producer metadata from a pre-captured transcript stat.
+ *
+ * T-SST-09 (R20-001): The caller MUST pass a transcript stat snapshotted
+ * BEFORE `parseTranscript()` runs, so the metadata describes the same
+ * transcript generation that was parsed. A re-stat here would produce
+ * metadata pointing at a later state than the tokens/offset reflect.
+ */
 function buildProducerMetadata(
   transcriptPath: string,
+  transcriptStat: Stats,
   usage: TranscriptUsage,
 ): HookProducerMetadata {
-  const transcriptStat = statSync(transcriptPath);
   const fingerprint = createHash('sha256')
     .update(`${transcriptPath}:${transcriptStat.size}:${transcriptStat.mtimeMs}`)
     .digest('hex')
@@ -267,12 +270,10 @@ export async function processStopHook(
   options: SessionStopProcessOptions = {},
 ): Promise<SessionStopProcessResult> {
   const autosaveMode = options.autosaveMode ?? 'enabled';
-  const touchedPaths = new Set<string>();
   let parsedMessageCount = 0;
   let producerMetadataWritten = false;
   let autosaveOutcome: SessionStopAutosaveOutcome = 'skipped';
   let retargetReason: SessionStopRetargetReason = null;
-  let stateWriteFailed = false;
   let transcriptOutcome: OperationResult<{ parsedMessageCount: number; lastTranscriptOffset: number }> = {
     status: 'skipped',
     reason: 'no_transcript_path',
@@ -300,17 +301,41 @@ export async function processStopHook(
   const sessionId = getRequiredSessionId(input.session_id, 'session-stop');
   hookLog('info', 'session-stop', `Stop hook fired for session ${sessionId}`);
 
-  // Parse transcript for token usage
+  // ────────────────────────────────────────────────────────────────
+  // ACCUMULATE PATCH — do NOT write state mid-flight
+  // ────────────────────────────────────────────────────────────────
+  // T-SST-10 (R31-002/R32-002): Collapse what were previously three
+  // independent `recordStateUpdate()` calls (transcript/metrics+producer,
+  // spec folder retarget, session summary) into a single atomic
+  // `updateState()` at the end of this function. Intermediate writes
+  // would create a torn-state window visible to interleaved writers and
+  // to the autosave process that previously re-read from disk.
   const stateBeforeStopResult = loadState(sessionId);
   const stateBeforeStop = stateBeforeStopResult.ok ? stateBeforeStopResult.state : null;
+  const patch: Partial<HookState> = {};
+  let producerMetadata: HookProducerMetadata | null = null;
+
+  // Parse transcript for token usage
   if (input.transcript_path) {
+    const transcriptPath = input.transcript_path as string;
     const startOffset = stateBeforeStop?.metrics?.lastTranscriptOffset ?? 0;
 
+    // T-SST-09 (R20-001): Snapshot transcript stat BEFORE parseTranscript()
+    // runs so the fingerprint/size/mtime describe the same generation the
+    // parser will consume. A re-stat inside buildProducerMetadata would
+    // capture a later state than the bytes actually parsed (cursor and
+    // metadata describing different transcript generations).
+    let preParseStat: Stats | null = null;
     try {
-      const { usage, newOffset } = await parseTranscript(
-        input.transcript_path as string,
-        startOffset,
-      );
+      preParseStat = statSync(transcriptPath);
+    } catch (err: unknown) {
+      // Leave preParseStat null; the parse attempt below will surface the
+      // real error and we simply skip producer-metadata construction.
+      hookLog('warn', 'session-stop', `Pre-parse transcript stat failed: ${err instanceof Error ? err.message : String(err)}`);
+    }
+
+    try {
+      const { usage, newOffset } = await parseTranscript(transcriptPath, startOffset);
 
       parsedMessageCount = usage.messageCount;
       if (usage.messageCount > 0) {
@@ -324,37 +349,36 @@ export async function processStopHook(
           },
         };
 
-        let producerMetadata: HookProducerMetadata | null = null;
-        try {
-          producerMetadata = buildProducerMetadata(input.transcript_path as string, usage);
-          producerMetadataOutcome = {
-            status: 'ran',
-            value: producerMetadata,
-          };
-        } catch (err: unknown) {
+        if (preParseStat) {
+          try {
+            producerMetadata = buildProducerMetadata(transcriptPath, preParseStat, usage);
+            producerMetadataOutcome = {
+              status: 'ran',
+              value: producerMetadata,
+            };
+          } catch (err: unknown) {
+            producerMetadataOutcome = {
+              status: 'failed',
+              reason: 'producer_metadata_failed',
+              detail: err instanceof Error ? err.message : String(err),
+            };
+            hookLog('warn', 'session-stop', `Producer metadata build failed: ${producerMetadataOutcome.detail}`);
+          }
+        } else {
           producerMetadataOutcome = {
             status: 'failed',
             reason: 'producer_metadata_failed',
-            detail: err instanceof Error ? err.message : String(err),
+            detail: 'Pre-parse transcript stat unavailable',
           };
-          hookLog('warn', 'session-stop', `Producer metadata build failed: ${producerMetadataOutcome.detail}`);
         }
 
-        const patch: Partial<HookState> = {
-          metrics: {
-            estimatedPromptTokens: usage.promptTokens,
-            estimatedCompletionTokens: usage.completionTokens,
-            lastTranscriptOffset: newOffset,
-          },
+        patch.metrics = {
+          estimatedPromptTokens: usage.promptTokens,
+          estimatedCompletionTokens: usage.completionTokens,
+          lastTranscriptOffset: newOffset,
         };
         if (producerMetadata) {
           patch.producerMetadata = producerMetadata;
-        }
-        const updateResult = recordStateUpdate(sessionId, patch, touchedPaths);
-        if (!updateResult.persisted) {
-          stateWriteFailed = true;
-        } else if (producerMetadata) {
-          producerMetadataWritten = true;
         }
 
         hookLog('info', 'session-stop',
@@ -385,31 +409,39 @@ export async function processStopHook(
     }
   }
 
+  // ────────────────────────────────────────────────────────────────
   // Auto-detect spec folder from transcript paths
+  // ────────────────────────────────────────────────────────────────
+  // T-SST-11 (R37-002): Refresh lastSpecFolder from a fresh state read
+  // immediately before detection, so the "prefer currentSpecFolder"
+  // preference inside selectDetectedSpecFolder does not lock in a stale
+  // generation if another writer advanced the packet target between
+  // handler entry and this step.
   if (input.transcript_path) {
+    const refreshedStateResult = loadState(sessionId);
+    const refreshedState = refreshedStateResult.ok ? refreshedStateResult.state : null;
+    const currentSpecFolder = refreshedState?.lastSpecFolder ?? stateBeforeStop?.lastSpecFolder ?? null;
     const detectedSpec = detectSpecFolderResult(
       input.transcript_path as string,
-      stateBeforeStop?.lastSpecFolder ?? null,
+      currentSpecFolder,
     );
-    if (!stateBeforeStop?.lastSpecFolder && detectedSpec.specFolder) {
-      const updateResult = recordStateUpdate(sessionId, { lastSpecFolder: detectedSpec.specFolder }, touchedPaths);
-      stateWriteFailed = stateWriteFailed || !updateResult.persisted;
+    if (!currentSpecFolder && detectedSpec.specFolder) {
+      patch.lastSpecFolder = detectedSpec.specFolder;
       retargetReason = 'no_previous_packet';
       hookLog('info', 'session-stop', `Auto-detected spec folder: ${detectedSpec.specFolder}`);
-    } else if (stateBeforeStop?.lastSpecFolder && detectedSpec.specFolder === stateBeforeStop.lastSpecFolder) {
+    } else if (currentSpecFolder && detectedSpec.specFolder === currentSpecFolder) {
       hookLog('info', 'session-stop', `Validated active spec folder from transcript: ${detectedSpec.specFolder}`);
     } else if (
-      stateBeforeStop?.lastSpecFolder
+      currentSpecFolder
       && detectedSpec.specFolder
-      && detectedSpec.specFolder !== stateBeforeStop.lastSpecFolder
+      && detectedSpec.specFolder !== currentSpecFolder
     ) {
       retargetReason = 'detected_different_packet';
-      const updateResult = recordStateUpdate(sessionId, { lastSpecFolder: detectedSpec.specFolder }, touchedPaths);
-      stateWriteFailed = stateWriteFailed || !updateResult.persisted;
+      patch.lastSpecFolder = detectedSpec.specFolder;
       hookLog(
         'info',
         'session-stop',
-        `Retargeted autosave spec folder from ${stateBeforeStop.lastSpecFolder} to ${detectedSpec.specFolder}`,
+        `Retargeted autosave spec folder from ${currentSpecFolder} to ${detectedSpec.specFolder}`,
       );
     } else if (detectedSpec.reason === 'ambiguous_transcript') {
       retargetReason = 'ambiguous_transcript';
@@ -423,20 +455,52 @@ export async function processStopHook(
   // Extract session summary from last assistant message
   if (input.last_assistant_message) {
     const text = extractSessionSummary(input.last_assistant_message);
-    const updateResult = recordStateUpdate(sessionId, {
-      sessionSummary: { text, extractedAt: new Date().toISOString() },
-    }, touchedPaths);
-    stateWriteFailed = stateWriteFailed || !updateResult.persisted;
+    patch.sessionSummary = { text, extractedAt: new Date().toISOString() };
     hookLog('info', 'session-stop', `Session summary extracted (${text.length} chars)`);
   }
 
+  // ────────────────────────────────────────────────────────────────
+  // Single atomic state write
+  // ────────────────────────────────────────────────────────────────
+  // T-SST-10 (R31-002/R32-002): Apply accumulated patch exactly once.
+  // T-SST-12 (R33-003): Consume `persisted: false` — if the write was
+  // attempted but did not land on disk, the autosave MUST abort;
+  // spawning the continuity script would otherwise persist stale disk
+  // state (or a mix of fields from separate generations). When there is
+  // nothing to patch (no transcript, no summary, no retarget), no write
+  // is attempted and autosave falls through to its own skip logic using
+  // the pre-handler state snapshot.
+  const touchedPaths: string[] = [];
+  let autosaveState: PersistedHookState | null = stateBeforeStop;
+  let stateWriteFailed = false;
+
+  if (Object.keys(patch).length > 0) {
+    const updateResult = updateState(sessionId, patch);
+    autosaveState = updateResult.merged;
+    if (updateResult.persisted) {
+      touchedPaths.push(updateResult.path);
+      if (patch.producerMetadata) {
+        producerMetadataWritten = true;
+      }
+    } else {
+      stateWriteFailed = true;
+    }
+  }
+
   if (autosaveMode === 'enabled') {
-    autosaveOutcome = stateWriteFailed ? 'failed' : runContextAutosave(sessionId);
+    if (stateWriteFailed) {
+      autosaveOutcome = 'failed';
+    } else if (!autosaveState) {
+      // No pre-existing state and no patch attempted → nothing to save.
+      autosaveOutcome = 'skipped';
+    } else {
+      autosaveOutcome = runContextAutosave(sessionId, autosaveState);
+    }
   }
 
   hookLog('info', 'session-stop', `Session ${sessionId} stop processing complete`);
   return {
-    touchedPaths: [...touchedPaths],
+    touchedPaths,
     parsedMessageCount,
     autosaveMode,
     autosaveOutcome,

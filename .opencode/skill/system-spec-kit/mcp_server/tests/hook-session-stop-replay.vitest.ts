@@ -60,4 +60,30 @@ describe.sequential('Claude session-stop replay harness', () => {
     expect(secondRun.state!.claudeSessionId).toBe('double-replay-session');
     expect(secondRun.state!.speckitSessionId).toBeNull();
   });
+
+  // T-SST-10 (R31-002/R32-002) replay: the first run parses the fixture,
+  // triggers a first-time spec folder detection, and writes state. All
+  // three dimensions (metrics+producer, retarget, summary) can land in a
+  // single `touchedPaths` entry because the handler now collapses them
+  // into one atomic `updateState()` call. The second run finds a state
+  // that already reflects the prior transcript, so no patch accumulates
+  // and `touchedPaths` is empty.
+  it('produces exactly one touchedPaths entry per stop event even when retarget + transcript metrics land together (T-SST-10 replay)', async () => {
+    sandbox = createStopReplaySandbox(fixturePath, 'atomic-replay-session');
+
+    const firstRun = await sandbox.run();
+    const secondRun = await sandbox.run();
+
+    // First run: retarget (no_previous_packet) + metrics + producer
+    // metadata must all coalesce into a single atomic write.
+    expect(firstRun.process.retargetReason).toBe('no_previous_packet');
+    expect(firstRun.process.producerMetadataWritten).toBe(true);
+    expect(firstRun.process.touchedPaths).toHaveLength(1);
+
+    // Second run: no new transcript bytes, state already has the target
+    // packet, no summary input → no patch, no touched paths.
+    expect(secondRun.process.retargetReason).toBeNull();
+    expect(secondRun.process.producerMetadataWritten).toBe(false);
+    expect(secondRun.process.touchedPaths).toHaveLength(0);
+  });
 });
