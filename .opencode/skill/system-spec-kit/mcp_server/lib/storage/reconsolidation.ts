@@ -506,9 +506,9 @@ export function executeConflict(
         db,
         existingMemory,
         predecessorSnapshot,
-        'deprecate',
         {
-          deprecate: () => {
+          mode: 'deprecate',
+          apply: () => {
             const updateResult = db.prepare(`
               UPDATE memory_index
               SET importance_tier = 'deprecated',
@@ -550,9 +550,9 @@ export function executeConflict(
         db,
         existingMemory,
         predecessorSnapshot,
-        'content_update',
         {
-          contentUpdate: () => {
+          mode: 'content_update',
+          apply: () => {
             const updateResult = db.prepare(`
               UPDATE memory_index
               SET content_text = ?,
@@ -920,6 +920,10 @@ function isArchivedRow(row: Record<string, unknown>): boolean {
   return false;
 }
 
+type ReconsolidationOp =
+  | { mode: 'deprecate'; apply: () => boolean }
+  | { mode: 'content_update'; apply: () => boolean };
+
 /**
  * Re-run the shared compare-and-swap guards before applying a conflict-path
  * mutation so both transaction modes abort the same way on stale predecessors.
@@ -928,11 +932,7 @@ function executeAtomicReconsolidationTxn(
   db: Database.Database,
   existingMemory: SimilarMemory,
   predecessorSnapshot: PredecessorSnapshot,
-  mode: 'deprecate' | 'content_update',
-  operations: {
-    deprecate?: () => boolean;
-    contentUpdate?: () => boolean;
-  },
+  operation: ReconsolidationOp,
 ): ConflictAbortStatus | null {
   let abortStatus: ConflictAbortStatus | null = null;
   db.transaction(() => {
@@ -950,13 +950,7 @@ function executeAtomicReconsolidationTxn(
       return;
     }
 
-    const applyOperation = mode === 'deprecate'
-      ? operations.deprecate
-      : operations.contentUpdate;
-    if (!applyOperation) {
-      throw new Error(`Missing reconsolidation transaction operation for mode ${mode}`);
-    }
-    if (!applyOperation()) {
+    if (!operation.apply()) {
       abortStatus = 'conflict_stale_predecessor';
     }
   })();
