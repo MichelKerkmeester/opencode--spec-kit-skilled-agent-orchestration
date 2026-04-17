@@ -40,6 +40,9 @@ run_check() {
             --include='*.tsx' \
             --include='*.js' \
             --include='*.mjs' \
+            --exclude-dir='dist' \
+            --exclude-dir='node_modules' \
+            --exclude-dir='.git' \
             2>/dev/null || true
     )
 
