@@ -572,12 +572,30 @@ def compute_hub_skills(adjacency: Dict[str, dict]) -> List[str]:
     return sorted(hubs)
 
 
-def compile_graph(all_metadata: List[Tuple[str, str, dict]]) -> dict:
-    """Compile all per-skill metadata into a single skill-graph.json."""
+def compile_graph(
+    all_metadata: List[Tuple[str, str, dict]],
+    topology_warnings: Optional[Dict[str, List[str]]] = None,
+) -> dict:
+    """Compile all per-skill metadata into a single skill-graph.json.
+
+    Args:
+        all_metadata: Per-skill parsed graph-metadata.json tuples.
+        topology_warnings: Optional dict of advisory warning-category → messages
+            captured during validation (R45-003 T-SGC-02 durability fix).
+            When supplied, the compiled output serializes them under the
+            ``topology_warnings`` key so downstream consumers
+            (``health_check()``) can detect degraded topology state without
+            re-running validation.
+    """
     families: Dict[str, List[str]] = {}
     adjacency: Dict[str, dict] = {}
-    conflicts: List[List[str]] = []
-    seen_conflicts: Set[tuple] = set()
+    # T-SGC-03 / T-SAP-04 (R46-002): only emit `conflicts` pairs when BOTH
+    # sides declared `conflicts_with` for each other. Unilateral declarations
+    # are upstream-gated to exit 2 by `validate_edge_symmetry()`, but the
+    # serialized contract makes reciprocity explicit so runtime consumers
+    # (`_apply_graph_conflict_penalty`) cannot accidentally penalize a
+    # non-declaring skill if validation is bypassed.
+    declared_conflicts: Dict[str, Set[str]] = {}
 
     for folder_name, _, data in all_metadata:
         skill_id = data.get("skill_id", folder_name)
@@ -608,14 +626,24 @@ def compile_graph(all_metadata: List[Tuple[str, str, dict]]) -> dict:
         if skill_adj:
             adjacency[skill_id] = skill_adj
 
-        # Collect conflicts
+        # Record directional conflict declarations for the reciprocity pass.
         for edge in edges.get("conflicts_with", []):
             target = edge.get("target")
             if target:
-                pair = tuple(sorted([skill_id, target]))
-                if pair not in seen_conflicts:
-                    seen_conflicts.add(pair)
-                    conflicts.append(list(pair))
+                declared_conflicts.setdefault(skill_id, set()).add(target)
+
+    # Now emit only mutually-declared conflict pairs.
+    conflicts: List[List[str]] = []
+    seen_conflicts: Set[tuple] = set()
+    for skill_id, targets in declared_conflicts.items():
+        for target in targets:
+            if skill_id not in declared_conflicts.get(target, set()):
+                # Defensive: upstream validation should have caught this.
+                continue
+            pair = tuple(sorted([skill_id, target]))
+            if pair not in seen_conflicts:
+                seen_conflicts.add(pair)
+                conflicts.append(list(pair))
 
     signals = {}
     for folder_name, _, data in all_metadata:
@@ -630,6 +658,16 @@ def compile_graph(all_metadata: List[Tuple[str, str, dict]]) -> dict:
 
     hub_skills = compute_hub_skills(adjacency)
 
+    # Normalize and embed topology warnings so that `health_check()` can
+    # report degraded state without re-running validation (R45-003).
+    serialized_warnings: Dict[str, List[str]] = {}
+    if topology_warnings:
+        for category, messages in topology_warnings.items():
+            if not messages:
+                continue
+            # Copy to break aliasing; sort for stable output.
+            serialized_warnings[str(category)] = sorted(str(m) for m in messages)
+
     return {
         "schema_version": COMPILED_SCHEMA_VERSION,
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -639,6 +677,7 @@ def compile_graph(all_metadata: List[Tuple[str, str, dict]]) -> dict:
         "signals": dict(sorted(signals.items())),
         "conflicts": sorted(conflicts),
         "hub_skills": hub_skills,
+        "topology_warnings": dict(sorted(serialized_warnings.items())),
     }
 
 
@@ -724,8 +763,19 @@ def main() -> int:
     if args.validate_only:
         return 0
 
+    # T-SGC-02 (R45-003): Serialize advisory warnings into the compiled graph so
+    # downstream `health_check()` consumers can report degraded state without
+    # re-running validation. Hard-blocking categories (SYMMETRY, ZERO-EDGE,
+    # DEPENDENCY CYCLE) already gate this path via the exit above; only truly
+    # advisory warnings (WEIGHT-BAND, WEIGHT-PARITY) remain at this point.
+    topology_warnings_payload: Dict[str, List[str]] = {}
+    if weight_band_warnings:
+        topology_warnings_payload["weight_band"] = list(weight_band_warnings)
+    if weight_parity_warnings:
+        topology_warnings_payload["weight_parity"] = list(weight_parity_warnings)
+
     # Compile
-    graph = compile_graph(all_metadata)
+    graph = compile_graph(all_metadata, topology_warnings=topology_warnings_payload)
     output_json = None
     size_bytes = None
     if args.export_json:

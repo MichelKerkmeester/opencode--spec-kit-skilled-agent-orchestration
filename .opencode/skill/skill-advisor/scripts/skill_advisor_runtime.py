@@ -278,3 +278,39 @@ def get_cache_status() -> Dict[str, Any]:
         "skipped_files": len(skipped),
         "healthy": len(skipped) == 0,
     }
+
+
+# ───────────────────────────────────────────────────────────────
+# 7. INVENTORY COMPARISON (T-SAR-01 / R42-002)
+# ───────────────────────────────────────────────────────────────
+
+def compare_inventories(
+    skill_names: Iterable[str],
+    graph_skill_ids: Iterable[str],
+) -> Dict[str, Any]:
+    """Compare SKILL.md discovery against a compiled-graph skill-ID inventory.
+
+    R42-002 flagged that `health_check()` previously returned ``ok`` even when
+    the two authoritative routing inventories disagreed:
+
+    * SKILL.md discovery (this module's cache) drives the per-skill record
+      lookup used in ``analyze_request``'s keyword/corpus scoring.
+    * The compiled skill graph (loaded in ``skill_advisor.py``) drives the
+      adjacency / signal / conflict boosts.
+
+    A skill present in one inventory but not the other silently disables a
+    layer of routing signal with no log or error. This helper normalizes
+    both inputs and returns a structured parity report that ``health_check``
+    can surface as ``degraded`` status.
+    """
+    skill_set = {str(name) for name in skill_names if isinstance(name, str) and name}
+    graph_set = {str(ident) for ident in graph_skill_ids if isinstance(ident, str) and ident}
+    missing_in_graph = sorted(skill_set - graph_set)
+    missing_in_discovery = sorted(graph_set - skill_set)
+    return {
+        "in_sync": not missing_in_graph and not missing_in_discovery,
+        "skill_discovery_count": len(skill_set),
+        "graph_skill_count": len(graph_set),
+        "missing_in_graph": missing_in_graph,
+        "missing_in_discovery": missing_in_discovery,
+    }

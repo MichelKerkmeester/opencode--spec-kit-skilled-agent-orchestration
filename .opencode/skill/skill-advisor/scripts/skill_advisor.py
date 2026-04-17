@@ -182,6 +182,61 @@ def _load_source_graph_signal_map() -> Dict[str, List[str]]:
     return signal_map
 
 
+def _load_source_conflict_declarations() -> Dict[str, Set[str]]:
+    """Read per-skill `graph-metadata.json` to recover directional conflict edges.
+
+    T-SAP-04 (R46-002): defense-in-depth for the runtime conflict penalty. The
+    compiled graph's `conflicts` is flattened into undirected pairs, so the
+    runtime cannot detect unilateral-declaration asymmetry from that payload
+    alone. The compiler's T-SGC-03 symmetry check gates against unilateral
+    declarations at build time, but if a compiled graph is shipped that
+    bypassed validation (e.g. a legacy JSON artifact), the runtime must
+    refuse to penalize a non-declaring skill. This helper replays the
+    per-skill `conflicts_with` arrays so the runtime can cross-check.
+    """
+    declarations: Dict[str, Set[str]] = {}
+
+    try:
+        skill_entries = sorted(os.scandir(SKILLS_DIR), key=lambda entry: entry.name)
+    except OSError:
+        return declarations
+
+    for entry in skill_entries:
+        if not entry.is_dir():
+            continue
+
+        graph_metadata_path = os.path.join(entry.path, "graph-metadata.json")
+        if not os.path.exists(graph_metadata_path):
+            continue
+
+        try:
+            with open(graph_metadata_path, "r", encoding="utf-8") as handle:
+                graph_metadata = json.load(handle)
+        except (OSError, ValueError, json.JSONDecodeError):
+            continue
+
+        if not isinstance(graph_metadata, dict):
+            continue
+
+        skill_id = str(graph_metadata.get("skill_id") or entry.name)
+        edges = graph_metadata.get("edges")
+        if not isinstance(edges, dict):
+            continue
+
+        conflicts = edges.get("conflicts_with")
+        if not isinstance(conflicts, list):
+            continue
+
+        for edge in conflicts:
+            if not isinstance(edge, dict):
+                continue
+            target = edge.get("target")
+            if isinstance(target, str) and target:
+                declarations.setdefault(skill_id, set()).add(target)
+
+    return declarations
+
+
 def _load_skill_graph_sqlite() -> Optional[Dict[str, Any]]:
     """Load compiled-equivalent skill graph data from SQLite."""
     if not os.path.exists(SKILL_GRAPH_SQLITE_PATH):
@@ -210,6 +265,10 @@ def _load_skill_graph_sqlite() -> Optional[Dict[str, Any]]:
             ).fetchone()
             generated_at_row = connection.execute(
                 "SELECT value FROM skill_graph_metadata WHERE key = 'last_scan_timestamp'"
+            ).fetchone()
+            # T-SGC-02 / R45-003: durable topology-warning payload.
+            topology_warnings_row = connection.execute(
+                "SELECT value FROM skill_graph_metadata WHERE key = 'topology_warnings'"
             ).fetchone()
     except sqlite3.Error:
         return None
@@ -261,6 +320,24 @@ def _load_skill_graph_sqlite() -> Optional[Dict[str, Any]]:
 
         schema_version = int(schema_row["version"]) if schema_row and schema_row["version"] is not None else 1
 
+        # T-SGC-02: decode persisted topology warnings (best-effort; missing or
+        # malformed payload degrades gracefully to empty).
+        topology_warnings_payload: Dict[str, List[str]] = {}
+        if topology_warnings_row and topology_warnings_row["value"]:
+            try:
+                decoded = json.loads(str(topology_warnings_row["value"]))
+            except (TypeError, ValueError, json.JSONDecodeError):
+                decoded = None
+            if isinstance(decoded, dict):
+                for category, messages in decoded.items():
+                    if not isinstance(category, str):
+                        continue
+                    if not isinstance(messages, list):
+                        continue
+                    cleaned = sorted(str(m) for m in messages if isinstance(m, str) and m.strip())
+                    if cleaned:
+                        topology_warnings_payload[category] = cleaned
+
         return {
             "schema_version": schema_version,
             "generated_at": generated_at,
@@ -270,6 +347,7 @@ def _load_skill_graph_sqlite() -> Optional[Dict[str, Any]]:
             "signals": dict(sorted(signals.items())),
             "conflicts": [list(pair) for pair in sorted(conflicts)],
             "hub_skills": _compute_hub_skills(adjacency),
+            "topology_warnings": dict(sorted(topology_warnings_payload.items())),
         }
     except (TypeError, ValueError, json.JSONDecodeError):
         return None
@@ -296,6 +374,18 @@ def _load_skill_graph_json() -> Optional[Dict[str, Any]]:
         _extend_signal_map(signal_map, skill_id, raw_signals)
 
     graph["signals"] = dict(sorted(signal_map.items()))
+
+    # T-SGC-02 (R45-003): Normalize topology_warnings (older graphs may omit).
+    raw_warnings = graph.get("topology_warnings")
+    normalized_warnings: Dict[str, List[str]] = {}
+    if isinstance(raw_warnings, dict):
+        for category, messages in raw_warnings.items():
+            if not isinstance(category, str) or not isinstance(messages, list):
+                continue
+            cleaned = sorted(str(m) for m in messages if isinstance(m, str) and m.strip())
+            if cleaned:
+                normalized_warnings[category] = cleaned
+    graph["topology_warnings"] = dict(sorted(normalized_warnings.items()))
     return graph
 
 
@@ -533,7 +623,15 @@ def _apply_signal_boosts(
 
 
 def _apply_graph_conflict_penalty(recommendations: List[Dict[str, Any]]) -> None:
-    """Increase uncertainty when conflicting skills are both recommended."""
+    """Increase uncertainty when conflicting skills are both recommended.
+
+    T-SAP-04 (R46-002): defense-in-depth reciprocity check. The compiled graph
+    promises that `conflicts` pairs are mutually declared (T-SGC-03 compiler
+    gate), but the runtime re-verifies by reading per-skill
+    `graph-metadata.json` before penalizing. If a pair is unilateral, the
+    penalty is skipped — a unilateral metadata edit must not silently
+    create a bilateral runtime penalty.
+    """
     graph = _load_skill_graph()
     if not graph:
         return
@@ -541,11 +639,28 @@ def _apply_graph_conflict_penalty(recommendations: List[Dict[str, Any]]) -> None
     if not conflicts:
         return
 
+    declarations = _load_source_conflict_declarations()
+
+    def _is_mutually_declared(a: str, b: str) -> bool:
+        # Empty declarations map means per-skill metadata was unreadable;
+        # trust the compiled graph in that case (backwards compat) so we
+        # don't silently break existing routing when running outside the
+        # repo checkout.
+        if not declarations:
+            return True
+        return b in declarations.get(a, set()) and a in declarations.get(b, set())
+
     passing = {r["skill"] for r in recommendations if r.get("passes_threshold")}
     conflict_set: Set[str] = set()
     for pair in conflicts:
-        if len(pair) == 2 and pair[0] in passing and pair[1] in passing:
-            conflict_set.update(pair)
+        if len(pair) != 2:
+            continue
+        a, b = pair[0], pair[1]
+        if a not in passing or b not in passing:
+            continue
+        if not _is_mutually_declared(a, b):
+            continue
+        conflict_set.update(pair)
 
     for rec in recommendations:
         if rec["skill"] in conflict_set:
@@ -1856,6 +1971,100 @@ ITERATION_LOOP_PHRASES = (
     "spec_kit:deep-research", "spec_kit:deep-review",
 )
 
+# T-SAP-02 (R45-002): Deep-research disambiguation phrases. When the prompt
+# contains one of these and both `sk-deep-research` and `sk-code-review`
+# appear as candidates within a thin margin, enforce a ≥ 0.10 confidence gap
+# so `sk-deep-research` keeps the primary slot. Wording-sensitive audit/review
+# tokens must not steal a deep-research prompt back into the generic review
+# lane.
+DEEP_RESEARCH_DISAMBIGUATION_PHRASES = (
+    "deep research",
+    "deep-research",
+    "autoresearch",
+    "/autoresearch",
+    "research loop",
+    "iterative research",
+    "autonomous research",
+    "auto research",
+    "/spec_kit:deep-research",
+    "spec_kit:deep-research",
+)
+
+# Symmetric guard for deep-review vs code-review wording collisions.
+# NOTE: "auto review" is intentionally omitted because the shipped regression
+# corpus treats "auto review this PR" as an sk-code-review prompt. Strong
+# sk-deep-review phrases (e.g. "auto review release readiness") are already
+# covered by explicit multi-token PHRASE_INTENT_BOOSTERS entries that win
+# on raw score before this disambiguation tier executes.
+DEEP_REVIEW_DISAMBIGUATION_PHRASES = (
+    "deep review",
+    "deep-review",
+    "review loop",
+    "iterative review",
+    "autonomous review",
+    "/spec_kit:deep-review",
+    "spec_kit:deep-review",
+)
+
+DISAMBIGUATION_MARGIN = 0.10
+
+
+def _apply_deep_research_disambiguation(
+    recommendations: List[Dict[str, Any]],
+    prompt_lower: str,
+) -> None:
+    """Ensure sk-deep-research beats sk-code-review by ≥ 0.10 on deep-research prompts.
+
+    T-SAP-02 (R45-002): audit/review-token overlap between deep-research prompts
+    and code-review prompts produced sub-0.02 confidence ties. When the prompt
+    contains an unambiguous deep-research marker AND both `sk-deep-research`
+    and `sk-code-review` appear as candidates, widen the margin to at least
+    ``DISAMBIGUATION_MARGIN`` so the router returns a stable deep-research
+    recommendation instead of a wording-sensitive tie.
+
+    Symmetric handling is applied for `sk-deep-review` vs `sk-code-review` via
+    ``DEEP_REVIEW_DISAMBIGUATION_PHRASES``.
+    """
+    if not prompt_lower or not recommendations:
+        return
+
+    def _find(skill_name: str) -> Optional[Dict[str, Any]]:
+        for rec in recommendations:
+            if rec.get("skill") == skill_name:
+                return rec
+        return None
+
+    def _enforce_margin(
+        winner: Dict[str, Any],
+        loser: Dict[str, Any],
+        reason_label: str,
+    ) -> None:
+        winner_conf = float(winner.get("confidence", 0.0))
+        loser_conf = float(loser.get("confidence", 0.0))
+        gap = winner_conf - loser_conf
+        if gap >= DISAMBIGUATION_MARGIN:
+            return
+        adjusted = max(0.0, round(winner_conf - DISAMBIGUATION_MARGIN, 2))
+        if adjusted >= loser_conf:
+            return
+        loser["confidence"] = adjusted
+        existing_reason = str(loser.get("reason", ""))
+        note = f" [disambiguation: {reason_label} reserved for this prompt]"
+        if note not in existing_reason:
+            loser["reason"] = f"{existing_reason}{note}"
+
+    if any(phrase in prompt_lower for phrase in DEEP_RESEARCH_DISAMBIGUATION_PHRASES):
+        winner = _find("sk-deep-research")
+        loser = _find("sk-code-review")
+        if winner and loser:
+            _enforce_margin(winner, loser, "sk-deep-research")
+
+    if any(phrase in prompt_lower for phrase in DEEP_REVIEW_DISAMBIGUATION_PHRASES):
+        winner = _find("sk-deep-review")
+        loser = _find("sk-code-review")
+        if winner and loser:
+            _enforce_margin(winner, loser, "sk-deep-review")
+
 
 def _apply_iteration_loop_tiebreaker(
     recommendations: List[Dict[str, Any]],
@@ -2084,6 +2293,11 @@ def analyze_request(
         if total_matches > 0 and graph_boost_count / total_matches > 0.5:
             recommendation["confidence"] = round(recommendation["confidence"] * 0.90, 2)
 
+    # T-SAP-02 (R45-002): disambiguate deep-research vs code-review and
+    # deep-review vs code-review before the iteration-loop tiebreaker so the
+    # primary-slot selection is stable on audit/review-token prompts.
+    _apply_deep_research_disambiguation(recommendations, prompt_lower)
+
     # Iteration-loop tiebreaker: when the query mentions iterative investigation/review
     # phrases AND command-spec-kit matches alongside a cli-* executor skill, promote
     # command-spec-kit. The CLI executor is a tool INSIDE the command's workflow, not
@@ -2140,6 +2354,46 @@ def load_all_skills() -> List[Dict[str, Any]]:
     return loaded
 
 
+def _collect_graph_skill_ids(graph: Optional[Dict[str, Any]]) -> Set[str]:
+    """Extract the union of skill IDs mentioned anywhere in a compiled graph."""
+    graph_ids: Set[str] = set()
+    if not isinstance(graph, dict):
+        return graph_ids
+    for family_members in (graph.get("families") or {}).values():
+        if isinstance(family_members, list):
+            graph_ids.update(
+                str(member) for member in family_members if isinstance(member, str)
+            )
+    for source_id, edge_groups in (graph.get("adjacency") or {}).items():
+        if isinstance(source_id, str):
+            graph_ids.add(str(source_id))
+        if isinstance(edge_groups, dict):
+            for targets in edge_groups.values():
+                if isinstance(targets, dict):
+                    graph_ids.update(
+                        str(target) for target in targets.keys() if isinstance(target, str)
+                    )
+    for signal_id in (graph.get("signals") or {}).keys():
+        if isinstance(signal_id, str):
+            graph_ids.add(str(signal_id))
+    return graph_ids
+
+
+def _compare_inventories(
+    skill_names: List[str],
+    graph: Optional[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """Thin wrapper around ``skill_advisor_runtime.compare_inventories``.
+
+    T-SAR-01 (R42-002): the primitive set-comparison lives in
+    ``skill_advisor_runtime.py`` so it can be reused from other harnesses;
+    this wrapper extracts the compiled-graph skill IDs and forwards to the
+    runtime helper.
+    """
+    graph_ids = _collect_graph_skill_ids(graph)
+    return _runtime_module.compare_inventories(skill_names, graph_ids)
+
+
 def health_check() -> Dict[str, Any]:
     """Return skill count and status for diagnostics."""
     skills = load_all_skills()
@@ -2148,10 +2402,31 @@ def health_check() -> Dict[str, Any]:
     graph = _load_skill_graph()
     graph_loaded = graph is not None
 
-    # Determine status: error if no skills, degraded if graph unavailable
+    # T-SGC-02 (R45-003): surface persisted topology-warning payload (if any).
+    topology_warnings: Dict[str, List[str]] = {}
+    if isinstance(graph, dict):
+        raw = graph.get("topology_warnings")
+        if isinstance(raw, dict):
+            for category, messages in raw.items():
+                if isinstance(category, str) and isinstance(messages, list):
+                    cleaned = [str(m) for m in messages if isinstance(m, str) and m.strip()]
+                    if cleaned:
+                        topology_warnings[category] = cleaned
+    has_topology_warnings = any(topology_warnings.values())
+
+    # T-SAR-01 (R42-002): inventory parity check between SKILL.md discovery
+    # (authoritative for analyze_request's skill records) and the compiled
+    # graph (authoritative for adjacency/signal-based boosts). Any mismatch
+    # downgrades health to `degraded` even when both sources loaded cleanly.
+    skill_discovery_names = [s.get("name", "") for s in real_skills if s.get("name")]
+    inventory_parity = _compare_inventories(skill_discovery_names, graph)
+    inventory_synced = bool(inventory_parity["in_sync"])
+
+    # Determine status. Error if no skills. Otherwise degraded when any of
+    # {graph missing, topology warnings present, inventory mismatch} applies.
     if not real_skills:
         status = "error"
-    elif not graph_loaded:
+    elif not graph_loaded or has_topology_warnings or not inventory_synced:
         status = "degraded"
     else:
         status = "ok"
@@ -2177,6 +2452,8 @@ def health_check() -> Dict[str, Any]:
         ),
         "skill_graph_sqlite_path": SKILL_GRAPH_SQLITE_PATH,
         "skill_graph_json_path": SKILL_GRAPH_PATH,
+        "topology_warnings": topology_warnings,
+        "inventory_parity": inventory_parity,
     }
 
     if not graph_loaded:

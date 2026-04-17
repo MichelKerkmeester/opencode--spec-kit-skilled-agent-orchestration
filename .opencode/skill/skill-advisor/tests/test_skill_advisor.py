@@ -381,6 +381,225 @@ description: Fixture helper for routing tests
     except Exception as exc:
         fail_test("T243-SA-010: graph signals and trigger phrases boost routing", str(exc))
 
+    # T243-SA-011: T-SAP-02 / R45-002 deep-research vs sk-code-review margin >= 0.10
+    try:
+        thin_margin_prompts = [
+            "deep research audit this subsystem",
+            "autoresearch review the architecture",
+            "research loop review architecture findings",
+        ]
+        margin_failures = []
+        for prompt in thin_margin_prompts:
+            recs = advisor.analyze_prompt(
+                prompt=prompt,
+                confidence_threshold=0.5,
+                uncertainty_threshold=1.0,
+                confidence_only=True,
+                show_rejections=True,
+            )
+            by_skill = {r.get("skill"): r for r in recs if isinstance(r, dict)}
+            dr = by_skill.get("sk-deep-research")
+            cr = by_skill.get("sk-code-review")
+            if not dr or not cr:
+                margin_failures.append(f"{prompt!r} missing dr={bool(dr)} cr={bool(cr)}")
+                continue
+            gap = float(dr.get("confidence", 0.0)) - float(cr.get("confidence", 0.0))
+            if gap + 1e-9 < 0.10:
+                margin_failures.append(f"{prompt!r} gap={gap:.2f}")
+        if not margin_failures:
+            ok("T243-SA-011: deep-research disambiguation enforces >= 0.10 margin")
+        else:
+            fail_test(
+                "T243-SA-011: deep-research disambiguation enforces >= 0.10 margin",
+                "; ".join(margin_failures),
+            )
+    except Exception as exc:
+        fail_test("T243-SA-011: deep-research disambiguation enforces >= 0.10 margin", str(exc))
+
+    # T243-SA-012: T-SAP-02 deep-review vs sk-code-review margin >= 0.10
+    try:
+        review_failures = []
+        for prompt in ["deep review this code for audit findings", "deep-review audit the module"]:
+            recs = advisor.analyze_prompt(
+                prompt=prompt,
+                confidence_threshold=0.5,
+                uncertainty_threshold=1.0,
+                confidence_only=True,
+                show_rejections=True,
+            )
+            by_skill = {r.get("skill"): r for r in recs if isinstance(r, dict)}
+            drv = by_skill.get("sk-deep-review")
+            cr = by_skill.get("sk-code-review")
+            if not drv or not cr:
+                review_failures.append(f"{prompt!r} missing drv={bool(drv)} cr={bool(cr)}")
+                continue
+            gap = float(drv.get("confidence", 0.0)) - float(cr.get("confidence", 0.0))
+            if gap + 1e-9 < 0.10:
+                review_failures.append(f"{prompt!r} gap={gap:.2f}")
+        if not review_failures:
+            ok("T243-SA-012: deep-review disambiguation enforces >= 0.10 margin")
+        else:
+            fail_test(
+                "T243-SA-012: deep-review disambiguation enforces >= 0.10 margin",
+                "; ".join(review_failures),
+            )
+    except Exception as exc:
+        fail_test("T243-SA-012: deep-review disambiguation enforces >= 0.10 margin", str(exc))
+
+    # T243-SA-013: T-SAR-01 / R42-002 inventory comparison detects mismatch
+    try:
+        parity = advisor._compare_inventories(["sk-git", "sk-doc"], {
+            "families": {"sk-util": ["sk-git", "sk-doc", "sk-missing"]},
+            "adjacency": {},
+            "signals": {},
+        })
+        if (
+            isinstance(parity, dict)
+            and parity.get("in_sync") is False
+            and "sk-missing" in parity.get("missing_in_discovery", [])
+        ):
+            ok("T243-SA-013: inventory parity check detects graph-only skill")
+        else:
+            fail_test(
+                "T243-SA-013: inventory parity check detects graph-only skill",
+                f"parity={parity}",
+            )
+    except Exception as exc:
+        fail_test("T243-SA-013: inventory parity check detects graph-only skill", str(exc))
+
+    # T243-SA-013c: T-SAR-01 runtime-level `compare_inventories` helper.
+    try:
+        runtime = load_module("skill_advisor_runtime", "skill_advisor_runtime.py")
+        parity = runtime.compare_inventories(
+            ["sk-git", "sk-doc", "sk-spurious"],
+            ["sk-git", "sk-doc", "sk-missing"],
+        )
+        if (
+            isinstance(parity, dict)
+            and parity.get("in_sync") is False
+            and parity.get("missing_in_graph") == ["sk-spurious"]
+            and parity.get("missing_in_discovery") == ["sk-missing"]
+        ):
+            ok("T243-SA-013c: runtime compare_inventories flags symmetric mismatches")
+        else:
+            fail_test(
+                "T243-SA-013c: runtime compare_inventories flags symmetric mismatches",
+                f"parity={parity}",
+            )
+    except Exception as exc:
+        fail_test("T243-SA-013c: runtime compare_inventories flags symmetric mismatches", str(exc))
+
+    # T243-SA-013b: inventory parity also detects SKILL.md-only skill.
+    try:
+        parity = advisor._compare_inventories(["alpha", "beta"], {
+            "families": {"sk-util": ["alpha"]},
+            "adjacency": {"alpha": {"enhances": {"alpha": 0.3}}},
+            "signals": {"alpha": ["foo"]},
+        })
+        if parity.get("in_sync") is False and "beta" in parity.get("missing_in_graph", []):
+            ok("T243-SA-013b: inventory parity check detects discovery-only skill")
+        else:
+            fail_test(
+                "T243-SA-013b: inventory parity check detects discovery-only skill",
+                f"parity={parity}",
+            )
+    except Exception as exc:
+        fail_test("T243-SA-013b: inventory parity check detects discovery-only skill", str(exc))
+
+    # T243-SA-014: T-SGC-02 / R45-003 health_check exposes topology_warnings payload
+    try:
+        original_graph = advisor._SKILL_GRAPH
+        original_source = advisor._SKILL_GRAPH_SOURCE
+        try:
+            advisor._SKILL_GRAPH = {
+                "schema_version": 1,
+                "skill_count": 1,
+                "families": {"sk-util": ["demo"]},
+                "adjacency": {},
+                "signals": {},
+                "conflicts": [],
+                "topology_warnings": {
+                    "weight_band": ["demo edges.depends_on[0] weight 0.1 outside recommended band"],
+                },
+            }
+            advisor._SKILL_GRAPH_SOURCE = "json"
+            health = advisor.health_check()
+            warnings_payload = health.get("topology_warnings") or {}
+            if (
+                health.get("status") == "degraded"
+                and "weight_band" in warnings_payload
+                and "demo" in warnings_payload["weight_band"][0]
+            ):
+                ok("T243-SA-014: health_check exposes topology_warnings")
+            else:
+                fail_test(
+                    "T243-SA-014: health_check exposes topology_warnings",
+                    f"status={health.get('status')} warnings={warnings_payload}",
+                )
+        finally:
+            advisor._SKILL_GRAPH = original_graph
+            advisor._SKILL_GRAPH_SOURCE = original_source
+    except Exception as exc:
+        fail_test("T243-SA-014: health_check exposes topology_warnings", str(exc))
+
+    # T243-SA-015: T-SAP-04 / R46-002 conflict penalty requires reciprocity.
+    try:
+        original_graph = advisor._SKILL_GRAPH
+        original_source = advisor._SKILL_GRAPH_SOURCE
+        original_loader = advisor._load_source_conflict_declarations
+        try:
+            advisor._SKILL_GRAPH = {
+                "schema_version": 1,
+                "skill_count": 2,
+                "families": {},
+                "adjacency": {},
+                "signals": {},
+                "conflicts": [["skill-a", "skill-b"]],
+            }
+            advisor._SKILL_GRAPH_SOURCE = "json"
+
+            # Simulate unilateral declaration: only skill-a declared conflicts_with skill-b.
+            advisor._load_source_conflict_declarations = lambda: {"skill-a": {"skill-b"}}
+
+            unilateral_recs = [
+                {"skill": "skill-a", "uncertainty": 0.20, "passes_threshold": True},
+                {"skill": "skill-b", "uncertainty": 0.20, "passes_threshold": True},
+            ]
+            advisor._apply_graph_conflict_penalty(unilateral_recs)
+            unilateral_penalized = any(
+                abs(r["uncertainty"] - 0.35) < 1e-6 for r in unilateral_recs
+            )
+
+            # Simulate mutual declaration: both skills declare the conflict.
+            advisor._load_source_conflict_declarations = lambda: {
+                "skill-a": {"skill-b"},
+                "skill-b": {"skill-a"},
+            }
+
+            mutual_recs = [
+                {"skill": "skill-a", "uncertainty": 0.20, "passes_threshold": True},
+                {"skill": "skill-b", "uncertainty": 0.20, "passes_threshold": True},
+            ]
+            advisor._apply_graph_conflict_penalty(mutual_recs)
+            mutual_penalized = all(
+                abs(r["uncertainty"] - 0.35) < 1e-6 for r in mutual_recs
+            )
+
+            if not unilateral_penalized and mutual_penalized:
+                ok("T243-SA-015: conflict penalty only applies on mutual declaration")
+            else:
+                fail_test(
+                    "T243-SA-015: conflict penalty only applies on mutual declaration",
+                    f"unilateral_penalized={unilateral_penalized} mutual_penalized={mutual_penalized}",
+                )
+        finally:
+            advisor._SKILL_GRAPH = original_graph
+            advisor._SKILL_GRAPH_SOURCE = original_source
+            advisor._load_source_conflict_declarations = original_loader
+    except Exception as exc:
+        fail_test("T243-SA-015: conflict penalty only applies on mutual declaration", str(exc))
+
+
 # ───────────────────────────────────────────────────────────────
 # 3. BENCH HARNESS TESTS
 # ───────────────────────────────────────────────────────────────
@@ -782,6 +1001,120 @@ def test_graph_compiler():
             )
     except Exception as exc:
         fail_test("T246-GC-007: acyclic dependency graph passes validation", str(exc))
+
+    # T246-GC-008: T-SGC-02 / R45-003 compile_graph serializes topology_warnings.
+    try:
+        fake_metadata = [
+            (
+                "alpha",
+                "/tmp/alpha",
+                {
+                    "schema_version": 1,
+                    "skill_id": "alpha",
+                    "family": "system",
+                    "edges": {
+                        "depends_on": [{"target": "beta", "weight": 0.9, "context": "ctx"}],
+                    },
+                },
+            ),
+            (
+                "beta",
+                "/tmp/beta",
+                {
+                    "schema_version": 1,
+                    "skill_id": "beta",
+                    "family": "system",
+                    "edges": {
+                        "prerequisite_for": [{"target": "alpha", "weight": 0.9, "context": "ctx"}],
+                    },
+                },
+            ),
+        ]
+        graph = compiler.compile_graph(
+            fake_metadata,
+            topology_warnings={
+                "weight_band": ["alpha edges.depends_on[0] weight 0.2 outside band"],
+                "weight_parity": [],
+            },
+        )
+        payload = graph.get("topology_warnings") or {}
+        if (
+            "weight_band" in payload
+            and payload["weight_band"] == ["alpha edges.depends_on[0] weight 0.2 outside band"]
+            and "weight_parity" not in payload
+        ):
+            ok("T246-GC-008: compile_graph serializes topology_warnings durably")
+        else:
+            fail_test(
+                "T246-GC-008: compile_graph serializes topology_warnings durably",
+                f"payload={payload}",
+            )
+    except Exception as exc:
+        fail_test("T246-GC-008: compile_graph serializes topology_warnings durably", str(exc))
+
+    # T246-GC-009: T-SGC-03 / T-SAP-04 compile_graph emits only mutually-declared conflicts.
+    try:
+        fake_metadata_unilateral = [
+            (
+                "alpha",
+                "/tmp/alpha",
+                {
+                    "schema_version": 1,
+                    "skill_id": "alpha",
+                    "family": "system",
+                    "edges": {
+                        "conflicts_with": [{"target": "beta", "weight": 0.9, "context": "ctx"}],
+                    },
+                },
+            ),
+            (
+                "beta",
+                "/tmp/beta",
+                {
+                    "schema_version": 1,
+                    "skill_id": "beta",
+                    "family": "system",
+                    "edges": {},
+                },
+            ),
+        ]
+        graph_unilateral = compiler.compile_graph(fake_metadata_unilateral)
+        fake_metadata_mutual = [
+            (
+                "alpha",
+                "/tmp/alpha",
+                {
+                    "schema_version": 1,
+                    "skill_id": "alpha",
+                    "family": "system",
+                    "edges": {
+                        "conflicts_with": [{"target": "beta", "weight": 0.9, "context": "ctx"}],
+                    },
+                },
+            ),
+            (
+                "beta",
+                "/tmp/beta",
+                {
+                    "schema_version": 1,
+                    "skill_id": "beta",
+                    "family": "system",
+                    "edges": {
+                        "conflicts_with": [{"target": "alpha", "weight": 0.9, "context": "ctx"}],
+                    },
+                },
+            ),
+        ]
+        graph_mutual = compiler.compile_graph(fake_metadata_mutual)
+        if graph_unilateral.get("conflicts") == [] and graph_mutual.get("conflicts") == [["alpha", "beta"]]:
+            ok("T246-GC-009: compile_graph emits conflicts only on mutual declaration")
+        else:
+            fail_test(
+                "T246-GC-009: compile_graph emits conflicts only on mutual declaration",
+                f"unilateral={graph_unilateral.get('conflicts')} mutual={graph_mutual.get('conflicts')}",
+            )
+    except Exception as exc:
+        fail_test("T246-GC-009: compile_graph emits conflicts only on mutual declaration", str(exc))
 
 
 # ───────────────────────────────────────────────────────────────
