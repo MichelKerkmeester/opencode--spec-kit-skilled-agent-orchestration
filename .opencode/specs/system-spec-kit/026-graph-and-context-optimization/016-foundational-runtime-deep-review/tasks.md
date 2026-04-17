@@ -106,12 +106,12 @@ Every task below maps to a phase in `plan.md` §4. The mapping is:
 - [x] T-PRE-01 Phase 016 research complete (50 iterations, FINAL-synthesis-and-review.md)
 - [x] T-PRE-02 Findings registry structured (findings-registry.json)
 - [x] T-PRE-03 P0 composite candidates identified and constituent findings mapped
-- [ ] T-PRE-04 [P0] Closing-pass audit of 11 untouched files (FINAL §8.2): `ensure-ready.ts`, `code-graph/context.ts`, `graph-lifecycle.ts`, `reconsolidation.ts:executeMerge`, `entity-linker.ts`, `memory-save.ts` timeline, `hooks/claude/shared.ts` producer-string exploit, `hooks/claude/compact-inject.ts`, three additional command YAMLs, `generate-context.js` trigger surface, handover-state enum, `opencode.json` + `.utcp_config.json` naming
+- [x] T-PRE-04 [P0] Closing-pass audit of 11 untouched files (FINAL §8.2): `ensure-ready.ts`, `code-graph/context.ts`, `graph-lifecycle.ts`, `reconsolidation.ts:executeMerge`, `entity-linker.ts`, `memory-save.ts` timeline, `hooks/claude/shared.ts` producer-string exploit, `hooks/claude/compact-inject.ts`, three additional command YAMLs, `generate-context.js` trigger surface, handover-state enum, `opencode.json` + `.utcp_config.json` naming
 - [x] T-PRE-05 [P0] Resolve OQ1: does `command-spec-kit` enforce Gate 3 independently of skill routing? (Determines Watch-P1 upgrade.)
 - [x] T-PRE-06 [P0] Resolve OQ2: are the 7 degraded-contract test files intentional compatibility shims or oversights? (Gates S1/S2/S3.)
 - [x] T-PRE-07 [P0] Resolve OQ3: can HookState gain schemaVersion without breaking already-quiesced state files? (Gates T-HST-M2.)
 - [x] T-PRE-08 [P0] Resolve OQ4: full enumeration of `/spec_kit:*` subcommands needing bridge entries. (Gates T-SAP-05.)
-- [ ] T-PRE-09 [P1] Construct §8.3 adversarial repros: R33-001 compact-prime identity race; R40-001 cleanup TOCTOU; R46-003 adversarial lastJobId; R34-002 complement duplicate window; R35-001 conflict fork
+- [x] T-PRE-09 [P1] Construct §8.3 adversarial repros: R33-001 compact-prime identity race; R40-001 cleanup TOCTOU; R46-003 adversarial lastJobId; R34-002 complement duplicate window; R35-001 conflict fork
 <!-- /ANCHOR:preflight -->
 
 ---
@@ -157,7 +157,7 @@ Top-2 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D1, D2
 - [x] T-HST-07 [P1] R33-001: `clearCompactPrime()` clears by session ID only, not payload identity; newer payload erased on overlap → identity-based clear (check `cachedAt` or `opaqueId`) (A4 from S2) (`hook-state.ts:184-205`; also `session-prime.ts:43-46,281-287`) — Phase 1b / QW #20
 - [x] T-HST-08 [P2] R36-001: `loadMostRecentState` stat-then-read race: concurrent rename can swap generation between mtime and content → re-read mtime after `readFileSync()` and discard candidate if changed (A5 from S2) (`hook-state.ts:140-155,170-176`) — Phase 1b
 - [x] T-HST-09 [P1] R32-001 + R33-003 (producer side): `updateState` returns merged after failed persist → return `{ ok, merged, persisted }`; consumers surface persistence failures (A8 from S2) (`hook-state.ts:170-176,221-241`) — Phase 1b
-- [ ] T-HST-10 [P2] R4-003: Recent-state authority based on filesystem mtime, not `state.updatedAt` → rank by `updatedAt` field (`hook-state.ts:142-155`)
+- [x] T-HST-10 [P2] R4-003: Recent-state authority based on filesystem mtime, not `state.updatedAt` → rank by `updatedAt` field (`hook-state.ts:142-155`)
 - [x] T-HST-11 [P0-D] [P] T-SST-06 counterpart: `Math.max()` offset monotonicity guard in `updateState()` (`hook-state.ts:221-241`) — Phase 1a / QW #9
 
 <!-- /ANCHOR:group-hst -->
@@ -177,9 +177,9 @@ Top-3 file by distinct-issue count. Primary workstream: S1 (P0-B).
 - [x] T-RCB-06 [P1] R34-002: Complement path: stale-search duplicate window between `runReconsolidationIfEnabled` and `writeTransaction` → move complement decision inside writer transaction or re-run search (B2 from S1) (`reconsolidation-bridge.ts:261-306`) — Phase 1d / B2 [B:T-RCB-04]
 - [x] T-RCB-07 [P1] R39-002 + R40-002 (dedup): Governed scope filter reads each candidate's row individually outside any transaction; mixed-snapshot candidate universe → batched scope reads or wrap in transaction (B3/M6 from S1) (`reconsolidation-bridge.ts:203-237,282-306`) — Phase 1d / B3
 - [x] T-RCB-08 [P2] R36-002 + R37-003 (dedup): Assistive reconsolidation recommendation built from pre-transaction snapshot; can be stale on delivery → re-run assistive search inside transaction OR flag `advisory_stale: true` (B4 from S1) (`reconsolidation-bridge.ts:453-501`; `memory-save.ts:2159-2170,2250-2304`) — Phase 1d / B4 [B:T-RCB-07]
-- [ ] T-RCB-09 [P2] R11-004 + R12-003 (dedup): Scope-filtered reconsolidation candidates vanish silently; limit-pre-filter can starve in-scope candidates → structured warning `{ code: 'scope_filter_suppressed_candidates', candidates: [...] }` (B5 from S1) (`reconsolidation-bridge.ts:283-295`) — Phase 1d / B5
-- [ ] T-RCB-10 [P2] R16-002: Malformed vector-search rows coerced into sentinel values → reject malformed rows in `reconsolidation-bridge` (`reconsolidation-bridge.ts:295-305`) [Phase 3 Med-G]
-- [ ] T-RCB-11 [P2] R19-002: Assistive reconsolidation failures fall open to ordinary save; no machine-readable signal → surface as structured failure (`reconsolidation-bridge.ts:453-511,514-518`) [Phase 3 Med-H]
+- [x] T-RCB-09 [P2] R11-004 + R12-003 (dedup): Scope-filtered reconsolidation candidates vanish silently; limit-pre-filter can starve in-scope candidates → structured warning `{ code: 'scope_filter_suppressed_candidates', candidates: [...] }` (B5 from S1) (`reconsolidation-bridge.ts:283-295`) — Phase 1d / B5
+- [x] T-RCB-10 [P2] R16-002: Malformed vector-search rows coerced into sentinel values → reject malformed rows in `reconsolidation-bridge` (`reconsolidation-bridge.ts:295-305`) [Phase 3 Med-G]
+- [x] T-RCB-11 [P2] R19-002: Assistive reconsolidation failures fall open to ordinary save; no machine-readable signal → surface as structured failure (`reconsolidation-bridge.ts:453-511,514-518`) [Phase 3 Med-H]
 <!-- /ANCHOR:group-rcb -->
 
 ---
@@ -206,8 +206,8 @@ Top-4 file by distinct-issue count. Primary workstream: M13 (enum status refacto
 - [x] T-PIN-04 [P1] R14-003 (dedup of R12-004): Partial causal-link failures normalized into successful enrichment → propagate `partial` status (`post-insert.ts:94-113`) [B:T-PIN-02]
 - [x] T-PIN-05 [P2] R11-005: `summary`/`graphLifecycle` no-ops normalized to `true` → `skipped` status with reason (`post-insert.ts:136-147,187-200`) [B:T-PIN-02]
 - [x] T-PIN-06 [P2] R12-005 (dedup of R14-004): `entityLinking.skippedByDensityGuard` collapsed into success → `skipped` status with `reason: 'density_guard'` (`post-insert.ts:159-173`) [B:T-PIN-02]
-- [ ] T-PIN-07 [P2] R17-002: Exception-driven enrichment failures still report `executionStatus=ran` → `failed` status with exception reason (`post-insert.ts:106-109,126-129,148-151,174-177,201-214`) [B:T-PIN-02]
-- [ ] T-PIN-08 [P1] R27-001: `graphLifecycle=true` even when `onIndex` returns `skipped:true`; `runEnrichmentBackfill` can't unblock → propagate underlying skip reason (`post-insert.ts:187-200`) [B:T-PIN-02]
+- [x] T-PIN-07 [P2] R17-002: Exception-driven enrichment failures still report `executionStatus=ran` → `failed` status with exception reason (`post-insert.ts:106-109,126-129,148-151,174-177,201-214`) [B:T-PIN-02]
+- [x] T-PIN-08 [P1] R27-001: `graphLifecycle=true` even when `onIndex` returns `skipped:true`; `runEnrichmentBackfill` can't unblock → propagate underlying skip reason (`post-insert.ts:187-200`) [B:T-PIN-02]
 <!-- /ANCHOR:group-pin -->
 
 ---
@@ -225,10 +225,10 @@ Top-5 file by distinct-issue count. Primary workstream: Quick wins + M8 cascades
 - [x] T-CGQ-06 [P2] R13-003: Outline queries degrade unknown/path-mismatched files into ok with `nodeCount: 0` → validate outline subject path first (`code-graph/query.ts:340-364`) [QW #13]
 - [x] T-CGQ-07 [P1] R16-001: `includeTransitive: true` runs before switch-level validation; unsupported ops default to CALLS → validate operation before transitive branch (`code-graph/query.ts:417-436,547-548`) [QW]
 - [x] T-CGQ-08 [P2] R17-001: Dangling edges returned as successful relationships with raw `edge.targetId` → flag dangling edges as corruption (`code-graph/query.ts:442-559`) [QW #17]
-- [ ] T-CGQ-09 [P2] R18-001 + R20-003 (dedup): Query-level `detectorProvenance` silently degrades to global last-index snapshot → compute query-level provenance or omit field (`code-graph/query.ts:94-99,551-565`)
-- [ ] T-CGQ-10 [P2] R19-001: Transitive traversal silently degrades dangling nodes into ok with null metadata → surface as corruption (paired with T-CGQ-08) (`code-graph/query.ts:127-166,417-436`) [Phase 3 Med-H]
-- [ ] T-CGQ-11 [P1] R22-001 + R23-001 (dedup): Self-contradictory success payload (readiness `empty` + `detectorProvenance: structured`); query exposes `empty` readiness while bootstrap canonicalizes same condition as `missing` → align vocabulary via M8 (`code-graph/query.ts:61-83,94-99,319-364,551-564`) [B:T-SHP-01]
-- [ ] T-CGQ-12 [P1] R27-002: Routing still recommends `code_graph_query` despite readiness-fail-open gap → update routing recommendations in `context-server.ts:801-816` [B:T-CGQ-02]
+- [x] T-CGQ-09 [P2] R18-001 + R20-003 (dedup): Query-level `detectorProvenance` silently degrades to global last-index snapshot → compute query-level provenance or omit field (`code-graph/query.ts:94-99,551-565`)
+- [x] T-CGQ-10 [P2] R19-001: Transitive traversal silently degrades dangling nodes into ok with null metadata → surface as corruption (paired with T-CGQ-08) (`code-graph/query.ts:127-166,417-436`) [Phase 3 Med-H]
+- [x] T-CGQ-11 [P1] R22-001 + R23-001 (dedup): Self-contradictory success payload (readiness `empty` + `detectorProvenance: structured`); query exposes `empty` readiness while bootstrap canonicalizes same condition as `missing` → align vocabulary via M8 (`code-graph/query.ts:61-83,94-99,319-364,551-564`) [B:T-SHP-01]
+- [x] T-CGQ-12 [P1] R27-002: Routing still recommends `code_graph_query` despite readiness-fail-open gap → update routing recommendations in `context-server.ts:801-816` [B:T-CGQ-02]
 <!-- /ANCHOR:group-cgq -->
 
 ---
@@ -273,7 +273,7 @@ Structural workstreams addressing governance-layer findings. Runs in parallel wi
 
 Primary workstream: M8 (trust-state vocabulary).
 
-- [ ] T-SHP-01 [P1] R9-001: `trustStateFromGraphState()` / `trustStateFromStructuralStatus()` collapse `missing` + `empty` into `stale` → introduce `absent`/`unavailable` distinct from `stale`; migrate producers (M8) (`shared-payload.ts:592-601`) — Phase 3 M8
+- [x] T-SHP-01 [P1] R9-001: `trustStateFromGraphState()` / `trustStateFromStructuralStatus()` collapse `missing` + `empty` into `stale` → introduce `absent`/`unavailable` distinct from `stale`; migrate producers (M8) (`shared-payload.ts:592-601`) — Phase 3 M8
 - [x] T-SHP-02 [P2] R9-002: `coerceSharedPayloadEnvelope()` is shape-only, not contract-level → runtime validation of `SharedPayloadKind`/`producer` (`shared-payload.ts:598-601`) [QW #18]
 <!-- /ANCHOR:group-shp -->
 
@@ -305,7 +305,7 @@ Primary workstream: S2 (P0-A).
 Primary workstream: Phase 3 Med-A, Med-B.
 
 - [x] T-ENR-01 [P1] R5-001: Successful inline refresh still reports pre-refresh freshness → refresh readiness/freshness reports after inline reindex completes (`ensure-ready.ts:283-317`) [Phase 3 Med-A]
-- [ ] T-ENR-02 [P1] R5-002: Partial persistence failures silently treated as successful refresh (file_mtime_ms written before node/edge failure) → don't write mtime until nodes+edges persist (`ensure-ready.ts:183-217`) [Phase 3 Med-B]
+- [x] T-ENR-02 [P1] R5-002: Partial persistence failures silently treated as successful refresh (file_mtime_ms written before node/edge failure) → don't write mtime until nodes+edges persist (`ensure-ready.ts:183-217`) [Phase 3 Med-B]
 <!-- /ANCHOR:group-enr -->
 
 ---
@@ -315,12 +315,12 @@ Primary workstream: Phase 3 Med-A, Med-B.
 
 Primary workstream: S2 (P0-A) + M8.
 
-- [ ] T-SBS-01 [P1] R30-001: Same payload carries `trustState=stale` AND `graphOps.readiness.canonical=empty` → align vocabulary to M8 expansion (`session-bootstrap.ts:321-347` + `session-resume.ts:530-551`) — Phase 3 M8 [B:T-SHP-01]
+- [x] T-SBS-01 [P1] R30-001: Same payload carries `trustState=stale` AND `graphOps.readiness.canonical=empty` → align vocabulary to M8 expansion (`session-bootstrap.ts:321-347` + `session-resume.ts:530-551`) — Phase 3 M8 [B:T-SHP-01]
 - [x] T-SRS-01 [P1] R24-002: Cached scope drives `fallbackSpecFolder` but OpenCode transport uses `args.specFolder ?? null` → `handleSessionResume` forwards fallback scope (`session-resume.ts:174-188,415-429,560-563`) [QW]
 - [x] T-SRS-02 [P1] R29-001 consumer side: schema-version rejection path unreachable → paired with T-HST-02 to enable it (`session-resume.ts:174-208`) [B:T-HST-02]
-- [ ] T-SRS-03 [P2] R38-001 extension: `session-resume.ts:348-366` has same all-or-nothing scan; inherits T-HST-03 fix [B:T-HST-03]
+- [x] T-SRS-03 [P2] R38-001 extension: `session-resume.ts:348-366` has same all-or-nothing scan; inherits T-HST-03 fix [B:T-HST-03]
 - [x] T-SHS-01 [P2] R26-002: `session_health` doesn't attach section-level `structuralTrust` axes → add structural-trust section (QW #19) (`session-health.ts:136-166`) [QW #19]
-- [ ] T-SRS-04 [P2] R29-002: Claude startup collapses all rejection reasons into same "no cached continuity" state → distinct reason codes per M1/M2 (`session-prime.ts:130-143`) [B:T-HST-01, T-HST-02]
+- [x] T-SRS-04 [P2] R29-002: Claude startup collapses all rejection reasons into same "no cached continuity" state → distinct reason codes per M1/M2 (`session-prime.ts:130-143`) [B:T-HST-01, T-HST-02]
 <!-- /ANCHOR:group-sbs-srs-shs -->
 
 ---
@@ -355,7 +355,7 @@ Top-6 file by distinct-issue count. Primary workstream: S4.
 
 - [x] T-SAP-01 [P1] R43-001 + R44-001 (dedup): Live skill router does not consume per-skill `intent_signals`/`derived.trigger_phrases`; `signals` map populated but has no consumer in `analyze_request()` → wire signals into scoring (A2 from S4) (`skill_advisor.py:105-116,140-152,180-187,1669-1694`) — Phase 2 S4 / QW #1
 - [x] T-SAP-02 [P2] R45-002: Deep-research prompts containing `audit`/`review` tokens score within 0.02 of `sk-code-review`; no ranking-stability test → disambiguation tier for deep-research vs review (A2b from S4) (`skill_advisor.py:568-577,771-813,1669-1694`) [B:T-SAP-01]
-- [ ] T-SAP-03 [P1] R46-001: `COMMAND_BRIDGES` registers only `/spec_kit` prefix; all `/spec_kit:*` subcommands collapse to `command-spec-kit` at `kind_priority=2` → per-subcommand bridges (A0 from S4) (`skill_advisor.py:980-1021,1404-1410,1647,1741-1768`) — Phase 2 S4 / QW #2 [B:T-PRE-08]
+- [x] T-SAP-03 [P1] R46-001: `COMMAND_BRIDGES` registers only `/spec_kit` prefix; all `/spec_kit:*` subcommands collapse to `command-spec-kit` at `kind_priority=2` → per-subcommand bridges (A0 from S4) (`skill_advisor.py:980-1021,1404-1410,1647,1741-1768`) — Phase 2 S4 / QW #2 [B:T-PRE-08]
 - [x] T-SAP-04 [P1] R46-002: `validate_edge_symmetry()` never inspects `conflicts_with` edges; unilateral metadata edit silently creates bilateral runtime penalty → reciprocity check (paired with T-SGC-03) (A4 from S4) (`skill_advisor.py:141-187,321-339`) — Phase 2 S4
 - [x] T-SAP-05 [P1] R41-003: Skill-graph topology checks advisory-only; `--validate-only` returns success for graphs violating routing invariants → promote to hard errors (paired with T-SGC-02) (`skill_advisor.py:203-265`) [QW #27]
 <!-- /ANCHOR:group-sap -->
