@@ -64,6 +64,11 @@ describe('Gate 3 classifier — normalization', () => {
     expect(normalizePrompt('Fix    THE bug')).toBe('fix the bug');
   });
 
+  it('applies NFKC and strips soft hyphen / zero-width characters before matching', () => {
+    expect(normalizePrompt('f\u00ADix   t\u200Bhe bug')).toBe('fix the bug');
+    expect(normalizePrompt('\uFEFFwrite the file')).toBe('write the file');
+  });
+
   it('tokenizes while preserving /, :, - and _', () => {
     const tokens = tokenizePrompt(normalizePrompt('/spec_kit:resume the deep-research'));
     expect(tokens).toEqual(expect.arrayContaining(['/spec_kit:resume', 'the', 'deep-research']));
@@ -106,6 +111,24 @@ describe('Gate 3 classifier — positive matches (T-DOC-02)', () => {
 
   it('triggers Gate 3 for "fix the bug"', () => {
     expect(classifyPrompt('please fix the bug in session-stop').triggersGate3).toBe(true);
+  });
+
+  it('triggers Gate 3 when soft hyphen hides a file-write token', () => {
+    const r = classifyPrompt('f\u00ADile write');
+    expect(r.triggersGate3).toBe(true);
+    expect(r.reason).toBe('file_write_match');
+  });
+
+  it('triggers Gate 3 when zero-width space hides a file-write token', () => {
+    const r = classifyPrompt('wr\u200Bite the packet');
+    expect(r.triggersGate3).toBe(true);
+    expect(r.reason).toBe('file_write_match');
+  });
+
+  it('triggers Gate 3 when soft hyphen and zero-width space appear together', () => {
+    const r = classifyPrompt('wr\u00ADi\u200Bte the packet');
+    expect(r.triggersGate3).toBe(true);
+    expect(r.reason).toBe('file_write_match');
   });
 });
 
@@ -183,6 +206,18 @@ describe('Gate 3 classifier — negative baselines', () => {
 
   it('does NOT trigger Gate 3 for "show me" reads', () => {
     expect(classifyPrompt('show me the recent commits').triggersGate3).toBe(false);
+  });
+
+  it('does NOT confusable-fold Cyrillic homoglyphs into a file-write token', () => {
+    const r = classifyPrompt('d\u0435lete the helper');
+    expect(r.triggersGate3).toBe(false);
+    expect(r.reason).toBe('no_match');
+  });
+
+  it('does NOT confusable-fold Greek epsilon into a file-write token', () => {
+    const r = classifyPrompt('\u0395dit the helper');
+    expect(r.triggersGate3).toBe(false);
+    expect(r.reason).toBe('no_match');
   });
 });
 

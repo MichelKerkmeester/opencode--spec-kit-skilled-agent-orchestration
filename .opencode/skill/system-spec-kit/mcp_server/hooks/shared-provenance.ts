@@ -30,6 +30,14 @@ export const RECOVERED_TRANSCRIPT_STRIP_PATTERNS: readonly RegExp[] = [
   /^\s*<(?:\/)?(?:system|developer|assistant|user|instructions?)\b/i,
 ];
 
+function normalizeRecoveredPayloadLine(line: string): string {
+  return line.normalize('NFKC').replace(/[\u00AD\u200B-\u200F\uFEFF]/g, '');
+}
+
+function normalizeRecoveredPayloadLineForMatching(line: string): string {
+  return line.replace(/[\u0395\u03B5]/g, (char) => (char === '\u0395' ? 'E' : 'e'));
+}
+
 /** URL-escape a provenance field value so forged markers cannot break out of the marker line. */
 export function escapeProvenanceField(value: unknown, fallback: string): string {
   return encodeURIComponent(typeof value === 'string' ? value : fallback);
@@ -39,7 +47,8 @@ export function escapeProvenanceField(value: unknown, fallback: string): string 
 export function sanitizeRecoveredPayload(payload: string): string {
   return payload
     .split(/\r?\n/)
-    .filter((line) => !RECOVERED_TRANSCRIPT_STRIP_PATTERNS.some((pattern) => pattern.test(line)))
+    .map((line) => normalizeRecoveredPayloadLine(line))
+    .filter((line) => !RECOVERED_TRANSCRIPT_STRIP_PATTERNS.some((pattern) => pattern.test(normalizeRecoveredPayloadLineForMatching(line))))
     .join('\n')
     .trim();
 }

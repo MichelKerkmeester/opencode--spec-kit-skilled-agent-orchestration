@@ -143,7 +143,12 @@ export const GATE_3_VOCABULARY = Object.freeze({
  * preserve `/` and `:` so command forms like `/spec_kit:resume` survive.
  */
 export function normalizePrompt(prompt: string): string {
-  return prompt.toLowerCase().replace(/\s+/g, ' ').trim();
+  return prompt
+    .normalize('NFKC')
+    .replace(/[\u00AD\u200B-\u200F\uFEFF]/g, '')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 /** Tokenize a normalized prompt into alphanumeric + `/` + `:` words. */

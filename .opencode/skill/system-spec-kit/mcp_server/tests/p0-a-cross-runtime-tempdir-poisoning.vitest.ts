@@ -64,7 +64,7 @@ describe.sequential('P0-A cross-runtime tempdir poisoning regression', () => {
     tempRoot = null;
   });
 
-  it('quarantines a poisoned hook-state file so Claude, Gemini, and OpenCode consumers keep working', async () => {
+  it('quarantines a poisoned hook-state file so Claude + Gemini consumers keep working', async () => {
     const poisonedSessionId = 'poisoned-session';
     const healthySessionId = 'healthy-session';
     const healthySpecFolder = 'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review';
@@ -153,6 +153,7 @@ describe.sequential('P0-A cross-runtime tempdir poisoning regression', () => {
     expect(geminiSections[0]?.title).toBe('Recovered Context (Post-Compression)');
     expect(geminiSections[0]?.content).toContain('mcp_server/hooks/claude/hook-state.ts');
 
+    // OpenCode inherits the same schema-safe HookState reader path through the shared startup brief/session-resume surface.
     const startupBrief = buildStartupBrief(undefined, { claudeSessionId: healthySessionId });
     expect(startupBrief.sessionContinuity).toContain(healthySpecFolder);
     expect(startupBrief.sessionContinuity).toContain('Continue the HookState hardening work');
