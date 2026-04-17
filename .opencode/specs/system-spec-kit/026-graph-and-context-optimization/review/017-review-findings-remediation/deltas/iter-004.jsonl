@@ -1,0 +1,13 @@
+{"iteration":4,"dimension":"maintainability","timestamp":"2026-04-17T20:00:00Z","event":"iteration_start","dispatcher":"claude-opus-4.7-1m"}
+{"iteration":4,"event":"finding","id":"R4-P2-001","severity":"P2","dimension":"maintainability","file":".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/readiness-contract.ts","lines":"61-72,90-101","title":"readiness-contract switches omit assertNever default — inconsistent with Phase 017 rollout","refines":"R1-P2-002","weight":1.0}
+{"iteration":4,"event":"finding","id":"R4-P2-002","severity":"P2","dimension":"maintainability","file":".opencode/skill/system-spec-kit/mcp_server/lib/enrichment/retry-budget.ts","lines":"68-79","title":"clearBudget optional-param design allows silent clear-all regression","refines":"R1-P2-001","weight":1.0}
+{"iteration":4,"event":"finding","id":"R4-P2-003","severity":"P2","dimension":"maintainability","file":".opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts","lines":"927-965","title":"executeAtomicReconsolidationTxn mode+operations-bag lacks discriminated union","refines":null,"weight":1.0}
+{"iteration":4,"event":"finding","id":"R4-P2-004","severity":"P2","dimension":"maintainability","file":".opencode/skill/system-spec-kit/mcp_server/hooks/shared-provenance.ts","lines":"37-39","title":"normalizeRecoveredPayloadLineForMatching unexported despite being cited attack surface","refines":"R1-P1-001","weight":1.0}
+{"iteration":4,"event":"pass","id":"P-004-01","title":"assertNever consistently applied across 14 of 16 switch sites"}
+{"iteration":4,"event":"pass","id":"P-004-02","title":"runEnrichmentStep extraction clean — 18 LOC helper, 5 uniform lane runners, 30 LOC coordinator"}
+{"iteration":4,"event":"pass","id":"P-004-03","title":"Validation-script exit-code semantics consistent across 3 scripts"}
+{"iteration":4,"event":"ruled_out","id":"H-004-01","claim":"assertNever module over-engineered","verdict":"RULED_OUT","reason":"14 callsites across 8 files justify dedicated module"}
+{"iteration":4,"event":"ruled_out","id":"H-004-02","claim":"caller-context API bloated","verdict":"RULED_OUT","reason":"minimal get/require/scope triad with distinct semantics"}
+{"iteration":4,"event":"ruled_out","id":"H-004-03","claim":"Claude/Gemini re-exports duplicated boilerplate","verdict":"RULED_OUT","reason":"shared barrel would introduce import-cycle risk"}
+{"iteration":4,"event":"metrics","findingsCount":4,"P0":0,"P1":0,"P2":4,"severityWeightedNew":4.0,"cumulativeWeight":43.0,"newFindingsRatio":0.093,"convergedThisIter":false,"toolCallsUsed":11}
+{"iteration":4,"event":"iteration_complete","convergenceCandidate":false,"marginAboveThreshold":0.013,"recommendedNextDimension":"cross-reference"}
