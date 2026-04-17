@@ -126,10 +126,10 @@ Every task below maps to a phase in `plan.md` §4. The mapping is:
 
 Top-1 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D4, D5).
 
-- [ ] T-SST-01 [P1] R1-002: `input.session_id ?? 'unknown'` collapses unrelated sessions onto shared state file; reject or quarantine missing `session_id` payloads (`session-stop.ts:60-105,240-309`)
-- [ ] T-SST-02 [P1] R11-001: Transcript/producer-metadata failure degrades to warning-only; no machine-readable outcome → surface as typed `OperationResult` with `failed` status (`session-stop.ts:199-218,248-276`) [B:T-PIN-M13 for typed contract]
-- [ ] T-SST-03 [P1] R13-001: `runContextAutosave` silently skips when `lastSpecFolder`/`sessionSummary` unset → emit `autosaveOutcome: 'skipped'` (`session-stop.ts:60-67,308-312`) [B:T-SST-07]
-- [ ] T-SST-04 [P1] R14-001: `storeTokenSnapshot` writes `lastTranscriptOffset: 0` before producer metadata builds; catch swallows later failure → eliminate intermediate zero-offset write (`session-stop.ts:175-193,257-268,274-276`) [B:T-SST-06 (D4)]
+- [x] T-SST-01 [P1] R1-002: `input.session_id ?? 'unknown'` collapses unrelated sessions onto shared state file; reject or quarantine missing `session_id` payloads (`session-stop.ts:60-105,240-309`)
+- [x] T-SST-02 [P1] R11-001: Transcript/producer-metadata failure degrades to warning-only; no machine-readable outcome → surface as typed `OperationResult` with `failed` status (`session-stop.ts:199-218,248-276`) [B:T-PIN-M13 for typed contract]
+- [x] T-SST-03 [P1] R13-001: `runContextAutosave` silently skips when `lastSpecFolder`/`sessionSummary` unset → emit `autosaveOutcome: 'skipped'` (`session-stop.ts:60-67,308-312`) [B:T-SST-07]
+- [x] T-SST-04 [P1] R14-001: `storeTokenSnapshot` writes `lastTranscriptOffset: 0` before producer metadata builds; catch swallows later failure → eliminate intermediate zero-offset write (`session-stop.ts:175-193,257-268,274-276`) [B:T-SST-06 (D4)]
 - [x] T-SST-05 [P0-D] [P] R37-001: Transient `lastTranscriptOffset: 0` sentinel between two writes; second concurrent stop hook can re-parse from zero; carry final offset through to `recordStateUpdate()` (`session-stop.ts:175-190,244-252,257-268`) — Phase 1a / QW #21
 - [x] T-SST-06 [P0-D] [P] R33-002: Overlapping stop hooks can regress `lastTranscriptOffset` backwards; `Math.max()` monotonicity guard in `updateState()` (also lands in T-HST group) (`session-stop.ts:119-125,244-268`) — Phase 1a / QW #9
 - [x] T-SST-07 [P1] R39-001: Autosave outcome (ran/skipped/failed) never surfaced in `SessionStopProcessResult`; add `autosaveOutcome` field (`session-stop.ts:60-67,108-117,299-318`) — Phase 1a / QW #22
@@ -148,15 +148,15 @@ Top-1 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D4, D5
 
 Top-2 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D1, D2, D3, D5).
 
-- [ ] T-HST-01 [P1] R21-002, R25-004 (dedup): `JSON.parse(raw) as HookState` with no validation; feeds prompt replay + autosave routing across 5 hook entrypoints → add runtime `HookStateSchema` (Zod); quarantine to `.bad` on validation failure (M1 from S2) (`hook-state.ts:83-87`) — Phase 1b / M1
-- [ ] T-HST-02 [P1] R29-001: Cached-summary `schemaVersion` check fabricated; HookState has no version field → add `schemaVersion` field; reject mismatched versions with `schema_mismatch` reason; migration step if OQ3 resolves negatively (M2 from S2) (`hook-state.ts`; also `session-resume.ts:174-208`) — Phase 1b / M2 [B:T-HST-01]
+- [x] T-HST-01 [P1] R21-002, R25-004 (dedup): `JSON.parse(raw) as HookState` with no validation; feeds prompt replay + autosave routing across 5 hook entrypoints → add runtime `HookStateSchema` (Zod); quarantine to `.bad` on validation failure (M1 from S2) (`hook-state.ts:83-87`) — Phase 1b / M1
+- [x] T-HST-02 [P1] R29-001: Cached-summary `schemaVersion` check fabricated; HookState has no version field → add `schemaVersion` field; reject mismatched versions with `schema_mismatch` reason; migration step if OQ3 resolves negatively (M2 from S2) (`hook-state.ts`; also `session-resume.ts:174-208`) — Phase 1b / M2 [B:T-HST-01]
 - [x] T-HST-03 [P0-D] [P] R38-001: `loadMostRecentState` all-or-nothing `try` block; one bad sibling aborts entire scan → per-file error isolation; return `{ states, errors }` (`hook-state.ts:131-165`) — Phase 1a / QW #24
 - [x] T-HST-04 [P0-D] [P] R38-002: `cleanStaleStates` all-or-nothing `try` block; partial removed count returned with no indication of skipped files → per-file isolation; return `{ removed, skipped, errors }` (`hook-state.ts:243-263`) — Phase 1a / QW #24
 - [x] T-HST-05 [P0-D] [P] R40-001: `cleanStaleStates` TOCTOU stat-then-unlink can delete fresh state → identity check (re-stat or open+fstat) before `unlinkSync()` (`hook-state.ts:170-176,247-255`) — Phase 1a / QW #25
 - [x] T-HST-06 [P1] R31-001: Deterministic `filePath + '.tmp'` means two writers for same session swap bytes before rename → `.tmp-<pid>-<counter>-<random>` + retry loop (A2 from S2) (`hook-state.ts:169-176,221-240`) — Phase 1b / QW #12
-- [ ] T-HST-07 [P1] R33-001: `clearCompactPrime()` clears by session ID only, not payload identity; newer payload erased on overlap → identity-based clear (check `cachedAt` or `opaqueId`) (A4 from S2) (`hook-state.ts:184-205`; also `session-prime.ts:43-46,281-287`) — Phase 1b / QW #20
-- [ ] T-HST-08 [P2] R36-001: `loadMostRecentState` stat-then-read race: concurrent rename can swap generation between mtime and content → re-read mtime after `readFileSync()` and discard candidate if changed (A5 from S2) (`hook-state.ts:140-155,170-176`) — Phase 1b
-- [ ] T-HST-09 [P1] R32-001 + R33-003 (producer side): `updateState` returns merged after failed persist → return `{ ok, merged, persisted }`; consumers surface persistence failures (A8 from S2) (`hook-state.ts:170-176,221-241`) — Phase 1b
+- [x] T-HST-07 [P1] R33-001: `clearCompactPrime()` clears by session ID only, not payload identity; newer payload erased on overlap → identity-based clear (check `cachedAt` or `opaqueId`) (A4 from S2) (`hook-state.ts:184-205`; also `session-prime.ts:43-46,281-287`) — Phase 1b / QW #20
+- [x] T-HST-08 [P2] R36-001: `loadMostRecentState` stat-then-read race: concurrent rename can swap generation between mtime and content → re-read mtime after `readFileSync()` and discard candidate if changed (A5 from S2) (`hook-state.ts:140-155,170-176`) — Phase 1b
+- [x] T-HST-09 [P1] R32-001 + R33-003 (producer side): `updateState` returns merged after failed persist → return `{ ok, merged, persisted }`; consumers surface persistence failures (A8 from S2) (`hook-state.ts:170-176,221-241`) — Phase 1b
 - [ ] T-HST-10 [P2] R4-003: Recent-state authority based on filesystem mtime, not `state.updatedAt` → rank by `updatedAt` field (`hook-state.ts:142-155`)
 - [x] T-HST-11 [P0-D] [P] T-SST-06 counterpart: `Math.max()` offset monotonicity guard in `updateState()` (`hook-state.ts:221-241`) — Phase 1a / QW #9
 
@@ -238,10 +238,10 @@ Top-5 file by distinct-issue count. Primary workstream: Quick wins + M8 cascades
 
 Top-9 file by distinct-issue count. Primary workstream: S3 (P0-C).
 
-- [ ] T-GMP-01 [P1] R11-002 + R21-003 + R23-002 (dedup cluster): Legacy fallback returns `ok: true` with no migration marker; `refreshGraphMetadataForSpecFolder()` launders malformed modern JSON into canonical → return `{ ok, metadata, migrated, migrationSource? }` and propagate migrated marker through refresh path (M7/C1/C4 from S3) (`graph-metadata-parser.ts:223-233,264-275,1015-1019`) — Phase 1c / M7
-- [ ] T-GMP-02 [P1] R13-002: `readDoc()` collapses I/O failure to `null`; `deriveStatus()` misreads as `planned`/`complete` → distinguish I/O failure from "file does not exist"; propagate as `status: 'unknown'` (C3 from S3) (`graph-metadata-parser.ts:280-285,457-475,831-860`) — Phase 1c / C3
-- [ ] T-GMP-03 [P2] R18-002: Legacy fallback discards original current-schema validation errors → preserve original validation errors in diagnostic set (C2 from S3) (`graph-metadata-parser.ts:228-242`) — Phase 1c / C2
-- [ ] T-GMP-04 [P2] R20-002: Legacy fallback fabricates `created_at`/`last_save_at` via `new Date().toISOString()` → preserve original timestamps when available; emit migrated marker when fabricating (paired with T-GMP-01) (`graph-metadata-parser.ts:167-205,223-233`) — Phase 1c
+- [x] T-GMP-01 [P1] R11-002 + R21-003 + R23-002 (dedup cluster): Legacy fallback returns `ok: true` with no migration marker; `refreshGraphMetadataForSpecFolder()` launders malformed modern JSON into canonical → return `{ ok, metadata, migrated, migrationSource? }` and propagate migrated marker through refresh path (M7/C1/C4 from S3) (`graph-metadata-parser.ts:223-233,264-275,1015-1019`) — Phase 1c / M7
+- [x] T-GMP-02 [P1] R13-002: `readDoc()` collapses I/O failure to `null`; `deriveStatus()` misreads as `planned`/`complete` → distinguish I/O failure from "file does not exist"; propagate as `status: 'unknown'` (C3 from S3) (`graph-metadata-parser.ts:280-285,457-475,831-860`) — Phase 1c / C3
+- [x] T-GMP-03 [P2] R18-002: Legacy fallback discards original current-schema validation errors → preserve original validation errors in diagnostic set (C2 from S3) (`graph-metadata-parser.ts:228-242`) — Phase 1c / C2
+- [x] T-GMP-04 [P2] R20-002: Legacy fallback fabricates `created_at`/`last_save_at` via `new Date().toISOString()` → preserve original timestamps when available; emit migrated marker when fabricating (paired with T-GMP-01) (`graph-metadata-parser.ts:167-205,223-233`) — Phase 1c
 - [x] T-GMP-05 [P2] R31-004 + R32-004 (dedup): `process.pid + Date.now()` temp path collides at ms precision → unique temp filenames via `.tmp-<pid>-<counter>-<random>` (`graph-metadata-parser.ts:969-989`) [QW #15]
 <!-- /ANCHOR:group-gmp -->
 
@@ -252,7 +252,7 @@ Top-9 file by distinct-issue count. Primary workstream: S3 (P0-C).
 
 Primary workstream: S3 (P0-C).
 
-- [ ] T-MPR-01 [P1] R22-002: Fallback-recovered `graph-metadata` gets `qualityScore: 1`, +0.12 packet boost → propagate `migrated` flag; penalize (not boost) `migrated=true` rows in stage-1 ranking (C5 from S3) (`memory-parser.ts:293-330`) — Phase 1c / C5 [B:T-GMP-01]
+- [x] T-MPR-01 [P1] R22-002: Fallback-recovered `graph-metadata` gets `qualityScore: 1`, +0.12 packet boost → propagate `migrated` flag; penalize (not boost) `migrated=true` rows in stage-1 ranking (C5 from S3) (`memory-parser.ts:293-330`) — Phase 1c / C5 [B:T-GMP-01]
 <!-- /ANCHOR:group-mpr -->
 
 <!-- /ANCHOR:phase-1 -->
@@ -317,7 +317,7 @@ Primary workstream: S2 (P0-A) + M8.
 
 - [ ] T-SBS-01 [P1] R30-001: Same payload carries `trustState=stale` AND `graphOps.readiness.canonical=empty` → align vocabulary to M8 expansion (`session-bootstrap.ts:321-347` + `session-resume.ts:530-551`) — Phase 3 M8 [B:T-SHP-01]
 - [x] T-SRS-01 [P1] R24-002: Cached scope drives `fallbackSpecFolder` but OpenCode transport uses `args.specFolder ?? null` → `handleSessionResume` forwards fallback scope (`session-resume.ts:174-188,415-429,560-563`) [QW]
-- [ ] T-SRS-02 [P1] R29-001 consumer side: schema-version rejection path unreachable → paired with T-HST-02 to enable it (`session-resume.ts:174-208`) [B:T-HST-02]
+- [x] T-SRS-02 [P1] R29-001 consumer side: schema-version rejection path unreachable → paired with T-HST-02 to enable it (`session-resume.ts:174-208`) [B:T-HST-02]
 - [ ] T-SRS-03 [P2] R38-001 extension: `session-resume.ts:348-366` has same all-or-nothing scan; inherits T-HST-03 fix [B:T-HST-03]
 - [x] T-SHS-01 [P2] R26-002: `session_health` doesn't attach section-level `structuralTrust` axes → add structural-trust section (QW #19) (`session-health.ts:136-166`) [QW #19]
 - [ ] T-SRS-04 [P2] R29-002: Claude startup collapses all rejection reasons into same "no cached continuity" state → distinct reason codes per M1/M2 (`session-prime.ts:130-143`) [B:T-HST-01, T-HST-02]
