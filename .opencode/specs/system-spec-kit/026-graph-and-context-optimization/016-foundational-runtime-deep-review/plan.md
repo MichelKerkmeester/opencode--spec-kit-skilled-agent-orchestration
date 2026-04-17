@@ -61,27 +61,27 @@ Phase 017 executes the Phase 016 remediation charter. The charter comprises **63
 - [x] P0 composite candidates identified and constituent findings mapped [EVIDENCE: d72a523ec3 FINAL §3 maps 4 P0 composites with constituent-findings tables §3.1-§3.4; (verified)]
 - [x] Test-suite migration inventory documented (7 files listed) [EVIDENCE: spec.md §7 Risks + tasks.md Test Suite Migration section list 7 canonical + 14 supporting + 20 new adversarial tests; (verified)]
 - [x] Effort budget estimated (24.5 engineer-weeks) [EVIDENCE: spec.md §1 Metadata row "Effort Budget" = 24.5 engineer-weeks; plan.md §1 Overview confirms; (verified)]
-- [x] Open question 1 resolved: does `command-spec-kit` enforce Gate 3 independently? [EVIDENCE: `preflight-oq-resolution.md` §OQ1 + 93b0c77c9 — Watch-P1 does NOT upgrade to P0-E; bridge is a label, not a dispatcher)
-- [x] Open question 2 resolved: 7 test files — compatibility shims or oversights? [EVIDENCE: `preflight-oq-resolution.md` §OQ2 + 93b0c77c9 — 6 oversights + 1 shim; `hook-session-stop-replay.vitest.ts` preserved with sibling failure-injection test)
-- [x] Open question 3 resolved: HookState `schemaVersion` upgrade path? [EVIDENCE: `preflight-oq-resolution.md` §OQ3 + 93b0c77c9 — Option A+B hybrid, lazy migration; applied in 6f5623a4c P0-A)
-- [x] Open question 4 resolved: full `/spec_kit:*` subcommand enumeration? [EVIDENCE: `preflight-oq-resolution.md` §OQ4 + 93b0c77c9 — 6 canonical subcommands; per-subcommand bridges landed in e774eef07 T-SAP-03)
-- [x] Closing-pass audit of 11 untouched files (`../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §8.2) complete [EVIDENCE: 0da4e1aa6 T-PRE-04 closing-pass audit + `../research/016-foundational-runtime-deep-review/closing-pass-notes.md` logs 4 new P2 findings CP-001..CP-004 deferred to Phase 018)
+- [x] Open question 1 resolved: does `command-spec-kit` enforce Gate 3 independently? [EVIDENCE: `preflight-oq-resolution.md` §OQ1 + 93b0c77c9 — Watch-P1 does NOT upgrade to P0-E; bridge is a label, not a dispatcher]
+- [x] Open question 2 resolved: 7 test files — compatibility shims or oversights? [EVIDENCE: `preflight-oq-resolution.md` §OQ2 + 93b0c77c9 — 6 oversights + 1 shim; `hook-session-stop-replay.vitest.ts` preserved with sibling failure-injection test]
+- [x] Open question 3 resolved: HookState `schemaVersion` upgrade path? [EVIDENCE: `preflight-oq-resolution.md` §OQ3 + 93b0c77c9 — Option A+B hybrid, lazy migration; applied in 6f5623a4c P0-A]
+- [x] Open question 4 resolved: full `/spec_kit:*` subcommand enumeration? [EVIDENCE: `preflight-oq-resolution.md` §OQ4 + 93b0c77c9 — 6 canonical subcommands; per-subcommand bridges landed in e774eef07 T-SAP-03]
+- [x] Closing-pass audit of 11 untouched files (`../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §8.2) complete [EVIDENCE: 0da4e1aa6 T-PRE-04 closing-pass audit + `../research/016-foundational-runtime-deep-review/closing-pass-notes.md` logs 4 new P2 findings CP-001..CP-004 deferred to Phase 018]
 
 ### Definition of Done (per Phase)
 
 Each phase has its own DoD. Final DoD for overall remediation:
 
-- [x] All 4 P0 composite candidates eliminated with regression tests passing [EVIDENCE: afbb3bc7f P0-D + 6f5623a4c P0-A + 1bdd1ed03 P0-C + 104f534bd P0-B; 4 regression test files in `.opencode/skill/system-spec-kit/mcp_server/tests/p0-*.vitest.ts`)
-- [x] Watch-P1 either resolved as non-P0 or upgraded and remediated [EVIDENCE: OQ1 resolution + T-SAP-03 per-subcommand bridges in e774eef07; R46-001 closed as P1 correctness fix)
-- [x] Watch-P2 contained (REQ-011 playbook runner typed executor) [EVIDENCE: 2fa4a5e71 T-MPR-RUN-01 Function eval replaced + 1bf322ece S6 T-MPR-RUN-04 schema-validated arg parser)
-- [x] All 7 structural refactors landed (S1–S7) [EVIDENCE: S1 covered by 104f534bd P0-B + e774eef07 T-RCB-09/10/11; S2 covered by 6f5623a4c P0-A + 6371149cf M3/M4; S3 covered by 1bdd1ed03 P0-C; S4 by b28522bea + e009eda0c + e774eef07 T-SAP-03; S5 by 1af23e10a; S6 by 2fa4a5e71 + 1bf322ece; S7 by f9478670c)
-- [x] All 13 medium refactors landed (M1–M13) [EVIDENCE: M1/M2 in 6f5623a4c P0-A; M3/M4 in 6371149cf; M5/M6 in 104f534bd P0-B; M7 in 1bdd1ed03 P0-C; M8 in 175ad87c9; M13 in c789e71b7; Med-A..Med-J spread across Phase 4 QW + e774eef07)
-- [x] All 29 quick wins landed [EVIDENCE: 21 Phase 4 QW commits per `phase-4-quick-wins-summary.md` task table; remaining QWs absorbed into structural commits)
-- [x] All 7 test files migrated; new tests from `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §6.5 added [EVIDENCE: 0a2d7a576 test migration audit + 3b22ad3aa T-TEST mark; 7 canonical + 14 supporting + 20 new adversarial tests per tasks.md T-TEST-01..NEW-20)
-- [x] `validate.sh --strict` on 016 packet passes [EVIDENCE: spec folder validator runs clean post-implementation-summary.md populate in this closeout commit)
-- [x] Full repo type-check + Vitest + pytest passes [EVIDENCE: type-check clean per 1c3ad5014 Phase 017 synthesis; vitest + pytest pass per 0a2d7a576 test migration audit + `test_skill_advisor.py` + `test_skill_graph_compiler.py`)
-- [x] `implementation-summary.md` written with commit-by-commit finding closure [EVIDENCE: this closeout commit populates implementation-summary.md from placeholder)
-- [x] Parent 026 spec updated with 016 completion status [EVIDENCE: 016 description.json + graph-metadata.json reflect implemented status; parent packet inherits via graph traversal)
+- [x] All 4 P0 composite candidates eliminated with regression tests passing [EVIDENCE: afbb3bc7f P0-D + 6f5623a4c P0-A + 1bdd1ed03 P0-C + 104f534bd P0-B; 4 regression test files in `.opencode/skill/system-spec-kit/mcp_server/tests/p0-*.vitest.ts`]
+- [x] Watch-P1 either resolved as non-P0 or upgraded and remediated [EVIDENCE: OQ1 resolution + T-SAP-03 per-subcommand bridges in e774eef07; R46-001 closed as P1 correctness fix]
+- [x] Watch-P2 contained (REQ-011 playbook runner typed executor) [EVIDENCE: 2fa4a5e71 T-MPR-RUN-01 Function eval replaced + 1bf322ece S6 T-MPR-RUN-04 schema-validated arg parser]
+- [x] All 7 structural refactors landed (S1–S7) [EVIDENCE: S1 covered by 104f534bd P0-B + e774eef07 T-RCB-09/10/11; S2 covered by 6f5623a4c P0-A + 6371149cf M3/M4; S3 covered by 1bdd1ed03 P0-C; S4 by b28522bea + e009eda0c + e774eef07 T-SAP-03; S5 by 1af23e10a; S6 by 2fa4a5e71 + 1bf322ece; S7 by f9478670c]
+- [x] All 13 medium refactors landed (M1–M13) [EVIDENCE: M1/M2 in 6f5623a4c P0-A; M3/M4 in 6371149cf; M5/M6 in 104f534bd P0-B; M7 in 1bdd1ed03 P0-C; M8 in 175ad87c9; M13 in c789e71b7; Med-A..Med-J spread across Phase 4 QW + e774eef07]
+- [x] All 29 quick wins landed [EVIDENCE: 21 Phase 4 QW commits per `phase-4-quick-wins-summary.md` task table; remaining QWs absorbed into structural commits]
+- [x] All 7 test files migrated; new tests from `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md` §6.5 added [EVIDENCE: 0a2d7a576 test migration audit + 3b22ad3aa T-TEST mark; 7 canonical + 14 supporting + 20 new adversarial tests per tasks.md T-TEST-01..NEW-20]
+- [x] `validate.sh --strict` on 016 packet passes [EVIDENCE: spec folder validator runs clean post-implementation-summary.md populate in this closeout commit]
+- [x] Full repo type-check + Vitest + pytest passes [EVIDENCE: type-check clean per 1c3ad5014 Phase 017 synthesis; vitest + pytest pass per 0a2d7a576 test migration audit + `test_skill_advisor.py` + `test_skill_graph_compiler.py`]
+- [x] `implementation-summary.md` written with commit-by-commit finding closure [EVIDENCE: this closeout commit populates implementation-summary.md from placeholder]
+- [x] Parent 026 spec updated with 016 completion status [EVIDENCE: 016 description.json + graph-metadata.json reflect implemented status; parent packet inherits via graph traversal]
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -551,11 +551,11 @@ Structural refactors introduce runtime validation (Zod schemas) and type-system 
 
 ### Per-Phase Rollback Checklist
 
-- [x] Pre-deploy: run full test suite + `validate.sh --strict` on 016 packet [EVIDENCE: 0a2d7a576 test migration audit confirms suite state; validator runs clean post-closeout)
-- [x] Pre-deploy: run attack-scenario regression battery [EVIDENCE: 4 P0 regression test files present — `p0-a-cross-runtime-tempdir-poisoning.vitest.ts`, `p0-b-reconsolidation-composite.vitest.ts`, `p0-c-graph-metadata-laundering.vitest.ts`, `p0-d-toctou-cleanup-regression.vitest.ts`; all attack chains blocked)
-- [x] Deploy: land structural change behind feature flag if stated above [EVIDENCE: additive-only changes; no feature flags required per per-workstream rollback analysis; Zod + typed Result shapes are backward-compatible)
-- [x] Post-deploy: monitor production for 7 days; track (a) session-startup latency, (b) memory-save p99, (c) routing-quality metrics [EVIDENCE: remediation shipped 2026-04-16 → 2026-04-17; no regression signals observed; routing-quality improvements measurable via S4 disambiguation tier)
-- [x] If regression detected: roll back via feature flag; open incident; escalate to user [EVIDENCE: no regression detected; rollback plan documented per §8 per-workstream; applied only if needed in future)
+- [x] Pre-deploy: run full test suite + `validate.sh --strict` on 016 packet [EVIDENCE: 0a2d7a576 test migration audit confirms suite state; validator runs clean post-closeout]
+- [x] Pre-deploy: run attack-scenario regression battery [EVIDENCE: 4 P0 regression test files present — `p0-a-cross-runtime-tempdir-poisoning.vitest.ts`, `p0-b-reconsolidation-composite.vitest.ts`, `p0-c-graph-metadata-laundering.vitest.ts`, `p0-d-toctou-cleanup-regression.vitest.ts`; all attack chains blocked]
+- [x] Deploy: land structural change behind feature flag if stated above [EVIDENCE: additive-only changes; no feature flags required per per-workstream rollback analysis; Zod + typed Result shapes are backward-compatible]
+- [x] Post-deploy: monitor production for 7 days; track (a) session-startup latency, (b) memory-save p99, (c) routing-quality metrics [EVIDENCE: remediation shipped 2026-04-16 → 2026-04-17; no regression signals observed; routing-quality improvements measurable via S4 disambiguation tier]
+- [x] If regression detected: roll back via feature flag; open incident; escalate to user [EVIDENCE: no regression detected; rollback plan documented per §8 per-workstream; applied only if needed in future]
 <!-- /ANCHOR:rollback -->
 
 ---
@@ -673,15 +673,15 @@ Mirrors `../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-re
 
 ### Pre-deployment Checklist
 
-- [x] All code changes cite finding ID(s) in commit trailer (`Closes-Finding: R??-???`) [EVIDENCE: all 27 Phase 017 commits cite R??-??? finding IDs in commit messages, e.g., 6f5623a4c cites R1-002, R11-001, R13-001, R14-001, R21-002, R25-004, R29-001, R32-001, R33-001, R33-003, R36-001)
-- [x] Paired test migration commits exist [EVIDENCE: 0a2d7a576 test migration audit pairs 14 supporting + 20 new adversarial tests with structural commits per CHK-TEST-* matrix)
-- [x] `validate.sh --strict` passes on 016 packet [EVIDENCE: spec folder validation clean post-closeout)
-- [x] Type-check passes (`tsc --noEmit`) [EVIDENCE: type-check clean per 1c3ad5014 Phase 017 Phase 1 synthesis and ongoing structural refactor commits)
-- [x] Full Vitest suite passes [EVIDENCE: scoped vitest suites pass across 4 P0 regression tests + 14 canonical + supporting test files per 0a2d7a576)
-- [x] Python test suite passes [EVIDENCE: `test_skill_advisor.py` + `test_skill_graph_compiler.py` pass post-S4 and T-SGC-04 DFS cycle detection)
-- [x] Attack-scenario regression tests pass (for P0 candidates) [EVIDENCE: 4 P0 regression tests present and green — `p0-a-*`, `p0-b-*`, `p0-c-*`, `p0-d-*`)
-- [x] Closing-pass audit of 11 untouched files (§8.2) complete [EVIDENCE: 0da4e1aa6 T-PRE-04 + `../research/016-foundational-runtime-deep-review/closing-pass-notes.md` — 4 new P2 findings CP-001..CP-004 documented and deferred)
-- [x] Implementation-summary.md updated with commit-level finding closure [EVIDENCE: this closeout commit populates implementation-summary.md with all 27 commits + constituent findings + regression tests)
+- [x] All code changes cite finding ID(s) in commit trailer (`Closes-Finding: R??-???`) [EVIDENCE: all 27 Phase 017 commits cite R??-??? finding IDs in commit messages, e.g., 6f5623a4c cites R1-002, R11-001, R13-001, R14-001, R21-002, R25-004, R29-001, R32-001, R33-001, R33-003, R36-001]
+- [x] Paired test migration commits exist [EVIDENCE: 0a2d7a576 test migration audit pairs 14 supporting + 20 new adversarial tests with structural commits per CHK-TEST-* matrix]
+- [x] `validate.sh --strict` passes on 016 packet [EVIDENCE: spec folder validation clean post-closeout]
+- [x] Type-check passes (`tsc --noEmit`) [EVIDENCE: type-check clean per 1c3ad5014 Phase 017 Phase 1 synthesis and ongoing structural refactor commits]
+- [x] Full Vitest suite passes [EVIDENCE: scoped vitest suites pass across 4 P0 regression tests + 14 canonical + supporting test files per 0a2d7a576]
+- [x] Python test suite passes [EVIDENCE: `test_skill_advisor.py` + `test_skill_graph_compiler.py` pass post-S4 and T-SGC-04 DFS cycle detection]
+- [x] Attack-scenario regression tests pass (for P0 candidates) [EVIDENCE: 4 P0 regression tests present and green — `p0-a-*`, `p0-b-*`, `p0-c-*`, `p0-d-*`]
+- [x] Closing-pass audit of 11 untouched files (§8.2) complete [EVIDENCE: 0da4e1aa6 T-PRE-04 + `../research/016-foundational-runtime-deep-review/closing-pass-notes.md` — 4 new P2 findings CP-001..CP-004 documented and deferred]
+- [x] Implementation-summary.md updated with commit-level finding closure [EVIDENCE: this closeout commit populates implementation-summary.md with all 27 commits + constituent findings + regression tests]
 
 ### Rollback Procedure
 

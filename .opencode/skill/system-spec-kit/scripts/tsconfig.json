@@ -28,7 +28,8 @@
     "renderers/**/*.ts",
     "spec-folder/**/*.ts",
     "types/**/*.ts",
-    "utils/**/*.ts"
+    "utils/**/*.ts",
+    "validation/**/*.ts"
   ],
   "exclude": ["node_modules", "dist", "tests/**/*.vitest.ts"]
 }
