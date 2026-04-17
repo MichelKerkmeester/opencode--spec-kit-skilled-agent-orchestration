@@ -152,6 +152,11 @@ function buildPostInsertEnrichmentResult(
   const partialSteps = stepEntries.filter(([, step]) => step.status === 'partial');
   const deferredSteps = stepEntries.filter(([, step]) => step.status === 'deferred');
 
+  // T-RBD-03 / T-RBD-01 (commit 709727e98): this MCP response rollup intentionally
+  // diverges from post-insert.ts. Clients need the postInsertEnrichment block to keep
+  // deferred/partial/failed nuance, warnings, and recovery hints visible even when the
+  // writer-side executionStatus collapsed to a simpler failure-with-recovery decision
+  // for internal scheduling.
   // Overall status precedence:
   //   1. executionStatus='deferred' OR all steps deferred → 'deferred'
   //   2. any step failed → 'failed' (recovery needed)

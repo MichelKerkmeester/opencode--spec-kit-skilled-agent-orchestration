@@ -348,6 +348,11 @@ export async function runPostInsertEnrichment(
   // an enrichment_step_failed never presents as ordinary success.  `runEnrichmentBackfill`
   // can then key on `failedSteps` + `partialSteps` rather than re-scanning the entire
   // enrichmentStatus tree.
+  // T-RBD-03 / T-RBD-01 (commit 709727e98): this writer-side rollup intentionally
+  // stays conservative about failure-with-recovery. Internal follow-up routing only
+  // needs to know whether enrichment still requires `runEnrichmentBackfill`, not the
+  // full MCP-facing nuance for partial/deferred states. response-builder.ts preserves
+  // that richer postInsertEnrichment contract for external clients.
   const failedSteps = (Object.entries(enrichmentStatus) as Array<[keyof EnrichmentStatus, EnrichmentStepResult]>)
     .filter(([, step]) => step.status === 'failed')
     .map(([name]) => name);
