@@ -778,7 +778,10 @@ async function buildServerInstructions(): Promise<string> {
     staleWarning.trim(),
   ];
 
-  // Phase 024 / Item 4: Session recovery digest from session-snapshot
+  // Phase 024 / Item 4 + M8 / T-CGQ-12: Session recovery digest from
+  // session-snapshot. 'empty' recommends code_graph_scan (graph absent);
+  // 'error' recommends memory_health because structural context is
+  // unavailable, not merely outdated.
   try {
     const { getSessionSnapshot } = await import('./lib/session/session-snapshot.js');
     const snap = getSessionSnapshot();
@@ -786,6 +789,7 @@ async function buildServerInstructions(): Promise<string> {
     if (hasData) {
       const recommended = !snap.primed ? 'call session_bootstrap()' :
         snap.graphFreshness === 'empty' ? 'run code_graph_scan' :
+        snap.graphFreshness === 'error' ? 'call memory_health (structural context unavailable)' :
         snap.sessionQuality === 'critical' ? 'call memory_context(resume)' : 'ready';
       lines.push('');
       lines.push('## Session Recovery');
@@ -796,15 +800,25 @@ async function buildServerInstructions(): Promise<string> {
     }
   } catch { /* session-snapshot not available — skip digest */ }
 
-  // Phase 027: Structural bootstrap guidance for non-hook runtimes
+  // Phase 027 + M8 / T-CGQ-12 (R27-002): Structural bootstrap guidance for
+  // non-hook runtimes. Readiness vocabulary is aligned across bootstrap,
+  // resume, health, and code_graph_query (ready | stale | absent |
+  // unavailable). code_graph_query is only recommended when structural
+  // context is actually reachable; 'absent' and 'unavailable' route to
+  // repair/recovery, not query.
   lines.push('');
   lines.push('## Structural Bootstrap (Phase 027)');
   lines.push('Non-hook runtimes receive automatic structural context via session_bootstrap, session_resume, and auto-prime.');
   lines.push('- If structural context shows "ready": code_graph_query is available for structural lookups');
-  lines.push('- If "stale" or "missing": call session_bootstrap first to refresh structural context');
+  lines.push('- If "stale": code_graph_query still works, but a session_bootstrap refresh is recommended');
+  lines.push('- If "absent" (empty/missing graph): run code_graph_scan first, then session_bootstrap');
+  lines.push('- If "unavailable" (DB unreachable / readiness probe failed): call memory_health for repair guidance instead of code_graph_query');
   lines.push('- Recovery priority: session_bootstrap → session_resume → code_graph_scan');
 
-  // Phase 024: Tool routing decision tree
+  // Phase 024 + M8 / T-CGQ-12: Tool routing decision tree.
+  // code_graph_query is only surfaced when graph freshness is 'fresh' or
+  // 'stale' (queryable). 'empty' → recommend code_graph_scan; 'error' →
+  // recommend memory_health because the database probe failed.
   try {
     const { getSessionSnapshot: getSnap } = await import('./lib/session/session-snapshot.js');
     const snap = getSnap();
@@ -814,6 +828,10 @@ async function buildServerInstructions(): Promise<string> {
     }
     if (snap.graphFreshness === 'fresh' || snap.graphFreshness === 'stale') {
       routingRules.push('Structural queries (callers, imports, deps) → code_graph_query');
+    } else if (snap.graphFreshness === 'empty') {
+      routingRules.push('Structural queries → unavailable: run code_graph_scan first (graph is absent)');
+    } else if (snap.graphFreshness === 'error') {
+      routingRules.push('Structural queries → unavailable: call memory_health to diagnose (graph readiness unavailable)');
     }
     routingRules.push('Exact text/regex matching → Grep tool');
     if (routingRules.length > 0) {

@@ -96,11 +96,16 @@ describe('code-graph-query handler', () => {
       allowInlineFullScan: false,
     });
     expect(mocks.queryEdgesFrom).toHaveBeenCalledWith('symbol-1', 'IMPORTS');
+    // M8 / T-CGQ-11: readiness carries the raw ensure-ready fields plus
+    // the canonical vocabulary alignment (ready/stale/missing) and the
+    // shared trust-state vocabulary (live/stale/absent/unavailable).
     expect(parsed.data.readiness).toEqual({
       freshness: 'fresh',
       action: 'none',
       inlineIndexPerformed: false,
       reason: 'ok',
+      canonicalReadiness: 'ready',
+      trustState: 'live',
     });
   });
 
@@ -175,6 +180,79 @@ describe('code-graph-query handler', () => {
     expect(parsed.data.edgeType).toBe('OVERRIDES');
     expect(parsed.data.transitive).toBe(true);
     expect(mocks.queryEdgesFrom).toHaveBeenCalledWith('symbol-1', 'OVERRIDES');
+  });
+
+  // M8 / T-CGQ-10 (R19-001): transitive traversal must flag dangling
+  // endpoints as corruption warnings instead of silently returning nodes
+  // with null fqName/filePath metadata.
+  it('flags dangling transitive endpoints as corruption warnings instead of null-metadata nodes', async () => {
+    mocks.queryEdgesFrom.mockReturnValueOnce([
+      {
+        edge: { targetId: 'dangling-target' },
+        targetNode: null,
+      },
+      {
+        edge: { targetId: 'symbol-2' },
+        targetNode: { fqName: 'ResolvedTarget', filePath: 'src/target.ts', startLine: 42 },
+      },
+    ]);
+    mocks.queryEdgesFrom.mockReturnValue([]);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'calls_from',
+      subject: 'SomeSymbol',
+      includeTransitive: true,
+      maxDepth: 2,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.data.nodes).toHaveLength(1);
+    expect(parsed.data.nodes[0]).toMatchObject({
+      symbolId: 'symbol-2',
+      fqName: 'ResolvedTarget',
+      filePath: 'src/target.ts',
+    });
+    // The dangling endpoint must not appear in nodes (no null metadata).
+    expect(parsed.data.nodes).not.toContainEqual(
+      expect.objectContaining({ symbolId: 'dangling-target' }),
+    );
+    // It must surface as a dangling_edge warning instead.
+    expect(parsed.data.warnings).toEqual([
+      expect.objectContaining({
+        code: 'dangling_edge',
+        operation: 'calls_from',
+        missingEndpoint: 'target',
+        count: 1,
+        danglingSymbolIds: ['dangling-target'],
+      }),
+    ]);
+  });
+
+  // M8 / T-CGQ-11 (R22-001, R23-001): readiness block must carry both the
+  // raw freshness and the canonical readiness + trust state so consumers
+  // see one aligned vocabulary across session_bootstrap, session_resume,
+  // and code_graph_query.
+  it('emits aligned canonical readiness and trust state on transitive responses', async () => {
+    mocks.ensureCodeGraphReady.mockResolvedValueOnce({
+      freshness: 'stale',
+      action: 'none',
+      inlineIndexPerformed: false,
+      reason: 'tracked files older than index',
+    });
+    mocks.queryEdgesFrom.mockReturnValue([]);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'calls_from',
+      subject: 'SomeSymbol',
+      includeTransitive: true,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.data.readiness).toMatchObject({
+      freshness: 'stale',
+      canonicalReadiness: 'stale',
+      trustState: 'stale',
+    });
   });
 
   it('rejects unsupported operations before transitive traversal begins', async () => {

@@ -7,8 +7,10 @@
 import {
   isSharedPayloadKind,
   isSharedPayloadProducer,
+  isSharedPayloadTrustState,
   SHARED_PAYLOAD_KIND_VALUES,
   SHARED_PAYLOAD_PRODUCER_VALUES,
+  SHARED_PAYLOAD_TRUST_STATE_VALUES,
 } from './shared-payload.js';
 import type { SharedPayloadEnvelope, SharedPayloadSection } from './shared-payload.js';
 import type { CodeGraphOpsContract } from '../code-graph/ops-hardening.js';
@@ -137,15 +139,25 @@ export function coerceSharedPayloadEnvelope(value: unknown): SharedPayloadEnvelo
       `Invalid shared payload envelope provenance.producer "${String(value.provenance.producer)}"; expected one of ${formatAllowedValues(SHARED_PAYLOAD_PRODUCER_VALUES)}.`,
     );
   }
+  // M8 / T-SHP-01: reject legacy or unknown trust-state labels so producers
+  // must migrate to the 'absent'/'unavailable' vocabulary rather than silently
+  // collapsing non-existent/unreachable scopes into 'stale'.
+  if (!isSharedPayloadTrustState(value.provenance.trustState)) {
+    throw new Error(
+      `Invalid shared payload envelope provenance.trustState "${String(value.provenance.trustState)}"; expected one of ${formatAllowedValues(SHARED_PAYLOAD_TRUST_STATE_VALUES)}.`,
+    );
+  }
 
   const kind = value.kind;
   const producer = value.provenance.producer;
+  const trustState = value.provenance.trustState;
   return {
     ...value,
     kind,
     provenance: {
       ...value.provenance,
       producer,
+      trustState,
     },
   };
 }

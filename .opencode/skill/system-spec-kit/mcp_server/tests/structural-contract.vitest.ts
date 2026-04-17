@@ -107,7 +107,9 @@ describe('buildStructuralBootstrapContract', () => {
     expect(contract.highlights).toBeUndefined();
     expect(contract.recommendedAction).toContain('session_bootstrap');
     expect(contract.sourceSurface).toBe('session_resume');
-    expect(contract.provenance?.trustState).toBe('stale');
+    // M8 / T-SHP-01: 'missing' structural status now maps to 'absent',
+    // distinct from merely stale data. Matches the canonical vocabulary.
+    expect(contract.provenance?.trustState).toBe('absent');
   });
 
   it('avoids self-referential guidance when session_bootstrap is already the current surface', async () => {

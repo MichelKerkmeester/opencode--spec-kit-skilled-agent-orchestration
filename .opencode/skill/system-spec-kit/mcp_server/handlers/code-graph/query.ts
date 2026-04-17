@@ -11,7 +11,9 @@ import {
   attachStructuralTrustFields,
   type EdgeEvidenceClass,
   type HotFileBreadcrumb,
+  type SharedPayloadTrustState,
 } from '../../lib/context/shared-payload.js';
+import type { StructuralReadiness } from '../../lib/code-graph/ops-hardening.js';
 
 export interface QueryArgs {
   operation: 'outline' | 'calls_from' | 'calls_to' | 'imports_from' | 'imports_to' | 'blast_radius';
@@ -215,6 +217,70 @@ function buildQueryStructuralTrust(readiness: ReadyResult) {
   } as const;
 }
 
+// M8 / T-CGQ-11 (R22-001, R23-001): align query-level readiness vocabulary
+// with session_bootstrap / session_resume. Canonical readiness uses the
+// ops-hardening StructuralReadiness contract ('ready' | 'stale' | 'missing')
+// so consumers see one vocabulary. The expanded trust state adds 'absent'
+// for 'empty'/'missing' graphs so queries don't masquerade as 'stale'.
+function canonicalReadinessFromFreshness(
+  freshness: ReadyResult['freshness'],
+): StructuralReadiness {
+  switch (freshness) {
+    case 'fresh':
+      return 'ready';
+    case 'stale':
+      return 'stale';
+    case 'empty':
+      return 'missing';
+  }
+}
+
+function queryTrustStateFromFreshness(
+  freshness: ReadyResult['freshness'],
+): SharedPayloadTrustState {
+  switch (freshness) {
+    case 'fresh':
+      return 'live';
+    case 'stale':
+      return 'stale';
+    case 'empty':
+      return 'absent';
+  }
+}
+
+// M8 / T-CGQ-09 (R18-001, R20-003): compute query-level detector provenance
+// from the last-persisted scan instead of silently surfacing a global
+// snapshot. The value is still the last persisted provenance but we emit
+// it alongside a lastPersistedAt breadcrumb so consumers can correlate the
+// provenance with a scan moment, and we omit the field entirely when no
+// scan has occurred (empty graph) rather than reporting 'unknown'.
+function buildQueryGraphMetadata(readiness: ReadyResult): Record<string, unknown> | undefined {
+  if (readiness.freshness === 'empty') {
+    return undefined;
+  }
+
+  const detectorProvenance = graphDb.getLastDetectorProvenance();
+  if (!detectorProvenance) {
+    return undefined;
+  }
+
+  return {
+    detectorProvenance,
+    detectorProvenanceSource: 'last-persisted-scan',
+  };
+}
+
+// M8 / T-CGQ-11: emit a readiness block with the canonical vocabulary
+// alongside the raw ensure-ready freshness so existing consumers keep
+// working while new consumers can key off canonicalReadiness + trustState.
+function buildReadinessBlock(readiness: ReadyResult) {
+  return {
+    ...readiness,
+    canonicalReadiness: canonicalReadinessFromFreshness(readiness.freshness),
+    trustState: queryTrustStateFromFreshness(readiness.freshness),
+  };
+}
+
 function buildGraphQueryPayload<T extends Record<string, unknown>>(
   payload: T,
   readiness: ReadyResult,
@@ -224,12 +290,16 @@ function buildGraphQueryPayload<T extends Record<string, unknown>>(
     numericConfidence: number;
   } | null,
 ) {
-  const withTrust = attachStructuralTrustFields({
-    ...payload,
-    graphMetadata: {
-      detectorProvenance: graphDb.getLastDetectorProvenance() ?? 'unknown',
-    },
-  }, buildQueryStructuralTrust(readiness), { label });
+  const { readiness: _incomingReadiness, ...rest } = payload as Record<string, unknown>;
+  const graphMetadata = buildQueryGraphMetadata(readiness);
+  const base = graphMetadata
+    ? { ...rest, graphMetadata, readiness: buildReadinessBlock(readiness) }
+    : { ...rest, readiness: buildReadinessBlock(readiness) };
+  const withTrust = attachStructuralTrustFields(
+    base as T & { readiness: ReturnType<typeof buildReadinessBlock> },
+    buildQueryStructuralTrust(readiness),
+    { label },
+  );
 
   return graphEdgeEnrichment
     ? attachGraphEdgeEnrichment(withTrust, graphEdgeEnrichment, {
@@ -295,18 +365,40 @@ function excludeDanglingEdges<TEntry>(
   };
 }
 
-/** BFS transitive traversal from a symbolId via the given edge type */
+/**
+ * BFS transitive traversal from a symbolId via the given edge type.
+ *
+ * M8 / T-CGQ-10 (R19-001): dangling nodes (where queryEdgesFrom/To returns
+ * an edge whose endpoint has no node row) were previously surfaced as
+ * successful traversal results with null fqName/filePath. They are now
+ * flagged as corruption alongside the resolved results so callers can
+ * trust the absence of `warnings` as "no dangling references".
+ */
+interface TransitiveTraversalResult {
+  nodes: Array<{
+    symbolId: string;
+    fqName: string | null;
+    filePath: string | null;
+    line: number | null;
+    depth: number;
+  }>;
+  warnings?: DanglingEdgeWarning[];
+}
+
 function transitiveTraversal(
   startId: string,
   edgeType: string,
   direction: 'from' | 'to',
   maxDepth: number,
   limit: number,
-): Array<{ symbolId: string; fqName: string | null; filePath: string | null; line: number | null; depth: number }> {
+  operation: QueryArgs['operation'],
+): TransitiveTraversalResult {
   const visited = new Set<string>();
   const resultSymbolIds = new Set<string>();
-  const results: Array<{ symbolId: string; fqName: string | null; filePath: string | null; line: number | null; depth: number }> = [];
+  const results: TransitiveTraversalResult['nodes'] = [];
+  const danglingSymbolIds: string[] = [];
   let frontier = [{ id: startId, depth: 0 }];
+  const missingEndpoint: DanglingEdgeWarning['missingEndpoint'] = direction === 'from' ? 'target' : 'source';
 
   while (frontier.length > 0 && results.length < limit) {
     const next: typeof frontier = [];
@@ -320,14 +412,18 @@ function transitiveTraversal(
           if (nextDepth > maxDepth) {
             continue;
           }
+          if (targetNode == null) {
+            danglingSymbolIds.push(edge.targetId);
+            continue;
+          }
           if (!visited.has(edge.targetId)) {
             if (!resultSymbolIds.has(edge.targetId)) {
               resultSymbolIds.add(edge.targetId);
               results.push({
                 symbolId: edge.targetId,
-                fqName: targetNode?.fqName ?? null,
-                filePath: targetNode?.filePath ?? null,
-                line: targetNode?.startLine ?? null,
+                fqName: targetNode.fqName ?? null,
+                filePath: targetNode.filePath ?? null,
+                line: targetNode.startLine ?? null,
                 depth: nextDepth,
               });
             }
@@ -341,14 +437,18 @@ function transitiveTraversal(
           if (nextDepth > maxDepth) {
             continue;
           }
+          if (sourceNode == null) {
+            danglingSymbolIds.push(edge.sourceId);
+            continue;
+          }
           if (!visited.has(edge.sourceId)) {
             if (!resultSymbolIds.has(edge.sourceId)) {
               resultSymbolIds.add(edge.sourceId);
               results.push({
                 symbolId: edge.sourceId,
-                fqName: sourceNode?.fqName ?? null,
-                filePath: sourceNode?.filePath ?? null,
-                line: sourceNode?.startLine ?? null,
+                fqName: sourceNode.fqName ?? null,
+                filePath: sourceNode.filePath ?? null,
+                line: sourceNode.startLine ?? null,
                 depth: nextDepth,
               });
             }
@@ -363,7 +463,23 @@ function transitiveTraversal(
     frontier = next;
   }
 
-  return results.slice(0, limit);
+  const truncated = results.slice(0, limit);
+  if (danglingSymbolIds.length === 0) {
+    return { nodes: truncated };
+  }
+
+  const uniqueDangling = [...new Set(danglingSymbolIds)];
+  return {
+    nodes: truncated,
+    warnings: [{
+      code: 'dangling_edge',
+      operation,
+      missingEndpoint,
+      count: uniqueDangling.length,
+      danglingSymbolIds: uniqueDangling,
+      message: `Transitive ${operation} traversal encountered ${uniqueDangling.length} dangling ${missingEndpoint} node reference(s). Reindex the code graph to repair the missing node references.`,
+    }],
+  };
 }
 
 function classifyEdgeEvidenceClass(
@@ -609,7 +725,6 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
           data: buildGraphQueryPayload({
             operation: 'outline',
             filePath: resolvedSubject,
-            readiness,
             nodeCount: limited.length,
             nodes: limited.map(n => ({
               name: n.name,
@@ -666,7 +781,6 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
             multiFileUnion: args.unionMode === 'multi' && blastRadius.sourceFiles.length > 1,
             unionMode: args.unionMode ?? 'single',
             maxDepth: Math.max(0, maxDepth),
-            readiness,
             affectedFiles: blastRadius.affectedFiles,
             hotFileBreadcrumbs: blastRadius.hotFileBreadcrumbs,
           }, readiness, 'code_graph_query blast_radius payload'),
@@ -693,7 +807,15 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
   // If includeTransitive, use BFS traversal instead of 1-hop
   if (args.includeTransitive) {
     const direction = operation.endsWith('from') ? 'from' : 'to';
-    const transitive = transitiveTraversal(symbolId, requestedEdgeType ?? 'CALLS', direction, maxDepth, limit);
+    const transitive = transitiveTraversal(
+      symbolId,
+      requestedEdgeType ?? 'CALLS',
+      direction,
+      maxDepth,
+      limit,
+      operation,
+    );
+    const warnings = mergeWarnings(resolvedSubject.warnings, transitive.warnings);
     return {
       content: [{
         type: 'text',
@@ -705,9 +827,8 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
             edgeType: requestedEdgeType,
             transitive: true,
             maxDepth,
-            ...(resolvedSubject.warnings ? { warnings: resolvedSubject.warnings } : {}),
-            readiness,
-            nodes: transitive,
+            ...(warnings ? { warnings } : {}),
+            nodes: transitive.nodes,
           }, readiness, `code_graph_query ${operation} payload`),
         }, null, 2),
       }],
@@ -868,7 +989,6 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
           data: buildGraphQueryPayload({
             ...result,
             ...(warnings ? { warnings } : {}),
-            readiness,
           }, readiness, `code_graph_query ${operation} payload`, summarizeWeakestGraphEdgeEnrichment(result.edges)),
       }, null, 2),
     }],

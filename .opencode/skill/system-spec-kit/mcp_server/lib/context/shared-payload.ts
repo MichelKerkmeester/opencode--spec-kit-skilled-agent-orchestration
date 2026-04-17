@@ -14,13 +14,40 @@ export const SHARED_PAYLOAD_KIND_VALUES = [
 
 export type SharedPayloadKind = (typeof SHARED_PAYLOAD_KIND_VALUES)[number];
 
-export type SharedPayloadTrustState =
-  | 'live'
-  | 'cached'
-  | 'stale'
-  | 'imported'
-  | 'rebuilt'
-  | 'rehomed';
+// ───────────────────────────────────────────────────────────────
+// M8 / T-SHP-01 (R9-001): Trust-state vocabulary expansion.
+// Canonical axes keep 'live' and 'stale' for existing-but-freshness
+// semantics and add 'absent' (does not exist for this scope) and
+// 'unavailable' (should exist but inaccessible — I/O failure,
+// lock held, readiness probe threw). Older values ('cached',
+// 'imported', 'rebuilt', 'rehomed') remain for compact-cache and
+// migration-aware producers that already emit them on purpose.
+export const SHARED_PAYLOAD_TRUST_STATE_VALUES = [
+  'live',
+  'cached',
+  'stale',
+  'absent',
+  'unavailable',
+  'imported',
+  'rebuilt',
+  'rehomed',
+] as const;
+
+export type SharedPayloadTrustState = (typeof SHARED_PAYLOAD_TRUST_STATE_VALUES)[number];
+
+export function isSharedPayloadTrustState(value: unknown): value is SharedPayloadTrustState {
+  return typeof value === 'string'
+    && SHARED_PAYLOAD_TRUST_STATE_VALUES.includes(value as SharedPayloadTrustState);
+}
+
+export function assertSharedPayloadTrustState(value: unknown): SharedPayloadTrustState {
+  if (!isSharedPayloadTrustState(value)) {
+    throw new Error(
+      `Invalid shared payload trust state: expected one of ${SHARED_PAYLOAD_TRUST_STATE_VALUES.join(', ')}`,
+    );
+  }
+  return value;
+}
 
 export const SHARED_PAYLOAD_CERTAINTY_VALUES = [
   'exact',
@@ -607,16 +634,39 @@ export function createSharedPayloadEnvelope(input: {
   };
 }
 
+// ───────────────────────────────────────────────────────────────
+// M8 / T-SHP-01 (R9-001): Canonical mapping from structural freshness
+// to trust state. 'empty' and 'missing' indicate the graph scope has
+// no data (→ 'absent'); 'error' indicates the scope is unreachable
+// (→ 'unavailable'). Callers that only observe structural status
+// (no error axis) should use trustStateFromStructuralStatus instead.
 export function trustStateFromGraphState(
-  graphState: 'ready' | 'stale' | 'empty' | 'missing',
+  graphState: 'ready' | 'stale' | 'empty' | 'missing' | 'error',
 ): SharedPayloadTrustState {
-  return graphState === 'ready' ? 'live' : 'stale';
+  switch (graphState) {
+    case 'ready':
+      return 'live';
+    case 'stale':
+      return 'stale';
+    case 'empty':
+    case 'missing':
+      return 'absent';
+    case 'error':
+      return 'unavailable';
+  }
 }
 
 export function trustStateFromStructuralStatus(
   status: 'ready' | 'stale' | 'missing',
 ): SharedPayloadTrustState {
-  return status === 'ready' ? 'live' : 'stale';
+  switch (status) {
+    case 'ready':
+      return 'live';
+    case 'stale':
+      return 'stale';
+    case 'missing':
+      return 'absent';
+  }
 }
 
 export function trustStateFromCache(

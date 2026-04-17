@@ -34,7 +34,14 @@ import type { MCPResponse } from '@spec-kit/shared/types';
 ──────────────────────────────────────────────────────────────── */
 
 type SessionStatus = 'ok' | 'warning' | 'stale';
-type SessionHealthSectionTrustState = Extract<SharedPayloadTrustState, 'live' | 'stale'> | 'absent' | 'unavailable';
+// M8 / T-SHS-01: Section-level trust state reuses the canonical
+// SharedPayloadTrustState vocabulary ('live' / 'stale' / 'absent' /
+// 'unavailable'). Keeping the alias narrows to just the four states
+// session-health observes (it never emits 'cached'/'imported'/etc.).
+type SessionHealthSectionTrustState = Extract<
+  SharedPayloadTrustState,
+  'live' | 'stale' | 'absent' | 'unavailable'
+>;
 
 interface SessionHealthDetails {
   sessionAgeMs: number;
