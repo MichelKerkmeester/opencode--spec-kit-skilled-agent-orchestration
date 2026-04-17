@@ -22,6 +22,11 @@ type ScenarioDefinition = {
   exactPrompt: string;
   commandSequence: string;
   expectedSignals: string;
+  // T-MPR-RUN-02 / R42-003: explicit automatable boolean from scenario frontmatter
+  // (or SOURCE METADATA). When null, falls back to legacy filename-substring inference
+  // in preclassifiedUnautomatableReason().
+  automatable: boolean | null;
+  automatableReason: string | null;
 };
 
 type ScenarioParseFailure = {
@@ -311,6 +316,45 @@ function createParseFailureReason(text: string, missingParts: string[]): string 
   return `Missing ${missingParts.join(' and ')} in ${scope}.`;
 }
 
+// T-MPR-RUN-02 / R42-003: Extract explicit `automatable: true|false` metadata from
+// scenario frontmatter or SOURCE METADATA section. Returns:
+//   - { automatable: true|false, reason?: string } when the field is present
+//   - { automatable: null } when absent (callers fall back to legacy inference)
+//
+// Matches both frontmatter (`automatable: false` between --- fences) and the
+// `- automatable: false` bullet convention used under `## 5. SOURCE METADATA`.
+// When present, `automatable_reason` (or `- automatable_reason: ...`) supplies
+// the human-readable explanation.
+export function parseAutomatableMetadata(text: string): {
+  automatable: boolean | null;
+  reason: string | null;
+} {
+  const frontmatterMatch = text.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
+  const frontmatter = frontmatterMatch?.[1] ?? '';
+
+  const sourceMetadataMatch = text.match(/## 5\. SOURCE METADATA\s*([\s\S]*?)(?:\n## |\n---\s*\n|$)/);
+  const sourceMetadata = sourceMetadataMatch?.[1] ?? '';
+
+  const searchSpaces = [frontmatter, sourceMetadata];
+  let automatable: boolean | null = null;
+  let reason: string | null = null;
+
+  for (const scope of searchSpaces) {
+    if (!scope) continue;
+    // Accept both `automatable: false` and `- automatable: false` conventions.
+    const valueMatch = scope.match(/^\s*-?\s*automatable\s*:\s*(true|false)\s*$/im);
+    if (valueMatch && automatable === null) {
+      automatable = valueMatch[1].toLowerCase() === 'true';
+    }
+    const reasonMatch = scope.match(/^\s*-?\s*automatable[_-]reason\s*:\s*["']?(.+?)["']?\s*$/im);
+    if (reasonMatch && reason === null) {
+      reason = reasonMatch[1].trim();
+    }
+  }
+
+  return { automatable, reason };
+}
+
 export function parseScenarioDefinition(filePath: string): ScenarioParseResult {
   const text = fs.readFileSync(filePath, 'utf8');
   const match = text.match(/## 3\. TEST EXECUTION[\s\S]*?\n\|[^\n]+\n\|[-| :]+\n(\|.+\|)\n/);
@@ -320,6 +364,9 @@ export function parseScenarioDefinition(filePath: string): ScenarioParseResult {
   const titleMatch = text.match(/^#\s+(.+)$/m);
   const scenarioId = scenarioIdMatch?.[1]?.trim() ?? path.basename(filePath, '.md');
   const featureName = titleMatch?.[1]?.trim() ?? path.basename(filePath, '.md');
+  // T-MPR-RUN-02 / R42-003: read explicit automatable metadata once; propagated into
+  // every ScenarioDefinition regardless of which fallback branch produces it.
+  const { automatable, reason: automatableReason } = parseAutomatableMetadata(text);
 
   const parseProseDefinition = (): ScenarioParseResult => {
     const executionMatch = text.match(/## 3\. TEST EXECUTION\s*([\s\S]*?)(?:\n---\s*\n|\n## 4\.)/);
@@ -375,6 +422,8 @@ export function parseScenarioDefinition(filePath: string): ScenarioParseResult {
       exactPrompt: prompt,
       commandSequence: commands,
       expectedSignals: expected,
+      automatable,
+      automatableReason,
     });
   };
 
@@ -396,6 +445,8 @@ export function parseScenarioDefinition(filePath: string): ScenarioParseResult {
     exactPrompt: columns[3].replace(/^`|`$/g, ''),
     commandSequence: columns[4],
     expectedSignals: columns[5],
+    automatable,
+    automatableReason,
   });
 }
 
@@ -453,6 +504,18 @@ function scenarioResultFromParseFailure(failure: ScenarioParseFailure): Scenario
 }
 
 function preclassifiedUnautomatableReason(definition: ScenarioDefinition): string | null {
+  // T-MPR-RUN-02 / R42-003: explicit scenario metadata wins over filename-substring
+  // inference. When `automatable: false` is declared, honor it (with its reason when
+  // supplied). When `automatable: true` is declared, shortcut past the legacy
+  // filename fallbacks below.
+  if (definition.automatable === false) {
+    return definition.automatableReason
+      ?? 'Scenario metadata declares automatable: false; runner honors explicit opt-out.';
+  }
+  if (definition.automatable === true) {
+    return null;
+  }
+
   if (definition.scenarioId.startsWith('M-')) {
     return 'Prose-first operator workflow requires manual/source cross-checks beyond direct handler output.';
   }
@@ -560,13 +623,38 @@ function parseSteps(commandSequence: string): ScenarioStep[] {
   return lineSteps.map(classifyStep);
 }
 
+// T-MPR-RUN-04 / R46-003: `lastJobId` originates from prior handler payloads and is
+// interpolated into tokenized object-literal source before parsing. Even though the
+// typed parser rejects quoted-string breakouts (see parseObjectLiteralArgs test
+// coverage), we sanitize at the substitution boundary as defense in depth: only a
+// nanoid-shaped `job_<12 alphanumerics>` (and safe extensions) is accepted. Anything
+// else is dropped so a malicious payload cannot reach the tokenizer at all.
+const JOB_ID_ALLOWLIST = /^[A-Za-z0-9_-]{1,64}$/;
+
+export function sanitizeJobIdForSubstitution(rawJobId: string): string | null {
+  if (typeof rawJobId !== 'string') return null;
+  if (rawJobId.length === 0) return null;
+  return JOB_ID_ALLOWLIST.test(rawJobId) ? rawJobId : null;
+}
+
 function substitutePlaceholders(value: string, fixture: FixtureToolContext, runtimeState: RuntimeState): string {
   let next = value;
   for (const [needle, replacement] of Object.entries(fixture.placeholders)) {
     next = next.split(needle).join(replacement);
   }
-  if (runtimeState.lastJobId) {
-    next = next.split('<job-id>').join(runtimeState.lastJobId);
+  if (runtimeState.lastJobId && next.includes('<job-id>')) {
+    const sanitized = sanitizeJobIdForSubstitution(runtimeState.lastJobId);
+    if (sanitized === null) {
+      // T-MPR-RUN-04 / R46-003: adversarial lastJobId must never reach the
+      // tokenizer. Throw a structured error so the scenario fails visibly
+      // instead of silently swallowing a dangerous payload.
+      throw new Error(
+        'Playbook injection defense: runtimeState.lastJobId contains characters '
+        + 'outside the nanoid allowlist ([A-Za-z0-9_-]{1,64}). Refusing to '
+        + 'substitute potentially adversarial payload into playbook source.',
+      );
+    }
+    next = next.split('<job-id>').join(sanitized);
   }
   return next;
 }
@@ -921,6 +1009,65 @@ function defaultArgsForTool(
   }
 }
 
+// T-MPR-RUN-05 / R50-002: lightweight schema validator for tool arguments.
+// Each tool has an allowed set of keys + required fields. Rejects unknown keys to
+// surface playbook drift immediately; rejects missing required fields so that
+// previously-undefined-in-JS-scoping shorthand (`{jobId}`) cannot slip past the
+// parser and then be silently coerced into defaults.
+type ToolArgSchema = {
+  required: readonly string[];
+  optional: readonly string[];
+};
+
+const TOOL_ARG_SCHEMAS: Record<string, ToolArgSchema> = {
+  memory_ingest_start: { required: ['paths'], optional: ['specFolder'] },
+  memory_ingest_status: { required: ['jobId'], optional: [] },
+  memory_ingest_cancel: { required: ['jobId'], optional: [] },
+  memory_delete: { required: ['id'], optional: ['confirm'] },
+  memory_bulk_delete: { required: ['confirm'], optional: ['tier', 'specFolder', 'scope'] },
+  memory_update: {
+    required: ['id'],
+    optional: [
+      'title', 'content', 'triggerPhrases', 'tags', 'tier', 'importance',
+      'allowPartialUpdate', 'notes', 'description',
+    ],
+  },
+  memory_validate: {
+    required: ['id'],
+    optional: ['wasUseful', 'resultRank', 'totalResultsShown', 'queryUsed'],
+  },
+  memory_causal_link: {
+    required: ['sourceId', 'targetId', 'relation'],
+    optional: ['strength', 'evidence', 'notes'],
+  },
+  memory_causal_unlink: { required: ['edgeId'], optional: [] },
+  memory_drift_why: { required: ['memoryId'], optional: ['direction', 'maxDepth'] },
+};
+
+export function validateToolArgsSchema(toolName: string, args: Record<string, unknown>): void {
+  const schema = TOOL_ARG_SCHEMAS[toolName];
+  if (!schema) return;
+
+  for (const key of schema.required) {
+    if (!(key in args) || args[key] === undefined || args[key] === null) {
+      throw new Error(
+        `Playbook schema violation for ${toolName}: required argument "${key}" is missing. `
+        + 'Shorthand or untyped placeholders must be rewritten as explicit `key: value` form.',
+      );
+    }
+  }
+
+  const allowedKeys = new Set<string>([...schema.required, ...schema.optional]);
+  for (const key of Object.keys(args)) {
+    if (!allowedKeys.has(key)) {
+      throw new Error(
+        `Playbook schema violation for ${toolName}: unknown argument "${key}". `
+        + 'Add it to TOOL_ARG_SCHEMAS or remove it from the scenario command.',
+      );
+    }
+  }
+}
+
 function coerceToolArgs(
   step: ScenarioStep,
   definition: ScenarioDefinition,
@@ -941,6 +1088,10 @@ function coerceToolArgs(
       ...parsedStepArgs(step, definition, fixture, runtimeState),
     };
   }
+
+  // T-MPR-RUN-05 / R50-002: validate against known-tool schema so shorthand drift
+  // (`{jobId}` vs `{ jobId:"..." }`) cannot silently pass through with partial args.
+  validateToolArgsSchema(step.toolName, args);
 
   if ((step.toolName === 'memory_context' || step.toolName === 'memory_search') && typeof args.sessionId === 'string') {
     const candidate = args.sessionId.trim();

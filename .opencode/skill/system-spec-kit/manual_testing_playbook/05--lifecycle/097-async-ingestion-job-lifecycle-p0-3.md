@@ -33,8 +33,8 @@ As a lifecycle validation operator, confirm job state machine, duplicate-path de
 ### Commands
 
 1. `memory_ingest_start({paths:["specs/<target-spec>/decision-record.md","specs/<target-spec>/decision-record.md","specs/<target-spec>/implementation-summary.md"]})` → capture `jobId`, `duplicatePathCount`, and the dedup hint (must be explicit `.md` file paths, not directories)
-2. `memory_ingest_status({jobId})` → verify state transitions (queued→parsing→embedding→indexing→complete)
-3. start a new job, then `memory_ingest_cancel({jobId})` → verify cancelled state
+2. `memory_ingest_status({ jobId:"<job-id>" })` → verify state transitions (queued→parsing→embedding→indexing→complete)
+3. start a new job, then `memory_ingest_cancel({ jobId:"<job-id>" })` → verify cancelled state
 4. verify job IDs are nanoid-style (`job_` prefix + 12 alphanumeric chars)
 5. restart server → verify incomplete jobs re-enqueue via `resetIncompleteJobsToQueued`
 
