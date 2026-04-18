@@ -43,9 +43,24 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Scaffold-time artifacts: 5 Level 2 packet docs. Originating source: `../../../scratch/deep-review-research-suggestions.md §3 DR-1`. Upstream review data: the 015 review-report file (1535 lines, 243 findings).
+9-iteration canonical `/spec_kit:deep-review :auto` loop via `cli-codex gpt-5.4 high fast`. Review artifacts at `026/review/019-system-hardening-001-initial-research-002-delta-review-015/`: 9 iteration markdown files, `review-report.md` (164 lines, canonical synthesis), `deep-review-state.jsonl` (append-only per-iteration stream), `deep-review-strategy.md`, `findings-registry.json`. Delta-report mirror at `026/review/015-deep-review-and-remediation/delta-report-2026-04.md` for the 015 Workstream 0+ handoff. Convergence ratios: 0.55 → 0.70 → 0.64 → 0.59 → 0.52 → 0.41 → 0.33 → 0.18 → 0.06.
 
-Post-convergence: classification counts (ADDRESSED / STILL_OPEN / SUPERSEDED / UNVERIFIED), 015 P0 verdict, narrowed residual backlog.
+### Final tally (all 242 findings classified)
+
+| Classification | Count | Notes |
+|----------------|-------|-------|
+| **ADDRESSED** | 61 | cite commit hash per finding; phase 016/017/018 commits |
+| **STILL_OPEN** | 19 | 015 Workstream 0+ narrowed residual |
+| **SUPERSEDED** | 162 | phase 016/017/018 architectural primitives replaced the surface |
+| **UNVERIFIED** | 0 | all resolved by iter 6 |
+
+### 015 P0 verdict
+
+`reconsolidation-bridge.ts:208-250` cross-scope merge — **ADDRESSED** by commit `104f534bd0` (phase 016 P0-B composite: transactional reconsolidation + predecessor CAS + complement window closure). Current-main evidence: `findScopeFilteredCandidates()` at `reconsolidation-bridge.ts:342-387` + regression coverage at `reconsolidation-bridge.vitest.ts:390-400`.
+
+### STILL_OPEN backlog
+
+19 STILL_OPEN findings clustered into proposed 015 Workstream 0+ scope with severity (P1/P2), file:line evidence, and effort (S/M/L). See `review-report.md §STILL_OPEN Backlog` for cluster layout.
 <!-- /ANCHOR:what-built -->
 
 ---

@@ -13,11 +13,13 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research"
     last_updated_at: "2026-04-18T17:15:00Z"
     last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Wave 1 in flight. Sub-packet 001 iter 3 surfaced P0: packets 007+010 have metadata without spec.md (real state divergence); save_lineage=null universally violated. Sub-packet 002 iter 1 verified 015 P0 ADDRESSED by commit 104f534bd0."
-    next_safe_action: "Continue Wave 1 iterations 001/iter4+ and 002/iter2+; DO NOT dispatch Wave 2 until 001 P0 findings assessed per ADR-001 wave gate"
+    recent_action: "WAVE 1 CONVERGED. 001 SSK-RR-2: 9 iters, research.md (193 lines), 2 P0s surfaced with remediation proposals. 002 DR-1: 9 iters, review-report.md (164 lines), all 242 findings classified (ADDRESSED=61, STILL_OPEN=19, SUPERSEDED=162), 015 P0 ADDRESSED by 104f534bd0."
+    next_safe_action: "Wave 2 PAUSE per ADR-001 wave-gate: SSK-RR-2 surfaced 2 P0s — need user direction. Options: (a) dispatch Wave 2 regardless (P0s scoped + remediation drafted), (b) halt Wave 2 and spawn 019/002 remediation child first, (c) skip Wave 2+3 and jump straight to implementation"
     blockers:
-      - "P0-escalation-from-001-iter3: packets 007-release-alignment-revisits + 010-search-and-routing-tuning lack spec.md despite having description.json + graph-metadata.json (one canonical layer missing); save_lineage violations universal. See 001-canonical-save-invariants/iterations/iteration-003.md"
-    key_files: ["implementation-summary.md"]
+      - "P0 #1 from 001: packets 007/008/009/010 carry description.json + graph-metadata.json without spec.md — real state divergence. Full-tree scan confirms only these 4. Remediation proposal drafted (stub spec.md vs archive vs README-only coordination packet)."
+      - "P0 #2 from 001: save_lineage writeback bug — built workflow.js calls refreshGraphMetadata(path) without options, so same_pass flag never reaches persist layer (source/dist mismatch). Fix requires wrapper + dist rebuild + schema verification."
+      - "Wave 2 (003 RR-1 Q4 NFKC + 004 RR-2 description-regen) dispatch blocked pending P0 decision"
+    key_files: ["implementation-summary.md", "001-canonical-save-invariants/research.md", "002-delta-review-015/review-report.md"]
 
 ---
 # Implementation Summary: 019 Initial Research Wave
