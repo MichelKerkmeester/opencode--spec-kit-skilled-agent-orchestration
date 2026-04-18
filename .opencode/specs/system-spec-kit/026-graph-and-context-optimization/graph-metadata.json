@@ -18,9 +18,9 @@
     "system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation",
     "system-spec-kit/026-graph-and-context-optimization/013-advisor-phrase-booster-tailoring",
     "system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite",
-    "system-spec-kit/026-graph-and-context-optimization/015-packets-009-014-audit",
+    "system-spec-kit/026-graph-and-context-optimization/015-deep-review-and-remediation",
     "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
-    "system-spec-kit/026-graph-and-context-optimization/017-cli-runtime-executors",
+    "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution",
     "system-spec-kit/026-graph-and-context-optimization/018-cli-executor-remediation"
   ],
   "manual": {

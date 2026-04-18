@@ -88,7 +88,7 @@ Iter 5 flagged the meta-irony of 017's own `description.json` being a 556-byte s
 - `010-search-and-routing-tuning/description.json` — 245 bytes
 - `007-release-alignment-revisits/description.json` — 264 bytes
 - `009-playbook-and-remediation/description.json` — 265 bytes
-- `015-packets-009-014-audit/description.json` — 538 bytes
+- `015-deep-review-and-remediation/description.json` — 538 bytes
 - `014-memory-save-rewrite/description.json` — 533 bytes
 
 Full-fidelity siblings (`001`, `003`, `004`, `005`, `012`) sit at 1000–1600 bytes. The minimum-information threshold iter 5 applied to 017 (556 bytes = stub) flags 6 additional folders as sub-threshold. Memory-indexing visibility is proportionally degraded across those 6 folders.

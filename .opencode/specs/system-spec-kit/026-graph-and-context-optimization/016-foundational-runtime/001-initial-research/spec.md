@@ -453,6 +453,6 @@ Full 10-item cross-file anti-pattern roster and 16-item reinforcement-chain map 
 - **Implementation Plan**: `plan.md`
 - **Task Breakdown**: `tasks.md`
 - **Verification Checklist**: `checklist.md`
-- **Prior Deep Review**: `../015-packets-009-014-audit/`
+- **Prior Deep Review**: `../015-deep-review-and-remediation/`
 - **Parent 026 Spec**: `../spec.md`
 <!-- /ANCHOR:questions -->

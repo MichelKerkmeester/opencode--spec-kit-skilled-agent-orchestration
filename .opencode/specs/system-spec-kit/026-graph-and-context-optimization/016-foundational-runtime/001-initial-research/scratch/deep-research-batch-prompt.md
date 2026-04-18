@@ -105,7 +105,7 @@ Read these before starting iterations:
 - `016-foundational-runtime/001-initial-research/scratch/medium-priority-deep-dive.md` — medium-priority findings
 - `016-foundational-runtime/001-initial-research/scratch/cross-cutting-patterns.md` — 4 systemic themes
 - `016-foundational-runtime/001-initial-research/scratch/deep-review-prompts.md` — adversarial review prompts for HIGH files
-- `015-packets-009-014-audit/review/` — prior 120-iteration review findings (for deduplication)
+- `015-deep-review-and-remediation/review/` — prior 120-iteration review findings (for deduplication)
 
 ## Output Expectations
 

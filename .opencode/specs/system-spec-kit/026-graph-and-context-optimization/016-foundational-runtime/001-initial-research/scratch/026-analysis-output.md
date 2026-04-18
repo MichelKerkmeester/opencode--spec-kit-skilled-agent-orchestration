@@ -74,7 +74,7 @@ I found **19 strong candidates** for deeper review or follow-up research across 
   - Priority: MEDIUM
 
 ### Phase 015: implementation-deep-review
-- **`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-packets-009-014-audit/implementation-summary.md`** — Summarizes the 120-iteration review, the 243 findings, and the planned remediation workstreams.
+- **`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-deep-review-and-remediation/implementation-summary.md`** — Summarizes the 120-iteration review, the 243 findings, and the planned remediation workstreams.
   - Why: This is not runtime code, but it remains the best concentration point for what 026 still knows is fragile. It deserves another research pass because the audit focused heavily on 009/010/012/014, while foundational earlier runtime packets received much less cross-cutting follow-up.
   - Priority: MEDIUM
 

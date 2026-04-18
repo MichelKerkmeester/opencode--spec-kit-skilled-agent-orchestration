@@ -362,5 +362,5 @@ Success criteria from `spec.md §5` (SC-001 through SC-010):
 - **Phase 4 QW Synthesis**: `phase-4-quick-wins-summary.md` — 21 quick-win commits task-by-task
 - **Phase 1 P0 Composites Synthesis**: `phase-016-remediation-p0-composites-summary.md` — 4 P0 composite eliminations detailed
 - **Parent Packet**: `../spec.md` — 026-graph-and-context-optimization parent charter
-- **Prior Deep Review**: `../015-packets-009-014-audit/` — Phase 015 remediation state
+- **Prior Deep Review**: `../015-deep-review-and-remediation/` — Phase 015 remediation state
 <!-- /ANCHOR:limitations -->

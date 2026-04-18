@@ -4876,7 +4876,7 @@
       "lastUpdated": "2026-04-17T18:43:49.606Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/015-packets-009-014-audit",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/015-deep-review-and-remediation",
       "description": "Remediation specification for 243 deduplicated findings synthesized from the merged 120-iteration deep review across packets 009, 010, 012, and 014. The packet is organized around 11 workstreams, with the governed save-time reconsolidation scope leak treated as the release-blocking P0, followed by sequential hardening workstreams and then batch-automatable correctness, security, and test-quality remediations once the scope-boundary foundations are in place.",
       "keywords": [
         "deep review findings",
@@ -5127,7 +5127,7 @@
       "lastUpdated": "2026-04-17T14:42:34.376Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/review/015-packets-009-014-audit/merged-015-archive",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/review/015-deep-review-and-remediation/merged-015-archive",
       "description": "Feature Specification: Combined Deep Review — 009 + 010 + 012 + 014",
       "keywords": [
         "feature",

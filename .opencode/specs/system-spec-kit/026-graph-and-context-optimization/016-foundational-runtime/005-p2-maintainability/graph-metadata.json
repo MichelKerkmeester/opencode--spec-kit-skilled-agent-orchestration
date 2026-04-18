@@ -38,7 +38,7 @@
       "t-yml-cp4-01",
       "004-p2-maintainability"
     ],
-    "importance_tier": "standard",
+    "importance_tier": "normal",
     "status": "in_progress",
     "key_files": [
       "mcp_server/lib/utils/exhaustiveness.ts",

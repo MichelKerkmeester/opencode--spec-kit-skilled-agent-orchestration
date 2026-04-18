@@ -103,7 +103,7 @@ Cases:
 **Fixture dir**: `.opencode/skill/system-spec-kit/mcp_server/tests/description/fixtures/`
 
 Steps:
-1. Copy 3-4 rich 017 packet `description.json` files into fixtures: e.g., `016-foundational-runtime.description.json`, `017-cli-runtime-executors/001-executor-feature.description.json`, `017-cli-runtime-executors/002-runtime-matrix.description.json`. (If file-copying is possible; otherwise inline the content.)
+1. Copy 3-4 rich 017 packet `description.json` files into fixtures: e.g., `016-foundational-runtime.description.json`, `017-sk-deep-cli-runtime-execution/001-executor-feature.description.json`, `017-sk-deep-cli-runtime-execution/002-runtime-matrix.description.json`. (If file-copying is possible; otherwise inline the content.)
 2. Simulate a schema-error scenario by adding an extra invalid top-level key (e.g., `"invalid_shape": true`) or malforming a sub-field that trips validation.
 3. Run the loader → assert schema_error result.
 4. Apply mergePreserveRepair with the canonical overrides the generate-description script would produce.

@@ -149,7 +149,7 @@ The 19 candidates from `spec.md` drove the iteration file selection:
 12. `.opencode/skill/skill-advisor/scripts/skill_advisor.py`
 13. `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py`
 14. `.opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml`
-15. `015-packets-009-014-audit/implementation-summary.md`
+15. `015-deep-review-and-remediation/implementation-summary.md`
 
 ### LOW priority (4)
 16. `001-research-graph-context-systems/recommendations.md`
@@ -193,7 +193,7 @@ Iterations were free to read companion files (tests, callers, transports) as con
    - P1: silent quality degradation; operator-visible only through log-scraping
    - P2: observability gap; degraded contract but recoverable
 3. **Deduplicated.** Cross-iteration findings that describe the same underlying bug are collapsed into canonical IDs in the registry's `dedup_clusters` section.
-4. **No redo of 015.** Findings must describe behavior not covered in the Phase-015 review report (`015-packets-009-014-audit/review/review-report.md`).
+4. **No redo of 015.** Findings must describe behavior not covered in the Phase-015 review report (`015-deep-review-and-remediation/review/review-report.md`).
 5. **Actionable.** Each finding includes a concrete remediation recommendation (size + shape + affected files).
 
 ---

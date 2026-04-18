@@ -105,7 +105,7 @@ See §6 in `spec.md` for the file-collision groups and atomic-ship constraints.
 
 ### Phase dependencies
 - **Depends on**: Phase 017 (already landed — 27 fix commits since afbb3bc7f)
-- **Related**: 015-packets-009-014-audit (prior audit cycle)
+- **Related**: 015-deep-review-and-remediation (prior audit cycle)
 - **Blocks**: Phase 019 changelog + parking-lot P2 items
 
 ### Runtime dependencies

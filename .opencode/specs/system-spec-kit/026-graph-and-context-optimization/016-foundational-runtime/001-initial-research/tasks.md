@@ -510,5 +510,5 @@ Note: the task count exceeds 63 because (a) some dedup clusters are implemented 
 - **Findings Registry**: `../research/016-foundational-runtime-001-initial-research/findings-registry.json`
 - **Research Narrative**: `../research/016-foundational-runtime-001-initial-research/research.md`
 - **Iteration Evidence**: `../research/016-foundational-runtime-001-initial-research/iterations/iteration-{001..050}.md`
-- **Prior Deep Review**: `../015-packets-009-014-audit/`
+- **Prior Deep Review**: `../015-deep-review-and-remediation/`
 <!-- /ANCHOR:cross-refs -->

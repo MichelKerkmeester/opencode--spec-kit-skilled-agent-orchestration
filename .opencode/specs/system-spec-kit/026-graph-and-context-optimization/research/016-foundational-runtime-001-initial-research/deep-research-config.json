@@ -137,7 +137,7 @@
       ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
       ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
       ".opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml",
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-packets-009-014-audit/implementation-summary.md"
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-deep-review-and-remediation/implementation-summary.md"
     ],
     "low_priority": [
       ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/001-research-graph-context-systems/recommendations.md",

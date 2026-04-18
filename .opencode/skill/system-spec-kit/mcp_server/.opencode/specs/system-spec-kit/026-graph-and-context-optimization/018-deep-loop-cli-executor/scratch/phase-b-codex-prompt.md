@@ -2,7 +2,7 @@
 
 ## GATE 3 ALREADY RESOLVED — DO NOT ASK
 
-**Spec folder**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-cli-runtime-executors/001-executor-feature/`
+**Spec folder**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/001-executor-feature/`
 **Previous phase (A) status**: COMPLETE. Shipped executor-config.ts + deep_research_config.json + deep_review_config.json + 16 vitest tests all green.
 **Your role**: Execute Phase B Sub-wave B tasks (T-PPT-01/02/03 + T-TST-02). Do NOT ask about spec folder. Proceed directly.
 

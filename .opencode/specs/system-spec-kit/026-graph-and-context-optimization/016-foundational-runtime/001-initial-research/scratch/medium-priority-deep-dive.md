@@ -304,7 +304,7 @@ No direct automated tests were identified for this asset. Any current validation
 3. Reconcile the two conflicting parallel-dispatch stories.
 4. Add CI or command-level validation that all declared template paths exist.
 
-## M8. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-packets-009-014-audit/implementation-summary.md`
+## M8. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-deep-review-and-remediation/implementation-summary.md`
 
 ### Architecture Assessment
 

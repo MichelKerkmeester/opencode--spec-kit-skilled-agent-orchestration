@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/002-runtime-matrix",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/002-runtime-matrix",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution",
+  "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "cli runtime matrix",
+      "cli-copilot executor",
+      "cli-gemini executor",
+      "cli-claude-code executor",
+      "cross-cli delegation",
+      "019 plan",
+      "cli runtime matrix plan",
+      "019 tasks",
+      "cli matrix tasks",
+      "019 checklist",
+      "cli matrix verification",
+      "019 decisions"
+    ],
+    "key_topics": [
+      "cli",
+      "runtime",
+      "matrix",
+      "cli-copilot",
+      "executor",
+      "cli-gemini",
+      "cli-claude-code",
+      "cross-cli",
+      "delegation",
+      "019",
+      "plan",
+      "tasks"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/skill/sk-deep-research/SKILL.md",
+      ".opencode/skill/sk-deep-review/SKILL.md",
+      ".opencode/command/spec_kit/deep-research.md",
+      "tests/deep-loop/cli-matrix.vitest.ts",
+      "tests/deep-loop/executor-config.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/executor-config.vitest.ts",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml",
+      ".opencode/command/spec_kit/deep-review.md",
+      ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+      ".opencode/skill/sk-deep-review/references/loop_protocol.md",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/cli-matrix.vitest.ts",
+      "decision-record.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      ".opencode/skill/cli-codex/SKILL.md"
+    ],
+    "entities": [
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli-matrix.vitest.ts",
+        "kind": "test",
+        "path": "tests/deep-loop/cli-matrix.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "executor-config.vitest.ts",
+        "kind": "test",
+        "path": "tests/deep-loop/executor-config.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "executor-config.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-review_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-review_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "loop_protocol.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Runtime Matrix",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Iterative Skills",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Ready",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Begin Phase",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 018 shipped executor selection with two kinds: `native` (default) and `cli-codex` (new). Three more kinds were reserved in the enum (`cli-copilot`, `cli-gemini`, `cli-claude-code`) but rejected at config load with `ExecutorNotWiredError`. This packet wires all three. Both iterative skills (sk-deep-research + sk-deep-review) gain support for four CLI executors plus native. Each CLI has a different invocation surface, so `executor-config.ts` grows per-kind flag-compatibility validation. Cross-CLI delegation is documented: any CLI executor CAN, in theory, invoke the other CLI skills from within its iteration via its shell/sandbox, with the anti-pattern being self-recursive invocation.",
+    "created_at": "2026-04-18T11:30:00Z",
+    "last_save_at": "2026-04-18T14:47:57.972Z",
+    "last_accessed_at": "2026-04-18T11:30:00Z",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

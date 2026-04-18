@@ -1,0 +1,25 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution",
+  "description": "Feature Specification: CLI Runtime Executors for Iterative Skills (merged)",
+  "keywords": [
+    "feature",
+    "specification",
+    "cli",
+    "runtime",
+    "executors",
+    "iterative",
+    "skills",
+    "merged"
+  ],
+  "lastUpdated": "2026-04-18T14:47:57.313Z",
+  "specId": "017",
+  "folderSlug": "sk-deep-cli-runtime-execution",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}
