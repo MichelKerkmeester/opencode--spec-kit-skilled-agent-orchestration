@@ -1,0 +1,60 @@
+{
+  "topic": "Template v2.2 + validator ruleset joint audit. Enumerate anchors + fields in .opencode/skill/system-spec-kit/templates/level_{1,2,3}/ (CORE + ADDENDUM). Enumerate validator rules in scripts/spec/validate.sh strict-mode set (FILE_EXISTS, PLACEHOLDER_FILLED, SECTIONS_PRESENT, TEMPLATE_HEADERS, PHASE_LINKS, SPEC_DOC_INTEGRITY, ANCHORS_VALID, CROSS_ANCHOR_CONTAMINATION, POST_SAVE_FINGERPRINT, CONTINUITY_FRESHNESS, MERGE_LEGALITY, NORMALIZER_LINT, EVIDENCE_MARKER_LINT, TOC_POLICY, FRONTMATTER_MEMORY_BLOCK, SPEC_DOC_SUFFICIENCY, LEVEL_DECLARED, LEVEL_MATCH, LINKS_VALID, GRAPH_METADATA_PRESENT, PRIORITY_TAGS). Cross-reference into coverage matrix. Classify mismatches (orphan rule, orphan field, duplicate coverage, unenforced invariant). Rank proposed changes by affected-packet count and validator-noise reduction. Dispatch on spec folder .opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/006-template-validator-audit/ with iteration budget 12.",
+  "maxIterations": 12,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 240,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 30,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/006-template-validator-audit",
+  "createdAt": "2026-04-18T20:39:41Z",
+  "status": "in_progress",
+  "executionMode": "auto",
+  "reviewTarget": ".opencode/skill/system-spec-kit/templates + .opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+  "reviewScopeFiles": [".opencode/skill/system-spec-kit/templates/level_1/", ".opencode/skill/system-spec-kit/templates/level_2/", ".opencode/skill/system-spec-kit/templates/level_3/", ".opencode/skill/system-spec-kit/scripts/spec/validate.sh"],
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.4",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "sandboxMode": "workspace-write",
+    "timeoutSeconds": 1800
+  },
+  "lineage": {
+    "sessionId": "dr-006-template-validator-20260418T203941Z",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": ["new", "resume", "restart"],
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "findings-registry.json",
+    "dashboardFile": "deep-review-dashboard.md",
+    "strategyFile": "deep-review-strategy.md",
+    "machineOwnedSections": [
+      "key-questions",
+      "answered-questions",
+      "what-worked",
+      "what-failed",
+      "exhausted-approaches",
+      "ruled-out-directions",
+      "next-focus"
+    ]
+  },
+  "dimensions": ["correctness", "contracts", "documentation", "maintainability"],
+  "pauseSentinelPath": ".deep-review-pause",
+  "archiveRoot": "archive",
+  "fileProtection": {
+    "deep-review-config.json": "immutable",
+    "deep-review-state.jsonl": "append-only",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    "findings-registry.json": "auto-generated",
+    "iteration-*.md": "write-once",
+    "review-report.md": "mutable"
+  }
+}

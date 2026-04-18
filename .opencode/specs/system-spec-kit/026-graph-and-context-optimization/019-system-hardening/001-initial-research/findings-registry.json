@@ -1,0 +1,73 @@
+{
+  "registry_version": "1.0",
+  "created_at": "2026-04-18T20:45:00Z",
+  "updated_at": "2026-04-18T23:35:00Z",
+  "consolidation_status": "all_6_converged",
+  "sub_packets": {
+    "001-canonical-save-invariants": {"status": "converged", "iter_count": 9, "research_file": "research.md", "p0": 2, "p1_validator_rules": 5},
+    "002-delta-review-015": {"status": "converged", "iter_count": 9, "review_file": "review-report.md", "residual_findings": 19, "delta_classified": {"ADDRESSED": 61, "STILL_OPEN": 19, "SUPERSEDED": 162, "UNVERIFIED": 0}},
+    "003-q4-nfkc-robustness": {"status": "converged", "iter_count": 6, "research_file": "research.md", "p0": 0, "p1": 3, "p2": 1, "hardening_proposals": 6},
+    "004-description-regen-strategy": {"status": "converged", "iter_count": 5, "research_file": "research.md", "strategy_selected": "field-level-merge-policy"},
+    "005-routing-accuracy": {"status": "converged", "iter_count": 8, "research_file": "research.md", "p0": 0, "p1": 3, "p2": 2, "baseline": {"gate3_f1": 0.686, "advisor_accuracy": 0.535}, "joint_error_rate": 0.635},
+    "006-template-validator-audit": {"status": "converged", "iter_count": 6, "review_file": "review-report.md", "p0": 0, "p1": 1, "p2": 3}
+  },
+  "total_findings_by_severity": {
+    "P0": 2,
+    "P1": 8,
+    "P2": 6,
+    "P1_validator_rules": 5,
+    "residuals_015": 19,
+    "total": 40
+  },
+  "remediation_children_plan": [
+    {
+      "id": "019/002-canonical-save-hardening",
+      "source_packet": "001-canonical-save-invariants",
+      "scope": "P0 #1 packet-root repair (007/008/009/010) + P0 #2 save_lineage runtime parity + 5 new validator rules",
+      "waves": ["Wave A: lineage dist fix (wrapper + rebuild dist)", "Wave B: 007-010 root-doc remediation", "Wave C: validator rollout with grandfathering"],
+      "estimated_effort": "3-5 days",
+      "priority": "P0"
+    },
+    {
+      "id": "019/003-nfkc-unification-hardening",
+      "source_packet": "003-q4-nfkc-robustness",
+      "scope": "HP1 shared Unicode normalization utility + HP2 post-normalization instruction denylist + HP3 expand confusable coverage + HP4 semantic recovered-payload contract + HP5 provenance contract enforcement + HP6 adversarial round-trip corpus",
+      "target_files": ["scripts/lib/trigger-phrase-sanitizer.ts", "mcp_server/hooks/shared-provenance.ts", "mcp_server/hooks/claude/hook-state.ts", "session-prime + compact-cache readers"],
+      "estimated_effort": "4-6 days",
+      "priority": "P1"
+    },
+    {
+      "id": "019/004-routing-accuracy-hardening",
+      "source_packet": "005-routing-accuracy",
+      "scope": "Wave A advisor command-surface normalization (skill_advisor.py command-bridge → owning-skill mapping) + Wave B Gate 3 deep-loop positive markers + Wave C optional follow-ons (broader resume/context + mixed-tail exception)",
+      "measured_gain": "advisor 53.5%→60.0%, Gate 3 F1 68.6%→83.3%, joint errors 127→26 after Gate 3 bundle + advisor normalization",
+      "target_files": ["skill-advisor/scripts/skill_advisor.py", "system-spec-kit/shared/gate-3-classifier.ts"],
+      "estimated_effort": "2-3 days",
+      "priority": "P1"
+    },
+    {
+      "id": "019/005-description-regen-contract",
+      "source_packet": "004-description-regen-strategy",
+      "scope": "Formalize field-level merge policy: shared description.json schema + unified merge helper (merge schema-valid + 018 R4 repair lanes) + unknown-key passthrough",
+      "target_files": ["scripts/spec-folder/folder-discovery.ts (getDescriptionWritePayload)", "018 R4 mergePreserveRepair() helper"],
+      "estimated_effort": "2-3 days",
+      "priority": "P1"
+    },
+    {
+      "id": "019/006-residual-015-backlog",
+      "source_packet": "002-delta-review-015",
+      "scope": "19 STILL_OPEN findings in 6 clusters: DB path boundary (C1 2 P1), advisor degraded-state (C2 3 P1), resume minimal-mode (C3 1 P1), review-graph correctness (C4 2 P1 1 P2), doc/reference parity (C5 2 P1 5 P2), save/startup hygiene (C6 2 P2)",
+      "phasing": ["W0+A: C1+C3 (DB + resume contract)", "W0+B: C4 (review-graph)", "W0+C: C2 (advisor degraded-state)", "W0+D: C5+C6 (docs + hygiene)"],
+      "estimated_effort": "3-4 days",
+      "priority": "P1"
+    },
+    {
+      "id": "019/007-template-validator-contract-alignment",
+      "source_packet": "006-template-validator-audit",
+      "scope": "P1-001 rule registry canonicalization (show_help + dispatch + severity from one source) + P2-001 malformed decision-record placeholder + P2-002 semantic non-empty frontmatter validation + P2-004 check-anchors.sh vs preflight parity",
+      "target_files": ["scripts/spec/validate.sh", "scripts/rules/check-frontmatter.sh", "scripts/rules/check-anchors.sh", "mcp_server/lib/validation/spec-doc-structure.ts", "templates/level_3/decision-record.md"],
+      "estimated_effort": "3-4 days",
+      "priority": "P1"
+    }
+  ]
+}
