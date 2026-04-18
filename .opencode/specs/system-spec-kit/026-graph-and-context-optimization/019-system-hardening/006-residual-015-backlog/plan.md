@@ -7,11 +7,11 @@ contextType: "plan"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/006-015-residuals-restart"
-    last_updated_at: "2026-04-18T23:50:00Z"
-    last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Plan scaffolded"
-    next_safe_action: "Dispatch implementation"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/006-residual-015-backlog"
+    last_updated_at: "2026-04-19T01:00:00+02:00"
+    last_updated_by: "codex-gpt-5.4"
+    recent_action: "Residual implementation and strict validation completed"
+    next_safe_action: "Run orchestrator-owned commit handoff"
 ---
 # Implementation Plan: 015 Residuals Restart
 
@@ -30,7 +30,7 @@ _memory:
 
 ### Overview
 
-4-wave sequential dispatch per 019/001/002 recommendation.
+4-wave sequential dispatch per 019/001/002 recommendation. All waves are implemented; commit and push remain orchestrator-owned per dispatch constraint.
 <!-- /ANCHOR:summary -->
 
 <!-- ANCHOR:quality-gates -->
@@ -40,8 +40,8 @@ _memory:
 - [x] Delta review converged with clustered residual backlog
 
 ### Definition of Done
-- [ ] All 19 residuals closed
-- [ ] Per-wave regression green
+- [x] All 19 residuals closed
+- [x] Per-wave regression green
 <!-- /ANCHOR:quality-gates -->
 
 <!-- ANCHOR:architecture -->
@@ -56,35 +56,35 @@ Additive bug fixes, no architecture changes.
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: W0+A — C1 DB boundary + C3 resume minimal
-- [ ] Fix realpath escape enforcement in config.ts
-- [ ] Fix late-env-override drift
-- [ ] Fix session_resume minimal contract
-- [ ] Regression tests per finding
+- [x] Fix realpath escape enforcement in config.ts
+- [x] Fix late-env-override drift
+- [x] Fix session_resume minimal contract
+- [x] Regression tests per finding
 
 ### Phase 2: W0+B — C4 review-graph
-- [ ] Fix coverage_gaps semantics
-- [ ] Fix coverage_gaps/uncovered_questions collapse
-- [ ] Fix status fail-open
-- [ ] Regression tests
+- [x] Fix coverage_gaps semantics
+- [x] Fix coverage_gaps/uncovered_questions collapse
+- [x] Fix status fail-open
+- [x] Regression tests
 
 ### Phase 3: W0+C — C2 advisor degraded-state
-- [ ] Fix corrupt source-metadata fail-open
-- [ ] Fix continuation-record degraded visibility
-- [ ] Fix cache-health false-green
-- [ ] Regression tests
+- [x] Fix corrupt source-metadata fail-open
+- [x] Fix continuation-record degraded visibility
+- [x] Fix cache-health false-green
+- [x] Regression tests
 
 ### Phase 4: W0+D — C5 docs + C6 hygiene
-- [ ] Update mcp-code-mode README
-- [ ] Update folder_routing.md
-- [ ] Update troubleshooting.md, AUTO_SAVE_MODE reference
-- [ ] Fix sk-code-full-stack path + cli-copilot duplicate tail
-- [ ] Fix save-quality-gate whitespace triggers
-- [ ] Fix session-prime regression hiding
+- [x] Update mcp-code-mode README
+- [x] Update folder_routing.md
+- [x] Update troubleshooting.md, AUTO_SAVE_MODE reference
+- [x] Fix sk-code-full-stack path + cli-copilot duplicate tail
+- [x] Fix save-quality-gate whitespace triggers
+- [x] Fix session-prime regression hiding
 
 ### Phase 5: Verification
-- [ ] Full test suite green
-- [ ] validate.sh --strict green on updated docs
-- [ ] Checklist verified
+- [x] Targeted regression suite and final build green
+- [x] validate.sh --strict green on updated docs
+- [x] Checklist verified
 <!-- /ANCHOR:phases -->
 
 ### 4.1 Dispatch Command

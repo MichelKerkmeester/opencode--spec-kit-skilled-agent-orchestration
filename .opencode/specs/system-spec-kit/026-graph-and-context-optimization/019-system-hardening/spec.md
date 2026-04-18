@@ -42,7 +42,7 @@ _memory:
 |-------|-------|
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | 018-cli-executor-remediation |
-| **Successor** | (future children 002+ once research surfaces remediation clusters) |
+| **Successor** | 019/002-007 (6 remediation children spawned from 001 research findings) |
 
 Packet `019-system-hardening` is the research-first umbrella for the post-026-consolidation hardening train. The 2026-04-18 consolidation that collapsed the former 015-020 range into four thematic packets (015, 016, 017, 018) left six high-leverage investigation items unaddressed: three 026 close-out candidates (`DR-1` 015 delta-review, `RR-1` Q4 NFKC robustness, `RR-2` description.json regen strategy) and three system-spec-kit-wide candidates (`SSK-RR-1` Gate 3 + skill-advisor routing accuracy, `SSK-DR-1` template v2.2 + validator joint audit, `SSK-RR-2` canonical-save pipeline invariants). This packet coordinates them as one research wave plus follow-on implementation children.
 
@@ -66,7 +66,7 @@ Packet `019-system-hardening` is the research-first umbrella for the post-026-co
 | **Immediate Predecessor** | `018-cli-executor-remediation/` (shipped 2026-04-18) |
 | **Source Document** | `../scratch/deep-review-research-suggestions.md` (Tier 1 candidates §3 and §6) |
 | **Effort Estimate** | Research wave ~60-90h wall clock (dispatched iterations); implementation effort deferred until findings converge |
-| **Child Layout** | `001-initial-research` (research wave), `002+` reserved for per-cluster remediation |
+| **Child Layout** | `001-initial-research` (research wave — CONVERGED), `002-canonical-save-hardening`, `003-nfkc-unification-hardening`, `004-routing-accuracy-hardening`, `005-description-regen-contract`, `006-residual-015-backlog`, `007-template-validator-contract-alignment` (all scaffolded 2026-04-18, implementation in flight) |
 <!-- /ANCHOR:metadata -->
 
 ---

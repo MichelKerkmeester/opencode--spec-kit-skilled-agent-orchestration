@@ -11,8 +11,11 @@
 // but the authoritative list of tokens lives here.
 // ---------------------------------------------------------------
 
-import { assertNever } from '../mcp_server/lib/utils/exhaustiveness.js';
-import { foldUnicodeConfusablesToAscii } from '../mcp_server/hooks/shared-provenance.js';
+import { canonicalFold } from './unicode-normalization.js';
+
+function assertNever(value: never, label: string): never {
+  throw new Error(`Unexpected ${label}: ${String(value)}`);
+}
 
 // ---------------------------------------------------------------
 // 1. TRIGGER SCHEMA
@@ -74,10 +77,12 @@ export const FILE_WRITE_TRIGGERS: readonly TriggerEntry[] = Object.freeze([
   { pattern: 'modify',     kind: 'token', category: 'file_write' },
   { pattern: 'edit',       kind: 'token', category: 'file_write' },
   { pattern: 'fix',        kind: 'token', category: 'file_write' },
+  { pattern: 'patch',      kind: 'token', category: 'file_write' },
   { pattern: 'refactor',   kind: 'token', category: 'file_write' },
   { pattern: 'implement',  kind: 'token', category: 'file_write' },
   { pattern: 'build',      kind: 'token', category: 'file_write' },
   { pattern: 'write',      kind: 'token', category: 'file_write' },
+  { pattern: 'rewrite',    kind: 'token', category: 'file_write' },
   { pattern: 'generate',   kind: 'token', category: 'file_write' },
   { pattern: 'configure',  kind: 'token', category: 'file_write' },
 ]);
@@ -103,6 +108,31 @@ export const MEMORY_SAVE_TRIGGERS: readonly TriggerEntry[] = Object.freeze([
  */
 export const RESUME_TRIGGERS: readonly TriggerEntry[] = Object.freeze([
   { pattern: '/spec_kit:resume',    kind: 'phrase', category: 'resume' },
+  { pattern: '/spec_kit:deep-research', kind: 'phrase', category: 'resume' },
+  { pattern: 'spec_kit:deep-research',  kind: 'phrase', category: 'resume' },
+  { pattern: '/spec_kit:deep-review',   kind: 'phrase', category: 'resume' },
+  { pattern: 'spec_kit:deep-review',    kind: 'phrase', category: 'resume' },
+  { pattern: 'resume the packet',        kind: 'phrase', category: 'resume' },
+  { pattern: 'resume the phase folder',  kind: 'phrase', category: 'resume' },
+  { pattern: 'reconstruct continuity',   kind: 'phrase', category: 'resume' },
+  { pattern: ':auto',               kind: 'phrase', category: 'resume', note: 'Only matches with spec_kit prefix.' },
+  { pattern: 'deep-research',       kind: 'phrase', category: 'resume' },
+  { pattern: 'deep research',       kind: 'phrase', category: 'resume' },
+  { pattern: 'deep-review',         kind: 'phrase', category: 'resume' },
+  { pattern: 'deep review',         kind: 'phrase', category: 'resume' },
+  { pattern: 'deep-loop',           kind: 'phrase', category: 'resume' },
+  { pattern: 'research loop',       kind: 'phrase', category: 'resume' },
+  { pattern: 'review loop',         kind: 'phrase', category: 'resume' },
+  { pattern: 'iteration loop',      kind: 'phrase', category: 'resume' },
+  { pattern: 'research sweep',      kind: 'phrase', category: 'resume' },
+  { pattern: 'research cycle',      kind: 'phrase', category: 'resume' },
+  { pattern: 'research run',        kind: 'phrase', category: 'resume' },
+  { pattern: 'research wave',       kind: 'phrase', category: 'resume' },
+  { pattern: 'review wave',         kind: 'phrase', category: 'resume' },
+  { pattern: 'looped investigation',kind: 'phrase', category: 'resume' },
+  { pattern: 'keep iterating',      kind: 'phrase', category: 'resume' },
+  { pattern: 'autoresearch',        kind: 'phrase', category: 'resume' },
+  { pattern: 'convergence',         kind: 'phrase', category: 'resume' },
   { pattern: 'resume iteration',    kind: 'phrase', category: 'resume' },
   { pattern: 'resume deep research',kind: 'phrase', category: 'resume' },
   { pattern: 'resume deep review',  kind: 'phrase', category: 'resume' },
@@ -146,7 +176,7 @@ export const GATE_3_VOCABULARY = Object.freeze({
  * preserve `/` and `:` so command forms like `/spec_kit:resume` survive.
  */
 export function normalizePrompt(prompt: string): string {
-  return foldUnicodeConfusablesToAscii(prompt)
+  return canonicalFold(prompt)
     .toLowerCase()
     .replace(/\s+/g, ' ')
     .trim();
@@ -164,10 +194,80 @@ export function tokenizePrompt(normalized: string): string[] {
 /** Check if a single trigger entry matches a normalized prompt. */
 export function matchesEntry(entry: TriggerEntry, normalized: string, tokens: string[]): boolean {
   if (entry.kind === 'phrase') {
+    if (entry.pattern === ':auto' && entry.category === 'resume') {
+      return normalized.includes(':auto') && normalized.includes('spec_kit');
+    }
     return normalized.includes(entry.pattern);
   }
   // token match — must appear as a standalone word
   return tokens.includes(entry.pattern);
+}
+
+function triggerIndex(entry: TriggerEntry, normalized: string): number {
+  return normalized.indexOf(entry.pattern);
+}
+
+function hasMixedWriteTail(
+  normalized: string,
+  writeMatches: TriggerEntry[],
+  readOnlyMatches: TriggerEntry[],
+): boolean {
+  for (const readOnlyEntry of readOnlyMatches) {
+    const readIndex = triggerIndex(readOnlyEntry, normalized);
+    if (readIndex < 0) {
+      continue;
+    }
+
+    for (const writeEntry of writeMatches) {
+      const writeIndex = triggerIndex(writeEntry, normalized);
+      if (writeIndex <= readIndex) {
+        continue;
+      }
+
+      const between = normalized.slice(readIndex + readOnlyEntry.pattern.length, writeIndex);
+      if (/\b(then|and|if)\b/.test(between) || between.includes(',')) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function hasWorkflowInvocationMarker(normalized: string): boolean {
+  return /\b(run|use|start|begin|continue|resume|append|kick off|keep|launch)\b/.test(normalized);
+}
+
+function hasNegatedWriteAction(normalized: string, writeMatches: TriggerEntry[]): boolean {
+  for (const writeEntry of writeMatches) {
+    const writeIndex = triggerIndex(writeEntry, normalized);
+    if (writeIndex < 0) {
+      continue;
+    }
+
+    const prefix = normalized.slice(Math.max(0, writeIndex - 32), writeIndex);
+    if (/\b(do not|don't|dont|without|no need to)\b/.test(prefix)) {
+      return true;
+    }
+  }
+
+  return /\bdo not (change|edit|save|write|update)\b/.test(normalized);
+}
+
+function hasFileTarget(normalized: string): boolean {
+  return /`[^`]+\.(md|jsonl|json|ts|tsx|js|py|sh|txt|toml|ya?ml)`/.test(normalized)
+    || /\b(file|folder|readme|docs?|corpus|checklist|implementation-summary|research\.md|tasks\.md)\b/.test(normalized);
+}
+
+function isPromptOnlyGeneration(normalized: string): boolean {
+  if (!/\b(prompt|phrasing)\b/.test(normalized)) {
+    return false;
+  }
+  if (hasFileTarget(normalized)) {
+    return false;
+  }
+  return /\b(inline|in chat only|show it|just show|better phrasing|cleaner user prompt|prompt variant|prompt package|stronger system prompt)\b/.test(normalized)
+    || /\b(create|generate|build|write)\b.*\b(prompt|phrasing)\b/.test(normalized);
 }
 
 /**
@@ -218,11 +318,20 @@ export function classifyPrompt(prompt: string): ClassificationResult {
     }
   }
 
+  const fileWriteMatched = matched.filter((entry) => entry.category === 'file_write');
+  const hasRecoverableMixedWriteTail = hasMixedWriteTail(normalized, fileWriteMatched, readOnlyMatched);
+  if (hasFileWrite && (hasNegatedWriteAction(normalized, fileWriteMatched) || isPromptOnlyGeneration(normalized))) {
+    return { triggersGate3: false, reason: readOnlyMatched.length > 0 ? 'read_only_override' : 'no_match', matched, readOnlyMatched };
+  }
+
   // Memory save / resume: Gate 3 ALWAYS required (writes produced regardless).
   if (hasMemorySave) {
     return { triggersGate3: true, reason: 'memory_save_match', matched, readOnlyMatched };
   }
   if (hasResume) {
+    if (readOnlyMatched.length > 0 && !hasWorkflowInvocationMarker(normalized) && !hasRecoverableMixedWriteTail) {
+      return { triggersGate3: false, reason: hasFileWrite ? 'read_only_override' : 'no_match', matched, readOnlyMatched };
+    }
     return { triggersGate3: true, reason: 'resume_match', matched, readOnlyMatched };
   }
 
@@ -231,6 +340,9 @@ export function classifyPrompt(prompt: string): ClassificationResult {
   // a read-only verb like "review", "audit", "inspect").
   if (hasFileWrite) {
     if (readOnlyMatched.length > 0) {
+      if (hasRecoverableMixedWriteTail) {
+        return { triggersGate3: true, reason: 'file_write_match', matched, readOnlyMatched };
+      }
       return { triggersGate3: false, reason: 'read_only_override', matched, readOnlyMatched };
     }
     return { triggersGate3: true, reason: 'file_write_match', matched, readOnlyMatched };

@@ -20,6 +20,10 @@ import {
   createPreMergeSelectionMetadata,
   createSharedPayloadEnvelope,
 } from '../../lib/context/shared-payload.js';
+import {
+  CANONICAL_FOLD_VERSION,
+  getUnicodeRuntimeFingerprint,
+} from '@spec-kit/shared/unicode-normalization';
 
 const COMPACT_FEEDBACK_GUARDS = [
   /^\s*\[SOURCE:\s*hook-cache/i,
@@ -175,6 +179,8 @@ async function main(): Promise<void> {
           generatedAt: new Date().toISOString(),
           lastUpdated: null,
           sourceRefs: ['gemini-compact-cache', 'hook-state'],
+          sanitizerVersion: CANONICAL_FOLD_VERSION,
+          runtimeFingerprint: getUnicodeRuntimeFingerprint(),
         },
         selection,
       }),

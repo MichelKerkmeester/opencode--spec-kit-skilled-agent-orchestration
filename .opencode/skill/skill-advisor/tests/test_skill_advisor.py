@@ -157,6 +157,114 @@ def test_advisor_module():
     except Exception as exc:
         fail_test("T243-SA-005: health_check returns dict", str(exc))
 
+    # T243-SA-005b: corrupt source graph-metadata degrades health visibly.
+    try:
+        original_skills_dir = advisor.SKILLS_DIR
+        original_graph = advisor._SKILL_GRAPH
+        original_source = advisor._SKILL_GRAPH_SOURCE
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                skill_dir = os.path.join(tmpdir, "alpha-skill")
+                os.makedirs(skill_dir, exist_ok=True)
+                with open(os.path.join(skill_dir, "SKILL.md"), "w", encoding="utf-8") as handle:
+                    handle.write(
+                        "---\n"
+                        "name: alpha-skill\n"
+                        "description: Valid skill used for degraded metadata tests.\n"
+                        "---\n"
+                        "\n# Alpha Skill\n"
+                    )
+                with open(os.path.join(skill_dir, "graph-metadata.json"), "w", encoding="utf-8") as handle:
+                    handle.write("{invalid json")
+
+                advisor.SKILLS_DIR = tmpdir
+                advisor._SKILL_GRAPH = {
+                    "schema_version": 1,
+                    "skill_count": 1,
+                    "families": {"system": ["alpha-skill"]},
+                    "adjacency": {},
+                    "signals": {},
+                    "conflicts": [],
+                    "topology_warnings": {},
+                }
+                advisor._SKILL_GRAPH_SOURCE = "json"
+
+                health = advisor.health_check()
+                source_metadata = health.get("source_metadata") or {}
+                if (
+                    health.get("status") == "degraded"
+                    and source_metadata.get("healthy") is False
+                    and source_metadata.get("issue_count", 0) >= 1
+                ):
+                    ok("T243-SA-005b: corrupt source metadata degrades health")
+                else:
+                    fail_test(
+                        "T243-SA-005b: corrupt source metadata degrades health",
+                        f"status={health.get('status')} source_metadata={source_metadata}",
+                    )
+        finally:
+            advisor.SKILLS_DIR = original_skills_dir
+            advisor._SKILL_GRAPH = original_graph
+            advisor._SKILL_GRAPH_SOURCE = original_source
+            advisor.get_skills(force_refresh=True)
+    except Exception as exc:
+        fail_test("T243-SA-005b: corrupt source metadata degrades health", str(exc))
+
+    # T243-SA-005c: SKILL.md parse drops make cache health degraded, not green.
+    try:
+        original_skills_dir = advisor.SKILLS_DIR
+        original_graph = advisor._SKILL_GRAPH
+        original_source = advisor._SKILL_GRAPH_SOURCE
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                valid_dir = os.path.join(tmpdir, "valid-skill")
+                invalid_dir = os.path.join(tmpdir, "invalid-skill")
+                os.makedirs(valid_dir, exist_ok=True)
+                os.makedirs(invalid_dir, exist_ok=True)
+                with open(os.path.join(valid_dir, "SKILL.md"), "w", encoding="utf-8") as handle:
+                    handle.write(
+                        "---\n"
+                        "name: valid-skill\n"
+                        "description: Valid skill used for cache diagnostics.\n"
+                        "---\n"
+                        "\n# Valid Skill\n"
+                    )
+                with open(os.path.join(invalid_dir, "SKILL.md"), "w", encoding="utf-8") as handle:
+                    handle.write("---\nname: invalid-skill\n")
+
+                advisor.SKILLS_DIR = tmpdir
+                advisor._SKILL_GRAPH = {
+                    "schema_version": 1,
+                    "skill_count": 1,
+                    "families": {"system": ["valid-skill"]},
+                    "adjacency": {},
+                    "signals": {},
+                    "conflicts": [],
+                    "topology_warnings": {},
+                }
+                advisor._SKILL_GRAPH_SOURCE = "json"
+
+                health = advisor.health_check()
+                cache = health.get("cache") or {}
+                if (
+                    health.get("status") == "degraded"
+                    and cache.get("healthy") is False
+                    and cache.get("skipped_files") == 1
+                ):
+                    ok("T243-SA-005c: cache parse drops degrade health")
+                else:
+                    fail_test(
+                        "T243-SA-005c: cache parse drops degrade health",
+                        f"status={health.get('status')} cache={cache}",
+                    )
+        finally:
+            advisor.SKILLS_DIR = original_skills_dir
+            advisor._SKILL_GRAPH = original_graph
+            advisor._SKILL_GRAPH_SOURCE = original_source
+            advisor.get_skills(force_refresh=True)
+    except Exception as exc:
+        fail_test("T243-SA-005c: cache parse drops degrade health", str(exc))
+
     # T243-SA-006: get_skills returns non-empty dict
     try:
         skills = advisor.get_skills()
@@ -645,6 +753,63 @@ description: Fixture helper for routing tests
             "T243-SA-016: /spec_kit:deep-research routes to sk-deep-research (not command-spec-kit)",
             str(exc),
         )
+
+    # T243-SA-017: routing-accuracy Wave A command bridges normalize to owner.
+    try:
+        failures = []
+        expected_routes = [
+            ("run /memory:save for this packet", "system-spec-kit"),
+            ("run /spec_kit:resume for the 019 hardening packet", "system-spec-kit"),
+            ("run /spec_kit:deep-research :auto on this packet", "sk-deep-research"),
+            ("run /spec_kit:deep-review :auto on this packet", "sk-deep-review"),
+        ]
+        for prompt, expected_skill in expected_routes:
+            recs = advisor.analyze_prompt(
+                prompt=prompt,
+                confidence_threshold=0.5,
+                uncertainty_threshold=1.0,
+                confidence_only=True,
+                show_rejections=True,
+            )
+            top = recs[0] if isinstance(recs, list) and recs else None
+            if not isinstance(top, dict) or top.get("skill") != expected_skill or top.get("kind") != "skill":
+                failures.append(f"{prompt!r}: top={top}")
+                continue
+            if "command-normalized:" not in str(top.get("reason", "")):
+                failures.append(f"{prompt!r}: missing normalization reason {top.get('reason')!r}")
+        if not failures:
+            ok("T243-SA-017: command bridge winners normalize to owning skills")
+        else:
+            fail_test(
+                "T243-SA-017: command bridge winners normalize to owning skills",
+                "; ".join(failures),
+            )
+    except Exception as exc:
+        fail_test("T243-SA-017: command bridge winners normalize to owning skills", str(exc))
+
+    # T243-SA-018: quoted commands and command-target implementation refs are guarded.
+    try:
+        guard_cases = [
+            ("explain `/memory:save` without changing files", "command-memory-save", True),
+            ("add tests for command-memory-save normalization guard", "command-memory-save", True),
+            ("modify command-spec-kit-deep-review mapping", "command-spec-kit-deep-review", True),
+            ("run /memory:save for this packet", "command-memory-save", False),
+            ("run /spec_kit:deep-review :auto", "command-spec-kit-deep-review", False),
+        ]
+        failures = []
+        for prompt, command_name, expected in guard_cases:
+            actual = advisor._should_guard_command_bridge_normalization(prompt.lower(), command_name)
+            if actual != expected:
+                failures.append(f"{prompt!r}/{command_name}: expected={expected} actual={actual}")
+        if not failures:
+            ok("T243-SA-018: command bridge normalization guard preserves implementation refs")
+        else:
+            fail_test(
+                "T243-SA-018: command bridge normalization guard preserves implementation refs",
+                "; ".join(failures),
+            )
+    except Exception as exc:
+        fail_test("T243-SA-018: command bridge normalization guard preserves implementation refs", str(exc))
 
 
 # ───────────────────────────────────────────────────────────────

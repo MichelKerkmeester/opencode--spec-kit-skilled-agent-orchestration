@@ -28,6 +28,7 @@ from typing import Any, Dict, Iterable, Optional, Set, Tuple
 _CACHE: Dict[str, Any] = {
     "signature": None,
     "records": None,
+    "skipped": [],
 }
 
 KEYWORDS_COMMENT_RE = re.compile(
@@ -270,13 +271,16 @@ def get_cached_skill_records(
 
 def get_cache_status() -> Dict[str, Any]:
     """Expose cache diagnostics for health output."""
-    records = _CACHE.get("records") or {}
+    records = _CACHE.get("records")
     skipped = _CACHE.get("skipped") or []
+    cached = records is not None
     return {
-        "cached": bool(records),
-        "cached_records": len(records),
+        "cached": cached,
+        "cached_records": len(records or {}),
         "skipped_files": len(skipped),
-        "healthy": len(skipped) == 0,
+        "skipped_paths": list(skipped),
+        "healthy": cached and len(skipped) == 0,
+        "status": "ok" if cached and len(skipped) == 0 else "degraded",
     }
 
 

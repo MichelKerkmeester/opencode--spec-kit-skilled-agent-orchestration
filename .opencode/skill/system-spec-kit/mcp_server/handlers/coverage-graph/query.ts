@@ -63,18 +63,31 @@ export async function handleCoverageGraphQuery(
 
     const limit = Math.min(Math.max(args.limit ?? 50, 1), 200);
 
-    switch (args.queryType) {
-      case 'uncovered_questions':
-      case 'coverage_gaps': {
-        const gaps = findCoverageGaps(ns);
-        return okResponse({
-          queryType: args.queryType,
-          namespace: buildNamespacePayload(ns),
-          scopeMode: 'session',
-          gaps: gaps.slice(0, limit),
-          totalGaps: gaps.length,
-        });
-      }
+	    switch (args.queryType) {
+	      case 'uncovered_questions': {
+	        if (args.loopType !== 'research') {
+	          return errorResponse('uncovered_questions is only valid for research graphs; use coverage_gaps for review graphs');
+	        }
+	        const gaps = findCoverageGaps(ns);
+	        return okResponse({
+	          queryType: 'uncovered_questions',
+	          namespace: buildNamespacePayload(ns),
+	          scopeMode: 'session',
+	          gaps: gaps.slice(0, limit),
+	          totalGaps: gaps.length,
+	        });
+	      }
+
+	      case 'coverage_gaps': {
+	        const gaps = findCoverageGaps(ns);
+	        return okResponse({
+	          queryType: 'coverage_gaps',
+	          namespace: buildNamespacePayload(ns),
+	          scopeMode: 'session',
+	          gaps: gaps.slice(0, limit),
+	          totalGaps: gaps.length,
+	        });
+	      }
 
       case 'unverified_claims': {
         const claims = findUnverifiedClaims(ns);

@@ -11,6 +11,11 @@ import { processStopHook } from '../hooks/claude/session-stop.js';
 import { handleCompact as handleGeminiCompact } from '../hooks/gemini/session-prime.js';
 import { getCachedSessionSummaryDecision } from '../handlers/session-resume.js';
 import { buildStartupBrief } from '../lib/code-graph/startup-brief.js';
+import { createSharedPayloadEnvelope } from '../lib/context/shared-payload.js';
+import {
+  CANONICAL_FOLD_VERSION,
+  getUnicodeRuntimeFingerprint,
+} from '../../scripts/lib/unicode-normalization';
 
 function buildTranscriptFingerprint(transcriptPath: string): {
   fingerprint: string;
@@ -26,6 +31,29 @@ function buildTranscriptFingerprint(transcriptPath: string): {
     modifiedAt: transcriptStat.mtime.toISOString(),
     sizeBytes: transcriptStat.size,
   };
+}
+
+function buildTestPayloadContract(payload: string, timestamp: string) {
+  return createSharedPayloadEnvelope({
+    kind: 'compaction',
+    sections: [{
+      key: 'test-compact-context',
+      title: 'Test Compact Context',
+      content: payload,
+      source: 'session',
+    }],
+    summary: 'Test compact payload',
+    provenance: {
+      producer: 'hook_cache',
+      sourceSurface: 'gemini-compact-cache',
+      trustState: 'cached',
+      generatedAt: timestamp,
+      lastUpdated: null,
+      sourceRefs: ['gemini-compact-cache', 'hook-state'],
+      sanitizerVersion: CANONICAL_FOLD_VERSION,
+      runtimeFingerprint: getUnicodeRuntimeFingerprint(),
+    },
+  });
 }
 
 describe.sequential('P0-A cross-runtime tempdir poisoning regression', () => {
@@ -84,6 +112,7 @@ describe.sequential('P0-A cross-runtime tempdir poisoning regression', () => {
       pendingCompactPrime: {
         payload: '## Active Files\n- mcp_server/hooks/claude/hook-state.ts',
         cachedAt: now,
+        payloadContract: buildTestPayloadContract('## Active Files\n- mcp_server/hooks/claude/hook-state.ts', now),
       },
       producerMetadata: {
         lastClaudeTurnAt: now,

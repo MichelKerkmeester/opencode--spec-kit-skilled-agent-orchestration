@@ -106,7 +106,7 @@ The MCP server supports multiple embedding providers for semantic search. Provid
 | Variable | Default | Purpose |
 |----------|---------|---------|
 | `DEBUG` | `false` | Enable debug logging in generate-context.ts |
-| `AUTO_SAVE_MODE` | `false` | Skip alignment check in hooks |
+| `AUTO_SAVE_MODE` | `false` | Non-interactive save mode for hooks and automation; skips the interactive folder-alignment prompt only after the caller has already supplied or recovered a spec folder |
 | `SPECKIT_QUIET` | `false` | Suppress non-essential output |
 | `SPECKIT_TEMPLATES_DIR` | Auto-detected | Override templates directory |
 | `SPECKIT_TEMPLATE_STYLE` | `minimal` | Template style (currently only `minimal` supported) |

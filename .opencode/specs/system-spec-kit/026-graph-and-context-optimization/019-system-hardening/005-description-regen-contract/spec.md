@@ -26,7 +26,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Parent Spec** | ../spec.md |
-| **Source Research** | ../001-initial-research/004-description-regen-strategy/research.md |
+| **Source Research** | ../../research/019-system-hardening-001-initial-research-004-description-regen-strategy/research.md |
 | **Priority** | P1 |
 
 <!-- ANCHOR:metadata -->
@@ -87,10 +87,10 @@ Formalize the field-level merge policy so:
 
 ### 3.3 Files to Change
 
-- `scripts/spec-folder/folder-discovery.ts` — `getDescriptionWritePayload()` refactor
-- `scripts/lib/description-schema.ts` (NEW) — shared schema
-- `scripts/lib/description-merge.ts` (NEW) — unified merge helper
-- 018 R4 `mergePreserveRepair()` helper — route through new merge
+- `mcp_server/lib/search/folder-discovery.ts` — `getDescriptionWritePayload()` refactor
+- `mcp_server/lib/description/description-schema.ts` (NEW) — shared schema
+- `mcp_server/lib/description/description-merge.ts` (NEW) — unified merge helper
+- `mcp_server/lib/description/repair.ts` — route 018 R4 `mergePreserveRepair()` through new merge
 - Tests + fixtures
 <!-- /ANCHOR:scope -->
 
@@ -99,15 +99,15 @@ Formalize the field-level merge policy so:
 
 ### 4.1 P0 - Blockers
 
-- **R1**: Shared description schema formalizes the 5 field classes
-- **R2**: Unified merge helper handles both schema-valid + schema-invalid-parseable paths
-- **R3**: Regen preserves title, type, trigger_phrases, path on all existing rich files
-- **R4**: Unknown non-reserved keys pass through
+- **REQ-FUNC-001**: Shared description schema formalizes the 5 field classes
+- **REQ-FUNC-002**: Unified merge helper handles both schema-valid and schema-invalid-parseable paths
+- **REQ-FUNC-003**: Regen preserves `title`, `type`, `trigger_phrases`, and `path` on all existing rich files
+- **REQ-FUNC-004**: Unknown non-reserved keys pass through
 
 ### 4.2 P1 - Required
 
-- **R5**: Regression tests cover all 5 field classes
-- **R6**: No deletion of authored fields on the 28 rich-sample description.json files
+- **REQ-FUNC-005**: Regression tests cover all 5 field classes
+- **REQ-DATA-006**: No deletion of authored fields on the 28 rich-sample description.json files
 <!-- /ANCHOR:requirements -->
 
 <!-- ANCHOR:success-criteria -->
@@ -117,6 +117,13 @@ Formalize the field-level merge policy so:
 - [ ] Shared schema importable from both lanes
 - [ ] Unified merge helper passes schema-valid + schema-invalid-parseable test cases
 - [ ] Unknown key passthrough verified with synthetic fixture
+
+### 5.1 Acceptance Scenarios
+
+- **Given** a schema-valid `description.json` containing authored optional fields, **when** regen runs, **then** canonical fields refresh and `title`, `type`, `trigger_phrases`, and `path` remain intact.
+- **Given** a schema-invalid but parseable `description.json`, **when** repair regeneration runs, **then** the same merge policy preserves allowed authored fields and tracking state.
+- **Given** a `description.json` containing unknown non-reserved top-level keys, **when** regen runs, **then** those keys pass through unchanged.
+- **Given** a canonical authored field such as `description` or `keywords`, **when** canonical inputs change, **then** the regenerated output reflects the new canonical values.
 <!-- /ANCHOR:success-criteria -->
 
 <!-- ANCHOR:risks -->
@@ -128,9 +135,9 @@ Formalize the field-level merge policy so:
 | Merge helper subtly changes tracking field semantics | Unit tests per field class |
 <!-- /ANCHOR:risks -->
 
-<!-- ANCHOR:open-questions -->
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - Should unknown-key passthrough have size cap (prevent pollution)?
 - Should `description`/`keywords` regeneration trigger on every save or only on authored-source change?
-<!-- /ANCHOR:open-questions -->
+<!-- /ANCHOR:questions -->

@@ -17,7 +17,13 @@ import {
   withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET,
   sanitizeRecoveredPayload, wrapRecoveredCompactPayload, getRequiredSessionId,
 } from '../claude/shared.js';
-import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from '../claude/hook-state.js';
+import {
+  ensureStateDir,
+  loadState,
+  readCompactPrime,
+  clearCompactPrime,
+  validatePendingCompactPrimeSemantics,
+} from '../claude/hook-state.js';
 import { parseGeminiStdin, formatGeminiOutput } from './shared.js';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
@@ -48,9 +54,24 @@ async function main(): Promise<void> {
     hookLog('warn', 'gemini:compact-inject', `Rejecting stale compact cache (cached at ${cachedAt})`);
     return;
   }
+  const semanticValidation = validatePendingCompactPrimeSemantics(pendingCompactPrime);
+  if (!semanticValidation.ok) {
+    hookLog('warn', 'gemini:compact-inject', `Rejecting compact cache: ${semanticValidation.reason}`);
+    clearCompactPrime(sessionId, {
+      cachedAt: pendingCompactPrime.cachedAt,
+      opaqueId: pendingCompactPrime.opaqueId ?? null,
+    });
+    return;
+  }
 
   const sanitizedPayload = sanitizeRecoveredPayload(payload);
-  const wrappedPayload = wrapRecoveredCompactPayload(sanitizedPayload, cachedAt);
+  const wrappedPayload = wrapRecoveredCompactPayload(sanitizedPayload, cachedAt, {
+    producer: pendingCompactPrime.payloadContract?.provenance.producer,
+    trustState: pendingCompactPrime.payloadContract?.provenance.trustState,
+    sourceSurface: pendingCompactPrime.payloadContract?.provenance.sourceSurface,
+    sanitizerVersion: pendingCompactPrime.payloadContract?.provenance.sanitizerVersion,
+    runtimeFingerprint: pendingCompactPrime.payloadContract?.provenance.runtimeFingerprint,
+  });
 
   hookLog('info', 'gemini:compact-inject', `Injecting cached compact brief (${sanitizedPayload.length} chars, cached at ${cachedAt})`);
 

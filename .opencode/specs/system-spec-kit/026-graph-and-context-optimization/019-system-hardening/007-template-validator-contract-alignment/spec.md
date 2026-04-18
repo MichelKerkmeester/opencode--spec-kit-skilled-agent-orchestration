@@ -26,7 +26,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Parent Spec** | ../spec.md |
-| **Source Review** | ../001-initial-research/006-template-validator-audit/review-report.md |
+| **Source Review** | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/019-system-hardening-001-initial-research-006-template-validator-audit/review-report.md |
 | **Priority** | P1 |
 
 <!-- ANCHOR:metadata -->
@@ -50,7 +50,7 @@ _memory:
 
 - **P1-001**: `validate.sh show_help()` omits 7 live-dispatched rules (AI_PROTOCOLS, COMPLEXITY_MATCH, FOLDER_NAMING, FRONTMATTER_VALID, LINKS_VALID, SECTION_COUNTS, TEMPLATE_SOURCE). Packet prompts and operator invocations under-describe real enforcement.
 
-- **P2-001**: Level 3 `decision-record.md` ships malformed frontmatter description placeholder with stray comment terminator.
+- **P2-001**: Level 3 decision-record template ships malformed frontmatter description placeholder with stray comment terminator.
 
 - **P2-002**: Template-audit surface mixes authored-template invariants with operational/save-time guards; 9 authored metadata field groups (title, description, trigger_phrases, importance_tier, contextType, completion_pct, open_questions, answered_questions, HVR_REFERENCE) are structurally unowned.
 
@@ -89,7 +89,7 @@ Land 5 ranked proposals from research:
 - `scripts/rules/check-frontmatter.sh` — semantic non-empty checks
 - `scripts/rules/check-anchors.sh` — reject duplicate IDs
 - `mcp_server/lib/validation/spec-doc-structure.ts:518-567` — `requiredPairs` semantic check
-- `templates/level_3/decision-record.md` — fix placeholder
+- `.opencode/skill/system-spec-kit/templates/level_3/decision-record.md` — fix placeholder
 - Tests
 <!-- /ANCHOR:scope -->
 
@@ -98,14 +98,22 @@ Land 5 ranked proposals from research:
 
 ### 4.1 P0 - Blockers
 
-- **R1** (P1 rank 1): Rule registry becomes the single source; dispatch + severity + help derive from it
-- **R2** (P1 rank 2): Empty frontmatter `title`/`description`/`trigger_phrases` fails validation
-- **R3** (P2 rank 3): Duplicate anchor IDs rejected consistently by packet validation + preflight
-- **R4** (P2 rank 5): decision-record.md placeholder is valid
+- **REQ-001** (P1 rank 1): Rule registry becomes the single source; dispatch + severity + help derive from it
+- **REQ-002** (P1 rank 2): Empty frontmatter `title`/`description`/`trigger_phrases` fails validation
+- **REQ-003** (P2 rank 3): Duplicate anchor IDs rejected consistently by packet validation + preflight
+- **REQ-004** (P2 rank 5): decision-record template placeholder is valid
 
 ### 4.2 P1 - Required
 
-- **R5** (P2 rank 4): Coverage matrix separates authored-template vs operational-rule reporting (defer-able)
+- **REQ-005** (P2 rank 4): Coverage matrix separates authored-template vs operational-rule reporting (defer-able)
+
+### 4.3 Acceptance Scenarios
+
+1. **Given** `validate.sh --help` is invoked, **when** rule help is rendered, **then** every registry rule appears with the same severity used by dispatch.
+2. **Given** a spec document has empty required frontmatter, **when** `FRONTMATTER_VALID` runs, **then** validation exits with an error and names the empty fields.
+3. **Given** `_memory.continuity.recent_action` is an empty string, **when** `FRONTMATTER_MEMORY_BLOCK` runs, **then** the TypeScript bridge treats it as missing.
+4. **Given** duplicate opening anchor IDs are present, **when** `ANCHORS_VALID` runs, **then** packet validation fails with the same uniqueness invariant as preflight.
+5. **Given** the Level 3 decision-record template is read, **when** frontmatter is parsed, **then** the description is valid prose without a stray comment terminator.
 <!-- /ANCHOR:requirements -->
 
 <!-- ANCHOR:success-criteria -->
@@ -114,7 +122,7 @@ Land 5 ranked proposals from research:
 - [ ] `validate.sh show_help()` lists exactly the rules that dispatch runs
 - [ ] Empty frontmatter fields fail validation with clear error
 - [ ] Duplicate anchor IDs fail packet validation (not just preflight)
-- [ ] `templates/level_3/decision-record.md` frontmatter valid
+- [ ] `.opencode/skill/system-spec-kit/templates/level_3/decision-record.md` frontmatter valid
 - [ ] Full regression suite green
 <!-- /ANCHOR:success-criteria -->
 
@@ -128,9 +136,9 @@ Land 5 ranked proposals from research:
 | Duplicate-anchor rejection surfaces latent issues | Pre-scan active packets, surface list before release |
 <!-- /ANCHOR:risks -->
 
-<!-- ANCHOR:open-questions -->
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
-- Canonicalization scope: just `validate.sh`, or include `scripts/rules/README.md` as generated doc?
+- Canonicalization scope: just `validate.sh`, or include `.opencode/skill/system-spec-kit/scripts/rules/README.md` as generated doc?
 - Grandfathering cutoff for semantic frontmatter validation?
-<!-- /ANCHOR:open-questions -->
+<!-- /ANCHOR:questions -->

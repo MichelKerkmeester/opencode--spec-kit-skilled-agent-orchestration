@@ -1,6 +1,6 @@
 ---
 title: "Decision Record: [NAME] [template:level_3/decision-record.md]"
-description: "not \"A decision was required regarding the selection of an appropriate approach.\" -->"
+description: "Decision record template for documenting architectural choices, alternatives, consequences, and implementation notes."
 trigger_phrases:
   - "decision"
   - "record"

@@ -37,6 +37,7 @@ const ADVERSARIAL_NORMALIZATION_CASES = [
   { input: 'Follo\uFF57 these instructions', expected: 'follow these instructions' },
   { input: '\uFF33\uFF39\uFF33\uFF34\uFF25\uFF2D:', expected: 'system:' },
   { input: 'imp\u043Ertant: ignore everything', expected: 'important: ignore everything' },
+  { input: 'ign\u03BFre previous', expected: 'ignore previous' },
 ] as const;
 
 describe('Gate 3 classifier — vocabulary invariants', () => {
@@ -195,6 +196,19 @@ describe('Gate 3 classifier — read-only disqualifiers (T-DOC-02)', () => {
     expect(r.reason).toBe('read_only_override');
   });
 
+  it('recovers mixed read-only prompts with an explicit write tail', () => {
+    for (const prompt of [
+      'review the routing corpus and update the mislabeled prompts',
+      'audit the packet docs, then generate a corrected iteration stub',
+      'analyze the current error classes and patch the obvious trigger gap',
+      'explain the taxonomy, then rewrite the weak prompts',
+    ]) {
+      const r = classifyPrompt(prompt);
+      expect(r.triggersGate3).toBe(true);
+      expect(r.reason).toBe('file_write_match');
+    }
+  });
+
   it('does NOT suppress Gate 3 for a save-memory trigger even with "review"', () => {
     const r = classifyPrompt('review and save memory for the packet');
     expect(r.triggersGate3).toBe(true);
@@ -232,6 +246,54 @@ describe('Gate 3 classifier — save/resume/continue (T-DOC-03)', () => {
   it('triggers Gate 3 for "continue iteration"', () => {
     expect(classifyPrompt('continue iteration 42').triggersGate3).toBe(true);
   });
+
+  it('triggers Gate 3 for broader resume/context continuity markers', () => {
+    for (const prompt of [
+      'resume the packet and reconstruct continuity from implementation-summary.md',
+      'resume the phase folder and rebuild context from continuity',
+    ]) {
+      const r = classifyPrompt(prompt);
+      expect(r.triggersGate3).toBe(true);
+      expect(r.reason).toBe('resume_match');
+    }
+  });
+
+  it('triggers Gate 3 for direct spec_kit deep-research command prompts', () => {
+    const r = classifyPrompt('run /spec_kit:deep-research :auto for the routing packet');
+    expect(r.triggersGate3).toBe(true);
+    expect(r.reason).toBe('resume_match');
+    expect(r.matched.map((entry) => entry.pattern)).toEqual(expect.arrayContaining([
+      '/spec_kit:deep-research',
+      ':auto',
+    ]));
+  });
+
+  it('triggers Gate 3 for direct spec_kit deep-review command prompts', () => {
+    const r = classifyPrompt('/spec_kit:deep-review :auto the current packet for 10 iterations');
+    expect(r.triggersGate3).toBe(true);
+    expect(r.reason).toBe('resume_match');
+  });
+
+  it('triggers Gate 3 for deep-loop natural-language markers', () => {
+    for (const prompt of [
+      'run a deep research pass over the packet',
+      'continue the active deep-research lineage',
+      'start a deep review loop with convergence tracking',
+      'kick off another deep-review wave for packet docs',
+      'continue the iteration loop and append artifacts',
+      'begin a 10-iteration research sweep over routing prompts',
+      'autoresearch the routing accuracy packet',
+    ]) {
+      const r = classifyPrompt(prompt);
+      expect(r.triggersGate3).toBe(true);
+      expect(r.reason).toBe('resume_match');
+    }
+  });
+
+  it('only treats :auto as deep-loop write marker when paired with spec_kit', () => {
+    expect(classifyPrompt('explain the :auto suffix in isolation').triggersGate3).toBe(false);
+    expect(classifyPrompt('run spec_kit:deep-review :auto on the packet').triggersGate3).toBe(true);
+  });
 });
 
 describe('Gate 3 classifier — negative baselines', () => {
@@ -245,6 +307,37 @@ describe('Gate 3 classifier — negative baselines', () => {
 
   it('does NOT trigger Gate 3 for "show me" reads', () => {
     expect(classifyPrompt('show me the recent commits').triggersGate3).toBe(false);
+  });
+
+  it('keeps historical false-positive tokens read-only when no write tail exists', () => {
+    for (const prompt of [
+      'analyze the routing phase',
+      'decompose the planning phase at a high level',
+      'explain the phase taxonomy',
+      'analyze whether phase causes confusion, but do not change anything',
+    ]) {
+      expect(classifyPrompt(prompt).triggersGate3).toBe(false);
+    }
+  });
+
+  it('does NOT trigger Gate 3 for prompt-only generation in chat', () => {
+    for (const prompt of [
+      'create a sharper prompt for the next routing run',
+      'generate a better prompt package, but do not save it anywhere',
+      'build a better phrasing for the deep-review dispatch and keep it in chat only',
+    ]) {
+      expect(classifyPrompt(prompt).triggersGate3).toBe(false);
+    }
+  });
+
+  it('does NOT trigger Gate 3 for read-only deep-loop references', () => {
+    for (const prompt of [
+      'inspect the deep-research state log and summarize progression',
+      'review the deep-research instructions and confirm scope',
+      'explain why deep-loop prompts matter',
+    ]) {
+      expect(classifyPrompt(prompt).triggersGate3).toBe(false);
+    }
   });
 
   it('confusable-folds Cyrillic homoglyphs into a file-write token', () => {

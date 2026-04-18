@@ -84,6 +84,10 @@ STRICT_TOPOLOGY_HEADERS = (
 )
 _SKILL_GRAPH: Optional[Dict[str, Any]] = None
 _SKILL_GRAPH_SOURCE: Optional[str] = None
+_SOURCE_METADATA_DIAGNOSTICS: Dict[str, List[Dict[str, str]]] = {
+    "signal_map": [],
+    "conflict_declarations": [],
+}
 
 
 def _log_skill_graph_warning(message: str) -> None:
@@ -146,13 +150,40 @@ def _extend_signal_map(
                 seen.add(variant)
 
 
+def _record_source_metadata_issue(surface: str, file_path: str, reason: str) -> None:
+    """Record malformed source metadata so health checks cannot look green."""
+    _SOURCE_METADATA_DIAGNOSTICS.setdefault(surface, []).append({
+        "path": file_path,
+        "reason": reason,
+    })
+
+
+def _source_metadata_health() -> Dict[str, Any]:
+    """Summarize source metadata diagnostics collected by fallback loaders."""
+    issues: List[Dict[str, str]] = []
+    for surface, surface_issues in _SOURCE_METADATA_DIAGNOSTICS.items():
+        for issue in surface_issues:
+            issues.append({
+                "surface": surface,
+                "path": issue.get("path", ""),
+                "reason": issue.get("reason", "unknown"),
+            })
+    return {
+        "healthy": len(issues) == 0,
+        "issue_count": len(issues),
+        "issues": issues[:25],
+    }
+
+
 def _load_source_graph_signal_map() -> Dict[str, List[str]]:
     """Load intent signals and derived trigger phrases from source metadata files."""
+    _SOURCE_METADATA_DIAGNOSTICS["signal_map"] = []
     signal_map: Dict[str, List[str]] = {}
 
     try:
         skill_entries = sorted(os.scandir(SKILLS_DIR), key=lambda entry: entry.name)
-    except OSError:
+    except OSError as exc:
+        _record_source_metadata_issue("signal_map", SKILLS_DIR, f"scan_failed:{exc.__class__.__name__}")
         return signal_map
 
     for entry in skill_entries:
@@ -166,10 +197,12 @@ def _load_source_graph_signal_map() -> Dict[str, List[str]]:
         try:
             with open(graph_metadata_path, "r", encoding="utf-8") as handle:
                 graph_metadata = json.load(handle)
-        except (OSError, ValueError, json.JSONDecodeError):
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            _record_source_metadata_issue("signal_map", graph_metadata_path, f"parse_failed:{exc.__class__.__name__}")
             continue
 
         if not isinstance(graph_metadata, dict):
+            _record_source_metadata_issue("signal_map", graph_metadata_path, "invalid_shape")
             continue
 
         skill_id = str(graph_metadata.get("skill_id") or entry.name)
@@ -178,6 +211,8 @@ def _load_source_graph_signal_map() -> Dict[str, List[str]]:
         derived = graph_metadata.get("derived")
         if isinstance(derived, dict):
             _extend_signal_map(signal_map, skill_id, derived.get("trigger_phrases"))
+        elif derived is not None:
+            _record_source_metadata_issue("signal_map", graph_metadata_path, "invalid_derived")
 
     return signal_map
 
@@ -194,11 +229,13 @@ def _load_source_conflict_declarations() -> Dict[str, Set[str]]:
     refuse to penalize a non-declaring skill. This helper replays the
     per-skill `conflicts_with` arrays so the runtime can cross-check.
     """
+    _SOURCE_METADATA_DIAGNOSTICS["conflict_declarations"] = []
     declarations: Dict[str, Set[str]] = {}
 
     try:
         skill_entries = sorted(os.scandir(SKILLS_DIR), key=lambda entry: entry.name)
-    except OSError:
+    except OSError as exc:
+        _record_source_metadata_issue("conflict_declarations", SKILLS_DIR, f"scan_failed:{exc.__class__.__name__}")
         return declarations
 
     for entry in skill_entries:
@@ -212,10 +249,12 @@ def _load_source_conflict_declarations() -> Dict[str, Set[str]]:
         try:
             with open(graph_metadata_path, "r", encoding="utf-8") as handle:
                 graph_metadata = json.load(handle)
-        except (OSError, ValueError, json.JSONDecodeError):
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            _record_source_metadata_issue("conflict_declarations", graph_metadata_path, f"parse_failed:{exc.__class__.__name__}")
             continue
 
         if not isinstance(graph_metadata, dict):
+            _record_source_metadata_issue("conflict_declarations", graph_metadata_path, "invalid_shape")
             continue
 
         skill_id = str(graph_metadata.get("skill_id") or entry.name)
@@ -1359,6 +1398,7 @@ COMMAND_BRIDGES = {
     "command-memory-save": {
         "description": "Save conversation context to memory using /memory:save.",
         "slash_markers": ["/memory:save", "memory:save"],
+        "owning_skill": "system-spec-kit",
     },
     "command-improve-agent": {
         "description": "Evaluate and improve any agent across 5 dimensions using /improve:agent.",
@@ -1393,6 +1433,47 @@ COMMAND_BRIDGES = {
         "slash_markers": ["/create:folder_readme", "create:folder_readme"],
     },
 }
+
+COMMAND_BRIDGE_OWNER_NORMALIZATION = {
+    "command-memory-save": "system-spec-kit",
+    "command-spec-kit-resume": "system-spec-kit",
+    "command-spec-kit-deep-research": "sk-deep-research",
+    "command-spec-kit-deep-review": "sk-deep-review",
+}
+
+COMMAND_TARGET_IMPLEMENTATION_MARKERS = (
+    "add",
+    "bridge",
+    "carve-out",
+    "carve out",
+    "command bridge",
+    "command target",
+    "command-only",
+    "command-surface",
+    "command surface",
+    "guard",
+    "implement",
+    "implementation",
+    "mapping",
+    "modify",
+    "normalize",
+    "normalization",
+    "refactor",
+    "router",
+    "scorer",
+    "test",
+    "unit test",
+    "update",
+)
+
+COMMAND_WORKFLOW_INVOCATION_MARKERS = (
+    "execute",
+    "kick off",
+    "launch",
+    "run",
+    "start",
+    "use",
+)
 
 # ───────────────────────────────────────────────────────────────
 # 1b. COCOINDEX SEMANTIC SEARCH CONFIGURATION
@@ -1790,6 +1871,114 @@ def detect_explicit_command_intent(prompt_lower: str) -> Optional[str]:
             if marker and marker in prompt_lower:
                 return command_name
     return None
+
+
+def _command_bridge_references(command_name: str) -> Set[str]:
+    """Return command bridge strings that can appear as quoted implementation refs."""
+    command_config = COMMAND_BRIDGES.get(command_name, {})
+    references = {command_name, command_name.replace("-", " ")}
+    for marker in command_config.get("slash_markers", []):
+        if isinstance(marker, str) and marker:
+            references.add(marker.lower())
+    return references
+
+
+def _has_quoted_command_reference(prompt_lower: str, references: Set[str]) -> bool:
+    """Detect command strings quoted as text rather than invoked as workflows."""
+    if not references:
+        return False
+
+    quoted_segments = re.findall(r"`[^`]+`|\"[^\"]+\"|'[^']+'", prompt_lower)
+    return any(any(reference in segment for reference in references) for segment in quoted_segments)
+
+
+def _quoted_command_reference_is_workflow_invocation(
+    prompt_lower: str,
+    references: Set[str],
+) -> bool:
+    """Return True when a quoted command is still being invoked as a workflow."""
+    stripped = prompt_lower.strip()
+    quote_prefixed_command = any(
+        any(stripped.startswith(f"{quote}{reference}") for quote in ("`", '"', "'"))
+        for reference in references
+    )
+    if quote_prefixed_command:
+        return True
+
+    return any(marker in prompt_lower for marker in COMMAND_WORKFLOW_INVOCATION_MARKERS)
+
+
+def _should_guard_command_bridge_normalization(prompt_lower: str, command_name: str) -> bool:
+    """Return True when a command bridge is itself the implementation target.
+
+    Command-surface normalization is intended for workflow invocation prompts
+    (for example "run /memory:save"), not prompts that quote a command string
+    or ask to edit/test the command bridge implementation itself.
+    """
+    references = _command_bridge_references(command_name)
+    if _has_quoted_command_reference(prompt_lower, references) and not (
+        _quoted_command_reference_is_workflow_invocation(prompt_lower, references)
+    ):
+        return True
+
+    command_name_referenced = command_name in prompt_lower or command_name.replace("-", " ") in prompt_lower
+    if not command_name_referenced:
+        return False
+
+    return any(marker in prompt_lower for marker in COMMAND_TARGET_IMPLEMENTATION_MARKERS)
+
+
+def normalize_command_bridge_recommendations(
+    ranked: List[Dict[str, Any]],
+    prompt_lower: str,
+) -> List[Dict[str, Any]]:
+    """Normalize top command bridge recommendations back to owning skills."""
+    if not ranked:
+        return ranked
+
+    top = ranked[0]
+    command_name = str(top.get("skill", ""))
+    owning_skill = COMMAND_BRIDGE_OWNER_NORMALIZATION.get(command_name)
+    if not owning_skill:
+        return ranked
+    if _should_guard_command_bridge_normalization(prompt_lower, command_name):
+        return ranked
+
+    owner_index = next(
+        (index for index, item in enumerate(ranked) if item.get("skill") == owning_skill),
+        None,
+    )
+    owner = ranked[owner_index] if owner_index is not None else None
+    normalized = dict(owner or top)
+
+    normalized["skill"] = owning_skill
+    normalized["kind"] = "skill"
+    normalized["confidence"] = max(
+        float(top.get("confidence", 0.0)),
+        float(normalized.get("confidence", 0.0)),
+    )
+    normalized["uncertainty"] = min(
+        float(top.get("uncertainty", 1.0)),
+        float(normalized.get("uncertainty", 1.0)),
+    )
+    normalized["passes_threshold"] = bool(top.get("passes_threshold")) or bool(
+        normalized.get("passes_threshold")
+    )
+    reason = str(normalized.get("reason", "")).strip()
+    note = f"[command-normalized: {command_name}->{owning_skill}]"
+    normalized["reason"] = f"{reason} {note}".strip()
+    normalized["_kind_priority"] = max(
+        int(top.get("_kind_priority", 0)),
+        int(normalized.get("_kind_priority", 0)),
+    )
+    normalized["_explicit_skill_match"] = bool(top.get("_explicit_skill_match")) or bool(
+        normalized.get("_explicit_skill_match")
+    )
+
+    removed = {0}
+    if owner_index is not None:
+        removed.add(owner_index)
+    return [normalized] + [item for index, item in enumerate(ranked) if index not in removed]
 
 
 def apply_intent_normalization(
@@ -2371,6 +2560,7 @@ def analyze_request(
         ),
         reverse=True,
     )
+    ranked = normalize_command_bridge_recommendations(ranked, prompt_lower)
 
     # Internal sort metadata should not leak in advisor output.
     for rec in ranked:
@@ -2446,6 +2636,10 @@ def health_check() -> Dict[str, Any]:
     command_bridges = [s for s in skills if s.get("kind") == "command"]
     graph = _load_skill_graph()
     graph_loaded = graph is not None
+    _load_source_graph_signal_map()
+    _load_source_conflict_declarations()
+    source_metadata = _source_metadata_health()
+    cache_status = get_cache_status()
 
     # T-SGC-02 (R45-003): surface persisted topology-warning payload (if any).
     topology_warnings: Dict[str, List[str]] = {}
@@ -2467,11 +2661,17 @@ def health_check() -> Dict[str, Any]:
     inventory_parity = _compare_inventories(skill_discovery_names, graph)
     inventory_synced = bool(inventory_parity["in_sync"])
 
-    # Determine status. Error if no skills. Otherwise degraded when any of
-    # {graph missing, topology warnings present, inventory mismatch} applies.
+    # Determine status. Error if no skills. Otherwise degraded when any runtime
+    # input surface is incomplete or malformed.
     if not real_skills:
         status = "error"
-    elif not graph_loaded or has_topology_warnings or not inventory_synced:
+    elif (
+        not graph_loaded
+        or has_topology_warnings
+        or not inventory_synced
+        or not bool(cache_status.get("healthy"))
+        or not bool(source_metadata.get("healthy"))
+    ):
         status = "degraded"
     else:
         status = "ok"
@@ -2484,7 +2684,8 @@ def health_check() -> Dict[str, Any]:
         "command_bridge_names": [s.get('name', 'unknown') for s in command_bridges],
         "skills_dir": SKILLS_DIR,
         "skills_dir_exists": os.path.exists(SKILLS_DIR),
-        "cache": get_cache_status(),
+        "cache": cache_status,
+        "source_metadata": source_metadata,
         "skill_graph_loaded": graph_loaded,
         "skill_graph_source": _SKILL_GRAPH_SOURCE,
         "skill_graph_skill_count": graph.get("skill_count", 0) if graph else 0,

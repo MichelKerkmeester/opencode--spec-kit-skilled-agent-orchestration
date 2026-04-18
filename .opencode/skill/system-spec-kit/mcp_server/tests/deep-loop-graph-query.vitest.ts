@@ -205,5 +205,15 @@ describe('coverage graph live query surfaces', () => {
       evidenceDensity: 0,
       hotspotSaturation: 1,
     });
+
+    const uncoveredQuestionsResponse = parseResponse(await handleCoverageGraphQuery({
+      specFolder,
+      loopType: 'review',
+      sessionId,
+      queryType: 'uncovered_questions',
+    }));
+
+    expect(uncoveredQuestionsResponse.status).toBe('error');
+    expect(uncoveredQuestionsResponse.error).toContain('coverage_gaps for review graphs');
   });
 });

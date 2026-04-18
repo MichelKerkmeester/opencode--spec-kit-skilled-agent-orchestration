@@ -10,7 +10,7 @@ import type { PerFolderDescription } from '../../lib/search/folder-discovery';
 type DiscoveryModule = typeof import('../../lib/search/folder-discovery');
 
 const FIXTURE_NAMES = [
-  '016-foundational-runtime.description.json',
+  '017-review-findings-remediation.description.json',
   '017-001-infrastructure-primitives.description.json',
   '017-002-cluster-consumers.description.json',
 ] as const;
@@ -113,7 +113,7 @@ describe('description.json discriminated loader', () => {
     expect(parseResult.detail).toMatch(/JSON|Unexpected/i);
 
     const schemaFixture = createSpecFolderWithDescription(
-      '016-foundational-runtime.description.json',
+      '017-review-findings-remediation.description.json',
       (payload) => ({
         ...payload,
         memorySequence: 'broken',
@@ -216,6 +216,41 @@ describe('description.json schema-error repair specimens', () => {
     }
   });
 
+  it('preserves a synthetic unknown passthrough key through schema-error repair', async () => {
+    const { discovery } = await loadModules();
+    const specimen = createSpecFolderWithDescription(
+      '017-001-infrastructure-primitives.description.json',
+      (payload) => ({
+        ...payload,
+        custom_passthrough: {
+          owner: 'synthetic-test',
+          mode: 'preserve',
+        },
+        memorySequence: 'broken',
+      }),
+    );
+    cleanupTargets.push(specimen.dir);
+
+    const canonical = buildCanonicalDescription(specimen.payload, {
+      description: 'Synthetic passthrough repair',
+      keywords: ['synthetic', 'passthrough'],
+      lastUpdated: '2026-04-18T19:30:00.000Z',
+      memorySequence: 15,
+    });
+
+    discovery.savePerFolderDescription(canonical, specimen.dir);
+
+    const raw = JSON.parse(
+      fs.readFileSync(specimen.descriptionPath, 'utf-8'),
+    ) as Record<string, unknown>;
+
+    expect(raw.custom_passthrough).toEqual({
+      owner: 'synthetic-test',
+      mode: 'preserve',
+    });
+    expect(raw.description).toBe('Synthetic passthrough repair');
+  });
+
   it('stays stable across two consecutive repair passes on the same specimen', async () => {
     const { discovery } = await loadModules();
     const specimen = createSpecFolderWithDescription(
@@ -262,7 +297,7 @@ describe('description.json schema-error repair specimens', () => {
     process.env.SPECKIT_DESCRIPTION_REPAIR_MERGE_SAFE = 'false';
     const { discovery } = await loadModules();
     const specimen = createSpecFolderWithDescription(
-      '016-foundational-runtime.description.json',
+      '017-review-findings-remediation.description.json',
       (payload) => ({
         ...payload,
         memorySequence: 'broken',

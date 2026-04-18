@@ -75,6 +75,19 @@ describe('explicit follow-up indexing APIs', () => {
     expect(refreshed.metadata.spec_folder).toBe('system-spec-kit/915-follow-up-api');
   });
 
+  it('refreshGraphMetadata preserves explicit refresh options through the public wrapper', async () => {
+    const fixture = createGraphMetadataFixture();
+    const { refreshGraphMetadata } = await import('../api/indexing.js');
+
+    const refreshed = refreshGraphMetadata(fixture.specFolder, {
+      now: '2026-04-18T12:00:00.000Z',
+      saveLineage: 'same_pass',
+    });
+
+    expect(refreshed.metadata.derived.last_save_at).toBe('2026-04-18T12:00:00.000Z');
+    expect(refreshed.metadata.derived.save_lineage).toBe('same_pass');
+  });
+
   it('reindexSpecDocs runs the standard incremental spec-doc scan with explicit follow-up arguments', async () => {
     const scanResponse = {
       content: [{ type: 'text', text: JSON.stringify({ data: { status: 'indexed', scanned: 2 } }) }],

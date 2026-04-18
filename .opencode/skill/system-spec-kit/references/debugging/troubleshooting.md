@@ -50,7 +50,7 @@ Issue Detected
 
 | Issue | Symptom | Solution |
 |-------|---------|----------|
-| Missing spec folder | `Folder not found` | `mkdir -p specs/###-feature/memory/` |
+| Missing spec folder | `Folder not found` | Create the packet folder with canonical docs, then run `generate-context.js` to refresh metadata |
 | Vector search empty | No results from `memory_search()` | Run `memory_stats()` to check index health |
 | MCP server not responding | Tool timeout errors | Restart MCP server, check `opencode.json` config |
 | Wrong script path | `File not found` | Use `.opencode/skill/system-spec-kit/` |

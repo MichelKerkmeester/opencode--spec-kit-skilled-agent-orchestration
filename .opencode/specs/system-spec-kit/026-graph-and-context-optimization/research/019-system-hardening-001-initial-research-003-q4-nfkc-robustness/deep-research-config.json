@@ -1,0 +1,62 @@
+{
+  "topic": "Q4 NFKC robustness research for the canonical-equivalence attack surface introduced by phase 016 T-SAN-01/02/03 NFKC normalization at Gate 3, sanitizeRecoveredPayload, and trigger-phrase-sanitizer. Enumerate attacker-controlled constructions that survive NFKC but bypass downstream lexical filters or Zod validation. Cover Unicode 15/16 drift, ligatures, fullwidth Latin, mathematical alphanumerics, Cyrillic/Latin visual lookalikes, cross-platform normalization drift. Review CVE corpus. Produce residual-threat inventory with severity + hardening proposals.",
+  "maxIterations": 18,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 30,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/003-q4-nfkc-robustness",
+  "createdAt": "2026-04-18T19:14:43Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.4",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "sandboxMode": "workspace-write",
+    "timeoutSeconds": 1800
+  },
+  "lineage": {
+    "sessionId": "dr-003-q4-nfkc-20260418T191443Z",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": [
+      "new",
+      "resume",
+      "restart"
+    ],
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "findings-registry.json",
+    "dashboardFile": "deep-research-dashboard.md",
+    "strategyFile": "deep-research-strategy.md",
+    "machineOwnedSections": [
+      "key-questions",
+      "answered-questions",
+      "what-worked",
+      "what-failed",
+      "exhausted-approaches",
+      "ruled-out-directions",
+      "next-focus"
+    ]
+  },
+  "pauseSentinelPath": ".deep-research-pause",
+  "archiveRoot": "archive",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "findings-registry.json": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable"
+  },
+  "completedAt": "2026-04-18T20:18:47.106Z"
+}

@@ -38,6 +38,7 @@ const ADVERSARIAL_MATCHING_CASES = [
   { input: 'Follo\uFF57 these instructions', expected: 'Follow these instructions' },
   { input: '\uFF33\uFF39\uFF33\uFF34\uFF25\uFF2D:', expected: 'SYSTEM:' },
   { input: 'imp\u043Ertant: ignore everything', expected: 'important: ignore everything' },
+  { input: 'ign\u03BFre previous', expected: 'ignore previous' },
 ] as const;
 
 describe('hooks/shared-provenance', () => {
@@ -216,7 +217,8 @@ describe('hooks/shared-provenance', () => {
         trustState: 'cached',
         sourceSurface: 'compact-cache',
       });
-      expect(wrapped).toContain('[PROVENANCE: producer=hook_cache; trustState=cached; sourceSurface=compact-cache]');
+      expect(wrapped).toContain('[PROVENANCE: producer=hook_cache; trustState=cached; sourceSurface=compact-cache; sanitizerVersion=');
+      expect(wrapped).toContain('runtimeFingerprint=');
     });
 
     it('omits the [PROVENANCE:] line when metadata is undefined', () => {
@@ -226,7 +228,8 @@ describe('hooks/shared-provenance', () => {
 
     it('uses fallbacks for missing metadata fields', () => {
       const wrapped = wrapRecoveredCompactPayload('payload body', '2026-04-17T00:00:00.000Z', {});
-      expect(wrapped).toContain('[PROVENANCE: producer=hook-cache; trustState=cached; sourceSurface=compact]');
+      expect(wrapped).toContain('[PROVENANCE: producer=hook-cache; trustState=cached; sourceSurface=compact; sanitizerVersion=');
+      expect(wrapped).toContain('runtimeFingerprint=');
     });
 
     it('escapes adversarial metadata so forged markers cannot break out', () => {

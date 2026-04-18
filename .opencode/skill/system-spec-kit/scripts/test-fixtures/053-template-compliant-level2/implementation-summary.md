@@ -5,6 +5,13 @@ trigger_phrases:
   - "fixture"
 importance_tier: "normal"
 contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/scripts/test-fixtures/053-template-compliant-level2"
+    last_updated_at: "2026-04-19T00:00:00Z"
+    last_updated_by: "validator-fixture"
+    recent_action: "Maintained compliant Level 2 validator fixture"
+    next_safe_action: "Use for validator regression coverage"
 ---
 # Implementation Summary
 
@@ -28,7 +35,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This fixture gives the validator a fully compliant Level 2 folder so strict template comparison can be tested against live templates instead of placeholder documents.
+This fixture gives the validator a fully compliant Level 2 folder so strict template comparison can be tested against live templates instead of placeholder documents. The concrete fixture artifact is `.opencode/skill/system-spec-kit/scripts/test-fixtures/053-template-compliant-level2/spec.md`.
 <!-- /ANCHOR:what-built -->
 
 ---

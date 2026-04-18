@@ -15,6 +15,7 @@ import {
 const THIS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURE_ROOT = path.resolve(THIS_DIR, '../../scripts/test-fixtures');
 const VALIDATE_SCRIPT = path.resolve(THIS_DIR, '../../scripts/spec/validate.sh');
+const VALIDATOR_REGISTRY = path.resolve(THIS_DIR, '../../scripts/lib/validator-registry.json');
 
 const TEMP_DIRS: string[] = [];
 
@@ -193,6 +194,21 @@ describe('spec-doc-structure contract', () => {
     expect(result.details.some((detail) => detail.includes('SPECDOC_FRONTMATTER_001'))).toBe(true);
   });
 
+  it('fails empty continuity values as missing frontmatter fields', () => {
+    const folder = copyFixture('063-template-compliant-level3');
+    const specPath = path.join(folder, 'spec.md');
+    injectMemoryBlock(specPath, { recent_action: '' });
+
+    const result = runSpecDocStructureRule({
+      folder,
+      level: '3',
+      rule: 'FRONTMATTER_MEMORY_BLOCK',
+    });
+
+    expect(result.status).toBe('fail');
+    expect(result.details.some((detail) => detail.includes('missing continuity fields recent_action'))).toBe(true);
+  });
+
   it('fails merge legality when table rows are routed into prose anchors', () => {
     const fixture = createMergeFixture();
     const result = runSpecDocStructureRule({
@@ -313,6 +329,27 @@ describe('spec-doc-structure contract', () => {
       '| **Spec Folder** | 063-template-compliant-level3 |',
       '| **Spec Folder** | 064-spec-doc-structure-level3 |',
     );
+    fs.writeFileSync(
+      path.join(folder, 'graph-metadata.json'),
+      JSON.stringify({
+        schema_version: 1,
+        packet_id: '064-spec-doc-structure-level3',
+        spec_folder: '064-spec-doc-structure-level3',
+        parent_id: null,
+        children_ids: [],
+        manual: {
+          depends_on: [],
+          supersedes: [],
+          related_to: [],
+        },
+        derived: {
+          trigger_phrases: ['spec doc structure'],
+          key_files: ['spec.md'],
+          source_docs: ['spec.md', 'plan.md', 'tasks.md'],
+        },
+      }),
+      'utf8',
+    );
 
     const result = spawnSync(VALIDATE_SCRIPT, ['--strict', folder], {
       encoding: 'utf8',
@@ -320,5 +357,55 @@ describe('spec-doc-structure contract', () => {
 
     expect(result.status).toBe(0);
     expect(result.stdout).toContain('RESULT: PASSED');
+  });
+
+  it('keeps validate.sh help aligned with the validator registry', () => {
+    const registry = JSON.parse(fs.readFileSync(VALIDATOR_REGISTRY, 'utf8')) as Array<{ rule_id: string }>;
+    const result = spawnSync(VALIDATE_SCRIPT, ['--help'], {
+      encoding: 'utf8',
+    });
+
+    expect(result.status).toBe(0);
+    for (const rule of registry) {
+      expect(result.stdout).toContain(rule.rule_id);
+    }
+    expect(result.stdout).toContain('authored_template');
+    expect(result.stdout).toContain('operational_runtime');
+  });
+
+  it('fails semantic-empty authored frontmatter fields', () => {
+    const folder = copyFixture('053-template-compliant-level2');
+    const specPath = path.join(folder, 'spec.md');
+    const broken = fs.readFileSync(specPath, 'utf8')
+      .replace('title: "Feature Specification: Template Fixture [template:level_2/spec.md]"', 'title: ""')
+      .replace('trigger_phrases:\n  - "fixture"', 'trigger_phrases: []');
+    fs.writeFileSync(specPath, broken, 'utf8');
+
+    const result = spawnSync(VALIDATE_SCRIPT, [folder], {
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        SPECKIT_RULES: 'FRONTMATTER_VALID',
+        SKIP_TEMPLATE_CHECK: '1',
+      },
+    });
+
+    expect(result.status).toBe(2);
+    expect(result.stdout).toContain('Empty required frontmatter field: title');
+    expect(result.stdout).toContain('Empty required frontmatter field: trigger_phrases');
+  });
+
+  it('fails duplicate opening anchor IDs during packet validation', () => {
+    const folder = copyFixture('011-anchors-duplicate-ids');
+    const result = spawnSync(VALIDATE_SCRIPT, [folder], {
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        SPECKIT_RULES: 'ANCHORS_VALID',
+      },
+    });
+
+    expect(result.status).toBe(2);
+    expect(result.stdout).toContain("Duplicate anchor ID 'section'");
   });
 });

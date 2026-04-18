@@ -60,6 +60,10 @@ describe('copilot compact cycle', () => {
       producer: 'hook_cache',
       sourceSurface: 'copilot-compact-cache',
       trustState: 'cached',
+      sanitizerVersion: 'nfkc-hidden-mark-confusable-v1',
+    });
+    expect(state.ok && state.state.pendingCompactPrime?.payloadContract?.provenance.runtimeFingerprint).toMatchObject({
+      normalizer: 'nfkc-hidden-mark-confusable-v1',
     });
   });
 
@@ -78,7 +82,8 @@ describe('copilot compact cycle', () => {
     const output = handleCompact(testSessionId);
 
     expect(output).toContain('Recovered Context (Post-Compression)');
-    expect(output).toContain('[PROVENANCE: producer=hook_cache; trustState=cached; sourceSurface=copilot-compact-cache]');
+    expect(output).toContain('[PROVENANCE: producer=hook_cache; trustState=cached; sourceSurface=copilot-compact-cache; sanitizerVersion=');
+    expect(output).toContain('runtimeFingerprint=');
     expect(output).toContain('Recovery Instructions');
   });
 });

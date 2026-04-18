@@ -247,7 +247,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js dat
    ```bash
    node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/context.json "014-stateless-alignment"
    ```
-4. Generated continuity support artifact written under `specs/014-stateless-alignment/memory/`
+4. Canonical continuity is routed into packet docs such as `implementation-summary.md`, `handover.md`, and `decision-record.md`; generated metadata files are refreshed for search and graph traversal.
 
 ### Fallback Detection
 
@@ -397,11 +397,11 @@ Score:                 (3/3) × 100 = 100%
 
 ### Example 2: Moderate Alignment (50-69%) - Warning + Proceed
 
-**Scenario:** Conversation about semantic memory search saved to memory alignment folder
+**Scenario:** Conversation about semantic memory search saved to a broader memory tooling folder
 
 ```
 Conversation Topic: "Improve semantic memory search"
-Target Folder:      specs/016-memory-alignment-fix/
+Target Folder:      specs/016-memory-tooling-hardening/
 ```
 
 **Keyword Analysis:**

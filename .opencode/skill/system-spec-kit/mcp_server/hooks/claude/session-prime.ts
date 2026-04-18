@@ -15,7 +15,13 @@ import {
   type HookInput,
   type OutputSection,
 } from './shared.js';
-import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from './hook-state.js';
+import {
+  ensureStateDir,
+  loadState,
+  readCompactPrime,
+  clearCompactPrime,
+  validatePendingCompactPrimeSemantics,
+} from './hook-state.js';
 import { getCachedSessionSummaryDecision, logCachedSummaryDecision } from '../../handlers/session-resume.js';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
@@ -33,10 +39,12 @@ type StartupBrief = {
 
 // Dynamic import for startup brief builder — may not be available
 let buildStartupBrief: ((highlightCount?: number, stateScope?: { specFolder?: string; claudeSessionId?: string }) => StartupBrief) | null = null;
+let startupBriefImportError: string | null = null;
 try {
   const mod = await import('../../lib/code-graph/startup-brief.js');
   buildStartupBrief = mod.buildStartupBrief;
-} catch {
+} catch (err: unknown) {
+  startupBriefImportError = err instanceof Error ? err.message : String(err);
   // Startup brief module not available — keep static startup output
 }
 
@@ -63,12 +71,26 @@ function handleCompact(sessionId: string): OutputSection[] {
       content: 'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
     }];
   }
+  const semanticValidation = validatePendingCompactPrimeSemantics(pendingCompactPrime);
+  if (!semanticValidation.ok) {
+    hookLog('warn', 'session-prime', `Rejecting compact cache for session ${sessionId}: ${semanticValidation.reason}`);
+    clearCompactPrime(sessionId, {
+      cachedAt: pendingCompactPrime.cachedAt,
+      opaqueId: pendingCompactPrime.opaqueId ?? null,
+    });
+    return [{
+      title: 'Context Recovery',
+      content: 'Context was compacted, but the cached compact brief was quarantined by semantic validation. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+    }];
+  }
 
   const sanitizedPayload = sanitizeRecoveredPayload(payload);
   const wrappedPayload = wrapRecoveredCompactPayload(payload, cachedAt, {
     producer: pendingCompactPrime.payloadContract?.provenance.producer,
     trustState: pendingCompactPrime.payloadContract?.provenance.trustState,
     sourceSurface: pendingCompactPrime.payloadContract?.provenance.sourceSurface,
+    sanitizerVersion: pendingCompactPrime.payloadContract?.provenance.sanitizerVersion,
+    runtimeFingerprint: pendingCompactPrime.payloadContract?.provenance.runtimeFingerprint,
   });
   hookLog('info', 'session-prime', `Injecting cached compact brief (${sanitizedPayload.length} chars after sanitization, cached at ${cachedAt})`);
 
@@ -169,6 +191,7 @@ export function handleStartup(
   const sessionId = typeof input.session_id === 'string' ? input.session_id : undefined;
   const requestedSpecFolder = typeof input.specFolder === 'string' ? input.specFolder : undefined;
   let startupBrief: StartupBrief | null = null;
+  let startupBriefWarning: string | null = null;
   try {
     startupBrief = buildStartupBrief
       ? buildStartupBrief(undefined, {
@@ -177,14 +200,20 @@ export function handleStartup(
       })
       : null;
   } catch (err: unknown) {
-    hookLog('error', 'session-prime', `buildStartupBrief threw: ${err instanceof Error ? err.message : String(err)}`);
+    startupBriefWarning = `buildStartupBrief threw: ${err instanceof Error ? err.message : String(err)}`;
+    hookLog('error', 'session-prime', startupBriefWarning);
   }
   if (!buildStartupBrief) {
-    hookLog('warn', 'session-prime', 'Startup brief module unavailable — using fallback surface');
+    startupBriefWarning = startupBriefImportError
+      ? `Startup brief module unavailable: ${startupBriefImportError}`
+      : 'Startup brief module unavailable';
+    hookLog('warn', 'session-prime', `${startupBriefWarning} — using fallback surface`);
   } else if (!startupBrief) {
-    hookLog('warn', 'session-prime', 'buildStartupBrief returned null — possible startup-brief regression');
+    startupBriefWarning = 'buildStartupBrief returned null';
+    hookLog('warn', 'session-prime', `${startupBriefWarning} — possible startup-brief regression`);
   } else if (!startupBrief.startupSurface) {
-    hookLog('warn', 'session-prime', 'startupBrief.startupSurface is empty — possible startup-brief regression');
+    startupBriefWarning = 'startupBrief.startupSurface is empty';
+    hookLog('warn', 'session-prime', `${startupBriefWarning} — possible startup-brief regression`);
   }
   const cachedSummaryDecision = getCachedSessionSummaryDecision({
     specFolder: requestedSpecFolder,
@@ -221,6 +250,12 @@ export function handleStartup(
       ].join('\n'),
     },
   ];
+  if (startupBriefWarning) {
+    sections.push({
+      title: 'Startup Brief Warning',
+      content: `${startupBriefWarning}. Using fallback startup context; inspect the startup-brief module before trusting structural priming.`,
+    });
+  }
   if (startupBrief?.graphOutline) {
     sections.push({
       title: 'Structural Context',

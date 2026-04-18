@@ -731,6 +731,78 @@ describe('T009 generatePerFolderDescription', () => {
     expect(result!.memoryNameHistory).toEqual(['a.md', 'b.md']);
     expect(result!.description).toBe('Feature'); // Updated from spec.md
   });
+
+  it('preserves schema-valid authored optional fields on regeneration', () => {
+    const specDir = path.join(tmpDir2, '011-rich-feature');
+    fs.mkdirSync(specDir, { recursive: true });
+    fs.writeFileSync(path.join(specDir, 'spec.md'), '# Rich Feature\n\nContent.');
+
+    fs.writeFileSync(path.join(specDir, 'description.json'), JSON.stringify({
+      specFolder: '011-rich-feature',
+      description: 'Old description',
+      keywords: ['old'],
+      lastUpdated: '2026-04-18T00:00:00.000Z',
+      specId: '011',
+      folderSlug: 'rich-feature',
+      parentChain: [],
+      memorySequence: 5,
+      memoryNameHistory: ['ctx-001.md'],
+      title: 'Rich authored title',
+      type: 'phase',
+      trigger_phrases: ['rich', 'feature'],
+      path: '.opencode/specs/system-spec-kit/example',
+    }, null, 2));
+
+    const result = generatePerFolderDescription(specDir, tmpDir2);
+    expect(result).not.toBeNull();
+    savePerFolderDescription(result!, specDir);
+
+    const raw = JSON.parse(
+      fs.readFileSync(path.join(specDir, 'description.json'), 'utf-8'),
+    ) as Record<string, unknown>;
+
+    expect(raw.title).toBe('Rich authored title');
+    expect(raw.type).toBe('phase');
+    expect(raw.trigger_phrases).toEqual(['rich', 'feature']);
+    expect(raw.path).toBe('.opencode/specs/system-spec-kit/example');
+    expect(raw.description).toBe('Rich Feature');
+  });
+
+  it('preserves schema-valid unknown top-level passthrough keys on regeneration', () => {
+    const specDir = path.join(tmpDir2, '012-custom-feature');
+    fs.mkdirSync(specDir, { recursive: true });
+    fs.writeFileSync(path.join(specDir, 'spec.md'), '# Custom Feature\n\nContent.');
+
+    fs.writeFileSync(path.join(specDir, 'description.json'), JSON.stringify({
+      specFolder: '012-custom-feature',
+      description: 'Old description',
+      keywords: ['old'],
+      lastUpdated: '2026-04-18T00:00:00.000Z',
+      specId: '012',
+      folderSlug: 'custom-feature',
+      parentChain: [],
+      memorySequence: 1,
+      memoryNameHistory: [],
+      custom_passthrough: {
+        owner: 'test',
+        mode: 'preserve',
+      },
+    }, null, 2));
+
+    const result = generatePerFolderDescription(specDir, tmpDir2);
+    expect(result).not.toBeNull();
+    savePerFolderDescription(result!, specDir);
+
+    const raw = JSON.parse(
+      fs.readFileSync(path.join(specDir, 'description.json'), 'utf-8'),
+    ) as Record<string, unknown>;
+
+    expect(raw.custom_passthrough).toEqual({
+      owner: 'test',
+      mode: 'preserve',
+    });
+    expect(raw.description).toBe('Custom Feature');
+  });
 });
 
 describe('T009 loadPerFolderDescription / savePerFolderDescription', () => {

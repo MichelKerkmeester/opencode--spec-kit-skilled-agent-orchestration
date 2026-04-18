@@ -5,6 +5,7 @@
 // shared by startup, recovery, and compaction surfaces.
 
 import { assertNever } from '../utils/exhaustiveness.js';
+import type { UnicodeRuntimeFingerprint } from '@spec-kit/shared/unicode-normalization';
 
 export const SHARED_PAYLOAD_KIND_VALUES = [
   'startup',
@@ -213,6 +214,8 @@ export interface SharedPayloadProvenance {
   generatedAt: string;
   lastUpdated: string | null;
   sourceRefs: string[];
+  sanitizerVersion?: string;
+  runtimeFingerprint?: UnicodeRuntimeFingerprint;
 }
 
 export interface PreMergeSelectionMetadata {

@@ -14,6 +14,7 @@ import {
   ensureStateDir,
   loadState,
   readCompactPrime,
+  validatePendingCompactPrimeSemantics,
   type HookStateCompactPrimeIdentity,
 } from '../claude/hook-state.js';
 import { wrapRecoveredCompactPayload } from '../shared-provenance.js';
@@ -115,11 +116,24 @@ export function handleCompact(sessionId: string): string {
       'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
     ].join('\n\n');
   }
+  const semanticValidation = validatePendingCompactPrimeSemantics(pendingCompactPrime);
+  if (!semanticValidation.ok) {
+    clearCompactPrime(sessionId, {
+      cachedAt: pendingCompactPrime.cachedAt,
+      opaqueId: pendingCompactPrime.opaqueId ?? null,
+    });
+    return [
+      'Context Recovery',
+      'Context was compacted, but the cached compact brief was quarantined by semantic validation. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+    ].join('\n\n');
+  }
 
   const wrappedPayload = wrapRecoveredCompactPayload(payload, cachedAt, {
     producer: pendingCompactPrime.payloadContract?.provenance.producer,
     trustState: pendingCompactPrime.payloadContract?.provenance.trustState,
     sourceSurface: pendingCompactPrime.payloadContract?.provenance.sourceSurface,
+    sanitizerVersion: pendingCompactPrime.payloadContract?.provenance.sanitizerVersion,
+    runtimeFingerprint: pendingCompactPrime.payloadContract?.provenance.runtimeFingerprint,
   });
 
   const sections = [

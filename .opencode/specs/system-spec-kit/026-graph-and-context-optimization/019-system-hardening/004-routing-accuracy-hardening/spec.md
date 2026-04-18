@@ -26,7 +26,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Parent Spec** | ../spec.md |
-| **Source Research** | ../001-initial-research/005-routing-accuracy/research.md |
+| **Source Research** | ../../research/019-system-hardening-001-initial-research-005-routing-accuracy/research.md |
 | **Priority** | P1 |
 
 <!-- ANCHOR:metadata -->
@@ -36,7 +36,7 @@ _memory:
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 (3 P1 + 2 P2 findings) |
-| **Status** | Spec Ready |
+| **Status** | Complete |
 | **Effort Estimate** | 2-3 days |
 | **Executor** | cli-codex gpt-5.4 high fast |
 <!-- /ANCHOR:metadata -->
@@ -96,26 +96,43 @@ Land Wave A (advisor normalization) and Wave B (Gate 3 deep-loop markers) with m
 <!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
-### 4.1 P0 - Blockers
+### 4.1 Functional Requirements
 
-- **R1** (Wave A): Advisor command-normalization lands with guard for quoted-command prompts
-- **R2** (Wave A): Post-change corpus shows advisor exact-match ≥ 60% (baseline 53.5%)
-- **R3** (Wave B): Gate 3 deep-loop positive markers added; 22 `deep_loop_write` gold prompts now fire positive
-- **R4** (Wave B): Post-change corpus shows Gate 3 F1 ≥ 83% (baseline 68.6%)
+| ID | Priority | Requirement |
+|----|----------|-------------|
+| REQ-001 | P0 | Advisor command-normalization lands with guard coverage for quoted-command prompts. |
+| REQ-002 | P0 | Post-change corpus shows advisor exact-match accuracy >= 60% against the 200-prompt labeled fixture. |
+| REQ-003 | P0 | Gate 3 deep-loop positive markers are added so canonical deep-loop write prompts fire positive. |
+| REQ-004 | P0 | Post-change corpus shows Gate 3 F1 >= 83% against the 200-prompt labeled fixture. |
+| REQ-005 | P1 | Historical false-positive tokens `analyze`, `decompose`, and `phase` remain read-only when no write tail is present. |
+| REQ-006 | P1 | Joint matrix is re-measured after Wave A+B and any conditional Wave C decision is evidence-backed. |
 
-### 4.2 P1 - Required
+### 4.2 Acceptance Scenarios
 
-- **R5**: No regression on `analyze`, `decompose`, `phase` historical false-positive tokens
-- **R6**: Joint matrix re-measured after Wave A+B: TT≥108, FT≤12, FF≤15 (per research projections)
+#### Scenario 1 - Advisor normalizes command bridge winners
+
+**Given** the prompt routes to a command bridge such as `command-memory-save`, when advisor final ranking is produced, then the recommendation returns the owning skill `system-spec-kit`.
+
+#### Scenario 2 - Advisor preserves implementation references
+
+**Given** the prompt explicitly quotes or discusses a command target as an implementation-level reference, when advisor final ranking is produced, then command bridge normalization is not applied.
+
+#### Scenario 3 - Gate 3 detects deep-loop write workflows
+
+**Given** the prompt invokes a deep research or deep review workflow with command-style or natural-language deep-loop markers, when `classifyPrompt()` runs, then Gate 3 returns a file-modification classification.
+
+#### Scenario 4 - Gate 3 preserves historical read-only behavior
+
+**Given** the prompt only analyzes, decomposes, or discusses a phase without a write tail, when `classifyPrompt()` runs, then Gate 3 does not require a spec-folder write gate.
 <!-- /ANCHOR:requirements -->
 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- [ ] Advisor accuracy ≥ 60% on labeled corpus
-- [ ] Gate 3 F1 ≥ 83% on labeled corpus
-- [ ] Historical false-positive tokens still pass as read-only
-- [ ] Joint matrix improvements match research projections within ±5%
+- [x] Advisor accuracy ≥ 60% on labeled corpus [Evidence: final corpus advisor accuracy 60.0%]
+- [x] Gate 3 F1 ≥ 83% on labeled corpus [Evidence: final corpus Gate 3 F1 97.66%]
+- [x] Historical false-positive tokens still pass as read-only [Evidence: final corpus historical false-positive regressions 0]
+- [x] Joint matrix improvements match research projections within ±5% [Evidence: final matrix TT 115 / FT 5 / FF 1]
 <!-- /ANCHOR:success-criteria -->
 
 <!-- ANCHOR:risks -->
@@ -127,9 +144,9 @@ Land Wave A (advisor normalization) and Wave B (Gate 3 deep-loop markers) with m
 | Deep-loop markers over-trigger Gate 3 on read-only | Corpus-driven threshold tuning |
 <!-- /ANCHOR:risks -->
 
-<!-- ANCHOR:open-questions -->
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - Normalize on every command-bridge win vs only explicit-invocation (research Q1) — implementation chooses
 - Deep-loop as dedicated Gate 3 category vs additive trigger coverage (research Q3)
-<!-- /ANCHOR:open-questions -->
+<!-- /ANCHOR:questions -->

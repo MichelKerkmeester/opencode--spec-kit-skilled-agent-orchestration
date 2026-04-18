@@ -1,0 +1,268 @@
+[
+  {
+    "rule_id": "FILE_EXISTS",
+    "aliases": ["FILES", "FILES_PRESENT", "FILES_EXISTS"],
+    "script_path": "rules/check-files.sh",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Validates required spec documents for the declared documentation level."
+  },
+  {
+    "rule_id": "PLACEHOLDER_FILLED",
+    "aliases": ["PLACEHOLDER", "PLACEHOLDERS", "PLACEHOLDERS_FILLED"],
+    "script_path": "rules/check-placeholders.sh",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Rejects unfilled template placeholders in authored spec documents."
+  },
+  {
+    "rule_id": "SECTIONS_PRESENT",
+    "aliases": ["SECTIONS"],
+    "script_path": "rules/check-sections.sh",
+    "severity": "warn",
+    "category": "authored_template",
+    "description": "Checks that required high-level markdown sections are present."
+  },
+  {
+    "rule_id": "LEVEL_DECLARED",
+    "aliases": ["LEVEL"],
+    "script_path": "rules/check-level.sh",
+    "severity": "info",
+    "category": "authored_template",
+    "description": "Reports whether the documentation level was declared or inferred."
+  },
+  {
+    "rule_id": "PRIORITY_TAGS",
+    "aliases": ["PRIORITY"],
+    "script_path": "rules/check-priority-tags.sh",
+    "severity": "warn",
+    "category": "authored_template",
+    "description": "Validates P0/P1/P2 priority tags on checklist items."
+  },
+  {
+    "rule_id": "EVIDENCE_CITED",
+    "aliases": ["EVIDENCE"],
+    "script_path": "rules/check-evidence.sh",
+    "severity": "warn",
+    "category": "authored_template",
+    "description": "Checks completed checklist/tasks items for evidence citations."
+  },
+  {
+    "rule_id": "ANCHORS_VALID",
+    "aliases": ["ANCHOR", "ANCHORS", "ANCHOR_MATCHED"],
+    "script_path": "rules/check-anchors.sh",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Validates anchor syntax, pairing, order, and uniqueness."
+  },
+  {
+    "rule_id": "FRONTMATTER_MEMORY_BLOCK",
+    "aliases": ["MEMORY_BLOCK", "FRONTMATTER_MEMORY"],
+    "script_path": "ts:spec-doc-structure",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Validates canonical _memory continuity frontmatter blocks."
+  },
+  {
+    "rule_id": "MERGE_LEGALITY",
+    "aliases": ["MERGE"],
+    "script_path": "ts:spec-doc-structure",
+    "severity": "error",
+    "category": "operational_runtime",
+    "description": "Validates generated merge payloads against target anchor shape."
+  },
+  {
+    "rule_id": "SPEC_DOC_SUFFICIENCY",
+    "aliases": ["SUFFICIENCY", "DOC_SUFFICIENCY"],
+    "script_path": "ts:spec-doc-structure",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Checks implementation-summary sufficiency after save/write flows."
+  },
+  {
+    "rule_id": "CROSS_ANCHOR_CONTAMINATION",
+    "aliases": ["CONTAMINATION", "CROSS_ANCHOR"],
+    "script_path": "ts:spec-doc-structure",
+    "severity": "error",
+    "category": "operational_runtime",
+    "description": "Detects route/category mismatches before generated content is merged."
+  },
+  {
+    "rule_id": "POST_SAVE_FINGERPRINT",
+    "aliases": ["FINGERPRINT", "POST_SAVE"],
+    "script_path": "ts:spec-doc-structure",
+    "severity": "error",
+    "category": "operational_runtime",
+    "description": "Verifies post-save fingerprints for generated writes."
+  },
+  {
+    "rule_id": "TOC_POLICY",
+    "aliases": ["TOC"],
+    "script_path": "rules/check-toc-policy.sh",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Enforces table-of-contents placement policy."
+  },
+  {
+    "rule_id": "PHASE_LINKS",
+    "aliases": [],
+    "script_path": "rules/check-phase-links.sh",
+    "severity": "warn",
+    "category": "authored_template",
+    "description": "Checks parent/child phase-link consistency."
+  },
+  {
+    "rule_id": "AI_PROTOCOLS",
+    "aliases": ["AI_PROTOCOL"],
+    "script_path": "rules/check-ai-protocols.sh",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Validates AI execution protocol sections in high-governance specs."
+  },
+  {
+    "rule_id": "COMPLEXITY_MATCH",
+    "aliases": ["COMPLEXITY"],
+    "script_path": "rules/check-complexity.sh",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Checks declared level against content complexity signals."
+  },
+  {
+    "rule_id": "FOLDER_NAMING",
+    "aliases": [],
+    "script_path": "rules/check-folder-naming.sh",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Validates numbered spec-folder naming conventions."
+  },
+  {
+    "rule_id": "FRONTMATTER_VALID",
+    "aliases": ["FRONTMATTER"],
+    "script_path": "rules/check-frontmatter.sh",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Validates YAML frontmatter structure and required semantic values."
+  },
+  {
+    "rule_id": "LEVEL_MATCH",
+    "aliases": [],
+    "script_path": "rules/check-level-match.sh",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Checks required files match the declared documentation level."
+  },
+  {
+    "rule_id": "GRAPH_METADATA_PRESENT",
+    "aliases": ["GRAPH_METADATA"],
+    "script_path": "rules/check-graph-metadata.sh",
+    "severity": "warn",
+    "category": "operational_runtime",
+    "description": "Checks generated description and graph metadata are present."
+  },
+  {
+    "rule_id": "NORMALIZER_LINT",
+    "aliases": ["NORMALIZER"],
+    "script_path": "rules/check-normalizer-lint.sh",
+    "severity": "error",
+    "category": "operational_runtime",
+    "description": "Strict-only lint for duplicated runtime normalizer helpers."
+  },
+  {
+    "rule_id": "LINKS_VALID",
+    "aliases": ["LINKS"],
+    "script_path": "rules/check-links.sh",
+    "severity": "warn",
+    "category": "operational_runtime",
+    "description": "Validates cross-skill wikilinks when explicitly enabled."
+  },
+  {
+    "rule_id": "SECTION_COUNTS",
+    "aliases": [],
+    "script_path": "rules/check-section-counts.sh",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Checks section-count expectations for authored spec documents."
+  },
+  {
+    "rule_id": "SPEC_DOC_INTEGRITY",
+    "aliases": ["DOC_INTEGRITY"],
+    "script_path": "rules/check-spec-doc-integrity.sh",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Verifies inline markdown references resolve within spec docs."
+  },
+  {
+    "rule_id": "TEMPLATE_SOURCE",
+    "aliases": [],
+    "script_path": "rules/check-template-source.sh",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Checks SPECKIT_TEMPLATE_SOURCE provenance markers."
+  },
+  {
+    "rule_id": "TEMPLATE_HEADERS",
+    "aliases": [],
+    "script_path": "rules/check-template-headers.sh",
+    "severity": "error",
+    "category": "authored_template",
+    "description": "Checks required template header order and naming."
+  },
+  {
+    "rule_id": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+    "aliases": [],
+    "script_path": "rules/check-canonical-save.sh",
+    "severity": "error",
+    "category": "operational_runtime",
+    "description": "Ensures canonical saves include a root spec reference."
+  },
+  {
+    "rule_id": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+    "aliases": [],
+    "script_path": "rules/check-canonical-save.sh",
+    "severity": "error",
+    "category": "operational_runtime",
+    "description": "Ensures canonical saves include source document references."
+  },
+  {
+    "rule_id": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+    "aliases": [],
+    "script_path": "rules/check-canonical-save.sh",
+    "severity": "error",
+    "category": "operational_runtime",
+    "description": "Ensures canonical save lineage metadata is present."
+  },
+  {
+    "rule_id": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+    "aliases": [],
+    "script_path": "rules/check-canonical-save.sh",
+    "severity": "error",
+    "category": "operational_runtime",
+    "description": "Checks canonical save packet identity normalization."
+  },
+  {
+    "rule_id": "CANONICAL_SAVE_DESCRIPTION_GRAPH_FRESHNESS",
+    "aliases": [],
+    "script_path": "rules/check-canonical-save.sh",
+    "severity": "error",
+    "category": "operational_runtime",
+    "description": "Checks generated description/graph freshness for canonical saves."
+  },
+  {
+    "rule_id": "CONTINUITY_FRESHNESS",
+    "aliases": [],
+    "script_path": "validation/continuity-freshness.ts",
+    "severity": "warn",
+    "category": "operational_runtime",
+    "strict_only": true,
+    "description": "Strict-mode freshness check for continuity frontmatter."
+  },
+  {
+    "rule_id": "EVIDENCE_MARKER_LINT",
+    "aliases": [],
+    "script_path": "validation/evidence-marker-lint.ts",
+    "severity": "warn",
+    "category": "operational_runtime",
+    "strict_only": true,
+    "description": "Strict-mode lint for evidence marker formatting."
+  }
+]

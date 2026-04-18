@@ -18,6 +18,12 @@ import { z } from 'zod';
 import { hookLog } from './shared.js';
 import { assertNever } from '../../lib/utils/exhaustiveness.js';
 import type { SharedPayloadEnvelope } from '../../lib/context/shared-payload.js';
+import {
+  CANONICAL_FOLD_VERSION,
+  canonicalFold,
+  type UnicodeRuntimeFingerprint,
+} from '@spec-kit/shared/unicode-normalization';
+import { RECOVERED_TRANSCRIPT_STRIP_PATTERNS } from '../shared-provenance.js';
 
 export const CURRENT_HOOK_STATE_SCHEMA_VERSION = 1 as const;
 
@@ -45,11 +51,165 @@ const HookProducerMetadataSchema = z.object({
   }).nullable(),
 });
 
+export type PendingCompactPrimeRejectionReason =
+  | 'missing_payload_contract'
+  | 'missing_provenance'
+  | 'missing_sanitizer_version'
+  | 'missing_runtime_fingerprint'
+  | 'forbidden_normalized_prefix'
+  | 'suspicious_line_density';
+
+export type PendingCompactPrimeSemanticValidation =
+  | { ok: true }
+  | {
+    ok: false;
+    reason: PendingCompactPrimeRejectionReason;
+    detail: string;
+  };
+
+function validatePendingCompactPrimePayloadSafety(payload: string): PendingCompactPrimeSemanticValidation {
+  const canonicalLines = payload
+    .split(/\r?\n/)
+    .map((line) => canonicalFold(line).trim())
+    .filter((line) => line.length > 0);
+  const suspiciousLines = canonicalLines.filter((line) =>
+    RECOVERED_TRANSCRIPT_STRIP_PATTERNS.some((pattern) => pattern.test(line)),
+  );
+  if (suspiciousLines.length > 0) {
+    return {
+      ok: false,
+      reason: 'forbidden_normalized_prefix',
+      detail: `pendingCompactPrime contains instruction-shaped line after canonical fold: ${suspiciousLines[0]}`,
+    };
+  }
+
+  const suspiciousDensity = canonicalLines.length === 0
+    ? 0
+    : suspiciousLines.length / canonicalLines.length;
+  if (suspiciousDensity > 0.2) {
+    return {
+      ok: false,
+      reason: 'suspicious_line_density',
+      detail: `pendingCompactPrime suspicious line density ${suspiciousDensity.toFixed(2)} exceeds 0.20.`,
+    };
+  }
+
+  return { ok: true };
+}
+
+function hasRuntimeFingerprint(value: unknown): value is UnicodeRuntimeFingerprint {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+  const record = value as Record<string, unknown>;
+  return typeof record.normalizer === 'string' && record.normalizer.trim().length > 0
+    && typeof record.node === 'string' && record.node.trim().length > 0
+    && typeof record.icu === 'string' && record.icu.trim().length > 0
+    && typeof record.unicode === 'string' && record.unicode.trim().length > 0;
+}
+
+function validatePayloadContract(contract: unknown): PendingCompactPrimeSemanticValidation {
+  if (typeof contract !== 'object' || contract === null) {
+    return {
+      ok: false,
+      reason: 'missing_payload_contract',
+      detail: 'pendingCompactPrime requires a structured payloadContract.',
+    };
+  }
+  const provenance = (contract as { provenance?: unknown }).provenance;
+  if (typeof provenance !== 'object' || provenance === null) {
+    return {
+      ok: false,
+      reason: 'missing_provenance',
+      detail: 'pendingCompactPrime.payloadContract requires provenance metadata.',
+    };
+  }
+
+  const record = provenance as Record<string, unknown>;
+  const requiredFields = ['producer', 'sourceSurface', 'trustState', 'generatedAt'];
+  const missing = requiredFields.filter((field) =>
+    typeof record[field] !== 'string' || String(record[field]).trim().length === 0,
+  );
+  const sourceRefs = Array.isArray(record.sourceRefs)
+    ? record.sourceRefs.filter((entry): entry is string => typeof entry === 'string' && entry.trim().length > 0)
+    : [];
+  if (missing.length > 0 || sourceRefs.length === 0) {
+    return {
+      ok: false,
+      reason: 'missing_provenance',
+      detail: `pendingCompactPrime.payloadContract provenance is missing required fields: ${[
+        ...missing,
+        ...(sourceRefs.length === 0 ? ['sourceRefs'] : []),
+      ].join(', ')}.`,
+    };
+  }
+
+  if (typeof record.sanitizerVersion !== 'string' || record.sanitizerVersion.trim().length === 0) {
+    return {
+      ok: false,
+      reason: 'missing_sanitizer_version',
+      detail: 'pendingCompactPrime.payloadContract provenance requires sanitizerVersion.',
+    };
+  }
+  if (record.sanitizerVersion !== CANONICAL_FOLD_VERSION) {
+    return {
+      ok: false,
+      reason: 'missing_sanitizer_version',
+      detail: `pendingCompactPrime sanitizerVersion ${String(record.sanitizerVersion)} does not match ${CANONICAL_FOLD_VERSION}.`,
+    };
+  }
+  if (!hasRuntimeFingerprint(record.runtimeFingerprint)) {
+    return {
+      ok: false,
+      reason: 'missing_runtime_fingerprint',
+      detail: 'pendingCompactPrime.payloadContract provenance requires runtimeFingerprint.',
+    };
+  }
+  return { ok: true };
+}
+
+export function validatePendingCompactPrimeSemantics(
+  pendingCompactPrime: {
+    payload: string;
+    payloadContract?: SharedPayloadEnvelope | null;
+  },
+): PendingCompactPrimeSemanticValidation {
+  const payloadValidation = validatePendingCompactPrimePayloadSafety(pendingCompactPrime.payload);
+  if (!payloadValidation.ok) {
+    return payloadValidation;
+  }
+
+  const contractValidation = validatePayloadContract(pendingCompactPrime.payloadContract ?? null);
+  if (!contractValidation.ok) {
+    return contractValidation;
+  }
+
+  return { ok: true };
+}
+
+export function isPendingCompactPrimeSafeForEmission(
+  pendingCompactPrime: {
+    payload: string;
+    payloadContract?: SharedPayloadEnvelope | null;
+  },
+): boolean {
+  return validatePendingCompactPrimeSemantics(pendingCompactPrime).ok;
+}
+
 const PendingCompactPrimeSchema = z.object({
   payload: z.string(),
   cachedAt: z.string().min(1),
   opaqueId: z.string().min(1).optional(),
   payloadContract: SharedPayloadEnvelopeSchema.nullable().optional(),
+}).superRefine((value, ctx) => {
+  const validation = validatePendingCompactPrimePayloadSafety(value.payload);
+  if (!validation.ok) {
+    ctx.addIssue({
+      code: 'custom',
+      message: `${validation.reason}: ${validation.detail}`,
+      path: ['payload'],
+    });
+  }
 });
 
 export const HookStateSchema = z.object({

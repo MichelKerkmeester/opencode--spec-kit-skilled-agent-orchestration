@@ -133,6 +133,13 @@ run_check() {
             opens=$(awk -v id="$id" '$2 == id {count++} END {print count+0}' "$tmp_opens")
             closes=$(awk -v id="$id" '$2 == id {count++} END {print count+0}' "$tmp_closes")
 
+            if [[ "$opens" -gt 1 ]]; then
+                while IFS= read -r open_line; do
+                    [[ -z "$open_line" ]] && continue
+                    errors+=("$display_name:$open_line: Duplicate anchor ID '$id' - each anchor must be unique")
+                done < <(awk -v id="$id" '$2 == id {count++; if (count > 1) print $1}' "$tmp_opens")
+            fi
+
             if [[ "$opens" -gt "$closes" ]]; then
                 open_line=$(awk -v id="$id" '$2 == id {print $1; exit}' "$tmp_opens")
                 errors+=("$display_name:$open_line: Unclosed anchor '$id'")

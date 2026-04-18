@@ -22,7 +22,13 @@ import {
   getRequiredSessionId,
   type OutputSection,
 } from '../claude/shared.js';
-import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from '../claude/hook-state.js';
+import {
+  ensureStateDir,
+  loadState,
+  readCompactPrime,
+  clearCompactPrime,
+  validatePendingCompactPrimeSemantics,
+} from '../claude/hook-state.js';
 import { parseGeminiStdin, formatGeminiOutput } from './shared.js';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
@@ -69,6 +75,18 @@ export function handleCompact(sessionId: string): OutputSection[] {
       content: 'Context was compressed. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
     }];
   }
+  const semanticValidation = validatePendingCompactPrimeSemantics(pendingCompactPrime);
+  if (!semanticValidation.ok) {
+    hookLog('warn', 'gemini:session-prime', `Rejecting compact cache: ${semanticValidation.reason}`);
+    clearCompactPrime(sessionId, {
+      cachedAt: pendingCompactPrime.cachedAt,
+      opaqueId: pendingCompactPrime.opaqueId ?? null,
+    });
+    return [{
+      title: 'Context Recovery',
+      content: 'Context was compressed, but the cached compact brief was quarantined by semantic validation. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+    }];
+  }
 
   hookLog('info', 'gemini:session-prime', `Injecting cached compact brief (${payload.length} chars, cached at ${cachedAt})`);
 
@@ -76,6 +94,8 @@ export function handleCompact(sessionId: string): OutputSection[] {
     producer: pendingCompactPrime.payloadContract?.provenance.producer,
     trustState: pendingCompactPrime.payloadContract?.provenance.trustState,
     sourceSurface: pendingCompactPrime.payloadContract?.provenance.sourceSurface,
+    sanitizerVersion: pendingCompactPrime.payloadContract?.provenance.sanitizerVersion,
+    runtimeFingerprint: pendingCompactPrime.payloadContract?.provenance.runtimeFingerprint,
   });
   const sections: OutputSection[] = [
     { title: 'Recovered Context (Post-Compression)', content: wrappedPayload },

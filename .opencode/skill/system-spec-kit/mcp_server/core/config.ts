@@ -41,7 +41,26 @@ export interface DatabasePaths {
   dbUpdatedFile: string;
 }
 
-export function resolveDatabasePaths(): DatabasePaths {
+function realpathAllowMissing(targetPath: string): string {
+  const resolvedPath = path.resolve(targetPath);
+  if (fs.existsSync(resolvedPath)) {
+    return fs.realpathSync(resolvedPath);
+  }
+
+  const parentPath = path.dirname(resolvedPath);
+  if (parentPath === resolvedPath) {
+    return resolvedPath;
+  }
+
+  return path.join(realpathAllowMissing(parentPath), path.basename(resolvedPath));
+}
+
+function isPathInside(candidate: string, prefix: string): boolean {
+  const relative = path.relative(prefix, candidate);
+  return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
+}
+
+function computeDatabasePaths(): DatabasePaths {
   // H8 FIX: Re-check SPEC_KIT_DB_DIR at call time to support runtime overrides
   // (e.g. tests that set the env var after module import). Fall back to the
   // import-time DB_PATH when no runtime override is present.
@@ -51,23 +70,18 @@ export function resolveDatabasePaths(): DatabasePaths {
     ? path.resolve(process.cwd(), runtimeDbDir)
     : path.dirname(DB_PATH);
 
-  // F4.04: Reject paths that escape the project root (allow homedir and tmpdir for tests).
-  // Use realpathSync to handle macOS /var -> /private/var symlinks.
-  const resolved = path.resolve(databaseDir);
-  const cwd = process.cwd();
-  const allowedPrefixes = [cwd, os.homedir()];
+  // Resolve symlinks before the boundary check so repo-local links cannot
+  // smuggle the database into an unrelated system path.
+  const resolved = realpathAllowMissing(databaseDir);
+  const allowedPrefixes = [process.cwd(), os.homedir()].map(realpathAllowMissing);
   try {
     const tmpDir = os.tmpdir();
-    allowedPrefixes.push(tmpDir);
-    try { allowedPrefixes.push(fs.realpathSync(tmpDir)); } catch { /* ignore */ }
+    allowedPrefixes.push(realpathAllowMissing(tmpDir));
   } catch { /* os.tmpdir may be unavailable in test environments */ }
-  if (!allowedPrefixes.some((prefix) => {
-    const relative = path.relative(prefix, resolved);
-    return !relative.startsWith('..') && !path.isAbsolute(relative);
-  })) {
+  if (!allowedPrefixes.some((prefix) => isPathInside(resolved, prefix))) {
     throw new Error(
-      `Database directory "${resolved}" is outside the project root and home directory. ` +
-      `Set SPEC_KIT_DB_DIR to a path within your project or home directory.`
+      `Database directory "${resolved}" is outside the allowed project, home, and temporary directories. ` +
+      `Set SPEC_KIT_DB_DIR to a path within one of those boundaries.`
     );
   }
 
@@ -80,10 +94,19 @@ export function resolveDatabasePaths(): DatabasePaths {
   };
 }
 
-const resolvedDatabasePaths = resolveDatabasePaths();
-export const DATABASE_DIR: string = resolvedDatabasePaths.databaseDir;
-export const DATABASE_PATH: string = resolvedDatabasePaths.databasePath;
-export const DB_UPDATED_FILE: string = resolvedDatabasePaths.dbUpdatedFile;
+export let DATABASE_DIR: string;
+export let DATABASE_PATH: string;
+export let DB_UPDATED_FILE: string;
+
+export function resolveDatabasePaths(): DatabasePaths {
+  const resolvedDatabasePaths = computeDatabasePaths();
+  DATABASE_DIR = resolvedDatabasePaths.databaseDir;
+  DATABASE_PATH = resolvedDatabasePaths.databasePath;
+  DB_UPDATED_FILE = resolvedDatabasePaths.dbUpdatedFile;
+  return resolvedDatabasePaths;
+}
+
+resolveDatabasePaths();
 
 // ────────────────────────────────────────────────────────────────
 // 3. BATCH PROCESSING CONFIGURATION 

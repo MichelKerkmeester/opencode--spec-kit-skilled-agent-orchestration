@@ -1444,10 +1444,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       if (typeof refreshGraphMetadata !== 'function') {
         throw new Error('refreshGraphMetadata export unavailable');
       }
-      const graphRefreshResult = refreshGraphMetadata(validatedSpecFolderPath, {
+      const graphRefreshOptions = {
         now: metadataSaveTimestamp,
         saveLineage: 'same_pass',
-      });
+      } as const;
+      const graphRefreshResult = refreshGraphMetadata(validatedSpecFolderPath, graphRefreshOptions);
       log(`   ${graphRefreshResult.created ? 'Created' : 'Refreshed'} ${path.basename(graphRefreshResult.filePath)}`);
     } catch (graphErr: unknown) {
       throw new Error(`[workflow] graph-metadata refresh failed: ${graphErr instanceof Error ? graphErr.message : String(graphErr)}`);

@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 
 export type SpecDocRuleName =
   | 'FRONTMATTER_MEMORY_BLOCK'
@@ -81,6 +82,11 @@ interface ParsedFrontmatter {
   continuityBlock: string | null;
   fingerprint: string | null;
 }
+
+const DEFAULT_FRONTMATTER_ALLOWLIST = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../../../scripts/lib/frontmatter-grandfather-allowlist.json',
+);
 
 const SPEC_DOC_RULE_ORDER: readonly SpecDocRuleName[] = [
   'FRONTMATTER_MEMORY_BLOCK',
@@ -355,6 +361,44 @@ function extractContinuityField(block: string | null, field: string): string | n
   return raw;
 }
 
+function isEmptyYamlScalar(value: string | null): boolean {
+  if (value === null) {
+    return true;
+  }
+  return value.trim().length === 0;
+}
+
+function isFrontmatterGrandfathered(documentPath: string): boolean {
+  const allowlistPath = process.env.SPECKIT_FRONTMATTER_ALLOWLIST ?? DEFAULT_FRONTMATTER_ALLOWLIST;
+  if (!fs.existsSync(allowlistPath)) {
+    return false;
+  }
+
+  try {
+    const parsed = JSON.parse(fs.readFileSync(allowlistPath, 'utf8')) as {
+      cutoff?: string;
+      paths?: string[];
+    };
+    const cutoff = Date.parse(parsed.cutoff ?? '');
+    if (!Number.isFinite(cutoff) || Date.now() >= cutoff) {
+      return false;
+    }
+
+    const cwd = process.cwd();
+    const candidates = new Set([
+      documentPath,
+      path.resolve(documentPath),
+      path.relative(cwd, path.resolve(documentPath)),
+    ].map((entry) => entry.replace(/\\/g, '/')));
+
+    return (parsed.paths ?? [])
+      .map((entry) => entry.replace(/\\/g, '/'))
+      .some((entry) => candidates.has(entry));
+  } catch {
+    return false;
+  }
+}
+
 function extractContinuityList(block: string | null, field: string): string[] {
   if (!block) {
     return [];
@@ -523,13 +567,21 @@ function validateFrontmatterMemoryBlock(folder: string): RuleResult {
       ['next_safe_action', nextSafeAction],
     ];
 
-    const missingFields = requiredPairs.filter(([, value]) => value === null);
+    const missingFields = requiredPairs.filter(([, value]) => isEmptyYamlScalar(value));
     if (missingFields.length > 0) {
-      diagnostics.push({
-        code: 'SPECDOC_FRONTMATTER_003',
-        severity: 'error',
-        detail: `${document.basename}: missing continuity fields ${missingFields.map(([field]) => field).join(', ')}`,
-      });
+      if (isFrontmatterGrandfathered(document.path)) {
+        diagnostics.push({
+          code: 'SPECDOC_FRONTMATTER_003',
+          severity: 'warning',
+          detail: `${document.basename}: missing continuity fields ${missingFields.map(([field]) => field).join(', ')} grandfathered until cutoff`,
+        });
+      } else {
+        diagnostics.push({
+          code: 'SPECDOC_FRONTMATTER_003',
+          severity: 'error',
+          detail: `${document.basename}: missing continuity fields ${missingFields.map(([field]) => field).join(', ')}`,
+        });
+      }
     }
 
     if (packetPointer && (!/^[a-z0-9._-]+(?:\/[a-z0-9._-]+)+\/?$/.test(packetPointer) || packetPointer.includes('..') || packetPointer.includes('\\'))) {

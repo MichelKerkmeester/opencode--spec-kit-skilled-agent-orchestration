@@ -39,9 +39,9 @@ trigger_phrases:
 
 MCP Code Mode is the mandatory execution layer for all external MCP tool calls. Instead of exposing hundreds of tool schemas directly into the AI context window, Code Mode provides a single `call_tool_chain` tool that executes TypeScript code with full access to your entire toolkit. Tools are discovered on demand and called using a consistent naming pattern, so the AI context stays small regardless of how many tools are configured.
 
-Code Mode applies to tools configured in `.utcp_config.json`: ClickUp, Figma, Webflow, Notion, Chrome DevTools, and any other external MCP servers. It does not apply to native MCP tools such as Spec Kit Memory, Sequential Thinking, or CocoIndex Code, which are called directly. This boundary is strict: using Code Mode for native tools wastes overhead, and bypassing Code Mode for external tools causes context exhaustion.
+Code Mode applies to tools configured in `.utcp_config.json`: ClickUp, Figma, Webflow, Notion, Chrome DevTools, and other external MCP servers. It does not apply to native MCP tools such as Spec Kit Memory, Sequential Thinking, CocoIndex Code, or first-class app connectors exposed directly by the active runtime. This boundary is strict: using Code Mode for native tools wastes overhead, and bypassing Code Mode for external tools causes context exhaustion.
 
-The skill covers seven native tools exposed by the Code Mode MCP server: `call_tool_chain` executes arbitrary TypeScript with tool access, `search_tools` finds relevant tools by description, `list_tools` returns all registered tool names, `tool_info` returns the TypeScript interface for a specific tool, `get_required_keys_for_tool` checks required environment variables, `register_manual` adds a server at runtime, and `deregister_manual` removes one. Together these seven tools replace what would otherwise be 200+ individual tool definitions loaded upfront.
+The core Code Mode surface is four meta-tools: `call_tool_chain` executes arbitrary TypeScript with tool access, `search_tools` finds relevant tools by description, `list_tools` returns registered tool names, and `tool_info` returns the TypeScript interface for a specific tool. Some installations also expose manual-registration helpers, but workflows should discover the live surface at runtime instead of assuming those helpers exist. Together these meta-tools replace what would otherwise be a large external-tool inventory loaded upfront.
 
 When Code Mode work hands back into a Spec Kit packet, `/spec_kit:resume` remains the canonical recovery surface. Continuity still rebuilds from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts stay supporting only.
 
@@ -254,7 +254,7 @@ Code Mode uses two separate configuration systems. Understanding the boundary be
 | `figma` | `${FIGMA_API_KEY}` | `figma_FIGMA_API_KEY` |
 | `notion` | `${NOTION_TOKEN}` | `notion_NOTION_TOKEN` |
 
-**`opencode.json`** registers the Code Mode MCP server itself as a native tool. The `UTCP_CONFIG_FILE` environment variable points to the `.utcp_config.json` path.
+**`opencode.json`** registers the Code Mode MCP server itself as a native tool. The `UTCP_CONFIG_FILE` environment variable points to the `.utcp_config.json` path. This exposes Code Mode's meta-tools only; the external tools themselves remain behind `call_tool_chain` and runtime discovery.
 
 ```json
 {
@@ -392,9 +392,9 @@ Fix: Increase the timeout parameter. Use 60s for three to five tool workflows an
 
 What you see: Code Mode fails to initialize and reports it cannot locate the configuration file.
 
-Common causes: The `UTCP_CONFIG_FILE` environment variable in `opencode.json` points to a relative path instead of an absolute path, or the file does not exist at that location.
+Common causes: The `UTCP_CONFIG_FILE` environment variable in `opencode.json` points to a relative path instead of an absolute path, the file does not exist at that location, or the active runtime is using a different MCP config file than the one being edited.
 
-Fix: Use an absolute path in the `UTCP_CONFIG_FILE` value. Verify the file exists with `ls -la /absolute/path/to/.utcp_config.json` and validate it with `cat .utcp_config.json | python3 -m json.tool`.
+Fix: Use an absolute path in the `UTCP_CONFIG_FILE` value, verify the active runtime config, and confirm the file exists with `ls -la /absolute/path/to/.utcp_config.json`. Validate JSON with `python3 -m json.tool /absolute/path/to/.utcp_config.json`.
 
 <!-- /ANCHOR:troubleshooting -->
 

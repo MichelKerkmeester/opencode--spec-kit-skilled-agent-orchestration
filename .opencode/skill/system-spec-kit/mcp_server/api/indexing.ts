@@ -14,6 +14,7 @@ import { handleMemoryIndexScan } from '../handlers/index.js';
 import { findSpecDocuments } from '../handlers/memory-index-discovery.js';
 import {
   refreshGraphMetadata as refreshGraphMetadataForResolvedFolder,
+  type GraphMetadataRefreshOptions,
   type GraphMetadataRefreshResult,
 } from '../lib/graph/graph-metadata-parser.js';
 
@@ -93,8 +94,11 @@ function resolveSpecFolderPath(specFolder: string): string {
 }
 
 /** Refreshes graph metadata for a spec folder using an explicit follow-up entry point. */
-export function refreshGraphMetadata(specFolder: string): GraphMetadataRefreshResult {
-  return refreshGraphMetadataForResolvedFolder(resolveSpecFolderPath(specFolder));
+export function refreshGraphMetadata(
+  specFolder: string,
+  options: GraphMetadataRefreshOptions = {},
+): GraphMetadataRefreshResult {
+  return refreshGraphMetadataForResolvedFolder(resolveSpecFolderPath(specFolder), options);
 }
 
 /** Reindexes canonical spec docs for a spec folder using the standard incremental scan. */

@@ -491,7 +491,7 @@ export function scoreTitleQuality(title: string | null): number {
  * @returns Score: 0 phrases=0, 1-2=0.5, 3+=1.0
  */
 export function scoreTriggerQuality(triggerPhrases: string[]): number {
-  const count = triggerPhrases.length;
+  const count = triggerPhrases.filter((phrase) => phrase.trim().length > 0).length;
   if (count === 0) return 0;
   if (count <= 2) return 0.5;
   return 1.0;

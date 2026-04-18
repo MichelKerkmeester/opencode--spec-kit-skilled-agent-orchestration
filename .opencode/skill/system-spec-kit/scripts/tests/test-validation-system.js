@@ -40,6 +40,7 @@ const RULES_DIR = path.join(SCRIPTS_DIR, 'rules');
 const FIXTURES_DIR = path.join(SCRIPTS_DIR, 'test-fixtures');
 const VALIDATOR_SCRIPT = path.join(SCRIPTS_DIR, 'spec', 'validate.sh');
 const TEMPLATES_DIR = path.join(ROOT, 'templates');
+const COMPLIANT_FIXTURE_NAME = '053-template-compliant-level2';
 
 // Test workspace for creating temporary fixtures
 const TEST_WORKSPACE = path.join(SCRIPTS_DIR, 'tests', '.validation-test-workspace');
@@ -713,7 +714,7 @@ Inner content.
       fail('Nested anchors valid', 'Nesting issue detected');
     }
 
-    // Test duplicate anchor IDs (both closed)
+    // Test duplicate anchor IDs (both closed) -- rejected to match preflight parity.
     const duplicateAnchors = `# Memory File
 
 <!-- ANCHOR:summary -->
@@ -736,10 +737,10 @@ Second summary.
       dupCounts.close++;
     }
 
-    if (dupCounts.open === dupCounts.close) {
-      pass('Duplicate anchor IDs (both closed)', `${dupCounts.open} opens, ${dupCounts.close} closes`);
+    if (dupCounts.open === dupCounts.close && dupCounts.open > 1) {
+      pass('Duplicate anchor IDs rejected', `${dupCounts.open} balanced duplicates detected`);
     } else {
-      fail('Duplicate anchor IDs (both closed)', `Mismatch: ${dupCounts.open} opens, ${dupCounts.close} closes`);
+      fail('Duplicate anchor IDs rejected', `Unexpected duplicate fixture counts: ${dupCounts.open} opens, ${dupCounts.close} closes`);
     }
 
   } catch (error) {
@@ -1219,17 +1220,17 @@ async function testExitCodeBehavior() {
       return;
     }
 
-    // Test valid fixture (should pass or warn depending on section counts)
-    const validFixture = path.join(FIXTURES_DIR, '002-valid-level1');
+    // Test compliant fixture (should pass cleanly under the live default registry)
+    const validFixture = path.join(FIXTURES_DIR, COMPLIANT_FIXTURE_NAME);
     if (dirExists(validFixture)) {
       const validResult = runValidator(validFixture);
-      if (validResult.exitCode === 0 || validResult.exitCode === 1) {
-        pass('Valid fixture: exit 0 or 1', `Exit code: ${validResult.exitCode}`);
+      if (validResult.exitCode === 0) {
+        pass('Compliant fixture: exit 0', `Exit code: ${validResult.exitCode}`);
       } else {
-        fail('Valid fixture: exit 0 or 1', `Exit code: ${validResult.exitCode}`);
+        fail('Compliant fixture: exit 0', `Exit code: ${validResult.exitCode}`);
       }
     } else {
-      skip('Valid fixture test', 'Fixture 002-valid-level1 not found');
+      skip('Compliant fixture test', `Fixture ${COMPLIANT_FIXTURE_NAME} not found`);
     }
 
     // Test empty folder fixture (should fail with exit 2)
@@ -1308,9 +1309,9 @@ async function testJsonOutputMode() {
       return;
     }
 
-    const validFixture = path.join(FIXTURES_DIR, '002-valid-level1');
+    const validFixture = path.join(FIXTURES_DIR, COMPLIANT_FIXTURE_NAME);
     if (!dirExists(validFixture)) {
-      skip('JSON output tests', 'Fixture 002-valid-level1 not found');
+      skip('JSON output tests', `Fixture ${COMPLIANT_FIXTURE_NAME} not found`);
       endSuite();
       return;
     }
@@ -1622,7 +1623,7 @@ async function testQuietMode() {
       return;
     }
 
-    const validFixture = path.join(FIXTURES_DIR, '002-valid-level1');
+    const validFixture = path.join(FIXTURES_DIR, COMPLIANT_FIXTURE_NAME);
     if (!dirExists(validFixture)) {
       skip('Quiet mode tests', 'Fixture not found');
       endSuite();

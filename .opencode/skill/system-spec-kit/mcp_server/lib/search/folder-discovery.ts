@@ -5,7 +5,13 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as crypto from 'node:crypto';
-import { mergePreserveRepair } from '../description/repair.js';
+import { mergeDescription } from '../description/description-merge.js';
+import {
+  formatDescriptionSchemaIssues,
+  perFolderDescriptionSchema,
+  pickCanonicalDescriptionFields,
+  type DescriptionKnownAuthoredOptionalFields,
+} from '../description/description-schema.js';
 import { stripYamlFrontmatter } from '../parsing/content-normalizer.js';
 
 // ───────────────────────────────────────────────────────────────
@@ -43,6 +49,10 @@ export interface PerFolderDescription extends FolderDescription {
   parentChain: string[];        // Ancestor folder names
   memorySequence: number;       // Monotonic counter per save
   memoryNameHistory: string[];  // Last 20 slugs (ring buffer)
+  title?: string;
+  type?: string;
+  trigger_phrases?: string[];
+  path?: string;
 }
 
 export type LoadResult =
@@ -144,35 +154,24 @@ function getPerFolderDescriptionIssues(parsed: unknown): {
   issues: string[];
   partial?: Record<string, unknown>;
 } {
+  const validation = perFolderDescriptionSchema.safeParse(parsed);
+  if (validation.success) {
+    return {
+      issues: [],
+      partial: validation.data as Record<string, unknown>,
+    };
+  }
+
   if (!isRecord(parsed)) {
     return {
       issues: ['top-level JSON value must be an object'],
     };
   }
 
-  const issues: string[] = [];
-
-  if (typeof parsed.specFolder !== 'string') issues.push('specFolder must be a string');
-  if (typeof parsed.lastUpdated !== 'string') issues.push('lastUpdated must be a string');
-  if (typeof parsed.description !== 'string') issues.push('description must be a string');
-  if (!isStringArray(parsed.keywords)) issues.push('keywords must be a string[]');
-  if (parsed.specId !== undefined && typeof parsed.specId !== 'string') {
-    issues.push('specId must be a string when present');
-  }
-  if (parsed.folderSlug !== undefined && typeof parsed.folderSlug !== 'string') {
-    issues.push('folderSlug must be a string when present');
-  }
-  if (parsed.parentChain !== undefined && !isStringArray(parsed.parentChain)) {
-    issues.push('parentChain must be a string[] when present');
-  }
-  if (parsed.memorySequence !== undefined && typeof parsed.memorySequence !== 'number') {
-    issues.push('memorySequence must be a number when present');
-  }
-  if (parsed.memoryNameHistory !== undefined && !isStringArray(parsed.memoryNameHistory)) {
-    issues.push('memoryNameHistory must be a string[] when present');
-  }
-
-  return { issues, partial: parsed };
+  return {
+    issues: formatDescriptionSchemaIssues(validation.error.issues),
+    partial: parsed,
+  };
 }
 
 function normalizePerFolderDescription(
@@ -198,19 +197,9 @@ function normalizePerFolderDescription(
   return normalized as unknown as PerFolderDescription;
 }
 
-function buildCanonicalDescriptionOverrides(
+function buildCanonicalDescriptionFields(
   desc: PerFolderDescription,
-): Pick<
-  PerFolderDescription,
-  | 'specFolder'
-  | 'description'
-  | 'keywords'
-  | 'lastUpdated'
-  | 'specId'
-  | 'folderSlug'
-  | 'parentChain'
-  | 'memorySequence'
-> {
+): ReturnType<typeof pickCanonicalDescriptionFields> {
   return {
     specFolder: desc.specFolder,
     description: desc.description,
@@ -219,8 +208,20 @@ function buildCanonicalDescriptionOverrides(
     specId: desc.specId,
     folderSlug: desc.folderSlug,
     parentChain: desc.parentChain,
-    memorySequence: desc.memorySequence,
   };
+}
+
+function pickIncomingAuthoredOptionalFields(
+  desc: PerFolderDescription,
+): DescriptionKnownAuthoredOptionalFields {
+  const authored: DescriptionKnownAuthoredOptionalFields = {};
+
+  if (desc.title !== undefined) authored.title = desc.title;
+  if (desc.type !== undefined) authored.type = desc.type;
+  if (desc.trigger_phrases !== undefined) authored.trigger_phrases = desc.trigger_phrases;
+  if (desc.path !== undefined) authored.path = desc.path;
+
+  return authored;
 }
 
 function getSchemaErrorHistory(
@@ -236,21 +237,23 @@ function getDescriptionWritePayload(
   desc: PerFolderDescription,
   existing: LoadResult,
 ): Record<string, unknown> {
-  const canonicalOverrides = buildCanonicalDescriptionOverrides(desc);
+  const canonical = buildCanonicalDescriptionFields(desc);
+  const incoming = {
+    memorySequence: desc.memorySequence,
+    memoryNameHistory: desc.memoryNameHistory,
+    ...pickIncomingAuthoredOptionalFields(desc),
+  };
 
   if (existing.ok) {
-    return {
-      ...existing.data,
-      ...canonicalOverrides,
-      memoryNameHistory: desc.memoryNameHistory,
-    };
+    return mergeDescription(
+      existing.data as unknown as Record<string, unknown>,
+      canonical,
+      incoming,
+    ).merged;
   }
 
   if (existing.reason === 'schema_error' && getRepairMergeSafe() && existing.partial) {
-    const repaired = mergePreserveRepair({
-      partial: existing.partial,
-      canonicalOverrides: canonicalOverrides as Record<string, unknown> & typeof canonicalOverrides,
-    });
+    const repaired = mergeDescription(existing.partial, canonical, incoming);
     return {
       ...repaired.merged,
       memoryNameHistory: getSchemaErrorHistory(existing.partial, desc.memoryNameHistory),

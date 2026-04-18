@@ -18,9 +18,14 @@ import { mergeCompactBrief } from '../../lib/code-graph/compact-merger.js';
 import type { MergeInput } from '../../lib/code-graph/compact-merger.js';
 import { autoSurfaceAtCompaction } from '../../hooks/memory-surface.js';
 import {
+  createSharedPayloadEnvelope,
   createPreMergeSelectionMetadata,
   type SharedPayloadEnvelope,
 } from '../../lib/context/shared-payload.js';
+import {
+  CANONICAL_FOLD_VERSION,
+  getUnicodeRuntimeFingerprint,
+} from '@spec-kit/shared/unicode-normalization';
 
 const COMPACT_FEEDBACK_GUARDS = [
   /^\s*\[SOURCE:\s*hook-cache/i,
@@ -390,10 +395,11 @@ async function main(): Promise<void> {
     const mergedContext = await buildMergedContext(transcriptLines);
     payload = truncateToTokenBudget(mergedContext, COMPACTION_TOKEN_BUDGET);
     const payloadContract = await buildMergedPayloadContract(transcriptLines);
+    const timestamp = new Date().toISOString();
     const updateResult = updateState(sessionId, {
       pendingCompactPrime: {
         payload,
-        cachedAt: new Date().toISOString(),
+        cachedAt: timestamp,
         payloadContract: {
           ...payloadContract,
           provenance: {
@@ -401,6 +407,8 @@ async function main(): Promise<void> {
             producer: 'hook_cache',
             sourceSurface: 'compact-cache',
             trustState: 'cached',
+            sanitizerVersion: CANONICAL_FOLD_VERSION,
+            runtimeFingerprint: getUnicodeRuntimeFingerprint(),
           },
         },
       },
@@ -417,11 +425,31 @@ async function main(): Promise<void> {
     payload = truncateToTokenBudget(rawContext, COMPACTION_TOKEN_BUDGET);
   }
 
+  const timestamp = new Date().toISOString();
   const updateResult = updateState(sessionId, {
     pendingCompactPrime: {
       payload,
-      cachedAt: new Date().toISOString(),
-      payloadContract: null,
+      cachedAt: timestamp,
+      payloadContract: createSharedPayloadEnvelope({
+        kind: 'compaction',
+        sections: [{
+          key: 'legacy-compact-context',
+          title: 'Legacy Compact Context',
+          content: payload,
+          source: 'session',
+        }],
+        summary: 'Legacy compaction cache assembled after merge fallback',
+        provenance: {
+          producer: 'hook_cache',
+          sourceSurface: 'compact-cache',
+          trustState: 'cached',
+          generatedAt: timestamp,
+          lastUpdated: null,
+          sourceRefs: ['compact-inject', 'hook-state'],
+          sanitizerVersion: CANONICAL_FOLD_VERSION,
+          runtimeFingerprint: getUnicodeRuntimeFingerprint(),
+        },
+      }),
     },
   });
   if (!updateResult.persisted) {

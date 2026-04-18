@@ -57,12 +57,8 @@ export async function handleCoverageGraphStatus(
     let momentum = null;
 
     if (stats.totalNodes > 0) {
-      try {
-        signals = computeScopedSignals(ns);
-        momentum = computeScopedMomentum(ns);
-      } catch {
-        // Non-blocking: continue with null signals
-      }
+      signals = computeScopedSignals(ns);
+      momentum = computeScopedMomentum(ns);
     }
 
     return {

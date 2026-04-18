@@ -22,6 +22,10 @@ import {
   createSharedPayloadEnvelope,
 } from '../../lib/context/shared-payload.js';
 import { wrapRecoveredCompactPayload } from '../shared-provenance.js';
+import {
+  CANONICAL_FOLD_VERSION,
+  getUnicodeRuntimeFingerprint,
+} from '@spec-kit/shared/unicode-normalization';
 
 const IS_CLI_ENTRY = process.argv[1]
   ? resolve(process.argv[1]) === fileURLToPath(import.meta.url)
@@ -264,6 +268,8 @@ export function cacheCompactContext(input: CopilotHookInput | null): {
           generatedAt: timestamp,
           lastUpdated: null,
           sourceRefs: ['copilot-compact-cache', 'hook-state'],
+          sanitizerVersion: CANONICAL_FOLD_VERSION,
+          runtimeFingerprint: getUnicodeRuntimeFingerprint(),
         },
         selection,
       }),

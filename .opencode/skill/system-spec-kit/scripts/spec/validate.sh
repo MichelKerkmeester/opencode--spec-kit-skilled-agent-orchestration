@@ -19,9 +19,12 @@ fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly RULES_DIR="$SCRIPT_DIR/../rules"
+readonly VALIDATOR_REGISTRY_JSON="$SCRIPT_DIR/../lib/validator-registry.json"
 readonly SPEC_DOC_STRUCTURE_TS="$SCRIPT_DIR/../../mcp_server/lib/validation/spec-doc-structure.ts"
 readonly CONTINUITY_FRESHNESS_TS="$SCRIPT_DIR/../validation/continuity-freshness.ts"
+readonly CONTINUITY_FRESHNESS_JS="$SCRIPT_DIR/../dist/validation/continuity-freshness.js"
 readonly EVIDENCE_MARKER_LINT_TS="$SCRIPT_DIR/../validation/evidence-marker-lint.ts"
+readonly EVIDENCE_MARKER_LINT_JS="$SCRIPT_DIR/../dist/validation/evidence-marker-lint.js"
 readonly VERSION="2.0.0"
 
 # Source shared libraries
@@ -81,7 +84,11 @@ RULE_SEVERITY_GRAPH_METADATA_PRESENT="warn" RULE_SEVERITY_GRAPH_METADATA="warn"
 # 4. HELP & ARGUMENT PARSING
 # ───────────────────────────────────────────────────────────────
 
-show_help() { cat << 'EOF'
+show_help() {
+    local registry_rules=""
+    registry_rules=$(validator_registry_query help 2>/dev/null || true)
+    [[ -z "$registry_rules" ]] && registry_rules="RULES: registry unavailable at $VALIDATOR_REGISTRY_JSON"
+    cat << EOF
 validate-spec.sh - Spec Folder Validation Orchestrator (v2.0)
 
 USAGE: ./validate-spec.sh <folder-path> [OPTIONS]
@@ -95,11 +102,7 @@ OPTIONS:
 
 EXIT CODES: 0=pass, 1=warnings, 2=errors
 
-RULES: FILE_EXISTS, PLACEHOLDER_FILLED, SECTIONS_PRESENT, LEVEL_DECLARED,
-       PRIORITY_TAGS, EVIDENCE_CITED, ANCHORS_VALID, FRONTMATTER_MEMORY_BLOCK,
-       MERGE_LEGALITY, SPEC_DOC_SUFFICIENCY, CROSS_ANCHOR_CONTAMINATION,
-       POST_SAVE_FINGERPRINT, TOC_POLICY, PHASE_LINKS, SPEC_DOC_INTEGRITY,
-       GRAPH_METADATA_PRESENT, NORMALIZER_LINT
+$registry_rules
 
 LEVELS: 1=spec+plan+tasks+impl-summary*, 2=+checklist, 3=+decision-record
         *impl-summary required after tasks completed
@@ -318,81 +321,121 @@ log_detail() { ! $JSON_MODE && ! $QUIET_MODE && printf "    - %s\n" "$1"; true; 
 # 8. RULE RESOLUTION
 # ───────────────────────────────────────────────────────────────
 
-get_rule_severity() {
-    case "$1" in
-        FILE_EXISTS|FILES|PLACEHOLDER_FILLED|PLACEHOLDERS|ANCHORS_VALID|ANCHORS|TOC_POLICY|TEMPLATE_HEADERS|NORMALIZER_LINT) echo "error" ;;
-        SECTIONS_PRESENT|SECTIONS|PRIORITY_TAGS|EVIDENCE_CITED|EVIDENCE|PRIORITY|PHASE_LINKS|LINKS_VALID|LINKS|GRAPH_METADATA_PRESENT|GRAPH_METADATA) echo "warn" ;;
-        SPEC_DOC_INTEGRITY|DOC_INTEGRITY) echo "error" ;;
-        FRONTMATTER_MEMORY_BLOCK|MERGE_LEGALITY|SPEC_DOC_SUFFICIENCY|CROSS_ANCHOR_CONTAMINATION|POST_SAVE_FINGERPRINT) echo "error" ;;
-        LEVEL_DECLARED|LEVEL) echo "info" ;;
-        *) echo "error" ;;
-    esac
+validator_registry_query() {
+    local mode="$1"
+    local value="${2:-}"
+
+    if [[ ! -f "$VALIDATOR_REGISTRY_JSON" ]]; then
+        case "$mode" in
+            canonical) echo "$value" | tr '[:lower:]-' '[:upper:]_' ;;
+            severity) echo "error" ;;
+            *) return 1 ;;
+        esac
+        return 0
+    fi
+
+    node -e '
+const fs = require("fs");
+const [registryPath, mode, value = ""] = process.argv.slice(1);
+const rules = JSON.parse(fs.readFileSync(registryPath, "utf8"));
+const normalize = (input) => String(input).trim().replace(/-/g, "_").toUpperCase();
+const findRule = (input) => {
+  const normalized = normalize(input);
+  return rules.find((rule) => {
+    if (rule.rule_id === normalized) return true;
+    return (rule.aliases || []).map(normalize).includes(normalized);
+  });
+};
+const rule = findRule(value);
+
+if (mode === "canonical") {
+  process.stdout.write(rule ? rule.rule_id : normalize(value));
+} else if (mode === "severity") {
+  process.stdout.write(rule ? rule.severity : "error");
+} else if (mode === "script") {
+  process.stdout.write(rule ? rule.script_path : "");
+} else if (mode === "default_rules") {
+  process.stdout.write(
+    rules
+      .filter((entry) => entry.strict_only !== true && entry.severity !== "skip")
+      .map((entry) => entry.rule_id)
+      .join("\n")
+  );
+} else if (mode === "help") {
+  const labels = {
+    authored_template: "authored_template",
+    operational_runtime: "operational_runtime",
+  };
+  const lines = ["RULES BY CATEGORY:"];
+  for (const category of ["authored_template", "operational_runtime"]) {
+    lines.push(`  ${labels[category]}:`);
+    for (const entry of rules.filter((item) => item.category === category)) {
+      const suffix = entry.strict_only ? " strict-only" : "";
+      lines.push(`    ${entry.rule_id} [${entry.severity}${suffix}] - ${entry.description}`);
+    }
+  }
+  process.stdout.write(lines.join("\n"));
+} else {
+  process.exitCode = 1;
 }
-should_run_rule() { [[ "$(get_rule_severity "$1")" != "skip" ]]; }
+' "$VALIDATOR_REGISTRY_JSON" "$mode" "$value"
+}
+
+get_rule_severity() {
+    validator_registry_query severity "$1"
+}
+should_run_rule() {
+    local canonical_rule
+    canonical_rule=$(canonicalize_rule_name "$1")
+    if [[ ${#RULE_ORDER[@]} -gt 0 ]]; then
+        local selected=""
+        for selected in "${RULE_ORDER[@]}"; do
+            [[ "$selected" == "$canonical_rule" ]] && return 0
+        done
+        return 1
+    fi
+    [[ "$(get_rule_severity "$canonical_rule")" != "skip" ]]
+}
 
 # Map rule name to script filename
 canonicalize_rule_name() {
-    local raw="$1"
-    local normalized
-    normalized=$(echo "$raw" | tr '[:lower:]-' '[:upper:]_')
-    case "$normalized" in
-        FILES|FILES_PRESENT|FILES_EXISTS|FILE_EXISTS) echo "FILE_EXISTS" ;;
-        PLACEHOLDERS|PLACEHOLDER|PLACEHOLDER_FILLED|PLACEHOLDERS_FILLED) echo "PLACEHOLDER_FILLED" ;;
-        SECTIONS|SECTIONS_PRESENT) echo "SECTIONS_PRESENT" ;;
-        LEVEL|LEVEL_DECLARED) echo "LEVEL_DECLARED" ;;
-        PRIORITY|PRIORITY_TAGS) echo "PRIORITY_TAGS" ;;
-        EVIDENCE|EVIDENCE_CITED) echo "EVIDENCE_CITED" ;;
-        ANCHOR|ANCHORS|ANCHOR_MATCHED|ANCHORS_VALID) echo "ANCHORS_VALID" ;;
-        MEMORY_BLOCK|FRONTMATTER_MEMORY_BLOCK|FRONTMATTER_MEMORY) echo "FRONTMATTER_MEMORY_BLOCK" ;;
-        MERGE|MERGE_LEGALITY) echo "MERGE_LEGALITY" ;;
-        SUFFICIENCY|SPEC_DOC_SUFFICIENCY|DOC_SUFFICIENCY) echo "SPEC_DOC_SUFFICIENCY" ;;
-        CONTAMINATION|CROSS_ANCHOR_CONTAMINATION|CROSS_ANCHOR) echo "CROSS_ANCHOR_CONTAMINATION" ;;
-        FINGERPRINT|POST_SAVE_FINGERPRINT|POST_SAVE) echo "POST_SAVE_FINGERPRINT" ;;
-        TOC|TOC_POLICY) echo "TOC_POLICY" ;;
-        PHASE_LINKS) echo "PHASE_LINKS" ;;
-        LINKS|LINKS_VALID) echo "LINKS_VALID" ;;
-        AI_PROTOCOL|AI_PROTOCOLS) echo "AI_PROTOCOLS" ;;
-        COMPLEXITY|COMPLEXITY_MATCH) echo "COMPLEXITY_MATCH" ;;
-        FOLDER_NAMING) echo "FOLDER_NAMING" ;;
-        FRONTMATTER|FRONTMATTER_VALID) echo "FRONTMATTER_VALID" ;;
-        LEVEL_MATCH) echo "LEVEL_MATCH" ;;
-        GRAPH_METADATA|GRAPH_METADATA_PRESENT) echo "GRAPH_METADATA_PRESENT" ;;
-        NORMALIZER|NORMALIZER_LINT) echo "NORMALIZER_LINT" ;;
-        SECTION_COUNTS) echo "SECTION_COUNTS" ;;
-        SPEC_DOC_INTEGRITY|DOC_INTEGRITY) echo "SPEC_DOC_INTEGRITY" ;;
-        TEMPLATE_SOURCE) echo "TEMPLATE_SOURCE" ;;
-        TEMPLATE_HEADERS) echo "TEMPLATE_HEADERS" ;;
-        *) echo "$normalized" ;;
-    esac
+    validator_registry_query canonical "$1"
 }
 
 rule_name_to_script() {
     local rule="$1"
-    case "$rule" in
-        FILE_EXISTS) echo "files" ;;
-        PLACEHOLDER_FILLED) echo "placeholders" ;;
-        SECTIONS_PRESENT) echo "sections" ;;
-        LEVEL_DECLARED) echo "level" ;;
-        PRIORITY_TAGS) echo "priority-tags" ;;
-        EVIDENCE_CITED) echo "evidence" ;;
-        ANCHORS_VALID) echo "anchors" ;;
-        FRONTMATTER_MEMORY_BLOCK|MERGE_LEGALITY|SPEC_DOC_SUFFICIENCY|CROSS_ANCHOR_CONTAMINATION|POST_SAVE_FINGERPRINT) echo "TS_RULE:$rule" ;;
-        TOC_POLICY) echo "toc-policy" ;;
-        PHASE_LINKS) echo "phase-links" ;;
-        AI_PROTOCOLS) echo "ai-protocols" ;;
-        COMPLEXITY_MATCH) echo "complexity" ;;
-        FOLDER_NAMING) echo "folder-naming" ;;
-        FRONTMATTER_VALID) echo "frontmatter" ;;
-        LEVEL_MATCH) echo "level-match" ;;
-        GRAPH_METADATA_PRESENT) echo "graph-metadata" ;;
-        NORMALIZER_LINT) echo "normalizer-lint" ;;
-        LINKS_VALID) echo "links" ;;
-        SECTION_COUNTS) echo "section-counts" ;;
-        TEMPLATE_SOURCE) echo "template-source" ;;
-        SPEC_DOC_INTEGRITY) echo "spec-doc-integrity" ;;
-        TEMPLATE_HEADERS) echo "template-headers" ;;
-        *) echo "" ;;
-    esac
+    validator_registry_query script "$rule"
+}
+
+emit_rule_script() {
+    local rule_name="$1"
+    local canonical_rule
+    canonical_rule=$(canonicalize_rule_name "$rule_name")
+
+    local registry_path
+    registry_path=$(rule_name_to_script "$canonical_rule")
+    [[ -z "$registry_path" ]] && return 0
+
+    if [[ "$registry_path" == ts:* ]]; then
+        echo "TS_RULE:$canonical_rule"
+        return 0
+    fi
+
+    # Strict-only validation scripts are executed by run_strict_validators().
+    if [[ "$registry_path" == validation/* ]]; then
+        return 0
+    fi
+
+    local script="$SCRIPT_DIR/../$registry_path"
+    if [[ -f "$script" ]]; then
+        if [[ "$(basename "$script")" == "check-canonical-save.sh" ]]; then
+            echo "SCRIPT_RULE:$canonical_rule:$script"
+        else
+            echo "$script"
+        fi
+    else
+        echo "Warning: Rule script not found: $registry_path (from rule '$canonical_rule')" >&2
+    fi
 }
 
 get_rule_scripts() {
@@ -400,29 +443,12 @@ get_rule_scripts() {
     # If RULE_ORDER is set, use that order; otherwise alphabetical
     if [[ ${#RULE_ORDER[@]} -gt 0 ]]; then
         for rule_name in "${RULE_ORDER[@]}"; do
-            local script_name; script_name=$(rule_name_to_script "$rule_name")
-            [[ -z "$script_name" ]] && continue
-            if [[ "$script_name" == TS_RULE:* ]]; then
-                echo "$script_name"
-                continue
-            fi
-            local script="$RULES_DIR/check-${script_name}.sh"
-            if [[ -f "$script" ]]; then
-                echo "$script"
-            else
-                echo "Warning: Rule script not found: check-${script_name}.sh (from rule '$rule_name')" >&2
-            fi
+            emit_rule_script "$rule_name"
         done
     else
-        for script in "$RULES_DIR"/check-*.sh; do
-            [[ -f "$script" ]] && echo "$script"
-            if [[ "$(basename "$script")" == "check-anchors.sh" ]]; then
-                echo "TS_RULE:FRONTMATTER_MEMORY_BLOCK"
-                echo "TS_RULE:MERGE_LEGALITY"
-                echo "TS_RULE:SPEC_DOC_SUFFICIENCY"
-                echo "TS_RULE:CROSS_ANCHOR_CONTAMINATION"
-                echo "TS_RULE:POST_SAVE_FINGERPRINT"
-            fi
+        validator_registry_query default_rules | while IFS= read -r rule_name; do
+            [[ -z "$rule_name" ]] && continue
+            emit_rule_script "$rule_name"
         done
     fi
 }
@@ -528,6 +554,42 @@ run_all_rules() {
             fi
             continue
         fi
+        if [[ "$rule_script" == SCRIPT_RULE:* ]]; then
+            local script_payload="${rule_script#SCRIPT_RULE:}"
+            local active_rule_name="${script_payload%%:*}"
+            local active_rule_script="${script_payload#*:}"
+            should_run_rule "$active_rule_name" || continue
+            [[ ! -f "$active_rule_script" ]] && continue
+            local start_ms; start_ms=$(get_time_ms)
+            RULE_NAME="" RULE_STATUS="pass" RULE_MESSAGE="" RULE_DETAILS=() RULE_REMEDIATION=""
+            SPECKIT_CANONICAL_SAVE_RULE="$active_rule_name"
+            source "$active_rule_script"
+            type run_check >/dev/null 2>&1 || continue
+            run_check "$folder" "$level" "$active_rule_name"
+            unset SPECKIT_CANONICAL_SAVE_RULE
+            local end_ms; end_ms=$(get_time_ms)
+            local elapsed_ms=$(( end_ms - start_ms ))
+            local timing_str=""
+            if $VERBOSE && ! $JSON_MODE && ! $QUIET_MODE; then
+                if [[ $elapsed_ms -lt 1000 ]]; then
+                    timing_str=" [${elapsed_ms}ms]"
+                else
+                    timing_str=" [$((elapsed_ms / 1000)).$((elapsed_ms % 1000 / 100))s]"
+                fi
+            fi
+            local sev; sev="$(get_rule_severity "$active_rule_name")"
+            case "${RULE_STATUS:-pass}" in
+                pass) log_pass "${RULE_NAME:-$active_rule_name}" "${RULE_MESSAGE:-OK}${timing_str}" ;;
+                fail) case "$sev" in error) log_error "${RULE_NAME:-$active_rule_name}" "${RULE_MESSAGE:-Failed}${timing_str}" ;; warn) log_warn "${RULE_NAME:-$active_rule_name}" "${RULE_MESSAGE:-Warning}${timing_str}" ;; info) $VERBOSE && log_info "${RULE_NAME:-$active_rule_name}" "${RULE_MESSAGE:-Info}${timing_str}" ;; esac ;;
+                warn) log_warn "${RULE_NAME:-$active_rule_name}" "${RULE_MESSAGE:-Warning}${timing_str}" ;;
+                info) $VERBOSE && log_info "${RULE_NAME:-$active_rule_name}" "${RULE_MESSAGE:-Info}${timing_str}" ;;
+            esac
+            if [[ -n "${RULE_DETAILS[*]-}" ]]; then
+                for d in "${RULE_DETAILS[@]}"; do log_detail "$d"; done
+            fi
+            unset -f run_check 2>/dev/null || true
+            continue
+        fi
         [[ ! -f "$rule_script" ]] && continue
         # P1-14 FIX: Validate rule script before sourcing
         # Ensure it's a regular file with .sh extension within RULES_DIR
@@ -592,16 +654,19 @@ run_continuity_freshness_check() {
     local details=()
     local tsx_bin="$SCRIPT_DIR/../node_modules/.bin/tsx"
 
-    if [[ ! -f "$CONTINUITY_FRESHNESS_TS" ]]; then
-        log_warn "$rule_name" "Strict-mode validator missing: $CONTINUITY_FRESHNESS_TS"
-        return 0
+    if [[ -f "$CONTINUITY_FRESHNESS_JS" ]]; then
+        output=$(node "$CONTINUITY_FRESHNESS_JS" --folder "$folder" 2>&1) || exit_code=$?
+    else
+        if [[ ! -f "$CONTINUITY_FRESHNESS_TS" ]]; then
+            log_warn "$rule_name" "Strict-mode validator missing: $CONTINUITY_FRESHNESS_TS"
+            return 0
+        fi
+        if [[ ! -x "$tsx_bin" ]]; then
+            log_error "$rule_name" "tsx runtime missing: $tsx_bin"
+            return 0
+        fi
+        output=$("$tsx_bin" "$CONTINUITY_FRESHNESS_TS" --folder "$folder" 2>&1) || exit_code=$?
     fi
-    if [[ ! -x "$tsx_bin" ]]; then
-        log_error "$rule_name" "tsx runtime missing: $tsx_bin"
-        return 0
-    fi
-
-    output=$("$tsx_bin" "$CONTINUITY_FRESHNESS_TS" --folder "$folder" 2>&1) || exit_code=$?
     if [[ $exit_code -gt 1 ]]; then
         log_error "$rule_name" "Continuity freshness validator failed to execute"
         log_detail "$output"
@@ -645,16 +710,19 @@ run_evidence_marker_lint_check() {
     local details=()
     local tsx_bin="$SCRIPT_DIR/../node_modules/.bin/tsx"
 
-    if [[ ! -f "$EVIDENCE_MARKER_LINT_TS" ]]; then
-        log_warn "$rule_name" "Strict-mode validator missing: $EVIDENCE_MARKER_LINT_TS"
-        return 0
+    if [[ -f "$EVIDENCE_MARKER_LINT_JS" ]]; then
+        output=$(node "$EVIDENCE_MARKER_LINT_JS" --folder "$folder" --strict 2>&1) || exit_code=$?
+    else
+        if [[ ! -f "$EVIDENCE_MARKER_LINT_TS" ]]; then
+            log_warn "$rule_name" "Strict-mode validator missing: $EVIDENCE_MARKER_LINT_TS"
+            return 0
+        fi
+        if [[ ! -x "$tsx_bin" ]]; then
+            log_error "$rule_name" "tsx runtime missing: $tsx_bin"
+            return 0
+        fi
+        output=$("$tsx_bin" "$EVIDENCE_MARKER_LINT_TS" --folder "$folder" --strict 2>&1) || exit_code=$?
     fi
-    if [[ ! -x "$tsx_bin" ]]; then
-        log_error "$rule_name" "tsx runtime missing: $tsx_bin"
-        return 0
-    fi
-
-    output=$("$tsx_bin" "$EVIDENCE_MARKER_LINT_TS" --folder "$folder" --strict 2>&1) || exit_code=$?
     if [[ $exit_code -gt 1 ]]; then
         log_error "$rule_name" "Evidence marker lint validator failed to execute"
         log_detail "$output"
@@ -691,8 +759,9 @@ run_evidence_marker_lint_check() {
 run_strict_validators() {
     local folder="$1"
     $STRICT_MODE || return 0
-    run_continuity_freshness_check "$folder"
-    run_evidence_marker_lint_check "$folder"
+    should_run_rule "CONTINUITY_FRESHNESS" && run_continuity_freshness_check "$folder"
+    should_run_rule "EVIDENCE_MARKER_LINT" && run_evidence_marker_lint_check "$folder"
+    return 0
 }
 
 # ───────────────────────────────────────────────────────────────

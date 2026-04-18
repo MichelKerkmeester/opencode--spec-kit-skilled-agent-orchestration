@@ -235,6 +235,19 @@ describe('T-W1-CNS-04 refreshGraphMetadata runs on every canonical save', () => 
     // suppresses this refresh. Second invocation must advance the stamp.
     expect(secondStamp > firstStamp).toBe(true);
   });
+
+  it('persists same_pass lineage when the canonical-save path requests it', () => {
+    const refreshed = refreshGraphMetadata(tempSpecFolder, {
+      now: '2026-04-18T12:00:00Z',
+      saveLineage: 'same_pass',
+    });
+
+    expect(refreshed.metadata.derived.last_save_at).toBe('2026-04-18T12:00:00Z');
+    expect(refreshed.metadata.derived.save_lineage).toBe('same_pass');
+
+    const saved = loadGraphMetadata(refreshed.filePath);
+    expect(saved?.derived.save_lineage).toBe('same_pass');
+  });
 });
 
 // TODO(017-wave-a): full runWorkflow integration harness.

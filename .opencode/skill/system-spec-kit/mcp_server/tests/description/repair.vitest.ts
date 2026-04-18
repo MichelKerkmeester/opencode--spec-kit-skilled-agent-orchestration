@@ -25,8 +25,8 @@ describe('mergePreserveRepair', () => {
     });
     expect(result.overriddenKeys).toEqual([
       'specFolder',
-      'description',
       'lastUpdated',
+      'description',
     ]);
     expect(result.preservedKeys).toEqual(['title', 'contextType']);
   });

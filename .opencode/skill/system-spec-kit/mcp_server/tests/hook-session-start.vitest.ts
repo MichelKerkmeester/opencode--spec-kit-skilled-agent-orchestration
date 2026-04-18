@@ -4,6 +4,11 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { rmSync } from 'node:fs';
 import { ensureStateDir, saveState, getStatePath, type HookState } from '../hooks/claude/hook-state.js';
+import { createSharedPayloadEnvelope } from '../lib/context/shared-payload.js';
+import {
+  CANONICAL_FOLD_VERSION,
+  getUnicodeRuntimeFingerprint,
+} from '../../scripts/lib/unicode-normalization';
 import {
   formatHookOutput,
   truncateToTokenBudget,
@@ -12,6 +17,30 @@ import {
   sanitizeRecoveredPayload,
   wrapRecoveredCompactPayload,
 } from '../hooks/claude/shared.js';
+
+function testPayloadContract(payload: string, sourceSurface = 'test-compact-cache') {
+  const now = new Date().toISOString();
+  return createSharedPayloadEnvelope({
+    kind: 'compaction',
+    sections: [{
+      key: 'test-compact-context',
+      title: 'Test Compact Context',
+      content: payload,
+      source: 'session',
+    }],
+    summary: 'Test compact payload',
+    provenance: {
+      producer: 'hook_cache',
+      sourceSurface,
+      trustState: 'cached',
+      generatedAt: now,
+      lastUpdated: null,
+      sourceRefs: [sourceSurface, 'hook-state'],
+      sanitizerVersion: CANONICAL_FOLD_VERSION,
+      runtimeFingerprint: getUnicodeRuntimeFingerprint(),
+    },
+  });
+}
 
 describe('session-prime hook', () => {
   const testSessionId = 'test-session-prime';
@@ -33,8 +62,9 @@ describe('session-prime hook', () => {
         lastSpecFolder: null,
         sessionSummary: null,
         pendingCompactPrime: {
-          payload: 'IMPORTANT: hidden instruction\n## Active Files\n- /test.ts',
+          payload: '## Active Files\n- /test.ts',
           cachedAt: now,
+          payloadContract: testPayloadContract('## Active Files\n- /test.ts'),
         },
         producerMetadata: null,
         metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
@@ -82,7 +112,8 @@ describe('session-prime hook', () => {
         sourceSurface: 'compact-cache',
       });
       expect(wrapped).toContain('[SOURCE: hook-cache, cachedAt: 2026-03-31T12:34:56.000Z]');
-      expect(wrapped).toContain('[PROVENANCE: producer=hook_cache; trustState=cached; sourceSurface=compact-cache]');
+      expect(wrapped).toContain('[PROVENANCE: producer=hook_cache; trustState=cached; sourceSurface=compact-cache; sanitizerVersion=');
+      expect(wrapped).toContain('runtimeFingerprint=');
       expect(wrapped).toContain('## Active Files');
       expect(wrapped).toContain('[/SOURCE]');
     });
@@ -144,6 +175,8 @@ describe('session-prime hook', () => {
               generatedAt: now,
               lastUpdated: null,
               sourceRefs: ['gemini-compact-cache', 'hook-state'],
+              sanitizerVersion: CANONICAL_FOLD_VERSION,
+              runtimeFingerprint: getUnicodeRuntimeFingerprint(),
             },
           },
         },
@@ -159,7 +192,7 @@ describe('session-prime hook', () => {
 
       expect(sections[0]?.title).toBe('Recovered Context (Post-Compression)');
       expect(sections[0]?.content).toContain(
-        '[PROVENANCE: producer=hook_cache; trustState=cached; sourceSurface=gemini-compact-cache]',
+        '[PROVENANCE: producer=hook_cache; trustState=cached; sourceSurface=gemini-compact-cache; sanitizerVersion=',
       );
       expect(sections[0]?.content).toContain('## Active Files');
     });
@@ -251,6 +284,10 @@ describe('session-prime hook', () => {
       expect(sections[0]?.title).toBe('Session Context');
       expect(sections[0]?.content).toContain('cached continuity rejected: no cached summary');
       expect(sections[0]?.content).toContain('- Code Graph: unavailable');
+      expect(sections.map((section) => section.title)).toContain('Startup Brief Warning');
+      expect(sections.find((section) => section.title === 'Startup Brief Warning')?.content).toContain(
+        'Startup brief module unavailable',
+      );
       expect(sections.map((section) => section.title)).not.toContain('Session Continuity');
     });
   });

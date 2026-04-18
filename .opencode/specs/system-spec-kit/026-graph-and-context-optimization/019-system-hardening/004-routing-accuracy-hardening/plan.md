@@ -41,8 +41,8 @@ Land Wave A + Wave B. Measure corpus delta. Decide Wave C based on residual erro
 - [x] Labeled corpus available as regression fixture
 
 ### Definition of Done
-- [ ] Wave A + B land with target accuracy gain
-- [ ] No regression on historical false-positives
+- [x] Wave A + B land with target accuracy gain [Evidence: Wave A advisor 60.0%; Wave B Gate 3 F1 84.9%; final Wave C Gate 3 F1 97.66%]
+- [x] No regression on historical false-positives [Evidence: final corpus historical false-positive regressions 0]
 <!-- /ANCHOR:quality-gates -->
 
 <!-- ANCHOR:architecture -->
@@ -57,26 +57,26 @@ Additive rule changes. Both Waves are independent; can run in parallel. Wave C d
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Wave A — Advisor normalization
-- [ ] Add command-bridge → owning-skill mapping in skill_advisor.py
-- [ ] Add explicit-invocation guard (quoted command + implementation-target carve-outs)
-- [ ] Regression: 200-prompt corpus, accuracy ≥ 60%
+- [x] Add command-bridge → owning-skill mapping in skill_advisor.py [Evidence: `COMMAND_BRIDGE_OWNER_NORMALIZATION`]
+- [x] Add explicit-invocation guard (quoted command + implementation-target carve-outs) [Evidence: T243-SA-018]
+- [x] Regression: 200-prompt corpus, accuracy ≥ 60% [Evidence: advisor accuracy 60.0%]
 
 ### Phase 2: Wave B — Gate 3 deep-loop markers
-- [ ] Extend classifyPrompt() positive trigger list with deep-loop markers
-- [ ] Regression: 200-prompt corpus, Gate 3 F1 ≥ 83%, no `analyze/decompose/phase` regression
+- [x] Extend classifyPrompt() positive trigger list with deep-loop markers [Evidence: expanded `RESUME_TRIGGERS`]
+- [x] Regression: 200-prompt corpus, Gate 3 F1 ≥ 83%, no `analyze/decompose/phase` regression [Evidence: final Gate 3 F1 97.66%; historical regressions 0]
 
 ### Phase 3: Re-measurement
-- [ ] Compute joint matrix after Wave A+B
-- [ ] Compare to research projection: TT≥108, FT≤12, FF≤15
-- [ ] Decide Wave C based on residual FF mass
+- [x] Compute joint matrix after Wave A+B [Evidence: Wave B TT 105 / FT 15 / FF 22]
+- [x] Compare to research projection: TT≥108, FT≤12, FF≤15 [Evidence: final TT 115 / FT 5 / FF 1]
+- [x] Decide Wave C based on residual FF mass [Evidence: Wave C shipped because Wave B FF 22 > 20]
 
 ### Phase 4: Optional Wave C (conditional)
-- [ ] Add resume/context markers
-- [ ] Add mixed-tail write exception
+- [x] Add resume/context markers [Evidence: `resume the packet`, `resume the phase folder`, `reconstruct continuity`]
+- [x] Add mixed-tail write exception [Evidence: `hasMixedWriteTail()` with precision guards]
 
 ### Phase 5: Verification
-- [ ] Full regression suite green
-- [ ] Checklist verified
+- [x] Full regression suite green [Evidence: advisor PASS 44/44; Gate 3 Vitest PASS 47/47; final corpus overall_pass true]
+- [x] Checklist verified [Evidence: checklist.md status Passed]
 <!-- /ANCHOR:phases -->
 
 ### 4.1 Dispatch Command

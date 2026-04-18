@@ -1,10 +1,6 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation",
-  "specId": "009",
-  "folderSlug": "playbook-and-remediation",
   "title": "Playbook and Remediation",
   "type": "coordination-parent",
-  "description": "Coordination parent for playbook follow-on work and remediation phases. The primary child packet repairs the Phase 014 documentation scaffold after prompt-field rewrite work already landed in the manual testing playbook corpus, restoring the required Level 2 anchors, missing task and checklist files, and the real playbook index references while keeping the work scoped to packet documentation rather than the playbook content itself.",
   "trigger_phrases": [
     "playbook prompt rewrite",
     "manual testing playbook repair",
@@ -17,6 +13,12 @@
     "phase 014 repair packet",
     "playbook corpus reference-only"
   ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-04-26_22-57__wave-b-restored-root-spec-for-coordination-parent.md"
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation",
+  "description": "Coordination parent for playbook follow-on work and remediation phases. The primary child packet repairs the Phase 014 documentation scaffold after prompt-field rewrite work already landed in the manual testing playbook corpus, restoring the required Level 2 anchors, missing task and checklist files, and the real playbook index references while keeping the work scoped to packet documentation rather than the playbook content itself.",
   "keywords": [
     "playbook documentation",
     "prompt fields",
@@ -32,11 +34,11 @@
     "reference integrity",
     "checklist restoration"
   ],
-  "lastUpdated": "2026-04-17T18:43:49.606Z",
+  "lastUpdated": "2026-04-18T21:57:19.716Z",
+  "specId": "009",
+  "folderSlug": "playbook-and-remediation",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  ]
 }

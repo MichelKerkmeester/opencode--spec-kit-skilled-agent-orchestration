@@ -55,7 +55,7 @@ This orchestrator runs in three primary phases:
 `sk-code-full-stack` owns stack detection, implementation patterns, and stack-specific verification commands.
 
 For formal findings-first code review output, use `sk-code-review` as the baseline:
-- Severity model and review output contract: `sk-code-review/references/quick_reference.md`
+- Severity model and review output contract: `.opencode/skill/sk-code-review/SKILL.md`
 - Baseline security/quality/test review checks: `sk-code-review` references
 - This skill: stack-specific overlay rules and verification commands
 

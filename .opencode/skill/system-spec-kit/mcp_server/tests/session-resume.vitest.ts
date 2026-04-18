@@ -270,7 +270,7 @@ describe('session-resume handler', () => {
     });
   });
 
-  it('still returns ladder-backed memory in minimal mode while adding session quality', async () => {
+  it('returns the minimal contract without ladder-backed memory payload', async () => {
     const workspacePath = createWorkspace();
     workspacesToRemove.push(workspacePath);
     const specFolder = 'system-spec-kit/026-root/004-gate-d';
@@ -281,7 +281,14 @@ describe('session-resume handler', () => {
     const result = await handleSessionResume({ specFolder, minimal: true });
     const parsed = JSON.parse(result.content[0].text);
 
-    expect(parsed.data.memory.source).toBe('continuity');
+    expect(parsed.data.mode).toBe('minimal');
+    expect(parsed.data.memory).toBeUndefined();
+    expect(parsed.data.payloadContract).toBeUndefined();
+    expect(parsed.data.opencodeTransport).toBeUndefined();
+    expect(parsed.data.codeGraph.status).toBe('fresh');
+    expect(typeof parsed.data.cocoIndex.available).toBe('boolean');
+    expect(parsed.data.structuralContext.sourceSurface).toBe('session_resume');
+    expect(parsed.data.graphOps.readiness.sourceSurface).toBe('session_resume');
     expect(parsed.data.sessionQuality).toBe('degraded');
     expect(computeQualityScore).toHaveBeenCalledTimes(1);
     expect(recordBootstrapEvent).not.toHaveBeenCalled();

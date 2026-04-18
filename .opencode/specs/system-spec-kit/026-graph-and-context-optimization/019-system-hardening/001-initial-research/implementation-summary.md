@@ -11,14 +11,16 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 --
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research"
-    last_updated_at: "2026-04-18T20:30:00Z"
+    last_updated_at: "2026-04-19T00:00:00Z"
     last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "WAVE 2 COMPLETE. 003 RR-1 NFKC: 6 iters, research.md (273 lines), P1 trigger-phrase-sanitizer surface mismatch. 004 RR-2 description-regen: 5 iters, research.md (386 lines), field-level merge recommended. Delta-file hardening commits 410db26b7 + d5e086c33 prevent type-drift recurrence. AUTONOMOUS-COMPLETION DIRECTIVE SAVED across 3 surfaces (auto-memory, constitutional, this block)."
-    next_safe_action: "AUTONOMOUS RUN: dispatch Wave 3 (005 routing-accuracy + 006 template-validator-audit) → synthesize all 6 sub-packet findings → create remediation sub-phases under 019-system-hardening/ → implement each with cli-codex gpt-5.4 high fast. NO CONFIRMATION GATES. Hours-long continuous execution authorized by user directive 2026-04-18."
+    recent_action: "ALL 6 SUB-PACKETS CONVERGED. 005 routing-accuracy: 8 iters, research.md (19KB), 3 P1 + 2 P2 findings, measured gains (Gate 3 F1 68.6%→83.3%, advisor 53.5%→60.0%). 006 template-validator: 6 iters, review-report.md (10KB), 1 P1 + 3 P2 findings. Findings registry consolidated with 40 total findings across 2 P0 + 8 P1 + 6 P2 + 5 validator rules + 19 residuals. 6 remediation children scaffolded: 002-canonical-save-hardening, 003-nfkc-unification-hardening, 004-routing-accuracy-hardening, 005-description-regen-contract, 006-residual-015-backlog, 007-template-validator-contract-alignment. Implementation Wave impl 1 dispatched (002 + 005 parallel)."
+    next_safe_action: "Wait for Wave impl 1 (002 + 005) convergence. Then dispatch Wave impl 2 (003 + 007 parallel — no file conflicts). Then Wave impl 3 (004 alone) and Wave impl 4 (006 alone) sequentially to avoid shared-file conflicts. Commit+push per child as they complete."
     blockers:
-      - "P0 #1 from 001: packets 007/008/009/010 carry description.json + graph-metadata.json without spec.md — real state divergence. Remediation scheduled as first child after synthesis."
-      - "P0 #2 from 001: save_lineage writeback bug — built workflow.js calls refreshGraphMetadata(path) without options, so same_pass flag never reaches persist layer. Remediation scheduled after synthesis."
-      - "P1 from 003: trigger-phrase-sanitizer keeps fullwidth/mathematical/zero-width chars that shared-provenance strips. Severity capped by lack of shell/file/SQL sink downstream."
+      - "P0 #1 from 001: packets 007/008/009/010 missing root spec.md — addressed by Wave impl 1 child 019/002 Wave B"
+      - "P0 #2 from 001: save_lineage runtime parity — addressed by Wave impl 1 child 019/002 Wave A"
+      - "P1 from 003 NFKC: trigger surface mismatch — addressed by Wave impl 2 child 019/003"
+      - "P1 from 005: advisor command-surface fragmentation — addressed by Wave impl 3 child 019/004"
+      - "P1 from 006: validator show_help/dispatch drift — addressed by Wave impl 2 child 019/007"
     autonomous_completion_directive:
       authorized_at: "2026-04-18T20:25:00Z"
       scope: "Synthesize + scaffold remediation sub-phases + implement all findings in one continuous autonomous run. No confirmation gates. Hours-long permitted. Commit+push after each child. Mark all spec docs complete+verified at end."

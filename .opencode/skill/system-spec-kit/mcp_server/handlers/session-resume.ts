@@ -122,6 +122,17 @@ interface SessionResumeResult {
   hints: string[];
 }
 
+interface SessionResumeMinimalResult {
+  mode: 'minimal';
+  codeGraph: CodeGraphStatus;
+  cocoIndex: CocoIndexStatus;
+  cachedSummary?: CachedSessionSummaryDecision;
+  structuralContext: StructuralBootstrapContract;
+  sessionQuality: 'healthy' | 'degraded' | 'critical' | 'unknown';
+  graphOps: CodeGraphOpsContract;
+  hints: string[];
+}
+
 /* ───────────────────────────────────────────────────────────────
    2. HELPERS
 ──────────────────────────────────────────────────────────────── */
@@ -490,18 +501,7 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     logCachedSummaryDecision('session_resume', cachedSummaryDecision);
   }
 
-  // ── Sub-call 1: Resume ladder (filesystem-first, no SQL on happy path) ──
-  const memoryResult = buildResumeLadder({
-    specFolder: args.specFolder,
-    fallbackSpecFolder: scopeFallback,
-    workspacePath: process.cwd(),
-  });
-  hints.push(...memoryResult.hints);
-  if (memoryResult.source === 'none') {
-    hints.push('Resume ladder found no canonical recovery context. Pass specFolder explicitly or start with /spec_kit:plan.');
-  }
-
-  // ── Sub-call 2: Code graph status ───────────────────────────
+  // ── Sub-call 1: Code graph status ───────────────────────────
   let codeGraph: CodeGraphStatus = {
     status: 'error',
     lastScan: null,
@@ -543,13 +543,49 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
 
   const structuralTrust = buildStructuralContextTrust(structuralContext);
 
-  let sessionQuality: SessionResumeResult['sessionQuality'];
+  let sessionQuality: SessionResumeResult['sessionQuality'] | SessionResumeMinimalResult['sessionQuality'];
   if (args.minimal) {
     try {
       sessionQuality = computeQualityScore().level;
     } catch {
       sessionQuality = 'unknown';
     }
+  }
+
+  const graphOps = buildCodeGraphOpsContract({
+    graphFreshness: codeGraph.status as GraphFreshness,
+    sourceSurface: 'session_resume',
+  });
+
+  if (args.minimal) {
+    const minimalResult: SessionResumeMinimalResult = {
+      mode: 'minimal',
+      codeGraph,
+      cocoIndex,
+      cachedSummary: cachedSummaryDecision,
+      structuralContext,
+      sessionQuality: sessionQuality ?? 'unknown',
+      graphOps,
+      hints: [...new Set(hints)],
+    };
+
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({ status: 'ok', data: minimalResult }, null, 2),
+      }],
+    };
+  }
+
+  // ── Sub-call 2: Resume ladder (filesystem-first, no SQL on happy path) ──
+  const memoryResult = buildResumeLadder({
+    specFolder: args.specFolder,
+    fallbackSpecFolder: scopeFallback,
+    workspacePath: process.cwd(),
+  });
+  hints.push(...memoryResult.hints);
+  if (memoryResult.source === 'none') {
+    hints.push('Resume ladder found no canonical recovery context. Pass specFolder explicitly or start with /spec_kit:plan.');
   }
 
   const memoryCertainty: SharedPayloadCertainty = memoryResult.source === 'none'
@@ -614,11 +650,6 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
       sourceRefs: ['resume-ladder', 'code-graph-db', 'cocoindex-path', 'session-snapshot'],
     },
   });
-  const graphOps = buildCodeGraphOpsContract({
-    graphFreshness: codeGraph.status as GraphFreshness,
-    sourceSurface: 'session_resume',
-  });
-
   const result: SessionResumeResult = {
     memory: memoryResult as unknown as Record<string, unknown>,
     codeGraph,

@@ -27,7 +27,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Parent Spec** | ../spec.md |
-| **Source Research** | ../001-initial-research/003-q4-nfkc-robustness/research.md |
+| **Source Research** | ../../research/019-system-hardening-001-initial-research-003-q4-nfkc-robustness/research.md |
 | **Priority** | P1 |
 
 <!-- ANCHOR:metadata -->
@@ -106,15 +106,15 @@ Implement 6 hardening proposals (HP1-HP6) in staged order to close the normaliza
 
 ### 4.1 P0 - Blockers
 
-- **R1** (HP1): Shared normalization utility used by all 3 surfaces
-- **R2** (HP2): Denylist applied post-normalization, not raw
-- **R3** (HP3): RT5 Greek-omicron + adjacent high-risk confusables patched
-- **R4** (HP4): Semantic payload boundary added before session-prime emission
+- **REQ-001** (HP1): Shared normalization utility used by all 3 surfaces
+- **REQ-002** (HP2): Denylist applied post-normalization, not raw
+- **REQ-003** (HP3): RT5 Greek-omicron + adjacent high-risk confusables patched
+- **REQ-004** (HP4): Semantic payload boundary added before session-prime emission
 
 ### 4.2 P1 - Required
 
-- **R5** (HP5): Provenance metadata required on compact-cache writers
-- **R6** (HP6): Adversarial corpus + tests pass across all 4 surfaces
+- **REQ-005** (HP5): Provenance metadata required on compact-cache writers
+- **REQ-006** (HP6): Adversarial corpus + tests pass across all 4 surfaces
 <!-- /ANCHOR:requirements -->
 
 <!-- ANCHOR:success-criteria -->
@@ -124,6 +124,13 @@ Implement 6 hardening proposals (HP1-HP6) in staged order to close the normaliza
 - [ ] RT1-RT10 adversarial cases all blocked or quarantined
 - [ ] Hook-state payload passes through semantic gate before emission
 - [ ] Full regression + adversarial test suite green
+
+### 5.1 Acceptance Scenarios
+
+- **Given** a fullwidth or hidden-character trigger phrase, when it is sanitized, then the denylist evaluates the canonical folded text.
+- **Given** a Greek-omicron `ignοre previous` recovered payload line, when shared-provenance normalizes it, then the line is stripped or quarantined.
+- **Given** a pending compact-prime payload with instruction-shaped canonical content, when a session-prime reader loads it, then the reader rejects the payload before prompt emission.
+- **Given** a compact-cache payload without sanitizer version or runtime fingerprint provenance, when a reader attempts recovery, then the reader fails closed and emits fallback recovery text.
 <!-- /ANCHOR:success-criteria -->
 
 <!-- ANCHOR:risks -->
@@ -136,9 +143,9 @@ Implement 6 hardening proposals (HP1-HP6) in staged order to close the normaliza
 | Semantic gate too strict, rejects valid payloads | Quarantine-first, fail-closed later |
 <!-- /ANCHOR:risks -->
 
-<!-- ANCHOR:open-questions -->
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - Manual confusable table vs library-driven (Unicode confusables data) — implementation chooses
 - Legacy `pendingCompactPrime` migration if semantic validation stricter than `z.string()`
-<!-- /ANCHOR:open-questions -->
+<!-- /ANCHOR:questions -->

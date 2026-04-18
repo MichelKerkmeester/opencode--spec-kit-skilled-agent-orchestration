@@ -41,7 +41,9 @@ These checks assume Gate E continuity now resumes through `/spec_kit:resume` and
 
 | Category             | Count | Details                                       |
 | -------------------- | ----- | --------------------------------------------- |
-| Rules                | 18    | Modular validation scripts                    |
+| Registry Rules       | 33    | Canonical entries in `scripts/lib/validator-registry.json` |
+| Authored Rules       | 20    | Template/spec-document invariants             |
+| Operational Rules    | 13    | Runtime/generated/save-time validation guards |
 | Severity Levels      | 3     | error, warn, info                             |
 | Documentation Levels | 4     | L1, L2, L3, L3+ with progressive requirements |
 
@@ -83,7 +85,7 @@ These checks assume Gate E continuity now resumes through `/spec_kit:resume` and
 # Check that rules are executable
 ls -la .opencode/skill/system-spec-kit/scripts/rules/
 
-# Expected: 18 .sh files with execute permissions
+# Expected: rule dispatch is sourced from scripts/lib/validator-registry.json
 # -rwxr-xr-x check-files.sh
 # -rwxr-xr-x check-priority-tags.sh
 # -rwxr-xr-x check-complexity.sh
@@ -108,6 +110,7 @@ ls -la .opencode/skill/system-spec-kit/scripts/rules/
 rules/
 ├── check-ai-protocols.sh   # AI_PROTOCOL - AI execution protocols (L3+)
 ├── check-anchors.sh        # ANCHORS_VALID - Memory file anchor pairs
+├── check-canonical-save.sh # CANONICAL_SAVE_* - Save-time generated artifact guards
 ├── check-complexity.sh     # COMPLEXITY_MATCH - Level vs content validation
 ├── check-evidence.sh       # EVIDENCE_CITED - P0/P1 completion evidence
 ├── check-files.sh          # FILE_EXISTS - Required files by level
@@ -126,6 +129,19 @@ rules/
 ├── check-template-source.sh   # TEMPLATE_SOURCE - Template provenance marker checks
 └── README.md                  # This file
 ```
+
+The authoritative rule metadata lives in `scripts/lib/validator-registry.json`.
+`spec/validate.sh` derives rule dispatch, severity, aliases, and `--help` output from that registry.
+
+### Rule Coverage Matrix
+
+#### Authored Template Rules
+
+These rules validate files authored by humans or agents in spec packets: `FILE_EXISTS`, `PLACEHOLDER_FILLED`, `SECTIONS_PRESENT`, `LEVEL_DECLARED`, `PRIORITY_TAGS`, `EVIDENCE_CITED`, `ANCHORS_VALID`, `FRONTMATTER_MEMORY_BLOCK`, `SPEC_DOC_SUFFICIENCY`, `TOC_POLICY`, `PHASE_LINKS`, `AI_PROTOCOLS`, `COMPLEXITY_MATCH`, `FOLDER_NAMING`, `FRONTMATTER_VALID`, `LEVEL_MATCH`, `SECTION_COUNTS`, `SPEC_DOC_INTEGRITY`, `TEMPLATE_SOURCE`, and `TEMPLATE_HEADERS`.
+
+#### Operational Runtime Rules
+
+These rules validate runtime, generated, opt-in, or save-time surfaces: `MERGE_LEGALITY`, `CROSS_ANCHOR_CONTAMINATION`, `POST_SAVE_FINGERPRINT`, `GRAPH_METADATA_PRESENT`, `NORMALIZER_LINT`, `LINKS_VALID`, `CANONICAL_SAVE_ROOT_SPEC_REQUIRED`, `CANONICAL_SAVE_SOURCE_DOCS_REQUIRED`, `CANONICAL_SAVE_LINEAGE_REQUIRED`, `CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED`, `CANONICAL_SAVE_DESCRIPTION_GRAPH_FRESHNESS`, `CONTINUITY_FRESHNESS`, and `EVIDENCE_MARKER_LINT`.
 
 ### Key Files
 

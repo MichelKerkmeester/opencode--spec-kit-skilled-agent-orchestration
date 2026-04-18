@@ -7,6 +7,8 @@
 // Keep the blocklist and allowlist narrow, shape-based, and aligned to that
 // frozen corpus guidance.
 
+import { canonicalFold } from './unicode-normalization';
+
 export type TriggerPhraseSanitizeReason =
   | 'empty'
   | 'contamination'
@@ -33,7 +35,7 @@ const PATH_LIKE_SLUG_PATTERN = /^\d{3}-[a-z0-9_-]+$/i;
 const MANUAL_FINDING_ID_PREFIX_PATTERN = /^DR-\d{3}-I\d{3}-P\d-\d{3}\b/i;
 const SUSPICIOUS_PREFIX_PATTERN = /^(?:(?:f|q)\d+|ac-?\d+|phase\s+\d+|iter(?:ation)?\s+\d+)\b/i;
 const CONTROL_CHARACTER_PATTERN = /[\x00-\x1F\x7F-\x9F]/;
-const CONTAMINATION_PATTERN = /<[^>]+>|\b(?:ignore previous|system prompt|developer message|tool state|tool output|assistant:|user:)\b/i;
+const CONTAMINATION_PATTERN = /<[^>]+>|\[(?:system|developer|assistant|user)\]\s*:|\b(?:ignore\s*:?\s*previous|system prompt|developer message|tool state|tool output)\b|\b(?:assistant|user|role|policy)\s*:/i;
 const MAX_TRIGGER_PHRASE_LENGTH = 200;
 
 // Aligned with BASE_VALID_SHORT_TERMS in topic-keywords.ts — keep in sync.
@@ -108,7 +110,7 @@ const SYNTHETIC_BIGRAM_BLOCKLIST = new Set([
 ]);
 
 function normalizeUnicodeForm(phrase: string): string {
-  return phrase.normalize('NFC');
+  return canonicalFold(phrase);
 }
 
 function normalizePhrase(phrase: string): string {
