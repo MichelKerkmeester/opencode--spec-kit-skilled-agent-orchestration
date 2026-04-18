@@ -13,11 +13,11 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 --
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
-    last_updated_at: "2026-04-18T17:30:00Z"
+    last_updated_at: "2026-04-19T01:15:00Z"
     last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Phase 019 registered; canonical metadata refreshed"
-    next_safe_action: "Approve 019 charter; dispatch Wave 1"
-    key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md", "decision-record.md", "implementation-summary.md", "015-deep-review-and-remediation/spec.md", "016-foundational-runtime/implementation-summary.md", "017-sk-deep-cli-runtime-execution/implementation-summary.md", "018-cli-executor-remediation/implementation-summary.md", "019-system-hardening/spec.md", "019-system-hardening/001-initial-research/spec.md", "scratch/deep-review-research-suggestions.md"]
+    recent_action: "Phase 019 system-hardening: all 6 sub-packet research/review iterations converged + all 6 remediation children implemented in single autonomous overnight run via cli-codex gpt-5.4 high fast. 2 P0s closed (packet-root structural + save_lineage runtime parity), 8 P1s + 6 P2s + 5 new validator rules + 19 015-residuals closed. Gate 3 F1 68.6%->97.66%, advisor accuracy 53.5%->60.0%, joint error rate 63.5%->43.5% (FF 31->1)."
+    next_safe_action: "019 umbrella implementation-complete. Next: (a) resolve pre-existing unrelated baseline test failures (out of 019 scope), (b) monitor for regression via new validator rules post-2026-05-01 grandfather cutoff."
+    key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md", "decision-record.md", "implementation-summary.md", "015-deep-review-and-remediation/spec.md", "016-foundational-runtime/implementation-summary.md", "017-sk-deep-cli-runtime-execution/implementation-summary.md", "018-cli-executor-remediation/implementation-summary.md", "019-system-hardening/spec.md", "019-system-hardening/001-initial-research/findings-registry.json", "019-system-hardening/002-canonical-save-hardening/implementation-summary.md", "019-system-hardening/003-nfkc-unification-hardening/implementation-summary.md", "019-system-hardening/004-routing-accuracy-hardening/implementation-summary.md", "019-system-hardening/005-description-regen-contract/implementation-summary.md", "019-system-hardening/006-residual-015-backlog/implementation-summary.md", "019-system-hardening/007-template-validator-contract-alignment/implementation-summary.md", "scratch/deep-review-research-suggestions.md"]
 
 ---
 # Implementation Summary
@@ -85,9 +85,27 @@ Phase 017 made executor selection a first-class YAML-owned dispatch branch on `s
 
 Phase 018 closed R1-R11 of the R1-R12 findings surfaced by the 30-iteration deep-research dogfood against packet 017's research root. Seven waves shipped via cli-codex dogfooding: Wave A shared executor-provenance (first-write JSONL append + typed failure event), Wave B description.json repair safety (parse/schema split + merge-preserving repair helper), Wave C Copilot `@path` large-prompt fallback, Wave D metadata lineage (graph-metadata.json `derived.*` save-lineage tag + continuity threshold documentation normalization), Wave E evidence-marker audit parser fix (indented-fence + nested-fence), Wave F telemetry + caller-context coverage + readiness docs parity, Wave G R12 deferred. 116 of 116 scoped tests pass. See `018-cli-executor-remediation/implementation-summary.md`.
 
-### Phase 019 — System Hardening (research-first umbrella, scaffolded 2026-04-18)
+### Phase 019 — System Hardening (scaffolded + researched + remediated 2026-04-18 to 2026-04-19)
 
-Phase 019 is a research-first umbrella for the six Tier 1 candidates surfaced by the post-consolidation analysis in `scratch/deep-review-research-suggestions.md`: three 026 close-out candidates (`DR-1` delta-review of 015's 243 findings, `RR-1` Q4 NFKC robustness research, `RR-2` description.json rich-content regen strategy) and three system-spec-kit-wide candidates (`SSK-RR-1` Gate 3 + skill-advisor routing accuracy research, `SSK-DR-1` template v2.2 + validator ruleset joint audit, `SSK-RR-2` canonical-save pipeline invariant research). Nested child `001-initial-research` runs all six iterations through the canonical `/spec_kit:deep-research :confirm` and `/spec_kit:deep-review :confirm` commands with a wave-ordered dispatch (Wave 1: SSK-RR-2 + DR-1, Wave 2: RR-1 + RR-2, Wave 3: SSK-RR-1 + SSK-DR-1). Future siblings `019/002-*` are reserved for per-cluster remediation once research converges. See `019-system-hardening/spec.md` and `019-system-hardening/001-initial-research/plan.md` for the charter and copy-paste-ready dispatch blocks.
+Phase 019 executed end-to-end in a single autonomous overnight run via cli-codex gpt-5.4 high fast per explicit user directive 2026-04-18.
+
+**Research wave** (`019/001-initial-research/`) — 6 sub-packets converged via wave-ordered dispatch:
+- `001 SSK-RR-2 canonical-save-invariants` (9 iters) — 2 P0s: packet roots 007/008/009/010 missing spec.md + save_lineage wrapper/dist parity bug; 5 proposed validator assertions
+- `002 DR-1 delta-review-015` (9 iters) — 242 original findings classified: 61 ADDRESSED, 19 STILL_OPEN, 162 SUPERSEDED (by 016/017/018 primitives), 0 UNVERIFIED. 015 P0 ADDRESSED by commit `104f534bd0`
+- `003 RR-1 Q4-NFKC-robustness` (6 iters) — 3 P1 + 1 P2 Unicode normalization gaps; HP1-HP6 hardening proposals
+- `004 RR-2 description-regen-strategy` (5 iters) — field-level merge policy selected over 3 alternatives
+- `005 SSK-RR-1 routing-accuracy` (8 iters) — 3 P1 + 2 P2 routing findings with 200-prompt labeled corpus baseline (Gate 3 F1 68.6%, advisor 53.5%, joint error 63.5%)
+- `006 SSK-DR-1 template-validator-audit` (6 iters) — 1 P1 + 3 P2 template/validator contract drift
+
+**Remediation wave** (`019/002-*` through `019/007-*`) — 6 implementation children landed:
+- `002-canonical-save-hardening` — Wave A lineage runtime parity (indexing.ts widened, dist rebuilt), Wave B 4 packet roots repaired, Wave C 5 validator rules (CANONICAL_SAVE_*) with 2026-05-01 grandfather cutoff. Recursive 026 validator pack: 19 phases 0 errors 0 warnings
+- `003-nfkc-unification-hardening` — HP1 shared/unicode-normalization.ts canonicalFold, HP2 post-normalization denylist, HP3 Greek-omicron confusables, HP4 semantic hook-state gate, HP5 compact-cache provenance, HP6 adversarial corpus (91 tests RT1-RT10)
+- `004-routing-accuracy-hardening` — Wave A advisor command-bridge normalization (accuracy 53.5%→60.0%), Wave B Gate 3 deep-loop markers (F1 68.6%→97.66%), Wave C mixed-tail write exception. Final joint matrix TT 115 / FT 5 / FF 1 vs projection TT≥108 / FT≤12 / FF≤15. Zero regression on analyze/decompose/phase historical FPs
+- `005-description-regen-contract` — shared description-schema.ts + unified description-merge.ts helper routing both schema-valid + 018 R4 repair lanes through one field-level merge policy. 28 rich description.json files regenerate without field loss (117/117 focused tests)
+- `006-residual-015-backlog` — 19 015 residuals closed across 6 clusters in 4 waves: W0+A DB boundary + resume minimal, W0+B review-graph query/status, W0+C advisor degraded-state visibility, W0+D doc parity + save/startup hygiene
+- `007-template-validator-contract-alignment` — Rank 1 scripts/lib/validator-registry.{ts,json} as single source of truth (33 rules), Rank 2 semantic non-empty frontmatter + grandfather allowlist, Rank 3 check-anchors.sh parity with preflight, Rank 4 authored_template vs operational_runtime categorization, Rank 5 decision-record placeholder fix
+
+Headline outcomes: **2 P0s closed** (packet-root structural repair + save_lineage runtime parity), **8 P1s + 6 P2s + 5 new validator rules + 19 015-residuals closed**. **Gate 3 F1 68.6% → 97.66%**, **advisor accuracy 53.5% → 60.0%**, **joint error rate 63.5% → 43.5%** (FF cell 31 → 1, a 97% reduction). Commits 783385ab2 (implementation) + f3b1e4eff (scaffold + research convergence). See each child's `implementation-summary.md`, the parent `019/001-initial-research/findings-registry.json` for the consolidated registry, and `019-system-hardening/spec.md` for the umbrella charter.
 <!-- /ANCHOR:how-delivered -->
 
 ---
