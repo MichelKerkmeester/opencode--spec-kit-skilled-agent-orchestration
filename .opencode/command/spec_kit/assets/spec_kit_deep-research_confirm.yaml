@@ -525,39 +525,70 @@ workflow:
         on_D: { action: "Cancel workflow", status: "CANCELLED" }
 
       step_dispatch_iteration:
-        action: "Dispatch @deep-research agent for one iteration"
-        dispatch:
-          agent: deep-research
-          model: opus
-          pre_dispatch:
-            generate_summary: |
-              STATE SUMMARY (auto-generated):
-              Segment: {current_segment} | Iteration: {current_iteration} of {max_iterations}
-              Questions: {answered_count}/{total_questions} answered | Last focus: {last_focus}
-              Last 2 ratios: {ratio_prev} -> {ratio_latest} | Stuck count: {stuck_count}
-              Next focus: {next_focus}
-          context: |
-            {state_summary}
-
-            Research Topic: {research_topic}
-            Iteration: {current_iteration} of {max_iterations}
-            Focus Area: {next_focus}
-            Remaining Key Questions: {remaining_questions_list}
-            Last 3 Iterations Summary: {last_3_summaries}
-
-            State Files (ALL paths relative to repo root):
-              Config: {state_paths.config}
-              State Log: {state_paths.state_log}
-              Strategy: {state_paths.strategy}
-              Registry: {state_paths.registry}
-              Write findings to: {state_paths.iteration_pattern}
-
-            CONSTRAINT: You are a LEAF agent. Do NOT dispatch sub-agents.
-            CONSTRAINT: Target 3-5 research actions. Max 12 tool calls total.
-            CONSTRAINT: Write ALL findings to files. Do not hold in context.
-            CONSTRAINT: The workflow reducer owns strategy machine-owned sections, registry, and dashboard synchronization.
-            CONSTRAINT: When emitting the iteration JSONL record, include an optional `graphEvents` array of {type, id, label, relation?, source?, target?} objects representing coverage graph nodes and edges discovered this iteration. Omit the field when no graph events are produced.
-        wait_for_completion: true
+        action: "Dispatch one iteration via the selected executor"
+        resolve_executor:
+          source: "config.executor"
+          loader: ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts#parseExecutorConfig"
+        pre_dispatch:
+          generate_summary: |
+            STATE SUMMARY (auto-generated):
+            Segment: {current_segment} | Iteration: {current_iteration} of {max_iterations}
+            Questions: {answered_count}/{total_questions} answered | Last focus: {last_focus}
+            Last 2 ratios: {ratio_prev} -> {ratio_latest} | Stuck count: {stuck_count}
+            Next focus: {next_focus}
+          render_prompt_pack:
+            template_path: ".opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl"
+            renderer: ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/prompt-pack.ts#renderPromptPack"
+            output_path: "{spec_folder}/research/prompts/iteration-{current_iteration}.md"
+            variables:
+              state_summary: "{state_summary}"
+              research_topic: "{research_topic}"
+              current_iteration: "{current_iteration}"
+              max_iterations: "{max_iterations}"
+              next_focus: "{next_focus}"
+              remaining_questions_list: "{remaining_questions_list}"
+              last_3_summaries: "{last_3_summaries}"
+              state_paths_config: "{state_paths.config}"
+              state_paths_state_log: "{state_paths.state_log}"
+              state_paths_strategy: "{state_paths.strategy}"
+              state_paths_registry: "{state_paths.registry}"
+              state_paths_iteration_pattern: "{state_paths.iteration_pattern}"
+        branch_on: "config.executor.kind"
+        if_native:
+          dispatch:
+            agent: deep-research
+            model: opus
+            context_source: "rendered_prompt_pack"
+          wait_for_completion: true
+        if_cli_codex:
+          command: |
+            codex exec \
+              --model "{config.executor.model}" \
+              -c model_reasoning_effort="{config.executor.reasoningEffort}" \
+              -c service_tier="{config.executor.serviceTier}" \
+              -c approval_policy=never \
+              --sandbox workspace-write \
+              - < "{spec_folder}/research/prompts/iteration-{current_iteration}.md"
+          working_directory: "{repo_root}"
+          timeout_seconds: "{config.executor.timeoutSeconds}"
+          wait_for_completion: true
+        post_dispatch_validate:
+          validator: ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/post-dispatch-validate.ts#validateIterationOutputs"
+          assert_exists: "{state_paths.iteration_pattern}"
+          assert_appended: "{state_paths.state_log}"
+          assert_jsonl_fields: [type, iteration, newInfoRatio, status, focus]
+          on_failure:
+            action: "emit schema_mismatch canonical conflict event"
+            escalation: "After 3 consecutive failures, trigger stuck_recovery event with diagnostic context"
+        record_executor_audit:
+          skip_when: "config.executor.kind == 'native'"
+          target: "{state_paths.state_log}"
+          field: "executor"
+          value:
+            kind: "{config.executor.kind}"
+            model: "{config.executor.model}"
+            reasoningEffort: "{config.executor.reasoningEffort}"
+            serviceTier: "{config.executor.serviceTier}"
 
       step_reduce_state:
         action: "Run the reducer to synchronize registry, dashboard, and strategy"

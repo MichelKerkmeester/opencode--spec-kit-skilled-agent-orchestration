@@ -253,6 +253,20 @@ CONSTRAINT: LEAF agent -- do NOT dispatch sub-agents
 CONSTRAINT: Target files are READ-ONLY -- never modify code under review
 ```
 
+#### Executor Resolution (spec 018)
+
+Before dispatching, the YAML resolves the executor via `parseExecutorConfig` from `.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts`. The resolved `config.executor.kind` selects the dispatch branch:
+
+- `native`: the loop proceeds exactly as documented below (dispatch `@deep-review` with model Opus).
+- `cli-codex`: the rendered prompt pack is piped via stdin to `codex exec --model <gpt-5.4|other> -c model_reasoning_effort="<level>" -c service_tier="<tier>" -c approval_policy=never --sandbox workspace-write`.
+
+Both branches share:
+1. Pre-dispatch prompt rendering via `renderPromptPack` (writes to `{spec_folder}/review/prompts/iteration-{n}.md`).
+2. Post-dispatch validation via `validateIterationOutputs` (asserts iteration file + JSONL delta + required fields).
+3. Executor audit append via `appendExecutorAuditToLastRecord` (skipped when kind=='native').
+
+Failure handling within `post_dispatch_validate` follows the existing `schema_mismatch` → conflict event → 3-consecutive-failures → `stuck_recovery` path. Executor kind does not alter recovery semantics.
+
 **Agent constraints**:
 - `@deep-review` is LEAF-only: it cannot dispatch sub-agents
 - No WebFetch: review is code-only and read-only

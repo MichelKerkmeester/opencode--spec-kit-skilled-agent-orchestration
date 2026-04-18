@@ -60,7 +60,45 @@ This skill is invoked EXCLUSIVELY through the `/spec_kit:deep-review` command. T
 - Require every iteration to produce BOTH the markdown narrative AND the JSONL delta (dispatch scripts must fail if either is missing)
 - Use `resolveArtifactRoot(specFolder, 'review')` from `.opencode/skill/system-spec-kit/shared/review-research-paths.cjs` to locate the canonical review root
 
-**If the user specifies an executor CLI** ("use cli-copilot gpt-5.4 high"), that selects the HOW — the executor still runs INSIDE the command's workflow. The CLI executor is a tool inside the command, not a replacement for the command.
+### Executor Selection Contract
+
+The YAML workflow supports executor selection via `config.executor.kind`. Current shipped kinds:
+
+| Kind | Dispatch | Required fields | Status |
+|------|----------|----------------|--------|
+| `native` | `@deep-review` agent via Task tool, `model: opus` | none (default) | Shipped. Default. |
+| `cli-codex` | `codex exec` via stdin-piped rendered prompt | `model` (e.g. gpt-5.4) | Shipped (spec 018). |
+| `cli-copilot` | Reserved | — | Not wired — awaits future spec. |
+| `cli-gemini` | Reserved | — | Not wired — awaits future spec. |
+| `cli-claude-code` | Reserved | — | Not wired — awaits future spec. |
+
+**Invariants** the executor MUST satisfy regardless of kind:
+
+1. Produce an iteration markdown file at `{state_paths.iteration_pattern}` (non-empty).
+2. Append a JSONL delta record to `{state_paths.state_log}` with required fields: `type`, `iteration`, `dimensions`, `filesReviewed`, `findingsSummary`, `newFindingsRatio`.
+3. Respect the LEAF-agent constraint: no sub-dispatch, no nested loops. Max 12 tool calls per iteration.
+
+**Failure modes**:
+
+- Missing iteration file → `iteration_file_missing` from `post-dispatch-validate.ts`, emits `schema_mismatch` conflict event.
+- Empty iteration file → `iteration_file_empty`, same downstream.
+- JSONL not appended → `jsonl_not_appended`.
+- JSONL missing required fields → `jsonl_missing_fields`.
+- JSONL malformed → `jsonl_parse_error`.
+- 3 consecutive failures → existing `stuck_recovery` event (unchanged).
+
+**JSONL audit field**: Non-native executor runs append an `executor: {kind, model, reasoningEffort, serviceTier}` block to the iteration's JSONL record via `executor-audit.ts`. Native runs are NOT audited (the default path is recoverable from YAML alone).
+
+**Template**: The executor-agnostic iteration prompt lives at `.opencode/skill/sk-deep-review/assets/prompt_pack_iteration.md.tmpl`. It is rendered by `prompt-pack.ts` before dispatch and either (a) injected as the agent's context (native) or (b) piped to `codex exec` stdin (cli-codex).
+
+**Config surface**: Defined in `assets/deep_review_config.json` under the `executor` key. Schema is in `.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts`. CLI flag precedence is: `--executor/--model/--reasoning-effort/--service-tier/--executor-timeout > config file > schema default`.
+
+**What NEVER changes regardless of executor kind**:
+
+- YAML owns state (`deep-review-state.jsonl`, strategy.md, registry, dashboard).
+- `reduce-state.cjs` is the single state writer.
+- Convergence detection, lifecycle events (new/resume/restart), review dimensions pass (correctness, security, traceability, maintainability), and stuck_recovery all stay YAML-driven.
+- The `@deep-review` LEAF agent definition is untouched — it is the native executor, not the only one.
 
 ### Trigger Phrases
 

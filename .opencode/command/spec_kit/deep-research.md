@@ -63,7 +63,27 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    |-- --max-iterations=N -> maxIterations = N
    |-- --convergence=N -> convergenceThreshold = N
    |-- --spec-folder=PATH -> spec_path = PATH, omit Q1
-   +-- Defaults: maxIterations=10, convergenceThreshold=0.05
+   |-- --executor=<kind> -> config.executor.kind (`native` | `cli-codex`)
+   |-- --model=<id> -> config.executor.model (for example `gpt-5.4`)
+   |-- --reasoning-effort=<level> -> config.executor.reasoningEffort (`none` | `minimal` | `low` | `medium` | `high` | `xhigh`)
+   |-- --service-tier=<tier> -> config.executor.serviceTier (`priority` | `standard` | `fast`)
+   |-- --executor-timeout=<seconds> -> config.executor.timeoutSeconds (positive integer, default `900`)
+   +-- Defaults: maxIterations=10, convergenceThreshold=0.05, config.executor.kind=`native`, config.executor.timeoutSeconds=900
+
+   Executor precedence for setup resolution:
+   - CLI flag > config file > schema defaults
+   - The generated `deep-research-config.json` stores executor settings under `config.executor.*`
+
+   Parsing to config mapping:
+   - `--executor` -> `config.executor.kind`
+   - `--model` -> `config.executor.model`
+   - `--reasoning-effort` -> `config.executor.reasoningEffort`
+   - `--service-tier` -> `config.executor.serviceTier`
+   - `--executor-timeout` -> `config.executor.timeoutSeconds`
+
+   Validation hook:
+   - `parseExecutorConfig` from `.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts` runs at config-write time
+   - Invalid combinations fail fast with clear errors, including `cli-codex` without `--model` and reserved-but-unwired executor kinds
 
 4. Search for related spec folders across alias roots:
    $ find specs .opencode/specs -mindepth 2 -maxdepth 2 -type d 2>/dev/null | sort | tail -10
@@ -73,6 +93,8 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - Store: prior_work_found = [yes/no]
 
 6. ASK with SINGLE prompt (include only applicable questions):
+   - Include Q-Exec only when `--executor` is NOT present and the topic text does NOT already mention executor hints such as `cli-codex`, `codex`, or `gpt-5.4`
+   - If Q-Exec is omitted and no executor is otherwise resolved, default to `native`
 
    Q0. Research Topic (if not in command): What topic to research deeply?
 
@@ -89,7 +111,14 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    Q3. Max Iterations (if not set via flag):
      Default is 10. Change? [Enter number or press enter for default]
 
-   Reply format: "A, A" or "WebSocket research, A, B, 15"
+   Q-Exec. Executor (optional, press enter for default):
+     A) Native (default) — dispatch via @deep-research agent with Opus.
+     B) cli-codex — dispatch via codex exec. Requires --model. Example: `--executor=cli-codex --model=gpt-5.4 --reasoning-effort=high --service-tier=fast`.
+
+   Reply format examples:
+   - `"A, A"`
+   - `"WebSocket research, A, B, 15"`
+   - `"WebSocket reconnection strategies, B, A, 10, 0.05, B, gpt-5.4, high, fast"`
 
 7. WAIT for user response (DO NOT PROCEED)
 
@@ -100,6 +129,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - execution_mode = [AUTONOMOUS/INTERACTIVE]
    - maxIterations = [from Q3 or flag or default 10]
    - convergenceThreshold = [from flag or default 0.05]
+   - executor config = [CLI flags, compact reply, config file, or default `native`; map compact reply fields to `config.executor.kind/model/reasoningEffort/serviceTier`, and accept an optional volunteered convergence value before executor fields]
 
 9. SET STATUS: PASSED
 

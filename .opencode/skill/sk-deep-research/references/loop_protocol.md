@@ -206,6 +206,20 @@ Output: Write findings to {spec_folder}/research/iterations/iteration-{NNN}.md
 CONSTRAINT: LEAF agent -- do NOT dispatch sub-agents
 ```
 
+#### Executor Resolution (spec 018)
+
+Before dispatching, the YAML resolves the executor via `parseExecutorConfig` from `.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts`. The resolved `config.executor.kind` selects the dispatch branch:
+
+- `native`: the loop proceeds exactly as documented below (dispatch `@deep-research` with model Opus).
+- `cli-codex`: the rendered prompt pack is piped via stdin to `codex exec --model <gpt-5.4|other> -c model_reasoning_effort="<level>" -c service_tier="<tier>" -c approval_policy=never --sandbox workspace-write`.
+
+Both branches share:
+1. Pre-dispatch prompt rendering via `renderPromptPack` (writes to `{spec_folder}/research/prompts/iteration-{n}.md`).
+2. Post-dispatch validation via `validateIterationOutputs` (asserts iteration file + JSONL delta + required fields).
+3. Executor audit append via `appendExecutorAuditToLastRecord` (skipped when kind=='native').
+
+Failure handling within `post_dispatch_validate` follows the existing `schema_mismatch` → conflict event → 3-consecutive-failures → `stuck_recovery` path. Executor kind does not alter recovery semantics.
+
 The dispatch context may include a suggested `focusTrack` label (e.g., `"focusTrack": "performance"`, `"focusTrack": "security"`). Agents may tag their iteration with this track label for post-hoc grouping and analysis. Track labels are metadata only — the orchestrator does not use them for loop decisions.
 
 #### Step 3a: Per-Iteration Budget

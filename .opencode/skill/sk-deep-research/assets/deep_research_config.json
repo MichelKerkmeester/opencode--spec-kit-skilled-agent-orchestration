@@ -11,6 +11,14 @@
   "createdAt": "",
   "status": "initialized",
   "executionMode": "auto",
+  "executor": {
+    "kind": "native",
+    "model": null,
+    "reasoningEffort": null,
+    "serviceTier": null,
+    "sandboxMode": null,
+    "timeoutSeconds": 900
+  },
   "lineage": {
     "sessionId": "",
     "parentSessionId": null,

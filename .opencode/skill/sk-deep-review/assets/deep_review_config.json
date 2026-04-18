@@ -18,6 +18,14 @@
   "status": "initialized",
   "releaseReadinessState": "in-progress",
   "executionMode": "auto",
+  "executor": {
+    "kind": "native",
+    "model": null,
+    "reasoningEffort": null,
+    "serviceTier": null,
+    "sandboxMode": null,
+    "timeoutSeconds": 900
+  },
   "mode": "review",
   "reviewTarget": "",
   "reviewTargetType": "spec-folder",
