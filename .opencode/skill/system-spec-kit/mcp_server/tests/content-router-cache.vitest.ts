@@ -8,7 +8,7 @@ function makeContext(options: {
   sessionMeta?: Record<string, unknown>;
 } = {}) {
   return {
-    specFolder: options.specFolder ?? '026-graph-and-context-optimization/015-implementation-deep-review',
+    specFolder: options.specFolder ?? '026-graph-and-context-optimization/015-packets-009-014-audit',
     packetLevel: options.packetLevel ?? 'L3+',
     existingAnchors: ['phase-1', 'phase-2', 'phase-3', 'what-built', 'how-delivered'],
     sessionMeta: {

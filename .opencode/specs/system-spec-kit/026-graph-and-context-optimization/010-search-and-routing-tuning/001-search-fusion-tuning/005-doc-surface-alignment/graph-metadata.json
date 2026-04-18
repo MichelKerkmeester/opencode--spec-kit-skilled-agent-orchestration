@@ -208,7 +208,7 @@
     ],
     "causal_summary": "Several operator-facing search docs still described the pre-017 tuning state. The runtime now treats reranker length scaling as a neutral `1.0` multiplier, exposes reranker cache telemetry through `getRerankerStatus()`, applies a continuity-specific adaptive fusion profile, waits for at least four results before Stage 3 reranking, and includes continuity in the Stage 3 MMR lambda map, but not every requested surface reflected those changes.",
     "created_at": "2026-04-13T08:18:57.063Z",
-    "last_save_at": "2026-04-18T10:18:14.820Z",
+    "last_save_at": "2026-04-18T14:39:04.277Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

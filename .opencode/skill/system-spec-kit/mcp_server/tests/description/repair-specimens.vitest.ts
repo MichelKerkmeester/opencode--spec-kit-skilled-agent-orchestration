@@ -10,7 +10,7 @@ import type { PerFolderDescription } from '../../lib/search/folder-discovery';
 type DiscoveryModule = typeof import('../../lib/search/folder-discovery');
 
 const FIXTURE_NAMES = [
-  '017-review-findings-remediation.description.json',
+  '016-foundational-runtime.description.json',
   '017-001-infrastructure-primitives.description.json',
   '017-002-cluster-consumers.description.json',
 ] as const;
@@ -113,7 +113,7 @@ describe('description.json discriminated loader', () => {
     expect(parseResult.detail).toMatch(/JSON|Unexpected/i);
 
     const schemaFixture = createSpecFolderWithDescription(
-      '017-review-findings-remediation.description.json',
+      '016-foundational-runtime.description.json',
       (payload) => ({
         ...payload,
         memorySequence: 'broken',
@@ -262,7 +262,7 @@ describe('description.json schema-error repair specimens', () => {
     process.env.SPECKIT_DESCRIPTION_REPAIR_MERGE_SAFE = 'false';
     const { discovery } = await loadModules();
     const specimen = createSpecFolderWithDescription(
-      '017-review-findings-remediation.description.json',
+      '016-foundational-runtime.description.json',
       (payload) => ({
         ...payload,
         memorySequence: 'broken',

@@ -52,4 +52,4 @@ Taken together, the Phase 017 pass made the pipeline contracts more explicit wit
 - Group: Pipeline Architecture
 - Source feature title: Phase 017 maintainability extracts
 - Phase 017 commits: `787bf4f88`, `0ac9cdcba`, `ad02986fe`
-- Current reality source: `026-graph-and-context-optimization/017-review-findings-remediation/004-p2-maintainability/implementation-summary.md`
+- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/005-p2-maintainability/implementation-summary.md`

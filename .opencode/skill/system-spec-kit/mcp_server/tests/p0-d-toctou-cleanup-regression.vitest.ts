@@ -58,7 +58,7 @@ describe.sequential('P0-D TOCTOU cleanup regression', () => {
     const staleState: HookState = {
       claudeSessionId: sessionId,
       speckitSessionId: 'stale-session',
-      lastSpecFolder: 'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review',
+      lastSpecFolder: 'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research',
       sessionSummary: { text: 'stale state', extractedAt: new Date(0).toISOString() },
       pendingCompactPrime: null,
       producerMetadata: null,

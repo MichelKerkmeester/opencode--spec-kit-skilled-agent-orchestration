@@ -45,4 +45,4 @@ The helper ships as part of the broader Wave D maintainability pass, but it mate
 - Group: Mutation
 - Source feature title: Reconsolidation conflict transaction helper
 - Phase 017 commits: `0ac9cdcba`
-- Current reality source: `026-graph-and-context-optimization/017-review-findings-remediation/004-p2-maintainability/implementation-summary.md`
+- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/005-p2-maintainability/implementation-summary.md`

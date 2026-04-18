@@ -50,4 +50,4 @@ The budget is intentionally process-local. It resets on restart, which is accept
 - Group: Lifecycle
 - Source feature title: Post-insert retry budget
 - Phase 017 commits: `61f93c9bf`
-- Current reality source: `026-graph-and-context-optimization/017-review-findings-remediation/002-cluster-consumers/implementation-summary.md`
+- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/003-cluster-consumers/implementation-summary.md`

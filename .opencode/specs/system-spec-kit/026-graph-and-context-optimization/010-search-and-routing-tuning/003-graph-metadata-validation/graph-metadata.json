@@ -195,7 +195,7 @@
     ],
     "causal_summary": "Scan all 515+ graph-metadata.json files on disk to validate relationship integrity, entity quality, and derived field accuracy. No historical save data needed - this is a pure filesystem and code analysis.",
     "created_at": "2026-04-14T17:11:35.288Z",
-    "last_save_at": "2026-04-18T10:18:14.834Z",
+    "last_save_at": "2026-04-18T14:39:04.287Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

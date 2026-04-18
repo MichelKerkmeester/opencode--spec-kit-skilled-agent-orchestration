@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/017-cli-runtime-executors",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/017-cli-runtime-executors",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/017-cli-runtime-executors/001-executor-feature",
+    "system-spec-kit/026-graph-and-context-optimization/017-cli-runtime-executors/002-runtime-matrix"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "cli runtime executors",
+      "cli executor selection",
+      "cli-codex deep research",
+      "cli-copilot executor",
+      "cli-gemini executor",
+      "cli-claude-code executor",
+      "executor kind config",
+      "cli runtime executors plan",
+      "cli executor plan",
+      "cli runtime executors tasks",
+      "cli runtime executors summary"
+    ],
+    "key_topics": [
+      "cli",
+      "runtime",
+      "executors",
+      "executor",
+      "selection",
+      "cli-codex",
+      "deep",
+      "research",
+      "cli-copilot",
+      "cli-gemini",
+      "cli-claude-code",
+      "kind"
+    ],
+    "importance_tier": "medium",
+    "status": "complete",
+    "key_files": [
+      ".opencode/changelog/12--sk-deep-research/v1.10.0.0.md",
+      ".opencode/changelog/13--sk-deep-review/v1.7.0.0.md",
+      ".opencode/changelog/01--system-spec-kit/v3.4.0.2.md",
+      "001-executor-feature/plan.md",
+      "002-runtime-matrix/plan.md",
+      "001-executor-feature/tasks.md",
+      "002-runtime-matrix/tasks.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "v1.10.0.0.md",
+        "kind": "doc",
+        "path": ".opencode/changelog/12--sk-deep-research/v1.10.0.0.md",
+        "source": "derived"
+      },
+      {
+        "name": "v1.7.0.0.md",
+        "kind": "doc",
+        "path": ".opencode/changelog/13--sk-deep-review/v1.7.0.0.md",
+        "source": "derived"
+      },
+      {
+        "name": "v3.4.0.2.md",
+        "kind": "doc",
+        "path": ".opencode/changelog/01--system-spec-kit/v3.4.0.2.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Runtime Executors",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Iterative Skills",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "the",
+        "kind": "key_phrase",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "fail-fast",
+        "kind": "key_phrase",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "1. PROBLEM STATEMENT",
+        "kind": "heading",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Artifacts",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "1. ARC OVERVIEW",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "2. CROSS-CUTTING INVARIANTS",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "3. CROSS-REFERENCES",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Child Task Ledgers",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Downstream",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Tasks: CLI Runtime Executors (merged pointer)",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "trigger_phrases: [",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "] importance_tier:",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Merged packet covering the CLI executor arc: 001-executor-feature (ex-018, native + cli-codex) plus 002-runtime-matrix (ex-019, cli-copilot + cli-gemini + cli-claude-code). Shared executor-config.ts, dispatch YAML branching, per-kind flag validation.",
+    "created_at": "2026-04-18T14:39:22.815Z",
+    "last_save_at": "2026-04-18T14:39:22.815Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

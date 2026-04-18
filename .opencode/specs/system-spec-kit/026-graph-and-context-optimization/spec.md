@@ -32,7 +32,7 @@ Packet `026-graph-and-context-optimization` is the parent program for the graph-
 
 **Key Decisions**: Keep the runtime phases ordered by prerequisite relationships, treat `003-memory-quality-remediation` and `004-agent-execution-guardrails` as orthogonal support lanes, and track child-packet completion through a 14-phase map plus packet-local strict validation.
 
-**Critical Dependencies**: The fourteen active child packets `001` through `014` remain the implementation and research authorities for their own scopes. Packet `015-implementation-deep-review` is a cross-cutting review and remediation packet that audited packets 009/010/012/014 and produced 243 finding fixes. Packet `016-foundational-runtime-deep-review` is a follow-up deep review targeting 19 foundational runtime candidates (7 HIGH, 8 MEDIUM, 4 LOW) in earlier phases that 015 did not cover deeply. This root packet owns coordination, sequencing, and completion truth only.
+**Critical Dependencies**: The fourteen active child packets `001` through `014` remain the implementation and research authorities for their own scopes. Packet `015-packets-009-014-audit` is a cross-cutting review and remediation packet that audited packets 009/010/012/014 and produced 243 finding fixes. Packet `016-foundational-runtime/001-initial-research` is a follow-up deep review targeting 19 foundational runtime candidates (7 HIGH, 8 MEDIUM, 4 LOW) in earlier phases that 015 did not cover deeply. This root packet owns coordination, sequencing, and completion truth only.
 
 ---
 
@@ -147,8 +147,8 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 | Packet | Focus | Scope | Status |
 |--------|-------|-------|--------|
-| `015-implementation-deep-review/` | 120-iteration deep review of packets 009, 010, 012, 014 | 243 findings (1 P0, 114 P1, 133 P2), 28-batch remediation | Complete |
-| `016-foundational-runtime-deep-review/` | Deep review of foundational runtime seams in 002, 003, 005, 008, 010, 014 | 19 candidates (7 HIGH, 8 MEDIUM, 4 LOW), contract drift and hidden semantics | Planning |
+| `015-packets-009-014-audit/` | 120-iteration deep review of packets 009, 010, 012, 014 | 243 findings (1 P0, 114 P1, 133 P2), 28-batch remediation | Complete |
+| `016-foundational-runtime/001-initial-research/` | Deep review of foundational runtime seams in 002, 003, 005, 008, 010, 014 | 19 candidates (7 HIGH, 8 MEDIUM, 4 LOW), contract drift and hidden semantics | Planning |
 <!-- /ANCHOR:phase-map -->
 
 ---

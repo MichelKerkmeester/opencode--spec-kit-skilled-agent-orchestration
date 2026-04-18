@@ -185,7 +185,7 @@
     ],
     "causal_summary": "The sk-improve-agent skill has been validated against handover, debug, orchestrate, and review agents (Phases 001-008), but never against itself. The agent-improver's own agent definition (`.opencode/agent/agent-improver.md`) has never been a target. This is the only agent in the system that describes the improvement workflow itself, creating a unique self-referential case where the integration scanner discovers its own surfaces, the profile generator extracts its own rules, and the scorer evaluates its own quality.",
     "created_at": "2026-04-13T04:55:07.905Z",
-    "last_save_at": "2026-04-18T10:18:10.868Z",
+    "last_save_at": "2026-04-18T14:39:00.347Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

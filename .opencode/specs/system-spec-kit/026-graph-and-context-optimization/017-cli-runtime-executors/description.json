@@ -1,0 +1,25 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-cli-runtime-executors",
+  "description": "Feature Specification: CLI Runtime Executors for Iterative Skills (merged)",
+  "keywords": [
+    "feature",
+    "specification",
+    "cli",
+    "runtime",
+    "executors",
+    "iterative",
+    "skills",
+    "merged"
+  ],
+  "lastUpdated": "2026-04-18T14:38:53.866Z",
+  "specId": "017",
+  "folderSlug": "cli-runtime-executors",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

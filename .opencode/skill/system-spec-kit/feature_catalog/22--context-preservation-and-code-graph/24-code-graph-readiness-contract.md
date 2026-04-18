@@ -60,4 +60,4 @@ The result is a single readiness surface across the code-graph family: callers c
 - Group: Context Preservation and Code Graph
 - Source feature title: Code-graph readiness contract
 - Phase 017 commits: `4a154c555`, `f253194bf`
-- Current reality source: `026-graph-and-context-optimization/017-review-findings-remediation/001-infrastructure-primitives/implementation-summary.md` and `002-cluster-consumers/implementation-summary.md`
+- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives/implementation-summary.md` and `002-cluster-consumers/implementation-summary.md`

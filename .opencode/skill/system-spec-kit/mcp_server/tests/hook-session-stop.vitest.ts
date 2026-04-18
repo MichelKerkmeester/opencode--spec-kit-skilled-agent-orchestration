@@ -182,7 +182,7 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
     );
     process.env.SPECKIT_GENERATE_CONTEXT_SCRIPT = autosaveScriptPath;
     updateState('autosave-failed', {
-      lastSpecFolder: 'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review',
+      lastSpecFolder: 'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research',
       sessionSummary: {
         text: 'Persist this summary',
         extractedAt: new Date(0).toISOString(),
@@ -317,7 +317,7 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
     const transcriptText = `${transcriptLine}\n`;
     writeFileSync(transcriptPath, transcriptText, 'utf-8');
     updateState('offset-sentinel-session', {
-      lastSpecFolder: 'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review',
+      lastSpecFolder: 'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research',
       metrics: {
         estimatedPromptTokens: 1,
         estimatedCompletionTokens: 1,
@@ -388,7 +388,7 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
     });
     const transcriptText = [
       transcriptLine,
-      'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review/tasks.md',
+      'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research/tasks.md',
     ].join('\n') + '\n';
     writeFileSync(transcriptPath, transcriptText, 'utf-8');
 
@@ -441,7 +441,7 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
 
       const finalState = loadPersistedState('atomic-write-session');
       expect(finalState?.lastSpecFolder).toBe(
-        'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review',
+        'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research',
       );
       expect(finalState?.sessionSummary?.text).toBe('Atomic write verification summary.');
       expect(finalState?.producerMetadata?.transcript?.sizeBytes).toBe(Buffer.byteLength(transcriptText, 'utf-8'));
@@ -658,7 +658,7 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
     // Seed a valid pre-existing state so the autosave WOULD run if the
     // persist-failure check were missing.
     updateState('persist-fail-session', {
-      lastSpecFolder: 'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review',
+      lastSpecFolder: 'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research',
       sessionSummary: {
         text: 'Pre-existing summary',
         extractedAt: new Date().toISOString(),

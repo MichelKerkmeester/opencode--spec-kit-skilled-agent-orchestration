@@ -54,4 +54,4 @@ The validator therefore gained both freshness enforcement and structural linting
 - Group: Tooling and Scripts
 - Source feature title: Strict validation add-ons: continuity freshness and evidence markers
 - Phase 017 commits: `32a180bba`, `7d85861a0`, `e40dff0bb`, `ded5ece07`
-- Current reality source: `026-graph-and-context-optimization/017-review-findings-remediation/implementation-summary.md`
+- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/implementation-summary.md`

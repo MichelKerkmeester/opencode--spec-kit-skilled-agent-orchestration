@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/001-infrastructure-primitives",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives",
   "description": "Phase 017 Wave A child packet: infrastructure primitives (~20h, CRITICAL PATH). 5 tasks: T-CNS-01 + T-W1-CNS-04 (canonical save metadata writer, merged PR, 6h, eliminates H-56-1 root cause), T-CGC-01 (extract lib/code-graph/readiness-contract.ts, 4h, prereq for Wave B T-W1-CGC-03), T-W1-HOK-02 (extract hooks/shared-provenance.ts, 4h, prereq for Wave B T-W1-HOK-01 — breaks Gemini→Claude transitive import R52-P2-001), T-SCP-01 (collapse 4 local normalizers to canonical, 4h, resolves R1-P1-001 + R4-P1-001 compound), T-EVD-01-prep (rewrap 016 checklist.md evidence markers ')' → ']', 2h, prereq for Wave C T-EVD-01 strict mode). Blocks all downstream Wave B/C/D work. Atomic-ship: G1 (T-CNS-01 + T-W1-CNS-04) MUST land as single PR. Gate: /spec_kit:deep-review :auto ×7 emits ZERO new P0/P1.",
   "keywords": [
     "phase-017-wave-a",
@@ -54,13 +54,13 @@
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
-    "017-review-findings-remediation"
+    "016-foundational-runtime"
   ],
   "kind": "remediation",
   "level": 2,
   "status": "ready_for_implementation",
   "phaseStage": "stage-1-spec-complete",
-  "parentPacket": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation",
+  "parentPacket": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
   "childPhasePosition": {
     "wave": "A",
     "position": 1,

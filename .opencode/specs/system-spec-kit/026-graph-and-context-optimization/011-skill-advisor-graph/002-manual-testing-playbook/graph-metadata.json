@@ -207,7 +207,7 @@
     ],
     "causal_summary": "Align the full manual testing playbook package with current reality: all 24 scenario snippets follow the sk-doc 5-section/RCAF snippet contract, the root `manual_testing_playbook.md` remains a multi-section operator guide, and every Skill Advisor runtime path reference uses `.opencode/skill/skill-advisor/scripts/...` rather than bare `skill-advisor/...` or the retired `.opencode/skill/scripts/...` location.",
     "created_at": "2026-04-13T14:17:29.252Z",
-    "last_save_at": "2026-04-18T10:18:14.850Z",
+    "last_save_at": "2026-04-18T14:39:04.298Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

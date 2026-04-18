@@ -1,0 +1,24 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives",
+  "description": "Specification: Phase 017 Wave A — Infrastructure Primitives",
+  "keywords": [
+    "specification",
+    "phase",
+    "017",
+    "wave",
+    "infrastructure",
+    "primitives"
+  ],
+  "lastUpdated": "2026-04-18T14:38:53.407Z",
+  "specId": "002",
+  "folderSlug": "infrastructure-primitives",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "016-foundational-runtime"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

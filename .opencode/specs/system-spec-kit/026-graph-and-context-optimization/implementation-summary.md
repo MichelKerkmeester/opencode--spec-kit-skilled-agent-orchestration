@@ -16,7 +16,7 @@ _memory:
     last_updated_by: "claude-opus-4.7"
     recent_action: "Phase 017 review-findings-remediation complete: 27 tasks closed, 26 commits, v3.4.0.2 shipped. Child train now 13 phases total."
     next_safe_action: "Phase 018 autonomous Copilot iteration unblocked (Cluster E T-W1-HOK-01/02 landed). Optional /spec_kit:deep-review ×7 on Phase 017 scope as formal final ship gate."
-    key_files: ["implementation-summary.md", "017-review-findings-remediation/implementation-summary.md", "016-foundational-runtime-deep-review/implementation-summary.md"]
+    key_files: ["implementation-summary.md", "016-foundational-runtime/implementation-summary.md", "016-foundational-runtime/001-initial-research/implementation-summary.md"]
 
 ---
 # Implementation Summary
@@ -68,7 +68,7 @@ The root docs now reflect the April 2026 reorganization that split `006-canonica
 
 ### Phase 016 — Foundational Runtime Deep Review (v3.4.0.0 + v3.4.0.1)
 
-Phase 016 delivered the 50-iteration deep-research audit of the MCP server runtime (`16-foundational-runtime-deep-review/`) and shipped the v3.4.0.1 "Silent Failures Made Loud" remediation — 27 commits closing 63 distinct findings + 4 P0 composite attack scenarios + 7 structural refactors + 13 medium refactors + 21 quick wins + 34 test migrations. Six architectural primitives introduced (typed `OperationResult<T>`, Zod HookStateSchema + `.bad` quarantine, predecessor CAS, graph-metadata migrated marker, 4-state TrustState, per-subcommand COMMAND_BRIDGES). See `016-foundational-runtime-deep-review/implementation-summary.md` for full narrative.
+Phase 016 delivered the 50-iteration deep-research audit of the MCP server runtime (`16-foundational-runtime-deep-review/`) and shipped the v3.4.0.1 "Silent Failures Made Loud" remediation — 27 commits closing 63 distinct findings + 4 P0 composite attack scenarios + 7 structural refactors + 13 medium refactors + 21 quick wins + 34 test migrations. Six architectural primitives introduced (typed `OperationResult<T>`, Zod HookStateSchema + `.bad` quarantine, predecessor CAS, graph-metadata migrated marker, 4-state TrustState, per-subcommand COMMAND_BRIDGES). See `016-foundational-runtime/001-initial-research/implementation-summary.md` for full narrative.
 
 ### Phase 017 — Review-Findings Remediation (v3.4.0.2)
 
@@ -83,7 +83,7 @@ The headline fix: **H-56-1 canonical save metadata no-op**. Two lines in `script
 
 Four new architectural primitives added: AsyncLocalStorage caller-context (zero handler signature churn), readiness-contract module (consumed by 7 code-graph handlers), shared-provenance module (consumed by Claude + Gemini + Copilot), retry-budget keyed on `(memoryId, step, reason)`.
 
-See `017-review-findings-remediation/implementation-summary.md` for full narrative + commit manifest + verification results.
+See `016-foundational-runtime/implementation-summary.md` for full narrative + commit manifest + verification results.
 <!-- /ANCHOR:how-delivered -->
 
 ---

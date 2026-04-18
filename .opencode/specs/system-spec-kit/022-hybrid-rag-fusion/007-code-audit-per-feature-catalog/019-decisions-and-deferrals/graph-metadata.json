@@ -191,7 +191,7 @@
     ],
     "causal_summary": "Systematic code audit of 5 Decisions and Deferrals features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/cross-cutting/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.",
     "created_at": "2026-04-12T09:02:50.255Z",
-    "last_save_at": "2026-04-18T10:18:11.132Z",
+    "last_save_at": "2026-04-18T14:39:00.488Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

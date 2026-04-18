@@ -55,4 +55,4 @@ Commit `ded5ece07` added `scripts/rules/check-normalizer-lint.sh` and its test c
 - Group: Bug Fixes and Data Integrity
 - Source feature title: Scope normalizer canonicalization and lint
 - Phase 017 commits: `b923623cc`, `ded5ece07`
-- Current reality source: `026-graph-and-context-optimization/017-review-findings-remediation/implementation-summary.md`
+- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/implementation-summary.md`

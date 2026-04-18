@@ -4876,7 +4876,7 @@
       "lastUpdated": "2026-04-17T18:43:49.606Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/015-packets-009-014-audit",
       "description": "Remediation specification for 243 deduplicated findings synthesized from the merged 120-iteration deep review across packets 009, 010, 012, and 014. The packet is organized around 11 workstreams, with the governed save-time reconsolidation scope leak treated as the release-blocking P0, followed by sequential hardening workstreams and then batch-automatable correctness, security, and test-quality remediations once the scope-boundary foundations are in place.",
       "keywords": [
         "deep review findings",
@@ -4897,7 +4897,7 @@
       "lastUpdated": "2026-04-17T18:43:49.606Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research",
       "description": "Feature Specification: Foundational Runtime Remediation (Phase 016 → Phase 016 remediation Charter)",
       "keywords": [
         "feature",
@@ -4912,7 +4912,7 @@
       "lastUpdated": "2026-04-17T14:42:34.283Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
       "description": "Remediation charter for 27 consolidated tasks closing the Phase 017 review backlog across four waves. The headline fix is H-56-1: the canonical `/memory:save` path had been a deterministic metadata-freshness no-op because of a dead-code guard, a full-auto-only graph refresh gate, and the default plan-only execution mode; the packet also closes the code-graph readiness asymmetry, the Copilot compact-cache observability gap, the session-resume auth binding work, and the deferred maintainability follow-ups that Phase 018 depends on for traceable recovery and rollout hygiene.",
       "keywords": [
         "review findings",
@@ -4933,7 +4933,7 @@
       "lastUpdated": "2026-04-17T18:43:49.606Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/001-infrastructure-primitives",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives",
       "description": "Phase 017 Wave A child packet: infrastructure primitives (~20h, CRITICAL PATH). 5 tasks: T-CNS-01 + T-W1-CNS-04 (canonical save metadata writer, merged PR, 6h, eliminates H-56-1 root cause), T-CGC-01 (extract lib/code-graph/readiness-contract.ts, 4h, prereq for Wave B T-W1-CGC-03), T-W1-HOK-02 (extract hooks/shared-provenance.ts, 4h, prereq for Wave B T-W1-HOK-01 — breaks Gemini→Claude transitive import R52-P2-001), T-SCP-01 (collapse 4 local normalizers to canonical, 4h, resolves R1-P1-001 + R4-P1-001 compound), T-EVD-01-prep (rewrap 016 checklist.md evidence markers ')' → ']', 2h, prereq for Wave C T-EVD-01 strict mode). Blocks all downstream Wave B/C/D work. Atomic-ship: G1 (T-CNS-01 + T-W1-CNS-04) MUST land as single PR. Gate: /spec_kit:deep-review :auto ×7 emits ZERO new P0/P1.",
       "keywords": [
         "phase-017-wave-a",
@@ -4985,7 +4985,7 @@
       "lastUpdated": "2026-04-17T14:45:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/002-cluster-consumers",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/003-cluster-consumers",
       "description": "Phase 017 Wave B child packet: 9 tasks / 30h across 3 parallel lanes consuming Wave A primitives. Lane B1 (Cluster B consumers, 12h, 4 tasks): T-CNS-02 research folder backfill, T-W1-CNS-05 continuity freshness validator, T-CGC-02 context.ts explicit error branch, T-RBD-03 design-intent comments. Lane B2 (Cluster D + Cluster E, 16h, 2 tasks): T-W1-CGC-03 5-sibling code-graph readiness propagation (atomic-ship or stub rollout), T-W1-HOK-01 Copilot compact-cache + session-prime (depends Wave A T-W1-HOK-02). Lane B3 (Cluster A + C + Standalone P1, 12h, 3 tasks): T-SCP-02 normalizer lint rule, T-SAN-01 + T-SAN-02 + T-SAN-03 NFKC unicode normalization + tests, T-PIN-RET-01 retry-exhaustion counter. Resolves FC-3 (research iteration folders metadata), FC-4 (6 code-graph handlers readiness vocabulary), FC-5 (Copilot compact-cache wiring), FC-6 (NFKC Gate 3 hardening), FC-8 (partial_causal_link_unresolved retry-exhaustion). Wave B gate: /spec_kit:deep-review :auto ×7 + validate.sh --strict on 017 folder.",
       "keywords": [
         "phase-017-wave-b",
@@ -5033,7 +5033,7 @@
       "lastUpdated": "2026-04-17T14:41:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/003-rollout-sweeps",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/004-rollout-sweeps",
       "description": "Phase 017 Wave C child: 5 tree-wide rollout and sweep tasks (~15h / 2 days). Activates evidence-marker lint in strict mode (T-EVD-01), runs 16-folder canonical-save sweep with per-folder commits (T-CNS-03), amends stale closing-pass-notes CP-002 (T-CPN-01), renames memory-context `readiness` field to `advisoryPreset` (T-W1-MCX-01), and binds session-resume auth to MCP transport identity with permissive-mode canary (T-SRS-BND-01). HIGH rollback cost on 16-folder sweep mitigated by 1-folder smoke test and pre-sweep git stash. Depends on Wave A (`../001-infrastructure-primitives/`) and Wave B (`../002-cluster-consumers/`) merged; blocks Wave D (`../004-p2-maintainability/`) ship gate.",
       "keywords": [
         "phase-017-wave-c",
@@ -5072,7 +5072,7 @@
       "lastUpdated": "2026-04-17T14:41:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/004-p2-maintainability",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/005-p2-maintainability",
       "description": "Spec: Phase 017 Wave D — P2 Maintainability (Deferrable)",
       "keywords": [
         "spec",
@@ -5127,7 +5127,7 @@
       "lastUpdated": "2026-04-17T14:42:34.376Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/review/015-implementation-deep-review/merged-015-archive",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/review/015-packets-009-014-audit/merged-015-archive",
       "description": "Feature Specification: Combined Deep Review — 009 + 010 + 012 + 014",
       "keywords": [
         "feature",

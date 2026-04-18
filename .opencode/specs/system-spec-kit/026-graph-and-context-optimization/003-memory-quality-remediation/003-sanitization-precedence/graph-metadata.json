@@ -207,7 +207,7 @@
     ],
     "causal_summary": "Phase 3 is the packet's P2 child spec. It isolates the two behavior-sensitive fixes that the parent packet intentionally deferred until the low-risk foundation and metadata phases landed first: PR-5 for D3 trigger-phrase sanitization and PR-6 for the D2 precedence-only decision gate. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/spec.md:177-183] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/research/research.md:216-223] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/research/research.md:1158-1159]",
     "created_at": "2026-04-12T09:02:53.458Z",
-    "last_save_at": "2026-04-18T10:18:14.752Z",
+    "last_save_at": "2026-04-18T14:39:04.224Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

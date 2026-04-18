@@ -195,7 +195,7 @@
     ],
     "causal_summary": "Phase 016 aligned the README surfaces across the `system-spec-kit` tree before Phase 018 replaced standalone continuity artifacts with canonical packet continuity and shortened recovery to a three-step ladder. The README surfaces therefore needed a new pass so public-facing discovery docs would describe the current save/resume contract instead of the pre-018 model.",
     "created_at": "2026-04-12T09:02:53.483Z",
-    "last_save_at": "2026-04-18T10:18:14.797Z",
+    "last_save_at": "2026-04-18T14:39:04.253Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

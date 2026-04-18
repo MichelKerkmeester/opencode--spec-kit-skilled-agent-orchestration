@@ -50,4 +50,4 @@ The shared module now owns the provenance escaping, recovered-payload sanitizati
 - Group: UX Hooks
 - Source feature title: Shared provenance and Copilot compact-cache parity
 - Phase 017 commits: `77da3013a`, `5923737c7`
-- Current reality source: `026-graph-and-context-optimization/017-review-findings-remediation/001-infrastructure-primitives/implementation-summary.md` and `002-cluster-consumers/implementation-summary.md`
+- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives/implementation-summary.md` and `002-cluster-consumers/implementation-summary.md`

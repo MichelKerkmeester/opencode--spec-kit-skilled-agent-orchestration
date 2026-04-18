@@ -1,0 +1,64 @@
+{
+  "topic": "Post-Phase-017 refinement, improvement, bug, and follow-up surface under .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/. Investigate: metadata-freshness regen stability (H-56-1 aftermath + description.json auto-regen preserve-field gaps), code-graph readiness vocabulary completeness across the 7 sibling handlers, NFKC + evidence-marker + lint false-positive surfaces, retry-budget policy calibration (N=3 empirical basis), AsyncLocalStorage caller-context propagation edge cases, Copilot autonomous-execution hardening preconditions, Wave-D deferred P2 coupling risk (R55-P2-002/003/004), + 16-folder canonical-save sweep ordering invariants. Deliverable: Phase-019+ scoping document with prioritized findings (P0/P1/P2), reproduction paths, + risk-ranked remediation candidates.",
+  "maxIterations": 30,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-cli-runtime-executors/001-executor-feature/",
+  "createdAt": "2026-04-18T10:08:54Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "lineage": {
+    "sessionId": "dr-20260418T120854Z-9c57f9",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": ["new", "resume", "restart"],
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "findings-registry.json",
+    "dashboardFile": "deep-research-dashboard.md",
+    "strategyFile": "deep-research-strategy.md",
+    "machineOwnedSections": [
+      "key-questions",
+      "answered-questions",
+      "what-worked",
+      "what-failed",
+      "exhausted-approaches",
+      "ruled-out-directions",
+      "next-focus"
+    ]
+  },
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.4",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "sandboxMode": null,
+    "timeoutSeconds": 900
+  },
+  "capabilityMatrixPath": ".opencode/skill/sk-deep-research/assets/runtime_capabilities.json",
+  "capabilityMatrixDocPath": ".opencode/skill/sk-deep-research/references/capability_matrix.md",
+  "runtimeCapabilityResolver": ".opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs",
+  "reducerScriptPath": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+  "pauseSentinelPath": ".deep-research-pause",
+  "archiveRoot": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research_archive/017-cli-runtime-executors/001-executor-feature",
+  "migrationWindowDays": 28,
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "findings-registry.json": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable"
+  }
+}
+</content>
+</invoke>

@@ -1,0 +1,22 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
+  "description": "Feature Specification: Foundational Runtime (merged)",
+  "keywords": [
+    "feature",
+    "specification",
+    "foundational",
+    "runtime",
+    "merged"
+  ],
+  "lastUpdated": "2026-04-18T14:38:53.145Z",
+  "specId": "016",
+  "folderSlug": "foundational-runtime",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

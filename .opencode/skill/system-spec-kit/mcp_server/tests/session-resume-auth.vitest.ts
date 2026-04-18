@@ -58,7 +58,7 @@ interface CallerContextModule {
   }, fn: () => T) => T;
 }
 
-const SPEC_FOLDER = 'system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/003-rollout-sweeps';
+const SPEC_FOLDER = 'system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/004-rollout-sweeps';
 const workspacesToRemove: string[] = [];
 let originalCwd = process.cwd();
 

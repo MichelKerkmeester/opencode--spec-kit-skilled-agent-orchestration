@@ -45,4 +45,4 @@ The script is deliberately narrow: it is not a full regenerate-everything pass l
 - Group: Tooling and Scripts
 - Source feature title: Research metadata backfill
 - Phase 017 commits: `88063287b`
-- Current reality source: `026-graph-and-context-optimization/017-review-findings-remediation/002-cluster-consumers/implementation-summary.md`
+- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/003-cluster-consumers/implementation-summary.md`

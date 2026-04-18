@@ -200,7 +200,7 @@
     ],
     "causal_summary": "Gate B cleanup was supposed to delete legacy `**/memory/*.md` artifacts and retire archived-tier runtime branches, but the Gate F packet still described a dead observation-and-decision model. Until this packet is rewritten and the cleanup is re-verified against the live SQLite database plus on-disk spec tree, the phase does not provide an auditable answer to the real question: did Gate B actually finish the cleanup without leaving stale rows, orphan causal edges, or misleading packet guidance behind?",
     "created_at": "2026-04-12T09:02:53.481Z",
-    "last_save_at": "2026-04-18T10:18:14.791Z",
+    "last_save_at": "2026-04-18T14:39:04.250Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

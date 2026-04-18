@@ -67,7 +67,7 @@ describe.sequential('P0-A cross-runtime tempdir poisoning regression', () => {
   it('quarantines a poisoned hook-state file so Claude + Gemini consumers keep working', async () => {
     const poisonedSessionId = 'poisoned-session';
     const healthySessionId = 'healthy-session';
-    const healthySpecFolder = 'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review';
+    const healthySpecFolder = 'specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research';
     const transcriptPath = join(sandboxRoot!, 'healthy-transcript.jsonl');
     writeFileSync(transcriptPath, '{"role":"assistant","content":"resume packet 016"}\n', 'utf-8');
     const transcriptIdentity = buildTranscriptFingerprint(transcriptPath);

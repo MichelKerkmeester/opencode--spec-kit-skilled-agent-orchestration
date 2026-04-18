@@ -109,7 +109,7 @@ beforeEach(() => {
   });
   getLastToolCallAtMock.mockReturnValue(new Date(LAST_TOOL_CALL_AT).getTime());
   getSessionMetricsMock.mockReturnValue({
-    currentSpecFolder: 'system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review',
+    currentSpecFolder: 'system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research',
   });
   buildStructuralBootstrapContractMock.mockReturnValue(createStructuralContext('ready'));
 });

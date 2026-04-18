@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/005-p2-maintainability",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/005-p2-maintainability",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "017 wave d",
+      "017 p2 maintainability",
+      "phase 017 wave d",
+      "t-exh-01 assertnever",
+      "t-pin-god-01 runenrichmentstep",
+      "t-rcb-dup-01 runatomicreconsolidationtxn",
+      "t-yml-cp4-01",
+      "004-p2-maintainability",
+      "017 wave d plan",
+      "phase 017 wave d plan",
+      "004 p2 maintainability plan",
+      "p2 maintainability implementation plan"
+    ],
+    "key_topics": [
+      "017",
+      "wave",
+      "maintainability",
+      "phase",
+      "t-exh-01",
+      "assertnever",
+      "t-pin-god-01",
+      "runenrichmentstep",
+      "t-rcb-dup-01",
+      "runatomicreconsolidationtxn",
+      "t-yml-cp4-01",
+      "004-p2-maintainability"
+    ],
+    "importance_tier": "standard",
+    "status": "in_progress",
+    "key_files": [
+      "mcp_server/lib/utils/exhaustiveness.ts",
+      "mcp_server/handlers/save/post-insert.ts",
+      "mcp_server/lib/storage/reconsolidation.ts",
+      "mcp_server/tests/exhaustiveness.vitest.ts",
+      "mcp_server/tests/run-enrichment-step.vitest.ts",
+      "mcp_server/tests/reconsolidation.vitest.ts",
+      ".opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml",
+      ".opencode/skill/system-spec-kit/shared/predicates/boolean-expr.test.ts",
+      "shared/predicates/boolean-expr.ts",
+      "shared/predicates/boolean-expr.test.ts",
+      "lib/utils/exhaustiveness.ts",
+      "tasks.md",
+      "checklist.md",
+      "handlers/save/post-insert.ts",
+      "lib/storage/reconsolidation.ts",
+      "spec.md",
+      "plan.md",
+      "description.json",
+      "graph-metadata.json",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "exhaustiveness.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/utils/exhaustiveness.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-insert.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/save/post-insert.ts",
+        "source": "derived"
+      },
+      {
+        "name": "reconsolidation.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/storage/reconsolidation.ts",
+        "source": "derived"
+      },
+      {
+        "name": "exhaustiveness.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/exhaustiveness.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "run-enrichment-step.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/run-enrichment-step.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "reconsolidation.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/reconsolidation.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_complete_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "boolean-expr.test.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/shared/predicates/boolean-expr.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "boolean-expr.ts",
+        "kind": "code",
+        "path": "shared/predicates/boolean-expr.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": "description.json",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": "graph-metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Schedule Wave",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Any Wave",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Rule",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Wave",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase",
+        "kind": "key_phrase",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "no",
+        "kind": "key_phrase",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "After Wave",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 017 deep-review surfaced 6 P2-severity maintainability findings that degrade type safety, inflate function length, or leave anti-patterns undocumented — none of which break correctness today, but each of which will compound as the surrounding code evolves.",
+    "created_at": "2026-04-18T14:40:19.045Z",
+    "last_save_at": "2026-04-18T14:40:22.584Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

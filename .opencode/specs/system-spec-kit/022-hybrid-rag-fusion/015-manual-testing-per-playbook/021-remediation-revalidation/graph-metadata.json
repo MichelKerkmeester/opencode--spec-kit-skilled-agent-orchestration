@@ -195,7 +195,7 @@
     ],
     "causal_summary": "The code audit remediation and revalidation phase (catalog phase 021) synthesized findings from all 20 prior audit phases, identifying ~45 PARTIAL verdicts across 220+ features with 5 issue categories (source file list inflation, stale references, deprecated-as-active modules, flag default contradictions, and behavioral description mismatches). Manual testing scenarios are needed to verify that remediation tracking captures all findings, the revalidation checklist works against fixed items, and the finding closure workflow operates end-to-end.",
     "created_at": "2026-04-12T09:02:50.306Z",
-    "last_save_at": "2026-04-18T10:18:11.303Z",
+    "last_save_at": "2026-04-18T14:39:00.604Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

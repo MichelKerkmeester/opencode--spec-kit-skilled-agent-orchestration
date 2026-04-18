@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0-segment2",
+  "segment": 2,
+  "generated_at": "2026-04-17T11:27:20Z",
+  "dispatched_by": "Task tool @general / Opus 4.7 (claude-opus-4-7) / parallel waves",
+  "topic": "Deep-dive on deep-review findings from 2026-04-17T120827Z session; 10 P1 + 18 P2 across 3 clusters + 4 standalones; Phase 017 remediation plan",
+  "input_source": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/016-foundational-runtime-001-initial-research/review-report.md",
+  "iteration_range": "51-57",
+  "openQuestions": [
+    {
+      "id": "KQ-51-1",
+      "text": "Does the Cluster B infrastructure gap (generate-context.js never writes description.json.lastUpdated, no active git hooks, no evidence-marker linter) extend to other canonical-save surfaces not yet audited — graph-metadata.json.derived, implementation-summary.md._memory.continuity, checklist.md CHK evidence, tasks.md EVIDENCE citations?",
+      "status": "open",
+      "iteration_opened": 50,
+      "iteration_answered": null,
+      "dimension": "root-cause + cross-cutting-coverage",
+      "priority": "P1-critical"
+    },
+    {
+      "id": "KQ-51-2",
+      "text": "Does the R6-P1-001 sibling-asymmetry pattern (context.ts missing trustState+canonicalReadiness+lastPersistedAt hardening that query.ts got in T-CGQ-09/10/11/12) recur elsewhere in code-graph tool family (scan.ts, status.ts), memory_* handlers, or session_resume variants?",
+      "status": "open",
+      "iteration_opened": 50,
+      "iteration_answered": null,
+      "dimension": "cross-cutting-coverage",
+      "priority": "P1-critical"
+    },
+    {
+      "id": "KQ-51-3",
+      "text": "Can any P1 finding escalate to P0 under expanded attack scenarios — multi-UID (shared-host, CI runner, NFS), non-POSIX (Windows, eCryptfs), MCP transport-layer injection, or supply-chain (malicious npm dependency in @deep-review chain)?",
+      "status": "open",
+      "iteration_opened": 50,
+      "iteration_answered": null,
+      "dimension": "blast-radius",
+      "priority": "P0-escalation-check"
+    },
+    {
+      "id": "KQ-51-4",
+      "text": "What are the cross-cluster dependencies among Cluster A (scope-normalization), B (canonical-save), C (ASCII-only) remediation tasks that should inform Phase 017 task ordering? Is there a critical path where one cluster's fix depends on another?",
+      "status": "open",
+      "iteration_opened": 50,
+      "iteration_answered": null,
+      "dimension": "remediation-feasibility",
+      "priority": "P1-planning"
+    },
+    {
+      "id": "KQ-51-5",
+      "text": "Do P2 findings (god function runPostInsertEnrichment 243 LOC, missing assertNever exhaustiveness across 7+ typed unions, duplicate executeConflict transaction blocks, 170/179 malformed evidence markers) mask latent P1-class risks under specific code-paths — e.g. does missing assertNever hide a runtime fall-through that silently swallows enrichment failures?",
+      "status": "open",
+      "iteration_opened": 50,
+      "iteration_answered": null,
+      "dimension": "root-cause",
+      "priority": "P1-latency-check"
+    }
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "iterationFindings": {},
+  "metrics": {
+    "iterationsCompleted": 0,
+    "totalIterationsPlanned": 7,
+    "openQuestions": 5,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0,
+    "weightedCumulative": 0
+  },
+  "notes": "Segment 2 extends the original 50-iteration research with 7 parallel Opus-dispatched iterations meta-auditing the Phase 017 deep-review report. Final synthesis will produce a Phase-017-remediation-plan appendix inside research.md and a standalone Phase-017-remediation-plan.md in the spec folder."
+}

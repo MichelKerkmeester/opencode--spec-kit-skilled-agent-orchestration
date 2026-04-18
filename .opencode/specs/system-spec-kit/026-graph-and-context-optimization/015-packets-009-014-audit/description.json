@@ -1,0 +1,23 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-packets-009-014-audit",
+  "description": "Remediation Plan: 120-Iteration Deep Review Findings",
+  "keywords": [
+    "remediation",
+    "plan",
+    "120-iteration",
+    "deep",
+    "review",
+    "findings"
+  ],
+  "lastUpdated": "2026-04-18T14:38:53.000Z",
+  "specId": "015",
+  "folderSlug": "packets-009-014-audit",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

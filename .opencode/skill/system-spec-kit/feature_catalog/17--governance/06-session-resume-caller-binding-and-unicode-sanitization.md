@@ -53,4 +53,4 @@ The net governance effect is twofold: the resume surface now trusts transport-bo
 - Group: Governance
 - Source feature title: Session-resume caller binding and Unicode sanitization
 - Phase 017 commits: `debb5d7a8`, `87636d923`, `1bd7856a9`
-- Current reality source: `026-graph-and-context-optimization/017-review-findings-remediation/001-infrastructure-primitives/implementation-summary.md` and `002-cluster-consumers/implementation-summary.md`
+- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives/implementation-summary.md` and `002-cluster-consumers/implementation-summary.md`

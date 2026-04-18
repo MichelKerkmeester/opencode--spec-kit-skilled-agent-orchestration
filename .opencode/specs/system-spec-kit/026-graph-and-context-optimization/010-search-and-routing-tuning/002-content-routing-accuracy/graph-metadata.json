@@ -195,7 +195,7 @@
     ],
     "causal_summary": "Investigate whether the 3-tier content router (Tier1 keyword heuristic, Tier2 prototype similarity, Tier3 LLM classification) correctly classifies saves into the 8 routing categories. No historical save data needed - uses synthetic payloads against the current router code.",
     "created_at": "2026-04-14T17:11:35.279Z",
-    "last_save_at": "2026-04-18T10:18:14.823Z",
+    "last_save_at": "2026-04-18T14:39:04.280Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

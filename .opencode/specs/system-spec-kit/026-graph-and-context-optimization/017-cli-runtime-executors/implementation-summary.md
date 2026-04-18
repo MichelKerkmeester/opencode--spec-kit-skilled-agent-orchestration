@@ -1,0 +1,60 @@
+---
+title: "Implementation Summary: CLI Runtime Executors (merged)"
+description: "Shipped-state summary for the merged CLI executor arc. Both child packets complete and pushed to main before packet consolidation."
+trigger_phrases: ["cli runtime executors summary"]
+importance_tier: "high"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/017-cli-runtime-executors"
+    last_updated_at: "2026-04-18T16:30:00Z"
+    last_updated_by: "claude-opus-4.7"
+    recent_action: "Packet consolidation from ex-018 and ex-019"
+    next_safe_action: "R1-R12 remediation in downstream 018-cli-executor-remediation packet"
+    blockers: []
+---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
+
+# Implementation Summary: CLI Runtime Executors (merged)
+
+## Status
+**Shipped** — both child packets merged to `main` 2026-04-18.
+
+## What Shipped
+
+### 001-executor-feature (ex-018)
+- `executor-config.ts` — Zod schema, `parseExecutorConfig`, discriminated-union validation
+- 4 YAMLs patched with `branch_on: "config.executor.kind"` dispatch (research auto+confirm, review auto+confirm)
+- Prompt-pack templates: `sk-deep-research/assets/prompt_pack_iteration.md.tmpl`, `sk-deep-review/assets/prompt_pack_iteration.md.tmpl`
+- Setup flag parsing: `--executor`, `--model`, `--reasoning-effort`, `--service-tier`, `--executor-timeout`
+- JSONL audit field `executor: {kind, model, reasoningEffort, serviceTier}` per iteration
+- SKILL.md CONTRACT sections for both iterative skills
+- 62 new tests across executor-audit, post-dispatch-validate, dispatch-failure, prompt-pack render
+
+### 002-runtime-matrix (ex-019)
+- Three more executor kinds wired: `cli-copilot`, `cli-gemini`, `cli-claude-code`
+- `EXECUTOR_KIND_FLAG_SUPPORT` per-kind compatibility map
+- Copilot 3-concurrent cap preserved
+- Per-kind YAML dispatch branches in all 4 YAMLs
+- Cross-CLI delegation documented
+
+## Test Metrics (combined)
+- Tests passing: 116 (up from 54 pre-feature)
+- Test files: 13 (up from 5)
+- TypeScript errors: 0
+- Regression: native path byte-for-byte identical to pre-feature baseline
+
+## Downstream Remediation
+
+30-iter deep-research via `cli-codex gpt-5.4 high fast` dogfood produced 12 R-IDs (R1-R12) in `research/017-cli-runtime-executors-001-executor-feature/research.md`. Those closed in `../018-cli-executor-remediation/`.
+
+## Changelogs
+
+- `.opencode/changelog/12--sk-deep-research/v1.10.0.0.md`
+- `.opencode/changelog/13--sk-deep-review/v1.7.0.0.md`
+- `.opencode/changelog/01--system-spec-kit/v3.4.0.2.md` (executor wiring)
+
+## Consolidation Provenance
+
+This top-level packet is a post-ship consolidation of the ex-`017-cli-runtime-executors/001-executor-feature` and ex-`017-cli-runtime-executors/002-runtime-matrix` packets into a single thematic arc. No source code changed during consolidation. Only folder structure and cross-references were updated.

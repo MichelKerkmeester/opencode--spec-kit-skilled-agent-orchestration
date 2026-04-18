@@ -188,7 +188,7 @@
     ],
     "causal_summary": "The D5 research agent found the system already has basic empty-result handling, trace envelopes, session transition trace, token budgets, session dedup, and evidence-gap detection. The gap is not raw capability but shaping these signals into an **AI-caller-friendly DECISION CONTRACT** — structured payloads that let the calling AI make informed decisions about retries, abstention, follow-up queries, and presentation depth without parsing free-text or guessing.",
     "created_at": "2026-04-12T09:02:50.236Z",
-    "last_save_at": "2026-04-18T10:18:11.061Z",
+    "last_save_at": "2026-04-18T14:39:00.445Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

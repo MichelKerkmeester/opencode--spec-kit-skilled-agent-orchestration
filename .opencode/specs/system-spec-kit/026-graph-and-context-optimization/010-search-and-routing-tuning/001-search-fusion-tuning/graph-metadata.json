@@ -188,7 +188,7 @@
     ],
     "causal_summary": "Investigate whether the hardcoded thresholds, weights, and decay constants in the search pipeline are optimal. No historical save data is needed - all research uses the current codebase, schema, and synthetic query generation.",
     "created_at": "2026-04-14T17:11:35.269Z",
-    "last_save_at": "2026-04-18T10:18:14.812Z",
+    "last_save_at": "2026-04-18T14:39:04.273Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Phase 2 of `001-research-graph-context-systems` is a read-only audit of the codesight external Node.js/TypeScript skill (zero-runtime-dependency CLI that scans a project root and generates AI-assistant context artifacts) to translate its detector architecture, MCP tool design, profile generation, scanner heuristics, and blast-radius analysis into concrete improvements for `Code_Environment/Public`'s existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table plus late-session adoption synthesis grounded in specific `external/src/` file:line citations across 20 deep-research iterations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.",
     "created_at": "2026-04-12T09:02:53.446Z",
-    "last_save_at": "2026-04-18T10:18:14.726Z",
+    "last_save_at": "2026-04-18T14:39:04.208Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

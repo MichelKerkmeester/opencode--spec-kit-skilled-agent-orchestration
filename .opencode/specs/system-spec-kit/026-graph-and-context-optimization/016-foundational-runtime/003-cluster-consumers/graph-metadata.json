@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/003-cluster-consumers",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/003-cluster-consumers",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "017 wave b",
+      "phase 017 wave b cluster consumers",
+      "t-cns-02 research backfill",
+      "t-w1-cgc-03 readiness propagation",
+      "t-w1-hok-01 copilot compact-cache",
+      "017 lane b1",
+      "017 lane b2",
+      "017 lane b3",
+      "017 wave b plan",
+      "wave b 3-lane execution",
+      "017 lane b1 plan",
+      "017 lane b2 plan"
+    ],
+    "key_topics": [
+      "017",
+      "wave",
+      "phase",
+      "cluster",
+      "consumers",
+      "t-cns-02",
+      "research",
+      "backfill",
+      "t-w1-cgc-03",
+      "readiness",
+      "propagation",
+      "t-w1-hok-01"
+    ],
+    "importance_tier": "critical",
+    "status": "in_progress",
+    "key_files": [
+      "scripts/memory/backfill-research-metadata.ts",
+      "scripts/core/workflow.ts",
+      "scripts/validation/continuity-freshness.ts",
+      "implementation-summary.md",
+      "lib/code-graph/readiness-contract.ts",
+      "mcp_server/tests/code-graph-siblings-readiness.vitest.ts",
+      "hooks/copilot/compact-cache.ts",
+      "hooks/shared-provenance.ts",
+      "hooks/copilot/session-prime.ts",
+      "mcp_server/tests/copilot-compact-cycle.vitest.ts",
+      "lib/governance/scope-governance.ts",
+      "scripts/tests/gate-3-classifier.vitest.ts",
+      "mcp_server/lib/enrichment/retry-budget.ts",
+      "mcp_server/tests/retry-budget.vitest.ts",
+      "mcp_server/lib/context/caller-context.ts",
+      "mcp_server/tests/caller-context.vitest.ts",
+      "handlers/session-resume.ts",
+      "mcp_server/tests/session-resume-auth.vitest.ts",
+      "handlers/code-graph/context.ts",
+      "handlers/save/post-insert.ts"
+    ],
+    "entities": [
+      {
+        "name": "backfill-research-metadata.ts",
+        "kind": "code",
+        "path": "scripts/memory/backfill-research-metadata.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "continuity-freshness.ts",
+        "kind": "code",
+        "path": "scripts/validation/continuity-freshness.ts",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "readiness-contract.ts",
+        "kind": "code",
+        "path": "lib/code-graph/readiness-contract.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-siblings-readiness.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/code-graph-siblings-readiness.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "compact-cache.ts",
+        "kind": "code",
+        "path": "hooks/copilot/compact-cache.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-provenance.ts",
+        "kind": "code",
+        "path": "hooks/shared-provenance.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "hooks/copilot/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "copilot-compact-cycle.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/copilot-compact-cycle.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "scope-governance.ts",
+        "kind": "code",
+        "path": "lib/governance/scope-governance.ts",
+        "source": "derived"
+      },
+      {
+        "name": "gate-3-classifier.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/gate-3-classifier.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "retry-budget.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/enrichment/retry-budget.ts",
+        "source": "derived"
+      },
+      {
+        "name": "retry-budget.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/retry-budget.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "caller-context.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/context/caller-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "caller-context.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/caller-context.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": "handlers/session-resume.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume-auth.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/session-resume-auth.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context.ts",
+        "kind": "code",
+        "path": "handlers/code-graph/context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-insert.ts",
+        "kind": "code",
+        "path": "handlers/save/post-insert.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Cluster Consumers",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Begin Wave",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Ready",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Wave A lands the canonical-save metadata writer (`workflow.ts:1259, 1333`), the shared `readiness-contract.ts` module, the `hooks/shared-provenance.ts` module, and collapses 4 scope normalizers. Those are foundational primitives — on their own they fix H-56-1 at the writer level but do **not** propagate the readiness contract to the 6 code-graph sibling handlers, do **not** add the Copilot compact-cache consumer, do **not** backfill the research-iteration folders, and do **not** harden Gate 3 against unicode homoglyphs. Shipping only Wave A leaves:",
+    "created_at": "2026-04-18T14:40:19.042Z",
+    "last_save_at": "2026-04-18T14:40:22.580Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}
