@@ -558,6 +558,7 @@ workflow:
               state_paths_strategy: "{state_paths.strategy}"
               state_paths_registry: "{state_paths.registry}"
               state_paths_iteration_pattern: "{state_paths.iteration_pattern}"
+              state_paths_delta_pattern: "{state_paths.delta_pattern}"
         pre_dispatch_audit:
           skip_when: "config.executor.kind == 'native'"
           call: ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts#writeFirstRecordExecutor"
@@ -647,6 +648,9 @@ workflow:
           assert_exists: "{state_paths.iteration_pattern}"
           assert_appended: "{state_paths.state_log}"
           assert_jsonl_fields: [type, iteration, newInfoRatio, status, focus]
+          assert_canonical_type: "iteration"
+          assert_delta_file_exists: "{state_paths.delta_pattern}"
+          assert_delta_file_has_iteration_record: true
           on_failure:
             action: "emit schema_mismatch canonical conflict event"
             escalation: "After 3 consecutive failures, trigger stuck_recovery event with diagnostic context"

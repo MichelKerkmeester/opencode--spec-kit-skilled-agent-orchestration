@@ -140,7 +140,7 @@ workflow:
 
       step_create_directories:
         action: "Create spec folder and canonical review packet directories if they don't exist"
-        command: "mkdir -p {state_paths.iteration_dir}"
+        command: "mkdir -p {state_paths.iteration_dir} {state_paths.delta_dir}"
 
       step_migrate_legacy_review_state:
         action: "Rehome legacy review artifacts into review/iterations before session classification"
@@ -657,6 +657,7 @@ workflow:
               state_paths_findings_registry: "{state_paths.findings_registry}"
               state_paths_strategy: "{state_paths.strategy}"
               state_paths_iteration_pattern: "{state_paths.iteration_pattern}"
+              state_paths_delta_pattern: "{state_paths.delta_pattern}"
         pre_dispatch_audit:
           skip_when: "config.executor.kind == 'native'"
           call: ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts#writeFirstRecordExecutor"
@@ -746,6 +747,19 @@ workflow:
           assert_exists: "{state_paths.iteration_pattern}"
           assert_appended: "{state_paths.state_log}"
           assert_jsonl_fields: [type, iteration, dimensions, filesReviewed, findingsSummary, newFindingsRatio]
+          assert_canonical_type: "iteration"
+          assert_delta_file_exists: "{state_paths.delta_pattern}"
+          assert_delta_file_has_iteration_record: true
+          failure_reasons:
+            - iteration_file_missing
+            - iteration_file_empty
+            - jsonl_not_appended
+            - jsonl_missing_fields
+            - jsonl_parse_error
+            - jsonl_wrong_type
+            - delta_file_missing
+            - delta_file_empty
+            - delta_file_missing_iteration_record
           on_failure:
             action: "emit schema_mismatch canonical conflict event"
             escalation: "After 3 consecutive failures, trigger stuck_recovery event with diagnostic context"
