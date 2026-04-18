@@ -43,9 +43,23 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Scaffold-time artifacts: 5 Level 2 packet docs. Source: `../../../scratch/deep-review-research-suggestions.md §3 RR-2`.
+5-iteration canonical `/spec_kit:deep-research :auto` loop via `cli-codex gpt-5.4 high fast`. Converged at iter 5 with newInfoRatio 0.11. Artifacts at `026/research/019-system-hardening-001-initial-research-004-description-regen-strategy/`: 5 iteration markdown files, `research.md` (386 lines), per-iteration delta files in `deltas/iter-001.jsonl` through `iter-005.jsonl`, state/strategy/registry.
 
-Post-convergence: field catalogue + strategy comparison + recommendation with migration path.
+### Key findings
+
+**Q1**: Field catalogue across 86 description.json files — mix of always-derived (lastUpdated, memorySequence, memoryNameHistory, specId, folderSlug, parentChain) and can-be-authored (description text, custom keywords beyond template).
+
+**Q2**: **Field-level merge policy** recommended over opt-in flag, hash detection, or schema-versioned authored layer. Lowest migration cost + preserves rich content.
+
+**Q3**: 29 rich description.json files (per 018 §5) audited. Customization patterns catalogued.
+
+**Q4**: **Phase 018 R4 description-repair-helper already implements the schema-error half of the recommended policy**. Valid-file path should unify with schema-error path behind one shared merge helper + one explicit field policy.
+
+**Q5**: Rollout sequence: (a) shared schema first, (b) unified merge helper second, (c) targeted regen/audit pass third, (d) 007/008/009/010 missing-spec root-doc remediation tracked separately (structural defect, not merge defect).
+
+### Interaction with sub-packet 001 (SSK-RR-2)
+
+Both converge on 007/008/009/010 missing-spec-md finding. 001 proposes packet-root stub/archive/README-only remediation options; 004 confirms this is a separate defect from the merge-policy fix. Both feed into same implementation child (019/002+).
 <!-- /ANCHOR:what-built -->
 
 ---

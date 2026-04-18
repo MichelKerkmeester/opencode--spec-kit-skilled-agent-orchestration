@@ -11,15 +11,21 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 --
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research"
-    last_updated_at: "2026-04-18T17:15:00Z"
+    last_updated_at: "2026-04-18T20:30:00Z"
     last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "WAVE 1 CONVERGED. 001 SSK-RR-2: 9 iters, research.md (193 lines), 2 P0s surfaced with remediation proposals. 002 DR-1: 9 iters, review-report.md (164 lines), all 242 findings classified (ADDRESSED=61, STILL_OPEN=19, SUPERSEDED=162), 015 P0 ADDRESSED by 104f534bd0."
-    next_safe_action: "Wave 2 PAUSE per ADR-001 wave-gate: SSK-RR-2 surfaced 2 P0s — need user direction. Options: (a) dispatch Wave 2 regardless (P0s scoped + remediation drafted), (b) halt Wave 2 and spawn 019/002 remediation child first, (c) skip Wave 2+3 and jump straight to implementation"
+    recent_action: "WAVE 2 COMPLETE. 003 RR-1 NFKC: 6 iters, research.md (273 lines), P1 trigger-phrase-sanitizer surface mismatch. 004 RR-2 description-regen: 5 iters, research.md (386 lines), field-level merge recommended. Delta-file hardening commits 410db26b7 + d5e086c33 prevent type-drift recurrence. AUTONOMOUS-COMPLETION DIRECTIVE SAVED across 3 surfaces (auto-memory, constitutional, this block)."
+    next_safe_action: "AUTONOMOUS RUN: dispatch Wave 3 (005 routing-accuracy + 006 template-validator-audit) → synthesize all 6 sub-packet findings → create remediation sub-phases under 019-system-hardening/ → implement each with cli-codex gpt-5.4 high fast. NO CONFIRMATION GATES. Hours-long continuous execution authorized by user directive 2026-04-18."
     blockers:
-      - "P0 #1 from 001: packets 007/008/009/010 carry description.json + graph-metadata.json without spec.md — real state divergence. Full-tree scan confirms only these 4. Remediation proposal drafted (stub spec.md vs archive vs README-only coordination packet)."
-      - "P0 #2 from 001: save_lineage writeback bug — built workflow.js calls refreshGraphMetadata(path) without options, so same_pass flag never reaches persist layer (source/dist mismatch). Fix requires wrapper + dist rebuild + schema verification."
-      - "Wave 2 (003 RR-1 Q4 NFKC + 004 RR-2 description-regen) dispatch blocked pending P0 decision"
-    key_files: ["implementation-summary.md", "001-canonical-save-invariants/research.md", "002-delta-review-015/review-report.md"]
+      - "P0 #1 from 001: packets 007/008/009/010 carry description.json + graph-metadata.json without spec.md — real state divergence. Remediation scheduled as first child after synthesis."
+      - "P0 #2 from 001: save_lineage writeback bug — built workflow.js calls refreshGraphMetadata(path) without options, so same_pass flag never reaches persist layer. Remediation scheduled after synthesis."
+      - "P1 from 003: trigger-phrase-sanitizer keeps fullwidth/mathematical/zero-width chars that shared-provenance strips. Severity capped by lack of shell/file/SQL sink downstream."
+    autonomous_completion_directive:
+      authorized_at: "2026-04-18T20:25:00Z"
+      scope: "Synthesize + scaffold remediation sub-phases + implement all findings in one continuous autonomous run. No confirmation gates. Hours-long permitted. Commit+push after each child. Mark all spec docs complete+verified at end."
+      executor: "cli-codex gpt-5.4 high fast (timeout 1800)"
+      fallback: "cli-copilot (max 3 concurrent)"
+      injection_surfaces: ["~/.claude/projects/.../memory/feedback_019_autonomous_completion.md", ".opencode/skill/system-spec-kit/constitutional/phase-019-autonomous-completion.md", "this _memory.continuity block"]
+    key_files: ["implementation-summary.md", "001-canonical-save-invariants/research.md", "002-delta-review-015/review-report.md", "003-q4-nfkc-robustness/research.md", "004-description-regen-strategy/research.md"]
 
 ---
 # Implementation Summary: 019 Initial Research Wave
