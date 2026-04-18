@@ -312,5 +312,3 @@ The executor-selection feature ships with full unit-test coverage, symmetric acr
 
 Track 2 (30-iter cli-codex research) is unblocked and ready to run.
 <!-- /ANCHOR:verdict -->
-</content>
-</invoke>

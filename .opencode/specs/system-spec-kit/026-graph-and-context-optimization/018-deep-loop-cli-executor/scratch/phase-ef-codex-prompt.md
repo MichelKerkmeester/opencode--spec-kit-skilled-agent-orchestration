@@ -195,5 +195,3 @@ VITEST_RESULT: [<n>/<m> passed]
 SYMMETRY_CHECK: [research ↔ review docs parallel: yes | no + detail]
 NEXT_STEPS: <follow-ups>
 ```
-</content>
-</invoke>

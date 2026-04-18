@@ -208,5 +208,3 @@ Phase 019 ships a complete executor matrix: native + 4 CLIs. Users can now invok
 
 Track 2 from the original approved plan (30-iteration deep-research on Phase 017 refinements via cli-codex) is still pending and now has the option of using any of the four CLIs instead.
 <!-- /ANCHOR:handoff -->
-</content>
-</invoke>

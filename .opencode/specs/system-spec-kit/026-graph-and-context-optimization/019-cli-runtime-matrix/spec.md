@@ -302,5 +302,3 @@ When a CLI executor runs an iteration, it operates inside its own sandbox/permis
 - **Decision Records**: See `decision-record.md`
 - **Immediate Predecessor**: `../018-deep-loop-cli-executor/implementation-summary.md`
 - **Per-CLI References**: `.opencode/skill/cli-codex/SKILL.md`, `.opencode/skill/cli-copilot/SKILL.md`, `.opencode/skill/cli-gemini/SKILL.md`, `.opencode/skill/cli-claude-code/SKILL.md`
-</content>
-</invoke>

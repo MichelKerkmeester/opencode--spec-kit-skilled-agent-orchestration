@@ -219,5 +219,3 @@ Recommended ship: Group 3 first (libs + unit tests), then Groups 1+2 together (Y
 - **Predecessor**: `../017-review-findings-remediation/`
 - **Session Plan**: `/Users/michelkerkmeester/.claude/plans/research-and-refinements-improvements-cheerful-scott.md`
 <!-- /ANCHOR:cross-refs -->
-</content>
-</invoke>

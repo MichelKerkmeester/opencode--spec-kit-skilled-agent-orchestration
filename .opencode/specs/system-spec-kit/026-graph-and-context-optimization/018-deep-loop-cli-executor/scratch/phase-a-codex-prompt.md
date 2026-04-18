@@ -152,5 +152,3 @@ TSC_RESULT: [pass | fail: <summary>]
 VITEST_RESULT: [<n>/<m> passed]
 NEXT_STEPS: <any follow-ups the orchestrator should handle>
 ```
-</content>
-</invoke>

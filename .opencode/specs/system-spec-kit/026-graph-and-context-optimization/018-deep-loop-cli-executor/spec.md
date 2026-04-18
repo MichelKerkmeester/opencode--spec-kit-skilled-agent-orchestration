@@ -296,5 +296,3 @@ Extension-point stubs for `cli-copilot`, `cli-gemini`, `cli-claude-code` are res
 - **Approved Plan (session-local)**: `/Users/michelkerkmeester/.claude/plans/research-and-refinements-improvements-cheerful-scott.md`
 - **Immediate Predecessor**: `../017-review-findings-remediation/implementation-summary.md`
 - **Skill Contracts**: `.opencode/skill/sk-deep-research/SKILL.md`, `.opencode/skill/sk-deep-review/SKILL.md`
-</content>
-</invoke>

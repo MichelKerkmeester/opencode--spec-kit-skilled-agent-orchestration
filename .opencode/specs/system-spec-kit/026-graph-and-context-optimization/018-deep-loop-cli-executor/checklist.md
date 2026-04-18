@@ -195,5 +195,3 @@ _memory:
 
 **Verdict**: [DRAFT/CONDITIONAL/PASS — populate post-verification]
 <!-- /ANCHOR:summary -->
-</content>
-</invoke>

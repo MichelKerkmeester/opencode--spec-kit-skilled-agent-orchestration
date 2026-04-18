@@ -135,5 +135,3 @@ _memory:
 
 **Verdict**: [DRAFT → CONDITIONAL → PASS per Phase 018 convention]
 <!-- /ANCHOR:summary -->
-</content>
-</invoke>

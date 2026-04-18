@@ -158,5 +158,3 @@ Ship Groups 1+2 together; Group 3 after verification.
 - **Predecessor**: `../018-deep-loop-cli-executor/`
 - **Per-CLI References**: `.opencode/skill/cli-codex/SKILL.md`, `.opencode/skill/cli-copilot/SKILL.md`, `.opencode/skill/cli-gemini/SKILL.md`, `.opencode/skill/cli-claude-code/SKILL.md`
 <!-- /ANCHOR:cross-refs -->
-</content>
-</invoke>

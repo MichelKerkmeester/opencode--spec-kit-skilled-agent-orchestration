@@ -91,5 +91,3 @@ VITEST_RESULT: [<n>/<m> passed]
 SYMMETRY_CHECK: [research-confirm-auto vs review-confirm-auto structurally equivalent: yes | no + detail]
 NEXT_STEPS: <follow-ups>
 ```
-</content>
-</invoke>

@@ -296,5 +296,3 @@ Level 3 Decision Record — 5 ADRs covering major architectural choices.
 Follows Phase 017 precedent of capturing scope-boundary, symmetry, and mechanism decisions.
 HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
 -->
-</content>
-</invoke>

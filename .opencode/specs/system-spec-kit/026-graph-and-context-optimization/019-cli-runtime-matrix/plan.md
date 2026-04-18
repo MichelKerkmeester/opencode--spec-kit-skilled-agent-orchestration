@@ -170,5 +170,3 @@ All branches funnel through:
 - **Procedure**: Single-commit revert of the 019 PR restores the 018 state (cli-codex + native only). Per-kind validation changes are additive; removing them has no blast radius on the 018 paths.
 - **Blast radius**: Users who adopted cli-copilot / cli-gemini / cli-claude-code have their config rejected post-revert. They fall back to cli-codex or native.
 <!-- /ANCHOR:rollback -->
-</content>
-</invoke>

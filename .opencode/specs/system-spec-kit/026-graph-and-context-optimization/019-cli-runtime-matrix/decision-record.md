@@ -235,5 +235,3 @@ When Google ships a new model, users file a PR updating the whitelist.
 
 **What it costs**: One-line update per new Google release. Low friction.
 <!-- /ANCHOR:adr-004 -->
-</content>
-</invoke>

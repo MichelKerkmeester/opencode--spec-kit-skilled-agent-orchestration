@@ -251,5 +251,3 @@ From SKILL.md:46-52 (both skills), these invariants MUST survive:
 5. Convergence detection stays YAML-driven; executor can't short-circuit.
 6. No custom bash dispatcher wraps the loop. The YAML-declared `codex exec` invocation is ONE step inside the YAML, not a replacement for the loop.
 <!-- /ANCHOR:invariants -->
-</content>
-</invoke>

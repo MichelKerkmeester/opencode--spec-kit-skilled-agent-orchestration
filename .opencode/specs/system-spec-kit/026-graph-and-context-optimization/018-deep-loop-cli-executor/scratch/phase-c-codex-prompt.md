@@ -223,5 +223,3 @@ VITEST_RESULT: [<n>/<m> passed]
 NATIVE_PATH_PRESERVATION: [verified via visual diff | requires post-hoc test]
 NEXT_STEPS: <follow-ups>
 ```
-</content>
-</invoke>
