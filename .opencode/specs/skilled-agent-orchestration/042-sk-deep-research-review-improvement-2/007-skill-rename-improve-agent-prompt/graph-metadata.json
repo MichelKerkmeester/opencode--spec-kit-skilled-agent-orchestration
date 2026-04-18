@@ -199,7 +199,7 @@
     ],
     "causal_summary": "This phase closes the documentation gap around a skill-folder rename that had already shipped in the repo. The two improver skills are now canonically named `sk-improve-agent` and `sk-improve-prompt`, their changelog directories were moved to `14--sk-improve-prompt/` and `15--sk-improve-agent/`, and the live runtime-agent files already use the `improve-agent` naming convention. The packet records that truth so future maintainers can trust the renamed paths without reconstructing the rename from git history.",
     "created_at": "2026-04-12T09:02:50.196Z",
-    "last_save_at": "2026-04-18T09:14:20.598Z",
+    "last_save_at": "2026-04-18T10:18:10.904Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

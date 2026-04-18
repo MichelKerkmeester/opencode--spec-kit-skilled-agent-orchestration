@@ -204,7 +204,7 @@
     ],
     "causal_summary": "The evaluation category contains 6 manual test scenarios covering ablation studies (channel-level Recall@20 delta measurement), reporting dashboard (sprint/channel trend aggregation), evaluation dashboard generation, ablation study execution with custom parameters, baseline comparison reporting, and learning history retrieval. The four new scenarios (EX-046 through EX-049) expand coverage to comprehensive evaluation workflows and historical analysis. Each scenario must be executed with defined prompts, expected behaviors verified, and evidence captured to validate that evaluation tools function correctly.",
     "created_at": "2026-04-12T09:02:50.294Z",
-    "last_save_at": "2026-04-18T09:14:20.774Z",
+    "last_save_at": "2026-04-18T10:18:11.274Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

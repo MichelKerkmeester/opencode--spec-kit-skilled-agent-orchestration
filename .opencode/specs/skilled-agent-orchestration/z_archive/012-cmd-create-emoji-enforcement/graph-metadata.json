@@ -201,7 +201,7 @@
     ],
     "causal_summary": "The `/create` command currently enforces emoji usage in documentation titles and sections through validation logic. This policy has been deprecated. This spec documents the removal of all emoji enforcement logic from the command infrastructure while preserving the command's core functionality.",
     "created_at": "2026-04-12T09:02:50.211Z",
-    "last_save_at": "2026-04-18T09:14:20.620Z",
+    "last_save_at": "2026-04-18T10:18:10.964Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

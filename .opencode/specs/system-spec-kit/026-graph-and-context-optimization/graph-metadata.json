@@ -21,7 +21,8 @@
     "system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review",
     "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review",
     "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation",
-    "system-spec-kit/026-graph-and-context-optimization/018-deep-loop-cli-executor"
+    "system-spec-kit/026-graph-and-context-optimization/018-deep-loop-cli-executor",
+    "system-spec-kit/026-graph-and-context-optimization/019-cli-runtime-matrix"
   ],
   "manual": {
     "depends_on": [],
@@ -220,7 +221,7 @@
     ],
     "causal_summary": "Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It coordinates a 14-phase child train covering the runtime pipeline, memory-quality remediation, AGENTS guardrails, continuity refactoring, search/routing tuning, command-graph consolidation, advisor tuning, and the memory-save rewrite -- all aligned to one dependency-aware execution map.",
     "created_at": "2026-04-12T09:02:53.443Z",
-    "last_save_at": "2026-04-18T09:14:24.239Z",
+    "last_save_at": "2026-04-18T10:18:14.719Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

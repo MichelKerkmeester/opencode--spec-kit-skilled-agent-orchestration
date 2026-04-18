@@ -71,6 +71,14 @@ Both `/create:changelog` YAMLs (auto and confirm), the user-facing changelog com
 
 A new CHANGELOG intent was added to `INTENT_SIGNALS` (weight 4, keywords include "changelog", "release notes", "changelog template", "release template", "create changelog", "github release"), a matching `RESOURCE_MAP` entry returns the new template path, the resource-domain bullet for `assets/documentation/` was extended to mention changelog and release-notes templates, the `WHEN TO USE` section gained a Changelog & Release Notes use case, and the Templates list under Section 5 now links to the moved file.
 
+### Template restructured to match the canonical asset shape
+
+After the move, the template was rewritten to match the canonical skill asset template at `.opencode/skill/sk-doc/assets/skill/skill_asset_template` so it conforms to the same skeleton as every other documentation template (readme, install_guide, llmstxt, and frontmatter templates under sk-doc/assets/documentation). It now has YAML frontmatter (title + description), an H1 with subtitle and 1-2 sentence intro, a `## 1. OVERVIEW` section with `### Purpose` and `### Usage` subsections, retrieval-anchor open/close comment markers on every H2, and a final `## 8. RELATED RESOURCES` section linking to other documentation templates and HVR/core standards. The actual content (compact and expanded format blocks, writing-style rules, format-selection guide, real examples, nested-changelog pointer) was preserved verbatim. `validate_document.py` reports it as a clean asset-type document with 0 issues.
+
+### sk-doc README.md directory-tree updated
+
+The sk-doc README Section 4 lists every template in a directory tree under `assets/documentation/`. An entry for the new changelog template was added in alphabetical position above the frontmatter-templates entry. README validation: 0 issues.
+
 ### sk-git impact
 
 sk-git references the `/create:changelog` command surface (in finish_workflows reference and elsewhere), not the template path itself. A grep for `changelog_template` under `.opencode/skill/sk-git/` returns zero hits, so no sk-git source files were modified. The user-facing slash command `/create:changelog` continues to work without behavioural change.
@@ -86,6 +94,7 @@ sk-git references the `/create:changelog` command surface (in finish_workflows r
 | .opencode/command/create/changelog.md | Modified | Section 3 canonical-template reference repointed at sk-doc |
 | .opencode/skill/system-spec-kit/references/workflows/nested_changelog.md | Modified | "Do not reuse global template" pointer repointed at sk-doc |
 | .opencode/skill/sk-doc/SKILL.md | Modified | Added CHANGELOG intent, RESOURCE_MAP entry, use-case mention, references-list entry, and updated assets/documentation domain bullet |
+| .opencode/skill/sk-doc/README.md | Modified | Added changelog_template.md to the assets/documentation directory tree |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -117,6 +126,8 @@ The work was a single-pass refactor: copy + delete + repoint references + wire t
 | Check | Result |
 |-------|--------|
 | validate_document.py on sk-doc/SKILL (`python3 .opencode/skill/sk-doc/scripts/validate_document.py` against the modified skill document) | PASS, 0 issues |
+| validate_document.py on the rewritten changelog_template (asset type) | PASS, 0 issues |
+| validate_document.py on the updated sk-doc README (readme type) | PASS, 0 issues |
 | Grep for `command/create/assets/changelog_template` under `.opencode/command/` and `.opencode/skill/` | PASS, zero hits in live source files (only matches in this packet's own docs and frozen historical artifacts) |
 | File parity check on the moved template | PASS, 7,718 bytes both before and after the move |
 | Skill list mid-run shows `/create:assets:changelog_template` is gone | PASS, the old slash command surface is no longer registered |

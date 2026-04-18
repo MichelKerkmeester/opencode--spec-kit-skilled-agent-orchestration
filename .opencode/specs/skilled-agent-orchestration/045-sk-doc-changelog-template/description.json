@@ -7,13 +7,15 @@
     "move",
     "sk-doc"
   ],
-  "lastUpdated": "2026-04-18T09:14:14.798Z",
+  "lastUpdated": "2026-04-18T09:32:27.239Z",
   "specId": "045",
   "folderSlug": "sk-doc-changelog-template",
   "parentChain": [
     "specs",
     "skilled-agent-orchestration"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-04-26_10-32__moved-canonical-changelog-and-release-notes.md"
+  ]
 }

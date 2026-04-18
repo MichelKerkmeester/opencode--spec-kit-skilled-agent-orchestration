@@ -133,6 +133,7 @@ Summary of requirements:
 
 - **FC-1**: Every `/memory:save` invocation (any `plannerMode`) writes `description.json.lastUpdated` and refreshes `graph-metadata.json.derived.*` on the target spec folder.
 - **FC-2**: All 16 sibling folders under `026-graph-and-context-optimization/` have `description.json.lastUpdated ≥ graph-metadata.json.derived.last_save_at - 10m`.
+  Follow-up note: the 10-minute divergence limit is a heuristic one-sided policy budget pending telemetry calibration, not an empirically measured same-save latency bound, and date-only timestamps need precision-aware normalization before they can participate in strict freshness checks.
 - **FC-3**: Every research iteration folder (`research/NNN-*/iterations/`) either has `description.json` + `graph-metadata.json` or is explicitly flagged as auto-invisible.
 - **FC-4**: `handlers/code-graph/{scan,status,context,ccc-status,ccc-reindex,ccc-feedback}.ts` emit `canonicalReadiness` + `trustState` + `lastPersistedAt` via shared `lib/code-graph/readiness-contract.ts`.
 - **FC-5**: `hooks/copilot/compact-cache.ts` exists and writes `trustState: 'cached'`; `hooks/copilot/session-prime.ts` reads `payloadContract?.provenance.trustState`.
@@ -151,6 +152,7 @@ Summary of requirements:
 
 - Same-UID filesystem trust model documented in deployment docs; Docker `-v /tmp:/tmp` flagged as anti-pattern.
 - `description.json.lastUpdated` and `graph-metadata.json.derived.last_save_at` MUST remain ≤10m divergent across all canonical save paths.
+- The 10-minute continuity threshold is a heuristic one-sided policy budget pending telemetry calibration; it is not a measured same-pass latency guarantee.
 - `trustState` vocabulary remains `'live' | 'stale' | 'absent' | 'unavailable'` — no new values added.
 <!-- /ANCHOR:success-criteria -->
 

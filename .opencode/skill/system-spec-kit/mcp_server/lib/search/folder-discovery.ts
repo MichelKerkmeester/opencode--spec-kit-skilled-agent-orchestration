@@ -5,6 +5,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as crypto from 'node:crypto';
+import { mergePreserveRepair } from '../description/repair.js';
 import { stripYamlFrontmatter } from '../parsing/content-normalizer.js';
 
 // ───────────────────────────────────────────────────────────────
@@ -44,6 +45,15 @@ export interface PerFolderDescription extends FolderDescription {
   memoryNameHistory: string[];  // Last 20 slugs (ring buffer)
 }
 
+export type LoadResult =
+  | { ok: true; data: PerFolderDescription }
+  | {
+    ok: false;
+    reason: 'file_missing' | 'parse_error' | 'schema_error';
+    partial?: Record<string, unknown>;
+    detail?: string;
+  };
+
 // ───────────────────────────────────────────────────────────────
 // 2. STOP WORDS
 // ───────────────────────────────────────────────────────────────
@@ -65,6 +75,10 @@ const STOP_WORDS = new Set([
 
 const MAX_DESCRIPTION_LENGTH = 150;
 const MAX_SPEC_DISCOVERY_DEPTH = 8;
+const DESCRIPTION_REPAIR_MERGE_SAFE = (() => {
+  const rawValue = process.env.SPECKIT_DESCRIPTION_REPAIR_MERGE_SAFE?.trim().toLowerCase();
+  return rawValue !== 'false' && rawValue !== '0';
+})();
 const SCAN_SKIP_DIRECTORIES = new Set([
   '.git',
   '.hg',
@@ -116,6 +130,143 @@ function resolveRealPathSafe(targetPath: string): string | null {
       return null;
     }
   }
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((entry: unknown) => typeof entry === 'string');
+}
+
+function getPerFolderDescriptionIssues(parsed: unknown): {
+  issues: string[];
+  partial?: Record<string, unknown>;
+} {
+  if (!isRecord(parsed)) {
+    return {
+      issues: ['top-level JSON value must be an object'],
+    };
+  }
+
+  const issues: string[] = [];
+
+  if (typeof parsed.specFolder !== 'string') issues.push('specFolder must be a string');
+  if (typeof parsed.lastUpdated !== 'string') issues.push('lastUpdated must be a string');
+  if (typeof parsed.description !== 'string') issues.push('description must be a string');
+  if (!isStringArray(parsed.keywords)) issues.push('keywords must be a string[]');
+  if (parsed.specId !== undefined && typeof parsed.specId !== 'string') {
+    issues.push('specId must be a string when present');
+  }
+  if (parsed.folderSlug !== undefined && typeof parsed.folderSlug !== 'string') {
+    issues.push('folderSlug must be a string when present');
+  }
+  if (parsed.parentChain !== undefined && !isStringArray(parsed.parentChain)) {
+    issues.push('parentChain must be a string[] when present');
+  }
+  if (parsed.memorySequence !== undefined && typeof parsed.memorySequence !== 'number') {
+    issues.push('memorySequence must be a number when present');
+  }
+  if (parsed.memoryNameHistory !== undefined && !isStringArray(parsed.memoryNameHistory)) {
+    issues.push('memoryNameHistory must be a string[] when present');
+  }
+
+  return { issues, partial: parsed };
+}
+
+function normalizePerFolderDescription(
+  parsed: Record<string, unknown>,
+  folderPath: string,
+): PerFolderDescription {
+  const normalized = { ...parsed } as Record<string, unknown>;
+  const folderName = path.basename(folderPath);
+
+  if (!normalized.specId) {
+    const numMatch = folderName.match(/^(\d+)/);
+    normalized.specId = numMatch ? numMatch[1] : '';
+  }
+
+  if (!normalized.folderSlug) {
+    normalized.folderSlug = slugifyFolderName(folderName);
+  }
+
+  if (!normalized.parentChain) normalized.parentChain = [];
+  if (normalized.memorySequence === undefined) normalized.memorySequence = 0;
+  if (!normalized.memoryNameHistory) normalized.memoryNameHistory = [];
+
+  return normalized as unknown as PerFolderDescription;
+}
+
+function buildCanonicalDescriptionOverrides(
+  desc: PerFolderDescription,
+): Pick<
+  PerFolderDescription,
+  | 'specFolder'
+  | 'description'
+  | 'keywords'
+  | 'lastUpdated'
+  | 'specId'
+  | 'folderSlug'
+  | 'parentChain'
+  | 'memorySequence'
+> {
+  return {
+    specFolder: desc.specFolder,
+    description: desc.description,
+    keywords: desc.keywords,
+    lastUpdated: desc.lastUpdated,
+    specId: desc.specId,
+    folderSlug: desc.folderSlug,
+    parentChain: desc.parentChain,
+    memorySequence: desc.memorySequence,
+  };
+}
+
+function getSchemaErrorHistory(
+  partial: Record<string, unknown> | undefined,
+  fallback: string[],
+): string[] {
+  return partial && isStringArray(partial.memoryNameHistory)
+    ? partial.memoryNameHistory
+    : fallback;
+}
+
+function getDescriptionWritePayload(
+  desc: PerFolderDescription,
+  existing: LoadResult,
+): Record<string, unknown> {
+  const canonicalOverrides = buildCanonicalDescriptionOverrides(desc);
+
+  if (existing.ok) {
+    return {
+      ...existing.data,
+      ...canonicalOverrides,
+      memoryNameHistory: desc.memoryNameHistory,
+    };
+  }
+
+  if (existing.reason === 'schema_error' && getRepairMergeSafe() && existing.partial) {
+    const repaired = mergePreserveRepair({
+      partial: existing.partial,
+      canonicalOverrides: canonicalOverrides as Record<string, unknown> & typeof canonicalOverrides,
+    });
+    return {
+      ...repaired.merged,
+      memoryNameHistory: getSchemaErrorHistory(existing.partial, desc.memoryNameHistory),
+    };
+  }
+
+  if (existing.reason === 'parse_error') {
+    const detail = existing.detail ? ` (${existing.detail})` : '';
+    console.warn(`Warning: description.json parse error, writing minimal replacement${detail}`);
+  }
+
+  return { ...desc };
+}
+
+export function getRepairMergeSafe(): boolean {
+  return DESCRIPTION_REPAIR_MERGE_SAFE;
 }
 
 function normalizeBasePaths(basePaths: string[]): string[] {
@@ -695,52 +846,42 @@ export function generatePerFolderDescription(
  * @param folderPath - Absolute path to the spec folder.
  * @returns The parsed PerFolderDescription, or null.
  */
-export function loadPerFolderDescription(folderPath: string): PerFolderDescription | null {
+export function loadExistingDescription(folderPath: string): LoadResult {
   const descPath = path.join(folderPath, 'description.json');
   if (!fs.existsSync(descPath)) {
-    return null;
+    return { ok: false, reason: 'file_missing' };
   }
 
   try {
     const raw = fs.readFileSync(descPath, 'utf-8');
     const parsed = JSON.parse(raw);
-    // Validate ALL PerFolderDescription fields — type mismatch triggers spec.md fallback.
-    // Array element type checks (every() guards) prevent non-string elements from silently
-    // Passing Array.isArray() and causing downstream TypeError on string operations.
-    if (
-      !parsed ||
-      typeof parsed.specFolder !== 'string' ||
-      typeof parsed.lastUpdated !== 'string' ||
-      typeof parsed.description !== 'string' ||
-      !Array.isArray(parsed.keywords) ||
-      !parsed.keywords.every((e: unknown) => typeof e === 'string') ||
-      (parsed.specId !== undefined && typeof parsed.specId !== 'string') ||
-      (parsed.folderSlug !== undefined && typeof parsed.folderSlug !== 'string') ||
-      (parsed.parentChain !== undefined && (!Array.isArray(parsed.parentChain) || !parsed.parentChain.every((e: unknown) => typeof e === 'string'))) ||
-      (parsed.memorySequence !== undefined && typeof parsed.memorySequence !== 'number') ||
-      (parsed.memoryNameHistory !== undefined && (!Array.isArray(parsed.memoryNameHistory) || !parsed.memoryNameHistory.every((e: unknown) => typeof e === 'string')))
-    ) {
-      return null; // Structurally invalid — triggers spec.md fallback
+    const validation = getPerFolderDescriptionIssues(parsed);
+    if (validation.issues.length > 0) {
+      return {
+        ok: false,
+        reason: 'schema_error',
+        partial: validation.partial,
+        detail: validation.issues.join('; '),
+      };
     }
-    // F-36: Upgrade-on-read — fill missing optional fields from folder path
-    if (!parsed.specId || !parsed.folderSlug) {
-      const folderName = path.basename(folderPath);
-      if (!parsed.specId) {
-        const numMatch = folderName.match(/^(\d+)/);
-        parsed.specId = numMatch ? numMatch[1] : '';
-      }
-      if (!parsed.folderSlug) {
-        parsed.folderSlug = slugifyFolderName(folderName);
-      }
-    }
-    if (!parsed.parentChain) parsed.parentChain = [];
-    if (parsed.memorySequence === undefined) parsed.memorySequence = 0;
-    if (!parsed.memoryNameHistory) parsed.memoryNameHistory = [];
 
-    return parsed as PerFolderDescription;
-  } catch (_error: unknown) {
-    return null;
+    return {
+      ok: true,
+      data: normalizePerFolderDescription(validation.partial!, folderPath),
+    };
+  } catch (error: unknown) {
+    const parseMessage = error instanceof Error ? error.message : String(error);
+    return {
+      ok: false,
+      reason: 'parse_error',
+      detail: parseMessage,
+    };
   }
+}
+
+export function loadPerFolderDescription(folderPath: string): PerFolderDescription | null {
+  const result = loadExistingDescription(folderPath);
+  return result.ok ? result.data : null;
 }
 
 /**
@@ -759,13 +900,14 @@ export function savePerFolderDescription(desc: PerFolderDescription, folderPath:
     fs.mkdirSync(folderPath, { recursive: true });
   }
   const descPath = path.join(folderPath, 'description.json');
+  const payload = getDescriptionWritePayload(desc, loadExistingDescription(folderPath));
   // Atomic write with random suffix, fsync, and cleanup to prevent partial writes
   const tempSuffix = crypto.randomBytes(4).toString('hex');
   const tempPath = `${descPath}.tmp.${tempSuffix}`;
   try {
     const fd = fs.openSync(tempPath, 'w');
     try {
-      fs.writeSync(fd, JSON.stringify(desc, null, 2), undefined, 'utf-8');
+      fs.writeSync(fd, JSON.stringify(payload, null, 2), undefined, 'utf-8');
       fs.fsyncSync(fd);
     } finally {
       fs.closeSync(fd);

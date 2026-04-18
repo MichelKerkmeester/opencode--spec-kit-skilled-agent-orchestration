@@ -117,7 +117,7 @@ _memory:
 - [ ] CHK-090 [P1] Wave F (R8) docs: retry-budget said to be heuristic, not calibrated
 - [ ] CHK-091 [P1] Wave F (R10) docs: caller-context coverage documented for new boundaries
 - [ ] CHK-092 [P1] Wave F (R11) docs: readiness contract narrowed to 4 reachable values
-- [ ] CHK-093 [P0] 3 changelogs drafted per canonical template: sk-deep-research v1.10.0.0, sk-deep-review v1.7.0.0, system-spec-kit v3.5.0.0
+- [ ] CHK-093 [P0] 3 changelogs drafted per canonical template: sk-deep-research v1.10.0.0, sk-deep-review v1.7.0.0, system-spec-kit v3.4.0.3
 <!-- /ANCHOR:docs -->
 
 ---

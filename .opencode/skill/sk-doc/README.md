@@ -205,6 +205,7 @@ sk-doc/
 ├── README.md                                        # This file
 ├── assets/
 │   ├── documentation/                               # Document templates
+│   │   ├── changelog_template.md                    # Global changelog and GitHub release notes
 │   │   ├── frontmatter_templates.md                 # Frontmatter validation (11 types)
 │   │   ├── install_guide_template.md                # 5-phase install guide template
 │   │   ├── llmstxt_templates.md                     # llms.txt generation templates

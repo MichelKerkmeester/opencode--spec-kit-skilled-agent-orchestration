@@ -114,7 +114,7 @@ Task ID format: `T-<CAT>-NN` where CAT ∈ {AUD, VAL, YML, REP, LIN, FEN, RET, C
 
 - [ ] **T-CLG-01** Write `.opencode/changelog/12--sk-deep-research/v1.10.0.0.md` per canonical template.
 - [ ] **T-CLG-02** Write `.opencode/changelog/13--sk-deep-review/v1.7.0.0.md`.
-- [ ] **T-CLG-03** Write `.opencode/changelog/01--system-spec-kit/v3.5.0.0.md` (covers generate-description.ts + graph-metadata lineage work).
+- [ ] **T-CLG-03** Write `.opencode/changelog/01--system-spec-kit/v3.4.0.3.md` (covers generate-description.ts + graph-metadata lineage work).
 - [ ] **T-SUM-01** Populate `implementation-summary.md` with shipped state.
 - [ ] **T-SUM-02** Refresh description.json + graph-metadata.json via generate-description.js.
 - [ ] **T-VAL-03** Run `validate.sh --strict` on 020; confirm 0 errors.

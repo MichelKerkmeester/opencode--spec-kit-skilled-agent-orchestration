@@ -3,7 +3,7 @@
 // MODULE: Continuity Freshness Validator
 // ───────────────────────────────────────────────────────────────
 // Warns when implementation-summary continuity lags graph metadata
-// by more than 10 minutes.
+// by more than the 10-minute heuristic one-sided policy budget.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -234,7 +234,7 @@ export function validateContinuityFreshness(
   if (deltaMs > CONTINUITY_STALENESS_THRESHOLD_MS) {
     return buildWarn(
       'stale',
-      'Continuity last_updated_at lags graph-metadata derived.last_save_at by more than 10 minutes',
+      'Continuity last_updated_at lags graph-metadata derived.last_save_at by more than the 10-minute heuristic policy budget',
       [
         `deltaMs=${deltaMs}`,
         `continuity=${continuityTimestamp}`,
@@ -267,7 +267,7 @@ export function validateContinuityFreshness(
 
   return buildPass(
     'fresh',
-    'Continuity last_updated_at is within the 10-minute freshness budget',
+    'Continuity last_updated_at is within the 10-minute heuristic policy budget',
     [
       `deltaMs=${deltaMs}`,
       `continuity=${continuityTimestamp}`,

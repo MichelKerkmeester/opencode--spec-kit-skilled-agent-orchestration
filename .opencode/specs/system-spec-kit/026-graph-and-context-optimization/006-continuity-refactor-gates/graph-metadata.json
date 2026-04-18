@@ -207,7 +207,7 @@
     ],
     "causal_summary": "Without root coordination docs, the packet is harder to validate, harder to resume, and easier to misread as either \"research only\" or \"ready to execute everywhere at once.\" The parent packet needs to state the overall contract and explicitly route execution work into the child gates.",
     "created_at": "2026-04-12T09:02:53.476Z",
-    "last_save_at": "2026-04-18T09:14:24.272Z",
+    "last_save_at": "2026-04-18T10:18:14.778Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

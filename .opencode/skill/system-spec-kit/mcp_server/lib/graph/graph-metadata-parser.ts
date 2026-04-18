@@ -26,6 +26,7 @@ import {
   type GraphMetadataMigrationSource,
   type GraphMetadataManual,
   type PacketReference,
+  type SaveLineage,
 } from './graph-metadata-schema.js';
 
 const CANONICAL_PACKET_DOCS = [
@@ -98,6 +99,7 @@ export type GraphMetadataValidationResult =
 export interface GraphMetadataRefreshOptions {
   now?: Date | string;
   statusOverride?: string | null;
+  saveLineage?: SaveLineage;
 }
 
 export interface GraphMetadataRefreshResult {
@@ -1065,6 +1067,7 @@ export function deriveGraphMetadata(
     causal_summary: causalSummary,
     created_at: existing?.derived.created_at ?? nowIso,
     last_save_at: nowIso,
+    save_lineage: options.saveLineage,
     last_accessed_at: existing?.derived.last_accessed_at ?? null,
     source_docs: sourceDocs,
   };
@@ -1171,7 +1174,10 @@ export function refreshGraphMetadataForSpecFolder(
 
   const filePath = path.join(canonicalSpecFolderPath, GRAPH_METADATA_FILENAME);
   const existing = loadGraphMetadata(filePath);
-  const refreshed = deriveGraphMetadata(canonicalSpecFolderPath, existing, options);
+  const refreshed = deriveGraphMetadata(canonicalSpecFolderPath, existing, {
+    ...options,
+    saveLineage: options.saveLineage ?? 'graph_only',
+  });
   const merged = mergeGraphMetadata(existing, refreshed);
   writeGraphMetadataFile(filePath, merged);
 

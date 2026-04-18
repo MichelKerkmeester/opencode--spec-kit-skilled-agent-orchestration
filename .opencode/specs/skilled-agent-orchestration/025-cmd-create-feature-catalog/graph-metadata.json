@@ -209,7 +209,7 @@
     ],
     "causal_summary": "This packet defines the implementation contract for a new `/create:feature-catalog` command that scaffolds the current `sk-doc` feature-catalog package shape. The command must create or update `feature_catalog/` using the shipped creation reference and both template files, then keep runtime mirrors and command-discovery surfaces aligned.",
     "created_at": "2026-04-12T09:02:50.173Z",
-    "last_save_at": "2026-04-18T09:14:20.549Z",
+    "last_save_at": "2026-04-18T10:18:10.774Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

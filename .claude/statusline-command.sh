@@ -31,4 +31,13 @@ else
   week_part=""
 fi
 
-printf "%s%s%s" "$branch_part" "$five_part" "$week_part"
+# --- Context window remaining ---
+ctx_rem=$(echo "$input" | jq -r '.context_window.remaining_percentage // empty')
+if [ -n "$ctx_rem" ]; then
+  ctx_fmt=$(printf "%.0f" "$ctx_rem")
+  ctx_part=" | ctx: ${ctx_fmt}% left"
+else
+  ctx_part=""
+fi
+
+printf "%s%s%s%s" "$branch_part" "$five_part" "$week_part" "$ctx_part"

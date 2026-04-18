@@ -68,10 +68,12 @@ export {
   generatePerFolderDescription,
   savePerFolderDescription,
   loadPerFolderDescription,
+  loadExistingDescription,
   extractKeywords,
   slugifyFolderName,
+  getRepairMergeSafe,
 } from '../lib/search/folder-discovery.js';
-export type { PerFolderDescription } from '../lib/search/folder-discovery.js';
+export type { PerFolderDescription, LoadResult } from '../lib/search/folder-discovery.js';
 
 // --- Entity extraction (used by scripts/memory) ---
 export {
@@ -85,6 +87,7 @@ export {
   GRAPH_METADATA_FILENAME,
   GRAPH_METADATA_MIGRATED_QUALITY_FLAG,
   GRAPH_METADATA_SCHEMA_VERSION,
+  SAVE_LINEAGE_VALUES,
   createEmptyGraphMetadataManual,
   graphMetadataSchema,
   packetReferenceSchema,
@@ -97,6 +100,7 @@ export type {
   GraphMetadataManual,
   GraphEntityReference,
   PacketReference,
+  SaveLineage,
 } from '../lib/graph/graph-metadata-schema.js';
 export {
   validateGraphMetadataContent,
