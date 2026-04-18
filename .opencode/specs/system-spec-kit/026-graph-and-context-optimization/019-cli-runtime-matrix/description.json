@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-cli-runtime-matrix",
+  "description": "Feature Specification: CLI Runtime Matrix for Iterative Skills",
+  "keywords": [
+    "feature",
+    "specification",
+    "cli",
+    "runtime",
+    "matrix",
+    "iterative",
+    "skills"
+  ],
+  "lastUpdated": "2026-04-18T09:52:11.639Z",
+  "specId": "019",
+  "folderSlug": "cli-runtime-matrix",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

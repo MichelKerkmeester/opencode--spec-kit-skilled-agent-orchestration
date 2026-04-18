@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest';
 
 import {
   ExecutorConfigError,
-  ExecutorNotWiredError,
   parseExecutorConfig,
   resolveExecutorConfig,
 } from '../../lib/deep-loop/executor-config';
@@ -48,16 +47,35 @@ describe('executor-config', () => {
     }
   });
 
-  it('rejects cli-copilot because it is not wired yet', () => {
-    expect(() => parseExecutorConfig({ kind: 'cli-copilot', model: 'copilot-x' })).toThrow(ExecutorNotWiredError);
+  it('accepts a cli-copilot executor with a model', () => {
+    expect(parseExecutorConfig({ kind: 'cli-copilot', model: 'gpt-5.4' })).toMatchObject({
+      kind: 'cli-copilot',
+      model: 'gpt-5.4',
+    });
   });
 
-  it('rejects cli-gemini because it is not wired yet', () => {
-    expect(() => parseExecutorConfig({ kind: 'cli-gemini', model: 'gemini-pro' })).toThrow(ExecutorNotWiredError);
+  it('accepts a cli-gemini executor with a supported model', () => {
+    expect(parseExecutorConfig({ kind: 'cli-gemini', model: 'gemini-3.1-pro-preview' })).toMatchObject({
+      kind: 'cli-gemini',
+      model: 'gemini-3.1-pro-preview',
+    });
   });
 
-  it('rejects cli-claude-code because it is not wired yet', () => {
-    expect(() => parseExecutorConfig({ kind: 'cli-claude-code', model: 'opus-4.7' })).toThrow(ExecutorNotWiredError);
+  it('accepts a cli-claude-code executor with a model', () => {
+    expect(parseExecutorConfig({ kind: 'cli-claude-code', model: 'claude-opus-4-6' })).toMatchObject({
+      kind: 'cli-claude-code',
+      model: 'claude-opus-4-6',
+    });
+  });
+
+  it('accepts cli-claude-code reasoningEffort because the kind supports it', () => {
+    expect(
+      parseExecutorConfig({ kind: 'cli-claude-code', model: 'claude-opus-4-6', reasoningEffort: 'high' }),
+    ).toMatchObject({
+      kind: 'cli-claude-code',
+      model: 'claude-opus-4-6',
+      reasoningEffort: 'high',
+    });
   });
 
   it('rejects unknown executor kinds', () => {
@@ -86,6 +104,49 @@ describe('executor-config', () => {
     expect(parseExecutorConfig({ kind: 'cli-codex', model: 'gpt-5.4' }).timeoutSeconds).toBe(900);
   });
 
+  it('rejects serviceTier for cli-gemini because the kind does not support it', () => {
+    expect(() =>
+      parseExecutorConfig({ kind: 'cli-gemini', model: 'gemini-3.1-pro-preview', serviceTier: 'fast' }),
+    ).toThrowError(/serviceTier.*not supported by executor kind 'cli-gemini'/);
+  });
+
+  it('rejects reasoningEffort for cli-copilot because the kind does not support it', () => {
+    expect(() => parseExecutorConfig({ kind: 'cli-copilot', model: 'gpt-5.4', reasoningEffort: 'high' })).toThrowError(
+      /reasoningEffort.*not supported by executor kind 'cli-copilot'/,
+    );
+  });
+
+  it('rejects serviceTier for cli-copilot because the kind does not support it', () => {
+    expect(() => parseExecutorConfig({ kind: 'cli-copilot', model: 'gpt-5.4', serviceTier: 'fast' })).toThrowError(
+      /serviceTier.*not supported by executor kind 'cli-copilot'/,
+    );
+  });
+
+  it('rejects serviceTier for cli-claude-code because the kind does not support it', () => {
+    expect(() =>
+      parseExecutorConfig({ kind: 'cli-claude-code', model: 'claude-opus-4-6', serviceTier: 'fast' }),
+    ).toThrowError(/serviceTier.*not supported by executor kind 'cli-claude-code'/);
+  });
+
+  it('rejects model for native because the kind does not support it', () => {
+    expect(() => parseExecutorConfig({ kind: 'native', model: 'foo' })).toThrowError(
+      /model.*not supported by executor kind 'native'/,
+    );
+  });
+
+  it('rejects unsupported cli-gemini models with the whitelist message', () => {
+    expect(() => parseExecutorConfig({ kind: 'cli-gemini', model: 'gemini-ultra-foo' })).toThrowError(
+      /model 'gemini-ultra-foo'.*Supported: gemini-3.1-pro-preview/,
+    );
+  });
+
+  it('accepts the whitelisted cli-gemini model as a sanity check', () => {
+    expect(parseExecutorConfig({ kind: 'cli-gemini', model: 'gemini-3.1-pro-preview' })).toMatchObject({
+      kind: 'cli-gemini',
+      model: 'gemini-3.1-pro-preview',
+    });
+  });
+
   it('lets CLI values override file values during resolution', () => {
     expect(resolveExecutorConfig({ cli: { kind: 'cli-codex', model: 'gpt-5.4' }, file: { kind: 'native' } })).toMatchObject({
       kind: 'cli-codex',
@@ -100,15 +161,10 @@ describe('executor-config', () => {
     });
   });
 
-  it('merges a CLI model onto the default native kind without requiring it', () => {
-    expect(resolveExecutorConfig({ cli: { model: 'x' } })).toEqual({
-      kind: 'native',
-      model: 'x',
-      reasoningEffort: null,
-      serviceTier: null,
-      sandboxMode: null,
-      timeoutSeconds: 900,
-    });
+  it('rejects resolving a CLI model onto the default native kind because native supports no model flag', () => {
+    expect(() => resolveExecutorConfig({ cli: { model: 'x' } })).toThrowError(
+      /model.*not supported by executor kind 'native'/,
+    );
   });
 
   it('rejects a resolved cli-codex config when no model is available from any source', () => {

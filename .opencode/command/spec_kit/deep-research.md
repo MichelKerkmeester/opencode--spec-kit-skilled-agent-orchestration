@@ -113,12 +113,16 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
    Q-Exec. Executor (optional, press enter for default):
      A) Native (default) — dispatch via @deep-research agent with Opus.
-     B) cli-codex — dispatch via codex exec. Requires --model. Example: `--executor=cli-codex --model=gpt-5.4 --reasoning-effort=high --service-tier=fast`.
+     B) cli-codex — `codex exec` with --model X -c model_reasoning_effort -c service_tier.
+     C) cli-copilot — `copilot -p "PROMPT" --model X --allow-all-tools --no-ask-user`. Reasoning-effort only via ~/.copilot/config.json. No service-tier.
+     D) cli-gemini — `gemini "PROMPT" -m gemini-3.1-pro-preview -y -o text`. Single supported model currently. No reasoning-effort or service-tier.
+     E) cli-claude-code — `claude -p "PROMPT" --model X --permission-mode acceptEdits` with optional --effort. No service-tier.
 
    Reply format examples:
    - `"A, A"`
    - `"WebSocket research, A, B, 15"`
    - `"WebSocket reconnection strategies, B, A, 10, 0.05, B, gpt-5.4, high, fast"`
+   - `"agent execution guardrails research, B, A, 15, 0.05, C, gpt-5.4, _, _"`
 
 7. WAIT for user response (DO NOT PROCEED)
 

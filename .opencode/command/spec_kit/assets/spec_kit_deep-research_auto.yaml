@@ -510,6 +510,54 @@ workflow:
           working_directory: "{repo_root}"
           timeout_seconds: "{config.executor.timeoutSeconds}"
           wait_for_completion: true
+        if_cli_copilot:
+          command: |
+            copilot \
+              -p "$(cat '{spec_folder}/research/prompts/iteration-{current_iteration}.md')" \
+              --model "{config.executor.model}" \
+              --allow-all-tools \
+              --no-ask-user
+          working_directory: "{repo_root}"
+          timeout_seconds: "{config.executor.timeoutSeconds}"
+          wait_for_completion: true
+          notes:
+            - "copilot has no stdin support; prompt passed positionally via -p and command substitution"
+            - "copilot reasoningEffort is NOT a CLI flag; must be set in ~/.copilot/config.json ahead of time"
+            - "copilot concurrency cap: max 5 per account (feedback_copilot_concurrency_override)"
+        if_cli_gemini:
+          command: |
+            gemini \
+              "$(cat '{spec_folder}/research/prompts/iteration-{current_iteration}.md')" \
+              -m "{config.executor.model}" \
+              -s none \
+              -y \
+              -o text
+          working_directory: "{repo_root}"
+          timeout_seconds: "{config.executor.timeoutSeconds}"
+          wait_for_completion: true
+          notes:
+            - "gemini accepts positional prompt or stdin; we use positional via command substitution"
+            - "gemini has no reasoningEffort or serviceTier flags; model is the only lever"
+            - "gemini model whitelist enforced at config parse (currently only gemini-3.1-pro-preview)"
+        if_cli_claude_code:
+          command: |
+            claude \
+              -p "$(cat '{spec_folder}/research/prompts/iteration-{current_iteration}.md')" \
+              --model "{config.executor.model}" \
+              --permission-mode acceptEdits \
+              --output-format text \
+              {optional_effort_flag}
+          working_directory: "{repo_root}"
+          timeout_seconds: "{config.executor.timeoutSeconds}"
+          wait_for_completion: true
+          render_hint:
+            optional_effort_flag: |
+              If config.executor.reasoningEffort is set and non-null, expand to: --effort {config.executor.reasoningEffort}
+              Otherwise expand to empty string.
+          notes:
+            - "claude-code default permission-mode is 'plan' (read-only); we override to 'acceptEdits' for iteration writes"
+            - "claude-code has no serviceTier flag"
+            - "claude-code supports --effort for reasoning depth"
         post_dispatch_validate:
           validator: ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/post-dispatch-validate.ts#validateIterationOutputs"
           assert_exists: "{state_paths.iteration_pattern}"

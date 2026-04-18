@@ -206,19 +206,26 @@ Output: Write findings to {spec_folder}/research/iterations/iteration-{NNN}.md
 CONSTRAINT: LEAF agent -- do NOT dispatch sub-agents
 ```
 
-#### Executor Resolution (spec 018)
+#### Executor Resolution (spec 018 + 019)
 
 Before dispatching, the YAML resolves the executor via `parseExecutorConfig` from `.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts`. The resolved `config.executor.kind` selects the dispatch branch:
 
-- `native`: the loop proceeds exactly as documented below (dispatch `@deep-research` with model Opus).
-- `cli-codex`: the rendered prompt pack is piped via stdin to `codex exec --model <gpt-5.4|other> -c model_reasoning_effort="<level>" -c service_tier="<tier>" -c approval_policy=never --sandbox workspace-write`.
+- `native` (spec 018): dispatch `@deep-research` agent with model Opus.
+- `cli-codex` (spec 018): pipe rendered prompt via stdin to `codex exec --model X -c model_reasoning_effort=Y -c service_tier=Z -c approval_policy=never --sandbox workspace-write`.
+- `cli-copilot` (spec 019): positional prompt to `copilot -p "$(cat prompt)" --model X --allow-all-tools --no-ask-user`. No stdin support; no CLI reasoning-effort flag (set via `~/.copilot/config.json` ahead of time).
+- `cli-gemini` (spec 019): positional prompt to `gemini "$(cat prompt)" -m X -s none -y -o text`. Model whitelist enforced (`gemini-3.1-pro-preview` only). No reasoning-effort or service-tier flags.
+- `cli-claude-code` (spec 019): `claude -p "$(cat prompt)" --model X --permission-mode acceptEdits --output-format text` with optional `--effort Y`. Default permission-mode is `plan` (read-only); we override to `acceptEdits` so iteration writes succeed.
 
-Both branches share:
+All branches share:
 1. Pre-dispatch prompt rendering via `renderPromptPack` (writes to `{spec_folder}/research/prompts/iteration-{n}.md`).
 2. Post-dispatch validation via `validateIterationOutputs` (asserts iteration file + JSONL delta + required fields).
 3. Executor audit append via `appendExecutorAuditToLastRecord` (skipped when kind=='native').
 
-Failure handling within `post_dispatch_validate` follows the existing `schema_mismatch` → conflict event → 3-consecutive-failures → `stuck_recovery` path. Executor kind does not alter recovery semantics.
+Per-kind flag-compatibility is enforced at config parse time by `EXECUTOR_KIND_FLAG_SUPPORT` in `executor-config.ts`. Setting a flag that the chosen kind does not support throws `ExecutorConfigError` before dispatch.
+
+Cross-CLI delegation (a running executor invoking other CLIs via its shell) is documented design intent. Runtime recursion detection is out of scope; see the SKILL.md Cross-CLI Delegation subsection.
+
+Failure handling remains unchanged from spec 018: `schema_mismatch` → conflict event → 3 consecutive failures → `stuck_recovery`.
 
 The dispatch context may include a suggested `focusTrack` label (e.g., `"focusTrack": "performance"`, `"focusTrack": "security"`). Agents may tag their iteration with this track label for post-hoc grouping and analysis. Track labels are metadata only — the orchestrator does not use them for loop decisions.
 

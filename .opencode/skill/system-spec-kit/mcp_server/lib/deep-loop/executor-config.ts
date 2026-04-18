@@ -27,6 +27,17 @@ export const executorConfigSchema = z.object({
 
 export type ExecutorConfig = z.infer<typeof executorConfigSchema>;
 
+export const EXECUTOR_KIND_FLAG_SUPPORT: Record<ExecutorKind, readonly (keyof ExecutorConfig)[]> = {
+  native: [],
+  'cli-codex': ['model', 'reasoningEffort', 'serviceTier', 'sandboxMode', 'timeoutSeconds'],
+  'cli-copilot': ['model', 'timeoutSeconds'],
+  'cli-gemini': ['model', 'sandboxMode', 'timeoutSeconds'],
+  'cli-claude-code': ['model', 'reasoningEffort', 'sandboxMode', 'timeoutSeconds'],
+};
+
+export const GEMINI_SUPPORTED_MODELS = ['gemini-3.1-pro-preview'] as const;
+export type GeminiSupportedModel = typeof GEMINI_SUPPORTED_MODELS[number];
+
 type ExecutorConfigIssue = {
   path: PropertyKey[];
   message: string;
@@ -74,8 +85,46 @@ export function parseExecutorConfig(raw: unknown): ExecutorConfig {
     });
   }
 
-  if (config.kind === 'cli-copilot' || config.kind === 'cli-gemini' || config.kind === 'cli-claude-code') {
-    throw new ExecutorNotWiredError(config.kind);
+  const supportedFlags = EXECUTOR_KIND_FLAG_SUPPORT[config.kind];
+  const unsupportedFields: string[] = [];
+  const allOptionalFields: (keyof ExecutorConfig)[] = [
+    'model',
+    'reasoningEffort',
+    'serviceTier',
+    'sandboxMode',
+    'timeoutSeconds',
+  ];
+
+  for (const field of allOptionalFields) {
+    if (!supportedFlags.includes(field) && config[field] !== null && !(field === 'timeoutSeconds' && config[field] === 900)) {
+      unsupportedFields.push(field);
+    }
+  }
+
+  if (unsupportedFields.length > 0) {
+    throw new ExecutorConfigError({
+      issues: unsupportedFields.map((field) => ({
+        path: [field],
+        message: `field '${field}' is not supported by executor kind '${config.kind}'. Supported fields for ${config.kind}: ${
+          supportedFlags.length ? supportedFlags.join(', ') : 'none'
+        }.`,
+      })),
+    });
+  }
+
+  if (
+    config.kind === 'cli-gemini' &&
+    config.model !== null &&
+    !GEMINI_SUPPORTED_MODELS.some((model) => model === config.model)
+  ) {
+    throw new ExecutorConfigError({
+      issues: [
+        {
+          path: ['model'],
+          message: `model '${config.model}' is not a supported cli-gemini model. Supported: ${GEMINI_SUPPORTED_MODELS.join(', ')}.`,
+        },
+      ],
+    });
   }
 
   return config;

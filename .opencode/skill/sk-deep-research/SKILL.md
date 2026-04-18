@@ -66,9 +66,25 @@ The YAML workflow supports executor selection via `config.executor.kind`. Curren
 |------|----------|----------------|--------|
 | `native` | `@deep-research` agent via Task tool, `model: opus` | none (default) | Shipped. Default. |
 | `cli-codex` | `codex exec` via stdin-piped rendered prompt | `model` (e.g. gpt-5.4) | Shipped (spec 018). |
-| `cli-copilot` | Reserved | — | Not wired — awaits future spec. |
-| `cli-gemini` | Reserved | — | Not wired — awaits future spec. |
-| `cli-claude-code` | Reserved | — | Not wired — awaits future spec. |
+| `cli-copilot` | Reserved | — | Shipped (spec 019). |
+| `cli-gemini` | Reserved | — | Shipped (spec 019). |
+| `cli-claude-code` | Reserved | — | Shipped (spec 019). |
+
+#### Cross-CLI Delegation
+
+Each CLI executor operates inside its own sandbox / permissions layer (codex `workspace-write`, copilot `allow-all-tools`, gemini `-y -s none`, claude-code `acceptEdits`). Within that sandbox, a running iteration CAN, in theory, shell out to other CLIs.
+
+**What is possible**:
+- A `cli-codex` iteration can invoke `gemini "..."`, `copilot -p ...`, or `claude -p ...` via its shell.
+- A `cli-gemini` iteration can invoke `codex exec ...`, `copilot -p ...`, or `claude -p ...`.
+- A `cli-copilot` iteration can invoke other CLIs through its tool-execution layer.
+- A `cli-claude-code` iteration (with `acceptEdits` permission mode) can invoke other CLIs via shell.
+
+**Anti-patterns** (each CLI's own SKILL.md warns against these):
+- **Self-recursion**: do NOT invoke `codex` from within a `cli-codex` iteration; do NOT invoke `copilot` from within a `cli-copilot` iteration; same for gemini and claude-code. Each CLI's orchestration skill warns that self-invocation is circular and wasteful.
+- **Auth propagation assumptions**: do NOT assume the parent executor's environment has credentials for child CLIs. Each CLI uses its own authentication layer (OPENAI_API_KEY for codex, GitHub OAuth for copilot, Google credentials for gemini, Anthropic API key for claude). Auth is a user-responsibility; the deep-loop workflow does not mediate.
+
+**Runtime enforcement**: NONE. This is documented design intent, not a code path. If a user wires a recursive invocation, the `post_dispatch_validate` step will eventually catch repeated failures through the existing `schema_mismatch` → `stuck_recovery` flow, but the workflow does not detect or block cross-CLI delegation at dispatch time.
 
 **Invariants** the executor MUST satisfy regardless of kind:
 
