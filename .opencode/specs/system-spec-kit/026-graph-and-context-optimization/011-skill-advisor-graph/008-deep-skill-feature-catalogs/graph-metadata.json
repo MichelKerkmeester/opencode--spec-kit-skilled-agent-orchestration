@@ -1,17 +1,206 @@
 {
-  "schema_version": 2,
-  "packet_id": "008-deep-skill-feature-catalogs",
-  "parent_id": "011-skill-advisor-graph",
-  "title": "Deep Skill Feature Catalogs",
-  "status": "planned",
-  "level": 3,
-  "created_at": "2026-04-13",
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/008-deep-skill-feature-catalogs",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/008-deep-skill-feature-catalogs",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
   "derived": {
-    "trigger_phrases": ["feature catalog deep research", "feature catalog deep review", "feature catalog improve agent"],
-    "key_topics": ["feature catalog", "sk-deep-research", "sk-deep-review", "sk-improve-agent"],
-    "key_files": ["spec.md", "plan.md", "tasks.md", "checklist.md"],
-    "source_docs": ["spec.md", "plan.md", "tasks.md", "checklist.md"],
-    "entities": [],
-    "causal_summary": "Creates feature catalogs for 3 high-complexity skills that currently lack discoverable feature inventories."
+    "trigger_phrases": [
+      "008-deep-skill-feature-catalogs",
+      "deep skill feature catalog",
+      "feature catalog deep research",
+      "feature catalog deep review",
+      "feature catalog improve agent"
+    ],
+    "key_topics": [
+      "008-deep-skill-feature-catalogs",
+      "deep",
+      "skill",
+      "feature",
+      "catalog",
+      "research",
+      "review",
+      "improve",
+      "agent",
+      "three",
+      "high-complexity",
+      "skills"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "feature_catalog/feature_catalog.md",
+      ".opencode/skill/sk-deep-research/feature_catalog/feature_catalog.md",
+      ".opencode/skill/sk-deep-review/feature_catalog/feature_catalog.md",
+      ".opencode/skill/sk-improve-agent/feature_catalog/feature_catalog.md",
+      ".opencode/skill/skill-advisor/feature_catalog/feature_catalog.md",
+      ".opencode/skill/skill-advisor/feature_catalog/02--graph-system/04-transitive-boosts.md",
+      ".opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_template.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "feature_catalog.md",
+        "kind": "doc",
+        "path": "feature_catalog/feature_catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "04-transitive-boosts.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/feature_catalog/02--graph-system/04-transitive-boosts.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Deep Skill Feature Catalogs",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Has Catalog",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Very High",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Current Reality",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "1. APPROACH",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: sk-deep-research (parallel)",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 2: sk-deep-review (parallel)",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 3: sk-improve-agent (parallel)",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "sk-deep-research",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "sk-deep-review",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "sk-improve-agent",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Tasks: Deep Skill Feature Catalogs",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "_memory:   continuity:     packet_pointer:",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Three high-complexity skills lack feature catalogs:",
+    "created_at": "2026-04-18T15:28:47.531Z",
+    "last_save_at": "2026-04-18T15:28:47.531Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
   }
 }

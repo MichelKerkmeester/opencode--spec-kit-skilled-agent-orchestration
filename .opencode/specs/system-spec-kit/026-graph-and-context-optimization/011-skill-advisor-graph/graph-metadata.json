@@ -220,7 +220,7 @@
     ],
     "causal_summary": "Add a `graph-metadata.json` to each of the 21 skill folders (20 routable + skill-advisor itself) capturing structured relationships (dependencies, overlays, siblings, conflicts), compile them into a single lightweight `skill-graph.json` (~1-2KB), and integrate graph-derived boosts into the `skill_advisor.py` routing pipeline. This replaces implicit relationship knowledge hardcoded across 170+ intent boosters with an explicit, maintainable graph.",
     "created_at": "2026-04-13T12:00:00.000Z",
-    "last_save_at": "2026-04-18T14:39:04.295Z",
+    "last_save_at": "2026-04-18T15:28:47.503Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
