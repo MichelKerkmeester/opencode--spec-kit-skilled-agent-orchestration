@@ -97,6 +97,11 @@ state_paths:
   pause_sentinel: "{artifact_dir}/.deep-review-pause"
   iteration_dir: "{artifact_dir}/iterations"
   iteration_pattern: "{artifact_dir}/iterations/iteration-{NNN}.md"
+  # Per-iteration structured delta stream — complement to the canonical state_log
+  # append. MUST contain at least one record with `type === "iteration"`; variants
+  # like `"iteration_delta"` are silently dropped by the reducer.
+  delta_dir: "{artifact_dir}/deltas"
+  delta_pattern: "{artifact_dir}/deltas/iter-{NNN}.jsonl"
   review_output: "{artifact_dir}/review-report.md"
   archive_root: "{artifact_archive_root}"
 

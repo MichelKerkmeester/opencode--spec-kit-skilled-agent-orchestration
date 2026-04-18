@@ -46,7 +46,8 @@ All paths are relative to the repo root.
 - State Log: {state_paths_state_log}
 - Findings Registry: {state_paths_findings_registry}
 - Strategy: {state_paths_strategy}
-- Write findings to: {state_paths_iteration_pattern}
+- Write iteration narrative to: {state_paths_iteration_pattern}
+- Write per-iteration delta file to: {state_paths_delta_pattern}
 
 ## CONSTRAINTS
 
@@ -59,16 +60,26 @@ All paths are relative to the repo root.
 
 ## OUTPUT CONTRACT
 
-You MUST produce TWO artifacts per iteration. The YAML-owned post_dispatch_validate step will emit a `schema_mismatch` conflict event if either is missing or malformed.
+You MUST produce THREE artifacts per iteration. The YAML-owned post_dispatch_validate step emits a `schema_mismatch` conflict event if any is missing or malformed.
 
-1. **Iteration narrative markdown** at `{state_paths_iteration_pattern}` (path is pre-substituted for the current iteration number). Structure: headings for Dimension, Files Reviewed, Findings by Severity (P0/P1/P2), Traceability Checks, Verdict, Next Dimension.
+1. **Iteration narrative markdown** at `{state_paths_iteration_pattern}` (path pre-substituted for the current iteration number). Structure: headings for Dimension, Files Reviewed, Findings by Severity (P0/P1/P2), Traceability Checks, Verdict, Next Dimension.
 
-2. **JSONL delta record** appended to `{state_paths_state_log}` with the required schema:
+2. **Canonical JSONL iteration record** APPENDED to `{state_paths_state_log}`. The record MUST use `"type":"iteration"` EXACTLY — NOT `"iteration_delta"` or any other variant. The reducer counts records where `type === "iteration"` only; other types are silently ignored. Required schema:
 
 ```json
 {"type":"iteration","iteration":<n>,"dimensions":["..."],"filesReviewed":<n>,"findingsSummary":{"P0":<n>,"P1":<n>,"P2":<n>},"findingsNew":[],"traceabilityChecks":{},"newFindingsRatio":<0..1>,"graphEvents":[/* optional */]}
 ```
 
-Both artifacts are REQUIRED. The reducer consumes the JSONL delta to update the findings registry, dashboard, and machine-owned strategy sections. The markdown narrative is the human-readable record.
-</content>
-</invoke>
+Append via single-line JSON with newline terminator — e.g. `echo '<single-line-json>' >> {state_paths_state_log}`. Do NOT pretty-print. Do NOT print to stdout only; it MUST land in the state log file.
+
+3. **Per-iteration delta file** at `{state_paths_delta_pattern}` (path pre-substituted — e.g. `deltas/iter-001.jsonl`). This file holds the structured delta stream for this iteration: one `{"type":"iteration",...}` record (same as the state-log append) plus per-event structured records (one per graphEvent, finding, classification, traceability-check, ruled_out direction). Each record on its own JSON line.
+
+Example delta file contents (one review iteration):
+```json
+{"type":"iteration","iteration":3,"dimensions":["correctness"],"filesReviewed":12,"findingsSummary":{"P0":0,"P1":2,"P2":5},"newFindingsRatio":0.41,"graphEvents":[]}
+{"type":"finding","id":"R3-P1-001","severity":"P1","cluster":"...","file":"path:line","title":"...","iteration":3}
+{"type":"classification","detail":"...","iteration":3}
+{"type":"ruled_out","direction":"...","reason":"...","iteration":3}
+```
+
+All three artifacts are REQUIRED. The post_dispatch_validate step fails the iteration if any artifact is missing, malformed, or if the state-log append uses the wrong record type (`iteration_delta` etc.).

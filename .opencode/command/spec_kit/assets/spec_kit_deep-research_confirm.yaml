@@ -91,6 +91,11 @@ state_paths:
   lock_file: "{artifact_dir}/.deep-research.lock"
   iteration_dir: "{artifact_dir}/iterations"
   iteration_pattern: "{artifact_dir}/iterations/iteration-{NNN}.md"
+  # Per-iteration structured delta stream — complement to the canonical state_log
+  # append. MUST contain at least one record with `type === "iteration"`; variants
+  # like `"iteration_delta"` are silently dropped by the reducer.
+  delta_dir: "{artifact_dir}/deltas"
+  delta_pattern: "{artifact_dir}/deltas/iter-{NNN}.jsonl"
   research_output: "{artifact_dir}/research.md"
   archive_root: "{artifact_archive_root}"
   synthesis_snapshot_pattern: "{artifact_dir}/synthesis-v{generation}.md"
@@ -129,7 +134,7 @@ workflow:
 
       step_create_directories:
         action: "Create spec folder and research packet directories if they don't exist"
-        command: "mkdir -p {state_paths.iteration_dir} {state_paths.archive_root}"
+        command: "mkdir -p {state_paths.iteration_dir} {state_paths.delta_dir} {state_paths.archive_root}"
 
       step_resolve_canonical_names:
         action: "Resolve canonical research packet artifact names before classification"
