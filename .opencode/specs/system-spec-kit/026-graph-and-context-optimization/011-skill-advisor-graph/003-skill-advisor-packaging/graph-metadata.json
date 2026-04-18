@@ -58,7 +58,6 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "review/deep-review-findings.md",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -71,12 +70,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "deep-review-findings.md",
-        "kind": "doc",
-        "path": "review/deep-review-findings.md",
-        "source": "derived"
-      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -214,11 +207,17 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The shipped `skill-advisor` package now uses a clean root layout with `../../../../../skill/skill-advisor/README.md`, the package setup guide, `feature_catalog/`, `manual_testing_playbook/`, `scripts/`, and `graph-metadata.json` under `../../../../../skill/skill-advisor/`. This remediation pass updates the packet so it describes that live layout accurately, replaces loose metadata placeholders with concrete file evidence, and restores the Level 3 headers and anchors required by strict validation.",
     "created_at": "2026-04-13T00:00:00.000Z",
-    "last_save_at": "2026-04-15T11:50:34.651Z",
+    "last_save_at": "2026-04-18T09:14:24.321Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

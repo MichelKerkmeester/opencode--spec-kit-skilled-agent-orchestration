@@ -56,10 +56,7 @@
       "mcp_server/test/hooks/replay-harness.ts",
       "tests/fixtures/hooks/session-stop-replay.jsonl",
       "tests/hook-session-stop-replay.vitest.ts",
-      "tests/sqlite-fts.vitest.ts",
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/research.md",
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/recommendations.md",
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/research/research.md"
+      "tests/sqlite-fts.vitest.ts"
     ],
     "entities": [
       {
@@ -153,12 +150,6 @@
         "source": "derived"
       },
       {
-        "name": "recommendations.md",
-        "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/recommendations.md",
-        "source": "derived"
-      },
-      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -205,11 +196,17 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Claude Code",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This packet no longer treats the earlier six-phase warning-hook prototype as the active plan. The canonical 2026-04-08 research narrowed the safe early continuity lane to two things: truthful predecessor ordering and a bounded producer-side metadata patch inside `session-stop.ts` and `hook-state.ts` after the FTS helper and forced-degrade tests exist [SOURCE: research.md §1; §2].",
     "created_at": "2026-04-12T09:02:53.453Z",
-    "last_save_at": "2026-04-15T11:50:34.487Z",
+    "last_save_at": "2026-04-18T09:14:24.251Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

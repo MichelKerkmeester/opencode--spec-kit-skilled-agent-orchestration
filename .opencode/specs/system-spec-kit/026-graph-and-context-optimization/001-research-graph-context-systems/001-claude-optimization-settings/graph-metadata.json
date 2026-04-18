@@ -43,21 +43,13 @@
     "key_files": [
       ".claude/settings.local.json",
       "external/reddit_post.md",
-      "research/deep-research-strategy.md",
-      "research/deep-research-dashboard.md",
-      "research/research.md",
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "decision-record.md",
       "implementation-summary.md",
-      "research/deep-research-config.json",
-      "research/deep-research-state.jsonl",
-      "scratch/100-percent-completion-closeout.md",
-      "research/findings-registry.json",
-      "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/settings.local.json",
-      "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings/research/research.md"
+      "scratch/100-percent-completion-closeout.md"
     ],
     "entities": [
       {
@@ -70,24 +62,6 @@
         "name": "reddit_post.md",
         "kind": "doc",
         "path": "external/reddit_post.md",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-strategy.md",
-        "kind": "doc",
-        "path": "research/deep-research-strategy.md",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-dashboard.md",
-        "kind": "doc",
-        "path": "research/deep-research-dashboard.md",
-        "source": "derived"
-      },
-      {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
         "source": "derived"
       },
       {
@@ -127,27 +101,9 @@
         "source": "derived"
       },
       {
-        "name": "deep-research-config.json",
-        "kind": "config",
-        "path": "research/deep-research-config.json",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-state.jsonl",
-        "kind": "file",
-        "path": "research/deep-research-state.jsonl",
-        "source": "derived"
-      },
-      {
         "name": "100-percent-completion-closeout.md",
         "kind": "doc",
         "path": "scratch/100-percent-completion-closeout.md",
-        "source": "derived"
-      },
-      {
-        "name": "findings-registry.json",
-        "kind": "config",
-        "path": "research/findings-registry.json",
         "source": "derived"
       },
       {
@@ -203,11 +159,47 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "State Format",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Synthesis Target",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Guardrails",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Checklist Before",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This phase audited a Reddit primary-source field report covering 858-926 Claude Code sessions against `Code_Environment/Public`'s actual `.claude/settings.local.json` and `CLAUDE.md`. The headline configuration recommendation from the post -- `ENABLE_TOOL_SEARCH=true` -- is already present in this repo, making the central deliverable a ranked recommendation set rather than a new config flip. Twenty-four findings (F1-F24) were produced across four prioritization tiers, with 11 adopt-now, 11 prototype-later, and 2 reject labels. The original 8-iteration synthesis-ready loop was extended to 13 iterations by user request via `cli-codex` `gpt-5.4` high reasoning to bring an independent skeptical perspective before closeout. This is a research-only phase; no settings were changed, no hooks were implemented, and no auditor was built.",
     "created_at": "2026-04-12T09:02:53.445Z",
-    "last_save_at": "2026-04-15T11:50:34.458Z",
+    "last_save_at": "2026-04-18T09:14:24.242Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
@@ -215,8 +207,7 @@
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "implementation-summary.md",
-      "research/research.md"
+      "implementation-summary.md"
     ]
   }
 }

@@ -199,7 +199,7 @@
     ],
     "causal_summary": "The research packet in `research/` already answered the core question: Codex does not mainly lack command docs. The higher-value fix is better placement in the first-touch surface that `system-spec-kit` already loads, especially when runtime UI command surfaces are weak or absent.",
     "created_at": "2026-04-12T09:02:50.182Z",
-    "last_save_at": "2026-04-15T11:50:28.214Z",
+    "last_save_at": "2026-04-18T09:14:20.568Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

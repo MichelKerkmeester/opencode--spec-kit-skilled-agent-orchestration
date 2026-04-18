@@ -1,0 +1,1 @@
+/Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter/coder/AGENTS.md

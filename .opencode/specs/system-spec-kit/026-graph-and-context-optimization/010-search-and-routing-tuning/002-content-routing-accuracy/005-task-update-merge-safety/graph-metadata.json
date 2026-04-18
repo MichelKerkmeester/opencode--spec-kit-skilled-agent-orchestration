@@ -104,12 +104,6 @@
         "source": "derived"
       },
       {
-        "name": "Created Level",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
         "name": "Success Criteria",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -186,11 +180,17 @@
         "kind": "proper_noun",
         "path": "implementation-summary.md",
         "source": "derived"
+      },
+      {
+        "name": "What Was Built This",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Add Task Update Merge Safety Guard",
     "created_at": "2026-04-13T14:16:45.059Z",
-    "last_save_at": "2026-04-15T11:50:34.619Z",
+    "last_save_at": "2026-04-18T09:14:24.306Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

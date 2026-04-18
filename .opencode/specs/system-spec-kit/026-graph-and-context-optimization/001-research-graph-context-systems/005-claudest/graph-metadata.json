@@ -41,17 +41,10 @@
     "importance_tier": "critical",
     "status": "complete",
     "key_files": [
-      "research/research.md",
       "external/.claude-plugin/marketplace.json",
       "mcp_server/lib/search/sqlite-fts.ts",
       "mcp_server/lib/search/hybrid-search.ts",
       "mcp_server/lib/search/graph-search-fn.ts",
-      "research/deep-research-config.json",
-      "research/deep-research-state.jsonl",
-      "research/deep-research-strategy.md",
-      "research/deep-research-dashboard.md",
-      "research/findings-registry.json",
-      "research/archive/research-v1-iter012-snapshot.md",
       "implementation-summary.md",
       ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
       ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
@@ -60,15 +53,16 @@
       "external/plugins/claude-memory/skills/recall-conversations/scripts/recent_chats.py",
       "external/plugins/claude-memory/hooks/hooks.json",
       "external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/summarizer.py",
-      "external/plugins/claude-memory/skills/extract-learnings/SKILL.md"
+      "external/plugins/claude-memory/skills/extract-learnings/SKILL.md",
+      "external/plugins/claude-memory/agents/memory-auditor.md",
+      "external/plugins/claude-memory/agents/signal-discoverer.md",
+      "external/plugins/claude-memory/skills/get-token-insights/scripts/ingest_token_data.py",
+      "external/plugins/claude-memory/skills/get-token-insights/templates/dashboard.html",
+      "mcp_server/hooks/claude/session-stop.ts",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "plan.md"
     ],
     "entities": [
-      {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
-        "source": "derived"
-      },
       {
         "name": "marketplace.json",
         "kind": "config",
@@ -91,42 +85,6 @@
         "name": "graph-search-fn.ts",
         "kind": "code",
         "path": "mcp_server/lib/search/graph-search-fn.ts",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-config.json",
-        "kind": "config",
-        "path": "research/deep-research-config.json",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-state.jsonl",
-        "kind": "file",
-        "path": "research/deep-research-state.jsonl",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-strategy.md",
-        "kind": "doc",
-        "path": "research/deep-research-strategy.md",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-dashboard.md",
-        "kind": "doc",
-        "path": "research/deep-research-dashboard.md",
-        "source": "derived"
-      },
-      {
-        "name": "findings-registry.json",
-        "kind": "config",
-        "path": "research/findings-registry.json",
-        "source": "derived"
-      },
-      {
-        "name": "research-v1-iter012-snapshot.md",
-        "kind": "doc",
-        "path": "research/archive/research-v1-iter012-snapshot.md",
         "source": "derived"
       },
       {
@@ -184,6 +142,48 @@
         "source": "derived"
       },
       {
+        "name": "memory-auditor.md",
+        "kind": "doc",
+        "path": "external/plugins/claude-memory/agents/memory-auditor.md",
+        "source": "derived"
+      },
+      {
+        "name": "signal-discoverer.md",
+        "kind": "doc",
+        "path": "external/plugins/claude-memory/agents/signal-discoverer.md",
+        "source": "derived"
+      },
+      {
+        "name": "ingest_token_data.py",
+        "kind": "file",
+        "path": "external/plugins/claude-memory/skills/get-token-insights/scripts/ingest_token_data.py",
+        "source": "derived"
+      },
+      {
+        "name": "dashboard.html",
+        "kind": "file",
+        "path": "external/plugins/claude-memory/skills/get-token-insights/templates/dashboard.html",
+        "source": "derived"
+      },
+      {
+        "name": "session-stop.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/claude/session-stop.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -198,19 +198,19 @@
       {
         "name": "Claude Code",
         "kind": "proper_noun",
-        "path": "research/research.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
         "name": "Spec Kit Memory",
         "kind": "proper_noun",
-        "path": "research/research.md",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Phase 5 of `001-research-graph-context-systems` is a read-only audit of the Claudest external Claude Code plugin marketplace (`external/.claude-plugin/marketplace.json`) and its flagship `claude-memory` plugin to translate concrete patterns into actionable improvements for `Code_Environment/Public`. The plugin is studied at function level: the v3 SQLite schema with branch-aware BM25/FTS5 recall, the Stop/SessionStart hook chain that pre-computes branch summaries and injects them into the next session via `hookSpecificOutput.additionalContext`, the `extract-learnings` consolidation pipeline split between `memory-auditor` and `signal-discoverer`, and the `get-token-insights` skill that ingests Claude JSONL session logs into a relational analytics model with embedded HTML dashboard. The deliverable is an evidence-grounded `adopt now` / `prototype later` / `reject` matrix grounded in `external/plugins/...` file:line citations across 20 deep-research iterations, plus packet-ready briefs and an execution-ready follow-on packet roadmap for Public's FTS, analytics, SessionStart, and consolidation seams.",
     "created_at": "2026-04-12T09:02:53.450Z",
-    "last_save_at": "2026-04-15T11:50:34.479Z",
+    "last_save_at": "2026-04-18T09:14:24.248Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
@@ -218,8 +218,7 @@
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "implementation-summary.md",
-      "research/research.md"
+      "implementation-summary.md"
     ]
   }
 }

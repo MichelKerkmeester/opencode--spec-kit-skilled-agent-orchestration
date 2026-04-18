@@ -41,8 +41,6 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "research/review-report.md",
-      "research/findings.jsonl",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -60,21 +58,10 @@
       ".opencode/skill/system-spec-kit/references/memory/memory_system.md",
       ".opencode/skill/system-spec-kit/references/workflows/execution_methods.md",
       ".opencode/skill/system-spec-kit/README.md",
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/007-skill-catalog-sync/implementation-summary.md"
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/007-skill-catalog-sync/implementation-summary.md",
+      ".opencode/skill/system-spec-kit/references/config/environment_variables.md"
     ],
     "entities": [
-      {
-        "name": "review-report.md",
-        "kind": "doc",
-        "path": "research/review-report.md",
-        "source": "derived"
-      },
-      {
-        "name": "findings.jsonl",
-        "kind": "file",
-        "path": "research/findings.jsonl",
-        "source": "derived"
-      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -172,6 +159,12 @@
         "source": "derived"
       },
       {
+        "name": "environment_variables.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/config/environment_variables.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -206,11 +199,17 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 7 is the downstream audit phase for `003-memory-quality-remediation`. It starts only after Phase 6 freezes the final compact-wrapper memory contract. Its job is to determine whether Phases 1-6 changed any behavior, contract, or workflow enough that supporting docs, templates, commands, MCP surfaces, or agent definitions now need to be updated for parity.",
     "created_at": "2026-04-12T09:02:53.462Z",
-    "last_save_at": "2026-04-15T11:50:34.522Z",
+    "last_save_at": "2026-04-18T09:14:24.264Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

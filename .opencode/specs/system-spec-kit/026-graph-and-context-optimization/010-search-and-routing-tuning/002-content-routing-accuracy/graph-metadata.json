@@ -42,11 +42,10 @@
       "mcp_server/lib/validation/spec-doc-structure.ts",
       "mcp_server/tests/content-router.vitest.ts",
       "spec.md",
-      "plan.md",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
       "tasks.md",
-      "checklist.md",
-      "research/research.md"
+      "plan.md",
+      "checklist.md"
     ],
     "entities": [
       {
@@ -98,15 +97,15 @@
         "source": "derived"
       },
       {
-        "name": "checklist.md",
+        "name": "plan.md",
         "kind": "doc",
-        "path": "checklist.md",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "research.md",
+        "name": "checklist.md",
         "kind": "doc",
-        "path": "research/research.md",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
@@ -146,6 +145,36 @@
         "source": "derived"
       },
       {
+        "name": "Closeout Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Approach Keep",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Child Packet Rollup",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "the",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "their",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
         "name": "Verification Checklist",
         "kind": "proper_noun",
         "path": "checklist.md",
@@ -162,48 +191,17 @@
         "kind": "heading",
         "path": "checklist.md",
         "source": "derived"
-      },
-      {
-        "name": "P2 (Advisory)",
-        "kind": "heading",
-        "path": "checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "Research Synthesis",
-        "kind": "proper_noun",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "Content Routing Accuracy After Implementation",
-        "kind": "proper_noun",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "Scope And Method This",
-        "kind": "proper_noun",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "Benchmark Verdict The",
-        "kind": "proper_noun",
-        "path": "research/research.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Investigate whether the 3-tier content router (Tier1 keyword heuristic, Tier2 prototype similarity, Tier3 LLM classification) correctly classifies saves into the 8 routing categories. No historical save data needed - uses synthetic payloads against the current router code.",
     "created_at": "2026-04-14T17:11:35.279Z",
-    "last_save_at": "2026-04-15T11:50:34.607Z",
+    "last_save_at": "2026-04-18T09:14:24.301Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
-      "checklist.md",
-      "research/research.md"
+      "checklist.md"
     ]
   }
 }

@@ -33,6 +33,12 @@ Enforce markdown structure, optimize content for AI assistants, validate quality
 - Checking required fields for document types
 - Fixing frontmatter syntax errors
 
+**Changelog & Release Notes** - Use `changelog_template.md` when:
+- Authoring a global component changelog at `.opencode/changelog/{NN--component}/v{VERSION}.md`
+- Composing GitHub release notes that mirror the changelog body
+- Choosing between compact (under 10 changes) and expanded (10+ changes or major) formats
+- Template: [changelog_template.md](./assets/documentation/changelog_template.md). Used by `/create:changelog` (auto + confirm). Nested packet-local changelogs use the spec-kit templates at `.opencode/skill/system-spec-kit/templates/changelog/` instead.
+
 **Validation Workflow** - Apply after Write/Edit operations:
 - Auto-correct filename violations (ALL CAPS to lowercase, hyphens to underscores)
 - Fix safe violations (separators, H2 case)
@@ -153,7 +159,7 @@ The router discovers markdown resources recursively from `references/` and `asse
 
 - `references/global/` for documentation standards, validation rules, optimization guidance, voice rules, and shared execution workflows.
 - `references/specific/` for document-family and component creation guides such as skill creation, agent creation, install guides, feature catalogs, and manual testing playbooks.
-- `assets/documentation/` for README, frontmatter, llms.txt, and install-guide templates.
+- `assets/documentation/` for README, frontmatter, llms.txt, install-guide, and changelog/release-notes templates.
 - `assets/skill/` for skill creation templates and `assets/agents/` for agent and command creation templates.
 - `assets/flowcharts/` for reusable ASCII flowchart patterns and diagram examples.
 
@@ -187,6 +193,7 @@ INTENT_SIGNALS = {
     "PLAYBOOK": {"weight": 4, "keywords": ["playbook", "manual testing", "test scenarios", "manual test", "testing playbook"]},
     "FEATURE_CATALOG": {"weight": 4, "keywords": ["feature catalog", "feature inventory", "capability inventory", "catalog snippet"]},
     "README_CREATION": {"weight": 3, "keywords": ["create readme", "readme creation", "write readme", "add documentation", "folder readme"]},
+    "CHANGELOG": {"weight": 4, "keywords": ["changelog", "release notes", "changelog template", "release template", "create changelog", "github release"]},
 }
 
 RESOURCE_MAP = {
@@ -200,6 +207,7 @@ RESOURCE_MAP = {
     "PLAYBOOK": ["references/specific/manual_testing_playbook_creation.md", "assets/documentation/testing_playbook/manual_testing_playbook_template.md"],
     "FEATURE_CATALOG": ["references/specific/feature_catalog_creation.md", "assets/documentation/feature_catalog/feature_catalog_template.md"],
     "README_CREATION": ["references/specific/readme_creation.md", "assets/documentation/readme_template.md"],
+    "CHANGELOG": ["assets/documentation/changelog_template.md"],
 }
 
 LOADING_LEVELS = {
@@ -647,6 +655,7 @@ Use the feature-catalog reference when the task is to inventory current behavior
 - [skill_md_template.md](./assets/skill/skill_md_template.md) - canonical SKILL.md template
 - [readme_template.md](./assets/documentation/readme_template.md) - README structure and quality rules
 - [install_guide_template.md](./assets/documentation/install_guide_template.md) - install guide template
+- [changelog_template.md](./assets/documentation/changelog_template.md) - canonical changelog and release-notes template (consumed by `/create:changelog`)
 - [feature_catalog_template.md](./assets/documentation/feature_catalog/feature_catalog_template.md) - feature catalog template
 - [feature_catalog_snippet_template.md](./assets/documentation/feature_catalog/feature_catalog_snippet_template.md) - feature catalog snippet template
 - [manual_testing_playbook_template.md](./assets/documentation/testing_playbook/manual_testing_playbook_template.md) - manual testing playbook template

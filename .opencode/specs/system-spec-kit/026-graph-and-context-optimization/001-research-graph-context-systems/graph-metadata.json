@@ -48,12 +48,6 @@
     "importance_tier": "critical",
     "status": "complete",
     "key_files": [
-      "research/research.md",
-      "research/recommendations.md",
-      "research/findings-registry.json",
-      "research/cross-phase-matrix.md",
-      "research/iterations/q-d-adoption-sequencing.md",
-      "research/iterations/q-f-killer-combos.md",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -67,45 +61,14 @@
       "002-codesight/spec.md",
       "003-contextador/spec.md",
       "004-graphify/spec.md",
-      "005-claudest/spec.md"
+      "005-claudest/spec.md",
+      "006-research-memory-redundancy/spec.md",
+      "scratch/spec-doc-audit.md",
+      "002-codesight/plan.md",
+      "005-claudest/plan.md",
+      "003-contextador/implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "recommendations.md",
-        "kind": "doc",
-        "path": "research/recommendations.md",
-        "source": "derived"
-      },
-      {
-        "name": "findings-registry.json",
-        "kind": "config",
-        "path": "research/findings-registry.json",
-        "source": "derived"
-      },
-      {
-        "name": "cross-phase-matrix.md",
-        "kind": "doc",
-        "path": "research/cross-phase-matrix.md",
-        "source": "derived"
-      },
-      {
-        "name": "q-d-adoption-sequencing.md",
-        "kind": "doc",
-        "path": "research/iterations/q-d-adoption-sequencing.md",
-        "source": "derived"
-      },
-      {
-        "name": "q-f-killer-combos.md",
-        "kind": "doc",
-        "path": "research/iterations/q-f-killer-combos.md",
-        "source": "derived"
-      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -161,6 +124,12 @@
         "source": "derived"
       },
       {
+        "name": "spec-doc-audit.md",
+        "kind": "doc",
+        "path": "scratch/spec-doc-audit.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -213,11 +182,41 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Protocol",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Checklist",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Status Reporting Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Blocked Task Protocol",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This packet turns the v2 master synthesis into a Level 3 coordination root for `Public`. The research now says Public should preserve its split semantic, structural, and continuity topology, prioritize seam-hardening contracts ahead of packaging work, and translate the strongest surviving recommendations into follow-on packets instead of treating any external system as a replacement architecture. A later derivative child packet, `006-research-memory-redundancy`, now tightens one local continuity rule for those follow-ons: persisted or cached summary artifacts should act as compact wrappers pointing at canonical packet docs rather than second narrative owners. [SOURCE: research/research.md:20-28] [SOURCE: research/research.md:274-306] [SOURCE: research/recommendations.md:3-101]",
     "created_at": "2026-04-12T09:02:53.443Z",
-    "last_save_at": "2026-04-15T11:50:34.453Z",
+    "last_save_at": "2026-04-18T09:14:24.240Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
@@ -225,8 +224,7 @@
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "implementation-summary.md",
-      "research/research.md"
+      "implementation-summary.md"
     ]
   }
 }

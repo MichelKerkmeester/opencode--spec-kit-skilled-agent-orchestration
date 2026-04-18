@@ -53,8 +53,6 @@
       ".opencode/skill/system-spec-kit/shared/parsing/memory-template-contract.ts",
       ".opencode/skill/system-spec-kit/scripts/memory/migrate-trigger-phrase-residual.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-migration.test.ts",
-      "research/research.md",
-      "research/findings-registry.json",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -136,18 +134,6 @@
         "source": "derived"
       },
       {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "findings-registry.json",
-        "kind": "config",
-        "path": "research/findings-registry.json",
-        "source": "derived"
-      },
-      {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
@@ -206,19 +192,30 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Parent Tasks",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Checklist",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 6 is the first post-closeout follow-on phase for `003-memory-quality-remediation`. It no longer starts from a broad residual-dedup charter. The sibling `001/.../006-research-memory-redundancy` packet has already completed that research and concluded that the real implementation home is a narrower wrapper-and-ownership contract: generated memory saves should become compact retrieval wrappers that point at canonical packet docs instead of replaying them.",
     "created_at": "2026-04-12T09:02:53.461Z",
-    "last_save_at": "2026-04-15T11:50:34.517Z",
+    "last_save_at": "2026-04-18T09:14:24.262Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "implementation-summary.md",
-      "research/research.md"
+      "implementation-summary.md"
     ]
   }
 }

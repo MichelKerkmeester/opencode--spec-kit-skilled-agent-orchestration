@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/010-root-level-review-research-convention",
+  "spec_folder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/010-root-level-review-research-convention",
+  "parent_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "root level review folder",
+      "review research folder convention",
+      "review at spec root",
+      "no nested review folders",
+      "consolidate review folders"
+    ],
+    "key_topics": [
+      "root",
+      "level",
+      "review",
+      "folder",
+      "research",
+      "convention",
+      "spec",
+      "nested",
+      "folders",
+      "consolidate",
+      "running",
+      "deep-review"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs",
+      ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs",
+      ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+      ".opencode/agent/deep-review.md",
+      ".opencode/agent/deep-research.md",
+      ".claude/agents/deep-review.md",
+      ".claude/agents/deep-research.md",
+      ".gemini/agents/deep-review.md",
+      ".gemini/agents/deep-research.md",
+      ".codex/agents/deep-review.toml",
+      ".codex/agents/deep-research.toml",
+      ".opencode/skill/sk-deep-review/SKILL.md",
+      ".opencode/skill/sk-deep-research/SKILL.md",
+      ".opencode/skill/sk-deep-review/README.md",
+      ".opencode/skill/sk-deep-research/README.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "review-research-paths.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-review_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-review_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.md",
+        "kind": "doc",
+        "path": ".opencode/agent/deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/agent/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.toml",
+        "kind": "file",
+        "path": ".codex/agents/deep-review.toml",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.toml",
+        "kind": "file",
+        "path": ".codex/agents/deep-research.toml",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Level Review",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Folder Convention",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement When",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Make",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Shared Path Resolver Create",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Consumer Updates",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Agent Definitions",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Shared Path Resolver",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "When running `/spec_kit:deep-review` or `/spec_kit:deep-research` on a child phase inside a parent spec tree, both skills create their output folders (`review/`, `research/`) **inside the child phase folder**. In a spec tree with many nested phases (like `026-graph-and-context-optimization` with 14 phases, some 3-4 levels deep), this scatters review and research artifacts across dozens of nested directories. Finding a specific review requires knowing the exact nesting path. Manual consolidation after the fact (as we did for 026 -- moving 42 review + 18 research folders) is tedious and error-prone.",
+    "created_at": "2026-04-18T07:39:57.335Z",
+    "last_save_at": "2026-04-18T09:14:20.602Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

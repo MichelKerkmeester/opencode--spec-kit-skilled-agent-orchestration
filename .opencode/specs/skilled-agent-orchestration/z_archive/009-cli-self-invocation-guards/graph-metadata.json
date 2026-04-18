@@ -198,7 +198,7 @@
     ],
     "causal_summary": "The CLI bridge skills are meant for cross-AI delegation, but the shared skill system makes it possible for a runtime to be told to invoke the very bridge that targets itself. That creates circular self-delegation and, in some cases, nested-runtime failure modes.",
     "created_at": "2026-04-12T09:02:50.204Z",
-    "last_save_at": "2026-04-15T11:50:28.352Z",
+    "last_save_at": "2026-04-18T09:14:20.617Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

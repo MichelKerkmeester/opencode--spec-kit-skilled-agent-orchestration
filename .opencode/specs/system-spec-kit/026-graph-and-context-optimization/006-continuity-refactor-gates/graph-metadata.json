@@ -53,14 +53,11 @@
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "research/research.md",
       "scratch/verify-phases-review.md",
       "scratch/phase-017-rerun-seed.md",
       ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
-      "lib/routing/content-router.ts",
-      "handover.md",
-      "prompts/research-prompt-impact.md",
-      "lib/resume/resume-ladder.ts"
+      "lib/resume/resume-ladder.ts",
+      "handover.md"
     ],
     "entities": [
       {
@@ -94,12 +91,6 @@
         "source": "derived"
       },
       {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
         "name": "verify-phases-review.md",
         "kind": "doc",
         "path": "scratch/verify-phases-review.md",
@@ -118,27 +109,15 @@
         "source": "derived"
       },
       {
-        "name": "content-router.ts",
+        "name": "resume-ladder.ts",
         "kind": "code",
-        "path": "lib/routing/content-router.ts",
+        "path": "lib/resume/resume-ladder.ts",
         "source": "derived"
       },
       {
         "name": "handover.md",
         "kind": "doc",
         "path": "handover.md",
-        "source": "derived"
-      },
-      {
-        "name": "research-prompt-impact.md",
-        "kind": "doc",
-        "path": "prompts/research-prompt-impact.md",
-        "source": "derived"
-      },
-      {
-        "name": "resume-ladder.ts",
-        "kind": "code",
-        "path": "lib/resume/resume-ladder.ts",
         "source": "derived"
       },
       {
@@ -206,11 +185,29 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Complete Gate",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Without root coordination docs, the packet is harder to validate, harder to resume, and easier to misread as either \"research only\" or \"ready to execute everywhere at once.\" The parent packet needs to state the overall contract and explicitly route execution work into the child gates.",
     "created_at": "2026-04-12T09:02:53.476Z",
-    "last_save_at": "2026-04-15T11:50:34.539Z",
+    "last_save_at": "2026-04-18T09:14:24.272Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
@@ -218,7 +215,6 @@
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "research/research.md",
       "handover.md"
     ]
   }

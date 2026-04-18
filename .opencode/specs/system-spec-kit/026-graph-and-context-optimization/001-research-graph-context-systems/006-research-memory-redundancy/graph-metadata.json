@@ -41,8 +41,6 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      "research/research.md",
-      "research/findings-registry.json",
       "decision-record.md",
       "implementation-summary.md",
       "spec.md",
@@ -51,18 +49,6 @@
       "checklist.md"
     ],
     "entities": [
-      {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "findings-registry.json",
-        "kind": "config",
-        "path": "research/findings-registry.json",
-        "source": "derived"
-      },
       {
         "name": "decision-record.md",
         "kind": "doc",
@@ -194,11 +180,23 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "Verification Date",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Protocol",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This packet operationalizes the completed redundancy research in `research/research.md`. It does not rerun the investigation. It records how the parent research canonicals and the downstream packet train should react to the compact-wrapper conclusion that memory saves should point at canonical docs instead of replaying them.",
     "created_at": "2026-04-12T09:02:53.452Z",
-    "last_save_at": "2026-04-15T11:50:34.484Z",
+    "last_save_at": "2026-04-18T09:14:24.250Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
@@ -206,8 +204,7 @@
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "implementation-summary.md",
-      "research/research.md"
+      "implementation-summary.md"
     ]
   }
 }

@@ -249,10 +249,10 @@ version_bump_rules:
 # ─────────────────────────────────────────────────────────────────
 changelog_template:
   # ─────────────────────────────────────────────────────────────────
-  # TEMPLATE FILE: .opencode/command/create/assets/changelog_template.md
+  # TEMPLATE FILE: .opencode/skill/sk-doc/assets/documentation/changelog_template.md
   # ─────────────────────────────────────────────────────────────────
   # The canonical changelog and release notes template lives in:
-  #   .opencode/command/create/assets/changelog_template.md
+  #   .opencode/skill/sk-doc/assets/documentation/changelog_template.md
   #
   # It defines TWO formats:
   #   1. COMPACT — for releases with fewer than 10 changes
@@ -263,7 +263,7 @@ changelog_template:
   # See PUBLIC_RELEASE.md Section 7 for writing style rules.
   # Expanded-format sub-headings should stay short (2-5 words, not full sentences).
   # ─────────────────────────────────────────────────────────────────
-  template_file: ".opencode/command/create/assets/changelog_template.md"
+  template_file: ".opencode/skill/sk-doc/assets/documentation/changelog_template.md"
   style_reference: "PUBLIC_RELEASE.md Section 7"
 
 # ─────────────────────────────────────────────────────────────────
@@ -284,7 +284,7 @@ highlight_categories:
   note: |
     Use plain category names from PUBLIC_RELEASE.md vocabulary.
     For expanded format: use short ### headings with Problem/Fix paragraphs.
-    Read .opencode/command/create/assets/changelog_template.md for full format reference.
+    Read .opencode/skill/sk-doc/assets/documentation/changelog_template.md for full format reference.
 
 # ─────────────────────────────────────────────────────────────────
 # WORKFLOW ENFORCEMENT
@@ -468,7 +468,7 @@ workflow:
   step_4_content_generation:
     purpose: Generate changelog content following established format
     activities:
-      - "Read the template: .opencode/command/create/assets/changelog_template.md"
+      - "Read the template: .opencode/skill/sk-doc/assets/documentation/changelog_template.md"
       - "If changelog_mode = nested, read .opencode/skill/system-spec-kit/templates/changelog/root.md or phase.md instead"
       - "Set DATE to today's date in YYYY-MM-DD format"
       - |

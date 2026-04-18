@@ -40,7 +40,6 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "/tmp/save-context-data.json",
       ".opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts",
       ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/input-normalizer-unit.vitest.ts",
@@ -54,12 +53,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "save-context-data.json",
-        "kind": "config",
-        "path": "/tmp/save-context-data.json",
-        "source": "derived"
-      },
       {
         "name": "input-normalizer.ts",
         "kind": "code",
@@ -197,11 +190,17 @@
         "kind": "proper_noun",
         "path": "implementation-summary.md",
         "source": "derived"
+      },
+      {
+        "name": "What Was Built This",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 8** of `003-memory-quality-remediation`.",
     "created_at": "2026-04-12T09:02:53.463Z",
-    "last_save_at": "2026-04-15T11:50:34.525Z",
+    "last_save_at": "2026-04-18T09:14:24.266Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

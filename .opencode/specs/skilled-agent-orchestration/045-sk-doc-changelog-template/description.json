@@ -1,0 +1,19 @@
+{
+  "specFolder": "specs/skilled-agent-orchestration/045-sk-doc-changelog-template",
+  "description": "Feature Specification: Move changelog_template.md into sk-doc",
+  "keywords": [
+    "feature",
+    "specification",
+    "move",
+    "sk-doc"
+  ],
+  "lastUpdated": "2026-04-18T09:14:14.798Z",
+  "specId": "045",
+  "folderSlug": "sk-doc-changelog-template",
+  "parentChain": [
+    "specs",
+    "skilled-agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

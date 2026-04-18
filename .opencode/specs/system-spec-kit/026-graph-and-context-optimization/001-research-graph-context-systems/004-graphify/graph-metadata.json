@@ -41,20 +41,12 @@
     "importance_tier": "critical",
     "status": "complete",
     "key_files": [
-      "research/research.md",
       "external/skills/graphify/skill.md",
       "implementation-summary.md",
       "external/worked/mixed-corpus/GRAPH_REPORT.md",
       ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
       ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
       "external/worked/karpathy-repos/GRAPH_REPORT.md",
-      "research/iterations/iteration-001.md",
-      "research/iterations/iteration-020.md",
-      "research/deep-research-config.json",
-      "research/deep-research-state.jsonl",
-      "research/deep-research-strategy.md",
-      "research/findings-registry.json",
-      "research/deep-research-dashboard.md",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -63,12 +55,6 @@
       "scratch/phase-research-prompt.md"
     ],
     "entities": [
-      {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
-        "source": "derived"
-      },
       {
         "name": "skill.md",
         "kind": "doc",
@@ -97,48 +83,6 @@
         "name": "generate-context.js",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
-        "source": "derived"
-      },
-      {
-        "name": "iteration-001.md",
-        "kind": "doc",
-        "path": "research/iterations/iteration-001.md",
-        "source": "derived"
-      },
-      {
-        "name": "iteration-020.md",
-        "kind": "doc",
-        "path": "research/iterations/iteration-020.md",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-config.json",
-        "kind": "config",
-        "path": "research/deep-research-config.json",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-state.jsonl",
-        "kind": "file",
-        "path": "research/deep-research-state.jsonl",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-strategy.md",
-        "kind": "doc",
-        "path": "research/deep-research-strategy.md",
-        "source": "derived"
-      },
-      {
-        "name": "findings-registry.json",
-        "kind": "config",
-        "path": "research/findings-registry.json",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-dashboard.md",
-        "kind": "doc",
-        "path": "research/deep-research-dashboard.md",
         "source": "derived"
       },
       {
@@ -206,11 +150,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Run",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Known Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 4 of `001-research-graph-context-systems` is a read-only audit of the graphify external Python skill to translate its two-pass codebase knowledge graph patterns into concrete improvements for Code_Environment/Public's existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table grounded in specific `external/graphify/` file:line citations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.",
     "created_at": "2026-04-12T09:02:53.448Z",
-    "last_save_at": "2026-04-15T11:50:34.473Z",
+    "last_save_at": "2026-04-18T09:14:24.246Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
@@ -218,8 +210,7 @@
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "implementation-summary.md",
-      "research/research.md"
+      "implementation-summary.md"
     ]
   }
 }

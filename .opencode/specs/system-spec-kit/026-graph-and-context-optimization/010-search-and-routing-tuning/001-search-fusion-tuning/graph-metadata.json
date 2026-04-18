@@ -44,9 +44,7 @@
       "mcp_server/configs/README.md",
       "checklist.md",
       "plan.md",
-      "configs/README.md",
-      "tasks.md",
-      "research/research.md"
+      "tasks.md"
     ],
     "entities": [
       {
@@ -104,12 +102,6 @@
         "source": "derived"
       },
       {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
         "name": "Search Fusion",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -146,6 +138,30 @@
         "source": "derived"
       },
       {
+        "name": "Closeout Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Approach Close",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Child Packet Rollup",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "their",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
         "name": "Verification Checklist",
         "kind": "proper_noun",
         "path": "checklist.md",
@@ -168,36 +184,17 @@
         "kind": "key_phrase",
         "path": "checklist.md",
         "source": "derived"
-      },
-      {
-        "name": "Research Synthesis",
-        "kind": "proper_noun",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "Search Fusion Weight Optimization",
-        "kind": "proper_noun",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "Safe Continuity",
-        "kind": "proper_noun",
-        "path": "research/research.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Investigate whether the hardcoded thresholds, weights, and decay constants in the search pipeline are optimal. No historical save data is needed - all research uses the current codebase, schema, and synthetic query generation.",
     "created_at": "2026-04-14T17:11:35.269Z",
-    "last_save_at": "2026-04-15T11:50:34.590Z",
+    "last_save_at": "2026-04-18T09:14:24.294Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
-      "checklist.md",
-      "research/research.md"
+      "checklist.md"
     ]
   }
 }

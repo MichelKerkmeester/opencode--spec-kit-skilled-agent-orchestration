@@ -206,7 +206,7 @@
     ],
     "causal_summary": "The 019 graph-metadata parser shipped behavior changes that operator-facing docs did not describe yet. That left command docs, guidance docs, templates, and metadata validation references out of sync on checklist-aware status fallback, lowercased status values, key-file sanitization, entity deduplication, trigger caps, and the new `--active-only` backfill flag.",
     "created_at": "2026-04-13T08:18:57.068Z",
-    "last_save_at": "2026-04-15T11:50:34.635Z",
+    "last_save_at": "2026-04-18T09:14:24.313Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

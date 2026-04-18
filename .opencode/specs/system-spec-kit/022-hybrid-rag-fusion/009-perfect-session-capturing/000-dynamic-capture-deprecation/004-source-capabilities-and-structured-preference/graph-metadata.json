@@ -195,7 +195,7 @@
     ],
     "causal_summary": "The session-capturing pipeline still expressed source-aware policy with a raw source-name exception. That made the contamination downgrade brittle and under-documented. At the same time, the CLI surface supported structured `--stdin` / `--json` input but did not describe those structured modes as the preferred save path when curated payloads already existed.",
     "created_at": "2026-04-12T09:02:50.266Z",
-    "last_save_at": "2026-04-15T11:50:28.783Z",
+    "last_save_at": "2026-04-18T09:14:20.714Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

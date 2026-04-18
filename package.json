@@ -1,5 +1,13 @@
 {
   "private": true,
   "name": "opencode-env",
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "node src/3_staging/server.js"
+  },
+  "dependencies": {
+    "chokidar": "^5.0.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
 }

@@ -38,7 +38,7 @@ command = "node"
 args = [".opencode/skill/mcp-code-mode/mcp_server/dist/index.js"]
 
 [mcp_servers.code_mode.env]
-UTCP_CONFIG_FILE = ".utcp_config.toml"
+UTCP_CONFIG_FILE = ".utcp_config.json"
 
 [features]
 multi_agent = true
@@ -57,10 +57,6 @@ model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 model_reasoning_effort = "high"
 
-[profiles.handover]
-sandbox_mode = "workspace-write"
-model_reasoning_effort = "high"
-
 [profiles.orchestrate]
 sandbox_mode = "read-only"
 model_reasoning_effort = "high"
@@ -71,10 +67,6 @@ model_reasoning_effort = "high"
 
 [profiles.review]
 sandbox_mode = "read-only"
-model_reasoning_effort = "high"
-
-[profiles.speckit]
-sandbox_mode = "workspace-write"
 model_reasoning_effort = "high"
 
 [profiles.ultra-think]
@@ -94,10 +86,6 @@ config_file = "agents/context.toml"
 description = "Debugging specialist for root-cause analysis and fix validation."
 config_file = "agents/debug.toml"
 
-[agents.handover]
-description = "Session handover specialist for continuation documents."
-config_file = "agents/handover.toml"
-
 [agents.orchestrate]
 description = "Senior orchestrator for decomposition, delegation, and synthesis."
 config_file = "agents/orchestrate.toml"
@@ -106,13 +94,21 @@ config_file = "agents/orchestrate.toml"
 description = "Iterative investigation specialist with convergence detection."
 config_file = "agents/deep-research.toml"
 
+[agents.deep-review]
+description = "LEAF review agent for sk-deep-review. Performs single review iteration: reads state, reviews one dimension with P0/P1/P2 findings, updates strategy and JSONL."
+config_file = "agents/deep-review.toml"
+
+[agents.improve-agent]
+description = "Proposal-only mutator for bounded improve-agent candidate generation with evaluator-first rules"
+config_file = "agents/improve-agent.toml"
+
+[agents.improve-prompt]
+description = "Improve-prompt specialist for framework selection, CLEAR validation, and dispatch-ready prompt packages for high-stakes external CLI invocations"
+config_file = "agents/improve-prompt.toml"
+
 [agents.review]
 description = "Code review specialist focused on correctness, risk, and tests."
 config_file = "agents/review.toml"
-
-[agents.speckit]
-description = "Spec-folder documentation specialist (template-enforced)."
-config_file = "agents/speckit.toml"
 
 [agents.ultra-think]
 description = "Multi-strategy planning architect for diverse reasoning and optimal plans."

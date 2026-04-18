@@ -41,17 +41,11 @@
     "importance_tier": "critical",
     "status": "complete",
     "key_files": [
-      "research/research.md",
       "external/src/ast/loader.ts",
       "external/src/mcp-server.ts",
       "external/src/generators/ai-config.ts",
       "external/src/detectors/blast-radius.ts",
       "external/src/eval.ts",
-      "research/deep-research-config.json",
-      "research/deep-research-state.jsonl",
-      "research/deep-research-strategy.md",
-      "research/deep-research-dashboard.md",
-      "research/findings-registry.json",
       "implementation-summary.md",
       ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
       ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
@@ -60,15 +54,15 @@
       "external/src/detectors/graph.ts",
       "external/src/detectors/contracts.ts",
       "external/src/ast/extract-python.ts",
-      "external/src/ast/extract-go.ts"
+      "external/src/ast/extract-go.ts",
+      "external/src/detectors/tokens.ts",
+      "external/src/scanner.ts",
+      "external/src/config.ts",
+      "external/src/detectors/components.ts",
+      "external/src/telemetry.ts",
+      "external/src/index.ts"
     ],
     "entities": [
-      {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
-        "source": "derived"
-      },
       {
         "name": "loader.ts",
         "kind": "code",
@@ -97,36 +91,6 @@
         "name": "eval.ts",
         "kind": "code",
         "path": "external/src/eval.ts",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-config.json",
-        "kind": "config",
-        "path": "research/deep-research-config.json",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-state.jsonl",
-        "kind": "file",
-        "path": "research/deep-research-state.jsonl",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-strategy.md",
-        "kind": "doc",
-        "path": "research/deep-research-strategy.md",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-dashboard.md",
-        "kind": "doc",
-        "path": "research/deep-research-dashboard.md",
-        "source": "derived"
-      },
-      {
-        "name": "findings-registry.json",
-        "kind": "config",
-        "path": "research/findings-registry.json",
         "source": "derived"
       },
       {
@@ -184,6 +148,42 @@
         "source": "derived"
       },
       {
+        "name": "tokens.ts",
+        "kind": "code",
+        "path": "external/src/detectors/tokens.ts",
+        "source": "derived"
+      },
+      {
+        "name": "scanner.ts",
+        "kind": "code",
+        "path": "external/src/scanner.ts",
+        "source": "derived"
+      },
+      {
+        "name": "config.ts",
+        "kind": "code",
+        "path": "external/src/config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "components.ts",
+        "kind": "code",
+        "path": "external/src/detectors/components.ts",
+        "source": "derived"
+      },
+      {
+        "name": "telemetry.ts",
+        "kind": "code",
+        "path": "external/src/telemetry.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "external/src/index.ts",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -204,13 +204,13 @@
       {
         "name": "Code Graph",
         "kind": "proper_noun",
-        "path": "research/research.md",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Phase 2 of `001-research-graph-context-systems` is a read-only audit of the codesight external Node.js/TypeScript skill (zero-runtime-dependency CLI that scans a project root and generates AI-assistant context artifacts) to translate its detector architecture, MCP tool design, profile generation, scanner heuristics, and blast-radius analysis into concrete improvements for `Code_Environment/Public`'s existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table plus late-session adoption synthesis grounded in specific `external/src/` file:line citations across 20 deep-research iterations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.",
     "created_at": "2026-04-12T09:02:53.446Z",
-    "last_save_at": "2026-04-15T11:50:34.462Z",
+    "last_save_at": "2026-04-18T09:14:24.243Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
@@ -218,8 +218,7 @@
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "implementation-summary.md",
-      "research/research.md"
+      "implementation-summary.md"
     ]
   }
 }

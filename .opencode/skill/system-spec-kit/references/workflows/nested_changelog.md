@@ -43,4 +43,4 @@ It derives summary, change bullets, verification notes, files changed, and follo
 - `templates/changelog/root.md`
 - `templates/changelog/phase.md`
 
-Use these templates for packet-local changelog generation. Do not reuse the global `.opencode/command/create/assets/changelog_template.md` for nested packet output.
+Use these templates for packet-local changelog generation. Do not reuse the global `.opencode/skill/sk-doc/assets/documentation/changelog_template.md` for nested packet output.
