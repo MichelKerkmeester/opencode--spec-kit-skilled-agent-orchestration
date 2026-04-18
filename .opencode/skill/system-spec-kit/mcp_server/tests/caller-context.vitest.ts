@@ -83,6 +83,46 @@ describe('caller-context', () => {
     });
   });
 
+  it('propagates context into setImmediate callbacks', async () => {
+    const callerContext = makeCallerContext();
+
+    await runWithCallerContext(callerContext, async () => {
+      await new Promise<void>((resolve) => {
+        setImmediate(() => {
+          expect(getCallerContext()).toBe(callerContext);
+          resolve();
+        });
+      });
+    });
+  });
+
+  it('propagates context into queueMicrotask callbacks', async () => {
+    const callerContext = makeCallerContext();
+
+    await runWithCallerContext(callerContext, async () => {
+      await new Promise<void>((resolve) => {
+        queueMicrotask(() => {
+          expect(getCallerContext()).toBe(callerContext);
+          resolve();
+        });
+      });
+    });
+  });
+
+  it('propagates context across node:timers/promises helpers', async () => {
+    const callerContext = makeCallerContext();
+
+    await runWithCallerContext(callerContext, async () => {
+      await import('node:timers/promises').then(async ({ setImmediate, setTimeout }) => {
+        await setImmediate();
+        expect(getCallerContext()).toBe(callerContext);
+
+        await setTimeout(0);
+        expect(getCallerContext()).toBe(callerContext);
+      });
+    });
+  });
+
   it('overrides nested runs and restores the parent context afterwards', () => {
     const parentContext = makeCallerContext({ sessionId: 'parent-session' });
     const childContext = makeCallerContext({ sessionId: 'child-session' });

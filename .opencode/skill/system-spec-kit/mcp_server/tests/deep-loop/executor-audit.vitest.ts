@@ -4,7 +4,12 @@ import { join } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { appendExecutorAuditToLastRecord, buildExecutorAuditRecord } from '../../lib/deep-loop/executor-audit.js';
+import {
+  appendExecutorAuditToLastRecord,
+  buildExecutorAuditRecord,
+  emitDispatchFailure,
+  writeFirstRecordExecutor,
+} from '../../lib/deep-loop/executor-audit.js';
 import type { ExecutorConfig } from '../../lib/deep-loop/executor-config.js';
 
 function withTempStateLog(content: string, run: (stateLogPath: string) => void): void {
@@ -52,6 +57,104 @@ describe('executor-audit', () => {
       const before = readFileSync(stateLogPath, 'utf8');
 
       appendExecutorAuditToLastRecord(stateLogPath, executor);
+
+      expect(readFileSync(stateLogPath, 'utf8')).toBe(before);
+    });
+  });
+
+  it('writeFirstRecordExecutor appends an iteration_start sentinel when no iteration record exists yet', () => {
+    const executor: ExecutorConfig = {
+      kind: 'cli-codex',
+      model: 'gpt-5.4',
+      reasoningEffort: 'high',
+      serviceTier: 'priority',
+      sandboxMode: null,
+      timeoutSeconds: 900,
+    };
+
+    withTempStateLog('{"type":"event","event":"start"}\n', (stateLogPath) => {
+      writeFirstRecordExecutor(stateLogPath, executor, 7);
+
+      const lines = readFileSync(stateLogPath, 'utf8').trimEnd().split('\n');
+      const lastRecord = JSON.parse(lines.at(-1) ?? '');
+      expect(lastRecord).toMatchObject({
+        type: 'iteration_start',
+        iteration: 7,
+        executor: {
+          kind: 'cli-codex',
+          model: 'gpt-5.4',
+          reasoningEffort: 'high',
+          serviceTier: 'priority',
+        },
+      });
+      expect(typeof lastRecord.timestamp).toBe('string');
+    });
+  });
+
+  it('writeFirstRecordExecutor merge-patches the iteration record when executor provenance is missing', () => {
+    const executor: ExecutorConfig = {
+      kind: 'cli-codex',
+      model: 'gpt-5.4-mini',
+      reasoningEffort: 'medium',
+      serviceTier: 'fast',
+      sandboxMode: null,
+      timeoutSeconds: 900,
+    };
+
+    withTempStateLog('{"type":"event","event":"start"}\n{"type":"iteration","iteration":4,"status":"continue"}\n', (stateLogPath) => {
+      writeFirstRecordExecutor(stateLogPath, executor, 4);
+
+      const lines = readFileSync(stateLogPath, 'utf8').trimEnd().split('\n');
+      expect(JSON.parse(lines.at(-1) ?? '')).toEqual({
+        type: 'iteration',
+        iteration: 4,
+        status: 'continue',
+        executor: {
+          kind: 'cli-codex',
+          model: 'gpt-5.4-mini',
+          reasoningEffort: 'medium',
+          serviceTier: 'fast',
+        },
+      });
+    });
+  });
+
+  it('writeFirstRecordExecutor is a no-op when the iteration record already has executor provenance', () => {
+    const executor: ExecutorConfig = {
+      kind: 'cli-codex',
+      model: 'gpt-5.4-mini',
+      reasoningEffort: 'low',
+      serviceTier: 'fast',
+      sandboxMode: null,
+      timeoutSeconds: 900,
+    };
+
+    withTempStateLog(
+      '{"type":"iteration","iteration":4,"status":"continue","executor":{"kind":"cli-codex","model":"gpt-5.4-mini","reasoningEffort":"low","serviceTier":"fast"}}\n',
+      (stateLogPath) => {
+        const before = readFileSync(stateLogPath, 'utf8');
+
+        writeFirstRecordExecutor(stateLogPath, executor, 4);
+
+        expect(readFileSync(stateLogPath, 'utf8')).toBe(before);
+      },
+    );
+  });
+
+  it('writeFirstRecordExecutor skips native executors', () => {
+    const executor: ExecutorConfig = {
+      kind: 'native',
+      model: null,
+      reasoningEffort: null,
+      serviceTier: null,
+      sandboxMode: null,
+      timeoutSeconds: 900,
+    };
+
+    withTempStateLog('{"type":"event","event":"start"}\n', (stateLogPath) => {
+      const before = readFileSync(stateLogPath, 'utf8');
+
+      writeFirstRecordExecutor(stateLogPath, executor, 2);
 
       expect(readFileSync(stateLogPath, 'utf8')).toBe(before);
     });
@@ -120,6 +223,82 @@ describe('executor-audit', () => {
 
     withTempStateLog('{"type":"event"}\n{"type":"iteration"\n', (stateLogPath) => {
       expect(() => appendExecutorAuditToLastRecord(stateLogPath, executor)).toThrow();
+    });
+  });
+
+  it('emitDispatchFailure writes a typed dispatch_failure event with executor provenance', () => {
+    const executor: ExecutorConfig = {
+      kind: 'cli-codex',
+      model: 'gpt-5.4',
+      reasoningEffort: 'high',
+      serviceTier: 'priority',
+      sandboxMode: null,
+      timeoutSeconds: 900,
+    };
+
+    withTempStateLog('{"type":"event","event":"start"}\n', (stateLogPath) => {
+      emitDispatchFailure(stateLogPath, executor, 'crash', 3, 'worker exited early');
+
+      const lines = readFileSync(stateLogPath, 'utf8').trimEnd().split('\n');
+      expect(JSON.parse(lines.at(-1) ?? '')).toMatchObject({
+        type: 'event',
+        event: 'dispatch_failure',
+        iteration: 3,
+        reason: 'crash',
+        detail: 'worker exited early',
+        executor: {
+          kind: 'cli-codex',
+          model: 'gpt-5.4',
+          reasoningEffort: 'high',
+          serviceTier: 'priority',
+        },
+      });
+    });
+  });
+
+  it('emitDispatchFailure is idempotent on repeat calls for the same iteration', () => {
+    const executor: ExecutorConfig = {
+      kind: 'cli-codex',
+      model: 'gpt-5.4',
+      reasoningEffort: 'medium',
+      serviceTier: 'standard',
+      sandboxMode: null,
+      timeoutSeconds: 900,
+    };
+
+    withTempStateLog('{"type":"event","event":"start"}\n', (stateLogPath) => {
+      emitDispatchFailure(stateLogPath, executor, 'timeout', 5, 'deadline exceeded');
+      const once = readFileSync(stateLogPath, 'utf8');
+
+      emitDispatchFailure(stateLogPath, executor, 'timeout', 5, 'deadline exceeded');
+
+      expect(readFileSync(stateLogPath, 'utf8')).toBe(once);
+    });
+  });
+
+  it('emitDispatchFailure omits the executor block for native executors', () => {
+    const executor: ExecutorConfig = {
+      kind: 'native',
+      model: null,
+      reasoningEffort: null,
+      serviceTier: null,
+      sandboxMode: null,
+      timeoutSeconds: 900,
+    };
+
+    withTempStateLog('{"type":"event","event":"start"}\n', (stateLogPath) => {
+      emitDispatchFailure(stateLogPath, executor, 'other', 1, 'native failure path');
+
+      const lines = readFileSync(stateLogPath, 'utf8').trimEnd().split('\n');
+      const lastRecord = JSON.parse(lines.at(-1) ?? '');
+      expect(lastRecord).toMatchObject({
+        type: 'event',
+        event: 'dispatch_failure',
+        iteration: 1,
+        reason: 'other',
+        detail: 'native failure path',
+      });
+      expect(lastRecord.executor).toBeUndefined();
     });
   });
 });

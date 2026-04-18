@@ -21,7 +21,13 @@ import {
 import { generateAndStoreSummary } from '../../lib/search/memory-summaries.js';
 import { runEntityLinkingForMemory } from '../../lib/search/entity-linker.js';
 import { onIndex, isGraphRefreshEnabled, type OnIndexSkipReason } from '../../lib/search/graph-lifecycle.js';
-import { clearBudget, recordFailure, shouldRetry } from '../../lib/enrichment/retry-budget.js';
+import {
+  clearBudget,
+  emitRetryTelemetry,
+  getRetryBudgetEntry,
+  recordFailure,
+  shouldRetry,
+} from '../../lib/enrichment/retry-budget.js';
 import { assertNever } from '../../lib/utils/exhaustiveness.js';
 import { toErrorMessage } from '../../utils/index.js';
 
@@ -111,6 +117,27 @@ const ON_INDEX_SKIP_REASON_TO_ENRICHMENT_SKIP_REASON = {
   empty_content: 'empty_content',
   onindex_exception: 'graph_lifecycle_no_op',
 } satisfies Record<OnIndexSkipReason, EnrichmentSkipReason>;
+
+const CAUSAL_LINK_RETRY_STEP = 'causal_links';
+const CAUSAL_LINK_RETRY_REASON = 'partial_causal_link_unresolved';
+
+function emitCausalLinkRetryTelemetry(
+  memoryId: number,
+  attempt: number,
+  outcome: 'retry' | 'give_up' | 'resolved',
+  timestamp: string,
+): void {
+  emitRetryTelemetry({
+    type: 'event',
+    event: 'retry_attempt',
+    memoryId: String(memoryId),
+    step: CAUSAL_LINK_RETRY_STEP,
+    reason: CAUSAL_LINK_RETRY_REASON,
+    attempt,
+    outcome,
+    timestamp,
+  });
+}
 
 export function shouldRunPostInsertEnrichment(plannerMode: SavePlannerMode = 'plan-only'): boolean {
   return plannerMode === 'full-auto' || isPostInsertEnrichmentEnabled();
@@ -256,9 +283,16 @@ function buildCausalLinksStepResult(
   const reason: EnrichmentFailureReason = result.errors.length > 0
     ? 'partial_causal_link_errors'
     : 'partial_causal_link_unresolved';
-  if (reason === 'partial_causal_link_unresolved') {
-    state.shouldRetry = shouldRetry(id, 'causal_links', reason);
-    state.retryAttempts = recordFailure(id, 'causal_links', reason).attempts;
+  if (reason === CAUSAL_LINK_RETRY_REASON) {
+    state.shouldRetry = shouldRetry(id, CAUSAL_LINK_RETRY_STEP, reason);
+    const retryEntry = recordFailure(id, CAUSAL_LINK_RETRY_STEP, reason);
+    state.retryAttempts = retryEntry.attempts;
+    emitCausalLinkRetryTelemetry(
+      id,
+      retryEntry.attempts - 1,
+      state.shouldRetry ? 'retry' : 'give_up',
+      retryEntry.lastFailedAt,
+    );
   }
   return { status: 'partial', reason, warnings };
 }
@@ -445,6 +479,15 @@ function buildExecutionStatus(
     };
   }
 
+  const resolvedRetryEntry = getRetryBudgetEntry(id, CAUSAL_LINK_RETRY_STEP, CAUSAL_LINK_RETRY_REASON);
+  if (resolvedRetryEntry) {
+    emitCausalLinkRetryTelemetry(
+      id,
+      resolvedRetryEntry.attempts - 1,
+      'resolved',
+      new Date().toISOString(),
+    );
+  }
   clearBudget(id);
   return { status: 'ran' };
 }

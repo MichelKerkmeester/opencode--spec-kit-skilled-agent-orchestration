@@ -8,7 +8,9 @@ export const GRAPH_METADATA_SCHEMA_VERSION = 1 as const;
 export const GRAPH_METADATA_DOCUMENT_TYPE = 'graph_metadata' as const;
 export const GRAPH_METADATA_FILENAME = 'graph-metadata.json' as const;
 export const GRAPH_METADATA_MIGRATED_QUALITY_FLAG = 'graph_metadata_migrated' as const;
+export const SAVE_LINEAGE_VALUES = ['description_only', 'graph_only', 'same_pass'] as const;
 export type GraphMetadataMigrationSource = 'legacy';
+export type SaveLineage = typeof SAVE_LINEAGE_VALUES[number];
 
 export const packetReferenceSchema = z.object({
   packet_id: z.string().min(1),
@@ -41,6 +43,7 @@ export const graphMetadataDerivedSchema = z.object({
   causal_summary: z.string(),
   created_at: z.string().datetime({ offset: true }),
   last_save_at: z.string().datetime({ offset: true }),
+  save_lineage: z.enum(SAVE_LINEAGE_VALUES).optional(),
   last_accessed_at: z.string().datetime({ offset: true }).nullable(),
   source_docs: z.array(z.string().min(1)),
 });

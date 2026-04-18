@@ -28,6 +28,10 @@
       "resume",
       "restart"
     ],
+    "deferredModes": [
+      "fork",
+      "completed-continue"
+    ],
     "generation": 1,
     "continuedFromRun": null
   },

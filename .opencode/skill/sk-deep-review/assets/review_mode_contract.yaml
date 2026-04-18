@@ -151,6 +151,12 @@ contract:
       description: Continue the current review lineage without changing generation.
     - id: restart
       description: Start a new generation for the same target and archive the prior review packet state.
+    - id: fork
+      status: deferred
+      description: Reserved compatibility branch. The current runtime does not emit or accept fork review lineages.
+    - id: completed-continue
+      status: deferred
+      description: Reserved compatibility branch. The current runtime does not reopen completed sessions under a completed-continue lineage.
 
   lineageFields:
     - sessionId

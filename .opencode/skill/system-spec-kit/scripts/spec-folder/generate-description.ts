@@ -13,14 +13,19 @@
 
 import * as path from 'node:path';
 import * as fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import {
   generatePerFolderDescription,
   savePerFolderDescription,
-  loadPerFolderDescription,
+  loadExistingDescription,
+  getRepairMergeSafe,
   extractKeywords,
   slugifyFolderName,
 } from '@spec-kit/mcp-server/api';
-import type { PerFolderDescription } from '@spec-kit/mcp-server/api';
+import type { LoadResult, PerFolderDescription } from '@spec-kit/mcp-server/api';
+
+export { getRepairMergeSafe, loadExistingDescription };
+export type { LoadResult };
 
 function main(): void {
   const args = process.argv.slice(2);
@@ -60,7 +65,8 @@ function main(): void {
 
   if (explicitDescription) {
     // Build from explicit description
-    const existing = loadPerFolderDescription(folderPath);
+    const existing = loadExistingDescription(folderPath);
+    const existingData = existing.ok ? existing.data : null;
     const folderName = path.basename(folderPath);
     const numMatch = folderName.match(/^(\d+)/);
     const specId = numMatch ? numMatch[1] : '';
@@ -80,8 +86,8 @@ function main(): void {
       specId,
       folderSlug,
       parentChain,
-      memorySequence: existing?.memorySequence ?? 0,
-      memoryNameHistory: existing?.memoryNameHistory ?? [],
+      memorySequence: existingData?.memorySequence ?? 0,
+      memoryNameHistory: existingData?.memoryNameHistory ?? [],
     };
   } else {
     // Generate from spec.md
@@ -97,4 +103,10 @@ function main(): void {
   console.log(`description.json created in ${folderPath}`);
 }
 
-main();
+const IS_CLI_ENTRY = process.argv[1]
+  ? path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+  : false;
+
+if (IS_CLI_ENTRY) {
+  main();
+}

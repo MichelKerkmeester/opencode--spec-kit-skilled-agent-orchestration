@@ -501,6 +501,8 @@ specs/007-auth-system/
 - **MUST use:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
 - Default `/memory:save` is no longer a metadata no-op. Every canonical save refreshes `description.json.lastUpdated` plus `graph-metadata.json` derived fields.
 - Canonical saves via `generate-context.js` also refresh `graph-metadata.json` derived fields in the spec folder.
+- Continuity freshness still uses a heuristic one-sided 10-minute policy budget pending telemetry calibration; date-only timestamps should be treated as low-precision inputs rather than precise save-latency evidence.
+- Deferred post-insert enrichment also uses a heuristic bounded hot-loop retry budget (`N=3`) with no empirical calibration data yet. Runtime retry decisions now emit structured `retry_attempt` telemetry so future tuning can use real attempt histograms instead of guesswork.
 - Derived graph metadata now follows the parser contract:
   - `status` is normalized to lowercase and falls back to `implementation-summary.md` presence plus checklist completion when explicit status is absent.
   - `trigger_phrases` are deduplicated and capped at 12.

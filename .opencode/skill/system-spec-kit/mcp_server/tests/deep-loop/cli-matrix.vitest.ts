@@ -10,7 +10,11 @@ import {
  * return the expected command string for that kind.
  * This mirrors the YAML dispatch logic for verification purposes.
  */
-function buildDispatchCommand(config: ExecutorConfig, promptPath: string): string {
+function buildDispatchCommand(
+  config: ExecutorConfig,
+  promptPath: string,
+  promptSizeBytes = 0,
+): string {
   switch (config.kind) {
     case 'native':
       return `TASK(agent=deep-research, model=opus, context=@${promptPath})`;
@@ -25,9 +29,18 @@ function buildDispatchCommand(config: ExecutorConfig, promptPath: string): strin
         `- < "${promptPath}"`,
       ].join(' ');
     case 'cli-copilot':
+      if (promptSizeBytes <= 16384) {
+        return [
+          'copilot',
+          `-p "$(cat '${promptPath}')"`,
+          `--model "${config.model}"`,
+          '--allow-all-tools',
+          '--no-ask-user',
+        ].join(' ');
+      }
       return [
         'copilot',
-        `-p "$(cat '${promptPath}')"`,
+        `-p "Read the instructions in @${promptPath} and follow them exactly. Do not deviate."`,
         `--model "${config.model}"`,
         '--allow-all-tools',
         '--no-ask-user',
@@ -77,17 +90,36 @@ describe('cli-matrix dispatch command shape', () => {
     expect(cmd).toContain(`- < "${promptPath}"`);
   });
 
-  it('cli-copilot produces positional prompt via -p with command substitution', () => {
+  it('cli-copilot small prompt stays on positional -p command substitution path', () => {
     const config = parseExecutorConfig({ kind: 'cli-copilot', model: 'gpt-5.4' });
-    const cmd = buildDispatchCommand(config, promptPath);
+    const cmd = buildDispatchCommand(config, promptPath, 4096);
     expect(cmd).toContain('copilot');
     expect(cmd).toContain(`-p "$(cat '${promptPath}')"`);
     expect(cmd).toContain('--model "gpt-5.4"');
     expect(cmd).toContain('--allow-all-tools');
     expect(cmd).toContain('--no-ask-user');
+    expect(cmd).not.toContain('Read the instructions in @');
     expect(cmd).not.toContain('--sandbox');
     expect(cmd).not.toContain('reasoning_effort');
     expect(cmd).not.toContain('service_tier');
+  });
+
+  it('cli-copilot large prompt switches to @path wrapper language', () => {
+    const config = parseExecutorConfig({ kind: 'cli-copilot', model: 'gpt-5.4' });
+    const cmd = buildDispatchCommand(config, promptPath, 20000);
+    expect(cmd).toContain('copilot');
+    expect(cmd).toContain(`Read the instructions in @${promptPath}`);
+    expect(cmd).toContain('--model "gpt-5.4"');
+    expect(cmd).toContain('--allow-all-tools');
+    expect(cmd).toContain('--no-ask-user');
+    expect(cmd).not.toContain(`-p "$(cat '${promptPath}')"`);
+  });
+
+  it('cli-copilot threshold boundary keeps direct prompt mode at 16384 bytes', () => {
+    const config = parseExecutorConfig({ kind: 'cli-copilot', model: 'gpt-5.4' });
+    const cmd = buildDispatchCommand(config, promptPath, 16384);
+    expect(cmd).toContain(`-p "$(cat '${promptPath}')"`);
+    expect(cmd).not.toContain(`Read the instructions in @${promptPath}`);
   });
 
   it('cli-gemini produces positional prompt with whitelisted model', () => {

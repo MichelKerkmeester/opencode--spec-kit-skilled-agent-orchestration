@@ -1331,6 +1331,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // condition to guard against — the description.json tracking must run on
   // every canonical save to keep lastUpdated / memorySequence fresh.
   const ctxFileWritten = true;
+  const metadataSaveTimestamp = new Date().toISOString();
   // Update per-folder description.json memory tracking (runs on every canonical save)
   if (ctxFileWritten) {
     try {
@@ -1387,7 +1388,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
           // staleness detectors, /memory:search ranking) see a live timestamp.
           // Pre-017: this field was never written by the canonical-save path —
           // R4-P1-002 grep over scripts/dist/memory/*.js returned zero matches.
-          sequenceSnapshot.lastUpdated = new Date().toISOString();
+          sequenceSnapshot.lastUpdated = metadataSaveTimestamp;
           savePFD(sequenceSnapshot, specFolderAbsolute);
 
           const verified = loadPFD(specFolderAbsolute);
@@ -1431,12 +1432,22 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         throw new Error('MCP server indexing API unavailable for graph-metadata refresh');
       }
       const { refreshGraphMetadata } = graphApiModule as {
-        refreshGraphMetadata?: (specFolderPath: string) => { created: boolean; filePath: string };
+        refreshGraphMetadata?: (
+          specFolderPath: string,
+          options?: {
+            now?: Date | string;
+            statusOverride?: string | null;
+            saveLineage?: 'description_only' | 'graph_only' | 'same_pass';
+          },
+        ) => { created: boolean; filePath: string };
       };
       if (typeof refreshGraphMetadata !== 'function') {
         throw new Error('refreshGraphMetadata export unavailable');
       }
-      const graphRefreshResult = refreshGraphMetadata(validatedSpecFolderPath);
+      const graphRefreshResult = refreshGraphMetadata(validatedSpecFolderPath, {
+        now: metadataSaveTimestamp,
+        saveLineage: 'same_pass',
+      });
       log(`   ${graphRefreshResult.created ? 'Created' : 'Refreshed'} ${path.basename(graphRefreshResult.filePath)}`);
     } catch (graphErr: unknown) {
       throw new Error(`[workflow] graph-metadata refresh failed: ${graphErr instanceof Error ? graphErr.message : String(graphErr)}`);

@@ -320,7 +320,7 @@ GPT-5.x models support reasoning effort levels that control depth vs speed:
 
 2. **Interactive mode** (persists to config): Select via `/model` → choose GPT-5.x → select effort level. The selection is saved to `~/.copilot/config.json` automatically.
 
-3. **No CLI flag**: There is no `--reasoning-effort` flag. The config file is the only non-interactive mechanism.
+3. **No CLI flag**: There is no `--reasoning-effort` flag. For scripted `-p` usage, `~/.copilot/config.json` is the only non-interactive mechanism; the interactive `/model` flow just writes back to that same config file.
 
 **Non-interactive invocation with xhigh reasoning:**
 ```bash
@@ -389,7 +389,7 @@ The calling AI acts as the **conductor** that delegates tasks to Copilot CLI.
 
 ### CONCURRENCY LIMIT
 
-**Maximum 5 concurrent `copilot` processes at any time.** Before launching a new `copilot -p` call, check `pgrep -f "copilot" | wc -l`. If 5 or more are already running, wait for one to finish before starting another. This prevents system memory exhaustion when dispatching parallel batches. For large fix or review campaigns, prefer sequential dispatch (one at a time) or small parallel batches (2-3 max).
+**Copilot CLI itself tolerates up to 5 concurrent `copilot` processes, but this repo's Phase 018 convention caps routine automation at 3 parallel calls.** Before launching a new `copilot -p` call, check `pgrep -f "copilot" | wc -l`. Treat 5 as the hard ceiling, and keep normal batches at 2-3 unless an explicit override says otherwise. This preserves the upstream limit while matching the repo-safe default used in packet workflows.
 
 ### NEVER
 

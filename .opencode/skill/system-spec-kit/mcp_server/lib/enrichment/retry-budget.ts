@@ -25,6 +25,17 @@ export interface RetryBudgetEntry {
   readonly lastFailedAt: string;
 }
 
+export interface RetryTelemetryRecord {
+  readonly type: 'event';
+  readonly event: 'retry_attempt';
+  readonly memoryId: string;
+  readonly step: string;
+  readonly reason: string;
+  readonly attempt: number;
+  readonly outcome: 'retry' | 'give_up' | 'resolved';
+  readonly timestamp: string;
+}
+
 // ───────────────────────────────────────────────────────────────
 // 2. CONSTANTS & STATE
 // ───────────────────────────────────────────────────────────────
@@ -50,6 +61,15 @@ export function shouldRetry(memoryId: number, step: string, reason: string): boo
   return !entry || entry.attempts < MAX_RETRIES;
 }
 
+/** Return the current retry-budget entry for one memory/step/reason tuple. */
+export function getRetryBudgetEntry(
+  memoryId: number,
+  step: string,
+  reason: string,
+): RetryBudgetEntry | undefined {
+  return retryBudget.get(buildRetryBudgetKey(memoryId, step, reason));
+}
+
 /** Record a failed enrichment attempt and return the updated budget entry. */
 export function recordFailure(memoryId: number, step: string, reason: string): RetryBudgetEntry {
   const budgetKey = buildRetryBudgetKey(memoryId, step, reason);
@@ -71,6 +91,11 @@ export function recordFailure(memoryId: number, step: string, reason: string): R
       };
   retryBudget.set(budgetKey, entry);
   return entry;
+}
+
+/** Emit a structured retry telemetry event to the same stderr JSON channel used by runtime diagnostics. */
+export function emitRetryTelemetry(record: RetryTelemetryRecord): void {
+  console.warn(JSON.stringify(record));
 }
 
 /** Clear retry state for a single memory ID. */

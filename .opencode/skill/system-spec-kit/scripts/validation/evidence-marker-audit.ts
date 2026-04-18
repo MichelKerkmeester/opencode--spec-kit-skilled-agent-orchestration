@@ -87,6 +87,37 @@ export interface FolderAuditResult {
   markers: Marker[];
 }
 
+interface FenceState {
+  readonly indent: number;
+  readonly backtickCount: number;
+}
+
+function readFenceStateAtLine(content: string, lineStart: number): FenceState | null {
+  let cursor = lineStart;
+  let indent = 0;
+
+  while (cursor < content.length && content[cursor] === ' ' && indent < 4) {
+    cursor++;
+    indent++;
+  }
+
+  if (indent > 3) {
+    return null;
+  }
+
+  const fenceStart = cursor;
+  while (cursor < content.length && content[cursor] === '`') {
+    cursor++;
+  }
+
+  const backtickCount = cursor - fenceStart;
+  if (backtickCount < 3) {
+    return null;
+  }
+
+  return { indent, backtickCount };
+}
+
 /* ───────────────────────────────────────────────────────────────
    3. PARSER (state machine)
 ------------------------------------------------------------------*/
@@ -113,7 +144,7 @@ export function parseMarkers(content: string, filePath: string): Marker[] {
   let lineStart = 0;
 
   // Mutually exclusive states (only one can be true at a time).
-  let inFencedCode = false;
+  let activeFence: FenceState | null = null;
   let inBacktickSpan = false;
 
   // Marker state (engages only when neither fenced nor backtick).
@@ -129,25 +160,35 @@ export function parseMarkers(content: string, filePath: string): Marker[] {
   while (i < len) {
     const ch = content[i];
 
-    // Fence detection. A fence is "```" at the start of a line (ignoring leading whitespace
-    // is intentionally NOT supported — GFM fences must be at column 0 in our spec docs).
-    if (!inBacktickSpan && !inMarker && i === lineStart &&
-        content[i] === '`' && content[i + 1] === '`' && content[i + 2] === '`') {
-      inFencedCode = !inFencedCode;
-      // Skip the three backticks plus the rest of the line.
-      while (i < len && content[i] !== '\n') i++;
-      if (i < len) {
-        // Advance past the newline.
-        line++;
-        i++;
-        lineStart = i;
-        col = 0;
+    // Fence detection supports CommonMark backtick fences indented by up to 3 spaces.
+    // When already inside a fence, only a line-start fence with indentation <= opener
+    // indentation and backtick count >= opener count may close it.
+    if (!inBacktickSpan && !inMarker && i === lineStart) {
+      const fenceState = readFenceStateAtLine(content, lineStart);
+      const shouldToggleFence = fenceState !== null && (
+        activeFence === null
+        || (
+          fenceState.indent <= activeFence.indent
+          && fenceState.backtickCount >= activeFence.backtickCount
+        )
+      );
+      if (shouldToggleFence) {
+        activeFence = activeFence === null ? fenceState : null;
+        // Skip the fence line plus the rest of the line.
+        while (i < len && content[i] !== '\n') i++;
+        if (i < len) {
+          // Advance past the newline.
+          line++;
+          i++;
+          lineStart = i;
+          col = 0;
+        }
+        continue;
       }
-      continue;
     }
 
     // Inside a fenced block, swallow everything until the closer.
-    if (inFencedCode) {
+    if (activeFence !== null) {
       if (ch === '\n') {
         line++;
         i++;

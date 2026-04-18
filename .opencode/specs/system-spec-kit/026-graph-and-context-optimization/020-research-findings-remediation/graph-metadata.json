@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/020-research-findings-remediation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/020-research-findings-remediation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/018-deep-loop-cli-executor",
+      "system-spec-kit/026-graph-and-context-optimization/019-cli-runtime-matrix"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 020 remediation",
+      "020 research findings remediation",
+      "deep-loop provenance hardening",
+      "description.json repair safety",
+      "executor first-write audit",
+      "dispatch_failure event",
+      "mergePreserveRepair helper",
+      "save-lineage tag",
+      "evidence-marker fence parser fix",
+      "retry-budget telemetry",
+      "caller-context async coverage",
+      "readiness-contract 4-state subset"
+    ],
+    "key_topics": [
+      "research-findings-remediation",
+      "executor-provenance",
+      "description-repair-safety",
+      "metadata-lineage",
+      "fence-parser-hardening",
+      "telemetry-before-tuning",
+      "phase-018-019-hardening"
+    ],
+    "importance_tier": "high",
+    "status": "spec_ready",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "description.json",
+      "graph-metadata.json"
+    ],
+    "entities": [],
+    "causal_summary": "Remediates the 12 prioritized findings (R1-R12) from research.md synthesis of the Phase 018 deep-loop-cli-executor research pass. 7 P1 + 5 P2 findings across 5 atomic-ship groups. Implements via 8 waves using cli-codex dogfooding pattern continuing from Phase 018/019. Highest-leverage slice is shared deep-loop provenance (R1-R2) plus description.json repair safety (R4-R5). Copilot @path fallback closes parity drift (R3). Metadata lineage (R6-R7) replaces timestamp-subtraction freshness. Smaller slices handle retry-budget telemetry (R8), caller-context coverage (R10), docs parity (R11). R55-P2-004 revisit conditional on R1-R3 completion.",
+    "created_at": "2026-04-18T15:00:00Z",
+    "last_save_at": "2026-04-18T15:00:00Z",
+    "last_accessed_at": "2026-04-18T15:00:00Z",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ],
+    "completeness_score": 0.70,
+    "doc_presence": {
+      "spec_md": true,
+      "plan_md": true,
+      "tasks_md": true,
+      "checklist_md": true,
+      "implementation_summary_md": false,
+      "decision_record_md": true
+    },
+    "task_counts": {
+      "total": 38,
+      "pending": 38,
+      "in_progress": 0,
+      "completed": 0
+    },
+    "adr_count": 4
+  }
+}
+</content>
+</invoke>

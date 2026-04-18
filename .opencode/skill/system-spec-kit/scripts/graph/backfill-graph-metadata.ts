@@ -30,6 +30,7 @@ interface BackfillSummary {
   created: number;
   refreshed: number;
   existing: number;
+  lineageStamped: number;
   reviewFlags: Array<{ specFolder: string; flags: string[] }>;
 }
 
@@ -195,24 +196,29 @@ export function runBackfill({ dryRun, root, activeOnly = false }: BackfillOption
     created: 0,
     refreshed: 0,
     existing: 0,
+    lineageStamped: 0,
     reviewFlags: [],
   };
 
   for (const specFolderPath of specFolders) {
     const graphPath = path.join(specFolderPath, 'graph-metadata.json');
     const existing = loadGraphMetadata(graphPath);
+    const saveLineage = existing?.derived.save_lineage ?? 'graph_only';
     if (existing) {
       summary.existing += 1;
     }
 
     const metadata = dryRun
-      ? deriveGraphMetadata(specFolderPath, existing)
-      : refreshGraphMetadataForSpecFolder(specFolderPath).metadata;
+      ? deriveGraphMetadata(specFolderPath, existing, { saveLineage })
+      : refreshGraphMetadataForSpecFolder(specFolderPath, { saveLineage }).metadata;
 
     if (!existing) {
       summary.created += 1;
     } else {
       summary.refreshed += 1;
+      if (!dryRun && !existing.derived.save_lineage && metadata.derived.save_lineage === 'graph_only') {
+        summary.lineageStamped += 1;
+      }
     }
 
     const flags = collectReviewFlags(specFolderPath, metadata);

@@ -19,6 +19,8 @@ Commit `61f93c9bf` introduced `mcp_server/lib/enrichment/retry-budget.ts` and wi
 
 The retry budget keys attempts on `(memoryId, step, reason)` tuples. `shouldRetry()` allows the first three attempts, `recordFailure()` increments the budget when the same unresolved condition recurs, and `clearBudget(memoryId?)` clears either one memory's counters or the whole in-memory budget. `getBudgetSize()` is exposed for diagnostics and tests.
 
+The current `N=3` cap is a heuristic bounded hot-loop budget, not an empirically calibrated threshold. Runtime retry decisions now emit structured `retry_attempt` events with `{memoryId, step, reason, attempt, outcome, timestamp}` so future tuning can use real attempt histograms instead of guesswork.
+
 The current consumer is the deferred post-insert enrichment path. If causal-link backfill keeps returning `partial_causal_link_unresolved`, the save pipeline now stops requeueing after the third failure and emits a structured warning instead of continuing an unbounded retry loop. A successful completion clears the memory-specific budget.
 
 The budget is intentionally process-local. It resets on restart, which is acceptable for the current save lifecycle because the feature is designed to prevent hot-loop retry churn inside one MCP process rather than to persist retry state across deployments.

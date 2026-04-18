@@ -84,6 +84,8 @@ state_paths:
   # Template paths document the canonical packet layout. Runtime resolution happens via
   # step_resolve_artifact_root plus the shared resolver, so child phases write into the
   # spec tree root's review/ folder with a phase-path subfolder when needed.
+  # Canonical root-spec write targets remain review/deep-review-config.json,
+  # review/deep-review-state.jsonl, and review/deep-review-findings-registry.json.
   packet_dir: "{artifact_dir}"
   local_packet_dir: "{spec_folder}/review"
   legacy_root_report: "{spec_folder}/review-report.md"
@@ -650,6 +652,13 @@ workflow:
               state_paths_findings_registry: "{state_paths.findings_registry}"
               state_paths_strategy: "{state_paths.strategy}"
               state_paths_iteration_pattern: "{state_paths.iteration_pattern}"
+        pre_dispatch_audit:
+          skip_when: "config.executor.kind == 'native'"
+          call: ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts#writeFirstRecordExecutor"
+          args:
+            stateLogPath: "{state_paths.state_log}"
+            executor: "{config.executor}"
+            iteration: "{current_iteration}"
         branch_on: "config.executor.kind"
         if_native:
           dispatch:
@@ -671,18 +680,28 @@ workflow:
           wait_for_completion: true
         if_cli_copilot:
           command: |
-            copilot \
-              -p "$(cat '{spec_folder}/review/prompts/iteration-{current_iteration}.md')" \
-              --model "{config.executor.model}" \
-              --allow-all-tools \
-              --no-ask-user
+            PROMPT_PATH='{spec_folder}/review/prompts/iteration-{current_iteration}.md'
+            PROMPT_SIZE=$(wc -c < "$PROMPT_PATH" | tr -d ' ')
+            if [ "$PROMPT_SIZE" -le 16384 ]; then
+              copilot \
+                -p "$(cat "$PROMPT_PATH")" \
+                --model "{config.executor.model}" \
+                --allow-all-tools \
+                --no-ask-user
+            else
+              copilot \
+                -p "Read the instructions in @$PROMPT_PATH and follow them exactly. Do not deviate." \
+                --model "{config.executor.model}" \
+                --allow-all-tools \
+                --no-ask-user
+            fi
           working_directory: "{repo_root}"
           timeout_seconds: "{config.executor.timeoutSeconds}"
           wait_for_completion: true
           notes:
-            - "copilot has no stdin support; prompt passed positionally via -p and command substitution"
-            - "copilot reasoningEffort is NOT a CLI flag; must be set in ~/.copilot/config.json ahead of time"
-            - "copilot concurrency cap: max 5 per account (feedback_copilot_concurrency_override)"
+            - "copilot has no stdin support; prompt is positional"
+            - "Size check uses 16KB threshold; above that uses @PROMPT_PATH wrapper prompt"
+            - "Large-prompt path relies on copilot honoring @path references within its prompt string"
         if_cli_gemini:
           command: |
             gemini \

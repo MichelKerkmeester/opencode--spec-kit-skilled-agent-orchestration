@@ -116,6 +116,12 @@ Each CLI executor operates inside its own sandbox / permissions layer (codex `wo
 - Convergence detection, lifecycle events (new/resume/restart), review dimensions pass (correctness, security, traceability, maintainability), and stuck_recovery all stay YAML-driven.
 - The `@deep-review` LEAF agent definition is untouched — it is the native executor, not the only one.
 
+### Code-Graph Readiness TrustState Surface
+
+On this skill surface, the live code-graph readiness contract only reaches four TrustState values: `live`, `stale`, `absent`, and `unavailable`.
+
+`cached`, `imported`, `rebuilt`, and `rehomed` remain declared in the shared TrustState type for compatibility and downstream schema stability, but the seven code-graph handlers and readiness helpers used here do not emit them today.
+
 ### Trigger Phrases
 
 - "review code quality" / "audit this code"
