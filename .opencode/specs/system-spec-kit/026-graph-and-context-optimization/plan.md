@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Graph and Context Optimization"
-description: "Coordination plan for updating the 026 parent packet to the reorganized 11-phase child map."
+description: "Coordination plan for keeping the 026 parent packet aligned with the reorganized 19-phase child map (001-014 foundational + 015-018 consolidated review/remediation/executor arc + 019-system-hardening research-first umbrella)."
 trigger_phrases:
   - "026 parent plan"
   - "graph context optimization plan"
@@ -39,7 +39,7 @@ _memory:
 
 ### Overview
 
-This plan updates the `026-graph-and-context-optimization` root to reflect the reorganized 11-phase child packet dependency graph. The work is coordination-only: sync the root packet docs to the shipped child folders, update the split-006 references, and verify strict validation for the parent packet surface.
+This plan keeps the `026-graph-and-context-optimization` root aligned with the reorganized 19-phase child packet dependency graph. The April 2026 reorganization split `006` into five focused packets (phases 6-10), then added phases 11-14 for skill-advisor-graph, command-graph consolidation, advisor phrase boosters, and the memory-save rewrite. The 2026-04-18 consolidation folded the former 015-020 range into four thematic packets (phases 15-18) covering deep-review-and-remediation, foundational-runtime, sk-deep-cli-runtime-execution, and cli-executor-remediation. The same day added `019-system-hardening` as a research-first umbrella for the Tier 1 candidates surfaced in `scratch/deep-review-research-suggestions.md`. The work remains coordination-only: sync the root packet docs to the shipped child folders, update phase-map references, and verify strict validation for the parent packet surface.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -103,7 +103,7 @@ Coordination-only parent packet over independently owned child packets
 ### Key Components
 
 - **Parent coordination layer**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
-- **Child packet map**: folders `001` through `011`
+- **Child packet map**: folders `001` through `019`
 - **Verification layer**: strict packet validation on the parent folder
 
 ### Data Flow
@@ -140,8 +140,8 @@ Child packet docs define packet-local truth. The parent packet aggregates only t
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Structural validation | Parent packet docs | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization --strict` |
-| Phase-map review | Child folders `001` through `011` | Manual review plus `find` and `rg` sweeps |
-| Drift check | Parent-doc references and handoff rules | `rg -n "Parent Spec|Phase Documentation Map|002-cache-warning-hooks|003-memory-quality-remediation|006-continuity-refactor-gates|011-skill-advisor-graph"` |
+| Phase-map review | Child folders `001` through `019` | Manual review plus `find` and `rg` sweeps |
+| Drift check | Parent-doc references and handoff rules | `rg -n "Parent Spec\|Phase Documentation Map\|002-cache-warning-hooks\|006-continuity-refactor-gates\|011-skill-advisor-graph\|015-deep-review-and-remediation\|016-foundational-runtime\|017-sk-deep-cli-runtime-execution\|018-cli-executor-remediation"` |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -151,7 +151,7 @@ Child packet docs define packet-local truth. The parent packet aggregates only t
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Child packet folders `001` through `011` | Internal | Green | Parent map cannot be reconciled honestly |
+| Child packet folders `001` through `019` | Internal | Green | Parent map cannot be reconciled honestly |
 | Spec validator | Internal | Green | Parent packet cannot prove compliance |
 | Existing child packet docs | Internal | Green | Parent packet would have to guess sequencing or status |
 <!-- /ANCHOR:dependencies -->

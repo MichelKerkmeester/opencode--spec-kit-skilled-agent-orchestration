@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/012-command-graph-consolidation/iterations",
+  "description": "Research iteration artifacts for 012-command-graph-consolidation.",
+  "keywords": [
+    "research",
+    "iteration",
+    "artifacts",
+    "012-command-graph-consolidation",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "iterations"
+  ],
+  "lastUpdated": "2026-04-18T16:45:36.958Z",
+  "specId": "012",
+  "folderSlug": "command-graph-consolidation-iterations",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "research",
+    "012-command-graph-consolidation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

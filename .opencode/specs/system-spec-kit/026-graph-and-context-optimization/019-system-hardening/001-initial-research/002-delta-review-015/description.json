@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/002-delta-review-015",
+  "description": "Feature Specification: Delta-Review of 015's 243 Findings",
+  "keywords": [
+    "feature",
+    "specification",
+    "delta-review",
+    "015",
+    "243",
+    "findings"
+  ],
+  "lastUpdated": "2026-04-18T17:54:30.324Z",
+  "specId": "002",
+  "folderSlug": "delta-review-015",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "019-system-hardening",
+    "001-initial-research"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-04-26_18-54__dr-1-review-packet-scaffolded-wave-1-dispatch.md"
+  ]
+}

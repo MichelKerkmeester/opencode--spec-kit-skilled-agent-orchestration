@@ -1,0 +1,26 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite/013-audit-snapshot/iterations",
+  "description": "Research iteration artifacts for 013-audit-snapshot.",
+  "keywords": [
+    "research",
+    "iteration",
+    "artifacts",
+    "013-audit-snapshot",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "014-memory-save-rewrite",
+    "iterations"
+  ],
+  "lastUpdated": "2026-04-18T16:45:36.970Z",
+  "specId": "013",
+  "folderSlug": "audit-snapshot-iterations",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "research",
+    "014-memory-save-rewrite",
+    "013-audit-snapshot"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

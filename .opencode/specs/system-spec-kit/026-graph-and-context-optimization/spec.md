@@ -28,11 +28,11 @@ _memory:
 
 ## EXECUTIVE SUMMARY
 
-Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It coordinates a 14-phase child train covering the runtime pipeline, memory-quality remediation, AGENTS guardrails, continuity refactoring, search/routing tuning, command-graph consolidation, advisor tuning, and the memory-save rewrite -- all aligned to one dependency-aware execution map.
+Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It coordinates a 19-phase child train covering the runtime pipeline, memory-quality remediation, AGENTS guardrails, continuity refactoring, search/routing tuning, command-graph consolidation, advisor tuning, the memory-save rewrite, the follow-on review-and-remediation waves, the foundational-runtime arc, the CLI runtime executor matrix, and the post-consolidation hardening train -- all aligned to one dependency-aware execution map.
 
-**Key Decisions**: Keep the runtime phases ordered by prerequisite relationships, treat `003-memory-quality-remediation` and `004-agent-execution-guardrails` as orthogonal support lanes, and track child-packet completion through a 14-phase map plus packet-local strict validation.
+**Key Decisions**: Keep the runtime phases ordered by prerequisite relationships, treat `003-memory-quality-remediation` and `004-agent-execution-guardrails` as orthogonal support lanes, and track child-packet completion through a 19-phase map plus packet-local strict validation. The 2026-04-18 reorganization consolidated the former phases 015-020 into four thematic packets (`015-deep-review-and-remediation`, `016-foundational-runtime`, `017-sk-deep-cli-runtime-execution`, `018-cli-executor-remediation`) and added `019-system-hardening` as the research-first umbrella for the Tier 1 candidates surfaced by `scratch/deep-review-research-suggestions.md`.
 
-**Critical Dependencies**: The fourteen active child packets `001` through `014` remain the implementation and research authorities for their own scopes. Packet `015-deep-review-and-remediation` is a cross-cutting review and remediation packet that audited packets 009/010/012/014 and produced 243 finding fixes. Packet `016-foundational-runtime/001-initial-research` is a follow-up deep review targeting 19 foundational runtime candidates (7 HIGH, 8 MEDIUM, 4 LOW) in earlier phases that 015 did not cover deeply. This root packet owns coordination, sequencing, and completion truth only.
+**Critical Dependencies**: The fourteen foundational child packets `001` through `014` remain the implementation and research authorities for their own scopes. Packet `015-deep-review-and-remediation` is a cross-cutting review-and-remediation packet that audited packets 009/010/012/014 and produced 243 findings (1 P0, 114 P1, 133 P2). Packet `016-foundational-runtime` merges the 50-iteration foundational-runtime research charter with its 4-wave remediation arc and shipped v3.4.0.0 through v3.4.0.2 (H-56-1 canonical-save metadata fix plus 63-finding closeout plus 27-task review-findings remediation). Packet `017-sk-deep-cli-runtime-execution` merges the executor feature (native + cli-codex) with the runtime matrix (cli-copilot + cli-gemini + cli-claude-code) into one first-class YAML-owned executor-dispatch surface for `sk-deep-research` and `sk-deep-review`. Packet `018-cli-executor-remediation` closes R1-R11 of the R1-R12 findings from the 30-iteration deep-research dogfood against 017's research root (R12 deferred). Packet `019-system-hardening` is the research-first umbrella for the six Tier 1 candidates surfaced by `scratch/deep-review-research-suggestions.md`; its `001-initial-research` child runs the research wave and future `002+` siblings carry the resulting implementation. This root packet owns coordination, sequencing, and completion truth only.
 
 ---
 
@@ -70,7 +70,7 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 ### In Scope
 
-- Record the dependency-aware execution order for the fourteen active child packets `001` through `014`.
+- Record the dependency-aware execution order for the nineteen active child packets `001` through `019`.
 - Track the parent packet's coordination contract, success criteria, and packet-level risks.
 - Maintain the phase documentation map and child handoff rules for strict validation.
 - Keep the parent `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` aligned with the shipped child packet set.
@@ -99,7 +99,7 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 ## PHASE DOCUMENTATION MAP
 
 > This spec uses phased decomposition. Each phase is an independently executable child spec folder.
-> Active children are `001` through `014`. Packets 012-014 were added after the initial 011 train shipped, covering command-graph consolidation, advisor tuning, and the memory-save rewrite. Packets `015` and `016` are cross-cutting deep review packets.
+> Active children are `001` through `019`. Packets 012-014 were added after the initial 011 train shipped. Packets 015-018 were consolidated on 2026-04-18 from the former 015-020 range into four thematic packets (deep-review-and-remediation, foundational-runtime, sk-deep-cli-runtime-execution, cli-executor-remediation). Packet 019 was added the same day as the research-first umbrella for the Tier 1 candidates surfaced by `scratch/deep-review-research-suggestions.md`.
 
 | Phase | Folder | Focus | Status |
 |-------|--------|-------|--------|
@@ -117,6 +117,11 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 | 12 | `012-command-graph-consolidation/` | Folded `/start` into `/plan`, extracted intake contract, removed redundant commands/agents | Complete |
 | 13 | `013-advisor-phrase-booster-tailoring/` | Migrated 36 dead INTENT keys to PHRASE boosters in skill advisor | Complete |
 | 14 | `014-memory-save-rewrite/` | Planner-first `/memory:save` default, retired legacy `memory/*.md`, opt-in mutation flags | Complete |
+| 15 | `015-deep-review-and-remediation/` | 120-iteration deep review of packets 009/010/012/014 plus remediation plan (243 findings: 1 P0, 114 P1, 133 P2, 11 workstreams) | In Progress |
+| 16 | `016-foundational-runtime/` | Merged foundational-runtime arc: 50-iter research charter (sub-phase 001) plus 4-wave remediation (sub-phases 002-005). Shipped v3.4.0.0 through v3.4.0.2 including the H-56-1 canonical-save metadata fix | Complete |
+| 17 | `017-sk-deep-cli-runtime-execution/` | Merged CLI runtime executor matrix: native + cli-codex (sub-phase 001) plus cli-copilot + cli-gemini + cli-claude-code (sub-phase 002). First-class YAML-owned executor dispatch for `sk-deep-research` and `sk-deep-review` | Complete |
+| 18 | `018-cli-executor-remediation/` | R1-R12 remediation from the 30-iteration deep-research dogfood against packet 017's research root. R1-R11 shipped, R12 deferred | Complete |
+| 19 | `019-system-hardening/` | Research-first umbrella for post-consolidation hardening. Nested `001-initial-research` dispatches 6 Tier 1 iterations from `scratch/deep-review-research-suggestions.md` (DR-1, RR-1, RR-2, SSK-RR-1, SSK-DR-1, SSK-RR-2); future `002+` siblings carry the resulting implementation | Planned |
 
 ### Phase Transition Rules
 
@@ -142,13 +147,11 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 | `008-cleanup-and-audit` + `011-skill-advisor-graph` | `012-command-graph-consolidation` | Command-graph consolidation follows after cleanup and advisor graph are stable | Child packets `008`, `011`, and `012` validate cleanly |
 | `011-skill-advisor-graph` | `013-advisor-phrase-booster-tailoring` | Phrase booster migration depends on the skill advisor graph being in place | Child packets `011` and `013` validate cleanly |
 | `012-command-graph-consolidation` + `010-search-and-routing-tuning` | `014-memory-save-rewrite` | Memory save rewrite depends on the consolidated command graph and search tuning outcomes | Child packets `012`, `010`, and `014` validate cleanly |
-
-### Cross-Cutting Review
-
-| Packet | Focus | Scope | Status |
-|--------|-------|-------|--------|
-| `015-deep-review-and-remediation/` | 120-iteration deep review of packets 009, 010, 012, 014 | 243 findings (1 P0, 114 P1, 133 P2), 28-batch remediation | Complete |
-| `016-foundational-runtime/001-initial-research/` | Deep review of foundational runtime seams in 002, 003, 005, 008, 010, 014 | 19 candidates (7 HIGH, 8 MEDIUM, 4 LOW), contract drift and hidden semantics | Planning |
+| `009-playbook-and-remediation` + `010-search-and-routing-tuning` + `012-command-graph-consolidation` + `014-memory-save-rewrite` | `015-deep-review-and-remediation` | Deep review targets the shipped code and docs produced by these four packets; the 243-finding remediation plan depends on the review verdict | Child packet `015` validates cleanly; review-report.md records 1 P0, 114 P1, 133 P2 |
+| `015-deep-review-and-remediation` | `016-foundational-runtime` | The foundational-runtime research charter (sub-phase `001-initial-research`) audits seams that 015 did not cover deeply (002, 003, 005, 008, 010, 014); the 4-wave remediation ships v3.4.0.0 through v3.4.0.2 | Child packets `015` and `016` validate cleanly |
+| `016-foundational-runtime` | `017-sk-deep-cli-runtime-execution` | Executor-selection surface depends on the runtime primitives shipped in 016 (typed OperationResult, readiness-contract, shared-provenance, retry-budget, caller-context) | Child packets `016` and `017` validate cleanly |
+| `017-sk-deep-cli-runtime-execution` | `018-cli-executor-remediation` | 30-iter deep-research dogfood against 017's research root surfaces R1-R12 findings; 018 closes R1-R11 and defers R12 | Child packets `017` and `018` validate cleanly |
+| `018-cli-executor-remediation` | `019-system-hardening` | Post-consolidation review of the 2026-04-18 reorganization identifies six Tier 1 candidates worth dedicated investigation; 019 umbrella coordinates research-first dispatch via nested `001-initial-research` | Child packet `019` validates cleanly; `scratch/deep-review-research-suggestions.md` is the source record |
 <!-- /ANCHOR:phase-map -->
 
 ---
@@ -253,12 +256,12 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 20/25 | Eleven active child packets plus parent coordination docs |
+| Scope | 23/25 | Nineteen active child packets plus parent coordination docs |
 | Risk | 14/25 | Mis-sequencing or coordination drift can mislead later runtime work |
 | Research | 14/20 | Requires aligning research-derived order with shipped child packets |
 | Multi-Agent | 4/15 | Coordination-only packet with no runtime implementation |
 | Coordination | 14/15 | Parent packet depends on many child packet states and handoffs |
-| **Total** | **66/100** | **Level 3** |
+| **Total** | **69/100** | **Level 3** |
 
 ---
 

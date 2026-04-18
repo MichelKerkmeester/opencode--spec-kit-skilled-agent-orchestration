@@ -1,0 +1,57 @@
+{
+  "sessionId": "dr-001-canonical-20260418T181241Z",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "terminalStop": null,
+  "openQuestions": [
+    {
+      "id": "question-1-q1-what-state-fields-does-each-memory-save-invocation-write-across-the-four-stat",
+      "text": "Q1: What state fields does each `/memory:save` invocation write across the four state layers (frontmatter, description.json, graph-metadata.json.derived.*, memory vector index)? Produce an exhaustive field catalogue.",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-2-q2-what-cross-layer-invariants-should-hold-between-the-four-state-layers-e-g-des",
+      "text": "Q2: What cross-layer invariants should hold between the four state layers? (e.g., `description.json.lastUpdated == max(frontmatter _memory.continuity.last_updated_at across packet docs)`). Derive at least 5 invariants with source-code citations.",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-3-q3-does-the-h-56-1-fix-at-workflow-ts-1259-dead-code-guard-and-1333-plan-only-ga",
+      "text": "Q3: Does the H-56-1 fix at `workflow.ts:1259` (dead-code guard) and `:1333` (plan-only gate) fully close the metadata no-op? Verify both full-auto and plan-only dispatch paths.",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-4-q4-across-the-26-active-026-tree-packets-which-observed-divergences-are-expected",
+      "text": "Q4: Across the 26 active 026-tree packets, which observed divergences are expected, benign, latent, or real? Classify every divergence (including the known `CONTINUITY_FRESHNESS deltaMs=-8455798` on 026 root).",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-5-q5-what-validator-assertions-should-be-added-to-enforce-the-derived-invariants-a",
+      "text": "Q5: What validator assertions should be added to enforce the derived invariants, and what migration path handles existing packet-local drift without breaking shipped packets?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    }
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "blockedStopHistory": [],
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "metrics": {
+    "iterationsCompleted": 8,
+    "openQuestions": 5,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0.16,
+    "coverageBySources": {}
+  },
+  "corruptionWarnings": [],
+  "status": "INITIALIZED"
+}

@@ -21,7 +21,8 @@
     "system-spec-kit/026-graph-and-context-optimization/015-deep-review-and-remediation",
     "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
     "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution",
-    "system-spec-kit/026-graph-and-context-optimization/018-cli-executor-remediation"
+    "system-spec-kit/026-graph-and-context-optimization/018-cli-executor-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/019-system-hardening"
   ],
   "manual": {
     "depends_on": [],
@@ -60,19 +61,27 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
+      "scratch/deep-review-research-suggestions.md",
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "decision-record.md",
       "implementation-summary.md",
-      "016-foundational-runtime/001-initial-research/implementation-summary.md",
       "scripts/core/workflow.ts",
-      "lib/code-graph/readiness-contract.ts",
-      "hooks/shared-provenance.ts",
-      "016-foundational-runtime/implementation-summary.md"
+      "016-foundational-runtime/implementation-summary.md",
+      "016-foundational-runtime/001-initial-research/implementation-summary.md",
+      "018-cli-executor-remediation/implementation-summary.md",
+      "019-system-hardening/spec.md",
+      "019-system-hardening/001-initial-research/plan.md"
     ],
     "entities": [
+      {
+        "name": "deep-review-research-suggestions.md",
+        "kind": "doc",
+        "path": "scratch/deep-review-research-suggestions.md",
+        "source": "derived"
+      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -113,18 +122,6 @@
         "name": "workflow.ts",
         "kind": "code",
         "path": "scripts/core/workflow.ts",
-        "source": "derived"
-      },
-      {
-        "name": "readiness-contract.ts",
-        "kind": "code",
-        "path": "lib/code-graph/readiness-contract.ts",
-        "source": "derived"
-      },
-      {
-        "name": "shared-provenance.ts",
-        "kind": "code",
-        "path": "hooks/shared-provenance.ts",
         "source": "derived"
       },
       {
@@ -188,7 +185,7 @@
         "source": "derived"
       },
       {
-        "name": "Execution Protocol",
+        "name": "The April",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
@@ -216,11 +213,17 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "Decision Record",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
-    "causal_summary": "Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It coordinates a 14-phase child train covering the runtime pipeline, memory-quality remediation, AGENTS guardrails, continuity refactoring, search/routing tuning, command-graph consolidation, advisor tuning, and the memory-save rewrite -- all aligned to one dependency-aware execution map.",
+    "causal_summary": "Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It coordinates a 19-phase child train covering the runtime pipeline, memory-quality remediation, AGENTS guardrails, continuity refactoring, search/routing tuning, command-graph consolidation, advisor tuning, the memory-save rewrite, the follow-on review-and-remediation waves, the foundational-runtime arc, the CLI runtime executor matrix, and the post-consolidation hardening train -- all aligned to one dependency-aware execution map.",
     "created_at": "2026-04-12T09:02:53.443Z",
-    "last_save_at": "2026-04-18T14:39:04.202Z",
+    "last_save_at": "2026-04-18T16:45:36.857Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

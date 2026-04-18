@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/001-research-graph-context-systems-001-claude-optimization-settings/iterations",
+  "description": "Research iteration artifacts for 001-research-graph-context-systems-001-claude-optimization-settings.",
+  "keywords": [
+    "research",
+    "iteration",
+    "artifacts",
+    "001-research-graph-context-systems-001-claude-optimization-settings",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "iterations"
+  ],
+  "lastUpdated": "2026-04-18T16:45:36.873Z",
+  "specId": "001",
+  "folderSlug": "research-graph-context-systems-001-claude-optimization-settings-iterations",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "research",
+    "001-research-graph-context-systems-001-claude-optimization-settings"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

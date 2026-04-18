@@ -1,0 +1,20 @@
+{
+  "openQuestions": [
+    {"id":"Q1","text":"Raw count of ADDRESSED/STILL_OPEN/SUPERSEDED/UNVERIFIED tally"},
+    {"id":"Q2","text":"015 P0 reconsolidation-bridge verification verdict"},
+    {"id":"Q3","text":"114 P1 findings classification per phase 016/017/018 primitives"},
+    {"id":"Q4","text":"133 P2 findings classification"},
+    {"id":"Q5","text":"Narrowed residual backlog for 015 Workstream 0+ restart"}
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "metrics": {
+    "iterationsCompleted": 0,
+    "openQuestions": 5,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0,
+    "coverageBySources": {}
+  }
+}

@@ -177,3 +177,77 @@ The former `006-canonical-continuity-refactor` packet had grown to 19 sub-phases
 - Cross-references move the former 006 sub-groups into phases `006` through `010`, and the former top-level `007` references now point to `011-skill-advisor-graph`.
 
 **How to roll back**: Revert the root-doc reorganization references and restore the previous parent phase map if the split is reversed.
+
+---
+
+### ADR-003: Consolidate phases 015-020 into four thematic packets
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-18 |
+| **Deciders** | 026 packet consolidation pass |
+
+---
+
+### Context
+
+After the 014-memory-save-rewrite shipped, the 026 train extended into a deep-review / foundational-runtime / CLI-executor arc via six new phases: 015 (implementation deep-review), 016 (foundational-runtime research charter), 017 (review-findings remediation against 016), 018 (cli-executor feature: native + cli-codex), 019 (cli-executor runtime matrix: cli-copilot + cli-gemini + cli-claude-code), and 020 (30-iter deep-research remediation against 018's research root). Each pair coupled tightly: 016 and 017 shared primitives and a single CONDITIONAL→PASS verdict, 018 and 019 shipped the same YAML-owned dispatch surface, and 020 was downstream remediation of 018/019. Keeping six separate top-level packets obscured the thematic grouping and forced cross-references that restated shared context.
+
+### Constraints
+
+- The consolidation must preserve history: every former sub-packet narrative and `implementation-summary.md` must remain locatable under the consolidated parent.
+- Root packet docs and the validator must stay coordination-only.
+- Cross-references across the repo must be swept to the new folder names.
+
+---
+
+### Decision
+
+**We chose**: consolidate the former 015-020 range into four thematic packets — `015-deep-review-and-remediation`, `016-foundational-runtime`, `017-sk-deep-cli-runtime-execution`, and `018-cli-executor-remediation`.
+
+**How it works**:
+- The former 016 research charter and former 017 remediation merged into `016-foundational-runtime` with five preserved sub-phases: `001-initial-research`, `002-infrastructure-primitives`, `003-cluster-consumers`, `004-rollout-sweeps`, `005-p2-maintainability`.
+- The former 018 executor feature and former 019 runtime matrix merged into `017-sk-deep-cli-runtime-execution` with two preserved sub-phases: `001-executor-feature`, `002-runtime-matrix`.
+- The former 020 research-findings remediation was renamed to `018-cli-executor-remediation` at the same depth as its predecessor.
+- The former 015 implementation deep-review absorbed its remediation plan and became `015-deep-review-and-remediation`.
+
+---
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Four thematic packets** | Each arc has one parent summary, one release-notes anchor, and one coordination surface | Requires one-time sweep of cross-references | 9/10 |
+| Keep six separate packets | No migration work | Six parents restating shared context; release alignment becomes ambiguous | 4/10 |
+
+**Why this one**: Keeps the shipped arc visible as one unit per theme while preserving every sub-packet's history in child folders.
+
+---
+
+### Consequences
+
+**What improves**:
+- Release-notes alignment is obvious (v3.4.0.1 and v3.4.0.2 belong to the 016 arc; v3.4.0.3 belongs to the 017+018 arc).
+- Navigation is easier because each arc has one parent packet.
+
+**What it costs**:
+- Cross-references across the repo had to be swept to the new names. Commit `6ea12ddc2 chore(026): consolidate phases 015-020 into 4 thematic packets` covers the sweep.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Legacy references to ex-016/017/018/019/020 remain in unrelated docs | M | One-time sweep via `rg` and validator runs; rely on the CI doc-graph to flag orphans |
+
+---
+
+### Implementation
+
+**What changes**:
+- Root packet docs now list 18 active phases.
+- The executive summary, phase documentation map, phase handoff criteria, and complexity assessment reflect the four thematic packets.
+
+**How to roll back**: Revert the consolidation commit, restore the six prior top-level folders, and sync the root packet phase map back to the ex-015 through ex-020 shape.
