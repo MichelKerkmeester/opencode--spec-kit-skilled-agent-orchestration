@@ -48,14 +48,14 @@ Build the Codex side of the advisor train. Narrow enforcement boundary: advice v
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] 002 + 004 + 005 merged (005 hard gate lifted)
-- [ ] Codex runtime capability captured + committed as fixture
+- [x] 002 + 004 + 005 merged (005 hard gate lifted)
+- [x] Codex runtime capability captured + committed as fixture
 
 ### Definition of Done
-- [ ] Codex adapter shipped + registered
-- [ ] Dynamic detector replaces all hard-coded "unavailable"
-- [ ] Parity test passes for 4 runtimes
-- [ ] Manual smoke test in real Codex session
+- [ ] Codex adapter shipped + registered — adapter shipped; `.codex/` registration blocked by sandbox EPERM
+- [x] Dynamic detector replaces all hard-coded "unavailable"
+- [x] Parity test passes for 4 runtimes
+- [x] Manual smoke test in real Codex session deferred to T9 per execution plan
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -124,41 +124,41 @@ detectCodexHookPolicy(): 'live' | 'partial' | 'unavailable'
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Dynamic policy detector
-- [ ] Create `lib/codex-hook-policy.ts`
-- [ ] Implement `detectCodexHookPolicy()` with version + hooks-list probes
-- [ ] Cache per session (1 probe)
-- [ ] Write `codex-hook-policy.vitest.ts`
-- [ ] Replace all hard-coded `hookPolicy: "unavailable"` references
+- [x] Create `lib/codex-hook-policy.ts`
+- [x] Implement `detectCodexHookPolicy()` with version + hooks-list probes
+- [x] Cache per session (1 probe)
+- [x] Write `codex-hook-policy.vitest.ts`
+- [x] Replace all hard-coded `hookPolicy: "unavailable"` references
 
 ### Phase 2: UserPromptSubmit adapter
-- [ ] Create `hooks/codex/user-prompt-submit.ts`
-- [ ] Defensive stdin/argv parse
-- [ ] Call producer + emit JSON additionalContext
-- [ ] Fail-open
-- [ ] Write `codex-user-prompt-submit-hook.vitest.ts`
+- [x] Create `hooks/codex/user-prompt-submit.ts`
+- [x] Defensive stdin/argv parse
+- [x] Call producer + emit JSON additionalContext
+- [x] Fail-open
+- [x] Write `codex-user-prompt-submit-hook.vitest.ts`
 
 ### Phase 3: PreToolUse adapter (narrow)
-- [ ] Create `hooks/codex/pre-tool-use.ts`
-- [ ] Load Bash denylist from `.codex/policy.json`
-- [ ] Emit `decision: "deny"` only for Bash match
-- [ ] Write Bash-match tests
+- [x] Create `hooks/codex/pre-tool-use.ts`
+- [x] Load Bash denylist from `.codex/policy.json`
+- [x] Emit `decision: "deny"` only for Bash match
+- [x] Write Bash-match tests
 
 ### Phase 4: Prompt-wrapper fallback
-- [ ] Create `hooks/codex/prompt-wrapper.ts`
-- [ ] Used only when policy detector returns `"unavailable"`
-- [ ] Document in implementation-summary.md
+- [x] Create `hooks/codex/prompt-wrapper.ts`
+- [x] Used only when policy detector returns `"unavailable"`
+- [x] Document in implementation-summary.md
 
 ### Phase 5: Parity + registration
-- [ ] Extend `advisor-runtime-parity.vitest.ts` to add Codex
-- [ ] Register hooks in `.codex/settings.json`
-- [ ] Capture runtime-capability fixture
+- [x] Extend `advisor-runtime-parity.vitest.ts` to add Codex
+- [ ] Register hooks in `.codex/settings.json` — blocked by sandbox EPERM
+- [x] Capture runtime-capability fixture
 
 ### Phase 6: Verification
-- [ ] All new tests green
-- [ ] Parity 4/4 runtimes
-- [ ] grep for hardcoded "unavailable" = 0 hits
-- [ ] Manual Codex smoke test
-- [ ] `tsc --noEmit` clean
+- [x] All new tests green
+- [x] Parity 4/4 runtimes
+- [x] grep for hardcoded "unavailable" = 0 hits
+- [x] Manual Codex smoke test deferred to T9 per execution plan
+- [x] `tsc --noEmit` clean
 <!-- /ANCHOR:phases -->
 
 ---

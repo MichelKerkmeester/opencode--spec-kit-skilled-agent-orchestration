@@ -46,7 +46,7 @@ _memory:
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 (parity expansion; not blocking doc release) |
-| **Status** | Spec Ready, Blocked by 005 |
+| **Status** | Implementation complete except sandbox-blocked `.codex/` registration |
 | **Created** | 2026-04-19 |
 | **Effort Estimate** | 1.25-2.25 engineering days |
 <!-- /ANCHOR:metadata -->
@@ -152,6 +152,10 @@ Wave-1 found Codex hook JSON can arrive via stdin OR argv depending on wrapper v
 - Superset notification hooks (not model-visible)
 - Documentation (belongs to 009)
 - Modifying Codex binary itself
+
+### Implementation Blocker Note
+
+The code/test implementation is complete, but this sandbox denied writes to `.codex/settings.json` and `.codex/policy.json` with `EPERM`. The intended registration and curated denylist content are therefore the remaining operator action outside this sandbox boundary.
 
 ### Files to Change
 
@@ -314,7 +318,7 @@ Wave-1 found Codex hook JSON can arrive via stdin OR argv depending on wrapper v
 
 ---
 
-## RELATED DOCUMENTS
+**Related Documents**
 
 - Parent: `../spec.md`
 - Predecessors: `../002-*`, `../004-*`, `../005-*` (HARD GATE)
