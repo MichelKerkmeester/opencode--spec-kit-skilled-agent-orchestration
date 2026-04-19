@@ -35,7 +35,7 @@ _memory:
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Delta review source read. [EVIDENCE: `../../review/019-pt-01/review-report.md` reviewed before edits.]
+- [x] CHK-001 [P0] Delta review source read. [EVIDENCE: `../../review/019-system-hardening-pt-01/review-report.md` reviewed before edits.]
 - [x] CHK-002 [P0] 19 residuals enumerated by cluster. [EVIDENCE: C1-C6 scope mirrored from `spec.md`, `plan.md`, and source review.]
 - [x] CHK-003 [P1] Existing dirty worktree respected. [EVIDENCE: target files were read and diffs checked before edits; no unrelated dirty files reverted.]
 <!-- /ANCHOR:pre-impl -->

@@ -222,6 +222,6 @@ Ship the minimal envelope extension that:
 
 - Parent: `../spec.md`
 - Predecessor: `../001-initial-research/` (converged)
-- Research synthesis: `../../../research/020-pt-01/research.md §Pattern Parallel Map`
-- Extended research: `../../../research/020-pt-02/research-extended.md §X9 / §Refined Cluster Decomposition row 002`
+- Research synthesis: `../../../research/020-skill-advisor-hook-surface-pt-01/research.md §Pattern Parallel Map`
+- Extended research: `../../../research/020-skill-advisor-hook-surface-pt-02/research-extended.md §X9 / §Refined Cluster Decomposition row 002`
 - Reference envelope: `../../../../../skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts`

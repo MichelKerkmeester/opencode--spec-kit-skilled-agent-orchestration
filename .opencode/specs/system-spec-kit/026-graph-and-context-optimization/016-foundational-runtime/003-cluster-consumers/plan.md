@@ -286,7 +286,7 @@ After all 3 lanes merge:
 ### 4.2 Integration / regression tests
 
 - `/spec_kit:deep-review :auto` ×7 after Wave B code-complete
-- T-CNS-02 run against 1 research folder (e.g. `research/016-pt-01/iterations/`) — verify generated `description.json` + `graph-metadata.json` match template
+- T-CNS-02 run against 1 research folder (e.g. `research/016-foundational-runtime-pt-01/iterations/`) — verify generated `description.json` + `graph-metadata.json` match template
 - Copilot end-to-end compact cycle — dispatch autonomous iteration, verify `trustState` round-trips through compaction
 
 ### 4.3 Manual verification

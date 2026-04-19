@@ -1,0 +1,27 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research/003-implementation-plan-validation-copilot",
+  "description": "Feature Specification: 020 Wave-3 Implementation Plan Validation (cli-copilot)",
+  "keywords": [
+    "feature",
+    "specification",
+    "020",
+    "wave-3",
+    "implementation",
+    "plan",
+    "validation",
+    "cli-copilot"
+  ],
+  "lastUpdated": "2026-04-19T09:53:00.868Z",
+  "specId": "003",
+  "folderSlug": "implementation-plan-validation-copilot",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "020-skill-advisor-hook-surface",
+    "001-initial-research"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-04-26_10-53__wave-3-validation-research-packet-scaffolded-20.md"
+  ]
+}

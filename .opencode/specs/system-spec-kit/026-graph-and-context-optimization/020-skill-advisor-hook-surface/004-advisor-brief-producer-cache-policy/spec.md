@@ -312,8 +312,8 @@ Ship `buildSkillAdvisorBrief(prompt, options)` returning `AdvisorHookResult` wit
 
 - Parent: `../spec.md`
 - Predecessors: `../002-shared-payload-advisor-contract/`, `../003-advisor-freshness-and-source-cache/`
-- Research: `../../../research/020-pt-01/research.md §Failure Modes + §Cross-Runtime Testing + Privacy`
-- Extended research: `../../../research/020-pt-02/research-extended.md §X1 §X5 §X7`
+- Research: `../../../research/020-skill-advisor-hook-surface-pt-01/research.md §Failure Modes + §Cross-Runtime Testing + Privacy`
+- Extended research: `../../../research/020-skill-advisor-hook-surface-pt-02/research-extended.md §X1 §X5 §X7`
 - Pattern analog: `../../../../../skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts`
 - NFKC utility: `../../../../../skill/system-spec-kit/shared/unicode-normalization.ts` (Phase 019/003)
 - Advisor source: `../../../../../skill/skill-advisor/scripts/skill_advisor.py`

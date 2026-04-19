@@ -35,7 +35,7 @@ _memory:
 
 - [ ] T001 [P0] Verify 002 + 003 + 004 merged
 - [ ] T002 [P0] Read research-extended §X1 §X5 §X6 §X9
-- [ ] T003 [P0] Read 019/004 corpus layout at `research/019-pt-03/corpus/labeled-prompts.jsonl`
+- [ ] T003 [P0] Read 019/004 corpus layout at `research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl`
 <!-- /ANCHOR:phase-1 -->
 
 <!-- ANCHOR:phase-2 -->
@@ -114,5 +114,5 @@ _memory:
 - Plan: `plan.md`
 - Parent: `../spec.md`
 - Predecessor: `../004-advisor-brief-producer-cache-policy/`
-- Corpus: `../../../research/019-pt-03/corpus/labeled-prompts.jsonl`
+- Corpus: `../../../research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl`
 <!-- /ANCHOR:cross-refs -->

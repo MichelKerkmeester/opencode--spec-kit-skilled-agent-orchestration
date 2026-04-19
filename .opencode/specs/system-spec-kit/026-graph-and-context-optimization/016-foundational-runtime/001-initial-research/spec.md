@@ -31,9 +31,9 @@ _memory:
 | **Created** | 2026-04-16 |
 | **Updated** | 2026-04-16 (Stage 2: remediation charter rewrite) |
 | **Branch** | `main` |
-| **Research Source** | `../research/016-pt-01/FINAL-synthesis-and-review.md` (1537 lines, 50-iteration Opus 4.7 synthesis) |
-| **Findings Registry** | `../research/016-pt-01/findings-registry.json` (structured) |
-| **Iteration Evidence** | `../research/016-pt-01/iterations/iteration-{001..050}.md` |
+| **Research Source** | `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` (1537 lines, 50-iteration Opus 4.7 synthesis) |
+| **Findings Registry** | `../research/016-foundational-runtime-pt-01/findings-registry.json` (structured) |
+| **Iteration Evidence** | `../research/016-foundational-runtime-pt-01/iterations/iteration-{001..050}.md` |
 | **Effort Budget** | 24.5 engineer-weeks (6 engineer-months, parallelizable to 10–12 weeks wall clock at 3 engineers) |
 <!-- /ANCHOR:metadata -->
 
@@ -75,7 +75,7 @@ The charter exists because the review's central conclusion is that **remediation
 
 ### In Scope — Remediation of 63 Distinct Findings Across ~37 Files
 
-Concrete file surfaces the remediation touches (grouped by top-10 distinct-issue count from `../research/016-pt-01/FINAL-synthesis-and-review.md` §9.3):
+Concrete file surfaces the remediation touches (grouped by top-10 distinct-issue count from `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §9.3):
 
 | Rank | File | Distinct | Dominant Pattern | Primary Workstream |
 |------|------|----------|------------------|--------------------|
@@ -112,7 +112,7 @@ Additional in-scope files (each with 1–3 distinct findings):
 
 ### Out of Scope
 
-- **Remediation of Domain-5 test-coverage gaps not catalogued** — see Phase 016 remediation Week 1 closing-pass in `../research/016-pt-01/FINAL-synthesis-and-review.md` §8.2.
+- **Remediation of Domain-5 test-coverage gaps not catalogued** — see Phase 016 remediation Week 1 closing-pass in `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §8.2.
 - **Real-load concurrency frequency measurement** — structural fixes work regardless; measurement deferred to Phase 017.
 - **Gemini lane cross-audit** — spot-checked only; dedicated Gemini parity audit deferred to Phase 017.
 - **Handover-state routing enum** — prose `handover_state` vocabulary never audited; deferred.
@@ -163,7 +163,7 @@ Each candidate bundles multiple P1/P2 constituent findings into an interaction e
 
 Attack scenario: a single corrupt/drifted/concurrently-replaced temp-state file simultaneously (1) injects forged provenance into Claude prompts, (2) misroutes Gemini startup continuity, (3) forces transcript re-parsing with duplicate token counts, (4) bypasses the cached-summary schema guard, (5) pairs one stop-hook's summary with another's packet target without CAS, (6) proceeds with autosave after a known saveState failure, (7) has fresh precompact payload silently deleted by older consumer's `clearCompactPrime()`, (8) returns freshness from one generation with content from another, (9) suppresses all sibling recovery when one file is transiently unreadable, (10) returns a partial `cleanStaleStates` sweep as if complete.
 
-**Remediation:** S2 structural overhaul (HookState schema versioning + runtime validation + unique temp paths + per-file isolation + TOCTOU identity check + CAS in `updateState()`). See `../research/016-pt-01/FINAL-synthesis-and-review.md` §3.1.
+**Remediation:** S2 structural overhaul (HookState schema versioning + runtime validation + unique temp paths + per-file isolation + TOCTOU identity check + CAS in `updateState()`). See `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §3.1.
 
 #### P0-B: Reconsolidation conflict + complement duplicate/corruption window
 
@@ -180,7 +180,7 @@ Attack scenario: a single corrupt/drifted/concurrently-replaced temp-state file 
 
 Attack scenario: two concurrent governed `memory_save` requests against overlapping candidates can (1) fork lineage because `insertSupersedesEdge()` deduplicates only by `(source_id, target_id, relation)`, (2) deprecate a predecessor already superseded because `executeConflict()` runs `UPDATE ... WHERE id = ?` without version or scope recheck, (3) insert duplicate complement rows because `runReconsolidationIfEnabled()` runs vector search + scope filter before the writer transaction, (4) admit/exclude candidates with mixed-source snapshots because `readStoredScope()` issues a fresh per-candidate `SELECT` outside any transaction, (5) generate stale assistive recommendations from a second pre-transaction search that differs from TM-06 planning.
 
-**Remediation:** S1 structural refactor (transactional reconsolidation: predecessor CAS, complement-inside-transaction, batched scope reads, assistive-in-transaction or stale-flag). See `../research/016-pt-01/FINAL-synthesis-and-review.md` §3.2.
+**Remediation:** S1 structural refactor (transactional reconsolidation: predecessor CAS, complement-inside-transaction, batched scope reads, assistive-in-transaction or stale-flag). See `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §3.2.
 
 #### P0-C: Graph-metadata laundering + packet-search boost
 
@@ -195,7 +195,7 @@ Attack scenario: two concurrent governed `memory_save` requests against overlapp
 
 Attack scenario: a malformed modern `graph-metadata.json` (1) gets accepted as legacy with `ok: true` and no migration marker, (2) gets fabricated `created_at`/`last_save_at` via `new Date().toISOString()` erasing original timestamp evidence, (3) gets reinterpreted through `deriveStatus()` as `planned`/`complete` when `readDoc()` collapses I/O failure into `null`, (4) gets rewritten as canonical current JSON by `refreshGraphMetadataForSpecFolder()` erasing the corruption evidence at the persistence layer, (5) gets `qualityScore: 1` and empty `qualityFlags: []` through the memory-parser fallback path, (6) gets +0.12 packet-search boost in stage-1 candidate generation, outranking legitimate spec docs.
 
-**Remediation:** S3 structural propagation (`migrated: boolean` flag propagation from `graph-metadata-parser.ts` through `memory-parser.ts` into stage-1 candidate ranking; remove +0.12 boost for `migrated=true` or `qualityScore: 1` rows). See `../research/016-pt-01/FINAL-synthesis-and-review.md` §3.3.
+**Remediation:** S3 structural propagation (`migrated: boolean` flag propagation from `graph-metadata-parser.ts` through `memory-parser.ts` into stage-1 candidate ranking; remove +0.12 boost for `migrated=true` or `qualityScore: 1` rows). See `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §3.3.
 
 #### P0-D: TOCTOU cleanup erasing fresh state under live session load
 
@@ -208,15 +208,15 @@ Attack scenario: a malformed modern `graph-metadata.json` (1) gets accepted as l
 
 Attack scenario: a routine `--finalize` sweep overlapping with a live session can (1) delete a freshly-written session state because `cleanStaleStates()` stat-then-unlink crosses a live rename, (2) make the next `loadMostRecentState()` return `null` for all consumers because of the single try/catch wrapping the whole directory loop, (3) re-parse transcript from offset 0 because the next stop hook sees `lastTranscriptOffset: 0` sentinel, (4) compound via overlap-induced offset regression without a `Math.max()` monotonicity guard. **Triggered by normal maintenance**, not abnormal concurrent load.
 
-**Remediation:** D1–D5 (TOCTOU identity check, per-file isolation, zero-offset sentinel elimination, `Math.max()` monotonicity). ~2 days solo engineer. See `../research/016-pt-01/FINAL-synthesis-and-review.md` §3.4.
+**Remediation:** D1–D5 (TOCTOU identity check, per-file isolation, zero-offset sentinel elimination, `Math.max()` monotonicity). ~2 days solo engineer. See `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §3.4.
 
 #### Watch-priority-1: Domain-4 routing misdirection chain
 
-Constituent findings: R46-001 + R43-001/R44-001 + R42-002 + R41-003 + R46-002. One confirmed concrete step (R46-001: `/spec_kit:deep-research` → `command-spec-kit` 0.95) pending resolution of whether `command-spec-kit` proceeds into spec-folder creation when invoked via bridge. Upgrade trigger and fix chain (A0 + A2) documented in `../research/016-pt-01/FINAL-synthesis-and-review.md` §3.5.
+Constituent findings: R46-001 + R43-001/R44-001 + R42-002 + R41-003 + R46-002. One confirmed concrete step (R46-001: `/spec_kit:deep-research` → `command-spec-kit` 0.95) pending resolution of whether `command-spec-kit` proceeds into spec-folder creation when invoked via bridge. Upgrade trigger and fix chain (A0 + A2) documented in `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §3.5.
 
 #### Watch-priority-2: Playbook runner `Function(...)` trust-boundary expansion
 
-Constituent findings: R41-004 + R45-004 + R46-003 + R50-002. Dev/CI isolation currently contains blast radius. Upgrade trigger: external payload influence reaches `runtimeState.lastJobId`. Fix chain: S6 (typed step executor). ~1.5 weeks. See `../research/016-pt-01/FINAL-synthesis-and-review.md` §3.6.
+Constituent findings: R41-004 + R45-004 + R46-003 + R50-002. Dev/CI isolation currently contains blast radius. Upgrade trigger: external payload influence reaches `runtimeState.lastJobId`. Fix chain: S6 (typed step executor). ~1.5 weeks. See `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §3.6.
 
 <!-- /ANCHOR:scope -->
 
@@ -265,12 +265,12 @@ Constituent findings: R41-004 + R45-004 + R46-003 + R50-002. Dev/CI isolation cu
 - **SC-002**: All 4 P0 composite candidates eliminated via composite remediation (REQ-001..004). Each elimination requires: (a) structural fix landed, (b) attack scenario's regression test added and passing, (c) every constituent finding closed.
 - **SC-003**: Watch-priority-1 (Domain-4 routing misdirection) resolved either by (a) confirming `command-spec-kit` does not proceed into spec-folder creation on bridge invocation (closes chain), or (b) upgrading to P0-E and remediating via S4/A0 + A2.
 - **SC-004**: Watch-priority-2 (playbook runner trust-boundary) contained by REQ-011 (typed step executor). Adversarial `lastJobId` injection test passes.
-- **SC-005**: All 7 test files codifying degraded contracts (see §7 Risks table) are migrated alongside their corresponding code changes. New tests required by `../research/016-pt-01/FINAL-synthesis-and-review.md` §6.5 (listed in `checklist.md` CHK-TEST-*) are added.
+- **SC-005**: All 7 test files codifying degraded contracts (see §7 Risks table) are migrated alongside their corresponding code changes. New tests required by `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §6.5 (listed in `checklist.md` CHK-TEST-*) are added.
 - **SC-006**: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research --strict` passes.
 - **SC-007**: Full repository type-check passes (`tsc --noEmit`), Vitest suite passes, Python test suite passes, no new warnings from `skill_graph_compiler.py --validate-only`.
 - **SC-008**: `health_check()` returns `status: "degraded"` (not `status: "ok"`) when topology warnings are present (regression for R45-003).
 - **SC-009**: `memory_save` / `session_bootstrap` / `session_resume` / `session_health` responses expose distinct state vocabulary (`live`, `stale`, `absent`, `unavailable`) with no self-contradictory field pairs (regression for R30-001).
-- **SC-010**: Manual attack-scenario reproduction for each P0 candidate (§8.3 of `../research/016-pt-01/FINAL-synthesis-and-review.md`) is constructed and confirmed to now fail (i.e., the attack is prevented).
+- **SC-010**: Manual attack-scenario reproduction for each P0 candidate (§8.3 of `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md`) is constructed and confirmed to now fail (i.e., the attack is prevented).
 
 ### Acceptance Scenarios
 
@@ -280,7 +280,7 @@ Constituent findings: R41-004 + R45-004 + R46-003 + R50-002. Dev/CI isolation cu
 
 **Given** the Phase 016 remediation is declared complete, **when** `tsc --noEmit` and `skill_graph_compiler.py --validate-only` run over the full repository, **then** both exit 0 with zero new errors or warnings beyond the pre-remediation baseline, and all `OperationResult<T>` / `TrustState` / `HookStateSchema` / `BooleanExpr` type usages compile without `any` escape hatches.
 
-**Given** every Phase 016 code commit carries a `Closes-Finding: R??-???` trailer citing finding IDs from `../research/016-pt-01/findings-registry.json`, **when** `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research --strict` runs, **then** spec/plan/tasks/checklist/implementation-summary remain internally consistent (strict pass: 0 errors, 0 warnings), every completed checklist item retains its `[EVIDENCE: ...]` citation, and the finding-to-commit mapping in `implementation-summary.md` is exhaustive for all 63 distinct findings.
+**Given** every Phase 016 code commit carries a `Closes-Finding: R??-???` trailer citing finding IDs from `../research/016-foundational-runtime-pt-01/findings-registry.json`, **when** `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research --strict` runs, **then** spec/plan/tasks/checklist/implementation-summary remain internally consistent (strict pass: 0 errors, 0 warnings), every completed checklist item retains its `[EVIDENCE: ...]` citation, and the finding-to-commit mapping in `implementation-summary.md` is exhaustive for all 63 distinct findings.
 
 <!-- /ANCHOR:success-criteria -->
 
@@ -297,8 +297,8 @@ Constituent findings: R41-004 + R45-004 + R46-003 + R50-002. Dev/CI isolation cu
 | Risk | Regression tests that codify degraded contracts may be intentional compatibility shims, not oversights. Delete-and-replace would break legitimate compatibility. | Medium | Resolve before starting S1/S2/S3: review each test's original PR message and commit log for compatibility intent. Default assumption: oversight unless evidence otherwise. |
 | Risk | Concurrent writer surface at runtime is characterized (7 interleavings) but not measured. Structural fixes work regardless of frequency, but test harness priorities may miss the actual high-frequency cases. | Low | 2-day measurement pass before S1/S2 (optional; fixes sound either way). |
 | Risk | Phase 015 remediation may have modified H6/H7 files concurrently with this research. | Low | Verify current-state of `reconsolidation-bridge.ts` and `post-insert.ts` against findings-registry line numbers before S1/S2/M13 starts. |
-| Dependency | `../research/016-pt-01/FINAL-synthesis-and-review.md` must remain the authoritative source throughout implementation. | High | Treat it as read-only during Phase 016 remediation. Any new findings discovered during implementation get appended to `implementation-summary.md` with cross-reference; do not amend the synthesis. |
-| Dependency | `/spec_kit:deep-review` pipeline used for closing-pass audits of the 11 untouched files (see `../research/016-pt-01/FINAL-synthesis-and-review.md` §8.2). | Medium | Gate: at Phase 016 remediation Week 1, run a 5-iteration closing-pass on the 11 untouched files before starting P0-A/B/C remediation, to avoid discovering new P1/P2 findings mid-refactor. |
+| Dependency | `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` must remain the authoritative source throughout implementation. | High | Treat it as read-only during Phase 016 remediation. Any new findings discovered during implementation get appended to `implementation-summary.md` with cross-reference; do not amend the synthesis. |
+| Dependency | `/spec_kit:deep-review` pipeline used for closing-pass audits of the 11 untouched files (see `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §8.2). | Medium | Gate: at Phase 016 remediation Week 1, run a 5-iteration closing-pass on the 11 untouched files before starting P0-A/B/C remediation, to avoid discovering new P1/P2 findings mid-refactor. |
 | Dependency | Copilot concurrency cap (3 per account) for parallel deep-review dispatches during remediation validation. | Low | Plan dispatch schedule accordingly; use per-iter delta files to avoid shared-write races. |
 
 ### Test-Suite Migration Mandate
@@ -354,7 +354,7 @@ Every code change in this remediation MUST identify its corresponding test updat
 ### Reliability
 
 - **NFR-R01**: Every remediation commit must cite the finding ID(s) it addresses. Git trailer format: `Closes-Finding: R21-002, R25-004` (extensible list).
-- **NFR-R02**: After each P0-candidate remediation lands, all constituent attack scenarios from `../research/016-pt-01/FINAL-synthesis-and-review.md` §3.x must have a regression test and those tests must pass.
+- **NFR-R02**: After each P0-candidate remediation lands, all constituent attack scenarios from `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §3.x must have a regression test and those tests must pass.
 - **NFR-R03**: `validate.sh --strict` must pass on this packet at every commit. CI gate on the 016 subfolder.
 
 ### Maintainability
@@ -424,11 +424,11 @@ Additional open questions (not blocking Phase 016 remediation start):
 12. Shared event schema for `intake_triggered` / `intake_completed`, or does each asset emit independently?
 13. Does `.opencode/skill/system-spec-kit/references/intake-contract.md` define `folderState` as valid synonym for `startState`, or is `.opencode/skill/system-spec-kit/SKILL.md` / `.opencode/skill/system-spec-kit/README.md` usage undocumented drift?
 
-See `../research/016-pt-01/FINAL-synthesis-and-review.md` §8.4 for full question list with file:line references.
+See `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §8.4 for full question list with file:line references.
 
 ### Cross-Cutting Systemic Themes
 
-The 63 distinct findings distribute across 5 architectural anti-patterns plus a 10-item cross-file anti-pattern roster. The five strongest signals (per `../research/016-pt-01/FINAL-synthesis-and-review.md` §5):
+The 63 distinct findings distribute across 5 architectural anti-patterns plus a 10-item cross-file anti-pattern roster. The five strongest signals (per `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §5):
 
 1. **§5.1 Success-shaped envelope masking skip/defer/partial/failed state.** Files: `post-insert.ts`, `session-stop.ts`, `code-graph/query.ts`, `reconsolidation-bridge.ts`, `response-builder.ts`, `graph-metadata-parser.ts`. Architectural fix: `OperationResult<T>` uniform result shape. ~2 weeks. Resolves ~15 findings. Hardest part is test migration.
 
@@ -440,16 +440,16 @@ The 63 distinct findings distribute across 5 architectural anti-patterns plus a 
 
 5. **§5.7 Deterministic / shared temp path under concurrency.** Files: `hook-state.ts`, `graph-metadata-parser.ts`, command YAMLs, runtime root docs, `data-loader.ts`. Architectural fix: remove `/tmp/save-context-data.json` from 4 surfaces + unique temp suffix. ~1 day (mostly doc editing).
 
-Full 10-item cross-file anti-pattern roster and 16-item reinforcement-chain map in `../research/016-pt-01/FINAL-synthesis-and-review.md` §5.5 and §5.6.
+Full 10-item cross-file anti-pattern roster and 16-item reinforcement-chain map in `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §5.5 and §5.6.
 
 ### Related Documents
 
-- **Canonical Research Source**: `../research/016-pt-01/FINAL-synthesis-and-review.md` (1537 lines, Opus 4.7 synthesis)
-- **Structured Finding Inventory**: `../research/016-pt-01/findings-registry.json`
-- **Narrative Research**: `../research/016-pt-01/research.md`
-- **Iteration Evidence**: `../research/016-pt-01/iterations/iteration-{001..050}.md`
+- **Canonical Research Source**: `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` (1537 lines, Opus 4.7 synthesis)
+- **Structured Finding Inventory**: `../research/016-foundational-runtime-pt-01/findings-registry.json`
+- **Narrative Research**: `../research/016-foundational-runtime-pt-01/research.md`
+- **Iteration Evidence**: `../research/016-foundational-runtime-pt-01/iterations/iteration-{001..050}.md`
 - **Interim Syntheses**: `interim-synthesis-{32,38,41,44,47}-iterations.md` (in research folder)
-- **Deep-Research State**: `../research/016-pt-01/deep-research-{config.json,state.jsonl,strategy.md,dashboard.md}`
+- **Deep-Research State**: `../research/016-foundational-runtime-pt-01/deep-research-{config.json,state.jsonl,strategy.md,dashboard.md}`
 - **Implementation Plan**: `plan.md`
 - **Task Breakdown**: `tasks.md`
 - **Verification Checklist**: `checklist.md`

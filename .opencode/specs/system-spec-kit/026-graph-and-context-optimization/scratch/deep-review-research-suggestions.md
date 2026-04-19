@@ -22,9 +22,9 @@ Three signal classes argue for further passes:
 |-------|-------|-------|
 | 120-iter doc+code review | Packets 009, 010, 012, 014 | `015/review/review-report.md` |
 | 50-iter foundational research | Packets 002, 003, 005, 008, 010, 014 | `016/001-initial-research/` |
-| 7-iter meta-review of 016 remediation | 016 Waves A-D | `review/016-pt-01/review-report.md` |
-| 7-iter segment-2 research extension | Foundational-runtime cluster D/E | `research/016-pt-01/segment-2-synthesis.md` |
-| 30-iter deep-research dogfood | 017/001-executor-feature | `research/017-pt-01/` |
+| 7-iter meta-review of 016 remediation | 016 Waves A-D | `review/016-foundational-runtime-pt-01/review-report.md` |
+| 7-iter segment-2 research extension | Foundational-runtime cluster D/E | `research/016-foundational-runtime-pt-01/segment-2-synthesis.md` |
+| 30-iter deep-research dogfood | 017/001-executor-feature | `research/017-sk-deep-cli-runtime-execution-pt-01/` |
 | 10-iter deep-review of 017 remediation | 017 (foundational-runtime ex-phase) | `review/017-review-remediation/` (per commit `44b82d11e`) |
 
 No pass has covered: `017/002-runtime-matrix`, post-ship `018`, or the consolidated 015→018 arc.

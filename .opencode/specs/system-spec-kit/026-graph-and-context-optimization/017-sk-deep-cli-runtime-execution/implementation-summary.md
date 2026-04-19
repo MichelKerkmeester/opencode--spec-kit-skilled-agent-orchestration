@@ -47,7 +47,7 @@ _memory:
 
 ## Downstream Remediation
 
-30-iter deep-research via `cli-codex gpt-5.4 high fast` dogfood produced 12 R-IDs (R1-R12) in `research/017-pt-01/research.md`. Those closed in `../018-cli-executor-remediation/`.
+30-iter deep-research via `cli-codex gpt-5.4 high fast` dogfood produced 12 R-IDs (R1-R12) in `research/017-sk-deep-cli-runtime-execution-pt-01/research.md`. Those closed in `../018-cli-executor-remediation/`.
 
 ## Changelogs
 

@@ -12,7 +12,7 @@ Read first:
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/002-canonical-save-hardening/spec.md`
 - `.../002-canonical-save-hardening/plan.md`
 - `.../002-canonical-save-hardening/tasks.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-pt-04/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-pt-04/research.md`
 
 Implement the 3 waves in order:
 

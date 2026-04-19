@@ -47,7 +47,7 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-9-iteration canonical `/spec_kit:deep-research :auto` loop via `cli-codex gpt-5.4 high fast`. Research artifacts at `026/research/019-pt-04/`: 9 iteration markdown files (iteration-001.md through iteration-009.md), `research.md` (193 lines, final synthesis), `deep-research-state.jsonl` (append-only stream with per-iteration records + graph events), `deep-research-strategy.md` (reducer-synced machine-owned sections), `findings-registry.json`, `deep-research-dashboard.md` (auto-generated). Convergence ratios: 0.68 → 0.57 → 0.62 → 0.73 → 0.71 → 0.43 → 0.24 → 0.16 → 0.08.
+9-iteration canonical `/spec_kit:deep-research :auto` loop via `cli-codex gpt-5.4 high fast`. Research artifacts at `026/research/019-system-hardening-pt-04/`: 9 iteration markdown files (iteration-001.md through iteration-009.md), `research.md` (193 lines, final synthesis), `deep-research-state.jsonl` (append-only stream with per-iteration records + graph events), `deep-research-strategy.md` (reducer-synced machine-owned sections), `findings-registry.json`, `deep-research-dashboard.md` (auto-generated). Convergence ratios: 0.68 → 0.57 → 0.62 → 0.73 → 0.71 → 0.43 → 0.24 → 0.16 → 0.08.
 
 ### Key findings
 

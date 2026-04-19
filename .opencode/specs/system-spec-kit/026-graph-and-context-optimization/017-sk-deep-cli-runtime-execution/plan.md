@@ -45,6 +45,6 @@ _memory:
 
 ## 3. CROSS-REFERENCES
 
-- Research root: `research/017-pt-01/` (30-iter deep-research dogfood that seeded the 018-cli-executor-remediation packet)
+- Research root: `research/017-sk-deep-cli-runtime-execution-pt-01/` (30-iter deep-research dogfood that seeded the 018-cli-executor-remediation packet)
 - Downstream remediation: `../018-cli-executor-remediation/` (closes R1-R12)
 - Related changelogs: `.opencode/changelog/12--sk-deep-research/v1.10.0.0.md`, `.opencode/changelog/13--sk-deep-review/v1.7.0.0.md`

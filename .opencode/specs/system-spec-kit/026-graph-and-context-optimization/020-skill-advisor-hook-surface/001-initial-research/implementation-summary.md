@@ -35,7 +35,7 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Current loop artifacts include the Codex hook audit in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-pt-01/iterations/iteration-004.md`, the iteration delta in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-pt-01/deltas/iter-004.jsonl`, and the appended canonical state in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-pt-01/deep-research-state.jsonl`.
+Current loop artifacts include the Codex hook audit in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-skill-advisor-hook-surface-pt-01/iterations/iteration-004.md`, the iteration delta in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-skill-advisor-hook-surface-pt-01/deltas/iter-004.jsonl`, and the appended canonical state in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-skill-advisor-hook-surface-pt-01/deep-research-state.jsonl`.
 <!-- /ANCHOR:what-built -->
 
 <!-- ANCHOR:how-delivered -->

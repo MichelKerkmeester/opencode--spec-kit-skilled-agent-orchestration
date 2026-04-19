@@ -9,7 +9,7 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research"
     last_updated_at: "2026-04-17T13:51:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Segment-2 deep-research complete (iterations 51-57): 7 Opus parallel-wave iterations meta-researching the 2026-04-17T120827Z deep-review findings. 14 new findings (9 P1, 5 P2) extending review's 10 P1 + 18 P2. 8 new Phase 017 task IDs (T-W1-CNS-04/05, T-W1-CGC-03, T-W1-HOK-01/02, T-W1-MCX-01, T-W1-PIN-02, T-W1-HST-02). Headline: H-56-1 CONFIRMED — default /memory:save is structural metadata-freshness no-op (workflow.ts:1259 `const ctxFileWritten = false` dead code + workflow.ts:1333 `plannerMode === 'full-auto'` gate with default `'plan-only'`). 2 new clusters: D (code-graph 6:1 sibling asymmetry — scan.ts/status.ts/context.ts/ccc-*.ts all missing trustState) + E (Copilot runtime observability gap). 0 P0 escalations confirmed across iter 53 adversarial + iter 56 compound-hypothesis audits. 3 compound hypotheses CONFIRMED (H-56-1/4/5), 1 REFUTED (H-56-2 cross-handler cache poisoning), 1 PARTIAL (H-56-3 shared-tmpfs). Synthesis: research/016-pt-01/segment-2-synthesis.md (332 lines, 12 sections)."
+    recent_action: "Segment-2 deep-research complete (iterations 51-57): 7 Opus parallel-wave iterations meta-researching the 2026-04-17T120827Z deep-review findings. 14 new findings (9 P1, 5 P2) extending review's 10 P1 + 18 P2. 8 new Phase 017 task IDs (T-W1-CNS-04/05, T-W1-CGC-03, T-W1-HOK-01/02, T-W1-MCX-01, T-W1-PIN-02, T-W1-HST-02). Headline: H-56-1 CONFIRMED — default /memory:save is structural metadata-freshness no-op (workflow.ts:1259 `const ctxFileWritten = false` dead code + workflow.ts:1333 `plannerMode === 'full-auto'` gate with default `'plan-only'`). 2 new clusters: D (code-graph 6:1 sibling asymmetry — scan.ts/status.ts/context.ts/ccc-*.ts all missing trustState) + E (Copilot runtime observability gap). 0 P0 escalations confirmed across iter 53 adversarial + iter 56 compound-hypothesis audits. 3 compound hypotheses CONFIRMED (H-56-1/4/5), 1 REFUTED (H-56-2 cross-handler cache poisoning), 1 PARTIAL (H-56-3 shared-tmpfs). Synthesis: research/016-foundational-runtime-pt-01/segment-2-synthesis.md (332 lines, 12 sections)."
     next_safe_action: "Run /spec_kit:plan :with-phases on 016-foundational-runtime to scope Phase 017 from 27-task consolidated backlog (critical path ~60h / 6 working days across 4 waves A-D). Alternative: /memory:save to re-index segment-2-synthesis.md."
     blockers:
       - id: "H-56-1"
@@ -57,7 +57,7 @@ _memory:
 | **Completed** | 2026-04-17 (closeout commit populating this summary) |
 | **Level** | 2 |
 | **Stage** | COMPLETE — all 5 phases shipped |
-| **Research Source** | `../research/016-pt-01/FINAL-synthesis-and-review.md` (50 iterations) |
+| **Research Source** | `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` (50 iterations) |
 | **Findings Closed** | 63 distinct findings (R1-001..R50-002) + 4 P0 composites + 4 new P2 findings (CP-001..CP-004) documented |
 | **Tasks Shipped** | 97 canonical T-XXX-NN tasks + 34 T-TEST-* tasks + 9 T-PRE-* preflight = 140 total |
 | **Commits to Main** | 27 (4 Phase 1 P0 composites + 21 Phase 4 QW + ~5 structural + Wave A/B/C + test migration audit + closeout) |
@@ -111,7 +111,7 @@ Delivery followed the Phase 016 remediation plan §4 dependency graph but compre
 
 ### Execution timeline
 
-**Preflight (committed 93b0c77c9, 0da4e1aa6):** OQ1–OQ4 resolved via direct code inspection + `../research/016-pt-01/FINAL-synthesis-and-review.md` evidence synthesis, producing `preflight-oq-resolution.md` as the authoritative OQ record. T-PRE-04 closing-pass audit inspected all 11 files flagged in FINAL §8.2, producing `../research/016-pt-01/closing-pass-notes.md` documenting 4 new P2 findings (CP-001 readiness fail-open in `context.ts`, CP-002 `onIndex()` skipped fan-in, CP-003 entity-linker whole-corpus escalation, CP-004 `spec_kit_complete_confirm.yaml` S7 coverage gap) deferred to Phase 016 remediation. T-PRE-09 adversarial repros for R33-001, R40-001, R46-003, R34-002, R35-001 were constructed and verified via existing or new regression test fixtures.
+**Preflight (committed 93b0c77c9, 0da4e1aa6):** OQ1–OQ4 resolved via direct code inspection + `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` evidence synthesis, producing `preflight-oq-resolution.md` as the authoritative OQ record. T-PRE-04 closing-pass audit inspected all 11 files flagged in FINAL §8.2, producing `../research/016-foundational-runtime-pt-01/closing-pass-notes.md` documenting 4 new P2 findings (CP-001 readiness fail-open in `context.ts`, CP-002 `onIndex()` skipped fan-in, CP-003 entity-linker whole-corpus escalation, CP-004 `spec_kit_complete_confirm.yaml` S7 coverage gap) deferred to Phase 016 remediation. T-PRE-09 adversarial repros for R33-001, R40-001, R46-003, R34-002, R35-001 were constructed and verified via existing or new regression test fixtures.
 
 **Phase 4 Quick Wins (21 commits in 11 waves, `phase-4-quick-wins-summary.md`):** Starting with `31233f06d` (T-CGQ-05 unsupported edgeType rejection) and ending with `3d0ab30c9` (T-DLS-01/T-DOC-01 removal of `/tmp/save-context-data.json` across 50+ files). Each wave used 3 concurrent cli-copilot agents. Notable wave highlights:
 - Wave 1–4: `code-graph/query.ts` hardening (T-CGQ-01..08), 8 distinct findings closed in a single file.
@@ -302,7 +302,7 @@ Every commit cites the closed findings in its commit trailer. Full mapping in §
 
 ### New findings deferred to Phase 016 remediation
 
-The T-PRE-04 closing-pass audit (`../research/016-pt-01/closing-pass-notes.md`) surfaced four new P2 findings during inspection of the 11 files flagged in `../research/016-pt-01/FINAL-synthesis-and-review.md §8.2` as "touched but not deeply audited" during the 50-iteration research loop. Per T-PRE-04 constraints, these were documented but not fixed in Phase 016 remediation; they are deferred to Phase 016 remediation:
+The T-PRE-04 closing-pass audit (`../research/016-foundational-runtime-pt-01/closing-pass-notes.md`) surfaced four new P2 findings during inspection of the 11 files flagged in `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md §8.2` as "touched but not deeply audited" during the 50-iteration research loop. Per T-PRE-04 constraints, these were documented but not fixed in Phase 016 remediation; they are deferred to Phase 016 remediation:
 
 | ID | Severity | File:lines | Description | Suggested remediation |
 |----|----------|-----------|-------------|----------------------|
@@ -355,9 +355,9 @@ Success criteria from `spec.md §5` (SC-001 through SC-010):
 - **Checklist**: `checklist.md` — 176 verification items across P0/P1/P2 severity (all verified with commit evidence)
 - **Description**: `description.json` — packet metadata for memory indexing
 - **Graph Metadata**: `graph-metadata.json` — graph-level packet state
-- **Authoritative Research**: `../research/016-pt-01/FINAL-synthesis-and-review.md` — 50-iteration synthesis
-- **Findings Registry**: `../research/016-pt-01/findings-registry.json` — structured lookup for 63 findings
-- **Closing-pass Notes**: `../research/016-pt-01/closing-pass-notes.md` — T-PRE-04 audit + 4 new P2 findings (CP-001..CP-004)
+- **Authoritative Research**: `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` — 50-iteration synthesis
+- **Findings Registry**: `../research/016-foundational-runtime-pt-01/findings-registry.json` — structured lookup for 63 findings
+- **Closing-pass Notes**: `../research/016-foundational-runtime-pt-01/closing-pass-notes.md` — T-PRE-04 audit + 4 new P2 findings (CP-001..CP-004)
 - **Preflight OQ Resolution**: `preflight-oq-resolution.md` — OQ1..OQ4 resolutions authoritative
 - **Phase 4 QW Synthesis**: `phase-4-quick-wins-summary.md` — 21 quick-win commits task-by-task
 - **Phase 1 P0 Composites Synthesis**: `phase-016-remediation-p0-composites-summary.md` — 4 P0 composite eliminations detailed

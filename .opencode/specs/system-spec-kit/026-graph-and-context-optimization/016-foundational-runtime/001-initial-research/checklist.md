@@ -39,10 +39,10 @@ _memory:
 
 Preflight verification items (Week 1 of Phase 016 remediation).
 
-- [x] CHK-PRE-001 [P0] Phase 016 research complete (50 iterations) — [EVIDENCE: inspection of `../research/016-pt-01/FINAL-synthesis-and-review.md` and 50 iteration files; (verified)]
+- [x] CHK-PRE-001 [P0] Phase 016 research complete (50 iterations) — [EVIDENCE: inspection of `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` and 50 iteration files; (verified)]
 - [x] CHK-PRE-002 [P0] Findings registry structured — [EVIDENCE: `findings-registry.json` exists with JSON schema validation; (verified)]
 - [x] CHK-PRE-003 [P0] P0 composite candidates mapped to constituent findings — [EVIDENCE: inspection of `spec.md` §3; (verified)]
-- [x] CHK-PRE-004 [P0] Closing-pass audit of 11 untouched files (`FINAL §8.2`) complete — [EVIDENCE: 0da4e1aa6 T-PRE-04 closing-pass audit; `../research/016-pt-01/closing-pass-notes.md` logs 4 new P2 findings CP-001 through CP-004; (verified)]
+- [x] CHK-PRE-004 [P0] Closing-pass audit of 11 untouched files (`FINAL §8.2`) complete — [EVIDENCE: 0da4e1aa6 T-PRE-04 closing-pass audit; `../research/016-foundational-runtime-pt-01/closing-pass-notes.md` logs 4 new P2 findings CP-001 through CP-004; (verified)]
 - [x] CHK-PRE-005 [P0] OQ1 resolved: `command-spec-kit` Gate 3 enforcement documented — [EVIDENCE: `preflight-oq-resolution.md` §OQ1 + commit 93b0c77c9 OQ preflight resolution; (verified)]
 - [x] CHK-PRE-006 [P0] OQ2 resolved: degraded-contract test compatibility review — [EVIDENCE: `preflight-oq-resolution.md` §OQ2 (6 oversights + 1 shim) + commit 93b0c77c9; (verified)]
 - [x] CHK-PRE-007 [P0] OQ3 resolved: HookState `schemaVersion` migration path decided — [EVIDENCE: `preflight-oq-resolution.md` §OQ3 (Option A+B hybrid, lazy migration) + commit 93b0c77c9; (verified)]
@@ -367,8 +367,8 @@ Runs at the very end of Phase 016 remediation, before declaring the 016 packet c
 - [x] CHK-DOC-02 [P1] Parent 026 spec.md updated with 016 entry (completion status, links) — verified by diff [EVIDENCE: parent packet graph-metadata.json + description.json reflect 016 completion]
 - [x] CHK-DOC-03 [P1] `description.json` status updated to `implemented` (from `ready_for_implementation` during implementation, from `planning` pre-Stage-2) — verified by JSON inspection [EVIDENCE: description.json status reflects implemented state]
 - [x] CHK-DOC-04 [P1] `graph-metadata.json` status reflects final state — verified by JSON inspection [EVIDENCE: graph-metadata.json tracks final 016 implementation state]
-- [x] CHK-DOC-05 [P2] Review findings archived in appropriate subfolder — verified by file tree inspection [EVIDENCE: closing-pass-notes.md under research/016-pt-01/; Phase 016 remediation synthesis files under packet root]
-- [x] CHK-DOC-06 [P1] Cross-references from systemic-themes narrative (if created) to `../research/016-pt-01/FINAL-synthesis-and-review.md` §5 — verified by inspection [EVIDENCE: `phase-016-remediation-p0-composites-summary.md` §4 cross-references FINAL §5 systemic anti-patterns]
+- [x] CHK-DOC-05 [P2] Review findings archived in appropriate subfolder — verified by file tree inspection [EVIDENCE: closing-pass-notes.md under research/016-foundational-runtime-pt-01/; Phase 016 remediation synthesis files under packet root]
+- [x] CHK-DOC-06 [P1] Cross-references from systemic-themes narrative (if created) to `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md` §5 — verified by inspection [EVIDENCE: `phase-016-remediation-p0-composites-summary.md` §4 cross-references FINAL §5 systemic anti-patterns]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -408,10 +408,10 @@ Runs at the very end of Phase 016 remediation, before declaring the 016 packet c
 - **Specification**: `spec.md`
 - **Plan**: `plan.md`
 - **Tasks**: `tasks.md`
-- **Authoritative Research**: `../research/016-pt-01/FINAL-synthesis-and-review.md`
-- **Findings Registry**: `../research/016-pt-01/findings-registry.json`
+- **Authoritative Research**: `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md`
+- **Findings Registry**: `../research/016-foundational-runtime-pt-01/findings-registry.json`
 - **Phase 4 QW Synthesis**: `phase-4-quick-wins-summary.md`
 - **Phase 1 P0 Synthesis**: `phase-016-remediation-p0-composites-summary.md`
-- **Closing-pass Notes**: `../research/016-pt-01/closing-pass-notes.md`
+- **Closing-pass Notes**: `../research/016-foundational-runtime-pt-01/closing-pass-notes.md`
 - **Preflight OQ Resolution**: `preflight-oq-resolution.md`
 <!-- /ANCHOR:summary -->

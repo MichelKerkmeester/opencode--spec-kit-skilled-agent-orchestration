@@ -8,7 +8,7 @@ Dispatched via `codex exec gpt-5.4 --reasoning-effort=high --service-tier=fast` 
 
 Read first:
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/004-routing-accuracy-hardening/{spec.md,plan.md,tasks.md}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-pt-03/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-pt-03/research.md`
 - `.../005-routing-accuracy/corpus/labeled-prompts.jsonl` (200-prompt regression fixture)
 
 Implement Wave A + Wave B (Wave C conditional):

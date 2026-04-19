@@ -43,7 +43,7 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-5-iteration canonical `/spec_kit:deep-research :auto` loop via `cli-codex gpt-5.4 high fast`. Converged at iter 5 with newInfoRatio 0.11. Artifacts at `026/research/019-pt-01/`: 5 iteration markdown files, `research.md` (386 lines), per-iteration delta files in `deltas/iter-001.jsonl` through `iter-005.jsonl`, state/strategy/registry.
+5-iteration canonical `/spec_kit:deep-research :auto` loop via `cli-codex gpt-5.4 high fast`. Converged at iter 5 with newInfoRatio 0.11. Artifacts at `026/research/019-system-hardening-pt-01/`: 5 iteration markdown files, `research.md` (386 lines), per-iteration delta files in `deltas/iter-001.jsonl` through `iter-005.jsonl`, state/strategy/registry.
 
 ### Key findings
 

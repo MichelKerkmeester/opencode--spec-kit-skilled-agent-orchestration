@@ -43,7 +43,7 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-9-iteration canonical `/spec_kit:deep-review :auto` loop via `cli-codex gpt-5.4 high fast`. Review artifacts at `026/review/019-pt-01/`: 9 iteration markdown files, `review-report.md` (164 lines, canonical synthesis), `deep-review-state.jsonl` (append-only per-iteration stream), `deep-review-strategy.md`, `findings-registry.json`. Delta-report mirror at `026/review/015-deep-review-and-remediation/delta-report-2026-04.md` for the 015 Workstream 0+ handoff. Convergence ratios: 0.55 → 0.70 → 0.64 → 0.59 → 0.52 → 0.41 → 0.33 → 0.18 → 0.06.
+9-iteration canonical `/spec_kit:deep-review :auto` loop via `cli-codex gpt-5.4 high fast`. Review artifacts at `026/review/019-system-hardening-pt-01/`: 9 iteration markdown files, `review-report.md` (164 lines, canonical synthesis), `deep-review-state.jsonl` (append-only per-iteration stream), `deep-review-strategy.md`, `findings-registry.json`. Delta-report mirror at `026/review/015-deep-review-and-remediation/delta-report-2026-04.md` for the 015 Workstream 0+ handoff. Convergence ratios: 0.55 → 0.70 → 0.64 → 0.59 → 0.52 → 0.41 → 0.33 → 0.18 → 0.06.
 
 ### Final tally (all 242 findings classified)
 

@@ -263,9 +263,9 @@ Wave A is code-complete when:
 - **Wave D**: `../004-p2-maintainability/` (pending, deferrable)
 
 ### Upstream research
-- **Review report**: `../../review/016-pt-01/review-report.md`
-- **Segment-1 synthesis**: `../../research/016-pt-01/FINAL-synthesis-and-review.md`
-- **Segment-2 synthesis**: `../../research/016-pt-01/segment-2-synthesis.md`
+- **Review report**: `../../review/016-foundational-runtime-pt-01/review-report.md`
+- **Segment-1 synthesis**: `../../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md`
+- **Segment-2 synthesis**: `../../research/016-foundational-runtime-pt-01/segment-2-synthesis.md`
 
 ### Operator feedback
 - `feedback_phase_018_autonomous` — DELETE not archive, deep-review ×7 per gate, cli-codex primary

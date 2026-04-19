@@ -26,7 +26,7 @@ All items must have evidence (file:line or test-run summary).
 
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
-- [x] Research reviewed: ../../research/019-pt-02/research.md [P0] [EVIDENCE: HP1-HP6 and RT1-RT10 inventory reviewed before edits.]
+- [x] Research reviewed: ../../research/019-system-hardening-pt-02/research.md [P0] [EVIDENCE: HP1-HP6 and RT1-RT10 inventory reviewed before edits.]
 - [x] Baseline tests captured [P0] [EVIDENCE: pre-change npm test failed on unrelated baseline suites before NFKC edits; targeted hardening slice established the regression baseline.]
 <!-- /ANCHOR:pre-impl -->
 

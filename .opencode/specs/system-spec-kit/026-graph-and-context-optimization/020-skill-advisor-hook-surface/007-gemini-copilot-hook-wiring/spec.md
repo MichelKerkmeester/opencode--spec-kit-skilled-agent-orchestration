@@ -264,8 +264,8 @@ Both adapters normalize via 005's comparator and pass the cross-runtime parity t
 
 - Parent: `../spec.md`
 - Predecessors: `../004-*`, `../005-*` (HARD GATE), `../006-claude-hook-wiring/`
-- Research: `../../../research/020-pt-01/research.md §Gemini path + §Copilot path`
-- Extended research: `../../../research/020-pt-02/research-extended.md §X3`
+- Research: `../../../research/020-skill-advisor-hook-surface-pt-01/research.md §Gemini path + §Copilot path`
+- Extended research: `../../../research/020-skill-advisor-hook-surface-pt-02/research-extended.md §X3`
 - Existing Gemini hook: `../../../../../skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts`
 - Existing Copilot hook: `../../../../../skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts`
 - 005 comparator: `../005-advisor-renderer-and-regression-harness/` (post-merge)

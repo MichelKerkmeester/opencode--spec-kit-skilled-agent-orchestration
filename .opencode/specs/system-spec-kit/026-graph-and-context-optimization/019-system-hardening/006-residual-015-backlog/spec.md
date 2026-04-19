@@ -27,7 +27,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Parent Spec** | ../spec.md |
-| **Source Review** | ../../review/019-pt-01/review-report.md |
+| **Source Review** | ../../review/019-system-hardening-pt-01/review-report.md |
 | **Priority** | P1 |
 
 <!-- ANCHOR:metadata -->

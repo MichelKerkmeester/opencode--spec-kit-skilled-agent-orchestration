@@ -295,7 +295,7 @@ Lanes B1 / B2 / B3 execute concurrently once Wave A merges. Within each lane, ta
 - **Parent plan**: `../plan.md` §3 (Wave B detailed task breakdowns)
 - **Parent tasks**: `../tasks.md` (Wave B section)
 - **Parent checklist**: `../checklist.md` (CHK-B1-*/B2-*/B3-*/B-GATE items)
-- **Upstream research**: `../../research/016-pt-01/segment-2-synthesis.md`
+- **Upstream research**: `../../research/016-foundational-runtime-pt-01/segment-2-synthesis.md`
 - **Operator feedback**: `feedback_phase_018_autonomous` (user memory), `feedback_copilot_concurrency_override` (user memory)
 
 <!-- ANCHOR:references -->

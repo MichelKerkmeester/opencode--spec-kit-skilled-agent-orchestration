@@ -103,7 +103,7 @@ TBD. Reference:
 
 | Child | Status | Converged at | Evidence |
 |-------|--------|--------------|----------|
-| 001-initial-research | Converged | 2026-04-19T08:30Z (wave-1) + 2026-04-19T09:15Z (wave-2) | Research synthesis under ../research/020-pt-01/ and .../020-pt-02/ |
+| 001-initial-research | Converged | 2026-04-19T08:30Z (wave-1) + 2026-04-19T09:15Z (wave-2) | Research synthesis under ../research/020-skill-advisor-hook-surface-pt-01/ and .../020-skill-advisor-hook-surface-pt-02/ |
 | 002-shared-payload-advisor-contract | Scaffolded | TBD | — |
 | 003-advisor-freshness-and-source-cache | Scaffolded | TBD | — |
 | 004-advisor-brief-producer-cache-policy | Scaffolded | TBD | — |

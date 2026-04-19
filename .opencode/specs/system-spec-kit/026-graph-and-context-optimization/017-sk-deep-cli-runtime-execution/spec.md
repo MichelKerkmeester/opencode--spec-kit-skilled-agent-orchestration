@@ -69,4 +69,4 @@ _memory:
 
 ## 5. DOWNSTREAM
 
-- `018-cli-executor-remediation/` (ex-020) remediates R1-R12 findings from the 30-iter deep-research dogfood pass against this packet's research root (`research/017-pt-01/`)
+- `018-cli-executor-remediation/` (ex-020) remediates R1-R12 findings from the 30-iter deep-research dogfood pass against this packet's research root (`research/017-sk-deep-cli-runtime-execution-pt-01/`)

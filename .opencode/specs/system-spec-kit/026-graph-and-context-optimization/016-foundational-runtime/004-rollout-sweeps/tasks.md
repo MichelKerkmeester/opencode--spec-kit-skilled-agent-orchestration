@@ -66,7 +66,7 @@ _memory:
 ### T-CPN-01 — [x] Closing-pass-notes CP-002 amend [EVIDENCE: 0c9d6f612]
 
 **Severity**: P2 | **Effort**: S (1h) | **Phase**: 1
-**Files**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/016-pt-01/closing-pass-notes.md:72-88`
+**Files**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/016-foundational-runtime-pt-01/closing-pass-notes.md:72-88`
 **Resolves**: R3-P1-001
 
 **Changes**:
@@ -211,8 +211,8 @@ After all 5 tasks complete:
 
 ### Upstream research
 
-- **Review report**: `../../review/016-pt-01/review-report.md`
-- **Segment-2 synthesis**: `../../research/016-pt-01/segment-2-synthesis.md`
+- **Review report**: `../../review/016-foundational-runtime-pt-01/review-report.md`
+- **Segment-2 synthesis**: `../../research/016-foundational-runtime-pt-01/segment-2-synthesis.md`
 
 ### Related operator feedback
 

@@ -34,7 +34,7 @@ _memory:
 
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
-- [x] CHK-001 [P0] Research reviewed: ../../research/019-pt-03/research.md [Evidence: Ranked Proposals drove Wave A/B/C order]
+- [x] CHK-001 [P0] Research reviewed: ../../research/019-system-hardening-pt-03/research.md [Evidence: Ranked Proposals drove Wave A/B/C order]
 - [x] CHK-002 [P0] Labeled corpus copied as regression fixture [Evidence: `tests/routing-accuracy/labeled-prompts.jsonl` has 200 rows]
 - [x] CHK-003 [P0] Baseline metrics captured [Evidence: research baseline Gate 3 F1 68.6%, advisor 53.5%; Wave A report captured pre-Wave-B Gate 3 F1 68.6%]
 <!-- /ANCHOR:pre-impl -->

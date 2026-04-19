@@ -236,7 +236,7 @@ Ship `mcp_server/hooks/claude/user-prompt-submit.ts` that:
 
 - Parent: `../spec.md`
 - Predecessors: `../004-advisor-brief-producer-cache-policy/`, `../005-advisor-renderer-and-regression-harness/`
-- Research: `../../../research/020-pt-01/research.md §Claude path`
-- Extended research: `../../../research/020-pt-02/research-extended.md §X2`
+- Research: `../../../research/020-skill-advisor-hook-surface-pt-01/research.md §Claude path`
+- Extended research: `../../../research/020-skill-advisor-hook-surface-pt-02/research-extended.md §X2`
 - Claude hook docs: Anthropic's `UserPromptSubmit` hook schema (see research-extended §X2 for citation)
 - Existing Claude hook: `../../../../../skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts`

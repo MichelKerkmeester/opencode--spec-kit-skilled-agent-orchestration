@@ -27,7 +27,7 @@ _memory:
 
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
-- [x] [P0] Research reviewed [EVIDENCE: [research.md](./../../research/019-pt-01/research.md) lines 7-9 and 69-83]
+- [x] [P0] Research reviewed [EVIDENCE: [research.md](./../../research/019-system-hardening-pt-01/research.md) lines 7-9 and 69-83]
 - [x] [P0] 28 rich description.json files enumerated [EVIDENCE: live count confirmed as `27` under `026` plus `1` archived backup]
 <!-- /ANCHOR:pre-impl -->
 

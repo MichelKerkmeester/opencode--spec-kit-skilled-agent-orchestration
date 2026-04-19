@@ -363,7 +363,7 @@ Depends on Wave A + B merged.
 
 ### 4.3 T-CPN-01 — Closing-pass-notes amend (1h, S)
 
-**Files**: `research/016-pt-01/closing-pass-notes.md:72-88`.
+**Files**: `research/016-foundational-runtime-pt-01/closing-pass-notes.md:72-88`.
 
 **Changes**: Amend CP-002 section to mark RESOLVED by T-PIN-08 / `e774eef07`. Add status tag `[STATUS: RESOLVED 2026-04-17]`.
 

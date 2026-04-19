@@ -326,7 +326,7 @@ _memory:
 ### T-CPN-01 — [x] Closing-pass-notes CP-002 amend [EVIDENCE: 0c9d6f612]
 
 **Severity**: P2 | **Effort**: S (1h) | **Wave**: C
-**Files**: `research/016-pt-01/closing-pass-notes.md:72-88`
+**Files**: `research/016-foundational-runtime-pt-01/closing-pass-notes.md:72-88`
 **Resolves**: R3-P1-001
 
 **Acceptance**:
@@ -466,9 +466,9 @@ _memory:
 - **Graph**: `graph-metadata.json` (this folder) — dependency graph
 
 ### Upstream research
-- **Review report**: `../review/016-pt-01/review-report.md`
-- **Segment-1 synthesis (50 iters)**: `../research/016-pt-01/FINAL-synthesis-and-review.md`
-- **Segment-2 synthesis (7 iters)**: `../research/016-pt-01/segment-2-synthesis.md`
+- **Review report**: `../review/016-foundational-runtime-pt-01/review-report.md`
+- **Segment-1 synthesis (50 iters)**: `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md`
+- **Segment-2 synthesis (7 iters)**: `../research/016-foundational-runtime-pt-01/segment-2-synthesis.md`
 - **Phase 017 implementation**: `../001-initial-research/implementation-summary.md`
 
 ### Related operator feedback
