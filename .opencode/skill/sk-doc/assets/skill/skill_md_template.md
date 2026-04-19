@@ -393,20 +393,20 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 ---
 
 <!-- NOTE: RULES section is REQUIRED by package_skill.py validation.
-     Subsections with semantic emojis (✅ ALWAYS, ❌ NEVER, ⚠️ ESCALATE IF) are REQUIRED.
+     Subsections MUST be named ALWAYS, NEVER, and ESCALATE IF (or ESCALATE WHEN).
      Use H3 by default; H4 is allowed when nested under phase headings.
-     Do NOT remove these emojis. Do NOT add horizontal dividers (---) between RULES subsections. -->
+     Do NOT add horizontal dividers (---) between RULES subsections. -->
 
 <!-- /ANCHOR:how-it-works -->
 <!-- ANCHOR:rules -->
 ## 4. RULES
 
 <!-- REQUIRED SUBSECTIONS (package_skill.py validation): -->
-<!-- - ✅ ALWAYS (or "ALWAYS") -->
-<!-- - ❌ NEVER (or "NEVER") -->
-<!-- - ⚠️ ESCALATE IF (or "ESCALATE IF" or "ESCALATE WHEN") -->
+<!-- - ALWAYS -->
+<!-- - NEVER -->
+<!-- - ESCALATE IF (or "ESCALATE WHEN") -->
 
-### ✅ ALWAYS
+### ALWAYS
 
 **ALWAYS do these without asking:**
 
@@ -426,7 +426,7 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 5. **ALWAYS [critical rule 5]**
    - [Detail]
 
-### ❌ NEVER
+### NEVER
 
 **NEVER do these:**
 
@@ -440,7 +440,7 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 3. **NEVER [anti-pattern]**
    - [Why problematic]
 
-### ⚠️ ESCALATE IF
+### ESCALATE IF
 
 **Ask user when:**
 
@@ -885,13 +885,13 @@ mode_detection:
 **Validation**: package_skill.py requires this section with specific subsections
 
 **Essential Content** (all three subsections REQUIRED):
-- ✅ ALWAYS rules (4-7 critical requirements)
-- ❌ NEVER rules (3-5 anti-patterns to avoid)
-- ⚠️ ESCALATE IF (3-5 situations requiring user input)
+- ALWAYS rules (4-7 critical requirements)
+- NEVER rules (3-5 anti-patterns to avoid)
+- ESCALATE IF (3-5 situations requiring user input)
 
 **Structure**:
 
-### ✅ ALWAYS
+### ALWAYS
 
 **ALWAYS do these without asking:**
 
@@ -899,7 +899,7 @@ mode_detection:
    - [Why this matters]
    - [Implementation detail]
 
-### ❌ NEVER
+### NEVER
 
 **NEVER do these:**
 
@@ -907,7 +907,7 @@ mode_detection:
    - [Why problematic]
    - [Alternative approach]
 
-### ⚠️ ESCALATE IF
+### ESCALATE IF
 
 **Ask user when:**
 
@@ -916,8 +916,7 @@ mode_detection:
    - [What clarification needed]
 
 **Writing Tips**:
-- Use semantic emojis with ALL CAPS for subsection headers (✅ ALWAYS, ❌ NEVER, ⚠️ ESCALATE IF)
-- Alternative formats accepted: "ALWAYS", "NEVER", "ESCALATE IF", "ESCALATE WHEN"
+- Use ALL CAPS for subsection headers: `ALWAYS`, `NEVER`, `ESCALATE IF` (or `ESCALATE WHEN`)
 - Be specific and actionable
 - Explain *why* for each rule (rationale matters)
 - Include implementation guidance

@@ -93,12 +93,12 @@ TASK CONTEXT
 The router discovers markdown resources recursively from `references/` and `assets/` and then applies intent scoring from `INTENT_SIGNALS`.
 
 ```text
-references/cli_reference.md          — CLI flags, commands, subcommands, config
-references/integration_patterns.md   — Cross-AI orchestration patterns
-references/codex_tools.md            — Built-in tools and capabilities comparison
-references/agent_delegation.md       — Codex agent routing and invocation
-assets/prompt_templates.md           — Copy-paste ready templates
-assets/prompt_quality_card.md        — Framework-per-task selector, CLEAR 5-check, escalation triggers
+references/cli_reference.md            — CLI flags, commands, subcommands, config
+references/integration_patterns.md     — Cross-AI orchestration patterns
+references/codex_tools.md              — Built-in tools and capabilities comparison
+references/agent_delegation.md         — Codex agent routing and invocation
+assets/prompt_templates.md             — Copy-paste ready templates
+assets/prompt_quality_card.md          — Framework-per-task selector, CLEAR 5-check, escalation triggers
 ```
 
 ### Resource Loading Levels
@@ -449,6 +449,12 @@ codex exec -p research "Research latest security advisories for Express.js" --mo
    - If complexity is `>= 7/10` or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline
    - Use the returned `ENHANCED_PROMPT` as the final Codex prompt
 
+10. **NEVER inject user-level voice/personalization content into AI-orchestrated Codex delegations**
+    - Codex CLI reads user-level voice guidance from `~/.codex/AGENTS.md` (the human's own global settings). That file is the user's personal voice/tone tuning and is loaded automatically by Codex at session start.
+    - When an AI (Claude Code, Gemini CLI, Copilot CLI, or any orchestrator using this skill) delegates a task to Codex via `codex exec`, the calling AI's own voice rules already govern the response. Do not read `~/.codex/AGENTS.md` and paste its contents into delegation prompts — it's the user's environment, not a dispatch payload.
+    - Keep delegations focused on the task, model, sandbox, reasoning effort, and (if applicable) spec folder pre-approval. Voice is the calling AI's responsibility, not Codex's.
+    - If the user asks how to make Codex sound more like Claude in **their own** Codex CLI or APP sessions, point them to `~/.codex/AGENTS.md` (global voice addendum) — not to any repo asset.
+
 ### ❌ NEVER
 
 **NEVER do these:**
@@ -620,6 +626,7 @@ Key integrations:
 
 ### Templates
 - [prompt_templates.md](./assets/prompt_templates.md) - Copy-paste ready prompt templates
+
 
 ### Related Skills
 - `cli-gemini` - Google Gemini CLI for parallel AI validation and Google Search grounding

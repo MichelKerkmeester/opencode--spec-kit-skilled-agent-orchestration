@@ -203,12 +203,15 @@ cli-codex/
   README.md                             # This file
   assets/
     prompt_templates.md                 # Copy-paste ready prompts for common tasks
+    prompt_quality_card.md              # Framework-per-task selector, CLEAR 5-check
   references/
     agent_delegation.md                 # Agent profiles, routing, invocation patterns
     codex_tools.md                      # Unique capabilities and comparison table
     cli_reference.md                    # CLI flags, commands, models, sandbox, config
     integration_patterns.md             # Cross-AI orchestration workflows
 ```
+
+> **Voice guidance lives outside this skill**: user-level voice/tone/reasoning instructions for Codex CLI are installed at `<repo>/.codex/AGENTS.md` (symlinked to `~/.codex/AGENTS.md`). That file governs how Codex talks in the user's own sessions and is **not** used by this skill when an AI delegates work to Codex. See §8 FAQ for the full rationale.
 
 <!-- /ANCHOR:structure -->
 
@@ -345,6 +348,19 @@ A: Use `codex resume [session-id]` to continue where you left off. Use `codex fo
 **Q: Can Codex run in the cloud?**
 A: Yes. The `codex cloud` subcommand offloads execution to remote infrastructure.
 
+### Voice Personalization (Codex CLI Global)
+
+**Q: How do I make Codex CLI sound more like Claude Opus — calibrated, diplomatically honest, scope-disciplined, no filler?**
+A: It's already configured at `<repo>/.codex/AGENTS.md` (symlinked to `~/.codex/AGENTS.md`). Codex CLI loads that file at every session start and combines it with the project-level `AGENTS.md` framework. The global file contains voice, tone, and reasoning-visibility guidance only — scope/gates/memory rules come from the project-level file.
+
+For the **Codex APP chat UI** (not CLI), the same content can be pasted into the app's custom-instructions field directly; the source prose is in `<repo>/.codex/AGENTS.md`.
+
+**Q: Should an AI orchestrator (Claude Code, Gemini CLI, Copilot CLI) inject this voice content when delegating to Codex via this skill?**
+A: **No.** The global voice file is for the user's own Codex CLI sessions. When an AI delegates a task to Codex, the calling AI's own system instructions already govern voice. Injecting `~/.codex/AGENTS.md` contents into a delegated prompt would add redundant or conflicting guidance and inflate token cost. SKILL.md §4 RULE #10 formalizes this: voice is the calling AI's responsibility, not Codex's.
+
+**Q: Does this conflict with the project-level `AGENTS.md` framework?**
+A: No — they're complementary. The project `AGENTS.md` is authoritative for gates, scope, and memory; the global voice file only shapes how responses sound. The global file's header explicitly defers to the project file for anything framework-level.
+
 <!-- /ANCHOR:faq -->
 
 ---
@@ -359,6 +375,10 @@ A: Yes. The `codex cloud` subcommand offloads execution to remote infrastructure
 - [agent_delegation.md](./references/agent_delegation.md): Agent profiles, routing, and invocation patterns
 - [integration_patterns.md](./references/integration_patterns.md): Cross-AI orchestration workflows
 - [prompt_templates.md](./assets/prompt_templates.md): Copy-paste ready prompts
+- [prompt_quality_card.md](./assets/prompt_quality_card.md): Framework-per-task selector and CLEAR 5-check
+
+### User-Level Voice Configuration (outside this skill)
+- `<repo>/.codex/AGENTS.md` (symlinked to `~/.codex/AGENTS.md`) — global voice, tone, and reasoning-visibility instructions loaded by Codex CLI at every session start. Origin: spec `046-cli-codex-tone-of-voice`.
 
 ### Related Skills
 - [cli-claude-code](../cli-claude-code/): Anthropic Claude Code CLI orchestrator

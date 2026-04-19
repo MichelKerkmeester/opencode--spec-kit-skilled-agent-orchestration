@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/046-cli-codex-tone-of-voice",
+  "spec_folder": "skilled-agent-orchestration/046-cli-codex-tone-of-voice",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "codex tone",
+      "codex voice",
+      "codex personalization",
+      "codex custom instructions",
+      "claude-like codex",
+      "gpt-5.4 voice",
+      "codex agents.md",
+      "codex global voice",
+      "codex tone plan",
+      "codex voice plan",
+      "046 plan",
+      "046 tasks"
+    ],
+    "key_topics": [
+      "codex",
+      "tone",
+      "voice",
+      "personalization",
+      "custom",
+      "instructions",
+      "claude-like",
+      "gpt-5",
+      "agents",
+      "global",
+      "plan",
+      "046"
+    ],
+    "importance_tier": "normal",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      ".codex/AGENTS.md",
+      ".opencode/skill/cli-codex/SKILL.md",
+      ".opencode/skill/cli-codex/README.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": ".codex/AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-codex/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-codex/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Codex Tone",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Voice Personalization",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Claude Opus",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Reasoning Visibility",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Resource Domains",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Smart Routing",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Breakdown",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Folder",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Initial Deliverable Assets",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Related Resources",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Codex-family models (GPT-5.4, GPT-5.3-codex) and the Codex APP product default to a response style that differs from Claude Opus in observable, friction-producing ways: (1) opens with pleasantries (\"Certainly!\", \"Absolutely!\", \"Great question!\"); (2) declares conclusions without showing reasoning or trade-offs; (3) agrees with faulty user premises for conversational flow; (4) silently over-engineers and gold-plates beyond the stated scope; (5) reports partial work as a \"good stopping point\"; (6) hedges less when uncertain; (7) rarely surfaces assumptions explicitly. AGENTS.md enforces behavior at the framework level (gates, scope, memory), but not at the **conversational style** level — and Codex APP has no AGENTS.md injection path at all.",
+    "created_at": "2026-04-19T11:24:29.406Z",
+    "last_save_at": "2026-04-19T13:30:40.388Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

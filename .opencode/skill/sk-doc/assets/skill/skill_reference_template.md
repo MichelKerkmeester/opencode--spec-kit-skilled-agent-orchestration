@@ -95,7 +95,7 @@ description: [One-line description - same as intro]
 > **WARNING: DO NOT duplicate content between intro and Section 1.**
 > The intro is a hook; Section 1 provides the details.
 
-#### ✅ GOOD Intro Structure
+#### GOOD Intro Structure
 
 ```markdown
 # Git Commit Workflows
@@ -118,7 +118,7 @@ Provides systematic workflows for analyzing changes, filtering artifacts, and cr
 Atomic commits with clear intent + filtered artifacts = maintainable Git history.
 ```
 
-#### ❌ BAD Intro Structure (duplicates content)
+#### BAD Intro Structure (duplicates content)
 
 ```markdown
 # Git Commit Workflows
@@ -217,7 +217,7 @@ Level 3: Reference files (this document)
 - Overview and "When to Use"
 - High-level workflow (3-5 steps)
 - Essential rules (ALWAYS/NEVER/ESCALATE IF)
-  > **Note**: RULES sections in SKILL.md use semantic emojis on H3/H4: `### ✅ ALWAYS`, `### ❌ NEVER`, `### ⚠️ ESCALATE IF` (or `####` at phase depth). These are the ONLY rule-heading emojis allowed. See [skill_md_template.md](./skill_md_template.md) for the complete pattern.
+  > **Note**: RULES sections in SKILL.md use ALL-CAPS H3 headers: `### ALWAYS`, `### NEVER`, `### ESCALATE IF` (or `####` at phase depth). See [skill_md_template.md](./skill_md_template.md) for the complete pattern.
 - Quick reference
 
 **Size**: Content under 200 lines
@@ -301,13 +301,13 @@ You MUST complete each phase before proceeding to the next.
 ```markdown
 ### [Pattern Name]
 
-❌ **BEFORE**: [Problem description]
+**BEFORE**: [Problem description]
 \```[language]
 // Bad code with issues
 // Showing what NOT to do
 \```
 
-✅ **AFTER**: [Solution description]
+**AFTER**: [Solution description]
 \```[language]
 // Good code with fixes
 // Showing correct approach
@@ -317,8 +317,8 @@ You MUST complete each phase before proceeding to the next.
 ```
 
 **Key Elements**:
-- ❌ emoji for "before" (wrong way)
-- ✅ emoji for "after" (right way)
+- `BEFORE:` marker for the wrong-way code
+- `AFTER:` marker for the right-way code
 - Inline comments explaining issues
 - "Why better" rationale
 

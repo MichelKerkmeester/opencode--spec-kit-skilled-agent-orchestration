@@ -185,7 +185,7 @@ description: [One-line description - same as intro]
 > **WARNING: DO NOT duplicate content between intro and OVERVIEW section.**
 > The intro is a hook; OVERVIEW provides the details.
 
-#### ✅ GOOD Intro Structure
+#### GOOD Intro Structure
 
 ```markdown
 # Git Commit Templates
@@ -208,7 +208,7 @@ Copy the appropriate template based on commit type...
 ...
 ```
 
-#### ❌ BAD Intro Structure (too long, has subsections)
+#### BAD Intro Structure (too long, has subsections)
 
 ```markdown
 # Git Commit Templates
@@ -410,7 +410,6 @@ Validate the document structure:
 1. Check if required sections exist
 2. Verify section ordering is correct
 3. Ensure frontmatter is valid (if present)
-4. Check emoji usage in headers
 ```
 
 **After (Python Pseudo-Code)**:
@@ -436,11 +435,6 @@ def validate_document(doc, doc_type):
     if doc.has_frontmatter:
         frontmatter_errors = validate_frontmatter(doc.frontmatter, doc_type)
         errors.extend(frontmatter_errors)
-
-    # Check emoji usage
-    for section in doc.sections:
-        if not section.has_emoji and section.level <= 2:
-            errors.append(f"Section '{section.name}' missing emoji")
 
     return errors
 ```
@@ -489,7 +483,7 @@ document_creation_workflow:
     depends_on: "phase_3_population"
 
   phase_5_formatting:
-    action: "Apply code standards (emoji, spacing, headers)"
+    action: "Apply code standards (spacing, headers)"
     output: "Formatted document"
     depends_on: "phase_4_validation"
 
@@ -507,7 +501,7 @@ document_creation_workflow:
 | ----------------- | ------- | ----------------------------------- |
 | strict_validation | true    | Enforce all validation rules        |
 | auto_fix          | false   | Automatically fix formatting issues |
-| emoji_required    | true    | Require emoji in H2/H3 headers      |
+| frontmatter_check | true    | Validate frontmatter per document type |
 ```
 
 **After (YAML Configuration)**:
@@ -524,9 +518,9 @@ feature_flags:
     values: [true, false]
     warning: "Use with caution - may change document semantics"
 
-  emoji_required:
+  frontmatter_check:
     default: true
-    description: "Require emoji in H2/H3 headers per code standards"
+    description: "Validate frontmatter fields per document type"
     values: [true, false]
     enforcement_level: "error"
 ```
@@ -610,7 +604,6 @@ tool_configuration:
 
     formatting:
       max_line_length: 100
-      emoji_style: "unicode"  # unicode | shortcode
       heading_style: "atx"    # atx | setext
 
     output:
@@ -626,7 +619,6 @@ tool_configuration:
 
     sections:
       require_toc_when: "lines > 100"
-      require_emoji: true
       numbering: "sequential"  # sequential | hierarchical | none
 ```
 
@@ -674,7 +666,7 @@ VALIDATION_LEVELS = {
     "SHOULD": {
         "severity": "warning",
         "blocking": False,
-        "examples": ["Emoji missing in headers", "Line length exceeds 100"],
+        "examples": ["Line length exceeds 100", "Inconsistent list bullet style"],
     },
 
     "MAY": {
@@ -718,10 +710,9 @@ VALIDATION_LEVELS = {
 | Checklist  | `[topic]_checklist.md`   | `validation_checklist.md`    |
 
 **Section Names**:
-- Start with emoji (contextually appropriate)
 - Use title case
 - Be descriptive but concise
-- Number if sequential: `1. 📋 Template Name`
+- Number if sequential: `1. Template Name`
 
 
 ### Content Organization
@@ -751,12 +742,6 @@ VALIDATION_LEVELS = {
 - Examples:
   - ✅ `[skill-name]`, `[feature-description]`, `your-project-name`
   - ❌ `xxx`, `placeholder`, `FIXME`
-
-**Emoji Usage**:
-- One emoji per H2/H3 header (at start)
-- Choose contextually appropriate emojis
-- Be consistent within file (same emoji for same concepts)
-- See `emoji_reference.md` for recommendations (if it exists)
 
 **Lists**:
 - Use `-` for unordered lists
@@ -802,7 +787,7 @@ VALIDATION_LEVELS = {
 Structure:
 □ Title with descriptive subtitle
 □ Introduction paragraph (1-2 sentences)
-□ Numbered sections with emojis
+□ Numbered sections
 □ Horizontal rules (---) between major sections
 
 Content:
@@ -815,7 +800,6 @@ Content:
 Quality:
 □ File name follows conventions ([topic]_[type].md)
 □ All code blocks specify language
-□ Headers use consistent emoji style
 □ No spelling or grammar errors
 □ Links work correctly
 
@@ -856,7 +840,6 @@ Integration:
 - TOC listing all templates
 - One section per document type
 - Section order requirements
-- Emoji standards
 - Quick validation checklist
 
 **Key Features**:
@@ -936,7 +919,7 @@ Integration:
 - ✅ Use clear, descriptive file names
 - ✅ Reference from SKILL.md where relevant
 - ✅ Keep assets focused (one topic per file)
-- ✅ Use consistent formatting and emoji style
+- ✅ Use consistent formatting
 
 **DON'T**:
 - ❌ Duplicate SKILL.md core content in assets
