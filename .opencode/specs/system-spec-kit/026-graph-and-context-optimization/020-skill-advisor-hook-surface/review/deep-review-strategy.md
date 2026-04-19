@@ -92,3 +92,14 @@ After convergence or iter 40:
 ## Convergence Threshold
 
 0.05
+
+## Extension Run Notes (Iterations 10-40)
+
+- User directive overrode the iteration-009 convergence stop. This packet was intentionally driven to the full 40-iteration cap.
+- Dimension rotation completed to plan: D1 x5, D2 x5, D3 x5, D4 x4, D5 x4, D6 x4, D7 x4 across iterations 10-40.
+- New findings added during the extension run:
+  - `P1-012-01` (D5): plugin bridge timeout resolves before child exit and never escalates past SIGTERM
+  - `P2-013-01` (D6): plugin negative-path coverage omits parser/nonzero-exit branches
+  - `P1-016-01` (D7): published build/setup commands point at a repo-root workspace invocation the checkout cannot satisfy
+- Final cumulative totals after iteration 040: P0=0, P1=5, P2=2
+- Deferred items remain unchanged: live-AI telemetry gaps and the two pre-existing non-020 failures were not re-opened as blockers.

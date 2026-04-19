@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-04-19T19:05:24Z",
+  "generatedAt": "2026-04-19T19:51:00Z",
   "target": "skill-advisor-phase-stack",
   "verdict": "PASS",
   "hasAdvisories": true,
   "totals": {
     "P0": 0,
-    "P1": 3,
-    "P2": 1,
-    "iterations": 9
+    "P1": 5,
+    "P2": 2,
+    "iterations": 40
   },
   "byDimension": {
     "D1": {
@@ -32,17 +32,17 @@
     },
     "D5": {
       "P0": [],
-      "P1": ["P1-005-01"],
+      "P1": ["P1-005-01", "P1-012-01"],
       "P2": []
     },
     "D6": {
       "P0": [],
       "P1": [],
-      "P2": ["P2-006-01"]
+      "P2": ["P2-006-01", "P2-013-01"]
     },
     "D7": {
       "P0": [],
-      "P1": [],
+      "P1": ["P1-016-01"],
       "P2": []
     }
   },
@@ -89,6 +89,39 @@
       "evidence": ".opencode/skill/system-spec-kit/mcp_server/tests/advisor-privacy.vitest.ts:78-112",
       "impact": "The current suite is broad but would not directly catch the two most valuable regressions identified by this review.",
       "remediation": "Add a subprocess command-line privacy assertion and a plugin parity suite that reuses the runtime-parity fixtures.",
+      "status": "open"
+    },
+    {
+      "id": "P1-012-01",
+      "severity": "P1",
+      "dimension": "D5",
+      "iteration": 12,
+      "headline": "Plugin bridge timeout resolves before child exit and never escalates past SIGTERM",
+      "evidence": ".opencode/plugins/spec-kit-skill-advisor.js:171-186",
+      "impact": "Timed-out bridge subprocesses can outlive the failed request, creating transport-specific resource churn when timeouts repeat.",
+      "remediation": "Wait for child exit after SIGTERM, escalate to SIGKILL on grace-window expiry, and add a regression test for a non-exiting bridge child.",
+      "status": "open"
+    },
+    {
+      "id": "P2-013-01",
+      "severity": "P2",
+      "dimension": "D6",
+      "iteration": 13,
+      "headline": "Plugin coverage omits the bridge parser and nonzero-exit negative branches",
+      "evidence": ".opencode/plugins/spec-kit-skill-advisor.js:127-155",
+      "impact": "Regressions in empty-stdout, malformed-JSON, or parsed-success-plus-nonzero-exit handling would currently slip past the shipped plugin suite.",
+      "remediation": "Add plugin tests for EMPTY_STDOUT, PARSE_FAIL, and NONZERO_EXIT branches.",
+      "status": "open"
+    },
+    {
+      "id": "P1-016-01",
+      "severity": "P1",
+      "dimension": "D7",
+      "iteration": 16,
+      "headline": "Published build/setup commands point at a repo-root workspace invocation that the checkout cannot satisfy",
+      "evidence": ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md:86-91",
+      "impact": "The first documented setup/build step fails on a normal checkout because the repo root disables workspaces and is not the system-spec-kit workspace root.",
+      "remediation": "Update docs to build from .opencode/skill/system-spec-kit or .opencode/skill/system-spec-kit/mcp_server, or align the repo root with the documented workspace invocation.",
       "status": "open"
     }
   ]
