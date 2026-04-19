@@ -183,6 +183,8 @@ LOAD_LEVELS = {
     "IMPLEMENTATION": "STANDARD",
 }
 
+ON_DEMAND_KEYWORDS = ["database migration", "api endpoint", "react feature", "nodejs handler", "deployment pipeline", "coverage regression"]
+
 AMBIGUITY_DELTA = 1
 
 def _task_text(task) -> str:
@@ -360,6 +362,12 @@ def route_resources(user_request, task=None, workspace_files=None, package_json_
         for path in (focused_refs or stack_refs[:6]):
             load_if_available(path)
     else:
+        for path in stack_refs:
+            load_if_available(path)
+        for path in stack_assets:
+            load_if_available(path)
+
+    if any(keyword in task_text for keyword in ON_DEMAND_KEYWORDS):
         for path in stack_refs:
             load_if_available(path)
         for path in stack_assets:

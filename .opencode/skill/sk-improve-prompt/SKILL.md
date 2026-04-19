@@ -114,7 +114,7 @@ RESOURCE_MAP = {
     "FRAMEWORK": ["references/patterns_evaluation.md"],
 }
 
-ON_DEMAND_KEYWORDS = ["deep dive", "full template", "all frameworks", "format guide"]
+ON_DEMAND_KEYWORDS = ["deep dive", "full template", "all frameworks", "format guide", "overnight-agent prompt", "system prompt", "prompt package", "prompt variant", "operator prompt", "evaluator prompt", "dispatch prompt"]
 
 UNKNOWN_FALLBACK_CHECKLIST = [
     "Is this a prompt enhancement request or a different task?",

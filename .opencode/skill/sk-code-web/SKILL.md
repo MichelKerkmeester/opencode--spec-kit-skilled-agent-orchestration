@@ -182,7 +182,7 @@ RESOURCE_MAP = {
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE],
-    "ON_DEMAND_KEYWORDS": ["deep dive", "full checklist", "full performance plan"],
+    "ON_DEMAND_KEYWORDS": ["deep dive", "full checklist", "full performance plan", "webflow", "css", "browser", "html", "viewport", "routing dashboard"],
     "ON_DEMAND": ["assets/checklists/code_quality_checklist.md", "assets/checklists/verification_checklist.md"],
 }
 

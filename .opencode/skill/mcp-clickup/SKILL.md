@@ -83,7 +83,7 @@ RESOURCE_MAP = {
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE],
-    "ON_DEMAND_KEYWORDS": ["full reference", "all tools", "all commands", "deep dive"],
+    "ON_DEMAND_KEYWORDS": ["full reference", "all tools", "all commands", "deep dive", "clickup sprint", "clickup tasks", "summarize blockers", "routing hardening", "sprint tasks"],
     "ON_DEMAND": ["references/tool_reference.md", "references/cli_reference.md", "assets/tool_categories.md"],
 }
 

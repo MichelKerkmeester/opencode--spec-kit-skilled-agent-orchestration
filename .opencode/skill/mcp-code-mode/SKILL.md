@@ -75,7 +75,7 @@ from pathlib import Path
 
 SKILL_ROOT = Path(__file__).resolve().parent
 RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "assets")
-DEFAULT_RESOURCE = "references/quick_reference.md"
+DEFAULT_RESOURCE = "references/workflows.md"
 
 INTENT_SIGNALS = {
     "NAMING": {"weight": 4, "keywords": ["tool not found", "naming", "prefix", "format"]},
@@ -104,7 +104,7 @@ COMMAND_BOOSTS = {
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE],
-    "ON_DEMAND_KEYWORDS": ["full config", "deep dive", "full workflow", "all tools"],
+    "ON_DEMAND_KEYWORDS": ["full config", "deep dive", "full workflow", "all tools", "call_tool_chain", "tool chain", "mcp tools", "tool catalog", "code mode"],
     "ON_DEMAND": ["references/configuration.md", "references/workflows.md"],
 }
 

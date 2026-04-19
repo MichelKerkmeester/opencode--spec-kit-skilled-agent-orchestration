@@ -26,7 +26,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Parent Track** | 026-graph-and-context-optimization |
-| **Predecessors** | 021/001 (advisor-hook efficacy), 021/002 (SKILL.md smart-router efficacy) |
+| **Predecessors** | 021/001 (advisor-hook efficacy), 021/002 (skill-manifest smart-router efficacy) |
 
 ---
 
@@ -50,7 +50,7 @@ _memory:
 
 Two research packets just shipped with 10+ concrete recommendations:
 - **021/001** (advisor hook efficacy): V8 + V9 adopt-now → build `spec-kit-skill-advisor` OpenCode plugin using the `spec-kit-compact-code-graph.js` pattern.
-- **021/002** (SKILL.md smart-router efficacy): 6 recommendations spanning stale paths, keyword tuning, fallback safety, CI check, observe-only harness.
+- **021/002** (skill-manifest smart-router efficacy): 6 recommendations spanning stale paths, keyword tuning, fallback safety, CI check, observe-only harness.
 
 None are being acted on. Without remediation, the smart-router pattern stays pure advisory, the OpenCode plugin surface is missing, and the 76.3% theoretical savings ceiling from 021/002 remains unrealized.
 
@@ -77,8 +77,8 @@ Ship all 6 recommendations + the OpenCode plugin in a single remediation packet.
 - Target: raise hit rate from 5.5% baseline toward 20%+ on common-case prompts
 
 **Area C — CLI silent-fallback replacement**
-- `cli-codex`, `cli-copilot`, `cli-gemini` `SKILL.md`: replace silent `GENERATION` zero-score default with explicit `UNKNOWN_FALLBACK` + disambiguation checklist (pattern from non-CLI skills)
-- `cli-claude-code` `SKILL.md`: same for `DEEP_REASONING` default
+- `cli-codex`, `cli-copilot`, `cli-gemini` skill manifests: replace silent `GENERATION` zero-score default with explicit `UNKNOWN_FALLBACK` + disambiguation checklist (pattern from non-CLI skills)
+- `cli-claude-code` skill manifest: same for `DEEP_REASONING` default
 - Preserve behavior when intents DO score — only change the zero-score path
 
 **Area D — Static CI check**
@@ -163,10 +163,80 @@ Ship all 6 recommendations + the OpenCode plugin in a single remediation packet.
 - **SC-005**: Observe-only harness produces valid compliance records
 - **SC-006**: 118/118 Phase 020 tests green; tsc clean; validate.sh --strict clean
 - **SC-007**: Plugin tests pass (unit tests for cache + status tool + opt-out)
+<!-- /ANCHOR:success-criteria -->
 
 ---
 
-## RELATED DOCUMENTS
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Phase 020 advisor dist output | Plugin bridge cannot load canonical producer/renderer | Use compiled dist path and fail open when unavailable |
+| Dependency | 019 corpus | ON_DEMAND hit-rate measurement loses evidence | Use the committed JSONL corpus path from the spec |
+| Risk | Router parser misses a pseudocode variant | Static checker may under-report stale paths | Support documented aliases and validate current skills with test-like local runs |
+| Risk | Plugin exposes prompt text in status | Privacy regression | Status tool reports only configuration, cache, and health fields |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Plugin bridge timeout defaults to 1000ms and fails open.
+- **NFR-P02**: Static checker should run from shell without requiring a TypeScript build.
+
+### Security
+- **NFR-S01**: Plugin status output must not contain raw prompts, stdout, stderr, secrets, or recommendations derived from prompt text.
+- **NFR-S02**: Telemetry must record caller-supplied resource paths and compliance class without storing raw prompts.
+
+### Reliability
+- **NFR-R01**: Area D missing-path failures exit 1; bloat warnings exit 0.
+- **NFR-R02**: Area F plugin opt-out must avoid bridge invocation through both env and config flags.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Acceptance Scenarios
+- **Given** a router references a missing markdown file, **When** `check-smart-router.sh` runs, **Then** it exits 1 and names the missing path.
+- **Given** a router has an ALWAYS tier larger than 50% of its loadable tree, **When** `check-smart-router.sh` runs, **Then** it emits a bloat warning but exits 0 if no paths are missing.
+- **Given** a CLI skill has no matching route score, **When** its pseudocode fallback executes, **Then** it returns UNKNOWN and a disambiguation checklist instead of a productive intent.
+- **Given** the plugin is disabled by env or config, **When** a user prompt arrives, **Then** no bridge process is invoked and no additional context is returned.
+
+### Error Scenarios
+- Bridge timeout: plugin returns no brief and status reflects fail-open health.
+- Missing telemetry directory: recorder creates it before appending JSONL.
+- Empty actual reads: telemetry classifies missing expected resources when allowed resources were predicted.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 22/25 | Six work areas touch skill docs, scripts, tests, and plugin code |
+| Risk | 18/25 | Main risks are Phase 020 regression and prompt-safe plugin behavior |
+| Research | 18/20 | Work is driven by 021/001 and 021/002 research packets |
+| **Total** | **58/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- None at implementation start. Runtime enforcement is intentionally deferred until telemetry data exists.
+<!-- /ANCHOR:questions -->
+
+---
+
+### Related Documents
 
 - Parent: `../020-skill-advisor-hook-surface/` (shipped)
 - Research inputs:

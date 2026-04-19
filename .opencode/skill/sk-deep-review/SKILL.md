@@ -55,7 +55,7 @@ This skill is invoked EXCLUSIVELY through the `/spec_kit:deep-review` command. T
 
 **ALWAYS:**
 - Invoke via `/spec_kit:deep-review :auto` or `/spec_kit:deep-review :confirm`
-- Let the command's YAML workflow own dispatch (auto: `assets/spec_kit_deep-review_auto.yaml`)
+- Let the command's YAML workflow own dispatch (auto: `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`)
 - Let `scripts/reduce-state.cjs` be the SINGLE state writer
 - Require every iteration to produce BOTH the markdown narrative AND the JSONL delta (dispatch scripts must fail if either is missing)
 - Use `resolveArtifactRoot(specFolder, 'review')` from `.opencode/skill/system-spec-kit/shared/review-research-paths.cjs` to locate the canonical review root
@@ -199,7 +199,7 @@ RESOURCE_MAP = {
 
 LOADING_LEVELS = {
     "ALWAYS":            [DEFAULT_RESOURCE],
-    "ON_DEMAND_KEYWORDS": ["full protocol", "all templates", "complete reference"],
+    "ON_DEMAND_KEYWORDS": ["full protocol", "all templates", "complete reference", "resume deep review", "deep-review wave", "review artifact", "release-readiness audit", "convergence-tracked", "same session lineage", "P0"],
     "ON_DEMAND":         [
         "references/loop_protocol.md",
         "references/state_format.md",

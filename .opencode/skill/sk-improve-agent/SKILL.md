@@ -102,7 +102,7 @@ RESOURCE_MAP = {
     "LOOP_EXECUTION": ["references/loop_protocol.md", "references/benchmark_operator_guide.md"],
     "EVALUATION_POLICY": ["references/evaluator_contract.md", "references/no_go_conditions.md", "references/promotion_rules.md"],
     "PROMOTION_OPERATIONS": ["references/rollback_runbook.md", "references/mirror_drift_policy.md", "references/promotion_rules.md"],
-    "TARGET_ONBOARDING": ["references/target_onboarding.md", "references/second_target_evaluation.md"],
+    "TARGET_ONBOARDING": ["references/target_onboarding.md"],
     "INTEGRATION_SCAN": ["references/integration_scanning.md", "references/evaluator_contract.md"],
     "FULL_SETUP": ["assets/improvement_charter.md", "assets/improvement_strategy.md"],
 }
@@ -110,6 +110,8 @@ RESOURCE_MAP = {
 RUNTIME_ASSETS = {
     "ALWAYS": ["assets/improvement_config.json", "assets/target_manifest.jsonc"],
 }
+
+ON_DEMAND_KEYWORDS = ["target profile", "score candidate", "proposal loop", "benchmark", "promotion gate", "mirror drift"]
 
 def _task_text(task) -> str:
     return " ".join([
@@ -167,6 +169,12 @@ def route_recursive_agent_resources(task):
     for intent in intents:
         for relative_path in RESOURCE_MAP.get(intent, []):
             load_if_available(relative_path)
+
+    text = _task_text(task)
+    if any(keyword in text for keyword in ON_DEMAND_KEYWORDS):
+        for paths in RESOURCE_MAP.values():
+            for relative_path in paths:
+                load_if_available(relative_path)
 
     runtime_assets = list(RUNTIME_ASSETS["ALWAYS"])
 

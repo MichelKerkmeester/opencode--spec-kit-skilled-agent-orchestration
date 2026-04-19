@@ -220,7 +220,7 @@ COMMAND_BOOSTS = {
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE],
-    "ON_DEMAND_KEYWORDS": ["deep dive", "full validation", "full checklist", "full template"],
+    "ON_DEMAND_KEYWORDS": ["deep dive", "full validation", "full checklist", "full template", "save context", "/memory:save", "/spec_kit:resume", "implementation-summary", "tasks.md", "spec folder", "phase folder", "description metadata"],
     "ON_DEMAND": [
         "references/validation/phase_checklists.md",
         "references/templates/template_guide.md",

@@ -124,6 +124,8 @@ UNKNOWN_FALLBACK_CHECKLIST = [
     "Confirm minimum verification command set before completion claim",
 ]
 
+ON_DEMAND_KEYWORDS = ["gate-3-classifier", "skill_advisor.py", "vitest", "jsonl", "json schema", "commonjs helper", "mcp.json", "typescript"]
+
 def _task_text(task) -> str:
     return " ".join([
         str(getattr(task, "context", "")),
@@ -236,6 +238,10 @@ def route_opencode_resources(task):
             "needs_clarification": True,
             "disambiguation_checklist": UNKNOWN_FALLBACK_CHECKLIST,
         }
+
+    if any(keyword in text for keyword in ON_DEMAND_KEYWORDS):
+        for language in languages:
+            selected.append(f"assets/checklists/{language.lower()}_checklist.md")
 
     deduped = []
     seen = set()

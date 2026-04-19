@@ -128,7 +128,7 @@ Create manual testing playbooks with deterministic scenarios, structured evidenc
 
 Create feature catalogs with a rooted capability inventory, numbered category sections, and per-feature reference files.
 
-**Feature Catalog** - Use `feature_catalog/feature_catalog_template.md` when:
+**Feature Catalog** - Use `assets/documentation/feature_catalog/feature_catalog_template.md` when:
 - Creating a canonical current-state feature inventory for a skill or system
 - Linking manual playbooks back to a stable capability reference
 - Documenting current behavior with source-file anchors and stable slugs
@@ -212,7 +212,7 @@ RESOURCE_MAP = {
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE],
-    "ON_DEMAND_KEYWORDS": ["full standards", "all templates", "deep dive"],
+    "ON_DEMAND_KEYWORDS": ["full standards", "all templates", "deep dive", "readme", "documentation", "manual testing playbook", "feature catalog", "release notes", "corpus/readme", "corpus documentation"],
     "ON_DEMAND": ["assets/documentation/frontmatter_templates.md"],
 }
 

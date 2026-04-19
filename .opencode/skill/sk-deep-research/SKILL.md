@@ -53,7 +53,7 @@ This skill is invoked EXCLUSIVELY through the `/spec_kit:deep-research` command.
 
 **ALWAYS:**
 - Invoke via `/spec_kit:deep-research :auto` or `/spec_kit:deep-research :confirm`
-- Let the command's YAML workflow own dispatch (auto: `assets/spec_kit_deep-research_auto.yaml`)
+- Let the command's YAML workflow own dispatch (auto: `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`)
 - Let `scripts/reduce-state.cjs` be the SINGLE state writer
 - Require every iteration to produce BOTH the markdown narrative AND the JSONL delta (dispatch scripts must fail if either is missing)
 - Use `resolveArtifactRoot(specFolder, 'research')` from `.opencode/skill/system-spec-kit/shared/review-research-paths.cjs` to locate the canonical research root
@@ -185,7 +185,7 @@ RESOURCE_MAP = {
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE],
-    "ON_DEMAND_KEYWORDS": ["full protocol", "all templates", "complete reference"],
+    "ON_DEMAND_KEYWORDS": ["full protocol", "all templates", "complete reference", "resume deep research", "routing-accuracy iteration", "state log", "research/iterations", "deltas", "overnight research", "active lineage"],
     "ON_DEMAND": ["references/loop_protocol.md", "references/state_format.md", "references/convergence.md"],
 }
 ```

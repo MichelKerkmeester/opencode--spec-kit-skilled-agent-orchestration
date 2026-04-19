@@ -86,7 +86,7 @@ RESOURCE_MAP = {
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE],
-    "ON_DEMAND_KEYWORDS": ["full git flow", "all templates", "full reference"],
+    "ON_DEMAND_KEYWORDS": ["full git flow", "all templates", "full reference", "git worktree", "experiment branch", "clean experiment branch", "routing-hardening", "routing-accuracy experiment"],
     "ON_DEMAND": ["references/shared_patterns.md", "assets/commit_message_template.md"],
 }
 

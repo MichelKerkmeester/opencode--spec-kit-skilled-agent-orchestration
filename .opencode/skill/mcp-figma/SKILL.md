@@ -120,7 +120,7 @@ RESOURCE_MAP = {
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE],
-    "ON_DEMAND_KEYWORDS": ["full reference", "deep dive", "all figma tools"],
+    "ON_DEMAND_KEYWORDS": ["full reference", "deep dive", "all figma tools", "figma design", "component screenshots", "main frame", "dashboard component", "scorecard component"],
     "ON_DEMAND": ["references/tool_reference.md", "assets/tool_categories.md"],
 }
 

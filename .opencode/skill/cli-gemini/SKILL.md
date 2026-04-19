@@ -137,7 +137,7 @@ RESOURCE_MAP = {
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE, "assets/prompt_quality_card.md"],
-    "ON_DEMAND_KEYWORDS": ["full reference", "all templates", "deep dive", "complete guide"],
+    "ON_DEMAND_KEYWORDS": ["full reference", "all templates", "deep dive", "complete guide", "google search", "gemini prompt", "gemini agent", "web research", "multi query"],
     "ON_DEMAND": ["references/gemini_tools.md", "assets/prompt_templates.md"],
 }
 
@@ -181,7 +181,7 @@ def score_intents(task) -> dict[str, float]:
 def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_intents: int = 2) -> list[str]:
     ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
     if not ranked or ranked[0][1] <= 0:
-        return ["GENERATION"]  # zero-score fallback
+        return ["UNKNOWN"]
     selected = [ranked[0][0]]
     if len(ranked) > 1 and ranked[1][1] > 0 and (ranked[0][1] - ranked[1][1]) <= ambiguity_delta:
         selected.append(ranked[1][0])
@@ -207,9 +207,8 @@ def route_gemini_resources(task):
 
     # 2. UNKNOWN FALLBACK: no keywords matched at all
     if max(scores.values()) == 0:
-        load_if_available("references/cli_reference.md")
         return {
-            "intents": ["GENERATION"],
+            "intents": ["UNKNOWN"],
             "load_level": "UNKNOWN_FALLBACK",
             "needs_disambiguation": True,
             "disambiguation_checklist": UNKNOWN_FALLBACK_CHECKLIST,

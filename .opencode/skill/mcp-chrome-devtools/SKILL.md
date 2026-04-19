@@ -83,7 +83,7 @@ RESOURCE_MAP = {
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE],
-    "ON_DEMAND_KEYWORDS": ["full troubleshooting", "full session guide", "all patterns"],
+    "ON_DEMAND_KEYWORDS": ["full troubleshooting", "full session guide", "all patterns", "capture a har", "console errors", "routing dashboard", "staging", "devtools"],
     "ON_DEMAND": ["references/troubleshooting.md", "references/session_management.md"],
 }
 

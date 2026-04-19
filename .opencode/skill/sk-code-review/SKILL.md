@@ -147,7 +147,7 @@ RESOURCE_MAP = {
     "TESTING": ["references/test_quality_checklist.md"],
 }
 
-ON_DEMAND_KEYWORDS = ["deep review", "full review", "all checks", "comprehensive"]
+ON_DEMAND_KEYWORDS = ["deep review", "full review", "all checks", "comprehensive", "flag false positives", "blocking regressions", "list findings", "read-only only", "underrepresented", "scope correctly"]
 UNKNOWN_FALLBACK_CHECKLIST = [
     "Confirm review scope (diff/staged/files/commit range)",
     "Confirm risk priority (security/correctness/performance/maintainability/test quality/contract safety)",
