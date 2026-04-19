@@ -51,7 +51,7 @@ _memory:
 
 Phase 020 shipped the skill-advisor hook surface across 4 runtimes (Claude/Gemini/Copilot/Codex) with 11 new lib files, 4 hook adapters, 11 test files, and full reference documentation at `.opencode/skill/system-spec-kit/references/hooks/`. However:
 
-1. The skill-advisor's OWN artifacts — `README.md`, `feature_catalog/feature_catalog.md`, `manual_testing_playbook/manual_testing_playbook.md` — have not been updated to reflect the new hook-based invocation path. They still describe the explicit `skill_advisor.py` subprocess flow as primary.
+1. The skill-advisor's OWN artifacts — `README.md`, feature_catalog/feature_catalog.md, manual_testing_playbook/manual_testing_playbook.md — have not been updated to reflect the new hook-based invocation path. They still describe the explicit `skill_advisor.py` subprocess flow as primary.
 
 2. Phase 020 lib + hook code was written by cli-codex autonomously. While tests + tsc + validate all pass, the code hasn't been audited against sk-code-opencode multi-language TypeScript standards (strict mode, explicit return types, error handling patterns, comment discipline, etc.). Mismatches may exist.
 
@@ -68,10 +68,10 @@ Bring skill-advisor's own docs into alignment with the Phase 020 hook surface, a
 ### In Scope
 
 **Docs updates:**
-- `.opencode/skill/skill-advisor/README.md` — add hook-based invocation as primary path; keep explicit `skill_advisor.py` as fallback; cross-reference `references/hooks/skill-advisor-hook.md`.
-- `.opencode/skill/skill-advisor/feature_catalog/feature_catalog.md` — document Phase 020 features: advisor hook, HMAC cache, freshness probe, 4-runtime parity, disable flag, observability, privacy contract.
-- `.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md` — add new playbook section for hook-based routing (per-runtime smoke test steps, disable-flag verification, stale-graph handling).
-- Optional: `.opencode/skill/skill-advisor/SET-UP_GUIDE.md` — reference hook registration snippets from 020/009.
+- `../../../../skill/skill-advisor/README.md` — add hook-based invocation as primary path; keep explicit `skill_advisor.py` as fallback; cross-reference references/hooks/skill-advisor-hook.md.
+- ../../../../skill/skill-advisor/feature_catalog/feature_catalog.md — document Phase 020 features: advisor hook, HMAC cache, freshness probe, 4-runtime parity, disable flag, observability, privacy contract.
+- ../../../../skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md — add new playbook section for hook-based routing (per-runtime smoke test steps, disable-flag verification, stale-graph handling).
+- Optional: `../../../../skill/skill-advisor/SET-UP_GUIDE.md` — reference hook registration snippets from 020/009.
 
 **Code alignment:**
 - Audit Phase 020 files against sk-code-opencode TypeScript standards:
@@ -97,9 +97,9 @@ Bring skill-advisor's own docs into alignment with the Phase 020 hook surface, a
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/skill-advisor/README.md` | Modify | Hook-based path documentation |
-| `.opencode/skill/skill-advisor/feature_catalog/feature_catalog.md` | Modify | Phase 020 feature additions |
-| `.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md` | Modify | Hook-based routing playbook |
+| `../../../../skill/skill-advisor/README.md` | Modify | Hook-based path documentation |
+| ../../../../skill/skill-advisor/feature_catalog/feature_catalog.md | Modify | Phase 020 feature additions |
+| ../../../../skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md | Modify | Hook-based routing playbook |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/*.ts` | Audit + Fix if drift | sk-code-opencode alignment |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/**/*.ts` | Audit + Fix if drift | sk-code-opencode alignment |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts` | Audit + Fix if drift | sk-code-opencode alignment (002 scope only) |
@@ -125,7 +125,7 @@ Bring skill-advisor's own docs into alignment with the Phase 020 hook surface, a
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-010 | Cross-references from skill-advisor docs to reference doc | README + feature catalog link to `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md` |
+| REQ-010 | Cross-references from skill-advisor docs to reference doc | README + feature catalog link to ../../../../skill/system-spec-kit/references/hooks/skill-advisor-hook.md |
 | REQ-011 | sk-code-opencode findings catalogued | `implementation-summary.md` lists every finding + whether fixed or deferred with reason |
 <!-- /ANCHOR:requirements -->
 
@@ -143,7 +143,7 @@ Bring skill-advisor's own docs into alignment with the Phase 020 hook surface, a
 - **SC-007**: validate.sh --strict clean on 022 spec folder
 
 ### Acceptance Scenario 1: README hook-first
-**Given** a user lands on `.opencode/skill/skill-advisor/README.md`, **when** they scan for "how to use the advisor", **then** the hook-based path is the primary documented invocation with cross-reference to the reference doc.
+**Given** a user lands on `../../../../skill/skill-advisor/README.md`, **when** they scan for "how to use the advisor", **then** the hook-based path is the primary documented invocation with cross-reference to the reference doc.
 
 ### Acceptance Scenario 2: Feature catalog comprehensive
 **Given** the feature catalog after update, **when** searched for "hook", **then** entries exist for: user-prompt-submit hook (4 runtimes), HMAC exact cache, freshness probe + per-skill fingerprints, generation counter, 4-runtime parity, disable flag env var, observability metrics + JSONL, privacy contract.
@@ -157,10 +157,29 @@ Bring skill-advisor's own docs into alignment with the Phase 020 hook surface, a
 
 ---
 
-## RELATED DOCUMENTS
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Phase 020 hook reference docs | Docs could drift from shipped hook behavior | Use ../../../../skill/system-spec-kit/references/hooks/skill-advisor-hook.md as the authoritative source |
+| Dependency | Phase 020 vitest suites | Code alignment could regress hook behavior unnoticed | Run the targeted 118-test Phase 020 suite after TS edits |
+| Risk | Over-broad code cleanup | Could change shipped Phase 020 behavior | Limit remediations to sk-code-opencode alignment issues and skip behavior-changing fixes |
+| Risk | Parallel Phase 021 research artifacts | Could accidentally modify sibling work | Scope edits to 022 docs, skill-advisor docs, and Phase 020 TS audit targets |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+No open questions remain for Phase 022 execution.
+
+### Related Documents
 
 - Parent: `../020-skill-advisor-hook-surface/` (shipped)
 - Sibling: `../021-smart-router-context-efficacy/` (research in progress)
-- sk-code-opencode skill: `.opencode/skill/sk-code-opencode/SKILL.md`
+- sk-code-opencode skill: `../../../../skill/sk-code-opencode/SKILL.md`
 - skill-advisor: `.opencode/skill/skill-advisor/`
-- Reference doc: `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md` (from 020/009)
+- Reference doc: ../../../../skill/system-spec-kit/references/hooks/skill-advisor-hook.md (from 020/009)
+<!-- /ANCHOR:questions -->

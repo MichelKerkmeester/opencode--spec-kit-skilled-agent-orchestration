@@ -15,7 +15,8 @@ This document combines the current feature inventory for the `skill-advisor` sys
 - [2. ROUTING PIPELINE](#2--routing-pipeline)
 - [3. GRAPH SYSTEM](#3--graph-system)
 - [4. SEMANTIC SEARCH](#4--semantic-search)
-- [5. TESTING](#5--testing)
+- [5. HOOK SURFACE](#5--hook-surface)
+- [6. TESTING](#6--testing)
 
 ---
 
@@ -28,6 +29,7 @@ Use this catalog as the canonical inventory for the live `skill-advisor` feature
 | Routing pipeline | 6 features | `skill_advisor.py` |
 | Graph system | 10 features | `skill_advisor.py`, `skill_graph_compiler.py`, `skill-graph.sqlite` |
 | Semantic search | 2 features | `skill_advisor.py` |
+| Hook surface | 12 features | `buildSkillAdvisorBrief()`, runtime `UserPromptSubmit` adapters |
 | Testing | 2 features | `skill_advisor_regression.py`, `skill_advisor.py` |
 
 ---
@@ -332,7 +334,203 @@ See [`03--semantic-search/02-auto-triggers.md`](03--semantic-search/02-auto-trig
 
 ---
 
-## 5. TESTING
+## 5. HOOK SURFACE
+
+These entries cover the Phase 020 prompt-time hook surface. The hook path is now the primary Gate 2 invocation route, while `skill_advisor.py` remains the direct CLI fallback for diagnostics and scripted checks. The operator contract lives in the [Skill Advisor Hook Reference](../../system-spec-kit/references/hooks/skill-advisor-hook.md).
+
+### User-prompt-submit hook adapters
+
+#### Description
+
+Runs the advisor at prompt time for Claude, Gemini, Copilot, and Codex.
+
+#### Current Reality
+
+Claude and Gemini emit JSON `hookSpecificOutput.additionalContext`, Copilot uses an SDK callback when available with a wrapper fallback, and Codex uses native `UserPromptSubmit` with a prompt-wrapper fallback when native hooks are unavailable.
+
+#### Source Files
+
+Primary adapters: `mcp_server/hooks/claude/user-prompt-submit.ts`, `mcp_server/hooks/gemini/user-prompt-submit.ts`, `mcp_server/hooks/copilot/user-prompt-submit.ts`, and `mcp_server/hooks/codex/user-prompt-submit.ts`.
+
+---
+
+### Shared-payload advisor envelope
+
+#### Description
+
+Defines the typed advisor metadata contract carried through shared payloads.
+
+#### Current Reality
+
+`AdvisorEnvelopeMetadata` allows only `freshness`, `confidence`, `uncertainty`, `skillLabel`, and `status`, with producer-gated metadata and prompt-derived provenance rejection.
+
+#### Source Files
+
+Primary contract: `mcp_server/lib/context/shared-payload.ts`.
+
+---
+
+### HMAC exact prompt cache
+
+#### Description
+
+Caches exact canonical prompt results without persisting prompt text.
+
+#### Current Reality
+
+Prompt cache keys use an HMAC with a process-local session secret, include runtime, source signature, and threshold settings, and expire after the 5-minute TTL.
+
+#### Source Files
+
+Primary implementation: `mcp_server/lib/skill-advisor/prompt-cache.ts`.
+
+---
+
+### Freshness probe and fingerprints
+
+#### Description
+
+Reports whether advisor sources and graph artifacts are current enough for hook output.
+
+#### Current Reality
+
+Freshness uses per-skill `SKILL.md` and `graph-metadata.json` fingerprints, script and graph artifact probes, generation-tagged snapshots, and explicit live/stale/absent/unavailable states.
+
+#### Source Files
+
+Primary implementation: `mcp_server/lib/skill-advisor/freshness.ts`.
+
+---
+
+### Generation counter
+
+#### Description
+
+Tags source snapshots so graph rebuilds can invalidate stale prompt-cache reads.
+
+#### Current Reality
+
+The generation counter writes through a temporary file plus rename, recovers malformed counters when possible, and reports unrecoverable corruption as unavailable freshness.
+
+#### Source Files
+
+Primary implementation: `mcp_server/lib/skill-advisor/generation.ts`.
+
+---
+
+### Four-runtime parity harness
+
+#### Description
+
+Keeps model-visible advisor text consistent across runtime transports.
+
+#### Current Reality
+
+Adapter output normalization compares Claude, Gemini, Copilot, and Codex outputs through a runtime-neutral shape so parity tests can assert identical `additionalContext` text.
+
+#### Source Files
+
+Primary implementation: `mcp_server/lib/skill-advisor/normalize-adapter-output.ts`.
+
+---
+
+### 200-prompt corpus parity gate
+
+#### Description
+
+Protects routing quality against regressions from hook integration.
+
+#### Current Reality
+
+The Phase 020 release gate reuses the 019/004 200-prompt corpus and requires top-1 parity between direct advisor output and hook-visible recommendations.
+
+#### Source Files
+
+Primary evidence: `mcp_server/tests/advisor-corpus-parity.vitest.ts` and the Phase 020 implementation summaries.
+
+---
+
+### Disable flag
+
+#### Description
+
+Provides an immediate rollback switch for prompt-time advisor work.
+
+#### Current Reality
+
+Setting `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` makes every runtime adapter bypass `buildSkillAdvisorBrief()` and emit `{}` or no prompt wrapper output.
+
+#### Source Files
+
+Primary contract: [Skill Advisor Hook Reference §9](../../system-spec-kit/references/hooks/skill-advisor-hook.md#9--disable-flag).
+
+---
+
+### Observability metrics
+
+#### Description
+
+Defines the closed metric namespace for hook outcomes, latency, cache behavior, and freshness.
+
+#### Current Reality
+
+Metrics use the `speckit_advisor_hook_*` namespace with closed labels for runtime, status, freshness, cacheHit, and errorCode.
+
+#### Source Files
+
+Primary implementation: `mcp_server/lib/skill-advisor/metrics.ts`.
+
+---
+
+### AdvisorHookDiagnosticRecord JSONL
+
+#### Description
+
+Standardizes prompt-free diagnostic records written by runtime adapters.
+
+#### Current Reality
+
+Diagnostics include timestamp, runtime, status, freshness, duration, cache hit state, optional error code, skill label, and generation. Forbidden JSONL fields include `prompt`, `promptFingerprint`, `promptExcerpt`, `stdout`, and `stderr`.
+
+#### Source Files
+
+Primary implementation: `mcp_server/lib/skill-advisor/metrics.ts`.
+
+---
+
+### advisor-hook-health session section
+
+#### Description
+
+Summarizes recent hook health without exposing prompt content.
+
+#### Current Reality
+
+The `advisor-hook-health` section reports recent diagnostic records, rolling cache-hit rate, cache-hit p95, and fail-open rate, capped to the last 30 invocations.
+
+#### Source Files
+
+Primary implementation: `mcp_server/lib/skill-advisor/metrics.ts`.
+
+---
+
+### Privacy contract
+
+#### Description
+
+Prevents prompt text and prompt-derived identifiers from crossing hook observability or shared-payload boundaries.
+
+#### Current Reality
+
+Raw prompts, prompt excerpts, prompt fingerprints, subprocess stdout, and subprocess stderr are forbidden in diagnostics, metrics, health output, and shared-payload source refs. Exact prompt cache keys stay private and HMAC-derived.
+
+#### Source Files
+
+Primary contract: [Skill Advisor Hook Reference §10](../../system-spec-kit/references/hooks/skill-advisor-hook.md#10--privacy-contract).
+
+---
+
+## 6. TESTING
 
 These entries describe the validation surfaces that keep routing quality measurable and make it easy to inspect whether the advisor can still discover skills, load the compiled graph, and reach its semantic dependencies.
 

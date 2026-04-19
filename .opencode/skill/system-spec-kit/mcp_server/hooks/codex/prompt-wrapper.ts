@@ -2,7 +2,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Codex Prompt Wrapper Fallback
 // ───────────────────────────────────────────────────────────────
-// Compatibility path for Codex installs where native hooks are unavailable.
+// Fallback path for Codex installs where native hooks are unavailable.
 // The wrapper keeps prompt rewriting in memory and never logs prompt text.
 
 import { performance } from 'node:perf_hooks';
@@ -232,4 +232,3 @@ if (IS_CLI_ENTRY) {
     process.exit(0);
   });
 }
-

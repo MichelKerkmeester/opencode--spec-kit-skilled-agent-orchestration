@@ -6,6 +6,8 @@ import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { performance } from 'node:perf_hooks';
+
+import type { ChildProcess } from 'node:child_process';
 import type { AdvisorThresholds } from './prompt-cache.js';
 
 export interface AdvisorRecommendation {
@@ -89,20 +91,21 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 function parseRecommendations(stdout: string): AdvisorRecommendation[] {
   const parsed: unknown = JSON.parse(stdout);
   if (!Array.isArray(parsed)) {
-    throw new Error('advisor stdout must be a JSON array');
+    throw new Error(`advisor stdout: expected JSON array; actual ${typeof parsed}.`);
   }
   return parsed.map((item, index) => {
+    const path = `advisor stdout[${index}]`;
     if (!isRecord(item)) {
-      throw new Error(`advisor recommendation ${index} must be an object`);
+      throw new Error(`${path}: expected object recommendation; actual ${typeof item}.`);
     }
     if (typeof item.skill !== 'string' || item.skill.trim().length === 0) {
-      throw new Error(`advisor recommendation ${index} requires skill`);
+      throw new Error(`${path}.skill: expected non-empty string; actual ${typeof item.skill}.`);
     }
     if (typeof item.confidence !== 'number' || Number.isNaN(item.confidence)) {
-      throw new Error(`advisor recommendation ${index} requires numeric confidence`);
+      throw new Error(`${path}.confidence: expected finite number; actual ${typeof item.confidence}.`);
     }
     if (typeof item.uncertainty !== 'number' || Number.isNaN(item.uncertainty)) {
-      throw new Error(`advisor recommendation ${index} requires numeric uncertainty`);
+      throw new Error(`${path}.uncertainty: expected finite number; actual ${typeof item.uncertainty}.`);
     }
     return {
       skill: item.skill,
@@ -127,7 +130,7 @@ function runSpawnAttempt(args: {
     let stderr = '';
     let settled = false;
     let timedOut = false;
-    let child;
+    let child: ChildProcess;
 
     try {
       child = spawn(args.command, args.commandArgs, {
@@ -135,7 +138,7 @@ function runSpawnAttempt(args: {
         env: process.env,
         stdio: ['ignore', 'pipe', 'pipe'],
       });
-    } catch (error) {
+    } catch (error: unknown) {
       resolve({
         ok: false,
         stdout,
@@ -273,7 +276,7 @@ export async function runAdvisorSubprocess(
         durationMs: performance.now() - startedAt,
         retriesAttempted,
       };
-    } catch (error) {
+    } catch (error: unknown) {
       return {
         ok: false,
         recommendations: [],

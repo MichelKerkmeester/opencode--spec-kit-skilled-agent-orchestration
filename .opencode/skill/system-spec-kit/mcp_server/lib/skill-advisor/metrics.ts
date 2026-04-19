@@ -248,7 +248,9 @@ export function validateAdvisorHookDiagnosticRecord(value: unknown): value is Ad
 
 export function serializeAdvisorHookDiagnosticRecord(record: AdvisorHookDiagnosticRecord): string {
   if (!validateAdvisorHookDiagnosticRecord(record)) {
-    throw new Error('Invalid AdvisorHookDiagnosticRecord');
+    throw new Error(
+      `AdvisorHookDiagnosticRecord: expected prompt-free closed-schema diagnostic record; actual ${typeof record}.`,
+    );
   }
   return JSON.stringify(record);
 }
@@ -276,7 +278,9 @@ export class AdvisorHookMetricsCollector {
 
   record(record: AdvisorHookDiagnosticRecord): void {
     if (!validateAdvisorHookDiagnosticRecord(record)) {
-      throw new Error('Invalid AdvisorHookDiagnosticRecord');
+      throw new Error(
+        `AdvisorHookDiagnosticRecord: expected prompt-free closed-schema diagnostic record; actual ${typeof record}.`,
+      );
     }
     this.records.push(record);
   }

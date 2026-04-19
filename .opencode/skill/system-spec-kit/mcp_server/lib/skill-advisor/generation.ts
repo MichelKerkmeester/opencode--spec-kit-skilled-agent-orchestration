@@ -100,7 +100,7 @@ function writeGenerationAtomic(filePath: string, generation: number): void {
   try {
     writeFileSync(tempPath, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
     renameSync(tempPath, filePath);
-  } catch (error) {
+  } catch (error: unknown) {
     try {
       rmSync(tempPath, { force: true });
     } catch {
@@ -114,7 +114,9 @@ function parseGenerationFile(filePath: string): number {
   const raw = readFileSync(filePath, 'utf8');
   const payload: unknown = JSON.parse(raw);
   if (!isGenerationFilePayload(payload)) {
-    throw new Error('Invalid generation counter payload');
+    throw new Error(
+      `Invalid generation counter payload at ${filePath}: expected {generation: safe integer >= 0, updatedAt: string}; actual ${typeof payload}.`,
+    );
   }
   return payload.generation;
 }

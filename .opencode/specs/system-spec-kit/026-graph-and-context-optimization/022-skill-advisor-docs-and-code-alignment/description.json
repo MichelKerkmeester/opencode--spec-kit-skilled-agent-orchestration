@@ -1,0 +1,19 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/022-skill-advisor-docs-and-code-alignment",
+  "description": "Skill-advisor docs updated for Phase 020 hook-first invocation plus Phase 020 TypeScript code alignment audit.",
+  "keywords": [
+    "skill-advisor",
+    "hook",
+    "phase-020",
+    "typescript",
+    "audit",
+    "docs"
+  ],
+  "lastUpdated": "2026-04-19T18:10:00Z",
+  "specId": "022",
+  "folderSlug": "skill-advisor-docs-and-code-alignment",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ]
+}

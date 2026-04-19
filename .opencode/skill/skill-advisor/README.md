@@ -23,14 +23,15 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. FEATURES](#3--features)
-- [4. STRUCTURE](#4--structure)
-- [5. CONFIGURATION](#5--configuration)
-- [6. USAGE EXAMPLES](#6--usage-examples)
-- [7. TROUBLESHOOTING](#7--troubleshooting)
-- [8. FAQ](#8--faq)
-- [9. RELATED DOCUMENTS](#9--related-documents)
+- [2. HOOK INVOCATION (PRIMARY)](#2--hook-invocation-primary)
+- [3. FALLBACK / DIRECT CLI](#3--fallback--direct-cli)
+- [4. FEATURES](#4--features)
+- [5. STRUCTURE](#5--structure)
+- [6. CONFIGURATION](#6--configuration)
+- [7. USAGE EXAMPLES](#7--usage-examples)
+- [8. TROUBLESHOOTING](#8--troubleshooting)
+- [9. FAQ](#9--faq)
+- [10. RELATED DOCUMENTS](#10--related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -87,8 +88,46 @@ These routing scripts can surface the right packet helpers, but canonical packet
 
 ---
 
-<!-- ANCHOR:quick-start -->
-## 2. QUICK START
+<!-- ANCHOR:hook-invocation-primary -->
+## 2. HOOK INVOCATION (PRIMARY)
+
+The primary Gate 2 path is the Phase 020 `UserPromptSubmit` hook surface. Claude, Gemini, Copilot, and Codex runtimes call the shared TypeScript producer at prompt time, render a compact `Advisor: ...` brief when the advisor passes threshold, and fail open with `{}` when the prompt should not receive guidance.
+
+Build the hook bundle before enabling runtime registrations:
+
+```bash
+cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+npm run --workspace=@spec-kit/mcp-server build
+```
+
+Then register the runtime hook command for the active host. The Claude command shape is representative:
+
+```json
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/user-prompt-submit.js'",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+For Gemini, Copilot, Codex, failure-mode handling, disable flag behavior, metrics, and privacy rules, use the authoritative hook contract: [Skill Advisor Hook Reference](../system-spec-kit/references/hooks/skill-advisor-hook.md).
+
+<!-- /ANCHOR:hook-invocation-primary -->
+
+---
+
+<!-- ANCHOR:fallback-direct-cli -->
+## 3. FALLBACK / DIRECT CLI
 
 **1. Verify setup**
 
@@ -119,16 +158,20 @@ if python3 -c "exit(0 if float('$CONFIDENCE') >= 0.8 else 1)"; then
 fi
 ```
 
-<!-- /ANCHOR:quick-start -->
+Use this path when runtime hooks are unavailable, when a script needs raw advisor JSON, or when comparing hook output against the advisor baseline.
+
+<!-- /ANCHOR:fallback-direct-cli -->
 
 ---
 
 <!-- ANCHOR:features -->
-## 3. FEATURES
+## 4. FEATURES
 
-### 3.1 FEATURE HIGHLIGHTS
+### 4.1 FEATURE HIGHLIGHTS
 
 **Routing pipeline.** The advisor runs every request through a seven-step pipeline: tokenize input, filter stop words, expand synonyms, apply intent boosters, score against skill descriptions, calibrate confidence, and return sorted recommendations. The pipeline is deterministic and fast enough for use in every Gate 2 check.
+
+**Hook-first invocation.** Phase 020 makes prompt-time hooks the primary invocation path. Claude, Gemini, Copilot, and Codex adapters share `buildSkillAdvisorBrief()`, the renderer, diagnostics, and privacy rules, while the Python CLI remains available for fallback diagnostics.
 
 **Dual-threshold filtering.** By default, a result must pass two gates: confidence at or above the threshold (default 0.8) and uncertainty at or below the ceiling (default 0.35). This prevents confident-but-ambiguous matches from triggering skill invocation when the request is unclear. Passing `--confidence-only` opts out of the uncertainty check.
 
@@ -154,7 +197,7 @@ fi
 
 **Autonomous review boundary.** Explicit research workflows such as `autoresearch` and `/autoresearch` route to `sk-deep-research`. Explicit review-loop workflows such as `deep review`, `review loop`, `:review:auto`, and `auto review release readiness` route to `sk-deep-review`. Ordinary review requests such as `code review`, `review this PR`, and `auto review this PR` stay on `sk-code-review`.
 
-### 3.2 FEATURE REFERENCE
+### 4.2 FEATURE REFERENCE
 
 **Matching Algorithm Steps**
 
@@ -222,7 +265,7 @@ fi
 ---
 
 <!-- ANCHOR:structure -->
-## 4. STRUCTURE
+## 5. STRUCTURE
 
 ```text
 .opencode/skill/skill-advisor/
@@ -236,6 +279,7 @@ fi
 │   ├── manual_testing_playbook.md           # Root playbook and scenario index
 │   ├── 02--graph-boosts/                    # Graph-system validation scenarios
 │   └── 05--sqlite-graph/                    # SQLite graph validation scenarios
+│   └── 06--hook-routing/                    # Hook registration and smoke validation
 └── scripts/
     ├── skill_advisor.py                     # Skill routing engine (Gate 2)
     ├── skill_advisor_runtime.py             # Cache and metadata runtime helpers
@@ -275,7 +319,7 @@ JSON result: [{ "skill": "sk-git", "confidence": 0.92, "reason": "..." }]
 ---
 
 <!-- ANCHOR:configuration -->
-## 5. CONFIGURATION
+## 6. CONFIGURATION
 
 ### Path Resolution
 
@@ -376,7 +420,7 @@ For full customization guidance, see [SET-UP_GUIDE.md](./SET-UP_GUIDE.md).
 ---
 
 <!-- ANCHOR:usage-examples -->
-## 6. USAGE EXAMPLES
+## 7. USAGE EXAMPLES
 
 ### Basic routing
 
@@ -507,7 +551,7 @@ python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --pretty
 ---
 
 <!-- ANCHOR:troubleshooting -->
-## 7. TROUBLESHOOTING
+## 8. TROUBLESHOOTING
 
 ### Empty results for all queries
 
@@ -583,7 +627,7 @@ RESULT=$(python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "my requ
 ---
 
 <!-- ANCHOR:faq -->
-## 8. FAQ
+## 9. FAQ
 
 **Q: Why does confidence cap at 0.95?**
 
@@ -599,14 +643,14 @@ Synonyms expand the query vocabulary before scoring. They work bidirectionally: 
 
 **Q: Can I use this routing engine in other projects?**
 
-Yes. Copy `skill_advisor.py` and `skill_advisor_runtime.py` into any project that follows the `skill-name/SKILL.md` convention. Update SYNONYM_MAP, INTENT_BOOSTERS, and PHRASE_INTENT_BOOSTERS for your domain. See `SET-UP_GUIDE.md` for the full customization checklist.
+Yes. Copy `skill_advisor.py` and `skill_advisor_runtime.py` into any project that follows the `skill-name/SKILL.md` convention. Update SYNONYM_MAP, INTENT_BOOSTERS, and PHRASE_INTENT_BOOSTERS for your domain. Hook adapters are repository-specific; port them only after the target runtime has an equivalent prompt-submit surface. See `SET-UP_GUIDE.md` for the full customization checklist.
 
 <!-- /ANCHOR:faq -->
 
 ---
 
 <!-- ANCHOR:related-documents -->
-## 9. RELATED DOCUMENTS
+## 10. RELATED DOCUMENTS
 
 | Document | Purpose |
 | --- | --- |
@@ -615,6 +659,7 @@ Yes. Copy `skill_advisor.py` and `skill_advisor_runtime.py` into any project tha
 | [scripts/skill_graph_compiler.py](./scripts/skill_graph_compiler.py) | Graph metadata compiler and validator that emits `scripts/skill-graph.json` |
 | [feature_catalog/feature_catalog.md](./feature_catalog/feature_catalog.md) | Canonical feature inventory for routing, graph system, semantic search, and tests |
 | [manual_testing_playbook/manual_testing_playbook.md](./manual_testing_playbook/manual_testing_playbook.md) | Root manual validation playbook for routing, graph, compiler, and regression checks |
+| [Skill Advisor Hook Reference](../system-spec-kit/references/hooks/skill-advisor-hook.md) | Phase 020 hook setup, runtime matrix, metrics, disable flag, privacy, and troubleshooting |
 | [Skills Library README](../README.md) | Full catalog of all 21 skill folders, graph metadata coverage, and routing policy |
 | [system-spec-kit SKILL.md](../system-spec-kit/SKILL.md) | Spec folder and memory foundation |
 | [sk-doc SKILL.md](../sk-doc/SKILL.md) | Documentation standards and component templates |

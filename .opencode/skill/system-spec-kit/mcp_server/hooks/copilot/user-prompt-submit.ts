@@ -3,9 +3,8 @@
 // MODULE: Copilot UserPromptSubmitted Hook — Skill Advisor Brief
 // ───────────────────────────────────────────────────────────────
 // Preferred path: Copilot SDK onUserPromptSubmitted returns
-// { additionalContext }. Local checkout capability on 2026-04-19:
-// @github/copilot-cli, @github/copilot-sdk, and @ai-sdk/github-copilot
-// were not installed, so the CLI entrypoint routes to wrapper fallback.
+// { additionalContext }. SDK packages are probed at module load, and the
+// CLI entrypoint routes to the wrapper fallback when no SDK package exists.
 // Wrapper fallback keeps rewritten prompts in memory and emits diagnostics
 // without prompt text.
 

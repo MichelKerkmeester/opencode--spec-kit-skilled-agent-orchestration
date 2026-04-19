@@ -2,7 +2,7 @@
 // MODULE: Codex Hook Policy Detection
 // ───────────────────────────────────────────────────────────────
 // Probes the local Codex CLI once per process to distinguish native hook
-// support from legacy or restricted installs.
+// support from restricted installs.
 
 import { spawnSync } from 'node:child_process';
 import { performance } from 'node:perf_hooks';
@@ -208,4 +208,3 @@ export function detectCodexHookPolicy(options: CodexHookPolicyOptions = {}): Cod
     },
   }, useCache);
 }
-

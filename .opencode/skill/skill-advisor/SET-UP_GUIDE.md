@@ -8,6 +8,7 @@ description: "Setup, graph metadata, validation, and maintenance guide for the s
 Complete setup and validation guide for the Skill Advisor workflow in `.opencode/skill/skill-advisor/`.
 
 This guide reflects the current runtime:
+- prompt-time hook invocation as the primary Gate 2 path
 - default dual-threshold routing (`confidence >= 0.8` and `uncertainty <= 0.35`)
 - explicit confidence-only override (`--confidence-only`)
 - command-bridge separation (`kind: command`)
@@ -23,7 +24,7 @@ This guide reflects the current runtime:
 - [1. OVERVIEW](#1--overview)
 - [2. PREREQUISITES](#2--prerequisites)
 - [3. INSTALLATION VALIDATION](#3--installation-validation)
-- [4. CLI MODES AND FLAGS](#4--cli-modes-and-flags)
+- [4. HOOK INVOCATION AND CLI FALLBACK](#4--hook-invocation-and-cli-fallback)
 - [5. GRAPH METADATA SYSTEM](#5--graph-metadata-system)
 - [6. QUALITY VERIFICATION](#6--quality-verification)
 - [7. FEATURE CATALOG AND MANUAL TESTING PLAYBOOK](#7--feature-catalog-and-manual-testing-playbook)
@@ -55,7 +56,9 @@ The Skill Advisor package now includes the routing scripts, the per-skill graph 
 │   ├── 01--routing-accuracy/
 │   ├── 02--graph-boosts/
 │   ├── 03--compiler/
-│   └── 04--regression-safety/
+│   ├── 04--regression-safety/
+│   ├── 05--sqlite-graph/
+│   └── 06--hook-routing/
 └── scripts/
     ├── check-prompt-quality-card-sync.sh
     ├── skill_advisor.py
@@ -81,7 +84,15 @@ The Skill Advisor package now includes the routing scripts, the per-skill graph 
 
 ### Gate 2 Integration
 
-Typical invocation used by workflows:
+Primary invocation is hook-based. Register the active runtime using the Phase 020 hook contract, then let the runtime call the compiled `UserPromptSubmit` adapter at prompt time:
+
+```bash
+npm run --workspace=@spec-kit/mcp-server build
+```
+
+Use [Skill Advisor Hook Reference](../system-spec-kit/references/hooks/skill-advisor-hook.md) for Claude, Gemini, Copilot, and Codex setup snippets.
+
+Direct CLI invocation remains the fallback for diagnostics and scripted checks:
 
 ```bash
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "$USER_REQUEST" --threshold 0.8
@@ -151,7 +162,23 @@ Expected behavior:
 
 ---
 
-## 4. CLI MODES AND FLAGS
+## 4. HOOK INVOCATION AND CLI FALLBACK
+
+### Hook Mode
+
+Runtime hooks are the preferred path for ordinary Gate 2 routing. They call `buildSkillAdvisorBrief()` before the turn proceeds, inject a compact `Advisor: ...` brief when a recommendation passes threshold, and fail open with `{}` when the prompt is skipped, disabled, or degraded.
+
+Rollback for prompt-time advice:
+
+```bash
+export SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1
+```
+
+Unset the variable to restore hook advice:
+
+```bash
+unset SPECKIT_SKILL_ADVISOR_HOOK_DISABLED
+```
 
 ### One-Shot Default Mode
 

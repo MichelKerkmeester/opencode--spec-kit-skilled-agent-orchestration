@@ -20,6 +20,7 @@ Canonical source artifacts:
 - `.opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/`
 - `.opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/`
 - `.opencode/skill/skill-advisor/manual_testing_playbook/05--sqlite-graph/`
+- `.opencode/skill/skill-advisor/manual_testing_playbook/06--hook-routing/`
 
 ---
 
@@ -36,16 +37,17 @@ Canonical source artifacts:
 - [9. COMPILER (`CP-001..CP-005`)](#9--compiler-cp-001cp-005)
 - [10. REGRESSION SAFETY (`RS-001..RS-004`)](#10--regression-safety-rs-001rs-004)
 - [11. SQLITE GRAPH (`SG-001..SG-004`)](#11--sqlite-graph-sg-001sg-004)
-- [12. AUTOMATED TEST CROSS-REFERENCE](#12--automated-test-cross-reference)
-- [13. FEATURE CATALOG CROSS-REFERENCE INDEX](#13--feature-catalog-cross-reference-index)
+- [12. HOOK ROUTING (`HR-001..HR-006`)](#12--hook-routing-hr-001hr-006)
+- [13. AUTOMATED TEST CROSS-REFERENCE](#13--automated-test-cross-reference)
+- [14. FEATURE CATALOG CROSS-REFERENCE INDEX](#14--feature-catalog-cross-reference-index)
 
 ---
 
 ## 1. OVERVIEW
 
-This playbook provides 28 deterministic scenarios across 5 categories validating the `skill-advisor` routing and graph pipeline. Each feature keeps its original ID and links to a dedicated feature file with the full execution contract.
+This playbook provides 34 deterministic scenarios across 6 categories validating the `skill-advisor` routing, graph pipeline, and Phase 020 prompt-time hook surface. Each feature keeps its original ID and links to a dedicated feature file with the full execution contract.
 
-Coverage note (2026-04-13): all 28 scenario files now follow the split-document playbook contract, and the package now includes a dedicated SQLite graph category covering startup scan, MCP query tools, auto-reindex, and JSON fallback behavior.
+Coverage note (2026-04-19): all 34 scenarios now follow the split-document playbook contract, including SQLite graph checks and the Phase 020 hook-routing smoke surface.
 
 ### Realistic Test Model
 
@@ -141,7 +143,7 @@ Release is `READY` only when:
 
 1. No scenario verdict is `FAIL`.
 2. All compiler and regression-safety scenarios are `PASS`.
-3. Coverage is 100% of the 28 scenario files linked in this root document.
+3. Coverage is 100% of the 34 scenarios linked in this root document.
 4. No unresolved blocker remains after triage.
 5. No retired script-directory path references remain anywhere under `manual_testing_playbook/`.
 6. `skill-graph.sqlite` has been restored after any JSON fallback run.
@@ -160,7 +162,7 @@ This section records wave planning and capacity guidance for the Skill Advisor m
 
 1. Reserve one coordinator to keep the verdict ledger and evidence log coherent.
 2. Run routing-accuracy scenarios as one wave, graph boosts as a second wave, compiler checks as a third wave, regression safety as a fourth wave, and SQLite graph scenarios as a fifth wave.
-3. If the graph must be rebuilt, do that before running graph boosts, regression safety, or SQLite graph checks.
+3. If the graph must be rebuilt, do that before running graph boosts, regression safety, SQLite graph checks, or hook-routing stale-graph checks.
 4. Do not mix graph-regeneration commands, watcher-driven metadata edits, or the `SG-004` database rename with read-only inspection commands in the same parallel wave.
 5. Capture every FAIL with the matching per-feature file path and the exact command output that triggered it.
 6. Re-run only the affected scenario after a targeted fix rather than rerunning the whole playbook by default.
@@ -248,7 +250,22 @@ These scenarios validate the live SQLite graph store, the MCP graph tools, watch
 
 ---
 
-## 12. AUTOMATED TEST CROSS-REFERENCE
+## 12. HOOK ROUTING (`HR-001..HR-006`)
+
+These scenarios validate the Phase 020 hook surface that now acts as the primary advisor invocation path. Run them after the MCP server bundle has been built and after runtime hook registration has been checked against the [Skill Advisor Hook Reference](../../system-spec-kit/references/hooks/skill-advisor-hook.md).
+
+| ID | Scenario | Command or Action | Expected | File |
+|---|---|---|---|---|
+| HR-001 | Runtime registration check | Inspect Claude, Gemini, Copilot, and Codex hook config surfaces | Each active runtime points to the compiled advisor hook or documented wrapper fallback | [001-hook-routing-smoke.md](06--hook-routing/001-hook-routing-smoke.md) |
+| HR-002 | Work-intent prompt emits brief | Send `"implement a TypeScript hook"` through each registered runtime | Model-visible output contains `Advisor: ...` when freshness allows emission | [001-hook-routing-smoke.md](06--hook-routing/001-hook-routing-smoke.md) |
+| HR-003 | Help prompt suppresses brief | Send `"/help"` through each registered runtime | No advisor brief is emitted and output is `{}` or no wrapper rewrite | [001-hook-routing-smoke.md](06--hook-routing/001-hook-routing-smoke.md) |
+| HR-004 | Disable flag bypass | Set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` and repeat one hook smoke | Producer is not called and runtime output is `{}` or no wrapper rewrite | [001-hook-routing-smoke.md](06--hook-routing/001-hook-routing-smoke.md) |
+| HR-005 | Stale graph still emits stale badge | Make skill sources newer than `skill-graph.sqlite`, then send a work-intent prompt | Brief still emits with `Advisor: stale` when a recommendation passes threshold | [001-hook-routing-smoke.md](06--hook-routing/001-hook-routing-smoke.md) |
+| HR-006 | Diagnostic privacy spot-check | Inspect hook JSONL/diagnostic output after the smoke run | Forbidden fields `prompt`, `promptFingerprint`, `promptExcerpt`, `stdout`, and `stderr` are absent | [001-hook-routing-smoke.md](06--hook-routing/001-hook-routing-smoke.md) |
+
+---
+
+## 13. AUTOMATED TEST CROSS-REFERENCE
 
 | Test Module | Coverage | Playbook Overlap |
 |---|---|---|
@@ -259,10 +276,12 @@ These scenarios validate the live SQLite graph store, the MCP graph tools, watch
 | `.opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts` | SQLite schema, hash-aware indexing, and scan summaries | SG-001, SG-003 |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/{scan,query,status,validate}.ts` | Live MCP skill graph scans, queries, health, and validation | SG-001, SG-002, SG-003 |
 | `.opencode/skill/system-spec-kit/mcp_server/context-server.ts` | Startup scan and watcher-driven auto-reindex behavior | SG-001, SG-003 |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts` | Runtime transport parity for Claude, Gemini, Copilot, and Codex | HR-001, HR-002 |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-privacy.vitest.ts` | Prompt privacy constraints across hook surfaces | HR-006 |
 
 ---
 
-## 13. FEATURE CATALOG CROSS-REFERENCE INDEX
+## 14. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 Skill Advisor ships a live feature catalog rooted at [`../feature_catalog/feature_catalog.md`](../feature_catalog/feature_catalog.md). Use that catalog for the current-state inventory, and use this playbook package for operator prompts, execution steps, evidence capture, and verdict criteria.
 
@@ -296,3 +315,9 @@ Skill Advisor ships a live feature catalog rooted at [`../feature_catalog/featur
 | SG-002 | MCP query tools | SQLite Graph | [SG-002](05--sqlite-graph/002-mcp-query-tools.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
 | SG-003 | Auto reindex | SQLite Graph | [SG-003](05--sqlite-graph/003-auto-reindex.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
 | SG-004 | JSON fallback | SQLite Graph | [SG-004](05--sqlite-graph/004-json-fallback.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| HR-001 | Runtime registration check | Hook Routing | [HR-001](06--hook-routing/001-hook-routing-smoke.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| HR-002 | Work-intent prompt emits brief | Hook Routing | [HR-002](06--hook-routing/001-hook-routing-smoke.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| HR-003 | Help prompt suppresses brief | Hook Routing | [HR-003](06--hook-routing/001-hook-routing-smoke.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| HR-004 | Disable flag bypass | Hook Routing | [HR-004](06--hook-routing/001-hook-routing-smoke.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| HR-005 | Stale graph still emits stale badge | Hook Routing | [HR-005](06--hook-routing/001-hook-routing-smoke.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| HR-006 | Diagnostic privacy spot-check | Hook Routing | [HR-006](06--hook-routing/001-hook-routing-smoke.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |

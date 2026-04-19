@@ -599,9 +599,8 @@ export function detectorProvenanceToParserProvenance(
   value: DetectorProvenance,
 ): ParserProvenance {
   if (value === 'structured') {
-    // Packet 006 owns the parser trust-axis vocabulary. Structured detector
-    // fallbacks are preserved separately and map to the nearest legacy parser
-    // provenance only when a 006 trust-axis carrier explicitly needs it.
+    // Structured detector fallbacks stay on the detector axis and map to the
+    // nearest parser provenance only when a parser-trust carrier requires it.
     return 'regex';
   }
   return assertParserProvenance(value);

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/022-skill-advisor-docs-and-code-alignment",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/022-skill-advisor-docs-and-code-alignment",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "022 skill-advisor docs alignment",
+      "skill-advisor feature catalog update",
+      "sk-code-opencode alignment check",
+      "skill advisor hook docs"
+    ],
+    "key_topics": [
+      "skill-advisor",
+      "hook",
+      "phase-020",
+      "typescript",
+      "audit",
+      "docs"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "scratch/audit-findings.md",
+      "../../../../skill/skill-advisor/README.md",
+      "../../../../skill/skill-advisor/feature_catalog/feature_catalog.md",
+      "../../../../skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md"
+    ],
+    "entities": [
+      {
+        "name": "Skill Advisor Hook Reference",
+        "kind": "doc",
+        "path": "../../../../skill/system-spec-kit/references/hooks/skill-advisor-hook.md",
+        "source": "manual"
+      },
+      {
+        "name": "audit-findings.md",
+        "kind": "doc",
+        "path": "scratch/audit-findings.md",
+        "source": "manual"
+      }
+    ],
+    "causal_summary": "Phase 020 shipped hook-first advisor routing, so Phase 022 updates skill-advisor package docs and audits the shipped TypeScript hook files for sk-code-opencode alignment.",
+    "created_at": "2026-04-19T18:10:00Z",
+    "last_save_at": "2026-04-19T18:10:00Z",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

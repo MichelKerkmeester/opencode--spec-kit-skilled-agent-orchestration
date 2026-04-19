@@ -15,7 +15,7 @@ export type AdvisorRuntimeTransport =
 
 export type AdvisorRuntimeDecision = 'allow' | 'block' | 'deny';
 
-/** Runtime-neutral shape used by adapter parity tests before 006/007/008 wire real hooks. */
+/** Runtime-neutral shape used by adapter parity tests. */
 export interface NormalizedAdvisorRuntimeOutput {
   readonly runtime: AdvisorRuntime;
   readonly transport: AdvisorRuntimeTransport;
