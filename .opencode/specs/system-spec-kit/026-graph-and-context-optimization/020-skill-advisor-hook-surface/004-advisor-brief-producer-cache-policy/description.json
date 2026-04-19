@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
+  "description": "Feature Specification: Advisor Brief Producer + Cache Policy",
+  "keywords": [
+    "feature",
+    "specification",
+    "advisor",
+    "brief",
+    "producer",
+    "cache",
+    "policy"
+  ],
+  "lastUpdated": "2026-04-19T08:47:05.103Z",
+  "specId": "004",
+  "folderSlug": "advisor-brief-producer-cache-policy",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "020-skill-advisor-hook-surface"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-04-26_09-47__scaffold-004-advisor-brief-producer-cache-policy.md"
+  ]
+}
