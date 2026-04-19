@@ -16,6 +16,8 @@ export type ComplianceClass =
 export type ComplianceRecord = {
   promptId: string;
   selectedSkill: string;
+  observedSkill?: string | null;
+  observedSkills?: string[];
   predictedRoute: string[];
   allowedResources: string[];
   actualReads: string[];
@@ -49,6 +51,10 @@ const TIER_PREFIXES: Record<string, ResourceTier> = {
 
 const TELEMETRY_PATH_ENV = 'SPECKIT_SMART_ROUTER_TELEMETRY_PATH';
 const TELEMETRY_DIR_ENV = 'SPECKIT_SMART_ROUTER_TELEMETRY_DIR';
+
+type ComplianceInput = Omit<ComplianceRecord, 'complianceClass' | 'timestamp'>;
+
+const activePromptInputs = new Map<string, ComplianceInput>();
 
 function sanitizeValue(value: string): string {
   return value
@@ -120,7 +126,11 @@ function locateRepoRoot(startDir: string): string {
   }
 }
 
-function telemetryFilePath(): string {
+export function telemetryFilePath(outputPath?: string): string {
+  if (outputPath && outputPath.trim().length > 0) {
+    return path.resolve(outputPath);
+  }
+
   const pathOverride = process.env[TELEMETRY_PATH_ENV];
   if (pathOverride && pathOverride.trim().length > 0) {
     return path.resolve(pathOverride);
@@ -135,18 +145,22 @@ function telemetryFilePath(): string {
   return path.join(repoRoot, '.opencode', 'skill', '.smart-router-telemetry', 'compliance.jsonl');
 }
 
-function appendJsonl(record: ComplianceRecord): void {
+function appendJsonl(record: ComplianceRecord, outputPath?: string): void {
   try {
-    const outputPath = telemetryFilePath();
-    fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+    const resolvedOutputPath = telemetryFilePath(outputPath);
+    fs.mkdirSync(path.dirname(resolvedOutputPath), { recursive: true });
     fs.appendFileSync(
-      outputPath,
+      resolvedOutputPath,
       `${JSON.stringify(record)}\n`,
       'utf8'
     );
   } catch {
     // Observe-only: telemetry must never alter caller behavior.
   }
+}
+
+function unique(values: string[]): string[] {
+  return [...new Set(sanitizeList(values))].sort();
 }
 
 export function classifyCompliance(allowed: string[], actual: string[]): ComplianceClass {
@@ -196,19 +210,92 @@ export function classifyCompliance(allowed: string[], actual: string[]): Complia
   return classForTier(highestTier);
 }
 
-export function recordSmartRouterCompliance(
-  input: Omit<ComplianceRecord, 'complianceClass' | 'timestamp'>
-): ComplianceRecord {
-  const record: ComplianceRecord = {
+function classForInput(input: ComplianceInput): ComplianceClass {
+  const observedSkills = unique([
+    ...(input.observedSkills ?? []),
+    ...(input.observedSkill ? [input.observedSkill] : []),
+  ]);
+  const selectedSkill = sanitizeValue(input.selectedSkill);
+  if (observedSkills.some((skill) => skill !== selectedSkill)) {
+    return 'extra';
+  }
+  return classifyCompliance(input.allowedResources, input.actualReads);
+}
+
+function buildRecord(input: ComplianceInput): ComplianceRecord {
+  const observedSkills = unique([
+    ...(input.observedSkills ?? []),
+    ...(input.observedSkill ? [input.observedSkill] : []),
+  ]);
+  const observedSkill = observedSkills.length === 1 ? observedSkills[0] : observedSkills.join(',');
+  const baseRecord: ComplianceRecord = {
     promptId: sanitizeValue(input.promptId),
+    selectedSkill: sanitizeValue(input.selectedSkill),
+    ...(observedSkill ? { observedSkill } : {}),
+    ...(observedSkills.length > 0 ? { observedSkills } : {}),
+    predictedRoute: sanitizeList(input.predictedRoute),
+    allowedResources: sanitizeList(input.allowedResources),
+    actualReads: sanitizeList(input.actualReads),
+    complianceClass: classForInput(input),
+    timestamp: new Date().toISOString(),
+  };
+  return baseRecord;
+}
+
+export function recordSmartRouterCompliance(
+  input: ComplianceInput,
+  options: { readonly outputPath?: string } = {},
+): ComplianceRecord {
+  const record = buildRecord(input);
+  appendJsonl(record, options.outputPath);
+  return record;
+}
+
+export function startSmartRouterCompliancePrompt(input: ComplianceInput): void {
+  const promptId = sanitizeValue(input.promptId);
+  activePromptInputs.set(promptId, {
+    promptId,
     selectedSkill: sanitizeValue(input.selectedSkill),
     predictedRoute: sanitizeList(input.predictedRoute),
     allowedResources: sanitizeList(input.allowedResources),
     actualReads: sanitizeList(input.actualReads),
-    complianceClass: classifyCompliance(input.allowedResources, input.actualReads),
-    timestamp: new Date().toISOString(),
-  };
+    observedSkills: unique([
+      ...(input.observedSkills ?? []),
+      ...(input.observedSkill ? [input.observedSkill] : []),
+    ]),
+  });
+}
 
-  appendJsonl(record);
-  return record;
+export function recordSmartRouterPromptObservation(input: ComplianceInput): void {
+  const promptId = sanitizeValue(input.promptId);
+  const existing = activePromptInputs.get(promptId);
+  if (!existing) {
+    startSmartRouterCompliancePrompt(input);
+    return;
+  }
+
+  activePromptInputs.set(promptId, {
+    ...existing,
+    predictedRoute: unique([...existing.predictedRoute, ...sanitizeList(input.predictedRoute)]),
+    allowedResources: unique([...existing.allowedResources, ...sanitizeList(input.allowedResources)]),
+    actualReads: unique([...existing.actualReads, ...sanitizeList(input.actualReads)]),
+    observedSkills: unique([
+      ...(existing.observedSkills ?? []),
+      ...(input.observedSkills ?? []),
+      ...(input.observedSkill ? [input.observedSkill] : []),
+    ]),
+  });
+}
+
+export function finalizeSmartRouterCompliancePrompt(
+  promptId: string,
+  options: { readonly outputPath?: string } = {},
+): ComplianceRecord | null {
+  const sanitizedPromptId = sanitizeValue(promptId);
+  const input = activePromptInputs.get(sanitizedPromptId);
+  if (!input) {
+    return null;
+  }
+  activePromptInputs.delete(sanitizedPromptId);
+  return recordSmartRouterCompliance(input, options);
 }

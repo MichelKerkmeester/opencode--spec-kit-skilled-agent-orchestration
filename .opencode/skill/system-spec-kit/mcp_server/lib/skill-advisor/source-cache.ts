@@ -54,6 +54,7 @@ function evictOverflow(): void {
 // 4. PUBLIC API
 // ───────────────────────────────────────────────────────────────
 
+/** Return a cached source-derived value or compute and retain it with TTL/LRU bounds. */
 export function getOrCompute<TValue>(
   key: string,
   ttlMs: number,
@@ -78,6 +79,7 @@ export function getOrCompute<TValue>(
   return value;
 }
 
+/** Clear all source-cache entries for tests and host reset flows. */
 export function clearAdvisorSourceCache(): void {
   entries.clear();
 }

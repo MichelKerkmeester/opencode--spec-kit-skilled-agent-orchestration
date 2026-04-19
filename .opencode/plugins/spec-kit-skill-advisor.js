@@ -5,6 +5,7 @@
 
 import { createHash } from 'node:crypto';
 import { spawn } from 'node:child_process';
+import { statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 import { tool } from '@opencode-ai/plugin';
@@ -15,8 +16,15 @@ const DEFAULT_THRESHOLD_CONFIDENCE = 0.7;
 const DEFAULT_MAX_TOKENS = 80;
 const DEFAULT_BRIDGE_TIMEOUT_MS = 1000;
 const DEFAULT_NODE_BINARY = 'node';
-const DISABLED_ENV = 'SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED';
+const DISABLED_ENV = 'SPECKIT_SKILL_ADVISOR_HOOK_DISABLED';
+const LEGACY_DISABLED_ENV = 'SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED';
 const BRIDGE_PATH = fileURLToPath(new URL('./spec-kit-skill-advisor-bridge.mjs', import.meta.url));
+const ADVISOR_SOURCE_PATHS = [
+  BRIDGE_PATH,
+  fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/dist/lib/skill-advisor/skill-advisor-brief.js', import.meta.url)),
+  fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/dist/lib/skill-advisor/render.js', import.meta.url)),
+  fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/dist/lib/skill-advisor/subprocess.js', import.meta.url)),
+];
 
 const advisorCache = new Map();
 let runtimeReady = false;
@@ -40,7 +48,36 @@ function normalizeThreshold(value) {
 }
 
 function envDisablesPlugin() {
-  return process.env[DISABLED_ENV] === '1';
+  return process.env[DISABLED_ENV] === '1' || process.env[LEGACY_DISABLED_ENV] === '1';
+}
+
+function disabledEnvName() {
+  if (process.env[DISABLED_ENV] === '1') {
+    return DISABLED_ENV;
+  }
+  if (process.env[LEGACY_DISABLED_ENV] === '1') {
+    return LEGACY_DISABLED_ENV;
+  }
+  return null;
+}
+
+function advisorSourceSignature() {
+  const hash = createHash('sha256');
+  for (const sourcePath of ADVISOR_SOURCE_PATHS) {
+    try {
+      const stat = statSync(sourcePath);
+      hash.update(sourcePath);
+      hash.update('\u001f');
+      hash.update(String(stat.mtimeMs));
+      hash.update('\u001f');
+      hash.update(String(stat.size));
+      hash.update('\u001e');
+    } catch {
+      hash.update(sourcePath);
+      hash.update('\u001fmissing\u001e');
+    }
+  }
+  return hash.digest('hex');
 }
 
 function normalizeOptions(rawOptions) {
@@ -57,6 +94,9 @@ function normalizeOptions(rawOptions) {
       ? options.nodeBinaryOverride.trim()
       : (process.env.SPEC_KIT_PLUGIN_NODE_BINARY || DEFAULT_NODE_BINARY),
     bridgeTimeoutMs: normalizePositiveInt(options.bridgeTimeoutMs, DEFAULT_BRIDGE_TIMEOUT_MS),
+    sourceSignatureOverride: typeof options.sourceSignatureOverride === 'string'
+      ? options.sourceSignatureOverride
+      : null,
   };
 }
 
@@ -71,13 +111,15 @@ function sessionIdFrom(input) {
     || '__global__';
 }
 
-function cacheKeyForPrompt(prompt, options, sessionID) {
+function cacheKeyForPrompt(prompt, options, sessionID, sourceSignature) {
   const promptKey = createHash('sha256')
     .update(prompt)
     .update('\u001f')
     .update(String(options.thresholdConfidence))
     .update('\u001f')
     .update(String(options.maxTokens))
+    .update('\u001f')
+    .update(sourceSignature)
     .digest('hex');
   return `${sessionID}::${promptKey}`;
 }
@@ -168,22 +210,19 @@ function runBridge({ projectDir, prompt, options }) {
 
     let stdout = '';
     let settled = false;
+    let timedOut = false;
+    let sigkillTimer = null;
     const timeout = setTimeout(() => {
       if (settled) {
         return;
       }
-      settled = true;
+      timedOut = true;
       child.kill('SIGTERM');
-      runtimeReady = false;
-      lastBridgeStatus = 'fail_open';
-      lastErrorCode = 'TIMEOUT';
-      lastDurationMs = Date.now() - startedAt;
-      resolve({
-        brief: null,
-        status: 'fail_open',
-        error: 'TIMEOUT',
-        metadata: {},
-      });
+      sigkillTimer = setTimeout(() => {
+        if (!settled) {
+          child.kill('SIGKILL');
+        }
+      }, 1000);
     }, options.bridgeTimeoutMs);
 
     child.stdout?.setEncoding?.('utf8');
@@ -197,14 +236,17 @@ function runBridge({ projectDir, prompt, options }) {
       }
       settled = true;
       clearTimeout(timeout);
+      if (sigkillTimer) {
+        clearTimeout(sigkillTimer);
+      }
       runtimeReady = false;
       lastBridgeStatus = 'fail_open';
-      lastErrorCode = 'SPAWN_ERROR';
+      lastErrorCode = timedOut ? 'TIMEOUT' : 'SPAWN_ERROR';
       lastDurationMs = Date.now() - startedAt;
       resolve({
         brief: null,
         status: 'fail_open',
-        error: 'SPAWN_ERROR',
+        error: lastErrorCode,
         metadata: {},
       });
     });
@@ -215,9 +257,14 @@ function runBridge({ projectDir, prompt, options }) {
       }
       settled = true;
       clearTimeout(timeout);
+      if (sigkillTimer) {
+        clearTimeout(sigkillTimer);
+      }
 
-      const response = parseBridgeResponse(stdout);
-      if (code !== 0 && response.status !== 'fail_open') {
+      const response = timedOut
+        ? { brief: null, status: 'fail_open', error: 'TIMEOUT', metadata: {} }
+        : parseBridgeResponse(stdout);
+      if (!timedOut && code !== 0 && response.status !== 'fail_open') {
         response.status = 'fail_open';
         response.brief = null;
         response.error = 'NONZERO_EXIT';
@@ -241,7 +288,8 @@ function runBridge({ projectDir, prompt, options }) {
 }
 
 async function getAdvisorContext({ projectDir, prompt, sessionID, options }) {
-  const key = cacheKeyForPrompt(prompt, options, sessionID);
+  const sourceSignature = options.sourceSignatureOverride ?? advisorSourceSignature();
+  const key = cacheKeyForPrompt(prompt, options, sessionID, sourceSignature);
   const now = Date.now();
   const cached = advisorCache.get(key);
 
@@ -285,7 +333,7 @@ export default async function SpecKitSkillAdvisorPlugin(ctx, rawOptions) {
   const options = normalizeOptions(rawOptions);
   const projectDir = ctx?.directory || process.cwd();
   disabledReason = !options.enabled
-    ? (envDisablesPlugin() ? DISABLED_ENV : 'config_enabled_false')
+    ? (disabledEnvName() ?? 'config_enabled_false')
     : null;
 
   async function onUserPromptSubmitted(input) {

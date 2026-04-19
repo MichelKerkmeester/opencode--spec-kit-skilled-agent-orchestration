@@ -148,10 +148,12 @@ function setGeneration(workspaceRoot: string, filePath: string, generation: numb
 // 4. PUBLIC API
 // ───────────────────────────────────────────────────────────────
 
+/** Resolve the persistent generation-counter path for a workspace. */
 export function getAdvisorGenerationPath(workspaceRoot: string): string {
   return join(resolve(workspaceRoot), GENERATION_STATE_RELATIVE_PATH);
 }
 
+/** Read or recover the advisor generation counter for freshness checks. */
 export function readAdvisorGeneration(workspaceRoot: string): AdvisorGenerationSnapshot {
   const filePath = getAdvisorGenerationPath(workspaceRoot);
   try {
@@ -169,6 +171,7 @@ export function readAdvisorGeneration(workspaceRoot: string): AdvisorGenerationS
   }
 }
 
+/** Increment the advisor generation counter after source-affecting writes. */
 export function incrementAdvisorGeneration(workspaceRoot: string): AdvisorGenerationSnapshot {
   const current = readAdvisorGeneration(workspaceRoot);
   if (current.status === 'unavailable') {
@@ -178,6 +181,7 @@ export function incrementAdvisorGeneration(workspaceRoot: string): AdvisorGenera
   return setGeneration(workspaceRoot, filePath, current.generation + 1);
 }
 
+/** Clear process-local generation observations for tests. */
 export function clearAdvisorGenerationMemory(): void {
   observedGenerations.clear();
 }

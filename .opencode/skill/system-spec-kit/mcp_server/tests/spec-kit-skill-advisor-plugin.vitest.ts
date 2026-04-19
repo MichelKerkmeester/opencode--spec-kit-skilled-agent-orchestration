@@ -27,7 +27,7 @@ function bridgeResponse(brief = 'Advisor: live; use sk-code-opencode 0.91/0.23 p
   });
 }
 
-function makeChild(stdout: string, closeDelayMs = 0) {
+function makeChild(stdout: string, closeDelayMs = 0, closeCode = 0) {
   const child = new EventEmitter() as EventEmitter & {
     stdout: EventEmitter & { setEncoding: ReturnType<typeof vi.fn> };
     stderr: EventEmitter & { setEncoding: ReturnType<typeof vi.fn> };
@@ -42,16 +42,19 @@ function makeChild(stdout: string, closeDelayMs = 0) {
   child.stdin = { end: vi.fn() };
   child.kill = vi.fn((signal: string) => {
     child.emit('killed', signal);
+    if (signal === 'SIGKILL') {
+      queueMicrotask(() => child.emit('close', null));
+    }
     return true;
   });
 
   queueMicrotask(() => {
     child.stdout.emit('data', stdout);
     if (closeDelayMs > 0) {
-      setTimeout(() => child.emit('close', 0), closeDelayMs);
+      setTimeout(() => child.emit('close', closeCode), closeDelayMs);
       return;
     }
-    child.emit('close', 0);
+    child.emit('close', closeCode);
   });
 
   return child;
@@ -70,6 +73,7 @@ describe('Spec Kit skill advisor OpenCode plugin', () => {
     vi.useRealTimers();
     vi.clearAllMocks();
     delete process.env.SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED;
+    delete process.env.SPECKIT_SKILL_ADVISOR_HOOK_DISABLED;
     const resetHooks = await SpecKitSkillAdvisorPlugin({ directory: process.cwd() }, {});
     await resetHooks.onSessionEnd();
     mockBridgeSuccess();
@@ -146,6 +150,19 @@ describe('Spec Kit skill advisor OpenCode plugin', () => {
     expect(status).toContain('disabled_reason=SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED');
   });
 
+  it('shared hook env opt-out disables bridge invocation', async () => {
+    process.env.SPECKIT_SKILL_ADVISOR_HOOK_DISABLED = '1';
+    const hooks = await makePlugin();
+
+    const output = await hooks.onUserPromptSubmitted({ prompt: 'implement feature X' });
+
+    expect(output).toEqual({ additionalContext: null });
+    expect(mockedBridge.spawn).not.toHaveBeenCalled();
+    const status = await hooks.tool?.spec_kit_skill_advisor_status.execute({});
+    expect(status).toContain('enabled=false');
+    expect(status).toContain('disabled_reason=SPECKIT_SKILL_ADVISOR_HOOK_DISABLED');
+  });
+
   it('config opt-out disables bridge invocation', async () => {
     const hooks = await makePlugin({ enabled: false });
 
@@ -164,13 +181,14 @@ describe('Spec Kit skill advisor OpenCode plugin', () => {
     const hooks = await makePlugin({ bridgeTimeoutMs: 10 });
 
     const outputPromise = hooks.onUserPromptSubmitted({ prompt: 'implement feature X' });
-    await vi.advanceTimersByTimeAsync(11);
+    await vi.advanceTimersByTimeAsync(1011);
     const output = await outputPromise;
 
     expect(output).toEqual({ additionalContext: null });
     expect(mockedBridge.spawn).toHaveBeenCalledTimes(1);
     const child = mockedBridge.spawn.mock.results[0]?.value;
     expect(child.kill).toHaveBeenCalledWith('SIGTERM');
+    expect(child.kill).toHaveBeenCalledWith('SIGKILL');
     const status = await hooks.tool?.spec_kit_skill_advisor_status.execute({});
     expect(status).toContain('last_bridge_status=fail_open');
     expect(status).toContain('last_error_code=TIMEOUT');
@@ -191,5 +209,67 @@ describe('Spec Kit skill advisor OpenCode plugin', () => {
     const status = await hooks.tool?.spec_kit_skill_advisor_status.execute({});
     expect(status).toContain('last_bridge_status=fail_open');
     expect(status).toContain('last_error_code=SPAWN_ERROR');
+  });
+
+  it('invalid bridge stdout fail-opens without caching', async () => {
+    mockBridgeSuccess('{not-json');
+    const hooks = await makePlugin();
+
+    const output = await hooks.onUserPromptSubmitted({ prompt: 'implement feature X' });
+    const repeat = await hooks.onUserPromptSubmitted({ prompt: 'implement feature X' });
+
+    expect(output).toEqual({ additionalContext: null });
+    expect(repeat).toEqual({ additionalContext: null });
+    expect(mockedBridge.spawn).toHaveBeenCalledTimes(2);
+    const status = await hooks.tool?.spec_kit_skill_advisor_status.execute({});
+    expect(status).toContain('last_error_code=PARSE_FAIL');
+  });
+
+  it('nonzero bridge close fail-opens even when stdout looks ok', async () => {
+    mockedBridge.spawn.mockImplementation(() => makeChild(bridgeResponse(), 0, 2));
+    const hooks = await makePlugin();
+
+    const output = await hooks.onUserPromptSubmitted({ prompt: 'implement feature X' });
+
+    expect(output).toEqual({ additionalContext: null });
+    const status = await hooks.tool?.spec_kit_skill_advisor_status.execute({});
+    expect(status).toContain('last_error_code=NONZERO_EXIT');
+  });
+
+  it('isolates prompt cache entries by session', async () => {
+    const hooks = await makePlugin({ cacheTTLMs: 5000 });
+
+    await hooks.onUserPromptSubmitted({ sessionId: 's1', prompt: 'implement feature X' });
+    await hooks.onUserPromptSubmitted({ sessionId: 's2', prompt: 'implement feature X' });
+    await hooks.onUserPromptSubmitted({ sessionId: 's1', prompt: 'implement feature X' });
+
+    expect(mockedBridge.spawn).toHaveBeenCalledTimes(2);
+    const status = await hooks.tool?.spec_kit_skill_advisor_status.execute({});
+    expect(status).toContain('cache_hits=1');
+    expect(status).toContain('cache_misses=2');
+  });
+
+  it('evicts only the targeted session cache on session end', async () => {
+    const hooks = await makePlugin({ cacheTTLMs: 5000 });
+
+    await hooks.onUserPromptSubmitted({ sessionId: 's1', prompt: 'implement feature X' });
+    await hooks.onUserPromptSubmitted({ sessionId: 's2', prompt: 'implement feature X' });
+    await hooks.onSessionEnd({ sessionId: 's1' });
+    await hooks.onUserPromptSubmitted({ sessionId: 's1', prompt: 'implement feature X' });
+    await hooks.onUserPromptSubmitted({ sessionId: 's2', prompt: 'implement feature X' });
+
+    expect(mockedBridge.spawn).toHaveBeenCalledTimes(3);
+  });
+
+  it('invalidates host cache when advisor source signature changes', async () => {
+    const hooksA = await makePlugin({ cacheTTLMs: 5000, sourceSignatureOverride: 'sig-a' });
+    await hooksA.onUserPromptSubmitted({ prompt: 'implement feature X' });
+    await hooksA.onUserPromptSubmitted({ prompt: 'implement feature X' });
+    expect(mockedBridge.spawn).toHaveBeenCalledTimes(1);
+
+    const hooksB = await makePlugin({ cacheTTLMs: 5000, sourceSignatureOverride: 'sig-b' });
+    await hooksB.onUserPromptSubmitted({ prompt: 'implement feature X' });
+
+    expect(mockedBridge.spawn).toHaveBeenCalledTimes(2);
   });
 });

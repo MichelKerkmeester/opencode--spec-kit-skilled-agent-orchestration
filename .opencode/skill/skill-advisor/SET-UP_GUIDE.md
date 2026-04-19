@@ -87,7 +87,7 @@ The Skill Advisor package now includes the routing scripts, the per-skill graph 
 Primary invocation is hook-based. Register the active runtime using the Phase 020 hook contract, then let the runtime call the compiled `UserPromptSubmit` adapter at prompt time:
 
 ```bash
-npm run --workspace=@spec-kit/mcp-server build
+npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 ```
 
 Use [Skill Advisor Hook Reference](../system-spec-kit/references/hooks/skill-advisor-hook.md) for Claude, Gemini, Copilot, and Codex setup snippets.

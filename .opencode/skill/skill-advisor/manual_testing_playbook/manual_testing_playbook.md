@@ -48,9 +48,9 @@ Canonical source artifacts:
 
 ## 1. OVERVIEW
 
-This playbook provides 34 deterministic scenarios across 6 categories validating the `skill-advisor` routing, graph pipeline, and Phase 020 prompt-time hook surface. Each feature keeps its original ID and links to a dedicated feature file with the full execution contract.
+This playbook provides 46 deterministic scenarios across 9 categories validating the `skill-advisor` routing, graph pipeline, Phase 020 prompt-time hook surface, plugin path, static measurement harness, and live telemetry workflow. Each feature keeps its original ID and links to its execution contract.
 
-Coverage note (2026-04-19): all 34 scenarios now follow the split-document playbook contract, including SQLite graph checks and the Phase 020 hook-routing smoke surface.
+Coverage note (2026-04-19): all 46 scenarios now follow the split-document playbook contract, including SQLite graph checks, the Phase 020 hook-routing smoke surface, plugin checks, measurement runs, and live telemetry checks.
 
 ### Realistic Test Model
 
@@ -146,7 +146,7 @@ Release is `READY` only when:
 
 1. No scenario verdict is `FAIL`.
 2. All compiler and regression-safety scenarios are `PASS`.
-3. Coverage is 100% of the 34 scenarios linked in this root document.
+3. Coverage is 100% of the 46 scenarios linked in this root document.
 4. No unresolved blocker remains after triage.
 5. No retired script-directory path references remain anywhere under `manual_testing_playbook/`.
 6. `skill-graph.sqlite` has been restored after any JSON fallback run.
@@ -277,7 +277,7 @@ These scenarios cover the Phase 023 Area F `spec-kit-skill-advisor` OpenCode plu
 | PP-001 | Plugin loads on session start | Start an OpenCode session with the plugin enabled | Plugin initializes session cache; no errors in session log |
 | PP-002 | Plugin emits brief on user prompt | Send a work-intent prompt with the plugin active | Plugin bridge returns rendered brief, delivered as `additionalContext` |
 | PP-003 | Status tool prompt-safety | Invoke the plugin's status tool during a session | Output contains counters/status only — no raw prompts, no fingerprints, no stdout/stderr |
-| PP-004 | Env opt-out | Set `SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED=1` and restart | Plugin initializes disabled; no bridge invocation per user prompt |
+| PP-004 | Env opt-out | Set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` and restart | Plugin initializes disabled; no bridge invocation per user prompt; `SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED=1` remains accepted as a legacy alias |
 | PP-005 | Config opt-out | Set `enabled: false` in plugin config and restart | Same as PP-004: bridge never invoked |
 
 ---
@@ -288,7 +288,7 @@ These scenarios cover the Phase 024 Track 2 static corpus measurement harness. R
 
 | ID | Scenario | Command or Action | Expected |
 |---|---|---|---|
-| MR-001 | Full 200-prompt corpus run | Execute `scripts/observability/smart-router-measurement.ts` end-to-end against 019/004 corpus | `smart-router-measurement-report.md` regenerated; `results.jsonl` has 200 records; summary reports per-skill accuracy + savings |
+| MR-001 | Full 200-prompt corpus run | Execute `scripts/observability/smart-router-measurement.ts` end-to-end against 019/004 corpus | `smart-router-measurement-report.md` regenerated; `smart-router-measurement-results.jsonl` has 200 records; optional static compliance telemetry writes `.opencode/reports/smart-router-static/compliance.jsonl`; summary reports per-skill accuracy + savings |
 | MR-002 | Advisor accuracy baseline | Inspect the generated report's summary line | Current baseline: 56.00% (112/200). Regressions below this warrant investigation |
 | MR-003 | UNKNOWN-fallback rate | Check report's UNKNOWN row | Should be ≤ 18.5% (baseline); higher means routing vocabulary regressed |
 
@@ -300,7 +300,7 @@ These scenarios cover the Phase 024 Track 3 live-session wrapper + Track 4 analy
 
 | ID | Scenario | Command or Action | Expected |
 |---|---|---|---|
-| LT-001 | Wrapper registration per runtime | Follow `LIVE_SESSION_WRAPPER_SETUP.md` for the target runtime | Wrapper registered in the runtime settings file; no errors |
+| LT-001 | Wrapper registration per runtime | Follow `LIVE_SESSION_WRAPPER_SETUP.md` for the target runtime | Wrapper registered through the runtime-specific surface; Copilot uses callback wrapping rather than a generic settings-file model |
 | LT-002 | Read-tool telemetry accumulates | Run a session and exercise the active runtime normally | `.opencode/skill/.smart-router-telemetry/compliance.jsonl` gains new lines with compliance classification |
 | LT-003 | Analyzer produces report | Run `scripts/observability/smart-router-analyze.ts` against the JSONL | Timestamped markdown report emitted with compliance distribution + over/under-load rates + ON_DEMAND trigger rate |
 | LT-004 | Empty-state handling | Run analyzer with no JSONL content | Report says "no data yet; run live-session wrapper first" without failing |
@@ -318,7 +318,7 @@ These scenarios cover the Phase 024 Track 3 live-session wrapper + Track 4 analy
 | `.opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts` | SQLite schema, hash-aware indexing, and scan summaries | SG-001, SG-003 |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/{scan,query,status,validate}.ts` | Live MCP skill graph scans, queries, health, and validation | SG-001, SG-002, SG-003 |
 | `.opencode/skill/system-spec-kit/mcp_server/context-server.ts` | Startup scan and watcher-driven auto-reindex behavior | SG-001, SG-003 |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts` | Runtime transport parity for Claude, Gemini, Copilot, and Codex | HR-001, HR-002 |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts` | Runtime transport parity for Claude, Gemini, Copilot, Codex, and the OpenCode plugin | HR-001, HR-002, PP-002 |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-privacy.vitest.ts` | Prompt privacy constraints across hook surfaces | HR-006 |
 
 ---

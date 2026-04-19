@@ -115,4 +115,5 @@ export function normalizeRuntimeOutput(
   };
 }
 
+/** @deprecated Use `normalizeRuntimeOutput` for runtime-neutral adapter comparisons. */
 export const normalizeAdapterOutput = normalizeRuntimeOutput;

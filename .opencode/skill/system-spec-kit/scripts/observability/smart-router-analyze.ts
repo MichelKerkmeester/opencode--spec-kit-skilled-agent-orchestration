@@ -116,6 +116,52 @@ function hasOnDemandSignal(record: ComplianceRecord): boolean {
     || record.allowedResources.some((resource) => resource.toLowerCase().startsWith('on_demand:'));
 }
 
+function isBaselineSkillRead(resourcePath: string): boolean {
+  return resourcePath === 'SKILL.md' || resourcePath.endsWith('/SKILL.md');
+}
+
+function collapsePromptRecords(records: readonly ComplianceRecord[]): ComplianceRecord[] {
+  const byPrompt = new Map<string, ComplianceRecord[]>();
+  for (const record of records) {
+    byPrompt.set(record.promptId, [...(byPrompt.get(record.promptId) ?? []), record]);
+  }
+
+  return [...byPrompt.values()].map((rows) => {
+    const first = rows[0];
+    if (!first) {
+      throw new Error('internal error: empty prompt record group');
+    }
+    const actualReads = [...new Set(rows.flatMap((row) => row.actualReads))].sort();
+    const observedSkills = [...new Set(rows.flatMap((row) => row.observedSkills ?? (row.observedSkill ? [row.observedSkill] : [])))].sort();
+    const hasCrossSkill = observedSkills.some((skill) => skill !== first.selectedSkill);
+    const nonBaselineReads = actualReads.filter((read) => !isBaselineSkillRead(read));
+    const complianceClass: ComplianceClass = hasCrossSkill
+      ? 'extra'
+      : actualReads.length > 0 && nonBaselineReads.length === 0
+        ? 'always'
+        : rows.some((row) => row.complianceClass === 'extra')
+          ? 'extra'
+          : rows.some((row) => row.complianceClass === 'missing_expected')
+            ? 'missing_expected'
+            : rows.some((row) => row.complianceClass === 'on_demand_expected')
+              ? 'on_demand_expected'
+              : rows.some((row) => row.complianceClass === 'conditional_expected')
+                ? 'conditional_expected'
+                : rows.some((row) => row.complianceClass === 'unknown_unparsed')
+                  ? 'unknown_unparsed'
+                  : 'always';
+
+    return {
+      ...first,
+      actualReads,
+      ...(observedSkills.length > 0 ? { observedSkill: observedSkills.length === 1 ? observedSkills[0] : observedSkills.join(',') } : {}),
+      ...(observedSkills.length > 0 ? { observedSkills } : {}),
+      complianceClass,
+      timestamp: rows[rows.length - 1]?.timestamp ?? first.timestamp,
+    };
+  });
+}
+
 export function analyzeTelemetryRecords(args: {
   readonly records: readonly ComplianceRecord[];
   readonly parseErrors?: number;
@@ -124,8 +170,9 @@ export function analyzeTelemetryRecords(args: {
 }): TelemetryAnalysis {
   const classDistribution = emptyClassDistribution();
   const bySkill = new Map<string, ComplianceRecord[]>();
+  const records = collapsePromptRecords(args.records);
 
-  for (const record of args.records) {
+  for (const record of records) {
     classDistribution[record.complianceClass] += 1;
     bySkill.set(record.selectedSkill, [...(bySkill.get(record.selectedSkill) ?? []), record]);
   }
@@ -150,11 +197,11 @@ export function analyzeTelemetryRecords(args: {
   return {
     generatedAt: args.generatedAt ?? new Date().toISOString(),
     inputPath: args.inputPath ?? DEFAULT_INPUT_PATH,
-    totalRecords: args.records.length,
+    totalRecords: records.length,
     parseErrors: args.parseErrors ?? 0,
     classDistribution,
     perSkill,
-    noData: args.records.length === 0,
+    noData: records.length === 0,
   };
 }
 
@@ -277,7 +324,9 @@ export function analyzeTelemetryFile(options: AnalyzerOptions = {}): TelemetryAn
 
 export function writeTelemetryAnalysisReport(analysis: TelemetryAnalysis, options: AnalyzerOptions = {}): string {
   const workspaceRoot = options.workspaceRoot ?? locateWorkspaceRoot();
-  const outputPath = path.resolve(options.outputPath ?? defaultOutputPath(workspaceRoot, analysis.generatedAt));
+  const outputPath = options.outputPath
+    ? path.resolve(workspaceRoot, options.outputPath)
+    : defaultOutputPath(workspaceRoot, analysis.generatedAt);
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, formatTelemetryAnalysisReport(analysis), 'utf8');
   return outputPath;

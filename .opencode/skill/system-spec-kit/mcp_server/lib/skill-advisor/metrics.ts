@@ -185,10 +185,12 @@ function envNumber(name: string, fallback: number): number {
 // 4. CORE LOGIC
 // ───────────────────────────────────────────────────────────────
 
+/** Return the stable metric definitions emitted by advisor hook diagnostics. */
 export function getAdvisorHookMetricDefinitions(): readonly AdvisorMetricDefinition[] {
   return ADVISOR_HOOK_METRIC_DEFINITIONS;
 }
 
+/** Read alert thresholds from environment with conservative defaults. */
 export function getAdvisorHookAlertThresholds(): AdvisorHookAlertThresholds {
   return {
     failOpenWarnRate: envNumber('SPECKIT_ADVISOR_HOOK_FAILOPEN_WARN_RATE', DEFAULT_ALERT_THRESHOLDS.failOpenWarnRate),
@@ -198,6 +200,7 @@ export function getAdvisorHookAlertThresholds(): AdvisorHookAlertThresholds {
   };
 }
 
+/** Build a prompt-safe diagnostic record from hook execution metadata. */
 export function createAdvisorHookDiagnosticRecord(input: {
   readonly runtime: AdvisorRuntime;
   readonly status: AdvisorHookStatus;
@@ -226,6 +229,7 @@ export function createAdvisorHookDiagnosticRecord(input: {
   };
 }
 
+/** Validate that a diagnostic record matches the prompt-free closed schema. */
 export function validateAdvisorHookDiagnosticRecord(value: unknown): value is AdvisorHookDiagnosticRecord {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
     return false;
@@ -246,6 +250,7 @@ export function validateAdvisorHookDiagnosticRecord(value: unknown): value is Ad
     && (record.generation === undefined || typeof record.generation === 'number');
 }
 
+/** Serialize a validated diagnostic record for JSONL emission. */
 export function serializeAdvisorHookDiagnosticRecord(record: AdvisorHookDiagnosticRecord): string {
   if (!validateAdvisorHookDiagnosticRecord(record)) {
     throw new Error(
@@ -255,6 +260,7 @@ export function serializeAdvisorHookDiagnosticRecord(record: AdvisorHookDiagnost
   return JSON.stringify(record);
 }
 
+/** Build the rolling health section shown in advisor observability output. */
 export function buildAdvisorHookHealthSection(
   records: readonly AdvisorHookDiagnosticRecord[],
 ): AdvisorHookHealthSection {
@@ -273,6 +279,7 @@ export function buildAdvisorHookHealthSection(
   };
 }
 
+/** Small in-memory collector for advisor hook metrics and health snapshots. */
 export class AdvisorHookMetricsCollector {
   private readonly records: AdvisorHookDiagnosticRecord[] = [];
 

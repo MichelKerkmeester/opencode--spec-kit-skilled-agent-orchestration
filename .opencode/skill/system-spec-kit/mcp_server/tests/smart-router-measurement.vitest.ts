@@ -146,6 +146,25 @@ describe('smart-router static measurement harness', () => {
     expect(markdown).toContain('It does not measure actual AI tool reads');
   });
 
+  it('records static compliance telemetry to the separated default stream', async () => {
+    const root = tempWorkspace();
+    writeSkill(root, 'sk-code-opencode', routedSkill, [
+      'references/shared/universal_patterns.md',
+      'references/typescript/style_guide.md',
+    ]);
+
+    await runMeasurement({
+      workspaceRoot: root,
+      corpusRows: [{ id: 'p1', prompt: 'Implement TypeScript support', skill_top_1: 'sk-code-opencode' }],
+      recordTelemetry: true,
+      buildBrief: async () => advisorResult('sk-code-opencode'),
+    });
+
+    const staticStream = path.join(root, '.opencode', 'reports', 'smart-router-static', 'compliance.jsonl');
+    expect(fs.existsSync(staticStream)).toBe(true);
+    expect(fs.readFileSync(staticStream, 'utf8')).toContain('"promptId":"p1"');
+  });
+
   it('falls back gracefully when a skill has no SMART ROUTING section', () => {
     const root = tempWorkspace();
     writeSkill(root, 'sk-no-router', '# No Router\n');

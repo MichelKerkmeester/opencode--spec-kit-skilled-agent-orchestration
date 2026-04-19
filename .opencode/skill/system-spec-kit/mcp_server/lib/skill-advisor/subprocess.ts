@@ -121,6 +121,7 @@ function parseRecommendations(stdout: string): AdvisorRecommendation[] {
 function runSpawnAttempt(args: {
   command: string;
   commandArgs: readonly string[];
+  prompt: string;
   cwd: string;
   timeoutMs: number;
 }): Promise<SpawnAttemptResult> {
@@ -136,7 +137,7 @@ function runSpawnAttempt(args: {
       child = spawn(args.command, args.commandArgs, {
         cwd: args.cwd,
         env: process.env,
-        stdio: ['ignore', 'pipe', 'pipe'],
+        stdio: ['pipe', 'pipe', 'pipe'],
       });
     } catch (error: unknown) {
       resolve({
@@ -151,6 +152,8 @@ function runSpawnAttempt(args: {
       return;
     }
 
+    child.stdin?.write(args.prompt);
+    child.stdin?.end();
     const timer = setTimeout(() => {
       timedOut = true;
       child.kill('SIGKILL');
@@ -205,6 +208,7 @@ async function delay(ms: number): Promise<void> {
   });
 }
 
+/** Run the Python skill advisor with prompt input carried over stdin. */
 export async function runAdvisorSubprocess(
   prompt: string,
   options: AdvisorSubprocessOptions,
@@ -231,7 +235,7 @@ export async function runAdvisorSubprocess(
   const commandArgs = [
     scriptPath,
     ...thresholdArgs(options.thresholdConfig),
-    prompt,
+    '--stdin',
   ];
   const command = options.pythonBin ?? 'python3';
 
@@ -241,6 +245,7 @@ export async function runAdvisorSubprocess(
     const attemptResult = await runSpawnAttempt({
       command,
       commandArgs,
+      prompt,
       cwd: options.workspaceRoot,
       timeoutMs: Math.max(1, remainingMs),
     });

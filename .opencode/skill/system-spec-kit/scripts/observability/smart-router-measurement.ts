@@ -84,6 +84,8 @@ export interface MeasurementOptions {
   readonly limit?: number;
   readonly corpusRows?: readonly CorpusRow[];
   readonly recordTelemetry?: boolean;
+  readonly liveStream?: boolean;
+  readonly telemetryOutputPath?: string;
   readonly buildBrief?: typeof buildSkillAdvisorBrief;
 }
 
@@ -102,6 +104,7 @@ interface RouterModel {
 const DEFAULT_CORPUS_PATH = '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl';
 const DEFAULT_REPORT_PATH = '.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement-report.md';
 const DEFAULT_JSONL_PATH = '.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement-results.jsonl';
+const DEFAULT_STATIC_COMPLIANCE_PATH = '.opencode/reports/smart-router-static/compliance.jsonl';
 const UNKNOWN_RESOURCE = '__unknown_unparsed__';
 const IS_CLI_ENTRY = process.argv[1]
   ? path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
@@ -630,6 +633,10 @@ export async function runMeasurement(options: MeasurementOptions = {}): Promise<
         predictedRoute: prediction.predictedRoute,
         allowedResources: [UNKNOWN_RESOURCE, ...prediction.allowedResources],
         actualReads: [],
+      }, {
+        outputPath: options.liveStream
+          ? undefined
+          : path.resolve(workspaceRoot, options.telemetryOutputPath ?? DEFAULT_STATIC_COMPLIANCE_PATH),
       });
     }
   }
@@ -751,6 +758,8 @@ async function main(): Promise<void> {
     corpusPath: argValue(args, '--corpus'),
     limit: limitValue ? Number(limitValue) : undefined,
     recordTelemetry: !args.includes('--no-record-telemetry'),
+    liveStream: args.includes('--live-stream'),
+    telemetryOutputPath: argValue(args, '--telemetry-output'),
   });
   writeMeasurementOutputs(summary, {
     workspaceRoot,

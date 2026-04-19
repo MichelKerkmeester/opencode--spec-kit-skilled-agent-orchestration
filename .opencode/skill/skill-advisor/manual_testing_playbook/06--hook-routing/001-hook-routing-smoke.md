@@ -28,7 +28,7 @@ Validate the Phase 020 hook path as the primary advisor invocation route. This s
 2. Build the MCP server hook bundle:
 
 ```bash
-npm run --workspace=@spec-kit/mcp-server build
+npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 ```
 
 3. Confirm the Phase 020 reference docs are present:

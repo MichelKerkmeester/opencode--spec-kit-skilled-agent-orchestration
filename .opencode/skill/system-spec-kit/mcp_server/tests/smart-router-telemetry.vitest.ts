@@ -6,12 +6,18 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import {
   classifyCompliance,
+  finalizeSmartRouterCompliancePrompt,
   recordSmartRouterCompliance,
+  recordSmartRouterPromptObservation,
+  startSmartRouterCompliancePrompt,
+  telemetryFilePath,
 } from '../../scripts/observability/smart-router-telemetry';
 
 const TELEMETRY_DIR_ENV = 'SPECKIT_SMART_ROUTER_TELEMETRY_DIR';
+const TELEMETRY_PATH_ENV = 'SPECKIT_SMART_ROUTER_TELEMETRY_PATH';
 const createdRoots = new Set<string>();
 let previousTelemetryDir: string | undefined;
+let previousTelemetryPath: string | undefined;
 
 function createTempRoot(): string {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'smart-router-telemetry-'));
@@ -31,6 +37,7 @@ function readJsonl(root: string): unknown[] {
 
 beforeEach(() => {
   previousTelemetryDir = process.env[TELEMETRY_DIR_ENV];
+  previousTelemetryPath = process.env[TELEMETRY_PATH_ENV];
 });
 
 afterEach(() => {
@@ -38,6 +45,11 @@ afterEach(() => {
     delete process.env[TELEMETRY_DIR_ENV];
   } else {
     process.env[TELEMETRY_DIR_ENV] = previousTelemetryDir;
+  }
+  if (previousTelemetryPath === undefined) {
+    delete process.env[TELEMETRY_PATH_ENV];
+  } else {
+    process.env[TELEMETRY_PATH_ENV] = previousTelemetryPath;
   }
 
   for (const root of createdRoots) {
@@ -169,5 +181,93 @@ describe('smart-router telemetry recording', () => {
     expect(record.allowedResources[0]).not.toContain('\n');
     expect(record.actualReads[0]).not.toContain('\n');
     expect(readJsonl(root)[0]).toEqual(record);
+  });
+
+  it('finalizes a zero-read prompt as one compliance record', () => {
+    const root = createTempRoot();
+    process.env[TELEMETRY_DIR_ENV] = root;
+
+    startSmartRouterCompliancePrompt({
+      promptId: 'prompt-zero',
+      selectedSkill: 'sk-code-opencode',
+      predictedRoute: ['TYPESCRIPT'],
+      allowedResources: ['expected:references/typescript/style_guide.md'],
+      actualReads: [],
+    });
+    const record = finalizeSmartRouterCompliancePrompt('prompt-zero');
+
+    expect(record?.actualReads).toEqual([]);
+    expect(record?.complianceClass).toBe('missing_expected');
+    expect(readJsonl(root)).toHaveLength(1);
+  });
+
+  it('aggregates multiple reads for the same prompt into one finalized record', () => {
+    const root = createTempRoot();
+    process.env[TELEMETRY_DIR_ENV] = root;
+    startSmartRouterCompliancePrompt({
+      promptId: 'prompt-multi',
+      selectedSkill: 'sk-code-opencode',
+      predictedRoute: ['TYPESCRIPT'],
+      allowedResources: [
+        'always:references/shared/universal_patterns.md',
+        'conditional:references/typescript/style_guide.md',
+      ],
+      actualReads: [],
+    });
+
+    recordSmartRouterPromptObservation({
+      promptId: 'prompt-multi',
+      selectedSkill: 'sk-code-opencode',
+      observedSkill: 'sk-code-opencode',
+      predictedRoute: ['TYPESCRIPT'],
+      allowedResources: ['always:references/shared/universal_patterns.md'],
+      actualReads: ['references/shared/universal_patterns.md'],
+    });
+    recordSmartRouterPromptObservation({
+      promptId: 'prompt-multi',
+      selectedSkill: 'sk-code-opencode',
+      observedSkill: 'sk-code-opencode',
+      predictedRoute: ['TYPESCRIPT'],
+      allowedResources: ['conditional:references/typescript/style_guide.md'],
+      actualReads: ['references/typescript/style_guide.md'],
+    });
+    const record = finalizeSmartRouterCompliancePrompt('prompt-multi');
+
+    expect(readJsonl(root)).toHaveLength(1);
+    expect(record?.actualReads).toEqual([
+      'references/shared/universal_patterns.md',
+      'references/typescript/style_guide.md',
+    ]);
+    expect(record?.observedSkill).toBe('sk-code-opencode');
+    expect(record?.complianceClass).toBe('conditional_expected');
+  });
+
+  it('classifies cross-skill reads as non-compliant even when resource names match', () => {
+    const record = recordSmartRouterCompliance({
+      promptId: 'prompt-cross-skill',
+      selectedSkill: 'sk-code-opencode',
+      observedSkill: 'sk-doc',
+      predictedRoute: ['TYPESCRIPT'],
+      allowedResources: ['always:SKILL.md'],
+      actualReads: ['SKILL.md'],
+    }, {
+      outputPath: path.join(createTempRoot(), 'cross-skill.jsonl'),
+    });
+
+    expect(record.observedSkill).toBe('sk-doc');
+    expect(record.complianceClass).toBe('extra');
+  });
+
+  it('resolves telemetry path precedence as explicit output, env path, env dir, then default', () => {
+    const explicit = path.join(createTempRoot(), 'explicit.jsonl');
+    const envPath = path.join(createTempRoot(), 'env-path.jsonl');
+    const envDir = createTempRoot();
+    process.env[TELEMETRY_PATH_ENV] = envPath;
+    process.env[TELEMETRY_DIR_ENV] = envDir;
+
+    expect(telemetryFilePath(explicit)).toBe(path.resolve(explicit));
+    expect(telemetryFilePath()).toBe(path.resolve(envPath));
+    delete process.env[TELEMETRY_PATH_ENV];
+    expect(telemetryFilePath()).toBe(path.join(path.resolve(envDir), 'compliance.jsonl'));
   });
 });

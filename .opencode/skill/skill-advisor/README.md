@@ -97,7 +97,7 @@ Build the hook bundle before enabling runtime registrations:
 
 ```bash
 cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
-npm run --workspace=@spec-kit/mcp-server build
+npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 ```
 
 Then register the runtime hook command for the active host. The Claude command shape is representative:

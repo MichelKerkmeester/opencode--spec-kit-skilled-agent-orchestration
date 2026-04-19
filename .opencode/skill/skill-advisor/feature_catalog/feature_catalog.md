@@ -544,7 +544,7 @@ Native OpenCode plugin that wires the advisor hook into OpenCode as a first-clas
 
 #### Current Reality
 
-`.opencode/plugins/spec-kit-skill-advisor.js` exports a default plugin function. A bridge process at `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs` runs `buildSkillAdvisorBrief` + `renderAdvisorBrief` out-of-process with IPC. Opt-out via `SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED=1` env or `enabled: false` in plugin config. Settings: `cacheTTLMs` (5 min), `thresholdConfidence` (0.7), `maxTokens` (80), `nodeBinaryOverride`, `bridgeTimeoutMs` (1000). Seven plugin tests cover cache TTL, status-tool prompt-safety, opt-out via env, opt-out via config, bridge-timeout fail-open, bridge-error fail-open, and smoke-path behavior.
+`.opencode/plugins/spec-kit-skill-advisor.js` exports a default plugin function. A bridge process at `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs` runs `buildSkillAdvisorBrief` + `renderAdvisorBrief` out-of-process with IPC. Opt-out via the shared `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` env, the legacy `SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED=1` alias, or `enabled: false` in plugin config. Settings: `cacheTTLMs` (5 min), `thresholdConfidence` (0.7), `maxTokens` (80), `nodeBinaryOverride`, `bridgeTimeoutMs` (1000). Plugin tests cover cache TTL, status-tool prompt-safety, opt-outs, timeout/SIGKILL fail-open, source-signature cache invalidation, bridge error modes, session isolation, targeted eviction, and smoke-path behavior.
 
 #### Source Files
 
@@ -576,7 +576,7 @@ Preferred Copilot adapter path that uses `@github/copilot-sdk` (public on npm, M
 
 #### Description
 
-Codex `.codex/settings.json` hooks + `.codex/policy.json` Bash denylist registration. Phase 020/008 sandbox blocked codex from writing these in-situ; now registered for users.
+Codex `.codex/settings.json` hooks + `.codex/policy.json` Bash denylist registration. Phase 020/008 code shipped the adapter and the registration is now present for users.
 
 #### Current Reality
 
@@ -615,7 +615,7 @@ Observe-only compliance telemetry module that callers invoke to record predicted
 
 #### Current Reality
 
-`smart-router-telemetry.ts` exports `classifyCompliance(allowed, actual)` (pure helper) and `recordSmartRouterCompliance(input)` (writes JSONL to `.opencode/skill/.smart-router-telemetry/compliance.jsonl`, gitignored). Six compliance classes: `always`, `conditional_expected`, `on_demand_expected`, `extra`, `missing_expected`, `unknown_unparsed`. Never throws, sanitizes unsafe control characters in resource paths.
+`smart-router-telemetry.ts` exports `classifyCompliance(allowed, actual)` (pure helper), `recordSmartRouterCompliance(input)` for immediate records, and prompt-level start/observe/finalize helpers for live sessions. Live telemetry writes JSONL to `.opencode/skill/.smart-router-telemetry/compliance.jsonl` by default. Six compliance classes: `always`, `conditional_expected`, `on_demand_expected`, `extra`, `missing_expected`, `unknown_unparsed`. Never throws, sanitizes unsafe control characters in resource paths, preserves observed skill identity, and aggregates live observations by `promptId`.
 
 #### Source Files
 
@@ -632,7 +632,7 @@ Runs the 019/004 200-prompt corpus through the advisor in-process, captures advi
 
 #### Current Reality
 
-`smart-router-measurement.ts` processes all 200 prompts. First measured advisor accuracy: 56.00% (112/200) vs corpus labels. UNKNOWN-fallback rate: 18.5% (pre-023/Area C). Per-skill accuracy range: 0% to 100%; brief-byte savings 99%+ everywhere; predicted-route context savings 28-95% per skill. Report emitted to `smart-router-measurement-report.md`; per-prompt JSONL to `smart-router-measurement-results.jsonl`.
+`smart-router-measurement.ts` processes all 200 prompts. First measured advisor accuracy: 56.00% (112/200) vs corpus labels. UNKNOWN-fallback rate: 18.5% (pre-023/Area C). Per-skill accuracy range: 0% to 100%; brief-byte savings 99%+ everywhere; predicted-route context savings 28-95% per skill. Report emitted to `smart-router-measurement-report.md`; per-prompt JSONL to `smart-router-measurement-results.jsonl`; static compliance records, when enabled, go to `.opencode/reports/smart-router-static/compliance.jsonl` unless `--live-stream` explicitly opts into the live stream.
 
 #### Source Files
 
@@ -650,7 +650,7 @@ TypeScript template + per-runtime setup docs for users to instrument their own C
 
 #### Current Reality
 
-`live-session-wrapper.ts` exposes an `onToolCall(tool, args)` hook that filters for Read tool calls against `.opencode/skill/*` and records via `recordSmartRouterCompliance`. Never throws, never blocks. `LIVE_SESSION_WRAPPER_SETUP.md` documents setup steps for each of the 4 runtimes. User opts in by registering in their runtime settings file.
+`live-session-wrapper.ts` exposes `configureSmartRouterSession()`, `onToolCall(tool, args)`, and `finalizeSmartRouterPrompt(promptId)`. It filters for Read tool calls against `.opencode/skill/*`, records observed skill identity, and writes one aggregate compliance record per prompt on finalization. Never throws, never blocks. `LIVE_SESSION_WRAPPER_SETUP.md` documents setup steps for each of the 4 runtimes; Copilot uses callback-style integration rather than a generic settings-file model.
 
 #### Source Files
 
@@ -667,7 +667,7 @@ CLI script that reads accumulated compliance JSONL and emits a decision-support 
 
 #### Current Reality
 
-`smart-router-analyze.ts` reads `.smart-router-telemetry/compliance.jsonl`. Aggregates compliance-class distribution, over-load rate (AI read unpredicted resources), under-load rate (AI missed predicted resources), ON_DEMAND trigger rate. Emits timestamped markdown report. Handles empty JSONL ("no data yet; run live-session wrapper first"); skips invalid lines + counts parse errors.
+`smart-router-analyze.ts` reads `.opencode/skill/.smart-router-telemetry/compliance.jsonl`. It groups scoring by `promptId`, treats a baseline `SKILL.md` read alone as compliant, aggregates compliance-class distribution, over-load rate (AI read unpredicted resources), under-load rate (AI missed predicted resources), and ON_DEMAND trigger rate. Emits timestamped markdown report. Handles empty JSONL ("no data yet; run live-session wrapper first"); skips invalid lines + counts parse errors.
 
 #### Source Files
 

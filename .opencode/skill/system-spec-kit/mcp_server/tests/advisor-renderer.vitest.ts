@@ -38,16 +38,23 @@ describe('renderAdvisorBrief', () => {
     expect(renderAdvisorBrief(fixture('skippedShortCasual.json'))).toBeNull();
   });
 
-  it('renders top-two ambiguity only when the 120-token mode is requested', () => {
+  it('renders top-two ambiguity when the producer result carries the 120-token mode', () => {
     const ambiguous = fixture('ambiguousTopTwo.json');
+    const compact = {
+      ...ambiguous,
+      metrics: {
+        ...ambiguous.metrics,
+        tokenCap: 80,
+      },
+    };
 
-    expect(renderAdvisorBrief(ambiguous)).toBe(
+    expect(renderAdvisorBrief(compact)).toBe(
       'Advisor: live; use sk-code-opencode 0.80/0.35 pass.',
     );
-    expect(renderAdvisorBrief(ambiguous, { tokenCap: 120 })).toBe(
+    expect(renderAdvisorBrief(ambiguous)).toBe(
       'Advisor: live; ambiguous: sk-code-opencode 0.80/0.35 vs sk-doc 0.75/0.32 pass.',
     );
-    expect(renderAdvisorBrief(ambiguous, { tokenCap: 120 })?.length).toBeLessThanOrEqual(480);
+    expect(renderAdvisorBrief(ambiguous)?.length).toBeLessThanOrEqual(480);
   });
 
   it('blocks canonical-folded instruction-shaped skill labels', () => {

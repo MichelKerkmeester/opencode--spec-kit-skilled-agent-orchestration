@@ -19,7 +19,7 @@ Run from the repository root:
 
 ```bash
 cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
-npm run --workspace=@spec-kit/mcp-server build
+npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 ```
 
 Required files:

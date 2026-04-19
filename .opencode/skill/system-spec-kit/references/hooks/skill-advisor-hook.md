@@ -67,7 +67,7 @@ The table below reflects shipped child summaries 006, 007 and 008 plus the parit
 | Gemini | JSON `hookSpecificOutput.additionalContext` under `BeforeAgent` | `.gemini/settings.json` | No | Live | Registered in 007 as `speckit-user-prompt-advisor` |
 | Copilot SDK | `onUserPromptSubmitted` return object with `additionalContext` | Runtime-specific SDK config | Yes | Live in code, SDK local smoke unavailable | 007 unit-tests SDK branch with dependency injection |
 | Copilot wrapper | In-memory prompt wrapper fallback | `.github/hooks/superset-notify.json` or runtime wrapper config | No | Live fallback | Local checkout uses wrapper path when SDK packages are absent |
-| Codex | JSON `hookSpecificOutput.additionalContext` | `.codex/settings.json` | No | Adapter live, registration deferred | 008 detector saw `codex-cli 0.121.0` and `partial` hook policy |
+| Codex | JSON `hookSpecificOutput.additionalContext` | `.codex/settings.json` | No | Adapter live, registration shipped | `.codex/settings.json` points to the compiled Codex adapter |
 | Codex fallback | Markdown-comment prompt wrapper | Wrapper command, only when detector reports `unavailable` | No | Live fallback | Rewritten prompt exists only in memory |
 
 Evidence:
@@ -75,7 +75,7 @@ Evidence:
 - 005 parity: `advisor-corpus-parity.vitest.ts` passed `200/200`.
 - 007 parity: Claude, Gemini and Copilot variants matched five canonical fixtures.
 - 008 parity: Claude, Gemini, Copilot and Codex matched five canonical fixtures.
-- 008 limitation: `.codex/settings.json` and `.codex/policy.json` could not be written in the sandbox and remain documented registration snippets.
+- 008 follow-up: `.codex/settings.json` and `.codex/policy.json` are now present as the shipped registration surfaces.
 
 ---
 
@@ -86,7 +86,7 @@ Evidence:
 Build the MCP server before enabling runtime hooks:
 
 ```bash
-npm run --workspace=@spec-kit/mcp-server build
+npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 ```
 
 Use the repo root as the working directory for every command below. Each command changes to `git rev-parse --show-toplevel` first so nested shell launches still find the compiled hook.
@@ -202,9 +202,9 @@ Notes:
 
 ### Codex
 
-Codex code and tests shipped in child 008. Configuration writes were blocked in the sandbox, so these snippets are the deferred operator contract and must not be committed as real files by 020/009.
+Codex code and tests shipped in child 008. `.codex/settings.json` and `.codex/policy.json` are now shipped registration surfaces; the snippets below document the active operator contract.
 
-Deferred `.codex/settings.json` snippet:
+`.codex/settings.json` snippet:
 
 ```json
 {
@@ -227,7 +227,7 @@ Deferred `.codex/settings.json` snippet:
 }
 ```
 
-Deferred `.codex/policy.json` snippet:
+`.codex/policy.json` snippet:
 
 ```json
 {

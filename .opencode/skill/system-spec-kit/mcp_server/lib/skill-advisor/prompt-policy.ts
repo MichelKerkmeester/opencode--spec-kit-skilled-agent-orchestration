@@ -118,11 +118,13 @@ function hasWorkIntentVerb(tokens: string[]): boolean {
   return tokens.some((token) => WORK_INTENT_VERBS.has(token));
 }
 
+/** Extract explicit `sk-*` mentions used for prompt-policy diagnostics. */
 export function extractMetalinguisticSkillMentions(prompt: string): string[] {
   const canonicalLower = normalizePrompt(prompt).toLowerCase();
   return [...new Set(canonicalLower.match(/\bsk-[a-z0-9][a-z0-9-]*\b/g) ?? [])].sort();
 }
 
+/** Decide whether a user prompt should invoke the advisor producer. */
 export function shouldFireAdvisor(prompt: string): AdvisorPromptPolicyResult {
   const canonicalPrompt = normalizePrompt(prompt);
   const canonicalLower = canonicalPrompt.toLowerCase();

@@ -6,6 +6,9 @@ import { createHmac, createHash } from 'node:crypto';
 import { performance } from 'node:perf_hooks';
 
 export const ADVISOR_PROMPT_CACHE_TTL_MS = 5 * 60 * 1000;
+export const ADVISOR_PROMPT_CACHE_DEFAULT_MAX_TOKENS = 80;
+export const ADVISOR_PROMPT_CACHE_MAX_TOKENS = 120;
+export const MAX_CACHE_ENTRIES = 1000;
 
 export interface AdvisorThresholds {
   readonly confidenceThreshold?: number;
@@ -18,6 +21,7 @@ export interface AdvisorPromptCacheKeyParts {
   readonly canonicalPrompt: string;
   readonly sourceSignature: string;
   readonly runtime: string;
+  readonly maxTokens?: number;
   readonly thresholdConfig?: AdvisorThresholds;
 }
 
@@ -44,6 +48,17 @@ function stableThresholdConfig(thresholdConfig: AdvisorThresholds | undefined): 
   });
 }
 
+function normalizeMaxTokens(maxTokens: number | undefined): number {
+  if (typeof maxTokens !== 'number' || Number.isNaN(maxTokens)) {
+    return ADVISOR_PROMPT_CACHE_DEFAULT_MAX_TOKENS;
+  }
+  return Math.min(
+    Math.max(1, Math.floor(maxTokens)),
+    ADVISOR_PROMPT_CACHE_MAX_TOKENS,
+  );
+}
+
+/** Build an opaque HMAC key for exact prompt-cache lookups. */
 export function createAdvisorPromptCacheKey(
   parts: AdvisorPromptCacheKeyParts,
   secret: Buffer = DEFAULT_SECRET,
@@ -52,11 +67,13 @@ export function createAdvisorPromptCacheKey(
     parts.canonicalPrompt,
     parts.sourceSignature,
     parts.runtime,
+    String(normalizeMaxTokens(parts.maxTokens)),
     stableThresholdConfig(parts.thresholdConfig),
   ].join('\u001f');
   return createHmac('sha256', secret).update(payload).digest('hex');
 }
 
+/** In-memory exact cache for advisor briefs scoped to one host process. */
 export class AdvisorPromptCache<T> {
   private readonly entries = new Map<string, AdvisorPromptCacheEntry<T>>();
 
@@ -65,10 +82,12 @@ export class AdvisorPromptCache<T> {
     private readonly secret: Buffer = DEFAULT_SECRET,
   ) {}
 
+  /** Create an opaque cache key from normalized prompt/runtime/source inputs. */
   makeKey(parts: AdvisorPromptCacheKeyParts): string {
     return createAdvisorPromptCacheKey(parts, this.secret);
   }
 
+  /** Return a live entry, evicting it first when its TTL has expired. */
   get(key: string, nowMs: number = performance.now()): AdvisorPromptCacheEntry<T> | null {
     const entry = this.entries.get(key);
     if (!entry) {
@@ -81,6 +100,7 @@ export class AdvisorPromptCache<T> {
     return entry;
   }
 
+  /** Insert or replace an entry, sweeping expired rows and evicting oldest overflow. */
   set(args: {
     key: string;
     sourceSignature: string;
@@ -89,6 +109,10 @@ export class AdvisorPromptCache<T> {
     nowMs?: number;
   }): AdvisorPromptCacheEntry<T> {
     const createdAtMs = args.nowMs ?? performance.now();
+    this.sweepExpired(createdAtMs);
+    if (!this.entries.has(args.key)) {
+      this.evictOldestUntilBelowLimit();
+    }
     const entry: AdvisorPromptCacheEntry<T> = {
       key: args.key,
       sourceSignature: args.sourceSignature,
@@ -101,10 +125,12 @@ export class AdvisorPromptCache<T> {
     return entry;
   }
 
+  /** Remove a single cache entry by key. */
   invalidate(key: string): void {
     this.entries.delete(key);
   }
 
+  /** Drop entries produced from stale advisor source signatures. */
   invalidateSourceSignatureChange(currentSourceSignature: string): number {
     let dropped = 0;
     for (const [key, entry] of this.entries) {
@@ -116,12 +142,32 @@ export class AdvisorPromptCache<T> {
     return dropped;
   }
 
+  /** Clear all cache entries, primarily for tests and session teardown. */
   clear(): void {
     this.entries.clear();
   }
 
+  /** Return the number of live and unswept entries currently retained. */
   size(): number {
     return this.entries.size;
+  }
+
+  private sweepExpired(nowMs: number): void {
+    for (const [key, entry] of this.entries) {
+      if (entry.expiresAtMs <= nowMs) {
+        this.entries.delete(key);
+      }
+    }
+  }
+
+  private evictOldestUntilBelowLimit(): void {
+    while (this.entries.size >= MAX_CACHE_ENTRIES) {
+      const oldestKey = this.entries.keys().next().value as string | undefined;
+      if (oldestKey === undefined) {
+        return;
+      }
+      this.entries.delete(oldestKey);
+    }
   }
 }
 

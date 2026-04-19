@@ -108,7 +108,7 @@ export function renderAdvisorBrief(
     return null;
   }
 
-  const tokenCap = clampTokenCap(options.tokenCap);
+  const tokenCap = clampTokenCap(result.metrics?.tokenCap ?? options.tokenCap);
   const recommendations = passingRecommendations(result);
   const [top, second] = recommendations;
   if (!top) {

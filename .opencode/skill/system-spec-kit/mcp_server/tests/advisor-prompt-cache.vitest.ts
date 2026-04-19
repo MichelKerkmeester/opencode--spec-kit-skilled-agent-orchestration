@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   AdvisorPromptCache,
+  MAX_CACHE_ENTRIES,
   createAdvisorPromptCacheKey,
 } from '../lib/skill-advisor/prompt-cache.js';
 
@@ -58,5 +59,43 @@ describe('skill advisor prompt cache', () => {
     expect(key).toMatch(/^[a-f0-9]{64}$/);
     expect(key).not.toContain(rawPrompt);
     expect(key).not.toContain('secret');
+  });
+
+  it('includes normalized maxTokens in prompt cache keys', () => {
+    const base = {
+      canonicalPrompt: 'implement feature x',
+      sourceSignature: 'sig-a',
+      runtime: 'codex',
+    };
+    const compact = createAdvisorPromptCacheKey({
+      ...base,
+      maxTokens: 80,
+    }, Buffer.from('test-secret'));
+    const expanded = createAdvisorPromptCacheKey({
+      ...base,
+      maxTokens: 120,
+    }, Buffer.from('test-secret'));
+    const defaulted = createAdvisorPromptCacheKey(base, Buffer.from('test-secret'));
+
+    expect(compact).not.toBe(expanded);
+    expect(defaulted).toBe(compact);
+  });
+
+  it('evicts the oldest entries when the size cap is reached', () => {
+    const cache = new AdvisorPromptCache<string>(300_000, Buffer.from('test-secret'));
+    for (let index = 0; index < MAX_CACHE_ENTRIES + 1; index += 1) {
+      const key = `key-${index}`;
+      cache.set({
+        key,
+        sourceSignature: 'sig-a',
+        value: `brief-${index}`,
+        skillLabels: [],
+        nowMs: index,
+      });
+    }
+
+    expect(cache.size()).toBe(MAX_CACHE_ENTRIES);
+    expect(cache.get('key-0', MAX_CACHE_ENTRIES + 2)).toBeNull();
+    expect(cache.get(`key-${MAX_CACHE_ENTRIES}`, MAX_CACHE_ENTRIES + 2)?.value).toBe(`brief-${MAX_CACHE_ENTRIES}`);
   });
 });

@@ -8,7 +8,11 @@
 import * as path from 'node:path';
 import * as fs from 'node:fs';
 
-import { recordSmartRouterCompliance } from './smart-router-telemetry.js';
+import {
+  finalizeSmartRouterCompliancePrompt,
+  recordSmartRouterPromptObservation,
+  startSmartRouterCompliancePrompt,
+} from './smart-router-telemetry.js';
 import { predictSmartRouterRoute } from './smart-router-measurement.js';
 
 export interface SmartRouterSessionState {
@@ -74,7 +78,7 @@ function stringArg(args: ToolArgs, keys: readonly string[]): string | null {
 }
 
 function normalizeReadPath(rawPath: string, workspaceRoot: string): {
-  readonly selectedSkill: string;
+  readonly observedSkill: string;
   readonly resource: string;
 } | null {
   const absolutePath = path.isAbsolute(rawPath)
@@ -85,18 +89,31 @@ function normalizeReadPath(rawPath: string, workspaceRoot: string): {
   if (relative.startsWith('..') || path.isAbsolute(relative)) {
     return null;
   }
-  const [selectedSkill, ...rest] = relative.split('/');
-  if (!selectedSkill || rest.length === 0) {
+  const [observedSkill, ...rest] = relative.split('/');
+  if (!observedSkill || rest.length === 0) {
     return null;
   }
   return {
-    selectedSkill,
+    observedSkill,
     resource: rest.join('/'),
   };
 }
 
 export function createLiveSessionWrapper(initialState?: SmartRouterSessionState) {
-  let state = initialState ?? null;
+  const states = new Map<string, SmartRouterSessionState>();
+  let currentPromptId = initialState?.promptId ?? null;
+  if (initialState) {
+    states.set(initialState.promptId, initialState);
+    startSmartRouterCompliancePrompt({
+      promptId: initialState.promptId,
+      selectedSkill: initialState.selectedSkill,
+      predictedRoute: [...initialState.predictedRoute],
+      allowedResources: initialState.allowedResources.length > 0
+        ? [...initialState.allowedResources]
+        : [UNKNOWN_RESOURCE],
+      actualReads: [],
+    });
+  }
 
   function configure(input: ConfigureSmartRouterSessionInput): SmartRouterSessionState {
     const workspaceRoot = path.resolve(input.workspaceRoot ?? locateWorkspaceRoot());
@@ -111,18 +128,29 @@ export function createLiveSessionWrapper(initialState?: SmartRouterSessionState)
         prompt: input.prompt ?? '',
       });
 
-    state = {
+    const state = {
       promptId: input.promptId,
       selectedSkill: input.selectedSkill,
       predictedRoute: [...predicted.predictedRoute],
       allowedResources: [...predicted.allowedResources],
       workspaceRoot,
     };
+    states.set(state.promptId, state);
+    currentPromptId = state.promptId;
+    startSmartRouterCompliancePrompt({
+      promptId: state.promptId,
+      selectedSkill: state.selectedSkill,
+      predictedRoute: [...state.predictedRoute],
+      allowedResources: state.allowedResources.length > 0
+        ? [...state.allowedResources]
+        : [UNKNOWN_RESOURCE],
+      actualReads: [],
+    });
     return state;
   }
 
   function getState(): SmartRouterSessionState | null {
-    return state;
+    return currentPromptId ? states.get(currentPromptId) ?? null : null;
   }
 
   function onToolCall(tool: string | ToolCallLike, args?: ToolArgs): void {
@@ -134,7 +162,8 @@ export function createLiveSessionWrapper(initialState?: SmartRouterSessionState)
       if (!rawPath) {
         return;
       }
-      const active = state;
+      const promptId = stringArg(args, ['promptId', 'prompt_id', 'session_id']) ?? currentPromptId;
+      const active = promptId ? states.get(promptId) : null;
       if (!active) {
         return;
       }
@@ -143,9 +172,10 @@ export function createLiveSessionWrapper(initialState?: SmartRouterSessionState)
         return;
       }
 
-      recordSmartRouterCompliance({
+      recordSmartRouterPromptObservation({
         promptId: active.promptId,
         selectedSkill: active.selectedSkill,
+        observedSkill: read.observedSkill,
         predictedRoute: [...active.predictedRoute],
         allowedResources: active.allowedResources.length > 0
           ? [...active.allowedResources]
@@ -157,8 +187,18 @@ export function createLiveSessionWrapper(initialState?: SmartRouterSessionState)
     }
   }
 
+  function finalizePrompt(promptId: string): ReturnType<typeof finalizeSmartRouterCompliancePrompt> {
+    const record = finalizeSmartRouterCompliancePrompt(promptId);
+    states.delete(promptId);
+    if (currentPromptId === promptId) {
+      currentPromptId = states.keys().next().value ?? null;
+    }
+    return record;
+  }
+
   return {
     configure,
+    finalizePrompt,
     getState,
     onToolCall,
   };
@@ -176,4 +216,8 @@ export function getSmartRouterSessionState(): SmartRouterSessionState | null {
 
 export function onToolCall(tool: string | ToolCallLike, args?: ToolArgs): void {
   defaultWrapper.onToolCall(tool, args);
+}
+
+export function finalizeSmartRouterPrompt(promptId: string): ReturnType<typeof finalizeSmartRouterCompliancePrompt> {
+  return defaultWrapper.finalizePrompt(promptId);
 }

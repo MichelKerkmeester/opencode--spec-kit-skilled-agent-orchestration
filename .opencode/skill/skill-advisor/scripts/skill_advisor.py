@@ -11,6 +11,8 @@ Usage: python skill_advisor.py "user request" [--threshold 0.8]
 Output: JSON array of skill recommendations with confidence scores
 
 Options:
+    --stdin      Read the single prompt from stdin instead of argv
+    --stdin-preferred  Prefer stdin for the single-prompt mode, falling back to argv when stdin is empty
     --health      Run health check diagnostics
     --validate-only  Run strict skill-graph validation
     --threshold   Confidence threshold used by default dual-threshold filtering (default: 0.8)
@@ -2779,6 +2781,7 @@ def main() -> int:
         epilog='''
 Examples:
   python skill_advisor.py "how does authentication work"
+  printf '%s' "how does authentication work" | python skill_advisor.py --stdin
   python skill_advisor.py "create a git commit" --threshold 0.8
   python skill_advisor.py "api chain mcp" --threshold 0.8 --confidence-only
   python skill_advisor.py --batch-file prompts.txt
@@ -2797,6 +2800,10 @@ Examples:
     )
     parser.add_argument('prompt', nargs='?', default='',
                         help='User request to analyze')
+    parser.add_argument('--stdin', action='store_true',
+                        help='Read the single prompt from stdin instead of process arguments.')
+    parser.add_argument('--stdin-preferred', action='store_true',
+                        help='Prefer stdin for single-prompt input and fall back to argv when stdin is empty.')
     parser.add_argument('--health', action='store_true',
                         help='Run health check diagnostics')
     parser.add_argument('--validate-only', action='store_true',
@@ -2836,8 +2843,8 @@ Examples:
     if args.validate_only:
         return run_skill_graph_validation(strict_topology=True)
 
-    if args.batch_file and args.batch_stdin:
-        print(json.dumps({"error": "Use either --batch-file or --batch-stdin, not both."}, indent=2))
+    if sum(bool(value) for value in [args.batch_file, args.batch_stdin, args.stdin]) > 1:
+        print(json.dumps({"error": "Use only one of --batch-file, --batch-stdin, or --stdin."}, indent=2))
         return 2
 
     # Parse pre-computed semantic hits (JSON array from MCP search results)
@@ -2881,6 +2888,11 @@ Examples:
             semantic_mode=args.semantic,
         ), indent=2))
         return 0
+
+    if args.stdin or args.stdin_preferred:
+        stdin_prompt = sys.stdin.read()
+        if args.stdin or stdin_prompt:
+            args.prompt = stdin_prompt
 
     if not args.prompt:
         print(json.dumps([]))

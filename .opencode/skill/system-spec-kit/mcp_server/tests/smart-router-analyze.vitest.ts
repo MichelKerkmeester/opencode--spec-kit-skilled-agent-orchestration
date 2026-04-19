@@ -9,6 +9,7 @@ import {
   analyzeTelemetryRecords,
   formatTelemetryAnalysisReport,
   readTelemetryJsonl,
+  writeTelemetryAnalysisReport,
   type TelemetryAnalysis,
 } from '../../scripts/observability/smart-router-analyze';
 import type { ComplianceRecord } from '../../scripts/observability/smart-router-telemetry';
@@ -45,14 +46,16 @@ describe('smart-router telemetry analyzer', () => {
   it('aggregates compliance classes and per-skill rates', () => {
     const analysis = analyzeTelemetryRecords({
       records: [
-        record({ complianceClass: 'always' }),
-        record({ complianceClass: 'extra', actualReads: ['references/extra.md'] }),
+        record({ promptId: 'p1', complianceClass: 'always' }),
+        record({ promptId: 'p2', complianceClass: 'extra', actualReads: ['references/extra.md'] }),
         record({
+          promptId: 'p3',
           selectedSkill: 'sk-doc',
           complianceClass: 'missing_expected',
           actualReads: [],
         }),
         record({
+          promptId: 'p4',
           selectedSkill: 'sk-doc',
           complianceClass: 'on_demand_expected',
           predictedRoute: ['ON_DEMAND'],
@@ -67,6 +70,37 @@ describe('smart-router telemetry analyzer', () => {
     expect(analysis.perSkill.find((row) => row.skill === 'sk-code-opencode')?.overloadRate).toBe(0.5);
     expect(analysis.perSkill.find((row) => row.skill === 'sk-doc')?.underloadRate).toBe(0.5);
     expect(analysis.perSkill.find((row) => row.skill === 'sk-doc')?.onDemandTriggerRate).toBe(0.5);
+  });
+
+  it('groups scoring by promptId before computing rates', () => {
+    const analysis = analyzeTelemetryRecords({
+      records: [
+        record({ promptId: 'same', complianceClass: 'always' }),
+        record({ promptId: 'same', complianceClass: 'extra', actualReads: ['references/extra.md'] }),
+      ],
+      generatedAt: '2026-04-19T21:00:00.000Z',
+    });
+
+    expect(analysis.totalRecords).toBe(1);
+    expect(analysis.classDistribution.extra).toBe(1);
+  });
+
+  it('treats baseline SKILL.md alone as compliant', () => {
+    const analysis = analyzeTelemetryRecords({
+      records: [
+        record({
+          complianceClass: 'extra',
+          actualReads: ['SKILL.md'],
+          observedSkill: 'sk-code-opencode',
+          observedSkills: ['sk-code-opencode'],
+        }),
+      ],
+      generatedAt: '2026-04-19T21:00:00.000Z',
+    });
+
+    expect(analysis.totalRecords).toBe(1);
+    expect(analysis.classDistribution.always).toBe(1);
+    expect(analysis.classDistribution.extra).toBe(0);
   });
 
   it('emits a no-data report for empty JSONL', () => {
@@ -112,5 +146,21 @@ describe('smart-router telemetry analyzer', () => {
     expect(markdown).toMatch(/^# Smart Router Telemetry Analysis Report/);
     expect(markdown).toContain('| Class | Count | Share |');
     expect(markdown).toContain('| sk-code-opencode | 1 |');
+  });
+
+  it('writes telemetry analysis markdown reports to disk', () => {
+    const root = tempRoot();
+    const analysis = analyzeTelemetryRecords({
+      records: [record({ complianceClass: 'always' })],
+      generatedAt: '2026-04-19T21:00:00.000Z',
+      inputPath: '/tmp/compliance.jsonl',
+    });
+    const outputPath = writeTelemetryAnalysisReport(analysis, {
+      workspaceRoot: root,
+      outputPath: 'reports/smart-router.md',
+    });
+
+    expect(outputPath).toBe(path.join(root, 'reports', 'smart-router.md'));
+    expect(fs.readFileSync(outputPath, 'utf8')).toContain('# Smart Router Telemetry Analysis Report');
   });
 });

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   buildSkillAdvisorBrief,
   clearAdvisorBriefCacheForTests,
@@ -56,11 +56,16 @@ function mockAdvisor(skill = 'sk-code-opencode') {
 }
 
 beforeEach(() => {
+  vi.useRealTimers();
   clearAdvisorBriefCacheForTests();
   vi.mocked(getAdvisorFreshness).mockReset();
   vi.mocked(runAdvisorSubprocess).mockReset();
   vi.mocked(getAdvisorFreshness).mockReturnValue(freshness());
   mockAdvisor();
+});
+
+afterEach(() => {
+  vi.useRealTimers();
 });
 
 describe('buildSkillAdvisorBrief', () => {
@@ -174,6 +179,37 @@ describe('buildSkillAdvisorBrief', () => {
     expect(second.brief).toBe(first.brief);
     expect(second.metrics.cacheHit).toBe(true);
     expect(runAdvisorSubprocess).not.toHaveBeenCalled();
+  });
+
+  it('keeps cache entries distinct for different maxTokens values', async () => {
+    const first = await buildSkillAdvisorBrief('implement feature X', {
+      ...options,
+      maxTokens: 80,
+    });
+    const second = await buildSkillAdvisorBrief('implement feature X', {
+      ...options,
+      maxTokens: 120,
+    });
+
+    expect(first.status).toBe('ok');
+    expect(second.status).toBe('ok');
+    expect(runAdvisorSubprocess).toHaveBeenCalledTimes(2);
+  });
+
+  it('restamps top-level and envelope generatedAt on cache hits', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-04-19T10:00:00.000Z'));
+    const first = await buildSkillAdvisorBrief('implement feature X', options);
+    vi.mocked(runAdvisorSubprocess).mockClear();
+
+    vi.setSystemTime(new Date('2026-04-19T10:01:00.000Z'));
+    const second = await buildSkillAdvisorBrief('implement feature X', options);
+
+    expect(second.metrics.cacheHit).toBe(true);
+    expect(runAdvisorSubprocess).not.toHaveBeenCalled();
+    expect(second.generatedAt).toBe('2026-04-19T10:01:00.000Z');
+    expect(second.sharedPayload?.provenance.generatedAt).toBe(second.generatedAt);
+    expect(second.generatedAt).not.toBe(first.generatedAt);
   });
 
   it('AS9 deleted-skill invalidates cached brief and re-runs advisor', async () => {

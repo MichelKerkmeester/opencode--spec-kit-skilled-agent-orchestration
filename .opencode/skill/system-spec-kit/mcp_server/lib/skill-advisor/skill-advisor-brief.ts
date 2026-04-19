@@ -300,10 +300,28 @@ function isCacheable(resultValue: AdvisorHookResult): resultValue is CachedAdvis
   return resultValue.status === 'ok' && resultValue.brief !== null && resultValue.recommendations.length > 0;
 }
 
+function restampCachedSharedPayload(
+  sharedPayload: SharedPayloadEnvelope | null,
+  generatedAt: string,
+): SharedPayloadEnvelope | null {
+  if (!sharedPayload) {
+    return null;
+  }
+  return {
+    ...sharedPayload,
+    provenance: {
+      ...sharedPayload.provenance,
+      generatedAt,
+    },
+  };
+}
+
+/** Clear memoized advisor briefs for deterministic tests and session reset hooks. */
 export function clearAdvisorBriefCacheForTests(): void {
   (advisorPromptCache as AdvisorPromptCache<unknown>).clear();
 }
 
+/** Build the typed skill-advisor result consumed by all runtime hook renderers. */
 export async function buildSkillAdvisorBrief(
   prompt: string,
   options: SkillAdvisorBriefOptions,
@@ -355,12 +373,14 @@ export async function buildSkillAdvisorBrief(
       canonicalPrompt: policy.canonicalPrompt,
       sourceSignature: freshness.sourceSignature,
       runtime: options.runtime,
+      maxTokens: options.maxTokens,
       thresholdConfig: options.thresholdConfig,
     });
     const cached = cache.get(cacheKey);
     if (cached) {
       const deletedSkills = deletedCachedSkills(cached.skillLabels, freshness);
       if (deletedSkills.length === 0) {
+        const generatedAt = new Date().toISOString();
         return {
           ...cached.value,
           metrics: {
@@ -369,7 +389,8 @@ export async function buildSkillAdvisorBrief(
             cacheHit: true,
             subprocessInvoked: false,
           },
-          generatedAt: new Date().toISOString(),
+          generatedAt,
+          sharedPayload: restampCachedSharedPayload(cached.value.sharedPayload, generatedAt),
         };
       }
       cache.invalidate(cacheKey);

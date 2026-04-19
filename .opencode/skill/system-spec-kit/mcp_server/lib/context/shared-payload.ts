@@ -6,6 +6,7 @@
 
 import { assertNever } from '../utils/exhaustiveness.js';
 import type { UnicodeRuntimeFingerprint } from '@spec-kit/shared/unicode-normalization';
+import { sanitizeSkillLabel } from '../skill-advisor/render.js';
 
 export const SHARED_PAYLOAD_KIND_VALUES = [
   'startup',
@@ -500,7 +501,11 @@ function assertAdvisorSkillLabel(value: unknown): string | null {
   if (/[\u0000-\u001F\u007F]/.test(value)) {
     throw new Error('advisor envelope metadata.skillLabel must be a sanitized single-line label.');
   }
-  return value;
+  const sanitized = sanitizeSkillLabel(value);
+  if (!sanitized) {
+    throw new Error('advisor envelope metadata.skillLabel must be a sanitized single-line label.');
+  }
+  return sanitized;
 }
 
 export function validateAdvisorEnvelopeMetadata(value: unknown): AdvisorEnvelopeMetadata {
