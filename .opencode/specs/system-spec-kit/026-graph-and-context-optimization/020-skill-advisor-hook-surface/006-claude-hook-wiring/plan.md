@@ -10,10 +10,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/006-claude-hook-wiring"
-    last_updated_at: "2026-04-19T09:30:00Z"
-    last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Plan scaffolded"
-    next_safe_action: "Dispatch /spec_kit:implement :auto after 005 converges"
+    last_updated_at: "2026-04-19T14:04:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Plan executed for Claude UserPromptSubmit runtime hook"
+    next_safe_action: "Dispatch 007 Gemini/Copilot and 008 Codex follow-on adapters"
     blockers: []
     key_files: []
 
@@ -48,14 +48,14 @@ Add `hooks/claude/user-prompt-submit.ts` alongside existing `session-prime.ts`. 
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] 005 hard gate lifted (all P0 items green)
-- [ ] 004 producer merged
+- [x] 005 hard gate lifted (all P0 items green)
+- [x] 004 producer merged
 
 ### Definition of Done
-- [ ] 6 acceptance scenarios green
-- [ ] Parity test confirms shared fixtures match across Claude hook + direct producer
-- [ ] Hook registered in `.claude/settings.local.json`
-- [ ] Manual smoke test in real Claude session
+- [x] 6 acceptance scenarios green
+- [x] Parity test confirms shared fixtures match across Claude hook + direct producer
+- [x] Hook registered in `.claude/settings.local.json`
+- [x] Manual smoke test deferred to T9 integration gauntlet; direct CLI smoke with simulated stdin passed
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -102,24 +102,24 @@ Claude CLI emits UserPromptSubmit event
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Hook script
-- [ ] Create `hooks/claude/user-prompt-submit.ts`
-- [ ] Implement stdin read + JSON parse with defensive error handling
-- [ ] Call `buildSkillAdvisorBrief()`
-- [ ] Emit `hookSpecificOutput.additionalContext` on brief
-- [ ] Fail-open on any exception
+- [x] Create `hooks/claude/user-prompt-submit.ts`
+- [x] Implement stdin read + JSON parse with defensive error handling
+- [x] Call `buildSkillAdvisorBrief()`
+- [x] Emit `hookSpecificOutput.additionalContext` on brief
+- [x] Fail-open on any exception
 
 ### Phase 2: Settings registration
-- [ ] Edit `.claude/settings.local.json` to register `UserPromptSubmit` hook
-- [ ] Verify existing SessionStart / PreCompact / Stop hooks still present
+- [x] Edit `.claude/settings.local.json` to register `UserPromptSubmit` hook
+- [x] Verify existing SessionStart / PreCompact / Stop hooks still present
 
 ### Phase 3: Tests
-- [ ] Write `claude-user-prompt-submit-hook.vitest.ts`
-- [ ] Cover 6 acceptance scenarios
-- [ ] Parity test with 005 fixtures
+- [x] Write `claude-user-prompt-submit-hook.vitest.ts`
+- [x] Cover 6 acceptance scenarios
+- [x] Parity test with 005 fixtures
 
 ### Phase 4: Smoke test
-- [ ] Real Claude session — verify hook runs and additionalContext surfaces
-- [ ] Record smoke test result in implementation-summary.md
+- [x] Real Claude session — deferred to T9 integration gauntlet per mission; direct CLI smoke executed
+- [x] Record smoke test result in implementation-summary.md
 <!-- /ANCHOR:phases -->
 
 ---
@@ -142,8 +142,8 @@ Claude CLI emits UserPromptSubmit event
 
 | Dependency | Type | Status |
 |------------|------|--------|
-| 004 producer | Predecessor | Pending |
-| 005 renderer + harness | Predecessor (HARD GATE) | Pending |
+| 004 producer | Predecessor | Complete |
+| 005 renderer + harness | Predecessor (HARD GATE) | Complete |
 | Claude CLI | Runtime | Live |
 | `.claude/settings.local.json` | Settings | Live |
 <!-- /ANCHOR:dependencies -->

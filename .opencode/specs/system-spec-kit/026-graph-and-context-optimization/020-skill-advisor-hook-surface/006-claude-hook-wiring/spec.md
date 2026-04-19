@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Claude Hook Wiring (UserPromptSubmit)"
-description: "Wire the advisor brief into Claude's UserPromptSubmit event via JSON hookSpecificOutput.additionalContext. First user-visible runtime slice. Blocked by 005 hard gate."
+description: "Wire the advisor brief into Claude's UserPromptSubmit event via JSON hookSpecificOutput.additionalContext. First user-visible runtime slice."
 trigger_phrases:
   - "020 claude hook"
   - "UserPromptSubmit advisor"
@@ -12,11 +12,11 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify |
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/006-claude-hook-wiring"
-    last_updated_at: "2026-04-19T09:30:00Z"
-    last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Spec scaffolded from wave-1 + wave-2 research"
-    next_safe_action: "Dispatch /spec_kit:implement :auto after 005 converges"
-    blockers: ["005-advisor-renderer-and-regression-harness"]
+    last_updated_at: "2026-04-19T14:04:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Claude UserPromptSubmit adapter implemented and verified"
+    next_safe_action: "Dispatch 007 Gemini/Copilot and 008 Codex follow-on adapters"
+    blockers: []
     key_files:
       - "spec.md"
       - "plan.md"
@@ -46,7 +46,7 @@ _memory:
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 (first user-visible slice) |
-| **Status** | Spec Ready, Blocked by 005 |
+| **Status** | Implemented |
 | **Created** | 2026-04-19 |
 | **Effort Estimate** | 0.75-1.25 engineering days |
 <!-- /ANCHOR:metadata -->
@@ -232,7 +232,7 @@ Ship `mcp_server/hooks/claude/user-prompt-submit.ts` that:
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - Parent: `../spec.md`
 - Predecessors: `../004-advisor-brief-producer-cache-policy/`, `../005-advisor-renderer-and-regression-harness/`
