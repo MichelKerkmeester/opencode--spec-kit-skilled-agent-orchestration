@@ -87,7 +87,7 @@ What we CANNOT close without live AI sessions: empirical proof that AIs skip SKI
   - Compare advisor top-1 vs corpus `skill_top_1` label
   - Record compliance prediction via Phase 023 Area E `recordSmartRouterCompliance`
 - Emit aggregate JSONL: per-prompt results + per-skill summary
-- Output a report: `smart-router-measurement-report.md` with: advisor accuracy vs corpus labels, ON_DEMAND hit rate per skill, predicted-resource distribution, projected savings distribution
+- Output a smart-router measurement report with: advisor accuracy vs corpus labels, ON_DEMAND hit rate per skill, predicted-resource distribution, projected savings distribution
 
 **Track 3 — Live-session wrapper template**
 - Script: `scripts/observability/live-session-wrapper.ts` (or `.sh`)
@@ -119,10 +119,11 @@ What we CANNOT close without live AI sessions: empirical proof that AIs skip SKI
 | `.codex/policy.json` | Create | 1 |
 | `.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts` | Create | 2 |
 | `.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts` | Create | 3 |
+| `.opencode/skill/system-spec-kit/scripts/observability/LIVE_SESSION_WRAPPER_SETUP.md` | Create | 3 docs |
 | `.opencode/skill/system-spec-kit/scripts/observability/smart-router-analyze.ts` | Create | 4 |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/smart-router-measurement.vitest.ts` | Create | 2 tests |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/smart-router-analyze.vitest.ts` | Create | 4 tests |
-| `scripts/observability/smart-router-measurement-report.md` | Create | 2 output |
+| measurement report output under `.opencode/skill/system-spec-kit/scripts/observability/` | Create | 2 output |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -162,10 +163,80 @@ What we CANNOT close without live AI sessions: empirical proof that AIs skip SKI
 - **SC-006**: 118/118 Phase 020 tests remain green; all new tests pass
 - **SC-007**: validate.sh --strict clean on 024 folder
 - **SC-008**: Honest reporting — no overclaiming empirical AI behavior
+<!-- /ANCHOR:success-criteria -->
 
 ---
 
-## RELATED DOCUMENTS
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | `.codex` writable access | Track 1 cannot be completed if sandbox denies top-level Codex config writes | Report the block with exact error and leave runtime adapters unchanged |
+| Risk | Static parser cannot execute every router pseudocode branch | Predicted allowed-resource counts may be conservative or unknown | Emit `unknown_unparsed` when parsing is uncertain and state caveats in reports |
+| Risk | Static predicted-route telemetry could be confused with live telemetry | Overstates what the run can prove | Classify static records as `unknown_unparsed` and document limits |
+| Dependency | Node/TypeScript runtime for validation scripts | Strict validation can fail before spec rules run when compiled validator JS is not loadable | Capture validation output and avoid changing unrelated build/runtime files in this phase |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Static measurement should process the 200-prompt corpus in a single local run.
+- **NFR-P02**: Analyzer should stream line-by-line enough to skip invalid JSONL without aborting the whole report.
+
+### Security
+- **NFR-S01**: New telemetry scripts must not persist raw prompt text outside explicit corpus result files.
+- **NFR-S02**: Live-session wrapper must never deny or alter tool calls.
+
+### Reliability
+- **NFR-R01**: Missing SMART ROUTING sections must fall back to `unknown_unparsed`.
+- **NFR-R02**: Empty telemetry JSONL must produce a no-data report rather than an exception.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Acceptance Scenarios
+- **Given** a prompt routes to a skill with a canonical SMART ROUTING block, **When** the measurement harness runs, **Then** it records predicted intents and allowed resources.
+- **Given** a prompt routes to a skill without a SMART ROUTING block, **When** the measurement harness runs, **Then** it marks the route as `unknown_unparsed`.
+- **Given** the telemetry analyzer receives an empty JSONL file, **When** it runs, **Then** it emits a no-data markdown report.
+- **Given** the telemetry analyzer receives invalid JSONL lines, **When** it runs, **Then** it skips those lines and reports parse error count.
+
+### Error Scenarios
+- `.codex` write denied: Track 1 is reported as blocked with exact error.
+- `tsx` IPC denied: scripts are executed through an alternative Node loader path.
+- Existing validator runtime failure: strict validation output is preserved for follow-up.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 20/25 | Four tracks add config, scripts, tests, docs and reports |
+| Risk | 16/25 | Main risks are overclaiming telemetry and touching shipped runtime code |
+| Research | 14/20 | Work depends on Phase 020-023 source docs and corpus |
+| **Total** | **50/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- None for Tracks 2-4. Track 1 needs a writable `.codex` directory in a future environment.
+<!-- /ANCHOR:questions -->
+
+---
+
+### Related Documents
 
 - Predecessors: `../020-skill-advisor-hook-surface/` through `../023-smart-router-remediation-and-opencode-plugin/`
 - Research inputs:

@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "notes": "Conservative starter Bash denylist for Codex PreToolUse enforcement. Full-word match required per .opencode/skill/system-spec-kit/mcp_server/hooks/codex/pre-tool-use.ts. Review + extend based on operator needs. Dual key aliases (`bashDenylist` and `bash_denylist`) provided to match both the shipped adapter field name and the Phase 024 operator-facing contract.",
+  "bashDenylist": [
+    "rm -rf /",
+    "rm -rf ~",
+    "rm -rf $HOME",
+    "git push --force main",
+    "git push --force master",
+    "git push -f main",
+    "git push -f master",
+    "git reset --hard origin/main",
+    "git reset --hard origin/master",
+    "sudo shutdown",
+    "sudo reboot",
+    "sudo rm -rf",
+    ":(){ :|:& };:",
+    "chmod -R 777 /",
+    "chown -R root:root /",
+    "dd if=/dev/zero of=/dev/",
+    "mkfs.ext4 /dev/"
+  ],
+  "bash_denylist": [
+    "rm -rf /",
+    "rm -rf ~",
+    "rm -rf $HOME",
+    "git push --force main",
+    "git push --force master",
+    "git push -f main",
+    "git push -f master",
+    "git reset --hard origin/main",
+    "git reset --hard origin/master",
+    "sudo shutdown",
+    "sudo reboot",
+    "sudo rm -rf",
+    ":(){ :|:& };:",
+    "chmod -R 777 /",
+    "chown -R root:root /",
+    "dd if=/dev/zero of=/dev/",
+    "mkfs.ext4 /dev/"
+  ]
+}

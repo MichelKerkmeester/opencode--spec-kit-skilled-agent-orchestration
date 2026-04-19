@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/024-deferred-remediation-and-telemetry-run",
+  "description": "Feature Specification: Deferred Remediation + Telemetry Measurement Run",
+  "keywords": [
+    "deferred-remediation",
+    "telemetry",
+    "smart-router",
+    "measurement",
+    "codex",
+    "analyzer",
+    "live-session-wrapper"
+  ],
+  "lastUpdated": "2026-04-19T18:10:00.000Z",
+  "specId": "024",
+  "folderSlug": "deferred-remediation-and-telemetry-run",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}
