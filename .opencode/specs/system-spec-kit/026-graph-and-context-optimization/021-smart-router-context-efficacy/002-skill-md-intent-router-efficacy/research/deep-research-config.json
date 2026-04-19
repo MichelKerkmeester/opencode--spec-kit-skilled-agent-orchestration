@@ -6,7 +6,7 @@
   "maxDurationMinutes": 180,
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
   "createdAt": "2026-04-19T18:55:00Z",
-  "status": "initialized",
+  "status": "complete",
   "executionMode": "auto",
   "executor": {
     "kind": "cli-codex",
