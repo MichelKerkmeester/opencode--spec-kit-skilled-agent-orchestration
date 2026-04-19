@@ -38,8 +38,11 @@ Canonical source artifacts:
 - [10. REGRESSION SAFETY (`RS-001..RS-004`)](#10--regression-safety-rs-001rs-004)
 - [11. SQLITE GRAPH (`SG-001..SG-004`)](#11--sqlite-graph-sg-001sg-004)
 - [12. HOOK ROUTING (`HR-001..HR-006`)](#12--hook-routing-hr-001hr-006)
-- [13. AUTOMATED TEST CROSS-REFERENCE](#13--automated-test-cross-reference)
-- [14. FEATURE CATALOG CROSS-REFERENCE INDEX](#14--feature-catalog-cross-reference-index)
+- [13. PLUGIN PATH (`PP-001..PP-005`)](#13--plugin-path-pp-001pp-005)
+- [14. MEASUREMENT RUN (`MR-001..MR-003`)](#14--measurement-run-mr-001mr-003)
+- [15. LIVE-SESSION TELEMETRY (`LT-001..LT-004`)](#15--live-session-telemetry-lt-001lt-004)
+- [16. AUTOMATED TEST CROSS-REFERENCE](#16--automated-test-cross-reference)
+- [17. FEATURE CATALOG CROSS-REFERENCE INDEX](#17--feature-catalog-cross-reference-index)
 
 ---
 
@@ -265,7 +268,46 @@ These scenarios validate the Phase 020 hook surface that now acts as the primary
 
 ---
 
-## 13. AUTOMATED TEST CROSS-REFERENCE
+## 13. PLUGIN PATH (`PP-001..PP-005`)
+
+These scenarios cover the Phase 023 Area F `spec-kit-skill-advisor` OpenCode plugin + its bridge process. Run them after the plugin has been enabled in the OpenCode runtime config and the MCP server bundle has been built.
+
+| ID | Scenario | Command or Action | Expected |
+|---|---|---|---|
+| PP-001 | Plugin loads on session start | Start an OpenCode session with the plugin enabled | Plugin initializes session cache; no errors in session log |
+| PP-002 | Plugin emits brief on user prompt | Send a work-intent prompt with the plugin active | Plugin bridge returns rendered brief, delivered as `additionalContext` |
+| PP-003 | Status tool prompt-safety | Invoke the plugin's status tool during a session | Output contains counters/status only — no raw prompts, no fingerprints, no stdout/stderr |
+| PP-004 | Env opt-out | Set `SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED=1` and restart | Plugin initializes disabled; no bridge invocation per user prompt |
+| PP-005 | Config opt-out | Set `enabled: false` in plugin config and restart | Same as PP-004: bridge never invoked |
+
+---
+
+## 14. MEASUREMENT RUN (`MR-001..MR-003`)
+
+These scenarios cover the Phase 024 Track 2 static corpus measurement harness. Run locally when validating advisor accuracy baselines or after significant advisor / smart-router changes.
+
+| ID | Scenario | Command or Action | Expected |
+|---|---|---|---|
+| MR-001 | Full 200-prompt corpus run | Execute `scripts/observability/smart-router-measurement.ts` end-to-end against 019/004 corpus | `smart-router-measurement-report.md` regenerated; `results.jsonl` has 200 records; summary reports per-skill accuracy + savings |
+| MR-002 | Advisor accuracy baseline | Inspect the generated report's summary line | Current baseline: 56.00% (112/200). Regressions below this warrant investigation |
+| MR-003 | UNKNOWN-fallback rate | Check report's UNKNOWN row | Should be ≤ 18.5% (baseline); higher means routing vocabulary regressed |
+
+---
+
+## 15. LIVE-SESSION TELEMETRY (`LT-001..LT-004`)
+
+These scenarios cover the Phase 024 Track 3 live-session wrapper + Track 4 analyzer workflow. Run by the operator who owns the runtime session to collect real compliance data.
+
+| ID | Scenario | Command or Action | Expected |
+|---|---|---|---|
+| LT-001 | Wrapper registration per runtime | Follow `LIVE_SESSION_WRAPPER_SETUP.md` for the target runtime | Wrapper registered in the runtime settings file; no errors |
+| LT-002 | Read-tool telemetry accumulates | Run a session and exercise the active runtime normally | `.opencode/skill/.smart-router-telemetry/compliance.jsonl` gains new lines with compliance classification |
+| LT-003 | Analyzer produces report | Run `scripts/observability/smart-router-analyze.ts` against the JSONL | Timestamped markdown report emitted with compliance distribution + over/under-load rates + ON_DEMAND trigger rate |
+| LT-004 | Empty-state handling | Run analyzer with no JSONL content | Report says "no data yet; run live-session wrapper first" without failing |
+
+---
+
+## 16. AUTOMATED TEST CROSS-REFERENCE
 
 | Test Module | Coverage | Playbook Overlap |
 |---|---|---|
@@ -281,7 +323,7 @@ These scenarios validate the Phase 020 hook surface that now acts as the primary
 
 ---
 
-## 14. FEATURE CATALOG CROSS-REFERENCE INDEX
+## 17. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 Skill Advisor ships a live feature catalog rooted at [`../feature_catalog/feature_catalog.md`](../feature_catalog/feature_catalog.md). Use that catalog for the current-state inventory, and use this playbook package for operator prompts, execution steps, evidence capture, and verdict criteria.
 

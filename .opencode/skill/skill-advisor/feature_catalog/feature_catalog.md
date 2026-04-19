@@ -16,7 +16,8 @@ This document combines the current feature inventory for the `skill-advisor` sys
 - [3. GRAPH SYSTEM](#3--graph-system)
 - [4. SEMANTIC SEARCH](#4--semantic-search)
 - [5. HOOK SURFACE](#5--hook-surface)
-- [6. TESTING](#6--testing)
+- [6. PLUGIN + OBSERVABILITY SURFACE](#6--plugin--observability-surface)
+- [7. TESTING](#7--testing)
 
 ---
 
@@ -30,6 +31,7 @@ Use this catalog as the canonical inventory for the live `skill-advisor` feature
 | Graph system | 10 features | `skill_advisor.py`, `skill_graph_compiler.py`, `skill-graph.sqlite` |
 | Semantic search | 2 features | `skill_advisor.py` |
 | Hook surface | 12 features | `buildSkillAdvisorBrief()`, runtime `UserPromptSubmit` adapters |
+| Plugin + observability | 8 features | `.opencode/plugins/spec-kit-skill-advisor.js`, `smart-router-*.ts` scripts |
 | Testing | 2 features | `skill_advisor_regression.py`, `skill_advisor.py` |
 
 ---
@@ -530,7 +532,151 @@ Primary contract: [Skill Advisor Hook Reference §10](../../system-spec-kit/refe
 
 ---
 
-## 6. TESTING
+## 6. PLUGIN + OBSERVABILITY SURFACE
+
+These entries cover Phase 023 + Phase 024 additions: the OpenCode plugin packaging for the advisor hook, the observability primitives that capture compliance + predicted routes, and the operator workflows for running the static corpus measurement + live-session telemetry.
+
+### OpenCode plugin: spec-kit-skill-advisor
+
+#### Description
+
+Native OpenCode plugin that wires the advisor hook into OpenCode as a first-class plugin rather than a shell-registered hook. Mirrors `.opencode/plugins/spec-kit-compact-code-graph.js` pattern: thin host + bridge process + session cache + prompt-safe status tool.
+
+#### Current Reality
+
+`.opencode/plugins/spec-kit-skill-advisor.js` exports a default plugin function. A bridge process at `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs` runs `buildSkillAdvisorBrief` + `renderAdvisorBrief` out-of-process with IPC. Opt-out via `SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED=1` env or `enabled: false` in plugin config. Settings: `cacheTTLMs` (5 min), `thresholdConfidence` (0.7), `maxTokens` (80), `nodeBinaryOverride`, `bridgeTimeoutMs` (1000). Seven plugin tests cover cache TTL, status-tool prompt-safety, opt-out via env, opt-out via config, bridge-timeout fail-open, bridge-error fail-open, and smoke-path behavior.
+
+#### Source Files
+
+- `.opencode/plugins/spec-kit-skill-advisor.js`
+- `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs`
+- `.opencode/skill/system-spec-kit/mcp_server/tests/spec-kit-skill-advisor-plugin.vitest.ts`
+
+---
+
+### Copilot SDK path activation
+
+#### Description
+
+Preferred Copilot adapter path that uses `@github/copilot-sdk` (public on npm, MIT) for programmatic `onUserPromptSubmitted` return of `{additionalContext}`. Phase 020/007 originally flagged this as deferred assuming the SDK was unavailable; the SDK was installable the whole time.
+
+#### Current Reality
+
+`@github/copilot-sdk@0.2.2` is installed as an `mcp_server` dependency. The Copilot adapter probes `COPILOT_SDK_MODULE_CANDIDATES` at module load, detects the SDK, and routes to the SDK path. Falls back cleanly to the wrapper path when the SDK is absent. Both paths have explicit test coverage.
+
+#### Source Files
+
+- `.opencode/skill/system-spec-kit/mcp_server/package.json`
+- `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/tests/copilot-user-prompt-submit-hook.vitest.ts`
+
+---
+
+### Codex runtime registration
+
+#### Description
+
+Codex `.codex/settings.json` hooks + `.codex/policy.json` Bash denylist registration. Phase 020/008 sandbox blocked codex from writing these in-situ; now registered for users.
+
+#### Current Reality
+
+`.codex/settings.json` registers `UserPromptSubmit` + `PreToolUse` hooks pointing to compiled adapter entries under `mcp_server/dist/hooks/codex/`. `.codex/policy.json` ships a conservative 17-entry Bash denylist covering rm -rf /, force-push-to-main, fork-bomb, chmod/chown recursive, dd/mkfs to device paths. Dual-key alias (`bashDenylist` + `bash_denylist`) for adapter compat.
+
+#### Source Files
+
+- `.codex/settings.json`
+- `.codex/policy.json`
+- `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/pre-tool-use.ts`
+
+---
+
+### Smart-router static CI check
+
+#### Description
+
+Static validator script that walks every `.opencode/skill/*/SKILL.md`, parses the Smart Routing section (3 pseudocode shape variants), asserts every referenced resource path exists, and flags ALWAYS-tier bloat > 50%.
+
+#### Current Reality
+
+`.opencode/skill/system-spec-kit/scripts/spec/check-smart-router.sh` runs in shell + embedded Python for multiline parsing. Exit 0 on clean paths; exit 1 on missing paths; warnings for bloat are informational. `--json` mode emits `{errors, warnings}` for CI. Currently passes on main (0 stale paths, 0 bloat errors).
+
+#### Source Files
+
+- `.opencode/skill/system-spec-kit/scripts/spec/check-smart-router.sh`
+
+---
+
+### Smart-router telemetry primitive
+
+#### Description
+
+Observe-only compliance telemetry module that callers invoke to record predicted route, allowed resources, actual reads, and compliance classification per user prompt.
+
+#### Current Reality
+
+`smart-router-telemetry.ts` exports `classifyCompliance(allowed, actual)` (pure helper) and `recordSmartRouterCompliance(input)` (writes JSONL to `.opencode/skill/.smart-router-telemetry/compliance.jsonl`, gitignored). Six compliance classes: `always`, `conditional_expected`, `on_demand_expected`, `extra`, `missing_expected`, `unknown_unparsed`. Never throws, sanitizes unsafe control characters in resource paths.
+
+#### Source Files
+
+- `.opencode/skill/system-spec-kit/scripts/observability/smart-router-telemetry.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/tests/smart-router-telemetry.vitest.ts`
+
+---
+
+### Static corpus measurement harness
+
+#### Description
+
+Runs the 019/004 200-prompt corpus through the advisor in-process, captures advisor top-1 + predicted route + allowed resources, compares to corpus ground-truth labels, emits per-skill accuracy + savings report.
+
+#### Current Reality
+
+`smart-router-measurement.ts` processes all 200 prompts. First measured advisor accuracy: 56.00% (112/200) vs corpus labels. UNKNOWN-fallback rate: 18.5% (pre-023/Area C). Per-skill accuracy range: 0% to 100%; brief-byte savings 99%+ everywhere; predicted-route context savings 28-95% per skill. Report emitted to `smart-router-measurement-report.md`; per-prompt JSONL to `smart-router-measurement-results.jsonl`.
+
+#### Source Files
+
+- `.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts`
+- `.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement-report.md`
+- `.opencode/skill/system-spec-kit/mcp_server/tests/smart-router-measurement.vitest.ts`
+
+---
+
+### Live-session wrapper template
+
+#### Description
+
+TypeScript template + per-runtime setup docs for users to instrument their own Claude Code / Codex / Gemini / Copilot sessions, log Read-tool calls against skill paths, and record compliance data.
+
+#### Current Reality
+
+`live-session-wrapper.ts` exposes an `onToolCall(tool, args)` hook that filters for Read tool calls against `.opencode/skill/*` and records via `recordSmartRouterCompliance`. Never throws, never blocks. `LIVE_SESSION_WRAPPER_SETUP.md` documents setup steps for each of the 4 runtimes. User opts in by registering in their runtime settings file.
+
+#### Source Files
+
+- `.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts`
+- `.opencode/skill/system-spec-kit/scripts/observability/LIVE_SESSION_WRAPPER_SETUP.md`
+
+---
+
+### Telemetry analyzer
+
+#### Description
+
+CLI script that reads accumulated compliance JSONL and emits a decision-support markdown report with per-skill compliance distribution, over/under-load ratios, ON_DEMAND trigger rate.
+
+#### Current Reality
+
+`smart-router-analyze.ts` reads `.smart-router-telemetry/compliance.jsonl`. Aggregates compliance-class distribution, over-load rate (AI read unpredicted resources), under-load rate (AI missed predicted resources), ON_DEMAND trigger rate. Emits timestamped markdown report. Handles empty JSONL ("no data yet; run live-session wrapper first"); skips invalid lines + counts parse errors.
+
+#### Source Files
+
+- `.opencode/skill/system-spec-kit/scripts/observability/smart-router-analyze.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/tests/smart-router-analyze.vitest.ts`
+
+---
+
+## 7. TESTING
 
 These entries describe the validation surfaces that keep routing quality measurable and make it easy to inspect whether the advisor can still discover skills, load the compiled graph, and reach its semantic dependencies.
 

@@ -122,6 +122,14 @@ Then register the runtime hook command for the active host. The Claude command s
 
 For Gemini, Copilot, Codex, failure-mode handling, disable flag behavior, metrics, and privacy rules, use the authoritative hook contract: [Skill Advisor Hook Reference](../system-spec-kit/references/hooks/skill-advisor-hook.md).
 
+### 2.1 OpenCode Plugin path (Phase 023)
+
+In addition to the shell-registered hook, a native OpenCode plugin is available at `.opencode/plugins/spec-kit-skill-advisor.js` with bridge process `spec-kit-skill-advisor-bridge.mjs`. The plugin mirrors the `spec-kit-compact-code-graph` pattern: thin host, bridge subprocess, session cache, prompt-safe status tool. It reuses `buildSkillAdvisorBrief` and `renderAdvisorBrief` without reinvention. Opt-out via `SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED=1` or `enabled: false` in plugin config.
+
+### 2.2 Copilot SDK activation (Phase 020/007 unblocked)
+
+The Copilot adapter's preferred path is the SDK (`@github/copilot-sdk@0.2.2`, installed in `mcp_server/package.json`). The adapter probes for SDK modules at load time and returns `{additionalContext}` from `onUserPromptSubmitted` when available, falling back to the wrapper path when the SDK is absent. Both paths have test coverage.
+
 <!-- /ANCHOR:hook-invocation-primary -->
 
 ---
