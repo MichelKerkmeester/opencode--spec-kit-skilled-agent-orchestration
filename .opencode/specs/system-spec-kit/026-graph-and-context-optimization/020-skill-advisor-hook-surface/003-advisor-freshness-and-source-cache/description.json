@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
+  "description": "Feature Specification: Advisor Freshness + Source Cache",
+  "keywords": [
+    "feature",
+    "specification",
+    "advisor",
+    "freshness",
+    "source",
+    "cache"
+  ],
+  "lastUpdated": "2026-04-19T08:47:04.383Z",
+  "specId": "003",
+  "folderSlug": "advisor-freshness-and-source-cache",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "020-skill-advisor-hook-surface"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-04-26_09-47__scaffold-003-advisor-freshness-and-source-cache.md"
+  ]
+}
