@@ -38,10 +38,24 @@ This section provides an overview of the Hooks directory.
 The `claude/` subdirectory contains hook scripts for Claude Code lifecycle events (PreCompact, SessionStart, Stop). These run as external processes triggered by Claude Code, not as MCP server modules:
 - `compact-inject.ts` — PreCompact: precomputes context, caches to temp state
 - `session-prime.ts` — SessionStart: injects context via stdout (routes by source)
+- `user-prompt-submit.ts` — UserPromptSubmit: injects the compact skill-advisor brief via `hookSpecificOutput.additionalContext`
 - `session-stop.ts` — Stop (async): parses transcript, stores token snapshots
 - `claude-transcript.ts`, `shared.ts`, `hook-state.ts` — shared libraries
 
 See `claude/README.md` for details and `references/config/hook_system.md` for registration.
+
+### Skill-Advisor Runtime Hooks
+
+Phase 020 adds prompt-time advisor hooks for all runtime surfaces:
+
+| Runtime | Entrypoint | Registration Surface |
+|---------|------------|----------------------|
+| Claude | `claude/user-prompt-submit.ts` | `.claude/settings.local.json` |
+| Gemini | `gemini/user-prompt-submit.ts` | `.gemini/settings.json` `BeforeAgent` |
+| Copilot | `copilot/user-prompt-submit.ts` | SDK `onUserPromptSubmitted` or wrapper hook config |
+| Codex | `codex/user-prompt-submit.ts` | deferred `.codex/settings.json` snippet |
+
+Operator contract: `../../references/hooks/skill-advisor-hook.md`.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:implemented-state -->
