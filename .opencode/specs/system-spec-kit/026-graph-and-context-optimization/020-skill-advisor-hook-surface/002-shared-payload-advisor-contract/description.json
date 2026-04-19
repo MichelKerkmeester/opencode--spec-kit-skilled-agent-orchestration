@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/002-shared-payload-advisor-contract",
+  "description": "Feature Specification: Shared-Payload Advisor Contract",
+  "keywords": [
+    "feature",
+    "specification",
+    "shared-payload",
+    "advisor",
+    "contract"
+  ],
+  "lastUpdated": "2026-04-19T08:47:00.040Z",
+  "specId": "002",
+  "folderSlug": "shared-payload-advisor-contract",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "020-skill-advisor-hook-surface"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-04-26_09-46__scaffold-002-shared-payload-advisor-contract-for.md"
+  ]
+}
