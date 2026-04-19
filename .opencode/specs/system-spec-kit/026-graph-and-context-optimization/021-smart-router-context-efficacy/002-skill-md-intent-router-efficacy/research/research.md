@@ -80,6 +80,8 @@ Decision: adopt-now.
 
 The byte parser handles current pseudocode shapes but is not a production parser. Behavioral scans use markdown artifacts, not actual transcript telemetry. The 019/004 corpus is useful for prompt realism but labels gate/skill routing rather than intra-skill intent. The CocoIndex semantic MCP call was cancelled by the MCP layer during this run, so V9 used exact search and config reads.
 
+Primary packet evidence is recorded in the iteration series. [SOURCE: `research/iterations/iteration-001.md` through `research/iterations/iteration-020.md`]
+
 ## 16. Recommendations
 
 1. Keep Smart Routing as a declarative manifest.
@@ -88,6 +90,15 @@ The byte parser handles current pseudocode shapes but is not a production parser
 4. Replace silent `GENERATION` zero-score fallbacks with UNKNOWN/disambiguation in CLI skills, or require stronger evidence before generation defaults.
 5. Build observe-only telemetry before adding enforcement.
 6. Add a static CI check that validates route paths and reports ALWAYS bloat.
+
+<!-- ANCHOR:sources -->
+## Sources
+
+- [SOURCE: `.opencode/skill/*/SKILL.md` inventory and router section parsing]
+- [SOURCE: `.opencode/specs/**/research/iterations/iteration-*.md` behavioral artifact scan]
+- [SOURCE: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl` prompt corpus sample]
+- [SOURCE: `.claude/settings.local.json`, `.codex/config.toml`, and `.gemini/settings.json` enforcement-surface review]
+<!-- /ANCHOR:sources -->
 
 ## 17. Conclusion
 
