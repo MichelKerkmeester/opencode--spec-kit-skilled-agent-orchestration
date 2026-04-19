@@ -1,0 +1,37 @@
+{
+  "topic": "Smart-router context-load efficacy investigation: measure whether Phase 020 advisor hook reduces AI-assistant context load; design OpenCode plugin packaging",
+  "maxIterations": 20,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 180,
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy/001-initial-research",
+  "createdAt": "2026-04-19T18:15:00Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.4",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "timeoutSeconds": 1800
+  },
+  "lineage": {
+    "sessionId": "021-001-r01",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "questions": [
+    "V1: Baseline context load without hook",
+    "V2: With-hook steering efficacy",
+    "V3: Savings quantification",
+    "V4: Miss-rate analysis",
+    "V5: Adversarial cases",
+    "V6: Cross-runtime comparison",
+    "V7: Runtime skip-SKILL.md behavior",
+    "V8: OpenCode plugin architecture",
+    "V9: Plugin design proposal",
+    "V10: Risks"
+  ]
+}
