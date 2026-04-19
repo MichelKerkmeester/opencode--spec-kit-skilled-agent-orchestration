@@ -1,0 +1,195 @@
+---
+title: "Implementation Plan: Skill-Advisor Hook Surface"
+description: "Research-first plan for cross-runtime skill-advisor hook integration. Phase 1 scaffolds 001-initial-research for architecture investigation; Phase 2+ spawns remediation children per cluster."
+trigger_phrases:
+  - "020 skill advisor hook plan"
+importance_tier: "critical"
+contextType: "plan"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface"
+    last_updated_at: "2026-04-19T06:40:00Z"
+    last_updated_by: "claude-opus-4.7-1m"
+    recent_action: "Plan scaffolded"
+    next_safe_action: "Create 001-initial-research sub-packet"
+
+---
+# Implementation Plan: Skill-Advisor Hook Surface
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript (MCP server hooks, shared-payload envelope) + Python (skill_advisor.py subprocess) |
+| **Storage** | Hook-state cache (`pendingCompactPrime`-adjacent field), skill-graph SQLite freshness probe |
+| **Runtimes Targeted** | Claude Code, Codex (pending research), Copilot, Gemini |
+| **Pattern Reference** | `lib/code-graph/startup-brief.ts` — same architectural shape |
+
+### Overview
+
+Phase 020 runs research-first. `001-initial-research` investigates (a) hook trigger-point availability per runtime, (b) empirical cache-TTL / latency budget, (c) freshness-signal semantics analogous to code-graph. Implementation children (`002-*`, `003-*`) land per finding cluster after convergence.
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Spec scope defined with 6 acceptance scenarios
+- [ ] Research umbrella sub-packet (001) scaffolded
+- [ ] User approval for research dispatch
+
+### Definition of Done (umbrella)
+- [ ] 001-initial-research converges with ranked proposals
+- [ ] All proposed remediation children spawned and implemented
+- [ ] 019/004 200-prompt corpus passes as regression fixture
+- [ ] Zero context-budget regression on typical sessions
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+
+**Producer/envelope/surface** — same three-layer pattern as code-graph:
+1. **Producer**: `buildSkillAdvisorBrief()` wraps `skill_advisor.py` subprocess + cache layer. Returns compact `SkillAdvisorBriefResult`.
+2. **Envelope**: shared-payload envelope (phase 018 R4) with `{ kind: 'skill-advisor', sections, provenance, trustState }`.
+3. **Surface**: per-runtime hooks (session-prime + user-prompt-submit) inject the envelope into the runtime's prompt context.
+
+### Key Components
+
+```
+mcp_server/
+  lib/
+    skill-advisor/                      (NEW)
+      skill-advisor-brief.ts             buildSkillAdvisorBrief()
+      freshness.ts                       getAdvisorFreshness()
+      cache.ts                           fingerprint + TTL logic
+  hooks/
+    claude/
+      session-prime.ts                   EDIT — append advisor brief
+      user-prompt-submit.ts              NEW — per-prompt injection
+      hook-state.ts                      EDIT — advisorCache field
+    gemini/
+      session-prime.ts                   EDIT
+      user-prompt-submit.ts              NEW (or equivalent)
+    copilot/
+      session-prime.ts                   EDIT
+      user-prompt-submit.ts              NEW (or wrapper)
+references/
+  hooks/
+    skill-advisor-hook.md                NEW — surface contract
+```
+
+### Data Flow
+
+```
+user prompt
+   │
+   ▼
+runtime's prompt-submit trigger
+   │
+   ▼
+buildSkillAdvisorBrief(prompt)
+   ├─ fingerprint = hash(prompt + skill-graph-mtime + skill-md-bundle-hash)
+   ├─ cache-hit? ──► return cached result (marked cached=true)
+   ├─ cache-miss? ─► skill_advisor.py subprocess (with 2s timeout)
+   ├─ freshness probe (compare mtimes)
+   ├─ wrap in shared-payload envelope
+   └─ store in hook-state advisorCache
+   │
+   ▼
+surface injection (1 line: "Skill: <name> (conf=<n>, unc=<n>, freshness=<state>)")
+```
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Research (001-initial-research)
+- [ ] Scaffold 001-initial-research Level 2 sub-packet
+- [ ] Dispatch `/spec_kit:deep-research :auto` on hook architecture + context budget + runtime parity
+- [ ] Converge with ranked proposals per cluster
+
+### Phase 2: Implementation Children (002+)
+- [ ] 002-advisor-brief-producer (core `buildSkillAdvisorBrief` + cache)
+- [ ] 003-claude-hook-wiring (session-prime + user-prompt-submit for Claude)
+- [ ] 004-gemini-hook-wiring
+- [ ] 005-copilot-hook-wiring
+- [ ] 006-codex-integration (depends on research finding for Codex hook surface)
+- [ ] 007-freshness-signal (mtime-based `live/stale/absent/unavailable`)
+- [ ] 008-documentation (hook-surface contract + references)
+
+Exact child numbering + count determined by research convergence.
+
+### Phase 3: Verification
+- [ ] 019/004 200-prompt regression corpus passes at 100%
+- [ ] Cross-runtime snapshot tests pass
+- [ ] Performance budget (p95 ≤ 50ms, ≤ 80 tokens) verified
+- [ ] Documentation published
+<!-- /ANCHOR:phases -->
+
+---
+
+### 4.1 Dispatch Command (for 020/001 research)
+
+```
+/spec_kit:deep-research :auto "Skill-advisor hook surface architecture research. Investigate: (a) per-runtime hook trigger-point availability (Claude UserPromptSubmit, Codex equivalent, Copilot equivalent, Gemini equivalent); (b) empirical latency + cache-TTL curve using the 019/004 200-prompt corpus; (c) freshness signal semantics analogous to code-graph getGraphFreshness; (d) context-budget tradeoffs for brief-length (40/60/80/120 tokens) vs routing-quality retention; (e) failure mode + fail-open contract for subprocess errors. Recommend implementation cluster decomposition with child spec folders under 020/." --executor=cli-codex --model=gpt-5.4 --reasoning-effort=high --service-tier=fast --executor-timeout=1800
+```
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Unit | `buildSkillAdvisorBrief` cache + fingerprint | vitest |
+| Unit | `getAdvisorFreshness` mtime comparison | vitest |
+| Integration | Hook injection into each runtime's session-prime output | vitest + snapshot |
+| Regression | 019/004 200-prompt corpus — hook vs direct CLI | pytest + vitest |
+| Performance | Per-prompt overhead measurement | benchmark harness |
+| Cross-runtime | Snapshot tests confirming identical brief format across 3 runtimes | vitest snapshot |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status |
+|------------|------|--------|
+| skill_advisor.py | Python subprocess | Live (Phase 019/004 hardened) |
+| Shared-payload envelope | Phase 018 R4 primitive | Live |
+| Hook-state schema | Phase 016 primitive | Live (would add `advisorCache` field) |
+| 019/004 200-prompt corpus | Regression fixture | Live, available at `.../research/019-system-hardening-001-initial-research-005-routing-accuracy/corpus/labeled-prompts.jsonl` |
+| Code-graph startup-brief pattern | Architectural reference | Live — direct adaptation source |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+**Trigger**: Hook adds > 150ms p95 latency OR the corpus regression shows accuracy drop > 5%.
+
+**Procedure**:
+1. Ship env flag `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=true` that short-circuits the hook
+2. Set flag in affected deployments
+3. Re-run research to identify the regression cause
+4. Ship fix OR revert hook wiring commits while keeping the producer library
+<!-- /ANCHOR:rollback -->
