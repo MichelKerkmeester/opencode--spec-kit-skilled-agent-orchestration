@@ -365,7 +365,7 @@ function prepareParsedMemoryForIndexing(
   });
   parsed.qualityScore = qualityLoopResult.score.total;
   parsed.qualityFlags = Array.from(new Set([
-    ...parsed.qualityFlags,
+    ...(parsed.qualityFlags ?? []),
     ...qualityLoopResult.score.issues,
   ]));
   if (qualityLoopResult.fixedTriggerPhrases) {

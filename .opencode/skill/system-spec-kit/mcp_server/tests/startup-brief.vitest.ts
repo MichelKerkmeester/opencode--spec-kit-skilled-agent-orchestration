@@ -27,7 +27,8 @@ vi.mock('../lib/code-graph/ensure-ready.js', () => ({
 
 vi.mock('../hooks/claude/hook-state.js', () => ({
   loadMostRecentState: vi.fn(() => ({
-    states: [{
+    ok: true,
+    state: {
       claudeSessionId: 'recent-session',
       speckitSessionId: 'speckit-session',
       lastSpecFolder: 'system-spec-kit/024-compact-code-graph/027-opencode-structural-priming',
@@ -39,7 +40,8 @@ vi.mock('../hooks/claude/hook-state.js', () => ({
       metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
       createdAt: '2026-04-02T10:00:00.000Z',
       updatedAt: '2026-04-02T10:01:00.000Z',
-    }],
+    },
+    path: '/tmp/mock-state-file.json',
     errors: [],
   })),
 }));
@@ -111,7 +113,8 @@ describe('startup-brief', () => {
     expect(brief.graphSummary).toMatchObject({ files: 0, nodes: 0, edges: 0, lastScan: null });
     expect(brief.graphOutline).toBeNull();
     expect(brief.startupSurface).toContain('- Code Graph: empty -- run `code_graph_scan`');
-    expect(brief.sharedPayload?.provenance.trustState).toBe('stale');
+    // Phase 016 M8: 'missing'/'empty' no longer collapse to 'stale' — they map to 'absent'.
+    expect(brief.sharedPayload?.provenance.trustState).toBe('absent');
   });
 
   it('reports stale graph state when freshness detection says stale even with graph counts present', () => {

@@ -34,8 +34,20 @@ vi.mock('../handlers/memory-search', () => ({
 import { handleMemoryContext } from '../handlers/memory-context';
 import { upsertThinContinuityInMarkdown } from '../lib/continuity/thin-continuity-record';
 
+/**
+ * Create a temp workspace containing a nested spec folder under
+ * `.opencode/specs/...`. The resume-ladder security hardening requires
+ * spec paths to resolve inside `.opencode/specs` or `specs` relative to
+ * the resolved workspace, so tests need to chdir into a structured root.
+ * Uses realpathSync to avoid macOS /tmp → /private/tmp symlink drift.
+ */
 function makeTempSpecFolder(): string {
-  return fs.mkdtempSync(path.join(os.tmpdir(), 'memory-context-resume-'));
+  const rawRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'memory-context-resume-'));
+  const workspaceRoot = fs.realpathSync(rawRoot);
+  const specFolder = path.join(workspaceRoot, '.opencode', 'specs', 'test-packet', '001-resume-fixture');
+  fs.mkdirSync(specFolder, { recursive: true });
+  process.chdir(workspaceRoot);
+  return specFolder;
 }
 
 function writeMarkdown(filePath: string, content: string): void {
@@ -86,16 +98,20 @@ function parseResumeEnvelope(result: Awaited<ReturnType<typeof handleMemoryConte
 
 describe('Gate D resume ladder in memory-context', () => {
   const tempFolders: string[] = [];
+  const originalCwd = process.cwd();
 
   beforeEach(() => {
     memorySearchSpy.mockClear();
   });
 
   afterEach(() => {
+    process.chdir(originalCwd);
     while (tempFolders.length > 0) {
       const folder = tempFolders.pop();
       if (folder) {
-        fs.rmSync(folder, { recursive: true, force: true });
+        // folder is the nested spec folder; clean up the workspace root (3 levels up)
+        const workspaceRoot = path.resolve(folder, '..', '..', '..');
+        fs.rmSync(workspaceRoot, { recursive: true, force: true });
       }
     }
   });

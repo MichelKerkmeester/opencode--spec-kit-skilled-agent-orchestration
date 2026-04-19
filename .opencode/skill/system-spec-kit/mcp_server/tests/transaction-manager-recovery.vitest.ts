@@ -10,6 +10,7 @@ import {
   resetMetrics,
   getMetrics,
 } from '../lib/storage/transaction-manager';
+import { resolveDatabasePaths } from '../core/config';
 
 const tempDirs: string[] = [];
 const originalSpecKitDbDir = process.env.SPEC_KIT_DB_DIR;
@@ -17,11 +18,13 @@ const originalSpeckitDbDir = process.env.SPECKIT_DB_DIR;
 
 function ensureDefaultRecoveryDb(rootDir: string): string {
   const dbDir = path.join(rootDir, 'db-fixture');
-  const dbPath = path.join(dbDir, 'context-index.sqlite');
   fs.mkdirSync(dbDir, { recursive: true });
-  fs.writeFileSync(dbPath, '', 'utf-8');
   process.env.SPEC_KIT_DB_DIR = dbDir;
   delete process.env.SPECKIT_DB_DIR;
+  // Resolve the actual provider-qualified DB filename via the runtime resolver
+  // so the fixture matches the path the recovery code actually queries.
+  const dbPath = resolveDatabasePaths().databasePath;
+  fs.writeFileSync(dbPath, '', 'utf-8');
   return dbPath;
 }
 

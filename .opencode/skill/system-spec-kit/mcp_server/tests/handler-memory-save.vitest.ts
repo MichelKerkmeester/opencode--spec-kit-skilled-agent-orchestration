@@ -531,7 +531,16 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       const runReconsolidationIfEnabledSpy = vi.spyOn(reconsolidationModule, 'runReconsolidationIfEnabled').mockResolvedValue({
         earlyReturn: null,
         warnings: [],
+        saveTimeReconsolidation: { status: 'skipped', persistedState: { kind: 'create' } },
       } as Awaited<ReturnType<typeof reconsolidationModule.runReconsolidationIfEnabled>>);
+      // Phase 016 predecessor-CAS hardening added a write-transaction-scoped call
+      // to findScopeFilteredCandidates that hits real vector_search. Mock it out
+      // so the tiny test embedding doesn't fail the dimension gate.
+      const findScopeFilteredCandidatesSpy = vi.spyOn(reconsolidationModule, 'findScopeFilteredCandidates').mockReturnValue({
+        candidates: [],
+        suppressedCandidateIds: [],
+        malformedCandidateCount: 0,
+      } as ReturnType<typeof reconsolidationModule.findScopeFilteredCandidates>);
 
       const createRecordModule = await import('../handlers/save/create-record');
       const findSamePathExistingMemorySpy = vi.spyOn(createRecordModule, 'findSamePathExistingMemory').mockReturnValue(
@@ -988,7 +997,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         specFolder: 'specs/999-atomic-save-fi',
         filePath,
       }));
-      expect(qualityLoopCall[2]).toEqual({ emitEvalMetrics: undefined });
+      expect(qualityLoopCall[2]).toEqual({ emitEvalMetrics: undefined, mode: 'advisory' });
     });
 
     // Deep-review regression coverage for same-path supersede routing through
@@ -2354,7 +2363,20 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           runReconsolidationIfEnabled: vi.fn(async () => ({
             earlyReturn: null,
             warnings: [],
+            saveTimeReconsolidation: { status: 'skipped', persistedState: { kind: 'create' } },
           })),
+          findScopeFilteredCandidates: vi.fn(() => ({
+            candidates: [],
+            suppressedCandidateIds: [],
+            malformedCandidateCount: 0,
+          })),
+          getRequestedScope: vi.fn(() => ({ tenantId: null, userId: null, agentId: null, sessionId: null })),
+          isAssistiveReconsolidationEnabled: vi.fn(() => false),
+          classifyAssistiveSimilarity: vi.fn(() => null),
+          classifySupersededOrComplement: vi.fn(() => ({ classification: 'complement', similarity: 0, olderMemoryId: null, newerMemoryId: null })),
+          logAssistiveRecommendation: vi.fn(() => {}),
+          ASSISTIVE_COMPATIBILITY_NOTE_THRESHOLD: 0.96,
+          ASSISTIVE_REVIEW_THRESHOLD: 0.88,
         }),
         createRecordModuleFactory: () => ({
           createMemoryRecord: createMemoryRecordMock,
@@ -2439,7 +2461,20 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           runReconsolidationIfEnabled: vi.fn(async () => ({
             earlyReturn: null,
             warnings: [],
+            saveTimeReconsolidation: { status: 'skipped', persistedState: { kind: 'create' } },
           })),
+          findScopeFilteredCandidates: vi.fn(() => ({
+            candidates: [],
+            suppressedCandidateIds: [],
+            malformedCandidateCount: 0,
+          })),
+          getRequestedScope: vi.fn(() => ({ tenantId: null, userId: null, agentId: null, sessionId: null })),
+          isAssistiveReconsolidationEnabled: vi.fn(() => false),
+          classifyAssistiveSimilarity: vi.fn(() => null),
+          classifySupersededOrComplement: vi.fn(() => ({ classification: 'complement', similarity: 0, olderMemoryId: null, newerMemoryId: null })),
+          logAssistiveRecommendation: vi.fn(() => {}),
+          ASSISTIVE_COMPATIBILITY_NOTE_THRESHOLD: 0.96,
+          ASSISTIVE_REVIEW_THRESHOLD: 0.88,
         }),
         createRecordModuleFactory: () => ({
           createMemoryRecord: createMemoryRecordMock,
