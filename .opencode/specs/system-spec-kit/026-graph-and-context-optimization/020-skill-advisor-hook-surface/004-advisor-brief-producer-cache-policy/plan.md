@@ -49,15 +49,15 @@ _memory:
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] 002 (shared-payload envelope) merged
-- [ ] 003 (freshness + source cache) merged
+- [x] 002 (shared-payload envelope) merged
+- [x] 003 (freshness + source cache) merged
 - [x] Research synthesis rules confirmed
 
 ### Definition of Done
-- [ ] 10 acceptance scenarios green
-- [ ] `tsc --noEmit` clean
-- [ ] Warm cache p95 ≤ 10 ms recorded
-- [ ] All P0 checklist items `[x]`
+- [x] 10 acceptance scenarios green
+- [x] `tsc --noEmit` clean
+- [x] Warm cache p95 ≤ 10 ms recorded
+- [x] All P0 checklist items `[x]`
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -116,36 +116,36 @@ buildSkillAdvisorBrief(prompt, options)
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Prompt policy + normalization
-- [ ] Create `prompt-policy.ts` with `shouldFireAdvisor()` + 6 prompt-class classifier
-- [ ] Wire NFKC canonical fold from `shared/unicode-normalization.ts`
-- [ ] Write `advisor-prompt-policy.vitest.ts`
+- [x] Create `prompt-policy.ts` with `shouldFireAdvisor()` + 6 prompt-class classifier
+- [x] Wire NFKC canonical fold from `shared/unicode-normalization.ts`
+- [x] Write `advisor-prompt-policy.vitest.ts`
 
 ### Phase 2: Exact prompt cache
-- [ ] Create `prompt-cache.ts` with HMAC-keyed LRU + 5-min TTL
-- [ ] Session-secret derivation from PID + launch time
-- [ ] Signature-gated invalidation
-- [ ] Write `advisor-prompt-cache.vitest.ts`
+- [x] Create `prompt-cache.ts` with HMAC-keyed LRU + 5-min TTL
+- [x] Session-secret derivation from PID + launch time
+- [x] Signature-gated invalidation
+- [x] Write `advisor-prompt-cache.vitest.ts`
 
 ### Phase 3: Subprocess wrapper
-- [ ] Create `subprocess.ts` with `runAdvisorSubprocess(canonical, opts)`
-- [ ] 1000ms timeout; SIGKILL on expiry
-- [ ] Strict JSON schema parse; stderr capture (not stdout intermingle)
-- [ ] SQLite-busy single-retry logic (75-125ms, ≥500ms budget)
-- [ ] Write `advisor-subprocess.vitest.ts`
+- [x] Create `subprocess.ts` with `runAdvisorSubprocess(canonical, opts)`
+- [x] 1000ms timeout; SIGKILL on expiry
+- [x] Strict JSON schema parse; stderr capture (not stdout intermingle)
+- [x] SQLite-busy single-retry logic (75-125ms, ≥500ms budget)
+- [x] Write `advisor-subprocess.vitest.ts`
 
 ### Phase 4: Producer orchestration
-- [ ] Create `skill-advisor-brief.ts` with `buildSkillAdvisorBrief()` orchestrator
-- [ ] Map all fail-open branches to `AdvisorHookResult`
-- [ ] Integrate envelope wrapping from 002
-- [ ] Enforce token caps at producer (60/80/120)
-- [ ] Diagnostics: metalinguistic suppression log
-- [ ] Write `advisor-brief-producer.vitest.ts` (10 acceptance scenarios)
+- [x] Create `skill-advisor-brief.ts` with `buildSkillAdvisorBrief()` orchestrator
+- [x] Map all fail-open branches to `AdvisorHookResult`
+- [x] Integrate envelope wrapping from 002
+- [x] Enforce token caps at producer (80 default / 120 hard cap; no 60-token floor)
+- [x] Diagnostics: metalinguistic suppression log
+- [x] Write `advisor-brief-producer.vitest.ts` (10 acceptance scenarios)
 
 ### Phase 5: Verification
-- [ ] All 4 vitest files green
-- [ ] `tsc --noEmit` clean
-- [ ] Bench warm/cold lanes; record p50/p95/p99
-- [ ] Privacy audit: grep test fixtures for raw prompts
+- [x] All 4 vitest files green
+- [x] `tsc --noEmit` clean
+- [x] Bench warm/cold lanes; record p50/p95/p99
+- [x] Privacy audit: grep test fixtures for raw prompts
 <!-- /ANCHOR:phases -->
 
 ---

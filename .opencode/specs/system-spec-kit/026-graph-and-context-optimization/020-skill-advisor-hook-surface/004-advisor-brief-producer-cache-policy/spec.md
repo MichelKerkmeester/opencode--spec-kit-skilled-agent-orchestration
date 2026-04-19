@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Advisor Brief Producer + Cache Policy"
-description: "buildSkillAdvisorBrief() producer + AdvisorHookResult + prompt policy + fail-open contract + optional HMAC exact prompt cache + 60/80/120 token caps. Depends on 002 and 003. Mirrors buildStartupBrief() orchestration shape."
+description: "buildSkillAdvisorBrief() producer + AdvisorHookResult + prompt policy + fail-open contract + optional HMAC exact prompt cache + 80/120 token caps. Depends on 002 and 003. Mirrors buildStartupBrief() orchestration shape."
 trigger_phrases:
   - "020 advisor brief producer"
   - "buildSkillAdvisorBrief"
@@ -73,7 +73,7 @@ Ship `buildSkillAdvisorBrief(prompt, options)` returning `AdvisorHookResult` wit
 - Optional HMAC exact prompt cache (5-min TTL, session-scoped secret)
 - Similarity-only cache reuse is **rejected** (research.md §Rejected ideas)
 - Fail-open on subprocess timeout, missing binary, JSON parse error, concurrent graph rebuild
-- 60/80/120 token caps depending on fixture class (minimum/default/ambiguity)
+- 80/120 token caps depending on fixture class (default/ambiguity; no 60-token floor)
 - Deleted-skill fail-open behavior (if cached skill no longer in fingerprint map, treat as fail-open)
 <!-- /ANCHOR:problem -->
 
@@ -121,26 +121,23 @@ Ship `buildSkillAdvisorBrief(prompt, options)` returning `AdvisorHookResult` wit
   - SQLite busy → single 75-125ms retry if ≥500ms budget remains; else fail-open with `errorCode: 'SQLITE_BUSY_EXHAUSTED'`
   - Deleted-skill in cache → `status: 'fail_open'`, `freshness: 'stale'` (fingerprint map shows the deletion), `brief: null` (do not render suppressed skill)
 
-- **Non-live freshness producer posture (wave-3 V7/V8 pinning — P1 tightening):** When the freshness probe returns a non-`live` state, the producer MUST NOT emit a normal passing brief. The exact mapping is:
+- **Non-live freshness producer posture (wave-3 P1 final pinning):** When the freshness probe returns a non-`live` state, the producer MUST follow the explicit status map instead of treating cache age as authority. The exact mapping is:
   - `freshness: "live"` → normal operation; brief emitted when recommendations pass threshold
-  - `freshness: "stale"` → `status: "degraded"`, `brief: <stale-prefixed brief>` (explicit "stale" wording); renderer (005) enforces the stale wording
-  - `freshness: "absent"` → `status: "fail_open"`, `brief: null` (no artifact to read from)
-  - `freshness: "unavailable"` → `status: "fail_open"`, `brief: null` (probe itself failed; never serve cached data as live)
+  - `freshness: "stale"` → `status: "ok"`, `brief: <stale-prefixed brief>` (explicit "stale" wording)
+  - `freshness: "absent"` → `status: "skipped"`, `brief: null` (no artifact to read from)
+  - `freshness: "unavailable"` → `status: "degraded"`, `brief: null` (probe itself failed; never serve cached data as live)
   - `SIGNAL_KILLED` subprocess exit → `status: "fail_open"`, `freshness: "unavailable"`, `brief: null`, `diagnostics.errorCode: "SIGNAL_KILLED"`
-  - Deleted-skill path (skill slug present in cached fingerprint but absent in current probe) → `status: "fail_open"`, `brief: null`, cache entry suppressed (never rendered)
-  - JSON fallback detected (`fallbackMode: "json"`) → freshness is already `"stale"` per 003; producer follows the stale path above; never upgrades to `"live"` regardless of cache age
+  - Deleted-skill path (skill slug present in cached entry but absent in current probe) → suppress cached brief, invalidate entry, and re-run advisor (never rendered)
+  - JSON fallback detected (`fallbackMode: "json"`) → freshness is already `"stale"` per 003; producer follows the stale `ok` path above; never upgrades to `"live"` regardless of cache age
 - **Token caps (wave-3 P1 — 60-token floor removed as unsupported scope)**: 80 default, 120 ambiguity/debug — enforced via char-heuristic (tokens ≈ chars/4) at producer level; renderer (005) enforces hard cap. No 60-token "minimum" class; the floor was never actually shipped in the advisor output shape and wave-3 V2 flagged it as contract drift.
 - `SkillAdvisorBriefOptions`:
   ```ts
-  { runtime: 'claude' | 'gemini' | 'copilot' | 'codex';
-    workspaceRoot: string;
-    freshness?: AdvisorFreshnessResult;  // if omitted, producer calls getAdvisorFreshness()
-    cacheSecret?: Buffer;
-    disableExactCache?: boolean;
-    timeoutMs?: number;  // default 1000
-  }
+  { workspaceRoot: string;
+    runtime: 'claude' | 'gemini' | 'copilot' | 'codex';
+    maxTokens?: number; // default 80, hard cap 120
+    thresholdConfig?: AdvisorThresholds; }
   ```
-  **Wave-3 P1 removal:** `semanticModeEnabled` is NOT part of the options surface. The research explicitly rejected similarity-only reuse, and the advisor subprocess does not expose a semantic mode toggle. Do not add a flag for a feature that does not exist — wave-3 V2 flagged this as contract drift that would mislead future implementers.
+  **Wave-3 P1 removal:** `semanticModeEnabled` is NOT part of the options surface. The producer also does not expose freshness/cache/test-injection fields in the public options; it calls `getAdvisorFreshness()` internally and owns the exact HMAC cache.
 - Privacy: raw prompt never logged, never persisted in shared-payload envelope sources, never embedded in cache key cleartext
 - Envelope wrapping via 002's `createSharedPayloadEnvelope({ producer: 'advisor', metadata: AdvisorEnvelopeMetadata, ... })`
 - Vitest unit tests covering: policy classes, normalization, cache hit/miss, fail-open branches, deleted-skill suppression, envelope shape
@@ -194,7 +191,7 @@ Ship `buildSkillAdvisorBrief(prompt, options)` returning `AdvisorHookResult` wit
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-020 | Metalinguistic skill-name suppression diagnosed | Prompts containing `sk-*` slugs record `diagnostics.skillNameSuppressions` |
-| REQ-021 | Non-live freshness branches map to explicit statuses (wave-3 V7/V8 pinning) | Every branch in §3 table covered by a unit test (stale/absent/unavailable/deleted-skill/SIGNAL_KILLED/JSON-fallback) |
+| REQ-021 | Non-live freshness branches map to explicit statuses (wave-3 P1 final pinning) | Every branch in §3 table covered by a unit test (stale/absent/unavailable/deleted-skill/SIGNAL_KILLED/JSON-fallback) |
 | REQ-022 | Token caps enforced at producer: 80 default / 120 ambiguity (no 60-token floor) | brief-length heuristic tested; no code path enforces 60-token minimum |
 | REQ-023 | `AdvisorHookMetrics` populated: durationMs, cacheHit, subprocessInvoked, retriesAttempted | Field presence test |
 | REQ-024 | `SkillAdvisorBriefOptions` does NOT expose `semanticModeEnabled` (wave-3 P1 — unsupported scope removed) | TypeScript interface review asserts absence |
@@ -318,7 +315,7 @@ Ship `buildSkillAdvisorBrief(prompt, options)` returning `AdvisorHookResult` wit
 
 ---
 
-## RELATED DOCUMENTS
+**Related Documents**
 
 - Parent: `../spec.md`
 - Predecessors: `../002-shared-payload-advisor-contract/`, `../003-advisor-freshness-and-source-cache/`
