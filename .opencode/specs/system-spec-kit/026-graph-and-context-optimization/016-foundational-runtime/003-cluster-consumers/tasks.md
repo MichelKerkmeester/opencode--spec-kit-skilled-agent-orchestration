@@ -327,9 +327,9 @@ After all 9 tasks across 3 lanes merge:
 
 ### Upstream research
 
-- `../../../review/016-foundational-runtime-001-initial-research/review-report.md`
-- `../../../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md`
-- `../../../research/016-foundational-runtime-001-initial-research/segment-2-synthesis.md`
+- `../../../review/016-pt-01/review-report.md`
+- `../../../research/016-pt-01/FINAL-synthesis-and-review.md`
+- `../../../research/016-pt-01/segment-2-synthesis.md`
 
 ### Related operator feedback
 

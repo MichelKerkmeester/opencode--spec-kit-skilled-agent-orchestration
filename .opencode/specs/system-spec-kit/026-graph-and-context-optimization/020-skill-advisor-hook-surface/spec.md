@@ -325,4 +325,4 @@ See research output for full file list. Architectural anchors:
 - Reference pattern: `../../../../skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts`
 - Reference contract: `../../../../skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts` (phase 018 R4)
 - Advisor source: `../../../../skill/skill-advisor/scripts/skill_advisor.py`
-- Routing corpus: `../../../../specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-001-initial-research-005-routing-accuracy/corpus/labeled-prompts.jsonl`
+- Routing corpus: `../../../../specs/system-spec-kit/026-graph-and-context-optimization/research/019-pt-03/corpus/labeled-prompts.jsonl`

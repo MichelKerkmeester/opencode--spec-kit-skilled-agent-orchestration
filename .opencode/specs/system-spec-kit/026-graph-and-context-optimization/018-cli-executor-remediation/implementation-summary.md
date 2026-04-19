@@ -31,7 +31,7 @@ _memory:
 | **Effort (actual)** | ~1 hour wall-clock via cli-codex dogfooding (6 waves) |
 | **Effort (planned)** | ~30h |
 | **Predecessor** | Phase 019 `017-sk-deep-cli-runtime-execution/002-runtime-matrix` (shipped same day) |
-| **Research source** | `research/017-sk-deep-cli-runtime-execution-001-executor-feature/research.md` (256 lines, 17 sections, 30 iterations) |
+| **Research source** | `research/017-pt-01/research.md` (256 lines, 17 sections, 30 iterations) |
 | **Test coverage** | 116/116 scoped tests green across 13 files |
 | **Remediations shipped** | R1-R11 (11 of 12); R12 conditional defer |
 <!-- /ANCHOR:metadata -->

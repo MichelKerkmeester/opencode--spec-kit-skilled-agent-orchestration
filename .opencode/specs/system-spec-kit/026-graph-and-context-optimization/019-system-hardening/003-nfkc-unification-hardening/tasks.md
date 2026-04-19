@@ -27,7 +27,7 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Read research: 019/001/003 research.md §4 HP1-HP6 (P0) — Evidence: reviewed `../../research/019-system-hardening-001-initial-research-003-q4-nfkc-robustness/research.md`, especially §4 proposals and RT1-RT10 inventory.
+- [x] T001 Read research: 019/001/003 research.md §4 HP1-HP6 (P0) — Evidence: reviewed `../../research/019-pt-02/research.md`, especially §4 proposals and RT1-RT10 inventory.
 - [x] T002 Baseline: run existing Gate 3 / shared-provenance / trigger-phrase tests, capture output for regression compare (P0) — Evidence: pre-change `cd .opencode/skill/system-spec-kit && npm test` reached Vitest and failed on unrelated baseline suites (`handler-memory-save`, `transaction-manager-recovery`, `startup-brief`, etc.); targeted hardening slice later passed 91/91.
 <!-- /ANCHOR:phase-1 -->
 
@@ -85,5 +85,5 @@ _memory:
 ## Cross-References
 
 - Parent: `../spec.md`
-- Source: `../../research/019-system-hardening-001-initial-research-003-q4-nfkc-robustness/research.md`
+- Source: `../../research/019-pt-02/research.md`
 <!-- /ANCHOR:cross-refs -->

@@ -27,7 +27,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Parent Spec** | ../spec.md |
-| **Source Research** | ../../research/019-system-hardening-001-initial-research-003-q4-nfkc-robustness/research.md |
+| **Source Research** | ../../research/019-pt-02/research.md |
 | **Priority** | P1 |
 
 <!-- ANCHOR:metadata -->

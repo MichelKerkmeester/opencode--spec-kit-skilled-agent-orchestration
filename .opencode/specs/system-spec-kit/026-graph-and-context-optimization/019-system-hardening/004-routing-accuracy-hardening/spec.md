@@ -26,7 +26,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Parent Spec** | ../spec.md |
-| **Source Research** | ../../research/019-system-hardening-001-initial-research-005-routing-accuracy/research.md |
+| **Source Research** | ../../research/019-pt-03/research.md |
 | **Priority** | P1 |
 
 <!-- ANCHOR:metadata -->

@@ -27,7 +27,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Parent Spec** | ../spec.md |
-| **Source Review** | ../../review/019-system-hardening-001-initial-research-002-delta-review-015/review-report.md |
+| **Source Review** | ../../review/019-pt-01/review-report.md |
 | **Priority** | P1 |
 
 <!-- ANCHOR:metadata -->

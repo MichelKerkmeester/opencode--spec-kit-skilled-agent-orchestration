@@ -289,6 +289,6 @@ Ship three deliverables:
 
 - Parent: `../spec.md`
 - Predecessors: `../002-*`, `../004-*`, `../005-*` (HARD GATE)
-- Research: `../../../research/020-skill-advisor-hook-surface-001-initial-research/research.md §Codex Integration Strategy`
-- Extended research: `../../../research/020-skill-advisor-hook-surface-001-initial-research-extended-copilot/research-extended.md §X4`
+- Research: `../../../research/020-pt-01/research.md §Codex Integration Strategy`
+- Extended research: `../../../research/020-pt-02/research-extended.md §X4`
 - 005 comparator: `../005-advisor-renderer-and-regression-harness/`

@@ -8,7 +8,7 @@ Dispatched via `codex exec gpt-5.4 --reasoning-effort=high --service-tier=fast` 
 
 Read first:
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/003-nfkc-unification-hardening/{spec.md,plan.md,tasks.md}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-001-initial-research-003-q4-nfkc-robustness/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-pt-02/research.md`
 
 Implement 6 hardening proposals (HP1-HP6) in order:
 

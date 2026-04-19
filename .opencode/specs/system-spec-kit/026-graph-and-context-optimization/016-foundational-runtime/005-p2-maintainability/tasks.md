@@ -260,8 +260,8 @@ The following P2 findings are tracked but explicitly NOT in Wave D scope. They r
 - **Graph metadata**: `./graph-metadata.json` — packet graph edges
 
 ### Upstream research
-- **Review report**: `../../review/016-foundational-runtime-001-initial-research/review-report.md`
-- **Segment-2 synthesis**: `../../research/016-foundational-runtime-001-initial-research/segment-2-synthesis.md`
+- **Review report**: `../../review/016-pt-01/review-report.md`
+- **Segment-2 synthesis**: `../../research/016-pt-01/segment-2-synthesis.md`
 
 ### Related operator feedback
 - `feedback_phase_018_autonomous` — autonomous execution rules

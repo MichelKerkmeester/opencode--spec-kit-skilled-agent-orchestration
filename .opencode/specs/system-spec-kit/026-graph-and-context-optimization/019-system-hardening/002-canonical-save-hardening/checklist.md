@@ -27,7 +27,7 @@ Complete all items with evidence links. Use file:line references for code eviden
 ## Pre-Implementation
 
 - [ ] Spec folder valid: `validate.sh --strict --no-recursive` passed at spec creation — evidence: not passed during dispatch; inherited packet-doc anchor/reference and sandbox `tsx` blockers were present before edits
-- [x] Source research reviewed: `../001-initial-research/001-canonical-save-invariants/research.md` — evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-001-initial-research-001-canonical-save-invariants/research.md`
+- [x] Source research reviewed: `../001-initial-research/001-canonical-save-invariants/research.md` — evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-pt-04/research.md`
 - [ ] Findings registry reviewed: `../001-initial-research/findings-registry.json` — evidence: not separately verified during this implementation dispatch
 
 ## Code Quality

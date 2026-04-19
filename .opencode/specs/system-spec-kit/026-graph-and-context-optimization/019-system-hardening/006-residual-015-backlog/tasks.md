@@ -38,7 +38,7 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 [P0] Read delta review report (`../../review/019-system-hardening-001-initial-research-002-delta-review-015/review-report.md`) - Evidence: source report read before code edits; residual clusters C1-C6 used as implementation scope.
+- [x] T001 [P0] Read delta review report (`../../review/019-pt-01/review-report.md`) - Evidence: source report read before code edits; residual clusters C1-C6 used as implementation scope.
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -102,5 +102,5 @@ _memory:
 - **Specification**: `spec.md`
 - **Plan**: `plan.md`
 - **Checklist**: `checklist.md`
-- **Source Review**: `../../review/019-system-hardening-001-initial-research-002-delta-review-015/review-report.md`
+- **Source Review**: `../../review/019-pt-01/review-report.md`
 <!-- /ANCHOR:cross-refs -->

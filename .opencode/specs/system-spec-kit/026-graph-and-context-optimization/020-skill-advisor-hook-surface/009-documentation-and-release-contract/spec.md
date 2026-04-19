@@ -262,6 +262,6 @@ Close the release contract: create the reference doc that 020/spec.md §3 alread
 
 - Parent: `../spec.md`
 - Predecessors: `../006-*`, `../007-*`, `../008-*`
-- Research: `../../../research/020-skill-advisor-hook-surface-001-initial-research/research.md §Failure Modes + §Cross-Runtime Testing + Privacy`
-- Extended research: `../../../research/020-skill-advisor-hook-surface-001-initial-research-extended-copilot/research-extended.md §X6 (observability) §X7 (migration) §X8 (concurrency)`
+- Research: `../../../research/020-pt-01/research.md §Failure Modes + §Cross-Runtime Testing + Privacy`
+- Extended research: `../../../research/020-pt-02/research-extended.md §X6 (observability) §X7 (migration) §X8 (concurrency)`
 - sk-doc skill: `../../../../skill/sk-doc/`

@@ -223,7 +223,7 @@ These require structural refactors bundling multiple constituent findings. They 
 
 ## 7. Recommended Next Phase
 
-Per `plan.md` §4 and `../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md` §7.5, the recommended execution order after Phase 4:
+Per `plan.md` §4 and `../research/016-pt-01/FINAL-synthesis-and-review.md` §7.5, the recommended execution order after Phase 4:
 
 **Phase 1a — P0-D Solo Sprint (2 engineer-days, start immediately)**
 
@@ -247,4 +247,4 @@ The full wiring of `intent_signals`, per-subcommand COMMAND_BRIDGES, topology wa
 
 ---
 
-*Generated 2026-04-16 from git log `31233f06d..3d0ab30c9` (21 commits, 11 waves). Source documents: `spec.md`, `plan.md`, `tasks.md`, `../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md`.*
+*Generated 2026-04-16 from git log `31233f06d..3d0ab30c9` (21 commits, 11 waves). Source documents: `spec.md`, `plan.md`, `tasks.md`, `../research/016-pt-01/FINAL-synthesis-and-review.md`.*

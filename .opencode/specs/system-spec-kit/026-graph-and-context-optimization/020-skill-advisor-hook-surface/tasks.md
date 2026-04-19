@@ -94,6 +94,6 @@ _memory:
 
 - Parent: `../spec.md` (026-graph-and-context-optimization)
 - Pattern reference: `../../../../skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts`
-- Source corpus: `../research/019-system-hardening-001-initial-research-005-routing-accuracy/corpus/labeled-prompts.jsonl`
+- Source corpus: `../research/019-pt-03/corpus/labeled-prompts.jsonl`
 - Plan dispatch command: `plan.md §4.1`
 <!-- /ANCHOR:cross-refs -->

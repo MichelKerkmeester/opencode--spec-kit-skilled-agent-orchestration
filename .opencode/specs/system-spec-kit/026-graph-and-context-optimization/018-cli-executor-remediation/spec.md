@@ -22,7 +22,7 @@ _memory:
 
 ## EXECUTIVE SUMMARY
 
-Remediates the 12 prioritized findings surfaced by the 30-iteration deep-research pass in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/017-sk-deep-cli-runtime-execution-001-executor-feature/research.md`. Seven P1 findings plus five P2 findings span five atomic-ship groups. Highest-leverage slice is shared deep-loop executor provenance (R1-R2), followed by description.json repair safety (R4-R5), then Copilot `@path` fallback (R3), metadata lineage (R6-R7), and the evidence-marker fence parser (R9). Three smaller slices (R8 telemetry prep, R10 caller-context coverage, R11 docs parity) ship independently. Phase 017 parking-lot R55-P2-004 is the only adjacent cleanup worth bundling (R12).
+Remediates the 12 prioritized findings surfaced by the 30-iteration deep-research pass in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/017-pt-01/research.md`. Seven P1 findings plus five P2 findings span five atomic-ship groups. Highest-leverage slice is shared deep-loop executor provenance (R1-R2), followed by description.json repair safety (R4-R5), then Copilot `@path` fallback (R3), metadata lineage (R6-R7), and the evidence-marker fence parser (R9). Three smaller slices (R8 telemetry prep, R10 caller-context coverage, R11 docs parity) ship independently. Phase 017 parking-lot R55-P2-004 is the only adjacent cleanup worth bundling (R12).
 
 **Key Decisions**: Wave structure follows the atomic-ship groups from research.md §11. Contract-first provenance (R1) precedes executor-specific hardening. Description repair safety (R4-R5) is independent from provenance and ships in parallel.
 
@@ -42,7 +42,7 @@ Remediates the 12 prioritized findings surfaced by the 30-iteration deep-researc
 | **Branch** | `main` |
 | **Parent Packet** | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/` |
 | **Immediate Predecessor** | `017-sk-deep-cli-runtime-execution/002-runtime-matrix/` (shipped 2026-04-18) |
-| **Research Source** | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/017-sk-deep-cli-runtime-execution-001-executor-feature/research.md` (256 lines, 17 sections, 30 iterations) |
+| **Research Source** | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/017-pt-01/research.md` (256 lines, 17 sections, 30 iterations) |
 | **Effort Estimate** | ~30h total across 7 waves via cli-codex dogfooding pattern |
 | **Wave Structure** | Wave A (R1+R2) → Wave B (R4+R5) → Wave C (R3) → Wave D (R6+R7) → Wave E (R9) → Wave F (R8+R10+R11 bundled) → Wave G (R12 deferrable) |
 <!-- /ANCHOR:metadata -->
@@ -194,7 +194,7 @@ Implement R1-R12 as sequenced waves per research.md §10 and §11 atomic-ship gr
 
 ## RELATED DOCUMENTS
 
-- **Research source**: `research/017-sk-deep-cli-runtime-execution-001-executor-feature/research.md`
+- **Research source**: `research/017-pt-01/research.md`
 - **Plan**: `plan.md`
 - **Tasks**: `tasks.md`
 - **Checklist**: `checklist.md`

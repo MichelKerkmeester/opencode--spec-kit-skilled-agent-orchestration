@@ -8,7 +8,7 @@ Dispatched via `codex exec gpt-5.4 --reasoning-effort=high --service-tier=fast` 
 
 Read first:
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/005-description-regen-contract/{spec.md,plan.md,tasks.md}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-001-initial-research-004-description-regen-strategy/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-pt-01/research.md`
 
 Implement field-level merge policy:
 

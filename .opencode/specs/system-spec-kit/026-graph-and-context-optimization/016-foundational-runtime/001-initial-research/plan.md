@@ -32,7 +32,7 @@ _memory:
 | **Storage** | SQLite (memory_index, code_graph, skill_graph), filesystem temp-state (HookState), JSON metadata files |
 | **Type system** | Zod for runtime validation (introduced by S2/M1); TS strict + explicit return types (enforced) |
 | **Testing** | Vitest + pytest regression; `/spec_kit:deep-review` for remediation validation |
-| **Research source** | `../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md` (authoritative) |
+| **Research source** | `../research/016-pt-01/FINAL-synthesis-and-review.md` (authoritative) |
 
 ### Overview
 
@@ -45,7 +45,7 @@ Phase 016 remediation executes the Phase 016 remediation charter. The charter co
 - **Phase 3 fills the middle**: medium refactors complete the scaffolding before/after structural work lands.
 - **Phase 4 opportunistic**: quick wins picked up between structural items; several are prerequisites for structural work and land in Week 1.
 - **Phase 5 threads throughout**: test migration commits paired with code commits (not deferred).
-- **Convergence validation**: at each P0 candidate "done" claim, run deep-review iteration against attack scenarios from `../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md` §3.x.
+- **Convergence validation**: at each P0 candidate "done" claim, run deep-review iteration against attack scenarios from `../research/016-pt-01/FINAL-synthesis-and-review.md` §3.x.
 - **Three engineers, ~10 weeks wall clock**, 24.5 engineer-weeks total.
 <!-- /ANCHOR:summary -->
 
@@ -56,7 +56,7 @@ Phase 016 remediation executes the Phase 016 remediation charter. The charter co
 
 ### Definition of Ready
 
-- [x] Phase 016 research complete (50 iterations, `../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md` authoritative) [EVIDENCE: d72a523ec3 50-iter Opus 4.7 synthesis committed; (verified)]
+- [x] Phase 016 research complete (50 iterations, `../research/016-pt-01/FINAL-synthesis-and-review.md` authoritative) [EVIDENCE: d72a523ec3 50-iter Opus 4.7 synthesis committed; (verified)]
 - [x] Findings registry structured (`findings-registry.json`) [EVIDENCE: d72a523ec3 findings-registry.json structured per 50-iter synthesis; (verified)]
 - [x] P0 composite candidates identified and constituent findings mapped [EVIDENCE: d72a523ec3 FINAL §3 maps 4 P0 composites with constituent-findings tables §3.1-§3.4; (verified)]
 - [x] Test-suite migration inventory documented (7 files listed) [EVIDENCE: spec.md §7 Risks + tasks.md Test Suite Migration section list 7 canonical + 14 supporting + 20 new adversarial tests; (verified)]
@@ -65,7 +65,7 @@ Phase 016 remediation executes the Phase 016 remediation charter. The charter co
 - [x] Open question 2 resolved: 7 test files — compatibility shims or oversights? [EVIDENCE: `preflight-oq-resolution.md` §OQ2 + 93b0c77c9 — 6 oversights + 1 shim; `hook-session-stop-replay.vitest.ts` preserved with sibling failure-injection test]
 - [x] Open question 3 resolved: HookState `schemaVersion` upgrade path? [EVIDENCE: `preflight-oq-resolution.md` §OQ3 + 93b0c77c9 — Option A+B hybrid, lazy migration; applied in 6f5623a4c P0-A]
 - [x] Open question 4 resolved: full `/spec_kit:*` subcommand enumeration? [EVIDENCE: `preflight-oq-resolution.md` §OQ4 + 93b0c77c9 — 6 canonical subcommands; per-subcommand bridges landed in e774eef07 T-SAP-03]
-- [x] Closing-pass audit of 11 untouched files (`../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md` §8.2) complete [EVIDENCE: 0da4e1aa6 T-PRE-04 closing-pass audit + `../research/016-foundational-runtime-001-initial-research/closing-pass-notes.md` logs 4 new P2 findings CP-001..CP-004 deferred to Phase 017]
+- [x] Closing-pass audit of 11 untouched files (`../research/016-pt-01/FINAL-synthesis-and-review.md` §8.2) complete [EVIDENCE: 0da4e1aa6 T-PRE-04 closing-pass audit + `../research/016-pt-01/closing-pass-notes.md` logs 4 new P2 findings CP-001..CP-004 deferred to Phase 017]
 
 ### Definition of Done (per Phase)
 
@@ -77,7 +77,7 @@ Each phase has its own DoD. Final DoD for overall remediation:
 - [x] All 7 structural refactors landed (S1–S7) [EVIDENCE: S1 covered by 104f534bd P0-B + e774eef07 T-RCB-09/10/11; S2 covered by 6f5623a4c P0-A + 6371149cf M3/M4; S3 covered by 1bdd1ed03 P0-C; S4 by b28522bea + e009eda0c + e774eef07 T-SAP-03; S5 by 1af23e10a; S6 by 2fa4a5e71 + 1bf322ece; S7 by f9478670c]
 - [x] All 13 medium refactors landed (M1–M13) [EVIDENCE: M1/M2 in 6f5623a4c P0-A; M3/M4 in 6371149cf; M5/M6 in 104f534bd P0-B; M7 in 1bdd1ed03 P0-C; M8 in 175ad87c9; M13 in c789e71b7; Med-A..Med-J spread across Phase 4 QW + e774eef07]
 - [x] All 29 quick wins landed [EVIDENCE: 21 Phase 4 QW commits per `phase-4-quick-wins-summary.md` task table; remaining QWs absorbed into structural commits]
-- [x] All 7 test files migrated; new tests from `../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md` §6.5 added [EVIDENCE: 0a2d7a576 test migration audit + 3b22ad3aa T-TEST mark; 7 canonical + 14 supporting + 20 new adversarial tests per tasks.md T-TEST-01..NEW-20]
+- [x] All 7 test files migrated; new tests from `../research/016-pt-01/FINAL-synthesis-and-review.md` §6.5 added [EVIDENCE: 0a2d7a576 test migration audit + 3b22ad3aa T-TEST mark; 7 canonical + 14 supporting + 20 new adversarial tests per tasks.md T-TEST-01..NEW-20]
 - [x] `validate.sh --strict` on 016 packet passes [EVIDENCE: spec folder validator runs clean post-implementation-summary.md populate in this closeout commit]
 - [x] Full repo type-check + Vitest + pytest passes [EVIDENCE: type-check clean per 1c3ad5014 Phase 016 remediation synthesis; vitest + pytest pass per 0a2d7a576 test migration audit + `test_skill_advisor.py` + `test_skill_graph_compiler.py`]
 - [x] `implementation-summary.md` written with commit-by-commit finding closure [EVIDENCE: this closeout commit populates implementation-summary.md from placeholder]
@@ -521,7 +521,7 @@ Phase 5 (Test Migration): every structural commit includes paired test migration
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md` (authoritative) | Internal | Green | Cannot proceed; this is the source of truth for 63 findings |
+| `../research/016-pt-01/FINAL-synthesis-and-review.md` (authoritative) | Internal | Green | Cannot proceed; this is the source of truth for 63 findings |
 | `findings-registry.json` | Internal | Green | Structured lookup for finding IDs + cross-references |
 | Phase 015 remediation state | Internal | Yellow | H6/H7 files may be concurrently modified; verify line numbers before S1/M13 starts |
 | `validate.sh --strict` script | Internal | Green | Packet validation on every commit |
@@ -648,7 +648,7 @@ Note: Phase 1 and Phase 2 run in parallel; test migration threads across all wee
 
 ### Week-by-Week Schedule (Phase 016 remediation, 10 weeks)
 
-Mirrors `../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md` §7.5 with adjustments for Stage 2 prioritization.
+Mirrors `../research/016-pt-01/FINAL-synthesis-and-review.md` §7.5 with adjustments for Stage 2 prioritization.
 
 | Week | Eng 1 (P0-A + M13) | Eng 2 (P0-C + S5) | Eng 3 (S4 + P0-B) | Support (rotating) |
 |------|--------------------|-------------------|-------------------|---------------------|
@@ -680,7 +680,7 @@ Mirrors `../research/016-foundational-runtime-001-initial-research/FINAL-synthes
 - [x] Full Vitest suite passes [EVIDENCE: scoped vitest suites pass across 4 P0 regression tests + 14 canonical + supporting test files per 0a2d7a576]
 - [x] Python test suite passes [EVIDENCE: `test_skill_advisor.py` + `test_skill_graph_compiler.py` pass post-S4 and T-SGC-04 DFS cycle detection]
 - [x] Attack-scenario regression tests pass (for P0 candidates) [EVIDENCE: 4 P0 regression tests present and green — `p0-a-*`, `p0-b-*`, `p0-c-*`, `p0-d-*`]
-- [x] Closing-pass audit of 11 untouched files (§8.2) complete [EVIDENCE: 0da4e1aa6 T-PRE-04 + `../research/016-foundational-runtime-001-initial-research/closing-pass-notes.md` — 4 new P2 findings CP-001..CP-004 documented and deferred]
+- [x] Closing-pass audit of 11 untouched files (§8.2) complete [EVIDENCE: 0da4e1aa6 T-PRE-04 + `../research/016-pt-01/closing-pass-notes.md` — 4 new P2 findings CP-001..CP-004 documented and deferred]
 - [x] Implementation-summary.md updated with commit-level finding closure [EVIDENCE: this closeout commit populates implementation-summary.md with all 27 commits + constituent findings + regression tests]
 
 ### Rollback Procedure

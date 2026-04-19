@@ -291,7 +291,7 @@ Track 2 of the approved plan ( `/Users/michelkerkmeester/.claude/plans/research-
 
 ### Artifact locations (per approved plan)
 
-Track-root research variant: artifacts land at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/017-sk-deep-cli-runtime-execution-001-executor-feature/` (the track root's `research/` folder + matching subfolder name).
+Track-root research variant: artifacts land at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/017-pt-01/` (the track root's `research/` folder + matching subfolder name).
 
 ### Success criteria
 

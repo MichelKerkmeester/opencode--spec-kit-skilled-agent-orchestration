@@ -37,9 +37,9 @@ _memory:
 | **Created** | 2026-04-17 |
 | **Updated** | 2026-04-17 |
 | **Branch** | `main` |
-| **Review Source** | `../review/016-foundational-runtime-001-initial-research/review-report.md` (413 lines, 7-iteration deep-review, CONDITIONAL verdict) |
-| **Research Source (seg-1)** | `../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md` (1537 lines, 50-iter Opus synthesis) |
-| **Research Source (seg-2)** | `../research/016-foundational-runtime-001-initial-research/segment-2-synthesis.md` (332 lines, 7-iter Opus synthesis) |
+| **Review Source** | `../review/016-pt-01/review-report.md` (413 lines, 7-iteration deep-review, CONDITIONAL verdict) |
+| **Research Source (seg-1)** | `../research/016-pt-01/FINAL-synthesis-and-review.md` (1537 lines, 50-iter Opus synthesis) |
+| **Research Source (seg-2)** | `../research/016-pt-01/segment-2-synthesis.md` (332 lines, 7-iter Opus synthesis) |
 | **Effort Estimate** | ~105h total / ~60h critical-path / 6 working days at 1 engineer |
 | **Wave Structure** | Wave A (20h infrastructure) → Wave B (30h consumers, parallel 3 lanes) → Wave C (15h rollout) → Wave D (40h P2s, deferrable) |
 <!-- /ANCHOR:metadata -->
@@ -102,7 +102,7 @@ Define the remediation charter that closes **all 27 consolidated tasks** across 
 - Re-auditing the 4 P0 composites (A/B/C/D) — already verified with genuine regression coverage in review iter 5.
 - Investigating P0 escalation under threat models outside iter 53's expanded set (multi-UID POSIX, Docker shared-tmp, NFS, Windows, MCP injection, prototype pollution, supply-chain, sibling cache poisoning — all ruled out).
 - Upgrading P2-masking findings to P1 — iter 55 confirmed all 5 candidates stay P2.
-- Refactoring `../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md` or segment-2-synthesis.md content.
+- Refactoring `../research/016-pt-01/FINAL-synthesis-and-review.md` or segment-2-synthesis.md content.
 - Phase 015 or Phase 016 findings not covered by the review.
 
 ### 3.3 Closed Hypotheses (iter 56)
@@ -372,10 +372,10 @@ Each child folder is self-contained. Run `/spec_kit:implement` targeting a speci
 <!-- ANCHOR:references -->
 ## 9. REFERENCES
 
-- Review report: `../review/016-foundational-runtime-001-initial-research/review-report.md`
-- Segment-1 synthesis: `../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md`
-- Segment-2 synthesis: `../research/016-foundational-runtime-001-initial-research/segment-2-synthesis.md`
-- Segment-2 iterations: `../research/016-foundational-runtime-001-initial-research/iterations/iteration-{051..057}.md`
+- Review report: `../review/016-pt-01/review-report.md`
+- Segment-1 synthesis: `../research/016-pt-01/FINAL-synthesis-and-review.md`
+- Segment-2 synthesis: `../research/016-pt-01/segment-2-synthesis.md`
+- Segment-2 iterations: `../research/016-pt-01/iterations/iteration-{051..057}.md`
 - Phase 016 implementation summary: `../001-initial-research/implementation-summary.md`
 - Operator feedback: `feedback_copilot_concurrency_override` (user memory), `feedback_phase_018_autonomous` (user memory), `feedback_stop_over_confirming` (user memory)
 <!-- /ANCHOR:references -->

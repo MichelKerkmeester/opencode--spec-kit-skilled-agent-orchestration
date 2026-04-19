@@ -8,7 +8,7 @@ Dispatched via `codex exec gpt-5.4 --reasoning-effort=high --service-tier=fast` 
 
 Read first:
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/006-residual-015-backlog/{spec.md,plan.md,tasks.md}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/019-system-hardening-001-initial-research-002-delta-review-015/review-report.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/019-pt-01/review-report.md`
 
 Implement 19 residuals across 6 clusters in 4 waves:
 

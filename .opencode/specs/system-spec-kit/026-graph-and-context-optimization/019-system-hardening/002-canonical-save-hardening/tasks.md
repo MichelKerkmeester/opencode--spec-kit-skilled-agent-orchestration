@@ -28,7 +28,7 @@ _memory:
 
 ## Phase 1: Setup
 
-- [x] T001 Read research context: 019/001/001 research.md §4 P0 #1 + P0 #2 (P0) — evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-001-initial-research-001-canonical-save-invariants/research.md` read before implementation
+- [x] T001 Read research context: 019/001/001 research.md §4 P0 #1 + P0 #2 (P0) — evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-pt-04/research.md` read before implementation
 - [ ] T002 Validate spec folder baseline: `validate.sh --strict --no-recursive` passes at start (P0) — not complete: baseline validation had inherited anchor/reference and sandbox `tsx` execution blockers before implementation
 
 ## Phase 2: Implementation

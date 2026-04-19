@@ -131,7 +131,7 @@ Ship the single trust-boundary renderer + a full regression harness that gates r
 #### 3.4 200-prompt parity harness
 
 - New `mcp_server/tests/advisor-corpus-parity.vitest.ts`:
-  - Reads `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-001-initial-research-005-routing-accuracy/corpus/labeled-prompts.jsonl`
+  - Reads `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-pt-03/corpus/labeled-prompts.jsonl`
   - For each of 200 prompts:
     - Invoke direct CLI `python3 skill_advisor.py --format json "<prompt>"` (baseline)
     - Invoke `buildSkillAdvisorBrief(prompt, opts)` (hook path)
@@ -349,7 +349,7 @@ Ship the single trust-boundary renderer + a full regression harness that gates r
 
 - Parent: `../spec.md`
 - Predecessor: `../004-advisor-brief-producer-cache-policy/`
-- Research: `../../../research/020-skill-advisor-hook-surface-001-initial-research/research.md §Cross-Runtime Testing + Privacy`
-- Extended research: `../../../research/020-skill-advisor-hook-surface-001-initial-research-extended-copilot/research-extended.md §X1 §X5 §X6 §X9`
-- Corpus: `../../../research/019-system-hardening-001-initial-research-005-routing-accuracy/corpus/labeled-prompts.jsonl`
+- Research: `../../../research/020-pt-01/research.md §Cross-Runtime Testing + Privacy`
+- Extended research: `../../../research/020-pt-02/research-extended.md §X1 §X5 §X6 §X9`
+- Corpus: `../../../research/019-pt-03/corpus/labeled-prompts.jsonl`
 - NFKC utility: `../../../../../skill/system-spec-kit/shared/unicode-normalization.ts`

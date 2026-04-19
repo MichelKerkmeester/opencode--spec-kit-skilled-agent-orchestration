@@ -60,7 +60,7 @@ Amended `016-foundational-runtime/001-initial-research/implementation-summary.md
 
 **Divergence caught by Wave C agent**: The prompt labeled CP-002 as the entity-linker whole-corpus fallback. Agent verified against git history and found CP-002 actually refers to `graph-lifecycle.ts:onIndex()` skip-reason collapse; the entity-linker fallback is CP-003. Docs updated truthfully to match commit `e774eef07`'s actual resolution.
 
-The existing `research/016-foundational-runtime-001-initial-research/closing-pass-notes.md` audit note was also amended to align.
+The existing `research/016-pt-01/closing-pass-notes.md` audit note was also amended to align.
 
 Resolves R3-P1-001 (stale closing-pass documentation).
 

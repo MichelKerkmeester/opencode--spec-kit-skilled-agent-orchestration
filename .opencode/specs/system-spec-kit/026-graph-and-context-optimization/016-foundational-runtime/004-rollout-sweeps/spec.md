@@ -75,7 +75,7 @@ Execute the 5 Wave C tasks in a staged, reversible manner that respects the HIGH
    - HIGH ROLLBACK COST — 1-folder smoke test first, per-folder commit, stashable
 
 3. **T-CPN-01** — Closing-pass-notes CP-002 amend (1h, S)
-   - Files: `research/016-foundational-runtime-001-initial-research/closing-pass-notes.md:72-88`
+   - Files: `research/016-pt-01/closing-pass-notes.md:72-88`
    - Resolves: R3-P1-001
 
 4. **T-W1-MCX-01** — memory-context readiness field rename (2h, S)

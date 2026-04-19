@@ -102,7 +102,7 @@ _memory:
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Parent**: `../spec.md`
-- **Source Research**: `../../research/019-system-hardening-001-initial-research-005-routing-accuracy/research.md`
-- **Source Corpus**: `../../research/019-system-hardening-001-initial-research-005-routing-accuracy/corpus/labeled-prompts.jsonl`
+- **Source Research**: `../../research/019-pt-03/research.md`
+- **Source Corpus**: `../../research/019-pt-03/corpus/labeled-prompts.jsonl`
 - **Regression Fixture**: `tests/routing-accuracy/labeled-prompts.jsonl`
 <!-- /ANCHOR:cross-refs -->

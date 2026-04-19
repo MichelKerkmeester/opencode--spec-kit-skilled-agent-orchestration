@@ -52,8 +52,8 @@ _memory:
 | **Completed** | 2026-04-17 18:00 (Wave D Cluster D3 merged) |
 | **Level** | 2 |
 | **Stage** | COMPLETE — all 4 waves (A/B/C/D) shipped |
-| **Review Source** | `../review/016-foundational-runtime-001-initial-research/review-report.md` (7-iteration deep-review, verdict CONDITIONAL, 10 P1 + 18 P2) |
-| **Segment-2 Source** | `../research/016-foundational-runtime-001-initial-research/segment-2-synthesis.md` (7-iteration Opus meta-research, 14 new findings, 3 compound hypotheses) |
+| **Review Source** | `../review/016-pt-01/review-report.md` (7-iteration deep-review, verdict CONDITIONAL, 10 P1 + 18 P2) |
+| **Segment-2 Source** | `../research/016-pt-01/segment-2-synthesis.md` (7-iteration Opus meta-research, 14 new findings, 3 compound hypotheses) |
 | **Tasks Closed** | 27 (10 P1 review + 9 P1 segment-2 + 8 P2 Wave D) |
 | **Commits to Main** | 25 (Wave A=5, Wave B=10, Wave C=4, Wave D=3, Support=3) |
 | **Architectural Primitives Added** | 4 (AsyncLocalStorage caller-context, readiness-contract module, shared-provenance module, retry-budget) |

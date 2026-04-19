@@ -148,7 +148,7 @@ Task ID format: `T-<CAT>-NN` where CAT ∈ {AUD, VAL, YML, REP, LIN, FEN, RET, C
 
 - **Specification**: `spec.md`
 - **Plan**: `plan.md`
-- **Research source**: `../../research/017-sk-deep-cli-runtime-execution-001-executor-feature/research.md`
+- **Research source**: `../../research/017-pt-01/research.md`
 - **Predecessors**: `../001-executor-feature/`, `../002-runtime-matrix/`
 <!-- /ANCHOR:cross-refs -->
 </content>

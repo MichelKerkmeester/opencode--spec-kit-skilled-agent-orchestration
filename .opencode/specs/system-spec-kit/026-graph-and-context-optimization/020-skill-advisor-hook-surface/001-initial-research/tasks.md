@@ -61,5 +61,5 @@ _memory:
 ## Cross-References
 
 - Parent: `../spec.md`
-- Research artifacts: `../../research/020-skill-advisor-hook-surface-001-initial-research/`
+- Research artifacts: `../../research/020-pt-01/`
 <!-- /ANCHOR:cross-refs -->

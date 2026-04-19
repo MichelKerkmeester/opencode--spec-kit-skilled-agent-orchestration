@@ -506,9 +506,9 @@ Note: the task count exceeds 63 because (a) some dedup clusters are implemented 
 - **Specification**: `spec.md`
 - **Plan**: `plan.md`
 - **Checklist**: `checklist.md`
-- **Authoritative Research**: `../research/016-foundational-runtime-001-initial-research/FINAL-synthesis-and-review.md`
-- **Findings Registry**: `../research/016-foundational-runtime-001-initial-research/findings-registry.json`
-- **Research Narrative**: `../research/016-foundational-runtime-001-initial-research/research.md`
-- **Iteration Evidence**: `../research/016-foundational-runtime-001-initial-research/iterations/iteration-{001..050}.md`
+- **Authoritative Research**: `../research/016-pt-01/FINAL-synthesis-and-review.md`
+- **Findings Registry**: `../research/016-pt-01/findings-registry.json`
+- **Research Narrative**: `../research/016-pt-01/research.md`
+- **Iteration Evidence**: `../research/016-pt-01/iterations/iteration-{001..050}.md`
 - **Prior Deep Review**: `../015-deep-review-and-remediation/`
 <!-- /ANCHOR:cross-refs -->

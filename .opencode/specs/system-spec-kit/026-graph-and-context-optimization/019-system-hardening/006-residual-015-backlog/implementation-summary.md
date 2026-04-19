@@ -18,7 +18,7 @@ _memory:
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
-This packet closes the 19 residual findings from delta review `019-system-hardening-001-initial-research-002-delta-review-015` across six clusters. The run followed the dispatch order W0+A through W0+D, preserved existing unrelated worktree changes, and left commit/push handoff to the orchestrator as requested.
+This packet closes the 19 residual findings from delta review `019-pt-01` across six clusters. The run followed the dispatch order W0+A through W0+D, preserved existing unrelated worktree changes, and left commit/push handoff to the orchestrator as requested.
 
 <!-- ANCHOR:metadata -->
 ## Metadata

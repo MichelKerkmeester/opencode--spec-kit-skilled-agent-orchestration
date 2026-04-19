@@ -192,7 +192,7 @@ Each child carries its own `plan.md` dispatch details. 005 is a **hard gate**: r
 | skill_advisor.py | Python subprocess | Live (Phase 019/004 hardened) |
 | Shared-payload envelope | Phase 018 R4 primitive | Live |
 | Hook-state schema | Phase 016 primitive | Live (would add `advisorCache` field) |
-| 019/004 200-prompt corpus | Regression fixture | Live, available at `.../research/019-system-hardening-001-initial-research-005-routing-accuracy/corpus/labeled-prompts.jsonl` |
+| 019/004 200-prompt corpus | Regression fixture | Live, available at `.../research/019-pt-03/corpus/labeled-prompts.jsonl` |
 | Code-graph startup-brief pattern | Architectural reference | Live — direct adaptation source |
 <!-- /ANCHOR:dependencies -->
 

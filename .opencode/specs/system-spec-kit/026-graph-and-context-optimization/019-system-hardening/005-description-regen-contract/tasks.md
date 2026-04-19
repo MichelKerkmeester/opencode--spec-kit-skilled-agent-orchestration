@@ -29,8 +29,8 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 [P0] Read research: 019/001/004 research.md strategy comparison + recommended strategy — evidence: [research.md](./../../research/019-system-hardening-001-initial-research-004-description-regen-strategy/research.md) lines 7-9 and 69-83; status: design anchored before implementation.
-- [x] T002 [P0] Catalog the 28 rich description.json files for regression — evidence: [research.md](./../../research/019-system-hardening-001-initial-research-004-description-regen-strategy/research.md) lines 69-83 plus live sweep confirmation `28 total = 27 under 026 + 1 archived backup`; status: temp-copy regen sweep passed.
+- [x] T001 [P0] Read research: 019/001/004 research.md strategy comparison + recommended strategy — evidence: [research.md](./../../research/019-pt-01/research.md) lines 7-9 and 69-83; status: design anchored before implementation.
+- [x] T002 [P0] Catalog the 28 rich description.json files for regression — evidence: [research.md](./../../research/019-pt-01/research.md) lines 69-83 plus live sweep confirmation `28 total = 27 under 026 + 1 archived backup`; status: temp-copy regen sweep passed.
 <!-- /ANCHOR:phase-1 -->
 
 <!-- ANCHOR:phase-2 -->
@@ -69,5 +69,5 @@ _memory:
 ## Cross-References
 
 - Parent: `../spec.md`
-- Source: `../../research/019-system-hardening-001-initial-research-004-description-regen-strategy/research.md`
+- Source: `../../research/019-pt-01/research.md`
 <!-- /ANCHOR:cross-refs -->
