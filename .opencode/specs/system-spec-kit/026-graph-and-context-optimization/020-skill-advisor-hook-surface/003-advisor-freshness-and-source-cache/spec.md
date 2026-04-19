@@ -266,10 +266,10 @@ Ship `getAdvisorFreshness(workspaceRoot)` that returns a trust-state snapshot + 
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - Parent: `../spec.md`
 - Predecessor: `../002-shared-payload-advisor-contract/`
 - Research: `../../../research/020-skill-advisor-hook-surface-pt-01/research.md §Pattern Parallel Map`
 - Extended research: `../../../research/020-skill-advisor-hook-surface-pt-02/research-extended.md §X7 §X8`
-- Code-graph analog: `../../../../../skill/system-spec-kit/mcp_server/lib/code-graph/freshness.ts`
+- Code-graph analog: `../../../../../skill/system-spec-kit/mcp_server/lib/code-graph/ensure-ready.ts`
