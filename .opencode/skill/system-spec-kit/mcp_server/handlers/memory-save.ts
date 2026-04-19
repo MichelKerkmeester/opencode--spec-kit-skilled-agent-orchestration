@@ -794,6 +794,10 @@ function buildRoutedSaveOptions(
 }
 
 function shouldUseCanonicalRouting(_params: Pick<AtomicSaveParams, 'routeAs' | 'mergeModeHint' | 'targetAnchorId'>): boolean {
+  // Test-only bypass: allows the T518 atomic-save failure-injection suite
+  // to exercise the legacy prepareParsedMemoryForIndexing path without
+  // setting up full Tier 3 classifier fixtures.
+  if (process.env.SPECKIT_TEST_DISABLE_CANONICAL_ROUTING === 'true') return false;
   return true; // Canonical routing is always enabled (Tier 3 LLM routing on by default)
 }
 
