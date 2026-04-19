@@ -116,7 +116,7 @@ workflow:
     command: "node -e \"const path = require('node:path'); const { resolveArtifactRoot } = require('.opencode/skill/system-spec-kit/shared/review-research-paths.cjs'); const resolved = resolveArtifactRoot('{spec_folder}', 'review'); const artifactDir = resolved.subfolder ? path.join(resolved.rootDir, resolved.subfolder) : resolved.rootDir; const artifactArchiveRoot = resolved.subfolder ? path.join(path.dirname(resolved.rootDir), path.basename(resolved.rootDir) + '_archive', resolved.subfolder) : path.join(path.dirname(resolved.rootDir), path.basename(resolved.rootDir) + '_archive'); console.log(JSON.stringify({ ...resolved, artifactDir, artifactArchiveRoot, legacyLocalArtifactDir: '{spec_folder}/review', legacyRootReport: '{spec_folder}/review-report.md' }));\""
     outputs:
       - artifact_root_dir: "Resolved spec-tree root review directory"
-      - artifact_subfolder: "Hyphen-joined child phase path, else null"
+      - artifact_subfolder: "Child phase subfolder ({phaseSlug}-pt-{NN}), else null"
       - artifact_dir: "Resolved review packet directory for this target"
       - artifact_archive_root: "Resolved root-level review archive directory for this target"
       - legacy_local_artifact_dir: "Legacy child-local review directory under {spec_folder}"
