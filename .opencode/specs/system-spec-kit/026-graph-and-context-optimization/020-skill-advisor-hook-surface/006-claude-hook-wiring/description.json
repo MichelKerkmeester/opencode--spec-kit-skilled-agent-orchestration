@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/006-claude-hook-wiring",
+  "description": "Feature Specification: Claude Hook Wiring (UserPromptSubmit)",
+  "keywords": [
+    "feature",
+    "specification",
+    "claude",
+    "hook",
+    "wiring",
+    "userpromptsubmit"
+  ],
+  "lastUpdated": "2026-04-19T08:47:06.599Z",
+  "specId": "006",
+  "folderSlug": "claude-hook-wiring",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "020-skill-advisor-hook-surface"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-04-26_09-47__scaffold-006-claude-hook-wiring-for-phase-020.md"
+  ]
+}
