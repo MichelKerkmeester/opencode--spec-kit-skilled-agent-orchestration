@@ -33,7 +33,7 @@ _memory:
 | Aspect | Value |
 |--------|-------|
 | **Language/Stack** | TypeScript (strict) |
-| **New Files** | 3 lib + 5 test files + 7 fixtures |
+| **New Files** | 3 lib + 5 test files + 10 fixtures |
 | **Corpus** | 019/004 200 labeled prompts |
 | **Hard gate** | Yes — blocks 006/007/008 merges |
 
@@ -88,6 +88,9 @@ mcp_server/
       skippedShortCasual.json
       ambiguousTopTwo.json
       unicodeInstructionalSkillLabel.json
+      skipPolicyEmptyPrompt.json
+      skipPolicyCommandOnly.json
+      promptPoisoningAdversarial.json
     advisor-renderer.vitest.ts       NEW — snapshots + sanitization
     advisor-corpus-parity.vitest.ts  NEW — 200-prompt gate
     advisor-timing.vitest.ts         NEW — 4-lane harness
@@ -118,36 +121,36 @@ renderAdvisorBrief(result, options)
 ### Phase 1: Renderer + fixtures
 - [ ] Create `render.ts` with `renderAdvisorBrief()`
 - [ ] Implement sanitization pipeline (fold → single-line → instruction-regex)
-- [ ] Write 7 canonical fixtures in `advisor-fixtures/`
-- [ ] Write `advisor-renderer.vitest.ts` with 7 snapshot scenarios + sanitization
+- [x] Write 10 canonical fixtures in `advisor-fixtures/`
+- [x] Write `advisor-renderer.vitest.ts` with 10 fixture scenarios + sanitization
 
 ### Phase 2: Normalized comparator + metrics
-- [ ] Create `normalize-adapter-output.ts` with `NormalizedAdvisorRuntimeOutput` + per-runtime transformers (stubs for adapters not yet implemented)
-- [ ] Create `metrics.ts` with `speckit_advisor_hook_*` namespace
-- [ ] Write `advisor-observability.vitest.ts`
+- [x] Create `normalize-adapter-output.ts` with `NormalizedAdvisorRuntimeOutput` + per-runtime transformers (stubs for adapters not yet implemented)
+- [x] Create `metrics.ts` with `speckit_advisor_hook_*` namespace
+- [x] Write `advisor-observability.vitest.ts`
 
 ### Phase 3: 200-prompt parity harness
-- [ ] Create `advisor-corpus-parity.vitest.ts`
-- [ ] Read 019/004 corpus JSONL
-- [ ] Invoke direct CLI + hook path for each prompt; compare top-1
-- [ ] Report per-prompt failures with deltas
+- [x] Create `advisor-corpus-parity.vitest.ts`
+- [x] Read 019/004 corpus JSONL
+- [x] Invoke direct CLI + hook path for each prompt; compare top-1
+- [x] Report per-prompt failures with deltas
 
 ### Phase 4: Timing harness
-- [ ] Create `advisor-timing.vitest.ts` with 4 lanes × 50 invocations each (cold / warm / cache-hit / cache-miss)
-- [ ] Record p50/p95/p99 across all 4 lanes
-- [ ] **Hard gate 1**: cache-hit lane p95 ≤ 50 ms (cache-hit lane only; cold/warm/miss lanes are diagnostic, not gated)
-- [ ] **Hard gate 2**: cache hit rate ≥ 60% on corrected 30-turn replay (**10 unique prompts + 20 repeats** = 20/30 = 66.7% nominal; single-flake tolerance keeps it at ≥ 19/30 = 63.3%)
+- [x] Create `advisor-timing.vitest.ts` with 4 lanes × 50 invocations each (cold / warm / cache-hit / cache-miss)
+- [x] Record p50/p95/p99 across all 4 lanes
+- [x] **Hard gate 1**: cache-hit lane p95 ≤ 50 ms (cache-hit lane only; cold/warm/miss lanes are diagnostic, not gated)
+- [x] **Hard gate 2**: cache hit rate ≥ 60% on corrected 30-turn replay (**10 unique prompts + 20 repeats** = 20/30 = 66.7% nominal; single-flake tolerance keeps it at ≥ 19/30 = 63.3%)
 - [ ] Wall-clock for this phase: ≤ 10 minutes (200 invocations × avg ~1-2 s cold + ≤ 50 ms warm hits = ~3-5 min typical, 10 min with CI jitter)
 
 ### Phase 5: Privacy audit
-- [ ] Create `advisor-privacy.vitest.ts`
-- [ ] Assert raw prompt absent from: envelope sources, metrics labels, stderr JSONL, `advisor-hook-health`, cache keys
+- [x] Create `advisor-privacy.vitest.ts`
+- [x] Assert raw prompt absent from: envelope sources, metrics labels, stderr JSONL, `advisor-hook-health`, cache keys
 
 ### Phase 6: Verification
-- [ ] All 5 test suites green
-- [ ] 200/200 parity gate
-- [ ] `tsc --noEmit` clean
-- [ ] Record all bench numbers in implementation-summary.md
+- [x] All 5 test suites green
+- [x] 200/200 parity gate
+- [x] `tsc --noEmit` clean
+- [x] Record all bench numbers in implementation-summary.md
 <!-- /ANCHOR:phases -->
 
 ---
@@ -171,7 +174,7 @@ renderAdvisorBrief(result, options)
 
 | Dependency | Type | Status |
 |------------|------|--------|
-| 002 + 003 + 004 | Predecessors | Pending |
+| 002 + 003 + 004 | Predecessors | Merged |
 | 019/004 corpus | Fixture | Live |
 | `shared/unicode-normalization.ts` | Phase 019/003 | Live |
 | `skill_advisor.py` | Python subprocess | Live |

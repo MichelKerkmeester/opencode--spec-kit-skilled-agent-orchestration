@@ -164,10 +164,11 @@ Ship the single trust-boundary renderer + a full regression harness that gates r
 
 | Metric (counter unless noted) | Type | Labels | Emit on |
 |-------------------------------|------|--------|---------|
-| `speckit_advisor_hook_invocations_total` | Counter | `runtime`, `status`, `freshness` | Every producer invocation |
-| `speckit_advisor_hook_duration_ms` | Histogram | `runtime`, `status`, `cacheHit` | Every invocation |
-| `speckit_advisor_hook_cache_hits_total` | Counter | `runtime`, `outcome` ∈ {`hit`, `miss`, `suppressed`} | Every cache probe |
-| `speckit_advisor_hook_failopen_total` | Counter | `runtime`, `errorCode` ∈ {`PYTHON_MISSING`, `SCRIPT_MISSING`, `TIMEOUT`, `PARSE_FAIL`, `NONZERO_EXIT`, `SIGNAL_KILLED`, `SQLITE_BUSY_EXHAUSTED`, `DELETED_SKILL`} | Fail-open paths |
+| `speckit_advisor_hook_invocations_total` | Counter | `runtime`, `status` | Every producer invocation |
+| `speckit_advisor_hook_duration_ms` | Histogram | `runtime`, `status`, `freshness`, `cacheHit` | Every invocation |
+| `speckit_advisor_hook_cache_hits_total` | Counter | `runtime` | Every cache hit |
+| `speckit_advisor_hook_cache_misses_total` | Counter | `runtime` | Every cache miss |
+| `speckit_advisor_hook_fail_open_total` | Counter | `runtime`, `errorCode` ∈ {`TIMEOUT`, `SCRIPT_MISSING`, `SQLITE_BUSY`, `PARSE_FAIL`, `SIGNAL_KILLED`, `GENERATION_COUNTER_CORRUPT`, `PYTHON_MISSING`, `NONZERO_EXIT`, `SQLITE_BUSY_EXHAUSTED`, `DELETED_SKILL`, `UNKNOWN`} | Fail-open paths |
 | `speckit_advisor_hook_freshness_state` | Gauge | `runtime`, `state` ∈ {`live`, `stale`, `absent`, `unavailable`} | Every freshness probe |
 
 **Label value whitelist (no free-form values):**
@@ -200,7 +201,7 @@ Privacy: the schema omits every prompt-bearing field. The audit test (see below)
 
 | Metric | Warn | Page | Window |
 |--------|------|------|--------|
-| `speckit_advisor_hook_failopen_total` rate | ≥ 2% of invocations | ≥ 5% of invocations | rolling 5 min |
+| `speckit_advisor_hook_fail_open_total` rate | ≥ 2% of invocations | ≥ 5% of invocations | rolling 5 min |
 | `speckit_advisor_hook_duration_ms` p95 (cacheHit=true) | ≥ 75 ms | ≥ 150 ms | rolling 5 min |
 | `speckit_advisor_hook_freshness_state{state="unavailable"}` | any sustained non-zero > 60 s | ≥ 5 min sustained | continuous |
 
@@ -233,7 +234,7 @@ Privacy: the schema omits every prompt-bearing field. The audit test (see below)
 | `.opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/render.ts` | Create | Pure `renderAdvisorBrief()` + sanitization |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/normalize-adapter-output.ts` | Create | `NormalizedAdvisorRuntimeOutput` comparator |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/metrics.ts` | Create | `speckit_advisor_hook_*` metric namespace |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-fixtures/` | Create | 7 JSON fixtures |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-fixtures/` | Create | 10 JSON fixtures |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-renderer.vitest.ts` | Create | Renderer fixture snapshots |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-corpus-parity.vitest.ts` | Create | 200-prompt parity |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-timing.vitest.ts` | Create | 4-lane timing harness |
@@ -318,7 +319,7 @@ Privacy: the schema omits every prompt-bearing field. The audit test (see below)
 **Given** a 30-turn synthetic session composed of **10 unique prompts + 20 repeats** (fixed pattern where each unique prompt first-appears once and then repeats 2-4x later in the stream), **when** the producer runs each turn in sequence with a stable source signature, **then** cache hit rate is 20/30 = 66.7% nominal (≥ 60% gate). A single SQLite-busy fail-open among the 30 turns still yields ≥ 19/30 = 63.3%, preserving the gate.
 
 ### Acceptance Scenario 11: Metrics namespace present
-**Given** a series of producer invocations, **when** observability suite runs, **then** metrics exist for `speckit_advisor_hook_invocations_total`, `_duration_ms`, `_cache_hits_total`, `_failopen_total`, `_freshness_state` with correct labels.
+**Given** a series of producer invocations, **when** observability suite runs, **then** metrics exist for `speckit_advisor_hook_invocations_total`, `_duration_ms`, `_cache_hits_total`, `_cache_misses_total`, `_fail_open_total`, `_freshness_state` with correct labels.
 
 ### Acceptance Scenario 12: Privacy — no raw prompt in any surface
 **Given** a set of sensitive prompts passed through the producer, **when** privacy suite runs, **then** no serialized surface contains the raw prompt text.
@@ -399,7 +400,7 @@ Privacy: the schema omits every prompt-bearing field. The audit test (see below)
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - Parent: `../spec.md`
 - Predecessor: `../004-advisor-brief-producer-cache-policy/`

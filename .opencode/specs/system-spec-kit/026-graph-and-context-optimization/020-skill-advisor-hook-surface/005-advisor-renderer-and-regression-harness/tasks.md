@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Advisor Renderer + 200-Prompt Regression Harness"
-description: "Task list for 020/005 — pure renderer + 5 test harnesses + 7 fixtures. Hard gate."
+description: "Task list for 020/005 — pure renderer + 5 test harnesses + 10 fixtures. Hard gate."
 trigger_phrases:
   - "020 005 tasks"
 importance_tier: "critical"
@@ -33,9 +33,9 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 [P0] Verify 002 + 003 + 004 merged
-- [ ] T002 [P0] Read research-extended §X1 §X5 §X6 §X9
-- [ ] T003 [P0] Read 019/004 corpus layout at `research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl`
+- [x] T001 [P0] Verify 002 + 003 + 004 merged
+- [x] T002 [P0] Read research-extended §X1 §X5 §X6 §X9
+- [x] T003 [P0] Read 019/004 corpus layout at `research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl`
 <!-- /ANCHOR:phase-1 -->
 
 <!-- ANCHOR:phase-2 -->
@@ -43,61 +43,53 @@ _memory:
 
 ### Renderer + Fixtures
 
-- [ ] T004 [P0] Create `mcp_server/lib/skill-advisor/render.ts` with `renderAdvisorBrief()`
-- [ ] T005 [P0] Implement sanitization: canonical-fold → single-line → instruction-regex deny
-- [ ] T006 [P0] Create `mcp_server/tests/advisor-fixtures/` directory
-- [ ] T007 [P0] Author 7 canonical fixtures (live, stale, noPassing, failOpen, skipped, ambiguous, unicodeInstructional)
-- [ ] T008 [P0] Write `advisor-renderer.vitest.ts` with 7 snapshot + sanitization scenarios
+- [x] T004 [P0] Create `mcp_server/lib/skill-advisor/render.ts` with `renderAdvisorBrief()`
+- [x] T005 [P0] Implement sanitization: canonical-fold → single-line → instruction-regex deny
+- [x] T006 [P0] Create `mcp_server/tests/advisor-fixtures/` directory
+- [x] T007 [P0] Author 10 canonical fixtures (live, stale, noPassing, failOpen, skipped, ambiguous, unicodeInstructional, empty prompt, command-only, prompt-poisoning)
+- [x] T008 [P0] Write `advisor-renderer.vitest.ts` with 10 fixture + sanitization scenarios
 <!-- /ANCHOR:phase-2 -->
 
 <!-- ANCHOR:phase-3 -->
 ### Normalizer + Metrics + Observability
 
-- [ ] T009 [P0] Create `mcp_server/lib/skill-advisor/normalize-adapter-output.ts`
-- [ ] T010 [P0] Create `mcp_server/lib/skill-advisor/metrics.ts` with `speckit_advisor_hook_*` namespace
-- [ ] T011 [P0] Define `advisor-hook-health` section schema + `session_health` integration point
-- [ ] T012 [P0] Write `advisor-observability.vitest.ts` (metric names, labels, stderr JSONL schema)
+- [x] T009 [P0] Create `mcp_server/lib/skill-advisor/normalize-adapter-output.ts`
+- [x] T010 [P0] Create `mcp_server/lib/skill-advisor/metrics.ts` with `speckit_advisor_hook_*` namespace
+- [x] T011 [P0] Define `advisor-hook-health` section schema + `session_health` integration point
+- [x] T012 [P0] Write `advisor-observability.vitest.ts` (metric names, labels, stderr JSONL schema)
 <!-- /ANCHOR:phase-3 -->
 
-<!-- ANCHOR:phase-4 -->
 ### 200-Prompt Parity Harness
 
-- [ ] T013 [P0] Create `advisor-corpus-parity.vitest.ts`
-- [ ] T014 [P0] Load 019/004 corpus JSONL (200 labeled prompts)
-- [ ] T015 [P0] For each prompt: invoke direct-CLI + hook path; compare top-1
-- [ ] T016 [P0] Report failures per prompt with delta (hook top-1 vs CLI top-1 + confidence delta)
-- [ ] T017 [P0] Enforce 100% parity gate
-<!-- /ANCHOR:phase-4 -->
+- [x] T013 [P0] Create `advisor-corpus-parity.vitest.ts`
+- [x] T014 [P0] Load 019/004 corpus JSONL (200 labeled prompts)
+- [x] T015 [P0] For each prompt: invoke direct-CLI + hook path; compare top-1
+- [x] T016 [P0] Report failures per prompt with delta (hook top-1 vs CLI top-1 + confidence delta)
+- [x] T017 [P0] Enforce 100% parity gate
 
-<!-- ANCHOR:phase-5 -->
 ### Timing Harness
 
-- [ ] T018 [P0] Create `advisor-timing.vitest.ts` with 4 lanes (cold / warm / cache hit / cache miss)
-- [ ] T019 [P0] Run 50 invocations per lane; record p50/p95/p99 across all 4 lanes
-- [ ] T020 [P0] Enforce cache-hit lane p95 ≤ 50 ms (cache-hit lane ONLY; cold/warm/miss lanes are recorded for diagnostics but NOT hard-gated on a wall-clock budget)
-- [ ] T021 [P0] Synthetic 30-turn replay with the **corrected trace**: 10 unique prompts + 20 repeats (fixed interleaved pattern yielding 20/30 = 66.7% hits nominal); enforce cache hit rate ≥ 60%. A single SQLite-busy fail-open among the 30 turns still keeps ≥ 19/30 = 63.3%, preserving the gate.
-<!-- /ANCHOR:phase-5 -->
+- [x] T018 [P0] Create `advisor-timing.vitest.ts` with 4 lanes (cold / warm / cache hit / cache miss)
+- [x] T019 [P0] Run 50 invocations per lane; record p50/p95/p99 across all 4 lanes
+- [x] T020 [P0] Enforce cache-hit lane p95 ≤ 50 ms (cache-hit lane ONLY; cold/warm/miss lanes are recorded for diagnostics but NOT hard-gated on a wall-clock budget)
+- [x] T021 [P0] Synthetic 30-turn replay with the **corrected trace**: 10 unique prompts + 20 repeats (fixed interleaved pattern yielding 20/30 = 66.7% hits nominal); enforce cache hit rate ≥ 60%. A single SQLite-busy fail-open among the 30 turns still keeps ≥ 19/30 = 63.3%, preserving the gate.
 
-<!-- ANCHOR:phase-6 -->
 ### Privacy Audit
 
-- [ ] T022 [P0] Create `advisor-privacy.vitest.ts`
-- [ ] T023 [P0] Assert raw prompt absent from: envelope sources, metrics labels, stderr JSONL, session_health, cache keys
-- [ ] T024 [P0] Use sensitive fixture prompts (e.g., `"api_key=SECRET_ABC123"`)
-<!-- /ANCHOR:phase-6 -->
+- [x] T022 [P0] Create `advisor-privacy.vitest.ts`
+- [x] T023 [P0] Assert raw prompt absent from: envelope sources, metrics labels, stderr JSONL, session_health, cache keys
+- [x] T024 [P0] Use sensitive fixture prompts (e.g., `"api_key=SECRET_ABC123"`)
 
-<!-- ANCHOR:phase-7 -->
 ## Phase 3: Verification
 
-- [ ] T025 [P0] All 5 advisor-*.vitest.ts suites green
-- [ ] T026 [P0] 200/200 corpus parity (top-1 match)
-- [ ] T027 [P0] Cache-hit lane p95 ≤ 50 ms (cache-hit lane only; cold/warm/miss lanes are diagnostic)
-- [ ] T028 [P0] Cache hit rate ≥ 60% on corrected 30-turn replay (10 unique + 20 repeats → 20/30 = 66.7% nominal)
-- [ ] T029 [P0] `tsc --noEmit` clean
-- [ ] T030 [P0] Mark all P0 checklist items `[x]`
-- [ ] T031 [P0] Update implementation-summary.md with bench table + gate confirmation
-- [ ] T032 [P0] Confirm 006/007/008 can proceed (hard gate lifted)
-<!-- /ANCHOR:phase-7 -->
+- [x] T025 [P0] All 5 advisor-*.vitest.ts suites green
+- [x] T026 [P0] 200/200 corpus parity (top-1 match)
+- [x] T027 [P0] Cache-hit lane p95 ≤ 50 ms (cache-hit lane only; cold/warm/miss lanes are diagnostic)
+- [x] T028 [P0] Cache hit rate ≥ 60% on corrected 30-turn replay (10 unique + 20 repeats → 20/30 = 66.7% nominal)
+- [x] T029 [P0] `tsc --noEmit` clean
+- [x] T030 [P0] Mark all P0 checklist items `[x]`
+- [x] T031 [P0] Update implementation-summary.md with bench table + gate confirmation
+- [x] T032 [P0] Confirm 006/007/008 can proceed (hard gate lifted)
 
 <!-- ANCHOR:completion -->
 ## Completion Criteria
