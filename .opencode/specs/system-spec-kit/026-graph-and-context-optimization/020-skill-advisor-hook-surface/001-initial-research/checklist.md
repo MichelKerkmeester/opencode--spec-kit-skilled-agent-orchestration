@@ -26,8 +26,8 @@ P0 HARD BLOCKER | P1 Required | P2 Optional
 
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
-- [ ] Parent 020 spec reviewed
-- [ ] Artifact tree scaffolded
+- [ ] [P0] Parent 020 spec reviewed
+- [ ] [P0] Artifact tree scaffolded
 <!-- /ANCHOR:pre-impl -->
 
 <!-- ANCHOR:code-quality -->
@@ -45,17 +45,17 @@ P0 HARD BLOCKER | P1 Required | P2 Optional
 
 <!-- ANCHOR:security -->
 ## Security
-- [ ] No sensitive data exposed in delta files
+- [ ] [P1] No sensitive data exposed in delta files
 <!-- /ANCHOR:security -->
 
 <!-- ANCHOR:docs -->
 ## Documentation
-- [ ] research.md covers all 7 parent §12 open questions
+- [ ] [P0] research.md covers all 7 parent §12 open questions
 <!-- /ANCHOR:docs -->
 
 <!-- ANCHOR:file-org -->
 ## File Organization
-- [ ] Artifacts under expected research/ path
+- [ ] [P0] Artifacts under expected research/ path
 <!-- /ANCHOR:file-org -->
 
 <!-- ANCHOR:summary -->

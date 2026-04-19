@@ -1,12 +1,58 @@
 {
   "sessionId": "dr-020-skill-advisor-hook-20260419T065000Z",
   "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research",
-  "findings": [],
+  "findings": [
+    {
+      "id": "F-002-001",
+      "iteration": 2,
+      "questionRefs": [
+        "Q4",
+        "Q10"
+      ],
+      "title": "Advisor brief can mirror code-graph startup producer shape",
+      "summary": "Use a sibling buildSkillAdvisorBrief(prompt, options) that composes outline, surface, summary, recommendations, freshness state, and shared payload.",
+      "sourceStrength": "primary",
+      "files": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts",
+        ".opencode/skill/skill-advisor/scripts/skill_advisor.py"
+      ]
+    },
+    {
+      "id": "F-002-002",
+      "iteration": 2,
+      "questionRefs": [
+        "Q4"
+      ],
+      "title": "Advisor freshness authority differs from code graph freshness authority",
+      "summary": "getAdvisorFreshness should compare SKILL.md discovery signatures, graph-metadata.json mtimes, skill graph artifacts, and advisor script/runtime/compiler mtimes; it should not use git HEAD or code graph tracked-file mtimes as its primary authority.",
+      "sourceStrength": "primary",
+      "files": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ensure-ready.ts",
+        ".opencode/skill/skill-advisor/scripts/skill_advisor_runtime.py",
+        ".opencode/skill/skill-advisor/scripts/skill_advisor.py"
+      ]
+    },
+    {
+      "id": "F-002-003",
+      "iteration": 2,
+      "questionRefs": [
+        "Q10"
+      ],
+      "title": "Shared-payload envelope is reusable but vocabulary must grow",
+      "summary": "createSharedPayloadEnvelope and OpenCode transport coercion are reusable, but first-class advisor envelopes need producer/source enum additions before hooks can emit skill_advisor_brief without failing validation.",
+      "sourceStrength": "primary",
+      "files": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/context/opencode-transport.ts"
+      ]
+    }
+  ],
   "summary": {
     "P0": 0,
     "P1": 0,
-    "P2": 0,
-    "total": 0
+    "P2": 3,
+    "total": 3
   },
-  "lastUpdated": "2026-04-19T06:50:00Z"
+  "lastUpdated": "2026-04-19T06:08:31Z"
 }

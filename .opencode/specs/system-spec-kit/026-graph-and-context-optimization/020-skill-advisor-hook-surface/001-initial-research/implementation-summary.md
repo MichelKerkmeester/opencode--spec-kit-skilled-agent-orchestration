@@ -35,7 +35,7 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-TBD. Expected: ranked hook-architecture proposals with cluster-to-child mapping.
+Current loop artifacts include the Codex hook audit in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-skill-advisor-hook-surface-001-initial-research/iterations/iteration-004.md`, the iteration delta in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-skill-advisor-hook-surface-001-initial-research/deltas/iter-004.jsonl`, and the appended canonical state in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-skill-advisor-hook-surface-001-initial-research/deep-research-state.jsonl`.
 <!-- /ANCHOR:what-built -->
 
 <!-- ANCHOR:how-delivered -->
@@ -53,7 +53,7 @@ TBD. See parent 020 ADRs for upstream decisions.
 <!-- ANCHOR:verification -->
 ## Verification
 
-TBD. Reference `research.md` synthesis.
+Iteration artifact verification used `python3` JSONL parsing for `deep-research-state.jsonl` and `deltas/iter-004.jsonl`, plus `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research --strict`.
 <!-- /ANCHOR:verification -->
 
 <!-- ANCHOR:limitations -->

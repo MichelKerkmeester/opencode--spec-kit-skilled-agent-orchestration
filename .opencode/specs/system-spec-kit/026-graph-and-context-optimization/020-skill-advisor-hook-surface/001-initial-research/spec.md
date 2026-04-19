@@ -76,11 +76,11 @@ Converge on a ranked set of implementation proposals with concrete child-spec-fo
 
 ### 4.1 P0 - Blockers
 
-- **R1**: Ranked proposal set with child-cluster mapping
-- **R2**: Codex hook surface answer (Q1 from parent 020 spec)
-- **R3**: Empirical cache-TTL recommendation backed by measurement
-- **R4**: Freshness-signal semantic design that matches code-graph vocabulary
-- **R5**: research.md synthesis written on convergence
+- **REQ-001**: Ranked proposal set with child-cluster mapping
+- **REQ-002**: Codex hook surface answer (Q1 from parent 020 spec)
+- **REQ-003**: Empirical cache-TTL recommendation backed by measurement
+- **REQ-004**: Freshness-signal semantic design that matches code-graph vocabulary
+- **REQ-005**: research.md synthesis written on convergence
 <!-- /ANCHOR:requirements -->
 
 <!-- ANCHOR:success-criteria -->
@@ -89,10 +89,22 @@ Converge on a ranked set of implementation proposals with concrete child-spec-fo
 - [ ] 10 iterations complete OR convergence (newInfoRatio < 0.05 for 3 consecutive)
 - [ ] research.md written with executive summary + per-cluster recommendations
 - [ ] All 7 open questions from parent 020 §12 answered or documented as remaining-open
+
+### Acceptance Scenario 1: Codex Hook Surface Answer
+**Given** the research loop reaches Q1, when the Codex hook audit completes, then the iteration artifact records whether Codex has `SessionStart`, `UserPromptSubmit`, and `PreToolUse` parity with concrete source evidence.
+
+### Acceptance Scenario 2: Cache Recommendation
+**Given** the 019/004 routing corpus is available, when cache/TTL research completes, then the synthesis records a measured TTL recommendation and rejects unsafe stale-cache reuse.
+
+### Acceptance Scenario 3: Freshness Semantics
+**Given** the advisor brief producer needs trust vocabulary, when freshness research completes, then the synthesis maps advisor source state to `live`, `stale`, `absent`, or `unavailable`.
+
+### Acceptance Scenario 4: Cluster Mapping
+**Given** all required questions are answered or explicitly deferred, when final synthesis is written, then each implementation cluster maps to a proposed child spec folder.
 <!-- /ANCHOR:success-criteria -->
 
 <!-- ANCHOR:risks -->
-## 6. RISKS & DEPENDENCIES
+## 7. RISKS & DEPENDENCIES
 
 | Risk | Mitigation |
 |------|-----------|
