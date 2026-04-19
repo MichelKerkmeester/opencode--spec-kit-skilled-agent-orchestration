@@ -1,0 +1,57 @@
+{
+  "topic": "Skill-advisor hook surface architecture research for phase 020. Investigate: (a) per-runtime hook trigger-point availability (Claude UserPromptSubmit, Codex equivalent, Copilot equivalent, Gemini equivalent) — concrete code references to existing hooks; (b) empirical latency + cache-TTL curve plan using the 019/004 200-prompt corpus; (c) freshness signal semantics parallel to code-graph getGraphFreshness (live/stale/absent/unavailable); (d) context-budget tradeoffs for brief-length (40/60/80/120 tokens) vs routing-quality retention; (e) failure-mode + fail-open contract for subprocess errors; (f) cross-runtime snapshot-test harness design. Produce ranked implementation-cluster decomposition with child spec-folder mapping (020/002-*, 020/003-*, ...). Pattern reference: lib/code-graph/startup-brief.ts + its per-runtime session-prime hooks in mcp_server/hooks/{claude,gemini,copilot}/. Dispatch on spec folder .opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research/ with iteration budget 10.",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 180,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 30,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research",
+  "createdAt": "2026-04-19T06:50:00Z",
+  "status": "in_progress",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.4",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "sandboxMode": "workspace-write",
+    "timeoutSeconds": 1800
+  },
+  "lineage": {
+    "sessionId": "dr-020-skill-advisor-hook-20260419T065000Z",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": ["new", "resume", "restart"],
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "findings-registry.json",
+    "dashboardFile": "deep-research-dashboard.md",
+    "strategyFile": "deep-research-strategy.md",
+    "machineOwnedSections": [
+      "key-questions",
+      "answered-questions",
+      "what-worked",
+      "what-failed",
+      "exhausted-approaches",
+      "ruled-out-directions",
+      "next-focus"
+    ]
+  },
+  "pauseSentinelPath": ".deep-research-pause",
+  "archiveRoot": "archive",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "findings-registry.json": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable"
+  }
+}
