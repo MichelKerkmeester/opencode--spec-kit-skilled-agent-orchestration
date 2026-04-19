@@ -159,6 +159,63 @@ export interface HotFileBreadcrumb {
   changeCarefullyReason: string;
 }
 
+export const SHARED_PAYLOAD_SOURCE_KIND_VALUES = [
+  'memory',
+  'code-graph',
+  'semantic',
+  'session',
+  'operational',
+  'skill-inventory',
+  'skill-graph',
+  'advisor-runtime',
+] as const;
+
+export type SharedPayloadSourceKind = (typeof SHARED_PAYLOAD_SOURCE_KIND_VALUES)[number];
+
+export interface SharedPayloadSourceRef {
+  kind: SharedPayloadSourceKind;
+  path: string;
+}
+
+export type SharedPayloadSourceRefValue = string | SharedPayloadSourceRef;
+
+export const ADVISOR_ENVELOPE_FRESHNESS_VALUES = [
+  'live',
+  'stale',
+  'absent',
+  'unavailable',
+] as const;
+
+export type AdvisorEnvelopeFreshness = (typeof ADVISOR_ENVELOPE_FRESHNESS_VALUES)[number];
+
+export const ADVISOR_ENVELOPE_STATUS_VALUES = [
+  'ok',
+  'skipped',
+  'degraded',
+  'fail_open',
+] as const;
+
+export type AdvisorEnvelopeStatus = (typeof ADVISOR_ENVELOPE_STATUS_VALUES)[number];
+
+/**
+ * Typed metadata carried by the shared-payload advisor producer.
+ *
+ * This contract intentionally allows only numeric trust fields plus one
+ * sanitized, single-line skill label so prompt text and free-form reasons
+ * cannot cross the shared transport boundary.
+ *
+ * @see .opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-skill-advisor-hook-surface-pt-01/research.md
+ */
+export interface AdvisorEnvelopeMetadata {
+  freshness: AdvisorEnvelopeFreshness;
+  confidence: number;
+  uncertainty: number;
+  skillLabel: string | null;
+  status: AdvisorEnvelopeStatus;
+}
+
+export type SharedPayloadEnvelopeMetadata = AdvisorEnvelopeMetadata;
+
 export const EDGE_EVIDENCE_CLASS_VALUES = [
   'direct_call',
   'import',
@@ -188,7 +245,7 @@ export interface SharedPayloadSection {
   key: string;
   title: string;
   content: string;
-  source: 'memory' | 'code-graph' | 'semantic' | 'session' | 'operational';
+  source: SharedPayloadSourceKind;
   certainty?: SharedPayloadCertainty;
   structuralTrust?: StructuralTrust;
   graphEdgeEnrichment?: GraphEdgeEnrichment;
@@ -203,6 +260,7 @@ export const SHARED_PAYLOAD_PRODUCER_VALUES = [
   'session_bootstrap',
   'compact_merger',
   'hook_cache',
+  'advisor',
 ] as const;
 
 export type SharedPayloadProducer = (typeof SHARED_PAYLOAD_PRODUCER_VALUES)[number];
@@ -213,7 +271,7 @@ export interface SharedPayloadProvenance {
   trustState: SharedPayloadTrustState;
   generatedAt: string;
   lastUpdated: string | null;
-  sourceRefs: string[];
+  sourceRefs: SharedPayloadSourceRefValue[];
   sanitizerVersion?: string;
   runtimeFingerprint?: UnicodeRuntimeFingerprint;
 }
@@ -233,6 +291,7 @@ export interface SharedPayloadEnvelope {
   summary: string;
   sections: SharedPayloadSection[];
   provenance: SharedPayloadProvenance;
+  metadata?: SharedPayloadEnvelopeMetadata;
   selection?: PreMergeSelectionMetadata;
 }
 
@@ -249,6 +308,13 @@ const PROHIBITED_STRUCTURAL_TRUST_KEYS = [
   'confidenceScore',
   'authorityScore',
 ] as const;
+const ADVISOR_METADATA_ALLOWED_KEYS = [
+  'freshness',
+  'confidence',
+  'uncertainty',
+  'skillLabel',
+  'status',
+] as const;
 
 export class StructuralTrustPayloadError extends Error {
   readonly code = 'STRUCTURAL_TRUST_PAYLOAD_INVALID';
@@ -261,6 +327,14 @@ export class StructuralTrustPayloadError extends Error {
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function formatAllowedValues(values: readonly string[]): string {
+  return values.join(', ');
 }
 
 export function isSharedPayloadKind(value: unknown): value is SharedPayloadKind {
@@ -276,6 +350,66 @@ export function isSharedPayloadCertainty(value: unknown): value is SharedPayload
 export function isSharedPayloadProducer(value: unknown): value is SharedPayloadProducer {
   return typeof value === 'string'
     && SHARED_PAYLOAD_PRODUCER_VALUES.includes(value as SharedPayloadProducer);
+}
+
+export function isSharedPayloadSourceKind(value: unknown): value is SharedPayloadSourceKind {
+  return typeof value === 'string'
+    && SHARED_PAYLOAD_SOURCE_KIND_VALUES.includes(value as SharedPayloadSourceKind);
+}
+
+export function isAdvisorEnvelopeFreshness(value: unknown): value is AdvisorEnvelopeFreshness {
+  return typeof value === 'string'
+    && ADVISOR_ENVELOPE_FRESHNESS_VALUES.includes(value as AdvisorEnvelopeFreshness);
+}
+
+export function isAdvisorEnvelopeStatus(value: unknown): value is AdvisorEnvelopeStatus {
+  return typeof value === 'string'
+    && ADVISOR_ENVELOPE_STATUS_VALUES.includes(value as AdvisorEnvelopeStatus);
+}
+
+function assertSharedPayloadKind(value: unknown): SharedPayloadKind {
+  if (!isSharedPayloadKind(value)) {
+    throw new Error(
+      `Invalid shared payload envelope kind "${String(value)}"; expected one of ${formatAllowedValues(SHARED_PAYLOAD_KIND_VALUES)}.`,
+    );
+  }
+  return value;
+}
+
+function assertSharedPayloadProducer(value: unknown): SharedPayloadProducer {
+  if (!isSharedPayloadProducer(value)) {
+    throw new Error(
+      `Invalid shared payload envelope provenance.producer "${String(value)}"; expected one of ${formatAllowedValues(SHARED_PAYLOAD_PRODUCER_VALUES)}.`,
+    );
+  }
+  return value;
+}
+
+function assertSharedPayloadSourceKind(value: unknown): SharedPayloadSourceKind {
+  if (!isSharedPayloadSourceKind(value)) {
+    throw new Error(
+      `Invalid shared payload source ref kind "${String(value)}"; expected one of ${formatAllowedValues(SHARED_PAYLOAD_SOURCE_KIND_VALUES)}.`,
+    );
+  }
+  return value;
+}
+
+function assertAdvisorEnvelopeFreshness(value: unknown): AdvisorEnvelopeFreshness {
+  if (!isAdvisorEnvelopeFreshness(value)) {
+    throw new Error(
+      `Invalid advisor envelope metadata.freshness "${String(value)}"; expected one of ${formatAllowedValues(ADVISOR_ENVELOPE_FRESHNESS_VALUES)}.`,
+    );
+  }
+  return value;
+}
+
+function assertAdvisorEnvelopeStatus(value: unknown): AdvisorEnvelopeStatus {
+  if (!isAdvisorEnvelopeStatus(value)) {
+    throw new Error(
+      `Invalid advisor envelope metadata.status "${String(value)}"; expected one of ${formatAllowedValues(ADVISOR_ENVELOPE_STATUS_VALUES)}.`,
+    );
+  }
+  return value;
 }
 
 export function isParserProvenance(value: unknown): value is ParserProvenance {
@@ -341,6 +475,110 @@ function assertFreshnessAuthority(value: unknown): FreshnessAuthority {
     );
   }
   return value;
+}
+
+function assertUnitIntervalNumber(value: unknown, label: string): number {
+  if (typeof value !== 'number' || Number.isNaN(value)) {
+    throw new Error(`${label} must be a number within [0, 1].`);
+  }
+  if (value < 0 || value > 1) {
+    throw new Error(`${label} must be within [0, 1].`);
+  }
+  return value;
+}
+
+function assertAdvisorSkillLabel(value: unknown): string | null {
+  if (value === null) {
+    return null;
+  }
+  if (typeof value !== 'string') {
+    throw new Error('advisor envelope metadata.skillLabel must be a string or null.');
+  }
+  if (value.trim().length === 0) {
+    throw new Error('advisor envelope metadata.skillLabel must not be empty.');
+  }
+  if (/[\u0000-\u001F\u007F]/.test(value)) {
+    throw new Error('advisor envelope metadata.skillLabel must be a sanitized single-line label.');
+  }
+  return value;
+}
+
+export function validateAdvisorEnvelopeMetadata(value: unknown): AdvisorEnvelopeMetadata {
+  if (!isRecord(value)) {
+    throw new Error('advisor envelope metadata requires an object payload.');
+  }
+
+  const unknownKeys = Object.keys(value).filter(
+    (key) => !ADVISOR_METADATA_ALLOWED_KEYS.includes(
+      key as (typeof ADVISOR_METADATA_ALLOWED_KEYS)[number],
+    ),
+  );
+  if (unknownKeys.length > 0) {
+    throw new Error(
+      `advisor envelope metadata rejects unknown key(s): ${unknownKeys.join(', ')}.`,
+    );
+  }
+
+  const missingKeys = ADVISOR_METADATA_ALLOWED_KEYS.filter(
+    (key) => !Object.prototype.hasOwnProperty.call(value, key),
+  );
+  if (missingKeys.length > 0) {
+    throw new Error(
+      `advisor envelope metadata requires key(s): ${missingKeys.join(', ')}.`,
+    );
+  }
+
+  return {
+    freshness: assertAdvisorEnvelopeFreshness(value.freshness),
+    confidence: assertUnitIntervalNumber(value.confidence, 'advisor envelope metadata.confidence'),
+    uncertainty: assertUnitIntervalNumber(value.uncertainty, 'advisor envelope metadata.uncertainty'),
+    skillLabel: assertAdvisorSkillLabel(value.skillLabel),
+    status: assertAdvisorEnvelopeStatus(value.status),
+  };
+}
+
+function isPromptFingerprintPath(value: string): boolean {
+  return value.trim().startsWith('sha256:');
+}
+
+function assertNoPromptDerivedSourcePath(path: string): void {
+  if (isPromptFingerprintPath(path)) {
+    throw new Error('Shared payload privacy policy rejects prompt-derived provenance source refs.');
+  }
+}
+
+export function validateSharedPayloadSourceRef(value: unknown): SharedPayloadSourceRefValue {
+  if (typeof value === 'string') {
+    if (!isNonEmptyString(value)) {
+      throw new Error('Shared payload source refs require non-empty string entries.');
+    }
+    assertNoPromptDerivedSourcePath(value);
+    return value;
+  }
+
+  if (!isRecord(value)) {
+    throw new Error('Shared payload source refs must be strings or structured source ref objects.');
+  }
+
+  if (value.kind === 'user-prompt') {
+    throw new Error('Shared payload privacy policy rejects prompt-derived provenance source refs.');
+  }
+  const kind = assertSharedPayloadSourceKind(value.kind);
+  if (!isNonEmptyString(value.path)) {
+    throw new Error('Shared payload source ref objects require a non-empty path.');
+  }
+  assertNoPromptDerivedSourcePath(value.path);
+  return {
+    kind,
+    path: value.path.trim(),
+  };
+}
+
+function validateSharedPayloadSourceRefs(value: unknown): SharedPayloadSourceRefValue[] {
+  if (!Array.isArray(value)) {
+    throw new Error('Shared payload provenance.sourceRefs must be an array.');
+  }
+  return value.map((sourceRef) => validateSharedPayloadSourceRef(sourceRef));
 }
 
 export function isMeasurementAuthority(value: unknown): value is MeasurementAuthority {
@@ -605,13 +843,63 @@ export function summarizeUnknown(value: unknown, maxChars: number = SUMMARY_MAX_
   }
 }
 
+function validateSharedPayloadProvenance(value: unknown): SharedPayloadProvenance {
+  if (!isRecord(value)) {
+    throw new Error('Shared payload envelope provenance requires an object payload.');
+  }
+
+  const producer = assertSharedPayloadProducer(value.producer);
+  const trustState = assertSharedPayloadTrustState(value.trustState);
+  const sourceRefs = validateSharedPayloadSourceRefs(value.sourceRefs);
+  if (!isNonEmptyString(value.sourceSurface)) {
+    throw new Error('Shared payload envelope provenance.sourceSurface must be a non-empty string.');
+  }
+  if (!isNonEmptyString(value.generatedAt)) {
+    throw new Error('Shared payload envelope provenance.generatedAt must be a non-empty string.');
+  }
+  if (value.lastUpdated !== null && typeof value.lastUpdated !== 'string') {
+    throw new Error('Shared payload envelope provenance.lastUpdated must be a string or null.');
+  }
+
+  return {
+    producer,
+    sourceSurface: value.sourceSurface.trim(),
+    trustState,
+    generatedAt: value.generatedAt.trim(),
+    lastUpdated: value.lastUpdated,
+    sourceRefs,
+    ...(typeof value.sanitizerVersion === 'string'
+      ? { sanitizerVersion: value.sanitizerVersion }
+      : {}),
+    ...(value.runtimeFingerprint
+      ? { runtimeFingerprint: value.runtimeFingerprint as UnicodeRuntimeFingerprint }
+      : {}),
+  };
+}
+
+function validateSharedPayloadMetadata(
+  producer: SharedPayloadProducer,
+  metadata: unknown,
+): SharedPayloadEnvelopeMetadata | undefined {
+  if (producer === 'advisor') {
+    return validateAdvisorEnvelopeMetadata(metadata);
+  }
+  if (metadata !== undefined) {
+    throw new Error('Shared payload metadata is only supported for the advisor producer.');
+  }
+  return undefined;
+}
+
 export function createSharedPayloadEnvelope(input: {
   kind: SharedPayloadKind;
   sections: SharedPayloadSection[];
   provenance: SharedPayloadProvenance;
+  metadata?: SharedPayloadEnvelopeMetadata;
   summary?: string;
   selection?: PreMergeSelectionMetadata;
 }): SharedPayloadEnvelope {
+  const provenance = validateSharedPayloadProvenance(input.provenance);
+  const metadata = validateSharedPayloadMetadata(provenance.producer, input.metadata);
   const sections = input.sections
     .filter((section) => section.content.trim().length > 0)
     .map((section) => ({
@@ -646,8 +934,34 @@ export function createSharedPayloadEnvelope(input: {
     kind: input.kind,
     summary,
     sections,
-    provenance: input.provenance,
+    provenance,
+    ...(metadata ? { metadata } : {}),
     ...(input.selection ? { selection: input.selection } : {}),
+  };
+}
+
+/** Narrow an unknown runtime payload to the shared payload envelope contract. */
+export function coerceSharedPayloadEnvelope(value: unknown): SharedPayloadEnvelope | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  if (!Array.isArray(value.sections) || typeof value.summary !== 'string') {
+    return null;
+  }
+
+  const kind = assertSharedPayloadKind(value.kind);
+  const provenance = validateSharedPayloadProvenance(value.provenance);
+  const metadata = validateSharedPayloadMetadata(provenance.producer, value.metadata);
+
+  return {
+    ...value,
+    kind,
+    summary: value.summary,
+    sections: value.sections as SharedPayloadSection[],
+    provenance,
+    ...(metadata ? { metadata } : {}),
+    ...(value.selection ? { selection: value.selection as PreMergeSelectionMetadata } : {}),
   };
 }
 
