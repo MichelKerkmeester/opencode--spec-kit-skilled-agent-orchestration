@@ -112,11 +112,11 @@ workflow:
 
   step_resolve_artifact_root:
     description: "Resolve the root-level artifact directory for this spec tree"
-    note: "review/ folders are always resolved at the spec tree root, not inside nested child phases. If the target spec is a child phase, artifacts go to {root}/review/{phase-subfolder}/ and archives go to {root}/review_archive/{phase-subfolder}/. Runtime also exposes the legacy child-local review paths for migration only."
+    note: "review/ folders are always resolved at the spec tree root, not inside nested child phases. If the target spec is a child phase, artifacts go to {root}/review/{phaseId}-pt-{NN}/ (short naming: phaseId = first 3 chars of child-phase segment, NN = sequential zero-padded counter) and archives go to {root}/review_archive/{phaseId}-pt-{NN}/. Runtime also exposes the legacy child-local review paths for migration only."
     command: "node -e \"const path = require('node:path'); const { resolveArtifactRoot } = require('.opencode/skill/system-spec-kit/shared/review-research-paths.cjs'); const resolved = resolveArtifactRoot('{spec_folder}', 'review'); const artifactDir = resolved.subfolder ? path.join(resolved.rootDir, resolved.subfolder) : resolved.rootDir; const artifactArchiveRoot = resolved.subfolder ? path.join(path.dirname(resolved.rootDir), path.basename(resolved.rootDir) + '_archive', resolved.subfolder) : path.join(path.dirname(resolved.rootDir), path.basename(resolved.rootDir) + '_archive'); console.log(JSON.stringify({ ...resolved, artifactDir, artifactArchiveRoot, legacyLocalArtifactDir: '{spec_folder}/review', legacyRootReport: '{spec_folder}/review-report.md' }));\""
     outputs:
       - artifact_root_dir: "Resolved spec-tree root review directory"
-      - artifact_subfolder: "Hyphen-joined child phase path, else null"
+      - artifact_subfolder: "Short child phase subfolder ({phaseId}-pt-{NN}), else null"
       - artifact_dir: "Resolved review packet directory for this target"
       - artifact_archive_root: "Resolved root-level review archive directory for this target"
       - legacy_local_artifact_dir: "Legacy child-local review directory under {spec_folder}"
