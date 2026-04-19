@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring",
+  "description": "Feature Specification: Gemini + Copilot Hook Wiring",
+  "keywords": [
+    "feature",
+    "specification",
+    "gemini",
+    "copilot",
+    "hook",
+    "wiring"
+  ],
+  "lastUpdated": "2026-04-19T08:47:07.445Z",
+  "specId": "007",
+  "folderSlug": "gemini-copilot-hook-wiring",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "020-skill-advisor-hook-surface"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-04-26_09-47__scaffold-007-gemini-copilot-hook-wiring-for-phase.md"
+  ]
+}
