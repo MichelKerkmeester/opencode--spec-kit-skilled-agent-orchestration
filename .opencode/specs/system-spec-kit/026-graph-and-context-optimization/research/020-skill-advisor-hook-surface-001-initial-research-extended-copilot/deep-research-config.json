@@ -1,0 +1,44 @@
+{
+  "topic": "Extended research wave for 020 skill-advisor hook surface. Wave-1 (cli-codex gpt-5.4 high fast) converged on architecture contract. This wave targets wave-1 remaining open questions + new architectural angles: corpus parity harness, Claude UserPromptSubmit semantics capture, Copilot adapter, Codex enforcement, adversarial advisor / prompt injection, observability, migration semantics, concurrent sessions, NFKC interaction (phase 019/003), and synthesis with wave-1 delta.",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 180,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 30,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research/002-extended-wave-copilot",
+  "createdAt": "2026-04-19T09:05:00Z",
+  "status": "in_progress",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-copilot",
+    "model": "gpt-5.4",
+    "reasoningEffort": "high",
+    "sandboxMode": "workspace-write",
+    "timeoutSeconds": 1800
+  },
+  "lineage": {
+    "sessionId": "dr-020-extended-copilot-20260419T090500Z",
+    "parentSessionId": "dr-020-skill-advisor-hook-20260419T065000Z",
+    "lineageMode": "continued",
+    "allowedModes": ["new", "resume", "restart"],
+    "generation": 2,
+    "continuedFromRun": "020/001 wave-1"
+  },
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "findings-registry.json",
+    "dashboardFile": "deep-research-dashboard.md",
+    "strategyFile": "deep-research-strategy.md",
+    "machineOwnedSections": ["key-questions", "answered-questions", "what-worked", "what-failed", "exhausted-approaches", "ruled-out-directions", "next-focus"]
+  },
+  "pauseSentinelPath": ".deep-research-pause",
+  "archiveRoot": "archive",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "research-extended.md": "mutable"
+  }
+}
