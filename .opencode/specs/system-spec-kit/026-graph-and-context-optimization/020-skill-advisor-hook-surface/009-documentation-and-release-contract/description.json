@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/009-documentation-and-release-contract",
+  "description": "Feature Specification: Documentation + Release Contract",
+  "keywords": [
+    "feature",
+    "specification",
+    "documentation",
+    "release",
+    "contract"
+  ],
+  "lastUpdated": "2026-04-19T08:47:08.687Z",
+  "specId": "009",
+  "folderSlug": "documentation-and-release-contract",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "020-skill-advisor-hook-surface"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-04-26_09-47__scaffold-009-documentation-and-release-contract.md"
+  ]
+}
