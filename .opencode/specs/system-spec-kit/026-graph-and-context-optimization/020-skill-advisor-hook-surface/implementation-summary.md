@@ -12,9 +12,9 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface"
     last_updated_at: "2026-04-19T11:40:00Z"
     last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Wave-3 P0 + 9 P1 patches applied across 003/004/005/007/008/009 specs; all 6 children pass validate.sh strict (0 errors); ready for implementation dispatch"
-    next_safe_action: "/spec_kit:implement :auto 020/002 with executor=cli-codex model=gpt-5.4 reasoning=high service-tier=fast; cli-copilot gpt-5.4 high as fallback executor for any child that exhausts cli-codex budget"
-    dispatch_policy: "Per user directive 2026-04-19: all 020/002-009 implementation dispatches use cli-codex gpt-5.4 high fast as primary executor with cli-copilot gpt-5.4 high as automatic fallback"
+    recent_action: "Wave-3 P0+P1 patches landed; battle plan authored"
+    next_safe_action: "Execute T1 (dispatch 020/002 implement per battle-plan)"
+    dispatch_policy: "cli-codex gpt-5.4 high fast primary; cli-copilot gpt-5.4 high fallback"
 
 ---
 # Implementation Summary: Skill-Advisor Hook Surface
