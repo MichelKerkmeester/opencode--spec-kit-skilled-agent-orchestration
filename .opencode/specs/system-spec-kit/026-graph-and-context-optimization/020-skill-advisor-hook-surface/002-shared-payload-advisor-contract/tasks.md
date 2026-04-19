@@ -31,30 +31,30 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 [P0] Read `lib/context/shared-payload.ts` and existing tests to understand current enum + coerce structure
-- [ ] T002 [P0] Read research.md §Pattern Parallel Map + research-extended.md §X9 for contract details
+- [x] T001 [P0] Read `lib/context/shared-payload.ts` and existing tests to understand current enum + coerce structure
+- [x] T002 [P0] Read research.md §Pattern Parallel Map + research-extended.md §X9 for contract details
 <!-- /ANCHOR:phase-1 -->
 
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T003 [P0] Extend producer enum to include `"advisor"` (`lib/context/shared-payload.ts`)
-- [ ] T004 [P0] Extend source-kind enum with `"skill-inventory"`, `"skill-graph"`, `"advisor-runtime"`
-- [ ] T005 [P0] Define `AdvisorEnvelopeMetadata` TypeScript interface with freshness/confidence/uncertainty/skillLabel/status fields
-- [ ] T006 [P0] Update `coerceSharedPayloadEnvelope()` to validate advisor metadata whitelist
-- [ ] T007 [P0] Add privacy-rejection validator: reject `kind: "user-prompt"` source refs + unanchored `sha256:*` paths
-- [ ] T008 [P1] Add JSDoc with `@see` tag pointing at research.md
+- [x] T003 [P0] Extend producer enum to include `"advisor"` (`lib/context/shared-payload.ts`)
+- [x] T004 [P0] Extend source-kind enum with `"skill-inventory"`, `"skill-graph"`, `"advisor-runtime"`
+- [x] T005 [P0] Define `AdvisorEnvelopeMetadata` TypeScript interface with freshness/confidence/uncertainty/skillLabel/status fields
+- [x] T006 [P0] Update `coerceSharedPayloadEnvelope()` to validate advisor metadata whitelist
+- [x] T007 [P0] Add privacy-rejection validator: reject `kind: "user-prompt"` source refs + unanchored `sha256:*` paths
+- [x] T008 [P1] Add JSDoc with `@see` tag pointing at research.md
 <!-- /ANCHOR:phase-2 -->
 
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T009 [P0] Write `mcp_server/tests/shared-payload-advisor.vitest.ts` with 6 acceptance scenarios
-- [ ] T010 [P0] Run `vitest run shared-payload-advisor` green
-- [ ] T011 [P0] Run full `shared-payload*.vitest.ts` suite (no regression)
-- [ ] T012 [P0] Run `tsc --noEmit` clean across mcp_server
-- [ ] T013 [P0] Mark all P0 items in `checklist.md` with `[x]` + evidence
-- [ ] T014 [P0] Update `implementation-summary.md` with Files Changed table + verification results
+- [x] T009 [P0] Write `mcp_server/tests/shared-payload-advisor.vitest.ts` with 6 acceptance scenarios
+- [x] T010 [P0] Run `vitest run shared-payload-advisor` green
+- [x] T011 [P0] Run full `shared-payload*.vitest.ts` suite (no regression)
+- [x] T012 [P0] Run `tsc --noEmit` clean across mcp_server
+- [x] T013 [P0] Mark all P0 items in `checklist.md` with `[x]` + evidence
+- [x] T014 [P0] Update `implementation-summary.md` with Files Changed table + verification results
 <!-- /ANCHOR:phase-3 -->
 
 <!-- ANCHOR:completion -->
