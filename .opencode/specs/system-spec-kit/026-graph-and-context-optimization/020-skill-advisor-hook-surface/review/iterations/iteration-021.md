@@ -1,12 +1,15 @@
-# Iteration 021 — Dimension(s): D5
+# Iteration 021 — Dimension(s): D7
 
 ## Scope this iteration
-Re-verified the plugin-vs-hook threshold mismatch using fresh code and catalog evidence to ensure the parity defect remains live in both runtime behavior and published current-reality docs.
+Reviewed D7 Documentation accuracy because iteration 21 rotates to D7. This pass focused on whether the root operator docs still describe the current measurement and validation surface after the Phase 023-024 additions.
 
 ## Evidence read
-- `.opencode/plugins/spec-kit-skill-advisor.js:13-15` and `:35-39` -> plugin default `thresholdConfidence` remains `0.7`.
-- `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs:86-90` and `:107-110` -> bridge threshold helper and forwarded `thresholdConfidence` remain anchored to `0.7 / 0.35`.
-- `.opencode/skill/skill-advisor/feature_catalog/feature_catalog.md:543-547` -> catalog explicitly documents the plugin’s `thresholdConfidence` as `0.7`, while the main advisor docs retain `0.8 / 0.35` as the default hook threshold.
+- .opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:35-43 → the table of contents now advertises nine scenario groups: Routing Accuracy, Graph Boosts, Compiler, Regression Safety, SQLite Graph, Hook Routing, Plugin Path, Measurement Run, and Live-Session Telemetry.
+- .opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:51-53 → the overview still says the playbook provides "34 deterministic scenarios across 6 categories" and repeats that "all 34 scenarios" follow the split-document contract.
+- .opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:145-149 → the release-readiness rule still requires coverage of "100% of the 34 scenarios linked in this root document."
+- .opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:291 → MR-001 tells operators to expect "`results.jsonl` has 200 records."
+- .opencode/skill/skill-advisor/feature_catalog/feature_catalog.md:635 → the feature catalog names the emitted per-prompt JSONL as `smart-router-measurement-results.jsonl`.
+- .opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:103-104 → the measurement harness defaults to `smart-router-measurement-report.md` and `smart-router-measurement-results.jsonl`.
 
 ## Findings
 
@@ -14,21 +17,21 @@ Re-verified the plugin-vs-hook threshold mismatch using fresh code and catalog e
 None.
 
 ### P1 (Required)
-None.
+id P1-021-01, dimension D7, the root manual-testing playbook understates its own validation scope and hard-codes a stale release-readiness denominator. Evidence: `.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:35-43` lists nine active scenario groups (including Plugin Path, Measurement Run, and Live-Session Telemetry), but `.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:51-53` still describes the package as "34 deterministic scenarios across 6 categories", and `.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:145-149` still declares release readiness at "100% of the 34 scenarios linked in this root document." Impact: operators can follow the root playbook and incorrectly judge readiness against an outdated scenario/category count, which weakens the package's own release gate after Phase 023-024 expanded the documented surface. Remediation: update the root summary and readiness rule to the current scenario/category totals derived from the published sections, or derive the denominator from the linked scenario tables instead of freezing it in prose.
 
 ### P2 (Suggestion)
-None.
+id P2-021-01, dimension D7, the measurement run playbook names the wrong output JSONL artifact. Evidence: `.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:291` tells operators to look for `results.jsonl`, while `.opencode/skill/skill-advisor/feature_catalog/feature_catalog.md:635` documents `smart-router-measurement-results.jsonl` and `.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:103-104` sets `DEFAULT_JSONL_PATH` to `.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement-results.jsonl`. Impact: the MR-001 procedure can send reviewers to a nonexistent or ambiguous filename after a corpus run, creating avoidable validation friction. Remediation: rename the expected MR-001 artifact in the root playbook to `smart-router-measurement-results.jsonl` for consistency with the script and feature catalog.
 
 ### Re-verified (no new severity)
-- `P1-005-01`: status: re-verified via `.opencode/plugins/spec-kit-skill-advisor.js:13-15`, `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs:86-90`, and `.opencode/skill/skill-advisor/feature_catalog/feature_catalog.md:543-547`.
+None.
 
 ## Metrics
-- newInfoRatio: 0.05
+- newInfoRatio: 0.10
 - cumulative_p0: 0
-- cumulative_p1: 5
-- cumulative_p2: 2
-- dimensions_advanced: [D5]
-- stuck_counter: 5
+- cumulative_p1: 12
+- cumulative_p2: 12
+- dimensions_advanced: [D7]
+- stuck_counter: 0
 
 ## Next iteration focus
-Go back to D6 and verify whether the broader hook suites now cover the previously identified subprocess/privacy and plugin/parity drift vectors.
+Advance D1 by re-checking whether the documented privacy and disable-flag guarantees still match the plugin and runtime hook implementations.

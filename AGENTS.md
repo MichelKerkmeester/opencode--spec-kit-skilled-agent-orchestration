@@ -52,6 +52,7 @@
 - **Spec Kit Memory MCP** - research tasks, context recovery, finding prior work. For full saves (DB indexing + embeddings): use `generate-context.js`. For session continuity updates: AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md`.
   - Full save: `generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' [spec-folder]` → handles DB indexing, embeddings, description.json, graph-metadata.json refresh.
   - Quick continuity: directly edit `_memory.continuity` YAML in `implementation-summary.md` frontmatter (no script round-trip needed).
+- **Skill Advisor Hook** - primary advisor invocation path. Hook-capable runtimes surface a compact skill recommendation automatically on prompt entry; explicit `skill_advisor.py` invocation remains the fallback for scripted checks, unsupported runtimes and hook diagnostics. Reference: `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md`.
 - **CocoIndex Code MCP** - semantic code search. MUST use when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-coco-index/`
 - **Git (sk-git)** - worktree setup, conventional commits, PR creation. Full details: `.opencode/skill/sk-git/`. Trigger keywords: worktree, branch, commit, merge, pr, pull request, git workflow, finish work, integrate changes
 
@@ -173,8 +174,9 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 > Gate 1 is SOFT - if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
 
 ####  GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
-1. A) Run: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "[request]" --threshold 0.8`
-2. B) Cite user's explicit direction: "User specified: [exact quote]"
+1. A) Primary: use the automatic Skill Advisor Hook brief already surfaced by the runtime when present. See `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md`.
+2. B) Fallback: run `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "[request]" --threshold 0.8` when no hook brief is present, when scripting a check, or when diagnosing hook behavior.
+3. C) Cite user's explicit direction: "User specified: [exact quote]"
 - Confidence ≥ 0.8 → MUST invoke skill | < 0.8 → general approach | User names skill → cite and proceed
 - Output: `SKILL ROUTING: [result]` or `SKILL ROUTING: User directed → [name]`
 - Skip: trivial queries only (greetings, single-line questions)
@@ -347,7 +349,7 @@ Skills are specialized, on-demand capabilities that provide domain expertise. Un
 ### How Skills Work
 
 ```
-Task Received → Gate 2: Run skill_advisor.py
+Task Received → Gate 2: Read hook brief, or run skill_advisor.py fallback
                     ↓
     Confidence > 0.8 → MUST invoke recommended skill
                     ↓
@@ -360,7 +362,7 @@ Task Received → Gate 2: Run skill_advisor.py
 
 ### Skill Loading Protocol
 
-1. Gate 2 provides skill recommendation via `skill_advisor.py`
+1. Gate 2 provides skill recommendation via the Skill Advisor Hook, or via `skill_advisor.py` when the hook is unavailable.
 2. Invoke using appropriate method for your environment
 3. Read bundled resources from `references/`, `scripts/`, `assets/` paths
 4. Follow skill instructions to completion

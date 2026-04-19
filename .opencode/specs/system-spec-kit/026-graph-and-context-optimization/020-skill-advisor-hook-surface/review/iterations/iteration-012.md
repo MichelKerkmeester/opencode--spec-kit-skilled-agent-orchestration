@@ -1,12 +1,14 @@
 # Iteration 012 — Dimension(s): D5
 
 ## Scope this iteration
-Focused on the OpenCode plugin bridge lifecycle under timeout pressure. The deeper question was whether a timed-out bridge is fully reaped or whether the host resolves fail-open before the child process has actually exited.
+Reviewed D5 Integration + Cross-runtime because the default rotation for iteration 12 lands on D5. I focused on fresh parity-harness, plugin-bridge, and plugin-test evidence to check whether the shipped OpenCode plugin is covered by the same cross-runtime guarantees as Claude, Gemini, Copilot, and Codex.
 
 ## Evidence read
-- `.opencode/plugins/spec-kit-skill-advisor.js:171-186` -> timeout path sets `settled = true`, sends `child.kill('SIGTERM')`, and resolves `fail_open` immediately.
-- `.opencode/plugins/spec-kit-skill-advisor.js:212-230` -> the `close` handler exits early when `settled` is already true, so the timeout path never waits for confirmed child termination.
-- `spec-kit-skill-advisor-plugin.vitest.ts:161-177` -> timeout coverage asserts only the single `SIGTERM` send and the null-context response.
+- .opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts:21 → the runtime parity harness enumerates only `claude`, `gemini`, `copilot`, and `codex`.
+- .opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts:121 → the parity variants add only `copilot-wrapper`, then assert identical visible brief text across those variants.
+- .opencode/plugins/spec-kit-skill-advisor.js:291 → the shipped OpenCode plugin exposes model-visible advisor output through `onUserPromptSubmitted`.
+- .opencode/plugins/spec-kit-skill-advisor-bridge.mjs:93 → the OpenCode bridge builds and renders advisor output through its own bridge path using compiled dist imports.
+- .opencode/skill/system-spec-kit/mcp_server/tests/spec-kit-skill-advisor-plugin.vitest.ts:78 → the dedicated plugin suite exercises cache-hit, status, disable, and timeout behavior rather than cross-runtime parity against the native hook outputs.
 
 ## Findings
 
@@ -14,24 +16,21 @@ Focused on the OpenCode plugin bridge lifecycle under timeout pressure. The deep
 None.
 
 ### P1 (Required)
-[P1-012-01] [D5] Plugin bridge timeout resolves before child exit and never escalates past SIGTERM
-- **Evidence**: `.opencode/plugins/spec-kit-skill-advisor.js:171-186`; `.opencode/plugins/spec-kit-skill-advisor.js:212-230`; `spec-kit-skill-advisor-plugin.vitest.ts:161-177`
-- **Impact**: A hung or SIGTERM-ignoring bridge can outlive the failed request. Repeated timeout bursts can leave lingering bridge subprocesses behind, causing avoidable resource churn and transport-specific instability in the plugin path.
-- **Remediation**: On timeout, send SIGTERM, wait for `close` with a short grace window, escalate to SIGKILL if the child does not exit, and only resolve once termination is confirmed. Add a regression test for the non-exiting-child path.
+None.
 
 ### P2 (Suggestion)
-None.
+id P2-012-01, dimension D5, the shipped OpenCode plugin is outside the runtime parity harness, so bridge/runtime drift can ship without tripping the advertised cross-runtime comparator. Evidence: .opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts:21 defines the parity runtime list as only `claude`, `gemini`, `copilot`, and `codex`, and .opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts:121 limits the asserted variants to those four plus `copilot-wrapper`. The OpenCode plugin still emits model-visible advisor context through `.opencode/plugins/spec-kit-skill-advisor.js:291` and routes it through a separate bridge path at `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs:93` and `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs:113`. Fresh test evidence shows the dedicated plugin suite at `.opencode/skill/system-spec-kit/mcp_server/tests/spec-kit-skill-advisor-plugin.vitest.ts:78`, `.opencode/skill/system-spec-kit/mcp_server/tests/spec-kit-skill-advisor-plugin.vitest.ts:120`, and `.opencode/skill/system-spec-kit/mcp_server/tests/spec-kit-skill-advisor-plugin.vitest.ts:161` covers cache/status/timeout behavior, but not parity against native hook output. Impact: the OpenCode bridge can diverge from the shared renderer contract while `advisor-runtime-parity.vitest.ts` still passes, weakening the stated hook-surface parity claim for the full shipped integration set. Remediation: extend the parity harness (or add a dedicated comparator test) to normalize plugin output and compare it against the same canonical fixtures used for the native runtimes.
 
 ### Re-verified (no new severity)
 None.
 
 ## Metrics
-- newInfoRatio: 0.24
+- newInfoRatio: 0.16 (fresh D5 evidence surfaced one new parity-gap suggestion, but most integration behavior remained consistent with earlier passes)
 - cumulative_p0: 0
-- cumulative_p1: 4
-- cumulative_p2: 1
+- cumulative_p1: 8
+- cumulative_p2: 7
 - dimensions_advanced: [D5]
 - stuck_counter: 0
 
 ## Next iteration focus
-Stay near the plugin path and audit whether its negative-path test coverage actually reaches the bridge parser and nonzero-exit branches.
+Advance D6 Test coverage + test-code quality by spot-checking whether the parity and plugin suites leave additional mock or negative-path gaps.
