@@ -12,11 +12,11 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify |
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/009-documentation-and-release-contract"
-    last_updated_at: "2026-04-19T09:30:00Z"
-    last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Spec scaffolded from wave-1 + wave-2 research"
-    next_safe_action: "Dispatch /spec_kit:implement :auto after 006/007/008 converge"
-    blockers: ["006-claude-hook-wiring", "007-gemini-copilot-hook-wiring", "008-codex-integration-and-hook-policy"]
+    last_updated_at: "2026-04-19T14:53:13Z"
+    last_updated_by: "codex"
+    recent_action: "Implemented release docs"
+    next_safe_action: "Dispatch T9 integration gauntlet"
+    blockers: []
     key_files:
       - "spec.md"
       - "plan.md"
@@ -45,7 +45,7 @@ _memory:
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 (required for release; not blocking runtime operation) |
-| **Status** | Spec Ready, Blocked by 006 + 007 + 008 |
+| **Status** | Implemented, verification complete |
 | **Created** | 2026-04-19 |
 | **Effort Estimate** | 0.5-1 engineering day |
 <!-- /ANCHOR:metadata -->
@@ -183,10 +183,10 @@ The reference doc MUST include an explicit privacy contract covering three previ
 |-----------|-------------|-------------|
 | .opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md | Create | Main reference doc |
 | `CLAUDE.md` | Modify | §Mandatory Tools + §Gate 2 discussion |
-| .claude/README.md (if present) | Modify | Hook registration snippet |
-| .gemini/README.md (if present) | Modify | Same |
+| Claude runtime README (if present) | Modify | Hook registration snippet |
+| Gemini runtime README (if present) | Modify | Same |
 | .opencode/runtime/copilot/README.md (or equivalent) | Modify | Same |
-| .codex/README.md (if present) | Modify | Same |
+| Codex runtime README (if present) | Modify | Same |
 | ../implementation-summary.md | Modify | Release prep section |
 <!-- /ANCHOR:scope -->
 
@@ -310,7 +310,7 @@ The reference doc MUST include an explicit privacy contract covering three previ
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - Parent: `../spec.md`
 - Predecessors: `../006-*`, `../007-*`, `../008-*`

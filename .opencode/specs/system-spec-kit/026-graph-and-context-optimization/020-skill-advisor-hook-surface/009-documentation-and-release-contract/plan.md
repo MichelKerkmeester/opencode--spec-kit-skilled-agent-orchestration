@@ -10,10 +10,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/009-documentation-and-release-contract"
-    last_updated_at: "2026-04-19T09:30:00Z"
-    last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Plan scaffolded"
-    next_safe_action: "Dispatch /spec_kit:implement :auto after 006/007/008 converge"
+    last_updated_at: "2026-04-19T14:53:13Z"
+    last_updated_by: "codex"
+    recent_action: "Plan executed and verified"
+    next_safe_action: "Dispatch T9 integration gauntlet"
     blockers: []
     key_files: []
 
@@ -47,14 +47,14 @@ Doc-only final child. Aggregates artifacts from the 7 prior children into a sing
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] 006 + 007 + 008 merged with implementation-summary.md fields populated
-- [ ] sk-doc skill available
+- [x] 006 + 007 + 008 merged with implementation-summary.md fields populated
+- [x] sk-doc skill available
 
 ### Definition of Done
-- [ ] Reference doc exists + DQI ≥ 0.85
-- [ ] CLAUDE.md updated
-- [ ] 4 runtime READMEs updated (where present)
-- [ ] 020 parent implementation-summary.md release section filled with evidence
+- [x] Reference doc exists + DQI ≥ 0.85
+- [x] CLAUDE.md updated
+- [x] 4 runtime READMEs updated (where present)
+- [x] 020 parent implementation-summary.md release section filled with evidence
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -72,10 +72,10 @@ Authoring-only: no code. Uses sk-doc skill for DQI compliance. Cross-references 
 .opencode/skill/system-spec-kit/references/hooks/
   skill-advisor-hook.md              NEW
 CLAUDE.md                            EDIT — §Mandatory Tools + §Gate 2
-.claude/README.md                    EDIT (if present)
-.gemini/README.md                    EDIT (if present)
+Claude runtime README                EDIT (if present)
+Gemini runtime README                EDIT (if present)
 .opencode/runtime/copilot/README.md  EDIT (or equivalent)
-.codex/README.md                     EDIT (if present)
+Codex runtime README                 EDIT (if present)
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/implementation-summary.md   EDIT — release section
 ```
 
@@ -99,29 +99,29 @@ update 020 parent implementation-summary.md release section
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Reference doc
-- [ ] Gather artifacts (prior children's implementation-summary.md + research)
-- [ ] Draft 11 sections per spec.md §3.1
-- [ ] Validate via sk-doc; fix until DQI ≥ 0.85
+- [x] Gather artifacts (prior children's implementation-summary.md + research)
+- [x] Draft 11 sections per spec.md §3.1
+- [x] Validate via sk-doc; fix until DQI ≥ 0.85
 
 ### Phase 2: CLAUDE.md
-- [ ] Update §Mandatory Tools to mention hook as primary advisor path
-- [ ] Update §Gate 2 discussion (hook → fallback)
-- [ ] Add cross-reference to reference doc
+- [x] Update §Mandatory Tools to mention hook as primary advisor path
+- [x] Update §Gate 2 discussion (hook → fallback)
+- [x] Add cross-reference to reference doc
 
 ### Phase 3: Runtime READMEs
-- [ ] Update .claude/README.md (if present)
-- [ ] Update .gemini/README.md
-- [ ] Update Copilot runtime README
-- [ ] Update .codex/README.md
+- [x] Update Claude runtime README (if present)
+- [x] Update Gemini runtime README
+- [x] Update Copilot runtime README
+- [x] Update Codex runtime README
 
 ### Phase 4: Release checklist
-- [ ] Fill 020 parent implementation-summary.md release-prep section
-- [ ] Link each item to evidence
+- [x] Fill 020 parent implementation-summary.md release-prep section
+- [x] Link each item to evidence
 
 ### Phase 5: Verification
-- [ ] sk-doc DQI ≥ 0.85 on reference doc
-- [ ] Capability matrix cross-referenced child-by-child
-- [ ] Manual read-through for accuracy
+- [x] sk-doc DQI ≥ 0.85 on reference doc
+- [x] Capability matrix cross-referenced child-by-child
+- [x] Manual read-through for accuracy
 <!-- /ANCHOR:phases -->
 
 ---
