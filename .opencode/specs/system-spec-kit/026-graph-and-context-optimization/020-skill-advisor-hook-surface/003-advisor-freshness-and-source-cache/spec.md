@@ -100,6 +100,7 @@ Ship `getAdvisorFreshness(workspaceRoot)` that returns a trust-state snapshot + 
   - `skill-graph.json` (fallback → `stale`/`degraded`, never `live`)
 - Per-skill fingerprint: hash of SKILL.md mtime + size + graph-metadata.json mtime
 - Generation tag: workspace-scoped monotonic counter; stored in `.opencode/skill/.advisor-state/generation.json` (file-atomic write)
+- **Malformed / unreadable `generation.json` recovery (wave-3 V8 P1)**: If `generation.json` exists but fails schema validation (missing counter, non-integer, wrong shape) OR is unreadable (EACCES, EISDIR, EBUSY, truncated mid-write): (1) the probe MUST NOT silently reuse any in-memory generation value as `live` state; (2) the probe MUST either (a) recreate the file atomically from a fresh counter seeded to `max(observed_in_memory, 1) + 1` if write succeeds, OR (b) return `state: "unavailable"` with `diagnostics.reason: "GENERATION_COUNTER_CORRUPT"` and `diagnostics.recoveryPath: "regenerate" | "unrecoverable"` if write fails (read-only FS). Under no circumstance does a corrupt counter map to `state: "live"`.
 - Rename/delete semantics: skill slug present in prior fingerprint map but missing in current probe is suppressed (not rendered from stale cache)
 - `getAdvisorFreshness()` is non-mutating and fast (stat-only; no file-content parsing beyond graph-metadata.json header); respects the 15-min source cache
 - Cache invalidation: source signature change triggers fresh probe; generation mismatch triggers fresh probe
@@ -147,6 +148,8 @@ Ship `getAdvisorFreshness(workspaceRoot)` that returns a trust-state snapshot + 
 | REQ-010 | `diagnostics.reason` populated on every non-`live` state | `{ reason: "SKILL_GRAPH_SQLITE_MISSING" }` or similar |
 | REQ-011 | Generation counter file uses file-atomic write (temp + rename) | No partial writes visible to readers |
 | REQ-012 | Concurrent probes serialized via workspace-scoped lock | No duplicate rebuild side-effects (N/A here — probe is read-only, but cache write must be serialized) |
+| REQ-013 | Corrupt / unreadable `generation.json` never maps to `state: "live"` | Unit test: seed corrupt file → probe returns either regenerated counter OR `state: "unavailable"` with `diagnostics.reason: "GENERATION_COUNTER_CORRUPT"`; never `"live"` |
+| REQ-014 | `generation.json` recovery is deterministic: atomic regeneration when FS is writable, fail-closed to `unavailable` when read-only | Two unit tests (writable-FS path + read-only-FS path) |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -182,6 +185,12 @@ Ship `getAdvisorFreshness(workspaceRoot)` that returns a trust-state snapshot + 
 
 ### Acceptance Scenario 8: Cache invalidation on signature change
 **Given** a prior probe, **when** any SKILL.md or skill-graph file mtime changes, **then** the source signature differs and the next probe is a fresh walk.
+
+### Acceptance Scenario 9: Corrupt generation counter — writable FS recovers atomically
+**Given** `.advisor-state/generation.json` exists but contains malformed JSON or a non-integer counter field, **when** probed on a writable filesystem, **then** the probe atomically rewrites the file with a fresh counter seeded to `max(observed_in_memory, 1) + 1`, returns the recovered counter, and the returned state is never `"live"` on that first post-corruption probe (must reflect actual source/artifact state with `diagnostics.reason: "GENERATION_COUNTER_RECOVERED"`). Subsequent probes may return `"live"` once the rewritten counter stabilizes.
+
+### Acceptance Scenario 10: Corrupt generation counter — read-only FS fails closed
+**Given** `.advisor-state/generation.json` is malformed AND the filesystem is read-only (atomic write fails with EACCES/EROFS), **when** probed, **then** the probe returns `state: "unavailable"` with `diagnostics.reason: "GENERATION_COUNTER_CORRUPT"` and `diagnostics.recoveryPath: "unrecoverable"`. The probe MUST NOT silently reuse any in-memory generation value as `"live"`.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -231,6 +240,7 @@ Ship `getAdvisorFreshness(workspaceRoot)` that returns a trust-state snapshot + 
 - SQLite file corrupt / unreadable: state `"unavailable"`, `diagnostics.reason: "SKILL_GRAPH_SQLITE_CORRUPT"`
 - `graph-metadata.json` header unparseable: treat that skill's fingerprint as based on SKILL.md mtime only; log once
 - Generation counter file deleted mid-session: recreate with current counter; no rebuild trigger
+- **Generation counter file malformed / unreadable (wave-3 V8)**: writable FS → atomic regeneration to `max(in_memory, 1) + 1` with `diagnostics.reason: "GENERATION_COUNTER_RECOVERED"`; read-only FS → `state: "unavailable"` with `diagnostics.reason: "GENERATION_COUNTER_CORRUPT"`. Never maps to `"live"` on the corrupted probe.
 <!-- /ANCHOR:edge-cases -->
 
 ---

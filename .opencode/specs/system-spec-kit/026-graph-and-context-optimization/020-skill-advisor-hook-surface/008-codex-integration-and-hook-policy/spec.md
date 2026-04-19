@@ -115,6 +115,31 @@ Ship three deliverables:
 - Provide `runtime/codex/prompt-wrapper.ts` that, when invoked manually, wraps the next outgoing prompt with a brief preamble
 - Not user-visible by default; escape-hatch path for legacy setups
 
+#### 3.5 PostToolUse audit/repair slice (wave-3 V1 P1 addition)
+
+Wave-1 §Codex Integration Strategy + wave-2 §X4 both called out `PostToolUse` as in-scope for audit/repair context (not enforcement). The original scaffold omitted this slice; wave-3 V1 flagged it as a missing contract.
+
+- New `mcp_server/hooks/codex/post-tool-use.ts`
+- **Purpose:** audit + repair context only. Not an enforcement point (never emits `decision: "deny"` or `"block"`)
+- **Event trigger:** Codex `PostToolUse` after every tool invocation
+- **Payload:** JSON `hookSpecificOutput.additionalContext` containing a minimal audit record: tool name, outcome (success/error), any advisor-relevant repair hints (e.g., "if this tool failed on SQLite busy, retry with a fresh skill-graph probe")
+- **Fail-open:** same contract as UserPromptSubmit; never throws, never blocks
+- **No state write-back:** PostToolUse observes; it does not mutate hook state, does not invalidate cache, does not increment generation counter. The producer handles all cache invalidation internally.
+- **Unit test:** snapshot the audit JSON for 3 tool outcomes (success / tool-error / signal-killed)
+
+#### 3.6 stdin-vs-argv precedence (wave-3 V5 P1 addition)
+
+Wave-1 found Codex hook JSON can arrive via stdin OR argv depending on wrapper version. When BOTH are present at the same invocation, the adapter MUST be deterministic:
+
+**Precedence rule: stdin wins.**
+
+- If stdin is non-empty AND argv JSON is also present: parse stdin; ignore argv; record `diagnostics.dualInputDetected: true` with `diagnostics.reason: "STDIN_ARGV_BOTH_PRESENT_USING_STDIN"`
+- If stdin is empty AND argv JSON is present: parse argv; normal path
+- If stdin is empty AND argv JSON is absent: fail-open with `diagnostics.reason: "NO_INPUT_PROVIDED"`
+- If stdin is non-empty but unparseable AND argv JSON is present and parseable: still use stdin (fail-open on its parse failure); do NOT silently fall through to argv, as that would mask runtime misbehavior
+
+**Rationale:** stdin is the canonical modern Codex hook transport; argv is a legacy-wrapper path. Preferring stdin when both appear prevents a wrapper-version-dependent non-determinism that wave-3 V5 flagged as a hidden correctness risk.
+
 #### 3.5 Parity + tests
 
 - New `mcp_server/tests/codex-user-prompt-submit-hook.vitest.ts` — stdin + argv parse, JSON output, fail-open, SDK detection
@@ -135,7 +160,9 @@ Ship three deliverables:
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts` | Create | Codex advisor adapter |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts` | Create | Dynamic policy detection |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/pre-tool-use.ts` | Create | Bash-only deny (narrow scope) |
+| `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/post-tool-use.ts` | Create | PostToolUse audit/repair slice (wave-3 V1 P1 addition; non-enforcement) |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts` | Create | Fallback wrapper for legacy Codex |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/codex-post-tool-use-hook.vitest.ts` | Create | PostToolUse audit fixture snapshot tests |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/codex-user-prompt-submit-hook.vitest.ts` | Create | Codex adapter tests |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/codex-hook-policy.vitest.ts` | Create | Policy detection tests |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts` | Modify | Add Codex as 4th runtime |
@@ -160,6 +187,8 @@ Ship three deliverables:
 | REQ-006 | Cross-runtime parity extended to 4 runtimes | `advisor-runtime-parity.vitest.ts` asserts 4 identical |
 | REQ-007 | Runtime-capability capture: fixture proving `additionalContext` lands in model prompt | Fixture committed |
 | REQ-008 | Codex adapter registered in `.codex/settings.json` (or equivalent) | File diff |
+| REQ-009 | PostToolUse slice for audit/repair context (wave-3 V1 P1) — non-enforcement; emits `hookSpecificOutput.additionalContext` audit record; no state write-back | `codex-post-tool-use-hook.vitest.ts` snapshot across 3 tool outcomes |
+| REQ-010 | stdin-vs-argv precedence: stdin wins when both present (wave-3 V5 P1) | 4 unit tests: stdin-only / argv-only / both-present-stdin-wins / both-present-stdin-unparseable-still-fail-open |
 
 ### 4.2 P1 - Required
 

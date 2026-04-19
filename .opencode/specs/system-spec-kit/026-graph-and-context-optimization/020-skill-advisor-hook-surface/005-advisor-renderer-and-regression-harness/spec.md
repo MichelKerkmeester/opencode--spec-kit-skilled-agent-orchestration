@@ -104,7 +104,7 @@ Ship the single trust-boundary renderer + a full regression harness that gates r
 
 #### 3.2 Fixture library
 
-- New `mcp_server/tests/advisor-fixtures/` directory with 7 canonical fixtures:
+- New `mcp_server/tests/advisor-fixtures/` directory with **10 canonical fixtures** (7 original + 3 wave-3 additions):
   - `livePassingSkill.json` — 80-token advisor brief
   - `staleHighConfidenceSkill.json` — stale brief with explicit wording
   - `noPassingSkill.json` — no model-visible brief
@@ -112,6 +112,9 @@ Ship the single trust-boundary renderer + a full regression harness that gates r
   - `skippedShortCasual.json` — no brief
   - `ambiguousTopTwo.json` — 120-token form
   - `unicodeInstructionalSkillLabel.json` — label looks like instruction → sanitization blocks render
+  - **`skipPolicyEmptyPrompt.json`** (wave-3 P1 addition, V4 corpus-adequacy) — empty / whitespace-only prompt → `status: "skipped"`, `brief: null`, no subprocess invocation
+  - **`skipPolicyCommandOnly.json`** (wave-3 P1 addition, V4) — prompt is just `/help` / `/clear` / `/exit` → skipped
+  - **`promptPoisoningAdversarial.json`** (wave-3 P1 addition, X5 prompt-poisoning class) — prompt contains injection-shaped sub-strings (`"ignore previous instructions"`, `"system: you are now"`, Unicode-hidden-mark tricks). Producer must still run normally; renderer must not echo any prompt content in the brief; sanitizer must still evaluate on `skillLabel`, not the prompt
 
 #### 3.3 Normalized runtime comparator
 
@@ -148,23 +151,72 @@ Ship the single trust-boundary renderer + a full regression harness that gates r
   - **Cache hit**: same prompt + unchanged source signature — measure producer-only wall time
   - **Cache miss**: signature changed mid-session — measure full re-probe
 - For each lane: record p50, p95, p99 across 50 invocations
-- Pass/fail thresholds:
-  - Cache hit p95 ≤ 50 ms (parent 020/spec.md §7 NFR-P01)
-  - Warm subprocess p95 ≤ 1100 ms
-  - Cold subprocess p95 ≤ 1500 ms
-  - Cache hit rate ≥ 60% on typical 30-turn session (synthetic replay)
+- Pass/fail thresholds (**hard gates**):
+  - **Cache-hit lane p95 ≤ 50 ms** (parent 020/spec.md §7 NFR-P01) — applies to the `cache hit` lane only; the cold, warm, and cache-miss lanes are measured and reported but NOT hard-gated on a wall-clock budget
+  - **Cache hit rate ≥ 60%** on synthetic 30-turn replay using the corrected trace: **10 unique prompts interleaved with 20 repeats** in a fixed pattern (each unique prompt appears 2-4x; first occurrence misses, subsequent appearances hit). This yields 20/30 = 66.7% hits, which exceeds the ≥ 60% gate with margin for single-prompt flake (e.g., one SQLite-busy fail-open among the 30 turns still leaves ≥ 19/30 = 63.3%)
+- Non-gate measurements (recorded for diagnostics in implementation-summary.md, never a ship blocker):
+  - Warm subprocess p95 ≤ 1100 ms (target; surfaces regression when exceeded, does not fail CI)
+  - Cold subprocess p95 ≤ 1500 ms (target; same)
 
 #### 3.6 Observability + privacy suite
 
-- New `mcp_server/tests/advisor-observability.vitest.ts`:
-  - Metrics namespace exists: `speckit_advisor_hook_invocations_total`, `speckit_advisor_hook_duration_ms`, `speckit_advisor_hook_cache_hits_total`, `speckit_advisor_hook_failopen_total`, `speckit_advisor_hook_freshness_state` (labels per freshness value)
-  - Metrics have correct labels (runtime, status, freshness, error_code)
-  - Stderr diagnostic JSONL schema: one record per invocation, `{ timestamp, runtime, status, freshness, durationMs, cacheHit, errorCode?, errorDetails? }` — never prompt content
-  - `advisor-hook-health` section injectable into `session_health` with last N invocations, fail-open rate, p95 latency
-- New `mcp_server/tests/advisor-privacy.vitest.ts`:
-  - Raw prompt content not in any test-serializable surface (metrics, envelope, stderr, cache key cleartext, `advisor-hook-health` output)
-  - Prompt fingerprint is HMAC, never raw
-  - Fingerprint never appears in shared-payload source refs
+**Metric namespace (exact names + label catalog — wave-3 V6 tightening):**
+
+| Metric (counter unless noted) | Type | Labels | Emit on |
+|-------------------------------|------|--------|---------|
+| `speckit_advisor_hook_invocations_total` | Counter | `runtime`, `status`, `freshness` | Every producer invocation |
+| `speckit_advisor_hook_duration_ms` | Histogram | `runtime`, `status`, `cacheHit` | Every invocation |
+| `speckit_advisor_hook_cache_hits_total` | Counter | `runtime`, `outcome` ∈ {`hit`, `miss`, `suppressed`} | Every cache probe |
+| `speckit_advisor_hook_failopen_total` | Counter | `runtime`, `errorCode` ∈ {`PYTHON_MISSING`, `SCRIPT_MISSING`, `TIMEOUT`, `PARSE_FAIL`, `NONZERO_EXIT`, `SIGNAL_KILLED`, `SQLITE_BUSY_EXHAUSTED`, `DELETED_SKILL`} | Fail-open paths |
+| `speckit_advisor_hook_freshness_state` | Gauge | `runtime`, `state` ∈ {`live`, `stale`, `absent`, `unavailable`} | Every freshness probe |
+
+**Label value whitelist (no free-form values):**
+- `runtime` ∈ `{claude, gemini, copilot, codex}`
+- `status` ∈ `{ok, skipped, fail_open, degraded}`
+- `freshness` ∈ `{live, stale, absent, unavailable}`
+- `errorCode` — closed enum above; unknown errors map to `UNKNOWN` (not free-form)
+
+**Stderr diagnostic JSONL schema (exact wave-3 V6 contract):**
+
+```ts
+type AdvisorHookDiagnosticRecord = {
+  timestamp: string;           // ISO 8601
+  runtime: 'claude' | 'gemini' | 'copilot' | 'codex';
+  status: 'ok' | 'skipped' | 'fail_open' | 'degraded';
+  freshness: 'live' | 'stale' | 'absent' | 'unavailable';
+  durationMs: number;          // integer
+  cacheHit: boolean;
+  errorCode?: AdvisorErrorCode; // present only when status !== 'ok'
+  errorDetails?: string;       // non-prompt diagnostic text (e.g., "sqlite locked after 2 retries")
+  skillLabel?: string;         // sanitized label rendered to user (if any); never raw prompt
+  generation?: number;         // freshness generation counter
+  // FORBIDDEN: prompt, promptFingerprint, promptExcerpt, stdout, stderr
+};
+```
+
+Privacy: the schema omits every prompt-bearing field. The audit test (see below) asserts these field names never appear in serialized output.
+
+**Alert thresholds (wave-3 V6 operator contract):**
+
+| Metric | Warn | Page | Window |
+|--------|------|------|--------|
+| `speckit_advisor_hook_failopen_total` rate | ≥ 2% of invocations | ≥ 5% of invocations | rolling 5 min |
+| `speckit_advisor_hook_duration_ms` p95 (cacheHit=true) | ≥ 75 ms | ≥ 150 ms | rolling 5 min |
+| `speckit_advisor_hook_freshness_state{state="unavailable"}` | any sustained non-zero > 60 s | ≥ 5 min sustained | continuous |
+
+**`advisor-hook-health` section** injectable into `session_health`: last 30 invocations (timestamp, status, freshness, durationMs, cacheHit), rolling fail-open rate, cache-hit-lane p95.
+
+**Observability test file** — `mcp_server/tests/advisor-observability.vitest.ts`:
+- Asserts every metric name + label tuple above
+- Asserts JSONL record conforms to schema + no forbidden field appears
+- Asserts alert thresholds are configurable via env (not hard-coded)
+- Asserts `session_health` integration round-trip
+
+**Privacy test file** — `mcp_server/tests/advisor-privacy.vitest.ts`:
+- Raw prompt content not in any test-serializable surface (metrics labels, envelope, stderr JSONL, cache key cleartext, `advisor-hook-health` output)
+- Prompt fingerprint is HMAC, never raw
+- Fingerprint never appears in shared-payload source refs
+- Sensitive fixture prompts (`"api_key=SECRET_ABC123"`, `"PASSWORD=hunter2"`) used across all serialization paths; asserts literal substring absent from every surface
 
 ### Out of Scope
 
@@ -202,8 +254,8 @@ Ship the single trust-boundary renderer + a full regression harness that gates r
 | REQ-002 | Whitelist-only visible fields | Code review + grep test asserts no `reason`/`description`/`prompt` reads |
 | REQ-003 | Unicode skill label sanitization blocks instruction-shaped labels | `unicodeInstructionalSkillLabel` fixture → render returns `null` |
 | REQ-004 | 200-prompt corpus: 100% top-1 parity hook vs direct CLI | `advisor-corpus-parity.vitest.ts` passes all 200 |
-| REQ-005 | Cache hit p95 ≤ 50 ms | Timing harness records + asserts |
-| REQ-006 | Cache hit rate ≥ 60% on synthetic 30-turn session replay | Timing harness records + asserts |
+| REQ-005 | Cache-hit lane p95 ≤ 50 ms (hard gate applies to cache-hit lane only; cold/warm/miss lanes are measured but not hard-gated) | Timing harness records + asserts cache-hit lane |
+| REQ-006 | Cache hit rate ≥ 60% on synthetic 30-turn replay using 10 unique prompts + 20 repeats (20/30 = 66.7% hits nominal; ≥ 60% after single-flake tolerance) | Timing harness records + asserts with the mathematically consistent trace |
 | REQ-007 | Metrics namespace `speckit_advisor_hook_*` populated | Observability test asserts metric names + labels |
 | REQ-008 | Stderr JSONL schema never contains prompt content | Privacy test asserts |
 | REQ-009 | `advisor-hook-health` section injectable into `session_health` | Integration test |
@@ -217,7 +269,9 @@ Ship the single trust-boundary renderer + a full regression harness that gates r
 |----|-------------|---------------------|
 | REQ-020 | Corpus parity failures surfaced with per-prompt diagnostics | Failure report includes prompt, hook top-1, CLI top-1, confidence delta |
 | REQ-021 | Timing harness records cold/warm lanes (non-gate but measured) | Implementation-summary.md table |
-| REQ-022 | 7 fixtures + 1 Unicode fixture committed | `advisor-fixtures/` has 8 JSON files |
+| REQ-022 | 10 fixtures committed (7 baseline + 3 wave-3 P1 additions) | `advisor-fixtures/` has 10 JSON files including `skipPolicyEmptyPrompt`, `skipPolicyCommandOnly`, `promptPoisoningAdversarial` |
+| REQ-023 | Observability contract: exact metric names, closed-enum label values, JSONL schema, alert thresholds | `advisor-observability.vitest.ts` asserts every row in §3.6 table |
+| REQ-024 | Alert thresholds configurable via env (not hard-coded in app code) | Env-override test |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -227,8 +281,8 @@ Ship the single trust-boundary renderer + a full regression harness that gates r
 
 - **SC-001**: All 5 test files green (`advisor-renderer`, `advisor-corpus-parity`, `advisor-timing`, `advisor-observability`, `advisor-privacy`)
 - **SC-002**: 200-prompt parity at 100% match gate
-- **SC-003**: Cache hit p95 ≤ 50 ms
-- **SC-004**: Cache hit rate ≥ 60% on replay
+- **SC-003**: Cache-hit lane p95 ≤ 50 ms (cache-hit lane only; cold/warm/miss lanes measured but not gated)
+- **SC-004**: Cache hit rate ≥ 60% on corrected replay (10 unique + 20 repeats → 20/30 = 66.7% nominal)
 - **SC-005**: Metrics namespace verified
 - **SC-006**: Privacy audit: no raw prompt in any test-observable surface
 - **SC-007**: `tsc --noEmit` clean
@@ -257,11 +311,11 @@ Ship the single trust-boundary renderer + a full regression harness that gates r
 ### Acceptance Scenario 8: 200-prompt parity — 100%
 **Given** the 019/004 corpus, **when** hook vs direct CLI compared across all 200 prompts, **then** top-1 matches 200/200.
 
-### Acceptance Scenario 9: Cache hit p95 ≤ 50 ms
-**Given** 50 repeated cache-hit invocations, **when** timing harness runs, **then** p95 ≤ 50 ms.
+### Acceptance Scenario 9: Cache-hit lane p95 ≤ 50 ms
+**Given** 50 repeated cache-hit invocations (same prompt + unchanged source signature), **when** timing harness runs the cache-hit lane, **then** p95 ≤ 50 ms. Cold/warm/miss lanes are recorded for diagnostics but not gated on a wall-clock budget.
 
-### Acceptance Scenario 10: Cache hit rate ≥ 60% on synthetic replay
-**Given** a 30-turn synthetic session (20 unique prompts + 10 repeats), **when** producer runs in sequence, **then** cache hit rate ≥ 60%.
+### Acceptance Scenario 10: Cache hit rate ≥ 60% on corrected synthetic replay
+**Given** a 30-turn synthetic session composed of **10 unique prompts + 20 repeats** (fixed pattern where each unique prompt first-appears once and then repeats 2-4x later in the stream), **when** the producer runs each turn in sequence with a stable source signature, **then** cache hit rate is 20/30 = 66.7% nominal (≥ 60% gate). A single SQLite-busy fail-open among the 30 turns still yields ≥ 19/30 = 63.3%, preserving the gate.
 
 ### Acceptance Scenario 11: Metrics namespace present
 **Given** a series of producer invocations, **when** observability suite runs, **then** metrics exist for `speckit_advisor_hook_invocations_total`, `_duration_ms`, `_cache_hits_total`, `_failopen_total`, `_freshness_state` with correct labels.

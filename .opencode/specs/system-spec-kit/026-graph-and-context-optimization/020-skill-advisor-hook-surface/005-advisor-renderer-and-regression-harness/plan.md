@@ -54,10 +54,12 @@ Deliver the single trust-boundary renderer (whitelist-only, Unicode label saniti
 
 ### Definition of Done
 - [ ] All 5 test suites green
-- [ ] 200/200 corpus parity
-- [ ] Cache hit p95 ≤ 50 ms, cache hit rate ≥ 60%
+- [ ] 200/200 corpus parity (top-1 match)
+- [ ] Cache-hit lane p95 ≤ 50 ms (cache-hit lane only; cold/warm/miss lanes measured but not gated)
+- [ ] Cache hit rate ≥ 60% on corrected 30-turn replay: **10 unique prompts + 20 repeats = 20/30 = 66.7% nominal**
 - [ ] Metrics + privacy verified
 - [ ] `tsc --noEmit` clean
+- [ ] Wall-clock target for full 4-lane timing suite: ≤ 15 minutes on CI (50 invocations × 4 lanes × avg latency, with margin for CI jitter)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -131,10 +133,11 @@ renderAdvisorBrief(result, options)
 - [ ] Report per-prompt failures with deltas
 
 ### Phase 4: Timing harness
-- [ ] Create `advisor-timing.vitest.ts` with 4 lanes × 50 invocations each
-- [ ] Record p50/p95/p99
-- [ ] Enforce cache hit p95 ≤ 50 ms gate
-- [ ] Enforce cache hit rate ≥ 60% gate on synthetic 30-turn replay
+- [ ] Create `advisor-timing.vitest.ts` with 4 lanes × 50 invocations each (cold / warm / cache-hit / cache-miss)
+- [ ] Record p50/p95/p99 across all 4 lanes
+- [ ] **Hard gate 1**: cache-hit lane p95 ≤ 50 ms (cache-hit lane only; cold/warm/miss lanes are diagnostic, not gated)
+- [ ] **Hard gate 2**: cache hit rate ≥ 60% on corrected 30-turn replay (**10 unique prompts + 20 repeats** = 20/30 = 66.7% nominal; single-flake tolerance keeps it at ≥ 19/30 = 63.3%)
+- [ ] Wall-clock for this phase: ≤ 10 minutes (200 invocations × avg ~1-2 s cold + ≤ 50 ms warm hits = ~3-5 min typical, 10 min with CI jitter)
 
 ### Phase 5: Privacy audit
 - [ ] Create `advisor-privacy.vitest.ts`

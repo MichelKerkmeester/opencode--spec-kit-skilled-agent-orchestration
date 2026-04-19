@@ -122,6 +122,55 @@ Close the release contract: create the reference doc that 020/spec.md §3 alread
   - Documentation published
   - CLAUDE.md updated
 
+#### 3.5 Validation / manual-playbook deliverables (wave-3 V1/V6 P1 addition)
+
+Wave-3 V1 flagged that the release child under-specified proof artifacts. Close this by shipping two deliverables alongside the reference doc:
+
+**A. Validation playbook** — new file at .opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook-validation.md (to be created during 020/009 implementation)
+
+Step-by-step manual validation a release manager runs before cutting a release:
+
+1. **Pre-flight**: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <each 020 child> --strict --no-recursive` passes
+2. **Cross-runtime smoke**: one known-good prompt tested in Claude + Gemini + Copilot + Codex; verify advisor brief appears in each (or documented absence for runtimes where the injection path is known not to land)
+3. **Disable-flag verification**: set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1`, repeat step 2; verify no advisor brief appears in any runtime
+4. **Corpus parity**: `advisor-corpus-parity.vitest.ts` → 200/200 top-1 match
+5. **Timing gates**: cache-hit lane p95 ≤ 50 ms; cache hit rate ≥ 60% on corrected 30-turn replay
+6. **Privacy audit**: `advisor-privacy.vitest.ts` green; spot-check `session_health` output for raw-prompt absence
+7. **Observability**: metric names match §3.1 reference doc table; alert thresholds configured from env
+8. **Rollback drill**: deploy → roll back via the disable flag → re-enable; verify no persisted state requires cleanup
+
+**B. Troubleshooting playbook** — appended to the main reference doc (skill-advisor-hook.md §10 Troubleshooting, same file created in §3.1)
+
+Top-5 failure symptoms + diagnostic flow:
+
+| Symptom | Check | Next step |
+|---------|-------|-----------|
+| No brief appears in any runtime | `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED` env, producer logs | Re-enable flag; check Python/script presence |
+| Brief appears in Claude but not Gemini/Copilot | Adapter registration (`.gemini/settings.json`, Copilot SDK version floor) | Re-register; capture SDK version; route to wrapper fallback if below floor |
+| `freshness: "unavailable"` sustained | `.opencode/skill/.advisor-state/generation.json` integrity; SQLite presence | Apply 003's malformed-counter recovery path |
+| p95 latency spikes above 100 ms | Cache hit rate dropping; subprocess spawn cost | Check source-signature invalidation frequency; graph-rebuild thrash |
+| Fail-open rate > 5% | Errors in stderr JSONL (errorCode labels) | Cross-reference §3.6 observability alert thresholds |
+
+#### 3.6 Prompt-artifact privacy rules (wave-3 V9 P1 addition)
+
+The reference doc MUST include an explicit privacy contract covering three previously under-specified surfaces:
+
+**A. Hook-state persistence policy:**
+- Only HMAC fingerprints + metadata are persisted across sessions (no raw prompts, no excerpts, no semantic embeddings of prompts)
+- Session-scoped secret is derived from process PID + launch time; never persisted
+- Shared-payload envelope sources contain only HMAC fingerprints, producer identity, and trust-state metadata — never prompt text
+
+**B. Copilot wrapper fallback artifact policy:**
+- When the Copilot SDK path is unavailable and the adapter uses the prompt-wrapper fallback, the rewritten prompt (original + advisor preamble) exists only in memory for the duration of the wrapper process; it is NOT written to any log, cache, history file, or diagnostics surface
+- Wrapper-fallback errors record `wrapperFallbackInvoked: true` + error code; no prompt content in the error surface
+- 007's spec §3.2d is the authoritative contract; this doc is its operator-facing statement
+
+**C. Observability surface policy:**
+- Metric labels are closed enums (runtime, status, freshness, errorCode, outcome) — never free-form values
+- Stderr JSONL records omit all prompt-bearing fields (no `prompt`, `promptFingerprint`, `promptExcerpt`, `stdout`, `stderr` field names)
+- `advisor-hook-health` section in `session_health` reports only counts + latencies + last-N outcomes; never prompt content
+- 005's spec §3.6 JSONL schema is authoritative; this doc is its operator-facing statement
+
 ### Out of Scope
 
 - Updating external user-facing marketing docs (handled elsewhere)
@@ -158,6 +207,9 @@ Close the release contract: create the reference doc that 020/spec.md §3 alread
 | REQ-006 | Observability contract published | Metric names + alert thresholds + health section |
 | REQ-007 | Failure-mode playbook | Map each `status` × `freshness` to operator action |
 | REQ-008 | Release checklist in 020 implementation-summary.md | All 6 items listed |
+| REQ-009 | Validation playbook published (wave-3 V1 P1) | New file skill-advisor-hook-validation.md under references/hooks/ with 8 manual steps |
+| REQ-010 | Troubleshooting playbook with top-5 failure symptoms and diagnostic flow | §10 Troubleshooting table covers the 5 rows in §3.5 B |
+| REQ-011 | Prompt-artifact privacy contract explicit (wave-3 V9 P1) | §3.6 A/B/C blocks present in reference doc; cross-links to 005 §3.6 and 007 §3.2d |
 
 ### 4.2 P1 - Required
 

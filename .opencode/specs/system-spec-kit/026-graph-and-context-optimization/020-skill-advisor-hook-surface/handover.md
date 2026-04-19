@@ -1,27 +1,29 @@
 ---
-title: "Handover: 020 Skill-Advisor Hook Surface (post-wave-3, pre-implementation)"
-description: "Pre-compact handover. Wave-3 validation converged. 1 P0 in child 005 blocks implementation. 9 P1 patches recommended. Folder rename complete. Next action: patch 005 P0 then dispatch /spec_kit:implement :auto 020/002."
+title: "Handover: 020 Skill-Advisor Hook Surface (post-patch, implementation-ready)"
+description: "Post-patch handover. Wave-3 P0 (005 impossible cache-hit gate) + all 9 P1 patches applied across 003/004/005/007/008/009. All 6 children pass validate.sh strict. Ready for /spec_kit:implement :auto 020/002 dispatch."
 trigger_phrases:
   - "020 handover"
   - "020 resume"
   - "020 post compact"
+  - "020 implementation ready"
 importance_tier: "critical"
 contextType: "handover"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface"
-    last_updated_at: "2026-04-19T11:10:00Z"
+    last_updated_at: "2026-04-19T11:45:00Z"
     last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Wave-3 converged, synthesis written, folder renamed to pt-03, committed"
-    next_safe_action: "Read research-validation.md §3 P0 action list; patch child 005 spec/plan/tasks for impossible cache-hit gate; then proceed with /spec_kit:implement :auto 020/002"
-    blockers: ["005 P0 cache-hit-rate gate is mathematically impossible"]
+    recent_action: "Wave-3 P0 + 9 P1 patches applied across 003/004/005/007/008/009; all children pass validate.sh --strict with 0 errors; committed"
+    next_safe_action: "Dispatch /spec_kit:implement :auto on 020/002-shared-payload-advisor-contract with executor=cli-codex model=gpt-5.4 reasoning=high service-tier=fast; cli-copilot gpt-5.4 high as fallback"
+    blockers: []
+    dispatch_policy: "cli-codex gpt-5.4 high fast primary, cli-copilot gpt-5.4 high fallback (user directive 2026-04-19)"
 
 ---
 # Handover: Phase 020 Skill-Advisor Hook Surface
 
-## Status Snapshot (2026-04-19T11:10:00Z)
+## Status Snapshot (2026-04-19T11:45:00Z)
 
-**Phase 020 state:** Research complete across 3 waves. Implementation not started.
+**Phase 020 state:** All research waves converged, all wave-3 P0 + P1 patches applied, implementation-ready.
 
 | Item | State |
 |------|-------|
@@ -32,9 +34,10 @@ _memory:
 | Short-name folder convention (`{phaseSlug}-pt-NN`) | Live in resolver + docs + rename complete |
 | Wave-3 folder renamed to pt-03 | Done, committed |
 | 020 parent implementation-summary updated | Done |
-| **005 P0 patch** | **NOT DONE — blocks implementation** |
-| Other P1 patches (9 items across 003/004/005/007/008/009) | Not done — recommended pre-implementation |
-| /spec_kit:implement :auto 020/002 | Not dispatched |
+| **005 P0 patch** (impossible cache-hit gate) | **DONE** — trace corrected to 10 unique + 20 repeats = 66.7% nominal; 50 ms gate restated as cache-hit-lane-only |
+| 9 P1 patches across 003/004/005/007/008/009 | **DONE** — all applied, all children pass validate.sh --strict (0 errors) |
+| **Implementation dispatch executor policy** | **cli-codex gpt-5.4 high fast primary, cli-copilot gpt-5.4 high fallback** (user directive 2026-04-19) |
+| /spec_kit:implement :auto 020/002 | Ready to dispatch — first in the critical path |
 
 ## What Happened This Session
 
@@ -48,48 +51,57 @@ _memory:
    - Final: 69 folders renamed, resolver + skill docs updated, 70 files with cross-reference updates
 6. **Wave-3 artifact folder renamed** from the long canonical name to `020-skill-advisor-hook-surface-pt-03/`. 020 parent implementation-summary and wave-3 child implementation-summary updated.
 
-## Critical Finding from Wave-3 (BLOCKER)
+## Wave-3 Patches Applied (P0 + 9 P1 items)
 
-**P0: Child 005's cache-hit-rate replay gate is mathematically impossible.**
+**All wave-3 blockers cleared.** Summary of what landed:
 
-005's spec.md / plan.md / tasks.md require cache hit rate ≥ 60% on a synthetic 30-turn replay composed of "20 unique + 10 repeats". But that trace can only yield 10/30 = 33.3% hits, not ≥60%. The gate is unsatisfiable.
+### P0 in 005 — resolved
+- **spec.md**: REQ-005 + REQ-006 rewritten; §3.5 Pass/fail thresholds restructured; AS9/AS10 updated
+- **plan.md**: DoD explicitly cache-hit-lane-only; Phase 4 replay metric corrected; wall-clock target ≤ 15 min
+- **tasks.md**: T020 cache-hit-lane-only; T021 uses corrected trace; T027/T028 aligned; completion criteria expanded
+- **Math fix**: replay trace is now "10 unique prompts + 20 repeats = 20/30 = 66.7% hits nominal" (≥ 60% gate with single-flake tolerance to ≥ 19/30 = 63.3%)
 
-**Fix (from research-validation.md §3 P0 actions):**
-1. Patch `005-advisor-renderer-and-regression-harness/spec.md` — replace `REQ-006` with a mathematically consistent rule, restate latency gate as cache-hit-only
-2. Patch `005-advisor-renderer-and-regression-harness/plan.md` — fix Phase 4 Definition of Done + replay metric + wall-clock target
-3. Patch `005-advisor-renderer-and-regression-harness/tasks.md` — fix T021, T028, completion criteria
+### P1 across 003/004/005/007/008/009 — all 9 resolved
+
+| # | Child | Patch |
+|---|-------|-------|
+| 1 | 003 | REQ-013/014 + AS9/AS10 + edge case: malformed `generation.json` recovery (writable → atomic regen; read-only → `unavailable`); never maps to `"live"` |
+| 2 | 004 | Removed `semanticModeEnabled` option + 60-token-floor; added non-live freshness posture table (stale/absent/unavailable/deleted-skill/SIGNAL_KILLED/JSON-fallback); REQ-021/024 |
+| 3 | 005 | 3 new fixtures (`skipPolicyEmptyPrompt`, `skipPolicyCommandOnly`, `promptPoisoningAdversarial`) — total 10 fixtures; REQ-022 updated |
+| 4 | 005 | Observability contract tightened: exact metric table, closed-enum label values, AdvisorHookDiagnosticRecord TypeScript schema, alert thresholds (warn/page); REQ-023/024 |
+| 5 | 007 | Copilot SDK proof = MERGE GATE with version floor; Gemini schema-version fixture matrix (≥ v1 + v2); §3.2a/§3.2b; REQ-009/010 |
+| 6 | 007 | `brief: null` no-emit rule per runtime (§3.2c); wrapper-fallback privacy (§3.2d); REQ-011/012 |
+| 7 | 008 | §3.5 PostToolUse audit/repair slice (non-enforcement); §3.6 stdin-vs-argv precedence (stdin wins); REQ-009/010 |
+| 8 | 008 | Files-to-change table expanded with `post-tool-use.ts` + `codex-post-tool-use-hook.vitest.ts` |
+| 9 | 009 | §3.5 validation playbook (8 manual steps) + troubleshooting table (top-5 symptoms); §3.6 prompt-artifact privacy (hook-state + Copilot wrapper + observability); REQ-009/010/011 |
+
+All 6 patched children pass `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <child> --strict --no-recursive` with 0 errors (pre-existing warnings only — RELATED DOCUMENTS custom header + implementation-summary.md baseline — same as pre-patch state).
 
 Full findings: `026/research/020-skill-advisor-hook-surface-pt-03/research-validation.md`
 
-## P1 Patches (Recommended Pre-Implementation)
-
-From research-validation.md §3 P1 actions (9 items):
-
-1. **003** — explicit malformed `.advisor-state/generation.json` recovery path
-2. **004** — remove unsupported `semanticModeEnabled` / 60-token-floor scope; pin non-live freshness behavior for all branches
-3. **005** — add skip-policy + X5 prompt-poisoning fixtures
-4. **005** — tighten observability contract (JSONL shape, label catalog, alert thresholds)
-5. **007** — Copilot SDK proof as merge gate + Gemini schema-version fixture matrix
-6. **007** — `brief: null` on success = no model-visible output; wrapper fallback privacy rules
-7. **008** — add missing `PostToolUse` audit/repair slice; define stdin-vs-argv precedence
-8. **008** — stronger runtime-policy/fixture surface
-9. **009** — add validation/manual-playbook deliverables; privacy wording for hook-state + Copilot wrapper
-
 ## Post-Compact Resume Plan
 
-**Step 1:** Read `research-validation.md` (via the file path in Key Files below). Absorb §1 Executive Summary + §3 Severity Action List.
+All patches are landed. The critical path is now:
 
-**Step 2:** Decide scope:
-- Option A (recommended): Patch only 005 P0, then start `/spec_kit:implement :auto 020/002`. Handle P1 patches as the train progresses.
-- Option B (conservative): Patch 005 P0 + all 9 P1 items, then start implementation. Higher up-front cost, less rework later.
-- Option C (aggressive): Skip all patches, start implementation, discover issues during 005 harness build. Not recommended — wave-3 explicitly flagged these as blockers/concerns.
+**Step 1:** Dispatch `/spec_kit:implement :auto` on `020/002-shared-payload-advisor-contract` (first in the 8-child critical path). Executor config: `--executor=cli-codex --model=gpt-5.4 --reasoning-effort=high --service-tier=fast`. If cli-codex exhausts its budget for any child, re-dispatch with `--executor=cli-copilot --model=gpt-5.4 --reasoning-effort=high` (cli-copilot does not support service-tier via CLI flag — runtime default applies).
 
-**Step 3:** Execute. Recommended sequence:
-1. Patch 005 spec/plan/tasks (P0, ~30 min of edits)
-2. If Option B: patch the 9 P1 items (~2-3 hours of edits)
-3. Validate: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <each child> --strict --no-recursive`
-4. Commit patches
-5. `/spec_kit:implement :auto` on 020/002 (shared-payload advisor contract — the first child in the critical path)
+**Step 2:** After 020/002 converges, dispatch 020/003, 020/004, 020/005 in sequence (serial — each depends on its predecessor). 020/005 is the **HARD GATE**: no runtime adapter (006/007/008) may merge before 005 converges.
+
+**Step 3:** After 020/005 converges and hard gate lifts, dispatch 020/006 (Claude) → then 020/007 + 020/008 can run in parallel (both depend on 006) → then 020/009 (documentation + release contract) as final closer.
+
+**Step 4:** Release prep checklist in 020/implementation-summary.md §Release Prep — verify each item before final merge.
+
+### Dispatch commands (copy-paste ready)
+
+```
+# Child 002 (first, must land before any other)
+/spec_kit:implement :auto "Implement 020/002-shared-payload-advisor-contract per spec.md/plan.md/tasks.md" --executor=cli-codex --model=gpt-5.4 --reasoning-effort=high --service-tier=fast --spec-folder=.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/002-shared-payload-advisor-contract
+
+# Fallback if cli-codex fails mid-run
+/spec_kit:implement :auto "Resume 020/002 implementation" --executor=cli-copilot --model=gpt-5.4 --reasoning-effort=high --spec-folder=.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/002-shared-payload-advisor-contract
+```
+
+Repeat pattern for 003-009; each command targets its own child spec folder.
 
 ## Key Files
 
@@ -171,10 +183,10 @@ No active background tasks.
 
 1. **Do not re-dispatch any research wave** — 3 waves converged, architecture is settled.
 2. **Do not scaffold new children** — 8 children (002-009) are the finalized decomposition.
-3. **Do not skip the 005 P0 patch** — it's a mathematically impossible gate; if you try to implement 005 as-written, the harness will never pass.
-4. **The wave-3 orchestrator script at `/tmp/wave3-orchestrator.sh`** is ephemeral; don't rely on it post-compact.
+3. **Patches are landed** — wave-3 P0 (005 impossible gate) + all 9 P1 items are applied and validated. No additional spec edits needed before implementation.
+4. **Executor policy** — cli-codex gpt-5.4 high fast primary; cli-copilot gpt-5.4 high fallback. Do not mix other executors into the 020 train without updating the continuity frontmatter.
 5. **Plan file at `/Users/michelkerkmeester/.claude/plans/start-running-all-iterations-bright-seal.md`** is from an earlier planning pass — treat as historical reference, not current state.
 
 ## Recommended First Message Post-Compact
 
-"Resume 020. Read `026/020-skill-advisor-hook-surface/handover.md` then read `026/research/020-skill-advisor-hook-surface-pt-03/research-validation.md` §3 P0 actions. Patch child 005 spec/plan/tasks for the impossible cache-hit-rate gate, then we'll decide whether to also patch the 9 P1 items before dispatching `/spec_kit:implement :auto 020/002`."
+"Resume 020. Patches are landed. Dispatch `/spec_kit:implement :auto` on 020/002-shared-payload-advisor-contract with executor=cli-codex model=gpt-5.4 reasoning=high service-tier=fast. Fall back to cli-copilot gpt-5.4 high if cli-codex fails mid-run. Proceed through the 8-child critical path (002→003→004→005 HARD GATE→006→007+008 parallel→009)."

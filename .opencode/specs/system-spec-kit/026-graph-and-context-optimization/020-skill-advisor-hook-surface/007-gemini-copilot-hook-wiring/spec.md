@@ -100,6 +100,48 @@ Both adapters normalize via 005's comparator and pass the cross-runtime parity t
 - Capture or fixture-check that the runtime exposes the SDK return object before shipping the default path
 - Register in `.opencode/runtime/copilot/` wrapper config (path per existing Copilot pattern)
 
+#### 3.2a Copilot SDK proof as MERGE GATE (wave-3 V5/V7 P1)
+
+**Merge-blocking requirement:** The Copilot adapter MUST ship with a committed runtime-capture fixture proving the SDK `onUserPromptSubmitted` return-object path lands model-visible text. Wrapper-fallback-only ship is NOT acceptable for merge; it is a runtime fallback, not a substitute for SDK proof.
+
+**Runtime / version floor (pin during implementation):**
+- Copilot CLI: ≥ the minimum version in which `onUserPromptSubmitted` accepts a return object with `additionalContext` (determined empirically during capture; document the version in the adapter's top-of-file comment)
+- If the installed Copilot version is below the floor → adapter detects and routes to wrapper fallback with `diagnostics.reason: "COPILOT_SDK_VERSION_BELOW_FLOOR"`
+
+**Runtime capability matrix (committed in implementation-summary.md):**
+
+| Copilot version | SDK path | Wrapper fallback | Evidence |
+|-----------------|----------|------------------|----------|
+| ≥ floor (pinned during impl) | Supported | Disabled (SDK preferred) | Captured fixture |
+| < floor | Not supported | Active | Version check test |
+
+#### 3.2b Gemini schema-version fixture matrix (wave-3 V5 P1)
+
+Gemini's `BeforeAgent` / prompt-hook payload schema varies across Gemini versions. The adapter MUST:
+
+- Ship a fixture matrix testing against **at least 2 documented Gemini payload schemas** (schema-v1 + schema-v2 at minimum; add v3+ as upstream introduces them). Each schema version is a separate fixture file under `mcp_server/tests/gemini-payload-fixtures/`
+- Use defensive parsing: unknown schema shape → fail-open (empty stdout, `diagnostics.reason: "GEMINI_UNKNOWN_SCHEMA"`)
+- Regression test: adding a new fixture under `gemini-payload-fixtures/` MUST run automatically through the adapter and produce a deterministic snapshot
+
+#### 3.2c `brief: null` on success = no model-visible output (wave-3 V7 P1)
+
+When `AdvisorHookResult.brief === null` (producer intentionally emitted no brief — e.g., `status: "ok"` with no passing skill, or `status: "skipped"`), each adapter MUST:
+
+- Gemini: omit the `hookSpecificOutput.additionalContext` key entirely (not emit an empty string, not emit `null`; the key is absent)
+- Copilot SDK path: return `{}` (no `additionalContext` key); distinct from error fail-open which also returns `{}`, diagnostics records the cause
+- Copilot wrapper path: DO NOT modify the outgoing prompt (no preamble, no transformation)
+
+**Privacy / correctness reasoning:** A `brief: null` result means the producer saw no high-confidence recommendation. Emitting an empty-but-present key would still mark the prompt as "advisor-touched" in downstream tools. Omitting the key entirely keeps advisor decisions invisible when there is nothing to say.
+
+#### 3.2d Wrapper-fallback privacy rules (wave-3 V9 P1)
+
+When the Copilot SDK path is unavailable and the adapter falls back to the prompt-wrapper path:
+
+- The rewritten prompt (original prompt + brief preamble) MUST NOT be persisted to any file (log, cache, history, diagnostics surface)
+- The rewritten prompt lives only in memory inside the wrapper process; it is handed to the Copilot CLI via its stdin and then discarded when the wrapper exits
+- `diagnostics.wrapperFallbackInvoked: true` is recorded but WITHOUT the prompt text (no `rewrittenPrompt`, no excerpt)
+- Wrapper-fallback errors (e.g., Copilot CLI non-zero exit) are logged with error shape only; raw prompt content is forbidden in the error surface
+
 #### 3.3 Parity + integration tests
 
 - New `mcp_server/tests/gemini-user-prompt-submit-hook.vitest.ts`
@@ -148,6 +190,10 @@ Both adapters normalize via 005's comparator and pass the cross-runtime parity t
 | REQ-006 | Gemini plain-text stdout is NOT used as injection path | Code review + test assertion |
 | REQ-007 | Fail-open on any adapter error | Error injection tests |
 | REQ-008 | Latency: each adapter total p95 ≤ 60 ms cache hit | Bench |
+| REQ-009 | Copilot SDK proof is a MERGE GATE — runtime-capture fixture committed, version floor pinned in adapter comment (wave-3 V5/V7 P1) | Capture fixture exists, version floor test fails below pinned version |
+| REQ-010 | Gemini schema-version fixture matrix ≥ 2 schemas (v1, v2) (wave-3 V5 P1) | `mcp_server/tests/gemini-payload-fixtures/` contains ≥ 2 files, snapshot test across all |
+| REQ-011 | `brief: null` on success = no model-visible output (wave-3 V7 P1): Gemini omits `additionalContext` key, Copilot SDK returns `{}`, wrapper does not modify prompt | Unit test per runtime |
+| REQ-012 | Wrapper-fallback privacy: rewritten prompt never persisted; diagnostics records `wrapperFallbackInvoked: true` without prompt content (wave-3 V9 P1) | Privacy test asserts no rewritten-prompt substring in any serialized surface |
 
 ### 4.2 P1 - Required
 

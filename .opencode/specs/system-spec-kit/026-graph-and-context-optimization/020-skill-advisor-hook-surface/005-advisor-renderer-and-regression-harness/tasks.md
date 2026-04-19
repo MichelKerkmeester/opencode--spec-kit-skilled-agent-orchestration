@@ -73,9 +73,9 @@ _memory:
 ### Timing Harness
 
 - [ ] T018 [P0] Create `advisor-timing.vitest.ts` with 4 lanes (cold / warm / cache hit / cache miss)
-- [ ] T019 [P0] Run 50 invocations per lane; record p50/p95/p99
-- [ ] T020 [P0] Enforce cache hit p95 ≤ 50 ms
-- [ ] T021 [P0] Synthetic 30-turn replay (20 unique + 10 repeats); enforce cache hit rate ≥ 60%
+- [ ] T019 [P0] Run 50 invocations per lane; record p50/p95/p99 across all 4 lanes
+- [ ] T020 [P0] Enforce cache-hit lane p95 ≤ 50 ms (cache-hit lane ONLY; cold/warm/miss lanes are recorded for diagnostics but NOT hard-gated on a wall-clock budget)
+- [ ] T021 [P0] Synthetic 30-turn replay with the **corrected trace**: 10 unique prompts + 20 repeats (fixed interleaved pattern yielding 20/30 = 66.7% hits nominal); enforce cache hit rate ≥ 60%. A single SQLite-busy fail-open among the 30 turns still keeps ≥ 19/30 = 63.3%, preserving the gate.
 <!-- /ANCHOR:phase-5 -->
 
 <!-- ANCHOR:phase-6 -->
@@ -90,9 +90,9 @@ _memory:
 ## Phase 3: Verification
 
 - [ ] T025 [P0] All 5 advisor-*.vitest.ts suites green
-- [ ] T026 [P0] 200/200 corpus parity
-- [ ] T027 [P0] Cache hit p95 ≤ 50 ms
-- [ ] T028 [P0] Cache hit rate ≥ 60%
+- [ ] T026 [P0] 200/200 corpus parity (top-1 match)
+- [ ] T027 [P0] Cache-hit lane p95 ≤ 50 ms (cache-hit lane only; cold/warm/miss lanes are diagnostic)
+- [ ] T028 [P0] Cache hit rate ≥ 60% on corrected 30-turn replay (10 unique + 20 repeats → 20/30 = 66.7% nominal)
 - [ ] T029 [P0] `tsc --noEmit` clean
 - [ ] T030 [P0] Mark all P0 checklist items `[x]`
 - [ ] T031 [P0] Update implementation-summary.md with bench table + gate confirmation
@@ -104,7 +104,11 @@ _memory:
 
 - All P0 tasks `[x]`
 - Hard gate lifted: 006, 007, 008 unblocked
-- Corpus + timing + privacy gates all passing
+- Corpus parity: 200/200 top-1 match
+- Cache-hit lane p95 ≤ 50 ms (cache-hit lane only; cold/warm/miss lanes are diagnostic, not gated)
+- Cache hit rate ≥ 60% on corrected 30-turn replay (10 unique + 20 repeats → 20/30 = 66.7% nominal)
+- Privacy audit: raw prompt absent from all serialized surfaces
+- Observability: `speckit_advisor_hook_*` metrics + `advisor-hook-health` section verified
 <!-- /ANCHOR:completion -->
 
 <!-- ANCHOR:cross-refs -->

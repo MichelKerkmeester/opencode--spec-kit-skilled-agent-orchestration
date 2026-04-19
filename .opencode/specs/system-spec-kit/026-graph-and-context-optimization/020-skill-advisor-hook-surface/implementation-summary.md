@@ -10,10 +10,11 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 --
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface"
-    last_updated_at: "2026-04-19T06:40:00Z"
+    last_updated_at: "2026-04-19T11:40:00Z"
     last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Wave-3 validation converged — 1 P0 (005 impossible cache-hit gate) + 9 P1 patches recommended; research-validation.md written"
-    next_safe_action: "Patch 005 P0 (impossible ≥60% cache-hit gate), then optionally P1 patches across 003/004/007/008/009, then /spec_kit:implement :auto 020/002"
+    recent_action: "Wave-3 P0 + 9 P1 patches applied across 003/004/005/007/008/009 specs; all 6 children pass validate.sh strict (0 errors); ready for implementation dispatch"
+    next_safe_action: "/spec_kit:implement :auto 020/002 with executor=cli-codex model=gpt-5.4 reasoning=high service-tier=fast; cli-copilot gpt-5.4 high as fallback executor for any child that exhausts cli-codex budget"
+    dispatch_policy: "Per user directive 2026-04-19: all 020/002-009 implementation dispatches use cli-codex gpt-5.4 high fast as primary executor with cli-copilot gpt-5.4 high as automatic fallback"
 
 ---
 # Implementation Summary: Skill-Advisor Hook Surface
@@ -92,8 +93,10 @@ TBD. Reference:
 | 2026-04-19T10:53:06Z | 020/001/003 wave-3 converged (early) | 020/001-initial-research/003-implementation-plan-validation-copilot | (see commits) | 13 iter (rolling avg 0.0367 < 0.05), all V1-V10 answered, 1 P0 found in 005, 9 P1 patches recommended |
 | 2026-04-19T11:00:00Z | Wave-3 synthesis written | — | (pending commit) | research-validation.md, 111 lines, per-child delta + severity action list |
 | 2026-04-19T11:05:00Z | Wave-3 artifact folder renamed | — | (pending commit) | `research/020-skill-advisor-hook-surface-pt-03/` per new short-name convention |
-| TBD | 005 P0 patch before impl | 020/005-advisor-renderer-and-regression-harness | TBD | Replace impossible ≥60% cache-hit gate; correct timing-budget rules |
-| TBD | 020/002 implementation | 020/002-shared-payload-advisor-contract | TBD | `/spec_kit:implement :auto` |
+| 2026-04-19T11:20:00Z | Wave-3 P0 patch landed | 020/005-advisor-renderer-and-regression-harness | (pending commit) | Replaced impossible ≥60% cache-hit gate on "20 unique + 10 repeats" (= 33.3%) with mathematically consistent "10 unique + 20 repeats" (= 66.7% nominal ≥ 60% with flake margin); restated 50 ms p95 as cache-hit-lane-only gate; updated spec/plan/tasks |
+| 2026-04-19T11:30:00Z | Wave-3 P1 patches landed (9 items) | 020/003,004,005,007,008,009 | (pending commit) | 003: generation.json malformed recovery; 004: removed semanticMode + 60-token-floor, pinned non-live branches; 005: 3 new fixtures (skip-policy + X5) + observability contract tightening (JSONL schema + label catalog + alert thresholds); 007: Copilot SDK merge gate + Gemini schema-version matrix + brief:null no-emit + wrapper privacy; 008: PostToolUse audit/repair slice + stdin/argv precedence; 009: validation playbook + prompt-artifact privacy contract |
+| 2026-04-19T11:40:00Z | All 6 patched children validate.sh --strict | 003/004/005/007/008/009 | (pending commit) | 0 errors, pre-existing warnings only (RELATED DOCUMENTS custom header + implementation-summary verification baseline — same as pre-patch state) |
+| TBD | 020/002 implementation | 020/002-shared-payload-advisor-contract | TBD | `/spec_kit:implement :auto` — executor: cli-codex gpt-5.4 high fast (primary) / cli-copilot gpt-5.4 high (fallback) |
 | TBD | 020/003 implementation | 020/003-advisor-freshness-and-source-cache | TBD | — |
 | TBD | 020/004 implementation | 020/004-advisor-brief-producer-cache-policy | TBD | — |
 | TBD | 020/005 implementation | 020/005-advisor-renderer-and-regression-harness | TBD | HARD GATE: 200/200 corpus + p95 ≤ 50 ms |
