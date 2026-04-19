@@ -306,7 +306,7 @@ When the Copilot SDK path is unavailable and the adapter falls back to the promp
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - Parent: `../spec.md`
 - Predecessors: `../004-*`, `../005-*` (HARD GATE), `../006-claude-hook-wiring/`
