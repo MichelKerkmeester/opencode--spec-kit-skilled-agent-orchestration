@@ -43,13 +43,16 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-TBD post-convergence. Expected: research-validation.md synthesis with per-child delta table + severity action list for 020/002-009 scaffold adoption.
+Converged at iter 13 (early, rolling avg 0.0367 < 0.05). research-validation.md (111 lines) produced via final synthesis pass. Findings: **1 P0** (005 impossible cache-hit-rate gate) + **9 P1** patches recommended across 003/004/005/007/008/009. No architecture re-opening; no new children proposed. Verdict: "patch first, then implement".
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| TBD | TBD | TBD |
+| `../../../research/020-skill-advisor-hook-surface-pt-03/research-validation.md` | Created | Full synthesis with 7 sections |
+| `../../../research/020-skill-advisor-hook-surface-pt-03/deep-research-state.jsonl` | Appended | 14 records (13 iter + 1 synthesis) |
+| `../../../research/020-skill-advisor-hook-surface-pt-03/iterations/iteration-001.md` through `iteration-013.md` | Created | Per-iter narratives |
+| `../../../research/020-skill-advisor-hook-surface-pt-03/` folder | Renamed | From long canonical name to pt-03 short form |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -57,7 +60,7 @@ TBD post-convergence. Expected: research-validation.md synthesis with per-child 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-TBD. Will record iteration count, convergence timestamp, any angles deferred.
+13/20 iterations executed; converged early at 10:53:06Z after rolling avg newInfoRatio hit 0.0367. All 10 validation angles (V1-V10) answered. Iter 14 (synthesis) ran post-convergence via direct cli-copilot dispatch (orchestrator's iter-20 synthesis step was skipped when convergence fired at iter 13).
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -73,7 +76,7 @@ Inherits wave-1 ADR-001 (research-first) + wave-2 extended framing. This wave ex
 <!-- ANCHOR:verification -->
 ## Verification
 
-TBD. Will include convergence metrics (final newInfoRatio + iter count) and run verification via vitest parity against scaffold files.
+Converged at iter 13 with final rolling-avg newInfoRatio = 0.0367 (threshold 0.05). 10 of 10 V-angles answered. research-validation.md exists at `../../../research/020-skill-advisor-hook-surface-pt-03/research-validation.md`. Verification command: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research/003-implementation-plan-validation-copilot --strict --no-recursive`.
 <!-- /ANCHOR:verification -->
 
 ---

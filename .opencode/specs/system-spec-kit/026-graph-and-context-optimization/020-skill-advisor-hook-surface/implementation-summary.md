@@ -12,8 +12,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface"
     last_updated_at: "2026-04-19T06:40:00Z"
     last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Research converged (waves 1 + 2); children 002-009 scaffolded with ADR-004 handoff"
-    next_safe_action: "Dispatch /spec_kit:implement :auto for 020/002 to begin the contract-first train"
+    recent_action: "Wave-3 validation converged — 1 P0 (005 impossible cache-hit gate) + 9 P1 patches recommended; research-validation.md written"
+    next_safe_action: "Patch 005 P0 (impossible ≥60% cache-hit gate), then optionally P1 patches across 003/004/007/008/009, then /spec_kit:implement :auto 020/002"
 
 ---
 # Implementation Summary: Skill-Advisor Hook Surface
@@ -88,6 +88,11 @@ TBD. Reference:
 | 2026-04-19T08:45:00Z | 020/001/002 wave-2 dispatch | 020/001-initial-research/002-extended-wave-copilot | (see commits) | cli-copilot gpt-5.4 high, 10 iterations |
 | 2026-04-19T09:15:00Z | 020/001/002 wave-2 converged | 020/001-initial-research/002-extended-wave-copilot | (see commits) | 10 iter, extended research synthesis written |
 | 2026-04-19T09:30:00Z | Children 002-009 scaffolded | 020/002-009 | (pending commit) | 56 new files + metadata; ADR-004 recorded handoff |
+| 2026-04-19T10:00:00Z | 020/001/003 wave-3 dispatch | 020/001-initial-research/003-implementation-plan-validation-copilot | (see commits) | cli-copilot gpt-5.4 high, 20-iter budget, validation of 8-child scaffold |
+| 2026-04-19T10:53:06Z | 020/001/003 wave-3 converged (early) | 020/001-initial-research/003-implementation-plan-validation-copilot | (see commits) | 13 iter (rolling avg 0.0367 < 0.05), all V1-V10 answered, 1 P0 found in 005, 9 P1 patches recommended |
+| 2026-04-19T11:00:00Z | Wave-3 synthesis written | — | (pending commit) | research-validation.md, 111 lines, per-child delta + severity action list |
+| 2026-04-19T11:05:00Z | Wave-3 artifact folder renamed | — | (pending commit) | `research/020-skill-advisor-hook-surface-pt-03/` per new short-name convention |
+| TBD | 005 P0 patch before impl | 020/005-advisor-renderer-and-regression-harness | TBD | Replace impossible ≥60% cache-hit gate; correct timing-budget rules |
 | TBD | 020/002 implementation | 020/002-shared-payload-advisor-contract | TBD | `/spec_kit:implement :auto` |
 | TBD | 020/003 implementation | 020/003-advisor-freshness-and-source-cache | TBD | — |
 | TBD | 020/004 implementation | 020/004-advisor-brief-producer-cache-policy | TBD | — |
@@ -103,7 +108,7 @@ TBD. Reference:
 
 | Child | Status | Converged at | Evidence |
 |-------|--------|--------------|----------|
-| 001-initial-research | Converged | 2026-04-19T08:30Z (wave-1) + 2026-04-19T09:15Z (wave-2) | Research synthesis under ../research/020-skill-advisor-hook-surface-pt-01/ and .../020-skill-advisor-hook-surface-pt-02/ |
+| 001-initial-research | Converged | 2026-04-19T08:30Z (wave-1) + 2026-04-19T09:15Z (wave-2) + 2026-04-19T10:53Z (wave-3) | Research synthesis under ../research/020-skill-advisor-hook-surface-pt-01/, .../020-skill-advisor-hook-surface-pt-02/, .../020-skill-advisor-hook-surface-pt-03/ |
 | 002-shared-payload-advisor-contract | Scaffolded | TBD | — |
 | 003-advisor-freshness-and-source-cache | Scaffolded | TBD | — |
 | 004-advisor-brief-producer-cache-policy | Scaffolded | TBD | — |
