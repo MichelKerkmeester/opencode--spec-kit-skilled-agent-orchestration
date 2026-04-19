@@ -1,0 +1,95 @@
+{
+  "generatedAt": "2026-04-19T19:05:24Z",
+  "target": "skill-advisor-phase-stack",
+  "verdict": "PASS",
+  "hasAdvisories": true,
+  "totals": {
+    "P0": 0,
+    "P1": 3,
+    "P2": 1,
+    "iterations": 9
+  },
+  "byDimension": {
+    "D1": {
+      "P0": [],
+      "P1": ["P1-001-01"],
+      "P2": []
+    },
+    "D2": {
+      "P0": [],
+      "P1": [],
+      "P2": []
+    },
+    "D3": {
+      "P0": [],
+      "P1": [],
+      "P2": []
+    },
+    "D4": {
+      "P0": [],
+      "P1": ["P1-004-01"],
+      "P2": []
+    },
+    "D5": {
+      "P0": [],
+      "P1": ["P1-005-01"],
+      "P2": []
+    },
+    "D6": {
+      "P0": [],
+      "P1": [],
+      "P2": ["P2-006-01"]
+    },
+    "D7": {
+      "P0": [],
+      "P1": [],
+      "P2": []
+    }
+  },
+  "findings": [
+    {
+      "id": "P1-001-01",
+      "severity": "P1",
+      "dimension": "D1",
+      "iteration": 1,
+      "headline": "Raw user prompts are exposed on the advisor subprocess command line",
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/subprocess.ts:231-235",
+      "impact": "Raw prompt text remains observable through local process inspection even though persisted hook surfaces stay prompt-safe.",
+      "remediation": "Send prompt content to skill_advisor.py over stdin or an equivalent non-argv channel and extend privacy tests to cover the subprocess boundary.",
+      "status": "open"
+    },
+    {
+      "id": "P1-004-01",
+      "severity": "P1",
+      "dimension": "D4",
+      "iteration": 4,
+      "headline": "Producer and runtime keep two divergent advisor brief formats alive",
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/skill-advisor-brief.ts:141-152",
+      "impact": "Stored/shared-payload brief text and runtime-injected brief text can diverge, and observability byte accounting tracks the producer string instead of the actual rendered hook output.",
+      "remediation": "Adopt one canonical renderer or a structured-fields-only pipeline reused by producer, envelope, and measurement code.",
+      "status": "open"
+    },
+    {
+      "id": "P1-005-01",
+      "severity": "P1",
+      "dimension": "D5",
+      "iteration": 5,
+      "headline": "OpenCode plugin defaults to a looser confidence threshold than the core hook stack",
+      "evidence": ".opencode/plugins/spec-kit-skill-advisor.js:13-16",
+      "impact": "The plugin can emit recommendations that the main hook path would suppress, breaking transport parity for the same prompt and workspace.",
+      "remediation": "Centralize the default threshold constant and add a plugin-vs-hook parity test on the canonical fixture set.",
+      "status": "open"
+    },
+    {
+      "id": "P2-006-01",
+      "severity": "P2",
+      "dimension": "D6",
+      "iteration": 6,
+      "headline": "Coverage misses the two highest-signal drift vectors: subprocess privacy and plugin-vs-hook parity",
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/tests/advisor-privacy.vitest.ts:78-112",
+      "impact": "The current suite is broad but would not directly catch the two most valuable regressions identified by this review.",
+      "remediation": "Add a subprocess command-line privacy assertion and a plugin parity suite that reuses the runtime-parity fixtures.",
+      "status": "open"
+    }
+  ]
+}
