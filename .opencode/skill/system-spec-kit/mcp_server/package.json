@@ -41,6 +41,7 @@
     "node": ">=20.11.0"
   },
   "dependencies": {
+    "@github/copilot-sdk": "^0.2.2",
     "@huggingface/transformers": "^3.8.1",
     "@modelcontextprotocol/sdk": "^1.24.3",
     "@spec-kit/shared": "file:../shared",

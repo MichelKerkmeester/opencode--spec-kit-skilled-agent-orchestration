@@ -59,26 +59,41 @@ async function runWrapperHook(input: CopilotUserPromptSubmitInput, result: Advis
 
 afterEach(() => {
   delete process.env.SPECKIT_SKILL_ADVISOR_HOOK_DISABLED;
+  vi.doUnmock('@github/copilot-sdk');
 });
 
 describe('Copilot UserPromptSubmitted advisor hook', () => {
-  it('AS1 exposes SDK detection at module load and defaults to wrapper fallback when unavailable here', async () => {
-    const diagnostics = diagnosticsSink();
+  it('AS1 exposes SDK detection at module load and activates the installed SDK path', async () => {
     expect(copilotSdkAvailability).toEqual({
+      available: true,
+      moduleName: '@github/copilot-sdk',
+      reason: 'available',
+    });
+    expect(sdkAvailable).toBe(true);
+  });
+
+  it('AS1b defaults to wrapper fallback when SDK module resolution fails', async () => {
+    vi.resetModules();
+    vi.doMock('@github/copilot-sdk', () => {
+      throw new Error('mocked module resolution failure');
+    });
+
+    const unavailableModule = await import('../hooks/copilot/user-prompt-submit.js') as typeof import('../hooks/copilot/user-prompt-submit.js');
+    const diagnostics = diagnosticsSink();
+    expect(unavailableModule.copilotSdkAvailability).toEqual({
       available: false,
       moduleName: null,
       reason: 'module_not_found',
     });
-    expect(sdkAvailable).toBe(false);
+    expect(unavailableModule.sdkAvailable).toBe(false);
 
-    const output = await handleCopilotUserPromptSubmit({
+    const output = await unavailableModule.handleCopilotUserPromptSubmit({
       prompt: 'implement a TypeScript hook',
       cwd: '/workspace/project',
     }, {
       buildBrief: vi.fn(async () => fixture('livePassingSkill.json')),
       renderBrief: renderAdvisorBrief,
       writeDiagnostic: diagnostics.writeDiagnostic,
-      sdkAvailable: false,
     });
 
     expect(output).toHaveProperty('promptWrapper');
