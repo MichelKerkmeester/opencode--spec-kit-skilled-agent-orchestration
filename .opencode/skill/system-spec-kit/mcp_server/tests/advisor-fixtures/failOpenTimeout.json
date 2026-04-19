@@ -1,0 +1,19 @@
+{
+  "status": "fail_open",
+  "freshness": "unavailable",
+  "brief": null,
+  "recommendations": [],
+  "diagnostics": {
+    "errorCode": "TIMEOUT"
+  },
+  "metrics": {
+    "durationMs": 1000,
+    "cacheHit": false,
+    "subprocessInvoked": true,
+    "retriesAttempted": 1,
+    "recommendationCount": 0,
+    "tokenCap": 80
+  },
+  "generatedAt": "2026-04-19T10:00:00.000Z",
+  "sharedPayload": null
+}
