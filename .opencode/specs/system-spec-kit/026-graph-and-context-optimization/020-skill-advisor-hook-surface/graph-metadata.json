@@ -3,7 +3,17 @@
   "packet_id": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface",
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
-  "children_ids": [],
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research",
+    "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/002-shared-payload-advisor-contract",
+    "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
+    "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
+    "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness",
+    "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/006-claude-hook-wiring",
+    "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring",
+    "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/008-codex-integration-and-hook-policy",
+    "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/009-documentation-and-release-contract"
+  ],
   "manual": {
     "depends_on": [],
     "supersedes": [],
@@ -182,12 +192,6 @@
         "source": "derived"
       },
       {
-        "name": "Research Scaffold",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
         "name": "Research Dispatch",
         "kind": "proper_noun",
         "path": "tasks.md",
@@ -198,11 +202,17 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "Implementation Execution",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Today's skill-advisor (Gate 2) runs **only** when the AI explicitly invokes `skill_advisor.py` in a shell command. That limits its impact to three ways: (1) the AI remembering to call it, (2) a Claude Code harness running it before turns, (3) manual developer invocation. Codex, Gemini, and Copilot runtimes don't benefit from proactive routing at all — even when they're perfectly positioned to use the same skill catalog. Meanwhile the advisor's full JSON output is verbose (often 200-400 tokens with multiple candidates, uncertainty fields, graph-boost explanations). If it ran on every prompt and dumped full output, context would balloon quickly.",
     "created_at": "2026-04-19T05:20:26.002Z",
-    "last_save_at": "2026-04-19T05:20:26.002Z",
+    "last_save_at": "2026-04-19T08:47:26.760Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

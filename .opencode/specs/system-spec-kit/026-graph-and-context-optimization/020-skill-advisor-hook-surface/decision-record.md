@@ -214,3 +214,84 @@ The advisor subprocess might fail for legitimate reasons: Python not in PATH on 
 - See `spec.md §6 Risks` row "Hook failure blocks turn completion"
 - See `spec.md §8 Edge Cases` "Error Scenarios"
 <!-- /ANCHOR:adr-003 -->
+
+---
+
+<!-- ANCHOR:adr-004 -->
+## ADR-004: Research → implementation handoff — 8-child critical path with renderer-first hard gate
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-04-19 |
+| **Status** | Accepted |
+| **Author** | claude-opus-4.7-1m |
+| **Severity** | P0 |
+
+### Context
+
+After wave-1 (cli-codex, 10 iterations) and wave-2 (cli-copilot, 10 iterations) converged on the 020 research charter, the handoff to implementation could have taken three shapes: (1) single-packet implementation with inline wiring for all runtimes; (2) runtime-first (ship Claude adapter before payload contract); or (3) contract-first, renderer-first train with runtime adapters layered on top.
+
+Waves agree on shape (3): ship the payload envelope → freshness → producer → renderer + corpus harness first, then runtimes. Wave-2 tightened the renderer into a **hard gate**: no runtime adapter merges before 005 converges at 100% corpus parity + p95 cache-hit ≤ 50 ms + privacy audit green.
+
+### Constraints
+
+- Each child must be independently reviewable via `/spec_kit:implement :auto`
+- 005 must be a hard dependency for 006/007/008 (research-extended §X5 + §X9: renderer is the trust boundary)
+- 002's envelope extension must land before any runtime emits advisor content (producer-identity rule from research-extended §X9)
+- 009 must land last to consolidate documentation + release checklist
+
+### Decision
+
+Scaffold 8 children (002-009) under `020/`, with the critical path:
+
+```
+001 (converged) -> 002 -> 003 -> 004 -> 005 (HARD GATE) -> 006 -> 007 -> 008 -> 009
+```
+
+- 002-006 ship first (core + first user-visible slice)
+- 007 + 008 run in parallel after 006 merges
+- 009 closes release contract after 006/007/008 converge
+
+### Alternatives Considered
+
+| Alternative | Why rejected |
+|-------------|--------------|
+| Single-packet implementation (inline everything) | Can't track per-child convergence; loses `/spec_kit:implement :auto` unit |
+| Runtime-first (Claude adapter before envelope) | Violates renderer-first gate + producer-identity rule |
+| 40-token brief (smaller visible surface) | Hides threshold/freshness; can make failed recommendations look valid |
+| Similarity-only cache reuse | Too many near-misses across deep-loop/review prompts |
+| `kind: "skill-advisor"` producer enum name | Confuses lifecycle with producer identity |
+| 5-runtime parallel rollout | Diverges renderer text; parity regressions untraceable |
+
+### Consequences
+
+**Positive**:
+- Each child has narrow scope + clear convergence criteria
+- 005 hard gate ensures corpus parity and p95 budget before user-visible rollout
+- Runtime adapters (006/007/008) are thin wrappers around the shared renderer
+- Disable flag (`SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1`) works uniformly because all runtimes share the producer
+
+**Negative**:
+- 8 children add orchestration overhead vs. single-packet
+- Hard gate adds wall-clock to first user-visible slice (must wait for 005 parity)
+- Documentation child (009) creates a late feedback loop on accuracy
+
+### Five Checks
+
+| Check | Answer |
+|-------|--------|
+| Simpler | Yes — each child is independently scoped |
+| Stable | Yes — both waves converged on this ordering with no architectural reversal |
+| Stated | Yes — this ADR plus cross-references in each child's spec.md |
+| Supported | Yes — research-extended §Final Open Questions: no architecture-level questions remain |
+| Sealed | Yes — scaffolding commit closes the handoff |
+
+### Implementation
+
+- See `spec.md §1 Metadata` Child Layout for the finalized 8-child list
+- See `plan.md §4 Phase 2` for the dependency chain
+- See `tasks.md` T007-T023 for the scaffolding + implementation tasks
+- See each child's `spec.md` for scope detail (wave-1 + wave-2 folded)
+<!-- /ANCHOR:adr-004 -->

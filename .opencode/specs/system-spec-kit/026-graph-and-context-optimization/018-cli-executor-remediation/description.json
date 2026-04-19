@@ -1,5 +1,5 @@
 {
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-cli-executor-remediation",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/018-cli-executor-remediation",
   "description": "Feature Specification: Phase 020 Research-Findings Remediation",
   "keywords": [
     "feature",
@@ -9,12 +9,10 @@
     "research-findings",
     "remediation"
   ],
-  "lastUpdated": "2026-04-18T14:38:54.287Z",
+  "lastUpdated": "2026-04-19T07:17:54.221Z",
   "specId": "018",
   "folderSlug": "cli-executor-remediation",
   "parentChain": [
-    ".opencode",
-    "specs",
     "system-spec-kit",
     "026-graph-and-context-optimization"
   ],

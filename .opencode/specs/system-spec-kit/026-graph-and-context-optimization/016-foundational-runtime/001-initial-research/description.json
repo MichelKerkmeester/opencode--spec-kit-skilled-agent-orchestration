@@ -1,5 +1,5 @@
 {
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research",
   "description": "Feature Specification: Foundational Runtime Remediation (Phase 016 → Phase 016 remediation Charter)",
   "keywords": [
     "feature",
@@ -11,12 +11,10 @@
     "016",
     "charter"
   ],
-  "lastUpdated": "2026-04-18T14:38:53.285Z",
+  "lastUpdated": "2026-04-19T07:17:54.217Z",
   "specId": "001",
   "folderSlug": "initial-research",
   "parentChain": [
-    ".opencode",
-    "specs",
     "system-spec-kit",
     "026-graph-and-context-optimization",
     "016-foundational-runtime"

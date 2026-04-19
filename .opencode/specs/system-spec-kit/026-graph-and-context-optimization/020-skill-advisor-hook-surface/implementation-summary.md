@@ -12,8 +12,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface"
     last_updated_at: "2026-04-19T06:40:00Z"
     last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Placeholder scaffolded at charter time"
-    next_safe_action: "Populate dispatch log when 020/001 dispatches; populate findings registry when it converges"
+    recent_action: "Research converged (waves 1 + 2); children 002-009 scaffolded with ADR-004 handoff"
+    next_safe_action: "Dispatch /spec_kit:implement :auto for 020/002 to begin the contract-first train"
 
 ---
 # Implementation Summary: Skill-Advisor Hook Surface
@@ -34,7 +34,7 @@ _memory:
 | **Spec Folder** | 020-skill-advisor-hook-surface |
 | **Completed** | TBD |
 | **Level** | 3 |
-| **Child Layout** | `001-initial-research` (research wave), `002+` remediation children post-convergence |
+| **Child Layout** | `001-initial-research` (converged); `002-shared-payload-advisor-contract`; `003-advisor-freshness-and-source-cache`; `004-advisor-brief-producer-cache-policy`; `005-advisor-renderer-and-regression-harness` (HARD GATE); `006-claude-hook-wiring`; `007-gemini-copilot-hook-wiring`; `008-codex-integration-and-hook-policy`; `009-documentation-and-release-contract` |
 | **Predecessor** | 019-system-hardening (shipped 2026-04-19, incl. 019/004 routing-accuracy) |
 <!-- /ANCHOR:metadata -->
 
@@ -81,11 +81,50 @@ TBD. Reference:
 
 | Timestamp (UTC) | Event | Child | Repo SHA (HEAD) | Notes |
 |-----------------|-------|-------|-----------------|-------|
-| 2026-04-19T06:40:00Z | Charter scaffolded | — | b960887db (pending commit) | Level 3 umbrella, research-first per ADR-001 |
-| TBD | 020/001 scaffolded | 020/001-initial-research | TBD | — |
-| TBD | 020/001 research dispatch | 020/001-initial-research | TBD | Via `/spec_kit:deep-research :auto` (see plan.md §4.1) |
-| TBD | 020/001 converged | 020/001-initial-research | TBD | — |
-| TBD | Children spawned | 020/002...N | TBD | Per finding-cluster mapping |
+| 2026-04-19T06:40:00Z | Charter scaffolded | — | b960887db | Level 3 umbrella, research-first per ADR-001 |
+| 2026-04-19T06:50:00Z | 020/001 scaffolded | 020/001-initial-research | (see commits) | — |
+| 2026-04-19T07:00:00Z | 020/001 wave-1 dispatch | 020/001-initial-research | (see commits) | cli-codex gpt-5.4 high fast, 10 iterations |
+| 2026-04-19T08:30:00Z | 020/001 wave-1 converged | 020/001-initial-research | 0715ac5d0 | 10 iter, research synthesis written |
+| 2026-04-19T08:45:00Z | 020/001/002 wave-2 dispatch | 020/001-initial-research/002-extended-wave-copilot | (see commits) | cli-copilot gpt-5.4 high, 10 iterations |
+| 2026-04-19T09:15:00Z | 020/001/002 wave-2 converged | 020/001-initial-research/002-extended-wave-copilot | (see commits) | 10 iter, extended research synthesis written |
+| 2026-04-19T09:30:00Z | Children 002-009 scaffolded | 020/002-009 | (pending commit) | 56 new files + metadata; ADR-004 recorded handoff |
+| TBD | 020/002 implementation | 020/002-shared-payload-advisor-contract | TBD | `/spec_kit:implement :auto` |
+| TBD | 020/003 implementation | 020/003-advisor-freshness-and-source-cache | TBD | — |
+| TBD | 020/004 implementation | 020/004-advisor-brief-producer-cache-policy | TBD | — |
+| TBD | 020/005 implementation | 020/005-advisor-renderer-and-regression-harness | TBD | HARD GATE: 200/200 corpus + p95 ≤ 50 ms |
+| TBD | 020/006 implementation | 020/006-claude-hook-wiring | TBD | — |
+| TBD | 020/007 implementation | 020/007-gemini-copilot-hook-wiring | TBD | — |
+| TBD | 020/008 implementation | 020/008-codex-integration-and-hook-policy | TBD | — |
+| TBD | 020/009 implementation | 020/009-documentation-and-release-contract | TBD | Final; closes 020 |
+
+---
+
+## Children Convergence Log
+
+| Child | Status | Converged at | Evidence |
+|-------|--------|--------------|----------|
+| 001-initial-research | Converged | 2026-04-19T08:30Z (wave-1) + 2026-04-19T09:15Z (wave-2) | Research synthesis under ../research/020-skill-advisor-hook-surface-001-initial-research/ and .../020-skill-advisor-hook-surface-001-initial-research-extended-copilot/ |
+| 002-shared-payload-advisor-contract | Scaffolded | TBD | — |
+| 003-advisor-freshness-and-source-cache | Scaffolded | TBD | — |
+| 004-advisor-brief-producer-cache-policy | Scaffolded | TBD | — |
+| 005-advisor-renderer-and-regression-harness | Scaffolded | TBD | — (hard gate) |
+| 006-claude-hook-wiring | Scaffolded | TBD | — |
+| 007-gemini-copilot-hook-wiring | Scaffolded | TBD | — |
+| 008-codex-integration-and-hook-policy | Scaffolded | TBD | — |
+| 009-documentation-and-release-contract | Scaffolded | TBD | — |
+
+---
+
+## Release Prep
+
+Populate once all 8 children converge:
+
+- [ ] All 8 children report `[x]` across all P0 checklist items
+- [ ] Cross-runtime parity: 4 runtimes × 5 canonical fixtures = identical additionalContext
+- [ ] 019/004 200-prompt corpus: 200/200 top-1 parity (owned by 005)
+- [ ] Cache hit p95 ≤ 50 ms + cache hit rate ≥ 60% on 30-turn replay (owned by 005)
+- [ ] Disable flag verified: `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` stops all adapter work
+- [ ] Documentation published at .opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md (created by 020/009) + CLAUDE.md §Gate 2 updated + 4 runtime READMEs
 
 ---
 

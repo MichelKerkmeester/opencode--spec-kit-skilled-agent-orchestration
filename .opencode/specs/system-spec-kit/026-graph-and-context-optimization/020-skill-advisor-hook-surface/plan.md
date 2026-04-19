@@ -125,16 +125,32 @@ surface injection (1 line: "Skill: <name> (conf=<n>, unc=<n>, freshness=<state>)
 - [ ] Dispatch `/spec_kit:deep-research :auto` on hook architecture + context budget + runtime parity
 - [ ] Converge with ranked proposals per cluster
 
-### Phase 2: Implementation Children (002+)
-- [ ] 002-advisor-brief-producer (core `buildSkillAdvisorBrief` + cache)
-- [ ] 003-claude-hook-wiring (session-prime + user-prompt-submit for Claude)
-- [ ] 004-gemini-hook-wiring
-- [ ] 005-copilot-hook-wiring
-- [ ] 006-codex-integration (depends on research finding for Codex hook surface)
-- [ ] 007-freshness-signal (mtime-based `live/stale/absent/unavailable`)
-- [ ] 008-documentation (hook-surface contract + references)
+### Phase 2: Implementation Children (002-009) — finalized post-convergence
 
-Exact child numbering + count determined by research convergence.
+Research-converged train (wave-1 + wave-2 agree; see `001-initial-research/` + extended wave):
+
+```
+001 (converged)
+  -> 002-shared-payload-advisor-contract          (envelope vocabulary gate)
+  -> 003-advisor-freshness-and-source-cache       (freshness authority)
+  -> 004-advisor-brief-producer-cache-policy      (buildSkillAdvisorBrief orchestrator)
+  -> 005-advisor-renderer-and-regression-harness  [HARD GATE — no runtime adapter ships before this converges]
+  -> 006-claude-hook-wiring                       (first user-visible runtime slice)
+  -> 007-gemini-copilot-hook-wiring               (parity expansion; parallel with 008 after 006)
+  -> 008-codex-integration-and-hook-policy        (parity expansion; parallel with 007 after 006)
+  -> 009-documentation-and-release-contract       (final; reference doc + CLAUDE.md + release checklist)
+```
+
+- [ ] 002-shared-payload-advisor-contract (producer/source enums + `AdvisorEnvelopeMetadata` + privacy rejection rules)
+- [ ] 003-advisor-freshness-and-source-cache (`getAdvisorFreshness()` + per-skill fingerprints + generation-tagged snapshots + 15-min source cache)
+- [ ] 004-advisor-brief-producer-cache-policy (`buildSkillAdvisorBrief()` + prompt policy + HMAC exact cache + fail-open contract)
+- [ ] 005-advisor-renderer-and-regression-harness (pure renderer + 200-prompt parity + 4 timing lanes + observability + privacy) — **HARD GATE**
+- [ ] 006-claude-hook-wiring (`hooks/claude/user-prompt-submit.ts` via JSON `hookSpecificOutput.additionalContext`)
+- [ ] 007-gemini-copilot-hook-wiring (Gemini JSON `additionalContext` + Copilot SDK + wrapper fallback)
+- [ ] 008-codex-integration-and-hook-policy (Codex `UserPromptSubmit` + dynamic hook-policy detection + Bash-only `PreToolUse deny`)
+- [ ] 009-documentation-and-release-contract (hook-surface reference doc + CLAUDE.md §Gate 2 + runtime READMEs + release checklist)
+
+Each child carries its own `plan.md` dispatch details. 005 is a **hard gate**: runtime adapters (006/007/008) do not merge before 005 converges at 200/200 corpus parity + cache hit p95 ≤ 50 ms + privacy audit green.
 
 ### Phase 3: Verification
 - [ ] 019/004 200-prompt regression corpus passes at 100%

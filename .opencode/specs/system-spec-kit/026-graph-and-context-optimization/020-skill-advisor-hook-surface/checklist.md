@@ -70,7 +70,7 @@ _memory:
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] [P0] New hook-surface reference doc published under `.opencode/skill/system-spec-kit/references/hooks/` (created by 020/008)
+- [ ] [P0] New hook-surface reference doc published under `.opencode/skill/system-spec-kit/references/hooks/` (created by 020/009)
 - [ ] [P1] CLAUDE.md references the hook in Gate 2 discussion
 - [ ] [P1] Cross-runtime README updates
 <!-- /ANCHOR:docs -->

@@ -67,7 +67,7 @@ The 019/004 routing-accuracy hardening that just landed (Gate 3 F1 68.6%→97.66
 | **Parent Packet** | `../` (026-graph-and-context-optimization) |
 | **Immediate Predecessor** | `019-system-hardening/` (shipped 2026-04-19, incl. 019/004 routing-accuracy Gate 3 F1 97.66%) |
 | **Effort Estimate** | Research wave ~20-30h wall clock; implementation ~3-5 days per cluster child |
-| **Child Layout** | `001-initial-research` (research wave), `002+` reserved for per-cluster remediation |
+| **Child Layout** | `001-initial-research` (converged); `002-shared-payload-advisor-contract`; `003-advisor-freshness-and-source-cache`; `004-advisor-brief-producer-cache-policy`; `005-advisor-renderer-and-regression-harness` (**HARD GATE**); `006-claude-hook-wiring`; `007-gemini-copilot-hook-wiring`; `008-codex-integration-and-hook-policy`; `009-documentation-and-release-contract` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -150,7 +150,7 @@ See research output for full file list. Architectural anchors:
 | `mcp_server/hooks/gemini/user-prompt-submit.ts` | NEW | Per-prompt advisor brief for Gemini transport |
 | `mcp_server/hooks/copilot/user-prompt-submit.ts` | NEW | Per-prompt advisor brief for Copilot transport |
 | `mcp_server/hooks/claude/hook-state.ts` | EDIT | Add `advisorCache` field with { fingerprint, result, updatedAt, ttlSecs } |
-| New hook-surface contract doc under `.opencode/skill/system-spec-kit/references/hooks/` | NEW | Hook surface contract doc (created by 020/008) |
+| New hook-surface contract doc under `.opencode/skill/system-spec-kit/references/hooks/` | NEW | Hook surface contract doc (created by 020/009 — research-finalized split: docs live in release-contract child, not the Codex child) |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -197,7 +197,7 @@ See research output for full file list. Architectural anchors:
 - [ ] Freshness signal correctly flips `live`→`stale` when any SKILL.md mtime exceeds skill-graph SQLite mtime
 - [ ] Hook failure mode: advisor unavailable → brief degrades to `freshness=unavailable` without turn interruption
 - [ ] All 3 runtime hooks ship with identical brief format (verified via snapshot tests)
-- [ ] Documentation: new hook-surface reference doc covers contract, failure modes, cache invalidation, cross-runtime semantics (location under `.opencode/skill/system-spec-kit/references/hooks/`, created by 020/008)
+- [ ] Documentation: new hook-surface reference doc covers contract, failure modes, cache invalidation, cross-runtime semantics (location under `.opencode/skill/system-spec-kit/references/hooks/`, created by 020/009)
 <!-- /ANCHOR:success-criteria -->
 
 ---
