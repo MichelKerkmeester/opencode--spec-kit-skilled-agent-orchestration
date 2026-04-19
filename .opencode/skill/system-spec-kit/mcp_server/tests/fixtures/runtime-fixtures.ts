@@ -3,10 +3,12 @@
 // ───────────────────────────────────────────────────────────────
 // Shared test fixtures for runtime detection and hook availability tests.
 
+import { detectCodexHookPolicy } from '../../lib/codex-hook-policy.js';
+
 /** Runtime fixture describing a specific runtime's hook capabilities */
 export interface RuntimeFixture {
   runtime: 'claude-code' | 'codex-cli' | 'copilot-cli' | 'gemini-cli';
-  hookPolicy: 'enabled' | 'disabled_by_scope' | 'unavailable';
+  hookPolicy: 'enabled' | 'disabled_by_scope' | 'live' | 'partial' | 'unavailable';
   supports: {
     sessionStartHook: boolean;
     preCompactHook: boolean;
@@ -29,17 +31,19 @@ export function createRuntimeFixture(runtime: RuntimeFixture['runtime']): Runtim
           toolFallback: true,
         },
       };
-    case 'codex-cli':
+    case 'codex-cli': {
+      const hookPolicy = detectCodexHookPolicy().hooks;
       return {
         runtime: 'codex-cli',
-        hookPolicy: 'unavailable',
+        hookPolicy,
         supports: {
-          sessionStartHook: false,
+          sessionStartHook: hookPolicy === 'live',
           preCompactHook: false,
           stopHook: false,
           toolFallback: true,
         },
       };
+    }
     case 'copilot-cli':
       return {
         runtime: 'copilot-cli',

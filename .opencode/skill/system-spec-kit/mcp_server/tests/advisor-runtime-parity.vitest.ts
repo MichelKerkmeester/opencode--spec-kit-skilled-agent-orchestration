@@ -7,6 +7,7 @@ import {
   handleCopilotSdkUserPromptSubmitted,
   handleCopilotWrapperFallback,
 } from '../hooks/copilot/user-prompt-submit.js';
+import { handleCodexUserPromptSubmit } from '../hooks/codex/user-prompt-submit.js';
 import {
   normalizeRuntimeOutput,
   type NormalizedAdvisorRuntimeOutput,
@@ -17,7 +18,7 @@ import type {
   AdvisorRuntime,
 } from '../lib/skill-advisor/skill-advisor-brief.js';
 
-export const RUNTIMES = ['claude', 'gemini', 'copilot'] as const;
+export const RUNTIMES = ['claude', 'gemini', 'copilot', 'codex'] as const;
 type RuntimeId = (typeof RUNTIMES)[number];
 type RuntimeVariant = RuntimeId | 'copilot-wrapper';
 
@@ -60,6 +61,13 @@ function promptInput(runtime: RuntimeId) {
         prompt: 'implement a TypeScript hook',
         cwd: '/workspace/project',
       };
+    case 'codex':
+      return {
+        session_id: 's1',
+        hook_event_name: 'UserPromptSubmit',
+        prompt: 'implement a TypeScript hook',
+        cwd: '/workspace/project',
+      };
     default: {
       const exhaustive: never = runtime;
       return exhaustive;
@@ -94,16 +102,21 @@ async function runRuntimeVariant(
     return normalizeRuntimeOutput(runtime, output);
   }
 
+  if (variant === 'codex') {
+    const output = await handleCodexUserPromptSubmit(promptInput('codex'), dependencies);
+    return normalizeRuntimeOutput(runtime, output);
+  }
+
   const output = await handleCopilotWrapperFallback(promptInput('copilot'), dependencies);
   return normalizeRuntimeOutput(runtime, output);
 }
 
 describe('advisor runtime parity', () => {
   it('keeps the runtime list as the single extension point for 008 Codex integration', () => {
-    expect(RUNTIMES).toEqual(['claude', 'gemini', 'copilot']);
+    expect(RUNTIMES).toEqual(['claude', 'gemini', 'copilot', 'codex']);
   });
 
-  it.each(CANONICAL_FIXTURES)('%s produces identical visible brief text across Claude, Gemini, and Copilot', async (fixtureName) => {
+  it.each(CANONICAL_FIXTURES)('%s produces identical visible brief text across Claude, Gemini, Copilot, and Codex', async (fixtureName) => {
     const result = fixture(fixtureName);
     const variants: readonly RuntimeVariant[] = [...RUNTIMES, 'copilot-wrapper'];
     const outputs = await Promise.all(
@@ -116,6 +129,7 @@ describe('advisor runtime parity', () => {
       claude: { additionalContext: visibleBriefs[0] },
       gemini: { additionalContext: visibleBriefs[0] },
       copilot: { additionalContext: visibleBriefs[0] },
+      codex: { additionalContext: visibleBriefs[0] },
       'copilot-wrapper': { additionalContext: visibleBriefs[0] },
     });
   });

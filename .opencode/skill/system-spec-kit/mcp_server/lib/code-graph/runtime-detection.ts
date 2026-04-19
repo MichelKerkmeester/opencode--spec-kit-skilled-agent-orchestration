@@ -5,12 +5,13 @@
 
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { detectCodexHookPolicy } from '../codex-hook-policy.js';
 
 /** Supported runtime identifiers */
 export type RuntimeId = 'claude-code' | 'codex-cli' | 'copilot-cli' | 'gemini-cli' | 'unknown';
 
 /** Hook policy for the detected runtime */
-export type HookPolicy = 'enabled' | 'disabled_by_scope' | 'unavailable' | 'unknown';
+export type HookPolicy = 'enabled' | 'disabled_by_scope' | 'live' | 'partial' | 'unavailable' | 'unknown';
 
 /** Runtime detection result */
 export interface RuntimeInfo {
@@ -35,7 +36,8 @@ export function detectRuntime(): RuntimeInfo {
     || typeof env.CODEX_TUI_SESSION_LOG_PATH === 'string'
     || env.OPENAI_API_KEY && env.CODEX_SANDBOX
   ) {
-    return { runtime: 'codex-cli', hookPolicy: 'unavailable' };
+    const hookPolicy = detectCodexHookPolicy().hooks;
+    return { runtime: 'codex-cli', hookPolicy };
   }
 
   // Copilot CLI: sets specific env patterns
@@ -111,7 +113,7 @@ function detectCopilotHookPolicy(): HookPolicy {
 /** Check if hooks are available for the current runtime */
 export function areHooksAvailable(): boolean {
   const { hookPolicy } = detectRuntime();
-  return hookPolicy === 'enabled';
+  return hookPolicy === 'enabled' || hookPolicy === 'live' || hookPolicy === 'partial';
 }
 
 /** Get the recommended context recovery approach for the current runtime */

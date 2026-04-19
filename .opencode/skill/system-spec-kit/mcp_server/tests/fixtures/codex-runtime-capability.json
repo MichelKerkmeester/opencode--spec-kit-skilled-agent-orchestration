@@ -1,0 +1,19 @@
+{
+  "capturedAt": "2026-04-19T00:00:00.000Z",
+  "commandPath": "/Users/michelkerkmeester/.superset/bin/codex",
+  "versionProbe": {
+    "command": "codex --version",
+    "exitCode": 0,
+    "stdout": "codex-cli 0.121.0"
+  },
+  "hooksProbe": {
+    "command": "codex hooks list",
+    "exitCode": 2,
+    "stderrIncludes": "unexpected argument 'list'",
+    "detectorOutcome": "partial"
+  },
+  "notes": [
+    "Sandbox capture confirms Codex CLI is installed and version-known.",
+    "This installed CLI does not expose a hooks list inspection subcommand, so the detector must report partial instead of a hard-coded unavailable policy."
+  ]
+}

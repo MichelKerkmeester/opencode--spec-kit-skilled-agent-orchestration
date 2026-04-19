@@ -5,6 +5,7 @@ import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, it, expect, afterEach } from 'vitest';
+import { clearCodexHookPolicyCacheForTests } from '../lib/codex-hook-policy.js';
 import { detectRuntime, areHooksAvailable, getRecoveryApproach } from '../lib/code-graph/runtime-detection.js';
 
 function clearRuntimeEnv(): void {
@@ -34,6 +35,7 @@ describe('runtime detection', () => {
       rmSync(tempDir, { recursive: true, force: true });
       tempDir = null;
     }
+    clearCodexHookPolicyCacheForTests();
 
     // Restore original env
     for (const key of Object.keys(process.env)) {
@@ -56,7 +58,7 @@ describe('runtime detection', () => {
       process.env.CODEX_THREAD_ID = 'thread-123';
       const result = detectRuntime();
       expect(result.runtime).toBe('codex-cli');
-      expect(result.hookPolicy).toBe('unavailable');
+      expect(['live', 'partial', 'unavailable']).toContain(result.hookPolicy);
     });
 
     it('detects copilot-cli with enabled hooks when repo hook config is present', () => {
@@ -125,9 +127,7 @@ describe('runtime detection', () => {
     });
 
     it('returns false for unknown runtime', () => {
-      delete process.env.CLAUDE_CODE;
-      delete process.env.CLAUDE_SESSION_ID;
-      delete process.env.MCP_SERVER_NAME;
+      clearRuntimeEnv();
       expect(areHooksAvailable()).toBe(false);
     });
   });
@@ -139,9 +139,7 @@ describe('runtime detection', () => {
     });
 
     it('returns tool_fallback for unknown', () => {
-      delete process.env.CLAUDE_CODE;
-      delete process.env.CLAUDE_SESSION_ID;
-      delete process.env.MCP_SERVER_NAME;
+      clearRuntimeEnv();
       expect(getRecoveryApproach()).toBe('tool_fallback');
     });
   });
