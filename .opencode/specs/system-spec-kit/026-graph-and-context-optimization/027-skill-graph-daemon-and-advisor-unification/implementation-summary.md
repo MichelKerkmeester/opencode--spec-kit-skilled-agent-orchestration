@@ -1,41 +1,46 @@
 ---
 title: "Phase 027 — Implementation Summary"
-description: "Research converged (r01 + follow-up, 60 iters, 43 adopt_now / 3 prototype_later / 0 reject). 6 implementation children scaffolded. Awaiting per-child dispatch."
+description: "Phase 027 COMPLETE. All 7 children shipped (000 + 001-006). Skill-graph daemon auto-updates; native TS advisor with 5-lane fusion at 80.5% corpus / 77.5% holdout (from 56% Python baseline); MCP tool surface live; Python + plugin compat shims route to native. Research r01 + follow-up: 43 adopt_now / 3 prototype_later / 0 reject."
 importance_tier: "high"
-contextType: "research"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification"
-    last_updated_at: "2026-04-20T18:15:00Z"
+    last_updated_at: "2026-04-20T19:30:00Z"
     last_updated_by: "orchestrator"
-    recent_action: "027/000..003 all converged (SHAs 77b0f59e2, 32fd9197c, 8318dfaf8, e35f93b52). 003 HARD GATE: 80.5% full / 77.5% holdout / UNKNOWN 10 / 0 regressions. 004 + 006 dispatched in parallel via cli-codex gpt-5.4 high fast."
-    next_safe_action: "Verify 004 + 006 on convergence + chain 005 closure"
+    recent_action: "Phase 027 COMPLETE — all 7 children (000 prereq + 001-006) shipped. Gate 7 closed via 005 Python scorer fix (52/52 overall_pass)."
+    next_safe_action: "Dispatch 40-iter sk-deep-review on Phase 027 via cli-copilot gpt-5.4 high (user directive)"
     blockers: []
     key_files:
-      - ".opencode/specs/.../027-skill-graph-daemon-and-advisor-unification/001-daemon-freshness-foundation/"
-      - ".opencode/specs/.../027-skill-graph-daemon-and-advisor-unification/002-lifecycle-and-derived-metadata/"
-      - ".opencode/specs/.../027-skill-graph-daemon-and-advisor-unification/003-native-advisor-core/"
-      - ".opencode/specs/.../027-skill-graph-daemon-and-advisor-unification/004-mcp-advisor-surface/"
-      - ".opencode/specs/.../027-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap/"
-      - ".opencode/specs/.../027-skill-graph-daemon-and-advisor-unification/006-promotion-gates/"
-      - ".opencode/specs/.../027-skill-graph-daemon-and-advisor-unification/decision-record.md"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/daemon/"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness/"
+      - ".opencode/skill/system-spec-kit/mcp_server/lib/derived/"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/lifecycle/"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/promotion/"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/compat/"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tools/"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/"
+      - ".opencode/skill/skill-advisor/scripts/skill_advisor.py"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
-      session_id: "027-scaffold-children-r01"
+      session_id: "027-phase-complete-r01"
       parent_session_id: null
-    completion_pct: 30
+    completion_pct: 100
     open_questions: []
     answered_questions:
       - "All 31 r01 + 20 follow-up sub-questions have adopt_now/prototype_later/reject verdicts with evidence"
       - "Self-contained mcp_server/skill-advisor/ package layout adopted (NOT lib/skill-advisor/)"
-      - "Daemon budget tightened to ≤1% idle CPU / <20MB RSS"
-      - "6-packet implementation chain with hard gates: 001 → 002 → 003 → {004, 006} → 005"
+      - "Daemon budget tightened to ≤1% idle CPU / <20MB RSS; measured 0.031% / 5.516MB"
+      - "5-lane fusion weights: explicit_author 0.45 / lexical 0.30 / graph_causal 0.15 / derived_generated 0.10 / semantic_shadow 0.00"
+      - "Python↔TS parity reinterpreted as regression-protection (ADR-007): 120/120 Python-correct preserved, TS improves 41 Python-wrong"
+      - "Gate 7 closed via 005 Python scorer fix (/spec_kit:plan + /memory:save command-bridge routing)"
 ---
 
 # Implementation Summary — Phase 027
 
 ## Status
-Research converged. Children scaffolded. Awaiting per-child `/spec_kit:implement :auto` dispatches.
+**COMPLETE** — All 7 children shipped end-to-end as of 2026-04-20.
 
 ## Research Recap
 
@@ -72,8 +77,8 @@ Two planes (graph/freshness + advisor projection/scoring) inside the self-contai
 | 002 | lifecycle-and-derived-metadata | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `8318dfaf8` (13 AC tests + 29 combined, 0 SKILL.md mutations) |
 | 003 | native-advisor-core (HARD GATE) | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 prep SHA `1146faeec` + final SHA `e35f93b52` (full 80.5%, holdout 77.5%, UNKNOWN 10, 0 regressions, p95 6.989/11.45ms) |
 | 004 | mcp-advisor-surface | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `08bd30145` (3 MCP tools, 17 handler tests + 83 combined) |
-| 005 | compat-migration-and-bootstrap | ✅ 2026-04-20 | 🔄 2026-04-20 cli-codex gpt-5.4 high fast (in flight — final phase + 006 Gate 7 fix) | — |
-| 006 | promotion-gates | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `5696acf4a` (6/7 gates; Gate 7 pre-existing Python regression → 005 carry-over) |
+| 005 | compat-migration-and-bootstrap | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `a61547796` (shim + plugin + install guide + H5 playbook + **Gate 7 FIX** — 52/52 overall_pass, 96 advisor tests green) |
+| 006 | promotion-gates | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `5696acf4a` (6/7 gates initial; Gate 7 closed post-005 Python scorer fix) |
 
 ## Architectural Decision Records
 
