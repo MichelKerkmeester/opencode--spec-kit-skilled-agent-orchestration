@@ -11,10 +11,10 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/004-mcp-advisor-surface"
-    last_updated_at: "2026-04-20T18:50:00Z"
+    last_updated_at: "2026-04-20T22:15:00Z"
     last_updated_by: "codex"
-    recent_action: "Implemented advisor_recommend, advisor_status, advisor_validate MCP surface"
-    next_safe_action: "Commit in-scope files without pushing"
+    recent_action: "Remediated prompt-safe advisor output, absent-freshness fail-open semantics, and status envelope fields"
+    next_safe_action: "Use remediation-report.md for review closure evidence"
     blockers: []
     key_files:
       - ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/schemas/advisor-tool-schemas.ts"
@@ -54,9 +54,9 @@ The system-spec-kit MCP server now has an additive native advisor surface with `
 
 | Tool | Input | Output | Handler |
 | --- | --- | --- | --- |
-| `advisor_recommend` | `{ prompt, options?: { topK, includeAttribution, includeAbstainReasons } }` | Recommendations, ambiguity, freshness, cache, warnings, abstain reasons | `skill-advisor/handlers/advisor-recommend.ts` |
-| `advisor_status` | `{ workspaceRoot }` | Freshness, generation, trust state, generation bump, lane weights, daemon PID/errors | `skill-advisor/handlers/advisor-status.ts` |
-| `advisor_validate` | `{ skillSlug?: string \| null }` | Corpus, holdout, parity, safety, latency slices plus per-skill status | `skill-advisor/handlers/advisor-validate.ts` |
+| `advisor_recommend` | `{ prompt, options?: { topK, includeAttribution, includeAbstainReasons, confidenceThreshold, uncertaintyThreshold } }` | Prompt-safe recommendations, ambiguity, freshness, trust state, cache, warnings, abstain reasons | `skill-advisor/handlers/advisor-recommend.ts` |
+| `advisor_status` | `{ workspaceRoot }` | Freshness, generation, trust state, generation bump, last scan time, skill count, lane weights, daemon PID/errors | `skill-advisor/handlers/advisor-status.ts` |
+| `advisor_validate` | `{ skillSlug?: string \| null }` | Measured corpus, holdout, parity, safety, and latency slices plus per-skill status | `skill-advisor/handlers/advisor-validate.ts` |
 <!-- /ANCHOR:tool-surface -->
 
 <!-- ANCHOR:schema-excerpts -->
@@ -65,7 +65,7 @@ The system-spec-kit MCP server now has an additive native advisor surface with `
 - `AdvisorRecommendInputSchema` is strict and accepts only `prompt` plus nested strict `options`.
 - `AdvisorStatusInputSchema` is strict and requires `workspaceRoot`.
 - `AdvisorValidateInputSchema` is strict and accepts optional nullable `skillSlug`.
-- Output schemas validate lane attribution, freshness enums, trust state, and validate-slice bundles before handlers return.
+- Output schemas validate sanitized lane attribution metadata, freshness enums, trust state, status metadata, and validate-slice bundles before handlers return.
 <!-- /ANCHOR:schema-excerpts -->
 
 <!-- ANCHOR:handler-integration-map -->
@@ -75,6 +75,7 @@ The system-spec-kit MCP server now has an additive native advisor surface with `
 | --- | --- | --- |
 | `advisor-recommend.ts` | `lib/scorer/fusion.ts` | Calls `scoreAdvisorPrompt()` for normalized scorer output. |
 | `advisor-recommend.ts` | `lib/prompt-cache.ts` | Reuses HMAC prompt cache with source-signature invalidation. |
+| `advisor-recommend.ts` | `lib/render.ts` | Sanitizes recommendation skill labels, redirect metadata, and lifecycle status before public output. |
 | `advisor-status.ts` | `lib/freshness/generation.ts` | Reads skill graph generation metadata. |
 | `advisor-status.ts` | `lib/freshness/trust-state.ts` | Produces live/stale/absent/unavailable trust states. |
 | `advisor-validate.ts` | `lib/scorer/fusion.ts` | Runs prompt corpus scoring for validation slices. |
@@ -96,7 +97,7 @@ The system-spec-kit MCP server now has an additive native advisor surface with `
 
 - Baseline before edits: requested suite passed 49 tests.
 - New handler suite: `vitest run mcp_server/skill-advisor/tests/handlers/` passed 17 tests.
-- Requested regression suite after edits: `vitest run mcp_server/skill-advisor/tests/ mcp_server/tests/advisor-freshness.vitest.ts --reporter=default` passed 83 tests.
+- Post-review package suite: `vitest run mcp_server/skill-advisor/tests/ --reporter=default` passed 93 tests before legacy-test consolidation and 167 tests after moving advisor legacy tests package-local.
 - `npm run typecheck` exited 0.
 - `npm run build` exited 0.
 - Registry/schema smoke caveat: targeted run including `context-server.vitest.ts` passed 505 tests and failed one source-text assertion outside the allowed 027/004 write scope.
@@ -105,7 +106,7 @@ The system-spec-kit MCP server now has an additive native advisor surface with `
 <!-- ANCHOR:privacy -->
 ## 8. PRIVACY CONFORMANCE
 
-`advisor_recommend` uses the existing HMAC prompt cache key and never returns raw prompt text. Handler tests assert prompt and PII-shaped content do not appear in recommend/status/validate outputs. `advisor_validate` returns aggregate corpus metrics only and omits raw prompts.
+`advisor_recommend` uses the existing HMAC prompt cache key and never returns raw prompt text. Public recommendations sanitize `skillId`, `redirectFrom`, `redirectTo`, and lifecycle `status`; `includeAttribution` returns only lane contribution metadata and strips prompt-derived evidence (`advisor-recommend.ts:92`, `advisor-recommend.ts:98`, `advisor-recommend.ts:115`). Handler tests assert prompt text, PII-shaped content, unsafe labels, and prompt-derived evidence do not appear in recommend/status/validate outputs (`advisor-recommend.vitest.ts:94`, `advisor-recommend.vitest.ts:117`, `advisor-recommend.vitest.ts:174`, `advisor-status.vitest.ts:77`). `advisor_validate` returns aggregate corpus metrics only and omits raw prompts.
 <!-- /ANCHOR:privacy -->
 
 <!-- ANCHOR:follow-ups -->

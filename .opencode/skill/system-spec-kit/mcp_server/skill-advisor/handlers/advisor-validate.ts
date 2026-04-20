@@ -3,10 +3,12 @@
 // ───────────────────────────────────────────────────────────────
 
 import { existsSync, readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { scoreAdvisorPrompt } from '../lib/scorer/fusion.js';
+import { runPromotionLatencyBench } from '../bench/latency-bench.js';
 import { createFixtureProjection } from '../lib/scorer/projection.js';
 import type { SkillProjection } from '../lib/scorer/types.js';
 import {
@@ -24,6 +26,16 @@ interface CorpusRow {
   readonly skill_top_1: string;
 }
 
+interface RegressionCase {
+  readonly id: string;
+  readonly priority?: string;
+  readonly prompt: string;
+  readonly confidence_only?: boolean;
+  readonly expect_result: boolean;
+  readonly expected_top_any?: readonly string[];
+  readonly allow_command_bridge?: boolean;
+}
+
 interface SkillAggregate {
   total: number;
   matched: number;
@@ -32,7 +44,7 @@ interface SkillAggregate {
 function findWorkspaceRoot(): string {
   let current = dirname(fileURLToPath(import.meta.url));
   for (let index = 0; index < 14; index += 1) {
-    if (existsSync(resolve(current, '.opencode', 'skill'))) return current;
+    if (existsSync(resolve(current, '.opencode', 'skill', 'system-spec-kit', 'SKILL.md'))) return current;
     current = resolve(current, '..');
   }
   return process.cwd();
@@ -47,6 +59,17 @@ function loadCorpus(workspaceRoot: string): CorpusRow[] {
     .trim()
     .split('\n')
     .map((line) => JSON.parse(line) as CorpusRow);
+}
+
+function loadRegressionCases(workspaceRoot: string): RegressionCase[] {
+  const fixturePath = resolve(
+    workspaceRoot,
+    '.opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl',
+  );
+  return readFileSync(fixturePath, 'utf8')
+    .trim()
+    .split('\n')
+    .map((line) => JSON.parse(line) as RegressionCase);
 }
 
 function goldSkill(row: CorpusRow): string | null {
@@ -116,6 +139,95 @@ function evaluateRows(rows: readonly CorpusRow[], workspaceRoot: string): {
   return { correct, unknown, falseFire, aggregates };
 }
 
+function runPythonTopSkills(rows: readonly CorpusRow[], workspaceRoot: string): Array<string | null> {
+  const script = `
+import importlib.util, json, os, sys
+workspace = sys.argv[1]
+path = os.path.join(workspace, '.opencode/skill/skill-advisor/scripts/skill_advisor.py')
+spec = importlib.util.spec_from_file_location('skill_advisor', path)
+mod = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(mod)
+prompts = json.loads(sys.stdin.read())
+out = []
+for prompt in prompts:
+    recs = mod.analyze_prompt(prompt=prompt, confidence_threshold=0.8, uncertainty_threshold=0.35, confidence_only=False, show_rejections=False)
+    out.append(recs[0]['skill'] if recs else None)
+print(json.dumps(out))
+`;
+  const result = spawnSync('python3', ['-c', script, workspaceRoot], {
+    input: JSON.stringify(rows.map((row) => row.prompt)),
+    encoding: 'utf8',
+    env: {
+      ...process.env,
+      SKILL_ADVISOR_DISABLE_BUILTIN_SEMANTIC: '1',
+    },
+    maxBuffer: 1024 * 1024 * 10,
+  });
+  if (result.status !== 0) {
+    throw new Error(`Python parity scorer failed: ${result.stderr || result.stdout}`);
+  }
+  return JSON.parse(result.stdout) as Array<string | null>;
+}
+
+function parityRegressions(rows: readonly CorpusRow[], workspaceRoot: string): string[] {
+  const pythonTopSkills = runPythonTopSkills(rows, workspaceRoot);
+  const regressions: string[] = [];
+  for (const [index, row] of rows.entries()) {
+    const gold = goldSkill(row);
+    if (pythonTopSkills[index] !== gold) continue;
+    const tsTopSkill = scoreAdvisorPrompt(row.prompt, { workspaceRoot }).topSkill;
+    if (tsTopSkill !== gold) {
+      regressions.push(row.id);
+    }
+  }
+  return regressions;
+}
+
+function pythonGoldNoneFalseFire(rows: readonly CorpusRow[], workspaceRoot: string): number {
+  const pythonTopSkills = runPythonTopSkills(rows, workspaceRoot);
+  return rows.filter((row, index) => goldSkill(row) === null && pythonTopSkills[index] !== null).length;
+}
+
+function evaluateRegressionCases(cases: readonly RegressionCase[], workspaceRoot: string): {
+  p0PassRate: number;
+  failedCount: number;
+  commandBridgeFalsePositiveRate: number;
+} {
+  let p0Total = 0;
+  let p0Passed = 0;
+  let failedCount = 0;
+  let commandBridgeEligible = 0;
+  let commandBridgeFalsePositive = 0;
+  for (const testCase of cases) {
+    const result = scoreAdvisorPrompt(testCase.prompt, {
+      workspaceRoot,
+      confidenceThreshold: 0.8,
+      uncertaintyThreshold: testCase.confidence_only ? 1 : 0.35,
+    });
+    const top = result.recommendations[0] ?? null;
+    const expected = testCase.expected_top_any ?? [];
+    const passed = testCase.expect_result
+      ? Boolean(top && expected.includes(top.skill))
+      : top === null;
+    if (testCase.priority === 'P0') {
+      p0Total += 1;
+      if (passed) p0Passed += 1;
+    }
+    if (!passed) failedCount += 1;
+    if (testCase.allow_command_bridge === false) {
+      commandBridgeEligible += 1;
+      if (top?.kind === 'command') commandBridgeFalsePositive += 1;
+    }
+  }
+  return {
+    p0PassRate: p0Total > 0 ? Number((p0Passed / p0Total).toFixed(4)) : 1,
+    failedCount,
+    commandBridgeFalsePositiveRate: commandBridgeEligible > 0
+      ? Number((commandBridgeFalsePositive / commandBridgeEligible).toFixed(4))
+      : 0,
+  };
+}
+
 function countSlice(correct: number, total: number, threshold = 0.7): {
   percentage: number;
   passed: boolean;
@@ -177,10 +289,13 @@ export function validateAdvisor(input: AdvisorValidateInput = {}): AdvisorValida
   const holdoutResult = evaluateRows(holdout, workspaceRoot);
   const fullSlice = countSlice(full.correct, corpus.length);
   const holdoutSlice = countSlice(holdoutResult.correct, holdout.length);
-  const explicitRegressions: string[] = [];
+  const explicitRegressions = parityRegressions(corpus, workspaceRoot);
+  const baselineGoldNoneFalseFire = pythonGoldNoneFalseFire(corpus, workspaceRoot);
   const derivedComplete = derivedAttributionComplete(workspaceRoot);
   const ambiguity = ambiguityStable();
   const safety = adversarialStuffingBlocked(workspaceRoot);
+  const latency = runPromotionLatencyBench(workspaceRoot);
+  const regressionSuite = evaluateRegressionCases(loadRegressionCases(workspaceRoot), workspaceRoot);
   const p0Checks = [
     fullSlice.passed,
     holdoutSlice.passed,
@@ -189,6 +304,10 @@ export function validateAdvisor(input: AdvisorValidateInput = {}): AdvisorValida
     ambiguity,
     derivedComplete,
     safety,
+    latency.gatePassed,
+    regressionSuite.p0PassRate >= 1.0,
+    regressionSuite.failedCount === 0,
+    regressionSuite.commandBridgeFalsePositiveRate <= 0.05,
   ];
   const failedCount = p0Checks.filter((passed) => !passed).length;
   const perSkill = [...full.aggregates.entries()]
@@ -213,7 +332,7 @@ export function validateAdvisor(input: AdvisorValidateInput = {}): AdvisorValida
         },
         gold_none_false_fire_count: {
           value: full.falseFire,
-          baselineDelta: 0,
+          baselineDelta: full.falseFire - baselineGoldNoneFalseFire,
         },
       },
       holdout: {
@@ -238,9 +357,11 @@ export function validateAdvisor(input: AdvisorValidateInput = {}): AdvisorValida
       },
       latency: {
         regression_suite_status: {
-          p0PassRate: Number(((p0Checks.length - failedCount) / p0Checks.length).toFixed(4)),
-          failedCount,
-          commandBridgeFalsePositiveRate: 0,
+          p0PassRate: regressionSuite.p0PassRate,
+          failedCount: regressionSuite.failedCount,
+          commandBridgeFalsePositiveRate: regressionSuite.commandBridgeFalsePositiveRate,
+          cacheHitP95Ms: latency.cacheHitP95Ms,
+          uncachedP95Ms: latency.uncachedP95Ms,
         },
       },
     },

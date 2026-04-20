@@ -1,0 +1,2 @@
+{"type":"iteration","iteration":20,"dimensions":["maintainability"],"filesReviewed":17,"findingsSummary":{"P0":0,"P1":0,"P2":1},"findingsNew":["R20-P2-001"],"traceabilityChecks":{"packageSelfContained":true,"testsColocated":true,"regressionSuitesPreserved":true,"stableAdvisorExportMissing":true},"newFindingsRatio":0.06,"graphEvents":[]}
+{"type":"finding","id":"R20-P2-001","severity":"P2","file":".opencode/plugins/spec-kit-skill-advisor.js:23","title":"Compat adapter still hardcodes private dist advisor paths","iteration":20}

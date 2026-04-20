@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Phase 027 — Skill-Graph Auto-Update Daemon + Advisor Unification"
-description: "Research phase for (1) filesystem-driven skill-graph auto-update daemon, (2) auto-derived advisor trigger phrases + keywords, (3) advisor matching upgrade using memory MCP's hybrid + causal search, (4) consolidation of skill-advisor into system-spec-kit MCP server."
+description: "Completed Phase 027 implementation for (1) filesystem-driven skill-graph auto-update daemon, (2) auto-derived advisor trigger phrases + keywords, (3) native advisor scoring and MCP surface, (4) skill-advisor consolidation into the system-spec-kit MCP server."
 trigger_phrases:
   - "phase 027"
   - "skill-graph daemon"
@@ -9,14 +9,14 @@ trigger_phrases:
   - "causal advisor"
   - "skill watcher"
 importance_tier: "high"
-contextType: "research"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification"
-    last_updated_at: "2026-04-20T05:20:00Z"
-    last_updated_by: "orchestrator"
-    recent_action: "Scaffolded Phase 027 research packet with 4-track battle plan"
-    next_safe_action: "Dispatch 40-iter deep-research (cli-codex gpt-5.4 high fast)"
+    last_updated_at: "2026-04-20T22:15:00Z"
+    last_updated_by: "codex"
+    recent_action: "Corrected parent packet drift after Phase 027 implementation and post-review remediation"
+    next_safe_action: "Use remediation-report.md as the closure evidence for review/027-skill-graph-daemon-and-advisor-unification-pt-01"
     blockers: []
     key_files:
       - ".opencode/skill/skill-advisor/scripts/skill_advisor.py"
@@ -31,7 +31,7 @@ _memory:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "027-scaffold-r01"
       parent_session_id: null
-    completion_pct: 0
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -48,14 +48,16 @@ _memory:
 |---|---|
 | **Level** | 3 |
 | **Priority** | P1 (Architectural) |
-| **Status** | Research (Draft) |
-| **Created** | 2026-04-20 |
+| **Status** | Complete |
+| **Created** | 2026-04-20 (completed 2026-04-20) |
 | **Branch** | `main` |
 | **Parent** | `../020-skill-advisor-hook-surface/` |
-| **Research** | 40-iter deep-research, cli-codex gpt-5.4 high fast |
+| **Research** | 40-iter deep-research + 20-iter follow-up complete |
 | **Research artifacts** | `../research/027-skill-graph-daemon-and-advisor-unification-pt-01/` |
 | **Child Layout** | `000-validator-esm-fix` (prereq); `001-daemon-freshness-foundation`; `002-lifecycle-and-derived-metadata`; `003-native-advisor-core`; `004-mcp-advisor-surface`; `005-compat-migration-and-bootstrap`; `006-promotion-gates` |
-| **Decision records** | `./decision-record.md` — ADR-001 through ADR-006 |
+| **Ship SHAs** | `77b0f59e2`, `32fd9197c`, `8318dfaf8`, `1146faeec`, `e35f93b52`, `08bd30145`, `a61547796`, `5696acf4a` |
+| **Post-review remediation** | `review/027-skill-graph-daemon-and-advisor-unification-pt-01/remediation-report.md` |
+| **Decision records** | `./decision-record.md` — ADR-001 through ADR-007 |
 | **Sibling decisions** | 021/001 (advisor hook efficacy), 021/002 (SKILL.md smart-router), 025 (R02 remediation), 026 (R03 remediation) |
 
 ---
@@ -78,7 +80,7 @@ Four entangled limitations in the current skill-advisor stack:
 
 Research-phase output (this packet, r01): converged recommendation on the shape of a unified skill-advisor subsystem that (a) auto-updates on skill change, (b) auto-derives/refreshes triggers + keywords, (c) uses memory MCP's hybrid + causal search primitives, (d) lives inside the system-spec-kit MCP server.
 
-Implementation (follow-on packets): shipped design per the research's `adopt now` / `prototype later` / `reject` call for each research question.
+Implementation (follow-on packets): shipped design per the research's `adopt now` / `prototype later` / `reject` call for each research question. The parent packet is now marked complete because all children 000-006 shipped and the Phase 027 post-implementation review findings were remediated in `review/027-skill-graph-daemon-and-advisor-unification-pt-01/remediation-report.md`.
 
 ---
 

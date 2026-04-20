@@ -1,0 +1,1 @@
+{"type":"iteration","iteration":14,"dimensions":["security"],"filesReviewed":13,"findingsSummary":{"P0":0,"P1":9,"P2":4},"findingsNew":[],"traceabilityChecks":{"a7SanitizerWriteBoundaries":true,"adversarialStuffingGateStable":true,"mcpPromptLeakageSurfaceStable":true,"compatPromptSafeBridgeStable":true},"newFindingsRatio":0,"graphEvents":[]}

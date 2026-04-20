@@ -15,6 +15,8 @@ function status(freshness: AdvisorStatusOutput['freshness']): AdvisorStatusOutpu
       lastLiveAt: freshness === 'live' ? '2026-04-20T00:00:00.000Z' : null,
     },
     lastGenerationBump: freshness === 'absent' ? null : '2026-04-20T00:00:00.000Z',
+    lastScanAt: freshness === 'absent' ? null : '2026-04-20T00:00:00.000Z',
+    skillCount: freshness === 'absent' ? 0 : 12,
     laneWeights: {
       explicit_author: 0.45,
       lexical: 0.3,
@@ -60,4 +62,3 @@ describe('compat daemon probe', () => {
     })).toMatchObject({ available: false, reason: 'ADVISOR_DISABLED' });
   });
 });
-

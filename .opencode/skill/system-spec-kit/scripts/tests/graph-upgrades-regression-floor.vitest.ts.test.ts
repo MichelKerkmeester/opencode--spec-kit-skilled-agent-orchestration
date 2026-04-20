@@ -9,7 +9,7 @@ import {
 } from '../../mcp_server/lib/search/evidence-gap-detector.ts';
 import {
   detectorProvenanceFromParserBackend,
-} from '../../mcp_server/lib/code-graph/structural-indexer.ts';
+} from '../../mcp_server/code-graph/lib/structural-indexer.ts';
 
 const mocks = vi.hoisted(() => ({
   getDb: vi.fn(),
@@ -28,7 +28,7 @@ const mocks = vi.hoisted(() => ({
   })),
 }));
 
-vi.mock('../../mcp_server/lib/code-graph/code-graph-db.js', () => ({
+vi.mock('../../mcp_server/code-graph/lib/code-graph-db.js', () => ({
   getDb: mocks.getDb,
   queryEdgesFrom: mocks.queryEdgesFrom,
   queryEdgesTo: mocks.queryEdgesTo,
@@ -39,11 +39,11 @@ vi.mock('../../mcp_server/lib/code-graph/code-graph-db.js', () => ({
   getLastDetectorProvenance: mocks.getLastDetectorProvenance,
 }));
 
-vi.mock('../../mcp_server/lib/code-graph/ensure-ready.js', () => ({
+vi.mock('../../mcp_server/code-graph/lib/ensure-ready.js', () => ({
   ensureCodeGraphReady: mocks.ensureCodeGraphReady,
 }));
 
-import { handleCodeGraphQuery } from '../../mcp_server/handlers/code-graph/query.js';
+import { handleCodeGraphQuery } from '../../mcp_server/code-graph/handlers/query.js';
 
 describe('graph upgrades regression floor', () => {
   it('keeps detector provenance honest for fallback lanes', () => {

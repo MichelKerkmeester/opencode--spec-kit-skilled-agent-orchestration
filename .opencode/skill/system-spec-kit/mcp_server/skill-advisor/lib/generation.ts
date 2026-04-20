@@ -14,6 +14,7 @@ import {
   classifyAdvisorException,
   type AdvisorErrorClass,
 } from './error-diagnostics.js';
+import { getSkillGraphGenerationPath } from './freshness/generation.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -35,18 +36,14 @@ export interface AdvisorGenerationSnapshot {
 interface GenerationFilePayload {
   readonly generation: number;
   readonly updatedAt: string;
+  readonly sourceSignature?: string | null;
+  readonly reason?: string;
+  readonly state?: string;
 }
 
 // ───────────────────────────────────────────────────────────────
 // 2. CONSTANTS
 // ───────────────────────────────────────────────────────────────
-
-const GENERATION_STATE_RELATIVE_PATH = join(
-  '.opencode',
-  'skill',
-  '.advisor-state',
-  'generation.json',
-);
 
 const observedGenerations = new Map<string, number>();
 
@@ -105,6 +102,9 @@ function writeGenerationAtomic(filePath: string, generation: number): void {
   const payload: GenerationFilePayload = {
     generation,
     updatedAt: new Date().toISOString(),
+    sourceSignature: null,
+    reason: 'LEGACY_ADVISOR_GENERATION_BUMP',
+    state: 'live',
   };
   const tempPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
   try {
@@ -160,7 +160,7 @@ function setGeneration(workspaceRoot: string, filePath: string, generation: numb
 
 /** Resolve the persistent generation-counter path for a workspace. */
 export function getAdvisorGenerationPath(workspaceRoot: string): string {
-  return join(resolve(workspaceRoot), GENERATION_STATE_RELATIVE_PATH);
+  return getSkillGraphGenerationPath(resolve(workspaceRoot));
 }
 
 /** Read or recover the advisor generation counter for freshness checks. */

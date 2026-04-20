@@ -10,6 +10,8 @@ function workspace(name: string): string {
   const root = mkdtempSync(join(tmpdir(), `advisor-status-${name}-`));
   mkdirSync(join(root, '.opencode', 'skill', '.advisor-state'), { recursive: true });
   mkdirSync(join(root, '.opencode', 'skill', 'system-spec-kit', 'mcp_server', 'database'), { recursive: true });
+  mkdirSync(join(root, '.opencode', 'skill', 'alpha'), { recursive: true });
+  writeFileSync(join(root, '.opencode', 'skill', 'alpha', 'graph-metadata.json'), '{"skill_id":"alpha"}\n', 'utf8');
   return root;
 }
 
@@ -37,6 +39,8 @@ describe('advisor_status handler', () => {
 
     expect(status.freshness).toBe('live');
     expect(status.generation).toBe(3);
+    expect(status.lastScanAt).toBe('2026-04-20T00:00:00.000Z');
+    expect(status.skillCount).toBe(1);
     expect(status.laneWeights.explicit_author).toBe(0.45);
   });
 

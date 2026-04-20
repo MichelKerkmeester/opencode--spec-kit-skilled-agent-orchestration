@@ -37,11 +37,17 @@ function skill(overrides: Partial<SkillProjection> & Pick<SkillProjection, 'id'>
 
 function passingGateInput() {
   return {
-    fullCorpus: { accuracy: 0.805, goldNoneFalseFire: 8, baselineGoldNoneFalseFire: 8 },
+    fullCorpus: { accuracy: 0.805, unknownCount: 10, goldNoneFalseFire: 8, baselineGoldNoneFalseFire: 8 },
     holdout: { accuracy: 0.775 },
     safety: { regressionCount: 0, baselineRegressionCount: 0 },
     latency: { cacheHitP95Ms: 7.196, uncachedP95Ms: 11.659 },
     exactParity: { pythonCorrect: 120, preservedPythonCorrect: 120, regressions: 0 },
+    paritySlices: {
+      explicitSkillTop1Regressions: 0,
+      ambiguityStable: true,
+      derivedLaneAttributionComplete: true,
+    },
+    adversarial: { stuffingRejected: true },
     regressionSuite: { p0PassRate: 1.0, failedCases: 0, commandBridgeFpRate: 0 },
     now: () => '2026-04-20T00:00:00.000Z',
   };
@@ -108,16 +114,21 @@ describe('027/006 weight and semantic guards', () => {
 });
 
 describe('027/006 seven-gate bundle', () => {
-  it('passes when all seven gates meet thresholds', () => {
+  it('passes when all required gate slices meet thresholds', () => {
     const result = evaluatePromotionGateBundle(passingGateInput());
     expect(result.passed).toBe(true);
-    expect(result.gates).toHaveLength(7);
+    expect(result.gates).toHaveLength(12);
   });
 
   it.each([
-    ['full-corpus-top1', { fullCorpus: { accuracy: 0.745, goldNoneFalseFire: 8, baselineGoldNoneFalseFire: 8 } }],
+    ['full-corpus-top1', { fullCorpus: { accuracy: 0.745, unknownCount: 10, goldNoneFalseFire: 8, baselineGoldNoneFalseFire: 8 } }],
     ['stratified-holdout-top1', { holdout: { accuracy: 0.70 } }],
-    ['gold-none-false-fire-no-increase', { fullCorpus: { accuracy: 0.805, goldNoneFalseFire: 9, baselineGoldNoneFalseFire: 8 } }],
+    ['unknown-count-ceiling', { fullCorpus: { accuracy: 0.805, unknownCount: 11, goldNoneFalseFire: 8, baselineGoldNoneFalseFire: 8 } }],
+    ['gold-none-false-fire-no-increase', { fullCorpus: { accuracy: 0.805, unknownCount: 10, goldNoneFalseFire: 9, baselineGoldNoneFalseFire: 8 } }],
+    ['explicit-skill-top1-no-regression', { paritySlices: { explicitSkillTop1Regressions: 1, ambiguityStable: true, derivedLaneAttributionComplete: true } }],
+    ['ambiguity-stability', { paritySlices: { explicitSkillTop1Regressions: 0, ambiguityStable: false, derivedLaneAttributionComplete: true } }],
+    ['derived-lane-attribution-required', { paritySlices: { explicitSkillTop1Regressions: 0, ambiguityStable: true, derivedLaneAttributionComplete: false } }],
+    ['adversarial-stuffing-rejection', { adversarial: { stuffingRejected: false } }],
     ['safety-regression-no-increase', { safety: { regressionCount: 1, baselineRegressionCount: 0 } }],
     ['latency-no-regression', { latency: { cacheHitP95Ms: 55, uncachedP95Ms: 11.659 } }],
     ['exact-parity-preservation', { exactParity: { pythonCorrect: 120, preservedPythonCorrect: 119, regressions: 1 } }],

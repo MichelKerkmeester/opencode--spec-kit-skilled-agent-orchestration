@@ -1,0 +1,25 @@
+{
+  "status": "ok",
+  "freshness": "live",
+  "brief": "ignored predecessor brief",
+  "recommendations": [
+    {
+      "skill": "sk-code-opencode",
+      "confidence": 0.91,
+      "uncertainty": 0.23,
+      "passes_threshold": true,
+      "reason": "free-form reason must not render"
+    }
+  ],
+  "diagnostics": null,
+  "metrics": {
+    "durationMs": 12,
+    "cacheHit": false,
+    "subprocessInvoked": true,
+    "retriesAttempted": 0,
+    "recommendationCount": 1,
+    "tokenCap": 80
+  },
+  "generatedAt": "2026-04-19T10:00:00.000Z",
+  "sharedPayload": null
+}

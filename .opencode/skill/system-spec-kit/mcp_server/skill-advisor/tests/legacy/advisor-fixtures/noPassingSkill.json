@@ -1,0 +1,24 @@
+{
+  "status": "ok",
+  "freshness": "live",
+  "brief": null,
+  "recommendations": [
+    {
+      "skill": "sk-code-opencode",
+      "confidence": 0.61,
+      "uncertainty": 0.52,
+      "passes_threshold": false
+    }
+  ],
+  "diagnostics": null,
+  "metrics": {
+    "durationMs": 10,
+    "cacheHit": false,
+    "subprocessInvoked": true,
+    "retriesAttempted": 0,
+    "recommendationCount": 1,
+    "tokenCap": 80
+  },
+  "generatedAt": "2026-04-19T10:00:00.000Z",
+  "sharedPayload": null
+}

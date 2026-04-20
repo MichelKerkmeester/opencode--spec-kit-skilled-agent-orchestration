@@ -20,7 +20,7 @@ interface CorpusRow {
 export function findWorkspaceRoot(): string {
   let current = dirname(fileURLToPath(import.meta.url));
   for (let index = 0; index < 12; index += 1) {
-    if (existsSync(resolve(current, '.opencode', 'skill'))) return current;
+    if (existsSync(resolve(current, '.opencode', 'skill', 'system-spec-kit', 'SKILL.md'))) return current;
     current = resolve(current, '..');
   }
   throw new Error('Unable to locate workspace root.');

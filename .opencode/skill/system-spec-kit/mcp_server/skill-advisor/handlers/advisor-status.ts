@@ -2,7 +2,7 @@
 // MODULE: advisor_status Handler
 // ───────────────────────────────────────────────────────────────
 
-import { existsSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 import { readSkillGraphGeneration } from '../lib/freshness/generation.js';
@@ -38,6 +38,25 @@ function maxMtimeMs(path: string): number {
   return stat.mtimeMs;
 }
 
+function countSkillMetadataFiles(skillRoot: string): number {
+  if (!existsSync(skillRoot)) return 0;
+  const pending = [skillRoot];
+  let count = 0;
+  while (pending.length > 0) {
+    const current = pending.pop();
+    if (!current) continue;
+    for (const entry of readdirSync(current, { withFileTypes: true })) {
+      const entryPath = join(current, entry.name);
+      if (entry.isDirectory()) {
+        pending.push(entryPath);
+      } else if (entry.isFile() && entry.name === 'graph-metadata.json') {
+        count += 1;
+      }
+    }
+  }
+  return count;
+}
+
 export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutput {
   const args = AdvisorStatusInputSchema.parse(input);
   const workspaceRoot = resolve(args.workspaceRoot);
@@ -67,6 +86,8 @@ export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutpu
       generation: generation.generation,
       trustState,
       lastGenerationBump: generation.updatedAt === new Date(0).toISOString() ? null : generation.updatedAt,
+      lastScanAt: generation.updatedAt === new Date(0).toISOString() ? null : generation.updatedAt,
+      skillCount: countSkillMetadataFiles(skillRoot),
       laneWeights: DEFAULT_SCORER_WEIGHTS,
       ...(parseDaemonPid() ? { daemonPid: parseDaemonPid() } : {}),
       ...(errors.length > 0 ? { errors } : {}),
@@ -87,6 +108,8 @@ export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutpu
       generation: 0,
       trustState,
       lastGenerationBump: null,
+      lastScanAt: null,
+      skillCount: countSkillMetadataFiles(skillRoot),
       laneWeights: DEFAULT_SCORER_WEIGHTS,
       errors: [message],
     };

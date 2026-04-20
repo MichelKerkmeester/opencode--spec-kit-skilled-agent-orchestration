@@ -64,7 +64,7 @@ NATIVE_ADVISOR_STATUS = os.path.join(
     "handlers",
     "advisor-status.js",
 )
-NATIVE_ADVISOR_RECOMMEND = os.path.join(
+NATIVE_ADVISOR_COMPAT = os.path.join(
     REPO_ROOT,
     ".opencode",
     "skill",
@@ -72,14 +72,13 @@ NATIVE_ADVISOR_RECOMMEND = os.path.join(
     "mcp_server",
     "dist",
     "skill-advisor",
-    "handlers",
-    "advisor-recommend.js",
+    "compat",
+    "index.js",
 )
 
 NATIVE_ADVISOR_BRIDGE = r"""
 import { readFileSync } from 'node:fs';
-import { readAdvisorStatus } from 'ADVISOR_STATUS_MODULE';
-import { handleAdvisorRecommend } from 'ADVISOR_RECOMMEND_MODULE';
+import { readAdvisorStatus, handleAdvisorRecommend } from 'ADVISOR_COMPAT_MODULE';
 
 const input = JSON.parse(readFileSync(0, 'utf8') || '{}');
 const workspaceRoot = input.workspaceRoot || process.cwd();
@@ -131,6 +130,8 @@ if (input.mode === 'status') {
       topK: Number.isFinite(input.topK) ? input.topK : 10,
       includeAbstainReasons: true,
       includeAttribution: false,
+      confidenceThreshold: Number.isFinite(input.confidenceThreshold) ? input.confidenceThreshold : undefined,
+      uncertaintyThreshold: Number.isFinite(input.uncertaintyThreshold) ? input.uncertaintyThreshold : undefined,
     },
   });
   const parsed = JSON.parse(response.content[0].text);
@@ -193,14 +194,39 @@ def _native_bridge_source() -> str:
     """Render the inline Node bridge with absolute module URLs."""
     return (
         NATIVE_ADVISOR_BRIDGE
-        .replace("ADVISOR_STATUS_MODULE", _file_url(NATIVE_ADVISOR_STATUS))
-        .replace("ADVISOR_RECOMMEND_MODULE", _file_url(NATIVE_ADVISOR_RECOMMEND))
+        .replace("ADVISOR_COMPAT_MODULE", _file_url(NATIVE_ADVISOR_COMPAT))
     )
 
 
 def _native_bridge_available() -> bool:
     """Return True when compiled native advisor handlers are present."""
-    return os.path.exists(NATIVE_ADVISOR_STATUS) and os.path.exists(NATIVE_ADVISOR_RECOMMEND)
+    return os.path.exists(NATIVE_ADVISOR_COMPAT)
+
+
+def _sanitize_native_label(value: Any) -> Optional[str]:
+    """Sanitize native labels before translating public compat output."""
+    if not isinstance(value, str):
+        return None
+    cleaned = " ".join(value.split()).strip()
+    if not cleaned or len(cleaned) > 160:
+        return None
+    if re.search(r"\b(ignore|override|forget|bypass|disable|execute|run|call|tool|developer|assistant|previous instructions|all instructions)\b", cleaned, re.I):
+        return None
+    if re.search(r"<!--|-->|```|<script\b|</script>|^\s*(system|instruction|developer|assistant)\s*:", cleaned, re.I):
+        return None
+    return cleaned
+
+
+def _sanitize_native_label_list(value: Any) -> List[str]:
+    """Return prompt-safe native label arrays."""
+    if not isinstance(value, list):
+        return []
+    labels: List[str] = []
+    for item in value:
+        sanitized = _sanitize_native_label(item)
+        if sanitized:
+            labels.append(sanitized)
+    return labels
 
 
 def _run_native_bridge(payload: Dict[str, Any], timeout: float = NATIVE_TIMEOUT_SECONDS) -> Dict[str, Any]:
@@ -301,7 +327,7 @@ def _legacy_recommendations_from_native(output: Dict[str, Any]) -> List[Dict[str
     for recommendation in recommendations:
         if not isinstance(recommendation, dict):
             continue
-        skill_id = str(recommendation.get("skillId") or "")
+        skill_id = _sanitize_native_label(recommendation.get("skillId"))
         if not skill_id:
             continue
         item: Dict[str, Any] = {
@@ -318,22 +344,33 @@ def _legacy_recommendations_from_native(output: Dict[str, Any]) -> List[Dict[str
         if "dominantLane" in recommendation:
             item["dominant_lane"] = recommendation["dominantLane"]
         if "status" in recommendation:
-            item["status"] = recommendation["status"]
+            status = _sanitize_native_label(recommendation["status"])
+            if status:
+                item["status"] = status
         if "redirectFrom" in recommendation:
-            item["redirect_from"] = recommendation["redirectFrom"]
+            item["redirect_from"] = _sanitize_native_label_list(recommendation["redirectFrom"])
         if "redirectTo" in recommendation:
-            item["redirect_to"] = recommendation["redirectTo"]
+            redirect_to = _sanitize_native_label(recommendation["redirectTo"])
+            if redirect_to:
+                item["redirect_to"] = redirect_to
         legacy.append(item)
     return legacy
 
 
-def recommend_with_native_advisor(prompt: str) -> Optional[List[Dict[str, Any]]]:
+def recommend_with_native_advisor(
+    prompt: str,
+    confidence_threshold: float = 0.8,
+    uncertainty_threshold: float = 0.35,
+    confidence_only: bool = False,
+) -> Optional[List[Dict[str, Any]]]:
     """Return native recommendations when the MCP advisor surface is available."""
     response = _run_native_bridge({
         "mode": "recommend",
         "workspaceRoot": REPO_ROOT,
         "prompt": prompt,
         "topK": 10,
+        "confidenceThreshold": confidence_threshold,
+        "uncertaintyThreshold": 1.0 if confidence_only else uncertainty_threshold,
     })
     data = response.get("data") if isinstance(response, dict) else None
     if not isinstance(data, dict):
@@ -3170,7 +3207,12 @@ Examples:
     if not args.force_local and pre_computed_hits is None and not args.semantic:
         probe = probe_native_advisor()
         if probe.get("available"):
-            native_results = recommend_with_native_advisor(args.prompt)
+            native_results = recommend_with_native_advisor(
+                args.prompt,
+                confidence_threshold=args.threshold,
+                uncertainty_threshold=args.uncertainty,
+                confidence_only=args.confidence_only,
+            )
             if native_results is not None:
                 print(json.dumps(native_results, indent=2))
                 return 0

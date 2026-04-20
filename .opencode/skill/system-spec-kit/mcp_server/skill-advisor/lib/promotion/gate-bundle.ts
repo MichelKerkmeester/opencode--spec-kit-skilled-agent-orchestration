@@ -24,6 +24,7 @@ export const PROMOTION_GATE_THRESHOLDS = {
 export interface PromotionGateBundleInput {
   readonly fullCorpus: {
     readonly accuracy: number;
+    readonly unknownCount: number;
     readonly goldNoneFalseFire: number;
     readonly baselineGoldNoneFalseFire: number;
   };
@@ -44,6 +45,14 @@ export interface PromotionGateBundleInput {
     readonly pythonCorrect: number;
     readonly preservedPythonCorrect: number;
     readonly regressions: number;
+  };
+  readonly paritySlices: {
+    readonly explicitSkillTop1Regressions: number;
+    readonly ambiguityStable: boolean;
+    readonly derivedLaneAttributionComplete: boolean;
+  };
+  readonly adversarial: {
+    readonly stuffingRejected: boolean;
   };
   readonly regressionSuite: {
     readonly p0PassRate: number;
@@ -92,10 +101,40 @@ export function evaluatePromotionGateBundle(input: PromotionGateBundleInput): Pr
       `${(input.holdout.accuracy * 100).toFixed(1)}%`,
     ),
     gate(
+      'unknown-count-ceiling',
+      input.fullCorpus.unknownCount <= 10,
+      '<=10 UNKNOWN outcomes',
+      `${input.fullCorpus.unknownCount}`,
+    ),
+    gate(
       'gold-none-false-fire-no-increase',
       input.fullCorpus.goldNoneFalseFire <= input.fullCorpus.baselineGoldNoneFalseFire,
       'candidate <= baseline',
       `${input.fullCorpus.goldNoneFalseFire} <= ${input.fullCorpus.baselineGoldNoneFalseFire}`,
+    ),
+    gate(
+      'explicit-skill-top1-no-regression',
+      input.paritySlices.explicitSkillTop1Regressions === 0,
+      '0 explicit-skill top-1 regressions',
+      `${input.paritySlices.explicitSkillTop1Regressions}`,
+    ),
+    gate(
+      'ambiguity-stability',
+      input.paritySlices.ambiguityStable,
+      'top-2 ambiguity remains stable',
+      String(input.paritySlices.ambiguityStable),
+    ),
+    gate(
+      'derived-lane-attribution-required',
+      input.paritySlices.derivedLaneAttributionComplete,
+      'derived lane attribution present',
+      String(input.paritySlices.derivedLaneAttributionComplete),
+    ),
+    gate(
+      'adversarial-stuffing-rejection',
+      input.adversarial.stuffingRejected,
+      'instruction-shaped stuffing rejected',
+      String(input.adversarial.stuffingRejected),
     ),
     gate(
       'safety-regression-no-increase',

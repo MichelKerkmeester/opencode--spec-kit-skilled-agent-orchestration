@@ -1,0 +1,20 @@
+{
+  "status": "skipped",
+  "freshness": "unavailable",
+  "brief": null,
+  "recommendations": [],
+  "diagnostics": {
+    "policyReason": "skip_command"
+  },
+  "metrics": {
+    "durationMs": 1,
+    "cacheHit": false,
+    "subprocessInvoked": false,
+    "retriesAttempted": 0,
+    "recommendationCount": 0,
+    "tokenCap": 80
+  },
+  "generatedAt": "2026-04-19T10:00:00.000Z",
+  "sharedPayload": null,
+  "inputPrompt": "/help"
+}

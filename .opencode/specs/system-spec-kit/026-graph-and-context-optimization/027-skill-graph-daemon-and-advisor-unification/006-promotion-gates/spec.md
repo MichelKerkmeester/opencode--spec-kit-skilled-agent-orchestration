@@ -13,11 +13,11 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/006-promotion-gates"
-    last_updated_at: "2026-04-20T14:00:00Z"
-    last_updated_by: "orchestrator"
-    recent_action: "Scaffolded 027/006 packet"
-    next_safe_action: "Land 027/003 + 027/004 first; 027/005 may finalize in parallel"
-    blockers: ["027/003", "027/004"]
+    last_updated_at: "2026-04-20T22:15:00Z"
+    last_updated_by: "codex"
+    recent_action: "Corrected shipped-state drift and §11 gate bundle scope after post-review remediation"
+    next_safe_action: "Use remediation-report.md for review closure"
+    blockers: []
     key_files:
       - ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/"
       - ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/promotion/"
@@ -26,7 +26,7 @@ _memory:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "027-006-scaffold-r01"
       parent_session_id: null
-    completion_pct: 0
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -40,10 +40,12 @@ _memory:
 |---|---|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-04-20 |
 | **Parent** | `../` |
 | **Predecessors** | `../003-native-advisor-core/`, `../004-mcp-advisor-surface/` |
+| **Ship SHA** | `5696acf4a` |
+| **Post-review remediation** | Parent review `remediation-report.md` adds missing §11 gates in `gate-bundle.ts` |
 | **Research source** | `research.md` §6 C6/C8 + §13.4 G5/G6; iterations 021, 023, 054-055 |
 
 ## 2. PROBLEM & PURPOSE
@@ -59,7 +61,7 @@ Ship shadow-cycle harness + bounded learned/adaptive live-influence path + stric
 ### In Scope
 - `lib/promotion/shadow-cycle.ts` — replay 200-prompt corpus through candidate fusion weights / semantic channels without live side effects.
 - `lib/promotion/weight-delta.ts` — bounded learned/adaptive live-influence path (max weight delta per promotion = 0.05).
-- `lib/promotion/gates.ts` — promotion gate evaluator checking (full research.md §11 slice bundle):
+- `lib/promotion/gate-bundle.ts` — promotion gate evaluator checking (full research.md §11 slice bundle):
   - ≥75% full-corpus exact top-1 (higher than 003's 70% baseline)
   - ≥72.5% stratified holdout top-1 (higher than 003's 70% baseline)
   - UNKNOWN fallback count ≤ 10 (preserved from 003)
@@ -74,9 +76,9 @@ Ship shadow-cycle harness + bounded learned/adaptive live-influence path + stric
   - Regression-suite gates (existing canonical fixtures stay green; P0 pass 1.0; command-bridge FP ≤0.05)
 - Two-positive-shadow-cycles requirement before promotion.
 - Semantic live weight locked at 0.00 through first promotion wave.
-- `bench/corpus-accuracy.ts` — corpus + holdout measurement harness.
-- `bench/latency.ts` — cache-hit + uncached latency harness.
-- `bench/safety.ts` — gold-`none` false-fire harness.
+- `bench/corpus-bench.ts` + `bench/holdout-bench.ts` — corpus + holdout measurement harnesses.
+- `bench/latency-bench.ts` — cache-hit + uncached latency harness.
+- Handler-backed validation slices in `advisor-validate.ts` — gold-`none`, parity, ambiguity, derived attribution, adversarial-stuffing, regression-suite status.
 - Tests under `tests/promotion/**`.
 
 ### Out of Scope
@@ -89,7 +91,7 @@ Ship shadow-cycle harness + bounded learned/adaptive live-influence path + stric
 ### 4.1 P0 (Blocker)
 1. Shadow-cycle harness replays corpus + regression fixtures without touching live state.
 2. Weight-delta path capped at 0.05 per promotion.
-3. Promotion gate evaluator checks all 7 gate criteria.
+3. Promotion gate evaluator checks the full 12-gate bundle, including the original 7 criteria plus explicit §11 correctness slices.
 4. Two-positive-shadow-cycles rule enforced.
 5. Semantic live weight locked at 0.00 (cannot be raised without harness + gate approval).
 6. Corpus accuracy harness measures full + holdout top-1.
@@ -122,7 +124,7 @@ Ship shadow-cycle harness + bounded learned/adaptive live-influence path + stric
 ### New (under `mcp_server/skill-advisor/`)
 - `lib/promotion/shadow-cycle.ts`
 - `lib/promotion/weight-delta.ts`
-- `lib/promotion/gates.ts`
+- `lib/promotion/gate-bundle.ts`
 - `lib/promotion/rollback.ts`
 - `bench/corpus-accuracy.ts`
 - `bench/latency.ts`

@@ -1,0 +1,26 @@
+{
+  "status": "ok",
+  "freshness": "stale",
+  "brief": "ignored stale predecessor brief",
+  "recommendations": [
+    {
+      "skill": "sk-code-opencode",
+      "confidence": 0.93,
+      "uncertainty": 0.12,
+      "passes_threshold": true
+    }
+  ],
+  "diagnostics": {
+    "staleReason": "SOURCE_NEWER_THAN_SKILL_GRAPH"
+  },
+  "metrics": {
+    "durationMs": 14,
+    "cacheHit": false,
+    "subprocessInvoked": true,
+    "retriesAttempted": 0,
+    "recommendationCount": 1,
+    "tokenCap": 80
+  },
+  "generatedAt": "2026-04-19T10:00:00.000Z",
+  "sharedPayload": null
+}

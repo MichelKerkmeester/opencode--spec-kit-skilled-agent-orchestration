@@ -101,7 +101,7 @@ function sanitizeLabel(value) {
     return null;
   }
   const cleaned = value.replace(/[\u0000-\u001F\u007F]/g, '').replace(/\s+/g, ' ').trim();
-  if (!cleaned || /^(system\s*:|instruction\s*:|ignore\b|execute\b|```|<!--)/i.test(cleaned)) {
+  if (!cleaned || cleaned.length > 160 || /\b(ignore|override|forget|bypass|disable|execute|run|call|tool|developer|assistant|previous instructions|all instructions)\b/i.test(cleaned) || /<!--|-->|```|<script\b|<\/script>|^\s*(system|instruction|developer|assistant)\s*:/i.test(cleaned)) {
     return null;
   }
   return cleaned;
@@ -141,22 +141,14 @@ function renderNativeBrief(data, maxTokens) {
 }
 
 async function loadNativeAdvisorModules() {
-  const [statusModule, recommendModule] = await Promise.all([
-    import('../skill/system-spec-kit/mcp_server/dist/skill-advisor/handlers/advisor-status.js'),
-    import('../skill/system-spec-kit/mcp_server/dist/skill-advisor/handlers/advisor-recommend.js'),
-  ]);
-
-  let compatProbe = null;
-  try {
-    compatProbe = await import('../skill/system-spec-kit/mcp_server/dist/skill-advisor/lib/compat/daemon-probe.js');
-  } catch {
-    compatProbe = null;
-  }
+  const compatModule = await import('../skill/system-spec-kit/mcp_server/dist/skill-advisor/compat/index.js');
 
   return {
-    readAdvisorStatus: statusModule.readAdvisorStatus,
-    handleAdvisorRecommend: recommendModule.handleAdvisorRecommend,
-    probeAdvisorDaemon: compatProbe?.probeAdvisorDaemon ?? null,
+    readAdvisorStatus: compatModule.readAdvisorStatus,
+    handleAdvisorRecommend: compatModule.handleAdvisorRecommend,
+    probeAdvisorDaemon: compatModule.probeAdvisorDaemon ?? null,
+    buildSkillAdvisorBrief: compatModule.buildSkillAdvisorBrief,
+    renderAdvisorBrief: compatModule.renderAdvisorBrief,
   };
 }
 
@@ -205,6 +197,12 @@ async function buildNativeBrief(input) {
   const data = parsed.data;
   const brief = renderNativeBrief(data, input.maxTokens);
   const top = Array.isArray(data?.recommendations) ? data.recommendations[0] : null;
+  const skillLabel = sanitizeLabel(top?.skillId);
+  const safeStatus = sanitizeLabel(top?.status);
+  const redirectTo = sanitizeLabel(top?.redirectTo);
+  const redirectFrom = Array.isArray(top?.redirectFrom)
+    ? top.redirectFrom.map(sanitizeLabel).filter(Boolean)
+    : [];
 
   return response({
     brief,
@@ -216,22 +214,16 @@ async function buildNativeBrief(input) {
       cacheHit: Boolean(data?.cache?.hit),
       recommendationCount: Array.isArray(data?.recommendations) ? data.recommendations.length : 0,
       tokenCap: positiveInt(input.maxTokens, 80),
-      skillLabel: typeof top?.skillId === 'string' ? top.skillId : null,
-      status: typeof top?.status === 'string' ? top.status : null,
-      redirectTo: typeof top?.redirectTo === 'string' ? top.redirectTo : null,
-      redirectFrom: Array.isArray(top?.redirectFrom) ? top.redirectFrom : [],
+      skillLabel,
+      status: safeStatus,
+      redirectTo,
+      redirectFrom,
     },
   });
 }
 
 async function buildLegacyBrief(input) {
-  const [
-    { buildSkillAdvisorBrief },
-    { renderAdvisorBrief },
-  ] = await Promise.all([
-    import('../skill/system-spec-kit/mcp_server/dist/lib/skill-advisor/skill-advisor-brief.js'),
-    import('../skill/system-spec-kit/mcp_server/dist/lib/skill-advisor/render.js'),
-  ]);
+  const { buildSkillAdvisorBrief, renderAdvisorBrief } = await loadNativeAdvisorModules();
 
   const maxTokens = positiveInt(input.maxTokens, 80);
   const result = await buildSkillAdvisorBrief(input.prompt, {
@@ -258,7 +250,7 @@ async function buildLegacyBrief(input) {
       subprocessInvoked: result.metrics.subprocessInvoked,
       recommendationCount: result.metrics.recommendationCount,
       tokenCap: result.metrics.tokenCap,
-      skillLabel: typeof top?.skill === 'string' ? top.skill : null,
+      skillLabel: sanitizeLabel(top?.skill),
     },
   });
 }

@@ -1,13 +1,13 @@
 ---
 title: "Phase 027 — Decision Record"
-description: "ADRs capturing the architectural decisions from the r01 research synthesis (research/027-skill-graph-daemon-and-advisor-unification-pt-01/)."
+description: "ADRs capturing the architectural decisions from the r01 research synthesis and implementation closure (research/027-skill-graph-daemon-and-advisor-unification-pt-01/)."
 importance_tier: "high"
 contextType: "research"
 ---
 
 # Phase 027 — Architectural Decision Records
 
-Six ADRs capturing the load-bearing decisions from the converged r01 research (40 iters + 20 follow-up = 60 iterations, 43 adopt_now / 3 prototype_later / 0 reject). Each ADR names the research evidence that justifies it.
+Seven ADRs capturing the load-bearing decisions from the converged r01 research and implementation closure (40 iters + 20 follow-up = 60 iterations, 43 adopt_now / 3 prototype_later / 0 reject). Each ADR names the research or implementation evidence that justifies it.
 
 ---
 
@@ -165,11 +165,33 @@ Two positive shadow cycles required before promotion.
 
 ---
 
+## ADR-007 — Python parity means regression protection, not byte-for-byte behavioral freeze
+
+**Status:** Accepted (implementation closure; 027/003 + 027/006)
+
+**Context:** The native TypeScript scorer intentionally improved on the old Python advisor. A literal "match Python on every corpus prompt" rule would preserve known Python mistakes and block the 80.5% TS corpus result. The correct safety property is narrower: preserve every Python-correct top-1 decision, prevent no-skill false-fire growth, and allow TS to improve Python-wrong prompts.
+
+**Decision:** Interpret Python parity as **regression protection**:
+- Every Python-correct corpus prompt must remain correct under the TS scorer.
+- Gold-`none` false-fire count must not increase.
+- Explicit-skill prompts must not regress or newly abstain.
+- Accuracy improvements on Python-wrong prompts are allowed and expected.
+
+**Rationale:**
+- The 027/003 parity suite reports 115 Python-correct prompts and 115 TS-preserved decisions, while TS improves 46 Python-wrong prompts and reaches 80.5% full-corpus accuracy.
+- Promotion gates now encode this as exact parity preservation plus separate `UNKNOWN`, gold-`none`, explicit-skill, ambiguity, derived-lane, and adversarial-stuffing slices.
+- This keeps backward compatibility as a safety floor without making the native scorer inherit Python's historical misroutes.
+
+**Applied in:** 027/003 (`tests/parity/python-ts-parity.vitest.ts`), 027/004 (`handlers/advisor-validate.ts` real parity slices), 027/006 (`lib/promotion/gate-bundle.ts`).
+
+---
+
 ## Cross-ADR relationships
 
 - **ADR-001** (daemon substrate) enables **ADR-004** (lease needs a long-running writer).
 - **ADR-002** (package layout) is applied by **ADR-003** (fusion), **ADR-005** (migration), **ADR-006** (promotion) — all new code lives in `mcp_server/skill-advisor/`.
 - **ADR-003** (fusion weights) is the load-bearing decision that **ADR-006** (promotion gates) protects.
+- **ADR-007** clarifies that **ADR-006** exact parity gates preserve Python-correct behavior while allowing measured native improvements.
 - **ADR-005** (migration additivity) ensures **ADR-004** (single-writer lease) can safely transition between schemas.
 
 ## Outstanding uncertainty (not ADRs)

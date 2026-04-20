@@ -24,7 +24,7 @@ const MAX_TOKEN_CAP = 120;
 const TOKEN_TO_CHAR_ESTIMATE = 4;
 const AMBIGUITY_EPSILON = 1e-9;
 const INSTRUCTION_LABEL_PATTERN =
-  /^\s*(SYSTEM|INSTRUCTION|IGNORE|EXECUTE|<!--|```)|\b(ignore\s+(previous|all)\s+instructions|system\s*:|instruction\s*:|execute\s*:)/i;
+  /^\s*(SYSTEM|INSTRUCTION|IGNORE|EXECUTE)\s*[:=]|^\s*(<!--|```)|\b(ignore\s+(previous|all)\s+instructions|system\s*:|instruction\s*:|execute\s*:|developer\s*:|assistant\s*:)/i;
 const CONTROL_CHAR_PATTERN = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g;
 
 // ───────────────────────────────────────────────────────────────

@@ -18,7 +18,6 @@ const laneBreakdownSchema = z.object({
   rawScore: z.number().min(0),
   weightedScore: z.number().min(0),
   weight: z.number().min(0),
-  evidence: z.array(z.string()),
   shadowOnly: z.boolean(),
 }).strict();
 
@@ -28,6 +27,8 @@ export const AdvisorRecommendInputSchema = z.object({
     topK: z.number().int().min(1).max(10).optional(),
     includeAttribution: z.boolean().optional(),
     includeAbstainReasons: z.boolean().optional(),
+    confidenceThreshold: z.number().min(0).max(1).optional(),
+    uncertaintyThreshold: z.number().min(0).max(1).optional(),
   }).strict().optional(),
 }).strict();
 
@@ -46,6 +47,13 @@ export const AdvisorRecommendOutputSchema = z.object({
   recommendations: z.array(AdvisorRecommendationSchema),
   ambiguous: z.boolean().optional(),
   freshness: AdvisorFreshnessSchema,
+  trustState: z.object({
+    state: AdvisorFreshnessSchema,
+    reason: z.string().nullable(),
+    generation: z.number().int().nonnegative(),
+    checkedAt: z.string().datetime(),
+    lastLiveAt: z.string().datetime().nullable(),
+  }).strict(),
   generatedAt: z.string().datetime(),
   cache: z.object({
     hit: z.boolean(),
@@ -70,6 +78,8 @@ export const AdvisorStatusOutputSchema = z.object({
     lastLiveAt: z.string().datetime().nullable(),
   }).strict(),
   lastGenerationBump: z.string().datetime().nullable(),
+  lastScanAt: z.string().datetime().nullable(),
+  skillCount: z.number().int().nonnegative(),
   laneWeights: z.record(AdvisorLaneSchema, z.number().min(0)),
   daemonPid: z.number().int().positive().optional(),
   errors: z.array(z.string()).optional(),
@@ -136,6 +146,8 @@ export const AdvisorValidateOutputSchema = z.object({
         p0PassRate: z.number().min(0).max(1),
         failedCount: z.number().int().nonnegative(),
         commandBridgeFalsePositiveRate: z.number().min(0).max(1),
+        cacheHitP95Ms: z.number().min(0),
+        uncachedP95Ms: z.number().min(0),
       }).strict(),
     }).strict(),
   }).strict(),

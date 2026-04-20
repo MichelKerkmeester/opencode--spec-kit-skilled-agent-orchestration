@@ -1,0 +1,30 @@
+{
+  "status": "ok",
+  "freshness": "live",
+  "brief": "ignored ambiguous predecessor brief",
+  "recommendations": [
+    {
+      "skill": "sk-code-opencode",
+      "confidence": 0.8,
+      "uncertainty": 0.35,
+      "passes_threshold": true
+    },
+    {
+      "skill": "sk-doc",
+      "confidence": 0.75,
+      "uncertainty": 0.32,
+      "passes_threshold": true
+    }
+  ],
+  "diagnostics": null,
+  "metrics": {
+    "durationMs": 18,
+    "cacheHit": false,
+    "subprocessInvoked": true,
+    "retriesAttempted": 0,
+    "recommendationCount": 2,
+    "tokenCap": 120
+  },
+  "generatedAt": "2026-04-19T10:00:00.000Z",
+  "sharedPayload": null
+}

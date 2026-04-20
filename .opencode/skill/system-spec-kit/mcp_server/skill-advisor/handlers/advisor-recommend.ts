@@ -7,6 +7,7 @@ import { resolve } from 'node:path';
 
 import { advisorPromptCache } from '../lib/prompt-cache.js';
 import { scoreAdvisorPrompt } from '../lib/scorer/fusion.js';
+import { sanitizeSkillLabel } from '../lib/render.js';
 import {
   AdvisorRecommendInputSchema,
   AdvisorRecommendOutputSchema,
@@ -16,6 +17,9 @@ import {
 import { readAdvisorStatus } from './advisor-status.js';
 
 type HandlerResponse = { content: Array<{ type: string; text: string }> };
+type AdvisorStatus = ReturnType<typeof readAdvisorStatus>;
+type ScoredRecommendation = ReturnType<typeof scoreAdvisorPrompt>['recommendations'][number];
+type PublicRecommendationStatus = NonNullable<AdvisorRecommendOutput['recommendations'][number]['status']>;
 
 function findWorkspaceRoot(start = process.cwd()): string {
   let current = resolve(start);
@@ -28,7 +32,7 @@ function findWorkspaceRoot(start = process.cwd()): string {
   return resolve(start);
 }
 
-function cacheSourceSignature(status: ReturnType<typeof readAdvisorStatus>): string {
+function cacheSourceSignature(status: AdvisorStatus): string {
   return `${status.freshness}:${status.generation}:${status.lastGenerationBump ?? 'never'}`;
 }
 
@@ -36,24 +40,99 @@ function recommendationLabels(output: AdvisorRecommendOutput): string[] {
   return output.recommendations.map((recommendation) => recommendation.skillId);
 }
 
-function disabledOutput(): AdvisorRecommendOutput {
+function unavailableTrustState(reason: string): AdvisorRecommendOutput['trustState'] {
+  return {
+    state: 'unavailable',
+    reason,
+    generation: 0,
+    checkedAt: new Date().toISOString(),
+    lastLiveAt: null,
+  };
+}
+
+function emptyOutput(args: {
+  freshness: AdvisorRecommendOutput['freshness'];
+  trustState: AdvisorRecommendOutput['trustState'];
+  warnings?: readonly string[];
+  abstainReasons?: readonly string[];
+}): AdvisorRecommendOutput {
   return AdvisorRecommendOutputSchema.parse({
     recommendations: [],
     ambiguous: false,
-    freshness: 'unavailable',
+    freshness: args.freshness,
+    trustState: args.trustState,
     generatedAt: new Date().toISOString(),
     cache: {
       hit: false,
       sourceSignaturePresent: false,
     },
+    ...(args.warnings && args.warnings.length > 0 ? { warnings: [...args.warnings] } : {}),
+    ...(args.abstainReasons && args.abstainReasons.length > 0 ? { abstainReasons: [...args.abstainReasons] } : {}),
+  });
+}
+
+function disabledOutput(): AdvisorRecommendOutput {
+  return emptyOutput({
+    freshness: 'unavailable',
+    trustState: unavailableTrustState('ADVISOR_DISABLED'),
     warnings: ['ADVISOR_DISABLED'],
     abstainReasons: ['Skill advisor disabled by SPECKIT_SKILL_ADVISOR_HOOK_DISABLED.'],
   });
 }
 
+function absentOutput(status: AdvisorStatus): AdvisorRecommendOutput {
+  return emptyOutput({
+    freshness: 'absent',
+    trustState: status.trustState,
+    warnings: [status.trustState.reason ?? 'ADVISOR_FRESHNESS_ABSENT'],
+    abstainReasons: ['Skill advisor freshness is absent; returning fail-open empty recommendations.'],
+  });
+}
+
+function safeMany(values: readonly string[] | undefined): string[] {
+  return (values ?? [])
+    .map((value) => sanitizeSkillLabel(value))
+    .filter((value): value is string => Boolean(value));
+}
+
+function publicRecommendation(recommendation: ScoredRecommendation, includeAttribution: boolean) {
+  const skillId = sanitizeSkillLabel(recommendation.skill);
+  if (!skillId) return null;
+  const redirectFrom = safeMany(recommendation.redirectFrom);
+  const redirectTo = sanitizeSkillLabel(recommendation.redirectTo ?? '');
+  const sanitizedStatus = sanitizeSkillLabel(recommendation.lifecycleStatus);
+  const status: PublicRecommendationStatus | undefined = sanitizedStatus === 'active'
+    || sanitizedStatus === 'deprecated'
+    || sanitizedStatus === 'archived'
+    || sanitizedStatus === 'future'
+    ? sanitizedStatus as PublicRecommendationStatus
+    : undefined;
+  return {
+    skillId,
+    score: recommendation.score,
+    confidence: recommendation.confidence,
+    dominantLane: recommendation.dominantLane,
+    ...(includeAttribution ? {
+      laneBreakdown: recommendation.laneContributions.map((lane) => ({
+        lane: lane.lane,
+        rawScore: lane.rawScore,
+        weightedScore: lane.weightedScore,
+        weight: lane.weight,
+        shadowOnly: lane.shadowOnly,
+      })),
+    } : {}),
+    ...(redirectFrom.length > 0 ? { redirectFrom } : {}),
+    ...(redirectTo ? { redirectTo } : {}),
+    ...(status ? { status } : {}),
+  };
+}
+
 function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecommendOutput {
   const workspaceRoot = findWorkspaceRoot();
   const status = readAdvisorStatus({ workspaceRoot });
+  if (status.freshness === 'absent') {
+    return absentOutput(status);
+  }
   const sourceSignature = cacheSourceSignature(status);
   advisorPromptCache.invalidateSourceSignatureChange(sourceSignature);
   const key = advisorPromptCache.makeKey({
@@ -75,25 +154,20 @@ function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecom
   }
 
   const topK = input.options?.topK ?? 3;
-  const result = scoreAdvisorPrompt(input.prompt, { workspaceRoot });
+  const result = scoreAdvisorPrompt(input.prompt, {
+    workspaceRoot,
+    confidenceThreshold: input.options?.confidenceThreshold,
+    uncertaintyThreshold: input.options?.uncertaintyThreshold,
+  });
+  const recommendations = result.recommendations
+    .map((recommendation) => publicRecommendation(recommendation, Boolean(input.options?.includeAttribution)))
+    .filter((recommendation): recommendation is NonNullable<typeof recommendation> => Boolean(recommendation))
+    .slice(0, topK);
   const output: AdvisorRecommendOutput = {
-    recommendations: result.recommendations.slice(0, topK).map((recommendation) => ({
-      skillId: recommendation.skill,
-      score: recommendation.score,
-      confidence: recommendation.confidence,
-      dominantLane: recommendation.dominantLane,
-      ...(input.options?.includeAttribution ? {
-        laneBreakdown: recommendation.laneContributions.map((lane) => ({
-          ...lane,
-          evidence: [...lane.evidence],
-        })),
-      } : {}),
-      ...(recommendation.redirectFrom && recommendation.redirectFrom.length > 0 ? { redirectFrom: [...recommendation.redirectFrom] } : {}),
-      ...(recommendation.redirectTo ? { redirectTo: recommendation.redirectTo } : {}),
-      status: recommendation.lifecycleStatus,
-    })),
+    recommendations,
     ambiguous: result.ambiguous,
     freshness: status.freshness,
+    trustState: status.trustState,
     generatedAt: new Date().toISOString(),
     cache: {
       hit: false,
