@@ -128,7 +128,7 @@ specs/NNN-name/
 **Optional:**
 - `scratch/`
 - `memory/`
-- `research/research.md` - Extended research documentation
+- `research/` packets — see §4 `research/` and `review/` (spec tree root). Deep-research and deep-review artifacts are NEVER placed inside a child phase folder.
 
 ---
 
@@ -177,6 +177,51 @@ triggers:
 
 # Content here
 ```
+
+### research/ and review/ (spec tree root only)
+
+Deep-research and deep-review artifacts (iterations, deltas, prompts, state logs, synthesis) live in a SINGLE `research/` or `review/` folder at the **spec tree root** — the top-level parent spec (the highest folder containing `spec.md`, stopping at the `specs/` boundary). They are NEVER placed inside a child phase folder.
+
+**Why:** one place holds every research and review packet for a whole coordination tree, so tooling, resumes, and reducers can find them without walking nested children.
+
+**Layout (spec tree root with child phases):**
+
+```
+specs/system-spec-kit/026-graph-and-context-optimization/   <- spec tree root (has spec.md)
+├── spec.md
+├── 019-system-hardening/                   <- child phase (NO research/ or review/ inside)
+├── 020-skill-advisor-hook-surface/         <- child phase (NO research/ or review/ inside)
+├── 027-skill-graph-daemon-.../             <- child phase (NO research/ or review/ inside)
+├── research/                               <- CANONICAL root-level research root
+│   ├── 019-system-hardening-pt-01/
+│   ├── 019-system-hardening-pt-02/
+│   ├── 020-skill-advisor-hook-surface-pt-01/
+│   └── 027-skill-graph-daemon-and-advisor-unification-pt-01/
+│       ├── deep-research-config.json
+│       ├── deep-research-state.jsonl
+│       ├── deep-research-strategy.md
+│       ├── deep-research-dashboard.md
+│       ├── findings-registry.json
+│       ├── research.md
+│       ├── iterations/iteration-NNN.md
+│       ├── deltas/iter-NNN.jsonl
+│       └── prompts/iteration-N.md
+├── research_archive/                       <- archived research packets mirror the same naming
+└── review/                                 <- same rules apply to deep-review
+    └── 019-system-hardening-pt-01/
+```
+
+**Naming:** `{phaseSlug}-pt-{NN}/`
+- `phaseSlug` = full first path segment under the spec tree root (e.g. `019-system-hardening`, `027-skill-graph-daemon-and-advisor-unification`)
+- `NN` = two-digit zero-padded sequential counter per phase within the artifact root (`-pt-01`, `-pt-02`, ...)
+
+**Flat spec (no child phases):** when the spec tree root is itself the target (no child phase folders), artifacts go directly under `{spec_folder}/research/` or `{spec_folder}/review/` with no `-pt-NN` subfolder.
+
+**Required resolver:** always use `resolveArtifactRoot(specFolder, 'research' | 'review')` from [`.opencode/skill/system-spec-kit/shared/review-research-paths.cjs`](../../shared/review-research-paths.cjs). It walks up from the target spec folder, locates the spec tree root, and allocates the next `{phaseSlug}-pt-{NN}` subfolder. Never hand-pick the path.
+
+**Forbidden:** creating `research/` or `review/` inside a child phase folder (e.g. `026-.../027-skill-graph-.../research/`). The canonical location is always the spec tree root.
+
+**See also:** `sk-deep-research/references/loop_protocol.md`, `sk-deep-review/references/loop_protocol.md`, and the `step_resolve_artifact_root` block in `command/spec_kit/assets/spec_kit_deep-research_auto.yaml`.
 
 ---
 
