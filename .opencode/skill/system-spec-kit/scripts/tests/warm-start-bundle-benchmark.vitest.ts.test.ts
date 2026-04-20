@@ -8,9 +8,12 @@ import {
   WARM_START_VARIANTS,
   type WarmStartScenario,
 } from '../../mcp_server/lib/eval/warm-start-variant-runner.js';
+import { dirnameFromImportMeta } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 const ENV_REFERENCE_PATH = resolve(
-  __dirname,
+  moduleDir,
   '../../mcp_server/ENV_REFERENCE.md',
 );
 

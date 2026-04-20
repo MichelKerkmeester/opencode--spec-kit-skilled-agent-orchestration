@@ -46,6 +46,7 @@
 
 import { promises as fs } from 'node:fs';
 import * as path from 'node:path';
+import { isMainModule } from '../lib/esm-entry.js';
 
 /* ───────────────────────────────────────────────────────────────
    2. TYPES
@@ -617,14 +618,7 @@ async function main(): Promise<number> {
 
 // Only run when invoked directly (not when imported by tests).
 // CommonJS-safe guard — works whether this file is built to CJS or run via tsx.
-const isDirectInvocation = (() => {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    return typeof require !== 'undefined' && typeof module !== 'undefined' && require.main === module;
-  } catch {
-    return false;
-  }
-})();
+const isDirectInvocation = isMainModule(import.meta.url);
 
 if (isDirectInvocation) {
   main().then((code) => process.exit(code)).catch((err) => {

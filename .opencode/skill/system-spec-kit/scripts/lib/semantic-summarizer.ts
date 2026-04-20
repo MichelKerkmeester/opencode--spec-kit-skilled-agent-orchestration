@@ -9,9 +9,9 @@
 import os from 'os';
 
 // Internal modules
-import { SemanticSignalExtractor } from './semantic-signal-extractor';
-import { cleanDescription } from '../utils/file-helpers';
-import { CONFIG } from '../core';
+import { SemanticSignalExtractor } from './semantic-signal-extractor.js';
+import { cleanDescription } from '../utils/file-helpers.js';
+import { CONFIG } from '../core/index.js';
 import type { WeightedDocumentSections } from '@spec-kit/shared/index';
 
 // ───────────────────────────────────────────────────────────────
@@ -314,7 +314,7 @@ function extractFileChanges(messages: SemanticMessage[], observations: SemanticO
 // ───────────────────────────────────────────────────────────────
 // 6. DESCRIPTION UTILITIES
 // ───────────────────────────────────────────────────────────────
-// CleanDescription is imported from '../utils/file-helpers' (canonical location)
+// CleanDescription is imported from '../utils/file-helpers.js' (canonical location)
 
 // NOTE: Similar to utils/file-helpers.ts:isDescriptionValid but differs in garbage patterns.
 // This version has 3 additional patterns (/^changed?$/i, /^no description available$/i, /^modified?$/i)

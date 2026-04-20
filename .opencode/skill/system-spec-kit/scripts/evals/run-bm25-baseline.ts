@@ -28,11 +28,14 @@ import {
   runBM25Baseline, recordBaselineMetrics,
   loadGroundTruth, initEvalDb,
   type BM25SearchFn, type BM25SearchResult, type BM25BaselineResult,
-} from '../../mcp_server/api';
+} from '../../mcp_server/api/index.js';
+import { dirnameFromImportMeta } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 // -- Config ------------------------------------------------------
 
-const DB_DIR = path.resolve(__dirname, '../../mcp_server/database');
+const DB_DIR = path.resolve(moduleDir, '../../mcp_server/database');
 const PROD_DB_PATH = path.join(DB_DIR, 'context-index.sqlite');
 const OUTPUT_PATH = '/tmp/bm25-baseline-result.json';
 

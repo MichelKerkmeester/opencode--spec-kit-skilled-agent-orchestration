@@ -15,7 +15,7 @@ import fs from 'fs';
 import path from 'path';
 
 // Internal modules
-import { structuredLog } from './logger';
+import { structuredLog } from './logger.js';
 
 // ───────────────────────────────────────────────────────────────
 // 3. PATH SANITIZATION

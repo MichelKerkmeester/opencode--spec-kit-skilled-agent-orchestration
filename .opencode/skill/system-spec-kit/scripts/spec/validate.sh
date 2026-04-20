@@ -471,14 +471,35 @@ run_spec_doc_ts_rule() {
         return
     fi
 
-    local cmd=(
-        node
-        --experimental-strip-types
-        "$SPEC_DOC_STRUCTURE_TS"
-        --folder "$folder"
-        --level "$level"
-        --rule "$rule_name"
-    )
+    local cmd=()
+    if node --experimental-strip-types --eval "process.exit(0)" >/dev/null 2>&1; then
+        cmd=(
+            node
+            --experimental-strip-types
+            "$SPEC_DOC_STRUCTURE_TS"
+            --folder "$folder"
+            --level "$level"
+            --rule "$rule_name"
+        )
+    else
+        local tsx_loader="$SCRIPT_DIR/../node_modules/tsx/dist/loader.mjs"
+        if [[ ! -f "$tsx_loader" ]]; then
+            RULE_STATUS="fail"
+            RULE_MESSAGE="TS rule bridge runtime missing for $rule_name"
+            RULE_DETAILS=("Node does not support --experimental-strip-types and tsx runtime is missing: $tsx_loader")
+            RULE_REMEDIATION="Install script dependencies or run with Node 25+ before rerunning validation."
+            return
+        fi
+        cmd=(
+            node
+            --import
+            "$tsx_loader"
+            "$SPEC_DOC_STRUCTURE_TS"
+            --folder "$folder"
+            --level "$level"
+            --rule "$rule_name"
+        )
+    fi
 
     [[ -n "${SPECKIT_MERGE_PLAN_JSON:-}" ]] && cmd+=(--merge-plan-json "$SPECKIT_MERGE_PLAN_JSON")
     [[ -n "${SPECKIT_CONTAMINATION_JSON:-}" ]] && cmd+=(--contamination-json "$SPECKIT_CONTAMINATION_JSON")

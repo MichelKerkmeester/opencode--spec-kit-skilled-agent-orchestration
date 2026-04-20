@@ -17,9 +17,9 @@ export {
   getSpecsDirectories,
   findActiveSpecsDir,
   getAllExistingSpecsDirs,
-} from '../core/config';
+} from '../core/config.js';
 
 export type {
   SpecKitConfig,
   WorkflowConfig,
-} from '../core/config';
+} from '../core/config.js';

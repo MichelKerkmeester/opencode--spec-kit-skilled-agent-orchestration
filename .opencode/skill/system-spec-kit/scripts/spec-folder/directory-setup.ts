@@ -12,8 +12,8 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 
 // Internal modules
-import { structuredLog, sanitizePath } from '../utils';
-import { CONFIG, findActiveSpecsDir, getSpecsDirectories, SPEC_FOLDER_PATTERN } from '../core';
+import { structuredLog, sanitizePath } from '../utils/index.js';
+import { CONFIG, findActiveSpecsDir, getSpecsDirectories, SPEC_FOLDER_PATTERN } from '../core/index.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. DIRECTORY SETUP

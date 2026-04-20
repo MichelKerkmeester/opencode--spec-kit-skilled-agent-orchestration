@@ -91,7 +91,7 @@ Phase workflow additions (specs 138-139):
 ## 4. BUILD AND RUNTIME
 
 
-`scripts/` remains CommonJS at runtime (`package.json` sets `"type": "commonjs"`). It interoperates with the ESM `@spec-kit/shared` and `@spec-kit/mcp-server` packages through the current CJS/ESM loader paths (including dynamic `import()` where needed).
+`scripts/` is pure ESM at runtime (`package.json` sets `"type": "module"`). TypeScript sources compile to ESM (`"module": "es2022"`) and local runtime imports use `.js` specifiers so the generated `dist/` entrypoints run under both Node 25 and the legacy Node 20.19.x target.
 
 TypeScript sources compile to `dist/` (generated build output; do not edit or commit by hand):
 

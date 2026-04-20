@@ -8,7 +8,7 @@
 // Sanitizes tool descriptions, input paths, and status values
 // shared across all CLI extractors
 
-import { toWorkspaceRelativePath } from './workspace-identity';
+import { toWorkspaceRelativePath } from './workspace-identity.js';
 
 const MAX_DESCRIPTION_LENGTH = 80;
 

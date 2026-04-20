@@ -10,8 +10,8 @@
 import { execFileSync } from 'child_process';
 import path from 'path';
 
-import { extractSpecFolderContext } from './spec-folder-extractor';
-import type { ModificationMagnitude } from '../types/session-types';
+import { extractSpecFolderContext } from './spec-folder-extractor.js';
+import type { ModificationMagnitude } from '../types/session-types.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES & CONSTANTS

@@ -26,6 +26,7 @@ import {
   DECAY_RATE,
 } from '@spec-kit/shared/scoring/folder-scoring';
 import type { FolderMemoryInput } from '@spec-kit/shared/scoring/folder-scoring';
+import { isMainModule } from '../lib/esm-entry.js';
 
 /* ───────────────────────────────────────────────────────────────
    2. INTERFACES
@@ -411,7 +412,7 @@ async function main(): Promise<void> {
 }
 
 // Guard main() execution to prevent side effects on import
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   main().catch((err: unknown) => {
     const errMsg = err instanceof Error ? err.message : String(err);
     console.error(`Error: ${errMsg}`);

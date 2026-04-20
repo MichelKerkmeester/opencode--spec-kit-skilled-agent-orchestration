@@ -2,7 +2,7 @@
 // MODULE: Source Capabilities
 // ───────────────────────────────────────────────────────────────
 
-import type { DataSource } from './input-normalizer';
+import type { DataSource } from './input-normalizer.js';
 
 export type SourceInputMode = 'structured' | 'captured';
 export type KnownDataSource = DataSource;

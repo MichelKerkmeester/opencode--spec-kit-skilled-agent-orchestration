@@ -7,7 +7,7 @@
 // Keep the blocklist and allowlist narrow, shape-based, and aligned to that
 // frozen corpus guidance.
 
-import { canonicalFold } from './unicode-normalization';
+import { canonicalFold } from './unicode-normalization.js';
 
 export type TriggerPhraseSanitizeReason =
   | 'empty'

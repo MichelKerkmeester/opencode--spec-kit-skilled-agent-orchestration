@@ -14,14 +14,14 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 
-import { CONFIG } from '../core';
-import { getSessionScopedSaveContextExample, isLegacySharedSaveContextPath } from '../core';
-import { structuredLog, sanitizePath } from '../utils';
+import { CONFIG } from '../core/index.js';
+import { getSessionScopedSaveContextExample, isLegacySharedSaveContextPath } from '../core/index.js';
+import { structuredLog, sanitizePath } from '../utils/index.js';
 
 import {
   validateInputData,
   normalizeInputData,
-} from '../utils/input-normalizer';
+} from '../utils/input-normalizer.js';
 import type {
   RawInputData,
   NormalizedData,
@@ -30,7 +30,7 @@ import type {
   RecentContext,
   FileEntry,
   DataSource,
-} from '../utils/input-normalizer';
+} from '../utils/input-normalizer.js';
 
 // ───────────────────────────────────────────────────────────────
 // 3. TYPES

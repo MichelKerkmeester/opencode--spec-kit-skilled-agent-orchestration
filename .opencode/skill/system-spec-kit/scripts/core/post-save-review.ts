@@ -20,11 +20,11 @@ import {
   METRIC_M6_MEMORY_SAVE_GIT_PROVENANCE_MISSING_TOTAL,
   METRIC_M7_MEMORY_SAVE_TEMPLATE_ANCHOR_VIOLATIONS_TOTAL,
   METRIC_M8_MEMORY_SAVE_REVIEW_VIOLATION_TOTAL,
-} from '../lib/memory-telemetry';
-import { sanitizeTriggerPhrase, type TriggerPhraseSanitizeReason } from '../lib/trigger-phrase-sanitizer';
-import { resolveSaveMode, SaveMode, type SaveModeInput } from '../types/save-mode';
-import { structuredLog } from '../utils/logger';
-import { detectContinuationPattern } from './find-predecessor-memory';
+} from '../lib/memory-telemetry.js';
+import { sanitizeTriggerPhrase, type TriggerPhraseSanitizeReason } from '../lib/trigger-phrase-sanitizer.js';
+import { resolveSaveMode, SaveMode, type SaveModeInput } from '../types/save-mode.js';
+import { structuredLog } from '../utils/logger.js';
+import { detectContinuationPattern } from './find-predecessor-memory.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES

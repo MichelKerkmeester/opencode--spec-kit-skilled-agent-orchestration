@@ -7,8 +7,8 @@
 // ───────────────────────────────────────────────────────────────
 // Extracts file references, descriptions, and observation types from session data
 
-import { CONFIG } from '../config';
-import { coerceFactToText, coerceFactsToText } from '../utils/fact-coercion';
+import { CONFIG } from '../config/index.js';
+import { coerceFactToText, coerceFactsToText } from '../utils/fact-coercion.js';
 import {
   toCanonicalRelativePath,
   toRelativePath,
@@ -16,14 +16,14 @@ import {
   isDescriptionValid,
   getDescriptionTierRank,
   validateDescription,
-} from '../utils/file-helpers';
-import { getPathBasename } from '../utils/path-utils';
+} from '../utils/file-helpers.js';
+import { getPathBasename } from '../utils/path-utils.js';
 import {
   extractSpecNumber,
   categorizeSection,
   generateAnchorId,
   validateAnchorUniqueness
-} from '../lib/anchor-generator';
+} from '../lib/anchor-generator.js';
 import type {
   CollectedDataSubset,
   DescriptionProvenance,
@@ -31,7 +31,7 @@ import type {
   ModificationMagnitude,
   Observation,
   ObservationDetailed,
-} from '../types/session-types';
+} from '../types/session-types.js';
 
 export type { FileChange, ObservationDetailed };
 

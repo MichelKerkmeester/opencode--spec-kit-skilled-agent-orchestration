@@ -7,10 +7,10 @@
 import * as crypto from 'node:crypto';
 import * as fsSync from 'node:fs';
 import * as path from 'node:path';
-import type { CollectedDataFull } from '../extractors/collect-session-data';
+import type { CollectedDataFull } from '../extractors/collect-session-data.js';
 import type { MemoryEvidenceSnapshot } from '@spec-kit/shared/parsing/memory-sufficiency';
-import type { FileChange } from '../types/session-types';
-import { readNamedObject, readStringArray, readNumber, readString } from './workflow-accessors';
+import type { FileChange } from '../types/session-types.js';
+import { readNamedObject, readStringArray, readNumber, readString } from './workflow-accessors.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES

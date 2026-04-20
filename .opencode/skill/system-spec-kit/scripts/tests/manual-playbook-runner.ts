@@ -3,6 +3,7 @@ import path from 'node:path';
 
 import type { FixtureToolContext } from './fixtures/manual-playbook-fixture.js';
 import { createManualPlaybookFixture } from './fixtures/manual-playbook-fixture.js';
+import { isMainModule } from '../lib/esm-entry.js';
 
 type ScenarioStatus = 'PASS' | 'FAIL' | 'SKIP' | 'UNAUTOMATABLE';
 type StepKind = 'tool' | 'slash' | 'shell' | 'narrative';
@@ -1736,7 +1737,7 @@ async function main(): Promise<void> {
   logProgress(`Results written to ${RESULTS_JSON}`);
 }
 
-if (typeof require !== 'undefined' && typeof module !== 'undefined' && require.main === module) {
+if (isMainModule(import.meta.url)) {
   main().catch((error: unknown) => {
     const message = error instanceof Error ? `${error.message}\n${error.stack ?? ''}` : String(error);
     process.stderr.write(`${message}\n`);

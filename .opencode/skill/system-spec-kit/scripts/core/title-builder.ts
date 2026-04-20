@@ -6,8 +6,8 @@
 
 import * as path from 'node:path';
 import * as fsSync from 'node:fs';
-import { pickBestContentName } from '../utils/slug-utils';
-import { normalizeSpecTitleForMemory } from '../utils/task-enrichment';
+import { pickBestContentName } from '../utils/slug-utils.js';
+import { normalizeSpecTitleForMemory } from '../utils/task-enrichment.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. FUNCTIONS

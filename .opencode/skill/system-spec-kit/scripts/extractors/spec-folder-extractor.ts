@@ -10,8 +10,8 @@
 import fs from 'fs';
 import path from 'path';
 
-import { CONFIG } from '../config';
-import { toCanonicalRelativePath } from '../utils/file-helpers';
+import { CONFIG } from '../config/index.js';
+import { toCanonicalRelativePath } from '../utils/file-helpers.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES

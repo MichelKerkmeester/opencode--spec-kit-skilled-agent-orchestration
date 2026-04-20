@@ -2,7 +2,7 @@
 // MODULE: Memory Telemetry
 // ---------------------------------------------------------------
 
-import { structuredLog } from '../utils/logger';
+import { structuredLog } from '../utils/logger.js';
 
 export const METRIC_M1_MEMORY_SAVE_OVERVIEW_LENGTH_HISTOGRAM = 'memory_save_overview_length_histogram';
 export const METRIC_M2_MEMORY_SAVE_DECISION_FALLBACK_USED_TOTAL = 'memory_save_decision_fallback_used_total';

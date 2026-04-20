@@ -13,14 +13,14 @@ import * as path from 'path';
 import * as fsSync from 'fs';
 
 // Internal modules
-import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from '../config';
-import { formatTimestamp } from '../utils/message-utils';
-import { pickBestContentName } from '../utils/slug-utils';
-import { structuredLog } from '../utils/logger';
-import { coerceFactsToText } from '../utils/fact-coercion';
-import { truncateOnWordBoundary } from '../lib/truncate-on-word-boundary';
-import { detectSpecFolder } from '../spec-folder';
-import { resolveSaveMode, SaveMode } from '../types/save-mode';
+import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from '../config/index.js';
+import { formatTimestamp } from '../utils/message-utils.js';
+import { pickBestContentName } from '../utils/slug-utils.js';
+import { structuredLog } from '../utils/logger.js';
+import { coerceFactsToText } from '../utils/fact-coercion.js';
+import { truncateOnWordBoundary } from '../lib/truncate-on-word-boundary.js';
+import { detectSpecFolder } from '../spec-folder/index.js';
+import { resolveSaveMode, SaveMode } from '../types/save-mode.js';
 
 import {
   generateSessionId,
@@ -30,16 +30,16 @@ import {
   calculateSessionDuration,
   calculateExpiryEpoch,
   detectRelatedDocs,
-} from './session-extractor';
+} from './session-extractor.js';
 
 import {
   detectObservationType,
   extractFilesFromData,
   buildObservationsWithAnchors,
-} from './file-extractor';
+} from './file-extractor.js';
 
-import { buildImplementationGuideData } from './implementation-guide-extractor';
-import type { ImplementationGuideData } from './implementation-guide-extractor';
+import { buildImplementationGuideData } from './implementation-guide-extractor.js';
+import type { ImplementationGuideData } from './implementation-guide-extractor.js';
 
 import type {
   CanonicalDocs,
@@ -59,7 +59,7 @@ import type {
   SpecFileEntry,
   ToolCounts,
   UserPrompt,
-} from '../types/session-types';
+} from '../types/session-types.js';
 
 // Re-export canonical types for backward compatibility
 export type {
@@ -1031,8 +1031,8 @@ function buildContinueSessionData(params: ContinueSessionParams): ContinueSessio
    4. LAZY-LOADED DEPENDENCIES
 ------------------------------------------------------------------*/
 
-import * as simFactoryModule from '../lib/simulation-factory';
-function getSimFactory(): typeof import('../lib/simulation-factory') {
+import * as simFactoryModule from '../lib/simulation-factory.js';
+function getSimFactory(): typeof import('../lib/simulation-factory.js') {
   return simFactoryModule;
 }
 

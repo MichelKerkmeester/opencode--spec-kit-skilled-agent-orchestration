@@ -28,15 +28,18 @@ import {
   initEvalDb, generateQueryEmbedding,
   initHybridSearch, hybridSearchEnhanced, vectorIndex,
   type AblationChannel, type AblationSearchFn, type AblationReport,
-} from '../../mcp_server/api';
+} from '../../mcp_server/api/index.js';
+import { dirnameFromImportMeta } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 // -- Config ------------------------------------------------------
 
 function resolveScriptsWorkspaceRoot(): string {
-  const directParent = path.resolve(__dirname, '..');
+  const directParent = path.resolve(moduleDir, '..');
   if (path.basename(directParent) === 'scripts') return directParent;
 
-  const nestedParent = path.resolve(__dirname, '..', '..');
+  const nestedParent = path.resolve(moduleDir, '..', '..');
   if (path.basename(nestedParent) === 'scripts') return nestedParent;
 
   return directParent;

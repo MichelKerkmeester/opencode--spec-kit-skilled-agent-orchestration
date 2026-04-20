@@ -13,6 +13,7 @@ import { load as loadSqliteVec } from 'sqlite-vec';
 
 // Shared config
 import { DB_PATH } from '@spec-kit/shared/paths';
+import { isMainModule } from '../lib/esm-entry.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES
@@ -193,7 +194,7 @@ async function main(): Promise<void> {
    4. INITIALIZE
 ------------------------------------------------------------------*/
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   main();
 }
 

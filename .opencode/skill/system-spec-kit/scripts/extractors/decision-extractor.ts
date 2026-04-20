@@ -7,21 +7,21 @@
 // ───────────────────────────────────────────────────────────────
 // Extracts decision records with options, rationale, confidence, and decision trees
 
-import { formatTimestamp } from '../utils/message-utils';
-import { validateDataStructure } from '../utils/data-validator';
-import { coerceFactsToText } from '../utils/fact-coercion';
-import { structuredLog } from '../utils/logger';
-import { generateAnchorId, validateAnchorUniqueness, extractSpecNumber } from '../lib/anchor-generator';
-import { generateDecisionTree } from '../lib/decision-tree-generator';
-import { truncateOnWordBoundary } from '../lib/truncate-on-word-boundary';
-import type { DecisionNode } from '../lib/decision-tree-generator';
+import { formatTimestamp } from '../utils/message-utils.js';
+import { validateDataStructure } from '../utils/data-validator.js';
+import { coerceFactsToText } from '../utils/fact-coercion.js';
+import { structuredLog } from '../utils/logger.js';
+import { generateAnchorId, validateAnchorUniqueness, extractSpecNumber } from '../lib/anchor-generator.js';
+import { generateDecisionTree } from '../lib/decision-tree-generator.js';
+import { truncateOnWordBoundary } from '../lib/truncate-on-word-boundary.js';
+import type { DecisionNode } from '../lib/decision-tree-generator.js';
 // O5-4: Removed dead simFactory import (F-12 eliminated simulation fallback path)
 import type {
   CollectedDataSubset,
   DecisionOption,
   DecisionRecord,
   DecisionData,
-} from '../types/session-types';
+} from '../types/session-types.js';
 
 // Re-export canonical types for backward compatibility
 export type { DecisionOption, DecisionRecord, DecisionData };

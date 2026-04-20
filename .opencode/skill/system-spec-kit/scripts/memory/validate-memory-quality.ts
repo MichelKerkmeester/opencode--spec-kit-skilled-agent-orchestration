@@ -19,7 +19,7 @@ export {
   shouldBlockWrite,
   validateMemoryQualityContent,
   validateMemoryQualityFile,
-} from '../lib/validate-memory-quality';
+} from '../lib/validate-memory-quality.js';
 
 export type {
   ValidationDisposition,
@@ -29,11 +29,12 @@ export type {
   QualityRuleId,
   ValidationResult,
   RuleResult,
-} from '../lib/validate-memory-quality';
+} from '../lib/validate-memory-quality.js';
 
 // CLI entry point — preserved here since this is the file invoked
 // as `node validate-memory-quality.js <path>`.
-import { validateMemoryQualityFile } from '../lib/validate-memory-quality';
+import { validateMemoryQualityFile } from '../lib/validate-memory-quality.js';
+import { isMainModule } from '../lib/esm-entry.js';
 
 function main(): void {
   const inputPath = process.argv[2];
@@ -60,6 +61,6 @@ function main(): void {
   console.log('QUALITY_GATE_PASS');
 }
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   main();
 }

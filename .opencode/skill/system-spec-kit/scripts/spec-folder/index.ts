@@ -6,7 +6,7 @@
 // 1. IMPORTS
 // ───────────────────────────────────────────────────────────────────
 // Barrel export for spec folder detection, validation, and setup modules
-import { detectSpecFolder, filterArchiveFolders } from './folder-detector';
+import { detectSpecFolder, filterArchiveFolders } from './folder-detector.js';
 import {
   ALIGNMENT_CONFIG,
   extractConversationTopics,
@@ -17,13 +17,13 @@ import {
   validateTelemetrySchemaDocsDrift,
   validateContentAlignment,
   validateFolderAlignment,
-} from './alignment-validator';
-import { ensureSpecFolderExists } from './directory-setup';
+} from './alignment-validator.js';
+import { ensureSpecFolderExists } from './directory-setup.js';
 import {
   buildNestedChangelogData,
   generateNestedChangelogMarkdown,
   writeNestedChangelog,
-} from './nested-changelog';
+} from './nested-changelog.js';
 
 // ───────────────────────────────────────────────────────────────────
 // 2. EXPORTS

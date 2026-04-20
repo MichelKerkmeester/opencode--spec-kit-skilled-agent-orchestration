@@ -7,6 +7,7 @@
 // ───────────────────────────────────────────────────────────────
 import fs from 'fs';
 import path from 'path';
+import { pathToFileURL } from 'node:url';
 
 type RedactionGateFn = (inputText: string) => {
   redactedText: string;
@@ -44,9 +45,9 @@ function isLikelyFalsePositive(value: string): boolean {
   return NON_SECRET_FP_PATTERNS.some((pattern) => pattern.test(value));
 }
 
-function evaluateFile(filePath: string): CalibrationCase {
+async function evaluateFile(filePath: string): Promise<CalibrationCase> {
   const input = fs.readFileSync(filePath, 'utf8');
-  const result = loadRedactionGate()(input);
+  const result = (await loadRedactionGate())(input);
   const tokens = tokenize(input);
 
   let falsePositives = 0;
@@ -67,14 +68,13 @@ function evaluateFile(filePath: string): CalibrationCase {
 
 let cachedRedactionGate: RedactionGateFn | null = null;
 
-function loadRedactionGate(): RedactionGateFn {
+async function loadRedactionGate(): Promise<RedactionGateFn> {
   if (cachedRedactionGate) {
     return cachedRedactionGate;
   }
 
   const gateModulePath = path.join(process.cwd(), 'mcp_server', 'dist', 'lib', 'extraction', 'redaction-gate.js');
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const gateModule = require(gateModulePath) as { applyRedactionGate: RedactionGateFn };
+  const gateModule = await import(pathToFileURL(gateModulePath).href) as { applyRedactionGate: RedactionGateFn };
   cachedRedactionGate = gateModule.applyRedactionGate;
   return cachedRedactionGate;
 }
@@ -130,7 +130,7 @@ function writeReport(specFolder: string, cases: CalibrationCase[]): void {
   fs.writeFileSync(outputPath, `${content}\n`, 'utf8');
 }
 
-function main(): void {
+async function main(): Promise<void> {
   const { specFolder } = parseArgs();
   const inputDir = path.join(specFolder, 'scratch', 'redaction-calibration-inputs');
   const files = fs.readdirSync(inputDir)
@@ -142,7 +142,7 @@ function main(): void {
     throw new Error(`No calibration input files found in ${inputDir}`);
   }
 
-  const cases = files.map((filePath) => evaluateFile(filePath));
+  const cases = await Promise.all(files.map((filePath) => evaluateFile(filePath)));
   writeReport(specFolder, cases);
   const totalFp = cases.reduce((sum, c) => sum + c.falsePositiveCount, 0);
   const totalTokens = cases.reduce((sum, c) => sum + c.tokenCount, 0);
@@ -150,4 +150,8 @@ function main(): void {
   console.log(`Redaction calibration complete (FP rate=${fpRate.toFixed(2)}%)`);
 }
 
-main();
+void main().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error);
+  console.error(`[run-redaction-calibration] ${message}`);
+  process.exit(1);
+});

@@ -14,11 +14,14 @@ import * as path from 'node:path';
 import {
   detectFrontmatter,
   parseSectionValue,
-} from '../lib/frontmatter-migration';
+} from '../lib/frontmatter-migration.js';
 import {
   isAllowlistedShortProductName,
   sanitizeTriggerPhrase,
-} from '../lib/trigger-phrase-sanitizer';
+} from '../lib/trigger-phrase-sanitizer.js';
+import { dirnameFromImportMeta, isMainModule } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 type MigrationMode = 'dry-run' | 'apply';
 type RemovalReason = 'empty_or_invalid' | 'sanitizer' | 'canonical_duplicate' | 'title_overlap';
@@ -115,8 +118,8 @@ Default scan roots:
 
 function resolveProjectRoot(): string {
   const candidates = [
-    path.resolve(__dirname, '../../../../../..'),
-    path.resolve(__dirname, '../../../..'),
+    path.resolve(moduleDir, '../../../../../..'),
+    path.resolve(moduleDir, '../../../..'),
     process.cwd(),
   ];
 
@@ -609,7 +612,7 @@ async function main(): Promise<void> {
   }
 }
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   void main().catch((error: unknown) => {
     const message = error instanceof Error ? error.message : String(error);
     console.error(`[migrate-trigger-phrase-residual] ${message}`);

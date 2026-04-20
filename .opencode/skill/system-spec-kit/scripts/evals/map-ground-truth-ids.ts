@@ -12,15 +12,18 @@
 import Database from 'better-sqlite3';
 import * as path from 'path';
 import * as fs from 'fs';
+import { dirnameFromImportMeta } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 // ───────────────────────────────────────────────────────────────
 // 2. CONFIGURATION
 // ───────────────────────────────────────────────────────────────
 function resolveScriptsWorkspaceRoot(): string {
-  const directParent = path.resolve(__dirname, '..');
+  const directParent = path.resolve(moduleDir, '..');
   if (path.basename(directParent) === 'scripts') return directParent;
 
-  const nestedParent = path.resolve(__dirname, '..', '..');
+  const nestedParent = path.resolve(moduleDir, '..', '..');
   if (path.basename(nestedParent) === 'scripts') return nestedParent;
 
   return directParent;

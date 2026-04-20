@@ -5,6 +5,8 @@
 import Database from 'better-sqlite3';
 
 import { DB_PATH } from '@spec-kit/shared/paths';
+import { rebuildAutoEntities } from '@spec-kit/mcp-server/api';
+import { isMainModule } from '../lib/esm-entry.js';
 
 interface ParsedArgs {
   dryRun: boolean;
@@ -22,12 +24,6 @@ interface RebuildAutoEntitiesResult {
   catalogEntriesRebuilt: number;
 }
 
-const { rebuildAutoEntities } = require('@spec-kit/mcp-server/api') as {
-  rebuildAutoEntities: (
-    database: Database.Database,
-    options: ParsedArgs,
-  ) => RebuildAutoEntitiesResult;
-};
 
 const HELP_TEXT = `
 rebuild-auto-entities — Rebuild auto-generated entity rows from current memory content
@@ -88,7 +84,7 @@ async function main(): Promise<void> {
   }
 }
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   void main().catch((error: unknown) => {
     const message = error instanceof Error ? error.message : String(error);
     console.error('[rebuild-auto-entities] Error:', message);

@@ -10,13 +10,16 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import ts from 'typescript';
+import { dirnameFromImportMeta } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 function resolveHandlersRoot(): string {
   const candidates = [
     // Source layout (tsx): scripts/evals/check-handler-cycles-ast.ts
-    path.resolve(__dirname, '../../mcp_server/handlers'),
+    path.resolve(moduleDir, '../../mcp_server/handlers'),
     // Compiled layout (node): scripts/dist/evals/check-handler-cycles-ast.js
-    path.resolve(__dirname, '../../../mcp_server/handlers'),
+    path.resolve(moduleDir, '../../../mcp_server/handlers'),
     // CWD fallbacks
     path.resolve(process.cwd(), '../mcp_server/handlers'),
     path.resolve(process.cwd(), 'mcp_server/handlers'),

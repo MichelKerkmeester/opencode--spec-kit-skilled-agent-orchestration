@@ -18,6 +18,9 @@ import {
   refreshGraphMetadataForSpecFolder,
   type GraphMetadata,
 } from '@spec-kit/mcp-server/api';
+import { dirnameFromImportMeta, isMainModule } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 const SPEC_FOLDER_RE = /^\d{3}(?:[-_].+)?$/;
 const EXCLUDED_DIRS = new Set(['memory', 'scratch', 'node_modules', '.git']);
@@ -46,7 +49,7 @@ function resolveRepoRoot(): string {
     return cwdCandidate;
   }
 
-  let current = path.resolve(__dirname);
+  let current = path.resolve(moduleDir);
   let lastMatch: string | null = null;
   while (true) {
     if (fs.existsSync(path.join(current, '.opencode', 'specs'))) {
@@ -61,7 +64,7 @@ function resolveRepoRoot(): string {
   if (lastMatch) {
     return lastMatch;
   }
-  return path.resolve(__dirname, '..', '..', '..', '..', '..');
+  return path.resolve(moduleDir, '..', '..', '..', '..', '..');
 }
 
 function parseArgs(argv: string[]): { dryRun: boolean; root: string; activeOnly: boolean } {
@@ -238,6 +241,6 @@ function run(): void {
   process.stdout.write(`${JSON.stringify(summary, null, 2)}\n`);
 }
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   run();
 }

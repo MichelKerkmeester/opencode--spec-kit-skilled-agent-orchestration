@@ -7,7 +7,7 @@
 // ───────────────────────────────────────────────────────────────
 // Extracts key topics from session data using weighted scoring and bigram analysis
 
-import { SemanticSignalExtractor } from '../lib/semantic-signal-extractor';
+import { SemanticSignalExtractor } from '../lib/semantic-signal-extractor.js';
 
 /** Represents decision for topics. */
 export interface DecisionForTopics {

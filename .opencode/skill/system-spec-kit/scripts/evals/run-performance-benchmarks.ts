@@ -23,6 +23,9 @@ import {
   resetExtractionMetrics,
   type ExtractionMetrics,
 } from '@spec-kit/mcp-server/api';
+import { dirnameFromImportMeta } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 interface LatencyStats {
   samples: number;
@@ -98,7 +101,7 @@ function resolveSpecFolderPath(specFolder: string): string {
     return direct;
   }
 
-  const workspaceFallback = path.resolve(__dirname, '..', '..', '..', '..', '..', specFolder);
+  const workspaceFallback = path.resolve(moduleDir, '..', '..', '..', '..', '..', specFolder);
   if (fs.existsSync(workspaceFallback)) {
     return workspaceFallback;
   }

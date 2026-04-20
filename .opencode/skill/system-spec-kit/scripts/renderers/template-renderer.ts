@@ -12,8 +12,8 @@
 // ───────────────────────────────────────────────────────────────
 import fs from 'fs/promises';
 import path from 'path';
-import { CONFIG } from '../core';
-import { structuredLog } from '../utils/logger';
+import { CONFIG } from '../core/index.js';
+import { structuredLog } from '../utils/logger.js';
 
 // ───────────────────────────────────────────────────────────────
 // 3. TYPES

@@ -29,8 +29,8 @@ import type { ExtractionResult, ScoredNgram } from '@spec-kit/shared/types';
 import {
   createValidShortTerms,
   shouldIncludeTopicWord,
-} from './topic-keywords';
-import { sanitizeTriggerPhrase } from './trigger-phrase-sanitizer';
+} from './topic-keywords.js';
+import { sanitizeTriggerPhrase } from './trigger-phrase-sanitizer.js';
 
 export type SemanticSignalMode = 'topics' | 'triggers' | 'summary' | 'all';
 export type StopwordProfile = 'balanced' | 'aggressive';

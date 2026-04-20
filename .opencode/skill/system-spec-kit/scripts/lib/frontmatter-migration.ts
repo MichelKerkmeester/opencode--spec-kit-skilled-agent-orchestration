@@ -9,7 +9,7 @@
 
 import * as path from 'path';
 import { CANONICAL_CONTEXT_TYPES, LEGACY_CONTEXT_TYPE_ALIASES } from '@spec-kit/shared/context-types';
-import { resolveImportanceTier } from '../extractors/session-extractor';
+import { resolveImportanceTier } from '../extractors/session-extractor.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES

@@ -7,8 +7,8 @@
 // ───────────────────────────────────────────────────────────────
 // Detects tool calls, classifies conversation phases, and identifies prose context
 
-import type { ConversationPhaseLabel } from '../types/session-types';
-import { classifyConversationPhase as classifyPhaseViaSignals } from '../lib/phase-classifier';
+import type { ConversationPhaseLabel } from '../types/session-types.js';
+import { classifyConversationPhase as classifyPhaseViaSignals } from '../lib/phase-classifier.js';
 
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES

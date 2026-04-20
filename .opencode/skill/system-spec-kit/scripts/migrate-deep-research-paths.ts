@@ -5,8 +5,11 @@
 
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { dirnameFromImportMeta } from './lib/esm-entry.js';
 
-const SCRIPT_DIR = __dirname;
+const moduleDir = dirnameFromImportMeta(import.meta.url);
+
+const SCRIPT_DIR = moduleDir;
 const DEFAULT_SPECS_ROOT = path.resolve(SCRIPT_DIR, '..', '..', '..', 'specs');
 
 const TEXT_EXTENSIONS = new Set(['.md', '.json', '.jsonl', '.yaml', '.yml', '.txt']);

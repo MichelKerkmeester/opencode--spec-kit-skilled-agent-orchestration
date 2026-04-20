@@ -15,7 +15,7 @@
 
 import * as fs from 'fs/promises';
 
-import type { CaptureExchange } from '../utils/input-normalizer';
+import type { CaptureExchange } from '../utils/input-normalizer.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES

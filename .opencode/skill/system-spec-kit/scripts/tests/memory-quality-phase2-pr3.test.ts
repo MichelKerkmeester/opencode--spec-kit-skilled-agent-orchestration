@@ -6,10 +6,10 @@ import { fileURLToPath } from 'node:url';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { reviewPostSaveQuality } from '../core/post-save-review';
-import { collectSessionData } from '../extractors/collect-session-data';
-import { buildFrontmatterContent } from '../lib/frontmatter-migration';
-import { normalizeInputData } from '../utils/input-normalizer';
+import { reviewPostSaveQuality } from '../core/post-save-review.js';
+import { collectSessionData } from '../extractors/collect-session-data.js';
+import { buildFrontmatterContent } from '../lib/frontmatter-migration.js';
+import { normalizeInputData } from '../utils/input-normalizer.js';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(TEST_DIR, '..', '..', '..', '..', '..');

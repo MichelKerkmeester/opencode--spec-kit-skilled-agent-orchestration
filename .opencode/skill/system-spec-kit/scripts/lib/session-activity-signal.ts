@@ -8,7 +8,7 @@
 // Aggregates spec-relevant session activity that can help spec-folder
 // auto-detection prefer the folder that is actually being worked on.
 
-import type { CollectedDataBase, FactValue, Observation } from '../types/session-types';
+import type { CollectedDataBase, FactValue, Observation } from '../types/session-types.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES & CONSTANTS

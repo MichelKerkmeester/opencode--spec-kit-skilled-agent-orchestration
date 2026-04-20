@@ -12,20 +12,20 @@ import {
   isGenericContentTask,
   normalizeMemoryNameCandidate,
   pickBestContentName,
-} from '../utils/slug-utils';
+} from '../utils/slug-utils.js';
 import {
   getDescriptionTierRank,
   type DescriptionTier,
   validateDescription,
-} from '../utils/file-helpers';
+} from '../utils/file-helpers.js';
 import type { MemorySufficiencyResult } from '@spec-kit/shared/parsing/memory-sufficiency';
 import type {
   DescriptionProvenance,
   QualityDimensionScore,
   QualityFlag,
   QualityScoreResult,
-} from '../types/session-types';
-import type { ContaminationSeverity } from '../extractors/contamination-filter';
+} from '../types/session-types.js';
+import type { ContaminationSeverity } from '../extractors/contamination-filter.js';
 
 interface FileWithDescription {
   DESCRIPTION?: string;
@@ -48,7 +48,7 @@ interface QualityBreakdown {
 }
 
 // Re-export quality types from canonical location for backward compatibility
-export type { QualityFlag, QualityDimensionScore, QualityInsufficiencySummary, QualityScoreResult } from '../types/session-types';
+export type { QualityFlag, QualityDimensionScore, QualityInsufficiencySummary, QualityScoreResult } from '../types/session-types.js';
 
 function clamp01(value: number): number {
   return Math.max(0, Math.min(1, value));

@@ -10,9 +10,9 @@
 // ───────────────────────────────────────────────────────────────
 // 2. IMPORTS
 // ───────────────────────────────────────────────────────────────
-import { CONFIG } from '../core';
-import { structuredLog } from './logger';
-import type { ToolCallEntry } from '../types/session-types';
+import { CONFIG } from '../core/index.js';
+import { structuredLog } from './logger.js';
+import type { ToolCallEntry } from '../types/session-types.js';
 
 // ───────────────────────────────────────────────────────────────
 // 3. TYPES

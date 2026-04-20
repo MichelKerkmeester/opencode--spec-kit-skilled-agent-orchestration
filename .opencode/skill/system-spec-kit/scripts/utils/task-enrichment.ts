@@ -7,7 +7,7 @@
 // ───────────────────────────────────────────────────────────────
 // Shared helpers for memory task title enrichment decisions
 
-import { isContaminatedMemoryName, isGenericContentTask, normalizeMemoryNameCandidate, pickBestContentName } from './slug-utils';
+import { isContaminatedMemoryName, isGenericContentTask, normalizeMemoryNameCandidate, pickBestContentName } from './slug-utils.js';
 
 function hasJsonDataFile(dataFilePath: string | null | undefined): boolean {
   return typeof dataFilePath === 'string' && dataFilePath.trim().length > 0;

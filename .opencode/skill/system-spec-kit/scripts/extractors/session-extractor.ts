@@ -14,8 +14,8 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 
 // Internal modules
-import { CONFIG } from '../config';
-import { SemanticSignalExtractor } from '../lib/semantic-signal-extractor';
+import { CONFIG } from '../config/index.js';
+import { SemanticSignalExtractor } from '../lib/semantic-signal-extractor.js';
 import type {
   FileEntry,
   FileProgressEntry,
@@ -24,7 +24,7 @@ import type {
   SpecFileEntry,
   ToolCounts,
   UserPrompt,
-} from '../types/session-types';
+} from '../types/session-types.js';
 
 export type {
   FileEntry,

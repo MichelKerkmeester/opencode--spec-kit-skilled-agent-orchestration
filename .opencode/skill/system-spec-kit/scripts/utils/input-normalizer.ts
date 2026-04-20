@@ -6,17 +6,17 @@
 // 1. INPUT NORMALIZER
 // ───────────────────────────────────────────────────────────────
 // Validates, normalizes, and transforms raw input data into structured session format
-import { structuredLog } from './logger';
+import { structuredLog } from './logger.js';
 import {
   buildSpecAffinityTargets,
   extractSpecIds,
   matchesSpecAffinityFilePath,
   matchesSpecAffinityText,
   normalizeText,
-} from './spec-affinity';
-import { truncateOnWordBoundary } from '../lib/truncate-on-word-boundary';
-import { resolveSaveMode, type SaveMode } from '../types/save-mode';
-import type { Observation, RecentContextEntry } from '../types/session-types';
+} from './spec-affinity.js';
+import { truncateOnWordBoundary } from '../lib/truncate-on-word-boundary.js';
+import { resolveSaveMode, type SaveMode } from '../types/save-mode.js';
+import type { Observation, RecentContextEntry } from '../types/session-types.js';
 
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES

@@ -20,6 +20,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import ts from 'typescript';
+import { dirnameFromImportMeta, isMainModule } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 // ───────────────────────────────────────────────────────────────
 // 3. TYPE DEFINITIONS
@@ -54,7 +57,7 @@ const SHARED_PROHIBITED_PACKAGE_PREFIXES = ['@spec-kit/mcp-server', '@spec-kit/s
 // 50 lines is generous for a spawn+exit wrapper; anything larger
 // Indicates logic that belongs in scripts/ instead
 const MAX_SUBSTANTIVE_LINES = 50;
-const PACKAGE_ROOT = resolvePackageRoot(__dirname);
+const PACKAGE_ROOT = resolvePackageRoot(moduleDir);
 const CHILD_PROCESS_MODULE_SPECIFIERS = new Set(['child_process', 'node:child_process']);
 const CHILD_PROCESS_WRAPPER_APIS = new Set(['spawn', 'spawnSync', 'exec', 'execSync', 'execFile', 'execFileSync', 'fork']);
 
@@ -484,7 +487,7 @@ function main(): void {
   process.exit(0);
 }
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   main();
 }
 

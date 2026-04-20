@@ -7,7 +7,7 @@
 // ───────────────────────────────────────────────────────────────
 // Script-side compatibility wrapper over the unified semantic signal extractor.
 
-import { SemanticSignalExtractor } from './semantic-signal-extractor';
+import { SemanticSignalExtractor } from './semantic-signal-extractor.js';
 import type { ExtractionResult } from '@spec-kit/shared/types';
 import {
   CONFIG as TRIGGER_CONFIG,

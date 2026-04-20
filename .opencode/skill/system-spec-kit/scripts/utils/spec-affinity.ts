@@ -11,7 +11,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import type { CollectedDataSubset } from '../types/session-types';
+import type { CollectedDataSubset } from '../types/session-types.js';
 
 const SPEC_ID_REGEX = /\b\d{3}-[a-z0-9][a-z0-9-]*\b/g;
 const KEYWORD_STOPWORDS = new Set([

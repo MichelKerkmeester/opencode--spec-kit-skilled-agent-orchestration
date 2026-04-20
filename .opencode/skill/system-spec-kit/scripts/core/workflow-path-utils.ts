@@ -8,7 +8,7 @@
 import * as path from 'node:path';
 import * as fsSync from 'node:fs';
 import { validateFilePath } from '@spec-kit/shared/utils/path-security';
-import type { FileChange } from '../types/session-types';
+import type { FileChange } from '../types/session-types.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. FUNCTIONS

@@ -22,10 +22,11 @@ import {
   SPEC_FOLDER_BASIC_PATTERN,
   CATEGORY_FOLDER_PATTERN,
   findChildFolderSync,
-} from '../core';
-import { runWorkflow, releaseFilesystemLock } from '../core/workflow';
-import { loadCollectedData } from '../loaders';
-import { collectSessionData } from '../extractors/collect-session-data';
+} from '../core/index.js';
+import { runWorkflow, releaseFilesystemLock } from '../core/workflow.js';
+import { loadCollectedData } from '../loaders/index.js';
+import { collectSessionData } from '../extractors/collect-session-data.js';
+import { isMainModule } from '../lib/esm-entry.js';
 
 type StructuredCollectedData = Record<string, unknown> & { _source: 'file' };
 
@@ -625,7 +626,7 @@ async function main(
 // ───────────────────────────────────────────────────────────────
 // 7. EXPORTS
 // ───────────────────────────────────────────────────────────────
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   installSignalHandlers();
   main().catch((error: unknown) => {
     const errMsg = error instanceof Error ? error.message : String(error);

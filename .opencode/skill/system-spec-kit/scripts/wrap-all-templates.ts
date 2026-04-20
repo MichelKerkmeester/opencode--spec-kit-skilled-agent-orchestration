@@ -13,8 +13,11 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { wrapSectionsWithAnchors } from './lib/anchor-generator.js';
+import { dirnameFromImportMeta } from './lib/esm-entry.js';
 
-const SCRIPT_DIR = __dirname;
+const moduleDir = dirnameFromImportMeta(import.meta.url);
+
+const SCRIPT_DIR = moduleDir;
 const TEMPLATE_BASE = path.resolve(SCRIPT_DIR, '..', 'templates');
 
 const LEVEL_FOLDERS = ['level_1', 'level_2', 'level_3', 'level_3+'];

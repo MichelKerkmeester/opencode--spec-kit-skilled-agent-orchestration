@@ -12,7 +12,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 import ts from 'typescript';
 
-import { isProhibitedImportPath } from './import-policy-rules';
+import { isProhibitedImportPath } from './import-policy-rules.js';
+import { dirnameFromImportMeta } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 interface AllowlistException {
   file: string;
@@ -61,14 +64,14 @@ interface ReExportTrace {
   importPath: string;
 }
 
-const SCRIPTS_ROOT = path.resolve(__dirname, '..');
+const SCRIPTS_ROOT = path.resolve(moduleDir, '..');
 
 function resolveAllowlistPath(): string | null {
   const candidates = [
     // Source layout (tsx): scripts/evals/check-no-mcp-lib-imports-ast.ts
-    path.resolve(__dirname, 'import-policy-allowlist.json'),
+    path.resolve(moduleDir, 'import-policy-allowlist.json'),
     // Compiled layout (node): scripts/dist/evals/check-no-mcp-lib-imports-ast.js
-    path.resolve(__dirname, '../../evals/import-policy-allowlist.json'),
+    path.resolve(moduleDir, '../../evals/import-policy-allowlist.json'),
     // CWD fallbacks
     path.resolve(process.cwd(), 'evals/import-policy-allowlist.json'),
     path.resolve(process.cwd(), 'scripts/evals/import-policy-allowlist.json'),
@@ -230,7 +233,7 @@ function parseFile(filePath: string, allowlist: Allowlist): ParsedFileResult {
       }
     }
 
-    // import Foo = require("module") — ImportEqualsDeclaration
+    // Import-equals external module references with CommonJS-style targets.
     if (ts.isImportEqualsDeclaration(node) && ts.isExternalModuleReference(node.moduleReference)) {
       const importPath = getModuleSpecifierText(node.moduleReference.expression);
       if (importPath) {

@@ -5,7 +5,7 @@
 // Provides a complete, type-safe default that individual tests can
 // override via Partial<SessionData> spreads.
 
-import type { SessionData } from '../../types/session-types';
+import type { SessionData } from '../../types/session-types.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. DEFAULTS

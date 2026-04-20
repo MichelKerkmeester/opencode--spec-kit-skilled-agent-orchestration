@@ -7,8 +7,8 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-
-const yaml = require('js-yaml') as { load: (source: string) => unknown };
+import * as yaml from 'js-yaml';
+import { isMainModule } from '../lib/esm-entry.js';
 
 const CONTINUITY_STALENESS_THRESHOLD_MS = 10 * 60 * 1000;
 const FRONTMATTER_RE = /^(?:\uFEFF)?(?:\s*<!--[\s\S]*?-->\s*)*---\s*\r?\n([\s\S]*?)\r?\n---(?:\s*\r?\n|$)/;
@@ -347,6 +347,6 @@ function runCli(): void {
   }
 }
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   runCli();
 }

@@ -9,7 +9,10 @@
 import * as path from 'path';
 import * as fsSync from 'fs';
 import { stripJsoncComments } from '@spec-kit/shared/utils/jsonc-strip';
-import { structuredLog } from '../utils/logger';
+import { structuredLog } from '../utils/logger.js';
+import { dirnameFromImportMeta } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES
@@ -69,8 +72,8 @@ export interface SpecKitConfig {
    2. PATH CONSTANTS
 ------------------------------------------------------------------*/
 
-// F-08: Stable root detection — walk up from __dirname looking for package.json
-// Instead of relying on fragile relative __dirname offset
+// F-08: Stable root detection — walk up from moduleDir looking for package.json
+// Instead of relying on fragile relative moduleDir offset
 function findScriptsRoot(startDir: string): string {
   let dir = startDir;
   for (let i = 0; i < 10; i++) {
@@ -81,11 +84,11 @@ function findScriptsRoot(startDir: string): string {
     if (candidate === dir) break; // filesystem root
     dir = candidate;
   }
-  // Fallback to original __dirname-relative resolution
+  // Fallback to original moduleDir-relative resolution
   return path.resolve(startDir, '..', '..');
 }
 
-const SCRIPTS_DIR: string = findScriptsRoot(__dirname);
+const SCRIPTS_DIR: string = findScriptsRoot(moduleDir);
 
 /* ───────────────────────────────────────────────────────────────
    3. CONFIG VALIDATION

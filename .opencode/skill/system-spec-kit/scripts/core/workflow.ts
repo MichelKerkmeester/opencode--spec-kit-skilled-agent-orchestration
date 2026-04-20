@@ -10,92 +10,95 @@
 import * as path from 'node:path';
 import * as fsSync from 'node:fs';
 // Internal modules
-import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from './config';
+import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from './config.js';
 import {
   extractConversations,
   extractDecisions,
   extractDiagrams,
   enhanceFilesWithSemanticDescriptions,
-} from '../extractors';
-import { detectSpecFolder, ensureSpecFolderExists } from '../spec-folder';
-import { generateContentSlug } from '../utils/slug-utils';
-import { pickPreferredMemoryTask, shouldEnrichTaskFromSpecTitle } from '../utils/task-enrichment';
+} from '../extractors/index.js';
+import { detectSpecFolder, ensureSpecFolderExists } from '../spec-folder/index.js';
+import { generateContentSlug } from '../utils/slug-utils.js';
+import { pickPreferredMemoryTask, shouldEnrichTaskFromSpecTitle } from '../utils/task-enrichment.js';
 import {
   buildSpecAffinityTargets,
   evaluateCollectedDataSpecAffinity,
-} from '../utils/spec-affinity';
-import { deriveMemoryDescription } from '../lib/memory-frontmatter';
+} from '../utils/spec-affinity.js';
+import { deriveMemoryDescription } from '../lib/memory-frontmatter.js';
 import {
   isAllowlistedShortProductName,
-} from '../lib/trigger-phrase-sanitizer';
-import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data';
-import type { CollectedDataFull } from '../extractors/collect-session-data';
-import type { SemanticFileInfo } from '../extractors/file-extractor';
-import { filterContamination, getContaminationPatternLabels, SEVERITY_RANK, type ContaminationSeverity } from '../extractors/contamination-filter';
+} from '../lib/trigger-phrase-sanitizer.js';
+import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data.js';
+import type { CollectedDataFull } from '../extractors/collect-session-data.js';
+import type { SemanticFileInfo } from '../extractors/file-extractor.js';
+import { filterContamination, getContaminationPatternLabels, SEVERITY_RANK, type ContaminationSeverity } from '../extractors/contamination-filter.js';
 import {
   scoreMemoryQuality as scoreMemoryQualityV2,
   type ValidationSignal,
-} from '../extractors/quality-scorer';
+} from '../extractors/quality-scorer.js';
 import {
   determineValidationDisposition,
   validateMemoryQualityContent,
-} from '../lib/validate-memory-quality';
-import { extractSpecFolderContext } from '../extractors/spec-folder-extractor';
-import { extractGitContext } from '../extractors/git-context-extractor';
+} from '../lib/validate-memory-quality.js';
+import { extractSpecFolderContext } from '../extractors/spec-folder-extractor.js';
+import { extractGitContext } from '../extractors/git-context-extractor.js';
 
-import { createFilterPipeline } from '../lib/content-filter';
-import type { FilterStats, ContaminationAuditRecord } from '../lib/content-filter';
+import { createFilterPipeline } from '../lib/content-filter.js';
+import type { FilterStats, ContaminationAuditRecord } from '../lib/content-filter.js';
 import {
   generateImplementationSummary,
   buildWeightedEmbeddingSections,
   formatSummaryAsMarkdown,
   extractFileChanges,
-} from '../lib/semantic-summarizer';
-import { EMBEDDING_DIM, MODEL_NAME } from '../lib/embeddings';
+} from '../lib/semantic-summarizer.js';
+import { EMBEDDING_DIM, MODEL_NAME } from '../lib/embeddings.js';
 import {
   evaluateMemorySufficiency,
 } from '@spec-kit/shared/parsing/memory-sufficiency';
 import { validateMemoryTemplateContract } from '@spec-kit/shared/parsing/memory-template-contract';
 import { evaluateSpecDocHealth } from '@spec-kit/shared/parsing/spec-doc-health';
-import * as simFactory from '../lib/simulation-factory';
-import { loadCollectedData as loadCollectedDataFromLoader } from '../loaders/data-loader';
-import { applyTreeThinning } from './tree-thinning';
-import { structuredLog } from '../utils/logger';
-import type { FileChange, SessionData } from '../types/session-types';
-import type { ThinFileInput } from './tree-thinning';
-import { getSourceCapabilities } from '../utils/source-capabilities';
-import { normalizeInputData } from '../utils/input-normalizer';
-import type { RawInputData } from '../utils/input-normalizer';
-import { resolveSaveMode, SaveMode } from '../types/save-mode';
+import * as simFactory from '../lib/simulation-factory.js';
+import { loadCollectedData as loadCollectedDataFromLoader } from '../loaders/data-loader.js';
+import { applyTreeThinning } from './tree-thinning.js';
+import { structuredLog } from '../utils/logger.js';
+import type { FileChange, SessionData } from '../types/session-types.js';
+import type { ThinFileInput } from './tree-thinning.js';
+import { getSourceCapabilities } from '../utils/source-capabilities.js';
+import { normalizeInputData } from '../utils/input-normalizer.js';
+import type { RawInputData } from '../utils/input-normalizer.js';
+import { resolveSaveMode, SaveMode } from '../types/save-mode.js';
 
 // Extracted modules
-import { stripWorkflowHtmlOutsideCodeFences, escapeLiteralAnchorExamples } from './content-cleaner';
+import { stripWorkflowHtmlOutsideCodeFences, escapeLiteralAnchorExamples } from './content-cleaner.js';
 import {
   buildMemoryTitle,
   extractSpecTitle,
-} from './title-builder';
+} from './title-builder.js';
 import {
   resolveTreeThinningContent,
-} from './workflow-path-utils';
+} from './workflow-path-utils.js';
 import {
   readExplicitMemoryText,
   resolveParentSpec,
-} from './memory-metadata';
+} from './memory-metadata.js';
 import {
   injectQualityMetadata,
   injectSpecDocHealthMetadata,
-} from './frontmatter-editor';
-import { shouldIndexMemory, formatSufficiencyAbort } from './quality-gates';
-import { summarizeAuditCounts } from './workflow-accessors';
+} from './frontmatter-editor.js';
+import { shouldIndexMemory, formatSufficiencyAbort } from './quality-gates.js';
+import { summarizeAuditCounts } from './workflow-accessors.js';
 import {
   resolveAlignmentTargets,
   matchesAlignmentTarget,
   applyThinningToFileChanges,
-} from './alignment-validator';
+} from './alignment-validator.js';
 import {
   hasResearchIterationDirectories,
   runBackfillResearchMetadata,
-} from '../memory/backfill-research-metadata';
+} from '../memory/backfill-research-metadata.js';
+import { dirnameFromImportMeta } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 // ───────────────────────────────────────────────────────────────
 // 2. HELPERS
@@ -331,7 +334,7 @@ export interface WorkflowResult {
 let workflowRunQueue: Promise<void> = Promise.resolve();
 
 /** Filesystem lock directory for cross-process serialization. */
-const WORKFLOW_MODULE_DIR = __dirname;
+const WORKFLOW_MODULE_DIR = moduleDir;
 const WORKFLOW_LOCK_DIR = path.resolve(WORKFLOW_MODULE_DIR, '../../.workflow-lock');
 const WORKFLOW_LOCK_OWNER_PATH = path.join(WORKFLOW_LOCK_DIR, 'owner.json');
 const LEGACY_LOCK_STALE_MS = 5_000;
@@ -1274,7 +1277,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     .filter((value): value is string => typeof value === 'string' && value.trim().length > 0)
     .map((value) => value.trim());
   if (existingSupersedes.length === 0 && collectedData.saveMode === SaveMode.Json) {
-    const { findPredecessorMemory } = await import('./find-predecessor-memory');
+    const { findPredecessorMemory } = await import('./find-predecessor-memory.js');
     const predecessorSessionId = await findPredecessorMemory(specFolder, {
       title: memoryTitle,
       description: explicitMemoryText.description ?? memoryDescription,
@@ -1604,7 +1607,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // Non-blocking: review failures are logged but do not abort the workflow.
   if (shouldRunExplicitSaveFollowUps) {
     try {
-      const { reviewPostSaveQuality, printPostSaveReview } = await import('./post-save-review');
+      const { reviewPostSaveQuality, printPostSaveReview } = await import('./post-save-review.js');
       const reviewResult = reviewPostSaveQuality({
         savedFilePath: validatedSpecFolderPath,
         collectedData: collectedData as Parameters<typeof reviewPostSaveQuality>[0]['collectedData'],
@@ -1663,7 +1666,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 // 7. EXPORTS
 // ───────────────────────────────────────────────────────────────
 
-export { stripWorkflowHtmlOutsideCodeFences } from './content-cleaner';
+export { stripWorkflowHtmlOutsideCodeFences } from './content-cleaner.js';
 
 export {
   filterTriggerPhrases,

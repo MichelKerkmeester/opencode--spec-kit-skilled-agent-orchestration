@@ -12,7 +12,7 @@
 // ───────────────────────────────────────────────────────────────
 import readline from 'readline';
 
-import { getSessionScopedSaveContextExample } from '../core';
+import { getSessionScopedSaveContextExample } from '../core/index.js';
 
 // ───────────────────────────────────────────────────────────────
 // 3. INTERACTIVE MODE DETECTION

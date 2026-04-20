@@ -11,9 +11,9 @@ import type {
   QualityDimensionScore,
   QualityFlag,
   QualityScoreResult,
-} from '../types/session-types';
-import type { ContaminationSeverity } from './contamination-filter';
-import { VALIDATION_RULE_METADATA, type QualityRuleId, type ValidationRuleSeverity } from '../lib/validate-memory-quality';
+} from '../types/session-types.js';
+import type { ContaminationSeverity } from './contamination-filter.js';
+import { VALIDATION_RULE_METADATA, type QualityRuleId, type ValidationRuleSeverity } from '../lib/validate-memory-quality.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES & CONSTANTS

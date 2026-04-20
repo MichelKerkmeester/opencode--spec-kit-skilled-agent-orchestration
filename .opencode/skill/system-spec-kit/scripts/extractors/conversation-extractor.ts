@@ -7,20 +7,20 @@
 // ───────────────────────────────────────────────────────────────
 // Extracts structured conversation data — exchanges, tool calls, phases, and flowcharts
 
-import { CONFIG } from '../config';
-import { formatTimestamp, truncateToolOutput, summarizeExchange } from '../utils/message-utils';
-import { detectToolCall, isProseContext } from '../utils/tool-detection';
-import { classifyConversationExchanges } from '../lib/phase-classifier';
-import { coerceFactsToText } from '../utils/fact-coercion';
-import { detectObservationType } from './file-extractor';
-import * as flowchartGen from '../lib/flowchart-generator';
+import { CONFIG } from '../config/index.js';
+import { formatTimestamp, truncateToolOutput, summarizeExchange } from '../utils/message-utils.js';
+import { detectToolCall, isProseContext } from '../utils/tool-detection.js';
+import { classifyConversationExchanges } from '../lib/phase-classifier.js';
+import { coerceFactsToText } from '../utils/fact-coercion.js';
+import { detectObservationType } from './file-extractor.js';
+import * as flowchartGen from '../lib/flowchart-generator.js';
 import type {
   CollectedDataSubset,
   ConversationData,
   ConversationMessage,
   ConversationPhase,
   ToolCallEntry,
-} from '../types/session-types';
+} from '../types/session-types.js';
 
 // Re-export canonical types for backward compatibility
 export type {

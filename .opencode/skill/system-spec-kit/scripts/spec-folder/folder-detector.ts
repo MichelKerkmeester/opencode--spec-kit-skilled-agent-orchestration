@@ -18,8 +18,8 @@ import Database from 'better-sqlite3';
 // Internal modules
 import { DB_PATH } from '@spec-kit/shared/paths';
 import { validateFilePath } from '@spec-kit/shared/utils/path-security';
-import { promptUser, promptUserChoice } from '../utils/prompt-utils';
-import { CONFIG, findActiveSpecsDir, getAllExistingSpecsDirs, SPEC_FOLDER_PATTERN, findChildFolderAsync } from '../core';
+import { promptUser, promptUserChoice } from '../utils/prompt-utils.js';
+import { CONFIG, findActiveSpecsDir, getAllExistingSpecsDirs, SPEC_FOLDER_PATTERN, findChildFolderAsync } from '../core/index.js';
 import {
   ALIGNMENT_CONFIG,
   isArchiveFolder,
@@ -27,9 +27,9 @@ import {
   calculateAlignmentScore,
   validateContentAlignment,
   validateFolderAlignment,
-} from './alignment-validator';
-import type { AlignmentCollectedData } from './alignment-validator';
-import { buildSessionActivitySignal } from '../lib/session-activity-signal';
+} from './alignment-validator.js';
+import type { AlignmentCollectedData } from './alignment-validator.js';
+import { buildSessionActivitySignal } from '../lib/session-activity-signal.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES

@@ -2,7 +2,7 @@
 // MODULE: Session Types
 // ---------------------------------------------------------------
 
-import type { SaveMode } from './save-mode';
+import type { SaveMode } from './save-mode.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. SESSION TYPES

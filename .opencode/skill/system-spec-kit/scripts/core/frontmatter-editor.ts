@@ -6,8 +6,8 @@
 
 import * as path from 'node:path';
 import type { SpecDocHealthResult } from '@spec-kit/shared/parsing/spec-doc-health';
-import { sanitizeTriggerPhrases } from '../lib/trigger-phrase-sanitizer';
-import type { FileChange } from '../types/session-types';
+import { sanitizeTriggerPhrases } from '../lib/trigger-phrase-sanitizer.js';
+import type { FileChange } from '../types/session-types.js';
 
 // CG-04: Domain-specific stopwords — duplicated from workflow.ts to avoid circular imports
 const FOLDER_STOPWORDS = new Set([

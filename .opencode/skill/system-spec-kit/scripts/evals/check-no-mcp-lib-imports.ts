@@ -11,7 +11,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { isProhibitedImportPath } from './import-policy-rules';
+import { isProhibitedImportPath } from './import-policy-rules.js';
+import { dirnameFromImportMeta } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 interface AllowlistException {
   file: string;
@@ -52,10 +55,10 @@ interface ScanFileResult {
   localImports: LocalImport[];
 }
 
-// When running from dist/evals/, __dirname resolves to dist/ which is wrong.
+// When running from dist/evals/, moduleDir resolves to dist/ which is wrong.
 // Detect compiled mode and go up one additional level to reach the source scripts/ root.
 const SCRIPTS_ROOT = (() => {
-  const candidate = path.resolve(__dirname, '..');
+  const candidate = path.resolve(moduleDir, '..');
   if (candidate.includes(`${path.sep}dist`) || candidate.endsWith(`${path.sep}dist`)) {
     return path.resolve(candidate, '..');
   }
@@ -65,9 +68,9 @@ const SCRIPTS_ROOT = (() => {
 function resolveAllowlistPath(): string | null {
   const candidates = [
     // Source layout (tsx): scripts/evals/check-no-mcp-lib-imports.ts
-    path.resolve(__dirname, 'import-policy-allowlist.json'),
+    path.resolve(moduleDir, 'import-policy-allowlist.json'),
     // Compiled layout (node): scripts/dist/evals/check-no-mcp-lib-imports.js
-    path.resolve(__dirname, '../../evals/import-policy-allowlist.json'),
+    path.resolve(moduleDir, '../../evals/import-policy-allowlist.json'),
     // CWD fallbacks
     path.resolve(process.cwd(), 'evals/import-policy-allowlist.json'),
     path.resolve(process.cwd(), 'scripts/evals/import-policy-allowlist.json'),

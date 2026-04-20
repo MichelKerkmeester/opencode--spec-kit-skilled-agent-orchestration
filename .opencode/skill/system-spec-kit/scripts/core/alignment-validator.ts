@@ -5,11 +5,11 @@
 // for file change lists. Extracted from workflow.ts to reduce module size.
 
 import * as path from 'node:path';
-import { extractSpecFolderContext } from '../extractors/spec-folder-extractor';
-import { normalizeFilePath, getParentDirectory, buildAlignmentKeywords } from './workflow-path-utils';
-import { capText } from './workflow-accessors';
-import type { FileChange } from '../types/session-types';
-import type { ThinningResult } from './tree-thinning';
+import { extractSpecFolderContext } from '../extractors/spec-folder-extractor.js';
+import { normalizeFilePath, getParentDirectory, buildAlignmentKeywords } from './workflow-path-utils.js';
+import { capText } from './workflow-accessors.js';
+import type { FileChange } from '../types/session-types.js';
+import type { ThinningResult } from './tree-thinning.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES

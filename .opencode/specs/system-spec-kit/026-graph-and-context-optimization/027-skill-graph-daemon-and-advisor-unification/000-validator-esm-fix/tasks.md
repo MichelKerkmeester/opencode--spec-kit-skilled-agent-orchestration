@@ -1,9 +1,29 @@
 ---
 title: "Tasks: 027/000 — Validator ESM Migration"
+template_source: "SPECKIT_TEMPLATE_SOURCE: level2-tasks | v2.2"
 description: "Ordered task ladder for ESM migration of scripts/ package."
+trigger_phrases:
+  - "027/000 tasks"
+  - "validator esm task ladder"
+  - "scripts esm migration tasks"
 importance_tier: "high"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/000-validator-esm-fix"
+    last_updated_at: "2026-04-20T15:15:11Z"
+    last_updated_by: "codex"
+    recent_action: "Preserved task ladder."
+    next_safe_action: "Commit scoped migration."
+    blockers: []
+    completion_pct: 100
+    open_questions: []
+    answered_questions: []
 ---
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: level2-tasks | v2.2 -->
+<!-- ANCHOR:task-ladder -->
 
 # Tasks: 027/000
 
@@ -28,7 +48,7 @@ contextType: "implementation"
 | T017 | AC-6 Verify: `grep -rln "^const .* = require(" scripts --include="*.ts" \| grep -v node_modules \| grep -v "\.vitest\.ts"` returns 0 | P0 | 1m | Empty output |
 | T018 | AC-7 Verify: `npm test` in scripts/ matches baseline (no new regressions) | P0 | 3m | Diff vs baseline |
 | T019 | AC-8 Verify: `node dist/memory/generate-context.js --stdin <<<'{}'` exits 1 with structured error, not SyntaxError | P0 | 1m | stderr clean |
-| T020 | Update `scripts/README.md` — add ESM requirement note + Node 25 support | P1 | 2m | Git diff |
+| T020 | Update scripts README — add ESM requirement note + Node 25 support | P1 | 2m | Git diff |
 | T021 | Mark all checklist.md items `[x]` with `file:line` evidence | P0 | 5m | checklist.md |
 | T022 | Fill `implementation-summary.md` from placeholder → real summary | P0 | 3m | File diff |
 | T023 | Commit `feat(027/000): migrate scripts/ to ESM for Node 25 compat` | P0 | 1m | Git log |
@@ -50,3 +70,5 @@ On blocker, write blocker.md to 027/000/ and exit 2.
 
 Commit + stop (orchestrator pushes).
 ```
+
+<!-- /ANCHOR:task-ladder -->

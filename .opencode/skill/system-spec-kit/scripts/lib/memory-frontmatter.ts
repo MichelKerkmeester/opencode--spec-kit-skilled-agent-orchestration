@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 // Shared helpers for memory-specific frontmatter quality.
 
-import { extractTriggerPhrases } from './trigger-extractor';
+import { extractTriggerPhrases } from './trigger-extractor.js';
 
 export const GENERIC_MEMORY_DESCRIPTION = 'Session context memory template for Spec Kit indexing.';
 export const LEGACY_GENERIC_MEMORY_TRIGGER_PHRASES = [

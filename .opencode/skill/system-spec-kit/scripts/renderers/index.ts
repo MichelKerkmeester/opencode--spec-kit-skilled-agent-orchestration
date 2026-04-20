@@ -9,6 +9,6 @@
 export {
   populateTemplate,
   renderTemplate,
-} from './template-renderer';
+} from './template-renderer.js';
 
-export type { TemplateContext } from './template-renderer';
+export type { TemplateContext } from './template-renderer.js';

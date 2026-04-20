@@ -6,11 +6,11 @@ import { fileURLToPath } from 'node:url';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { detectFrontmatter, parseSectionValue } from '../lib/frontmatter-migration';
+import { detectFrontmatter, parseSectionValue } from '../lib/frontmatter-migration.js';
 import {
   runTriggerPhraseResidualMigration,
   type TriggerPhraseMigrationReport,
-} from '../memory/migrate-trigger-phrase-residual';
+} from '../memory/migrate-trigger-phrase-residual.js';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURE_DIR = path.join(TEST_DIR, 'fixtures', 'memory-quality', 'migration');

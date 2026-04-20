@@ -11,4 +11,4 @@ export {
   sanitizeMemoryFrontmatterTitle,
   deriveMemoryDescription,
   deriveMemoryTriggerPhrases,
-} from '../lib/memory-frontmatter';
+} from '../lib/memory-frontmatter.js';

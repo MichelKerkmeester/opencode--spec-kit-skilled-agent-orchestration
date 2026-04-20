@@ -4,7 +4,7 @@
 // Memory indexing decision logic and sufficiency abort formatting.
 // Extracted from workflow.ts to reduce module size.
 
-import type { ValidationDispositionResult } from '../lib/validate-memory-quality';
+import type { ValidationDispositionResult } from '../lib/validate-memory-quality.js';
 import {
   MEMORY_SUFFICIENCY_REJECTION_CODE,
   type MemorySufficiencyResult,

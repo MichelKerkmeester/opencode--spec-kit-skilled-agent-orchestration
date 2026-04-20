@@ -8,8 +8,8 @@
 // Extracts implementation guidance and step-by-step instructions from session observations
 
 import { createHash } from 'node:crypto';
-import { detectObservationType } from './file-extractor';
-import { slugify } from '../utils/slug-utils';
+import { detectObservationType } from './file-extractor.js';
+import { slugify } from '../utils/slug-utils.js';
 // O3-2: Use canonical types from session-types (no local duplicates)
 import type {
   Observation,
@@ -17,7 +17,7 @@ import type {
   KeyFileWithRole,
   ExtensionGuide,
   CodePattern,
-} from '../types/session-types';
+} from '../types/session-types.js';
 
 // Re-export so downstream consumers keep working
 export type { ImplementationStep, KeyFileWithRole, ExtensionGuide, CodePattern };

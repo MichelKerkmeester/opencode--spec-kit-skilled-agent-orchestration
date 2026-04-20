@@ -6,13 +6,13 @@
 // 1. IMPORTS & TYPES
 // ───────────────────────────────────────────────────────────────
 
-import { SemanticSignalExtractor } from './semantic-signal-extractor';
+import { SemanticSignalExtractor } from './semantic-signal-extractor.js';
 import type {
   ConversationPhase,
   ConversationPhaseLabel,
   PhaseScoreMap,
   TopicCluster,
-} from '../types/session-types';
+} from '../types/session-types.js';
 
 type WeightedVector = Map<string, number>;
 

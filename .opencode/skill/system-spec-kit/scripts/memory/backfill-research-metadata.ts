@@ -18,6 +18,7 @@ import {
   slugifyFolderName,
   type PerFolderDescription,
 } from '@spec-kit/mcp-server/api';
+import { isMainModule } from '../lib/esm-entry.js';
 
 const ITERATION_PARENT_RE = /^\d{3}(?:[-_].+)?$/;
 const DESCRIPTION_FILENAME = 'description.json';
@@ -275,6 +276,6 @@ function runCli(): void {
   }
 }
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   runCli();
 }

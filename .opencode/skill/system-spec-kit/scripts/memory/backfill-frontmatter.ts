@@ -14,7 +14,10 @@ import {
   classifyDocument,
   SPEC_DOC_BASENAMES,
   type ClassifiedDocument,
-} from '../lib/frontmatter-migration';
+} from '../lib/frontmatter-migration.js';
+import { dirnameFromImportMeta, isMainModule } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
@@ -78,8 +81,8 @@ interface MigrationReport {
 
 function resolveProjectRoot(): string {
   const candidates = [
-    path.resolve(__dirname, '../../../../../..'),
-    path.resolve(__dirname, '../../../..'),
+    path.resolve(moduleDir, '../../../../../..'),
+    path.resolve(moduleDir, '../../../..'),
     process.cwd(),
   ];
 
@@ -582,7 +585,7 @@ function run(): void {
   }
 }
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   try {
     run();
   } catch (error: unknown) {

@@ -10,7 +10,7 @@
 import * as path from 'path';
 import * as fsSync from 'fs';
 import * as fs from 'fs/promises';
-import { getSpecsDirectories } from './config';
+import { getSpecsDirectories } from './config.js';
 
 /** Pattern for strict spec folder names: 3 digits + kebab-case suffix. */
 export const SPEC_FOLDER_PATTERN: RegExp = /^\d{3}-[a-z][a-z0-9-]*$/;

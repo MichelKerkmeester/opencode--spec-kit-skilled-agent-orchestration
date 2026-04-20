@@ -12,8 +12,11 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 
 // Internal modules
-import { promptUserChoice } from '../utils/prompt-utils';
-import type { CollectedDataSubset } from '../types/session-types';
+import { promptUserChoice } from '../utils/prompt-utils.js';
+import type { CollectedDataSubset } from '../types/session-types.js';
+import { dirnameFromImportMeta } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES
@@ -245,8 +248,8 @@ async function fileExists(filePath: string): Promise<boolean> {
 
 async function resolveTelemetrySchemaDocsPaths(): Promise<{ schemaPath: string; docsPath: string }> {
   const rootCandidates = [
-    path.resolve(__dirname, '..', '..'),
-    path.resolve(__dirname, '..', '..', '..'),
+    path.resolve(moduleDir, '..', '..'),
+    path.resolve(moduleDir, '..', '..', '..'),
   ];
 
   for (const rootDir of rootCandidates) {

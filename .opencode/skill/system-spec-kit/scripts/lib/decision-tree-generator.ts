@@ -15,9 +15,9 @@ import {
   formatChosenBox,
   formatCaveatsBox,
   formatFollowUpBox,
-} from './ascii-boxes';
-import type { OptionRecord, EvidenceRecord, CaveatRecord, FollowUpRecord } from './ascii-boxes';
-import type { DecisionRecord } from '../types/session-types';
+} from './ascii-boxes.js';
+import type { OptionRecord, EvidenceRecord, CaveatRecord, FollowUpRecord } from './ascii-boxes.js';
+import type { DecisionRecord } from '../types/session-types.js';
 
 // ───────────────────────────────────────────────────────────────
 // 3. TYPES

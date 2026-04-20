@@ -11,6 +11,7 @@ import {
   auditFolder,
   type Marker,
 } from './evidence-marker-audit.js';
+import { isMainModule } from '../lib/esm-entry.js';
 
 type ResultStatus = 'pass' | 'warn';
 
@@ -151,6 +152,6 @@ async function runCli(): Promise<void> {
   }
 }
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   void runCli();
 }

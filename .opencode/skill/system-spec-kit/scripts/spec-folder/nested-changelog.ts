@@ -10,7 +10,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { validateFilePath } from '@spec-kit/shared/utils/path-security';
-import { CONFIG, getSpecsDirectories, SPEC_FOLDER_PATTERN, findChildFolderSync } from '../core';
+import { CONFIG, getSpecsDirectories, SPEC_FOLDER_PATTERN, findChildFolderSync } from '../core/index.js';
+import { isMainModule } from '../lib/esm-entry.js';
 
 // ───────────────────────────────────────────────────────────────────
 // 2. TYPE DEFINITIONS
@@ -766,7 +767,7 @@ function main(): void {
   process.stdout.write(markdown);
 }
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   try {
     main();
   } catch (error) {

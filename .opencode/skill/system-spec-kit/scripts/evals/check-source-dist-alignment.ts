@@ -18,6 +18,9 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { dirnameFromImportMeta } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 interface AllowlistException {
   file: string;
@@ -120,7 +123,7 @@ function findAllowlistEntry(distFile: string): AllowlistException | undefined {
 }
 
 function main(): void {
-  const packageRoot = resolvePackageRoot(__dirname);
+  const packageRoot = resolvePackageRoot(moduleDir);
   const allowlistedOrphans: OrphanedDistFile[] = [];
   const violations: OrphanedDistFile[] = [];
   let scannedCount = 0;

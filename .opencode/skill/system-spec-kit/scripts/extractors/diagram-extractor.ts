@@ -7,16 +7,16 @@
 // ───────────────────────────────────────────────────────────────
 // Extracts and generates ASCII flowcharts and diagrams from conversation data
 
-import { validateDataStructure } from '../utils/data-validator';
-import { coerceFactsToText } from '../utils/fact-coercion';
-import { structuredLog } from '../utils/logger';
+import { validateDataStructure } from '../utils/data-validator.js';
+import { coerceFactsToText } from '../utils/fact-coercion.js';
+import { structuredLog } from '../utils/logger.js';
 import {
   detectToolCall,
   isProseContext,
   classifyConversationPhase
-} from '../utils/tool-detection';
-import * as flowchartGen from '../lib/flowchart-generator';
-import * as simFactory from '../lib/simulation-factory';
+} from '../utils/tool-detection.js';
+import * as flowchartGen from '../lib/flowchart-generator.js';
+import * as simFactory from '../lib/simulation-factory.js';
 import type {
   CollectedDataSubset,
   DiagramOutput,
@@ -25,7 +25,7 @@ import type {
   PatternSummaryEntry,
   PhaseEntry,
   DiagramData,
-} from '../types/session-types';
+} from '../types/session-types.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES

@@ -21,7 +21,7 @@ import type {
   DiagramData,
   SessionData,
   OutcomeEntry,
-} from '../types/session-types';
+} from '../types/session-types.js';
 
 // Re-export canonical types for backward compatibility
 export type {

@@ -13,12 +13,11 @@
 
 import fs from 'fs';
 import path from 'path';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { load: loadYaml } = require('js-yaml') as { load: (input: string) => unknown };
-import { structuredLog } from '../utils/logger';
-import type { ContaminationAuditRecord } from './content-filter';
-import type { DataSource } from '../utils/input-normalizer';
-import { getSourceCapabilities, type KnownDataSource } from '../utils/source-capabilities';
+import { load as loadYaml } from 'js-yaml';
+import { structuredLog } from '../utils/logger.js';
+import type { ContaminationAuditRecord } from './content-filter.js';
+import type { DataSource } from '../utils/input-normalizer.js';
+import { getSourceCapabilities, type KnownDataSource } from '../utils/source-capabilities.js';
 
 type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11' | 'V12' | 'V13' | 'V14';
 

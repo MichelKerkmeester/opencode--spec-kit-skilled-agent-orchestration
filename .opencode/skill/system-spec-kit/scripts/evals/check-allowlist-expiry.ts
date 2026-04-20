@@ -10,6 +10,9 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { dirnameFromImportMeta } from '../lib/esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 interface AllowlistException {
   file: string;
@@ -43,9 +46,9 @@ interface InvalidExpiry {
 function resolveAllowlistPath(): string | null {
   const candidates = [
     // Source layout (tsx): scripts/evals/check-allowlist-expiry.ts
-    path.resolve(__dirname, 'import-policy-allowlist.json'),
+    path.resolve(moduleDir, 'import-policy-allowlist.json'),
     // Compiled layout (node): scripts/dist/evals/check-allowlist-expiry.js
-    path.resolve(__dirname, '../../evals/import-policy-allowlist.json'),
+    path.resolve(moduleDir, '../../evals/import-policy-allowlist.json'),
     // Fallbacks based on cwd
     path.resolve(process.cwd(), 'evals/import-policy-allowlist.json'),
     path.resolve(process.cwd(), 'scripts/evals/import-policy-allowlist.json'),
@@ -66,8 +69,8 @@ function loadAllowlist(): Allowlist {
 
   if (!allowlistPath) {
     const searched = [
-      path.resolve(__dirname, 'import-policy-allowlist.json'),
-      path.resolve(__dirname, '../../evals/import-policy-allowlist.json'),
+      path.resolve(moduleDir, 'import-policy-allowlist.json'),
+      path.resolve(moduleDir, '../../evals/import-policy-allowlist.json'),
       path.resolve(process.cwd(), 'evals/import-policy-allowlist.json'),
       path.resolve(process.cwd(), 'scripts/evals/import-policy-allowlist.json'),
     ];

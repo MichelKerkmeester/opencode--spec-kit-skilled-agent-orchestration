@@ -8,7 +8,7 @@
 // Normalizes runtime fact values into displayable strings without
 // silently dropping object-shaped content at extractor boundaries.
 
-import { structuredLog } from './logger';
+import { structuredLog } from './logger.js';
 
 export type FactDropReason =
   | 'nullish'

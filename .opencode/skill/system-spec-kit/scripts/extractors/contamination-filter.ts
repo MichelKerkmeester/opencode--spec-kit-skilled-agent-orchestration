@@ -7,8 +7,8 @@
 // ───────────────────────────────────────────────────────────────
 // Removes orchestration chatter before semantic extraction
 
-import type { DataSource } from '../utils/input-normalizer';
-import { getSourceCapabilities, type SourceCapabilities } from '../utils/source-capabilities';
+import type { DataSource } from '../utils/input-normalizer.js';
+import { getSourceCapabilities, type SourceCapabilities } from '../utils/source-capabilities.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES & CONSTANTS

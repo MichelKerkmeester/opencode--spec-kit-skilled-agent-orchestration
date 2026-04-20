@@ -2,7 +2,7 @@
   "name": "@spec-kit/scripts",
   "version": "1.7.2",
   "description": "CLI tools for spec-kit context generation and memory management",
-  "type": "commonjs",
+  "type": "module",
   "main": "dist/memory/generate-context.js",
   "engines": {
     "node": ">=20.11.0"

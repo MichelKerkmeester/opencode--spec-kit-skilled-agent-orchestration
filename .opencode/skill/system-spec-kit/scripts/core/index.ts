@@ -14,13 +14,13 @@ export {
   getSpecsDirectories,
   findActiveSpecsDir,
   getAllExistingSpecsDirs,
-} from './config';
+} from './config.js';
 
 export {
   buildSessionScopedSaveContextPath,
   getSessionScopedSaveContextExample,
   isLegacySharedSaveContextPath,
-} from './save-context-path';
+} from './save-context-path.js';
 
 export {
   SPEC_FOLDER_PATTERN,
@@ -29,4 +29,4 @@ export {
   SEARCH_MAX_DEPTH,
   findChildFolderSync,
   findChildFolderAsync,
-} from './subfolder-utils';
+} from './subfolder-utils.js';

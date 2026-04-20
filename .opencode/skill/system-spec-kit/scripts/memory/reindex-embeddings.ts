@@ -21,6 +21,7 @@ import {
 ──────────────────────────────────────────────────────────────── */
 
 import type { MCPResponse } from '@spec-kit/shared/types';
+import { isMainModule } from '../lib/esm-entry.js';
 
 interface ScanData {
   status: string;
@@ -129,7 +130,7 @@ export { reindex };
    4. ENTRY POINT
 ──────────────────────────────────────────────────────────────── */
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   reindex().catch((err: unknown) => {
     const message = err instanceof Error ? err.message : String(err);
     const stack = err instanceof Error ? err.stack : '';

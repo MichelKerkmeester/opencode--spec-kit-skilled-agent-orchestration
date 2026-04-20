@@ -9,7 +9,10 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { stripJsoncComments } from '@spec-kit/shared/utils/jsonc-strip';
-import { structuredLog } from '../utils/logger';
+import { structuredLog } from '../utils/logger.js';
+import { dirnameFromImportMeta } from './esm-entry.js';
+
+const moduleDir = dirnameFromImportMeta(import.meta.url);
 
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES
@@ -203,7 +206,7 @@ function loadFilterConfig(): FilterConfig {
     },
   };
 
-  const configPath: string = path.join(__dirname, '..', '..', '..', 'config', 'filters.jsonc');
+  const configPath: string = path.join(moduleDir, '..', '..', '..', 'config', 'filters.jsonc');
 
   try {
     if (fs.existsSync(configPath)) {

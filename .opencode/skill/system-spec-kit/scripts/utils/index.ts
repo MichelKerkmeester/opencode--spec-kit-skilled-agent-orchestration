@@ -6,32 +6,32 @@
 // 1. INDEX
 // ───────────────────────────────────────────────────────────────
 // Barrel export for utility modules (logger, path, validation, file helpers)
-export { structuredLog } from './logger';
-export type { LogLevel, LogEntry } from './logger';
+export { structuredLog } from './logger.js';
+export type { LogLevel, LogEntry } from './logger.js';
 
-export { sanitizePath, getPathBasename } from './path-utils';
+export { sanitizePath, getPathBasename } from './path-utils.js';
 export {
   buildWorkspaceIdentity,
   getWorkspacePathVariants,
   isSameWorkspacePath,
   toWorkspaceRelativePath,
   normalizeAbsolutePath,
-} from './workspace-identity';
-export type { WorkspaceIdentity } from './workspace-identity';
+} from './workspace-identity.js';
+export type { WorkspaceIdentity } from './workspace-identity.js';
 
 export {
   buildSpecAffinityTargets,
   evaluateCollectedDataSpecAffinity,
-} from './spec-affinity';
+} from './spec-affinity.js';
 export type {
   SpecAffinityTargets,
   SpecAffinityEvaluation,
-} from './spec-affinity';
+} from './spec-affinity.js';
 
 export {
   validateDataStructure,
-} from './data-validator';
-export type { ValidatedData } from './data-validator';
+} from './data-validator.js';
+export type { ValidatedData } from './data-validator.js';
 
 export {
   transformKeyDecision,
@@ -41,7 +41,7 @@ export {
   validateInputData,
   transformOpencodeCapture,
   transformOpenCodeCapture,
-} from './input-normalizer';
+} from './input-normalizer.js';
 export type {
   Observation,
   NormalizedUserPrompt,
@@ -56,22 +56,22 @@ export type {
   CaptureToolCall,
   OpencodeCapture,
   TransformedCapture,
-} from './input-normalizer';
+} from './input-normalizer.js';
 
 export {
   coerceFactToText,
   coerceFactsToText,
-} from './fact-coercion';
+} from './fact-coercion.js';
 export type {
   CoercedFact,
   FactDropReason,
   FactDropLogContext,
-} from './fact-coercion';
+} from './fact-coercion.js';
 
 export {
   promptUser,
   promptUserChoice,
-} from './prompt-utils';
+} from './prompt-utils.js';
 
 export {
   toRelativePath,
@@ -79,33 +79,33 @@ export {
   validateDescription,
   isDescriptionValid,
   cleanDescription,
-} from './file-helpers';
+} from './file-helpers.js';
 
 export {
   detectToolCall,
   isProseContext,
   classifyConversationPhase,
-} from './tool-detection';
-export type { ToolUsage, ToolConfidence, ToolCallRecord, ConversationPhase } from './tool-detection';
+} from './tool-detection.js';
+export type { ToolUsage, ToolConfidence, ToolCallRecord, ConversationPhase } from './tool-detection.js';
 
 export {
   formatTimestamp,
   truncateToolOutput,
   summarizeExchange,
-} from './message-utils';
+} from './message-utils.js';
 
 export {
   validateNoLeakedPlaceholders,
   validateAnchors,
-} from './validation-utils';
+} from './validation-utils.js';
 
 export {
   sanitizeToolDescription,
   sanitizeToolInputPaths,
   normalizeToolStatus,
   isApiErrorContent,
-} from './tool-sanitizer';
-export type { ToolStatus } from './tool-sanitizer';
+} from './tool-sanitizer.js';
+export type { ToolStatus } from './tool-sanitizer.js';
 
 export {
   normalizeMemoryNameCandidate,
@@ -115,13 +115,13 @@ export {
   pickBestContentName,
   ensureUniqueMemoryFilename,
   generateContentSlug,
-} from './slug-utils';
+} from './slug-utils.js';
 
 export {
   getSourceCapabilities,
-} from './source-capabilities';
+} from './source-capabilities.js';
 export type {
   SourceInputMode,
   KnownDataSource,
   SourceCapabilities,
-} from './source-capabilities';
+} from './source-capabilities.js';
