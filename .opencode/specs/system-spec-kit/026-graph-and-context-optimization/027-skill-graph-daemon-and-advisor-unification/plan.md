@@ -24,6 +24,7 @@ Phase 027 (this packet, research)
 ## Research Phase (this)
 
 - Driver: `/tmp/run-deep-research-027.sh`
+- Research artifacts location: `../research/027-skill-graph-daemon-and-advisor-unification-pt-01/`
 - Executor: cli-codex gpt-5.4 high fast
 - Iterations: 40 (31 question iters + 4 cross-track + 5 synthesis intermediates)
 - Synthesis: 1 final cli-codex pass produces research.md + research-registry.json

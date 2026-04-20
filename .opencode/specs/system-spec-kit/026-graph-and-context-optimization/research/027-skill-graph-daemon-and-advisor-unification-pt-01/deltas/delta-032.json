@@ -1,0 +1,10 @@
+{
+  "iteration": 32,
+  "track": "X",
+  "question": "X1",
+  "verdict": "coherent",
+  "confidence": "high",
+  "newInfoRatio": 0.48,
+  "timestamp": "2026-04-20T07:26:52Z",
+  "iterationFile": "iterations/iteration-032.md"
+}

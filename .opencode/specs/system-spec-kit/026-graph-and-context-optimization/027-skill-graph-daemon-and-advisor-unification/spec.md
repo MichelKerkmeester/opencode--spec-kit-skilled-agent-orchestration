@@ -53,6 +53,7 @@ _memory:
 | **Branch** | `main` |
 | **Parent** | `../020-skill-advisor-hook-surface/` |
 | **Research** | 40-iter deep-research, cli-codex gpt-5.4 high fast |
+| **Research artifacts** | `../research/027-skill-graph-daemon-and-advisor-unification-pt-01/` |
 | **Sibling decisions** | 021/001 (advisor hook efficacy), 021/002 (SKILL.md smart-router), 025 (R02 remediation), 026 (R03 remediation) |
 
 ---
@@ -172,7 +173,7 @@ Implementation (follow-on packets): shipped design per the research's `adopt now
 
 40-iter deep-research, cli-codex gpt-5.4 high fast, maxConcurrent=1. Fresh per-iter invocation (proven pattern from R02 review + Phase 025 + Phase 026 drivers).
 
-Detailed research protocol + per-iteration prompt template: `research/deep-research-strategy.md` (battle plan).
+Detailed research protocol + per-iteration prompt template: `../research/027-skill-graph-daemon-and-advisor-unification-pt-01/deep-research-strategy.md` (battle plan).
 
 ---
 
