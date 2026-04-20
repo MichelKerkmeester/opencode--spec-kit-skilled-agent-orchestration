@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/004-mcp-advisor-surface",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/004-mcp-advisor-surface",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/003-native-advisor-core"
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "027/004",
+      "mcp advisor surface",
+      "advisor_recommend",
+      "advisor_status",
+      "advisor_validate"
+    ],
+    "key_topics": [
+      "mcp-tool-exposure",
+      "zod-schemas",
+      "dispatcher-registration",
+      "cache-reuse",
+      "privacy-contracts",
+      "handler-tests"
+    ],
+    "status": "draft",
+    "lastRefreshed": "2026-04-20T14:00:00.000Z"
+  }
+}

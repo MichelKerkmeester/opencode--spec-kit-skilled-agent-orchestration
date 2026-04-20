@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/001-daemon-freshness-foundation",
+  "description": "Feature Specification: 027/001 — Daemon + Freshness Foundation",
+  "keywords": [
+    "chokidar",
+    "skill-graph-daemon",
+    "freshness",
+    "single-writer-lease",
+    "watcher-benchmark",
+    "fail-open",
+    "sqlite-transaction"
+  ],
+  "lastUpdated": "2026-04-20T14:00:00.000Z",
+  "specId": "001",
+  "folderSlug": "daemon-freshness-foundation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "027-skill-graph-daemon-and-advisor-unification"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

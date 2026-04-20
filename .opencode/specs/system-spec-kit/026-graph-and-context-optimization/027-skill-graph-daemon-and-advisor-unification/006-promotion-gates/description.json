@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/006-promotion-gates",
+  "description": "Feature Specification: 027/006 — Promotion Gates",
+  "keywords": [
+    "shadow-cycle",
+    "promotion-gates",
+    "semantic-channel",
+    "learned-ranking",
+    "weight-delta-cap",
+    "accuracy-thresholds",
+    "latency-gates",
+    "safety-gates",
+    "rollback"
+  ],
+  "lastUpdated": "2026-04-20T14:00:00.000Z",
+  "specId": "006",
+  "folderSlug": "promotion-gates",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "027-skill-graph-daemon-and-advisor-unification"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

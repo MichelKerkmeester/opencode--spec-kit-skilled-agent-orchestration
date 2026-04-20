@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/001-daemon-freshness-foundation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/001-daemon-freshness-foundation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/research/027-skill-graph-daemon-and-advisor-unification-pt-01"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "027/001",
+      "daemon foundation",
+      "skill-graph watcher",
+      "single-writer lease",
+      "chokidar",
+      "freshness trust-state"
+    ],
+    "key_topics": [
+      "chokidar-watcher",
+      "single-writer-lease",
+      "workspace-scoped",
+      "post-commit-publication",
+      "fail-open-semantics",
+      "watcher-benchmark",
+      "sqlite-busy-backoff",
+      "rebuild-from-source"
+    ],
+    "status": "draft",
+    "lastRefreshed": "2026-04-20T14:00:00.000Z"
+  }
+}

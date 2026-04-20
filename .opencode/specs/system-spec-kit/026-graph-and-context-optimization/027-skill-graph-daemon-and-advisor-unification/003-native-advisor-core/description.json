@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/003-native-advisor-core",
+  "description": "Feature Specification: 027/003 — Native Advisor Core",
+  "keywords": [
+    "5-lane-fusion",
+    "analytical-scoring",
+    "skill-projection",
+    "causal-traversal",
+    "parity-harness",
+    "ablation-protocol",
+    "python-to-ts-port",
+    "ambiguity-rendering"
+  ],
+  "lastUpdated": "2026-04-20T14:00:00.000Z",
+  "specId": "003",
+  "folderSlug": "native-advisor-core",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "027-skill-graph-daemon-and-advisor-unification"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

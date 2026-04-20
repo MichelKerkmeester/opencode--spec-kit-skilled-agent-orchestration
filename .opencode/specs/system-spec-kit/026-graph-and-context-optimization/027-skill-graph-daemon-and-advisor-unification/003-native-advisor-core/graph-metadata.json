@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/003-native-advisor-core",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/003-native-advisor-core",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/001-daemon-freshness-foundation",
+      "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/002-lifecycle-and-derived-metadata"
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "027/003",
+      "native advisor core",
+      "5-lane fusion",
+      "python to ts port",
+      "parity harness",
+      "skill projection"
+    ],
+    "key_topics": [
+      "analytical-fusion",
+      "lane-separation",
+      "causal-traversal",
+      "skill-edges",
+      "ambiguity-top-two",
+      "attribution",
+      "ablation",
+      "200-prompt-parity",
+      "cache-hit-p95"
+    ],
+    "status": "draft",
+    "lastRefreshed": "2026-04-20T14:00:00.000Z"
+  }
+}
