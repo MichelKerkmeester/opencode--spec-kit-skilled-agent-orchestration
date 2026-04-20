@@ -28,7 +28,7 @@ The 4-track scope was deliberately narrowed. The following came up in synthesis 
 
 - **Current:** ~50-100 skills, 10-20 asset dirs.
 - **Unknowns:**
-  - At 500+ skills, does debouncing + hash-compare still fit <5% idle CPU? (ref A6 medium-confidence prototype_later)
+  - At 500+ skills, does debouncing + hash-compare still fit **≤1% idle CPU** (tightened from the original 5% defensive bound)? (ref A6 medium-confidence prototype_later)
   - Does the single-SQLite-commit model hit WAL contention before ~200 concurrent sessions?
   - When does `skill_edges` traversal stop being O(neighbors) in practice?
 - **Why researchable:** r01 assumed current repo cardinality. Growth trajectory changes trade-offs.

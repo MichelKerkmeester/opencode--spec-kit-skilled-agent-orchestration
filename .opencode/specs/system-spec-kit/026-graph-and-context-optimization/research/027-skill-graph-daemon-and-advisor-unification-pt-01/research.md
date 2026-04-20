@@ -157,7 +157,7 @@ The required cross-track adjustment is X3: generated keywords are valid inputs, 
 | Uncached deterministic latency | Lexical plus skill-graph SQL p95 | <=60ms before default hook use | New advisor bench lane |
 | Compatibility latency | Python shim cold/warm p95 | Cold <=60ms, warm <=20ms while shim remains | `skill_advisor_bench.py` |
 | Semantic/learned shadow | Promotion gate | >=75% full corpus, >=72.5% holdout, no safety regression, two shadow cycles, no latency breach | Shadow harness and ablations |
-| Daemon budget | Idle CPU, RSS, descriptors, debounce | <5% idle CPU, <50MB measured daemon budget, debounce <10s, no broad watch default until pass | Watcher benchmark and `skill_graph_status` |
+| Daemon budget | Idle CPU, RSS, descriptors, debounce | **≤1% idle CPU (hard ceiling; target <0.5%)**, **<20MB RSS**, debounce <10s, no broad watch default until pass (tightened 2026-04-20 from defensive 5%/50MB bounds; originals were upper bounds, not quality targets) | Watcher benchmark and `skill_graph_status` |
 | Freshness/recovery | Stale/unavailable/rebuild behavior | Prompt-time fail-open diagnostics, source-derived DB rebuild, no mixed generation publication | Integration tests and manual SQLite scenarios |
 | Hook/plugin privacy | Diagnostic output | No raw prompt, fingerprint, stdout, or stderr in status streams | Manual hook/plugin privacy scenarios |
 
