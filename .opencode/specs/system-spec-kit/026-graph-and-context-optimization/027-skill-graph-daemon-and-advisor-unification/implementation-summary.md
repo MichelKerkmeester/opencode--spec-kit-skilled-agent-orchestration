@@ -6,10 +6,10 @@ contextType: "research"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification"
-    last_updated_at: "2026-04-20T15:55:00Z"
+    last_updated_at: "2026-04-20T17:40:00Z"
     last_updated_by: "orchestrator"
-    recent_action: "027/000 validator ESM migration converged (SHA 77b0f59e2); 027/001 daemon + freshness dispatch in flight via cli-codex gpt-5.4 high fast"
-    next_safe_action: "Verify 027/001 on convergence + commit + chain 002"
+    recent_action: "027/000 + 027/001 converged (SHAs 77b0f59e2 + 32fd9197c); 027/002 lifecycle + derived metadata dispatched via cli-codex gpt-5.4 high fast"
+    next_safe_action: "Verify 027/002 on convergence + commit + chain 003 HARD GATE"
     blockers: []
     key_files:
       - ".opencode/specs/.../027-skill-graph-daemon-and-advisor-unification/001-daemon-freshness-foundation/"
@@ -68,8 +68,8 @@ Two planes (graph/freshness + advisor projection/scoring) inside the self-contai
 | # | Child | Scaffold | Implement dispatch | Convergence |
 |---|---|---|---|---|
 | 000 | validator-esm-fix (prereq) | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `77b0f59e2` |
-| 001 | daemon-freshness-foundation | ✅ 2026-04-20 | 🔄 2026-04-20 cli-codex gpt-5.4 high fast (in flight) | — |
-| 002 | lifecycle-and-derived-metadata | ✅ 2026-04-20 | — | — |
+| 001 | daemon-freshness-foundation | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `32fd9197c` (CPU 0.031% / RSS 5.516MB, 16/16 tests) |
+| 002 | lifecycle-and-derived-metadata | ✅ 2026-04-20 | 🔄 2026-04-20 cli-codex gpt-5.4 high fast (in flight) | — |
 | 003 | native-advisor-core | ✅ 2026-04-20 | — | — |
 | 004 | mcp-advisor-surface | ✅ 2026-04-20 | — | — |
 | 005 | compat-migration-and-bootstrap | ✅ 2026-04-20 | — | — |
