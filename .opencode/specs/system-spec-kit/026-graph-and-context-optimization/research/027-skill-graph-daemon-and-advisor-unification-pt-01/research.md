@@ -205,3 +205,82 @@ The required cross-track adjustment is X3: generated keywords are valid inputs, 
 | S3 | S | `iterations/iteration-038.md` |
 | S4 | S | `iterations/iteration-039.md` |
 | S5 | S | `iterations/iteration-040.md` |
+
+## 13. FOLLOW-UP RESEARCH FINDINGS (iters 41-60)
+
+### 13.1 Executive Summary
+
+The follow-up run resolved the E/F/G blocker set with **14 `adopt_now`**, **1 `prototype_later`**, and **0 `reject`** verdicts. Track E closed the daemon-shape questions in favor of benchmark-gated narrow metadata watching plus a workspace-scoped single-writer lease, with only debounce calibration left as a bounded measurement follow-up. Track F converted lifecycle and schema-migration gaps into implementable rules for age/status haircuts, supersession, mixed-version backfill, rollback, and `z_archive` / `z_future` handling. Track G fixed the first calibrated fusion weights, the lane-ablation protocol, the parity contract, and the shadow-to-promotion gates. Cross-track review found E×F and E×G coherent, while F×G requires one roadmap adjustment: `027/003` must calibrate against lifecycle-normalized inputs and lifecycle-specific fixtures from `027/002` rather than raw merged signals. `iterations/iteration-041.md:26-36`, `iterations/iteration-042.md:26-37`, `iterations/iteration-045.md:29-40`, `iterations/iteration-050.md:25-36`, `iterations/iteration-058.md:26-37`, `iterations/iteration-060.md:25-35`
+
+| Track | Questions | Verdict distribution |
+| --- | --- | --- |
+| E | 4 | 3 `adopt_now`, 1 `prototype_later`, 0 `reject` |
+| F | 5 | 5 `adopt_now`, 0 `prototype_later`, 0 `reject` |
+| G | 6 | 6 `adopt_now`, 0 `prototype_later`, 0 `reject` |
+| Y | 3 | 2 `coherent`, 1 `needs_adjustment` |
+| Z | 2 | 2 `draft_complete` |
+
+### 13.2 Track E Findings
+
+| ID | Verdict | Confidence | Rationale | Evidence |
+| --- | --- | --- | --- | --- |
+| E1 Watcher benchmark harness | `adopt_now` | high | Ship a watcher benchmark as a release gate for `027/001`; it distinguishes safe narrow metadata watching from unsafe broad directory watching on current, 2x, and 5x corpora. | `iterations/iteration-041.md:26-36` |
+| E2 Cross-runtime daemon sharing | `adopt_now` | high | Use a workspace-scoped single-writer lease with runtime-local readers; defer any shared-socket packaging to a later installation concern. | `iterations/iteration-042.md:26-37` |
+| E3 SQLite WAL contention ceiling | `adopt_now` | high | Treat the practical WAL ceiling as one active writer per workspace; a second writer already pushes `SQLITE_BUSY` into the hot path. | `iterations/iteration-043.md:25-36` |
+| E4 Debounce calibration | `prototype_later` | medium | Keep the current 2s debounce plus 1s stable-write pair as the provisional default, but require a burst/save-pattern benchmark before calling it empirically optimal. | `iterations/iteration-044.md:24-35` |
+
+### 13.3 Track F Findings
+
+| ID | Verdict | Confidence | Rationale | Evidence |
+| --- | --- | --- | --- | --- |
+| F1 Skill-aged signal decay | `adopt_now` | high | Apply discrete advisor-side age/status haircuts only to the generated lane; keep explicit author intent non-decaying. | `iterations/iteration-045.md:29-40` |
+| F2 Supersession routing | `adopt_now` | high | Make supersession asymmetric: successors win implicit/default routing, while explicit old-name prompts still surface the deprecated skill with redirect metadata. | `iterations/iteration-046.md:26-37` |
+| F3 v1 to v2 migration | `adopt_now` | high | Use mixed-version reads plus daemon-owned additive backfill so v1 remains routable while v2 adds `derived` without prompt-time writes. | `iterations/iteration-047.md:27-38` |
+| F4 Rollback path | `adopt_now` | high | Roll back additively by preserving authored metadata, removing or ignoring `derived`, resetting `schema_version` to 1, and reindexing. | `iterations/iteration-048.md:28-39` |
+| F5 `z_archive` / `z_future` treatment | `adopt_now` | high | Keep both trees structurally indexed, but exclude both from default routing and corpus-stat generation until content is promoted back into the active tree. | `iterations/iteration-049.md:24-35` |
+
+### 13.4 Track G Findings
+
+| ID | Verdict | Confidence | Rationale | Evidence |
+| --- | --- | --- | --- | --- |
+| G1 Initial analytical weights | `adopt_now` | medium | Start with normalized live weights of `explicit_author 0.45`, `lexical 0.30`, `graph/causal 0.15`, `derived_generated 0.10`, and `semantic-shadow 0.00`, then tune only inside bounded ablation bands. | `iterations/iteration-050.md:25-36` |
+| G2 Lane-ablation protocol | `adopt_now` | high | Reuse the repo’s ablation pattern against advisor lanes and require corpus, holdout, parity, safety, and latency slices before accepting any weight move. | `iterations/iteration-051.md:25-36` |
+| G3 Python ↔ TypeScript parity definition | `adopt_now` | high | Define parity as exact per-prompt agreement on top-1 skill identity plus pass-threshold / abstain outcome across the 200-prompt corpus and canonical regression fixtures. | `iterations/iteration-052.md:24-34` |
+| G4 Parity harness ownership | `adopt_now` | high | Keep the parity harness inside `027/003`, factoring only shared fixtures and comparators out for reuse. | `iterations/iteration-053.md:23-34` |
+| G5 Shadow-cycle methodology | `adopt_now` | high | Reuse the existing shadow-evaluation loop: deterministic holdout replay, no live side effects, two positive cycles to recommend promotion, and rollback on regression. | `iterations/iteration-054.md:30-41` |
+| G6 Promotion gates | `adopt_now` | high | Require the bundled promotion policy: `>=75%` full corpus, `>=72.5%` holdout, two positive shadow cycles, no safety/latency regression, exact parity preservation, regression-suite gates, and only bounded learned/adaptive live influence first while semantic stays at `0.00`. | `iterations/iteration-055.md:28-39` |
+
+### 13.5 Cross-track Coherence
+
+| ID | Verdict | Confidence | Rationale | Evidence |
+| --- | --- | --- | --- | --- |
+| Y1 E×F | `coherent` | high | Lifecycle backfill and rollback fit cleanly inside the same single-writer, metadata-centered daemon control plane established by Track E. | `iterations/iteration-056.md:27-38` |
+| Y2 E×G | `coherent` | high | Parity, ablation, and shadow work remain outside the prompt-time hot path and therefore stay compatible with E’s single-writer scaling and freshness model. | `iterations/iteration-057.md:27-38` |
+| Y3 F×G | `needs_adjustment` | high | `027/003` must consume lifecycle-normalized inputs and lifecycle-specific fixtures from `027/002`; otherwise parity and ablation could validate the wrong pre-fusion state. | `iterations/iteration-058.md:26-37` |
+
+### 13.6 Roadmap delta
+
+The follow-up evidence does **not** add a seventh sub-packet. It sharpens the existing six-packet roadmap and tightens the acceptance criteria between `027/001` and `027/006`. `iterations/iteration-059.md:24-35`, `iterations/iteration-060.md:25-35`
+
+| Sub-packet | Follow-up delta | Evidence |
+| --- | --- | --- |
+| `027/001` | Add the watcher benchmark gate, keep narrow metadata-only watching as the safe default, require a workspace-scoped single-writer lease, and treat the current 2s debounce / 1s stable-write pair as provisional pending the E4 burst benchmark. | `iterations/iteration-041.md:26-36`, `iterations/iteration-042.md:26-37`, `iterations/iteration-043.md:25-36`, `iterations/iteration-044.md:24-35` |
+| `027/002` | Expand scope to own lifecycle normalization: generated-lane age/status haircuts, asymmetric supersession, mixed-version v1/v2 reads, daemon-owned additive backfill, reversible rollback, and the maintenance-vs-routing split for `z_archive` and `z_future`. | `iterations/iteration-045.md:29-40`, `iterations/iteration-046.md:26-37`, `iterations/iteration-047.md:27-38`, `iterations/iteration-048.md:28-39`, `iterations/iteration-049.md:24-35` |
+| `027/003` | Make lifecycle-normalized inputs from `027/002` a hard prerequisite, and own normalized lane weights, lane ablations, exact top-1 plus pass-threshold parity, and lifecycle-aware fixture coverage. | `iterations/iteration-050.md:25-36`, `iterations/iteration-051.md:25-36`, `iterations/iteration-052.md:24-34`, `iterations/iteration-053.md:23-34`, `iterations/iteration-058.md:26-37` |
+| `027/004` | Keep the MCP surface packet unchanged in order, but consume the normalized scorer/parity outputs from `027/003` instead of re-owning parity logic. | `iterations/iteration-053.md:16-34`, `iterations/iteration-059.md:22-35` |
+| `027/005` | Preserve compatibility shims, hook/plugin bridges, and explicit redirect/non-active status surfaces for superseded, archived, future, and rolled-back skills during migration. | `iterations/iteration-046.md:22-37`, `iterations/iteration-048.md:26-39`, `iterations/iteration-059.md:22-35` |
+| `027/006` | Reuse the shadow-cycle machinery, allow only bounded learned/adaptive live influence first, and keep prompt-time semantic weight at `0.00` until a later latency budget is proven. | `iterations/iteration-054.md:28-41`, `iterations/iteration-055.md:28-39`, `iterations/iteration-059.md:22-35` |
+
+### 13.7 Updated Risk Register delta
+
+| ID | Follow-up delta | Evidence |
+| --- | --- | --- |
+| R1 / R2 | Tighten watcher and publication risk from “general daemon correctness” to “benchmark-gated metadata-only watching plus one active writer per workspace.” Broad watching is no longer a default candidate. | `iterations/iteration-041.md:26-36`, `iterations/iteration-042.md:26-37`, `iterations/iteration-043.md:25-36` |
+| R3 | Expand derived-lane inflation risk into a lifecycle-normalization requirement: aging, superseded, archived, future, mixed-version, and rollback-demoted skills must be normalized before fusion. | `iterations/iteration-045.md:29-40`, `iterations/iteration-046.md:26-37`, `iterations/iteration-049.md:24-35`, `iterations/iteration-058.md:26-37` |
+| R5 | Narrow semantic-promotion risk by keeping semantic live weight at `0.00` through the first promotion wave and by requiring the repo’s shadow-cycle and safety bundle before any change. | `iterations/iteration-054.md:30-41`, `iterations/iteration-055.md:28-39` |
+| R6 | Clarify parity drift risk: promotion now depends on exact per-prompt top-1 and pass-threshold / abstain agreement on corpus and regression fixtures, not on looser score-shape similarity. | `iterations/iteration-052.md:24-34`, `iterations/iteration-053.md:23-34` |
+| R9 | Broaden measurement blind-spot risk to explicitly include lifecycle fixtures for superseded redirects, mixed v1/v2 states, rollback-demoted skills, and `z_archive` / `z_future` non-routing expectations. | `iterations/iteration-051.md:21-36`, `iterations/iteration-058.md:24-37` |
+
+### 13.8 Final recommendation
+
+**Dispatch `027/001` now. `pt-02` is not needed before implementation.** The E/F/G blocker set is closed well enough to proceed on the existing six-packet roadmap, provided the handoff carries three guardrails into implementation: `027/001` ships with the watcher benchmark plus single-writer lease, `027/002` defines lifecycle normalization before `027/003` calibrates parity and weights, and `027/006` keeps semantic live influence at `0.00` while only bounded learned/adaptive effects are eligible for first promotion. The remaining uncertainty is bounded and implementation-local: E4 still needs the burst/save-pattern benchmark, Track H can be hardened inline, and Track I can stay deferred unless implementation evidence makes it blocking. `iterations/iteration-058.md:26-37`, `iterations/iteration-059.md:24-35`, `iterations/iteration-060.md:25-35`
