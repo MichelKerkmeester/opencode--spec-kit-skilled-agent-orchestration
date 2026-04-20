@@ -1,6 +1,6 @@
 ---
 title: "Phase 027 — Plan"
-description: "Research-first phase: r01 research converged, 6 implementation children scaffolded per research roadmap §9 + §13.6 delta."
+description: "Research-first phase: r01 research converged, 7 implementation children scaffolded (000 validator prereq + 001-006) per research roadmap §9 + §13.6 delta."
 importance_tier: "high"
 contextType: "research"
 ---
@@ -15,8 +15,8 @@ Phase 027 parent
   +-- r01 research (converged): 60 iters, 43 adopt_now / 3 prototype_later / 0 reject
   |     artifacts: ../research/027-skill-graph-daemon-and-advisor-unification-pt-01/
   |
-  +-- 6 implementation children (scaffolded):
-        001 → 002 → 003 → {004, 006} (parallel) → 005
+  +-- 7 implementation children (scaffolded):
+        000 (validator ESM prereq) → 001 → 002 → 003 → {004, 006} (parallel) → 005
 ```
 
 ## Research Phase (complete)
@@ -27,9 +27,12 @@ Phase 027 parent
 - Verdicts: 43 `adopt_now` / 3 `prototype_later` / 0 `reject`
 - Final synthesis recommendation: dispatch 027/001 now; no pt-02 needed
 
-## Implementation Chain (6 children)
+## Implementation Chain (7 children)
 
 ```
+   [000]  validator ESM migration (Node 25 compat)                  [PREREQ — unblocks post-phase validate.sh for 001-006]
+     |
+     v
    [001]  daemon + freshness + single-writer lease + benchmark gate (≤1% CPU / <20MB RSS)
      |
      v
@@ -48,14 +51,15 @@ Phase 027 parent
 ```
 
 **Depends-on chain (per child `graph-metadata.json.manual.depends_on`):**
-- 001: (none inside 027)
+- 000: (none; infrastructure prereq for 001-006 post-phase verification)
+- 001: (none inside 027; implicit soft-dep on 000 for validator tooling)
 - 002: 001
 - 003: 001, 002
 - 004: 003
 - 005: 004
 - 006: 003, 004
 
-**Effort estimate (research roadmap §9 + §13.6):** 27-40 engineering days total.
+**Effort estimate (research roadmap §9 + §13.6):** 27-40 engineering days total + ~0.5-1 day for 000 (ESM migration only).
 
 ## Deferred tracks (documented, not scaffolded)
 
@@ -83,8 +87,8 @@ Each child is a separate `/spec_kit:implement :auto` dispatch:
 
 ## Verification (parent-level)
 
-- All 6 children have the required 7-file set
+- All 7 children (000 + 001-006) have the required 7-file set
 - Each child's `graph-metadata.json.parent_id` points at this parent
-- Parent `spec.md` Child Layout lists all 6
-- `decision-record.md` has ADR-001 through ADR-006
+- Parent `spec.md` Child Layout lists all 7
+- `decision-record.md` has ADR-001 through ADR-006 (+ ADR-007 for 000 if added)
 - Children Convergence Log (this packet's `implementation-summary.md`) updated as each child lands

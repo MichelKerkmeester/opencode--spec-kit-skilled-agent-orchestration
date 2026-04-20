@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/000-validator-esm-fix",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/000-validator-esm-fix",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/001-daemon-freshness-foundation",
+      "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/002-lifecycle-and-derived-metadata",
+      "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/003-native-advisor-core",
+      "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/004-mcp-advisor-surface",
+      "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap",
+      "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/006-promotion-gates"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "027/000",
+      "validator esm fix",
+      "node 25 compat",
+      "require.main migration",
+      "scripts package esm",
+      "type module"
+    ],
+    "key_topics": [
+      "commonjs-to-esm-migration",
+      "node-25-compatibility",
+      "require-main-module-pattern",
+      "fileurl-to-path",
+      "import-meta-url",
+      "package-json-type-module",
+      "tsconfig-module-es2022",
+      "validator-preflight"
+    ],
+    "status": "draft",
+    "lastRefreshed": "2026-04-20T15:00:00.000Z"
+  }
+}

@@ -1,6 +1,6 @@
 ---
 title: "Phase 027 — Battle Plan"
-description: "Execution plan for implementing all 6 child sub-packets (027/001-006) using cli-codex gpt-5.4 high fast (primary) + cli-copilot gpt-5.4 high (fallback), with inter-phase review gates and deferred-item handling."
+description: "Execution plan for implementing 7 child sub-packets (027/000 validator prereq + 027/001-006) using cli-codex gpt-5.4 high fast (primary) + cli-copilot gpt-5.4 high (fallback), with inter-phase review gates and deferred-item handling."
 importance_tier: "high"
 contextType: "implementation"
 ---
@@ -9,7 +9,7 @@ contextType: "implementation"
 
 ## Mission
 
-Take Phase 027 from scaffolded research to fully shipped implementation. 6 child sub-packets, dependency-ordered, each converged to its checklist + test gates before the next starts. Final state: skill-graph daemon auto-updates on skill change, derived metadata + lifecycle handling under self-contained `mcp_server/skill-advisor/` package, native TS scorer with 5-lane fusion + Python parity, MCP tool surface live, compat shims working, promotion gates gated shadow-only for semantic.
+Take Phase 027 from scaffolded research to fully shipped implementation. 7 child sub-packets (000 validator ESM prereq + 001-006 feature work), dependency-ordered, each converged to its checklist + test gates before the next starts. Final state: skill-graph daemon auto-updates on skill change, derived metadata + lifecycle handling under self-contained `mcp_server/skill-advisor/` package, native TS scorer with 5-lane fusion + Python parity, MCP tool surface live, compat shims working, promotion gates gated shadow-only for semantic.
 
 ## Executor contract
 
@@ -35,7 +35,10 @@ Take Phase 027 from scaffolded research to fully shipped implementation. 6 child
 Strict dependency chain (per `plan.md` + `graph-metadata.json.manual.depends_on`):
 
 ```
-  [001] daemon + freshness          ← no deps inside 027
+  [000] validator ESM migration     ← infrastructure prereq (unblocks post-phase validate.sh for 001-006)
+    |
+    v
+  [001] daemon + freshness          ← no deps inside 027 (implicit soft-dep on 000 for verification tooling)
     |
     v
   [002] lifecycle + derived         ← depends on 001 daemon + freshness
@@ -53,6 +56,24 @@ Strict dependency chain (per `plan.md` + `graph-metadata.json.manual.depends_on`
 ```
 
 ## Per-phase dispatch plan
+
+### Phase 0 — 027/000 Validator ESM Migration (prereq)
+
+**Preconditions:**
+- Scaffold committed (this commit or the next one).
+- Node 25 confirmed as active runtime (`node --version`).
+- Baseline `npm test` state captured in `/tmp/027-000-baseline.log`.
+
+**Dispatch prompt summary:** "Implement 027/000 per spec.md/plan.md/tasks.md/checklist.md. Scope: migrate `.opencode/skill/system-spec-kit/scripts/` from hybrid CJS/ESM to pure ESM. Flip `package.json` `\"type\"` to `\"module\"`. Convert all `if (require.main === module)` entrypoint guards in ~16-20 production source files to `import.meta.url === fileURLToPath(process.argv[1])` pattern. Convert any `const x = require('user-module')` to `import x from 'user-module'`. Convert any `__dirname` / `__filename` uses to `fileURLToPath(import.meta.url)` + `path.dirname`. Test files (`*.vitest.ts`) left out of scope. Clean rebuild dist + verify `bash validate.sh .../027/001 --strict --no-recursive` runs under both Node 25 and Node 20.19.5 without SyntaxError/ReferenceError. No changes outside `scripts/` + the 027/000 spec folder."
+
+**Success gate:**
+- All P0 checklist items green
+- `validate.sh` runs without SyntaxError/ReferenceError on Node 25 and Node 20.19.5
+- `npm test` in scripts/ matches or improves baseline
+- `grep -rln "require.main === module" scripts --include="*.ts" | grep -v node_modules | grep -v "\\.vitest\\.ts"` → 0 lines
+- Git diff scoped to `scripts/` + `027/000` folder only
+
+**Expected wall:** 30-60 min single codex dispatch.
 
 ### Phase A — 027/001 Daemon + Freshness Foundation
 
