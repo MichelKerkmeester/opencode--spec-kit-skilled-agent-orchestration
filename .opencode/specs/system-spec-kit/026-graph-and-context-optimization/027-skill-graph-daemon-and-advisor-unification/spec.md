@@ -121,7 +121,7 @@ Implementation (follow-on packets): shipped design per the research's `adopt now
 - **C3 Causal graph for skills.** Can we model skill-to-skill relationships (e.g. sk-deep-research uses sk-deep-review; sk-code-opencode is-a-parent-of sk-code-web) as causal edges? Would that improve ambiguous-prompt routing?
 - **C4 Scoring fusion.** Keyword score + embedding similarity + causal-boost + tier-weight → single confidence. What fusion function? Learned weights or analytical? How do we stay explainable (advisor brief shows "used X because Y")?
 - **C5 Ambiguity handling.** When top-2 skills are within 0.05 confidence, current system emits ambiguous top-two rendering (post-025 fix). Richer matching should explicitly detect "user needs both" vs "ambiguous which one". Use causal edges as tiebreaker?
-- **C6 Performance.** Memory MCP hybrid search has known p95 latencies. Advisor hook is a prompt-blocking call — can we afford embedding lookups on every prompt? What's the caching story (post-025 HMAC cache is already in place)?
+- **C6 Performance.** Memory MCP hybrid search has known p95 latencies. Advisor hook is a prompt-blocking call — can we afford embedding lookups on every prompt? What's the caching story (post-025 HMAC cache is already in place)? **Post-synthesis verdict (prototype_later, research.md §6 C6 + ADR-006):** prompt-time embedding / hybrid lookup does NOT ride the hot path. Cache, lexical, and SQL graph lanes stay hot-path; embedding / hybrid remain shadow-only with live weight `0.00` until 027/006 promotion gates pass two positive shadow cycles plus latency safety.
 - **C7 Training / tuning data.** The 019/004 200-prompt labeled corpus is available. Can it be used to learn scoring weights? Hold-out evaluation?
 - **C8 Measurement.** Current advisor accuracy: 56% vs 200-prompt corpus (024 Track 2 baseline). Target: what accuracy should C1-C7 achieve to justify the added complexity?
 
@@ -132,12 +132,12 @@ Implementation (follow-on packets): shipped design per the research's `adopt now
 **Core questions:**
 - **D1 Current split.** Map what's already in `mcp_server/lib/skill-advisor/` vs what still lives in `.opencode/skill/skill-advisor/scripts/`. Inventory Python scripts, TypeScript modules, SQLite DB location, test files, install surfaces.
 - **D2 Migration target.** Target file layout is a **self-contained `mcp_server/skill-advisor/` package** (NOT `lib/skill-advisor/`). Sub-folders: `lib/` (producer, scorer, caches, freshness), `tools/` (advisor_* MCP tool definitions), `handlers/` (MCP tool handlers), `tests/` (package-local tests; cross-package fixtures live under `mcp_server/tests/_support/`). Which Python stays (if any)? Which gets ported to TS? SQLite schema — stays as-is or converges with memory MCP's schema?
-- **D3 MCP-tool surface.** Expose advisor as MCP tools: `advisor_match`, `advisor_reindex`, `advisor_status`, `advisor_explain`. Signature + semantics for each.
+- **D3 MCP-tool surface.** Expose advisor as MCP tools. **Post-synthesis verdict (adopt_now, research.md §7 D3 + iter 026):** `advisor_recommend`, `advisor_status`, `advisor_validate`. (Earlier working names `advisor_match` / `advisor_reindex` / `advisor_explain` were superseded during synthesis; see child 004 for final schemas.)
 - **D4 Subprocess elimination.** Can we remove `child_process.spawn('python3', ...)` entirely by porting `skill_advisor_runtime.py` matching logic to TS? Or keep the Python matcher and call it in-process via a Node FFI / pyodide bridge?
 - **D5 Cache + freshness sharing.** Can advisor share the memory MCP's session cache, freshness-check primitives, and observability pipeline?
 - **D6 Install/bootstrap.** How does install change when advisor is part of the mcp_server package? `.opencode` plugin manifest, opencode.json MCP declaration, uninstall, upgrade path.
 - **D7 Backward compat.** `skill_advisor.py` is referenced from Claude's Gate 2 fallback, from scripted checks, from the OpenCode plugin bridge, from manual-testing-playbook scenarios. Migration path that keeps all of these working until deprecated.
-- **D8 Plugin relationship.** `.opencode/plugins/spec-kit-skill-advisor.js` currently proxies to the Python subprocess. Post-consolidation: proxy to the MCP server's `advisor_match` tool? Deprecate the plugin? Keep both?
+- **D8 Plugin relationship.** `.opencode/plugins/spec-kit-skill-advisor.js` currently proxies to the Python subprocess. **Post-synthesis verdict (adopt_now, research.md §7 D8):** plugin stays as a thin runtime adapter; bridge backend routes to the MCP server's `advisor_recommend` tool (name superseded from `advisor_match`). No plugin deprecation during this migration.
 
 ---
 

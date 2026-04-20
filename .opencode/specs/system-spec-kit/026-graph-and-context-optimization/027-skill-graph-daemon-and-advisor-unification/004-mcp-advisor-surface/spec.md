@@ -78,7 +78,16 @@ Expose the native advisor as three MCP tools under the system-spec-kit MCP serve
 3. Dispatcher registration integrates with existing system-spec-kit MCP server (no new MCP server).
 4. `advisor_recommend` returns: recommendations array, confidence, freshness trust state, lane attribution, generated_at.
 5. `advisor_status` returns: daemon freshness, generation, trust state, skill count, last scan time.
-6. `advisor_validate` returns: per-skill corpus-match results (pass / fail / skipped), overall accuracy.
+6. `advisor_validate` returns: per-skill corpus-match results (pass / fail / skipped), overall accuracy, PLUS per-slice metrics from research.md §11:
+   - `full_corpus_top1` (percentage + count + threshold ≥70%)
+   - `holdout_top1` (percentage + count + threshold ≥70%)
+   - `unknown_count` (target ≤10)
+   - `gold_none_false_fire_count` (baseline delta)
+   - `explicit_skill_top1_regression` (boolean + list)
+   - `ambiguity_slice_stable` (boolean + top-2-within-0.05 fixture result)
+   - `derived_lane_attribution_complete` (boolean)
+   - `adversarial_stuffing_blocked` (boolean + fixture count)
+   - `regression_suite_status` (P0 pass rate + failed count + command-bridge FP rate)
 
 ### 4.2 P1 (Required)
 1. Cache integration: `advisor_recommend` reuses post-025 HMAC prompt cache with source-signature invalidation.

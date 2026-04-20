@@ -59,13 +59,19 @@ Ship shadow-cycle harness + bounded learned/adaptive live-influence path + stric
 ### In Scope
 - `lib/promotion/shadow-cycle.ts` — replay 200-prompt corpus through candidate fusion weights / semantic channels without live side effects.
 - `lib/promotion/weight-delta.ts` — bounded learned/adaptive live-influence path (max weight delta per promotion = 0.05).
-- `lib/promotion/gates.ts` — promotion gate evaluator checking:
-  - ≥75% full-corpus exact top-1
-  - ≥72.5% stratified holdout top-1
-  - No safety regression (gold-`none` false-fire count doesn't increase)
+- `lib/promotion/gates.ts` — promotion gate evaluator checking (full research.md §11 slice bundle):
+  - ≥75% full-corpus exact top-1 (higher than 003's 70% baseline)
+  - ≥72.5% stratified holdout top-1 (higher than 003's 70% baseline)
+  - UNKNOWN fallback count ≤ 10 (preserved from 003)
+  - Gold-`none` false-fire count: no increase from baseline
+  - Explicit-skill prompts: no top-1/no-abstain regression; derived lane does not displace
+  - Ambiguity slice stable: top-2-within-0.05 still renders ambiguous
+  - Derived-lane attribution complete on derived-dominant matches
+  - Adversarial-stuffing fixture blocked
+  - Lifecycle slices (from 027/002 fixtures): supersession redirects correctly, archived skills excluded from default, rolled-back skills stay at schema v1
   - No latency regression (cache-hit p95 ≤50ms; uncached deterministic p95 ≤60ms)
   - Exact parity preservation (from 027/003)
-  - Regression-suite gates (existing canonical fixtures stay green)
+  - Regression-suite gates (existing canonical fixtures stay green; P0 pass 1.0; command-bridge FP ≤0.05)
 - Two-positive-shadow-cycles requirement before promotion.
 - Semantic live weight locked at 0.00 through first promotion wave.
 - `bench/corpus-accuracy.ts` — corpus + holdout measurement harness.

@@ -90,6 +90,12 @@ Ship the compat + migration layer: `skill_advisor.py` stays as a thin shim, hook
   - Archived (`z_archive/`): brief includes `status: "archived"`, excluded from default recommendations
   - Future (`z_future/`): brief includes `status: "future"`, excluded from default recommendations
   - Rolled-back: brief includes `schema_version: 1`, `note: "v1 restored"`
+- **H5 operator alerting playbook (Track H inline hardening):**
+  - Playbook scenario: daemon in `degraded` state — detection, log inspection, remediation steps
+  - Playbook scenario: daemon in `quarantined` state (malformed SKILL.md) — identify offending skill, fix/revert
+  - Playbook scenario: daemon in `unavailable` state (corrupted SQLite) — trigger rebuild-from-source
+  - Health metric scraping via `advisor_status` tool output (for external monitoring)
+  - Disable-flag escape hatch documented as remediation of last resort
 
 ### Out of Scope
 - Removing the Python CLI entirely — deferred post-027 until docs + scripted callers fully migrate.

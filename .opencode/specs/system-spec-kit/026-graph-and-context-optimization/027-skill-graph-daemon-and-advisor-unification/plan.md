@@ -57,6 +57,12 @@ Phase 027 parent
 
 **Effort estimate (research roadmap §9 + §13.6):** 27-40 engineering days total.
 
+## Deferred tracks (documented, not scaffolded)
+
+Per `../research/027-skill-graph-daemon-and-advisor-unification-pt-01/next-research-paths.md` §4:
+- **Track H** (robustness + edge cases, 5 questions) — handled **inline during implementation**, NOT as a separate sub-packet. H1-H4 covered in 027/001 (reindex-storm back-pressure, malformed SKILL.md quarantine, partial-write resilience). H5 operator alerting playbook covered in 027/005.
+- **Track I** (causal edge discovery, 4 questions) — **deferred to post-027**. 027/003 uses existing / hand-authored `skill_edges` for causal traversal. Automated edge discovery (SKILL.md cross-references, shared references, trigger co-occurrence, command-bridge log inference) is NOT in scope for Phase 027. Revisit in a future phase if implementation evidence makes it blocking.
+
 ## Architectural decisions captured in ADRs
 
 See `decision-record.md` for ADR-001..ADR-006 covering:

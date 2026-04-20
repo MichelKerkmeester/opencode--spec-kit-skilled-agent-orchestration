@@ -79,6 +79,7 @@ Port scoring to TypeScript under self-contained `mcp_server/skill-advisor/` pack
 - Shadow-cycle + promotion gates (027/006).
 - Python shim removal (027/005 keeps it as compat during migration).
 - Any weight tuning without the ablation protocol.
+- **Automated causal-edge discovery (Track I, deferred to post-027).** Traversal uses existing / hand-authored `skill_edges` only. No trigger co-occurrence mining, no SKILL.md cross-reference inference, no command-bridge log mining. If implementation evidence surfaces a blocker, raise it; otherwise defer.
 
 ## 4. REQUIREMENTS
 
@@ -90,6 +91,17 @@ Port scoring to TypeScript under self-contained `mcp_server/skill-advisor/` pack
 5. Python↔TS parity green on full corpus before this child converges.
 6. Ablation protocol callable; documents corpus/holdout/parity/safety/latency slice deltas per lane move.
 7. Scoring code lives under `mcp_server/skill-advisor/lib/` (NOT `mcp_server/lib/skill-advisor/`).
+
+### 4.1.a Deterministic acceptance gates (from research.md §11)
+8. **Full-corpus exact top-1 ≥ 70%** (≥140/200 correct).
+9. **Stratified holdout top-1 ≥ 70%** (≥28/40 correct).
+10. **UNKNOWN fallback count ≤ 10** on full corpus (down from 37 baseline).
+11. **Gold-`none` false-fire count** on `none`-labeled prompts: no increase from baseline.
+12. **Explicit-skill prompts:** top-1 / no-abstain — no regression, derived lane does not displace author-authored signals.
+13. **Ambiguity slice stable:** top-2-within-0.05 cases render ambiguous brief (no silent collapse to single skill).
+14. **Derived-lane attribution required:** derived-only or derived-dominant matches must be lane-attributed in output; cannot pass default confidence threshold without direct explicit/lexical support unless precision-gated.
+15. **Adversarial-stuffing fixture** cannot pass default routing without legitimate direct evidence.
+16. **Regression safety:** P0 pass rate 1.0, failed cases 0, command-bridge false-positive rate ≤ 0.05 on `skill_advisor_regression.py` suite (during compat window).
 
 ### 4.2 P1 (Required)
 1. Skill projection layer: project-not-copy memory fields; advisor owns its own schema.

@@ -7,14 +7,16 @@ contextType: "implementation"
 # 027/002 Checklist
 
 ## P0 (HARD BLOCKER)
-- [ ] Derived extraction pipeline deterministic + regenerable from documented inputs
+- [ ] Derived extraction pipeline deterministic + regenerable from full B1 input set (SKILL.md frontmatter/headings/body/examples + references/** headings + assets/** filenames + intent_signals + prior source_docs/key_files)
 - [ ] Trust lanes: `explicit_author` vs `derived_generated`; author intent never decays
-- [ ] Schema-v2 `derived` block published (Zod validator + spec)
+- [ ] Schema-v2 `derived` block includes `key_files[]` + `source_docs[]` + `sanitizer_version` (Zod validator + spec)
 - [ ] v1→v2 backfill additive; rollback additive strip
 - [ ] Mixed-version reads during migration (v1 still routable)
 - [ ] Supersession asymmetry: successor default + explicit-name redirect
 - [ ] `z_archive` + `z_future` excluded from routing + corpus stats
 - [ ] Anti-stuffing caps enforced before derived lane contributes to scoring
+- [ ] **A7 sanitizer applied before every write boundary** (SQLite insert, graph-metadata.json.derived write, envelope publication, diagnostic emit). Instruction-shaped fixture rejected; regression test present.
+- [ ] Targeted invalidation: editing any single B1 input refreshes ONLY the affected skill's derived row — per-input-category tests pass
 
 ## P1 (Required)
 - [ ] Provenance fingerprint per skill invalidates derived rows on change

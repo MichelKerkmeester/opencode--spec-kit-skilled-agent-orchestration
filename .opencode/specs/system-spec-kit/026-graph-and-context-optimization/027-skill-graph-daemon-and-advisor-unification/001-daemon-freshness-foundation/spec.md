@@ -62,6 +62,12 @@ Stand up the workspace-scoped daemon foundation: narrow Chokidar watcher, hash-a
 - Hash-aware SQLite scan wiring — reuse existing TS content-hash indexer; targeted invalidation for changed rows, full re-index reserved for recovery/schema.
 - Post-commit ordering — generation bump + cache invalidation published ONLY after SQLite `COMMIT` succeeds.
 - Failure-mode contract — `SQLITE_BUSY` backoff + scan requeue, `ENOENT` during editor atomic-rename tolerated, corrupted SQLite triggers rebuild-from-source, descriptor-pressure detection for broad-watch opt-in.
+- **Track H inline hardening (deferred Track I excluded):**
+  - **H1 Reindex-storm back-pressure:** rate-limit + exponential backoff + circuit breaker if > N reindex events in < T ms (e.g. > 20 in 10s). After circuit opens, coalesce events + resume on cooldown.
+  - **H2 Malformed SKILL.md handling:** quarantine (log + skip + mark skill `unavailable`), not hard-fail. Daemon continues serving other skills.
+  - **H4 Partial-write resilience:** tolerate mid-save editor crash (atomic rename detection, temp-file filter, retry on next stable-write event).
+  - **H5 Operator alerting:** health metric exposes daemon state (`live`/`degraded`/`quarantined`/`unavailable`) via `advisor_status` for scraping + playbook alerting hook in 005.
+- **A7 sanitizer boundary:** if the daemon itself ever emits advisor-visible metadata (e.g. via `advisor_status` brief), it must pass through the `mcp_server/skill-advisor/lib/sanitizer.ts` module (owned by 027/002). The daemon does NOT store its own metadata strings to SQLite — all storage goes through 027/002 pipelines which are already sanitized. This item is a defensive note: daemon diagnostics must not leak raw paths/names to the envelope.
 - Watcher benchmark harness as release gate — measures CPU idle %, RSS, FD count, debounce behavior on current + 2x + 5x skill set. Acceptance: ≤1% idle CPU, <20MB RSS, debounce 2s + 1s stable-write (provisional pending E4 burst benchmark).
 - Graceful shutdown + restart semantics (daemon crash → runtime hook marks advisor `unavailable`, fails open).
 

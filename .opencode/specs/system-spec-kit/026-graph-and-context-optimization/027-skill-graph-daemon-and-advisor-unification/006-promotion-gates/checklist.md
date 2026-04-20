@@ -9,14 +9,20 @@ contextType: "implementation"
 ## P0 (HARD BLOCKER)
 - [ ] Shadow-cycle harness replays corpus without live state mutation
 - [ ] Weight-delta cap: proposals >0.05 rejected
-- [ ] Promotion gate evaluator checks all 7 criteria:
+- [ ] Promotion gate evaluator checks full research.md §11 slice bundle:
   - [ ] ≥75% full-corpus exact top-1
   - [ ] ≥72.5% stratified holdout top-1
+  - [ ] UNKNOWN fallback count ≤ 10
   - [ ] Gold-`none` false-fire count no increase
+  - [ ] Explicit-skill top-1 / no-abstain no regression
+  - [ ] Ambiguity slice stable (top-2-within-0.05)
+  - [ ] Derived-lane attribution complete
+  - [ ] Adversarial-stuffing fixture blocked
+  - [ ] Lifecycle slices: supersession redirects / archived excluded / rolled-back v1 preserved
   - [ ] Cache-hit p95 ≤50ms
   - [ ] Uncached deterministic p95 ≤60ms
   - [ ] Exact parity preservation (from 027/003)
-  - [ ] Canonical regression fixtures green
+  - [ ] Canonical regression fixtures green (P0 pass 1.0, failed 0, command-bridge FP ≤0.05)
 - [ ] Two-positive-shadow-cycles rule enforced
 - [ ] Semantic live weight locked at 0.00 (cannot raise without gate approval)
 - [ ] Corpus + latency + safety bench harnesses exist + callable

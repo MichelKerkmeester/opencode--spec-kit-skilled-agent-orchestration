@@ -58,8 +58,9 @@ Produce normalized, provenance-tagged derived metadata + lifecycle-aware skill s
 ## 3. SCOPE
 
 ### In Scope
-- `lib/derived/extract.ts` — deterministic TS n-gram + pattern extraction from SKILL.md body + headings + `references/**` headings + `graph-metadata.json.intent_signals`. No embeddings in hot path. Commit messages excluded from first slice.
-- `lib/derived/provenance.ts` — per-skill fingerprint over B1 inputs; dependency graph so targeted invalidation works.
+- `lib/derived/extract.ts` — deterministic TS n-gram + pattern extraction. **B1 input set (deterministic local sources):** SKILL.md frontmatter (non-decaying) + SKILL.md headings + SKILL.md body + SKILL.md inline examples/code blocks + `references/**` headings + `assets/**` filenames (basenames only, no content) + `graph-metadata.json.intent_signals` + `graph-metadata.json.derived.source_docs[]` + `graph-metadata.json.derived.key_files[]` (when present from prior runs). No embeddings in hot path. Commit messages explicitly excluded from first slice.
+- `lib/derived/provenance.ts` — per-skill fingerprint over the full B1 input set; dependency graph so targeted invalidation refreshes only the affected derived rows. Fingerprint hash inputs must include each category above as a named bucket.
+- `lib/derived/sanitizer.ts` — apply the existing renderer/shared-payload sanitizer (from `mcp_server/skill-advisor/lib/render.ts::sanitizeSkillLabel` post-Phase 025) to every derived value before it is written to `graph-metadata.json.derived`, SQLite `skill_nodes`, status envelopes, or advisor-visible diagnostics. Reject instruction-shaped derived values at write boundary. **This is A7 compliance: no advisor-visible metadata is stored or published without sanitization.**
 - `lib/derived/trust-lanes.ts` — `explicit_author` vs `derived_generated` lane separation; caps + haircuts before fusion.
 - `lib/derived/anti-stuffing.ts` — cardinality limits + repetition-density + suspicious-pattern demotions + gold-`none` gate.
 - `lib/lifecycle/age-haircut.ts` — discrete advisor-side age/status decay on derived lane only.
@@ -67,7 +68,7 @@ Produce normalized, provenance-tagged derived metadata + lifecycle-aware skill s
 - `lib/lifecycle/archive-handling.ts` — `z_archive/` + `z_future/` indexed but excluded from routing + corpus stats.
 - `lib/lifecycle/schema-migration.ts` — v1↔v2 additive backfill + rollback; mixed-version reads during transition.
 - `lib/corpus/df-idf.ts` — repo-level DF/IDF baseline, recomputed on startup + debounced graph changes.
-- Schema-v2 `derived` block shape defined + documented (fields: `trigger_phrases[]`, `keywords[]`, `provenance_fingerprint`, `generated_at`, `source_docs[]`, `trust_lane: "derived_generated"`).
+- Schema-v2 `derived` block shape defined + documented (fields: `trigger_phrases[]`, `keywords[]`, `provenance_fingerprint`, `generated_at`, `source_docs[]`, `key_files[]` — paths of local files whose content contributed to the derived extraction; used by 001 watcher for targeted invalidation, `trust_lane: "derived_generated"`, `sanitizer_version`).
 - Tests under `mcp_server/skill-advisor/tests/derived/`, `tests/lifecycle/`, `tests/corpus/`.
 
 ### Out of Scope
@@ -79,13 +80,15 @@ Produce normalized, provenance-tagged derived metadata + lifecycle-aware skill s
 ## 4. REQUIREMENTS
 
 ### 4.1 P0 (Blocker)
-1. Derived extraction pipeline deterministic + regenerable from documented inputs.
+1. Derived extraction pipeline deterministic + regenerable from the full B1 input set (SKILL.md frontmatter/headings/body/examples + references/** headings + assets/** filenames + intent_signals + prior source_docs/key_files).
 2. Trust-lane separation: `explicit_author` vs `derived_generated`. Author intent never decays.
-3. Schema-v2 `derived` block spec published + validators implemented; v1→v2 backfill is additive; rollback is additive strip.
+3. Schema-v2 `derived` block includes `key_files[]` + `source_docs[]` + `sanitizer_version`; spec published + Zod validators implemented; v1→v2 backfill is additive; rollback is additive strip.
 4. Mixed-version reads during migration: v1 skills routable while v2 skills gain `derived`.
 5. Supersession asymmetry: successor wins implicit routing; explicit old-name surfaces deprecated skill + redirect metadata.
 6. `z_archive` + `z_future` excluded from default routing + corpus stats.
 7. Anti-stuffing caps enforced before `derived_generated` can contribute to scoring.
+8. **A7 sanitizer applied before any advisor-visible metadata is written.** Sanitizer module integrated at every write boundary (SQLite `skill_nodes` insert, `graph-metadata.json.derived` write, status envelope publication, diagnostic emit). Regression test: instruction-shaped fixture in SKILL.md / references / assets cannot produce an unsanitized `skill_nodes` row or envelope `skillLabel`.
+9. Targeted invalidation: editing any single B1 input refreshes ONLY the affected skill's derived row (not the whole corpus). Test per input category (SKILL.md body, references heading, asset filename rename, intent_signals edit).
 
 ### 4.2 P1 (Required)
 1. Provenance fingerprint per skill; changes to B1 inputs invalidate derived rows.

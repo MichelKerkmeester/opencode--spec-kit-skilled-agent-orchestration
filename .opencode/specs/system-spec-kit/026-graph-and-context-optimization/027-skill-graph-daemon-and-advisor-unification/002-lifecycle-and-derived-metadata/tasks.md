@@ -20,9 +20,20 @@ contextType: "implementation"
 - [ ] Documentation block in schema file
 
 ## T004 — Extraction pipeline (P0)
-- [ ] `lib/derived/extract.ts` — deterministic n-gram + pattern extraction
-- [ ] `lib/derived/provenance.ts` — per-skill fingerprint over B1 inputs
-- [ ] Unit tests
+- [ ] `lib/derived/extract.ts` — deterministic n-gram + pattern extraction from full B1 input set (SKILL.md frontmatter/headings/body/examples + references/** headings + assets/** filenames + intent_signals + source_docs + key_files)
+- [ ] `lib/derived/provenance.ts` — per-skill fingerprint with named-bucket hash per B1 category
+- [ ] Unit tests per B1 category
+
+## T004b — Sanitizer at write boundary (P0, A7 compliance)
+- [ ] `lib/derived/sanitizer.ts` wraps `mcp_server/skill-advisor/lib/render.ts::sanitizeSkillLabel`
+- [ ] Applied at every write: SQLite insert, graph-metadata.json.derived write, envelope publication, diagnostic emit
+- [ ] Regression test: instruction-shaped fixture in SKILL.md / references heading / asset filename → sanitizer rejects, no unsafe row written
+- [ ] `sanitizer_version` field populated in derived block
+
+## T004c — Targeted invalidation (P0)
+- [ ] Invalidation dependency graph: per-skill fingerprint → which B1 inputs feed it
+- [ ] Test per input category: SKILL.md body edit → single-row refresh; references/** heading edit → single-row refresh; asset filename rename → single-row refresh; intent_signals edit → single-row refresh
+- [ ] No corpus-wide reindex triggered by single-skill edit
 
 ## T005 — Trust lanes + anti-stuffing (P0)
 - [ ] `lib/derived/trust-lanes.ts` — explicit_author vs derived_generated

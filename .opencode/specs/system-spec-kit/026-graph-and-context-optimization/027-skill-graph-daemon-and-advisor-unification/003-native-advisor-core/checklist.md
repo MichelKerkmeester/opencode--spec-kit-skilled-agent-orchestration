@@ -15,6 +15,17 @@ contextType: "implementation"
 - [ ] All new code under `mcp_server/skill-advisor/lib/` (NOT `mcp_server/lib/skill-advisor/`)
 - [ ] 11 lib/skill-advisor/*.ts files migrated; existing 65-test baseline still green
 
+## P0 Deterministic acceptance gates (research.md §11)
+- [ ] Full-corpus exact top-1 ≥ 70% (≥140/200)
+- [ ] Stratified holdout top-1 ≥ 70% (≥28/40)
+- [ ] UNKNOWN fallback count ≤ 10 on full corpus
+- [ ] Gold-`none` false-fire count: no increase from baseline
+- [ ] Explicit-skill top-1 / no-abstain: no regression; derived lane does not displace
+- [ ] Ambiguity slice stable: top-2-within-0.05 renders ambiguous brief
+- [ ] Derived-lane attribution required for derived-dominant matches
+- [ ] Adversarial-stuffing fixture cannot pass default routing
+- [ ] Regression safety: P0 pass 1.0 / failed 0 / command-bridge FP ≤ 0.05
+
 ## P1 (Required)
 - [ ] Skill projection layer (project-not-copy memory fields)
 - [ ] Bounded skill_edges traversal (depth + breadth caps)
