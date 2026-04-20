@@ -43,9 +43,9 @@ Across this skill tree, `/spec_kit:resume` is the canonical recovery surface for
 
 `.opencode/skill/` holds 21 folders: 20 skills plus the `skill-advisor/` support package. Skills are not passive references. Each skill contains executable guidance that an AI agent loads on demand through Gate 2 routing or explicit invocation. Skills carry their own references, assets, scripts, and graph metadata so domain knowledge stays close to the code that uses it.
 
-Skills divide into five categories: CLI orchestrators that delegate work to external AI binaries, MCP integrations that wrap third-party tools, code quality overlays that cover different stack contexts, documentation and improvement-loop utilities, and the system-spec-kit foundation that governs every file modification. The routing engine at `skill-advisor/scripts/skill_advisor.py` scores each incoming request against all skill descriptions and returns confidence-ranked recommendations. The graph metadata compiler at `skill-advisor/scripts/skill_graph_compiler.py` validates each folder's `graph-metadata.json` and builds `skill-advisor/scripts/skill-graph.json` for relationship-aware routing.
+Skills divide into five categories: CLI orchestrators that delegate work to external AI binaries, MCP integrations that wrap third-party tools, code quality overlays that cover different stack contexts, documentation and improvement-loop utilities, and the system-spec-kit foundation that governs every file modification. The primary routing engine is now the native TypeScript Skill Advisor package at `system-spec-kit/mcp_server/skill-advisor/`, exposed through `advisor_recommend`, `advisor_status`, and `advisor_validate`. The Python `skill-advisor/scripts/skill_advisor.py` entrypoint remains as a compatibility shim with native-first delegation and local fallback.
 
-Adding a skill is intentional. Every new skill goes through `sk-doc`'s scaffolding workflow, gets a SKILL.md with proper frontmatter, and is immediately discoverable by `skill_advisor.py` without any manual registration.
+Adding a skill is intentional. Every new skill goes through `sk-doc`'s scaffolding workflow, gets a SKILL.md with proper frontmatter, and is discovered by the native advisor through graph metadata indexing. The Python shim can still discover it directly when fallback mode is active.
 
 ### Key Statistics
 
@@ -60,17 +60,19 @@ Adding a skill is intentional. Every new skill goes through `sk-doc`'s scaffoldi
 | Documentation, research, review, and improvement skills | 5 | sk-improve-agent, sk-deep-research, sk-deep-review, sk-doc, sk-improve-prompt |
 | Git and system skills | 2 | sk-git, system-spec-kit |
 | Skills with local scripts/ | 12 | See Section 4 for the current script-bearing folders |
-| Shared routing scripts | 5 | `skill_advisor.py`, runtime, bench, regression, and graph compiler |
+| Native advisor tools | 3 | `advisor_recommend`, `advisor_status`, `advisor_validate` |
+| Shared compatibility scripts | 5 | `skill_advisor.py`, runtime, bench, regression, and graph compiler |
 
 ### Key Features
 
 | Feature | Description |
 | --- | --- |
-| Gate 2 routing | `skill_advisor.py` scores requests and returns ranked skill recommendations with confidence |
-| Graph metadata system | Per-folder `graph-metadata.json` is compiled into `skill-advisor/scripts/skill-graph.json` for graph-aware routing |
+| Gate 2 routing | Native `advisor_recommend` scores requests with 5-lane fusion and returns prompt-safe recommendations |
+| Advisor health and validation | `advisor_status` reports freshness, `skillCount`, `lastScanAt`, and lane weights; `advisor_validate` returns measured corpus, holdout, parity, safety, and latency slices |
+| Graph metadata system | Per-folder `graph-metadata.json` feeds the SQLite skill graph, with `skill-advisor/scripts/skill-graph.json` kept for export and fallback workflows |
 | On-demand loading | Skills load only when needed so context stays focused |
 | Self-contained skills | References, assets, and scripts live inside each skill folder |
-| Auto-discovery | New skills are found immediately by the advisor after adding a SKILL.md |
+| Auto-discovery | New skills are found through graph metadata and SKILL.md discovery |
 | Dual-threshold filtering | Confidence and uncertainty both gate routing to reduce false positives |
 
 <!-- /ANCHOR:overview -->
@@ -84,7 +86,11 @@ Three ways to use this library:
 
 **1. Route with Gate 2**
 
-Run the advisor before any non-trivial task. Pass the user's request and a confidence threshold.
+Use the native advisor before any non-trivial task when MCP is available. Use the Python shim when a runtime needs the legacy JSON-array contract.
+
+```text
+advisor_recommend({"prompt":"rewrite README for skill library","options":{"topK":1}})
+```
 
 ```bash
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "rewrite README for skill library" --threshold 0.8
@@ -111,7 +117,7 @@ python3 .opencode/skill/sk-doc/scripts/extract_structure.py README.md --json
 Loading sequence:
 
 ```text
-Request -> skill_advisor.py -> top match + confidence -> load SKILL.md -> follow instructions
+Request -> advisor_recommend -> top match + confidence -> load SKILL.md -> follow instructions
 ```
 
 <!-- /ANCHOR:quick-start -->
@@ -204,7 +210,7 @@ The skill system covers four distinct workflow domains.
 │   ├── graph-metadata.json
 │   ├── feature_catalog/
 │   ├── manual_testing_playbook/
-│   └── scripts/            # skill_advisor.py, skill_graph_compiler.py, skill-graph.json, regression, fixtures, out
+│   └── scripts/            # Python compat shim, graph export compiler, regression, fixtures, out
 ├── sk-improve-agent/       # Evaluator-first agent improvement loop
 ├── sk-code-full-stack/     # Stack-agnostic implementation orchestrator
 ├── sk-code-opencode/       # OpenCode system code standards
@@ -226,7 +232,7 @@ Each skill folder follows this internal structure:
 | Path | Purpose |
 | --- | --- |
 | `SKILL.md` | Required entry point with YAML frontmatter, routing logic, and instructions |
-| `graph-metadata.json` | Relationship metadata compiled by `skill-advisor/scripts/skill_graph_compiler.py` |
+| `graph-metadata.json` | Relationship metadata indexed by the native advisor graph and export compiler |
 | `references/` | Focused domain guidance loaded as needed |
 | `assets/` | Templates and static support files |
 | `scripts/` | Optional automation for checks and generation |
@@ -274,7 +280,7 @@ For the full system-spec-kit script inventory, see `system-spec-kit/scripts/scri
 
 ### Skill Routing Policy
 
-Gate 2 routing runs before any non-trivial task. The advisor script scores the request against all discovered skills and returns ranked recommendations.
+Gate 2 routing runs before any non-trivial task. The native advisor scores the request against discovered skills and returns ranked prompt-safe recommendations.
 
 | Condition | Action |
 | --- | --- |
@@ -299,14 +305,21 @@ trigger_phrases:
 
 The `name` and `description` fields are required. `trigger_phrases` strengthen routing accuracy.
 
-### Graph metadata compilation
+### Graph metadata indexing
 
-Every folder under `.opencode/skill/` contributes a `graph-metadata.json` file to the shared routing graph. Validate the graph metadata layer or rebuild the compiled snapshot with:
+Every folder under `.opencode/skill/` contributes a `graph-metadata.json` file to the shared routing graph. The native runtime reads the SQLite skill graph first. The JSON snapshot remains useful for export and fallback workflows:
 
 ```bash
 python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
 python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
 # Writes .opencode/skill/skill-advisor/scripts/skill-graph.json
+```
+
+Native health and validation:
+
+```text
+advisor_status({"workspaceRoot":"/absolute/path/to/repo"})
+advisor_validate({"skillSlug":null})
 ```
 
 ### Threshold Defaults
@@ -327,8 +340,14 @@ python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
 ### Route a request through Gate 2
 
 ```bash
-# Documentation task: sk-doc is recommended at high confidence
+# Documentation task: sk-doc is recommended at high confidence through the shim
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "create a flowchart for the auth flow" --threshold 0.8
+```
+
+Native equivalent:
+
+```text
+advisor_recommend({"prompt":"create a flowchart for the auth flow","options":{"topK":1}})
 ```
 
 ### Load a skill directly
@@ -414,7 +433,7 @@ python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "commit changes" 
 
 **Cause.** Overly broad description terms in a skill's SKILL.md, or a synonym mapping that pulls unrelated skills into the result set.
 
-**Fix.** Tighten the description in the recommended skill's SKILL.md frontmatter. Add a specific `trigger_phrases` list. Adjust boost values in `skill_advisor.py` INTENT_BOOSTERS if the false match comes from a keyword collision.
+**Fix.** Tighten the description in the recommended skill's SKILL.md frontmatter. Add specific `trigger_phrases` and graph metadata intent signals. If the issue appears only in fallback mode, compare native `advisor_recommend` with `skill_advisor.py --force-local`.
 
 ### New skill is not discovered
 
@@ -457,7 +476,7 @@ python3 -c "import yaml; print('ok')"
 
 **Q: Do I need to register a new skill anywhere after creating it?**
 
-No. `skill_advisor.py` discovers skills by scanning for SKILL.md files in `.opencode/skill/`. Adding a folder with a valid SKILL.md is enough. The advisor picks it up on the next run.
+No. Add a valid SKILL.md and graph metadata. The native advisor picks it up through the skill graph watcher or the next scan; the Python shim can also discover it directly in fallback mode.
 
 **Q: Can I use multiple skills in the same task?**
 
@@ -465,7 +484,7 @@ Yes. The advisor returns a ranked list. A task may load a primary skill (for exa
 
 **Q: What is the difference between skill-local scripts and the shared scripts/ folder?**
 
-The shared routing package lives in `.opencode/skill/skill-advisor/scripts/` and handles cross-skill concerns: routing, graph compilation, benchmarking, and regression testing. Skill-local scripts in a skill's own `scripts/` folder handle domain-specific automation (document validation, spec creation, memory generation) that only that skill uses.
+The native routing package lives in `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/`. The compatibility scripts live in `.opencode/skill/skill-advisor/scripts/` and handle legacy routing, graph export, benchmarking, and regression testing. Skill-local scripts in a skill's own `scripts/` folder handle domain-specific automation.
 
 **Q: Why does the advisor cap confidence at 0.95?**
 
@@ -481,8 +500,8 @@ The cap preserves a margin of uncertainty so the calling AI retains judgment on 
 | Document | Purpose |
 | --- | --- |
 | [Main Framework README](../../README.md) | Root project overview and framework entry point |
-| [Skill Advisor README](skill-advisor/README.md) | skill_advisor.py usage, architecture, feature catalog, and playbook index |
-| [Skill Advisor Setup Guide](skill-advisor/SET-UP_GUIDE.md) | Step-by-step customization for new projects |
+| [Skill Advisor README](skill-advisor/README.md) | Native advisor overview, MCP quick start, compatibility shim, runtime hooks, and playbook index |
+| [Skill Advisor Setup Guide](skill-advisor/SET-UP_GUIDE.md) | Native bootstrap pointer, validation commands, rollback controls, and operator states |
 | [system-spec-kit SKILL.md](system-spec-kit/SKILL.md) | Spec folder workflow and memory foundation |
 | [sk-doc SKILL.md](sk-doc/SKILL.md) | Documentation quality standards and templates |
 | [sk-git SKILL.md](sk-git/SKILL.md) | Git workflow orchestration |

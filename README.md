@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 21 skills, 21 command entry points, 56 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 21 skills, 21 command entry points, 59 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
 >
 > Don't buy me unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
@@ -53,7 +53,7 @@ The framework adds three layers on top of the base platform:
 | **🤖 10 Agents** | 10 custom specialists, multi-runtime |
 | **🎯 21 Skills** | Code, docs, git, prompts, MCP, research, review, improvement, cross-AI |
 | **⌨️ 21 Commands** | 6 spec_kit + 4 memory + 6 create + 2 improve + 2 doctor + 1 agent_router |
-| **🔧 56 MCP Tools** | 47 spec_kit_memory + 7 code mode + 1 semantic search + 1 sequential thinking |
+| **🔧 59 MCP Tools** | spec_kit_memory, native Skill Advisor, code mode, semantic search, and sequential thinking |
 | **🔍 CocoIndex Code** | Semantic code search via vector embeddings - natural-language discovery across 28+ languages |
 | **🏗️ Code Graph** | Structural indexer + SQLite - call graphs, imports, hierarchy, LLM-oriented neighborhoods, graph-first routing |
 | **⚡ Runtime Coverage** | OpenCode, Codex CLI, Claude Code, Gemini CLI, plus Copilot MCP/startup support |
@@ -86,7 +86,7 @@ The framework adds three layers on top of the base platform:
                  │                           │
                  ▼                           ▼
          ┌──────────────────────────────────────────┐
-         │       MEMORY ENGINE (56 MCP tools)       │
+        │       MEMORY ENGINE + ADVISOR TOOLS      │
          │  5 core + CocoIndex bridge: Vector,      │
          │  BM25, FTS5, Causal Graph, Degree        │
          │  Graph-first routing ─ 3-tier fallback    │
@@ -293,7 +293,7 @@ TypeScript sources compile to `scripts/dist/`. The runtime entry point for memor
                      ▼
   ┌─────────────────────────────────────────────┐
   │  Gate 2: Skill Routing (REQUIRED)           │
-  │  skill_advisor.py recommends skill          │
+  │  advisor_recommend recommends skill         │
   │  confidence >= 0.8 ─► MUST load skill        │
   └──────────────────┬──────────────────────────┘
                      │
@@ -539,7 +539,9 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 ### 🎯 Skill Advisor
 
-The Skill Advisor is an intelligent routing system that automatically matches user requests to the right skill. It powers Gate 2 in the gate system, analyzing every request against 21 skills using a multi-stage scoring pipeline with a SQLite-backed relationship graph. Average routing time: **0.5ms per query**.
+The Skill Advisor is the native Gate 2 routing system that matches user requests to the right skill. Phase 027 moved routing into the TypeScript MCP package at `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/`, with three tools: `advisor_recommend`, `advisor_status`, and `advisor_validate`. The Python script remains as a compatibility shim with native-first routing and local fallback.
+
+Current shipped baseline: **80.5% full-corpus accuracy**, **77.5% holdout accuracy**, **UNKNOWN <= 10**, and **0 regressions on Python-correct prompts**.
 
 #### How It Works
 
@@ -548,78 +550,77 @@ The Skill Advisor is an intelligent routing system that automatically matches us
                       │
                       ▼
            ┌──────────────────────┐
-      1.   │  NORMALIZE (0.1ms)   │  Lowercase, tokenize, expand
-           │                      │  synonyms, canonical intent rules
+      1.   │  NORMALIZE           │  Prompt-safe canonicalization
+           │                      │  with no raw prompt persistence
            └──────────┬───────────┘
                       ▼
            ┌──────────────────────┐
-      2.   │  SCORE (0.2ms)       │  170 single-skill boosters
-           │                      │  32 multi-skill boosters
-           │                      │  134 phrase intent boosters
+      2.   │  5-LANE FUSION       │  explicit_author 0.45
+           │                      │  lexical 0.30
+           │                      │  graph_causal 0.15
+           │                      │  derived_generated 0.10
+           │                      │  semantic_shadow 0.00
            └──────────┬───────────┘
                       ▼
       ┌───────────────────────────────┐
-      │  3. GRAPH BOOSTS (0.1ms)      │  Reads skill-graph.sqlite:
-      │                               │  mcp-figma depends_on
-      │  SQLite-backed skill graph    │    mcp-code-mode -> boost it
-      │  with typed relationships,    │  MCP family -> light boost
-      │  auto-indexed via watcher     │    to other MCP skills
-      │                               │  Ghost guard: only boost
-      │  4 MCP tools for any runtime  │    skills already scored
+      │  3. FRESHNESS + LIFECYCLE     │  live/stale/absent/unavailable
+      │                               │  superseded / archived /
+      │  SQLite-backed skill graph    │  future redirect metadata
+      │  plus generated metadata      │  fail-open trust states
       └───────────────┬───────────────┘
                       ▼
            ┌──────────────────────┐
-      4.   │  CALIBRATE (0.1ms)   │  Confidence + uncertainty
-           │                      │  Graph-heavy results get haircut
-           │                      │  Conflict penalty if applicable
+      4.   │  VALIDATE + FILTER   │  Confidence + uncertainty
+           │                      │  prompt-safe attribution
+           │                      │  cache and trust envelope
            └──────────┬───────────┘
                       ▼
            ┌──────────────────────┐
-      5.   │  FILTER              │  confidence >= 0.8 AND
-           │                      │  uncertainty <= 0.35
+      5.   │  RENDER              │  runtime hook brief or
+           │                      │  MCP recommendation JSON
            └──────────┬───────────┘
                       ▼
                 RESULT:
-           mcp-figma      0.95  pass
-           mcp-code-mode  0.95  pass  <- graph pulled this up
-           mcp-clickup    0.55  fail  <- below threshold
+           advisor_recommend -> recommendations[]
+           hook adapter -> "Advisor: live; use ..."
+           shim fallback -> legacy JSON array
 ```
 
 &nbsp;
-#### Skill Graph (SQLite-Backed)
+#### Native Advisor Package
 
-Every skill folder contains a `graph-metadata.json` declaring typed relationships to other skills. The graph is stored in `skill-graph.sqlite` (alongside `code-graph.sqlite` and `deep-loop-graph.sqlite`) and auto-indexed on MCP server startup and on file changes via a Chokidar watcher. The advisor reads SQLite first, falling back to the compiled JSON if SQLite is unavailable.
+The native package is self-contained:
 
-4 MCP tools expose the graph to all runtimes:
+```text
+.opencode/skill/system-spec-kit/mcp_server/skill-advisor/
+├── bench/
+├── compat/
+├── handlers/
+├── lib/
+├── schemas/
+├── tests/
+└── tools/
+```
 
 | Tool | Purpose |
 |------|---------|
-| `skill_graph_scan` | Index/reindex all metadata files into SQLite |
-| `skill_graph_query` | Structural queries: depends_on, enhances, family, transitive paths, hubs |
-| `skill_graph_status` | Health: node/edge counts, staleness, family distribution |
-| `skill_graph_validate` | Weight band, symmetry, and schema validation |
+| `advisor_recommend` | Prompt-safe recommendations, lane attribution, lifecycle redirects, cache and freshness trust |
+| `advisor_status` | Freshness, generation, trust state, lane weights, `skillCount`, `lastScanAt`, daemon status |
+| `advisor_validate` | Real corpus, holdout, parity, safety, and latency slice measurements |
 
 &nbsp;
-#### Relationship Types
+#### Runtime Integrations
 
-| Edge Type | Semantics | Damping | Example |
-|-----------|-----------|---------|---------|
-| `depends_on` | Cannot function without target | 0.20 | mcp-figma depends on mcp-code-mode |
-| `enhances` | Adds value alongside target (overlay) | 0.30 | sk-code-review enhances sk-code-opencode |
-| `siblings` | Peer with shared characteristics | 0.15 | cli-gemini siblings cli-codex |
-| `conflicts_with` | Should not be recommended together | penalty | - |
-| `prerequisite_for` | Inverse of depends_on | 0.20 | mcp-code-mode prerequisite for mcp-figma |
-
-Family affinity gives an additional 8% boost to same-family members when one has a strong signal. A ghost candidate guard prevents the graph from creating brand-new winners -- graph boosts only apply to candidates that already have positive evidence.
+Claude Code, Copilot CLI, Gemini CLI, and Codex CLI call prompt-time hook adapters under `.opencode/skill/system-spec-kit/mcp_server/hooks/`. OpenCode uses `.opencode/plugins/spec-kit-skill-advisor.js` with `spec-kit-skill-advisor-bridge.mjs`, which imports the stable native compatibility entrypoint at `skill-advisor/compat/index.ts`.
 
 &nbsp;
 #### Validation and Testing
 
-- `skill_graph_compiler.py --validate-only` validates all 21 metadata files with schema, weight band, and edge symmetry checks
-- `skill_advisor.py --health` reports graph source (sqlite/json), skill count, and CocoIndex availability
-- 44-case regression suite with 12 P0 cases, 3 graph-specific test cases, and 100% pass rate
-- 28-scenario manual testing playbook covering routing, graph boosts, compiler, regression safety, and SQLite graph
-- 20-feature catalog across 4 categories (routing pipeline, graph system, semantic search, testing)
+- `advisor_validate({"skillSlug":null})` returns measured corpus, holdout, parity, safety, and latency slices
+- Python compatibility regression suite passed 52/52
+- Native package baseline: 23 advisor test files / 167 tests
+- Manual testing playbook now contains 17 scenarios across native MCP tools, runtime hooks/plugin, compatibility controls, and H5 operator states
+- `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` disables all prompt-time advisor surfaces
 
 For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README.md).
 

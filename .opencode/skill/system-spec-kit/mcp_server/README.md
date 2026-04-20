@@ -8,7 +8,7 @@ trigger_phrases:
   - "cognitive memory"
   - "memory_context"
   - "memory_search"
-  - "51 tools"
+  - "advisor_recommend"
   - "FSRS decay"
 ---
 
@@ -54,7 +54,7 @@ Phase 017 also hardened the runtime edges: code-graph handlers now share one rea
 
 | What | Count | Details |
 |------|-------|---------|
-| **MCP tools** | 47 | Organized across core memory layers plus dedicated code-graph and CocoIndex dispatch groups |
+| **MCP tools** | Live registry | Core memory layers plus dedicated code graph, CocoIndex dispatch, and Skill Advisor groups |
 | **Search channels** | 5 core + CocoIndex bridge | Vector, FTS5, BM25, Causal Graph, Degree (+ CocoIndex semantic code search as external bridge) |
 | **Pipeline stages** | 4 | Gather (graph-first routing), Score, Rerank, Filter |
 | **Importance tiers** | 6 | constitutional, critical, important, normal, temporary, deprecated |
@@ -84,7 +84,7 @@ Phase 017 also hardened the runtime edges: code-graph handlers now share one rea
 
 ### How You Use It
 
-The memory system exposes 47 MCP tools through 4 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Think of commands as doors into the system. Each door opens access only to the tools it needs.
+The memory system exposes its MCP tools through 4 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Dedicated code-graph, CocoIndex, and Skill Advisor tools live in the same server. Think of commands as doors into the system. Each door opens access only to the tools it needs.
 
 | Command | What It Does | Tool Count |
 |---------|-------------|------------|
@@ -521,7 +521,7 @@ Research-grade infrastructure for measuring and improving search quality over ti
 
 The code graph system provides structural code analysis via tree-sitter AST parsing and SQLite storage. It maps what connects to what in the codebase: function calls, imports, class hierarchy and containment.
 
-**Architecture:** CocoIndex (semantic, external MCP) finds code by concept. Code Graph (structural, this server) maps imports, calls and hierarchy. Memory (session, this server) preserves decisions. The compact-merger combines all three under a 4000-token budget for compaction injection.
+**Architecture:** CocoIndex (semantic, external MCP) finds code by concept. Code Graph (structural, this server) maps imports, calls and hierarchy. Memory (session, this server) preserves decisions. The compact-merger combines all three under a 4000-token budget for compaction injection. After Phase 028, code-graph source is self-contained under `code-graph/` with `handlers/`, `lib/`, `tools/`, and `tests/`.
 
 **Parser:** Tree-sitter WASM is the default parser (JS/TS/Python/Shell). Set `SPECKIT_PARSER=regex` for regex fallback.
 
@@ -541,9 +541,31 @@ The code graph system provides structural code analysis via tree-sitter AST pars
 
 ---
 
+#### 3.1.14 SKILL ADVISOR
+
+The Skill Advisor is the native Gate 2 routing surface for matching prompts to skills. It now lives as a self-contained package under `skill-advisor/` inside this MCP server and exposes three MCP tools:
+
+| Tool | Purpose |
+|------|---------|
+| `advisor_recommend` | Route a prompt through native 5-lane fusion and return prompt-safe recommendations. |
+| `advisor_status` | Report freshness, generation, trust state, `skillCount`, `lastScanAt`, lane weights, and daemon availability. |
+| `advisor_validate` | Return measured corpus, holdout, parity, safety, and latency slices. |
+
+**Architecture:** the native package owns scorer fusion, daemon freshness, lifecycle redirects, promotion gates, compatibility entrypoints, Zod schemas, and package-local tests. The Python script at `.opencode/skill/skill-advisor/scripts/skill_advisor.py` is a compatibility shim: it probes the native path first, translates native output to the legacy JSON-array shape, and falls back to local Python scoring when native routing is unavailable.
+
+**Fusion lanes:** explicit_author 0.45, lexical 0.30, graph_causal 0.15, derived_generated 0.10, semantic_shadow 0.00. The semantic lane is shadow-only until the promotion bundle passes the required cycles and the semantic lock is lifted.
+
+**Current baseline:** 80.5% full corpus, 77.5% holdout, UNKNOWN <= 10, and zero regressions on Python-correct prompts.
+
+**Public API:** plugin and shim consumers should use `skill-advisor/compat/index.ts` or its compiled `dist/skill-advisor/compat/index.js` equivalent. Do not pin external consumers to private compiled handler paths.
+
+For package-local details, see [Skill Advisor Native Package README](skill-advisor/README.md) and [Skill Advisor Native Bootstrap](skill-advisor/INSTALL_GUIDE.md).
+
+---
+
 ### 3.2 TOOL REFERENCE
 
-All 51 tools listed by architecture layer. Each entry has a plain-language description and a parameter table. For full Zod schemas with types and defaults, see `tool-schemas.ts`.
+Tools are listed by architecture layer. Each entry has a plain-language description and a parameter table. For full Zod schemas with types and defaults, see `tool-schemas.ts`.
 
 **Start here for most tasks**: `memory_context` (L1) automatically figures out what you need. Use the lower-level tools when you want precise control.
 
@@ -1171,7 +1193,7 @@ mcp_server/
 
 | File | What It Does |
 |------|-------------|
-| `context-server.ts` | Starts the MCP listener, performs runtime bootstrap, and registers all 51 tools. |
+| `context-server.ts` | Starts the MCP listener, performs runtime bootstrap, and registers the live tool registry. |
 | `startup-checks.ts` | Startup diagnostics and environment validation run before the server begins serving tools. |
 | `tool-schemas.ts` | Defines every tool name, description and parameter schema in one place. |
 | `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks dedup/quality gates, generates embeddings, and stores the result. |

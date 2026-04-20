@@ -92,6 +92,7 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | **Spec Kit Memory MCP**       | 51-tool MCP server providing persistent semantic memory, graph intelligence, graph-first routing, and session orchestration across sessions, models and tools                                                 |
 | **Startup / Recovery Surfaces** | `/spec_kit:resume` is the canonical operator-facing recovery surface. Under the hood, startup and recovery rebuild active context from `handover.md`, then `_memory.continuity`, then canonical spec docs |
 | **Code Graph**                | Structural code analysis: tree-sitter WASM indexer + SQLite storage via 4 core graph tools, with adjacent `session_*` and `ccc_*` helpers for readiness, recovery, and semantic follow-up                 |
+| **Skill Advisor**             | Native Phase 027 routing package with `advisor_recommend`, `advisor_status`, `advisor_validate`, 5-lane fusion, Python compatibility shim, runtime hooks, and OpenCode plugin bridge                    |
 | **Session Continuity**        | `generate-context.js` updates canonical continuity surfaces and refreshes packet metadata on every `/memory:save` invocation so `/spec_kit:resume` can rebuild the next session from packet-local sources     |
 | **Validation Scripts**        | 20-rule validation, continuity freshness checks, and strict EVIDENCE-marker linting for spec folders                                                                                                          |
 | **Phase Decomposition**       | Parent/child spec folder structure for multi-session, multi-phase work                                                                                                                                         |
@@ -111,6 +112,12 @@ Structural code analysis via tree-sitter WASM parsing and SQLite storage. Maps f
 CocoIndex (semantic search) finds code by concept. Code Graph (structural) maps what connects to what. Startup and recovery surfaces now report freshness-aware graph state, structural read paths return a `readiness` block, and lightly stale graphs may repair inline with bounded `selective_reindex` while empty or broadly stale graphs stay on the explicit `code_graph_scan` path.
 
 For full tool reference with parameters, see [MCP Server README](mcp_server/README.md).
+
+### Skill Advisor
+
+Phase 027 moved Gate 2 skill routing into the native MCP server package at `mcp_server/skill-advisor/`. The public tools are `advisor_recommend`, `advisor_status`, and `advisor_validate`; the Python script under `.opencode/skill/skill-advisor/scripts/` remains a compatibility shim with native-first routing and local fallback. The shipped baseline is 80.5% full-corpus accuracy, 77.5% holdout accuracy, UNKNOWN <= 10, and zero regressions on Python-correct prompts. Runtime hooks cover Claude Code, Copilot CLI, Gemini CLI, Codex CLI, and the OpenCode plugin bridge.
+
+For install and API details, see [Skill Advisor Native Package README](mcp_server/skill-advisor/README.md).
 
 ### Requirements
 

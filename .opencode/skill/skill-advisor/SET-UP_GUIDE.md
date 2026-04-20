@@ -1,552 +1,231 @@
 ---
 title: "Skill Advisor Setup Guide"
-description: "Setup, graph metadata, validation, and maintenance guide for the skill-advisor routing package."
+description: "Setup, validation, rollback, and operator guidance for the Phase 027 native-first skill advisor."
 ---
 
 # Skill Advisor Setup Guide
 
-Complete setup and validation guide for the Skill Advisor workflow in `.opencode/skill/skill-advisor/`.
-
-This guide reflects the current runtime:
-- prompt-time hook invocation as the primary Gate 2 path
-- native MCP advisor tools as the authoritative routing surface when the daemon-backed graph is available
-- Python CLI preserved as a compatibility shim with native delegation and local fallback
-- default dual-threshold routing (`confidence >= 0.8` and `uncertainty <= 0.35`)
-- explicit confidence-only override (`--confidence-only`)
-- command-bridge separation (`kind: command`)
-- cached skill discovery with mtime invalidation
-- SQLite-first skill graph loading with JSON fallback
-- compiled graph metadata in `scripts/skill-graph.json`
-- permanent regression and benchmark tooling
+This guide covers the current setup for `.opencode/skill/skill-advisor/` after Phase 027. The canonical runtime is the native TypeScript package under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/`; the Python script remains for compatibility and diagnostics.
 
 ---
 
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
-- [2. PREREQUISITES](#2--prerequisites)
-- [3. INSTALLATION VALIDATION](#3--installation-validation)
-- [4. HOOK INVOCATION AND CLI FALLBACK](#4--hook-invocation-and-cli-fallback)
-- [5. GRAPH METADATA SYSTEM](#5--graph-metadata-system)
-- [6. QUALITY VERIFICATION](#6--quality-verification)
-- [7. FEATURE CATALOG AND MANUAL TESTING PLAYBOOK](#7--feature-catalog-and-manual-testing-playbook)
-- [8. TROUBLESHOOTING](#8--troubleshooting)
-- [9. OPERATIONAL CHECKLIST](#9--operational-checklist)
-- [10. REFERENCE COMMANDS](#10--reference-commands)
+- [2. CANONICAL INSTALL PATH](#2--canonical-install-path)
+- [3. COMPATIBILITY SHIM](#3--compatibility-shim)
+- [4. RUNTIME HOOKS AND PLUGIN](#4--runtime-hooks-and-plugin)
+- [5. VALIDATION](#5--validation)
+- [6. ROLLBACK CONTROLS](#6--rollback-controls)
+- [7. OPERATOR STATES](#7--operator-states)
+- [8. REFERENCE COMMANDS](#8--reference-commands)
 
 ---
 
 ## 1. OVERVIEW
 
-### What You Are Setting Up
+Phase 027 moved Skill Advisor routing into a native MCP package with three public tools:
 
-The Skill Advisor package now includes the routing scripts, the per-skill graph metadata surface, the compiled graph artifact, the feature catalog, and the manual testing playbook.
+- `advisor_recommend`
+- `advisor_status`
+- `advisor_validate`
 
-```text
-.opencode/skill/skill-advisor/
-├── README.md
-├── SET-UP_GUIDE.md
-├── graph-metadata.json
-├── feature_catalog/
-│   ├── feature_catalog.md
-│   ├── 01--routing-pipeline/
-│   ├── 02--graph-system/
-│   ├── 03--semantic-search/
-│   └── 04--testing/
-├── manual_testing_playbook/
-│   ├── manual_testing_playbook.md
-│   ├── 01--routing-accuracy/
-│   ├── 02--graph-boosts/
-│   ├── 03--compiler/
-│   ├── 04--regression-safety/
-│   ├── 05--sqlite-graph/
-│   ├── 06--hook-routing/
-│   └── 07--native-compat/
-└── scripts/
-    ├── check-prompt-quality-card-sync.sh
-    ├── skill_advisor.py
-    ├── skill_advisor_runtime.py
-    ├── skill_advisor_regression.py
-    ├── skill_advisor_bench.py
-    ├── skill_graph_compiler.py
-    ├── skill-graph.json
-    ├── fixtures/
-    │   └── skill_advisor_regression_cases.jsonl
-    └── out/
-        ├── regression-report.json
-        └── benchmark-report.json
-```
+The native package owns scorer fusion, freshness trust, daemon watching, lifecycle redirects, prompt-safe response schemas, promotion gates, and package-local tests. The Python shim probes this native path first and falls back to local Python scoring when native routing is unavailable or explicitly bypassed.
 
-### Core Routing Model
+Current baseline:
 
-- `default mode`: dual-threshold filter (`--threshold` + `--uncertainty`)
-- `override mode`: confidence-only filter (`--confidence-only`)
-- `skill kinds`: `kind: "skill"` and `kind: "command"`
-- `graph overlay`: compiled edge data can reinforce related skills without inventing brand-new winners
-- `command bridge behavior`: command bridges are deprioritized unless explicit slash intent is present
+| Metric | Value |
+| --- | --- |
+| Full corpus top-1 | 80.5% |
+| Holdout top-1 | 77.5% |
+| UNKNOWN target | <= 10 |
+| Python-correct regressions | 0 |
+| Python regression suite | 52/52 passed |
+| Native MCP tools | 3 |
+| Fusion lanes | 5, with `semantic_shadow` at live weight 0.00 |
 
-### Gate 2 Integration
+---
 
-Primary invocation is hook-based and native-first. Register the active runtime using the Phase 020 hook contract, then let the runtime call the compiled `UserPromptSubmit` adapter at prompt time. The hook, OpenCode plugin bridge, and Python CLI shim all share the same pattern: probe the native advisor status, call `advisor_recommend` when available, and fall back without leaking prompt text in degraded status surfaces.
+## 2. CANONICAL INSTALL PATH
+
+Use the native bootstrap guide as the source of truth:
+
+[Native Skill Advisor Install Guide](../system-spec-kit/mcp_server/skill-advisor/INSTALL_GUIDE.md)
+
+Minimum setup:
 
 ```bash
+npm --prefix .opencode/skill/system-spec-kit/mcp_server install
 npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 ```
 
-Use [Skill Advisor Hook Reference](../system-spec-kit/references/hooks/skill-advisor-hook.md) for Claude, Gemini, Copilot, and Codex setup snippets.
-
-Direct CLI invocation remains the fallback for diagnostics and scripted checks:
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "$USER_REQUEST" --threshold 0.8
-```
-
-Native and rollback diagnostics:
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-native "$USER_REQUEST"
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local "$USER_REQUEST"
-SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1 \
-  python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "$USER_REQUEST"
-```
-
-Interpretation:
-- skill returned in default mode -> passed both confidence and uncertainty gates
-- empty list in default mode but non-empty list with `--confidence-only` -> high confidence with elevated uncertainty
-
----
-
-## 2. PREREQUISITES
-
-### Required Software
-
-- Python `3.6+`
-- Workspace with `.opencode/skill/*/SKILL.md` entries
-- Skill folders with valid `graph-metadata.json` files when graph boosts are expected
-
-### Quick Checks
-
-```bash
-python3 --version
-ls -la .opencode/skill/skill-advisor/scripts/skill_advisor.py
-ls -la .opencode/skill/skill-advisor/graph-metadata.json
-```
-
-Optional executable bit:
-
-```bash
-chmod +x .opencode/skill/skill-advisor/scripts/skill_advisor.py
-```
-
----
-
-## 3. INSTALLATION VALIDATION
-
-### Step 1: Health Check
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health
-```
-
-Expected characteristics:
-- valid JSON
-- `status: "ok"`
-- `skills_found` > 0
-- `command_bridges_found` present
-- `skill_graph_loaded: true`
-- `cache` field present
-
-### Step 2: Smoke Routing
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "create a pull request on github"
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "save this conversation context to memory"
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "/memory:save this context"
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --semantic
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "auto review release readiness"
-```
-
-Expected behavior:
-- natural language prompts prefer `kind: "skill"`
-- explicit slash prompts may return `kind: "command"`
-- discovery prompts with `--semantic` or `--cocoindex` should favor `mcp-coco-index`
-- explicit autonomous review wording should favor `sk-deep-review`
-
-### Step 3: Native Advisor Registration
-
-Build the MCP server and verify the native advisor tools are present before enabling compat delegation:
-
-```bash
-npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
-```
-
-Then check the MCP surface from the runtime tool registry or with the server's registered tool list:
+Then verify native tool registration:
 
 ```text
-advisor_status({})
-advisor_recommend({prompt:"help me commit my changes",options:{topK:1}})
-advisor_validate({})
+advisor_status({"workspaceRoot":"/absolute/path/to/repo"})
+advisor_recommend({"prompt":"save this conversation context to memory","options":{"topK":1}})
+advisor_validate({"skillSlug":null})
 ```
 
-Expected behavior:
-- `advisor_status` returns prompt-safe health, generation, cache, and freshness information
-- `advisor_recommend` returns recommendations without echoing the raw prompt
-- `advisor_validate` can run the regression bundle or a skill-specific subset
+Expected:
+
+- `advisor_status` includes `skillCount` and `lastScanAt`.
+- `advisor_recommend` returns prompt-safe recommendations or a fail-open empty set.
+- `advisor_validate` returns measured corpus, holdout, parity, safety, and latency slices.
 
 ---
 
-## 4. HOOK INVOCATION AND CLI FALLBACK
+## 3. COMPATIBILITY SHIM
 
-### Hook Mode
+The stable Python entry remains:
 
-Runtime hooks are the preferred path for ordinary Gate 2 routing. They call the native advisor where available, inject a compact `Advisor: ...` brief when a recommendation passes threshold, and fail open with `{}` when the prompt is skipped, disabled, or degraded.
+```bash
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "help me commit my changes"
+```
 
-Rollback for prompt-time advice:
+Important modes:
+
+```bash
+printf '%s' "save this conversation context to memory" | \
+  python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --stdin
+
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-native "save this context"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local "save this context"
+```
+
+Mode meanings:
+
+| Mode | Behavior |
+| --- | --- |
+| default | Probe native; use native if live/stale; otherwise local Python fallback. |
+| `--stdin` | Read one prompt from stdin. |
+| `--force-native` | Require native routing and fail prompt-safely when unavailable. |
+| `--force-local` | Bypass native routing and run local Python scoring. |
+
+---
+
+## 4. RUNTIME HOOKS AND PLUGIN
+
+Prompt-time routing is available across runtime adapters:
+
+| Runtime | Hook Surface |
+| --- | --- |
+| Claude Code | `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts` |
+| Copilot CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts` |
+| Gemini CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/user-prompt-submit.ts` |
+| Codex CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts` plus `prompt-wrapper.ts` |
+| OpenCode | `.opencode/plugins/spec-kit-skill-advisor.js` plus `spec-kit-skill-advisor-bridge.mjs` |
+
+The OpenCode bridge must use the stable package entrypoint:
+
+```text
+.opencode/skill/system-spec-kit/mcp_server/skill-advisor/compat/index.ts
+```
+
+After build, plugin consumers load:
+
+```text
+.opencode/skill/system-spec-kit/mcp_server/dist/skill-advisor/compat/index.js
+```
+
+---
+
+## 5. VALIDATION
+
+Native validation:
+
+```text
+advisor_validate({"skillSlug":null})
+```
+
+Package checks:
+
+```bash
+npm --prefix .opencode/skill/system-spec-kit/mcp_server run typecheck
+npm --prefix .opencode/skill/system-spec-kit/mcp_server exec -- vitest run skill-advisor/tests --reporter=default
+```
+
+Python compatibility:
+
+```bash
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py \
+  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl
+```
+
+Manual validation:
+
+```text
+.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md
+```
+
+---
+
+## 6. ROLLBACK CONTROLS
+
+Use these controls only while diagnosing or recovering:
+
+| Control | Scope |
+| --- | --- |
+| `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` | Disables prompt-time advisor surfaces and native recommendations. |
+| `SPECKIT_SKILL_ADVISOR_FORCE_LOCAL=1` | Forces Python fallback in shim or plugin bridge diagnostics. |
+| `--force-local` | CLI-only Python scorer path. |
+| `--force-native` | CLI-only native-required path. |
+
+Examples:
 
 ```bash
 export SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1
+export SPECKIT_SKILL_ADVISOR_FORCE_LOCAL=1
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local "help me commit my changes"
 ```
 
-Unset the variable to restore hook advice:
+Restore normal operation:
 
 ```bash
 unset SPECKIT_SKILL_ADVISOR_HOOK_DISABLED
-```
-
-For a Python-only fallback without disabling the rest of the hook/plugin wiring:
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local "your prompt"
-SPECKIT_SKILL_ADVISOR_FORCE_LOCAL=1 node .opencode/plugins/spec-kit-skill-advisor-bridge.mjs
-```
-
-For native-only diagnostics:
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-native "your prompt"
-```
-
-### One-Shot Default Mode
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "your prompt"
-```
-
-Uses dual-threshold filtering:
-- `--threshold` default: `0.8`
-- `--uncertainty` default: `0.35`
-
-### CocoIndex Alias Flags
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --semantic
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --cocoindex
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --semantic-hits '[{"path":".opencode/skill/mcp-coco-index/SKILL.md","score":0.9}]'
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --cocoindex-hits '[{"path":".opencode/skill/mcp-coco-index/SKILL.md","score":0.9}]'
-```
-
-Both flag pairs are aliases. Use either spelling consistently in local workflows.
-
-### Confidence-Only Override
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "api chain mcp" --threshold 0.8 --confidence-only
-```
-
-Use this only when high-confidence suggestions are needed even when uncertainty stays above the default ceiling.
-
-### Batch Mode
-
-File mode:
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file prompts.txt
-```
-
-Stdin mode:
-
-```bash
-cat prompts.txt | python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-stdin
-```
-
-Batch mode reduces repeated process startup for multi-prompt evaluations.
-
-### Optional Debug And Control Flags
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "prompt" --show-rejections
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-refresh --health
+unset SPECKIT_SKILL_ADVISOR_FORCE_LOCAL
 ```
 
 ---
 
-## 5. GRAPH METADATA SYSTEM
+## 7. OPERATOR STATES
 
-### What The Graph Metadata Does
+| State | Meaning | First Response |
+| --- | --- | --- |
+| `live` | Native graph and generation state are current | No action. |
+| `stale` | Sources are newer than graph state | Run `skill_graph_scan` or restart daemon scan. |
+| `absent` | Required graph state is missing | Rebuild from source; `advisor_recommend` should fail open. |
+| `unavailable` | Native status cannot be read | Inspect daemon logs and rebuild source state. |
+| `degraded` | Hook or daemon can run only in limited trust | Follow OP-001 in the playbook. |
+| `quarantined` | Malformed skill metadata was isolated | Follow OP-002 in the playbook. |
 
-`graph-metadata.json` is the per-skill source of truth for relationship-aware routing. Each skill folder can declare its own routing identity and typed edges. The compiler scans those files across `.opencode/skill/`, validates the metadata contract, and writes the compact runtime artifact used by the advisor.
-
-### Runtime Flow
-
-```text
-.opencode/skill/*/graph-metadata.json
-        |
-        v
-python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
-        |
-        v
-.opencode/skill/skill-advisor/scripts/skill-graph.json
-        |
-        v
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health
-```
-
-### Key Files
-
-- `.opencode/skill/skill-advisor/graph-metadata.json` defines the advisor skill's own graph edges and derived topics.
-- `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` validates every discovered metadata file and builds the compiled graph.
-- `.opencode/skill/skill-advisor/scripts/skill-graph.json` is the generated runtime snapshot loaded by the advisor.
-- `.opencode/skill/system-spec-kit/mcp_server/database/skill-graph.sqlite` is the SQLite graph that the MCP server keeps current.
-
-### Skill Graph Setup
-
-After cloning the repo, the skill graph initializes automatically when the MCP server starts. For manual setup:
-
-```bash
-bash .opencode/skill/skill-advisor/scripts/init-skill-graph.sh
-```
-
-Use the manual setup when the JSON fallback is missing, when the health check reports `skill_graph_loaded: false`, or when the MCP server is not running yet.
-
-### Adding a New Skill
-
-1. Create `graph-metadata.json` in the new skill folder by copying an existing skill as the starting point.
-2. Set `skill_id` so it matches the `name` field in the target `SKILL.md`.
-3. Define the graph edges that matter for routing, starting with `depends_on`, `enhances`, and `siblings`.
-4. The skill graph watcher auto-indexes the new file within 3 seconds when the MCP server is running.
-5. Verify the new skill is visible:
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health
-```
-
-6. Re-run validation if the watcher is not active or if edge warnings need review:
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
-```
-
-### What To Expect From The Compiler
-
-- hard failures for schema or target problems
-- soft warnings for symmetry gaps and zero-edge skills
-- a refreshed `scripts/skill-graph.json` snapshot when validation passes
+H5 operator scenarios live in the manual playbook under `04--operator-h5/`.
 
 ---
 
-## 6. QUALITY VERIFICATION
-
-### Verification
-
-- `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health`  
-  Expected: `skill_graph_loaded: true`, `skill_graph_source: sqlite`, and a nonzero `skill_graph_skill_count` that matches the current compiled/discovered inventory; `status` should stay non-`error` and is only `ok` when graph, cache, source metadata, and inventory parity are all healthy
-- `python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only`  
-  Expected: `VALIDATION PASSED`
-
-### Compiler Validation
+## 8. REFERENCE COMMANDS
 
 ```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
-```
+# Build native package
+npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 
-Expected result:
-- all metadata files discovered
-- validation passes with exit code `0`
+# Typecheck native package
+npm --prefix .opencode/skill/system-spec-kit/mcp_server run typecheck
 
-### Regression Suite
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py \
-  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl \
-  --out .opencode/skill/skill-advisor/scripts/out/regression-report.json
-```
-
-Validates:
-- top-1 routing quality gates
-- P0 gate pass rate
-- command-bridge false-positive rate on non-slash prompts
-- full dataset pass rate
-
-### Benchmark Suite
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor_bench.py \
-  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl \
-  --runs 7 \
-  --out .opencode/skill/skill-advisor/scripts/out/benchmark-report.json
-```
-
-Reports:
-- one-shot subprocess latency
-- in-process warm latency
-- batch throughput multiplier
-
-### Script-Level Alignment
-
-```bash
-python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/skill-advisor/scripts
-```
-
-Expected: zero `ERROR` findings before claiming completion.
-
----
-
-## 7. FEATURE CATALOG AND MANUAL TESTING PLAYBOOK
-
-### Feature Catalog
-
-`feature_catalog/feature_catalog.md` is the current-state inventory for the package. It summarizes the routing pipeline, graph system, semantic search, and testing surfaces, then points to the per-feature files in:
-
-- `feature_catalog/01--routing-pipeline/`
-- `feature_catalog/02--graph-system/`
-- `feature_catalog/03--semantic-search/`
-- `feature_catalog/04--testing/`
-
-Use the feature catalog when a new routing surface, graph rule, or validation capability needs to be documented as part of the live package behavior.
-
-### Manual Testing Playbook
-
-`manual_testing_playbook/manual_testing_playbook.md` is the operator-facing validation directory for the package. It owns the scenario matrix, review rules, and release-readiness expectations, with execution details grouped under:
-
-- `manual_testing_playbook/01--routing-accuracy/`
-- `manual_testing_playbook/02--graph-boosts/`
-- `manual_testing_playbook/03--compiler/`
-- `manual_testing_playbook/04--regression-safety/`
-- `manual_testing_playbook/07--native-compat/`
-
-Use the playbook when a change affects routing outcomes, graph boosts, compiler behavior, regression-safety expectations, native compat delegation, redirect rendering, or H5 operator alerting.
-
-### Keeping The Catalog And Playbook In Sync
-
-When a new capability is added:
-1. update the relevant feature catalog entry
-2. add or update the matching manual testing scenario
-3. keep the commands and paths aligned with `.opencode/skill/skill-advisor/scripts/`
-
----
-
-## 8. TROUBLESHOOTING
-
-### Troubleshooting
-
-- `skill_graph_loaded: false` -> Run `bash .opencode/skill/skill-advisor/scripts/init-skill-graph.sh` or restart the MCP server.
-- `skill_graph_source: json` -> SQLite is unavailable, so the MCP server may not be running yet.
-- Stale graph -> Modify any `graph-metadata.json` file to trigger the watcher re-index, or run `skill_graph_scan`.
-- Native advisor unavailable -> Run `advisor_status({})`, then use `--force-local` until the daemon, generation, or cache issue is resolved.
-- Native advisor quarantined/degraded -> Follow `manual_testing_playbook/07--native-compat/001-native-shim-and-plugin.md` H5 operator playbook before re-enabling native delegation.
-
-### No Results Returned
-
-Possible causes:
-- prompt does not cross the confidence threshold
-- prompt crosses confidence but fails the uncertainty gate
-- graph metadata was changed but `scripts/skill-graph.json` was not rebuilt
-
-Check:
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "your prompt" --show-rejections
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "your prompt" --threshold 0.8 --confidence-only
-python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
-```
-
-### Batch Mode Input Errors
-
-Invalid batch combinations are rejected with JSON error payloads and exit code `2`:
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file /tmp/missing.txt
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file prompts.txt --batch-stdin
-```
-
-### Skills Or Graph Data Not Refreshing
-
-Force refresh cached discovery, then rebuild the graph if needed:
-
-```bash
-bash .opencode/skill/skill-advisor/scripts/init-skill-graph.sh
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-refresh --health
-python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
-```
-
----
-
-## 9. OPERATIONAL CHECKLIST
-
-- [ ] `--health` returns valid JSON and non-zero `skills_found`
-- [ ] `skill_graph_loaded` is `true`
-- [ ] default one-shot mode returns expected `kind: "skill"` for natural-language prompts
-- [ ] explicit slash prompts can route to `kind: "command"`
-- [ ] compiler validation passes
-- [ ] regression suite passes
-- [ ] benchmark suite passes
-- [ ] `advisor_status` and `advisor_recommend` are registered and prompt-safe
-- [ ] `--force-native`, `--force-local`, and `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` behave as expected
-- [ ] native compat playbook scenarios pass or have recorded operator notes
-- [ ] alignment verifier reports no errors for `.opencode/skill/skill-advisor/scripts`
-- [ ] feature catalog and manual testing playbook paths still match the live folder layout
-
----
-
-## 10. REFERENCE COMMANDS
-
-```bash
-# Manual skill graph setup
-bash .opencode/skill/skill-advisor/scripts/init-skill-graph.sh
-
-# Health
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health
-
-# One-shot default mode
+# Python shim default
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "create a pull request on github"
 
-# Native advisor required
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-native "create a pull request on github"
+# Python shim stdin
+printf '%s' "save this conversation context to memory" | \
+  python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --stdin
+
+# Native required
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-native "save this context"
 
 # Python fallback required
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local "create a pull request on github"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local "save this context"
 
-# Shared disable flag
-SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1 \
-  python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "create a pull request on github"
-
-# CocoIndex alias flags
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --semantic
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --cocoindex
-
-# Confidence-only override
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "api chain mcp" --threshold 0.8 --confidence-only
-
-# Batch file mode
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file prompts.txt
-
-# Graph validation
-python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
-
-# Graph compile
-python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
-
-# Regression report
+# Regression compatibility
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py \
-  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl \
-  --out .opencode/skill/skill-advisor/scripts/out/regression-report.json
-
-# Benchmark report
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor_bench.py \
-  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl \
-  --runs 7 \
-  --out .opencode/skill/skill-advisor/scripts/out/benchmark-report.json
-
-# Alignment verification
-python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/skill-advisor/scripts
+  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl
 ```
