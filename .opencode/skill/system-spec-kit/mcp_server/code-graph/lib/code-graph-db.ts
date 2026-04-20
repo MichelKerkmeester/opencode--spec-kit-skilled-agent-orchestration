@@ -5,7 +5,7 @@
 // Uses separate code-graph.sqlite alongside the memory index DB.
 
 import Database from 'better-sqlite3';
-import { join } from 'node:path';
+import { join, isAbsolute, resolve as resolvePath } from 'node:path';
 import { statSync } from 'node:fs';
 import type { CodeNode, CodeEdge, DetectorProvenance } from './indexer-types.js';
 import { DATABASE_DIR } from '../../core/config.js';
@@ -539,8 +539,15 @@ export function queryEdgesTo(symbolId: string, edgeType?: string): { edge: CodeE
 export function resolveSubjectFilePath(subject: string): string | null {
   const d = getDb();
 
-  const directFile = d.prepare('SELECT file_path FROM code_files WHERE file_path = ? LIMIT 1').get(subject) as { file_path: string } | undefined;
-  if (directFile) return directFile.file_path;
+  const candidates = [subject];
+  if (!isAbsolute(subject)) {
+    candidates.push(resolvePath(process.cwd(), subject));
+  }
+
+  for (const candidate of candidates) {
+    const directFile = d.prepare('SELECT file_path FROM code_files WHERE file_path = ? LIMIT 1').get(candidate) as { file_path: string } | undefined;
+    if (directFile) return directFile.file_path;
+  }
 
   const byId = d.prepare('SELECT file_path FROM code_nodes WHERE symbol_id = ? LIMIT 1').get(subject) as { file_path: string } | undefined;
   if (byId) return byId.file_path;
@@ -550,6 +557,9 @@ export function resolveSubjectFilePath(subject: string): string | null {
 
   const byName = d.prepare('SELECT file_path FROM code_nodes WHERE name = ? LIMIT 1').get(subject) as { file_path: string } | undefined;
   if (byName) return byName.file_path;
+
+  const like = d.prepare('SELECT file_path FROM code_files WHERE file_path LIKE ? LIMIT 1').get(`%${subject}`) as { file_path: string } | undefined;
+  if (like) return like.file_path;
 
   return null;
 }
