@@ -71,8 +71,8 @@ Two planes (graph/freshness + advisor projection/scoring) inside the self-contai
 | 001 | daemon-freshness-foundation | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `32fd9197c` (CPU 0.031% / RSS 5.516MB, 16/16 tests) |
 | 002 | lifecycle-and-derived-metadata | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `8318dfaf8` (13 AC tests + 29 combined, 0 SKILL.md mutations) |
 | 003 | native-advisor-core (HARD GATE) | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 prep SHA `1146faeec` + final SHA `e35f93b52` (full 80.5%, holdout 77.5%, UNKNOWN 10, 0 regressions, p95 6.989/11.45ms) |
-| 004 | mcp-advisor-surface | ✅ 2026-04-20 | 🔄 2026-04-20 cli-codex gpt-5.4 high fast (~95%, in flight) | — |
-| 005 | compat-migration-and-bootstrap | ✅ 2026-04-20 | — | — |
+| 004 | mcp-advisor-surface | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `08bd30145` (3 MCP tools, 17 handler tests + 83 combined) |
+| 005 | compat-migration-and-bootstrap | ✅ 2026-04-20 | 🔄 2026-04-20 cli-codex gpt-5.4 high fast (in flight — final phase + 006 Gate 7 fix) | — |
 | 006 | promotion-gates | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `5696acf4a` (6/7 gates; Gate 7 pre-existing Python regression → 005 carry-over) |
 
 ## Architectural Decision Records
