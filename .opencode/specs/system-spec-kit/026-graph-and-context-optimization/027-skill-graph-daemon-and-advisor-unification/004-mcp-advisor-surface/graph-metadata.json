@@ -27,7 +27,22 @@
       "privacy-contracts",
       "handler-tests"
     ],
-    "status": "draft",
-    "lastRefreshed": "2026-04-20T14:00:00.000Z"
+    "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/schemas/advisor-tool-schemas.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tools/",
+      ".opencode/skill/system-spec-kit/mcp_server/tools/index.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts"
+    ],
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "status": "implemented",
+    "last_save_at": "2026-04-20T18:50:00.000Z",
+    "lastRefreshed": "2026-04-20T18:50:00.000Z"
   }
 }

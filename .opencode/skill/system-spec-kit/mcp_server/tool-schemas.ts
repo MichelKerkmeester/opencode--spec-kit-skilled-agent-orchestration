@@ -7,6 +7,11 @@ import {
   MAX_INGEST_PATHS,
   MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS,
 } from './schemas/tool-input-schemas.js';
+import {
+  advisorRecommendTool,
+  advisorStatusTool,
+  advisorValidateTool,
+} from './skill-advisor/tools/index.js';
 
 /**
  * Re-export schema validation helpers used by the MCP tool entry points.
@@ -898,6 +903,9 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   skillGraphQuery,
   skillGraphStatus,
   skillGraphValidate,
+  advisorRecommendTool,
+  advisorStatusTool,
+  advisorValidateTool,
   // L8: CocoIndex
   cccStatus,
   cccReindex,

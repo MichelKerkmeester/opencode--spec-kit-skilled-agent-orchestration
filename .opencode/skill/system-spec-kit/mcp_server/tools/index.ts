@@ -10,6 +10,11 @@ import * as lifecycleTools from './lifecycle-tools.js';
 import * as codeGraphTools from './code-graph-tools.js';
 import * as skillGraphTools from './skill-graph-tools.js';
 import { validateToolArgs } from '../schemas/tool-input-schemas.js';
+import {
+  handleAdvisorRecommend,
+  handleAdvisorStatus,
+  handleAdvisorValidate,
+} from '../skill-advisor/handlers/index.js';
 import { handleCoverageGraphConvergence } from '../handlers/coverage-graph/convergence.js';
 import { handleCoverageGraphQuery } from '../handlers/coverage-graph/query.js';
 import { handleCoverageGraphStatus } from '../handlers/coverage-graph/status.js';
@@ -45,9 +50,30 @@ export const coverageGraphTools = {
   },
 };
 
+export const advisorTools = {
+  TOOL_NAMES: new Set([
+    'advisor_recommend',
+    'advisor_status',
+    'advisor_validate',
+  ]),
+  async handleTool(name: string, args: Record<string, unknown>): Promise<MCPResponse | null> {
+    switch (name) {
+      case 'advisor_recommend':
+        return toMCP(await handleAdvisorRecommend(parseArgs<Parameters<typeof handleAdvisorRecommend>[0]>(args)));
+      case 'advisor_status':
+        return toMCP(await handleAdvisorStatus(parseArgs<Parameters<typeof handleAdvisorStatus>[0]>(args)));
+      case 'advisor_validate':
+        return toMCP(await handleAdvisorValidate(parseArgs<Parameters<typeof handleAdvisorValidate>[0]>(args)));
+      default:
+        return null;
+    }
+  },
+};
+
 const SCHEMA_VALIDATED_TOOL_NAMES = new Set<string>([
   ...codeGraphTools.TOOL_NAMES,
   ...skillGraphTools.TOOL_NAMES,
+  ...advisorTools.TOOL_NAMES,
   ...coverageGraphTools.TOOL_NAMES,
 ]);
 
@@ -64,6 +90,7 @@ export const ALL_DISPATCHERS = [
   lifecycleTools,
   codeGraphTools,
   skillGraphTools,
+  advisorTools,
   coverageGraphTools,
 ] as const;
 

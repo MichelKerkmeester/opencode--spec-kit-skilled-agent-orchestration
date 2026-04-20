@@ -9,6 +9,7 @@
 ──────────────────────────────────────────────────────────────── */
 
 import { z, ZodError, type ZodType } from 'zod';
+import { AdvisorToolInputSchemas } from '../skill-advisor/schemas/advisor-tool-schemas.js';
 
 // Feature catalog: Strict Zod schema validation
 
@@ -608,6 +609,9 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   skill_graph_query: skillGraphQuerySchema as unknown as ToolInputSchema,
   skill_graph_status: skillGraphStatusSchema as unknown as ToolInputSchema,
   skill_graph_validate: skillGraphValidateSchema as unknown as ToolInputSchema,
+  advisor_recommend: AdvisorToolInputSchemas.advisor_recommend as unknown as ToolInputSchema,
+  advisor_status: AdvisorToolInputSchemas.advisor_status as unknown as ToolInputSchema,
+  advisor_validate: AdvisorToolInputSchemas.advisor_validate as unknown as ToolInputSchema,
   ccc_status: cccStatusSchema as unknown as ToolInputSchema,
   ccc_reindex: cccReindexSchema as unknown as ToolInputSchema,
   ccc_feedback: cccFeedbackSchema as unknown as ToolInputSchema,
@@ -664,6 +668,9 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   skill_graph_query: ['queryType', 'skillId', 'sourceSkillId', 'targetSkillId', 'family', 'minInbound', 'depth', 'limit'],
   skill_graph_status: [],
   skill_graph_validate: [],
+  advisor_recommend: ['prompt', 'options'],
+  advisor_status: ['workspaceRoot'],
+  advisor_validate: ['skillSlug'],
   ccc_status: [],
   ccc_reindex: ['full'],
   ccc_feedback: ['query', 'resultFile', 'rating', 'comment'],

@@ -1,4 +1,5 @@
 ---
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 title: "Feature Specification: 027/004 — MCP Advisor Surface"
 description: "Expose native advisor as MCP tools (advisor_recommend, advisor_status, advisor_validate) under self-contained mcp_server/skill-advisor/tools/ + handlers/. Zod schemas, dispatcher registration, cache/freshness integration. Consumes 027/003 normalized scorer output."
 trigger_phrases:
@@ -32,7 +33,9 @@ _memory:
 # Feature Specification: 027/004 — MCP Advisor Surface
 
 <!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -43,16 +46,20 @@ _memory:
 | **Created** | 2026-04-20 |
 | **Parent** | `../` |
 | **Predecessor** | `../003-native-advisor-core/` |
-| **Research source** | `research.md` §7 Track D (D3, D5, D6); iterations 026, 028-029 |
+| **Research source** | Track D §7 (D3, D5, D6); iterations 026, 028-029 |
+<!-- /ANCHOR:metadata -->
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
-### Problem
+### Problem Statement
 After 027/003 lands the native scorer in TypeScript, external callers (runtime hooks, OpenCode plugin, scripted checks, CI) still need a stable invocation surface. The memory MCP server already exposes tools via Zod schemas + dispatcher registration; the advisor should join that surface rather than stay behind a Python subprocess.
 
 ### Purpose
 Expose the native advisor as three MCP tools under the system-spec-kit MCP server (not a new MCP server): `advisor_recommend`, `advisor_status`, `advisor_validate`. Strict Zod schemas, dispatcher registration, cache/freshness integration with 027/001 trust states.
+<!-- /ANCHOR:problem -->
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -69,16 +76,18 @@ Expose the native advisor as three MCP tools under the system-spec-kit MCP serve
 - Compat shims + plugin bridge migration (027/005).
 - Shadow-cycle promotion machinery (027/006).
 - Adding a new MCP server registration (advisor is a module inside existing system-spec-kit MCP).
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### 4.1 P0 (Blocker)
-1. Three tools exposed with strict Zod request/response schemas: `advisor_recommend`, `advisor_status`, `advisor_validate`.
-2. Handlers live under `mcp_server/skill-advisor/handlers/`; tools under `mcp_server/skill-advisor/tools/`.
-3. Dispatcher registration integrates with existing system-spec-kit MCP server (no new MCP server).
-4. `advisor_recommend` returns: recommendations array, confidence, freshness trust state, lane attribution, generated_at.
-5. `advisor_status` returns: daemon freshness, generation, trust state, skill count, last scan time.
-6. `advisor_validate` returns: per-skill corpus-match results (pass / fail / skipped), overall accuracy, PLUS per-slice metrics from research.md §11:
+1. REQ-004-P0-001: Three tools exposed with strict Zod request/response schemas: `advisor_recommend`, `advisor_status`, `advisor_validate`.
+2. REQ-004-P0-002: Handlers live under `mcp_server/skill-advisor/handlers/`; tools under `mcp_server/skill-advisor/tools/`.
+3. REQ-004-P0-003: Dispatcher registration integrates with existing system-spec-kit MCP server (no new MCP server).
+4. REQ-004-P0-004: `advisor_recommend` returns: recommendations array, confidence, freshness trust state, lane attribution, generated_at.
+5. REQ-004-P0-005: `advisor_status` returns: daemon freshness, generation, trust state, skill count, last scan time.
+6. REQ-004-P0-006: `advisor_validate` returns: per-skill corpus-match results (pass / fail / skipped), overall accuracy, PLUS per-slice metrics from research.md §11:
    - `full_corpus_top1` (percentage + count + threshold ≥70%)
    - `holdout_top1` (percentage + count + threshold ≥70%)
    - `unknown_count` (target ≤10)
@@ -90,26 +99,30 @@ Expose the native advisor as three MCP tools under the system-spec-kit MCP serve
    - `regression_suite_status` (P0 pass rate + failed count + command-bridge FP rate)
 
 ### 4.2 P1 (Required)
-1. Cache integration: `advisor_recommend` reuses post-025 HMAC prompt cache with source-signature invalidation.
-2. Privacy contracts preserved from post-025: no raw prompts in diagnostics / cache keys / envelope.
-3. Handler tests: happy-path + fail-open + stale-freshness + cache-hit + cache-miss per tool.
-4. Tool schema introspection docs generated.
+1. REQ-004-P1-001: Cache integration: `advisor_recommend` reuses post-025 HMAC prompt cache with source-signature invalidation.
+2. REQ-004-P1-002: Privacy contracts preserved from post-025: no raw prompts in diagnostics / cache keys / envelope.
+3. REQ-004-P1-003: Handler tests: happy-path + fail-open + stale-freshness + cache-hit + cache-miss per tool.
+4. REQ-004-P1-004: Tool schema introspection docs generated.
 
 ### 4.3 P2 (Suggestion)
-1. `advisor_recommend` supports `trace: true` parameter for debug attribution.
-2. `advisor_validate` supports `--limit N` for partial corpus runs.
+1. REQ-004-P2-001: `advisor_recommend` supports `trace: true` parameter for debug attribution.
+2. REQ-004-P2-002: `advisor_validate` supports `--limit N` for partial corpus runs.
+<!-- /ANCHOR:requirements -->
 
+<!-- ANCHOR:success-criteria -->
 ## 5. ACCEPTANCE SCENARIOS
 
-1. **AC-1** `advisor_recommend({prompt: "...", workspaceRoot: "..."})` returns recommendations with attribution.
-2. **AC-2** `advisor_status({workspaceRoot})` returns current freshness + generation after a daemon scan.
-3. **AC-3** `advisor_validate({skillSlug: "sk-git"})` returns pass/fail against corpus subset matching that skill.
-4. **AC-4** Cache hit path: same prompt + source signature → instant return (cache-hit p95 ≤50ms gate from 027/003).
-5. **AC-5** Stale freshness: daemon marks stale; `advisor_recommend` returns with `trust: "stale"` and no blocking error.
-6. **AC-6** Fail-open: daemon absent; `advisor_recommend` returns `trust: "unavailable"` + `brief: null`.
-7. **AC-7** Zod schema rejects malformed input with clear error (schema validation test).
-8. **AC-8** Privacy test: no raw prompt in response diagnostics or cache key.
+1. **AC-1** **Given** a valid prompt, **When** `advisor_recommend` runs, **Then** it returns recommendations with attribution.
+2. **AC-2** **Given** a workspace root, **When** `advisor_status` runs, **Then** it returns current freshness and generation state.
+3. **AC-3** **Given** a skill slug, **When** `advisor_validate` runs, **Then** it returns pass/fail slice results for that skill or all skills.
+4. **AC-4** **Given** the same prompt and source signature, **When** `advisor_recommend` runs twice, **Then** the second result reports a cache hit.
+5. **AC-5** **Given** stale daemon freshness, **When** `advisor_recommend` runs, **Then** it returns stale trust metadata without a blocking error.
+6. **AC-6** **Given** absent daemon state, **When** `advisor_recommend` runs, **Then** it returns unavailable freshness with an empty fail-open recommendation set.
+7. **AC-7** **Given** malformed input, **When** any advisor tool input schema parses it, **Then** Zod rejects it with a clear error.
+8. **AC-8** **Given** prompt text containing sensitive content, **When** status or validate output is inspected, **Then** no raw prompt appears in diagnostics, cache metadata, or response envelopes.
+<!-- /ANCHOR:success-criteria -->
 
+<!-- ANCHOR:files -->
 ## 6. FILES TO CHANGE
 
 ### New (under `mcp_server/skill-advisor/`)
@@ -122,3 +135,10 @@ Expose the native advisor as three MCP tools under the system-spec-kit MCP serve
 ### Modified
 - `mcp_server/tools/` index or dispatcher — register new tools
 - `mcp_server/core/` — MCP dispatcher wiring (if needed)
+<!-- /ANCHOR:files -->
+
+<!-- ANCHOR:open-questions -->
+## 7. OPEN QUESTIONS
+
+No open implementation questions remain. P2 trace and partial-validation limit support are explicitly deferred.
+<!-- /ANCHOR:open-questions -->
