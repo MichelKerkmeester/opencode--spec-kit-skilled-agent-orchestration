@@ -432,7 +432,7 @@ Adapter output normalization compares Claude, Gemini, Copilot, and Codex outputs
 
 #### Source Files
 
-Primary implementation: `mcp_server/lib/skill-advisor/normalize-adapter-output.ts`.
+Primary implementation: `mcp_server/skill-advisor/lib/normalize-adapter-output.ts`.
 
 ---
 
@@ -480,7 +480,7 @@ Metrics use the `speckit_advisor_hook_*` namespace with closed labels for runtim
 
 #### Source Files
 
-Primary implementation: `mcp_server/lib/skill-advisor/metrics.ts`.
+Primary implementation: `mcp_server/skill-advisor/lib/metrics.ts`.
 
 ---
 
@@ -496,7 +496,7 @@ Diagnostics include timestamp, runtime, status, freshness, duration, cache hit s
 
 #### Source Files
 
-Primary implementation: `mcp_server/lib/skill-advisor/metrics.ts`.
+Primary implementation: `mcp_server/skill-advisor/lib/metrics.ts`.
 
 ---
 
@@ -512,7 +512,7 @@ The `advisor-hook-health` section reports recent diagnostic records, rolling cac
 
 #### Source Files
 
-Primary implementation: `mcp_server/lib/skill-advisor/metrics.ts`.
+Primary implementation: `mcp_server/skill-advisor/lib/metrics.ts`.
 
 ---
 
