@@ -194,6 +194,41 @@ describe('runAdvisorSubprocess', () => {
     expect(spawnMock).toHaveBeenCalledTimes(2);
   });
 
+  it('classifies child-process spawn errors for missing and non-executable runtimes', async () => {
+    const spawnMock = await importSpawnMock();
+    const missingRuntime = mockChild();
+    const nonExecutableRuntime = mockChild();
+    spawnMock
+      .mockReturnValueOnce(missingRuntime as never)
+      .mockReturnValueOnce(nonExecutableRuntime as never);
+
+    const missingRuntimePromise = runAdvisorSubprocess('implement feature X', { workspaceRoot, scriptPath });
+    missingRuntime.emit(
+      'error',
+      Object.assign(new Error('spawn python3 ENOENT'), { code: 'ENOENT' }) as NodeJS.ErrnoException,
+    );
+    const missingRuntimeResult = await missingRuntimePromise;
+
+    const nonExecutableRuntimePromise = runAdvisorSubprocess('implement feature X', { workspaceRoot, scriptPath });
+    nonExecutableRuntime.emit(
+      'error',
+      Object.assign(new Error('spawn python3 EACCES'), { code: 'EACCES' }) as NodeJS.ErrnoException,
+    );
+    const nonExecutableRuntimeResult = await nonExecutableRuntimePromise;
+
+    expect(missingRuntimeResult.ok).toBe(false);
+    expect(missingRuntimeResult.errorCode).toBe('PYTHON_MISSING');
+    expect(missingRuntimeResult.exitCode).toBeNull();
+    expect(missingRuntimeResult.signal).toBeNull();
+    expect(missingRuntimeResult.stderr).toBe('spawn python3 ENOENT');
+
+    expect(nonExecutableRuntimeResult.ok).toBe(false);
+    expect(nonExecutableRuntimeResult.errorCode).toBe('SPAWN_ERROR');
+    expect(nonExecutableRuntimeResult.exitCode).toBeNull();
+    expect(nonExecutableRuntimeResult.signal).toBeNull();
+    expect(nonExecutableRuntimeResult.stderr).toBe('spawn python3 EACCES');
+  });
+
   it('returns SCRIPT_MISSING before spawning when target is absent', async () => {
     const spawnMock = await importSpawnMock();
     const result = await runAdvisorSubprocess('implement feature X', {

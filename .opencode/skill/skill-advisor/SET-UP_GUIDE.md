@@ -303,7 +303,7 @@ python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate
 ### Verification
 
 - `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health`  
-  Expected: `skill_graph_loaded: true`, `skill_graph_source: sqlite`, `skill_graph_skill_count: 21`
+  Expected: `skill_graph_loaded: true`, `skill_graph_source: sqlite`, and a nonzero `skill_graph_skill_count` that matches the current compiled/discovered inventory; `status` should stay non-`error` and is only `ok` when graph, cache, source metadata, and inventory parity are all healthy
 - `python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only`  
   Expected: `VALIDATION PASSED`
 

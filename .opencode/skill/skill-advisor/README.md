@@ -59,9 +59,9 @@ These routing scripts can surface the right packet helpers, but canonical packet
 | Intent boosters | 185 | Direct keyword-to-skill score mappings |
 | Multi-skill boosters | 32 | Ambiguous keywords that boost multiple skills |
 | Phrase intent boosters | 159 | Multi-token phrases with high-signal routing boosts |
-| Command bridges | 10 | Slash commands exposed as pseudo-skills |
-| Skill folders with graph metadata | 21 | One `graph-metadata.json` file per folder under `.opencode/skill/` |
-| Graph families | 6 | `cli`, `mcp`, `sk-code`, `sk-deep`, `sk-util`, `system` |
+| Command bridges | Live discovery | Run `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health` and read `command_bridges_found` from the current workspace payload |
+| Skill folders with graph metadata | Live discovery | Use `--health` plus `python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only` to confirm the current metadata inventory under `.opencode/skill/` |
+| Graph families | Graph-defined | Current family labels are `cli`, `mcp`, `sk-code`, `sk-deep`, `sk-util`, and `system`; treat membership totals as graph-derived, not fixed |
 | Compiled graph edges | 67 | Sparse `enhances`, `depends_on`, `siblings`, and `prerequisite_for` links |
 | Live graph store | 1 database | `.opencode/skill/system-spec-kit/mcp_server/database/skill-graph.sqlite` |
 | MCP skill graph tools | 4 | `skill_graph_scan`, `skill_graph_query`, `skill_graph_status`, `skill_graph_validate` |
@@ -189,7 +189,7 @@ Use this path when runtime hooks are unavailable, when a script needs raw adviso
 
 **Graph-derived boosts.** `skill_graph_compiler.py` still turns the per-folder `graph-metadata.json` files into `scripts/skill-graph.json` for export and CI. At runtime, `skill_advisor.py` first loads compiled-equivalent graph data from `skill-graph.sqlite`, falls back to the JSON snapshot when needed, then uses `enhances`, `depends_on`, and `siblings` edges to reinforce candidates that already have direct prompt evidence.
 
-**Family affinity.** The compiled graph groups the current 21 folders into 6 families. When one family member has strong evidence, nearby family members can receive a small follow-on boost, but only if they already have a weaker positive score of their own.
+**Family affinity.** The compiled graph groups discovered folders into graph families. When one family member has strong evidence, nearby family members can receive a small follow-on boost, but only if they already have a weaker positive score of their own.
 
 **Ghost candidate guard.** Graph overlays never create a brand-new candidate. The advisor freezes the pre-graph score snapshot and skips any target that lacks positive evidence before graph processing starts.
 

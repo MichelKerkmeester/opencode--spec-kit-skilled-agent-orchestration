@@ -45,25 +45,44 @@ npx tsx .opencode/skill/system-spec-kit/scripts/observability/smart-router-analy
 
 ## Runtime Contract
 
-Your runtime wrapper should call `configureSmartRouterSession()` once per user prompt after the advisor hook selects a skill:
+Your runtime wrapper should run this per-prompt sequence after the advisor hook selects a skill:
+
+1. Create or reuse one stable `promptId` for the prompt, for example `<session-id>:<turn-number>`.
+2. Call `configureSmartRouterSession()` once before the runtime starts servicing tool calls for that prompt.
+3. Forward `Read` tool calls into `onToolCall()` and call `finalizeSmartRouterPrompt(promptId)` exactly once when that prompt completes, before the runtime starts the next prompt.
+
+Pass the same `promptId` to `finalizeSmartRouterPrompt(promptId)` that was used in `configureSmartRouterSession({ promptId, ... })`. Do not generate a second ID at finalization time.
 
 ```ts
 import {
   configureSmartRouterSession,
+  finalizeSmartRouterPrompt,
   onToolCall,
 } from './.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts';
 
+const promptId = 'session-42-turn-7';
+
 configureSmartRouterSession({
-  promptId: 'session-42-turn-7',
+  promptId,
   selectedSkill: 'sk-code-opencode',
   prompt: userPrompt,
   workspaceRoot: process.cwd(),
 });
 
 onToolCall('Read', { file_path: '.opencode/skill/sk-code-opencode/references/typescript/style_guide.md' });
+
+finalizeSmartRouterPrompt(promptId);
 ```
 
 If your runtime already computed `predictedRoute` and `allowedResources`, pass them directly. That avoids reparsing the skill file.
+
+Minimal completion hook:
+
+```ts
+function onPromptComplete(promptId: string) {
+  finalizeSmartRouterPrompt(promptId);
+}
+```
 
 ## Claude
 
@@ -72,10 +91,17 @@ Claude users can import the wrapper from a local hook module referenced by `.cla
 Example local observer module:
 
 ```ts
-import { onToolCall } from './.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts';
+import {
+  finalizeSmartRouterPrompt,
+  onToolCall,
+} from './.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts';
 
 export function onClaudeToolCall(toolName: string, toolInput: Record<string, unknown>) {
   onToolCall(toolName, toolInput);
+}
+
+export function onClaudePromptComplete(promptId: string) {
+  finalizeSmartRouterPrompt(promptId);
 }
 ```
 
@@ -86,10 +112,17 @@ Disable by removing the observer import or setting your wrapper module to no-op.
 Codex registration remains in `.codex/settings.json`. Keep `UserPromptSubmit` for advisor selection and add any local tool-call observer supported by your Codex host to call:
 
 ```ts
-import { onToolCall } from './.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts';
+import {
+  finalizeSmartRouterPrompt,
+  onToolCall,
+} from './.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts';
 
 export function onCodexToolCall(toolName: string, toolInput: Record<string, unknown>) {
   onToolCall(toolName, toolInput);
+}
+
+export function onCodexPromptComplete(promptId: string) {
+  finalizeSmartRouterPrompt(promptId);
 }
 ```
 
@@ -100,10 +133,17 @@ Disable by removing that observer or by routing it to an empty function.
 Gemini setups normally use `.gemini/settings.json` with `BeforeAgent` for prompt-time hooks. Add the wrapper in the local tool observer surface if your Gemini host exposes one:
 
 ```ts
-import { onToolCall } from './.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts';
+import {
+  finalizeSmartRouterPrompt,
+  onToolCall,
+} from './.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts';
 
 export function onGeminiToolCall(toolName: string, toolInput: Record<string, unknown>) {
   onToolCall(toolName, toolInput);
+}
+
+export function onGeminiPromptComplete(promptId: string) {
+  finalizeSmartRouterPrompt(promptId);
 }
 ```
 
@@ -114,10 +154,17 @@ Disable by removing the observer import.
 Copilot SDK hosts can call the wrapper from their tool invocation callback:
 
 ```ts
-import { onToolCall } from './.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts';
+import {
+  finalizeSmartRouterPrompt,
+  onToolCall,
+} from './.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts';
 
 export async function onToolInvoked(input: { name: string; arguments: Record<string, unknown> }) {
   onToolCall(input.name, input.arguments);
+}
+
+export function onPromptComplete(promptId: string) {
+  finalizeSmartRouterPrompt(promptId);
 }
 ```
 
@@ -126,5 +173,6 @@ Disable by removing the callback or returning before `onToolCall`.
 ## Operational Notes
 
 - Use stable prompt IDs, for example `<session-id>:<turn-number>`.
+- Finalize every prompt exactly once with the same `promptId` passed to `configureSmartRouterSession()`.
 - Do not pass raw prompt text to telemetry output. The wrapper uses prompt text only in memory to compute predicted routes.
 - Static measurement records emitted by `smart-router-measurement.ts` use `unknown_unparsed`; use live-wrapper records for behavioral claims.

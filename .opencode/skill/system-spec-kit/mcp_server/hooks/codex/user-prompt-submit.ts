@@ -263,7 +263,7 @@ export async function handleCodexUserPromptSubmit(
       durationMs: result.metrics.durationMs,
       cacheHit: result.metrics.cacheHit,
       errorCode: result.diagnostics?.errorCode,
-      errorDetails: result.diagnostics?.policyReason ?? result.diagnostics?.staleReason,
+      errorDetails: result.diagnostics?.errorMessage ?? result.diagnostics?.policyReason ?? result.diagnostics?.staleReason,
       skillLabel: skillLabelFor(result),
     }, writeDiagnostic);
 
@@ -330,4 +330,3 @@ if (IS_CLI_ENTRY) {
     process.exit(0);
   });
 }
-

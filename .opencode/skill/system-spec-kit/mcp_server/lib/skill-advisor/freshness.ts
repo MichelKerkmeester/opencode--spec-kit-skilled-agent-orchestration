@@ -18,6 +18,11 @@ import {
   type AdvisorGenerationRecoveryPath,
 } from './generation.js';
 import type { AdvisorEnvelopeMetadata } from '../context/shared-payload.js';
+import {
+  classifyAdvisorException,
+  type AdvisorErrorClass,
+  type AdvisorErrorDiagnostics,
+} from './error-diagnostics.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -38,6 +43,8 @@ export interface AdvisorFreshnessDiagnostics {
   readonly reason?: string;
   readonly missingSources?: string[];
   readonly recoveryPath?: AdvisorGenerationRecoveryPath;
+  readonly errorClass?: AdvisorErrorClass;
+  readonly errorMessage?: string;
 }
 
 /** Freshness snapshot consumed by downstream advisor brief producers. */
@@ -185,11 +192,13 @@ function nonLiveDiagnostics(
   reason: string,
   missingSources: string[] = [],
   recoveryPath?: AdvisorGenerationRecoveryPath,
+  errorDiagnostics?: AdvisorErrorDiagnostics,
 ): AdvisorFreshnessDiagnostics {
   return {
     reason,
     ...(missingSources.length > 0 ? { missingSources } : {}),
     ...(recoveryPath ? { recoveryPath } : {}),
+    ...(errorDiagnostics ?? {}),
   };
 }
 
@@ -258,6 +267,7 @@ function unavailableResult(
   workspaceRoot: string,
   reason: string,
   recoveryPath?: AdvisorGenerationRecoveryPath,
+  errorDiagnostics?: AdvisorErrorDiagnostics,
 ): AdvisorFreshnessResult {
   return {
     state: 'unavailable',
@@ -269,7 +279,7 @@ function unavailableResult(
     skillFingerprints: new Map(),
     fallbackMode: 'none',
     probedAt: new Date().toISOString(),
-    diagnostics: nonLiveDiagnostics(reason, [], recoveryPath),
+    diagnostics: nonLiveDiagnostics(reason, [], recoveryPath, errorDiagnostics),
   };
 }
 
@@ -289,8 +299,13 @@ export function getAdvisorFreshness(workspaceRoot: string): AdvisorFreshnessResu
   let snapshot: SourceSnapshot;
   try {
     snapshot = buildSourceSnapshot(workspaceRoot);
-  } catch {
-    return unavailableResult(workspaceRoot, 'ADVISOR_FRESHNESS_PROBE_FAILED');
+  } catch (error: unknown) {
+    return unavailableResult(
+      workspaceRoot,
+      'ADVISOR_FRESHNESS_PROBE_FAILED',
+      undefined,
+      classifyAdvisorException(error),
+    );
   }
 
   const generation = readAdvisorGeneration(workspaceRoot);
@@ -301,7 +316,17 @@ export function getAdvisorFreshness(workspaceRoot: string): AdvisorFreshnessResu
         0,
         'unavailable',
         snapshot.sqliteArtifact ? 'sqlite' : snapshot.jsonArtifact ? 'json' : 'none',
-        nonLiveDiagnostics(generation.reason ?? 'GENERATION_COUNTER_CORRUPT', [], generation.recoveryPath ?? undefined),
+        nonLiveDiagnostics(
+          generation.reason ?? 'GENERATION_COUNTER_CORRUPT',
+          [],
+          generation.recoveryPath ?? undefined,
+          generation.errorClass
+            ? {
+              errorClass: generation.errorClass,
+              ...(generation.errorMessage ? { errorMessage: generation.errorMessage } : {}),
+            }
+            : undefined,
+        ),
       ),
     };
   }

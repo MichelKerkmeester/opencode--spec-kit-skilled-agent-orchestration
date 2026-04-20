@@ -10,6 +10,10 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
+import {
+  classifyAdvisorException,
+  type AdvisorErrorClass,
+} from './error-diagnostics.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -24,6 +28,8 @@ export interface AdvisorGenerationSnapshot {
   readonly status: AdvisorGenerationStatus;
   readonly reason: string | null;
   readonly recoveryPath: AdvisorGenerationRecoveryPath | null;
+  readonly errorClass?: AdvisorErrorClass;
+  readonly errorMessage?: string;
 }
 
 interface GenerationFilePayload {
@@ -70,12 +76,16 @@ function recovered(generation: number): AdvisorGenerationSnapshot {
   };
 }
 
-function unavailable(reason: string): AdvisorGenerationSnapshot {
+function unavailable(
+  reason: string,
+  errorDiagnostics?: ReturnType<typeof classifyAdvisorException>,
+): AdvisorGenerationSnapshot {
   return {
     generation: 0,
     status: 'unavailable',
     reason,
     recoveryPath: 'unrecoverable',
+    ...(errorDiagnostics ?? {}),
   };
 }
 
@@ -129,8 +139,8 @@ function recoverMalformedCounter(workspaceRoot: string, filePath: string): Advis
     writeGenerationAtomic(filePath, nextGeneration);
     observedGenerations.set(key, nextGeneration);
     return recovered(nextGeneration);
-  } catch {
-    return unavailable('GENERATION_COUNTER_CORRUPT');
+  } catch (error: unknown) {
+    return unavailable('GENERATION_COUNTER_CORRUPT', classifyAdvisorException(error));
   }
 }
 
@@ -139,8 +149,8 @@ function setGeneration(workspaceRoot: string, filePath: string, generation: numb
     writeGenerationAtomic(filePath, generation);
     observedGenerations.set(workspaceKey(workspaceRoot), generation);
     return ok(generation);
-  } catch {
-    return unavailable('GENERATION_COUNTER_UNAVAILABLE');
+  } catch (error: unknown) {
+    return unavailable('GENERATION_COUNTER_UNAVAILABLE', classifyAdvisorException(error));
   }
 }
 

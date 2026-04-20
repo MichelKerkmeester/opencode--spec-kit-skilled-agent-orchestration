@@ -102,7 +102,7 @@ describe('buildSkillAdvisorBrief', () => {
       errorCode: 'SIGNAL_KILLED',
       exitCode: null,
       signal: 'SIGKILL',
-      stderr: null,
+      stderr: 'timed out after 1000ms\nsee logs',
       durationMs: 1000,
       retriesAttempted: 0,
     });
@@ -113,6 +113,8 @@ describe('buildSkillAdvisorBrief', () => {
     expect(result.brief).toBeNull();
     expect(result.freshness).toBe('unavailable');
     expect(result.diagnostics?.errorCode).toBe('SIGNAL_KILLED');
+    expect(result.diagnostics?.errorClass).toBe('timeout');
+    expect(result.diagnostics?.errorMessage).toBe('timed out after 1000ms see logs');
   });
 
   it('AS5 treats JSON fallback freshness as stale ok output', async () => {
@@ -160,7 +162,11 @@ describe('buildSkillAdvisorBrief', () => {
   it('maps unavailable freshness to degraded with null brief', async () => {
     vi.mocked(getAdvisorFreshness).mockReturnValue(freshness({
       state: 'unavailable',
-      diagnostics: { reason: 'ADVISOR_FRESHNESS_PROBE_FAILED' },
+      diagnostics: {
+        reason: 'ADVISOR_FRESHNESS_PROBE_FAILED',
+        errorClass: 'unknown',
+        errorMessage: 'probe root cause',
+      },
     }));
 
     const result = await buildSkillAdvisorBrief('implement feature X', options);
@@ -168,6 +174,22 @@ describe('buildSkillAdvisorBrief', () => {
     expect(result.status).toBe('degraded');
     expect(result.freshness).toBe('unavailable');
     expect(result.brief).toBeNull();
+    expect(result.diagnostics?.errorClass).toBe('unknown');
+    expect(result.diagnostics?.errorMessage).toBe('probe root cause');
+  });
+
+  it('preserves uncaught producer exception detail in fail-open diagnostics', async () => {
+    vi.mocked(getAdvisorFreshness).mockImplementation(() => {
+      throw new SyntaxError('Unexpected token <\nwhile probing freshness');
+    });
+
+    const result = await buildSkillAdvisorBrief('implement feature X', options);
+
+    expect(result.status).toBe('fail_open');
+    expect(result.freshness).toBe('unavailable');
+    expect(result.diagnostics?.errorCode).toBe('UNCAUGHT_EXCEPTION');
+    expect(result.diagnostics?.errorClass).toBe('parse');
+    expect(result.diagnostics?.errorMessage).toBe('Unexpected token < while probing freshness');
   });
 
   it('AS8 exact HMAC cache hit returns identical brief without subprocess', async () => {

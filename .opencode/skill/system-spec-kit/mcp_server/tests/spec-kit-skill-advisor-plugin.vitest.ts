@@ -64,8 +64,8 @@ function mockBridgeSuccess(stdout = bridgeResponse()) {
   mockedBridge.spawn.mockImplementation(() => makeChild(stdout));
 }
 
-async function makePlugin(options: Record<string, unknown> = {}) {
-  return await SpecKitSkillAdvisorPlugin({ directory: process.cwd() }, options);
+async function makePlugin(options: Record<string, unknown> = {}, directory = process.cwd()) {
+  return await SpecKitSkillAdvisorPlugin({ directory }, options);
 }
 
 describe('Spec Kit skill advisor OpenCode plugin', () => {
@@ -271,5 +271,35 @@ describe('Spec Kit skill advisor OpenCode plugin', () => {
     await hooksB.onUserPromptSubmitted({ prompt: 'implement feature X' });
 
     expect(mockedBridge.spawn).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps separate cache entries for identical prompts across workspace roots', async () => {
+    const workspaceA = `${process.cwd()}/workspace-a`;
+    const workspaceB = `${process.cwd()}/workspace-b`;
+    const hooksA = await makePlugin({ cacheTTLMs: 5000 }, workspaceA);
+    const hooksB = await makePlugin({ cacheTTLMs: 5000 }, workspaceB);
+
+    const firstA = await hooksA.onUserPromptSubmitted({ prompt: 'implement feature X' });
+    const firstB = await hooksB.onUserPromptSubmitted({ prompt: 'implement feature X' });
+    const secondA = await hooksA.onUserPromptSubmitted({ prompt: 'implement feature X' });
+    const secondB = await hooksB.onUserPromptSubmitted({ prompt: 'implement feature X' });
+
+    expect(firstA.additionalContext).toContain('sk-code-opencode');
+    expect(firstB.additionalContext).toContain('sk-code-opencode');
+    expect(secondA.additionalContext).toBe(firstA.additionalContext);
+    expect(secondB.additionalContext).toBe(firstB.additionalContext);
+    expect(mockedBridge.spawn).toHaveBeenCalledTimes(2);
+
+    const bridgePayloads = mockedBridge.spawn.mock.results.map((result) =>
+      JSON.parse(String(result.value.stdin.end.mock.calls[0]?.[0] ?? '{}'))
+    );
+    expect(bridgePayloads).toEqual([
+      expect.objectContaining({ workspaceRoot: workspaceA }),
+      expect.objectContaining({ workspaceRoot: workspaceB }),
+    ]);
+
+    const status = await hooksA.tool?.spec_kit_skill_advisor_status.execute({});
+    expect(status).toContain('cache_hits=2');
+    expect(status).toContain('cache_misses=2');
   });
 });

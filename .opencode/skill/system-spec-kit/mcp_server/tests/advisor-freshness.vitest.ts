@@ -146,6 +146,8 @@ describe('getAdvisorFreshness', () => {
 
     expect(result.state).toBe('unavailable');
     expect(result.diagnostics?.reason).toBe('ADVISOR_FRESHNESS_PROBE_FAILED');
+    expect(result.diagnostics?.errorClass).toBe('unknown');
+    expect(result.diagnostics?.errorMessage).toContain('directory');
   });
 
   it('AS5 suppresses deleted skills instead of reusing stale fingerprints', () => {
@@ -235,6 +237,8 @@ describe('getAdvisorFreshness', () => {
     expect(result.state).toBe('unavailable');
     expect(result.diagnostics?.reason).toBe('GENERATION_COUNTER_CORRUPT');
     expect(result.diagnostics?.recoveryPath).toBe('unrecoverable');
+    expect(result.diagnostics?.errorClass).toBe('parse');
+    expect(result.diagnostics?.errorMessage).toContain('directory');
   });
 
   it('bench records cold and warm probe p50/p95/p99 over 30 samples', () => {

@@ -6,6 +6,7 @@
 import { createHash } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { statSync } from 'node:fs';
+import { resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { tool } from '@opencode-ai/plugin';
@@ -111,7 +112,14 @@ function sessionIdFrom(input) {
     || '__global__';
 }
 
-function cacheKeyForPrompt(prompt, options, sessionID, sourceSignature) {
+function normalizeWorkspaceRoot(workspaceRoot) {
+  if (typeof workspaceRoot === 'string' && workspaceRoot.trim()) {
+    return resolvePath(workspaceRoot.trim());
+  }
+  return resolvePath(process.cwd());
+}
+
+function cacheKeyForPrompt(prompt, options, sessionID, sourceSignature, workspaceRoot) {
   const promptKey = createHash('sha256')
     .update(prompt)
     .update('\u001f')
@@ -120,6 +128,8 @@ function cacheKeyForPrompt(prompt, options, sessionID, sourceSignature) {
     .update(String(options.maxTokens))
     .update('\u001f')
     .update(sourceSignature)
+    .update('\u001f')
+    .update(workspaceRoot)
     .digest('hex');
   return `${sessionID}::${promptKey}`;
 }
@@ -289,7 +299,8 @@ function runBridge({ projectDir, prompt, options }) {
 
 async function getAdvisorContext({ projectDir, prompt, sessionID, options }) {
   const sourceSignature = options.sourceSignatureOverride ?? advisorSourceSignature();
-  const key = cacheKeyForPrompt(prompt, options, sessionID, sourceSignature);
+  const workspaceRoot = normalizeWorkspaceRoot(projectDir);
+  const key = cacheKeyForPrompt(prompt, options, sessionID, sourceSignature, workspaceRoot);
   const now = Date.now();
   const cached = advisorCache.get(key);
 
@@ -331,7 +342,7 @@ function cacheHitRate() {
 
 export default async function SpecKitSkillAdvisorPlugin(ctx, rawOptions) {
   const options = normalizeOptions(rawOptions);
-  const projectDir = ctx?.directory || process.cwd();
+  const projectDir = normalizeWorkspaceRoot(ctx?.directory);
   disabledReason = !options.enabled
     ? (disabledEnvName() ?? 'config_enabled_false')
     : null;

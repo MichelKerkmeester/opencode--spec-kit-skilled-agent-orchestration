@@ -552,13 +552,21 @@ function assertNoPromptDerivedSourcePath(path: string): void {
   }
 }
 
+function assertSanitizedSourcePath(path: string): string {
+  const sanitized = sanitizeSkillLabel(path);
+  if (!sanitized) {
+    throw new Error('Shared payload source refs must use sanitized single-line paths.');
+  }
+  return sanitized;
+}
+
 export function validateSharedPayloadSourceRef(value: unknown): SharedPayloadSourceRefValue {
   if (typeof value === 'string') {
     if (!isNonEmptyString(value)) {
       throw new Error('Shared payload source refs require non-empty string entries.');
     }
     assertNoPromptDerivedSourcePath(value);
-    return value;
+    return assertSanitizedSourcePath(value);
   }
 
   if (!isRecord(value)) {
@@ -575,7 +583,7 @@ export function validateSharedPayloadSourceRef(value: unknown): SharedPayloadSou
   assertNoPromptDerivedSourcePath(value.path);
   return {
     kind,
-    path: value.path.trim(),
+    path: assertSanitizedSourcePath(value.path),
   };
 }
 

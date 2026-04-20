@@ -133,18 +133,25 @@ describe('Claude UserPromptSubmit advisor hook', () => {
   });
 
   it('AS6 emits {} for producer timeout/fail-open and never emits a block decision', async () => {
+    const result = fixture('failOpenTimeout.json');
+    result.diagnostics = {
+      errorCode: 'TIMEOUT',
+      errorClass: 'timeout',
+      errorMessage: 'timed out after 1000ms\nsee logs',
+    };
     const { output, diagnostics } = await runHook({
       session_id: 's1',
       hook_event_name: 'UserPromptSubmit',
       prompt: 'implement a TypeScript hook',
       cwd: '/workspace/project',
-    }, fixture('failOpenTimeout.json'));
+    }, result);
 
     expect(output).toEqual({});
     expect(JSON.stringify(output)).not.toMatch(/"decision"\s*:\s*"(block|deny)"/);
     const diagnostic = parseDiagnostic(diagnostics.records[0] ?? '{}');
     expect(diagnostic.status).toBe('fail_open');
     expect(diagnostic.errorCode).toBe('TIMEOUT');
+    expect(diagnostic.errorDetails).toBe('timed out after 1000ms see logs');
   });
 
   it('CHK-021 emits {} for Python-missing fail-open', async () => {

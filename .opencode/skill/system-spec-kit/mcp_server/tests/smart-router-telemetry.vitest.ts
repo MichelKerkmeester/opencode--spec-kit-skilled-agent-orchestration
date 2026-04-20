@@ -270,4 +270,25 @@ describe('smart-router telemetry recording', () => {
     delete process.env[TELEMETRY_PATH_ENV];
     expect(telemetryFilePath()).toBe(path.join(path.resolve(envDir), 'compliance.jsonl'));
   });
+
+  it('falls back to the repo-root telemetry path when no output flag or env override is set', () => {
+    delete process.env[TELEMETRY_PATH_ENV];
+    delete process.env[TELEMETRY_DIR_ENV];
+
+    const repoRoot = createTempRoot();
+    fs.mkdirSync(path.join(repoRoot, '.opencode', 'skill'), { recursive: true });
+    const nestedWorkspace = path.join(repoRoot, 'nested', 'workspace');
+    fs.mkdirSync(nestedWorkspace, { recursive: true });
+    const resolvedRepoRoot = fs.realpathSync(repoRoot);
+
+    const originalCwd = process.cwd();
+    try {
+      process.chdir(nestedWorkspace);
+      expect(telemetryFilePath()).toBe(
+        path.join(resolvedRepoRoot, '.opencode', 'skill', '.smart-router-telemetry', 'compliance.jsonl')
+      );
+    } finally {
+      process.chdir(originalCwd);
+    }
+  });
 });

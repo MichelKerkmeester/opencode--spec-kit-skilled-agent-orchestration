@@ -180,17 +180,20 @@ export async function onUserPromptSubmitted(input) {
 }
 ```
 
-Command wrapper branch, shown from local `.github/hooks/superset-notify.json`:
+Command wrapper branch, illustrative only. For the exact shipped Copilot wrapper config, see [`../../../../../.github/hooks/superset-notify.json`](../../../../../.github/hooks/superset-notify.json):
 
 ```json
 {
-  "userPromptSubmitted": [
-    {
-      "type": "command",
-      "bash": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && if [ -f .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/user-prompt-submit.js ]; then node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/user-prompt-submit.js; else printf \"{}\\n\"; fi'",
-      "timeoutSec": 5
-    }
-  ]
+  "version": 1,
+  "hooks": {
+    "userPromptSubmitted": [
+      {
+        "type": "command",
+        "bash": "/absolute/path/to/copilot-hook.sh userPromptSubmitted",
+        "timeoutSec": 5
+      }
+    ]
+  }
 }
 ```
 
@@ -198,52 +201,57 @@ Notes:
 
 - SDK packages were not installed in the 007 local checkout, so unit tests cover SDK behavior through dependency injection.
 - The wrapper fallback writes no prompt to disk.
+- The checked-in Copilot file delegates through an external `copilot-hook.sh` wrapper; use the linked repo file for parity checks and rollback work.
 - If the wrapper also chains another local hook, keep advisor output first and make downstream hooks fail open.
 
 ### Codex
 
-Codex code and tests shipped in child 008. `.codex/settings.json` and `.codex/policy.json` are now shipped registration surfaces; the snippets below document the active operator contract.
+Codex code and tests shipped in child 008. The checked-in registration surfaces are [`../../../../../.codex/settings.json`](../../../../../.codex/settings.json) and [`../../../../../.codex/policy.json`](../../../../../.codex/policy.json). The snippets below are illustrative summaries of those shapes, not byte-for-byte copies.
 
-`.codex/settings.json` snippet:
+Illustrative `.codex/settings.json` shape:
 
 ```json
 {
   "hooks": {
     "UserPromptSubmit": [
       {
-        "type": "command",
-        "command": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/codex/user-prompt-submit.js'",
-        "timeout": 3
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/codex/user-prompt-submit.js'",
+            "timeout": 3
+          }
+        ]
       }
     ],
     "PreToolUse": [
       {
-        "type": "command",
-        "command": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/codex/pre-tool-use.js'",
-        "timeout": 3
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/codex/pre-tool-use.js'",
+            "timeout": 3
+          }
+        ]
       }
     ]
   }
 }
 ```
 
-`.codex/policy.json` snippet:
+Illustrative `.codex/policy.json` shape:
 
 ```json
 {
   "bashDenylist": [
-    {
-      "pattern": "git reset --hard",
-      "reason": "Refuse destructive reset without an explicit user request."
-    },
-    {
-      "pattern": "git checkout --",
-      "reason": "Refuse destructive checkout because it can overwrite user work."
-    },
-    {
-      "pattern": "rm -rf",
-      "reason": "Refuse broad recursive deletion from Codex PreToolUse."
-    }
+    "git reset --hard origin/main",
+    "git reset --hard origin/master",
+    "sudo rm -rf"
+  ],
+  "bash_denylist": [
+    "git reset --hard origin/main",
+    "git reset --hard origin/master",
+    "sudo rm -rf"
   ]
 }
 ```

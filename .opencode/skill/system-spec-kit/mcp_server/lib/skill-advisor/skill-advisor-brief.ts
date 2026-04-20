@@ -27,6 +27,11 @@ import {
   type AdvisorRecommendation,
   type AdvisorSubprocessErrorCode,
 } from './subprocess.js';
+import {
+  classifyAdvisorException,
+  classifyAdvisorFailure,
+  type AdvisorErrorClass,
+} from './error-diagnostics.js';
 
 export type AdvisorRuntime = 'claude' | 'gemini' | 'copilot' | 'codex';
 export type AdvisorHookStatus = AdvisorEnvelopeStatus;
@@ -42,6 +47,8 @@ export interface SkillAdvisorBriefOptions {
 export interface AdvisorHookDiagnostics {
   readonly reason?: string;
   readonly errorCode?: AdvisorSubprocessErrorCode | 'UNCAUGHT_EXCEPTION' | 'ADVISOR_FRESHNESS_UNAVAILABLE';
+  readonly errorClass?: AdvisorErrorClass;
+  readonly errorMessage?: string;
   readonly policyReason?: string;
   readonly metalinguisticMention?: readonly string[];
   readonly skillNameSuppressions?: readonly string[];
@@ -358,9 +365,15 @@ export async function buildSkillAdvisorBrief(
         ? {
           ...baseDiagnostics,
           staleReason: freshness.diagnostics?.reason,
+          ...(freshness.diagnostics?.errorClass ? { errorClass: freshness.diagnostics.errorClass } : {}),
+          ...(freshness.diagnostics?.errorMessage ? { errorMessage: freshness.diagnostics.errorMessage } : {}),
         }
-        : freshness.diagnostics?.reason
-          ? { staleReason: freshness.diagnostics.reason }
+        : freshness.diagnostics?.reason || freshness.diagnostics?.errorClass || freshness.diagnostics?.errorMessage
+          ? {
+            ...(freshness.diagnostics?.reason ? { staleReason: freshness.diagnostics.reason } : {}),
+            ...(freshness.diagnostics?.errorClass ? { errorClass: freshness.diagnostics.errorClass } : {}),
+            ...(freshness.diagnostics?.errorMessage ? { errorMessage: freshness.diagnostics.errorMessage } : {}),
+          }
           : null,
     });
     if (nonLive) {
@@ -401,6 +414,7 @@ export async function buildSkillAdvisorBrief(
       thresholdConfig: options.thresholdConfig,
     });
     if (!subprocess.ok) {
+      const failureDiagnostics = classifyAdvisorFailure(subprocess.errorCode, subprocess.stderr);
       return result({
         startedAt,
         status: 'fail_open',
@@ -409,6 +423,7 @@ export async function buildSkillAdvisorBrief(
         diagnostics: {
           ...(baseDiagnostics ?? {}),
           errorCode: subprocess.errorCode ?? 'NON_ZERO_EXIT',
+          ...(failureDiagnostics ?? {}),
         },
         metrics: {
           subprocessInvoked: true,
@@ -451,13 +466,16 @@ export async function buildSkillAdvisorBrief(
     }
 
     return okResult;
-  } catch {
+  } catch (error: unknown) {
     return result({
       startedAt,
       status: 'fail_open',
       freshness: 'unavailable',
       brief: null,
-      diagnostics: { errorCode: 'UNCAUGHT_EXCEPTION' },
+      diagnostics: {
+        errorCode: 'UNCAUGHT_EXCEPTION',
+        ...classifyAdvisorException(error),
+      },
       freshnessResult: null,
     });
   }
