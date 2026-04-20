@@ -686,7 +686,7 @@ Yes. Copy `skill_advisor.py` and `skill_advisor_runtime.py` into any project tha
 | [feature_catalog/feature_catalog.md](./feature_catalog/feature_catalog.md) | Canonical feature inventory for routing, graph system, semantic search, and tests |
 | [manual_testing_playbook/manual_testing_playbook.md](./manual_testing_playbook/manual_testing_playbook.md) | Root manual validation playbook for routing, graph, compiler, native compat, and regression checks |
 | [Skill Advisor Hook Reference](../system-spec-kit/references/hooks/skill-advisor-hook.md) | Phase 020 hook setup, runtime matrix, metrics, disable flag, privacy, and troubleshooting |
-| [Native Bootstrap Guide](../system-spec-kit/install_guide/skill-advisor-native-bootstrap.md) | Daemon bootstrap, native MCP registration checks, rollback controls, and H5 operator states |
+| [Native Bootstrap Guide](../system-spec-kit/mcp_server/skill-advisor/native-bootstrap.md) | Daemon bootstrap, native MCP registration checks, rollback controls, and H5 operator states |
 | [Skills Library README](../README.md) | Full catalog of all 21 skill folders, graph metadata coverage, and routing policy |
 | [system-spec-kit SKILL.md](../system-spec-kit/SKILL.md) | Spec folder and memory foundation |
 | [sk-doc SKILL.md](../sk-doc/SKILL.md) | Documentation standards and component templates |
