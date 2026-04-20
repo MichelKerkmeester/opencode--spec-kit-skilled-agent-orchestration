@@ -1,44 +1,84 @@
 ---
 title: "Phase 027 — Plan"
-description: "Research-first plan: 40-iter deep-research converges, then follow-on implementation sub-packets per roadmap."
+description: "Research-first phase: r01 research converged, 6 implementation children scaffolded per research roadmap §9 + §13.6 delta."
 importance_tier: "high"
 contextType: "research"
 ---
 
 # Plan: Phase 027
 
-## Phase Sequence
+## Phase Sequence (overview)
 
 ```
-Phase 027 (this packet, research)
+Phase 027 parent
   |
-  +-- r01 research: 40-iter cli-codex deep-research (converges)
-  |     |
-  |     +-- produces: research.md, research-registry.json, 40 iteration files
+  +-- r01 research (converged): 60 iters, 43 adopt_now / 3 prototype_later / 0 reject
+  |     artifacts: ../research/027-skill-graph-daemon-and-advisor-unification-pt-01/
   |
-  +-- Post-research scaffolding: 027/001, 027/002, ... (per roadmap in research.md)
-  |
-  +-- Each sub-packet: own impl + review + remediation cycle
+  +-- 6 implementation children (scaffolded):
+        001 → 002 → 003 → {004, 006} (parallel) → 005
 ```
 
-## Research Phase (this)
+## Research Phase (complete)
 
-- Driver: `/tmp/run-deep-research-027.sh`
-- Research artifacts location: `../research/027-skill-graph-daemon-and-advisor-unification-pt-01/`
-- Executor: cli-codex gpt-5.4 high fast
-- Iterations: 40 (31 question iters + 4 cross-track + 5 synthesis intermediates)
-- Synthesis: 1 final cli-codex pass produces research.md + research-registry.json
-- Wall time: ~2-3 hours (40 × 2-3min/iter + synthesis)
+- Driver: `/tmp/run-deep-research-027.sh` (archived)
+- Research artifacts: `../research/027-skill-graph-daemon-and-advisor-unification-pt-01/`
+- Total: 40 r01 + 20 follow-up = 60 iterations + 2 synthesis passes
+- Verdicts: 43 `adopt_now` / 3 `prototype_later` / 0 `reject`
+- Final synthesis recommendation: dispatch 027/001 now; no pt-02 needed
 
-## Post-Research Phase (future)
+## Implementation Chain (6 children)
 
-Will be scaffolded as sub-packets after r01 converges:
-- 027/001: scope TBD by research roadmap
-- 027/002+: additional sub-packets per research
+```
+   [001]  daemon + freshness + single-writer lease + benchmark gate (≤1% CPU / <20MB RSS)
+     |
+     v
+   [002]  lifecycle + derived metadata + schema v2 + rollback
+     |
+     v
+   [003]  native advisor core + 5-lane fusion + Py↔TS parity       [HARD GATE — consumes 002 lifecycle-normalized inputs per Y3]
+     |
+     +------+
+     |      |
+     v      v
+   [004]  [006]   (MCP surface + promotion gates parallel after 003)
+     |
+     v
+   [005]  compat + migration + bootstrap (finalizes after 006)
+```
 
-## Verification
+**Depends-on chain (per child `graph-metadata.json.manual.depends_on`):**
+- 001: (none inside 027)
+- 002: 001
+- 003: 001, 002
+- 004: 003
+- 005: 004
+- 006: 003, 004
 
-- All 31 sub-questions answered with adopt/prototype/reject verdict + evidence
-- research.md sk-doc DQI ≥ 85
-- research-registry.json validates as JSON + covers all 31 questions
-- 40 iteration files present with correct structure
+**Effort estimate (research roadmap §9 + §13.6):** 27-40 engineering days total.
+
+## Architectural decisions captured in ADRs
+
+See `decision-record.md` for ADR-001..ADR-006 covering:
+- Chokidar + hash-aware SQLite indexer as daemon substrate
+- Self-contained `mcp_server/skill-advisor/` package layout (NOT `lib/skill-advisor/`)
+- 5-lane analytical fusion initial weights 0.45/0.30/0.15/0.10/0.00
+- Workspace-scoped single-writer lease; one daemon writer per workspace
+- Schema v1↔v2 additive migration + additive rollback
+- Semantic live weight stays 0.00 through first promotion wave
+
+## Per-child dispatch
+
+Each child is a separate `/spec_kit:implement :auto` dispatch:
+```
+/spec_kit:implement :auto --spec-folder=.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/001-daemon-freshness-foundation
+```
+(And similar for 002 through 006, in dependency order.)
+
+## Verification (parent-level)
+
+- All 6 children have the required 7-file set
+- Each child's `graph-metadata.json.parent_id` points at this parent
+- Parent `spec.md` Child Layout lists all 6
+- `decision-record.md` has ADR-001 through ADR-006
+- Children Convergence Log (this packet's `implementation-summary.md`) updated as each child lands

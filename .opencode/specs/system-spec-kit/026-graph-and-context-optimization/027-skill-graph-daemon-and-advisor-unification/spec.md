@@ -54,6 +54,8 @@ _memory:
 | **Parent** | `../020-skill-advisor-hook-surface/` |
 | **Research** | 40-iter deep-research, cli-codex gpt-5.4 high fast |
 | **Research artifacts** | `../research/027-skill-graph-daemon-and-advisor-unification-pt-01/` |
+| **Child Layout** | `001-daemon-freshness-foundation`; `002-lifecycle-and-derived-metadata`; `003-native-advisor-core`; `004-mcp-advisor-surface`; `005-compat-migration-and-bootstrap`; `006-promotion-gates` |
+| **Decision records** | `./decision-record.md` — ADR-001 through ADR-006 |
 | **Sibling decisions** | 021/001 (advisor hook efficacy), 021/002 (SKILL.md smart-router), 025 (R02 remediation), 026 (R03 remediation) |
 
 ---
