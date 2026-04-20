@@ -18,7 +18,9 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-REPO_ROOT = SCRIPT_DIR.parents[1]
+# Path layout: .opencode/skill/skill-advisor/scripts/routing-accuracy/<script>
+# parents[0]=routing-accuracy, [1]=scripts, [2]=skill-advisor, [3]=skill, [4]=.opencode, [5]=repo root
+REPO_ROOT = SCRIPT_DIR.parents[4]
 DEFAULT_DATASET = SCRIPT_DIR / "labeled-prompts.jsonl"
 ADVISOR_PATH = REPO_ROOT / ".opencode" / "skill" / "skill-advisor" / "scripts" / "skill_advisor.py"
 GATE3_RUNNER = SCRIPT_DIR / "gate3-corpus-runner.mjs"
