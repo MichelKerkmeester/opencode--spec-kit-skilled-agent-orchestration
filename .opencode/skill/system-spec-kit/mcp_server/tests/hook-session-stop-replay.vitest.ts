@@ -12,7 +12,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { ensureStateDir } from '../hooks/claude/hook-state.js';
 import { processStopHook } from '../hooks/claude/session-stop.js';
-import { createStopReplaySandbox, type StopReplaySandbox } from '../test/hooks/replay-harness.js';
+import { createStopReplaySandbox, type StopReplaySandbox } from './_support/hooks/replay-harness.js';
 
 describe.sequential('Claude session-stop replay harness', () => {
   const fixturePath = fileURLToPath(new URL('./fixtures/hooks/session-stop-replay.jsonl', import.meta.url));

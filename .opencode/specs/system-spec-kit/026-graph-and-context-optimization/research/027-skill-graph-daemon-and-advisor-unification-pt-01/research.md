@@ -57,7 +57,7 @@ The packet used the fixed 40-iteration deep-research protocol in `deep-research-
 | ID | Verdict | Confidence | Rationale | Evidence |
 | --- | --- | --- | --- | --- |
 | D1 Current split inventory | `adopt_now` | high | Treat the split inventory as the migration baseline: system-spec-kit MCP owns live graph and hook shell; standalone skill-advisor owns Python scoring, JSON fallback, CLI health, regression, and benchmark harnesses. | `iterations/iteration-024.md:6`, `iterations/iteration-024.md:48`, `iterations/iteration-024.md:68` |
-| D2 Migration target layout | `adopt_now` | high | Keep `lib/skill-graph/` as graph plane, consolidate advisor runtime under `lib/skill-advisor/`, add `handlers/skill-advisor/` and `tools/advisor-tools.ts`, and retain Python CLI as a compatibility shim. | `iterations/iteration-025.md:6`, `iterations/iteration-025.md:55`, `iterations/iteration-025.md:67` |
+| D2 Migration target layout | `adopt_now` | high | Keep `lib/skill-graph/` as graph plane. Consolidate advisor as a **self-contained top-level `mcp_server/skill-advisor/` package** with its own `lib/`, `tools/`, `handlers/`, and `tests/` subfolders — NOT under `lib/skill-advisor/`. Retain Python CLI as a compatibility shim. Rationale: advisor owns a domain (scoring, fusion, caches, MCP tools, compat surfaces) and co-locating code + tools + handlers + tests inside one folder is clearer than scattering across top-level `lib/` + `tools/` + `handlers/` + `tests/`. | `iterations/iteration-025.md:6`, `iterations/iteration-025.md:55`, `iterations/iteration-025.md:67` (path adjusted 2026-04-20 per user preference) |
 | D3 MCP-tool surface | `adopt_now` | high | Add `advisor_recommend`, `advisor_status`, and `advisor_validate` with strict schemas, public tool definitions, dispatcher registration, and tests; defer batch/benchmark tools. | `iterations/iteration-026.md:6`, `iterations/iteration-026.md:44`, `iterations/iteration-026.md:87` |
 | D4 Subprocess elimination | `adopt_now` | medium | Move toward native TypeScript, not PyOdide, but stage the migration behind parity because the Python implementation and CLI compatibility surface are large. | `iterations/iteration-027.md:6`, `iterations/iteration-027.md:48`, `iterations/iteration-027.md:57` |
 | D5 Cache + freshness sharing | `adopt_now` | high | Reuse shared cache/freshness primitives, but keep advisor prompt-result caching as a domain-specific wrapper with source-signature, privacy, freshness, and latency contracts. | `iterations/iteration-028.md:6`, `iterations/iteration-028.md:42`, `iterations/iteration-028.md:51` |
@@ -106,11 +106,14 @@ Advisor projection and scoring
   - analytical capped fusion and confidence calibration
         |
         v
-Runtime surfaces
-  - buildSkillAdvisorBrief() -> native recommendSkills()
-  - advisor_recommend, advisor_status, advisor_validate
-  - skill_graph_scan/query/status/validate remain graph tools
-  - skill_advisor.py shim and OpenCode bridge remain compatibility adapters
+Runtime surfaces (self-contained mcp_server/skill-advisor/ package)
+  - skill-advisor/lib/       (producer, scorer, fusion, caches, freshness)
+  - skill-advisor/tools/     (advisor_recommend, advisor_status, advisor_validate)
+  - skill-advisor/handlers/  (MCP tool handlers)
+  - skill-advisor/tests/     (package-local tests; shared fixtures under tests/_support)
+  - lib/skill-graph/         (separate — graph authority)
+  - tests/_support/          (shared vitest setup + cross-package fixtures)
+  - skill_advisor.py shim + OpenCode bridge remain compatibility adapters
 ```
 
 The required cross-track adjustment is X3: generated keywords are valid inputs, but must enter the C scorer as a separate capped and provenance-aware `derived_generated` lane. They must not masquerade as direct author intent or the current direct `(signal)` boost lane.
@@ -136,7 +139,7 @@ The required cross-track adjustment is X3: generated keywords are valid inputs, 
 | R4 | Keyword stuffing or prompt-injection-shaped skill text poisons ranking before rendering. | Malicious or sloppy metadata outranks precise skills. | Add trust lanes, cardinality limits, repetition-density and suspicious-pattern demotions, adversarial fixtures, and gold-`none` gates. |
 | R5 | Semantic lookup or learned ranking enters prompt-time path too early. | Hook latency regresses or learned weights overfit a small corpus. | Keep semantic/learned channels shadow-only until C6/C7/C8 accuracy, holdout, latency, and shadow-cycle gates pass. |
 | R6 | Native TypeScript port diverges from Python CLI behavior. | Gate 2 fallback, health checks, playbooks, and plugin output break. | Stage `recommendSkills()` behind parity harnesses and keep `skill_advisor.py` as compatibility shim until docs/tests move. |
-| R7 | MCP consolidation blurs graph and advisor ownership. | Duplicate graph logic or schema churn. | Preserve `lib/skill-graph` as graph authority and put projection/scoring/status under `lib/skill-advisor` plus `advisor_*` handlers. |
+| R7 | MCP consolidation blurs graph and advisor ownership. | Duplicate graph logic or schema churn. | Preserve `lib/skill-graph/` as graph authority and put projection/scoring/status/tools/handlers/tests under a single self-contained `mcp_server/skill-advisor/` package (NOT `lib/skill-advisor/`). |
 | R8 | Plugin/bridge migration leaks prompts or removes controls too early. | OpenCode users lose prompt-safe status, disable paths, or bridge isolation. | Keep plugin and Node bridge as adapters, preserve prompt-safe diagnostics, and retain disable aliases through migration. |
 | R9 | Measurement gates miss ambiguity, `none`, explicit-skill, and latency regressions. | Exact top-1 can improve while critical UX or safety slices regress. | Track full corpus, holdout, per-skill slices, gold `none`, `UNKNOWN`, explicit prompts, ambiguity, p95 latency, and adversarial fixtures. |
 

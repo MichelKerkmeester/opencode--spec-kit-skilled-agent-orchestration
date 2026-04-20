@@ -23,7 +23,7 @@ export default defineConfig({
       'mcp_server/tests/archive/**',
     ],
     setupFiles: [
-      path.resolve(import.meta.dirname, 'test', 'vitest-setup.ts'),
+      path.resolve(import.meta.dirname, 'tests', '_support', 'vitest-setup.ts'),
     ],
     // Several script suites mutate shared process-level state and temp project roots.
     // Run files serially so the combined config remains deterministic.

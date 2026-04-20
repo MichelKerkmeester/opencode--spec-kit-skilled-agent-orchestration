@@ -11,12 +11,12 @@ import {
   getStatePath,
   loadState,
   type PersistedHookState,
-} from '../../hooks/claude/hook-state.js';
+} from '../../../hooks/claude/hook-state.js';
 import {
   processStopHook,
   type SessionStopProcessResult,
-} from '../../hooks/claude/session-stop.js';
-import type { HookInput } from '../../hooks/claude/shared.js';
+} from '../../../hooks/claude/session-stop.js';
+import type { HookInput } from '../../../hooks/claude/shared.js';
 
 export interface StopReplayRunResult {
   process: SessionStopProcessResult;

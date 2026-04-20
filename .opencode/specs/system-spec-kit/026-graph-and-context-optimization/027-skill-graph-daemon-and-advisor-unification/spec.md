@@ -129,7 +129,7 @@ Implementation (follow-on packets): shipped design per the research's `adopt now
 
 **Core questions:**
 - **D1 Current split.** Map what's already in `mcp_server/lib/skill-advisor/` vs what still lives in `.opencode/skill/skill-advisor/scripts/`. Inventory Python scripts, TypeScript modules, SQLite DB location, test files, install surfaces.
-- **D2 Migration target.** Target file layout under `mcp_server/lib/skill-advisor/` after consolidation. Which Python stays (if any)? Which gets ported to TS? SQLite schema — stays as-is or converges with memory MCP's schema?
+- **D2 Migration target.** Target file layout is a **self-contained `mcp_server/skill-advisor/` package** (NOT `lib/skill-advisor/`). Sub-folders: `lib/` (producer, scorer, caches, freshness), `tools/` (advisor_* MCP tool definitions), `handlers/` (MCP tool handlers), `tests/` (package-local tests; cross-package fixtures live under `mcp_server/tests/_support/`). Which Python stays (if any)? Which gets ported to TS? SQLite schema — stays as-is or converges with memory MCP's schema?
 - **D3 MCP-tool surface.** Expose advisor as MCP tools: `advisor_match`, `advisor_reindex`, `advisor_status`, `advisor_explain`. Signature + semantics for each.
 - **D4 Subprocess elimination.** Can we remove `child_process.spawn('python3', ...)` entirely by porting `skill_advisor_runtime.py` matching logic to TS? Or keep the Python matcher and call it in-process via a Node FFI / pyodide bridge?
 - **D5 Cache + freshness sharing.** Can advisor share the memory MCP's session cache, freshness-check primitives, and observability pipeline?
