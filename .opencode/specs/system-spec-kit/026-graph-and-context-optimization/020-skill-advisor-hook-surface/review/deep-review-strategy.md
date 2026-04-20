@@ -1,105 +1,111 @@
-# Deep Review Strategy: Skill-Advisor Phase Stack (020-024)
+# Deep Review Strategy: Skill-Advisor Phase Stack — R03 (POST-REMEDIATION)
 
 ## Target
 
-Skill-advisor phase stack shipped on main: Phase 020 (hook surface) + Phase 021/001 (advisor-hook efficacy research) + Phase 021/002 (SKILL.md smart-router research) + Phase 022 (skill-advisor docs + sk-code-opencode TS audit) + Phase 023 (6-area remediation + OpenCode plugin) + Phase 024 (deferred items + static corpus measurement + live-session wrapper + telemetry analyzer).
+Skill-advisor phase stack on main at HEAD=9e982f366 (post-Phase 025 remediation):
+- Phase 020 (parent + 8 children) — hook surface, shared payload, freshness, producer, renderer, 4 runtime hooks, Codex integration, docs
+- Phase 021/001 — advisor hook efficacy research (converged)
+- Phase 021/002 — SKILL.md smart-router research (converged)
+- Phase 022 — docs + TS audit
+- Phase 023 — 6-area remediation + OpenCode plugin
+- Phase 024 — deferred items + telemetry measurement
+- **Phase 025 — deep-review remediation (NEW, 5 P1 + 2 P2 closed)**
 
 ## Review Dimensions (7)
 
+Same D1-D7 framework as r01/r02:
+
 | ID | Dimension | Coverage |
 |---|---|---|
-| **D1** | Security + Privacy | Raw prompts never persisted; HMAC cache opacity; prompt-poisoning hardening; disable flag honored across all surfaces |
-| **D2** | Correctness | Envelope contract; 4-runtime parity; fail-open behavior; freshness semantics; UNKNOWN-fallback |
-| **D3** | Performance + Observability | Cache hit rate; p95 targets; metrics namespace; JSONL schema forbidden fields |
-| **D4** | Maintainability + sk-code-opencode alignment | Audit leftovers; TS strictness; comment discipline; no dead code |
-| **D5** | Integration + Cross-runtime | Hook surface parity; plugin/bridge correctness; corpus parity 200/200; Codex adapter edge cases |
-| **D6** | Test coverage + test-code quality | 134+13 tests: gaps in fixtures/mocks/coverage |
-| **D7** | Documentation accuracy | Reference doc DQI; README claims vs reality; feature catalog matches shipped code; playbook executable |
+| **D1** | Security + Privacy | Prompt stdin plumbing (025 fix), HMAC opacity, label sanitization at envelope (025 fix), disable flag |
+| **D2** | Correctness | Envelope contract, 4-runtime parity, tokenCap from metrics (025 fix), cache maxTokens key (025 fix), provenance restamping (025 fix), UNKNOWN-fallback |
+| **D3** | Performance + Observability | Cache hit rate, p95, static vs live telemetry separation (025 fix), finalizePrompt API (025 fix), promptId aggregation (025 fix), baseline SKILL.md handling |
+| **D4** | Maintainability + sk-code-opencode alignment | JSDoc coverage (025 fix), cache bounds (025 fix), normalizer alias (025 fix), TS strictness, dead code |
+| **D5** | Integration + Cross-runtime | Plugin disable flag (025 fix), SIGKILL escalation (025 fix), source-signature cache (025 fix), 5-runtime parity harness (025 fix), corpus 200/200, Codex adapter |
+| **D6** | Test coverage + quality | Plugin negative-paths (025 fix), subprocess error-codes (025 fix), telemetry path-precedence (025 fix), end-to-end parity (025 fix), fixture staleness |
+| **D7** | Documentation accuracy | Workspace build command (025 fix), Codex status (025 fix), playbook denominator (025 fix), artifact names (025 fix), Copilot callback model (025 fix) |
+
+## R03 Focus: POST-REMEDIATION
+
+This review is *after* Phase 025 closed all 7 prior findings. The review's job is to:
+
+1. **Verify prior fixes** — confirm each DR-P1-00X and DR-P2-00X is correctly implemented, not superficial
+2. **Surface new findings** — issues introduced by the remediation itself (new code has new surface area)
+3. **Find residual gaps** — prior reviews may have missed issues adjacent to the fixes
 
 ## Severity Levels (P0/P1/P2)
 
-- **P0 (Blocker)**: release-stops; security/correctness/parity failures; MUST fix pre-release
-- **P1 (Required)**: should fix; non-blocking but creates risk; fix or get user-approved deferral
-- **P2 (Suggestion)**: optional; style/polish; defer freely
+- **P0 (Blocker)**: release-stops; security/correctness/parity failures
+- **P1 (Required)**: should fix; non-blocking but creates risk
+- **P2 (Suggestion)**: optional; style/polish
 
 ## Stop Conditions
 
-- Rolling 3-iter newInfoRatio < 0.05 across all 7 dimensions
-- 40 iterations completed
-- Stuck threshold 3 (no new findings in 3 consecutive iters across ANY dimension)
-- P0 override: new P0 findings block convergence regardless
+- 40 iterations cap (user directive: run all 40)
+- Convergence protocol documented but iteration cap takes precedence per user
+- P0 override: new P0 findings block any cap-based convergence
+
+## Executor
+
+- cli-copilot gpt-5.4 high, maxConcurrent=1
+- **All 40 iters + synthesis with copilot** (user directive, differs from r02 mixed approach)
+- True per-iter dispatch: fresh copilot invocation per iter (proven approach from r02)
 
 ## Known Context
 
-**Current state of main branch** (HEAD: 008253d9c as of 2026-04-19):
-- 020 parent + 8 children shipped + tested (118 Phase 020 tests PASS)
-- 021/001 research converged (V1-V10 all answered)
-- 021/002 research converged (V1-V10 all answered, V9 enforcement found = NONE)
-- 022 shipped docs + 8 sk-code-opencode audit fixes
-- 023 shipped 6 areas + OpenCode plugin (134 tests total at that point)
-- 024 shipped 4 tracks; advisor accuracy measured at 56% vs corpus labels; 147 tests at that point
-- Copilot SDK unblocked via npm install (`@github/copilot-sdk@0.2.2`)
-- Track B docs sync landed: README + feature_catalog §6 + playbook §13-15
+**HEAD**: 9e982f366 (Phase 025 shipped)
 
-**Shipped artifacts to review**:
-- Code: `mcp_server/lib/skill-advisor/*.ts` (11 files); `mcp_server/hooks/{claude,gemini,copilot,codex}/*.ts` (7 files); `mcp_server/lib/codex-hook-policy.ts`; `mcp_server/lib/context/shared-payload.ts` (advisor extensions)
-- Plugin: `.opencode/plugins/spec-kit-skill-advisor.js` + `-bridge.mjs`
-- Scripts: `scripts/spec/check-smart-router.sh`; `scripts/observability/smart-router-*.ts` (4 files)
-- Tests: 18+ test files under `mcp_server/tests/` (advisor-*, copilot/codex/claude/gemini-*, plugin, telemetry, measurement, analyzer)
-- Docs: `references/hooks/skill-advisor-hook.md` (DQI 97); `LIVE_SESSION_WRAPPER_SETUP.md`; skill-advisor README/feature_catalog/playbook
-- Spec docs: 020 parent + 002-009 children; 021/001 + 021/002 research; 022/023/024 packets
+**Recent implementation commits (r03 scope)**:
+- `9e982f366` — feat(025): implement deep-review remediation (36 files, +1104/-194)
+- `ef574e200` — chore(025): scaffold packet
+- `c6d3fcc2c` — review(020): r02 deep-review complete (PASS 5/2)
+- `dd89ec89e` — chore: r02 progress + r01 archive
+- Earlier: 020-024 phases shipped across prior commits
 
-**Prior relevant deferrals now closed**:
-- 020/007 Copilot SDK → unblocked in T16 (SDK installed)
-- 020/008 .codex config → applied manually in 024 Track 1
-- 021/002 measurement baseline → 024 Track 2 measured 56% accuracy
-- 021/001 V8/V9 plugin design → shipped in 023/F
+**Test baseline**: 8 focused files / 65 tests PASS (Phase 025 suite). Full suite has pre-existing legacy failures (transcript-planner-export, deep-loop/prompt-pack, context-server-error-envelope) — DO NOT re-flag as regressions.
+
+**Prior findings closed in 025**:
+- DR-P1-001..005 and DR-P2-001..002 all Closed with file:line evidence in `.../025-deep-review-remediation/implementation-summary.md`
 
 **Still deferred (not expected to surface as blockers)**:
-- V4 live-AI miss-rate / V5 compliance gap / V7 SKILL.md-skip behavior — blocked by live-AI telemetry (primitive shipped; user must opt in)
-- 2 pre-existing non-020 test failures (transcript-planner-export, deep-loop/prompt-pack)
+- Live-AI miss-rate / compliance gap / SKILL.md-skip behavior — blocked by live-AI telemetry (primitive shipped; user must opt in)
+- 2-3 pre-existing non-020 test failures (transcript-planner-export, deep-loop/prompt-pack)
 
-## Review Protocol
+## Review Protocol (Per-Iter)
 
-Each iteration:
-1. Read prior `iterations/iteration-NNN.md` + `deep-review-state.jsonl`
-2. Pick one or more dimensions to advance this iter (weighted by remaining uncertainty)
-3. Read relevant code/docs/tests for chosen dimension
-4. Write iteration-NNN.md with:
-   - Iteration number (1-40)
-   - Dimension(s) advanced
-   - Findings (P0/P1/P2) with evidence citations (file:line or test name)
-   - newInfoRatio (0.0-1.0)
-   - Next iteration focus
-5. Append delta to `deep-review-state.jsonl`: `{type:"iteration", iteration:N, newInfoRatio, findings:[...], dimensions:[...]}`
-6. Check convergence; early stop if 3-iter rolling avg < 0.05 across all dimensions
+Each iteration (fresh copilot invocation):
+1. Read `review/deep-review-strategy.md`, `review/deep-review-config.json`, `review/deep-review-state.jsonl`
+2. Read prior `iterations/iteration-{N-1}.md` if N > 1
+3. Pick ONE dimension via rotation `((N-1) mod 7) + 1 → D(n+1)` (override if justified)
+4. Read NEW source evidence — do NOT just re-read prior iters
+5. For 025-touched surfaces: verify the documented fix matches the code. For non-025 surfaces: look for residual gaps.
+6. Write `iterations/iteration-NNN.md` (3-digit padded) with: Scope / Evidence read / Findings (P0/P1/P2 with id PX-NNN-MM, dimension, headline, file:line evidence, impact, remediation) / Re-verified (prior findings confirmed closed) / Metrics (honest newInfoRatio) / Next focus
+7. Append one JSON line to `deep-review-state.jsonl`
+8. Exit with `ITER_N_DONE`
 
-After convergence or iter 40:
-- Write `review-report.md` (9 sections): Executive Summary, Scope, Methodology, Evidence Classes, D1-D7 per-dimension findings, Verdict (PASS/CONDITIONAL/FAIL), Remediation plan, Cross-references
-- Write `findings-registry.json`: indexed findings by severity + dimension
+## Synthesis (After Iter 40)
+
+Same synthesis step as r02:
+1. Read all 40 iteration files
+2. Deduplicate findings by evidence-family
+3. Write `review/review-report.md` (9 sections)
+4. Write `review/findings-registry.json`
+5. Append `{"type":"event","event":"completed","iteration":40,...}` to state.jsonl
+6. Print `DEEP_REVIEW_SYNTHESIS_DONE verdict=<PASS|CONDITIONAL|FAIL> p0=<N> p1=<N> p2=<N>`
+
+Executor for synthesis: cli-copilot (per user directive: all copilot).
 
 ## Verdict Rules
 
-- **PASS**: 0 P0 findings, <= 5 P1 findings (can defer), any P2
+- **PASS**: 0 P0 findings, <= 5 P1 findings
 - **CONDITIONAL**: 0 P0 but > 5 P1 findings OR questionable P0 evidence
 - **FAIL**: >= 1 validated P0 finding
 - PASS `hasAdvisories=true` if ≥ 1 P2 finding
 
 ## Max Iterations
 
-40
+40 (user directive: run all 40, cap takes precedence over convergence)
 
 ## Convergence Threshold
 
-0.05
-
-## Extension Run Notes (Iterations 10-40)
-
-- User directive overrode the iteration-009 convergence stop. This packet was intentionally driven to the full 40-iteration cap.
-- Dimension rotation completed to plan: D1 x5, D2 x5, D3 x5, D4 x4, D5 x4, D6 x4, D7 x4 across iterations 10-40.
-- New findings added during the extension run:
-  - `P1-012-01` (D5): plugin bridge timeout resolves before child exit and never escalates past SIGTERM
-  - `P2-013-01` (D6): plugin negative-path coverage omits parser/nonzero-exit branches
-  - `P1-016-01` (D7): published build/setup commands point at a repo-root workspace invocation the checkout cannot satisfy
-- Final cumulative totals after iteration 040: P0=0, P1=5, P2=2
-- Deferred items remain unchanged: live-AI telemetry gaps and the two pre-existing non-020 failures were not re-opened as blockers.
+0.05 (documented but iteration cap rules — run to 40)
