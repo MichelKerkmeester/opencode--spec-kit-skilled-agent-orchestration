@@ -14,8 +14,8 @@ import { toErrorMessage } from '../utils/index.js';
 import * as intentClassifier from '../lib/search/intent-classifier.js';
 
 // Query-intent routing (Phase 020: structural/semantic/hybrid classification)
-import { classifyQueryIntent } from '../lib/code-graph/query-intent-classifier.js';
-import { buildContext } from '../lib/code-graph/code-graph-context.js';
+import { classifyQueryIntent } from '../code-graph/lib/query-intent-classifier.js';
+import { buildContext } from '../code-graph/lib/code-graph-context.js';
 
 // Core handlers for routing
 import { handleMemorySearch } from './memory-search.js';

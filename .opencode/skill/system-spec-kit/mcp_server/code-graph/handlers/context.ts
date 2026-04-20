@@ -3,11 +3,11 @@
 // ───────────────────────────────────────────────────────────────
 // MCP tool handler for code_graph_context — LLM-oriented graph neighborhoods.
 
-import { buildContext, type ContextArgs, type QueryMode } from '../../lib/code-graph/code-graph-context.js';
-import type { CodeGraphSeed } from '../../lib/code-graph/seed-resolver.js';
-import { ensureCodeGraphReady, type ReadyResult } from '../../lib/code-graph/ensure-ready.js';
-import * as graphDb from '../../lib/code-graph/code-graph-db.js';
-import { buildReadinessBlock } from '../../lib/code-graph/readiness-contract.js';
+import { buildContext, type ContextArgs, type QueryMode } from '../lib/code-graph-context.js';
+import type { CodeGraphSeed } from '../lib/seed-resolver.js';
+import { ensureCodeGraphReady, type ReadyResult } from '../lib/ensure-ready.js';
+import * as graphDb from '../lib/code-graph-db.js';
+import { buildReadinessBlock } from '../lib/readiness-contract.js';
 
 export interface ContextHandlerArgs {
   input?: string;

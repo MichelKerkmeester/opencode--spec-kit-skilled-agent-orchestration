@@ -7,13 +7,13 @@
 import { getStats, queryStartupHighlights, type StartupHighlight } from './code-graph-db.js';
 import { getGraphFreshness } from './ensure-ready.js';
 import { loadMostRecentState, type HookStateScope } from '../../hooks/claude/hook-state.js';
-import { isCocoIndexAvailable } from '../utils/cocoindex-path.js';
+import { isCocoIndexAvailable } from '../../lib/utils/cocoindex-path.js';
 import {
   createSharedPayloadEnvelope,
   trustStateFromGraphState,
   type SharedPayloadEnvelope,
   type SharedPayloadSection,
-} from '../context/shared-payload.js';
+} from '../../lib/context/shared-payload.js';
 
 /** Compact startup summary for the locally indexed code graph. */
 export interface StartupGraphSummary {

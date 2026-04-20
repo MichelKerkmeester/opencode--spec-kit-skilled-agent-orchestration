@@ -41,10 +41,10 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('returns ready status with highlights when graph is fresh', async () => {
-    vi.doMock('../lib/code-graph/code-graph-db.js', () => ({
+    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => freshGraphMock()),
     }));
-    vi.doMock('../lib/code-graph/ensure-ready.js', () => ({
+    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => 'fresh'),
     }));
     setupSharedMocks();
@@ -66,12 +66,12 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('returns stale status when graph scan is old', async () => {
-    vi.doMock('../lib/code-graph/code-graph-db.js', () => ({
+    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => freshGraphMock({
         lastScanTimestamp: new Date(Date.now() - 25 * 60 * 60 * 1000).toISOString(),
       })),
     }));
-    vi.doMock('../lib/code-graph/ensure-ready.js', () => ({
+    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => 'stale'),
     }));
     setupSharedMocks();
@@ -88,13 +88,13 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('returns missing status when graph is empty', async () => {
-    vi.doMock('../lib/code-graph/code-graph-db.js', () => ({
+    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => freshGraphMock({
         totalFiles: 0, totalNodes: 0, totalEdges: 0,
         lastScanTimestamp: null,
       })),
     }));
-    vi.doMock('../lib/code-graph/ensure-ready.js', () => ({
+    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => 'empty'),
     }));
     setupSharedMocks();
@@ -113,13 +113,13 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('avoids self-referential guidance when session_bootstrap is already the current surface', async () => {
-    vi.doMock('../lib/code-graph/code-graph-db.js', () => ({
+    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => freshGraphMock({
         totalFiles: 0, totalNodes: 0, totalEdges: 0,
         lastScanTimestamp: null,
       })),
     }));
-    vi.doMock('../lib/code-graph/ensure-ready.js', () => ({
+    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => 'empty'),
     }));
     setupSharedMocks();
@@ -133,10 +133,10 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('returns missing status when graph DB throws', async () => {
-    vi.doMock('../lib/code-graph/code-graph-db.js', () => ({
+    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => { throw new Error('DB not initialized'); }),
     }));
-    vi.doMock('../lib/code-graph/ensure-ready.js', () => ({
+    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => { throw new Error('DB not initialized'); }),
     }));
     setupSharedMocks();
@@ -149,10 +149,10 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('preserves sourceSurface parameter for each surface', async () => {
-    vi.doMock('../lib/code-graph/code-graph-db.js', () => ({
+    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => freshGraphMock()),
     }));
-    vi.doMock('../lib/code-graph/ensure-ready.js', () => ({
+    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => 'fresh'),
     }));
     setupSharedMocks();
@@ -167,7 +167,7 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('keeps the structural contract within the documented hard ceiling', async () => {
-    vi.doMock('../lib/code-graph/code-graph-db.js', () => ({
+    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => freshGraphMock({
         nodesByKind: Object.fromEntries(
           Array.from({ length: 12 }, (_, index) => [
@@ -177,7 +177,7 @@ describe('buildStructuralBootstrapContract', () => {
         ),
       })),
     }));
-    vi.doMock('../lib/code-graph/ensure-ready.js', () => ({
+    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => 'fresh'),
     }));
     setupSharedMocks();

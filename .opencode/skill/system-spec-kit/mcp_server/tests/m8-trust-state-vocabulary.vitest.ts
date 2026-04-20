@@ -123,7 +123,7 @@ describe('M8 — code_graph_query readiness vocabulary (T-CGQ-11 / R22-001, R23-
 
     // The canonical readiness vocabulary matches the ops-hardening contract
     // (ready | stale | missing) regardless of the trust-state axis.
-    const { normalizeStructuralReadiness } = await import('../lib/code-graph/ops-hardening.js');
+    const { normalizeStructuralReadiness } = await import('../code-graph/lib/ops-hardening.js');
     expect(normalizeStructuralReadiness('fresh')).toBe('ready');
     expect(normalizeStructuralReadiness('stale')).toBe('stale');
     expect(normalizeStructuralReadiness('empty')).toBe('missing');

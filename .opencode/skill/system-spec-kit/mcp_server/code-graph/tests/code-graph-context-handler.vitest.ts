@@ -14,20 +14,20 @@ const mocks = vi.hoisted(() => ({
   })),
 }));
 
-vi.mock('../lib/code-graph/code-graph-context.js', () => ({
+vi.mock('../lib/code-graph-context.js', () => ({
   buildContext: mocks.buildContext,
 }));
 
-vi.mock('../lib/code-graph/ensure-ready.js', () => ({
+vi.mock('../lib/ensure-ready.js', () => ({
   ensureCodeGraphReady: mocks.ensureCodeGraphReady,
 }));
 
-vi.mock('../lib/code-graph/code-graph-db.js', () => ({
+vi.mock('../lib/code-graph-db.js', () => ({
   getLastDetectorProvenance: mocks.getLastDetectorProvenance,
   getStats: mocks.getStats,
 }));
 
-import { handleCodeGraphContext } from '../handlers/code-graph/context.js';
+import { handleCodeGraphContext } from '../handlers/context.js';
 
 describe('code-graph-context handler', () => {
   beforeEach(() => {

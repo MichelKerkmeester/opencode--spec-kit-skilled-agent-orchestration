@@ -3,9 +3,9 @@
 // ───────────────────────────────────────────────────────────────
 // MCP tool handler for code_graph_status — reports graph health.
 
-import * as graphDb from '../../lib/code-graph/code-graph-db.js';
-import { getGraphFreshness } from '../../lib/code-graph/ensure-ready.js';
-import { buildReadinessBlock } from '../../lib/code-graph/readiness-contract.js';
+import * as graphDb from '../lib/code-graph-db.js';
+import { getGraphFreshness } from '../lib/ensure-ready.js';
+import { buildReadinessBlock } from '../lib/readiness-contract.js';
 
 /** Handle code_graph_status tool call */
 export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: string; text: string }> }> {

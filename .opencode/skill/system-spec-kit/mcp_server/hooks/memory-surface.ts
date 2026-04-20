@@ -6,7 +6,7 @@ import { isCocoIndexAvailable } from '../lib/utils/cocoindex-path.js';
 import * as vectorIndex from '../lib/search/vector-index.js';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher.js';
 import { enrichWithRetrievalDirectives } from '../lib/search/retrieval-directives.js';
-import * as graphDb from '../lib/code-graph/code-graph-db.js';
+import * as graphDb from '../code-graph/lib/code-graph-db.js';
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 import { recordBootstrapEvent } from '../lib/session/context-metrics.js';
 import * as workingMemory from '../lib/cognitive/working-memory.js';

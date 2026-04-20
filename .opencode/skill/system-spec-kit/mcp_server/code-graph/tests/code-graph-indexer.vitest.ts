@@ -7,12 +7,12 @@ import {
   generateContentHash,
   detectLanguage,
   getDefaultConfig,
-} from '../lib/code-graph/indexer-types.js';
+} from '../lib/indexer-types.js';
 import {
   parseFile,
   extractEdges,
   getRequestedParserBackend,
-} from '../lib/code-graph/structural-indexer.js';
+} from '../lib/structural-indexer.js';
 
 describe('indexer-types', () => {
   describe('generateSymbolId', () => {

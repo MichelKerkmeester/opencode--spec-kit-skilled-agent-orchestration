@@ -54,20 +54,20 @@ vi.mock('node:fs', () => ({
   statSync: mocks.statSync,
 }));
 
-vi.mock('../lib/code-graph/structural-indexer.js', () => ({
+vi.mock('../lib/structural-indexer.js', () => ({
   indexFiles: mocks.indexFiles,
 }));
 
-vi.mock('../lib/code-graph/code-graph-context.js', () => ({
+vi.mock('../lib/code-graph-context.js', () => ({
   buildContext: mocks.buildContext,
 }));
 
-vi.mock('../lib/code-graph/ensure-ready.js', () => ({
+vi.mock('../lib/ensure-ready.js', () => ({
   ensureCodeGraphReady: mocks.ensureCodeGraphReady,
   getGraphFreshness: mocks.getGraphFreshness,
 }));
 
-vi.mock('../lib/code-graph/code-graph-db.js', () => ({
+vi.mock('../lib/code-graph-db.js', () => ({
   getDb: mocks.getDb,
   getLastDetectorProvenance: mocks.getLastDetectorProvenance,
   getLastGitHead: mocks.getLastGitHead,
@@ -91,13 +91,13 @@ vi.mock('../lib/code-graph/code-graph-db.js', () => ({
   upsertFile: mocks.upsertFile,
 }));
 
-import { handleCodeGraphQuery } from '../handlers/code-graph/query.js';
-import { handleCodeGraphScan } from '../handlers/code-graph/scan.js';
-import { handleCodeGraphStatus } from '../handlers/code-graph/status.js';
-import { handleCodeGraphContext } from '../handlers/code-graph/context.js';
-import { handleCccStatus } from '../handlers/code-graph/ccc-status.js';
-import { handleCccReindex } from '../handlers/code-graph/ccc-reindex.js';
-import { handleCccFeedback } from '../handlers/code-graph/ccc-feedback.js';
+import { handleCodeGraphQuery } from '../handlers/query.js';
+import { handleCodeGraphScan } from '../handlers/scan.js';
+import { handleCodeGraphStatus } from '../handlers/status.js';
+import { handleCodeGraphContext } from '../handlers/context.js';
+import { handleCccStatus } from '../handlers/ccc-status.js';
+import { handleCccReindex } from '../handlers/ccc-reindex.js';
+import { handleCccFeedback } from '../handlers/ccc-feedback.js';
 
 type GraphStats = {
   totalFiles: number;

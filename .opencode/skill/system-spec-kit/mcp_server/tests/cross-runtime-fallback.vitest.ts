@@ -4,7 +4,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { createRuntimeFixture, setRuntimeEnv, clearRuntimeEnv } from './fixtures/runtime-fixtures.js';
 import { clearCodexHookPolicyCacheForTests } from '../lib/codex-hook-policy.js';
-import { detectRuntime, areHooksAvailable, getRecoveryApproach } from '../lib/code-graph/runtime-detection.js';
+import { detectRuntime, areHooksAvailable, getRecoveryApproach } from '../code-graph/lib/runtime-detection.js';
 
 describe('cross-runtime fallback', () => {
   afterEach(() => {

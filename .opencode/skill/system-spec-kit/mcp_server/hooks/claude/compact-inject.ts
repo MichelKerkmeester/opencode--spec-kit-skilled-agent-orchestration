@@ -14,8 +14,8 @@ import {
   withTimeout, HOOK_TIMEOUT_MS, COMPACTION_TOKEN_BUDGET, getRequiredSessionId,
 } from './shared.js';
 import { ensureStateDir, updateState } from './hook-state.js';
-import { mergeCompactBrief } from '../../lib/code-graph/compact-merger.js';
-import type { MergeInput } from '../../lib/code-graph/compact-merger.js';
+import { mergeCompactBrief } from '../../code-graph/lib/compact-merger.js';
+import type { MergeInput } from '../../code-graph/lib/compact-merger.js';
 import { autoSurfaceAtCompaction } from '../../hooks/memory-surface.js';
 import {
   createSharedPayloadEnvelope,

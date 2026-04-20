@@ -3,7 +3,7 @@ import {
   buildCodeGraphOpsContract,
   createMetadataOnlyPreview,
   normalizeStructuralReadiness,
-} from '../lib/code-graph/ops-hardening.js';
+} from '../lib/ops-hardening.js';
 
 describe('code graph ops hardening', () => {
   it('normalizes graph freshness into canonical readiness', () => {

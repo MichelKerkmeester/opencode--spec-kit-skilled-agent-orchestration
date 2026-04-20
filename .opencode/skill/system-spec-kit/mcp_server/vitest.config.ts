@@ -16,6 +16,7 @@ export default defineConfig({
   test: {
     include: [
       'mcp_server/tests/**/*.{vitest,test}.ts',
+      'mcp_server/code-graph/tests/**/*.{vitest,test}.ts',
       'mcp_server/skill-advisor/tests/**/*.{vitest,test}.ts',
       'scripts/tests/**/*.{vitest,test}.ts',
     ],

@@ -5,7 +5,7 @@
 // Collects events during MCP tool dispatch and computes quality scores.
 // In-memory only — no DB persistence needed for now.
 
-import { getStats as getGraphStats } from '../code-graph/code-graph-db.js';
+import { getStats as getGraphStats } from '../../code-graph/lib/code-graph-db.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES

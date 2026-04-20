@@ -10,9 +10,9 @@ import {
   handleCccStatus,
   handleCccReindex,
   handleCccFeedback,
-} from '../handlers/code-graph/index.js';
+} from '../handlers/index.js';
 
-import type { MCPResponse } from './types.js';
+import type { MCPResponse } from '../../tools/types.js';
 
 /** Tool names handled by this module */
 export const TOOL_NAMES = new Set([

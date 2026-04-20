@@ -41,7 +41,7 @@ type StartupBrief = {
 let buildStartupBrief: ((highlightCount?: number, stateScope?: { specFolder?: string; claudeSessionId?: string }) => StartupBrief) | null = null;
 let startupBriefImportError: string | null = null;
 try {
-  const mod = await import('../../lib/code-graph/startup-brief.js');
+  const mod = await import('../../code-graph/lib/startup-brief.js');
   buildStartupBrief = mod.buildStartupBrief;
 } catch (err: unknown) {
   startupBriefImportError = err instanceof Error ? err.message : String(err);

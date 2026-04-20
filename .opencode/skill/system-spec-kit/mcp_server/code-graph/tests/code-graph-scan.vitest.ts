@@ -28,11 +28,11 @@ vi.mock('node:fs', () => ({
   realpathSync: mocks.realpathSyncMock,
 }));
 
-vi.mock('../lib/code-graph/structural-indexer.js', () => ({
+vi.mock('../lib/structural-indexer.js', () => ({
   indexFiles: mocks.indexFilesMock,
 }));
 
-vi.mock('../lib/code-graph/code-graph-db.js', () => ({
+vi.mock('../lib/code-graph-db.js', () => ({
   getLastGitHead: mocks.getLastGitHeadMock,
   setLastDetectorProvenance: mocks.setLastDetectorProvenanceMock,
   setLastDetectorProvenanceSummary: mocks.setLastDetectorProvenanceSummaryMock,
@@ -47,7 +47,7 @@ vi.mock('../lib/code-graph/code-graph-db.js', () => ({
   getStats: mocks.getStatsMock,
 }));
 
-import { handleCodeGraphScan } from '../handlers/code-graph/scan.js';
+import { handleCodeGraphScan } from '../handlers/scan.js';
 
 describe('handleCodeGraphScan', () => {
   beforeEach(() => {

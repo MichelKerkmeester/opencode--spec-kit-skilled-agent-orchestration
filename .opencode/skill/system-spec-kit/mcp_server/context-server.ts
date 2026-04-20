@@ -82,8 +82,8 @@ import { runLineageBackfill } from './lib/storage/lineage-state.js';
 import * as hybridSearch from './lib/search/hybrid-search.js';
 import { createUnifiedGraphSearchFn } from './lib/search/graph-search-fn.js';
 import { isGraphUnifiedEnabled } from './lib/search/graph-flags.js';
-import * as graphDb from './lib/code-graph/code-graph-db.js';
-import { detectRuntime, type RuntimeInfo } from './lib/code-graph/runtime-detection.js';
+import * as graphDb from './code-graph/lib/code-graph-db.js';
+import { detectRuntime, type RuntimeInfo } from './code-graph/lib/runtime-detection.js';
 import {
   closeDb as closeSkillGraphDb,
   indexSkillMetadata,

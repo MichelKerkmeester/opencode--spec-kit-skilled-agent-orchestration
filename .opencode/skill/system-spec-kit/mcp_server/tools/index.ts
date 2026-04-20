@@ -7,7 +7,7 @@ import * as memoryTools from './memory-tools.js';
 import * as causalTools from './causal-tools.js';
 import * as checkpointTools from './checkpoint-tools.js';
 import * as lifecycleTools from './lifecycle-tools.js';
-import * as codeGraphTools from './code-graph-tools.js';
+import * as codeGraphTools from '../code-graph/tools/index.js';
 import * as skillGraphTools from './skill-graph-tools.js';
 import { validateToolArgs } from '../schemas/tool-input-schemas.js';
 import {

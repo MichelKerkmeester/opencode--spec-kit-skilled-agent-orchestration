@@ -3,9 +3,9 @@
 // ───────────────────────────────────────────────────────────────
 // MCP tool handler for code_graph_query — queries structural relationships.
 
-import * as graphDb from '../../lib/code-graph/code-graph-db.js';
-import { ensureCodeGraphReady, type ReadyResult } from '../../lib/code-graph/ensure-ready.js';
-import type { EdgeType } from '../../lib/code-graph/indexer-types.js';
+import * as graphDb from '../lib/code-graph-db.js';
+import { ensureCodeGraphReady, type ReadyResult } from '../lib/ensure-ready.js';
+import type { EdgeType } from '../lib/indexer-types.js';
 import {
   attachGraphEdgeEnrichment,
   attachStructuralTrustFields,
@@ -15,7 +15,7 @@ import {
 import {
   buildQueryGraphMetadata,
   buildReadinessBlock,
-} from '../../lib/code-graph/readiness-contract.js';
+} from '../lib/readiness-contract.js';
 
 export interface QueryArgs {
   operation: 'outline' | 'calls_from' | 'calls_to' | 'imports_from' | 'imports_to' | 'blast_radius';

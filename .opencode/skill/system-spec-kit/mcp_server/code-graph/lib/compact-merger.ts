@@ -9,7 +9,7 @@ import {
   createSharedPayloadEnvelope,
   type PreMergeSelectionMetadata,
   type SharedPayloadEnvelope,
-} from '../context/shared-payload.js';
+} from '../../lib/context/shared-payload.js';
 
 /** Input from each context source */
 export interface MergeInput {

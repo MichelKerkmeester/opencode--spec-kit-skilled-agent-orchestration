@@ -8,9 +8,9 @@ import {
   initDb,
   replaceNodes,
   upsertFile,
-} from '../lib/code-graph/code-graph-db.js';
-import type { CodeNode } from '../lib/code-graph/indexer-types.js';
-import { resolveSeed } from '../lib/code-graph/seed-resolver.js';
+} from '../lib/code-graph-db.js';
+import type { CodeNode } from '../lib/indexer-types.js';
+import { resolveSeed } from '../lib/seed-resolver.js';
 
 describe('code graph seed resolver', () => {
   let tempDir = '';

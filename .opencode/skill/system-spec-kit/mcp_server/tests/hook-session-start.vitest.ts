@@ -237,7 +237,7 @@ describe('session-prime hook', () => {
         })),
         logCachedSummaryDecision: vi.fn(),
       }));
-      vi.doMock('../lib/code-graph/startup-brief.js', () => ({
+      vi.doMock('../code-graph/lib/startup-brief.js', () => ({
         buildStartupBrief: vi.fn(() => ({
           graphOutline: '- handlers/session-bootstrap.ts',
           sessionContinuity: null,
@@ -274,7 +274,7 @@ describe('session-prime hook', () => {
         getCachedSessionSummaryDecision: vi.fn(() => ({ status: 'rejected', reason: 'no cached summary' })),
         logCachedSummaryDecision: vi.fn(),
       }));
-      vi.doMock('../lib/code-graph/startup-brief.js', () => {
+      vi.doMock('../code-graph/lib/startup-brief.js', () => {
         throw new Error('synthetic startup brief import failure');
       });
 

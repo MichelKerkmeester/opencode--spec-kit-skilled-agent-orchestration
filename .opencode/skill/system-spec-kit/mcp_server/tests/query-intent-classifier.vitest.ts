@@ -6,7 +6,7 @@ import {
   classifyQueryIntent,
   type QueryIntent,
   type ClassificationResult,
-} from '../lib/code-graph/query-intent-classifier.js';
+} from '../code-graph/lib/query-intent-classifier.js';
 
 describe('query-intent-classifier', () => {
   describe('structural queries', () => {

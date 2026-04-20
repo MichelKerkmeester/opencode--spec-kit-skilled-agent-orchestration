@@ -13,7 +13,7 @@ const mocks = vi.hoisted(() => ({
   getLastDetectorProvenance: vi.fn(),
 }));
 
-vi.mock('../lib/code-graph/code-graph-db.js', () => ({
+vi.mock('../code-graph/lib/code-graph-db.js', () => ({
   getLastDetectorProvenance: mocks.getLastDetectorProvenance,
 }));
 
@@ -23,7 +23,7 @@ import {
   buildQueryGraphMetadata,
   buildReadinessBlock,
   type ReadyResult,
-} from '../lib/code-graph/readiness-contract.js';
+} from '../code-graph/lib/readiness-contract.js';
 
 function makeReadiness(freshness: ReadyResult['freshness']): ReadyResult {
   return {

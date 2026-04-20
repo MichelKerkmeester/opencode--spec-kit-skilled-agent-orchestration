@@ -5,8 +5,8 @@
 
 import { existsSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
-import * as graphDb from '../../lib/code-graph/code-graph-db.js';
-import { canonicalReadinessFromFreshness } from '../../lib/code-graph/readiness-contract.js';
+import * as graphDb from '../lib/code-graph-db.js';
+import { canonicalReadinessFromFreshness } from '../lib/readiness-contract.js';
 
 function buildUnavailableReadiness(reason: string) {
   return {

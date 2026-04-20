@@ -10,7 +10,7 @@ import { handleStartup as handleClaudeStartup } from '../hooks/claude/session-pr
 import { processStopHook } from '../hooks/claude/session-stop.js';
 import { handleCompact as handleGeminiCompact } from '../hooks/gemini/session-prime.js';
 import { getCachedSessionSummaryDecision } from '../handlers/session-resume.js';
-import { buildStartupBrief } from '../lib/code-graph/startup-brief.js';
+import { buildStartupBrief } from '../code-graph/lib/startup-brief.js';
 import { createSharedPayloadEnvelope } from '../lib/context/shared-payload.js';
 import {
   CANONICAL_FOLD_VERSION,

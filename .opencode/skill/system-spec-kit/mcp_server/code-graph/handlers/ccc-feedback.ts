@@ -5,8 +5,8 @@
 
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
-import * as graphDb from '../../lib/code-graph/code-graph-db.js';
-import { canonicalReadinessFromFreshness } from '../../lib/code-graph/readiness-contract.js';
+import * as graphDb from '../lib/code-graph-db.js';
+import { canonicalReadinessFromFreshness } from '../lib/readiness-contract.js';
 
 export interface FeedbackArgs {
   query: string;

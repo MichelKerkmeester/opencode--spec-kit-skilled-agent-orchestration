@@ -28,15 +28,15 @@
 import * as graphDb from './code-graph-db.js';
 import type { ReadyResult } from './ensure-ready.js';
 import type { StructuralReadiness } from './ops-hardening.js';
-import type { SharedPayloadTrustState } from '../context/shared-payload.js';
-import { assertNever } from '../utils/exhaustiveness.js';
+import type { SharedPayloadTrustState } from '../../lib/context/shared-payload.js';
+import { assertNever } from '../../lib/utils/exhaustiveness.js';
 
 // Re-export the surface types that downstream consumers (query.ts
 // and its Wave B siblings) need so they can import everything
 // readiness-related from a single module.
 export type { ReadyResult } from './ensure-ready.js';
 export type { StructuralReadiness } from './ops-hardening.js';
-export type { SharedPayloadTrustState } from '../context/shared-payload.js';
+export type { SharedPayloadTrustState } from '../../lib/context/shared-payload.js';
 
 /** Readiness payload shared by code-graph handler responses. */
 export interface CodeGraphReadinessBlock extends ReadyResult {

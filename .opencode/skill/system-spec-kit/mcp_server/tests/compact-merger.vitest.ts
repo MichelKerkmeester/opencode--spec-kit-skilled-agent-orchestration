@@ -2,7 +2,7 @@
 // TEST: Compact Merger
 // ───────────────────────────────────────────────────────────────
 import { describe, it, expect } from 'vitest';
-import { mergeCompactBrief, type MergeInput } from '../lib/code-graph/compact-merger.js';
+import { mergeCompactBrief, type MergeInput } from '../code-graph/lib/compact-merger.js';
 
 describe('compact merger', () => {
   const createInput = (overrides: Partial<MergeInput> = {}): MergeInput => ({

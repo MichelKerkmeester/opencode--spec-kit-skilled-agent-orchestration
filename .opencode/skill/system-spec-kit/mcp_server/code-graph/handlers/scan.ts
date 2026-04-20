@@ -6,10 +6,10 @@
 import { execSync } from 'node:child_process';
 import { existsSync, realpathSync } from 'node:fs';
 import { resolve, sep } from 'node:path';
-import { getDefaultConfig, type DetectorProvenance, type CodeEdge } from '../../lib/code-graph/indexer-types.js';
-import { indexFiles } from '../../lib/code-graph/structural-indexer.js';
-import * as graphDb from '../../lib/code-graph/code-graph-db.js';
-import { buildReadinessBlock } from '../../lib/code-graph/readiness-contract.js';
+import { getDefaultConfig, type DetectorProvenance, type CodeEdge } from '../lib/indexer-types.js';
+import { indexFiles } from '../lib/structural-indexer.js';
+import * as graphDb from '../lib/code-graph-db.js';
+import { buildReadinessBlock } from '../lib/readiness-contract.js';
 
 export interface ScanArgs {
   rootDir?: string;

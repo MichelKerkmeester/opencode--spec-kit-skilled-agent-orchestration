@@ -2,7 +2,7 @@
 // TEST: Tree-Sitter WASM Parser
 // ───────────────────────────────────────────────────────────────
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { TreeSitterParser } from '../lib/code-graph/tree-sitter-parser.js';
+import { TreeSitterParser } from '../code-graph/lib/tree-sitter-parser.js';
 
 describe('TreeSitterParser', () => {
   describe('isReady', () => {
@@ -96,7 +96,7 @@ describe('structural-indexer tree-sitter readiness integration', () => {
     };
 
     vi.resetModules();
-    vi.doMock('../lib/code-graph/tree-sitter-parser.js', () => ({
+    vi.doMock('../code-graph/lib/tree-sitter-parser.js', () => ({
       TreeSitterParser: class MockTreeSitterParser {
         static init = treeSitterMocks.init;
         static loadAllLanguages = treeSitterMocks.loadAllLanguages;
@@ -104,7 +104,7 @@ describe('structural-indexer tree-sitter readiness integration', () => {
       },
     }));
 
-    const { getParser } = await import('../lib/code-graph/structural-indexer.js');
+    const { getParser } = await import('../code-graph/lib/structural-indexer.js');
 
     const firstParser = await getParser();
     expect(treeSitterMocks.init).toHaveBeenCalledTimes(1);

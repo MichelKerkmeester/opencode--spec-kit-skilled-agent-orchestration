@@ -37,7 +37,7 @@ export interface CopilotHookInput {
 
 let buildStartupBrief: (() => StartupBrief) | null = null;
 try {
-  const mod = await import('../../lib/code-graph/startup-brief.js');
+  const mod = await import('../../code-graph/lib/startup-brief.js');
   buildStartupBrief = mod.buildStartupBrief;
 } catch {
   // Startup brief builder unavailable — fall back to a minimal banner.

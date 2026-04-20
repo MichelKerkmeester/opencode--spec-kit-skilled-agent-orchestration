@@ -2,7 +2,7 @@
 // TEST: Code Graph Auto-Trigger (Ensure Ready)
 // ───────────────────────────────────────────────────────────────
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import type { ReadyAction, GraphFreshness, ReadyResult } from '../lib/code-graph/ensure-ready.js';
+import type { ReadyAction, GraphFreshness, ReadyResult } from '../code-graph/lib/ensure-ready.js';
 
 const mocks = vi.hoisted(() => ({
   getDbMock: vi.fn(),
@@ -23,7 +23,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 // Mock code-graph-db to avoid real DB access
-vi.mock('../lib/code-graph/code-graph-db.js', () => ({
+vi.mock('../code-graph/lib/code-graph-db.js', () => ({
   getDb: mocks.getDbMock,
   getStats: mocks.getStatsMock,
   getLastGitHead: mocks.getLastGitHeadMock,
@@ -47,7 +47,7 @@ vi.mock('node:child_process', () => ({
 }));
 
 // Mock structural-indexer to avoid real parsing
-vi.mock('../lib/code-graph/structural-indexer.js', () => ({
+vi.mock('../code-graph/lib/structural-indexer.js', () => ({
   indexFiles: mocks.indexFilesMock,
 }));
 
@@ -134,7 +134,7 @@ describe('ensure-ready', () => {
       mocks.getTrackedFilesMock.mockReturnValue(['/tmp/test-root/stale.ts']);
       mocks.ensureFreshFilesMock.mockReturnValue({ fresh: ['/tmp/test-root/stale.ts'], stale: [] });
 
-      const { ensureCodeGraphReady } = await import('../lib/code-graph/ensure-ready.js');
+      const { ensureCodeGraphReady } = await import('../code-graph/lib/ensure-ready.js');
       const result = await ensureCodeGraphReady('/tmp/test-root');
 
       expect(result.freshness).toBe('fresh');
@@ -149,7 +149,7 @@ describe('ensure-ready', () => {
       mocks.getTrackedFilesMock.mockReturnValue(['/tmp/test-root/deleted.ts']);
       mocks.existsSyncMock.mockReturnValue(false);
 
-      const { ensureCodeGraphReady } = await import('../lib/code-graph/ensure-ready.js');
+      const { ensureCodeGraphReady } = await import('../code-graph/lib/ensure-ready.js');
       const result = await ensureCodeGraphReady('/tmp/test-root');
 
       expect(result.action).toBe('none');
@@ -165,7 +165,7 @@ describe('ensure-ready', () => {
       mocks.getTrackedFilesMock.mockReturnValue(['/tmp/test-root/stale.ts']);
       mocks.ensureFreshFilesMock.mockReturnValue({ fresh: [], stale: ['/tmp/test-root/stale.ts'] });
 
-      const { ensureCodeGraphReady } = await import('../lib/code-graph/ensure-ready.js');
+      const { ensureCodeGraphReady } = await import('../code-graph/lib/ensure-ready.js');
       const result = await ensureCodeGraphReady('/tmp/test-root', { allowInlineIndex: false });
 
       expect(result.action).toBe('selective_reindex');
@@ -183,7 +183,7 @@ describe('ensure-ready', () => {
         .mockReturnValueOnce({ fresh: [], stale: ['/tmp/test-root/stale.ts'] })
         .mockReturnValueOnce({ fresh: ['/tmp/test-root/stale.ts'], stale: [] });
 
-      const { ensureCodeGraphReady } = await import('../lib/code-graph/ensure-ready.js');
+      const { ensureCodeGraphReady } = await import('../code-graph/lib/ensure-ready.js');
       const result = await ensureCodeGraphReady('/tmp/test-root', {
         allowInlineIndex: true,
         allowInlineFullScan: false,
@@ -210,7 +210,7 @@ describe('ensure-ready', () => {
         .mockReturnValueOnce({ fresh: [], stale: ['/tmp/test-root/stale.ts'] })
         .mockReturnValueOnce({ fresh: ['/tmp/test-root/stale.ts'], stale: [] });
 
-      const { ensureCodeGraphReady } = await import('../lib/code-graph/ensure-ready.js');
+      const { ensureCodeGraphReady } = await import('../code-graph/lib/ensure-ready.js');
       const result = await ensureCodeGraphReady('/tmp/test-root', {
         allowInlineIndex: true,
         allowInlineFullScan: false,
@@ -233,7 +233,7 @@ describe('ensure-ready', () => {
       mocks.getTrackedFilesMock.mockReturnValue(['/tmp/test-root/fresh.ts']);
       mocks.ensureFreshFilesMock.mockReturnValue({ fresh: ['/tmp/test-root/fresh.ts'], stale: [] });
 
-      const { ensureCodeGraphReady } = await import('../lib/code-graph/ensure-ready.js');
+      const { ensureCodeGraphReady } = await import('../code-graph/lib/ensure-ready.js');
       const result = await ensureCodeGraphReady('/tmp/test-root', {
         allowInlineIndex: true,
         allowInlineFullScan: false,
@@ -254,7 +254,7 @@ describe('ensure-ready', () => {
       mocks.getTrackedFilesMock.mockReturnValue(staleFiles);
       mocks.ensureFreshFilesMock.mockReturnValue({ fresh: [], stale: staleFiles });
 
-      const { ensureCodeGraphReady } = await import('../lib/code-graph/ensure-ready.js');
+      const { ensureCodeGraphReady } = await import('../code-graph/lib/ensure-ready.js');
       const result = await ensureCodeGraphReady('/tmp/test-root', {
         allowInlineIndex: true,
         allowInlineFullScan: false,
@@ -270,7 +270,7 @@ describe('ensure-ready', () => {
 
   describe('getGraphFreshness', () => {
     it('returns a valid GraphFreshness value', async () => {
-      const { getGraphFreshness } = await import('../lib/code-graph/ensure-ready.js');
+      const { getGraphFreshness } = await import('../code-graph/lib/ensure-ready.js');
       const freshness = getGraphFreshness('/tmp/test-root');
 
       expect(['fresh', 'stale', 'empty']).toContain(freshness);

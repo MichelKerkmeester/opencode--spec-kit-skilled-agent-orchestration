@@ -17,7 +17,7 @@ const mocks = vi.hoisted(() => ({
   })),
 }));
 
-vi.mock('../lib/code-graph/code-graph-db.js', () => ({
+vi.mock('../lib/code-graph-db.js', () => ({
   getDb: mocks.getDb,
   queryEdgesFrom: mocks.queryEdgesFrom,
   queryEdgesTo: mocks.queryEdgesTo,
@@ -28,11 +28,11 @@ vi.mock('../lib/code-graph/code-graph-db.js', () => ({
   getLastDetectorProvenance: mocks.getLastDetectorProvenance,
 }));
 
-vi.mock('../lib/code-graph/ensure-ready.js', () => ({
+vi.mock('../lib/ensure-ready.js', () => ({
   ensureCodeGraphReady: mocks.ensureCodeGraphReady,
 }));
 
-import { handleCodeGraphQuery } from '../handlers/code-graph/query.js';
+import { handleCodeGraphQuery } from '../handlers/query.js';
 
 function createDb({
   byId,

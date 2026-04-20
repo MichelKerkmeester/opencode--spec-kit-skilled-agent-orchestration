@@ -70,11 +70,11 @@ vi.mock('../lib/search/intent-classifier.js', () => ({
   getProfileForIntent: mocks.getProfileForIntent,
 }));
 
-vi.mock('../lib/code-graph/query-intent-classifier.js', () => ({
+vi.mock('../code-graph/lib/query-intent-classifier.js', () => ({
   classifyQueryIntent: mocks.classifyQueryIntent,
 }));
 
-vi.mock('../lib/code-graph/code-graph-context.js', () => ({
+vi.mock('../code-graph/lib/code-graph-context.js', () => ({
   buildContext: mocks.buildContext,
 }));
 
