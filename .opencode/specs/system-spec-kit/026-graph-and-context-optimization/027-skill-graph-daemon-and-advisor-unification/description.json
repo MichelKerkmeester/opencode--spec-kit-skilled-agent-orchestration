@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification",
+  "description": "Feature Specification: Phase 027 — Skill-Graph Daemon + Advisor Unification (research phase)",
+  "keywords": [
+    "skill-graph-daemon",
+    "auto-update",
+    "advisor-unification",
+    "hybrid-search",
+    "causal-graph",
+    "mcp-consolidation",
+    "trigger-phrase-derivation",
+    "research",
+    "cli-codex"
+  ],
+  "lastUpdated": "2026-04-20T05:20:00.000Z",
+  "specId": "027",
+  "folderSlug": "skill-graph-daemon-and-advisor-unification",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

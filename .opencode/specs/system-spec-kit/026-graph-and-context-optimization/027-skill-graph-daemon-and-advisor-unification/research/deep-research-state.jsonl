@@ -1,0 +1,2 @@
+{"type":"config","target":"skill-graph-daemon-and-advisor-unification","maxIterations":40,"createdAt":"2026-04-20T05:20:00Z","specFolder":"system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification","tracks":["A","B","C","D","X","S"]}
+{"type":"event","event":"init","sessionId":"027-dr-r01","generation":1,"timestamp":"2026-04-20T05:20:00Z","executor":"cli-codex-40-per-iter","strategy":"per-iter fresh codex invocation, 31 question iters + 4 cross-track + 5 synthesis intermediates + 1 final synthesis"}

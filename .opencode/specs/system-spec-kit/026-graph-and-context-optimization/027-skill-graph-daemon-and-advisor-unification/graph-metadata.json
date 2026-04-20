@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface",
+      "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy",
+      "system-spec-kit/026-graph-and-context-optimization/024-deferred-remediation-and-telemetry-run",
+      "system-spec-kit/026-graph-and-context-optimization/025-deep-review-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/026-r03-post-remediation"
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 027",
+      "skill graph daemon",
+      "advisor unification",
+      "auto update skill",
+      "causal advisor",
+      "mcp consolidation"
+    ],
+    "key_topics": [
+      "daemon",
+      "auto-reindex",
+      "trigger-derivation",
+      "hybrid-search",
+      "causal-graph",
+      "mcp-server-consolidation"
+    ],
+    "status": "draft",
+    "lastRefreshed": "2026-04-20T05:20:00.000Z"
+  }
+}
