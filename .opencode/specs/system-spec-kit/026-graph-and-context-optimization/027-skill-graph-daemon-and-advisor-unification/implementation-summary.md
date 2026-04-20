@@ -69,8 +69,8 @@ Two planes (graph/freshness + advisor projection/scoring) inside the self-contai
 |---|---|---|---|---|
 | 000 | validator-esm-fix (prereq) | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `77b0f59e2` |
 | 001 | daemon-freshness-foundation | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `32fd9197c` (CPU 0.031% / RSS 5.516MB, 16/16 tests) |
-| 002 | lifecycle-and-derived-metadata | ✅ 2026-04-20 | 🔄 2026-04-20 cli-codex gpt-5.4 high fast (in flight) | — |
-| 003 | native-advisor-core | ✅ 2026-04-20 | — | — |
+| 002 | lifecycle-and-derived-metadata | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `8318dfaf8` (13 AC tests + 29 combined, 0 SKILL.md mutations) |
+| 003 | native-advisor-core | ✅ 2026-04-20 | 🔄 2026-04-20 cli-codex gpt-5.4 high fast (HARD GATE, in flight) | — |
 | 004 | mcp-advisor-surface | ✅ 2026-04-20 | — | — |
 | 005 | compat-migration-and-bootstrap | ✅ 2026-04-20 | — | — |
 | 006 | promotion-gates | ✅ 2026-04-20 | — | — |
