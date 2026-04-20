@@ -2,7 +2,7 @@
 // MODULE: Derived Metadata Sanitizer
 // ───────────────────────────────────────────────────────────────
 
-import { sanitizeSkillLabel } from '../../../lib/skill-advisor/render.js';
+import { sanitizeSkillLabel } from '../render.js';
 import { SKILL_DERIVED_SANITIZER_VERSION } from '../../schemas/skill-derived-v2.js';
 
 // ───────────────────────────────────────────────────────────────

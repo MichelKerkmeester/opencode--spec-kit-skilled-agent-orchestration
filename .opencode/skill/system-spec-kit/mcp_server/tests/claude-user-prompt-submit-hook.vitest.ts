@@ -7,10 +7,10 @@ import {
   parseClaudeUserPromptSubmitInput,
   type ClaudeUserPromptSubmitInput,
 } from '../hooks/claude/user-prompt-submit.js';
-import { normalizeRuntimeOutput } from '../lib/skill-advisor/normalize-adapter-output.js';
-import { renderAdvisorBrief } from '../lib/skill-advisor/render.js';
-import { validateAdvisorHookDiagnosticRecord } from '../lib/skill-advisor/metrics.js';
-import type { AdvisorHookResult } from '../lib/skill-advisor/skill-advisor-brief.js';
+import { normalizeRuntimeOutput } from '../skill-advisor/lib/normalize-adapter-output.js';
+import { renderAdvisorBrief } from '../skill-advisor/lib/render.js';
+import { validateAdvisorHookDiagnosticRecord } from '../skill-advisor/lib/metrics.js';
+import type { AdvisorHookResult } from '../skill-advisor/lib/skill-advisor-brief.js';
 
 const fixturesDir = join(import.meta.dirname, 'advisor-fixtures');
 

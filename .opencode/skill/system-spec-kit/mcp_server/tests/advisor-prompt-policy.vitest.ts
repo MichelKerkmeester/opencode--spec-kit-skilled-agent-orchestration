@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   extractMetalinguisticSkillMentions,
   shouldFireAdvisor,
-} from '../lib/skill-advisor/prompt-policy.js';
+} from '../skill-advisor/lib/prompt-policy.js';
 
 describe('skill advisor prompt policy', () => {
   it('skips empty, whitespace, and exact navigation commands', () => {

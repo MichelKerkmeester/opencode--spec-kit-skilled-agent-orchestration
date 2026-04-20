@@ -17,7 +17,7 @@ import {
   readAdvisorGeneration,
   type AdvisorGenerationRecoveryPath,
 } from './generation.js';
-import type { AdvisorEnvelopeMetadata } from '../context/shared-payload.js';
+import type { AdvisorEnvelopeMetadata } from '../../lib/context/shared-payload.js';
 import {
   classifyAdvisorException,
   type AdvisorErrorClass,

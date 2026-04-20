@@ -4,8 +4,8 @@ import { describe, expect, it } from 'vitest';
 import {
   renderAdvisorBrief,
   sanitizeSkillLabel,
-} from '../lib/skill-advisor/render.js';
-import type { AdvisorHookResult } from '../lib/skill-advisor/skill-advisor-brief.js';
+} from '../skill-advisor/lib/render.js';
+import type { AdvisorHookResult } from '../skill-advisor/lib/skill-advisor-brief.js';
 
 const fixturesDir = join(import.meta.dirname, 'advisor-fixtures');
 

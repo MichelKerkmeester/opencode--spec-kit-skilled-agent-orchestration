@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { runAdvisorSubprocess } from '../lib/skill-advisor/subprocess.js';
+import { runAdvisorSubprocess } from '../skill-advisor/lib/subprocess.js';
 
 vi.mock('node:child_process', () => ({
   spawn: vi.fn(),

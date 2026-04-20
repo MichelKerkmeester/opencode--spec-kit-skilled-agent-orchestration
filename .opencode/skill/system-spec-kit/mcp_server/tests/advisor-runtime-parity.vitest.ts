@@ -12,13 +12,13 @@ import { handleCodexUserPromptSubmit } from '../hooks/codex/user-prompt-submit.j
 import {
   normalizeRuntimeOutput,
   type NormalizedAdvisorRuntimeOutput,
-} from '../lib/skill-advisor/normalize-adapter-output.js';
-import { renderAdvisorBrief } from '../lib/skill-advisor/render.js';
+} from '../skill-advisor/lib/normalize-adapter-output.js';
+import { renderAdvisorBrief } from '../skill-advisor/lib/render.js';
 import type {
   AdvisorHookResult,
   AdvisorRuntime,
-} from '../lib/skill-advisor/skill-advisor-brief.js';
-import { buildSkillAdvisorBrief } from '../lib/skill-advisor/skill-advisor-brief.js';
+} from '../skill-advisor/lib/skill-advisor-brief.js';
+import { buildSkillAdvisorBrief } from '../skill-advisor/lib/skill-advisor-brief.js';
 import SpecKitSkillAdvisorPlugin from '../../../../plugins/spec-kit-skill-advisor.js';
 
 const mockedBridge = vi.hoisted(() => ({

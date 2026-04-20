@@ -3,7 +3,7 @@ import {
   AdvisorPromptCache,
   MAX_CACHE_ENTRIES,
   createAdvisorPromptCacheKey,
-} from '../lib/skill-advisor/prompt-cache.js';
+} from '../skill-advisor/lib/prompt-cache.js';
 
 describe('skill advisor prompt cache', () => {
   it('returns exact HMAC cache hits within the TTL', () => {

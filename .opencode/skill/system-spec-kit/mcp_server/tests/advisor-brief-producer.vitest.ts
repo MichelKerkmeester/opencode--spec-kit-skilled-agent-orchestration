@@ -2,16 +2,16 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   buildSkillAdvisorBrief,
   clearAdvisorBriefCacheForTests,
-} from '../lib/skill-advisor/skill-advisor-brief.js';
-import type { AdvisorFreshnessResult } from '../lib/skill-advisor/freshness.js';
-import { getAdvisorFreshness } from '../lib/skill-advisor/freshness.js';
-import { runAdvisorSubprocess } from '../lib/skill-advisor/subprocess.js';
+} from '../skill-advisor/lib/skill-advisor-brief.js';
+import type { AdvisorFreshnessResult } from '../skill-advisor/lib/freshness.js';
+import { getAdvisorFreshness } from '../skill-advisor/lib/freshness.js';
+import { runAdvisorSubprocess } from '../skill-advisor/lib/subprocess.js';
 
-vi.mock('../lib/skill-advisor/freshness.js', () => ({
+vi.mock('../skill-advisor/lib/freshness.js', () => ({
   getAdvisorFreshness: vi.fn(),
 }));
 
-vi.mock('../lib/skill-advisor/subprocess.js', () => ({
+vi.mock('../skill-advisor/lib/subprocess.js', () => ({
   runAdvisorSubprocess: vi.fn(),
 }));
 

@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 import {
   buildSkillAdvisorBrief,
   type AdvisorHookResult,
-} from '../../mcp_server/lib/skill-advisor/skill-advisor-brief.js';
+} from '../../mcp_server/skill-advisor/lib/skill-advisor-brief.js';
 import { recordSmartRouterCompliance } from './smart-router-telemetry.js';
 
 export interface CorpusRow {

@@ -11,7 +11,7 @@ import {
   type SharedPayloadSection,
   type SharedPayloadSourceRef,
   type SharedPayloadTrustState,
-} from '../context/shared-payload.js';
+} from '../../lib/context/shared-payload.js';
 import {
   getAdvisorFreshness,
   type AdvisorFreshnessResult,

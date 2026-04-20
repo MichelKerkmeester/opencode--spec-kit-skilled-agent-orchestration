@@ -15,13 +15,13 @@ import { performance } from 'node:perf_hooks';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
   getAdvisorFreshness,
-} from '../lib/skill-advisor/freshness.js';
+} from '../skill-advisor/lib/freshness.js';
 import {
   clearAdvisorGenerationMemory,
   getAdvisorGenerationPath,
   incrementAdvisorGeneration,
-} from '../lib/skill-advisor/generation.js';
-import { clearAdvisorSourceCache } from '../lib/skill-advisor/source-cache.js';
+} from '../skill-advisor/lib/generation.js';
+import { clearAdvisorSourceCache } from '../skill-advisor/lib/source-cache.js';
 
 function writeFile(filePath: string, content: string, mtimeMs: number): void {
   mkdirSync(dirname(filePath), { recursive: true });

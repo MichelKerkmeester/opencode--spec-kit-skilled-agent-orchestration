@@ -10,7 +10,7 @@ import {
   getAdvisorHookMetricDefinitions,
   serializeAdvisorHookDiagnosticRecord,
   validateAdvisorHookDiagnosticRecord,
-} from '../lib/skill-advisor/metrics.js';
+} from '../skill-advisor/lib/metrics.js';
 
 describe('advisor observability contract', () => {
   it('defines the speckit_advisor_hook metric namespace and closed labels', () => {

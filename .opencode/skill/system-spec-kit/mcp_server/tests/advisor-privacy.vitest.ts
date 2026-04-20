@@ -1,25 +1,25 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { createAdvisorPromptCacheKey } from '../lib/skill-advisor/prompt-cache.js';
+import { createAdvisorPromptCacheKey } from '../skill-advisor/lib/prompt-cache.js';
 import {
   buildSkillAdvisorBrief,
   clearAdvisorBriefCacheForTests,
-} from '../lib/skill-advisor/skill-advisor-brief.js';
-import type { AdvisorFreshnessResult } from '../lib/skill-advisor/freshness.js';
-import { getAdvisorFreshness } from '../lib/skill-advisor/freshness.js';
-import { runAdvisorSubprocess } from '../lib/skill-advisor/subprocess.js';
-import { renderAdvisorBrief } from '../lib/skill-advisor/render.js';
+} from '../skill-advisor/lib/skill-advisor-brief.js';
+import type { AdvisorFreshnessResult } from '../skill-advisor/lib/freshness.js';
+import { getAdvisorFreshness } from '../skill-advisor/lib/freshness.js';
+import { runAdvisorSubprocess } from '../skill-advisor/lib/subprocess.js';
+import { renderAdvisorBrief } from '../skill-advisor/lib/render.js';
 import {
   buildAdvisorHookHealthSection,
   createAdvisorHookDiagnosticRecord,
   getAdvisorHookMetricDefinitions,
   serializeAdvisorHookDiagnosticRecord,
-} from '../lib/skill-advisor/metrics.js';
+} from '../skill-advisor/lib/metrics.js';
 
-vi.mock('../lib/skill-advisor/freshness.js', () => ({
+vi.mock('../skill-advisor/lib/freshness.js', () => ({
   getAdvisorFreshness: vi.fn(),
 }));
 
-vi.mock('../lib/skill-advisor/subprocess.js', () => ({
+vi.mock('../skill-advisor/lib/subprocess.js', () => ({
   runAdvisorSubprocess: vi.fn(),
 }));
 

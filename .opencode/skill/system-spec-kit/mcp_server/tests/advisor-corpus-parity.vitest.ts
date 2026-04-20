@@ -11,7 +11,7 @@ import { describe, expect, it } from 'vitest';
 import {
   buildSkillAdvisorBrief,
   clearAdvisorBriefCacheForTests,
-} from '../lib/skill-advisor/skill-advisor-brief.js';
+} from '../skill-advisor/lib/skill-advisor-brief.js';
 
 interface CorpusRow {
   readonly id: string;
