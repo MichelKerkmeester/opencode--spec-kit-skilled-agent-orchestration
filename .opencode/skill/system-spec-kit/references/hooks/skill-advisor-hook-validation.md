@@ -163,7 +163,7 @@ Pass condition: tests pass and JSONL/metrics schemas do not include forbidden pr
 Confirm metric names match the reference doc:
 
 ```bash
-rg -n "speckit_advisor_hook_" .opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/metrics.ts
+rg -n "speckit_advisor_hook_" .opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts
 ```
 
 Expected metric names:

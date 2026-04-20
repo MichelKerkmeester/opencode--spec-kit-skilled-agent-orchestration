@@ -384,7 +384,7 @@ Prompt cache keys use an HMAC with a process-local session secret, include runti
 
 #### Source Files
 
-Primary implementation: `mcp_server/lib/skill-advisor/prompt-cache.ts`.
+Primary implementation: `mcp_server/skill-advisor/lib/prompt-cache.ts`.
 
 ---
 
@@ -400,7 +400,7 @@ Freshness uses per-skill `SKILL.md` and `graph-metadata.json` fingerprints, scri
 
 #### Source Files
 
-Primary implementation: `mcp_server/lib/skill-advisor/freshness.ts`.
+Primary implementation: `mcp_server/skill-advisor/lib/freshness.ts`.
 
 ---
 
@@ -416,7 +416,7 @@ The generation counter writes through a temporary file plus rename, recovers mal
 
 #### Source Files
 
-Primary implementation: `mcp_server/lib/skill-advisor/generation.ts`.
+Primary implementation: `mcp_server/skill-advisor/lib/generation.ts`.
 
 ---
 

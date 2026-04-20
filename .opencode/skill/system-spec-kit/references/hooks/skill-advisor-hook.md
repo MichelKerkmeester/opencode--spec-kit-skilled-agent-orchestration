@@ -301,7 +301,7 @@ Fail-open means the advisor never blocks the user prompt. The only blocking path
 <!-- ANCHOR:observability-contract -->
 ## 5. OBSERVABILITY CONTRACT
 
-The shared metrics contract lives in [metrics.ts](../../mcp_server/lib/skill-advisor/metrics.ts). Runtime adapters should use that module instead of inventing labels.
+The shared metrics contract lives in [metrics.ts](../../mcp_server/skill-advisor/lib/metrics.ts). Runtime adapters should use that module instead of inventing labels.
 
 ### Metric Definitions
 

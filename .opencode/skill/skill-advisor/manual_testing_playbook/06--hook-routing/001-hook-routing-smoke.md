@@ -129,7 +129,7 @@ Inspect captured hook diagnostics and source schemas:
 
 ```bash
 rg -n "prompt|promptFingerprint|promptExcerpt|stdout|stderr" \
-  .opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/metrics.ts \
+  .opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts \
   .opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md
 ```
 
