@@ -16,7 +16,7 @@ In-memory tracker records file accesses with count and timestamp. getTopRoots(n)
 
 ## 2. CURRENT REALITY
 
-mcp_server/lib/code-graph/working-set-tracker.ts
+mcp_server/code-graph/lib/working-set-tracker.ts
 
 ---
 

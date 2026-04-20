@@ -765,7 +765,7 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 
 **Budget allocator floors:** constitutional 700, codeGraph 1200, cocoIndex 900, triggered 400, overflow pool 800.
 
-**Source:** `mcp_server/lib/code-graph/` | `mcp_server/handlers/code-graph/`
+**Source:** `mcp_server/code-graph/lib/` | `mcp_server/code-graph/handlers/`
 
 **Parser:** Tree-sitter WASM is the default structural parser for JS/TS/Python/Shell. Set `SPECKIT_PARSER=regex` for regex fallback. Parser adapter pattern allows future language additions.
 

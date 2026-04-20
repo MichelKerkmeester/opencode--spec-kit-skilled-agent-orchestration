@@ -16,7 +16,7 @@ The structural indexer extracts functions, classes, methods, interfaces, type al
 
 ## 2. CURRENT REALITY
 
-`mcp_server/lib/code-graph/structural-indexer.ts` plus `mcp_server/lib/code-graph/tree-sitter-parser.ts`
+`mcp_server/code-graph/lib/structural-indexer.ts` plus `mcp_server/code-graph/lib/tree-sitter-parser.ts`
 
 ---
 
@@ -26,9 +26,9 @@ The structural indexer extracts functions, classes, methods, interfaces, type al
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/code-graph/structural-indexer.ts` | Lib | Indexer orchestration plus regex fallback parser logic |
-| `mcp_server/lib/code-graph/tree-sitter-parser.ts` | Lib | Default tree-sitter WASM parser adapter |
-| `mcp_server/lib/code-graph/indexer-types.ts` | Lib | Type definitions, language detection, symbol/content hashing |
+| `mcp_server/code-graph/lib/structural-indexer.ts` | Lib | Indexer orchestration plus regex fallback parser logic |
+| `mcp_server/code-graph/lib/tree-sitter-parser.ts` | Lib | Default tree-sitter WASM parser adapter |
+| `mcp_server/code-graph/lib/indexer-types.ts` | Lib | Type definitions, language detection, symbol/content hashing |
 
 ### Tests
 

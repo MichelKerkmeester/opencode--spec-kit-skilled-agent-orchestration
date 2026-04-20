@@ -16,7 +16,7 @@ The ensure-ready module checks graph state (fresh/stale/empty) by comparing the 
 
 ## 2. CURRENT REALITY
 
-mcp_server/lib/code-graph/ensure-ready.ts
+mcp_server/code-graph/lib/ensure-ready.ts
 
 ---
 
@@ -26,9 +26,9 @@ mcp_server/lib/code-graph/ensure-ready.ts
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/code-graph/ensure-ready.ts` | Lib | Auto-trigger with git HEAD comparison and staleness detection |
-| `mcp_server/lib/code-graph/code-graph-db.ts` | Lib | DB helpers: getLastGitHead, setLastGitHead, ensureFreshFiles, isFileStale |
-| `mcp_server/handlers/code-graph/` | Handler | Consumers: context, query, status handlers call ensureCodeGraphReady() |
+| `mcp_server/code-graph/lib/ensure-ready.ts` | Lib | Auto-trigger with git HEAD comparison and staleness detection |
+| `mcp_server/code-graph/lib/code-graph-db.ts` | Lib | DB helpers: getLastGitHead, setLastGitHead, ensureFreshFiles, isFileStale |
+| `mcp_server/code-graph/handlers/` | Handler | Consumers: context, query, status handlers call ensureCodeGraphReady() |
 
 ---
 

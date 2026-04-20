@@ -16,7 +16,7 @@ Seed resolver normalizes CocoIndex file:line results to ArtifactRef via resoluti
 
 ## 2. CURRENT REALITY
 
-mcp_server/lib/code-graph/seed-resolver.ts
+mcp_server/code-graph/lib/seed-resolver.ts
 
 ---
 
@@ -26,9 +26,9 @@ mcp_server/lib/code-graph/seed-resolver.ts
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/code-graph/seed-resolver.ts` | Lib | Resolves CocoIndex file-range hits to graph anchors or file-level fallbacks |
-| `mcp_server/lib/code-graph/code-graph-context.ts` | Lib | Expands resolved seeds into budget-aware structural neighborhoods |
-| `mcp_server/handlers/code-graph/context.ts` | Handler | Exposes `code_graph_context` over MCP |
+| `mcp_server/code-graph/lib/seed-resolver.ts` | Lib | Resolves CocoIndex file-range hits to graph anchors or file-level fallbacks |
+| `mcp_server/code-graph/lib/code-graph-context.ts` | Lib | Expands resolved seeds into budget-aware structural neighborhoods |
+| `mcp_server/code-graph/handlers/context.ts` | Handler | Exposes `code_graph_context` over MCP |
 
 ### Tests
 

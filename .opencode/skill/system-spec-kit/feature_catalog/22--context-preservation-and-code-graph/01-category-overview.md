@@ -28,12 +28,12 @@ Implemented across spec 024-compact-code-graph with phase 018 canonical continui
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/hooks/claude/` | Hook | 6 Claude Code lifecycle hook scripts |
-| `mcp_server/lib/code-graph/` | Lib | 12 code graph library modules |
-| `mcp_server/handlers/code-graph/` | Handler | 4 MCP tool handlers |
+| `mcp_server/code-graph/lib/` | Lib | 12 code graph library modules |
+| `mcp_server/code-graph/handlers/` | Handler | 4 MCP tool handlers |
 | `mcp_server/tools/code-graph-tools.ts` | Dispatch | Tool dispatch for code graph tools |
-| `mcp_server/lib/code-graph/tree-sitter-parser.ts` | Lib | WASM-based AST parser (replaces regex) |
-| `mcp_server/lib/code-graph/query-intent-classifier.ts` | Lib | Structural/semantic/hybrid query routing |
-| `mcp_server/lib/code-graph/ensure-ready.ts` | Lib | Auto-trigger with git HEAD staleness detection |
+| `mcp_server/code-graph/lib/tree-sitter-parser.ts` | Lib | WASM-based AST parser (replaces regex) |
+| `mcp_server/code-graph/lib/query-intent-classifier.ts` | Lib | Structural/semantic/hybrid query routing |
+| `mcp_server/code-graph/lib/ensure-ready.ts` | Lib | Auto-trigger with git HEAD staleness detection |
 | `mcp_server/handlers/session-health.ts` | Handler | Session readiness and quality score |
 | `mcp_server/handlers/session-resume.ts` | Handler | Composite resume (memory + graph + CocoIndex) |
 | `mcp_server/handlers/session-bootstrap.ts` | Handler | Canonical first-call bootstrap (resume + health + structural contract) |

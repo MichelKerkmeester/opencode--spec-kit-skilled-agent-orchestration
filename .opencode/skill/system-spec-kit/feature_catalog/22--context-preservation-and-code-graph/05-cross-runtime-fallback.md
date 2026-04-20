@@ -25,7 +25,7 @@ Runtime detection is the source of truth for hook-aware fallback. It identifies 
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/code-graph/runtime-detection.ts` | Lib | Runtime identification and hook policy |
+| `mcp_server/code-graph/lib/runtime-detection.ts` | Lib | Runtime identification and hook policy |
 | `mcp_server/context-server.ts` | Server | Startup recovery guidance and tool routing hints |
 | `mcp_server/tests/runtime-detection.vitest.ts` | Tests | Runtime env simulation and detection |
 

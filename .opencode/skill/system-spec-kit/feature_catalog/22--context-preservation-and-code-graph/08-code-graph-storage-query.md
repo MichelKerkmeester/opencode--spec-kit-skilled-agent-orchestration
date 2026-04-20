@@ -16,7 +16,7 @@ SQLite database (code-graph.sqlite) stores indexed files, symbol nodes, and rela
 
 ## 2. CURRENT REALITY
 
-mcp_server/lib/code-graph/code-graph-db.ts
+mcp_server/code-graph/lib/code-graph-db.ts
 
 ---
 
@@ -26,11 +26,11 @@ mcp_server/lib/code-graph/code-graph-db.ts
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/code-graph/code-graph-db.ts` | Lib | SQLite schema, storage helpers, and graph CRUD operations |
-| `mcp_server/handlers/code-graph/scan.ts` | Handler | Implements `code_graph_scan` for structural indexing |
-| `mcp_server/handlers/code-graph/query.ts` | Handler | Implements `code_graph_query` for callers, imports, and outlines |
-| `mcp_server/handlers/code-graph/status.ts` | Handler | Implements `code_graph_status` for readiness and health checks |
-| `mcp_server/handlers/code-graph/context.ts` | Handler | Implements `code_graph_context` for compact structural neighborhoods |
+| `mcp_server/code-graph/lib/code-graph-db.ts` | Lib | SQLite schema, storage helpers, and graph CRUD operations |
+| `mcp_server/code-graph/handlers/scan.ts` | Handler | Implements `code_graph_scan` for structural indexing |
+| `mcp_server/code-graph/handlers/query.ts` | Handler | Implements `code_graph_query` for callers, imports, and outlines |
+| `mcp_server/code-graph/handlers/status.ts` | Handler | Implements `code_graph_status` for readiness and health checks |
+| `mcp_server/code-graph/handlers/context.ts` | Handler | Implements `code_graph_context` for compact structural neighborhoods |
 
 ### Tests
 

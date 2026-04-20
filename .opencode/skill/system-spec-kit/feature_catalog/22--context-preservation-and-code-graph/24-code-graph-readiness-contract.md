@@ -15,7 +15,7 @@ This is the shared structural context contract for the code-graph family. It rep
 
 ## 2. CURRENT REALITY
 
-Commit `4a154c555` introduced `mcp_server/lib/code-graph/readiness-contract.ts` with four shared helpers:
+Commit `4a154c555` introduced `mcp_server/code-graph/lib/readiness-contract.ts` with four shared helpers:
 
 - `canonicalReadinessFromFreshness()`
 - `queryTrustStateFromFreshness()`
@@ -36,14 +36,14 @@ The result is a single readiness surface across the code-graph family: callers c
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/code-graph/readiness-contract.ts` | Lib | Canonical readiness helper surface for code-graph handlers |
-| `mcp_server/handlers/code-graph/query.ts` | Handler | Query-time readiness projection and graph metadata envelope |
-| `mcp_server/handlers/code-graph/scan.ts` | Handler | Scan result readiness block |
-| `mcp_server/handlers/code-graph/status.ts` | Handler | Status result readiness block |
-| `mcp_server/handlers/code-graph/context.ts` | Handler | Context result readiness block |
-| `mcp_server/handlers/code-graph/ccc-status.ts` | Handler | CCC status stub readiness block |
-| `mcp_server/handlers/code-graph/ccc-reindex.ts` | Handler | CCC reindex stub readiness block |
-| `mcp_server/handlers/code-graph/ccc-feedback.ts` | Handler | CCC feedback stub readiness block |
+| `mcp_server/code-graph/lib/readiness-contract.ts` | Lib | Canonical readiness helper surface for code-graph handlers |
+| `mcp_server/code-graph/handlers/query.ts` | Handler | Query-time readiness projection and graph metadata envelope |
+| `mcp_server/code-graph/handlers/scan.ts` | Handler | Scan result readiness block |
+| `mcp_server/code-graph/handlers/status.ts` | Handler | Status result readiness block |
+| `mcp_server/code-graph/handlers/context.ts` | Handler | Context result readiness block |
+| `mcp_server/code-graph/handlers/ccc-status.ts` | Handler | CCC status stub readiness block |
+| `mcp_server/code-graph/handlers/ccc-reindex.ts` | Handler | CCC reindex stub readiness block |
+| `mcp_server/code-graph/handlers/ccc-feedback.ts` | Handler | CCC feedback stub readiness block |
 
 ### Tests
 
