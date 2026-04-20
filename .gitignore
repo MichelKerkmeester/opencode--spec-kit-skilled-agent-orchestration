@@ -105,3 +105,4 @@ code-graph.sqlite
 .codex/specs/00--anobel.com
 .agents/specs/00--anobel.com
 .opencode/barter
+.claude/scheduled_tasks.lock
