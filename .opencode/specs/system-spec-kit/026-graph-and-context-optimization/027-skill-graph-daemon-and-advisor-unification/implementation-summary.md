@@ -6,10 +6,10 @@ contextType: "research"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification"
-    last_updated_at: "2026-04-20T17:40:00Z"
+    last_updated_at: "2026-04-20T18:15:00Z"
     last_updated_by: "orchestrator"
-    recent_action: "027/000 + 027/001 converged (SHAs 77b0f59e2 + 32fd9197c); 027/002 lifecycle + derived metadata dispatched via cli-codex gpt-5.4 high fast"
-    next_safe_action: "Verify 027/002 on convergence + commit + chain 003 HARD GATE"
+    recent_action: "027/000..003 all converged (SHAs 77b0f59e2, 32fd9197c, 8318dfaf8, e35f93b52). 003 HARD GATE: 80.5% full / 77.5% holdout / UNKNOWN 10 / 0 regressions. 004 + 006 dispatched in parallel via cli-codex gpt-5.4 high fast."
+    next_safe_action: "Verify 004 + 006 on convergence + chain 005 closure"
     blockers: []
     key_files:
       - ".opencode/specs/.../027-skill-graph-daemon-and-advisor-unification/001-daemon-freshness-foundation/"
@@ -70,10 +70,10 @@ Two planes (graph/freshness + advisor projection/scoring) inside the self-contai
 | 000 | validator-esm-fix (prereq) | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `77b0f59e2` |
 | 001 | daemon-freshness-foundation | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `32fd9197c` (CPU 0.031% / RSS 5.516MB, 16/16 tests) |
 | 002 | lifecycle-and-derived-metadata | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 SHA `8318dfaf8` (13 AC tests + 29 combined, 0 SKILL.md mutations) |
-| 003 | native-advisor-core | ✅ 2026-04-20 | 🔄 2026-04-20 cli-codex gpt-5.4 high fast (HARD GATE, in flight) | — |
-| 004 | mcp-advisor-surface | ✅ 2026-04-20 | — | — |
+| 003 | native-advisor-core (HARD GATE) | ✅ 2026-04-20 | ✅ 2026-04-20 cli-codex gpt-5.4 high fast | ✅ 2026-04-20 prep SHA `1146faeec` + final SHA `e35f93b52` (full 80.5%, holdout 77.5%, UNKNOWN 10, 0 regressions, p95 6.989/11.45ms) |
+| 004 | mcp-advisor-surface | ✅ 2026-04-20 | 🔄 2026-04-20 cli-codex gpt-5.4 high fast (in flight ∥ 006) | — |
 | 005 | compat-migration-and-bootstrap | ✅ 2026-04-20 | — | — |
-| 006 | promotion-gates | ✅ 2026-04-20 | — | — |
+| 006 | promotion-gates | ✅ 2026-04-20 | 🔄 2026-04-20 cli-codex gpt-5.4 high fast (in flight ∥ 004) | — |
 
 ## Architectural Decision Records
 
