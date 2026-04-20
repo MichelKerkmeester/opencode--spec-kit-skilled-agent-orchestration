@@ -1,4 +1,5 @@
 ---
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 title: "Feature Specification: 027/005 — Compat Migration + Bootstrap"
 description: "Preserve skill_advisor.py compat shim. Hook/plugin bridges route to native advisor_recommend after daemon availability check. Install guide + verification + rollback docs. Manual-testing playbook updates. Prompt-safe status surfaces for superseded/archived/future/rolled-back skills."
 trigger_phrases:
@@ -35,7 +36,9 @@ _memory:
 # Feature Specification: 027/005 — Compat Migration + Bootstrap
 
 <!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: level_2/spec.md | v2.2 -->
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -46,11 +49,13 @@ _memory:
 | **Created** | 2026-04-20 |
 | **Parent** | `../` |
 | **Predecessor** | `../004-mcp-advisor-surface/` |
-| **Research source** | `research.md` §7 Track D (D4, D7, D8) + §13.3 Track F; iterations 027, 030-031, 046, 048, 056 |
+| **Research source** | Track D (D4, D7, D8) + §13.3 Track F; iterations 027, 030-031, 046, 048, 056 |
+<!-- /ANCHOR:metadata -->
 
+<!-- ANCHOR:problem-statement -->
 ## 2. PROBLEM & PURPOSE
 
-### Problem
+### Problem Statement
 Once native TypeScript advisor + MCP tools are live (027/003 + 027/004), the legacy surfaces still need to work:
 - Gate 2 fallback in CLAUDE.md invokes `python3 skill_advisor.py`
 - Scripted checks + CI + manual-testing playbook scenarios call the Python CLI
@@ -61,7 +66,9 @@ Cutting these over without a compat bridge would break existing users. And super
 
 ### Purpose
 Ship the compat + migration layer: `skill_advisor.py` stays as a thin shim, hook/plugin bridges route to `advisor_recommend` via MCP when available and fall back to local scoring when not. Install guide + playbook + setup docs updated for the new architecture. Prompt-safe redirect/status rendering for lifecycle states.
+<!-- /ANCHOR:problem-statement -->
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -101,40 +108,52 @@ Ship the compat + migration layer: `skill_advisor.py` stays as a thin shim, hook
 - Removing the Python CLI entirely — deferred post-027 until docs + scripted callers fully migrate.
 - Shadow-cycle promotion (027/006).
 - Plugin deprecation — plugin stays as adapter per research D8.
+<!-- /ANCHOR:scope -->
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### 4.1 P0 (Blocker)
-1. `skill_advisor.py` shim detects daemon + routes to native; falls back to local on absence.
-2. Plugin bridge detects daemon + delegates to `advisor_recommend`.
-3. All Phase 025/026 fixes preserved: `--stdin`, SIGKILL escalation, workspace cache key, shared disable flag.
-4. Install guide has updated bootstrap + rollback sections.
-5. Manual-testing playbook includes native-path scenarios.
-6. Prompt-safe status: superseded skills render redirect metadata.
+1. **REQ-001** `skill_advisor.py` shim detects daemon + routes to native; falls back to local on absence.
+2. **REQ-002** Plugin bridge detects daemon + delegates to `advisor_recommend`.
+3. **REQ-003** All Phase 025/026 fixes preserved: `--stdin`, SIGKILL escalation, workspace cache key, shared disable flag.
+4. **REQ-004** Install guide has updated bootstrap + rollback sections.
+5. **REQ-005** Manual-testing playbook includes native-path scenarios.
+6. **REQ-006** Prompt-safe status: superseded skills render redirect metadata.
 
 ### 4.2 P1 (Required)
-1. `--force-local` and `--force-native` CLI flags for testing.
-2. Archived / future / rolled-back status surfaces render correctly.
-3. Python-shim path preserved for scripted callers during transition.
-4. Disable flag `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED` honored across all compat paths.
-5. Integration test: plugin path + shim path both exercise the same corpus, match native output.
+1. **REQ-007** `--force-local` and `--force-native` CLI flags for testing.
+2. **REQ-008** Archived / future / rolled-back status surfaces render correctly.
+3. **REQ-009** Python-shim path preserved for scripted callers during transition.
+4. **REQ-010** Disable flag `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED` honored across all compat paths.
+5. **REQ-011** Integration test: plugin path + shim path both exercise the same corpus, match native output.
 
 ### 4.3 P2 (Suggestion)
 1. Deprecation notice in Python CLI output pointing at MCP tool.
 2. Gate 2 fallback in CLAUDE.md updated to mention native MCP path first.
+<!-- /ANCHOR:requirements -->
 
+<!-- ANCHOR:acceptance-scenarios -->
 ## 5. ACCEPTANCE SCENARIOS
 
-1. **AC-1** Run `skill_advisor.py "build a React component"` with daemon running → routed to `advisor_recommend` → same output shape as direct tool call.
-2. **AC-2** Run same command with daemon absent → falls back to local Python scoring → still returns valid result.
-3. **AC-3** Plugin bridge invoked with daemon available → uses native; verified by log + trace.
-4. **AC-4** Disable flag set → all compat paths return `disabled` brief.
-5. **AC-5** Install guide walkthrough on fresh checkout succeeds (manual test).
-6. **AC-6** Supersession fixture: prompt naming old `sk-X-v1` returns redirect metadata.
-7. **AC-7** Archived skill fixture: prompt matching archived skill returns with `status: "archived"`.
-8. **AC-8** `--stdin` mode still works (Phase 025 regression).
+1. **AC-1** **Given** daemon-backed native advisor is available, when `skill_advisor.py "build a React component"` runs, then the shim routes to `advisor_recommend` and preserves the legacy JSON output shape.
+2. **AC-2** **Given** native advisor is unavailable or forced local, when the same command runs, then the shim falls back to local Python scoring and still returns a valid result.
+3. **AC-3** **Given** the OpenCode plugin bridge receives a prompt and native advisor is available, when the bridge runs, then it uses native delegation and records a native route in prompt-safe metadata.
+4. **AC-4** **Given** `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1`, when any compat path runs, then it returns a disabled/skipped surface without prompt leakage.
+5. **AC-5** **Given** a fresh checkout, when the install guide bootstrap is followed, then native registration and rollback commands are verifiable.
+6. **AC-6** **Given** a supersession fixture naming old `sk-X-v1`, when redirect metadata renders, then it includes prompt-safe `redirect_from` and `redirect_to`.
+7. **AC-7** **Given** archived or future lifecycle state, when redirect metadata renders, then it exposes status and excludes the entry from default routing.
+8. **AC-8** **Given** stdin input, when `skill_advisor.py --stdin` runs, then Phase 025 stdin behavior remains valid.
+<!-- /ANCHOR:acceptance-scenarios -->
 
-## 6. FILES TO CHANGE
+<!-- ANCHOR:open-questions -->
+## 6. OPEN QUESTIONS
+
+No open questions remain for 027/005. CLAUDE.md and AGENTS.md pointer updates are intentionally deferred because the implementation authority explicitly excluded them.
+<!-- /ANCHOR:open-questions -->
+
+<!-- ANCHOR:files-to-change -->
+## 7. FILES TO CHANGE
 
 ### Modified (existing surfaces)
 - `.opencode/skill/skill-advisor/scripts/skill_advisor.py` — shim rewrite
@@ -155,3 +174,4 @@ Ship the compat + migration layer: `skill_advisor.py` stays as a thin shim, hook
 ### Kept read-only
 - `.opencode/skill/skill-advisor/scripts/skill_advisor_runtime.py` — Python scorer retained for fallback
 - `CLAUDE.md` / `AGENTS.md` — Gate 2 ref update deferred unless directly required
+<!-- /ANCHOR:files-to-change -->

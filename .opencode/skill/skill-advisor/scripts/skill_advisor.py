@@ -28,6 +28,7 @@ import shutil
 import sqlite3
 import subprocess
 import sys
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
 
 
@@ -49,6 +50,97 @@ LOCAL_CCC_BIN = os.path.join(
     "ccc",
 )
 DISABLE_BUILTIN_SEMANTIC_ENV = "SKILL_ADVISOR_DISABLE_BUILTIN_SEMANTIC"
+DISABLE_ADVISOR_ENV = "SPECKIT_SKILL_ADVISOR_HOOK_DISABLED"
+FORCE_LOCAL_ENV = "SPECKIT_SKILL_ADVISOR_FORCE_LOCAL"
+NATIVE_TIMEOUT_SECONDS = 2.5
+NATIVE_ADVISOR_STATUS = os.path.join(
+    REPO_ROOT,
+    ".opencode",
+    "skill",
+    "system-spec-kit",
+    "mcp_server",
+    "dist",
+    "skill-advisor",
+    "handlers",
+    "advisor-status.js",
+)
+NATIVE_ADVISOR_RECOMMEND = os.path.join(
+    REPO_ROOT,
+    ".opencode",
+    "skill",
+    "system-spec-kit",
+    "mcp_server",
+    "dist",
+    "skill-advisor",
+    "handlers",
+    "advisor-recommend.js",
+)
+
+NATIVE_ADVISOR_BRIDGE = r"""
+import { readFileSync } from 'node:fs';
+import { readAdvisorStatus } from 'ADVISOR_STATUS_MODULE';
+import { handleAdvisorRecommend } from 'ADVISOR_RECOMMEND_MODULE';
+
+const input = JSON.parse(readFileSync(0, 'utf8') || '{}');
+const workspaceRoot = input.workspaceRoot || process.cwd();
+
+function unavailable(reason) {
+  return {
+    available: false,
+    freshness: 'unavailable',
+    generation: 0,
+    trustState: {
+      state: 'unavailable',
+      reason,
+      generation: 0,
+      checkedAt: new Date().toISOString(),
+      lastLiveAt: null,
+    },
+    reason,
+  };
+}
+
+function probe() {
+  if (process.env.SPECKIT_SKILL_ADVISOR_HOOK_DISABLED === '1') {
+    return unavailable('ADVISOR_DISABLED');
+  }
+  try {
+    const status = readAdvisorStatus({ workspaceRoot });
+    return {
+      available: status.freshness === 'live' || status.freshness === 'stale',
+      freshness: status.freshness,
+      generation: status.generation,
+      trustState: status.trustState,
+      daemonPid: status.daemonPid || null,
+      reason: (status.errors && status.errors[0]) || status.trustState.reason || null,
+    };
+  } catch (error) {
+    return unavailable((error && error.name ? error.name : 'PROBE_FAILED').toUpperCase().replace(/[^A-Z0-9_]/g, '_'));
+  }
+}
+
+const probeResult = probe();
+if (input.mode === 'status') {
+  process.stdout.write(JSON.stringify({ status: 'ok', data: probeResult }));
+} else if (!probeResult.available) {
+  process.stdout.write(JSON.stringify({ status: 'unavailable', data: probeResult }));
+} else {
+  const response = await handleAdvisorRecommend({
+    prompt: String(input.prompt || ''),
+    options: {
+      topK: Number.isFinite(input.topK) ? input.topK : 10,
+      includeAbstainReasons: true,
+      includeAttribution: false,
+    },
+  });
+  const parsed = JSON.parse(response.content[0].text);
+  process.stdout.write(JSON.stringify({
+    status: parsed.status || 'ok',
+    data: parsed.data,
+    probe: probeResult,
+  }));
+}
+"""
 
 RUNTIME_PATH = os.path.join(SCRIPT_DIR, "skill_advisor_runtime.py")
 _RUNTIME_SPEC = None
@@ -90,6 +182,165 @@ _SOURCE_METADATA_DIAGNOSTICS: Dict[str, List[Dict[str, str]]] = {
     "signal_map": [],
     "conflict_declarations": [],
 }
+
+
+def _file_url(path: str) -> str:
+    """Return a minimal file URL for Node ESM dynamic imports."""
+    return Path(path).resolve().as_uri()
+
+
+def _native_bridge_source() -> str:
+    """Render the inline Node bridge with absolute module URLs."""
+    return (
+        NATIVE_ADVISOR_BRIDGE
+        .replace("ADVISOR_STATUS_MODULE", _file_url(NATIVE_ADVISOR_STATUS))
+        .replace("ADVISOR_RECOMMEND_MODULE", _file_url(NATIVE_ADVISOR_RECOMMEND))
+    )
+
+
+def _native_bridge_available() -> bool:
+    """Return True when compiled native advisor handlers are present."""
+    return os.path.exists(NATIVE_ADVISOR_STATUS) and os.path.exists(NATIVE_ADVISOR_RECOMMEND)
+
+
+def _run_native_bridge(payload: Dict[str, Any], timeout: float = NATIVE_TIMEOUT_SECONDS) -> Dict[str, Any]:
+    """Call the compiled native MCP advisor handlers through a tiny Node bridge."""
+    if not _native_bridge_available():
+        return {
+            "status": "unavailable",
+            "data": {
+                "available": False,
+                "freshness": "unavailable",
+                "generation": 0,
+                "reason": "NATIVE_DIST_MISSING",
+            },
+        }
+
+    try:
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", _native_bridge_source()],
+            input=json.dumps(payload),
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            cwd=REPO_ROOT,
+            env=os.environ.copy(),
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired, OSError) as exc:
+        return {
+            "status": "unavailable",
+            "data": {
+                "available": False,
+                "freshness": "unavailable",
+                "generation": 0,
+                "reason": exc.__class__.__name__.upper(),
+            },
+        }
+
+    if result.returncode != 0:
+        return {
+            "status": "unavailable",
+            "data": {
+                "available": False,
+                "freshness": "unavailable",
+                "generation": 0,
+                "reason": "NATIVE_BRIDGE_NONZERO",
+            },
+        }
+
+    try:
+        parsed = json.loads(result.stdout or "{}")
+    except json.JSONDecodeError:
+        return {
+            "status": "unavailable",
+            "data": {
+                "available": False,
+                "freshness": "unavailable",
+                "generation": 0,
+                "reason": "NATIVE_BRIDGE_PARSE_FAILED",
+            },
+        }
+    return parsed if isinstance(parsed, dict) else {"status": "unavailable", "data": {"available": False}}
+
+
+def probe_native_advisor() -> Dict[str, Any]:
+    """Probe native advisor availability without exposing prompt content."""
+    if os.environ.get(FORCE_LOCAL_ENV) == "1":
+        return {
+            "available": False,
+            "freshness": "unavailable",
+            "generation": 0,
+            "reason": "FORCE_LOCAL",
+        }
+    payload = {
+        "mode": "status",
+        "workspaceRoot": REPO_ROOT,
+    }
+    response = _run_native_bridge(payload)
+    data = response.get("data") if isinstance(response, dict) else None
+    return data if isinstance(data, dict) else {
+        "available": False,
+        "freshness": "unavailable",
+        "generation": 0,
+        "reason": "INVALID_NATIVE_PROBE",
+    }
+
+
+def _legacy_kind(skill_id: str) -> str:
+    """Infer legacy CLI kind from the native skill id."""
+    return "command" if skill_id.startswith("command-") else "skill"
+
+
+def _legacy_recommendations_from_native(output: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Translate advisor_recommend output to the legacy JSON-array CLI contract."""
+    recommendations = output.get("recommendations")
+    if not isinstance(recommendations, list):
+        return []
+
+    legacy: List[Dict[str, Any]] = []
+    for recommendation in recommendations:
+        if not isinstance(recommendation, dict):
+            continue
+        skill_id = str(recommendation.get("skillId") or "")
+        if not skill_id:
+            continue
+        item: Dict[str, Any] = {
+            "skill": skill_id,
+            "kind": _legacy_kind(skill_id),
+            "confidence": recommendation.get("confidence", 0),
+            "uncertainty": recommendation.get("uncertainty", 0.0),
+            "passes_threshold": True,
+            "reason": "Matched by native advisor_recommend",
+            "source": "native",
+        }
+        if "score" in recommendation:
+            item["score"] = recommendation["score"]
+        if "dominantLane" in recommendation:
+            item["dominant_lane"] = recommendation["dominantLane"]
+        if "status" in recommendation:
+            item["status"] = recommendation["status"]
+        if "redirectFrom" in recommendation:
+            item["redirect_from"] = recommendation["redirectFrom"]
+        if "redirectTo" in recommendation:
+            item["redirect_to"] = recommendation["redirectTo"]
+        legacy.append(item)
+    return legacy
+
+
+def recommend_with_native_advisor(prompt: str) -> Optional[List[Dict[str, Any]]]:
+    """Return native recommendations when the MCP advisor surface is available."""
+    response = _run_native_bridge({
+        "mode": "recommend",
+        "workspaceRoot": REPO_ROOT,
+        "prompt": prompt,
+        "topK": 10,
+    })
+    data = response.get("data") if isinstance(response, dict) else None
+    if not isinstance(data, dict):
+        return None
+    if response.get("status") != "ok":
+        return None
+    return _legacy_recommendations_from_native(data)
 
 
 def _log_skill_graph_warning(message: str) -> None:
@@ -1437,10 +1688,16 @@ COMMAND_BRIDGES = {
 }
 
 COMMAND_BRIDGE_OWNER_NORMALIZATION = {
-    "command-memory-save": "system-spec-kit",
     "command-spec-kit-resume": "system-spec-kit",
     "command-spec-kit-deep-research": "sk-deep-research",
     "command-spec-kit-deep-review": "sk-deep-review",
+}
+
+COMMAND_BRIDGE_EXPLICIT_ALIASES = {
+    # The canonical Python regression contract treats /spec_kit:plan as the
+    # command family bridge. Deep loop/resume subcommands keep their narrower
+    # owners because they enforce distinct skill-owned state machines.
+    "command-spec-kit-plan": "command-spec-kit",
 }
 
 COMMAND_TARGET_IMPLEMENTATION_MARKERS = (
@@ -1871,7 +2128,7 @@ def detect_explicit_command_intent(prompt_lower: str) -> Optional[str]:
     for command_name, command_config in COMMAND_BRIDGES.items():
         for marker in command_config.get("slash_markers", []):
             if marker and marker in prompt_lower:
-                return command_name
+                return COMMAND_BRIDGE_EXPLICIT_ALIASES.get(command_name, command_name)
     return None
 
 
@@ -2816,6 +3073,10 @@ Examples:
                         help='Use confidence-only filtering and bypass uncertainty checks explicitly.')
     parser.add_argument('--show-rejections', action='store_true',
                         help='Include recommendations that failed dual-threshold validation')
+    parser.add_argument('--force-local', action='store_true',
+                        help='Bypass native advisor_recommend and force the local Python scorer path.')
+    parser.add_argument('--force-native', action='store_true',
+                        help='Require native advisor_recommend; exit non-zero if the native path is unavailable.')
     parser.add_argument('--batch-file', type=str, default='',
                         help='Analyze prompts from file (one prompt per line) in one process.')
     parser.add_argument('--batch-stdin', action='store_true',
@@ -2828,6 +3089,10 @@ Examples:
                          help='Pre-computed CocoIndex results as JSON array of {"path": str, "score": float} objects.')
 
     args = parser.parse_args()
+
+    if args.force_local and args.force_native:
+        print(json.dumps({"error": "Use only one of --force-local or --force-native."}, indent=2))
+        return 2
 
     if args.force_refresh:
         get_skills(force_refresh=True)
@@ -2897,6 +3162,29 @@ Examples:
     if not args.prompt:
         print(json.dumps([]))
         return 0
+
+    if os.environ.get(DISABLE_ADVISOR_ENV) == "1":
+        print(json.dumps([]))
+        return 0
+
+    if not args.force_local and pre_computed_hits is None and not args.semantic:
+        probe = probe_native_advisor()
+        if probe.get("available"):
+            native_results = recommend_with_native_advisor(args.prompt)
+            if native_results is not None:
+                print(json.dumps(native_results, indent=2))
+                return 0
+        elif args.force_native:
+            print(json.dumps({
+                "error": "Native advisor unavailable",
+                "reason": probe.get("reason", "UNKNOWN"),
+                "freshness": probe.get("freshness", "unavailable"),
+            }, indent=2))
+            return 2
+
+    if args.force_native:
+        print(json.dumps({"error": "Native advisor unavailable", "reason": "NATIVE_CALL_FAILED"}, indent=2))
+        return 2
 
     # Resolve semantic hits: pre-computed > built-in search > none
     semantic_hits = pre_computed_hits

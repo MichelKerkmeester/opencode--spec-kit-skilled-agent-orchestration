@@ -31,7 +31,24 @@
       "archive-future",
       "rollback"
     ],
-    "status": "draft",
+    "key_files": [
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/plugins/spec-kit-skill-advisor.js",
+      ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/compat/",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/",
+      ".opencode/skill/system-spec-kit/install_guide/skill-advisor-native-bootstrap.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/07--native-compat/"
+    ],
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "status": "implemented",
+    "last_save_at": "2026-04-20T19:20:00.000Z",
     "lastRefreshed": "2026-04-20T14:00:00.000Z"
   }
 }

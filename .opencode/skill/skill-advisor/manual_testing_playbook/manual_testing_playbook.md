@@ -7,11 +7,11 @@ description: "Operator-facing reference combining the manual testing directory, 
 
 > **EXECUTION POLICY**: Every scenario MUST be executed for real - not mocked, not stubbed, not classified as "unautomatable". AI agents executing these scenarios must run the actual commands, inspect real files, call real handlers, and verify real outputs. The only acceptable classifications are PASS, FAIL, or SKIP (with a specific sandbox blocker documented). "UNAUTOMATABLE" is not a valid status.
 
-This document combines the full manual-validation contract for the `skill-advisor` package into a single reference. The root playbook acts as the operator directory, review protocol, and orchestration guide: it explains how realistic user-driven tests should be run, how evidence should be captured, how results should be graded, and where each deeper execution contract lives. Categories `01--` through `06--` use per-feature validation files. The plugin-path, measurement-run, and live-session telemetry categories remain root-only scenario tables in this document until split-doc follow-ups are added.
+This document combines the full manual-validation contract for the `skill-advisor` package into a single reference. The root playbook acts as the operator directory, review protocol, and orchestration guide: it explains how realistic user-driven tests should be run, how evidence should be captured, how results should be graded, and where each deeper execution contract lives. Categories `01--` through `07--` use per-feature validation files. The plugin-path, measurement-run, and live-session telemetry categories remain root-only scenario tables in this document until split-doc follow-ups are added.
 
 ---
 
-This playbook package uses a mixed structure for canonical Skill Advisor validation. The root document acts as the directory, review surface, and orchestration guide. Categories `01--` through `06--` keep per-feature execution detail in numbered category folders at the playbook root, while `PP-*`, `MR-*`, and `LT-*` remain inline root-only scenarios in this document.
+This playbook package uses a mixed structure for canonical Skill Advisor validation. The root document acts as the directory, review surface, and orchestration guide. Categories `01--` through `07--` keep per-feature execution detail in numbered category folders at the playbook root, while `PP-*`, `MR-*`, and `LT-*` remain inline root-only scenarios in this document.
 
 Canonical source artifacts:
 - `.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md`
@@ -21,6 +21,7 @@ Canonical source artifacts:
 - `.opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/`
 - `.opencode/skill/skill-advisor/manual_testing_playbook/05--sqlite-graph/`
 - `.opencode/skill/skill-advisor/manual_testing_playbook/06--hook-routing/`
+- `.opencode/skill/skill-advisor/manual_testing_playbook/07--native-compat/`
 
 Root-only scenario surfaces:
 - `PP-001..PP-005` in [Section 13](#13--plugin-path-pp-001pp-005)
@@ -43,17 +44,18 @@ Root-only scenario surfaces:
 - [10. REGRESSION SAFETY (`RS-001..RS-004`)](#10--regression-safety-rs-001rs-004)
 - [11. SQLITE GRAPH (`SG-001..SG-004`)](#11--sqlite-graph-sg-001sg-004)
 - [12. HOOK ROUTING (`HR-001..HR-006`)](#12--hook-routing-hr-001hr-006)
-- [13. PLUGIN PATH (`PP-001..PP-005`)](#13--plugin-path-pp-001pp-005)
-- [14. MEASUREMENT RUN (`MR-001..MR-003`)](#14--measurement-run-mr-001mr-003)
-- [15. LIVE-SESSION TELEMETRY (`LT-001..LT-004`)](#15--live-session-telemetry-lt-001lt-004)
-- [16. AUTOMATED TEST CROSS-REFERENCE](#16--automated-test-cross-reference)
-- [17. FEATURE CATALOG CROSS-REFERENCE INDEX](#17--feature-catalog-cross-reference-index)
+- [13. NATIVE COMPAT (`NC-001..NC-005`)](#13--native-compat-nc-001nc-005)
+- [14. PLUGIN PATH (`PP-001..PP-005`)](#14--plugin-path-pp-001pp-005)
+- [15. MEASUREMENT RUN (`MR-001..MR-003`)](#15--measurement-run-mr-001mr-003)
+- [16. LIVE-SESSION TELEMETRY (`LT-001..LT-004`)](#16--live-session-telemetry-lt-001lt-004)
+- [17. AUTOMATED TEST CROSS-REFERENCE](#17--automated-test-cross-reference)
+- [18. FEATURE CATALOG CROSS-REFERENCE INDEX](#18--feature-catalog-cross-reference-index)
 
 ---
 
 ## 1. OVERVIEW
 
-This playbook provides 46 deterministic scenarios across 9 categories validating the `skill-advisor` routing, graph pipeline, Phase 020 prompt-time hook surface, plugin path, static measurement harness, and live telemetry workflow. Each feature keeps its original ID and links to its execution contract, whether that contract lives in a per-feature file or in an inline root section.
+This playbook provides deterministic scenarios across 10 categories validating the `skill-advisor` routing, graph pipeline, Phase 020 prompt-time hook surface, plugin path, native compat migration, static measurement harness, and live telemetry workflow. Each feature keeps its original ID and links to its execution contract, whether that contract lives in a per-feature file or in an inline root section.
 
 Coverage note (2026-04-20): categories `01--` through `06--` use per-feature files. `PP-*`, `MR-*`, and `LT-*` currently ship as inline root-only scenarios and should be executed directly from this document.
 
@@ -83,8 +85,9 @@ Coverage note (2026-04-20): categories `01--` through `06--` use per-feature fil
 4. `.opencode/skill/skill-advisor/scripts/skill-graph.json` exists or can be regenerated before JSON fallback checks.
 5. The current set of skill folders with `graph-metadata.json` is present in `.opencode/skill/`; treat the inventory as live discovery data rather than a fixed count.
 6. The system-spec-kit MCP server is running for `SG-001`, `SG-002`, and `SG-003`.
-7. Terminal transcript capture is enabled so JSON output, compiler warnings, exit statuses, and MCP tool responses are preserved.
-8. This playbook includes one controlled destructive scenario, `SG-004`, which temporarily renames `skill-graph.sqlite`. Run that scenario in isolation and restore the database file before parallel execution resumes.
+7. The MCP server has been built before native compat checks: `npm --prefix .opencode/skill/system-spec-kit/mcp_server run build`.
+8. Terminal transcript capture is enabled so JSON output, compiler warnings, exit statuses, and MCP tool responses are preserved.
+9. This playbook includes one controlled destructive scenario, `SG-004`, which temporarily renames `skill-graph.sqlite`. Run that scenario in isolation and restore the database file before parallel execution resumes.
 
 ---
 
@@ -115,7 +118,7 @@ Coverage note (2026-04-20): categories `01--` through `06--` use per-feature fil
 ### Inputs Required
 
 1. `manual_testing_playbook.md`
-2. Referenced per-feature files under `manual_testing_playbook/NN--category-name/` for categories `01--` through `06--`
+2. Referenced per-feature files under `manual_testing_playbook/NN--category-name/` for categories `01--` through `07--`
 3. Inline root sections for `PP-*`, `MR-*`, and `LT-*`
 4. Scenario execution evidence
 5. Triage notes for all non-pass outcomes
@@ -153,7 +156,7 @@ Release is `READY` only when:
 
 1. No scenario verdict is `FAIL`.
 2. All compiler and regression-safety scenarios are `PASS`.
-3. Coverage is 100% of the 46 scenarios linked in this root document.
+3. Coverage is 100% of the scenarios linked in this root document.
 4. No unresolved blocker remains after triage.
 5. No retired script-directory path references remain anywhere under `manual_testing_playbook/`.
 6. `skill-graph.sqlite` has been restored after any JSON fallback run.
@@ -275,46 +278,60 @@ These scenarios validate the Phase 020 hook surface that now acts as the primary
 
 ---
 
-## 13. PLUGIN PATH (`PP-001..PP-005`)
+## 13. NATIVE COMPAT (`NC-001..NC-005`)
+
+These scenarios validate the 027/005 compatibility migration: `skill_advisor.py` probes native `advisor_recommend`, falls back to Python, the plugin bridge delegates to native, lifecycle redirect metadata renders prompt-safely, and H5 operator states are actionable.
+
+| ID | Scenario | Command or Action | Expected | File |
+|---|---|---|---|---|
+| NC-001 | Native CLI path | `python3 .../skill_advisor.py --force-native "save this conversation context to memory"` | Legacy JSON array with top `system-spec-kit` and `source: "native"` | [001-native-shim-and-plugin.md](07--native-compat/001-native-shim-and-plugin.md) |
+| NC-002 | Python fallback path | `python3 .../skill_advisor.py --force-local "help me commit my changes"` | Python scorer returns top `sk-git` | [001-native-shim-and-plugin.md](07--native-compat/001-native-shim-and-plugin.md) |
+| NC-003 | `--stdin` regression | Pipe a prompt into `skill_advisor.py --force-native --stdin` | Native route returns JSON and does not echo prompt text | [001-native-shim-and-plugin.md](07--native-compat/001-native-shim-and-plugin.md) |
+| NC-004 | Plugin bridge delegation | Run `spec-kit-skill-advisor-bridge.mjs` with JSON stdin | `metadata.route: "native"` and prompt-safe `Advisor:` brief | [001-native-shim-and-plugin.md](07--native-compat/001-native-shim-and-plugin.md) |
+| NC-005 | Redirect/lifecycle status | Run `redirect-metadata.vitest.ts` | Superseded, archived, future, and rolled-back surfaces render correctly | [001-native-shim-and-plugin.md](07--native-compat/001-native-shim-and-plugin.md) |
+
+---
+
+## 14. PLUGIN PATH (`PP-001..PP-005`)
 
 These scenarios cover the Phase 023 Area F `spec-kit-skill-advisor` OpenCode plugin + its bridge process. Run them after the plugin has been enabled in the OpenCode runtime config and the MCP server bundle has been built.
 
 | ID | Scenario | Command or Action | Expected | File |
 |---|---|---|---|---|
-| PP-001 | Plugin loads on session start | Start an OpenCode session with the plugin enabled | Plugin initializes session cache; no errors in session log | [Root playbook §13](#13--plugin-path-pp-001pp-005) |
-| PP-002 | Plugin emits brief on user prompt | Send a work-intent prompt with the plugin active | Plugin bridge returns rendered brief, delivered as `additionalContext` | [Root playbook §13](#13--plugin-path-pp-001pp-005) |
-| PP-003 | Status tool prompt-safety | Invoke the plugin's status tool during a session | Output contains counters/status only — no raw prompts, no fingerprints, no stdout/stderr | [Root playbook §13](#13--plugin-path-pp-001pp-005) |
-| PP-004 | Env opt-out | Set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` and restart | Plugin initializes disabled; no bridge invocation per user prompt; `SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED=1` remains accepted as a legacy alias | [Root playbook §13](#13--plugin-path-pp-001pp-005) |
-| PP-005 | Config opt-out | Set `enabled: false` in plugin config and restart | Same as PP-004: bridge never invoked | [Root playbook §13](#13--plugin-path-pp-001pp-005) |
+| PP-001 | Plugin loads on session start | Start an OpenCode session with the plugin enabled | Plugin initializes session cache; no errors in session log | [Root playbook §14](#14--plugin-path-pp-001pp-005) |
+| PP-002 | Plugin emits brief on user prompt | Send a work-intent prompt with the plugin active | Plugin bridge returns rendered brief, delivered as `additionalContext` | [Root playbook §14](#14--plugin-path-pp-001pp-005) |
+| PP-003 | Status tool prompt-safety | Invoke the plugin's status tool during a session | Output contains counters/status only — no raw prompts, no fingerprints, no stdout/stderr | [Root playbook §14](#14--plugin-path-pp-001pp-005) |
+| PP-004 | Env opt-out | Set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` and restart | Plugin initializes disabled; no bridge invocation per user prompt; `SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED=1` remains accepted as a legacy alias | [Root playbook §14](#14--plugin-path-pp-001pp-005) |
+| PP-005 | Config opt-out | Set `enabled: false` in plugin config and restart | Same as PP-004: bridge never invoked | [Root playbook §14](#14--plugin-path-pp-001pp-005) |
 
 ---
 
-## 14. MEASUREMENT RUN (`MR-001..MR-003`)
+## 15. MEASUREMENT RUN (`MR-001..MR-003`)
 
 These scenarios cover the Phase 024 Track 2 static corpus measurement harness. Run locally when validating advisor accuracy baselines or after significant advisor / smart-router changes.
 
 | ID | Scenario | Command or Action | Expected | File |
 |---|---|---|---|---|
-| MR-001 | Full 200-prompt corpus run | Execute `cd .opencode/skill/system-spec-kit/scripts && npx tsx observability/smart-router-measurement.ts` end-to-end against 019/004 corpus | `smart-router-measurement-report.md` regenerated; `smart-router-measurement-results.jsonl` has 200 records; optional static compliance telemetry writes `.opencode/reports/smart-router-static/compliance.jsonl`; summary reports per-skill accuracy + savings | [Root playbook §14](#14--measurement-run-mr-001mr-003) |
-| MR-002 | Advisor accuracy baseline | Inspect the generated report's summary line | Current baseline: 56.00% (112/200). Regressions below this warrant investigation | [Root playbook §14](#14--measurement-run-mr-001mr-003) |
-| MR-003 | UNKNOWN-fallback rate | Check report's UNKNOWN row | Should be ≤ 18.5% (baseline); higher means routing vocabulary regressed | [Root playbook §14](#14--measurement-run-mr-001mr-003) |
+| MR-001 | Full 200-prompt corpus run | Execute `cd .opencode/skill/system-spec-kit/scripts && npx tsx observability/smart-router-measurement.ts` end-to-end against 019/004 corpus | `smart-router-measurement-report.md` regenerated; `smart-router-measurement-results.jsonl` has 200 records; optional static compliance telemetry writes `.opencode/reports/smart-router-static/compliance.jsonl`; summary reports per-skill accuracy + savings | [Root playbook §15](#15--measurement-run-mr-001mr-003) |
+| MR-002 | Advisor accuracy baseline | Inspect the generated report's summary line | Current baseline: 56.00% (112/200). Regressions below this warrant investigation | [Root playbook §15](#15--measurement-run-mr-001mr-003) |
+| MR-003 | UNKNOWN-fallback rate | Check report's UNKNOWN row | Should be ≤ 18.5% (baseline); higher means routing vocabulary regressed | [Root playbook §15](#15--measurement-run-mr-001mr-003) |
 
 ---
 
-## 15. LIVE-SESSION TELEMETRY (`LT-001..LT-004`)
+## 16. LIVE-SESSION TELEMETRY (`LT-001..LT-004`)
 
 These scenarios cover the Phase 024 Track 3 live-session wrapper + Track 4 analyzer workflow. Run by the operator who owns the runtime session to collect real compliance data.
 
 | ID | Scenario | Command or Action | Expected | File |
 |---|---|---|---|---|
-| LT-001 | Wrapper registration per runtime | Follow [`LIVE_SESSION_WRAPPER_SETUP.md`](../../system-spec-kit/scripts/observability/LIVE_SESSION_WRAPPER_SETUP.md) for the target runtime | Wrapper registered through the runtime-specific surface; Copilot uses callback wrapping rather than a generic settings-file model | [Root playbook §15](#15--live-session-telemetry-lt-001lt-004) |
-| LT-002 | Read-tool telemetry accumulates | Run a session, exercise the active runtime normally, then call `finalizeSmartRouterPrompt(promptId)` once when that prompt completes | `.opencode/skill/.smart-router-telemetry/compliance.jsonl` gains one new aggregate line per finalized prompt with compliance classification | [Root playbook §15](#15--live-session-telemetry-lt-001lt-004) |
-| LT-003 | Analyzer produces report | Run `cd .opencode/skill/system-spec-kit/scripts && npx tsx observability/smart-router-analyze.ts` against the JSONL | Timestamped markdown report emitted with compliance distribution + over/under-load rates + ON_DEMAND trigger rate | [Root playbook §15](#15--live-session-telemetry-lt-001lt-004) |
-| LT-004 | Empty-state handling | Run analyzer with no JSONL content | Report says "no data yet; run live-session wrapper first" without failing | [Root playbook §15](#15--live-session-telemetry-lt-001lt-004) |
+| LT-001 | Wrapper registration per runtime | Follow [`LIVE_SESSION_WRAPPER_SETUP.md`](../../system-spec-kit/scripts/observability/LIVE_SESSION_WRAPPER_SETUP.md) for the target runtime | Wrapper registered through the runtime-specific surface; Copilot uses callback wrapping rather than a generic settings-file model | [Root playbook §16](#16--live-session-telemetry-lt-001lt-004) |
+| LT-002 | Read-tool telemetry accumulates | Run a session, exercise the active runtime normally, then call `finalizeSmartRouterPrompt(promptId)` once when that prompt completes | `.opencode/skill/.smart-router-telemetry/compliance.jsonl` gains one new aggregate line per finalized prompt with compliance classification | [Root playbook §16](#16--live-session-telemetry-lt-001lt-004) |
+| LT-003 | Analyzer produces report | Run `cd .opencode/skill/system-spec-kit/scripts && npx tsx observability/smart-router-analyze.ts` against the JSONL | Timestamped markdown report emitted with compliance distribution + over/under-load rates + ON_DEMAND trigger rate | [Root playbook §16](#16--live-session-telemetry-lt-001lt-004) |
+| LT-004 | Empty-state handling | Run analyzer with no JSONL content | Report says "no data yet; run live-session wrapper first" without failing | [Root playbook §16](#16--live-session-telemetry-lt-001lt-004) |
 
 ---
 
-## 16. AUTOMATED TEST CROSS-REFERENCE
+## 17. AUTOMATED TEST CROSS-REFERENCE
 
 | Test Module | Coverage | Playbook Overlap |
 |---|---|---|
@@ -327,10 +344,11 @@ These scenarios cover the Phase 024 Track 3 live-session wrapper + Track 4 analy
 | `.opencode/skill/system-spec-kit/mcp_server/context-server.ts` | Startup scan and watcher-driven auto-reindex behavior | SG-001, SG-003 |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts` | Runtime transport parity for Claude, Gemini, Copilot, Codex, and the OpenCode plugin | HR-001, HR-002, PP-002 |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-privacy.vitest.ts` | Prompt privacy constraints across hook surfaces | HR-006 |
+| `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/*.vitest.ts` | Native shim, plugin bridge, daemon-probe, and redirect metadata compat coverage | NC-001..NC-005 |
 
 ---
 
-## 17. FEATURE CATALOG CROSS-REFERENCE INDEX
+## 18. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 Skill Advisor ships a live feature catalog rooted at [`../feature_catalog/feature_catalog.md`](../feature_catalog/feature_catalog.md). Use that catalog for the current-state inventory, and use this playbook package for operator prompts, execution steps, evidence capture, and verdict criteria.
 

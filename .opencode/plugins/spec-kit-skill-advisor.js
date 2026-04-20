@@ -22,6 +22,9 @@ const LEGACY_DISABLED_ENV = 'SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED';
 const BRIDGE_PATH = fileURLToPath(new URL('./spec-kit-skill-advisor-bridge.mjs', import.meta.url));
 const ADVISOR_SOURCE_PATHS = [
   BRIDGE_PATH,
+  fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/dist/skill-advisor/handlers/advisor-recommend.js', import.meta.url)),
+  fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/dist/skill-advisor/handlers/advisor-status.js', import.meta.url)),
+  fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/dist/skill-advisor/lib/compat/daemon-probe.js', import.meta.url)),
   fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/dist/lib/skill-advisor/skill-advisor-brief.js', import.meta.url)),
   fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/dist/lib/skill-advisor/render.js', import.meta.url)),
   fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/dist/lib/skill-advisor/subprocess.js', import.meta.url)),
