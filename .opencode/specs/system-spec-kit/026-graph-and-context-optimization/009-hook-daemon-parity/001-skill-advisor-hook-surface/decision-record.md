@@ -88,8 +88,7 @@ Phase 020 could land as a direct-implementation spec folder (research inline, sh
 
 ---
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Reuse code-graph `buildStartupBrief()` pattern exactly
+### ADR-002: Reuse code-graph `buildStartupBrief()` pattern exactly
 
 ### Metadata
 
@@ -150,12 +149,10 @@ The code-graph hook (session-prime injection of `buildStartupBrief()` output via
 
 - See `spec.md §3 Files to Change` for file-level mirroring map
 - See `plan.md §3 Architecture` for data-flow parallel
-<!-- /ANCHOR:adr-002 -->
 
 ---
 
-<!-- ANCHOR:adr-003 -->
-## ADR-003: Fail-open contract when advisor subprocess unavailable
+### ADR-003: Fail-open contract when advisor subprocess unavailable
 
 ### Metadata
 
@@ -213,12 +210,10 @@ The advisor subprocess might fail for legitimate reasons: Python not in PATH on 
 
 - See `spec.md §6 Risks` row "Hook failure blocks turn completion"
 - See `spec.md §8 Edge Cases` "Error Scenarios"
-<!-- /ANCHOR:adr-003 -->
 
 ---
 
-<!-- ANCHOR:adr-004 -->
-## ADR-004: Research → implementation handoff — 8-child critical path with renderer-first hard gate
+### ADR-004: Research to implementation handoff with renderer-first hard gate
 
 ### Metadata
 
@@ -294,4 +289,3 @@ Scaffold 8 children (002-009) under `020/`, with the critical path:
 - See `plan.md §4 Phase 2` for the dependency chain
 - See `tasks.md` T007-T023 for the scaffolding + implementation tasks
 - See each child's `spec.md` for scope detail (wave-1 + wave-2 folded)
-<!-- /ANCHOR:adr-004 -->

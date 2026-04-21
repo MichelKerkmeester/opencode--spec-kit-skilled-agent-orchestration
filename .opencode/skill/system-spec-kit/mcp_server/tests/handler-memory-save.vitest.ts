@@ -1297,7 +1297,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           content: 'Implemented planner-first blocker classification in `mcp_server/handlers/memory-save.ts`.',
           routeAs: 'narrative_progress',
         },
-        { force: true }
+        { force: false }
       );
 
       expect(result.success).toBe(false);

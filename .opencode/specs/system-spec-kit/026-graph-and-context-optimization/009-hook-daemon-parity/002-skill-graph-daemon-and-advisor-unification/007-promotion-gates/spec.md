@@ -43,6 +43,8 @@ _memory:
 | **Status** | Complete |
 | **Created** | 2026-04-20 |
 | **Parent** | `../` |
+| **Parent Spec** | `../spec.md` |
+| **Predecessor** | `../006-compat-migration-and-bootstrap/spec.md` |
 | **Predecessors** | `../004-native-advisor-core/`, `../005-mcp-advisor-surface/` |
 | **Ship SHA** | `5696acf4a` |
 | **Post-review remediation** | Parent review `remediation-report.md` adds missing §11 gates in `gate-bundle.ts` |

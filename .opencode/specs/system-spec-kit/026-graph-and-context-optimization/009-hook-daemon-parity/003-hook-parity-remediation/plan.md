@@ -1,6 +1,6 @@
 ---
-title: "029 — Hook Parity Remediation Plan"
-description: "Implementation plan for 10 hook findings: phased by criticality, per-finding evidence, commit cadence, and test strategy."
+title: "029 - Hook Parity Remediation Plan"
+description: "Implementation plan for hook parity remediation across OpenCode, Codex, Copilot, and packet-local validation evidence."
 trigger_phrases:
   - "029 plan"
   - "hook parity plan"
@@ -9,176 +9,177 @@ contextType: "implementation-plan"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
-    last_updated_at: "2026-04-21T10:20:00Z"
-    last_updated_by: "claude-opus-4-7"
-    recent_action: "Scaffolded plan; 4 phases + closing"
-    next_safe_action: "Dispatch codex Phase A"
-    completion_pct: 5
+    last_updated_at: "2026-04-21T15:33:58Z"
+    last_updated_by: "codex-gpt-5.4"
+    recent_action: "Phase 003 plan reshaped to strict Level 3 template"
+    next_safe_action: "Run strict validation and close remaining review remediation gates"
+    completion_pct: 95
 ---
-<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 
-# Implementation Plan
+# Implementation Plan: 029 - Runtime Hook Parity Remediation
 
-<!-- ANCHOR:plan-sequence-029 -->
-## Phase Sequence
+---
 
-Ordered by impact:
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-1. **Phase A — OpenCode plugin transport fix** (HOOK-P1-001 + HOOK-P2-005) — restores code-graph context delivery
-2. **Phase B — Codex advisor hook reliability** (HOOK-P1-002 + HOOK-P1-003) — makes hook output visible
-3. **Phase C — Copilot startup wiring + docs truth-sync** (HOOK-P1-004 + HOOK-P1-005 + HOOK-P2-001 + HOOK-P2-004)
-4. **Phase D — Codex PreToolUse policy hardening** (HOOK-P2-002 + HOOK-P2-003)
+### Technical Context
 
-One commit per phase (4 commits total), plus 1 closing commit to append remediation log to the source deep-dive doc.
-<!-- /ANCHOR:plan-sequence-029 -->
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript, JavaScript, Markdown, JSON |
+| **Framework** | Vitest, Node.js, system-spec-kit validator |
+| **Storage** | Spec metadata JSON and packet-local markdown docs |
+| **Testing** | `npm run typecheck`, `npm run build`, targeted vitest, strict spec validation |
 
-<!-- ANCHOR:plan-phase-details-029 -->
+### Overview
 
-## Technical Context
+The remediation is ordered by review severity and dependency: first repair strict validation, then evidence traceability, then stale acceptance gates, then OpenCode runtime diagnostics, then continuity metadata. The implementation keeps code changes scoped to the plugin, bridge, and targeted vitest file while all documentation changes stay inside the 009 packet.
+<!-- /ANCHOR:summary -->
 
-The remediation touches the System Spec Kit MCP server TypeScript runtime, checked-in Codex/Copilot hook configuration, the OpenCode plugin bridge, and packet-local documentation. Build output is generated through `npm run build` in `.opencode/skill/system-spec-kit/mcp_server`.
+---
 
-The hook surfaces are intentionally different by runtime: Codex has prompt/pre-tool hooks but no startup lifecycle hook, Copilot uses repo-local shell wrappers, and OpenCode uses plugin-based lifecycle injection. The plan therefore fixes parity claims by capability class instead of forcing all runtimes into the same hook model.
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-## Architecture
+### Definition of Ready
 
-The architecture keeps hook transport construction inside the MCP handler layer and keeps runtime adapters thin. `session_resume` owns OpenCode transport plan construction; the OpenCode plugin and bridge only parse and deliver that plan.
+- [x] Problem statement clear and scope documented in `spec.md`.
+- [x] User supplied the active spec folder and explicit write authority.
+- [x] Deep-review source and findings are identified in the parent review report.
 
-Codex advisor dispatch now prefers in-process scoring when the local advisor graph is reachable and falls back to the subprocess path with a bounded timeout. Codex PreToolUse remains read-only during hook execution; policy file creation is isolated in `hooks/codex/setup.ts`.
+### Definition of Done
 
-Copilot startup delivery stays wrapper-based: `.github/hooks/superset-notify.json` routes `sessionStart` to `.github/hooks/scripts/session-start.sh`, and the wrapper performs Superset fan-out as a best-effort side effect.
+- [ ] Phase 003 strict validation exits 0.
+- [ ] Parent and children 001/002/003 strict validation exits 0.
+- [ ] Typecheck, build, and targeted vitest command exit 0.
+- [ ] The parent remediation summary lists each finding with status, files, verification, and proposed commit message.
+<!-- /ANCHOR:quality-gates -->
 
-## Phase A — OpenCode plugin transport fix
+---
 
-**Scope:** `session_resume({ minimal: true })` returns `opencodeTransport`; plugin contract test uses real bridge shape.
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-### Step A.1 — Confirm current behavior
-Read `handlers/session-resume.ts:560-578` and `dist/handlers/session-resume.js:318-335` — identify the early-return that skips `payloadContract` + `opencodeTransport`.
+### Pattern
 
-### Step A.2 — Decide transport surface
-**Decision** (see ADR-001): keep `--minimal` AND return `opencodeTransport`. The minimal flag is about skipping heavy enrichment (full memory snapshot), not skipping plugin contract fields.
+Thin runtime adapter with explicit diagnostics.
 
-### Step A.3 — Implement
-In `handleSessionResume()` minimal branch: build `opencodeTransport` before the early return. Lift the transport construction out of the non-minimal path into a shared helper (e.g., `buildOpencodeTransport()`). Minimal returns `{ payloadContract: null, opencodeTransport: {...transportOnly:true}, ... }`.
+### Key Components
 
-### Step A.4 — Test
-- `tests/session-resume.vitest.ts`: assert `minimal: true` output includes `opencodeTransport.transportOnly === true`.
-- `tests/opencode-plugin.vitest.ts`: new test that invokes the real bridge stdout (via child_process) and feeds into `parseTransportPlan()` — NOT mocked.
+- **OpenCode plugin transform**: parses bridge output and injects runtime code-graph context.
+- **OpenCode bridge**: invokes `session_resume` and serializes `opencodeTransport`.
+- **Phase 003 docs**: record requirements, decisions, tasks, checklist evidence, and validation state.
+- **Graph metadata**: exposes current packet status and file lineage to memory search.
 
-### Step A.5 — Runtime status
-Surface `Bridge returned no OpenCode transport payload` as an explicit advisor/plugin diagnostic (currently silent).
+### Data Flow
 
-## Phase B — Codex advisor hook reliability
+`session_resume` builds `data.opencodeTransport`; the bridge writes the handler JSON to stdout; the plugin parses stdout into a transport plan. When that parse fails or the transport plan is absent, the plugin or bridge must emit a visible diagnostic instead of silently returning the original system prompt.
+<!-- /ANCHOR:architecture -->
 
-**Scope:** HOOK-P1-002 (fail-open SIGNAL_KILLED) + HOOK-P1-003 (invalid `codex hooks list` probe).
+---
 
-### Step B.1 — Policy detector fix (HOOK-P1-003)
-- Replace `codex hooks list` probe in `lib/codex-hook-policy.ts` with `.codex/settings.json` file existence + JSON parse check.
-- Scrub Superset/TUI env vars (`CODEX_TUI_RECORD_SESSION`, `CODEX_TUI_SESSION_LOG_PATH`, `CODEX_CI`) from the `codex --version` probe's `spawnSync` env.
-- Update `tests/codex-hook-policy.vitest.ts` with: valid version + invalid `hooks list`, Superset env timeout simulation, `.codex/settings.json` positive detection.
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-### Step B.2 — Hook timeout + native path (HOOK-P1-002)
-- In `hooks/codex/user-prompt-submit.ts`: when native advisor path is available (`.opencode/skill/system-spec-kit/mcp_server/skill-advisor/` daemon reachable), use in-process scorer instead of spawning Python subprocess.
-- Extend subprocess timeout to `3000ms` (configurable via `SPECKIT_CODEX_HOOK_TIMEOUT_MS`).
-- On timeout, return a prompt-safe stale advisory: `hookSpecificOutput.additionalContext: "Advisor: stale (cold-start timeout)"` with `status:"stale"` diagnostic — NOT empty `{}` + `SIGNAL_KILLED`.
+### Phase 1: Setup
 
-### Step B.3 — Compiled-entrypoint smoke test
-New vitest `tests/codex-user-prompt-submit-hook.vitest.ts` that execs `dist/hooks/codex/user-prompt-submit.js` with a realistic payload and asserts non-empty `additionalContext`.
+- [x] Read Phase 003 spec docs before editing.
+- [x] Run strict validation to capture current failures.
+- [x] Confirm stale command-doc reference source and allowed fix path.
 
-## Phase C — Copilot startup wiring + docs truth-sync
+### Phase 2: Implementation
 
-**Scope:** HOOK-P1-004, HOOK-P1-005, HOOK-P2-001, HOOK-P2-004.
+- [x] Repair Phase 003 template headers and required anchors.
+- [x] Remove stale startup acceptance language that referenced a nonexistent Codex agent; retain `session_bootstrap` as the documented recovery path.
+- [ ] Add OpenCode plugin/bridge diagnostic behavior for absent or unparsable transport plans.
+- [ ] Add vitest coverage for the plugin diagnostic path.
+- [ ] Refresh continuity and graph metadata across parent plus children 001, 002, and 003.
 
-### Step C.1 — Copilot JSON route (HOOK-P1-004)
-- Update `.github/hooks/superset-notify.json`: `sessionStart` entry → `.github/hooks/scripts/session-start.sh`.
-- Wrapper already fans out to Superset inline (line 41). No Superset-side change needed.
-- Update `tests/copilot-hook-wiring.vitest.ts` to assert wrapper route.
+### Phase 3: Verification
 
-### Step C.2 — Codex lifecycle docs (HOOK-P1-005)
-- Choose: (a) create `.codex/agents/context-prime.toml`, OR (b) remove `context-prime` claims from packet docs.
-- **Decision** (ADR-002): option (b) — remove claims. Codex startup uses `session_bootstrap` MCP tool per install guide. The `context-prime` reference in `024/030/implementation-summary.md:143` is corrected.
-- Add a doc lint script (optional) that `grep -l context-prime` returns no matches without a corresponding file.
+- [ ] Run typecheck.
+- [ ] Run build.
+- [ ] Run targeted vitest for OpenCode plugin and session resume.
+- [ ] Run strict validation on Phase 003, parent 009, child 001, and child 002.
+- [ ] Write final remediation summary.
+<!-- /ANCHOR:phases -->
 
-### Step C.3 — Codex hooks README (HOOK-P2-001)
-- Rewrite `hooks/codex/README.md:19` area: describe current state (settings.json + policy.json present, lifecycle hooks absent, prompt hook smoke verification recommended, known SIGNAL_KILLED → stale fallback).
+---
 
-### Step C.4 — Runtime matrix docs (HOOK-P2-004)
-- Add 2-column-split matrix to `.opencode/skill/system-spec-kit/references/config/hook_system.md`, `AGENTS.md`, `.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md`: **prompt hook** | **lifecycle hook** per runtime. Codex: `yes | no`. Copilot: `yes | yes (via repo wrapper)`. Claude: `yes | yes`. OpenCode: `no (advisor separate) | yes (plugin)`.
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-## Phase D — Codex PreToolUse policy hardening
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Typecheck | MCP server TypeScript sources | `npm run typecheck` |
+| Build | MCP server compiled output | `npm run build` |
+| Unit/contract | OpenCode plugin, bridge, session resume | `vitest run tests/opencode-plugin.vitest.ts tests/session-resume.vitest.ts` |
+| Documentation | 009 parent and children | `validate.sh --strict --no-recursive` |
 
-**Scope:** HOOK-P2-002 + HOOK-P2-003.
+Targeted vitest is the primary behavioral gate for this review because the requested finding is in the OpenCode plugin diagnostic path. Any broader baseline failures are recorded as deferred only when they are outside the authorized write scope.
+<!-- /ANCHOR:testing -->
 
-### Step D.1 — Policy coverage (HOOK-P2-002)
-- `CodexPolicyFile` type: accept `bashDenylist` AND `bash_denylist`.
-- `loadPolicy()`: merge both keys if present.
-- `bashCommandFor()`: parse `toolInput.command` (camelCase) in addition to existing casings.
-- `.codex/policy.json` default denylist: add bare `git reset --hard`.
-- Tests: three new cases in `codex-pre-tool-use.vitest.ts`.
+---
 
-### Step D.2 — Remove filesystem side-effect (HOOK-P2-003)
-- `loadPolicy()`: if policy file missing, use in-memory default (do NOT write).
-- `ensurePolicyFile()` → renamed to `ensurePolicyBootstrap()` and moved to a setup script or session_bootstrap handler.
-- PreToolUse fail-open path: log `status: "in_memory_default"` diagnostic.
-- Tests: missing-file case asserts no filesystem write.
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
 
-## Commit Sequence
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` | Internal | Required | Cannot close traceability findings without strict validation exit 0. |
+| `.opencode/skill/system-spec-kit/mcp_server` npm scripts | Internal | Required | Cannot verify code changes without typecheck/build/vitest. |
+| Existing 001/002 child docs | Internal | Required | Parent parity validation depends on child continuity staying coherent. |
+| Sandbox write authority | External | Constrained | Git staging/commit is forbidden; summary file hands off to orchestrator. |
+<!-- /ANCHOR:dependencies -->
 
-```
-feat(029/A): OpenCode plugin transport fix (HOOK-P1-001 + P2-005)
-feat(029/B): Codex advisor hook reliability (HOOK-P1-002 + P1-003)
-feat(029/C): Copilot wiring + docs truth-sync (HOOK-P1-004 + P1-005 + P2-001 + P2-004)
-feat(029/D): Codex PreToolUse policy hardening (HOOK-P2-002 + P2-003)
-docs(029): remediation log + source deep-dive cross-reference
-```
+---
 
-Each commit runs: typecheck + build + vitest + validate.sh on this spec folder. Python regression is NOT in scope for this phase (hook-specific — no skill-advisor scoring changes).
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
 
-## AI Execution Protocol
+- **Trigger**: Typecheck, build, targeted vitest, or strict validation remains red after scoped fixes.
+- **Procedure**: Do not run git reset. Document the blocker in the parent remediation summary, leave evidence-backed changes in place, and hand off a precise follow-up to the orchestrator.
+<!-- /ANCHOR:rollback -->
 
-### Pre-Task Checklist
+---
 
-- Read the five packet docs and the source deep-dive before making edits.
-- Confirm the user-supplied spec folder remains the active documentation scope.
-- Confirm the edit authority list before touching files.
-- Avoid `git add`, `git commit`, and `git reset`.
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
 
-### Execution Rules
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Phase 1 validation repair | Read current docs and validator output | Phase 2 evidence updates |
+| Phase 2 evidence updates | Phase 1 template compliance | Phase 3 startup gate cleanup |
+| Phase 3 startup gate cleanup | ADR-002 recovery decision | Phase 4 plugin diagnostics |
+| Phase 4 plugin diagnostics | Plugin and bridge reads | Phase 5 metadata refresh |
+| Phase 5 metadata refresh | Current validation and verification output | Phase 6 summary |
+| Phase 6 summary | All verification output | Orchestrator commit |
+<!-- /ANCHOR:phase-deps -->
+
+### AI Execution Protocol
+
+#### Pre-Task Checklist
+
+- Confirm the active spec folder and write authority.
+- Read every file before editing it.
+- Keep code edits scoped to the plugin, bridge, and targeted vitest file.
+
+#### Execution Rules
 
 | Rule | Requirement |
-| --- | --- |
-| TASK-SEQ | Complete Phase A, B, C, D, then E in order. |
-| TASK-SCOPE | Edit only the files listed by the user or packet-local docs. |
-| TASK-VERIFY | Run typecheck, build, and phase-targeted tests before writing each phase summary. |
-| TASK-TRUTH | Record blocked or deferred gates instead of marking them green. |
+|------|-------------|
+| TASK-SEQ | Follow the user-specified phase order. |
+| TASK-SCOPE | Do not edit files outside the authorized list. |
+| TASK-VERIFY | Run the requested verification commands after edits. |
+| TASK-TRUTH | Record failures as blocked or deferred with command output. |
 
-### Status Reporting
+#### Status Reporting Format
 
-Status Format: each phase summary lists finding IDs addressed, files modified, verification output, blocked/deferred items, and proposed commit message.
+Status Format: finding ID, status, files modified, verification output, and proposed commit message.
 
-### Blocked Task Protocol
+#### Blocked Task Protocol
 
-When a task is BLOCKED by sandbox permissions, out-of-scope baseline failures, or ambiguous authority, record `[~]` with the exact evidence and continue to the next safe phase.
-
-## Rollback
-
-Per-phase: `git reset --hard <pre-phase-SHA>`.
-
-Full: `git reset --hard <pre-029-SHA>` — preserves the scaffolding commit for re-use.
-
-## Test Strategy
-
-- **Vitest suites touched**: `session-resume.vitest.ts`, `opencode-plugin.vitest.ts`, `codex-hook-policy.vitest.ts`, `codex-user-prompt-submit-hook.vitest.ts` (new), `codex-pre-tool-use.vitest.ts`, `copilot-hook-wiring.vitest.ts`.
-- **Smoke tests**: bridge stdout shape, compiled entrypoint smoke (documented under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/`).
-- **Integration**: Phase A real-bridge contract test ensures HOOK-P1-001 doesn't silently regress.
-
-## Risk + Mitigation
-
-| Risk | Mitigation |
-| --- | --- |
-| `buildOpencodeTransport()` helper changes non-minimal path behavior | Snapshot test on non-minimal output before + after |
-| Native advisor path not yet daemon-backed at hook time | Fall back to extended-timeout Python subprocess; emit `status: "python_fallback"` |
-| Copilot JSON route change breaks Superset fan-out | Wrapper preserves `superset-notify.sh` call; verified in smoke |
-| Doc changes drift from code reality | Doc-lint `grep` check runs in CI (optional stretch) |
-<!-- /ANCHOR:plan-phase-details-029 -->
+If a task is blocked by scope or sandbox constraints, mark it `DEFERRED` in the remediation summary and continue to the next safe in-scope phase.

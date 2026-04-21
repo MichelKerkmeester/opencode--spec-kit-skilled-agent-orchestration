@@ -192,7 +192,7 @@ The established pattern (same as Phase 026 driver):
 
 1. **Write a single-phase prompt file** at `/tmp/codex-027-NNN-prompt.txt` with:
    - Scope reference (read spec.md/plan.md/tasks.md/checklist.md)
-   - Predecessor dependency: "read `../NNN-prior-child/implementation-summary.md` before starting"
+   - Predecessor dependency: read the immediately preceding child implementation summary before starting.
    - Concrete deliverable list
    - Test gate instructions
    - Final marker line requirement (`PHASE_027_NNN_DONE p0_closed=X p1_closed=Y tests_passed=Z`)
@@ -269,7 +269,7 @@ Before dispatching each phase:
 After each phase lands:
 - [ ] Checklist items for that phase marked `[x]` with `file:line` evidence
 - [ ] `implementation-summary.md` for that phase populated
-- [ ] Parent `027/implementation-summary.md` Children Convergence Log row updated
+- [ ] Parent implementation summary Children Convergence Log row updated
 - [ ] Phase commit pushed to origin/main
 - [ ] Next phase preconditions verified before dispatching
 

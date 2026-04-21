@@ -10,10 +10,11 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 --
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface"
-    last_updated_at: "2026-04-19T18:00:00Z"
-    last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "T9 gauntlet PASS; release ready"
-    next_safe_action: "T10 sign-off + commit"
+    last_updated_at: "2026-04-21T15:42:05Z"
+    last_updated_by: "codex-gpt-5.4"
+    recent_action: "Already shipped"
+    next_safe_action: "Keep validation green"
+    completion_pct: 100
     dispatch_policy: "cli-codex gpt-5.4 high fast primary; cli-copilot gpt-5.4 high fallback"
 
 ---
@@ -32,7 +33,7 @@ _memory:
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 020-skill-advisor-hook-surface |
+| **Spec Folder** | 001-skill-advisor-hook-surface |
 | **Completed** | 2026-04-19 |
 | **Level** | 3 |
 | **Child Layout** | `001-initial-research` (converged); `002-shared-payload-advisor-contract`; `003-advisor-freshness-and-source-cache`; `004-advisor-brief-producer-cache-policy`; `005-advisor-renderer-and-regression-harness` (HARD GATE); `006-claude-hook-wiring`; `007-gemini-copilot-hook-wiring`; `008-codex-integration-and-hook-policy`; `009-documentation-and-release-contract` |
@@ -123,7 +124,7 @@ These are documented as out-of-scope; they do not block Phase 020 release.
 
 ---
 
-## Dispatch Log
+### Dispatch Log
 
 | Timestamp (UTC) | Event | Child | Repo SHA (HEAD) | Notes |
 |-----------------|-------|-------|-----------------|-------|
@@ -154,7 +155,7 @@ These are documented as out-of-scope; they do not block Phase 020 release.
 
 ---
 
-## Children Convergence Log
+### Children Convergence Log
 
 | Child | Status | Converged at | Evidence |
 |-------|--------|--------------|----------|
@@ -170,7 +171,7 @@ These are documented as out-of-scope; they do not block Phase 020 release.
 
 ---
 
-## Release Prep
+### Release Prep
 
 - [x] All 8 implementation children converged — [002](002-shared-payload-advisor-contract/implementation-summary.md), [003](003-advisor-freshness-and-source-cache/implementation-summary.md), [004](004-advisor-brief-producer-cache-policy/implementation-summary.md), [005](005-advisor-renderer-and-regression-harness/implementation-summary.md), [006](006-claude-hook-wiring/implementation-summary.md), [007](007-gemini-copilot-hook-wiring/implementation-summary.md), [008](008-codex-integration-and-hook-policy/implementation-summary.md), [009](009-documentation-and-release-contract/implementation-summary.md)
 - [x] Cross-runtime parity: 4 runtimes × 5 canonical fixtures = identical additionalContext — [advisor-runtime-parity.vitest.ts](../../../../skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts), extended by 008

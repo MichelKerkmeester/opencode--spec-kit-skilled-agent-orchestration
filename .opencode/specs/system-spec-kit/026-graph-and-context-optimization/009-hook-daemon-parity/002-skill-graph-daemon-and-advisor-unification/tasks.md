@@ -1,96 +1,107 @@
 ---
-title: "Phase 027 — Tasks"
-description: "Parent-level tasks. Research phase complete. Children scaffolded. Implementation dispatches per child."
+title: "027 - Skill Graph Daemon and Advisor Unification Tasks"
+description: "Parent-level task tracker for the completed Phase 027 skill-graph daemon and advisor unification work."
+trigger_phrases:
+  - "027 tasks"
+  - "advisor daemon tasks"
 importance_tier: "high"
-contextType: "research"
+contextType: "task-list"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification"
+    last_updated_at: "2026-04-21T15:42:05Z"
+    last_updated_by: "codex-gpt-5.4"
+    recent_action: "Already shipped"
+    next_safe_action: "Keep validation green"
+    completion_pct: 100
+---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+
+# Tasks: 027 - Skill Graph Daemon and Advisor Unification
+
 ---
 
-# Phase 027 Tasks
+<!-- ANCHOR:notation -->
+## Task Notation
 
-## Research Phase (complete)
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed with evidence |
+| `[~]` | Deferred with reason |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-### T001 — Scaffold research packet (done)
-- [x] Folder + 7 docs
-- [x] research/ artifacts at `../research/027-skill-graph-daemon-and-advisor-unification-pt-01/`
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
-### T002 — Dispatch research (done)
-- [x] 40 r01 iters (cli-codex gpt-5.4 high fast)
-- [x] 20 follow-up iters (cli-copilot gpt-5.4 high)
-- [x] 2 synthesis passes
+---
 
-### T003 — Research verification (done)
-- [x] research.md exists (12 sections + §13 follow-up)
-- [x] findings-registry.json valid + all 31 + 20 questions covered
-- [x] Architectural sketch present
-- [x] Implementation roadmap 6 sub-packets
-- [x] Risk register + measurement plan + §13.8 recommendation
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-## Scaffolding Phase (complete)
+- [x] T001 Complete Phase 027 research synthesis (`implementation-summary.md` records 60 iterations and synthesis passes).
+- [x] T002 Define child dependency chain (`plan.md` phase dependency table).
+- [x] T003 Record architecture decisions (`decision-record.md` ADR-001).
+- [x] T004 Ship validator ESM compatibility prerequisite (`implementation-summary.md` children convergence log).
+<!-- /ANCHOR:phase-1 -->
 
-### T004 — Scaffold child 001 (done)
-- [x] `002-daemon-freshness-foundation/` — 7 files
+---
 
-### T005 — Scaffold child 002 (done)
-- [x] `003-lifecycle-and-derived-metadata/` — 7 files
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
-### T006 — Scaffold child 003 (done)
-- [x] `004-native-advisor-core/` — 7 files
+- [x] T010 Implement narrow watcher defaults and freshness states (`implementation-summary.md` daemon freshness row).
+- [x] T011 Implement workspace-scoped single-writer lease (`spec.md` REQ-002).
+- [x] T020 Implement derived metadata extraction with provenance (`spec.md` REQ-004).
+- [x] T021 Implement trust-lane separation and anti-stuffing caps (`spec.md` NFR-S01).
+- [x] T022 Implement additive schema migration and rollback (`spec.md` REQ-005).
+- [x] T030 Port advisor scoring to TypeScript (`implementation-summary.md` native scorer row).
+- [x] T031 Implement five-lane fusion with semantic shadow weight at 0.00 (`decision-record.md` implementation notes).
+- [x] T032 Preserve Python-correct decisions as the parity floor (`decision-record.md` implementation notes).
+- [x] T040 Register advisor MCP tools (`spec.md` REQ-006).
+- [x] T041 Keep Python and plugin compatibility paths active (`spec.md` REQ-007).
+- [x] T042 Implement promotion gate evaluation (`spec.md` REQ-008).
+<!-- /ANCHOR:phase-2 -->
 
-### T007 — Scaffold child 004 (done)
-- [x] `005-mcp-advisor-surface/` — 7 files
+---
 
-### T008 — Scaffold child 005 (done)
-- [x] `006-compat-migration-and-bootstrap/` — 7 files
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
-### T009 — Scaffold child 006 (done)
-- [x] `007-promotion-gates/` — 7 files
+- [x] T050 Child implementation tests passed during shipment (`implementation-summary.md` children convergence log).
+- [x] T051 Parent implementation summary records all child convergence SHAs (`implementation-summary.md` children convergence log).
+- [ ] T052 Parent strict validation exits 0 after the 2026-04-21 parity repair.
+- [ ] T053 Phase 027 child parity validation exits 0 in the 2026-04-21 remediation pass.
+- [ ] T054 Parent 009 remediation summary records final validation output.
+<!-- /ANCHOR:phase-3 -->
 
-### T010 — Parent packet updates
-- [x] spec.md: Child Layout row + ADR pointer
-- [x] plan.md: child dispatch chain
-- [x] tasks.md: scaffolding + verification tasks (this file)
-- [x] decision-record.md: ADR-001..ADR-006 (NEW)
-- [x] implementation-summary.md: Children Convergence Log placeholder
+---
 
-### T011 — Validation
-- [ ] `bash validate.sh` per child (manual; GRAPH_METADATA_PRESENT warning expected due to broken generate-context.js)
-- [ ] Parent `validate.sh` passes
-- [ ] Each child's `description.json` + `graph-metadata.json` parse as valid JSON
+<!-- ANCHOR:completion -->
+## Completion Criteria
 
-## Implementation Phase (future dispatches)
+### Closing Status
 
-### T012 — Dispatch 027/001 (blocked: user decision to start)
-- [ ] `/spec_kit:implement :auto --spec-folder=.../027/002-daemon-freshness-foundation/`
-- [ ] 001 converges (benchmark passes, fail-open semantics verified)
+- [x] Phase 027 implementation shipped across all seven children.
+- [x] Continuity metadata refreshed to shipped state.
+- [ ] Strict validation output refreshed after this remediation.
 
-### T013 — Dispatch 027/002 (blocks on T012)
-- [ ] `/spec_kit:implement :auto --spec-folder=.../027/003-lifecycle-and-derived-metadata/`
+### Current Exit Criteria
 
-### T014 — Dispatch 027/003 (blocks on T013)
-- [ ] `/spec_kit:implement :auto --spec-folder=.../027/004-native-advisor-core/`
-- [ ] Py↔TS parity green on full 200-prompt corpus
+- [ ] Phase 027 parent validation exits 0.
+- [ ] Parent 009 remediation summary records this child parity gate.
+<!-- /ANCHOR:completion -->
 
-### T015 — Dispatch 027/004 (blocks on T014)
-- [ ] `/spec_kit:implement :auto --spec-folder=.../027/005-mcp-advisor-surface/`
+---
 
-### T016 — Dispatch 027/006 (blocks on T014; parallel with T015)
-- [ ] `/spec_kit:implement :auto --spec-folder=.../027/007-promotion-gates/`
+<!-- ANCHOR:cross-refs -->
+## Cross-References
 
-### T017 — Dispatch 027/005 (blocks on T015, optionally T016)
-- [ ] `/spec_kit:implement :auto --spec-folder=.../027/006-compat-migration-and-bootstrap/`
-
-### T018 — Phase 027 closure
-- [ ] All 6 children converged
-- [ ] Update parent `implementation-summary.md` Children Convergence Log with timestamps
-- [ ] Optional: deep-review pass on the full implementation stack
-
-## Commit strategy
-
-One commit per scaffolded child + one for parent updates (7 commits total for scaffolding phase):
-1. `chore(027): scaffold 002-daemon-freshness-foundation`
-2. `chore(027): scaffold 003-lifecycle-and-derived-metadata`
-3. `chore(027): scaffold 004-native-advisor-core`
-4. `chore(027): scaffold 005-mcp-advisor-surface`
-5. `chore(027): scaffold 006-compat-migration-and-bootstrap`
-6. `chore(027): scaffold 007-promotion-gates`
-7. `chore(027): wire parent packet + add decision-record.md`
+- **Specification**: See `spec.md`.
+- **Plan**: See `plan.md`.
+- **Checklist**: See `checklist.md`.
+- **Decisions**: See `decision-record.md`.
+- **Implementation Summary**: See `implementation-summary.md`.
+<!-- /ANCHOR:cross-refs -->

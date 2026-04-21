@@ -34,6 +34,7 @@ _memory:
 |-------|-------|
 | **Parent Spec** | ../spec.md |
 | **Predecessors** | ../006-*, ../007-*, ../008-* |
+| **Predecessor** | ../008-codex-integration-and-hook-policy/spec.md |
 | **Position in train** | 8 of 8 (final; closes 020) |
 
 ---

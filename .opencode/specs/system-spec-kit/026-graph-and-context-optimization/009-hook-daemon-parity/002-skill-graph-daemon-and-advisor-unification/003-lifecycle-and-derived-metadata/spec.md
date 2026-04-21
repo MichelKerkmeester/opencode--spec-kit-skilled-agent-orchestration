@@ -44,7 +44,9 @@ _memory:
 | **Status** | Draft |
 | **Created** | 2026-04-20 |
 | **Parent** | `../` |
-| **Predecessor** | `../002-daemon-freshness-foundation/` |
+| **Parent Spec** | `../spec.md` |
+| **Predecessor** | `../002-daemon-freshness-foundation/spec.md` |
+| **Successor** | `../004-native-advisor-core/spec.md` |
 | **Research source** | `research.md` §5 Track B + §13.3 Track F + §13.5 Y1/Y3; iterations 009-015, 045-049, 056, 058 |
 
 ## 2. PROBLEM & PURPOSE

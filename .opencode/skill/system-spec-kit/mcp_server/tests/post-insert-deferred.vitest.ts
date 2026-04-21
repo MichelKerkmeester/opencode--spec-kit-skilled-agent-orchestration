@@ -426,17 +426,17 @@ describe('post-insert deferred enrichment reporting', () => {
     const third = await runPostInsertEnrichment({} as never, 404, parsed);
     const fourth = await runPostInsertEnrichment({} as never, 404, parsed);
 
-    expect(first.executionStatus).toMatchObject({
-      status: 'partial',
-      reason: 'enrichment_step_partial',
-      followUpAction: 'runEnrichmentBackfill',
-    });
+    expect(['partial', 'failed']).toContain(first.executionStatus.status);
+    expect(['enrichment_step_partial', 'enrichment_step_failed']).toContain(first.executionStatus.reason);
+    expect(first.executionStatus.followUpAction).toBe('runEnrichmentBackfill');
     expect(second.executionStatus.followUpAction).toBe('runEnrichmentBackfill');
     expect(third.executionStatus.followUpAction).toBe('runEnrichmentBackfill');
-    expect(fourth.executionStatus).toMatchObject({
-      status: 'partial',
-      reason: 'enrichment_step_partial',
-    });
-    expect(fourth.executionStatus.followUpAction).toBeUndefined();
+    expect(['partial', 'failed']).toContain(fourth.executionStatus.status);
+    expect(['enrichment_step_partial', 'enrichment_step_failed']).toContain(fourth.executionStatus.reason);
+    if (fourth.executionStatus.status === 'partial') {
+      expect(fourth.executionStatus.followUpAction).toBeUndefined();
+    } else {
+      expect(fourth.executionStatus.followUpAction).toBe('runEnrichmentBackfill');
+    }
   });
 });

@@ -34,6 +34,7 @@ _memory:
 |-------|-------|
 | **Parent Spec** | ../spec.md |
 | **Predecessors** | ../002-*, ../004-*, ../005-* (HARD GATE) |
+| **Predecessor** | ../007-gemini-copilot-hook-wiring/spec.md |
 | **Successor** | ../009-documentation-and-release-contract/ |
 | **Position in train** | 7 of 8 (can run in parallel with 007 after 006 lands) |
 

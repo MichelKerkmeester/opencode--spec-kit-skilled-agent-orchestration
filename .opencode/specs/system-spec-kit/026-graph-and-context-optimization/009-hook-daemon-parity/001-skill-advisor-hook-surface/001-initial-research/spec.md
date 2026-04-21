@@ -39,6 +39,7 @@ _memory:
 | **Priority** | P0 (research-first gate for 020 implementation) |
 | **Status** | Spec Ready, Dispatch Pending |
 | **Effort Estimate** | 10 iterations × ~5-8 min = 50-80 min wall clock |
+| **Successor** | ../002-shared-payload-advisor-contract/spec.md |
 <!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->

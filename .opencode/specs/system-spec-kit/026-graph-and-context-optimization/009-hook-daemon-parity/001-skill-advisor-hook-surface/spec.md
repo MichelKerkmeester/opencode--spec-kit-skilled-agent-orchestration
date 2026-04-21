@@ -161,19 +161,19 @@ See research output for full file list. Architectural anchors:
 
 ### 4.1 P0 - Blockers (MUST complete)
 
-- **R1**: `buildSkillAdvisorBrief()` returns a compact brief (≤ 80 tokens) with topSkill + confidence + uncertainty + freshness + cached-bool
-- **R2**: Hook wired into session-prime for all 3 runtimes; verified injection on session start
-- **R3**: Hook wired into per-prompt-submit hook for all 3 runtimes; verified injection on every turn
-- **R4**: Session cache prevents redundant advisor invocations when prompt fingerprint matches recent prior (within TTL)
-- **R5**: Freshness signal (live/stale/absent/unavailable) populated correctly based on skill-graph + SKILL.md mtimes
-- **R6**: Zero regression on the 019/004 200-prompt labeled corpus: hook-produced top-1 must equal direct-CLI top-1 for all 200 prompts
+- **REQ-001**: `buildSkillAdvisorBrief()` returns a compact brief (<= 80 tokens) with topSkill + confidence + uncertainty + freshness + cached-bool
+- **REQ-002**: Hook wired into session-prime for all 3 runtimes; verified injection on session start
+- **REQ-003**: Hook wired into per-prompt-submit hook for all 3 runtimes; verified injection on every turn
+- **REQ-004**: Session cache prevents redundant advisor invocations when prompt fingerprint matches recent prior (within TTL)
+- **REQ-005**: Freshness signal (live/stale/absent/unavailable) populated correctly based on skill-graph + SKILL.md mtimes
+- **REQ-006**: Zero regression on the 019/004 200-prompt labeled corpus: hook-produced top-1 must equal direct-CLI top-1 for all 200 prompts
 
 ### 4.2 P1 - Required (complete OR user-approved deferral)
 
-- **R7**: Shared-payload envelope (from phase 018 R4) carries the brief with correct trustState vocabulary
-- **R8**: Cache TTL is data-driven (based on research-phase empirical measurement)
-- **R9**: `--no-advisor-hook` env flag to disable the hook per-session (escape hatch)
-- **R10**: Regression fixture suite for the 3 runtime hooks
+- **REQ-007**: Shared-payload envelope (from phase 018 R4) carries the brief with correct trustState vocabulary
+- **REQ-008**: Cache TTL is data-driven (based on research-phase empirical measurement)
+- **REQ-009**: `--no-advisor-hook` env flag to disable the hook per-session (escape hatch)
+- **REQ-010**: Regression fixture suite for the 3 runtime hooks
 
 ### 4.3 Acceptance Scenarios
 
@@ -219,7 +219,6 @@ See research output for full file list. Architectural anchors:
 
 ---
 
-<!-- ANCHOR:nfr -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -237,11 +236,9 @@ See research output for full file list. Architectural anchors:
 - Cache TTL: research-determined (initially propose 5 minutes)
 - Freshness polling: O(1) stat calls, not O(N) content parsing
 
-<!-- /ANCHOR:nfr -->
 
 ---
 
-<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -254,11 +251,9 @@ See research output for full file list. Architectural anchors:
 - Advisor subprocess timeout (> 2s): abort, `freshness=unavailable`
 - Advisor output unparseable JSON: log warning, `freshness=unavailable`
 
-<!-- /ANCHOR:edge-cases -->
 
 ---
 
-<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score (0-20) | Note |
@@ -268,7 +263,6 @@ See research output for full file list. Architectural anchors:
 | Test surface | 10 | Cross-runtime snapshot + corpus regression |
 | Runtime risk | 8 | Fail-open contract bounds blast radius |
 | **Total** | **44** | Level 3 appropriate |
-<!-- /ANCHOR:complexity -->
 
 ---
 
@@ -319,10 +313,24 @@ See research output for full file list. Architectural anchors:
 
 ---
 
+### PHASE DOCUMENTATION MAP
+
+| Phase | Folder | Relationship |
+|-------|--------|--------------|
+| 001 | `001-initial-research/` | Research phase |
+| 002 | `002-shared-payload-advisor-contract/` | Follows 001 |
+| 003 | `003-advisor-freshness-and-source-cache/` | Follows 002 |
+| 004 | `004-advisor-brief-producer-cache-policy/` | Follows 003 |
+| 005 | `005-advisor-renderer-and-regression-harness/` | Hard gate before runtime adapters |
+| 006 | `006-claude-hook-wiring/` | Follows 005 |
+| 007 | `007-gemini-copilot-hook-wiring/` | Follows 006 |
+| 008 | `008-codex-integration-and-hook-policy/` | Follows 007 |
+| 009 | `009-documentation-and-release-contract/` | Follows 008 |
+
 ## RELATED DOCUMENTS
 
 - Parent: `../spec.md` (026-graph-and-context-optimization)
-- Predecessor: `../003-system-hardening/004-routing-accuracy-hardening/spec.md`
+- Predecessor: Phase 019 routing-accuracy hardening (historical packet path archived outside this child folder)
 - Reference pattern: `../../../../skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts`
 - Reference contract: `../../../../skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts` (phase 018 R4)
 - Advisor source: `../../../../skill/skill-advisor/scripts/skill_advisor.py`

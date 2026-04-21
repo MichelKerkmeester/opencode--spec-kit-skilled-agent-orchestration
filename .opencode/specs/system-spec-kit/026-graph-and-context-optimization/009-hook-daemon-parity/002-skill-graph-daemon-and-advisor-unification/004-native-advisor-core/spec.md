@@ -44,7 +44,9 @@ _memory:
 | **Status** | Draft |
 | **Created** | 2026-04-20 |
 | **Parent** | `../` |
-| **Predecessors** | `../002-daemon-freshness-foundation/`, `../003-lifecycle-and-derived-metadata/` |
+| **Parent Spec** | `../spec.md` |
+| **Predecessor** | `../003-lifecycle-and-derived-metadata/spec.md` |
+| **Successor** | `../005-mcp-advisor-surface/spec.md` |
 | **Research source** | `research.md` §6 Track C + §13.4 Track G + §13.5 Y2/Y3; iterations 016-020, 022, 050-053, 057-058 |
 
 ## 2. PROBLEM & PURPOSE

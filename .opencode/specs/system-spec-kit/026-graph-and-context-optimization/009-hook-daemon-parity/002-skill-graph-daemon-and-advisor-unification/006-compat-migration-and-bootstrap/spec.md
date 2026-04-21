@@ -48,7 +48,9 @@ _memory:
 | **Status** | Draft |
 | **Created** | 2026-04-20 |
 | **Parent** | `../` |
-| **Predecessor** | `../005-mcp-advisor-surface/` |
+| **Parent Spec** | `../spec.md` |
+| **Predecessor** | `../005-mcp-advisor-surface/spec.md` |
+| **Successor** | `../007-promotion-gates/spec.md` |
 | **Research source** | Track D (D4, D7, D8) + §13.3 Track F; iterations 027, 030-031, 046, 048, 056 |
 <!-- /ANCHOR:metadata -->
 

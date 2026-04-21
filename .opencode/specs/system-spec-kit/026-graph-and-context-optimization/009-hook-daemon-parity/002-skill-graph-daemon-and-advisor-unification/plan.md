@@ -1,94 +1,188 @@
 ---
-title: "Phase 027 — Plan"
-description: "Research-first phase: r01 research converged, 7 implementation children scaffolded (000 validator prereq + 001-006) per research roadmap §9 + §13.6 delta."
+title: "027 - Skill Graph Daemon and Advisor Unification Plan"
+description: "Implementation plan for Phase 027 parent coordination across daemon freshness, derived metadata, native advisor scoring, MCP surface, compatibility, and promotion gates."
+trigger_phrases:
+  - "027 plan"
+  - "advisor daemon plan"
 importance_tier: "high"
-contextType: "research"
+contextType: "implementation-plan"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification"
+    last_updated_at: "2026-04-21T15:42:05Z"
+    last_updated_by: "codex-gpt-5.4"
+    recent_action: "Already shipped"
+    next_safe_action: "Keep validation green"
+    completion_pct: 100
+---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+
+# Implementation Plan: 027 - Skill Graph Daemon and Advisor Unification
+
 ---
 
-# Plan: Phase 027
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-## Phase Sequence (overview)
+### Technical Context
 
-```
-Phase 027 parent
-  |
-  +-- r01 research (converged): 60 iters, 43 adopt_now / 3 prototype_later / 0 reject
-  |     artifacts: ../research/027-skill-graph-daemon-and-advisor-unification-pt-01/
-  |
-  +-- 7 implementation children (scaffolded):
-        000 (validator ESM prereq) → 001 → 002 → 003 → {004, 006} (parallel) → 005
-```
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript, Python compatibility shim, Markdown, JSON |
+| **Framework** | Node.js, Vitest, system-spec-kit MCP server |
+| **Storage** | SQLite graph, JSON graph metadata, spec markdown |
+| **Testing** | MCP server typecheck/build, advisor vitest suites, strict spec validation |
 
-## Research Phase (complete)
+### Overview
 
-- Driver: `/tmp/run-deep-research-027.sh` (archived)
-- Research artifacts: `../research/027-skill-graph-daemon-and-advisor-unification-pt-01/`
-- Total: 40 r01 + 20 follow-up = 60 iterations + 2 synthesis passes
-- Verdicts: 43 `adopt_now` / 3 `prototype_later` / 0 `reject`
-- Final synthesis recommendation: dispatch 027/001 now; no pt-02 needed
+Phase 027 was delivered as seven child packets: validator prerequisite, daemon freshness, lifecycle metadata, native scorer, MCP surface, compatibility/bootstrap, and promotion gates. The parent plan records the dependency chain and validation strategy while the children own implementation details.
+<!-- /ANCHOR:summary -->
 
-## Implementation Chain (7 children)
+---
 
-```
-   [000]  validator ESM migration (Node 25 compat)                  [PREREQ — unblocks post-phase validate.sh for 001-006]
-     |
-     v
-   [001]  daemon + freshness + single-writer lease + benchmark gate (≤1% CPU / <20MB RSS)
-     |
-     v
-   [002]  lifecycle + derived metadata + schema v2 + rollback
-     |
-     v
-   [003]  native advisor core + 5-lane fusion + Py↔TS parity       [HARD GATE — consumes 002 lifecycle-normalized inputs per Y3]
-     |
-     +------+
-     |      |
-     v      v
-   [004]  [006]   (MCP surface + promotion gates parallel after 003)
-     |
-     v
-   [005]  compat + migration + bootstrap (finalizes after 006)
-```
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-**Depends-on chain (per child `graph-metadata.json.manual.depends_on`):**
-- 000: (none; infrastructure prereq for 001-006 post-phase verification)
-- 001: (none inside 027; implicit soft-dep on 000 for validator tooling)
-- 002: 001
-- 003: 001, 002
-- 004: 003
-- 005: 004
-- 006: 003, 004
+### Definition of Ready
 
-**Effort estimate (research roadmap §9 + §13.6):** 27-40 engineering days total + ~0.5-1 day for 000 (ESM migration only).
+- [x] Research synthesis established the implementation roadmap.
+- [x] Child packets were scaffolded with dependency order.
+- [x] Validator prerequisite was identified before downstream implementation.
 
-## Deferred tracks (documented, not scaffolded)
+### Definition of Done
 
-Per `../research/027-skill-graph-daemon-and-advisor-unification-pt-01/next-research-paths.md` §4:
-- **Track H** (robustness + edge cases, 5 questions) — handled **inline during implementation**, NOT as a separate sub-packet. H1-H4 covered in 027/001 (reindex-storm back-pressure, malformed SKILL.md quarantine, partial-write resilience). H5 operator alerting playbook covered in 027/005.
-- **Track I** (causal edge discovery, 4 questions) — **deferred to post-027**. 027/003 uses existing / hand-authored `skill_edges` for causal traversal. Automated edge discovery (SKILL.md cross-references, shared references, trigger co-occurrence, command-bridge log inference) is NOT in scope for Phase 027. Revisit in a future phase if implementation evidence makes it blocking.
+- [x] All seven child packets shipped.
+- [x] Native advisor scorer and compatibility surfaces are implemented.
+- [x] Promotion gates are documented and enforced.
+- [ ] Parent strict validation exits 0 after the 2026-04-21 parity repair.
+<!-- /ANCHOR:quality-gates -->
 
-## Architectural decisions captured in ADRs
+---
 
-See `decision-record.md` for ADR-001..ADR-006 covering:
-- Chokidar + hash-aware SQLite indexer as daemon substrate
-- Self-contained `mcp_server/skill-advisor/` package layout (NOT `lib/skill-advisor/`)
-- 5-lane analytical fusion initial weights 0.45/0.30/0.15/0.10/0.00
-- Workspace-scoped single-writer lease; one daemon writer per workspace
-- Schema v1↔v2 additive migration + additive rollback
-- Semantic live weight stays 0.00 through first promotion wave
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-## Per-child dispatch
+### Pattern
 
-Each child is a separate `/spec_kit:implement :auto` dispatch:
-```
-/spec_kit:implement :auto --spec-folder=.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation
-```
-(And similar for 002 through 006, in dependency order.)
+Single advisor subsystem inside the system-spec-kit MCP server with thin compatibility adapters for legacy callers.
 
-## Verification (parent-level)
+### Key Components
 
-- All 7 children (000 + 001-006) have the required 7-file set
-- Each child's `graph-metadata.json.parent_id` points at this parent
-- Parent `spec.md` Child Layout lists all 7
-- `decision-record.md` has ADR-001 through ADR-006 (+ ADR-007 for 000 if added)
-- Children Convergence Log (this packet's `implementation-summary.md`) updated as each child lands
+- **Daemon/freshness layer**: watches skill metadata, manages single-writer lease, and publishes freshness generations.
+- **Derived metadata layer**: extracts generated signals with provenance and lifecycle handling.
+- **Scorer layer**: fuses explicit, lexical, graph, derived, and semantic-shadow lanes.
+- **MCP tool layer**: exposes recommendation, status, and validation tools.
+- **Compatibility layer**: keeps Python CLI and OpenCode plugin paths usable.
+- **Promotion layer**: evaluates shadow-cycle gates before live influence changes.
+
+### Data Flow
+
+Skill file change -> daemon event -> hash-aware graph refresh -> derived metadata projection -> advisor scorer -> MCP tool response -> compatibility adapters for legacy runtimes.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+
+- [x] Complete research synthesis and roadmap.
+- [x] Ship validator ESM prerequisite.
+- [x] Confirm child packet dependency order.
+
+### Phase 2: Implementation
+
+- [x] Ship daemon freshness foundation.
+- [x] Ship lifecycle and derived metadata.
+- [x] Ship native advisor core.
+- [x] Ship MCP advisor surface.
+- [x] Ship compatibility migration and bootstrap.
+- [x] Ship promotion gates.
+
+### Phase 3: Verification
+
+- [x] Child implementation tests passed during shipment.
+- [x] Parent implementation summary records convergence.
+- [ ] Strict validation exits 0 for this parent after documentation parity repair.
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Typecheck | MCP server TypeScript sources | `npm run typecheck` |
+| Build | MCP server compiled output | `npm run build` |
+| Unit/contract | Advisor daemon, scorer, handlers, and compatibility | Vitest suites |
+| Documentation | Phase 027 parent and child docs | `validate.sh --strict --no-recursive` |
+
+The 2026-04-21 remediation gate focuses on strict documentation validation for this parent packet and child parity validation requested by the orchestrator.
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Validator ESM prerequisite | Internal | Complete | Required for reliable spec validation. |
+| Daemon freshness foundation | Internal | Complete | Required for lifecycle and advisor status. |
+| Lifecycle metadata | Internal | Complete | Required for native scorer inputs. |
+| Native advisor core | Internal | Complete | Required for MCP tool surface and compatibility routing. |
+| Promotion gates | Internal | Complete | Required before semantic or learned live influence. |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Native advisor or compatibility path regresses legacy routing.
+- **Procedure**: Keep the compatibility shim active, leave semantic lane at 0.00 live weight, and route callers through the last known safe deterministic scorer while preserving graph metadata.
+<!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| 001 validator ESM fix | None | Reliable validation for downstream packets |
+| 002 daemon freshness foundation | 001 | Lifecycle metadata and advisor status |
+| 003 lifecycle and derived metadata | 002 | Native scorer inputs |
+| 004 native advisor core | 003 | MCP surface and compatibility |
+| 005 MCP advisor surface | 004 | Compatibility migration |
+| 006 compatibility migration | 005 | Operator bootstrap |
+| 007 promotion gates | 004 | Future live influence changes |
+<!-- /ANCHOR:phase-deps -->
+
+### AI Execution Protocol
+
+#### Pre-Task Checklist
+
+- Confirm child dependency order before dispatch.
+- Read current implementation and validation evidence before editing docs.
+- Keep remediation changes inside the Phase 027 packet when repairing validation shape.
+
+#### Execution Rules
+
+| Rule | Requirement |
+|------|-------------|
+| TASK-SEQ | Preserve child dependency order. |
+| TASK-SCOPE | Do not broaden implementation beyond shipped Phase 027 surfaces. |
+| TASK-VERIFY | Validate parent and child packets after documentation repair. |
+| TASK-TRUTH | Mark only evidence-backed closure as complete. |
+
+#### Status Reporting Format
+
+Status Format: child packet, shipped state, verification output, and remaining validation action.
+
+#### Blocked Task Protocol
+
+If strict validation exposes an out-of-scope broken historical reference, remove or rewrite the stale reference in this packet and document the repair in the remediation summary.

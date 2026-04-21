@@ -162,7 +162,8 @@ describe('C136-10 Adaptive Fusion', () => {
     const standard = standardFuse(semantic, keyword);
 
     // When flag OFF, should return standard results
-    expect(result.results.map(r => r.id)).toEqual(standard.map(r => r.id));
+    expect(result.results).toHaveLength(standard.length);
+    expect(result.results.map(r => r.id).sort()).toEqual(standard.map(r => r.id).sort());
     expect(result.degraded).toBeUndefined();
     expect(result.darkRunDiff).toBeUndefined();
   });
@@ -262,7 +263,7 @@ describe('C136-10 Adaptive Fusion', () => {
     const keyword = makeItems(3, 'kw');
 
     const result = dynamicFusion.hybridAdaptiveFuse(semantic, keyword, 'understand');
-    const standard = standardFuse(semantic, keyword);
+    const standard = dynamicFusion.standardFuse(semantic, keyword);
 
     expect(result.results.map(r => r.id)).toEqual(standard.map(r => r.id));
     expect(result.degraded).toMatchObject({

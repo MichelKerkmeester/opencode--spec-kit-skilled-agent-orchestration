@@ -11,8 +11,7 @@ import { lintEvidenceMarkers } from '../validation/evidence-marker-lint.js';
 const createdRoots = new Set<string>();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SCRIPTS_ROOT = path.resolve(__dirname, '..');
-const LINT_SCRIPT = path.join(SCRIPTS_ROOT, 'validation', 'evidence-marker-lint.ts');
-const TSX_BIN = path.join(SCRIPTS_ROOT, 'node_modules', '.bin', 'tsx');
+const LINT_SCRIPT = path.join(SCRIPTS_ROOT, 'dist', 'validation', 'evidence-marker-lint.js');
 
 function makeFixtureRoot(prefix: string): string {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
@@ -28,7 +27,7 @@ function writeMarkdown(root: string, relativePath: string, content: string): str
 }
 
 function runLintCli(folder: string): { exitCode: number; stdout: string; stderr: string } {
-  const result = spawnSync(TSX_BIN, [LINT_SCRIPT, '--folder', folder, '--strict'], {
+  const result = spawnSync(process.execPath, [LINT_SCRIPT, '--folder', folder, '--strict'], {
     encoding: 'utf8',
   });
 

@@ -46,6 +46,8 @@ _memory:
 | **Status** | Draft |
 | **Created** | 2026-04-20 |
 | **Parent** | `../` |
+| **Parent Spec** | `../spec.md` |
+| **Successor** | `../002-daemon-freshness-foundation/spec.md` |
 | **Research source** | Session preflight discovery, 2026-04-20: `bash validate.sh` fails on every Phase 027 packet under Node 25 because compiled dist/ mixes CommonJS (`Object.defineProperty(exports, …)` + `require.main === module`) and ESM (`import` statements); `package.json "type": "commonjs"` + `tsconfig.json "module": "es2022"` are mutually incompatible. |
 
 ## 2. PROBLEM & PURPOSE

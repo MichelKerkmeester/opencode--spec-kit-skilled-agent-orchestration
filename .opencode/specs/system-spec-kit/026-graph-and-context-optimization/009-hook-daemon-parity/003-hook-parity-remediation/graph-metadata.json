@@ -50,7 +50,7 @@
       "codex user-prompt-submit",
       "codex hook policy",
       "copilot session start wiring",
-      "context-prime",
+      "session_bootstrap",
       "pre-tool-use policy",
       "session_resume minimal",
       "opencodeTransport",
@@ -71,7 +71,7 @@
       "session-start"
     ],
     "importance_tier": "high",
-    "status": "scaffolded",
+    "status": "in_progress",
     "key_files": [
       "spec.md",
       "plan.md",
@@ -85,6 +85,8 @@
       ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md",
       ".opencode/plugins/spec-kit-compact-code-graph.js",
       ".opencode/plugins/spec-kit-compact-code-graph-bridge.mjs",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/opencode-plugin.vitest.ts",
+      "review/remediation-summary.md",
       ".github/hooks/superset-notify.json",
       ".github/hooks/scripts/session-start.sh",
       ".opencode/skill/system-spec-kit/references/config/hook_system.md",
@@ -183,9 +185,9 @@
         "source": "manual"
       }
     ],
-    "causal_summary": "Phase 029 remediates 10 hook findings (5 P1 + 5 P2) across Codex, Copilot, and OpenCode runtime hook surfaces. Fixes OpenCode plugin transport (restores code-graph delivery), Codex advisor hook timeout + detector probes, Copilot sessionStart routing mismatch, Codex lifecycle doc staleness, and PreToolUse policy coverage gaps.",
+    "causal_summary": "Phase 029 remediates hook findings across Codex, Copilot, and OpenCode runtime hook surfaces. Current 2026-04-21 P1 remediation closes strict validation, task evidence, session_bootstrap startup truth-sync, OpenCode plugin diagnostics, and continuity metadata while retaining known deferrals.",
     "created_at": "2026-04-21T10:15:00.000Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-21T15:42:05Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -193,15 +195,19 @@
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "decision-record.md"
+      "decision-record.md",
+      "implementation-summary.md",
+      "review/remediation-summary.md"
     ]
   },
   "_memory": {
     "continuity": {
-      "recent_action": "Phase 029 scaffolded — spec/plan/tasks/checklist/decision-record authored from codex-and-code-graph-hook-deep-dive.md findings",
-      "next_safe_action": "Dispatch cli-codex gpt-5.4 high fast to implement Phase A (OpenCode plugin transport fix)",
-      "completion_pct": 5,
-      "status": "scaffolded"
+      "recent_action": "Post-029 Phases A-E documented; strict validation, task evidence, startup-gate cleanup, and OpenCode diagnostic remediation applied",
+      "next_safe_action": "Run full verification gate and write review remediation summary",
+      "completion_pct": 95,
+      "status": "in_progress",
+      "last_updated_at": "2026-04-21T15:42:05Z",
+      "last_updated_by": "codex-gpt-5.4"
     }
   },
   "aliases": [

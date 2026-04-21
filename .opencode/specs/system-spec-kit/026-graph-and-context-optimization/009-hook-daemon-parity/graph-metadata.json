@@ -74,7 +74,12 @@
       "plan.md",
       "tasks.md",
       "implementation-summary.md",
-      "context-index.md"
+      "context-index.md",
+      "review/review-report.md",
+      "review/remediation-summary.md",
+      "001-skill-advisor-hook-surface/implementation-summary.md",
+      "002-skill-graph-daemon-and-advisor-unification/implementation-summary.md",
+      "003-hook-parity-remediation/implementation-summary.md"
     ],
     "entities": [
       {
@@ -96,9 +101,9 @@
         "source": "migration"
       }
     ],
-    "causal_summary": "Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation. Direct child parent for 001-skill-advisor-hook-surface, 002-skill-graph-daemon-and-advisor-unification, 003-hook-parity-remediation.",
+    "causal_summary": "Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation. Direct child parent for 001-skill-advisor-hook-surface, 002-skill-graph-daemon-and-advisor-unification, and 003-hook-parity-remediation. Current work is closing the 2026-04-21 deep-review P1 remediation after post-029 Phases A-E, scan-findings, and policy repair.",
     "created_at": "2026-04-21T13:00:00Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-21T15:42:05Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -106,7 +111,9 @@
       "plan.md",
       "tasks.md",
       "implementation-summary.md",
-      "context-index.md"
+      "context-index.md",
+      "review/review-report.md",
+      "review/remediation-summary.md"
     ]
   },
   "migrated": true,

@@ -12,7 +12,7 @@
 | Research item | Source | Assigned child | Status | Notes |
 | --- | --- | --- | --- | --- |
 | A1 Watcher choice | `research.md:21` | 001 | covered | Chokidar is P0 in `001/spec.md:79` and checklist `001/checklist.md:36`. |
-| A2 Change detection scope | `research.md:22` | 001/002 | gap | SKILL.md + graph-metadata are covered, but `derived.source_docs` + `derived.key_files` are not fully carried; see Gap 1. |
+| A2 Change detection scope | `research.md:22` | 001/002 | gap | Skill definition files and graph metadata are covered, but `derived.source_docs` + `derived.key_files` are not fully carried; see Gap 1. |
 | A3 Incremental indexer | `research.md:23` | 001 | covered | Hash-aware targeted re-index in `001/spec.md:62`, `001/checklist.md:18`. |
 | A4 Transaction model | `research.md:24` | 001 | covered | Post-commit generation publication in `001/spec.md:63`, `001/checklist.md:12`. |
 | A5 Daemon lifecycle | `research.md:25` | 001/005 | covered | Fail-open lifecycle in `001/spec.md:66`, compat path in `005/spec.md:68-79`. |
@@ -69,14 +69,14 @@
 ### Gap 1 - high: Derived-source invalidation omits `derived.key_files` and parts of B1 source coverage
 - Research source: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/027-skill-graph-daemon-and-advisor-unification-pt-01/research.md:22`, `research.md:34`, `research.md:73-83`, `research.md:270-272`
 - Expected location: child 001 watcher/invalidation contract plus child 002 derived provenance/schema
-- Observed: 001 narrows watching to `graph-metadata.json` + `SKILL.md` only (`002-daemon-freshness-foundation/spec.md:59`) and 002 extraction/provenance covers SKILL.md, references headings, and `intent_signals` (`003-lifecycle-and-derived-metadata/spec.md:61-62`). The v2 `derived` shape includes `source_docs[]` but no `key_files` (`003-lifecycle-and-derived-metadata/spec.md:70`). Assets filenames, SKILL.md examples, and `derived.key_files` do not appear in 002 requirements/checklist (`003-lifecycle-and-derived-metadata/spec.md:81-95`, `003-lifecycle-and-derived-metadata/checklist.md:37-51`).
-- Recommended fix: Add explicit fields and gates for `derived.source_docs[]` and `derived.key_files[]`; define which local inputs count as deterministic B1 sources (SKILL.md headings/body/examples, references headings, assets filenames, graph metadata `intent_signals`, source docs, key files); add targeted invalidation tests proving changes to each input refresh only the affected derived rows. Keep commit messages explicitly out of first slice.
+- Observed: 001 narrows watching to graph metadata plus skill definition files only (`002-daemon-freshness-foundation/spec.md:59`) and 002 extraction/provenance covers skill definition content, reference headings, and `intent_signals` (`003-lifecycle-and-derived-metadata/spec.md:61-62`). The v2 `derived` shape includes `source_docs[]` but no `key_files` (`003-lifecycle-and-derived-metadata/spec.md:70`). Asset filenames, examples, and `derived.key_files` do not appear in 002 requirements/checklist (`003-lifecycle-and-derived-metadata/spec.md:81-95`, `003-lifecycle-and-derived-metadata/checklist.md:37-51`).
+- Recommended fix: Add explicit fields and gates for `derived.source_docs[]` and `derived.key_files[]`; define which local inputs count as deterministic B1 sources (skill definition headings/body/examples, references headings, assets filenames, graph metadata `intent_signals`, source docs, key files); add targeted invalidation tests proving changes to each input refresh only the affected derived rows. Keep commit messages explicitly out of first slice.
 
 ### Gap 2 - high: A7 sanitizer is checklist-only, not scoped implementation work
 - Research source: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/027-skill-graph-daemon-and-advisor-unification-pt-01/research.md:27`
 - Expected location: child 001 and/or 002, depending on where advisor-visible metadata is stored/published
 - Observed: 001 mentions A7 only in the research conformance checklist (`002-daemon-freshness-foundation/checklist.md:40`). 001 scope/tasks do not name sanitizer integration or tests (`002-daemon-freshness-foundation/spec.md:58-66`, `002-daemon-freshness-foundation/tasks.md:17-47`). 002 has anti-stuffing and trust lanes, but no renderer/shared-payload sanitizer before persisting/publishing derived metadata (`003-lifecycle-and-derived-metadata/spec.md:60-71`).
-- Recommended fix: Add a P0 requirement and task for applying the existing renderer/shared-payload sanitizer before writing `graph-metadata.json.derived`, SQLite rows, status envelopes, or advisor-visible diagnostics. Add fixtures with instruction-shaped SKILL.md/reference content proving sanitized storage and prompt-safe rendering.
+- Recommended fix: Add a P0 requirement and task for applying the existing renderer/shared-payload sanitizer before writing `graph-metadata.json.derived`, SQLite rows, status envelopes, or advisor-visible diagnostics. Add fixtures with instruction-shaped skill definition and reference content proving sanitized storage and prompt-safe rendering.
 
 ### Gap 3 - high: Section 11 measurement gates are only partially converted into child acceptance criteria
 - Research source: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/027-skill-graph-daemon-and-advisor-unification-pt-01/research.md:146-165`, especially `research.md:150-155`, `research.md:157-162`
@@ -136,7 +136,7 @@
 
 ## next-research-paths.md disposition
 - Tracks E/F/G - absorbed into follow-up run OK. The scaffold reflects E in 001, F in 002/005, and G in 003/006.
-- Track H - inline-during-impl only partial. 001 covers corrupted SQLite, ENOENT, SQLITE_BUSY, descriptor warnings, and telemetry, but does not explicitly cover H1 reindex-storm back-pressure/circuit breaker, H2 malformed SKILL.md quarantine/backoff, H4 partial-write crash scenarios, or H5 alerting/playbook coverage.
+- Track H - inline-during-impl only partial. 001 covers corrupted SQLite, ENOENT, SQLITE_BUSY, descriptor warnings, and telemetry, but does not explicitly cover H1 reindex-storm back-pressure/circuit breaker, H2 malformed skill definition quarantine/backoff, H4 partial-write crash scenarios, or H5 alerting/playbook coverage.
 - Track I - deferred by research, but not noted in scaffold. 003 implements traversal over existing `skill_edges`; no scaffold text says automated edge discovery is out of scope/post-027.
 
 ## Final Recommendation

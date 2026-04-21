@@ -209,3 +209,43 @@ Each child carries its own `plan.md` dispatch details. 005 is a **hard gate**: r
 3. Re-run research to identify the regression cause
 4. Ship fix OR revert hook wiring commits while keeping the producer library
 <!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Research | None | Contract children |
+| Shared payload | Research | Freshness and producer |
+| Freshness | Shared payload | Producer |
+| Producer | Freshness | Renderer |
+| Renderer hard gate | Producer | Runtime adapters |
+| Runtime adapters | Renderer | Release docs |
+| Release docs | Runtime adapters | Sign-off |
+<!-- /ANCHOR:phase-deps -->
+
+### AI Execution Protocol
+
+#### Pre-Task Checklist
+
+- Confirm active child packet and parent phase map.
+- Read predecessor child summaries before dispatch.
+- Keep runtime adapter edits behind the renderer hard gate.
+
+#### Execution Rules
+
+| Rule | Requirement |
+|------|-------------|
+| TASK-SEQ | Follow research, contract, producer, renderer, adapter, release order. |
+| TASK-SCOPE | Keep each child implementation inside its child packet scope. |
+| TASK-VERIFY | Run child tests and strict validation before release sign-off. |
+
+#### Status Reporting Format
+
+Status Format: child, gate, verification evidence, blocker, and next safe action.
+
+#### Blocked Task Protocol
+
+If a predecessor is not signed off, mark the child blocked and do not dispatch downstream runtime adapters.

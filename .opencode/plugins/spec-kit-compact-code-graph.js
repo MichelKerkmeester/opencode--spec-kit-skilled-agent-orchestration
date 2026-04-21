@@ -142,6 +142,35 @@ export function parseTransportPlan(responseText) {
   }
 }
 
+function diagnoseTransportPlanFailure(responseText) {
+  if (!responseText) {
+    return 'Bridge returned empty stdout; plugin injection will no-op';
+  }
+
+  try {
+    const parsed = JSON.parse(responseText);
+    const data = parsed?.data ?? parsed;
+    const plan = data?.opencodeTransport;
+    if (!plan || typeof plan !== 'object') {
+      return 'Bridge response missing data.opencodeTransport; plugin injection will no-op';
+    }
+    if (plan.transportOnly !== true) {
+      return 'Bridge opencodeTransport.transportOnly was not true; plugin injection will no-op';
+    }
+    if (!Array.isArray(plan.messagesTransform)) {
+      return 'Bridge opencodeTransport.messagesTransform was not an array; plugin injection will no-op';
+    }
+    return 'Bridge returned invalid OpenCode transport payload; plugin injection will no-op';
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error);
+    return `Bridge returned unparsable JSON (${reason}); plugin injection will no-op`;
+  }
+}
+
+function emitRuntimeDiagnostic(message) {
+  process.stderr.write(`[${PLUGIN_ID}] ${message}\n`);
+}
+
 function stringifyError(error) {
   if (!error) {
     return 'Unknown bridge error';
@@ -179,7 +208,12 @@ async function runTransportBridge({ projectDir, specFolder, nodeBinary, bridgeTi
     timeout: bridgeTimeoutMs,
     maxBuffer: 1024 * 1024,
   });
-  return parseTransportPlan(result.stdout.trim());
+  const stdout = result.stdout.trim();
+  const plan = parseTransportPlan(stdout);
+  return {
+    plan,
+    diagnostic: plan ? null : diagnoseTransportPlanFailure(stdout),
+  };
 }
 
 async function loadTransportPlan({ projectDir, sessionID, specFolder, cacheTtlMs, nodeBinary, bridgeTimeoutMs }) {
@@ -192,15 +226,17 @@ async function loadTransportPlan({ projectDir, sessionID, specFolder, cacheTtlMs
   }
 
   try {
-    const plan = await runTransportBridge({
+    const bridgeResult = await runTransportBridge({
       projectDir,
       specFolder,
       nodeBinary,
       bridgeTimeoutMs,
     });
+    const plan = bridgeResult.plan;
 
     if (!plan) {
-      lastRuntimeError = 'Bridge returned no OpenCode transport payload';
+      lastRuntimeError = bridgeResult.diagnostic || 'Bridge returned no OpenCode transport payload';
+      emitRuntimeDiagnostic(lastRuntimeError);
       runtimeReady = false;
       transportCache.delete(key);
       return null;

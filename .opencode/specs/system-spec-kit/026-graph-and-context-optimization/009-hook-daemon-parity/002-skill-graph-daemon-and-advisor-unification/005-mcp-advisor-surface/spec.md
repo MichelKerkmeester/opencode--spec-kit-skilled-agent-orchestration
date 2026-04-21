@@ -45,7 +45,9 @@ _memory:
 | **Status** | Draft |
 | **Created** | 2026-04-20 |
 | **Parent** | `../` |
-| **Predecessor** | `../004-native-advisor-core/` |
+| **Parent Spec** | `../spec.md` |
+| **Predecessor** | `../004-native-advisor-core/spec.md` |
+| **Successor** | `../006-compat-migration-and-bootstrap/spec.md` |
 | **Research source** | Track D §7 (D3, D5, D6); iterations 026, 028-029 |
 <!-- /ANCHOR:metadata -->
 

@@ -43,7 +43,7 @@
       "entangled"
     ],
     "importance_tier": "high",
-    "status": "in_progress",
+    "status": "complete",
     "key_files": [
       "decision-record.md",
       "plan.md",
@@ -201,7 +201,7 @@
     ],
     "causal_summary": "Four entangled limitations in the current skill-advisor stack:",
     "created_at": "2026-04-21T08:25:00.990Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-21T15:42:05Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

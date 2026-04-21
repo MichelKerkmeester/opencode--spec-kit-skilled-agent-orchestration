@@ -250,4 +250,28 @@ describe('Spec Kit compact code graph plugin', () => {
     expect(status).toContain('runtime_ready=false');
     expect(status).toContain('last_runtime_error=NODE_MODULE_VERSION mismatch');
   });
+
+  it('emits a stderr diagnostic when bridge stdout cannot be parsed as a transport plan', async () => {
+    const stderrWrite = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
+    mockBridgeSuccess(JSON.stringify({ status: 'ok', data: {} }));
+
+    const hooks = await SpecKitCompactCodeGraphPlugin({ directory: process.cwd() }, { cacheTtlMs: 5000 });
+    const output = { system: [] as string[] };
+
+    await hooks['experimental.chat.system.transform']?.(
+      { sessionID: 's-missing-transport', model: { id: 'test-model' } as never },
+      output,
+    );
+
+    expect(output.system).toHaveLength(0);
+    expect(stderrWrite).toHaveBeenCalledWith(
+      expect.stringContaining('Bridge response missing data.opencodeTransport; plugin injection will no-op'),
+    );
+
+    const status = await hooks.tool?.spec_kit_compact_code_graph_status.execute({});
+    expect(status).toContain('runtime_ready=false');
+    expect(status).toContain('last_runtime_error=Bridge response missing data.opencodeTransport; plugin injection will no-op');
+
+    stderrWrite.mockRestore();
+  });
 });

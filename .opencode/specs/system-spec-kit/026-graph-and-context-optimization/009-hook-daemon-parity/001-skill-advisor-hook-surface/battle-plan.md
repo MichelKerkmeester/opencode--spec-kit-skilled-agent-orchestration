@@ -665,5 +665,5 @@ cd .opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit && npx vitest 
 - Decision record (ADRs): `./decision-record.md`
 - Implementation summary: `./implementation-summary.md`
 - Handover: `./handover.md`
-- Wave-3 research: `../research/020-skill-advisor-hook-surface-pt-03/research-validation.md`
+- Wave-3 research: archived wave-3 validation synthesis in the 020 research artifact folder.
 - Per-child specs: `./002-*/spec.md` through `./009-*/spec.md`

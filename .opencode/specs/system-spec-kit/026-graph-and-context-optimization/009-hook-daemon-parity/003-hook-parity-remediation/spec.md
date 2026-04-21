@@ -1,6 +1,6 @@
 ---
-title: "029 — Runtime Hook Parity Remediation"
-description: "Fix 10 hook findings (5 P1 + 5 P2) from the 2026-04-21 deep-dive."
+title: "029 - Runtime Hook Parity Remediation"
+description: "Fix 10 hook findings from the 2026-04-21 hook parity review, including OpenCode transport, Codex hook reliability, Copilot startup wiring, and documentation truth-sync."
 trigger_phrases:
   - "029 hook parity"
   - "opencode plugin bridge"
@@ -11,181 +11,235 @@ packet_level: 3
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
-    last_updated_at: "2026-04-21T10:20:00Z"
-    last_updated_by: "claude-opus-4-7"
-    recent_action: "Scaffolded packet"
-    next_safe_action: "Dispatch codex Phase A"
-    completion_pct: 5
+    last_updated_at: "2026-04-21T15:33:58Z"
+    last_updated_by: "codex-gpt-5.4"
+    recent_action: "Phase 003 remediation evidence and validation shape repaired"
+    next_safe_action: "Run strict validation and close remaining review remediation gates"
+    completion_pct: 95
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 <!-- SPECKIT_LEVEL: 3 -->
 
-# Feature Specification: 029 — Runtime Hook Parity Remediation
+# Feature Specification: 029 - Runtime Hook Parity Remediation
+
+---
+
+## EXECUTIVE SUMMARY
+
+This phase closes hook parity defects discovered on 2026-04-21 across the OpenCode plugin bridge, Codex advisor hooks, Copilot startup routing, Codex PreToolUse safety, and runtime documentation. The implementation keeps each runtime on its real capability surface: OpenCode injects through the plugin bridge, Codex uses prompt/pre-tool hooks plus `session_bootstrap` for startup recovery, and Copilot starts through the repo-local wrapper.
+
+**Key Decisions**: minimal `session_resume` returns `opencodeTransport`; Codex startup recovery is documented through `session_bootstrap`; PreToolUse remains read-only at hook runtime.
+
+**Critical Dependencies**: system-spec-kit MCP server typecheck/build/vitest gates and strict spec validation.
+
+---
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
 | Field | Value |
-|---|---|
-| **Parent Spec** | ../spec.md |
-| **Predecessor** | ../002-skill-graph-daemon-and-advisor-unification/spec.md |
+|-------|-------|
+| **Level** | 3 |
+| **Priority** | P1 remediation |
+| **Status** | In Progress |
+| **Created** | 2026-04-21 |
+| **Branch** | `009-hook-daemon-parity` |
+| **Parent Spec** | `../spec.md` |
+| **Predecessor** | `../002-skill-graph-daemon-and-advisor-unification/spec.md` |
+<!-- /ANCHOR:metadata -->
 
-<!-- ANCHOR:spec-context-029 -->
-## 1. Context
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The 2026-04-21 Codex-and-code-graph hook deep-dive surfaced 10 runtime-hook findings: OpenCode plugin silently no-ops, Codex advisor hook fail-opens before injection, Codex hook-policy detector uses invalid probes, Copilot startup wiring points at Superset instead of the repo wrapper, packet docs claim a nonexistent `context-prime` agent, and PreToolUse policy has alias/casing coverage gaps.
 
-The 2026-04-21 Codex-and-code-graph hook deep-dive (under the 027 review packet) produced 10 findings across runtime hook surfaces:
+The 2026-04-21 hook parity review found 10 runtime-hook issues. The highest customer-facing risks were an OpenCode plugin path that could silently deliver no code-graph context and Codex advisor hook flows that could return no visible advisory on timeout.
 
-- **OpenCode plugin bridge** (HOOK-P1-001): `--minimal` path drops `opencodeTransport`, plugin no-ops
-- **Codex advisor hook fail-open** (HOOK-P1-002): subprocess 1s timeout produces `{}` with `SIGNAL_KILLED`
-- **Codex hook-policy detector** (HOOK-P1-003): `codex hooks list` probe invalid in 0.121.0; Superset TUI env causes spurious version-probe timeouts
-- **Copilot startup hook routing** (HOOK-P1-004): `superset-notify.json` still routes `sessionStart` to Superset, not the repo-local wrapper (contradicts Phase 031 summary)
-- **Codex lifecycle docs** (HOOK-P1-005): packet docs claim a `context-prime` Codex agent that does not exist
-- **Codex README staleness** (HOOK-P2-001): claims repo-local `.codex/settings.json` registration was deferred — it was not
-- **Codex PreToolUse policy coverage** (HOOK-P2-002): only `bashDenylist` (not `bash_denylist` alias) and only snake_case `tool_input` (not `toolInput`); bare `git reset --hard` not denied
-- **Codex PreToolUse filesystem side-effect** (HOOK-P2-003): `ensurePolicyFile()` writes a default policy from inside the hook
-- **Runtime docs overstate Codex hook coverage** (HOOK-P2-004): "hook-capable runtimes" phrasing implies lifecycle parity
-- **OpenCode plugin tests mock bridge contract** (HOOK-P2-005): tests mock `opencodeTransport` instead of exercising the real bridge
+### Purpose
 
-No P0 findings. The highest customer-facing risk is HOOK-P1-001 (OpenCode plugin delivers no code-graph context) and HOOK-P1-002 (Codex advisor brief invisible in hook-driven flows).
-<!-- /ANCHOR:spec-context-029 -->
+Restore reliable, visible hook behavior across OpenCode, Codex, and Copilot while keeping the documentation aligned with actual runtime capabilities.
+<!-- /ANCHOR:problem -->
 
-<!-- ANCHOR:spec-goals-029 -->
-## 2. Goals
+---
 
-- **G1** — OpenCode code-graph plugin delivers `opencodeTransport` through the real bridge path (no mocks).
-- **G2** — Codex `UserPromptSubmit` hook reliably returns `hookSpecificOutput.additionalContext` on a warm workspace; `SIGNAL_KILLED` failure mode eliminated or reclassified.
-- **G3** — Codex hook-policy detector uses a valid capability probe that works under Superset TUI env and classifies `.codex/settings.json` presence accurately.
-- **G4** — Copilot `sessionStart` points to the repo-local wrapper when the wrapper is the intended entrypoint; tests assert the intended route.
-- **G5** — Codex lifecycle claims in packet docs match actual filesystem state (`context-prime` removed or implemented).
-- **G6** — Codex PreToolUse policy covers `bash_denylist` alias, `toolInput` casing, and bare destructive commands; does not mutate the workspace during execution.
-- **G7** — Runtime hook docs split prompt-time hooks from lifecycle hooks so Codex is not misreported.
-- **G8** — OpenCode plugin tests exercise the real bridge shape (or assert the real minimal handler output parses through `parseTransportPlan()`).
-<!-- /ANCHOR:spec-goals-029 -->
+<!-- ANCHOR:scope -->
+## 3. SCOPE
 
-<!-- ANCHOR:spec-requirements-029 -->
-## 3. Non-Goals
+### In Scope
 
-- Implementing a Codex `SessionStart` lifecycle hook (per CLI capability; out of scope for this phase).
-- Rewriting the advisor subprocess or replacing the Python shim wholesale.
-- Changing skill-advisor scoring, projection, or fusion math.
-- Touching findings from `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/027-skill-graph-daemon-and-advisor-unification-pt-01/scan-findings.md` (handled in parallel Phase 027 remediation, commit `<pending>`).
+- OpenCode plugin transport delivery and diagnostic behavior.
+- Codex `UserPromptSubmit` reliability and policy detection.
+- Copilot `sessionStart` wrapper routing.
+- Codex PreToolUse denylist alias/casing coverage and read-only hook behavior.
+- Runtime hook documentation that distinguishes prompt hooks from lifecycle hooks.
+- Phase 003 evidence, checklist, validation, and continuity repair.
 
-## 4. Requirements
+### Out of Scope
 
-### 4.1 P0 (none)
+- Implementing a Codex `SessionStart` lifecycle hook, because the active Codex CLI hook surface does not expose one.
+- Replacing the skill-advisor scoring or fusion math.
+- Retiring the Python advisor shim.
+- Editing historical or archived startup-agent mentions outside the authorized 009 packet scope.
 
-No P0 items in this phase.
+### Files to Change
 
-### 4.2 P1 (must-have, blocks release)
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `.opencode/plugins/spec-kit-compact-code-graph.js` | Modify | Emit visible diagnostics when transport parsing fails. |
+| `.opencode/plugins/spec-kit-compact-code-graph-bridge.mjs` | Modify | Emit stderr diagnostics when `opencodeTransport` is missing. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/opencode-plugin.vitest.ts` | Modify | Assert the diagnostic path fires. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/**` | Modify | Repair validation, evidence, continuity, metadata, and remediation summary. |
+| Command debug doc | Create if required | Restore an intentional referenced command doc only if validation proves the reference is current. |
+<!-- /ANCHOR:scope -->
 
-- **R-P1-A (HOOK-P1-001)**: `session_resume({ minimal: true })` MUST return `data.opencodeTransport` with `transportOnly: true` so the OpenCode plugin bridge produces a valid transport plan. **Evidence**: running the bridge with `--minimal` returns JSON containing `data.opencodeTransport.transportOnly === true`; `parseTransportPlan()` accepts the real bridge output.
-- **R-P1-B (HOOK-P1-002)**: Compiled `dist/hooks/codex/user-prompt-submit.js` MUST emit `hookSpecificOutput.additionalContext` on a known prompt in a prepared workspace within the hook timeout budget. The `SIGNAL_KILLED` failure mode MUST be eliminated (via native path / extended timeout / warm cache) OR reclassified into a prompt-safe `stale` advisory with explicit `status`.
-- **R-P1-C (HOOK-P1-003)**: `detectCodexHookPolicy()` MUST NOT depend on `codex hooks list`. Detection MUST treat `.codex/settings.json` presence + valid JSON as the project-level registration source. The version probe MUST not time out under Superset TUI env.
-- **R-P1-D (HOOK-P1-004)**: `.github/hooks/superset-notify.json` MUST route `sessionStart` through the intended entrypoint. If the repo-local wrapper is intended (per Phase 031 summary), the JSON MUST point at `.github/hooks/scripts/session-start.sh`; the wrapper continues to fan out to Superset inline.
-- **R-P1-E (HOOK-P1-005)**: Packet docs MUST NOT reference `.codex/agents/context-prime.toml` unless the file exists. Docs update (recommended) + optional agent TOML creation (if desired).
+---
 
-### 4.3 P2 (should-have)
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-- **R-P2-A (HOOK-P2-001)**: `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md` MUST describe current registration state (settings + policy present, lifecycle hooks still absent, prompt hook smoke verification recommended).
-- **R-P2-B (HOOK-P2-002)**: `handleCodexPreToolUse()` MUST read both `bashDenylist` and `bash_denylist` alias, parse `tool_input` and `toolInput` casings, and include bare `git reset --hard` in the default denylist.
-- **R-P2-C (HOOK-P2-003)**: PreToolUse MUST NOT write a default policy file during hook execution. Missing policy → fail open with in-memory defaults. Policy generation moves to setup/bootstrap.
-- **R-P2-D (HOOK-P2-004)**: `.opencode/skill/system-spec-kit/references/config/hook_system.md`, `AGENTS.md`, `.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` updated with a runtime matrix splitting prompt-time hooks from lifecycle/startup hooks.
-- **R-P2-E (HOOK-P2-005)**: `tests/opencode-plugin.vitest.ts` MUST include at least one test that exercises the real bridge stdout shape (unmocked) or asserts `session_resume({ minimal: true })` real output parses through `parseTransportPlan()` successfully.
+### P0 - Blockers (MUST complete)
 
-## 5. Acceptance Scenarios
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-000 | No P0 findings are present in this review. | Review report verdict remains 0 P0. |
 
-- **AC-1** (R-P1-A): Running `node .opencode/plugins/spec-kit-compact-code-graph-bridge.mjs --minimal` produces JSON with `data.opencodeTransport.transportOnly === true`. Plugin test suite includes a contract test without bridge-output mocks.
-- **AC-2** (R-P1-B): `printf '{"prompt":"review","cwd":"/abs/workspace"}' | node dist/hooks/codex/user-prompt-submit.js` returns stdout containing `hookSpecificOutput.additionalContext`; stderr diagnostic shows `status:"ok"` or explicit `status:"stale"` (NOT `status:"fail_open"` with `SIGNAL_KILLED`).
-- **AC-3** (R-P1-C): Vitest `codex-hook-policy.vitest.ts` covers: (a) valid `codex --version` + invalid `hooks list`, (b) inherited Superset TUI env timeout, (c) `.codex/settings.json` presence as the authoritative signal. All pass.
-- **AC-4** (R-P1-D): `.github/hooks/superset-notify.json` `sessionStart` entry equals `.github/hooks/scripts/session-start.sh`; `tests/copilot-hook-wiring.vitest.ts` asserts that exact route.
-- **AC-5** (R-P1-E): `grep -r context-prime .opencode/specs/` returns only entries that reference an existing file; `.codex/agents/context-prime.toml` either exists or is absent from all docs.
-- **AC-6** (R-P2-A): `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md` no longer says registration is deferred; describes current state.
-- **AC-7** (R-P2-B): Vitest `codex-pre-tool-use.vitest.ts` includes: (a) `bash_denylist` alias denies, (b) `toolInput.command` denies, (c) bare `git reset --hard` denies.
-- **AC-8** (R-P2-C): `dist/hooks/codex/pre-tool-use.js` with missing `.codex/policy.json` does NOT create the file; stderr diagnostic shows in-memory default policy path taken.
-- **AC-9** (R-P2-D): `.opencode/skill/system-spec-kit/references/config/hook_system.md` includes a runtime matrix table with columns `prompt hook | lifecycle hook | compaction hook | stop hook`; Codex row shows `yes | no | no | no`.
-- **AC-10** (R-P2-E): `tests/opencode-plugin.vitest.ts` includes at least one test with no bridge-output mock; or `tests/session-resume.vitest.ts` asserts `minimal: true` payload contains `opencodeTransport`.
-<!-- /ANCHOR:spec-requirements-029 -->
+### P1 - Required (complete OR user-approved deferral)
 
-## 6. Verification Gates
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | `session_resume({ minimal: true })` must deliver a parseable OpenCode transport plan. | Bridge stdout parses with `transportOnly: true`; plugin tests cover real bridge shape. |
+| REQ-002 | OpenCode transform must not silently no-op when the transport plan is absent or unparsable. | Runtime-status entry or stderr diagnostic appears, and vitest asserts the diagnostic path. |
+| REQ-003 | Codex prompt hook must surface visible advisor context or a stale diagnostic on timeout. | Compiled smoke emits `hookSpecificOutput.additionalContext` with `status:"ok"` or `status:"stale"`. |
+| REQ-004 | Codex hook policy detection must use valid project evidence. | `.codex/settings.json` JSON validity is authoritative; `codex hooks list` is not required. |
+| REQ-005 | Copilot startup routing must use the repo-local wrapper. | `.github/hooks/superset-notify.json` points `sessionStart` to `.github/hooks/scripts/session-start.sh`. |
+| REQ-006 | Active docs must not claim a nonexistent Codex startup agent. | Active Phase 003 docs point to `session_bootstrap` and contain no stale startup-agent acceptance gate. |
+| REQ-007 | Phase 003 strict validation must pass. | `validate.sh .../003-hook-parity-remediation --strict --no-recursive` exits 0. |
 
-- `cd mcp_server && npm run typecheck` → exit 0
-- `cd mcp_server && npm run build` → exit 0
-- `cd mcp_server && ../scripts/node_modules/.bin/vitest run --reporter=default` → baseline tests green + new hook-parity tests added (no regressions)
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <this-folder> --strict --no-recursive` → pass
-- Codex smoke: compiled entrypoint emits `additionalContext` (AC-2)
-- OpenCode bridge smoke: `--minimal` returns valid transport plan (AC-1)
+### P2 - Should complete where in scope
 
-## 7. Out-of-Scope / Future Work
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-008 | Codex PreToolUse policy must support documented aliases and command casings. | Tests cover `bash_denylist`, `toolInput.command`, and bare `git reset --hard`. |
+| REQ-009 | PreToolUse hook execution must avoid filesystem writes. | Missing policy uses in-memory defaults and does not create a file. |
+| REQ-010 | Runtime docs must split prompt, lifecycle, compaction, and stop hook capabilities. | Hook system matrix shows Codex as prompt yes, lifecycle no, compaction no, stop no. |
+<!-- /ANCHOR:requirements -->
 
-- Codex `SessionStart` lifecycle hook parity (requires CLI capability that does not exist as of 0.121.0).
-- Gemini hook deep-smoke (out of scope per deep-dive confidence notes).
-- Advisor subprocess architectural rewrite.
-- Python shim retirement (tracked post-027).
+---
 
-## 8. References
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
 
-- Source findings: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/027-skill-graph-daemon-and-advisor-unification-pt-01/codex-and-code-graph-hook-deep-dive.md`
-- Prior art: Phase 020 (skill-advisor-hook-surface), Phase 024/030/031 (copilot startup hook wiring)
-- Runtime truth-source: `INSTALL_GUIDE.md:137`, `hook_system.md:50`
+- **SC-001**: **Given** OpenCode bridge `--minimal` output, **When** the plugin parser consumes stdout, **Then** it produces a valid transport plan.
+- **SC-002**: **Given** missing bridge transport, **When** the bridge exits successfully, **Then** stderr reports the missing `opencodeTransport` condition.
+- **SC-003**: **Given** malformed plugin transport output, **When** the transform runs, **Then** runtime status reports the parse failure.
+- **SC-004**: **Given** the MCP server workspace, **When** typecheck and build run, **Then** both exit 0.
+- **SC-005**: **Given** targeted hook vitest suites, **When** they run, **Then** they pass with the diagnostic assertions included.
+- **SC-006**: **Given** parent and child spec folders, **When** strict non-recursive validation runs, **Then** each command exits 0.
+- **SC-007**: **Given** Phase 003 task and checklist docs, **When** review traceability is inspected, **Then** each completed item cites concrete evidence and each unfinished item explains its deferral.
+<!-- /ANCHOR:success-criteria -->
 
-## 9. Requirement Trace
+---
 
-- **REQ-001**: OpenCode minimal resume payload includes an OpenCode transport plan for plugin lifecycle injection.
-- **REQ-002**: OpenCode plugin regression tests exercise real bridge stdout, not only mocked transport payloads.
-- **REQ-003**: Codex `UserPromptSubmit` returns a non-empty advisor `additionalContext` for work-intent prompts when the hook path is available.
-- **REQ-004**: Codex advisor timeout failures produce a prompt-safe stale advisory, not an empty fail-open result.
-- **REQ-005**: Codex hook policy detection uses valid `.codex/settings.json` evidence and a scrubbed `codex --version` hint.
-- **REQ-006**: Copilot `sessionStart` routes through the repo-local startup wrapper and preserves Superset fan-out.
-- **REQ-007**: Active Codex startup docs point to `session_bootstrap`, not a nonexistent `context-prime` lifecycle agent.
-- **REQ-008**: Codex hook README documents actual prompt/pre-tool registration and lifecycle limitations.
-- **REQ-009**: Codex PreToolUse supports denylist aliases, camelCase command payloads, and bare destructive reset defaults.
-- **REQ-010**: Codex PreToolUse hook execution is read-only and uses in-memory defaults when policy files are absent.
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
 
-## 10. Acceptance Scenario Trace
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Existing test baseline | Full-suite vitest may still fail outside this remediation scope. | Run the user-requested targeted suites and document any out-of-scope failures honestly. |
+| Risk | Plugin diagnostics could add noisy output. | Operators may see extra stderr/status entries during intentional no-context states. | Emit only when parsing fails or transport is missing, and test that path explicitly. |
+| Risk | Documentation shape changes may obscure prior narrative evidence. | Review traceability could regress. | Preserve evidence as subsections under the required template headers. |
+| Constraint | Sandbox forbids git staging/commits. | Cannot produce final commit. | Write the parent remediation summary with proposed commit message for the orchestrator. |
+<!-- /ANCHOR:risks -->
 
-- **Scenario 1**: OpenCode bridge `--minimal` stdout parses into a transport plan with `transportOnly: true`.
-  - **Given** the OpenCode bridge runs with `--minimal`, **When** stdout is parsed by `parseTransportPlan()`, **Then** the result has `transportOnly: true`.
-- **Scenario 2**: Codex compiled prompt hook smoke emits non-empty `hookSpecificOutput.additionalContext`.
-  - **Given** a work-intent prompt and workspace cwd, **When** the compiled Codex hook reads the JSON payload, **Then** stdout includes non-empty `hookSpecificOutput.additionalContext`.
-- **Scenario 3**: Codex hook policy tests prove `.codex/settings.json` detection does not depend on `codex hooks list`.
-  - **Given** `codex --version` succeeds and a hooks-list probe would fail, **When** settings JSON is valid, **Then** hook availability is `live`.
-- **Scenario 4**: Copilot hook wiring tests assert the `sessionStart` wrapper route and keep other events on Superset.
-  - **Given** checked-in Copilot hook JSON, **When** `sessionStart` is inspected, **Then** it points at `.github/hooks/scripts/session-start.sh`.
-- **Scenario 5**: Active docs contain no stale `context-prime` startup claim and direct Codex startup recovery to `session_bootstrap`.
-  - **Given** active hook docs and packet summaries, **When** Codex startup recovery is described, **Then** the docs point at `session_bootstrap`.
-- **Scenario 6**: Codex hook README states prompt/pre-tool registration exists and lifecycle hooks are absent.
-  - **Given** the Codex hooks README, **When** registration state is read, **Then** prompt/pre-tool hooks are present and lifecycle hooks are absent.
-- **Scenario 7**: PreToolUse tests deny via `bash_denylist`, deny via `toolInput.command`, and deny bare `git reset --hard`.
-  - **Given** alias denylist and camelCase command payloads, **When** destructive Bash commands are submitted, **Then** PreToolUse returns `decision:"deny"`.
-- **Scenario 8**: Missing Codex policy file does not get created during hook execution and logs `in_memory_default`.
-  - **Given** a missing policy path, **When** PreToolUse evaluates a Bash command, **Then** no file is written and an `in_memory_default` diagnostic is emitted.
-- **Scenario 9**: Runtime hook docs include the prompt/lifecycle/compaction/stop matrix with Codex `yes | no | no | no`.
-  - **Given** the runtime hook matrix, **When** Codex is checked, **Then** prompt hooks are `yes` and lifecycle/compaction/stop are `no`.
-- **Scenario 10**: Phase summaries capture verification output and proposed commit messages without running git staging or commits.
-  - **Given** each phase completes, **When** the phase summary is written, **Then** it includes verification output and proposed commit message without git staging.
+---
 
-## 11. AI Execution Protocol
+<!-- ANCHOR:questions -->
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
-### Pre-Task Checklist
+### Performance
 
-- Read `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and the source deep-dive before edits.
-- Confirm the established spec folder is `029-hook-parity-remediation`.
-- Keep file writes inside the authority list supplied by the user.
-- Do not run `git add`, `git commit`, or `git reset`.
+- **NFR-P01**: The OpenCode diagnostic path must not add heavy MCP work or block normal plugin injection.
 
-### Execution Rules
+### Security
 
-| Rule | Enforcement |
-| --- | --- |
-| Work phase-by-phase | Complete A, B, C, D, then E; write a phase summary after each phase. |
-| Preserve sandbox truth | Record `DEFERRED` or blocked status when a requested write/check cannot complete. |
-| Verify each phase | Run typecheck, build, and targeted regression tests; attempt full suite only when it does not block progress. |
-| Keep docs synchronized | Update checklist evidence, implementation summary, phase summaries, and source remediation log. |
+- **NFR-S01**: PreToolUse remains read-only during hook execution and denies destructive shell commands through in-memory defaults when policy files are absent.
 
-### Status Reporting Format
+### Reliability
 
-Each phase summary records: finding IDs addressed, modified absolute file paths, verification output, blocked/deferred items, and proposed commit message.
+- **NFR-R01**: Hook failures surface visible diagnostics rather than silent no-op behavior.
 
-### Blocked Task Protocol
+---
 
-If a finding is ambiguous or blocked, record the item as `DEFERRED` with the exact command/error evidence, continue to the next phase, and avoid claiming that the blocked gate passed.
+## 8. EDGE CASES
+
+### Data Boundaries
+
+- Empty bridge output must return no transport plan plus a clear diagnostic.
+- Malformed bridge output must not throw through the plugin transform; it must surface a visible status entry or stderr diagnostic.
+
+### Error Scenarios
+
+- Missing `opencodeTransport` from the bridge is a diagnostic condition.
+- Cold-start advisor timeout is a stale advisory, not an empty fail-open.
+
+---
+
+## 9. COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 20/25 | Plugin, bridge, tests, and seven spec docs. |
+| Risk | 18/25 | Runtime hook behavior and destructive-command policy. |
+| Research | 14/20 | Deep-review findings and validation contract had to be reconciled. |
+| Multi-Agent | 6/15 | Orchestrator will commit after this remediation. |
+| Coordination | 12/15 | Parent plus three child spec folders must validate together. |
+| **Total** | **70/100** | **Level 3** |
+
+---
+
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | A diagnostic fix changes plugin transform output shape. | High | Medium | Keep the existing transport plan contract and assert only the failure path addition. |
+| R-002 | Strict validation fixes accidentally overstate completion. | Medium | Medium | Mark only evidence-backed tasks `[x]`; keep true blockers documented as deferred. |
+| R-003 | Metadata refresh drifts from graph-metadata schema. | Medium | Low | Preserve existing graph keys and update only derived/status/continuity fields. |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Visible OpenCode Plugin Failure (Priority: P1)
+
+**As an** operator, **I want** a visible diagnostic when plugin transport parsing fails, **so that** code-graph context failures do not look like normal empty output.
+
+**Acceptance Criteria**:
+1. Given missing or malformed bridge transport, When the plugin transform runs, Then a runtime-status entry or stderr diagnostic explains the no-op.
+
+---
+
+### US-002: Truthful Hook Capability Docs (Priority: P1)
+
+**As a** maintainer, **I want** Codex startup recovery documented as `session_bootstrap`, **so that** I do not chase a nonexistent lifecycle agent.
+
+**Acceptance Criteria**:
+1. Given Phase 003 docs, When startup recovery is described, Then it references `session_bootstrap` and carries no stale startup-agent acceptance gate.
+
+---
+
+## 12. OPEN QUESTIONS
+
+- No blocking product questions remain for this remediation packet.
+<!-- /ANCHOR:questions -->
+
+---
+
+## RELATED DOCUMENTS
+
+- `plan.md`
+- `tasks.md`
+- `checklist.md`
+- `decision-record.md`
+- `implementation-summary.md`
+- `../review/review-report.md`

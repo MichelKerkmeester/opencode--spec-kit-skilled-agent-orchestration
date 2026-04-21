@@ -9,7 +9,7 @@ Scope: 47 failing tests across 30 failing files from `/tmp/vitest-full-clean.log
 | Finding ID | File:line | Failing test name | Root cause hypothesis | Proposed fix category |
 | --- | --- | --- | --- | --- |
 | A-001 | `mcp_server/tests/transcript-planner-export.vitest.ts:147` | exports planner outputs and fallback summaries for packet 015 transcript prototypes | Test reads `.opencode/specs/.../015-save-flow-planner-first-trim/scratch/transcript-*.md`, but that historical packet fixture is deleted in the working tree. | Convert to self-contained fixture or skip obsolete historical packet dependency. |
-| A-002 | `scripts/tests/memory-learn-command-docs.vitest.ts:24` | keeps active command and workspace docs aligned to the constitutional manager wording | Test reads `.opencode/command/spec_kit/debug.md`, which no longer exists in the active command layout. | Update test to current command docs or remove stale path assertion. |
+| A-002 | `scripts/tests/memory-learn-command-docs.vitest.ts:24` | keeps active command and workspace docs aligned to the constitutional manager wording | Test reads a stale spec-kit debug command doc path that no longer exists in the active command layout. | Update test to current command docs or remove stale path assertion. |
 
 ## Group B: Post-027/028 Architecture Drift
 
