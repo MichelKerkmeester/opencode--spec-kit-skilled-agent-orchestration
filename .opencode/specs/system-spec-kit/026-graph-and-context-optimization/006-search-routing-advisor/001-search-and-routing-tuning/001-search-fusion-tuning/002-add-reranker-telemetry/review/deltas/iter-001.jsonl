@@ -1,0 +1,1 @@
+{"type":"iteration_delta","mode":"review","run":1,"focus":"correctness","findingRefs":["F001"],"filesReviewed":[".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts"],"findingsNew":{"P0":0,"P1":1,"P2":0},"findingsSummary":{"P0":0,"P1":1,"P2":0},"newFindingsRatio":1.0,"timestamp":"2026-04-21T16:20:00Z"}

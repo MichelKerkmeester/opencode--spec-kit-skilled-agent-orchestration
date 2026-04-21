@@ -1,0 +1,150 @@
+{
+  "sessionId": "rvw-2026-04-21T16-20-56Z-004-raise-rerank-minimum",
+  "generation": 1,
+  "lineageMode": "new",
+  "openFindings": [
+    {
+      "findingId": "F001",
+      "severity": "P1",
+      "title": "Traceability parent chain still points at the retired `010-search-and-routing-tuning` slug",
+      "file": "description.json",
+      "line": 18,
+      "description": "The canonical parentChain still records 010-search-and-routing-tuning even though the migration block records the new packet path under 001-search-and-routing-tuning.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 3,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F002",
+      "severity": "P1",
+      "title": "Packet-local research citations no longer resolve after the packet migration",
+      "file": "plan.md",
+      "line": 13,
+      "description": "The plan, tasks, and decision record still cite ../research/research.md, but the current packet subtree has no sibling research/research.md.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 3,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F003",
+      "severity": "P1",
+      "title": "Traceability claim in the checklist overstates the implementation evidence",
+      "file": "checklist.md",
+      "line": 13,
+      "description": "The checklist says the implementation record cites specific research lines, but the implementation summary contains no such citation.",
+      "dimension": "traceability",
+      "firstSeen": 4,
+      "lastSeen": 4,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F004",
+      "severity": "P2",
+      "title": "Decision record lifecycle status is stale after completion",
+      "file": "decision-record.md",
+      "line": 3,
+      "description": "The decision record still declares status: planned even though the packet is otherwise complete.",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 4,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F005",
+      "severity": "P2",
+      "title": "Implementation summary verification count drifted from the live targeted suite",
+      "file": "implementation-summary.md",
+      "line": 48,
+      "description": "The packet records 22 tests for the targeted Vitest run, but the current targeted suite reports 23 passing tests.",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 4,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F006",
+      "severity": "P2",
+      "title": "Traceability metadata still advertises the pre-decision `4-5` ambiguity",
+      "file": "graph-metadata.json",
+      "line": 25,
+      "description": "The packet is complete and the decision record locked the shipped cutoff to 4, but generated key topics still include 4-5.",
+      "dimension": "traceability",
+      "firstSeen": 7,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 7,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "blockedStopHistory": [],
+  "persistentSameSeverity": [],
+  "severityChanged": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 3,
+    "P2": 3
+  },
+  "openFindingsCount": 6,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 0.65,
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "corruptionWarnings": []
+}

@@ -1,0 +1,232 @@
+{
+  "sessionId": "rvw-2026-04-21T17-10-21Z-delivery-progress-confusion",
+  "generation": 1,
+  "lineageMode": "new",
+  "openFindings": [
+    {
+      "findingId": "F001",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Packet rationale cites a missing research source",
+      "status": "open",
+      "firstSeenRun": 3,
+      "lastSeenRun": 7,
+      "evidence": [
+        "plan.md:13-16",
+        "tasks.md:6-8",
+        "checklist.md:7",
+        "decision-record.md:7"
+      ],
+      "summary": "The packet still depends on ../research/research.md, but no research file exists under the current 002-content-routing-accuracy tree, so the rationale is no longer independently reviewable."
+    },
+    {
+      "findingId": "F002",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Packet evidence still points at stale content-router line ranges",
+      "status": "open",
+      "firstSeenRun": 3,
+      "lastSeenRun": 7,
+      "evidence": [
+        "plan.md:13-16",
+        "tasks.md:6-7",
+        "checklist.md:7",
+        "decision-record.md:8",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:404-423",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:965-993"
+      ],
+      "summary": "The docs still cite 345-352 and 853-860, but the delivery cue bundle and strongDeliveryMechanics guard now live at 404-423 and 965-993, so the evidence trail no longer lands on the claimed logic."
+    },
+    {
+      "findingId": "F003",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "description.json parentChain still carries the legacy 010 phase slug",
+      "status": "open",
+      "firstSeenRun": 3,
+      "lastSeenRun": 7,
+      "evidence": [
+        "description.json:14-20",
+        ".opencode/skill/system-spec-kit/scripts/spec-folder/generate-description.ts:75-88",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts:532-565"
+      ],
+      "summary": "The packet moved to 001-search-and-routing-tuning, but description.json still indexes 010-search-and-routing-tuning in parentChain, which violates the generator contract and pollutes searchable metadata."
+    },
+    {
+      "findingId": "F004",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Continuity frontmatter lags the latest packet metadata refresh",
+      "status": "open",
+      "firstSeenRun": 7,
+      "lastSeenRun": 10,
+      "evidence": [
+        "implementation-summary.md:12-16",
+        "graph-metadata.json:191-203"
+      ],
+      "summary": "implementation-summary continuity still reports a 2026-04-13 update while graph-metadata reflects a 2026-04-21 save, so the resume surface trails the canonical metadata by eight days."
+    },
+    {
+      "findingId": "F005",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "Core packet docs still miss required template and anchor surfaces",
+      "status": "open",
+      "firstSeenRun": 4,
+      "lastSeenRun": 8,
+      "evidence": [
+        "spec.md:1-24",
+        "plan.md:1-25",
+        "tasks.md:1-14",
+        "checklist.md:1-16",
+        "decision-record.md:1-10"
+      ],
+      "summary": "The packet is marked complete, but five major docs still omit current template headers, machine-owned anchors, and _memory blocks, which breaks strict structured-retrieval validation."
+    },
+    {
+      "findingId": "F006",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Completed checklist claims are not backed by structured evidence markers",
+      "status": "open",
+      "firstSeenRun": 7,
+      "lastSeenRun": 10,
+      "evidence": [
+        "checklist.md:7-13"
+      ],
+      "summary": "The checklist marks major claims complete, but the checked lines do not carry structured evidence markers, so the packet fails the checklist-evidence gate under strict validation."
+    },
+    {
+      "findingId": "F007",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "decision-record frontmatter still says planned after completion",
+      "status": "open",
+      "firstSeenRun": 4,
+      "lastSeenRun": 8,
+      "evidence": [
+        "decision-record.md:1-4",
+        "spec.md:2-7",
+        "tasks.md:2-3"
+      ],
+      "summary": "The packet is otherwise complete, but decision-record frontmatter still advertises planned, which adds avoidable state ambiguity for future maintainers."
+    }
+  ],
+  "resolvedFindings": [],
+  "blockedStopHistory": [
+    {
+      "run": 6,
+      "blockedBy": [
+        "coverage",
+        "checklist_evidence"
+      ],
+      "gateResults": {
+        "convergenceGate": {
+          "pass": true,
+          "score": 0.66
+        },
+        "dimensionCoverageGate": {
+          "pass": true,
+          "covered": [
+            "correctness",
+            "security",
+            "traceability",
+            "maintainability"
+          ],
+          "missing": []
+        },
+        "p0ResolutionGate": {
+          "pass": true,
+          "activeP0": 0
+        },
+        "evidenceDensityGate": {
+          "pass": false,
+          "avgEvidencePerFinding": 0.86
+        },
+        "hotspotSaturationGate": {
+          "pass": true
+        },
+        "claimAdjudicationGate": {
+          "pass": false,
+          "activeP0P1": 5
+        }
+      },
+      "recoveryStrategy": "Continue traceability review and validate the packet's evidence chain before allowing synthesis."
+    },
+    {
+      "run": 9,
+      "blockedBy": [
+        "checklist_evidence"
+      ],
+      "gateResults": {
+        "convergenceGate": {
+          "pass": true,
+          "score": 0.71
+        },
+        "dimensionCoverageGate": {
+          "pass": true,
+          "covered": [
+            "correctness",
+            "security",
+            "traceability",
+            "maintainability"
+          ],
+          "missing": []
+        },
+        "p0ResolutionGate": {
+          "pass": true,
+          "activeP0": 0
+        },
+        "evidenceDensityGate": {
+          "pass": false,
+          "avgEvidencePerFinding": 0.89
+        },
+        "hotspotSaturationGate": {
+          "pass": true
+        },
+        "claimAdjudicationGate": {
+          "pass": false,
+          "activeP0P1": 6
+        }
+      },
+      "recoveryStrategy": "Hold synthesis until the packet's checked completion claims and continuity surfaces are restated with current evidence."
+    }
+  ],
+  "persistentSameSeverity": [
+    "F001",
+    "F002",
+    "F003",
+    "F004",
+    "F005",
+    "F006",
+    "F007"
+  ],
+  "severityChanged": [],
+  "repeatedFindings": [
+    "F001",
+    "F002",
+    "F003",
+    "F004",
+    "F005",
+    "F006",
+    "F007"
+  ],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 6,
+    "P2": 1
+  },
+  "openFindingsCount": 7,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 0.58,
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "corruptionWarnings": []
+}

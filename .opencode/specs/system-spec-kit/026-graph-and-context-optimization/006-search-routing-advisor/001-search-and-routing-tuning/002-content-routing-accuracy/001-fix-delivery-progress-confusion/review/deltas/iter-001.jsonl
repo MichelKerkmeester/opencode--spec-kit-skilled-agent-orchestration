@@ -1,0 +1,1 @@
+{"type":"iteration_delta","run":1,"dimension":"correctness","findingRefs":[],"findingsNew":{"P0":0,"P1":0,"P2":0},"findingsSummary":{"P0":0,"P1":0,"P2":0},"newFindingsRatio":0.0,"status":"complete","notes":"Established correctness baseline; no runtime defect found."}

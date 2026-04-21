@@ -1,0 +1,1 @@
+{"type":"iteration_delta","mode":"review","run":7,"focus":"traceability","findingRefs":["F005"],"filesReviewed":["decision-record.md","spec.md","implementation-summary.md"],"findingsNew":{"P0":0,"P1":1,"P2":0},"findingsSummary":{"P0":0,"P1":5,"P2":0},"newFindingsRatio":0.2,"timestamp":"2026-04-21T17:10:00Z"}

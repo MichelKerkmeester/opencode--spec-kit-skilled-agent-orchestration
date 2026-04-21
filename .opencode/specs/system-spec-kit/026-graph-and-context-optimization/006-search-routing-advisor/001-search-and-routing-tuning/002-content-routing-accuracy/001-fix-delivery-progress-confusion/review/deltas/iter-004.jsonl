@@ -1,0 +1,1 @@
+{"type":"iteration_delta","run":4,"dimension":"maintainability","findingRefs":["F005","F007"],"findingsNew":{"P0":0,"P1":1,"P2":1},"findingsSummary":{"P0":0,"P1":4,"P2":1},"newFindingsRatio":0.22,"status":"complete","notes":"Found missing template machinery across packet docs and a minor ADR status mismatch."}

@@ -1,0 +1,1 @@
+{"type":"delta","iteration":8,"dimension":"maintainability","newFindingRefs":[],"findingsNew":{"P0":0,"P1":0,"P2":0},"findingsRefined":2,"newFindingsRatio":0.11,"coverage":1.0,"notes":"Reinforced that graph-metadata path/entity problems are generator-quality issues, not isolated typos."}

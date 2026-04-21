@@ -1,0 +1,1 @@
+{"type":"delta","iteration":4,"dimension":"maintainability","newFindingRefs":["F004","F006"],"findingsNew":{"P0":0,"P1":1,"P2":1},"newFindingsRatio":0.18,"coverage":1.0,"notes":"Generated metadata contains conflicting file paths and low-signal extracted entities."}

@@ -1,0 +1,1 @@
+{"type":"delta","iteration":1,"dimension":"correctness","newFindings":["F001"],"refinedFindings":[],"filesReviewed":["spec.md","AGENTS.md","review/validation-strict.txt"],"findingsNew":{"P0":0,"P1":1,"P2":0},"findingsSummary":{"P0":0,"P1":1,"P2":0},"newFindingsRatio":0.62,"status":"complete","note":"Detected completion-state contradiction at the root packet."}

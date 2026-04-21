@@ -1,0 +1,1 @@
+{"type":"delta","iteration":3,"dimension":"traceability","newFindings":["F002"],"refinedFindings":[],"filesReviewed":["description.json","graph-metadata.json"],"findingsNew":{"P0":0,"P1":1,"P2":0},"findingsSummary":{"P0":0,"P1":3,"P2":0},"newFindingsRatio":0.31,"status":"complete","note":"Caught a stale canonical parentChain after phase renumbering."}

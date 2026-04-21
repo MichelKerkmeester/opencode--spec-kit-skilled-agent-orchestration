@@ -1,0 +1,1 @@
+{"type":"delta","iteration":3,"dimension":"traceability","newFindingRefs":["F001","F002"],"findingsNew":{"P0":0,"P1":2,"P2":0},"newFindingsRatio":0.42,"coverage":0.75,"notes":"Found contradictory scope claims across tasks, plan, and implementation summary."}

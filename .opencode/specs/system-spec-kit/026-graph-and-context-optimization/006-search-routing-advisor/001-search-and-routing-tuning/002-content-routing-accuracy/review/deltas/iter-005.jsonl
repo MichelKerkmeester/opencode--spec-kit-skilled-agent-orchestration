@@ -1,0 +1,1 @@
+{"type":"delta","iteration":5,"dimension":"correctness","newFindings":["F003"],"refinedFindings":[],"filesReviewed":["spec.md","tasks.md","checklist.md"],"findingsNew":{"P0":0,"P1":1,"P2":0},"findingsSummary":{"P0":0,"P1":5,"P2":0},"newFindingsRatio":0.27,"status":"complete","note":"Root closeout fails to preserve the original research exit-criteria synthesis."}

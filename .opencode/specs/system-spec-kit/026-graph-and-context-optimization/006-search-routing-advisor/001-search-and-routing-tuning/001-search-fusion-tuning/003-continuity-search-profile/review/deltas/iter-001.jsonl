@@ -1,0 +1,1 @@
+{"type":"delta","iteration":1,"dimension":"correctness","newFindingRefs":[],"findingsNew":{"P0":0,"P1":0,"P2":0},"newFindingsRatio":0.08,"coverage":0.25,"notes":"Verified the shipped continuity runtime path; no correctness defect found."}

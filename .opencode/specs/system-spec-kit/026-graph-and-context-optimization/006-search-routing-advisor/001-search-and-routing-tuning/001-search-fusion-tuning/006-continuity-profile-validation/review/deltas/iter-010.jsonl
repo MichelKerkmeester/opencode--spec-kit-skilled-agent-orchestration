@@ -1,0 +1,1 @@
+{"run":10,"dimension":"security","findingRefs":["F001","F002","F003"],"new":{"P0":0,"P1":0,"P2":0},"refined":{"P0":0,"P1":0,"P2":0},"newFindingsRatio":0.0,"summary":"Final security stabilization stayed clean and closed the loop at the iteration ceiling."}
