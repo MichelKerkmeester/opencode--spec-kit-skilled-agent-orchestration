@@ -106,3 +106,6 @@ code-graph.sqlite
 .agents/specs/00--anobel.com
 .opencode/barter
 .claude/scheduled_tasks.lock
+
+# Skill-advisor runtime output artifacts
+.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/out/*.json
