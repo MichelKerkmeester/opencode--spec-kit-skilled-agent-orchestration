@@ -1,11 +1,27 @@
 ---
 title: "NC-005 Lifecycle Redirect Metadata"
 description: "Manual validation that superseded, archived, future, and rolled-back lifecycle metadata surfaces through advisor_recommend."
+trigger_phrases:
+  - "nc-005"
+  - "lifecycle redirect metadata"
+  - "lifecycle redirect"
+  - "lifecycle"
 ---
 
 # NC-005 Lifecycle Redirect Metadata
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate lifecycle redirect metadata for non-active skill states.
 
@@ -56,7 +72,7 @@ advisor_recommend({"prompt":"route a superseded lifecycle fixture","options":{"t
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/lifecycle/`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/render.ts`

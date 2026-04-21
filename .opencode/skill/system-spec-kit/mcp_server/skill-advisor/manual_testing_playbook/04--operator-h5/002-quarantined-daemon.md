@@ -1,11 +1,26 @@
 ---
 title: "OP-002 Quarantined Daemon"
 description: "H5 operator playbook for malformed SKILL.md quarantine detection, repair, and revert."
+trigger_phrases:
+  - "op-002"
+  - "quarantined daemon"
+  - "quarantined"
 ---
 
 # OP-002 Quarantined Daemon
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate the quarantine path for malformed skill metadata without damaging the live repo.
 
@@ -55,7 +70,7 @@ advisor_status({"workspaceRoot":"/tmp/path-to-copy"})
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/daemon/watcher.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/schemas/daemon-status.ts`

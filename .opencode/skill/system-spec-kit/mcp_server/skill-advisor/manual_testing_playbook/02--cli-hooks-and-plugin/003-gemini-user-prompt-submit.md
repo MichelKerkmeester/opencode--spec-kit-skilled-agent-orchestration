@@ -1,11 +1,27 @@
 ---
 title: "CL-003 Gemini CLI UserPromptSubmit Hook"
 description: "Manual validation for Gemini BeforeAgent prompt-time advisor integration."
+trigger_phrases:
+  - "cl-003"
+  - "gemini cli userpromptsubmit hook"
+  - "gemini cli"
+  - "gemini"
 ---
 
 # CL-003 Gemini CLI UserPromptSubmit Hook
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate Gemini's prompt-equivalent hook adapter and its fail-open behavior.
 
@@ -56,6 +72,6 @@ printf '%s' '{"request":{"prompt":"create a flowchart for the auth process","cwd
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/user-prompt-submit.ts`

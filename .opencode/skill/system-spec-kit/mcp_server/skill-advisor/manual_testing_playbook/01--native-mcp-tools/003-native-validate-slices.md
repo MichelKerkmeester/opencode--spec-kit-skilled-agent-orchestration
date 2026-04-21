@@ -1,11 +1,27 @@
 ---
 title: "NC-003 Native advisor_validate Slice Bundle"
 description: "Manual validation that advisor_validate returns measured corpus, holdout, parity, safety, and latency slices."
+trigger_phrases:
+  - "nc-003"
+  - "native advisor_validate slice bundle"
+  - "native advisor_validate"
+  - "native"
 ---
 
 # NC-003 Native advisor_validate Slice Bundle
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate that `advisor_validate` runs the real native validation bundle rather than returning hard-coded pass values.
 
@@ -59,7 +75,7 @@ advisor_validate({"skillSlug":"system-spec-kit"})
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-validate.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/bench/`

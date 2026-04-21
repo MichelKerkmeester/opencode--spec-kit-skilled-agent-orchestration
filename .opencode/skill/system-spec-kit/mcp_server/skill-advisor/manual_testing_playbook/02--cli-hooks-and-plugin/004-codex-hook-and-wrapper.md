@@ -1,11 +1,27 @@
 ---
 title: "CL-004 Codex CLI Hook And Prompt Wrapper"
 description: "Manual validation for Codex UserPromptSubmit and prompt-wrapper fallback."
+trigger_phrases:
+  - "cl-004"
+  - "codex cli hook and prompt wrapper"
+  - "codex cli"
+  - "codex"
 ---
 
 # CL-004 Codex CLI Hook And Prompt Wrapper
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate the Codex prompt hook, stdin-over-argv parsing, and wrapper fallback used when native hooks are unavailable.
 
@@ -62,7 +78,7 @@ printf '%s' '{"prompt":"update documentation with DQI checks","cwd":"'"$PWD"'"}'
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts`

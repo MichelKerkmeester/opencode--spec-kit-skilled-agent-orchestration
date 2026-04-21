@@ -1,11 +1,26 @@
 ---
 title: "OP-001 Degraded Daemon"
 description: "H5 operator playbook for detecting and recovering a degraded native advisor daemon state."
+trigger_phrases:
+  - "op-001"
+  - "degraded daemon"
+  - "degraded"
 ---
 
 # OP-001 Degraded Daemon
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate the operator path for a degraded advisor daemon, usually caused by stale graph generation or a newer source file.
 
@@ -56,7 +71,7 @@ advisor_status({"workspaceRoot":"/absolute/path/to/repo"})
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/daemon/`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness/`

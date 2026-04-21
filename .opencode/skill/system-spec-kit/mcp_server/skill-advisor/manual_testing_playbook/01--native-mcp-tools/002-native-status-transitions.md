@@ -1,11 +1,27 @@
 ---
 title: "NC-002 Native advisor_status Transitions"
 description: "Manual validation of advisor_status freshness transitions and status fields."
+trigger_phrases:
+  - "nc-002"
+  - "native advisor_status transitions"
+  - "native advisor_status"
+  - "native"
 ---
 
 # NC-002 Native advisor_status Transitions
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate that `advisor_status` reports live, stale, and absent states with the Phase 027 `skillCount` and `lastScanAt` fields.
 
@@ -52,7 +68,7 @@ advisor_status({"workspaceRoot":"/absolute/path/to/repo"})
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-status.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness/`

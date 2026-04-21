@@ -1,11 +1,27 @@
 ---
 title: "CP-002 Force Local And Force Native Toggles"
 description: "Manual validation for Python shim native/local routing controls."
+trigger_phrases:
+  - "cp-002"
+  - "force local and force native toggles"
+  - "force local"
+  - "force"
 ---
 
 # CP-002 Force Local And Force Native Toggles
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate `--force-local` and `--force-native` behavior in the compatibility shim.
 
@@ -59,6 +75,6 @@ python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_a
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`

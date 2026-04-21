@@ -1,11 +1,27 @@
 ---
 title: "NC-001 Native advisor_recommend Happy Path"
 description: "Manual validation that advisor_recommend returns prompt-safe native recommendations for an existing skill."
+trigger_phrases:
+  - "nc-001"
+  - "native advisor_recommend happy path"
+  - "native advisor_recommend"
+  - "native"
 ---
 
 # NC-001 Native advisor_recommend Happy Path
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate the native MCP `advisor_recommend` tool with a prompt that should map to `system-spec-kit`.
 
@@ -52,7 +68,7 @@ advisor_recommend({"prompt":"save this conversation context to memory","options"
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-recommend.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/schemas/advisor-tool-schemas.ts`

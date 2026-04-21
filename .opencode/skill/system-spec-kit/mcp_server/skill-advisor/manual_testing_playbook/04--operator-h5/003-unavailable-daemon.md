@@ -1,11 +1,26 @@
 ---
 title: "OP-003 Unavailable Daemon"
 description: "H5 operator playbook for corrupted SQLite and rebuild-from-source recovery."
+trigger_phrases:
+  - "op-003"
+  - "unavailable daemon"
+  - "unavailable"
 ---
 
 # OP-003 Unavailable Daemon
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate the recovery path when the native advisor graph state is unavailable because SQLite is corrupt or unreadable.
 
@@ -58,7 +73,7 @@ advisor_status({"workspaceRoot":"/tmp/path-to-copy"})
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness/rebuild-from-source.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/daemon/lifecycle.ts`

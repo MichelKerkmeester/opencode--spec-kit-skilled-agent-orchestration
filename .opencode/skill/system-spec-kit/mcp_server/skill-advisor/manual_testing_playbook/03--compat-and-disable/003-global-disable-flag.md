@@ -1,11 +1,27 @@
 ---
 title: "CP-003 Global Disable Flag"
 description: "Manual validation that SPECKIT_SKILL_ADVISOR_HOOK_DISABLED disables all advisor prompt surfaces."
+trigger_phrases:
+  - "cp-003"
+  - "global disable flag"
+  - "global disable"
+  - "global"
 ---
 
 # CP-003 Global Disable Flag
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate the common disable flag across native MCP, Python shim, runtime hooks, and plugin bridge.
 
@@ -66,7 +82,7 @@ printf '%s' '{"prompt":"help me commit my changes","cwd":"'"$PWD"'"}' | SPECKIT_
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-recommend.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`

@@ -1,11 +1,16 @@
 ---
 title: "Skill Advisor Native-First Manual Testing Playbook"
-description: "Operator-facing validation package for the Phase 027 native skill advisor, Python compatibility shim, OpenCode plugin bridge, runtime hooks, and H5 operator states."
+description: "Operator-facing validation package for the Phase 027 native skill advisor, covering native MCP tools, runtime hooks, compatibility shim, operator recovery, daemon auto-update, auto-indexing, lifecycle routing, 5-lane scorer fusion, promotion gates, and Python compatibility."
+trigger_phrases:
+  - "skill advisor playbook"
+  - "native first manual testing"
+  - "advisor release readiness"
+  - "skill advisor validation"
 ---
 
 # Skill Advisor Native-First Manual Testing Playbook
 
-This playbook validates the post-Phase-027 Skill Advisor surface as shipped at remediation SHA `97a318d83`, with the Phase 028 code-graph migration treated as complete. The source of truth is the native TypeScript advisor package under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/`; the Python script in `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py` is now a compatibility shim.
+This playbook validates the post-Phase-027 Skill Advisor surface as shipped at remediation SHA `97a318d83`. The source of truth is the native TypeScript advisor package under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/`; the Python script at `scripts/skill_advisor.py` is a compatibility shim.
 
 ---
 
@@ -20,14 +25,20 @@ This playbook validates the post-Phase-027 Skill Advisor surface as shipped at r
 - [7. CLI HOOK AND PLUGIN SCENARIOS (`CL-001..CL-005`)](#7--cli-hook-and-plugin-scenarios-cl-001cl-005)
 - [8. COMPAT AND DISABLE SCENARIOS (`CP-001..CP-004`)](#8--compat-and-disable-scenarios-cp-001cp-004)
 - [9. OPERATOR H5 SCENARIOS (`OP-001..OP-003`)](#9--operator-h5-scenarios-op-001op-003)
-- [10. AUTOMATED TEST CROSS-REFERENCE](#10--automated-test-cross-reference)
-- [11. SOURCE CROSS-REFERENCE](#11--source-cross-reference)
+- [10. AUTO-UPDATE DAEMON SCENARIOS (`AU-001..AU-005`)](#10--auto-update-daemon-scenarios-au-001au-005)
+- [11. AUTO-INDEXING SCENARIOS (`AI-001..AI-005`)](#11--auto-indexing-scenarios-ai-001ai-005)
+- [12. LIFECYCLE ROUTING SCENARIOS (`LC-001..LC-005`)](#12--lifecycle-routing-scenarios-lc-001lc-005)
+- [13. SCORER FUSION SCENARIOS (`SC-001..SC-005`)](#13--scorer-fusion-scenarios-sc-001sc-005)
+- [14. PROMOTION GATE SCENARIOS (`PG-001..PG-005`)](#14--promotion-gate-scenarios-pg-001pg-005)
+- [15. PYTHON COMPAT SCENARIOS (`PC-001..PC-005`)](#15--python-compat-scenarios-pc-001pc-005)
+- [16. AUTOMATED TEST CROSS-REFERENCE](#16--automated-test-cross-reference)
+- [17. SOURCE CROSS-REFERENCE](#17--source-cross-reference)
 
 ---
 
 ## 1. OVERVIEW
 
-The playbook contains 17 deterministic manual scenarios across four groups:
+The playbook contains 47 deterministic manual scenarios across ten groups. The first four groups carry the original Phase 027 release-gate surface; the six new groups extend coverage to every shipped sub-feature.
 
 | Group | Scope | Scenario Files |
 | --- | --- | --- |
@@ -35,8 +46,14 @@ The playbook contains 17 deterministic manual scenarios across four groups:
 | CLI hooks and plugin | Claude Code, Copilot CLI, Gemini CLI, Codex CLI, OpenCode plugin bridge | [02--cli-hooks-and-plugin](02--cli-hooks-and-plugin/) |
 | Compat and disable | Python shim stdin, force toggles, disable flag, fallback behavior | [03--compat-and-disable](03--compat-and-disable/) |
 | Operator H5 | degraded, quarantined, unavailable recovery playbooks | [04--operator-h5](04--operator-h5/) |
+| Auto-update daemon | watcher scope, lease, lifecycle, generation, rebuild-from-source | [05--auto-update-daemon](05--auto-update-daemon/) |
+| Auto-indexing | derived extraction, sanitizer, provenance, DF/IDF, anti-stuffing | [06--auto-indexing](06--auto-indexing/) |
+| Lifecycle routing | age haircut, supersession, archive, schema migration, rollback | [07--lifecycle-routing](07--lifecycle-routing/) |
+| Scorer fusion | 5-lane fusion, projection, ambiguity, attribution, ablation | [08--scorer-fusion](08--scorer-fusion/) |
+| Promotion gates | shadow cycle, delta cap, 7-gate bundle, two-cycle, semantic lock and rollback | [09--promotion-gates](09--promotion-gates/) |
+| Python compat | stdin mode, force toggles, threshold flag, regression suite, bench | [10--python-compat](10--python-compat/) |
 
-Coverage note (2026-04-20): the scenarios target the current native-first runtime: 5-lane fusion, prompt-safe attribution, fail-open freshness states, the stable `compat/index.ts` entrypoint, and the OpenCode plugin bridge. They intentionally do not test the separate Phase 028 `mcp_server/code-graph/` package.
+Coverage note (2026-04-20): scenarios target the current native-first runtime with 5-lane fusion, prompt-safe attribution, fail-open freshness states, the stable `compat/index.ts` entrypoint, the OpenCode plugin bridge, the auto-update daemon, the lifecycle routing surface, and the promotion gate bundle. They intentionally do not test the separate Phase 028 `mcp_server/code-graph/` package.
 
 ---
 
@@ -82,7 +99,7 @@ Capture the following for every scenario:
 
 ## 5. REVIEW AND RELEASE RULES
 
-Release readiness is `READY` only when all 17 scenarios are `PASS` or have an approved `SKIP` with a real sandbox or runtime blocker. A failed native MCP tool scenario, disable-control scenario, or operator recovery scenario makes the package `NOT READY`.
+Release readiness is `READY` only when all 47 scenarios are `PASS` or have an approved `SKIP` with a real sandbox or runtime blocker. A failed native MCP tool scenario, disable-control scenario, operator recovery scenario, or any promotion-gate scenario makes the package `NOT READY`.
 
 Scenario acceptance:
 
@@ -139,7 +156,79 @@ Scenario acceptance:
 
 ---
 
-## 10. AUTOMATED TEST CROSS-REFERENCE
+## 10. AUTO-UPDATE DAEMON SCENARIOS (`AU-001..AU-005`)
+
+| ID | Scenario | File |
+| --- | --- | --- |
+| AU-001 | Chokidar watcher narrow scope | [001-watcher-narrow-scope.md](05--auto-update-daemon/001-watcher-narrow-scope.md) |
+| AU-002 | Workspace single-writer lease | [002-lease-single-writer.md](05--auto-update-daemon/002-lease-single-writer.md) |
+| AU-003 | Daemon lifecycle and SIGTERM | [003-daemon-lifecycle-shutdown.md](05--auto-update-daemon/003-daemon-lifecycle-shutdown.md) |
+| AU-004 | Generation-tagged snapshot publication | [004-generation-publication.md](05--auto-update-daemon/004-generation-publication.md) |
+| AU-005 | Rebuild from source on corrupt SQLite | [005-rebuild-from-source.md](05--auto-update-daemon/005-rebuild-from-source.md) |
+
+---
+
+## 11. AUTO-INDEXING SCENARIOS (`AI-001..AI-005`)
+
+| ID | Scenario | File |
+| --- | --- | --- |
+| AI-001 | Deterministic derived extraction | [001-derived-extraction.md](06--auto-indexing/001-derived-extraction.md) |
+| AI-002 | A7 sanitizer at every write boundary | [002-sanitizer-boundaries.md](06--auto-indexing/002-sanitizer-boundaries.md) |
+| AI-003 | Provenance fingerprints and trust lanes | [003-provenance-and-trust-lanes.md](06--auto-indexing/003-provenance-and-trust-lanes.md) |
+| AI-004 | DF/IDF corpus stats active-only | [004-corpus-df-idf.md](06--auto-indexing/004-corpus-df-idf.md) |
+| AI-005 | Anti-stuffing and cardinality caps | [005-anti-stuffing.md](06--auto-indexing/005-anti-stuffing.md) |
+
+---
+
+## 12. LIFECYCLE ROUTING SCENARIOS (`LC-001..LC-005`)
+
+| ID | Scenario | File |
+| --- | --- | --- |
+| LC-001 | Derived-lane-only age haircut | [001-age-haircut.md](07--lifecycle-routing/001-age-haircut.md) |
+| LC-002 | Asymmetric supersession redirects | [002-supersession.md](07--lifecycle-routing/002-supersession.md) |
+| LC-003 | Archive and future skills indexed but not routed | [003-archive-handling.md](07--lifecycle-routing/003-archive-handling.md) |
+| LC-004 | Schema v1 to v2 additive backfill | [004-schema-migration.md](07--lifecycle-routing/004-schema-migration.md) |
+| LC-005 | Lifecycle-level rollback | [005-rollback-lifecycle.md](07--lifecycle-routing/005-rollback-lifecycle.md) |
+
+---
+
+## 13. SCORER FUSION SCENARIOS (`SC-001..SC-005`)
+
+| ID | Scenario | File |
+| --- | --- | --- |
+| SC-001 | Five-lane analytical fusion | [001-five-lane-fusion.md](08--scorer-fusion/001-five-lane-fusion.md) |
+| SC-002 | Projection of skill nodes and edges | [002-projection.md](08--scorer-fusion/002-projection.md) |
+| SC-003 | Top-2 ambiguity window | [003-ambiguity.md](08--scorer-fusion/003-ambiguity.md) |
+| SC-004 | Lane contribution attribution | [004-lane-attribution.md](08--scorer-fusion/004-lane-attribution.md) |
+| SC-005 | Lane-by-lane ablation protocol | [005-ablation.md](08--scorer-fusion/005-ablation.md) |
+
+---
+
+## 14. PROMOTION GATE SCENARIOS (`PG-001..PG-005`)
+
+| ID | Scenario | File |
+| --- | --- | --- |
+| PG-001 | Shadow cycle no-mutation | [001-shadow-cycle-no-mutation.md](09--promotion-gates/001-shadow-cycle-no-mutation.md) |
+| PG-002 | Weight delta cap (max 0.05 per promotion) | [002-weight-delta-cap.md](09--promotion-gates/002-weight-delta-cap.md) |
+| PG-003 | Seven-gate bundle | [003-gate-bundle-safety.md](09--promotion-gates/003-gate-bundle-safety.md) |
+| PG-004 | Two consecutive passing cycles | [004-two-cycle-requirement.md](09--promotion-gates/004-two-cycle-requirement.md) |
+| PG-005 | Semantic lock and atomic rollback | [005-semantic-lock-and-rollback.md](09--promotion-gates/005-semantic-lock-and-rollback.md) |
+
+---
+
+## 15. PYTHON COMPAT SCENARIOS (`PC-001..PC-005`)
+
+| ID | Scenario | File |
+| --- | --- | --- |
+| PC-001 | Python shim `--stdin` round-trip | [001-stdin-mode.md](10--python-compat/001-stdin-mode.md) |
+| PC-002 | `--force-native` and `--force-local` toggles | [002-force-native-force-local.md](10--python-compat/002-force-native-force-local.md) |
+| PC-003 | `--threshold` confidence flag | [003-threshold-flag.md](10--python-compat/003-threshold-flag.md) |
+| PC-004 | Python regression suite 52/52 | [004-regression-suite.md](10--python-compat/004-regression-suite.md) |
+| PC-005 | Python bench runner | [005-bench-runner.md](10--python-compat/005-bench-runner.md) |
+
+---
+
+## 16. AUTOMATED TEST CROSS-REFERENCE
 
 | Surface | Automated Anchor |
 | --- | --- |
@@ -147,11 +236,14 @@ Scenario acceptance:
 | Python compatibility parity | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/parity/` and `tests/compat/shim.vitest.ts` |
 | Plugin bridge | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/plugin-bridge.vitest.ts` |
 | Lifecycle redirect metadata | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/lifecycle-derived-metadata.vitest.ts` |
-| Promotion gates | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/promotion/` |
+| Daemon freshness foundation | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/daemon-freshness-foundation.vitest.ts` |
+| Scorer (native) | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/scorer/native-scorer.vitest.ts` |
+| Promotion gates | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/promotion/promotion-gates.vitest.ts` |
+| Legacy advisor suites | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/legacy/` |
 
 ---
 
-## 11. SOURCE CROSS-REFERENCE
+## 17. SOURCE CROSS-REFERENCE
 
 Primary sources:
 
@@ -161,6 +253,15 @@ Primary sources:
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/schemas/advisor-tool-schemas.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/compat/index.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_runtime.py`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_bench.py`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/daemon/`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/derived/`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness/`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/lifecycle/`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/promotion/`
 - `.opencode/plugins/spec-kit-skill-advisor.js`
 - `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs`
 - `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md`

@@ -1,11 +1,27 @@
 ---
 title: "CP-004 Daemon Absent Fallback"
 description: "Manual validation for daemon-absent local fallback and native fail-open behavior."
+trigger_phrases:
+  - "cp-004"
+  - "daemon absent fallback"
+  - "daemon absent"
+  - "daemon"
 ---
 
 # CP-004 Daemon Absent Fallback
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate two fallback paths: the Python shim routes to local scoring when native daemon probing is unavailable, and native `advisor_recommend` fails open with empty recommendations when freshness is absent.
 
@@ -54,7 +70,7 @@ advisor_recommend({"prompt":"help me commit my changes","options":{"topK":1,"inc
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-recommend.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`

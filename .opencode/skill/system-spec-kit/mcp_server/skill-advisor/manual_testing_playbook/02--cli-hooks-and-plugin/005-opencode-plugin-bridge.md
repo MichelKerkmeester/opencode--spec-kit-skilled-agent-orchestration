@@ -1,11 +1,27 @@
 ---
 title: "CL-005 OpenCode Plugin Bridge"
 description: "Manual validation for the OpenCode spec-kit-skill-advisor plugin and bridge."
+trigger_phrases:
+  - "cl-005"
+  - "opencode plugin bridge"
+  - "opencode plugin"
+  - "opencode"
 ---
 
 # CL-005 OpenCode Plugin Bridge
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate the OpenCode plugin path that delegates through the stable native compat entrypoint, then falls back to Python brief production when needed.
 
@@ -60,7 +76,7 @@ spec_kit_skill_advisor_status({})
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/plugins/spec-kit-skill-advisor.js`
 - `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs`

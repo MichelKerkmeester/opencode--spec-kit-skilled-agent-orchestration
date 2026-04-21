@@ -1,11 +1,27 @@
 ---
 title: "CL-002 Copilot CLI UserPromptSubmit Hook"
 description: "Manual validation for Copilot SDK and wrapper prompt-time advisor paths."
+trigger_phrases:
+  - "cl-002"
+  - "copilot cli userpromptsubmit hook"
+  - "copilot cli"
+  - "copilot"
 ---
 
 # CL-002 Copilot CLI UserPromptSubmit Hook
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate the Copilot adapter path, including SDK return shape and wrapper fallback shape.
 
@@ -56,6 +72,6 @@ printf '%s' '{"prompt":"create a pull request on github","cwd":"'"$PWD"'"}' | no
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts`

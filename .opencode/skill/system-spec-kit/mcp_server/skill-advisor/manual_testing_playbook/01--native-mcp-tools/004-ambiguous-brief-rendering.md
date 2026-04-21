@@ -1,11 +1,27 @@
 ---
 title: "NC-004 Ambiguous Brief Rendering"
 description: "Manual validation of top-two ambiguity rendering when recommendations are within 0.05 confidence."
+trigger_phrases:
+  - "nc-004"
+  - "ambiguous brief rendering"
+  - "ambiguous brief"
+  - "ambiguous"
 ---
 
 # NC-004 Ambiguous Brief Rendering
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate that ambiguous advisor results surface as ambiguity rather than a false single-skill certainty.
 
@@ -56,7 +72,7 @@ advisor_recommend({"prompt":"review opencode docs and improve the prompt package
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/ambiguity.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/render.ts`

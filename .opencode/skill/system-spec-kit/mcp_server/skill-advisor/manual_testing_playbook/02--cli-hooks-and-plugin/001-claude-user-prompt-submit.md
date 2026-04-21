@@ -1,11 +1,27 @@
 ---
 title: "CL-001 Claude Code UserPromptSubmit Hook"
 description: "Manual validation for the Claude Code prompt-time skill advisor hook."
+trigger_phrases:
+  - "cl-001"
+  - "claude code userpromptsubmit hook"
+  - "claude code"
+  - "claude"
 ---
 
 # CL-001 Claude Code UserPromptSubmit Hook
 
-## 1. OVERVIEW
+## TABLE OF CONTENTS
+
+- [1. SCENARIO](#1--scenario)
+- [2. SETUP](#2--setup)
+- [3. STEPS](#3--steps)
+- [4. EXPECTED](#4--expected)
+- [5. FAILURE MODES](#5--failure-modes)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. SCENARIO
 
 Validate the Claude Code `UserPromptSubmit` adapter returns `hookSpecificOutput.additionalContext` and fails open.
 
@@ -56,6 +72,6 @@ printf '%s' '{"prompt":"help me commit my changes","cwd":"'"$PWD"'","hook_event_
 
 ---
 
-## 6. SOURCE FILES
+## 6. RELATED
 
 - `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts`
