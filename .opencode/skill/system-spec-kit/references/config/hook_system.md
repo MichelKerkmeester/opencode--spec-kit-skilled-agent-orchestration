@@ -45,9 +45,21 @@ Compiled: `mcp_server/dist/hooks/claude/*.js`
 - Session priming: 2000 tokens (`SESSION_PRIME_TOKEN_BUDGET`)
 - Hook timeout: 1800ms (`HOOK_TIMEOUT_MS`, under 2s hard cap)
 
+## Runtime Hook Matrix
+
+Prompt hooks and lifecycle hooks are separate capabilities. A runtime can support prompt-time advisor context without supporting startup/code-graph lifecycle injection.
+
+| Runtime | Prompt hook | Lifecycle hook | Compaction | Stop |
+| --- | --- | --- | --- | --- |
+| Claude | yes | yes | yes | yes |
+| Codex | yes | no | no | no |
+| Copilot | yes | yes (wrapper) | yes | n/a |
+| Gemini | yes | yes | yes | yes |
+| OpenCode | n/a (advisor separate) | yes (plugin) | yes (plugin) | n/a |
+
 ## Cross-Runtime Fallback
 
-Hook-capable runtimes include Claude Code, Copilot CLI, Gemini CLI, and OpenCode. Claude Code, Copilot CLI, and Gemini CLI use shell-script `session-prime.ts` hooks. OpenCode uses plugin-based hooks (`@opencode-ai/plugin` at `.opencode/plugins/spec-kit-compact-code-graph.js`). Codex CLI does not support lifecycle hooks; it relies on the explicit operator recovery path instead. If hook context is unavailable in any runtime for any reason, fall back to the canonical operator path: start with `/spec_kit:resume`, rebuild packet continuity from `handover.md -> _memory.continuity -> spec docs`, then use `session_bootstrap()` or `session_resume()` only when you need lower-level structural health or merged recovery detail.
+Claude Code, Copilot CLI, and Gemini CLI use shell-script `session-prime.ts` style lifecycle hooks. OpenCode uses plugin-based hooks (`@opencode-ai/plugin` at `.opencode/plugins/spec-kit-compact-code-graph.js`). Codex CLI has prompt hooks but does not support lifecycle hooks; it relies on the explicit operator recovery path instead. If hook context is unavailable in any runtime for any reason, fall back to the canonical operator path: start with `/spec_kit:resume`, rebuild packet continuity from `handover.md -> _memory.continuity -> spec docs`, then use `session_bootstrap()` or `session_resume()` only when you need lower-level structural health or merged recovery detail.
 
 ## Retrieval Primitives
 

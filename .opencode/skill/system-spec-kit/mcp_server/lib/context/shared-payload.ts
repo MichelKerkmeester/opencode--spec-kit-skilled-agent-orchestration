@@ -192,6 +192,7 @@ export type AdvisorEnvelopeFreshness = (typeof ADVISOR_ENVELOPE_FRESHNESS_VALUES
 export const ADVISOR_ENVELOPE_STATUS_VALUES = [
   'ok',
   'skipped',
+  'stale',
   'degraded',
   'fail_open',
 ] as const;

@@ -1,5 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import { existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { join } from 'node:path';
+import { tmpdir } from 'node:os';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
+  clearCodexPreToolUsePolicyCacheForTests,
   handleCodexPreToolUse,
   type CodexPolicyFile,
 } from '../hooks/codex/pre-tool-use.js';
@@ -18,6 +22,11 @@ const policy: CodexPolicyFile = {
 };
 
 describe('Codex PreToolUse Bash deny policy', () => {
+  afterEach(() => {
+    clearCodexPreToolUsePolicyCacheForTests();
+    vi.restoreAllMocks();
+  });
+
   it('denies Bash commands that match the denylist', () => {
     const output = handleCodexPreToolUse({
       tool: 'Bash',
@@ -87,5 +96,68 @@ describe('Codex PreToolUse Bash deny policy', () => {
     });
 
     expect(output).toEqual({});
+  });
+
+  it('denies Bash commands from the bash_denylist alias', () => {
+    const output = handleCodexPreToolUse({
+      tool: 'Bash',
+      tool_input: {
+        command: 'git reset --hard HEAD~1',
+      },
+    }, {
+      readPolicy: () => ({
+        bash_denylist: [
+          {
+            pattern: 'git reset --hard',
+            reason: 'No destructive reset.',
+          },
+        ],
+      }),
+    });
+
+    expect(output).toEqual({
+      decision: 'deny',
+      reason: 'No destructive reset.',
+    });
+  });
+
+  it('reads Bash commands from camelCase toolInput.command payloads', () => {
+    const output = handleCodexPreToolUse({
+      tool: 'Bash',
+      toolInput: {
+        command: 'git push --force main',
+      },
+    }, {
+      readPolicy: () => policy,
+    });
+
+    expect(output).toEqual({
+      decision: 'deny',
+      reason: 'No forced push to main.',
+    });
+  });
+
+  it('uses in-memory defaults when policy file is missing without writing the file', () => {
+    const tempDir = mkdtempSync(join(tmpdir(), 'codex-policy-'));
+    const policyPath = join(tempDir, '.codex', 'policy.json');
+    const stderrSpy = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
+
+    try {
+      const output = handleCodexPreToolUse({
+        tool: 'Bash',
+        command: 'git reset --hard HEAD~1',
+      }, {
+        policyPath,
+      });
+
+      expect(output).toEqual({
+        decision: 'deny',
+        reason: 'Codex PreToolUse denied Bash command matching git reset --hard',
+      });
+      expect(existsSync(policyPath)).toBe(false);
+      expect(stderrSpy).toHaveBeenCalledWith(expect.stringContaining('"status":"in_memory_default"'));
+    } finally {
+      rmSync(tempDir, { recursive: true, force: true });
+    }
   });
 });

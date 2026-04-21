@@ -42,6 +42,7 @@ export interface SkillAdvisorBriefOptions {
   readonly runtime: AdvisorRuntime;
   readonly maxTokens?: number;
   readonly thresholdConfig?: AdvisorThresholds;
+  readonly subprocessTimeoutMs?: number;
 }
 
 export interface AdvisorHookDiagnostics {
@@ -412,6 +413,7 @@ export async function buildSkillAdvisorBrief(
     const subprocess = await runAdvisorSubprocess(policy.canonicalPrompt, {
       workspaceRoot: options.workspaceRoot,
       thresholdConfig: options.thresholdConfig,
+      timeoutMs: options.subprocessTimeoutMs,
     });
     if (!subprocess.ok) {
       const failureDiagnostics = classifyAdvisorFailure(subprocess.errorCode, subprocess.stderr);

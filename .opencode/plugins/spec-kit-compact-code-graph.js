@@ -121,7 +121,7 @@ function cacheKeyForSession(sessionID, specFolder) {
   return `${specFolder ?? '__workspace__'}::${sessionID ?? '__global__'}`;
 }
 
-function parseTransportPlan(responseText) {
+export function parseTransportPlan(responseText) {
   if (!responseText) {
     return null;
   }

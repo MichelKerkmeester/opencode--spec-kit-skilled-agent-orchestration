@@ -13,7 +13,7 @@ import type {
 // ───────────────────────────────────────────────────────────────
 
 export const ADVISOR_RUNTIME_VALUES = ['claude', 'gemini', 'copilot', 'codex'] as const;
-export const ADVISOR_HOOK_STATUS_VALUES = ['ok', 'skipped', 'degraded', 'fail_open'] as const;
+export const ADVISOR_HOOK_STATUS_VALUES = ['ok', 'skipped', 'stale', 'degraded', 'fail_open'] as const;
 export const ADVISOR_HOOK_FRESHNESS_VALUES = ['live', 'stale', 'absent', 'unavailable'] as const;
 export const ADVISOR_ERROR_CODE_VALUES = [
   'TIMEOUT',

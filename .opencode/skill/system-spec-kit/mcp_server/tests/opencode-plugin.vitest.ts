@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mockedBridge = vi.hoisted(() => ({
@@ -8,7 +10,7 @@ vi.mock('node:child_process', () => ({
   execFile: mockedBridge.execFile,
 }));
 
-import SpecKitCompactCodeGraphPlugin from '../../../../plugins/spec-kit-compact-code-graph.js';
+import SpecKitCompactCodeGraphPlugin, { parseTransportPlan } from '../../../../plugins/spec-kit-compact-code-graph.js';
 
 function buildBridgeResponse() {
   return JSON.stringify({
@@ -98,11 +100,31 @@ describe('Spec Kit compact code graph plugin', () => {
     expect(output.system[0]).toContain('OpenCode Startup Digest');
   });
 
-  it('exports only a single default plugin function', async () => {
+  it('exports the plugin function and parser contract helper', async () => {
     const pluginModule = await import('../../../../plugins/spec-kit-compact-code-graph.js');
 
-    expect(Object.keys(pluginModule)).toEqual(['default']);
+    expect(Object.keys(pluginModule).sort()).toEqual(['default', 'parseTransportPlan']);
     expect(pluginModule.default).toBeTypeOf('function');
+    expect(pluginModule.parseTransportPlan).toBeTypeOf('function');
+  });
+
+  it('parses the real minimal bridge stdout without a mocked transport payload', async () => {
+    const { spawnSync } = await vi.importActual<typeof import('node:child_process')>('node:child_process');
+    const workspaceRoot = path.resolve(process.cwd(), '../../../..');
+    const bridgePath = path.join(workspaceRoot, '.opencode/plugins/spec-kit-compact-code-graph-bridge.mjs');
+
+    const result = spawnSync(process.execPath, [bridgePath, '--minimal'], {
+      cwd: workspaceRoot,
+      encoding: 'utf8',
+      env: process.env,
+      timeout: 15000,
+      maxBuffer: 1024 * 1024,
+    });
+
+    expect(result.status).toBe(0);
+    const plan = parseTransportPlan(result.stdout.trim());
+    expect(plan?.transportOnly).toBe(true);
+    expect(plan?.messagesTransform.length).toBeGreaterThan(0);
   });
 
   it('adds schema-aligned synthetic text parts and avoids duplicates', async () => {

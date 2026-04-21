@@ -14,11 +14,13 @@ import {
   type AdvisorHookResult,
   type AdvisorHookStatus,
 } from '../../skill-advisor/lib/skill-advisor-brief.js';
+import { getAdvisorFreshness } from '../../skill-advisor/lib/freshness.js';
 import { renderAdvisorBrief } from '../../skill-advisor/lib/render.js';
 import {
   createAdvisorHookDiagnosticRecord,
   serializeAdvisorHookDiagnosticRecord,
 } from '../../skill-advisor/lib/metrics.js';
+import { scoreAdvisorPrompt } from '../../skill-advisor/lib/scorer/fusion.js';
 
 const IS_CLI_ENTRY = process.argv[1]
   ? resolve(process.argv[1]) === fileURLToPath(import.meta.url)
@@ -81,6 +83,9 @@ interface HookDiagnosticInput {
   readonly generation?: number;
 }
 
+const DEFAULT_CODEX_HOOK_TIMEOUT_MS = 3000;
+const DEFAULT_TOKEN_CAP = 80;
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
@@ -128,6 +133,18 @@ function workspaceRootFor(input: CodexUserPromptSubmitInput): string {
   return process.cwd();
 }
 
+function positiveIntFromEnv(value: string | undefined, fallback: number): number {
+  if (typeof value !== 'string' || value.trim().length === 0) {
+    return fallback;
+  }
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function codexHookTimeoutMs(): number {
+  return positiveIntFromEnv(process.env.SPECKIT_CODEX_HOOK_TIMEOUT_MS, DEFAULT_CODEX_HOOK_TIMEOUT_MS);
+}
+
 function skillLabelFor(result: AdvisorHookResult): string | null {
   const metadataLabel = result.sharedPayload?.metadata?.skillLabel;
   if (typeof metadataLabel === 'string') {
@@ -149,6 +166,78 @@ function emitDiagnostic(
   } catch {
     // Diagnostics must never affect hook behavior.
   }
+}
+
+function timeoutFallbackOutput(): CodexHookSpecificOutput {
+  return {
+    hookSpecificOutput: {
+      hookEventName: 'UserPromptSubmit',
+      additionalContext: 'Advisor: stale (cold-start timeout)',
+    },
+  };
+}
+
+async function buildNativeCodexAdvisorBrief(
+  prompt: string,
+  options: { workspaceRoot: string },
+): Promise<AdvisorHookResult | null> {
+  const startedAt = performance.now();
+  try {
+    const freshness = getAdvisorFreshness(options.workspaceRoot);
+    if (freshness.state !== 'live' && freshness.state !== 'stale') {
+      return null;
+    }
+
+    const scored = scoreAdvisorPrompt(prompt, {
+      workspaceRoot: options.workspaceRoot,
+    });
+    const recommendations = scored.recommendations.map((recommendation) => ({
+      skill: recommendation.skill,
+      kind: recommendation.kind,
+      confidence: recommendation.confidence,
+      uncertainty: recommendation.uncertainty,
+      passes_threshold: recommendation.passes_threshold,
+      reason: recommendation.reason,
+    }));
+    const generatedAt = new Date().toISOString();
+    return {
+      status: recommendations.length > 0 ? 'ok' : 'skipped',
+      freshness: freshness.state,
+      brief: null,
+      recommendations,
+      diagnostics: freshness.state === 'stale'
+        ? { staleReason: freshness.diagnostics?.reason ?? 'STALE_ADVISOR_FRESHNESS' }
+        : null,
+      metrics: {
+        durationMs: Number((performance.now() - startedAt).toFixed(3)),
+        cacheHit: false,
+        subprocessInvoked: false,
+        retriesAttempted: 0,
+        recommendationCount: recommendations.length,
+        tokenCap: DEFAULT_TOKEN_CAP,
+      },
+      generatedAt,
+      sharedPayload: null,
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function buildCodexAdvisorBrief(
+  prompt: string,
+  options: { workspaceRoot: string },
+): Promise<AdvisorHookResult> {
+  const nativeResult = await buildNativeCodexAdvisorBrief(prompt, options);
+  if (nativeResult) {
+    return nativeResult;
+  }
+
+  return buildSkillAdvisorBrief(prompt, {
+    runtime: 'codex',
+    workspaceRoot: options.workspaceRoot,
+    subprocessTimeoutMs: codexHookTimeoutMs(),
+  });
 }
 
 export function parseCodexUserPromptSubmitInput(raw: string): CodexUserPromptSubmitInput | null {
@@ -250,13 +339,27 @@ export async function handleCodexUserPromptSubmit(
       return {};
     }
 
-    const buildBrief = dependencies.buildBrief ?? buildSkillAdvisorBrief;
+    const buildBrief = dependencies.buildBrief ?? buildCodexAdvisorBrief;
     const renderBrief = dependencies.renderBrief ?? renderAdvisorBrief;
     const result = await buildBrief(prompt, {
       runtime: 'codex',
       workspaceRoot: workspaceRootFor(input),
+      subprocessTimeoutMs: codexHookTimeoutMs(),
     });
     const brief = renderBrief(result);
+    if (result.status === 'fail_open' && result.diagnostics?.errorCode === 'TIMEOUT') {
+      emitDiagnostic({
+        status: 'stale',
+        freshness: 'stale',
+        durationMs: result.metrics.durationMs,
+        cacheHit: result.metrics.cacheHit,
+        errorCode: 'TIMEOUT',
+        errorDetails: 'cold-start timeout',
+        skillLabel: skillLabelFor(result),
+      }, writeDiagnostic);
+      return timeoutFallbackOutput();
+    }
+
     emitDiagnostic({
       status: result.status,
       freshness: result.freshness,

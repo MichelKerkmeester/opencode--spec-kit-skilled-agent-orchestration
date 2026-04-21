@@ -5,6 +5,8 @@
 // support from restricted installs.
 
 import { spawnSync } from 'node:child_process';
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { performance } from 'node:perf_hooks';
 
 // ───────────────────────────────────────────────────────────────
@@ -27,6 +29,7 @@ export interface CodexProbeCommand {
   readonly command: string;
   readonly args: readonly string[];
   readonly timeoutMs: number;
+  readonly env?: NodeJS.ProcessEnv;
 }
 
 export interface CodexProbeResult {
@@ -41,7 +44,8 @@ export interface CodexProbeResult {
 export interface CodexHookPolicyOptions {
   readonly command?: string;
   readonly timeoutMs?: number;
-  readonly hooksProbeArgs?: readonly string[];
+  readonly settingsPath?: string;
+  readonly workspaceRoot?: string;
   readonly runCommand?: (command: CodexProbeCommand) => CodexProbeResult;
   readonly useCache?: boolean;
   readonly now?: () => number;
@@ -59,7 +63,6 @@ interface CachedCodexHookPolicy {
 
 const DEFAULT_CODEX_COMMAND = 'codex';
 const DEFAULT_TIMEOUT_MS = 500;
-const DEFAULT_HOOKS_PROBE_ARGS = ['hooks', 'list'] as const;
 const MODULE_LAUNCH_TIME = new Date().toISOString();
 
 let cachedPolicy: CachedCodexHookPolicy | null = null;
@@ -87,6 +90,7 @@ function defaultRunCommand(command: CodexProbeCommand): CodexProbeResult {
     encoding: 'utf8',
     timeout: command.timeoutMs,
     windowsHide: true,
+    ...(command.env ? { env: command.env } : {}),
   });
   const error = result.error as NodeJS.ErrnoException | undefined;
   const timedOut = error?.code === 'ETIMEDOUT';
@@ -99,6 +103,36 @@ function defaultRunCommand(command: CodexProbeCommand): CodexProbeResult {
     timedOut,
     ...(error?.code ? { errorCode: error.code } : {}),
   };
+}
+
+function scrubCodexProbeEnv(env: NodeJS.ProcessEnv = process.env): NodeJS.ProcessEnv {
+  const scrubbed: NodeJS.ProcessEnv = { ...env };
+  for (const key of Object.keys(scrubbed)) {
+    if (key.startsWith('CODEX_TUI_')) {
+      delete scrubbed[key];
+    }
+  }
+  delete scrubbed.CODEX_CI;
+  delete scrubbed.CODEX_THREAD_ID;
+  return scrubbed;
+}
+
+function settingsPathFor(options: CodexHookPolicyOptions): string {
+  return options.settingsPath
+    ?? join(options.workspaceRoot ?? process.cwd(), '.codex', 'settings.json');
+}
+
+function hasValidCodexSettings(settingsPath: string): boolean {
+  if (!existsSync(settingsPath)) {
+    return false;
+  }
+
+  try {
+    JSON.parse(readFileSync(settingsPath, 'utf8'));
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function firstOutputLine(output: string): string | undefined {
@@ -160,6 +194,7 @@ export function detectCodexHookPolicy(options: CodexHookPolicyOptions = {}): Cod
     command,
     args: ['--version'],
     timeoutMs,
+    env: scrubCodexProbeEnv(),
   });
 
   if (versionProbe.timedOut) {
@@ -181,30 +216,17 @@ export function detectCodexHookPolicy(options: CodexHookPolicyOptions = {}): Cod
   }
 
   const codexVersion = firstOutputLine(versionProbe.stdout) ?? firstOutputLine(versionProbe.stderr);
-  const hooksProbe = runCommand({
-    command,
-    args: options.hooksProbeArgs ?? DEFAULT_HOOKS_PROBE_ARGS,
-    timeoutMs,
-  });
+  const settingsPath = settingsPathFor(options);
+  const settingsValid = hasValidCodexSettings(settingsPath);
 
-  if (hooksProbe.timedOut) {
-    return cachePolicy(unavailablePolicy({
-      startedAt,
-      now,
-      currentDate,
-      reason: 'CODEX_HOOKS_PROBE_TIMEOUT',
-      codexVersion,
-    }), useCache);
-  }
-
-  const hooks: CodexHookAvailability = hooksProbe.ok ? 'live' : 'partial';
+  const hooks: CodexHookAvailability = settingsValid ? 'live' : 'partial';
   return cachePolicy({
     hooks,
     probedAt: currentDate().toISOString(),
     diagnostics: {
       probeDurationMs: Number((now() - startedAt).toFixed(3)),
       ...(codexVersion ? { codexVersion } : {}),
-      ...(hooksProbe.ok ? {} : { reason: hooksProbe.errorCode ?? 'CODEX_HOOKS_PROBE_FAILED' }),
+      ...(settingsValid ? {} : { reason: 'CODEX_SETTINGS_MISSING_OR_INVALID' }),
     },
   }, useCache);
 }

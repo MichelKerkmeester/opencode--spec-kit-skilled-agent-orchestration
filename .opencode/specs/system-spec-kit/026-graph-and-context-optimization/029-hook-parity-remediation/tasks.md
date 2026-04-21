@@ -9,11 +9,11 @@ contextType: "task-list"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/029-hook-parity-remediation"
-    last_updated_at: "2026-04-21T10:20:00Z"
-    last_updated_by: "claude-opus-4-7"
-    recent_action: "Scaffolded tasks for 4 phases"
-    next_safe_action: "Codex implements Phase A"
-    completion_pct: 5
+    last_updated_at: "2026-04-21T13:10:00Z"
+    last_updated_by: "codex-gpt-5.4"
+    recent_action: "Phases A-D implemented; phase summaries written"
+    next_safe_action: "Orchestrator reviews summaries and resolves documented blockers"
+    completion_pct: 95
 ---
 
 <!-- SPECKIT_LEVEL: 3 -->
@@ -24,6 +24,16 @@ _memory:
 Status legend: `[ ]` pending · `[x]` done · `[~]` deferred
 
 <!-- ANCHOR:tasks-phase-a-029 -->
+## Closing Status
+
+- [x] Phase A implemented and summarized in `phase-A-fix-summary.md`.
+- [x] Phase B implemented and summarized in `phase-B-fix-summary.md`.
+- [x] Phase C implemented and summarized in `phase-C-fix-summary.md`.
+- [x] Phase D implemented and summarized in `phase-D-fix-summary.md`.
+- [x] Phase E remediation log, implementation summary, and checklist evidence updated.
+- [~] Full-suite vitest gate deferred: the completed run reports out-of-scope baseline failures across progressive-validation, canonical-save, integration, context-server, CLI, resume performance, task-enrichment, search archival, transcript planner, advisor runtime parity, and deep-loop prompt-pack tests.
+- [~] Direct `.codex/policy.json` edit deferred: sandbox writes to the file return `EPERM`; runtime/setup defaults include bare `git reset --hard`.
+
 ## Phase A — OpenCode plugin transport fix
 
 ### A.1 Extract `buildOpencodeTransport()` helper

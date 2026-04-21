@@ -16,11 +16,20 @@ trigger_phrases:
 - `pre-tool-use.ts` applies a narrow Bash-only deny policy from `.codex/policy.json`.
 - `prompt-wrapper.ts` adds an in-memory advisor preamble only when native hook detection reports `unavailable`.
 
-The adapter code and tests are live. Repo-local `.codex/settings.json` and `.codex/policy.json` registration was deferred because the 020/008 sandbox blocked those writes with `EPERM`.
+The adapter code, tests, and repo-local registration files are live. `.codex/settings.json` registers `UserPromptSubmit` and `PreToolUse`; `.codex/policy.json` holds the Bash deny policy. Codex CLI still does not expose startup, compaction, or stop lifecycle hooks, so startup recovery remains explicit via `session_bootstrap`.
 
-## 2. DEFERRED REGISTRATION
+Prompt-hook smoke check:
 
-Documented `.codex/settings.json` snippet:
+```bash
+printf '%s\n' '{"prompt":"implement TypeScript hook","cwd":"'"$PWD"'"}' \
+  | node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/codex/user-prompt-submit.js
+```
+
+Expected stdout contains non-empty `hookSpecificOutput.additionalContext`. Cold-start timeouts return the prompt-safe `Advisor: stale (cold-start timeout)` advisory with a `status:"stale"` stderr diagnostic.
+
+## 2. REGISTRATION
+
+Checked-in `.codex/settings.json` shape:
 
 ```json
 {

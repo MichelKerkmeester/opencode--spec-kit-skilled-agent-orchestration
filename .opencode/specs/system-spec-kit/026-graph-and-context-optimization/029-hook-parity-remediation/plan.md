@@ -35,6 +35,20 @@ One commit per phase (4 commits total), plus 1 closing commit to append remediat
 
 <!-- ANCHOR:plan-phase-details-029 -->
 
+## Technical Context
+
+The remediation touches the System Spec Kit MCP server TypeScript runtime, checked-in Codex/Copilot hook configuration, the OpenCode plugin bridge, and packet-local documentation. Build output is generated through `npm run build` in `.opencode/skill/system-spec-kit/mcp_server`.
+
+The hook surfaces are intentionally different by runtime: Codex has prompt/pre-tool hooks but no startup lifecycle hook, Copilot uses repo-local shell wrappers, and OpenCode uses plugin-based lifecycle injection. The plan therefore fixes parity claims by capability class instead of forcing all runtimes into the same hook model.
+
+## Architecture
+
+The architecture keeps hook transport construction inside the MCP handler layer and keeps runtime adapters thin. `session_resume` owns OpenCode transport plan construction; the OpenCode plugin and bridge only parse and deliver that plan.
+
+Codex advisor dispatch now prefers in-process scoring when the local advisor graph is reachable and falls back to the subprocess path with a bounded timeout. Codex PreToolUse remains read-only during hook execution; policy file creation is isolated in `hooks/codex/setup.ts`.
+
+Copilot startup delivery stays wrapper-based: `.github/hooks/superset-notify.json` routes `sessionStart` to `.github/hooks/scripts/session-start.sh`, and the wrapper performs Superset fan-out as a best-effort side effect.
+
 ## Phase A — OpenCode plugin transport fix
 
 **Scope:** `session_resume({ minimal: true })` returns `opencodeTransport`; plugin contract test uses real bridge shape.
@@ -120,6 +134,32 @@ docs(029): remediation log + source deep-dive cross-reference
 ```
 
 Each commit runs: typecheck + build + vitest + validate.sh on this spec folder. Python regression is NOT in scope for this phase (hook-specific — no skill-advisor scoring changes).
+
+## AI Execution Protocol
+
+### Pre-Task Checklist
+
+- Read the five packet docs and the source deep-dive before making edits.
+- Confirm the user-supplied spec folder remains the active documentation scope.
+- Confirm the edit authority list before touching files.
+- Avoid `git add`, `git commit`, and `git reset`.
+
+### Execution Rules
+
+| Rule | Requirement |
+| --- | --- |
+| TASK-SEQ | Complete Phase A, B, C, D, then E in order. |
+| TASK-SCOPE | Edit only the files listed by the user or packet-local docs. |
+| TASK-VERIFY | Run typecheck, build, and phase-targeted tests before writing each phase summary. |
+| TASK-TRUTH | Record blocked or deferred gates instead of marking them green. |
+
+### Status Reporting
+
+Status Format: each phase summary lists finding IDs addressed, files modified, verification output, blocked/deferred items, and proposed commit message.
+
+### Blocked Task Protocol
+
+When a task is BLOCKED by sandbox permissions, out-of-scope baseline failures, or ambiguous authority, record `[~]` with the exact evidence and continue to the next safe phase.
 
 ## Rollback
 

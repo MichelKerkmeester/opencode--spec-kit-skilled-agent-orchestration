@@ -48,7 +48,7 @@ Graph operations hardening now exists as a reusable runtime contract that standa
 Cross-runtime startup surfacing parity now exists across the other repo-managed CLI surfaces:
 - Claude and Gemini SessionStart hooks now start with the shared `Session context received. Current state:` block.
 - Copilot now has a repo-local session-start banner hook.
-- Codex `context-prime` now uses the same startup surface shape for its first-turn bootstrap output.
+- Codex startup recovery is handled through the explicit `session_bootstrap` MCP path rather than a native lifecycle hook.
 - Startup status is now freshness-aware instead of count-only, so OpenCode resume digests and the shared startup banner can say `stale` when the first structural read would immediately detect stale graph state.
 - OpenCode startup digests now also append the explicit startup-snapshot note in the live runtime, so the first-turn banner clearly explains that later structural reads may differ if the repo state changed.
 
@@ -124,7 +124,7 @@ That sequencing kept transport logic thin, kept graph operations beneath the tra
 | `npx tsc --build --verbose` in `.opencode/skill/system-spec-kit/mcp_server` | PASS - rebuilt stale OpenCode transport output so the snapshot note reached live startup digests |
 | `node --check .opencode/plugins/spec-kit-compact-code-graph.js` | PASS |
 | `jq empty opencode.json` | PASS |
-| `python3.11` TOML parse of `.codex/agents/context-prime.toml` | PASS |
+| Codex startup recovery docs reviewed against the `session_bootstrap` MCP path | PASS |
 | `jq empty .github/hooks/superset-notify.json` | PASS |
 | `./.github/hooks/scripts/session-start.sh` smoke run | PASS - emitted the shared startup banner plus the startup-snapshot note |
 | Dist-hook smoke runs for Copilot, Claude, and Gemini startup surfaces | PASS |
@@ -140,7 +140,7 @@ That sequencing kept transport logic thin, kept graph operations beneath the tra
 ## Known Limitations
 
 1. **Copilot parity is repo-local, not cross-repo global.** This workspace now tracks a repo-local `.github/hooks/*.json` sessionStart registration and wrapper scripts, but other repositories still need their own Copilot hook wiring if they want the same banner behavior.
-2. **Codex parity is bootstrap-based.** Codex now matches the startup surface through `context-prime`, not through a native SessionStart hook.
+2. **Codex recovery is bootstrap-based.** Codex does not expose a native SessionStart hook in this repo; operators use the `session_bootstrap` MCP tool for startup recovery.
 3. **Inline full scans remain intentionally manual.** Phase 5 improves first-use freshness for small stale deltas, including safe post-commit drift, but large branch-change or empty-graph cases still rely on explicit `code_graph_scan`.
 4. **Memory durability remains out of packet 030.** The packet now includes a live OpenCode plugin hook layer, cross-runtime startup surfacing, and bounded code graph auto-refresh, but long-term archive durability, import/export depth, and broader memory storage upgrades still belong to a separate follow-on track outside packet 030.
 5. **OpenCode startup parity still depends on build hygiene.** The packet now truthfully documents the startup-snapshot note in live OpenCode, but transport-layer formatter changes still require rebuilding the MCP server `dist/` output before runtime behavior matches source.

@@ -134,9 +134,9 @@ The repo contains checked-in MCP wiring for OpenCode, Claude Code, Codex, Gemini
 |---|---|---|
 | OpenCode | `opencode.json` | MCP wiring is checked in. A plugin-based startup digest implementation exists under `.opencode/plugins/`, but repo registration of that plugin is runtime-dependent and not shown in `opencode.json`. |
 | Claude Code | `.claude/mcp.json` | Checked-in SessionStart / PreCompact / Stop hooks in `.claude/settings.local.json`. |
-| Codex | `.codex/config.toml` | Checked-in MCP config. Bootstrap parity via `session_bootstrap` MCP tool, not a native SessionStart hook. |
+| Codex | `.codex/config.toml` | Checked-in MCP config and prompt hooks. Startup recovery is explicit via the `session_bootstrap` MCP tool, not a native SessionStart lifecycle hook. |
 | Gemini | `.gemini/settings.json` | Checked-in MCP config plus SessionStart / PreCompress / BeforeAgent / SessionEnd hook wiring. |
-| Copilot | `.vscode/mcp.json` | Checked-in MCP wrapper config. Startup banner code and wrapper scripts exist, but tracked `.github/hooks/superset-notify.json` still points at the Superset hook path, so local startup-hook behavior must be verified per environment. |
+| Copilot | `.vscode/mcp.json` | Checked-in MCP wrapper config plus `.github/hooks/superset-notify.json` sessionStart routing through `.github/hooks/scripts/session-start.sh`, which fans out to Superset after emitting the repo-local banner. |
 
 `Claude Desktop` remains documented here as a generic MCP configuration example, but it is outside the repo-checked runtime set above. Treat this table as repository configuration evidence, not as a blanket claim of live startup parity in every client.
 

@@ -7,11 +7,9 @@
 
 import {
   existsSync,
-  mkdirSync,
   readFileSync,
-  writeFileSync,
 } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const IS_CLI_ENTRY = process.argv[1]
@@ -24,6 +22,10 @@ export interface CodexPreToolUseInput {
   readonly toolName?: string;
   readonly command?: string;
   readonly tool_input?: {
+    readonly command?: string;
+    readonly [key: string]: unknown;
+  };
+  readonly toolInput?: {
     readonly command?: string;
     readonly [key: string]: unknown;
   };
@@ -40,7 +42,10 @@ export interface BashDenylistEntry {
 }
 
 export interface CodexPolicyFile {
+  readonly version?: number;
+  readonly notes?: string;
   readonly bashDenylist?: readonly (string | BashDenylistEntry)[];
+  readonly bash_denylist?: readonly (string | BashDenylistEntry)[];
 }
 
 export type CodexPreToolUseOutput =
@@ -55,8 +60,31 @@ export interface CodexPreToolUseDependencies {
   readonly readPolicy?: () => CodexPolicyFile;
 }
 
-const DEFAULT_POLICY: CodexPolicyFile = {
-  bashDenylist: [],
+export const DEFAULT_CODEX_BASH_DENYLIST: readonly string[] = [
+  'rm -rf /',
+  'rm -rf ~',
+  'rm -rf $HOME',
+  'git push --force main',
+  'git push --force master',
+  'git push -f main',
+  'git push -f master',
+  'git reset --hard',
+  'git reset --hard origin/main',
+  'git reset --hard origin/master',
+  'sudo shutdown',
+  'sudo reboot',
+  'sudo rm -rf',
+  ':(){ :|:& };:',
+  'chmod -R 777 /',
+  'chown -R root:root /',
+  'dd if=/dev/zero of=/dev/',
+  'mkfs.ext4 /dev/',
+];
+
+export const DEFAULT_POLICY: CodexPolicyFile = {
+  version: 1,
+  notes: 'In-memory default Bash denylist for Codex PreToolUse. Run npm run setup:codex-policy to write a repo-local policy file.',
+  bashDenylist: DEFAULT_CODEX_BASH_DENYLIST,
 };
 
 let cachedPolicyPath: string | null = null;
@@ -75,23 +103,28 @@ function parseCodexPreToolUseInput(raw: string): CodexPreToolUseInput | null {
   }
 }
 
-function defaultPolicyPath(): string {
+export function defaultCodexPolicyPath(): string {
   return resolve(process.cwd(), '.codex', 'policy.json');
 }
 
-function ensurePolicyFile(policyPath: string): void {
-  if (existsSync(policyPath)) {
-    return;
-  }
-  mkdirSync(dirname(policyPath), { recursive: true });
-  writeFileSync(policyPath, `${JSON.stringify(DEFAULT_POLICY, null, 2)}\n`, 'utf8');
+function writeMissingPolicyDiagnostic(policyPath: string): void {
+  process.stderr.write(`${JSON.stringify({
+    hook: 'codex-pre-tool-use',
+    status: 'in_memory_default',
+    policyPath,
+  })}\n`);
 }
 
 function loadPolicy(policyPath: string): CodexPolicyFile {
   if (cachedPolicy && cachedPolicyPath === policyPath) {
     return cachedPolicy;
   }
-  ensurePolicyFile(policyPath);
+  if (!existsSync(policyPath)) {
+    cachedPolicy = DEFAULT_POLICY;
+    cachedPolicyPath = policyPath;
+    writeMissingPolicyDiagnostic(policyPath);
+    return cachedPolicy;
+  }
   try {
     const parsed = JSON.parse(readFileSync(policyPath, 'utf8')) as unknown;
     cachedPolicy = isRecord(parsed) ? parsed as CodexPolicyFile : DEFAULT_POLICY;
@@ -108,7 +141,7 @@ function toolNameFor(input: CodexPreToolUseInput): string | null {
 }
 
 function bashCommandFor(input: CodexPreToolUseInput): string | null {
-  const command = input.command ?? input.tool_input?.command ?? input.input?.command;
+  const command = input.command ?? input.tool_input?.command ?? input.toolInput?.command ?? input.input?.command;
   return typeof command === 'string' ? command : null;
 }
 
@@ -157,6 +190,14 @@ function denylistMatch(
   return null;
 }
 
+function denylistEntries(policy: CodexPolicyFile): readonly (string | BashDenylistEntry)[] {
+  return [
+    ...(policy.bashDenylist ?? []),
+    ...(policy.bash_denylist ?? []),
+    ...DEFAULT_CODEX_BASH_DENYLIST,
+  ];
+}
+
 export function clearCodexPreToolUsePolicyCacheForTests(): void {
   cachedPolicy = null;
   cachedPolicyPath = null;
@@ -180,8 +221,8 @@ export function handleCodexPreToolUse(
       return {};
     }
 
-    const policy = dependencies.readPolicy?.() ?? loadPolicy(dependencies.policyPath ?? defaultPolicyPath());
-    const match = denylistMatch(command, policy.bashDenylist);
+    const policy = dependencies.readPolicy?.() ?? loadPolicy(dependencies.policyPath ?? defaultCodexPolicyPath());
+    const match = denylistMatch(command, denylistEntries(policy));
     if (!match) {
       return {};
     }

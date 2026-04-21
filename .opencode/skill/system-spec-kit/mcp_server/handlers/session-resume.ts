@@ -129,8 +129,20 @@ interface SessionResumeMinimalResult {
   cachedSummary?: CachedSessionSummaryDecision;
   structuralContext: StructuralBootstrapContract;
   sessionQuality: 'healthy' | 'degraded' | 'critical' | 'unknown';
+  payloadContract: null;
+  opencodeTransport: OpenCodeTransportPlan;
   graphOps: CodeGraphOpsContract;
   hints: string[];
+}
+
+interface SessionResumeTransportState {
+  payloadContract?: SharedPayloadEnvelope | null;
+  codeGraph: CodeGraphStatus;
+  cocoIndex: CocoIndexStatus;
+  structuralContext: StructuralBootstrapContract;
+  structuralTrust: ReturnType<typeof buildStructuralContextTrust>;
+  graphOps: CodeGraphOpsContract;
+  specFolder: string | null;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -148,6 +160,74 @@ function normalizeSpecFolder(specFolder: string | null | undefined): string | nu
   }
 
   return trimmed.replace(/^\.opencode\//, '');
+}
+
+function buildMinimalResumePayload(state: SessionResumeTransportState): SharedPayloadEnvelope {
+  const codeGraphCertainty: SharedPayloadCertainty = state.codeGraph.status === 'error' ? 'unknown' : 'exact';
+  const cocoIndexCertainty: SharedPayloadCertainty = 'exact';
+  const structuralCertainty: SharedPayloadCertainty = 'exact';
+
+  return createSharedPayloadEnvelope({
+    kind: 'resume',
+    sections: [
+      {
+        key: 'code-graph-status',
+        title: 'Code Graph Status',
+        content: `status=${state.codeGraph.status}; files=${state.codeGraph.fileCount}; nodes=${state.codeGraph.nodeCount}; edges=${state.codeGraph.edgeCount}; lastScan=${state.codeGraph.lastScan ?? 'unknown'}`,
+        source: 'code-graph',
+        certainty: codeGraphCertainty,
+      },
+      {
+        key: 'cocoindex-status',
+        title: 'CocoIndex Status',
+        content: state.cocoIndex.available
+          ? `available at ${state.cocoIndex.binaryPath}`
+          : `unavailable; expected at ${state.cocoIndex.binaryPath}`,
+        source: 'semantic',
+        certainty: cocoIndexCertainty,
+      },
+      {
+        key: 'structural-context',
+        title: 'Structural Context',
+        content: state.structuralContext.summary,
+        source: 'code-graph',
+        certainty: structuralCertainty,
+        structuralTrust: state.structuralTrust,
+      },
+    ],
+    summary: `Minimal resume payload: ${summarizeCertaintyContract([
+      { label: 'graph', certainty: codeGraphCertainty },
+      { label: 'cocoindex', certainty: cocoIndexCertainty },
+      { label: 'structural', certainty: structuralCertainty },
+    ])}; graph=${state.codeGraph.status}; graphStatus=${state.codeGraph.status}`,
+    provenance: {
+      producer: 'session_resume',
+      sourceSurface: 'session_resume',
+      trustState: trustStateFromStructuralStatus(state.structuralContext.status),
+      generatedAt: new Date().toISOString(),
+      lastUpdated: state.structuralContext.provenance?.lastUpdated ?? state.codeGraph.lastScan,
+      sourceRefs: ['code-graph-db', 'cocoindex-path', 'session-snapshot'],
+    },
+  });
+}
+
+function buildOpencodeTransport(
+  state: SessionResumeTransportState,
+  options: { minimal: boolean },
+): OpenCodeTransportPlan {
+  const resumePayload = options.minimal
+    ? buildMinimalResumePayload(state)
+    : state.payloadContract;
+
+  if (!resumePayload) {
+    throw new Error('OpenCode transport requires a resume payload.');
+  }
+
+  return buildOpenCodeTransportPlan({
+    resumePayload,
+    graphOps: state.graphOps,
+    specFolder: state.specFolder,
+  });
 }
 
 function parseIsoMs(value: string | null | undefined): number | null {
@@ -556,6 +636,14 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     graphFreshness: codeGraph.status as GraphFreshness,
     sourceSurface: 'session_resume',
   });
+  const transportStateBase = {
+    codeGraph,
+    cocoIndex,
+    structuralContext,
+    structuralTrust,
+    graphOps,
+    specFolder: resolvedSpecFolder,
+  };
 
   if (args.minimal) {
     const minimalResult: SessionResumeMinimalResult = {
@@ -565,6 +653,8 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
       cachedSummary: cachedSummaryDecision,
       structuralContext,
       sessionQuality: sessionQuality ?? 'unknown',
+      payloadContract: null,
+      opencodeTransport: buildOpencodeTransport(transportStateBase, { minimal: true }),
       graphOps,
       hints: [...new Set(hints)],
     };
@@ -657,11 +747,10 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     cachedSummary: cachedSummaryDecision,
     structuralContext,
     payloadContract,
-    opencodeTransport: buildOpenCodeTransportPlan({
-      resumePayload: payloadContract,
-      graphOps,
-      specFolder: resolvedSpecFolder,
-    }),
+    opencodeTransport: buildOpencodeTransport(
+      { ...transportStateBase, payloadContract },
+      { minimal: false },
+    ),
     graphOps,
     ...(sessionQuality ? { sessionQuality } : {}),
     hints: [...new Set(hints)],

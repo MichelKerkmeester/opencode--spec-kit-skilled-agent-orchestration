@@ -283,8 +283,9 @@ describe('session-resume handler', () => {
 
     expect(parsed.data.mode).toBe('minimal');
     expect(parsed.data.memory).toBeUndefined();
-    expect(parsed.data.payloadContract).toBeUndefined();
-    expect(parsed.data.opencodeTransport).toBeUndefined();
+    expect(parsed.data.payloadContract).toBeNull();
+    expect(parsed.data.opencodeTransport.transportOnly).toBe(true);
+    expect(parsed.data.opencodeTransport.messagesTransform.length).toBeGreaterThan(0);
     expect(parsed.data.codeGraph.status).toBe('fresh');
     expect(typeof parsed.data.cocoIndex.available).toBe('boolean');
     expect(parsed.data.structuralContext.sourceSurface).toBe('session_resume');

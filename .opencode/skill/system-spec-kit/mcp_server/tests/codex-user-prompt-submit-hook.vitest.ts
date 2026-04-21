@@ -1,6 +1,7 @@
+import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { performance } from 'node:perf_hooks';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   handleCodexUserPromptSubmit,
@@ -74,6 +75,7 @@ describe('Codex UserPromptSubmit advisor hook', () => {
     expect(buildBrief).toHaveBeenCalledWith('implement a TypeScript hook', {
       runtime: 'codex',
       workspaceRoot: '/workspace/project',
+      subprocessTimeoutMs: 3000,
     });
     const diagnostic = parseDiagnostic(diagnostics.records[0] ?? '{}');
     expect(validateAdvisorHookDiagnosticRecord(diagnostic)).toBe(true);
@@ -101,6 +103,7 @@ describe('Codex UserPromptSubmit advisor hook', () => {
     expect(buildBrief).toHaveBeenCalledWith('implement a TypeScript hook', {
       runtime: 'codex',
       workspaceRoot: '/workspace/project',
+      subprocessTimeoutMs: 3000,
     });
   });
 
@@ -128,6 +131,7 @@ describe('Codex UserPromptSubmit advisor hook', () => {
     expect(buildBrief).toHaveBeenCalledWith('stdin prompt wins', {
       runtime: 'codex',
       workspaceRoot: '/workspace/stdin',
+      subprocessTimeoutMs: 3000,
     });
   });
 
@@ -224,5 +228,33 @@ describe('Codex UserPromptSubmit advisor hook', () => {
   it('T012 preserves direct parse helper compatibility', () => {
     expect(parseCodexUserPromptSubmitInput('{not-json')).toBeNull();
     expect(parseCodexUserPromptSubmitInput('{"prompt":"hello"}')).toEqual({ prompt: 'hello' });
+  });
+
+  it('execs the compiled Codex hook and emits non-empty additionalContext', () => {
+    const workspaceRoot = resolve(import.meta.dirname, '../../../../..');
+    const hookPath = join(workspaceRoot, '.opencode/skill/system-spec-kit/mcp_server/dist/hooks/codex/user-prompt-submit.js');
+    const result = spawnSync(process.execPath, [hookPath], {
+      cwd: workspaceRoot,
+      input: JSON.stringify({
+        prompt: 'implement TypeScript hook remediation',
+        cwd: workspaceRoot,
+      }),
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        SPECKIT_CODEX_HOOK_TIMEOUT_MS: '3000',
+      },
+      timeout: 10000,
+      maxBuffer: 1024 * 1024,
+    });
+
+    expect(result.status).toBe(0);
+    const parsed = JSON.parse(result.stdout) as {
+      hookSpecificOutput?: {
+        additionalContext?: string;
+      };
+    };
+    expect(parsed.hookSpecificOutput?.additionalContext).toBeTruthy();
+    expect(parsed.hookSpecificOutput?.additionalContext?.trim().length).toBeGreaterThan(0);
   });
 });

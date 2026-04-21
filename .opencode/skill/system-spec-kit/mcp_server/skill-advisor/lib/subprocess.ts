@@ -60,8 +60,20 @@ interface SpawnAttemptResult {
   readonly durationMs: number;
 }
 
-const DEFAULT_TIMEOUT_MS = 1000;
+const DEFAULT_TIMEOUT_MS = 3000;
 const SQLITE_BUSY_PATTERN = /\bSQLITE_BUSY\b|database is locked/i;
+
+function parsePositiveInt(value: string | undefined, fallback: number): number {
+  if (typeof value !== 'string' || value.trim().length === 0) {
+    return fallback;
+  }
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function defaultTimeoutMs(): number {
+  return parsePositiveInt(process.env.SPECKIT_CODEX_HOOK_TIMEOUT_MS, DEFAULT_TIMEOUT_MS);
+}
 
 function thresholdArgs(thresholdConfig: AdvisorThresholds | undefined): string[] {
   const confidenceThreshold = String(thresholdConfig?.confidenceThreshold ?? 0.8);
@@ -195,7 +207,11 @@ function runSpawnAttempt(args: {
         stderr,
         exitCode,
         signal,
-        errorCode: timedOut ? 'TIMEOUT' : signal === 'SIGKILL' ? 'SIGNAL_KILLED' : null,
+        errorCode: timedOut || performance.now() - startedAt >= args.timeoutMs
+          ? 'TIMEOUT'
+          : signal === 'SIGKILL'
+            ? 'SIGNAL_KILLED'
+            : null,
         durationMs: performance.now() - startedAt,
       });
     });
@@ -213,7 +229,7 @@ export async function runAdvisorSubprocess(
   prompt: string,
   options: AdvisorSubprocessOptions,
 ): Promise<AdvisorSubprocessResult> {
-  const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  const timeoutMs = options.timeoutMs ?? defaultTimeoutMs();
   const scriptPath = options.scriptPath
     ?? join(
       options.workspaceRoot,

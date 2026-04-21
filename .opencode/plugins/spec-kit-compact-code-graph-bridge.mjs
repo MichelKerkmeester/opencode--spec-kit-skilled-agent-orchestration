@@ -86,6 +86,16 @@ async function main() {
     throw new Error('Bridge did not receive a text response from handleSessionResume()');
   }
 
+  try {
+    const parsed = JSON.parse(text);
+    const plan = parsed?.data?.opencodeTransport;
+    if (!plan || plan.transportOnly !== true) {
+      process.stderr.write('[bridge] session_resume returned no opencodeTransport - plugin injection will no-op\n');
+    }
+  } catch {
+    process.stderr.write('[bridge] session_resume returned non-JSON output - plugin injection will no-op\n');
+  }
+
   process.stdout.write(text);
 }
 
