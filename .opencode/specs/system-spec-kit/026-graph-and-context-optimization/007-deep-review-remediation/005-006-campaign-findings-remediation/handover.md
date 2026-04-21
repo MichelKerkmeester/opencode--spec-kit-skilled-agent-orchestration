@@ -28,7 +28,7 @@ User directive verbatim:
 Operational translation:
 1. Monitor the 006 impl-focused campaign already running
 2. Broaden any phases that return almost nothing
-3. After all 39 phases complete: merge impl findings INTO the existing `consolidated-findings.md` (don't create a separate doc)
+3. After all 39 phases complete: merge impl findings INTO the existing consolidated-findings.md (don't create a separate doc)
 4. Scaffold sub-phases inside 007/005 grouped by theme
 5. Dispatch cli-codex gpt-5.4 high fast (primary) to implement; cli-copilot only as fallback
 6. Single autonomous run — user will be asleep
@@ -81,7 +81,7 @@ pgrep -f "^/opt/homebrew/bin/codex.*exec.*gpt-5.4" | wc -l
 
 ### Step 2 — Monitor + broaden if needed
 
-If any completed phase has `review-impl/review-impl-report.md` with 0-1 findings AND the packet's `graph-metadata.json.derived.key_files` lists real `.ts/.py` files:
+If any completed phase has review-impl/review-impl-report.md with 0-1 findings AND the packet's `graph-metadata.json.derived.key_files` lists real `.ts/.py` files:
 1. Re-dispatch that phase with broadened scope:
    ```bash
    # See dispatch recipe in §DISPATCH RECIPES below
@@ -102,7 +102,7 @@ git push origin main
 
 Dispatch codex with prompt in §DISPATCH RECIPES → `synthesize-impl-into-consolidated`.
 
-Target: merge impl findings into the **existing** `consolidated-findings.md` (append a "Part 2: Implementation Review" section, keep Part 1 intact).
+Target: merge impl findings into the **existing** consolidated-findings.md (append a "Part 2: Implementation Review" section, keep Part 1 intact).
 
 Output location: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md` (overwrite in-place, preserving Part 1).
 
@@ -265,7 +265,7 @@ EOF
 ## Exit criteria (campaign complete)
 
 All of these must hold:
-- [ ] 006 impl campaign: 39/39 phases with `review-impl-report.md`
+- [ ] 006 impl campaign: 39/39 phases with review-impl-report.md
 - [ ] Merged consolidated-findings.md has Part 1 + Part 2 sections, grand total documented
 - [ ] 007/005 sub-phases created, all pass `validate.sh --strict --no-recursive`
 - [ ] Every sub-phase has an `implementation-summary.md` status=complete
@@ -292,7 +292,7 @@ All of these must hold:
 | Impl driver | `/tmp/006-impl-driver.sh` |
 | Impl progress log | `/tmp/006-impl-campaign-progress.log` |
 | Impl per-phase logs | `/tmp/006-impl-campaign-logs/` |
-| First-pass synthesis | `.../006-search-routing-advisor/review/consolidated-findings.md` |
+| First-pass synthesis | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md |
 | Prompt templates | `/tmp/006-impl-review-prompt-template.txt` (first impl template) |
 | Phase queue (same 39) | `/tmp/006-phase-queue.txt` |
 | 006 parent | `.../006-search-routing-advisor/` |
@@ -307,7 +307,7 @@ After compaction fires, read in this order before making decisions:
 1. **This file (handover.md)** — full state
 2. `_memory.continuity` block above — machine-readable status
 3. `/tmp/006-impl-campaign-progress.log` — live campaign state
-4. `consolidated-findings.md` (Part 1 at minimum) — what problems exist
+4. consolidated-findings.md (Part 1 at minimum) - what problems exist
 5. Last 5 git commits — what's already been done
 
 After reading: jump to §RESUME CHECKLIST Step 1 and proceed.

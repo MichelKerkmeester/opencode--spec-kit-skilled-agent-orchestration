@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/008-search-fusion-and-reranker-tuning",
+  "description": "Search Fusion and Reranker Tuning remediation packet",
+  "keywords": [
+    "search",
+    "fusion",
+    "and",
+    "reranker",
+    "tuning",
+    "remediation",
+    "findings"
+  ],
+  "lastUpdated": "2026-04-21T00:00:00Z",
+  "specId": "008",
+  "folderSlug": "search-fusion-and-reranker-tuning",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-deep-review-remediation",
+    "005-006-campaign-findings-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

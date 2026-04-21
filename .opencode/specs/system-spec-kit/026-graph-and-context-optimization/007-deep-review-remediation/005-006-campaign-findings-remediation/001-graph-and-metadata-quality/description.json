@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality",
+  "description": "Graph and Metadata Quality remediation packet",
+  "keywords": [
+    "graph",
+    "and",
+    "metadata",
+    "quality",
+    "remediation",
+    "findings"
+  ],
+  "lastUpdated": "2026-04-21T00:00:00Z",
+  "specId": "001",
+  "folderSlug": "graph-and-metadata-quality",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-deep-review-remediation",
+    "005-006-campaign-findings-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

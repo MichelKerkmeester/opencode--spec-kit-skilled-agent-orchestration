@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/004-migration-lineage-and-identity-drift",
+  "description": "Migration, Lineage, and Identity Drift remediation packet",
+  "keywords": [
+    "migration",
+    "lineage",
+    "and",
+    "identity",
+    "drift",
+    "remediation",
+    "findings"
+  ],
+  "lastUpdated": "2026-04-21T00:00:00Z",
+  "specId": "004",
+  "folderSlug": "migration-lineage-and-identity-drift",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-deep-review-remediation",
+    "005-006-campaign-findings-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

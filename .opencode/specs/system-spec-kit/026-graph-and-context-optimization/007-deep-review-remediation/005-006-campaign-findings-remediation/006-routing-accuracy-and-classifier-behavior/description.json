@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/006-routing-accuracy-and-classifier-behavior",
+  "description": "Routing Accuracy and Classifier Behavior remediation packet",
+  "keywords": [
+    "routing",
+    "accuracy",
+    "and",
+    "classifier",
+    "behavior",
+    "remediation",
+    "findings"
+  ],
+  "lastUpdated": "2026-04-21T00:00:00Z",
+  "specId": "006",
+  "folderSlug": "routing-accuracy-and-classifier-behavior",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-deep-review-remediation",
+    "005-006-campaign-findings-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

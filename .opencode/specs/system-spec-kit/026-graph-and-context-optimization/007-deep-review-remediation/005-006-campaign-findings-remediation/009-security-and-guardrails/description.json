@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/009-security-and-guardrails",
+  "description": "Security and Guardrails remediation packet",
+  "keywords": [
+    "security",
+    "and",
+    "guardrails",
+    "remediation",
+    "findings"
+  ],
+  "lastUpdated": "2026-04-21T00:00:00Z",
+  "specId": "009",
+  "folderSlug": "security-and-guardrails",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-deep-review-remediation",
+    "005-006-campaign-findings-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

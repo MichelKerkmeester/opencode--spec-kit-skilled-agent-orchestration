@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/010-telemetry-measurement-and-rollout-controls",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/010-telemetry-measurement-and-rollout-controls",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "010-telemetry-measurement-and-rollout-controls",
+      "telemetry, measurement, and rollout controls",
+      "telemetry, measurement, and rollout controls remediation",
+      "006 campaign findings"
+    ],
+    "key_topics": [
+      "telemetry",
+      "measurement",
+      "and",
+      "rollout",
+      "controls",
+      "remediation",
+      "findings"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md",
+      "codex/policy.json",
+      "pre-tool-use.ts"
+    ],
+    "source_docs": [
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "consolidated-findings.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md",
+        "source": "derived"
+      },
+      {
+        "name": "policy.json",
+        "kind": "config",
+        "path": "codex/policy.json",
+        "source": "derived"
+      },
+      {
+        "name": "pre-tool-use.ts",
+        "kind": "file",
+        "path": "pre-tool-use.ts",
+        "source": "derived"
+      }
+    ]
+  }
+}
