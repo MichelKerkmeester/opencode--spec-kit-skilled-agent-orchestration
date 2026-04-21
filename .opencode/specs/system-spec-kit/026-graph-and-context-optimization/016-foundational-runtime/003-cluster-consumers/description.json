@@ -1,5 +1,5 @@
 {
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/003-cluster-consumers",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/003-cluster-consumers",
   "description": "Feature Specification: Phase 017 Wave B — Cluster Consumers",
   "keywords": [
     "feature",
@@ -10,12 +10,10 @@
     "cluster",
     "consumers"
   ],
-  "lastUpdated": "2026-04-18T14:38:53.520Z",
+  "lastUpdated": "2026-04-21T06:00:35.631Z",
   "specId": "003",
   "folderSlug": "cluster-consumers",
   "parentChain": [
-    ".opencode",
-    "specs",
     "system-spec-kit",
     "026-graph-and-context-optimization",
     "016-foundational-runtime"

@@ -1,14 +1,15 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
-  "description": "Research packet measuring whether SKILL.md Smart Routing sections actually reduce AI resource loading or remain advisory.",
+  "description": "Feature Specification: SKILL.md Smart-Router Section Efficacy",
   "keywords": [
-    "smart routing",
-    "skill md",
-    "resource loading",
-    "intent router",
-    "context efficacy"
+    "feature",
+    "specification",
+    "skill",
+    "smart-router",
+    "section",
+    "efficacy"
   ],
-  "lastUpdated": "2026-04-19T19:45:00Z",
+  "lastUpdated": "2026-04-21T06:00:35.746Z",
   "specId": "002",
   "folderSlug": "skill-md-intent-router-efficacy",
   "parentChain": [

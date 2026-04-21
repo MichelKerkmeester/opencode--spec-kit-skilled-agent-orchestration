@@ -2,16 +2,15 @@
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap",
   "description": "Feature Specification: 027/005 — Compat Migration + Bootstrap",
   "keywords": [
-    "compat-shim",
-    "plugin-bridge",
-    "install-guide",
-    "daemon-probe",
-    "redirect-metadata",
-    "supersession-ux",
-    "python-shim",
+    "feature",
+    "specification",
+    "027",
+    "005",
+    "compat",
+    "migration",
     "bootstrap"
   ],
-  "lastUpdated": "2026-04-20T19:20:00.000Z",
+  "lastUpdated": "2026-04-21T06:00:35.809Z",
   "specId": "005",
   "folderSlug": "compat-migration-and-bootstrap",
   "parentChain": [

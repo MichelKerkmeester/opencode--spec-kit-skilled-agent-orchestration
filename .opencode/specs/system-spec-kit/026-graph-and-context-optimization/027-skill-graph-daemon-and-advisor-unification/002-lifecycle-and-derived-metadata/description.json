@@ -2,17 +2,15 @@
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/002-lifecycle-and-derived-metadata",
   "description": "Feature Specification: 027/002 — Lifecycle + Derived Metadata",
   "keywords": [
-    "derived-metadata",
-    "trust-lanes",
-    "provenance-fingerprint",
-    "schema-v2",
-    "supersession",
-    "z-archive",
-    "anti-stuffing",
-    "df-idf",
-    "age-haircut"
+    "feature",
+    "specification",
+    "027",
+    "002",
+    "lifecycle",
+    "derived",
+    "metadata"
   ],
-  "lastUpdated": "2026-04-20T14:00:00.000Z",
+  "lastUpdated": "2026-04-21T06:00:35.785Z",
   "specId": "002",
   "folderSlug": "lifecycle-and-derived-metadata",
   "parentChain": [
