@@ -1,0 +1,318 @@
+{
+  "sessionId": "drv-2026-04-21T16-04-55Z-remove-length-penalty",
+  "reviewTarget": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty",
+  "openFindings": [
+    {
+      "id": "DR-P1-001",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "description.json still advertises the retired 010 parent node after renumbering",
+      "summary": "The packet's current specFolder lives under 001-search-and-routing-tuning, but parentChain still lists 010-search-and-routing-tuning.",
+      "firstSeenIteration": 3,
+      "lastSeenIteration": 7,
+      "status": "open",
+      "evidence": [
+        {
+          "path": "description.json",
+          "line": "2",
+          "detail": "Current specFolder uses the 001-search-and-routing-tuning path."
+        },
+        {
+          "path": "description.json",
+          "line": "13-18",
+          "detail": "parentChain still stores 010-search-and-routing-tuning."
+        },
+        {
+          "path": "description.json",
+          "line": "25-31",
+          "detail": "migration.new_spec_folder and local_phase_slug confirm the packet was renumbered to 001."
+        }
+      ]
+    },
+    {
+      "id": "DR-P1-002",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "plan.md still instructs helper removal even though the shipped packet keeps the compatibility surface",
+      "summary": "The execution plan says remove LENGTH_PENALTY and helper functions, while the implementation summary and runtime exports keep them as no-op compatibility artifacts.",
+      "firstSeenIteration": 3,
+      "lastSeenIteration": 5,
+      "status": "open",
+      "evidence": [
+        {
+          "path": "plan.md",
+          "line": "8",
+          "detail": "Approach says the public applyLengthPenalty option stays as a temporary no-op."
+        },
+        {
+          "path": "plan.md",
+          "line": "13-14",
+          "detail": "Step 1 still says remove LENGTH_PENALTY, calculateLengthPenalty(), and applyLengthPenalty()."
+        },
+        {
+          "path": "implementation-summary.md",
+          "line": "39-41",
+          "detail": "Implementation summary says helpers and request path remain as a compatibility surface."
+        },
+        {
+          "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts",
+          "line": "569-577",
+          "detail": "Runtime export surface still includes LENGTH_PENALTY, calculateLengthPenalty, and applyLengthPenalty."
+        }
+      ]
+    },
+    {
+      "id": "DR-P1-003",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "checklist.md records an unsupported exact verification count",
+      "summary": "The checklist marks the four-suite vitest command as 15 files and 363 tests, which already conflicts with the implementation summary's capture of the same command.",
+      "firstSeenIteration": 3,
+      "lastSeenIteration": 7,
+      "status": "open",
+      "evidence": [
+        {
+          "path": "checklist.md",
+          "line": "9",
+          "detail": "Checklist claims the targeted four-suite vitest run passed with 15 files and 363 tests."
+        },
+        {
+          "path": "implementation-summary.md",
+          "line": "48",
+          "detail": "Implementation summary records the same command as 4 files and 126 tests."
+        }
+      ]
+    },
+    {
+      "id": "DR-P1-004",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "decision-record frontmatter still reports the packet as planned",
+      "summary": "The decision record remains at status: planned even though the spec packet and implementation summary are both complete.",
+      "firstSeenIteration": 4,
+      "lastSeenIteration": 7,
+      "status": "open",
+      "evidence": [
+        {
+          "path": "decision-record.md",
+          "line": "1-3",
+          "detail": "Decision record frontmatter still says status: planned."
+        },
+        {
+          "path": "spec.md",
+          "line": "1-7",
+          "detail": "The spec packet is complete."
+        },
+        {
+          "path": "implementation-summary.md",
+          "line": "37-42",
+          "detail": "Implementation summary describes delivered behavior, not a planned state."
+        }
+      ]
+    },
+    {
+      "id": "DR-P1-005",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "decision-record consequences still describe the retired lp cache split as active risk",
+      "summary": "The ADR says cache buckets may still split on retired lp bits, but the packet's tasks and implementation summary say that runtime fix already landed.",
+      "firstSeenIteration": 4,
+      "lastSeenIteration": 8,
+      "status": "open",
+      "evidence": [
+        {
+          "path": "decision-record.md",
+          "line": "10",
+          "detail": "Consequences still mention temporarily separate lp cache buckets."
+        },
+        {
+          "path": "tasks.md",
+          "line": "11",
+          "detail": "T-06 says generateCacheKey now ignores retired lp bits."
+        },
+        {
+          "path": "implementation-summary.md",
+          "line": "52-53",
+          "detail": "Implementation summary says the retired lp cache-key discriminator was removed."
+        }
+      ]
+    },
+    {
+      "id": "DR-P1-006",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "implementation-summary.md now carries its own stale exact test count",
+      "summary": "The implementation summary hard-codes the same four-suite vitest command as 126 tests; the packet therefore has two incompatible exact verification claims and no trustworthy canonical capture.",
+      "firstSeenIteration": 7,
+      "lastSeenIteration": 7,
+      "status": "open",
+      "evidence": [
+        {
+          "path": "implementation-summary.md",
+          "line": "47-48",
+          "detail": "Implementation summary records the exact targeted verification command as 4 files and 126 tests."
+        },
+        {
+          "path": "checklist.md",
+          "line": "9",
+          "detail": "Checklist records the same command as 15 files and 363 tests."
+        }
+      ]
+    },
+    {
+      "id": "DR-P2-001",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "No-op length-penalty compatibility exports remain public",
+      "summary": "The packet intentionally keeps LENGTH_PENALTY and helper exports alive even though they no longer change runtime behavior, which extends the API and test surface.",
+      "firstSeenIteration": 4,
+      "lastSeenIteration": 8,
+      "status": "open",
+      "evidence": [
+        {
+          "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts",
+          "line": "62-67",
+          "detail": "LENGTH_PENALTY constant remains defined with no-op multipliers."
+        },
+        {
+          "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts",
+          "line": "230-239",
+          "detail": "calculateLengthPenalty() and applyLengthPenalty() now return no-op results."
+        },
+        {
+          "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts",
+          "line": "569-577",
+          "detail": "The no-op constant and helpers remain exported."
+        }
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [
+    {
+      "findingId": "DR-P1-001",
+      "iterations": [
+        3,
+        7
+      ],
+      "note": "Hierarchy drift survived the second traceability pass."
+    },
+    {
+      "findingId": "DR-P1-002",
+      "iterations": [
+        3,
+        5
+      ],
+      "note": "Correctness stabilization confirmed the issue is documentation drift, not runtime behavior."
+    },
+    {
+      "findingId": "DR-P1-005",
+      "iterations": [
+        4,
+        8
+      ],
+      "note": "The stale cache-risk statement remained unresolved at synthesis."
+    },
+    {
+      "findingId": "DR-P2-001",
+      "iterations": [
+        4,
+        8
+      ],
+      "note": "No-op export surface remained advisory-only after the maintainability refresh."
+    }
+  ],
+  "dimensionCoverage": {
+    "correctness": {
+      "covered": true,
+      "iterations": [
+        1,
+        5,
+        9
+      ],
+      "verdict": "PASS",
+      "summary": "No behavior bug survived three passes through runtime and test surfaces."
+    },
+    "security": {
+      "covered": true,
+      "iterations": [
+        2,
+        6,
+        10
+      ],
+      "verdict": "PASS",
+      "summary": "Provider resolution, warning paths, and fallback behavior stayed within expected trust boundaries."
+    },
+    "traceability": {
+      "covered": true,
+      "iterations": [
+        3,
+        7
+      ],
+      "verdict": "CONDITIONAL",
+      "summary": "Core packet metadata and verification artifacts drift from the current renamed packet state."
+    },
+    "maintainability": {
+      "covered": true,
+      "iterations": [
+        4,
+        8
+      ],
+      "verdict": "CONDITIONAL",
+      "summary": "Decision-record and compatibility-surface cleanup debt remain open."
+    }
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 6,
+    "P2": 1
+  },
+  "traceabilityChecks": {
+    "spec_code": {
+      "status": "fail",
+      "lastIteration": 7,
+      "note": "Plan and ADR text no longer reconcile cleanly with the shipped compatibility posture."
+    },
+    "checklist_evidence": {
+      "status": "fail",
+      "lastIteration": 7,
+      "note": "Checklist and implementation-summary exact verification counts diverge."
+    },
+    "feature_catalog_code": {
+      "status": "notApplicable",
+      "lastIteration": 4,
+      "note": "This packet has no feature_catalog surface."
+    },
+    "playbook_capability": {
+      "status": "notApplicable",
+      "lastIteration": 4,
+      "note": "This packet has no playbook surface."
+    }
+  },
+  "convergenceScore": {
+    "latest": 0.55,
+    "history": [
+      {
+        "iteration": 3,
+        "score": 0.21
+      },
+      {
+        "iteration": 4,
+        "score": 0.32
+      },
+      {
+        "iteration": 8,
+        "score": 0.58
+      },
+      {
+        "iteration": 9,
+        "score": 0.7,
+        "blocked": true
+      },
+      {
+        "iteration": 10,
+        "score": 0.55
+      }
+    ]
+  }
+}

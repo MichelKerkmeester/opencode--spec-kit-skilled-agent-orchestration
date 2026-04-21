@@ -1,0 +1,1 @@
+{"type":"delta","iteration":3,"dimension":"traceability","findingRefs":["F002","F006"],"findingsNew":{"P0":0,"P1":1,"P2":1},"findingsSummary":{"P0":0,"P1":3,"P2":1},"newFindingsRatio":0.24,"status":"complete","note":"Root scope drift and stale child parent slugs recorded."}

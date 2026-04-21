@@ -1,0 +1,1 @@
+{"type":"iteration_delta","mode":"review","run":7,"dimension":"traceability","newFindingIds":["DRV-P1-005","DRV-P1-006"],"findingsNew":{"P0":0,"P1":2,"P2":0},"findingsSummary":{"P0":0,"P1":6,"P2":0},"newFindingsRatio":0.33,"churn":0.33,"convergenceAction":"continue","notes":"Migration-era metadata still disagrees about parent lineage and key-file paths."}

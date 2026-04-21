@@ -1,0 +1,1 @@
+{"type":"iteration_delta","mode":"review","run":4,"dimension":"maintainability","newFindingIds":["DRV-P1-004"],"findingsNew":{"P0":0,"P1":1,"P2":0},"findingsSummary":{"P0":0,"P1":4,"P2":0},"newFindingsRatio":0.25,"churn":0.25,"convergenceAction":"continue","notes":"Child ADR frontmatter was not normalized during closeout."}

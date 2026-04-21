@@ -1,0 +1,1 @@
+{"type":"delta","iteration":1,"dimension":"correctness","findingRefs":["F001"],"findingsNew":{"P0":0,"P1":1,"P2":0},"findingsSummary":{"P0":0,"P1":1,"P2":0},"newFindingsRatio":0.22,"status":"complete","note":"Root packet status drift recorded."}

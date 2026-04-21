@@ -1,0 +1,1 @@
+{"type":"iteration_delta","mode":"review","run":8,"dimension":"maintainability","newFindingIds":[],"findingsNew":{"P0":0,"P1":0,"P2":0},"findingsSummary":{"P0":0,"P1":6,"P2":0},"newFindingsRatio":0.0,"churn":0.0,"convergenceAction":"continue","notes":"No additional maintainability issue exceeded the existing ADR drift finding."}
