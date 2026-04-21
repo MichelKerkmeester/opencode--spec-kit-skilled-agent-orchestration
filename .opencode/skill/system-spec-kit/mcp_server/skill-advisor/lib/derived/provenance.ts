@@ -3,8 +3,8 @@
 // ───────────────────────────────────────────────────────────────
 
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync, statSync } from 'node:fs';
-import { relative, resolve } from 'node:path';
+import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs';
+import { isAbsolute, relative, resolve, sep } from 'node:path';
 import type { DerivedSourceCategory } from './trust-lanes.js';
 
 // ───────────────────────────────────────────────────────────────
@@ -40,11 +40,39 @@ function normalizeBucket(values: readonly string[]): string[] {
     .sort((left, right) => left.localeCompare(right));
 }
 
+function isWithin(parent: string, child: string): boolean {
+  const relativePath = relative(parent, child);
+  return relativePath === '' || (!relativePath.startsWith(`..${sep}`) && relativePath !== '..' && !relativePath.startsWith('/'));
+}
+
+export function workspaceRelativeFilePath(workspaceRoot: string, filePath: string): string | null {
+  if (isAbsolute(filePath)) return null;
+  const root = resolve(workspaceRoot);
+  const absolutePath = resolve(root, filePath);
+  if (!isWithin(root, absolutePath)) return null;
+  if (!existsSync(absolutePath)) {
+    return relative(root, absolutePath);
+  }
+  const realRoot = realpathSync(root);
+  const realPath = realpathSync(absolutePath);
+  if (!isWithin(realRoot, realPath)) return null;
+  return relative(realRoot, realPath);
+}
+
 export function fileDependency(workspaceRoot: string, filePath: string): FileDependency {
-  const absolutePath = resolve(workspaceRoot, filePath);
+  const relativePath = workspaceRelativeFilePath(workspaceRoot, filePath);
+  if (relativePath === null) {
+    return {
+      path: '[out-of-workspace]',
+      hash: 'out-of-scope',
+      exists: false,
+    };
+  }
+  const root = resolve(workspaceRoot);
+  const absolutePath = resolve(root, relativePath);
   if (!existsSync(absolutePath)) {
     return {
-      path: relative(resolve(workspaceRoot), absolutePath),
+      path: relativePath,
       hash: 'missing',
       exists: false,
     };
@@ -52,13 +80,13 @@ export function fileDependency(workspaceRoot: string, filePath: string): FileDep
   const stat = statSync(absolutePath);
   if (!stat.isFile()) {
     return {
-      path: relative(resolve(workspaceRoot), absolutePath),
+      path: relativePath,
       hash: 'not-file',
       exists: false,
     };
   }
   return {
-    path: relative(resolve(workspaceRoot), absolutePath),
+    path: relativePath,
     hash: sha256(readFileSync(absolutePath)),
     exists: true,
   };
@@ -90,4 +118,3 @@ export function computeProvenanceFingerprint(
 export function hasFingerprintChanged(previous: string | null | undefined, next: string): boolean {
   return previous !== next;
 }
-

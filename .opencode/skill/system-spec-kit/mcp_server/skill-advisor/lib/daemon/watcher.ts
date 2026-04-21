@@ -8,6 +8,7 @@ import { basename, dirname, join, relative, resolve, sep } from 'node:path';
 import Database from 'better-sqlite3';
 import chokidar from 'chokidar';
 import { indexSkillMetadata } from '../../../lib/skill-graph/skill-graph-db.js';
+import { workspaceRelativeFilePath } from '../derived/provenance.js';
 import { publishSkillGraphGeneration } from '../freshness/generation.js';
 
 export interface WatchTarget {
@@ -150,6 +151,8 @@ function parseDerivedKeyFiles(graphMetadataPath: string, workspaceRoot: string):
     if (!Array.isArray(keyFiles)) return [];
     return keyFiles
       .filter((entry): entry is string => typeof entry === 'string' && entry.trim().length > 0)
+      .map((entry) => workspaceRelativeFilePath(workspaceRoot, entry))
+      .filter((entry): entry is string => entry !== null)
       .map((entry) => resolve(workspaceRoot, entry))
       .filter((entry) => existsSync(entry));
   } catch {

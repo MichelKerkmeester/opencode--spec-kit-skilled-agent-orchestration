@@ -2,9 +2,9 @@
 // MODULE: Daemon Freshness Foundation Tests
 // ───────────────────────────────────────────────────────────────
 
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
+import { dirname, join, relative } from 'node:path';
 import Database from 'better-sqlite3';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { acquireSkillGraphLease, readLeaseSnapshot } from '../lib/daemon/lease.js';
@@ -247,6 +247,32 @@ describe('skill graph watcher foundation', () => {
     const targets = discoverWatchTargets(root);
 
     expect(targets.map((target) => target.path)).toContain(join(root, 'docs', 'alpha.md'));
+  });
+
+  it('rejects absolute, escaping, and symlinked-out derived.key_files watch targets', () => {
+    const root = workspace('skill-graph-key-files-contained');
+    const outsideRoot = workspace('skill-graph-key-files-outside');
+    const outsideSecret = join(outsideRoot, 'secret.md');
+    const insideKeyFile = join(root, 'docs', 'alpha.md');
+    const outsideLink = join(root, 'docs', 'outside-link.md');
+    write(insideKeyFile, '# alpha\n');
+    write(outsideSecret, '# secret\n');
+    symlinkSync(outsideSecret, outsideLink);
+    writeSkill(root, 'alpha', {
+      keyFiles: [
+        'docs/alpha.md',
+        outsideSecret,
+        relative(root, outsideSecret),
+        'docs/outside-link.md',
+      ],
+    });
+
+    const targetPaths = discoverWatchTargets(root).map((target) => target.path);
+
+    expect(targetPaths).toContain(insideKeyFile);
+    expect(targetPaths).not.toContain(outsideSecret);
+    expect(targetPaths).not.toContain(join(root, relative(root, outsideSecret)));
+    expect(targetPaths).not.toContain(outsideLink);
   });
 
   it('opens the reindex-storm circuit breaker and coalesces the burst', async () => {

@@ -5,7 +5,7 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { basename, dirname, extname, join, relative, resolve } from 'node:path';
 import { applyAntiStuffing } from './anti-stuffing.js';
-import { computeProvenanceFingerprint, fileDependency, type ProvenanceBuckets } from './provenance.js';
+import { computeProvenanceFingerprint, fileDependency, workspaceRelativeFilePath, type ProvenanceBuckets } from './provenance.js';
 import { sanitizeDerivedArray } from './sanitizer.js';
 import type { DerivedSourceCategory } from './trust-lanes.js';
 
@@ -175,6 +175,12 @@ function stringArray(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((entry): entry is string => typeof entry === 'string') : [];
 }
 
+function workspaceKeyFiles(workspaceRoot: string, value: unknown): string[] {
+  return stringArray(value)
+    .map((entry) => workspaceRelativeFilePath(workspaceRoot, entry))
+    .filter((entry): entry is string => entry !== null);
+}
+
 // ───────────────────────────────────────────────────────────────
 // 4. CORE LOGIC
 // ───────────────────────────────────────────────────────────────
@@ -190,6 +196,7 @@ export function extractDerivedMetadata(options: ExtractDerivedOptions): DerivedE
   const priorDerived = typeof graphMetadata.derived === 'object' && graphMetadata.derived !== null
     ? graphMetadata.derived as Record<string, unknown>
     : {};
+  const priorKeyFiles = workspaceKeyFiles(workspaceRoot, priorDerived.key_files);
   const buckets = emptyBuckets();
 
   buckets.frontmatter.push(...Object.values(parsedSkill.frontmatter), ...parsedSkill.keywords);
@@ -206,7 +213,7 @@ export function extractDerivedMetadata(options: ExtractDerivedOptions): DerivedE
   buckets.assets.push(...assetFiles.map((file) => basename(file, extname(file))));
   buckets.intent_signals.push(...stringArray(graphMetadata.intent_signals));
   buckets.source_docs.push(...stringArray(priorDerived.source_docs));
-  buckets.key_files.push(...stringArray(priorDerived.key_files));
+  buckets.key_files.push(...priorKeyFiles);
 
   const rawTriggerCandidates = [
     ...buckets.frontmatter,
@@ -232,7 +239,7 @@ export function extractDerivedMetadata(options: ExtractDerivedOptions): DerivedE
     relative(workspaceRoot, skillMdPath),
     relative(workspaceRoot, graphMetadataPath),
     ...assetFiles.map((file) => relative(workspaceRoot, file)),
-    ...stringArray(priorDerived.key_files),
+    ...priorKeyFiles,
   ], 'graph-metadata', 64);
 
   const antiStuffing = applyAntiStuffing(rawTriggerCandidates, rawKeywordCandidates);
@@ -241,7 +248,7 @@ export function extractDerivedMetadata(options: ExtractDerivedOptions): DerivedE
     fileDependency(workspaceRoot, relative(workspaceRoot, graphMetadataPath)),
     ...referenceFiles.map((file) => fileDependency(workspaceRoot, relative(workspaceRoot, file))),
     ...assetFiles.filter((file) => statSync(file).isFile()).map((file) => fileDependency(workspaceRoot, relative(workspaceRoot, file))),
-    ...stringArray(priorDerived.key_files).map((file) => fileDependency(workspaceRoot, file)),
+    ...priorKeyFiles.map((file) => fileDependency(workspaceRoot, file)),
   ];
   const provenance = computeProvenanceFingerprint(buckets, dependencies);
 

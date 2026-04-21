@@ -20,6 +20,7 @@ vi.mock('../../handlers/advisor-status.js', () => ({
 import { advisorPromptCache } from '../../lib/prompt-cache.js';
 import { AdvisorRecommendInputSchema } from '../../schemas/advisor-tool-schemas.js';
 import { handleAdvisorRecommend } from '../../handlers/advisor-recommend.js';
+import { buildErrorResponse, ErrorCodes, MemoryError } from '../../../lib/errors.js';
 import { dispatchTool } from '../../../tools/index.js';
 
 function status(freshness: 'live' | 'stale' | 'absent' | 'unavailable' = 'live') {
@@ -272,6 +273,29 @@ describe('advisor_recommend handler', () => {
       prompt: 'valid',
       includePrompt: true,
     })).toThrow(/Unrecognized key/);
+  });
+
+  it('redacts prompt fields from generic MCP error envelopes', () => {
+    const prompt = 'route this private customer incident with acct-12345';
+    const envelope = buildErrorResponse(
+      'advisor_recommend',
+      new MemoryError(
+        ErrorCodes.SEARCH_FAILED,
+        `failed while routing ${prompt}`,
+        {
+          prompt,
+          nested: {
+            canonicalPrompt: prompt,
+            diagnostic: `scorer rejected ${prompt}`,
+          },
+        },
+      ),
+      { prompt, options: { includeAttribution: true } },
+    );
+    const serialized = JSON.stringify(envelope);
+
+    expect(serialized).not.toContain(prompt);
+    expect(serialized).toContain('[REDACTED_PROMPT]');
   });
 
   it('is registered in the MCP dispatcher', async () => {

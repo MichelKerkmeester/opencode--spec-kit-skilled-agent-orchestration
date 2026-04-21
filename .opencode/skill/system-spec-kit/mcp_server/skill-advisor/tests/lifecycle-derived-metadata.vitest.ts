@@ -2,9 +2,9 @@
 // MODULE: Lifecycle Derived Metadata Tests
 // ───────────────────────────────────────────────────────────────
 
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
+import { dirname, join, relative } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { applyAntiStuffing } from '../lib/derived/anti-stuffing.js';
 import { extractDerivedMetadata } from '../lib/derived/extract.js';
@@ -198,6 +198,40 @@ describe('027/002 derived metadata acceptance', () => {
     expect(assetChanged).not.toBe(refChanged);
     expect(signalChanged).not.toBe(assetChanged);
     expect(betaAfter).toBe(betaBefore);
+  });
+
+  it('drops absolute, escaping, and symlinked-out derived key files from extraction and provenance', () => {
+    const root = workspace('derived-key-containment');
+    const outsideRoot = workspace('derived-key-outside');
+    const dir = writeSkillFixture(root);
+    const outsideSecret = join(outsideRoot, 'secret.md');
+    const outsideLink = join(dir, 'docs', 'outside-link.md');
+    write(outsideSecret, 'outside secret v1');
+    symlinkSync(outsideSecret, outsideLink);
+    const graphPath = join(dir, 'graph-metadata.json');
+    const graph = JSON.parse(readFileSync(graphPath, 'utf8')) as Record<string, unknown>;
+    write(graphPath, JSON.stringify({
+      ...graph,
+      derived: {
+        key_files: [
+          '.opencode/skill/alpha/docs/key-file.md',
+          outsideSecret,
+          relative(root, outsideSecret),
+          '.opencode/skill/alpha/docs/outside-link.md',
+        ],
+      },
+    }, null, 2));
+
+    const first = extractDerivedMetadata({ workspaceRoot: root, skillDir: dir });
+    write(outsideSecret, 'outside secret v2');
+    const second = extractDerivedMetadata({ workspaceRoot: root, skillDir: dir });
+
+    expect(first.keyFiles).toContain('.opencode/skill/alpha/docs/key-file.md');
+    expect(first.keyFiles).not.toContain(outsideSecret);
+    expect(first.keyFiles).not.toContain(relative(root, outsideSecret));
+    expect(first.keyFiles).not.toContain('.opencode/skill/alpha/docs/outside-link.md');
+    expect(first.buckets.key_files).toEqual(['.opencode/skill/alpha/docs/key-file.md']);
+    expect(second.provenanceFingerprint).toBe(first.provenanceFingerprint);
   });
 
   it('AC-2 sync writes only graph-metadata.json.derived and preserves SKILL.md author signals', () => {

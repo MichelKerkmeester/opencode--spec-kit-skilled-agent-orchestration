@@ -315,25 +315,50 @@ export function isPermanentError(error: Error): boolean {
 // ───────────────────────────────────────────────────────────────
 //
 // Build standardized error responses with recovery hints.
-export function sanitizeErrorField(value: string): string {
-  return value
+const PROMPT_FIELD_PATTERN = /^(?:raw|canonical|modified)?(?:user)?prompt(?:wrapper)?$/i;
+
+function collectPromptValues(details: unknown, seen?: WeakSet<object>): string[] {
+  if (!details || typeof details !== 'object') return [];
+  const visited = seen ?? new WeakSet<object>();
+  if (visited.has(details as object)) return [];
+  visited.add(details as object);
+  const prompts: string[] = [];
+  for (const [key, value] of Object.entries(details as Record<string, unknown>)) {
+    if (PROMPT_FIELD_PATTERN.test(key) && typeof value === 'string' && value.trim().length > 0) {
+      prompts.push(value);
+      continue;
+    }
+    prompts.push(...collectPromptValues(value, visited));
+  }
+  return prompts;
+}
+
+export function sanitizeErrorField(value: string, promptValues: readonly string[] = []): string {
+  let sanitized = value
     .replace(/sk-[a-zA-Z0-9_\-]{20,}/g, '[REDACTED]')
     .replace(/voy_[a-zA-Z0-9]{20,}/g, '[REDACTED]')
     .replace(/[Bb]earer\s+[a-zA-Z0-9._\-]+/g, 'Bearer [REDACTED]')
     .replace(/key[=:]\s*['"]?[a-zA-Z0-9_\-]{20,}/gi, 'key=[REDACTED]');
+  for (const prompt of promptValues) {
+    if (prompt.trim().length === 0) continue;
+    sanitized = sanitized.split(prompt).join('[REDACTED_PROMPT]');
+  }
+  return sanitized;
 }
 
-function sanitizeDetails(details: unknown, seen?: WeakSet<object>): unknown {
+function sanitizeDetails(details: unknown, promptValues: readonly string[] = [], seen?: WeakSet<object>): unknown {
   if (!details) return details;
-  if (typeof details === 'string') return sanitizeErrorField(details);
+  if (typeof details === 'string') return sanitizeErrorField(details, promptValues);
   if (typeof details !== 'object') return details;
   const visited = seen ?? new WeakSet<object>();
   if (visited.has(details as object)) return '[Circular]';
   visited.add(details as object);
-  if (Array.isArray(details)) return details.map(item => sanitizeDetails(item, visited));
+  if (Array.isArray(details)) return details.map(item => sanitizeDetails(item, promptValues, visited));
   const sanitized: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(details as Record<string, unknown>)) {
-    sanitized[k] = sanitizeDetails(v, visited);
+    sanitized[k] = PROMPT_FIELD_PATTERN.test(k) && typeof v === 'string'
+      ? '[REDACTED_PROMPT]'
+      : sanitizeDetails(v, promptValues, visited);
   }
   return sanitized;
 }
@@ -347,10 +372,11 @@ export function buildErrorResponse(
   error: Error | MemoryError,
   context: Record<string, unknown> = {}
 ): ErrorResponse {
+  const promptValues = collectPromptValues(context);
   // Extract error code (from MemoryError or fallback)
   const errorCode = (error as MemoryError).code || getDefaultErrorCodeForTool(toolName);
   const publicMessage = error instanceof MemoryError
-    ? sanitizeErrorField(error.message)
+    ? sanitizeErrorField(error.message, promptValues)
     : userFriendlyError(error);
 
   // Get recovery hint (zero-cost static lookup)
@@ -368,7 +394,7 @@ export function buildErrorResponse(
     data: {
       error: publicMessage,
       code: errorCode,
-      details: sanitizeDetails((error as MemoryError).details || context || null) as Record<string, unknown> | null
+      details: sanitizeDetails((error as MemoryError).details || context || null, promptValues) as Record<string, unknown> | null
     },
     hints,
     meta: {
