@@ -117,6 +117,8 @@ interface RerankerStatus {
   };
 }
 
+type CacheKeyDocumentInput = RerankDocument | number | string;
+
 /* ───────────────────────────────────────────────────────────────
    3. MODULE STATE
 ----------------------------------------------------------------*/
@@ -244,25 +246,34 @@ function applyLengthPenalty(
 ----------------------------------------------------------------*/
 
 // H19 FIX: Include provider and option bits in the cache key while
-// canonicalizing document IDs so equivalent document sets hit the same cache entry.
+// canonicalizing document identity so equivalent document sets hit the same cache entry.
 function generateCacheKey(
   query: string,
-  docIds: Array<number | string>,
+  documents: CacheKeyDocumentInput[],
   provider?: string,
   optionBits?: string,
 ): string {
-  const sortedDocIds = [...docIds]
-    .map(id => String(id))
+  void optionBits;
+  const sortedDocuments = [...documents]
+    .map(document => {
+      if (typeof document === 'object' && document !== null && 'id' in document) {
+        return `${String(document.id)}:${hashString(document.content)}`;
+      }
+      return String(document);
+    })
     .sort();
-  const key = `${provider || 'default'}:${query}:${sortedDocIds.join(',')}`;
-  // Simple hash
+  const key = `${provider || 'default'}:${query}:${sortedDocuments.join(',')}`;
+  return `rerank-${hashString(key)}`;
+}
+
+function hashString(value: string): string {
   let hash = 0;
-  for (let i = 0; i < key.length; i++) {
-    const char = key.charCodeAt(i);
+  for (let i = 0; i < value.length; i++) {
+    const char = value.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
     hash |= 0;
   }
-  return `rerank-${Math.abs(hash).toString(36)}`;
+  return Math.abs(hash).toString(36);
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -429,9 +440,9 @@ async function rerankResults(
   }
 
   // Check cache — length penalty is now a no-op, so cache keys only vary by
-  // provider + query + canonicalized document ids.
+  // provider + query + canonicalized document ids and content fingerprints.
   if (useCache) {
-    const cacheKey = generateCacheKey(query, documents.map(d => d.id), provider);
+    const cacheKey = generateCacheKey(query, documents, provider);
     const cached = cache.get(cacheKey);
     if (cached) {
       if (Date.now() - cached.timestamp < CACHE_TTL) {
@@ -482,7 +493,7 @@ async function rerankResults(
     // Cache results — length penalty is retired, so cache keys ignore that flag.
     // Phase C: enforceCacheBound() ensures MAX_CACHE_ENTRIES limit.
     if (useCache) {
-      const cacheKey = generateCacheKey(query, documents.map(d => d.id), provider);
+      const cacheKey = generateCacheKey(query, documents, provider);
       cache.set(cacheKey, { results, timestamp: Date.now() });
       enforceCacheBound();
     }

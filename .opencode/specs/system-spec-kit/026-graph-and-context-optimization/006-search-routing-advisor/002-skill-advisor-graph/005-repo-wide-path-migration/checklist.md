@@ -61,9 +61,9 @@ _memory:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] The migrated runtime entrypoint is healthy [Evidence: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health` returned `status: ok`, `skills_found: 20`, `command_bridges_found: 10`]
-- [x] CHK-021 [P0] Skill graph metadata validation passes at the migrated path [Evidence: `python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only` reported `VALIDATION PASSED: all metadata files are valid`]
-- [x] CHK-022 [P0] The regression suite passes at the migrated path [Evidence: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl` reported `44/44` passing and `overall_pass: true`]
+- [x] CHK-020 [P0] The migrated runtime entrypoint is healthy [Evidence: `python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --health` returned `status: ok`, `skills_found: 20`, `command_bridges_found: 10`]
+- [x] CHK-021 [P0] Skill graph metadata validation passes at the migrated path [Evidence: `python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py --validate-only` reported `VALIDATION PASSED: all metadata files are valid`]
+- [x] CHK-022 [P0] The regression suite passes at the migrated path [Evidence: `python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py --dataset .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl` reported `44/44` passing and `overall_pass: true`]
 - [x] CHK-023 [P1] Scoped grep over `011-skill-advisor-graph/` returns zero forbidden legacy matches [Evidence: final scoped `rg` over `011-skill-advisor-graph/` returned no matches]
 <!-- /ANCHOR:testing -->
 
@@ -83,7 +83,7 @@ _memory:
 ## Documentation
 
 - [x] CHK-040 [P1] Packet docs are synchronized around the shipped migration state [Evidence: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` all describe the same closeout state]
-- [x] CHK-041 [P1] README and playbook completion is marked from current repo evidence, not assumptions [Evidence: current repo reads confirmed the migrated paths in `../../../../../skill/skill-advisor/README.md`, `../../../../../skill/README.md`, and `../../../../../skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md`]
+- [x] CHK-041 [P1] README and playbook completion is marked from current repo evidence, not assumptions [Evidence: current repo reads confirmed the migrated paths in `../../../../../../skill/system-spec-kit/mcp_server/skill-advisor/README.md`, `../../../../../../skill/system-spec-kit/README.md`, and `../../../../../../skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md`]
 - [x] CHK-042 [P2] Historical migration narrative is retained in prose [Evidence: the packet still explains the retired layout, but without embedding the forbidden literal strings]
 <!-- /ANCHOR:docs -->
 

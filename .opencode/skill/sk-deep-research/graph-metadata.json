@@ -6,7 +6,13 @@
   "edges": {
     "depends_on": [],
     "enhances": [],
-    "siblings": [],
+    "siblings": [
+      {
+        "target": "sk-deep-review",
+        "weight": 0.5,
+        "context": "autonomous loop peer with shared externalized-state workflow"
+      }
+    ],
     "conflicts_with": [],
     "prerequisite_for": []
   },

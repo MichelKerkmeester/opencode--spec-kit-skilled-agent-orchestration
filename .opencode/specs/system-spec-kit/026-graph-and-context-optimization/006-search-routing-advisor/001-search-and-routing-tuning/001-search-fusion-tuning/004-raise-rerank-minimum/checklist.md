@@ -10,7 +10,7 @@ status: complete
 ## P1 (Should Fix)
 - [x] The phase keeps the change localized to Stage 3 and does not rewrite direct `crossEncoder.rerankResults()` tests unnecessarily. Evidence: the runtime change is isolated to `stage3-rerank.ts`, with threshold coverage added in `stage3-rerank-regression.vitest.ts`.
 - [x] Verification notes state clearly that 2-result and 3-result sets now skip reranking by design. Evidence: the regression suite names and assertions explicitly encode the `3 => false` and `4 => true` boundary.
-- [x] The implementation record cites `../research/research.md:167-184,247-248` rather than reopening the `4 vs 5` decision. Evidence: `implementation-summary.md` locks in `4` as the shipped cutoff and defers any move to `5` until telemetry exists.
+- [x] The implementation record keeps the `4` cutoff as shipped behavior without claiming packet-local research-line evidence. Evidence: `implementation-summary.md:37-48` documents the Stage 3 threshold, 3-row/4-row boundary tests, and targeted Vitest command.
 ## P2 (Advisory)
 - [x] Future metrics capture whether the new threshold should stay at `4` once live telemetry exists. Evidence: `implementation-summary.md` sets the next safe action to watch continuity-query telemetry before considering `5`.
 - [x] Any user-facing documentation that mentions rerank thresholds is updated after runtime verification. Evidence: the `005-doc-surface-alignment` child packet closed the README, architecture, command, and config-doc threshold wording against the shipped runtime.

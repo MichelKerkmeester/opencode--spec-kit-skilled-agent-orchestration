@@ -22,13 +22,13 @@ _memory:
       - ".opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/202-canonical-continuity-save-substrate.md"
       - ".mcp.json"
     session_dedup:
-      fingerprint: "sha256:018-phase-004-doc-surface-alignment"
-      session_id: "018-phase-004-doc-surface-alignment"
+      fingerprint: "sha256:001-002-004-doc-surface-alignment"
+      session_id: "001-002-004-doc-surface-alignment"
       parent_session_id: null
     completion_pct: 100
     open_questions: []
     answered_questions:
-      - "Which routing changes need doc parity for the 018 save-path refactor"
+      - "Which routing changes need doc parity for the 001/002 save-path refactor"
       - "Does this phase need an additional plan.md for strict packet validation in this folder"
 ---
 # Implementation Summary: Doc Surface Alignment for Research Content Routing Accuracy
@@ -102,7 +102,7 @@ The pass stayed doc-only and evidence-first. I read the live router and save-han
 |----------|-----|
 | Align the skill-local architecture doc instead of inventing a repo-root architecture-file change | The listed root file does not exist in this checkout, and `.opencode/skill/system-spec-kit/ARCHITECTURE.md` is the surface that actually documents the save architecture |
 | Leave `AGENTS.md`, `CLAUDE.md`, and `.opencode/agent/speckit.md` untouched unless verification proves they describe the changed router contract directly | Those files primarily describe the continuity ladder and workflow gates, not the save-router behavior itself |
-| Keep the packet-local docs in the same compact style as sibling 018 phases | The nearby phases already use that shape, so matching it keeps the packet family consistent and validator-friendly |
+| Keep the packet-local docs in the same compact style as sibling 001/002 phases | The nearby phases already use that shape, so matching it keeps the packet family consistent and validator-friendly |
 <!-- /ANCHOR:decisions -->
 
 ---

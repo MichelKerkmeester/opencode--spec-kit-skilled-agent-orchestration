@@ -11,16 +11,16 @@
   },
   "derived": {
     "trigger_phrases": [
-      "018 phase 004 spec",
+      "001 002 004 spec",
       "doc surface alignment",
       "research content routing accuracy",
       "save routing docs",
-      "018 phase 004 plan",
+      "001 002 004 plan",
       "doc surface alignment plan",
       "routing doc parity plan",
-      "018 phase 004 tasks",
+      "001 002 004 tasks",
       "doc surface alignment tasks",
-      "018 phase 004 checklist",
+      "001 002 004 checklist",
       "doc surface alignment verification",
       "phase 004 implementation summary"
     ],
@@ -222,23 +222,22 @@
     "save_lineage": "same_pass"
   },
   "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
-    "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+    "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
     "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment"
   ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
-    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
-    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
     "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
     "consolidation": "026-phase-surface-29-to-9",
     "flattened_at": "2026-04-21T13:00:00Z",
     "layout": "phase-root-local-sequence",
-    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
-    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
     "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
     "local_phase_slug": "001-search-and-routing-tuning",
-    "original_phase_slug": "010-search-and-routing-tuning",
+    "original_phase_slug": "001-search-and-routing-tuning",
     "renumbered_at": "2026-04-21T14:00:00Z"
   },
   "migrated": true,

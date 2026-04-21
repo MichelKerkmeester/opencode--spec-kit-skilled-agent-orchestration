@@ -10,9 +10,9 @@ This phase separates hard drop wrappers from soft operational commands so real h
 The safest implementation is heuristic surgery rather than a broad drop-rule rewrite: split the cue groups, extend the handover floor with state-first phrases, keep `extractHardNegativeFlags()` focused on true wrappers, and refresh only the handover examples that currently lead with commands.
 
 ## Steps
-1. Split the `drop` cue bundle in `mcp_server/lib/routing/content-router.ts:369-378` into hard wrappers and soft operational commands, following `../research/research.md:36-53,135-141`.
-2. Extend the handover floor in `mcp_server/lib/routing/content-router.ts:868-877` with state-first phrases such as `active files`, `current blockers`, `remaining effort`, and `next session`, per `../research/research.md:44-53`.
-3. Keep `extractHardNegativeFlags()` focused on true wrappers in `mcp_server/lib/routing/content-router.ts:904-920`, so soft command mentions do not trigger the same behavior as transcripts or boilerplate.
+1. Split the `drop` cue bundle in `mcp_server/lib/routing/content-router.ts:409-411` into hard wrappers and soft operational commands, following `../../../../research/010-search-and-routing-tuning-pt-02/research.md:36-53,135-141`.
+2. Extend the handover floor in `mcp_server/lib/routing/content-router.ts:1001-1014` with state-first phrases such as `active files`, `current blockers`, `remaining effort`, and `next session`, per `../../../../research/010-search-and-routing-tuning-pt-02/research.md:44-53`.
+3. Keep `extractHardNegativeFlags()` focused on true wrappers in `mcp_server/lib/routing/content-router.ts:1039-1049`, so soft command mentions do not trigger the same behavior as transcripts or boilerplate.
 4. Refresh the command-heavy handover prototypes in `mcp_server/lib/routing/routing-prototypes.json:83-129` and add regression tests in `mcp_server/tests/content-router.vitest.ts:110-141` for handover chunks that mention `git diff`, restart commands, or file-review lists.
 
 ## Verification

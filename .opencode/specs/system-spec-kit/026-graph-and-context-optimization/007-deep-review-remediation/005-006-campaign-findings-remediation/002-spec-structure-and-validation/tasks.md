@@ -10,9 +10,9 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation"
     last_updated_at: "2026-04-21T00:00:00Z"
     last_updated_by: "codex"
-    recent_action: "Generated task ledger"
-    next_safe_action: "Work tasks by severity"
-    completion_pct: 0
+    recent_action: "Applied runtime graph fix"
+    next_safe_action: "Resolve out-of-scope packet docs"
+    completion_pct: 20
 ---
 # Tasks: 002-spec-structure-and-validation Spec Structure and Validation Remediation
 <!-- SPECKIT_LEVEL: 3 -->
@@ -38,9 +38,9 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 [P0] Confirm consolidated findings source is readable
-- [ ] T002 [P0] Verify severity counts against the source report
-- [ ] T003 [P1] Identify target source phases before implementation edits
+- [x] T001 [P0] Confirm consolidated findings source is readable [EVIDENCE: consolidated-findings.md Theme 2 rows at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md:115`]
+- [x] T002 [P0] Verify severity counts against the source report [EVIDENCE: checklist.md summary tracks P0=1, P1=36, P2=23 at `checklist.md:83-85`]
+- [x] T003 [P1] Identify target source phases before implementation edits [EVIDENCE: tasks.md source phase ledger starts at `tasks.md:43`]
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -48,7 +48,7 @@ _memory:
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T010 [P] [P0] CF-207: [F002] Strict recursive packet validation fails with active template and integrity errors _(dimension: traceability)_ Source phase: 002-skill-advisor-graph. Evidence: -
+- [B] T010 [P] [P0] CF-207: [F002] Strict recursive packet validation fails with active template and integrity errors _(dimension: traceability)_ Source phase: 002-skill-advisor-graph. Evidence: recursive validation still exits 2 on historical packet docs outside this assignment's write authority; runtime graph validation sub-block fixed by `skill_graph_compiler.py --validate-only` exit 0.
 - [ ] T011 [P] [P1] CF-032: [DRV-P1-001] Root packet closeout does not answer the packet's own RQ-1..RQ-5 or capture threshold recommendations/measurements. _(dimension: correctness)_ Source phase: 001-search-and-routing-tuning/001-search-fusion-tuning. Evidence: spec.md:28-60; tasks.md:11-16; checklist.md:13-21
 - [ ] T012 [P] [P1] CF-033: [DRV-P1-002] Root Level 3 packet is missing implementation-summary.md. _(dimension: traceability)_ Source phase: 001-search-and-routing-tuning/001-search-fusion-tuning. Evidence: spec.md:2-5; AGENTS.md:260-268; 001-search-fusion-tuning(dir):1-13
 - [ ] T013 [P] [P1] CF-034: [DRV-P1-003] Root Level 3 packet is missing decision-record.md. _(dimension: traceability)_ Source phase: 001-search-and-routing-tuning/001-search-fusion-tuning. Evidence: spec.md:2-5; AGENTS.md:260-265; 001-search-fusion-tuning(dir):1-13
@@ -75,7 +75,7 @@ _memory:
 - [ ] T034 [P] [P1] CF-166: [F002] The recorded compiler validation command is stale, and the current compiler validation path returns validation failure rather than the documented pass. _(dimension: correctness)_ Source phase: 002-skill-advisor-graph/004-graph-metadata-enrichment. Evidence: spec.md:134, plan.md:109, checklist.md:68, implementation-summary.md:81
 - [ ] T035 [P] [P1] CF-170: [F006] The recorded regression command writes outside the packet boundary and points at stale skill-advisor paths, contradicting the packet's scope claims. _(dimension: security)_ Source phase: 002-skill-advisor-graph/004-graph-metadata-enrichment. Evidence: plan.md:123, tasks.md:109, checklist.md:78
 - [ ] T036 [P] [P1] CF-175: [F002] Runtime verification paths point to a deleted skill-advisor location. _(dimension: correctness)_ Source phase: 002-skill-advisor-graph/005-repo-wide-path-migration. Evidence: plan.md:119-120; tasks.md:69-71; checklist.md:64-66; .opencode/skill/skill-advisor is missing while the nested system-spec-kit path exists.
-- [ ] T037 [P] [P1] CF-176: [F003] Current compiler validation fails even at the live nested path. _(dimension: correctness)_ Source phase: 002-skill-advisor-graph/005-repo-wide-path-migration. Evidence: checklist.md:65; implementation-summary.md:84; live skill_graph_compiler.py --validate-only exited 2 with zero-edge warnings for sk-deep-research and sk-git.
+- [x] T037 [P] [P1] CF-176: [F003] Current compiler validation fails even at the live nested path. _(dimension: correctness)_ Source phase: 002-skill-advisor-graph/005-repo-wide-path-migration. Evidence: added reciprocal graph edges at `.opencode/skill/sk-deep-research/graph-metadata.json:9`, `.opencode/skill/sk-deep-review/graph-metadata.json:15`, `.opencode/skill/sk-git/graph-metadata.json:9`, `.opencode/skill/sk-doc/graph-metadata.json:15`; targeted vitest `skill-advisor/tests/legacy/advisor-graph-health.vitest.ts` passed 2 tests.
 - [ ] T038 [P] [P1] CF-177: [F004] Grep-zero and scope claims still target the old 011/007 root after the packet moved to 002. _(dimension: traceability)_ Source phase: 002-skill-advisor-graph/005-repo-wide-path-migration. Evidence: spec.md:32, spec.md:115, spec.md:133; checklist.md:67; no current 011-skill-advisor-graph directory under the active parent.
 - [ ] T039 [P] [P1] CF-199: [DRFC-P1-001] Packet completion state is stale relative to shipped catalogs. _(dimension: correctness)_ Source phase: 002-skill-advisor-graph/008-deep-skill-feature-catalogs. Evidence: spec.md:34-37; tasks.md:18-30; .opencode/skill/sk-deep-research/feature_catalog/feature_catalog.md:26-31; .opencode/skill/sk-deep-review/feature_catalog/feature_catalog.md:26-31; .opencode/skill/sk-improve-agent/feature_catalog/feature_catalog.md:25-29
 - [ ] T040 [P] [P1] CF-215: [F001] Regression command in the spec omits the required --dataset argument. The current harness requires it, so the documented command exits 2. _(dimension: correctness)_ Source phase: 003-advisor-phrase-booster-tailoring. Evidence: skill_advisor_regression.py:8, skill_advisor_regression.py:242, spec.md:122, tasks.md:54, tasks.md:80
@@ -115,9 +115,9 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T900 [P0] Run strict packet validation
-- [ ] T901 [P1] Update graph metadata after implementation
-- [ ] T902 [P1] Add implementation summary closeout evidence
+- [x] T900 [P0] Run strict packet validation [EVIDENCE: `validate.sh --strict --no-recursive` exited 0 for this sub-phase with `RESULT: PASSED`]
+- [x] T901 [P1] Update graph metadata after implementation [EVIDENCE: `graph-metadata.json:27` records `status: in_progress` while blocked findings remain]
+- [x] T902 [P1] Add implementation summary closeout evidence [EVIDENCE: `implementation-summary.md:104` records verification output]
 <!-- /ANCHOR:phase-3 -->
 
 ---

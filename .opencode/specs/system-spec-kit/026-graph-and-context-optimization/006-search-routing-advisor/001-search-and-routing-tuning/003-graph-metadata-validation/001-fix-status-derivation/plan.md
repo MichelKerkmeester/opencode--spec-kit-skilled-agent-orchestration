@@ -10,10 +10,10 @@ This phase updates `deriveStatus()` with the safer checklist-aware fallback rath
 The implementation should stay inside `graph-metadata-parser.ts` and its verification surface. No metadata schema rewrite is needed for this phase, and the adjacent trigger-cap cleanup should remain out of scope unless the parser tests make that dependency unavoidable.
 
 ## Steps
-1. Preserve the override and ranked frontmatter path in `mcp_server/lib/graph/graph-metadata-parser.ts:498-510`, then add the checklist-aware fallback described in `../research/research.md:291-324,349-353`.
-2. Add a checklist-evaluation helper adjacent to `deriveStatus()` so `implementation-summary.md` only promotes to `complete` when `checklist.md` is absent or evaluates as complete, matching the pseudocode in `../research/research.md:294-314`.
+1. Preserve the override and ranked frontmatter path in `mcp_server/lib/graph/graph-metadata-parser.ts:986-1013`, then add the checklist-aware fallback in `mcp_server/lib/graph/graph-metadata-parser.ts:1019-1040`.
+2. Add a checklist-evaluation helper adjacent to `deriveStatus()` so `implementation-summary.md` only promotes to `complete` when `checklist.md` is absent or evaluates as complete, matching `mcp_server/lib/graph/graph-metadata-parser.ts:1024-1040`.
 3. Add parser or integration coverage for the three researched cases: `implementation-summary + COMPLETE checklist`, `implementation-summary + incomplete checklist`, and `implementation-summary + no checklist`.
-4. Re-run graph-metadata verification so the phase proves the high-confidence `180 + 39` subset is fixed without auto-promoting the 63 incomplete-checklist folders named in `../research/research.md:317-324`.
+4. Re-run graph-metadata verification so the phase proves status derivation without auto-promoting incomplete-checklist folders; `mcp_server/tests/graph-metadata-schema.vitest.ts` is the replayable evidence surface.
 
 ## Verification
 - Run `cd .opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit`.

@@ -2,7 +2,7 @@
 title: "Feature Specification: SKILL.md Smart-Router Section Efficacy"
 description: "Research whether the Smart Routing section inside each top-level .opencode/skill/*/SKILL.md actually reduces AI context load or remains advisory only. The packet measures inventory, byte budgets, behavioral signals, classifier accuracy, compliance gaps, fallback safety, enforcement, and a future harness design."
 trigger_phrases:
-  - "021 002 skill md smart router"
+  - "004 002 skill md smart router"
   - "skill-md intent router efficacy"
   - "resource loading tier effectiveness"
 importance_tier: "important"
@@ -23,8 +23,8 @@ _memory:
       - "research/iterations/iteration-001.md"
       - "research/iterations/iteration-020.md"
     session_dedup:
-      fingerprint: "sha256:021002smartrouterefficacy"
-      session_id: "021-002-r01"
+      fingerprint: "sha256:004002smartrouterefficacy"
+      session_id: "004-002-r01"
       parent_session_id: null
     completion_pct: 100
     open_questions:

@@ -12,7 +12,13 @@
         "context": "doc creation for specs"
       }
     ],
-    "siblings": [],
+    "siblings": [
+      {
+        "target": "sk-git",
+        "weight": 0.4,
+        "context": "workflow utility peer for completion and handoff documentation"
+      }
+    ],
     "conflicts_with": [],
     "prerequisite_for": []
   },

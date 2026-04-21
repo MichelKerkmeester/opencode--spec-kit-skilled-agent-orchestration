@@ -162,6 +162,22 @@ describe('027/006 seven-gate bundle', () => {
   });
 });
 
+describe('manual testing prompt-safety release gates', () => {
+  it('keeps prompt leakage blocked in root and native MCP playbook acceptance criteria', () => {
+    const playbook = readFileSync(
+      join(process.cwd(), 'skill-advisor/manual_testing_playbook/manual_testing_playbook.md'),
+      'utf8',
+    );
+    const nativeScenario = readFileSync(
+      join(process.cwd(), 'skill-advisor/manual_testing_playbook/01--native-mcp-tools/001-native-recommend-happy-path.md'),
+      'utf8',
+    );
+
+    expect(playbook).toContain('Prompt text is not written to diagnostics, status output, cache metadata, or attribution fields.');
+    expect(nativeScenario).toContain('Raw prompt text is not present in `laneBreakdown`, `trustState`, `cache`, `warnings`, or `abstainReasons`.');
+  });
+});
+
 describe('027/006 two-cycle requirement', () => {
   it('requires two consecutive passing cycles and resets on failure', () => {
     const first = recordShadowCycle([], {

@@ -1340,7 +1340,7 @@ async function buildCanonicalAtomicPreparedSave(
   const packetLevel = toCanonicalPacketLevel(detectSpecLevelFromParsed(path.join(specFolderAbsolute, 'spec.md')));
   const packetKind = deriveCanonicalPacketKind(specFolderAbsolute, preparedMemory.parsed.specFolder);
   const saveMode = params.routeAs ? 'route-as' : 'natural';
-  const tier3Enabled = params.plannerMode === 'full-auto' || isTier3RoutingEnabled();
+  const tier3Enabled = isTier3RoutingEnabled();
   const router = buildCanonicalRouter({ tier3Enabled });
   const routingChunkText = normalizeRoutingChunkText(params.content);
   const likelyPhaseAnchor = deriveLikelyPhaseAnchorForCanonicalRouting({

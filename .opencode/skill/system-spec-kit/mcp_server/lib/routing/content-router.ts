@@ -332,11 +332,20 @@ export class InMemoryRouterCache implements RouterCache {
   }
 
   private buildKey(scope: CacheScope, key: string, context: SessionHints): string {
+    const routeContext = [
+      ROUTING_PROMPT_VERSION,
+      context.spec_folder,
+      context.packet_level,
+      context.packet_kind,
+      context.save_mode,
+      context.likely_phase_anchor ?? 'no-phase-anchor',
+    ].join(':');
+
     if (scope === 'session') {
       const sessionId = context.session_id?.trim();
-      return `${SESSION_CACHE_PREFIX}:${sessionId || context.spec_folder}:${key}`;
+      return `${SESSION_CACHE_PREFIX}:${sessionId || context.spec_folder}:${routeContext}:${key}`;
     }
-    return `${SPEC_FOLDER_CACHE_PREFIX}:${context.spec_folder}:${key}`;
+    return `${SPEC_FOLDER_CACHE_PREFIX}:${routeContext}:${key}`;
   }
 }
 
@@ -1072,7 +1081,7 @@ function buildTarget(
     case 'task_update':
       return { docPath: 'tasks.md', anchorId: likelyPhaseAnchor || DEFAULT_TASK_ANCHOR, mergeMode: 'update-in-place' };
     case 'metadata_only':
-      return { docPath: 'spec-frontmatter', anchorId: DEFAULT_METADATA_ANCHOR, mergeMode: 'update-in-place' };
+      return { docPath: 'implementation-summary.md', anchorId: DEFAULT_METADATA_ANCHOR, mergeMode: 'update-in-place' };
     case 'drop':
       return refusalTarget('drop');
   }
@@ -1280,12 +1289,12 @@ export function buildTier3Prompt(input: Tier3ClassifierInput): Tier3Prompt {
     '- handover_state: recent action, blocker, next safe action, stop-state, or resume instruction; usually handover.md',
     '- research_finding: evidence, investigation result, cited upstream behavior, or research conclusion; usually research/research.md',
     '- metadata_only: machine-owned continuity payload such as preflight, postflight, causal links, fingerprints, or compact continuity fields; usually implementation-summary.md::_memory.continuity',
-    '- drop_candidate: transcript turns, generic recovery hints, tool telemetry, wrapper scaffolding, or other non-canonical content that should not merge into spec docs',
+    '- drop: transcript turns, generic recovery hints, tool telemetry, wrapper scaffolding, or other non-canonical content that should not merge into spec docs',
     '',
     'Confidence scale: 0.90-1.00 safe auto-route; 0.70-0.89 strong route; 0.50-0.69 weak route with warning; below 0.50 refuse.',
     'Refusal is first-class, not a ninth category. If no category reaches 0.50 confidence: choose the closest category, set merge_mode="refuse-to-route", target_doc="scratch/pending-route-{CHUNK_HASH}.json", and target_anchor="manual-review".',
     'Output rules: return ONE JSON object only; no markdown fences; no chain-of-thought; no extra prose; reasoning <= 200 chars; alternatives up to 2, sorted by confidence; category must be one of the 8 categories; confidence must be 0.0..1.0; merge_mode must be one of "append-as-paragraph", "append-section", "insert-new-adr", "update-in-place", "refuse-to-route".',
-    'Merge-mode guidance: progress and delivery -> append-as-paragraph; handover and research -> append-section; L3/L3+ decision -> insert-new-adr; task_update, metadata_only, and L2 decision -> update-in-place; drop_candidate -> refuse-to-route.',
+    'Merge-mode guidance: progress and delivery -> append-as-paragraph; handover and research -> append-section; L3/L3+ decision -> insert-new-adr; task_update, metadata_only, and L2 decision -> update-in-place; drop -> refuse-to-route.',
     'Never invent a new category, doc, anchor, or merge mode. If still uncertain below 0.50 after using the provided evidence, refuse.',
   ].join('\n');
 

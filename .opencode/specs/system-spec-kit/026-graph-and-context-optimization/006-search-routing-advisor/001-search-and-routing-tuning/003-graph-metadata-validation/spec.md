@@ -3,7 +3,7 @@ title: "Research: Graph Metadata Quality & Relationship Validation"
 status: complete
 level: 3
 type: research
-parent: 010-search-and-routing-tuning
+parent: 001-search-and-routing-tuning
 predecessor: 002-content-routing-accuracy
 branch: main
 created: 2026-04-13

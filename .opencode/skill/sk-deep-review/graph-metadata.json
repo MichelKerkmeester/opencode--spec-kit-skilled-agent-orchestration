@@ -12,7 +12,13 @@
       }
     ],
     "enhances": [],
-    "siblings": [],
+    "siblings": [
+      {
+        "target": "sk-deep-research",
+        "weight": 0.5,
+        "context": "autonomous loop peer with shared externalized-state workflow"
+      }
+    ],
     "conflicts_with": [],
     "prerequisite_for": []
   },

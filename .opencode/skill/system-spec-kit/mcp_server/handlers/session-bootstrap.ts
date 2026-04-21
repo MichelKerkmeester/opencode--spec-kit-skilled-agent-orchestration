@@ -32,6 +32,8 @@ import {
   buildCodeGraphOpsContract,
   type CodeGraphOpsContract,
 } from '../code-graph/lib/ops-hardening.js';
+import { handleSkillGraphStatus } from './skill-graph/status.js';
+import { handleSkillGraphQuery } from './skill-graph/query.js';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
 /* ───────────────────────────────────────────────────────────────
@@ -41,6 +43,33 @@ import type { MCPResponse } from '@spec-kit/shared/types';
 interface SessionBootstrapArgs {
   specFolder?: string;
 }
+
+interface SkillGraphTopologyHub {
+  skillId: string;
+  family: string | null;
+  category: string | null;
+  inboundCount: number;
+}
+
+interface SkillGraphTopologySummary {
+  status: 'ready' | 'empty' | 'unavailable';
+  totalSkills: number;
+  totalEdges: number;
+  lastIndexedAt: string | null;
+  familyDistribution: Array<{ name: string; count: number }>;
+  hubSkills: SkillGraphTopologyHub[];
+  staleness: Record<string, unknown> | null;
+  validation: Record<string, unknown> | null;
+  summary: string;
+  error?: string;
+}
+
+type TextResponseLike = {
+  content?: Array<{
+    type?: string;
+    text?: string;
+  }>;
+};
 
 interface SessionBootstrapResult {
   resume: Record<string, unknown>;
@@ -57,6 +86,7 @@ interface SessionBootstrapResult {
   payloadContract?: SharedPayloadEnvelope;
   opencodeTransport?: OpenCodeTransportPlan;
   graphOps?: CodeGraphOpsContract;
+  skillGraphTopology?: SkillGraphTopologySummary;
   hints: string[];
   nextActions: string[];
 }
@@ -68,7 +98,7 @@ const RESUME_LADDER_SUMMARY =
    2. HELPERS
 ──────────────────────────────────────────────────────────────── */
 
-function extractData(response: MCPResponse): Record<string, unknown> {
+function extractData(response: TextResponseLike): Record<string, unknown> {
   try {
     const text = response?.content?.[0]?.text;
     if (typeof text !== 'string') {
@@ -169,6 +199,143 @@ function extractStructuralTrustFromPayload(
   return structuralSection?.structuralTrust ?? null;
 }
 
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? value as Record<string, unknown>
+    : null;
+}
+
+function asNumber(value: unknown, fallback = 0): number {
+  return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
+}
+
+function asString(value: unknown): string | null {
+  return typeof value === 'string' && value.trim().length > 0 ? value : null;
+}
+
+function normalizeGroupCounts(value: unknown): Array<{ name: string; count: number }> {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.flatMap((item) => {
+    const record = asRecord(item);
+    const name = asString(record?.name);
+    if (!record || !name) {
+      return [];
+    }
+
+    return [{
+      name,
+      count: asNumber(record.count),
+    }];
+  });
+}
+
+function normalizeHubSkills(value: unknown): SkillGraphTopologyHub[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.flatMap((item) => {
+    const record = asRecord(item);
+    const node = asRecord(record?.node);
+    const skillId = asString(node?.id);
+    if (!record || !node || !skillId) {
+      return [];
+    }
+
+    return [{
+      skillId,
+      family: asString(node.family),
+      category: asString(node.category),
+      inboundCount: asNumber(record.inboundCount),
+    }];
+  });
+}
+
+function describeSkillGraphTopology(topology: Omit<SkillGraphTopologySummary, 'summary'>): string {
+  if (topology.status === 'unavailable') {
+    return `Skill graph topology unavailable: ${topology.error ?? 'unknown error'}`;
+  }
+
+  const families = topology.familyDistribution.length > 0
+    ? topology.familyDistribution.map((family) => `${family.name}=${family.count}`).join(', ')
+    : 'none';
+  const hubs = topology.hubSkills.length > 0
+    ? topology.hubSkills.map((hub) => `${hub.skillId}(${hub.inboundCount})`).join(', ')
+    : 'none';
+  const lastIndexedAt = topology.lastIndexedAt ?? 'unknown';
+
+  return [
+    `Skill graph: ${topology.totalSkills} skills, ${topology.totalEdges} edges`,
+    `families: ${families}`,
+    `hubs: ${hubs}`,
+    `lastIndexedAt: ${lastIndexedAt}`,
+  ].join(' | ');
+}
+
+async function buildSkillGraphTopologySummary(): Promise<SkillGraphTopologySummary> {
+  try {
+    const statusData = extractData(await handleSkillGraphStatus());
+    if (statusData.error) {
+      const unavailable = {
+        status: 'unavailable' as const,
+        totalSkills: 0,
+        totalEdges: 0,
+        lastIndexedAt: null,
+        familyDistribution: [],
+        hubSkills: [],
+        staleness: null,
+        validation: null,
+        error: String(statusData.error),
+      };
+      return {
+        ...unavailable,
+        summary: describeSkillGraphTopology(unavailable),
+      };
+    }
+
+    const hubData = extractData(await handleSkillGraphQuery({
+      queryType: 'hub_skills',
+      minInbound: 2,
+      limit: 5,
+    }));
+    const totalSkills = asNumber(statusData.totalSkills);
+    const topology = {
+      status: (asString(statusData.dbStatus) === 'ready' ? 'ready' : 'empty') as 'ready' | 'empty',
+      totalSkills,
+      totalEdges: asNumber(statusData.totalEdges),
+      lastIndexedAt: asString(statusData.lastIndexedAt),
+      familyDistribution: normalizeGroupCounts(statusData.families),
+      hubSkills: normalizeHubSkills(hubData.skills),
+      staleness: asRecord(statusData.staleness),
+      validation: asRecord(statusData.validation),
+    };
+
+    return {
+      ...topology,
+      summary: describeSkillGraphTopology(topology),
+    };
+  } catch (error: unknown) {
+    const unavailable = {
+      status: 'unavailable' as const,
+      totalSkills: 0,
+      totalEdges: 0,
+      lastIndexedAt: null,
+      familyDistribution: [],
+      hubSkills: [],
+      staleness: null,
+      validation: null,
+      error: error instanceof Error ? error.message : String(error),
+    };
+    return {
+      ...unavailable,
+      summary: describeSkillGraphTopology(unavailable),
+    };
+  }
+}
+
 function buildStructuralRoutingNudge(
   structuralContext: StructuralBootstrapContract,
 ): SessionBootstrapResult['structuralRoutingNudge'] | null {
@@ -230,8 +397,12 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
 
   const cachedSummary = extractCachedSummary(resumeData);
   const structuralRoutingNudge = buildStructuralRoutingNudge(structuralContext);
+  const skillGraphTopology = await buildSkillGraphTopologySummary();
   if (structuralRoutingNudge) {
     allHints.push(structuralRoutingNudge.message);
+  }
+  if (skillGraphTopology.status === 'unavailable') {
+    allHints.push('Skill graph topology summary is unavailable; call `skill_graph_status` for details.');
   }
 
   // Deduplicate hints
@@ -246,6 +417,7 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
   const healthCertainty: SharedPayloadCertainty = healthData.error ? 'unknown' : 'estimated';
   const cachedCertainty: SharedPayloadCertainty = cachedSummary?.status === 'accepted' ? 'estimated' : 'defaulted';
   const structuralCertainty: SharedPayloadCertainty = 'exact';
+  const skillGraphCertainty: SharedPayloadCertainty = skillGraphTopology.status === 'unavailable' ? 'unknown' : 'estimated';
   const nextActionsCertainty: SharedPayloadCertainty = 'defaulted';
   const resumePayload = coerceSharedPayloadEnvelope(resumeData.payloadContract);
   const healthPayload = coerceSharedPayloadEnvelope(healthData.payloadContract);
@@ -310,6 +482,13 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
       structuralTrust: structuralSnapshotTrust,
     },
     {
+      key: 'skill-graph-topology',
+      title: 'Skill Graph Topology',
+      content: skillGraphTopology.summary,
+      source: 'skill-graph',
+      certainty: skillGraphCertainty,
+    },
+    {
       key: 'next-actions',
       title: 'Next Actions',
       content: buildNextActions(resumeData, healthData, structuralContext).join(' | '),
@@ -361,6 +540,7 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
       specFolder: args.specFolder ?? null,
     }),
     graphOps,
+    skillGraphTopology,
     hints: uniqueHints,
     // Keep advisory routing guidance out of nextActions so bootstrap and resume
     // remain the authoritative recovery owners for startup and deep resume flows.

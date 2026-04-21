@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { createContentRouter } from '../lib/routing/content-router.js';
+import { createContentRouter, InMemoryRouterCache } from '../lib/routing/content-router.js';
 
 function makeContext(options: {
   specFolder?: string;
@@ -36,6 +36,51 @@ function buildScopedKey(scope: string, key: string, context: Record<string, unkn
 }
 
 describe('content router cache context contract', () => {
+  it('partitions built-in Tier 3 entries by route-shaping context', () => {
+    const cache = new InMemoryRouterCache();
+    const entry = {
+      promptVersion: 'tier3-router-v1',
+      model: 'gpt-5.4',
+      packetLevel: 'L3+' as const,
+      category: 'narrative_progress' as const,
+      confidence: 0.91,
+      targetDoc: 'implementation-summary.md',
+      targetAnchor: 'what-built',
+      mergeMode: 'append-as-paragraph' as const,
+      reasoning: 'Cached progress decision.',
+      alternatives: [],
+      createdAt: '2026-04-21T00:00:00Z',
+    };
+    const baseContext = {
+      spec_folder: '026-graph-and-context-optimization/015-deep-review-and-remediation',
+      packet_level: 'L3+' as const,
+      packet_kind: 'phase' as const,
+      save_mode: 'auto' as const,
+      recent_docs_touched: [],
+      recent_anchors_touched: [],
+      likely_phase_anchor: 'phase-2',
+      session_id: 'session-123',
+    };
+
+    cache.set('session', 'shared-chunk-hash', entry, 60_000, baseContext);
+    cache.set('spec-folder', 'shared-chunk-hash', entry, 60_000, baseContext);
+
+    expect(cache.get('session', 'shared-chunk-hash', baseContext)).toEqual(entry);
+    expect(cache.get('spec-folder', 'shared-chunk-hash', baseContext)).toEqual(entry);
+    expect(cache.get('session', 'shared-chunk-hash', {
+      ...baseContext,
+      likely_phase_anchor: 'phase-3',
+    })).toBeNull();
+    expect(cache.get('spec-folder', 'shared-chunk-hash', {
+      ...baseContext,
+      packet_kind: 'feature',
+    })).toBeNull();
+    expect(cache.get('session', 'shared-chunk-hash', {
+      ...baseContext,
+      save_mode: 'route-as',
+    })).toBeNull();
+  });
+
   it('surfaces source and packet context so identical text can bypass stale cache hits', async () => {
     const cacheEntries = new Map<string, unknown>();
     const cache = {

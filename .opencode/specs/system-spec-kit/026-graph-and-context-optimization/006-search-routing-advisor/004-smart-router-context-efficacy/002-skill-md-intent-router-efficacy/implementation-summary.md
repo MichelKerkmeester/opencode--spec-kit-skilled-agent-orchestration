@@ -2,7 +2,7 @@
 title: "Implementation Summary: SKILL.md Smart-Router Section Efficacy"
 description: "Completed 20-iteration deep research packet on the efficacy of intra-skill Smart Routing sections."
 trigger_phrases:
-  - "021 002 smart router summary"
+  - "004 002 smart router summary"
   - "skill md router efficacy complete"
 importance_tier: "important"
 contextType: "implementation-summary"
@@ -20,8 +20,8 @@ _memory:
       - "research/research-validation.md"
       - "research/findings-registry.json"
     session_dedup:
-      fingerprint: "sha256:021002smartroutercomplete"
-      session_id: "021-002-r01"
+      fingerprint: "sha256:004002smartroutercomplete"
+      session_id: "004-002-r01"
       parent_session_id: null
     completion_pct: 100
     open_questions:

@@ -10,9 +10,9 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/004-migration-lineage-and-identity-drift"
     last_updated_at: "2026-04-21T00:00:00Z"
     last_updated_by: "codex"
-    recent_action: "Generated ADR placeholder"
-    next_safe_action: "Add ADRs during remediation"
-    completion_pct: 0
+    recent_action: "Accepted remediation decisions for current-lineage metadata and SQLite-only advisor runtime"
+    next_safe_action: "Use implementation-summary.md for closeout evidence"
+    completion_pct: 100
 ---
 # Decision Record: 004-migration-lineage-and-identity-drift Migration, Lineage, and Identity Drift Remediation
 <!-- SPECKIT_LEVEL: 3 -->
@@ -27,7 +27,7 @@ _memory:
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-21 |
 | **Deciders** | Orchestrator |
 
@@ -111,9 +111,11 @@ The consolidated 006 campaign review produced a large finding set that needs imp
 ### Implementation
 
 **What changes**:
-- Create Level 3 packet docs for the remediation theme.
-- Add graph metadata and description metadata for memory discovery.
+- Close the P1 migration lineage findings in this remediation theme.
+- Add graph metadata, description metadata, prompt, research-state, and advisor-runtime regression evidence.
+- Normalize current routing fields to the live 006/001, 006/002, and 006/004 packet paths.
+- Make SQLite the only runtime skill-graph source so `skill-graph.json` export cannot mask migration failure.
 
-**How to roll back**: Ask the orchestrator to remove or replace this packet before implementation begins.
+**How to roll back**: Ask the orchestrator to revert the remediation patch before committing.
 <!-- /ANCHOR:adr-001-impl -->
 <!-- /ANCHOR:adr-001 -->

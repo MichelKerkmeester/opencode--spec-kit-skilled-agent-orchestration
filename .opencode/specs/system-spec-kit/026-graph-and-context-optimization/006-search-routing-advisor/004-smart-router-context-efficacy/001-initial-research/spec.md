@@ -1,8 +1,8 @@
 ---
 title: "Research Charter: Smart-Router Context-Load Efficacy"
-description: "Research charter for 021/001 — 20-iteration deep-research on V1-V10 questions covering context-load measurement + OpenCode plugin design."
+description: "Research charter for 004/001 — 20-iteration deep-research on V1-V10 questions covering context-load measurement + OpenCode plugin design."
 trigger_phrases:
-  - "021 001 research charter"
+  - "004 001 research charter"
 importance_tier: "important"
 contextType: "research-charter"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"

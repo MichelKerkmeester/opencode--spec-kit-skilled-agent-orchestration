@@ -41,8 +41,11 @@ function makeContinuityQuery(
 }
 
 const CONTINUITY_FIXTURES = [
+  // These first rows model the generic resume ladder when a packet-local
+  // handover.md is present. Later rows model shipped compact continuity and
+  // canonical-doc fallback paths for packets that do not include handover.md.
   {
-    query: 'Resume from the latest stop-state for this packet',
+    query: 'Resume from the latest stop-state when handover.md exists for this packet',
     expectedPrimaryAt60: 'handover.md',
     evaluation: makeContinuityQuery(
       [
@@ -62,7 +65,7 @@ const CONTINUITY_FIXTURES = [
     ),
   },
   {
-    query: 'What is the next safe action if I continue this phase later',
+    query: 'What is the next safe action if I continue this phase later and handover.md exists',
     expectedPrimaryAt60: 'handover.md',
     evaluation: makeContinuityQuery(
       [
@@ -82,7 +85,7 @@ const CONTINUITY_FIXTURES = [
     ),
   },
   {
-    query: 'Which blocker was most recently recorded for this packet',
+    query: 'Which blocker was most recently recorded when handover.md exists for this packet',
     expectedPrimaryAt60: 'handover.md',
     evaluation: makeContinuityQuery(
       [
@@ -102,7 +105,7 @@ const CONTINUITY_FIXTURES = [
     ),
   },
   {
-    query: 'Show me the latest resume note before I restart work',
+    query: 'Show me the latest handover.md resume note before I restart work',
     expectedPrimaryAt60: 'handover.md',
     evaluation: makeContinuityQuery(
       [
@@ -414,10 +417,12 @@ describe('D1 Phase A: K-value optimization', () => {
     expect(resolved).toBe(10);
   });
 
-  it('keeps the continuity recommendation on baseline K=60 across the 12-query resume-ladder fixture', () => {
+  it('keeps the continuity recommendation on baseline K=60 across generic handover and compact-continuity fixtures', () => {
     const result = optimizeKValuesByIntent(CONTINUITY_FIXTURES.map((fixture) => fixture.evaluation));
 
     expect(CONTINUITY_FIXTURES).toHaveLength(12);
+    expect(CONTINUITY_FIXTURES.slice(0, 4).every((fixture) => fixture.query.includes('handover.md'))).toBe(true);
+    expect(CONTINUITY_FIXTURES.slice(4).some((fixture) => fixture.expectedPrimaryAt60 === '_memory.continuity')).toBe(true);
     for (const fixture of CONTINUITY_FIXTURES) {
       expect(
         fixture.evaluation.rankingsByK[60]?.[0],

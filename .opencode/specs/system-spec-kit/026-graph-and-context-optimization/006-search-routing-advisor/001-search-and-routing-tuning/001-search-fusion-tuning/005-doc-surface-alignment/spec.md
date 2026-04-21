@@ -85,9 +85,9 @@ Bring the requested documentation surfaces back into sync with the shipped searc
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `README.md` | Modify | Align public search pipeline and telemetry narrative with the current runtime |
-| `.opencode/skill/system-spec-kit/ARCHITECTURE.md` | Modify | Align architecture-level search behavior notes with the current runtime |
-| `.opencode/command/memory/search.md` | Modify | Document the current search contract, continuity profile, rerank gate, and telemetry |
+| repo-root `README.md` | Modify | Align public search pipeline and telemetry narrative with the current runtime |
+| repo-root `.opencode/skill/system-spec-kit/ARCHITECTURE.md` | Modify | Align architecture-level search behavior notes with the current runtime |
+| repo-root `.opencode/command/memory/search.md` | Modify | Document the current search contract, continuity profile, rerank gate, and telemetry |
 | `.opencode/skill/system-spec-kit/SKILL.md` | Modify | Update skill-level search guidance and continuity-profile references |
 | `.opencode/skill/system-spec-kit/mcp_server/configs/README.md` | Modify | Point operators to the real runtime sources for fusion weights, rerank gating, and telemetry |
 | `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | Modify | Align catalog-level summary text with shipped behavior |
@@ -97,7 +97,7 @@ Bring the requested documentation surfaces back into sync with the shipped searc
 | `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md` | Modify | Align feature-flag reference text with current search behavior |
 | `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md` | Modify | Align simple-language summary of the search pipeline |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Align the main manual testing search narrative |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/11--scoring-and-calibration/098-local-gguf-reranker-via-node-llama-cpp-p1-5.md` | Modify | Update reranker scenario expectations for telemetry and neutralized length scaling |
+| repo-root `.opencode/skill/system-spec-kit/manual_testing_playbook/11--scoring-and-calibration/098-local-gguf-reranker-via-node-llama-cpp-p1-5.md` | Modify | Update reranker scenario expectations for telemetry and neutralized length scaling |
 | `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md` | Create | Close the packet with required Level 2 execution docs |
 <!-- /ANCHOR:scope -->
 

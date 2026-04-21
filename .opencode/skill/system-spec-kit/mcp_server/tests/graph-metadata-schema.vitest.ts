@@ -398,6 +398,7 @@ describe('graph metadata schema and parser', () => {
     expect(graphMetadataParserTestables.keepKeyFile('spec.md || plan.md')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('spec.md >> out.txt')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('../spec.md')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('safe/../../spec.md')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('workflow.ts')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('memory/metadata.json')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('.opencode/specs/system-spec-kit/900-graph-metadata/memory/metadata.json')).toBe(false);
@@ -440,6 +441,30 @@ describe('graph metadata schema and parser', () => {
     expect(metadata.derived.key_files).toContain('scripts/core/workflow.ts');
     expect(metadata.derived.key_files).not.toContain('memory/metadata.json');
     expect(metadata.derived.key_files).not.toContain('scripts/missing-does-not-exist.ts');
+  });
+
+  it('rejects embedded parent segments during key-file resolution', () => {
+    const specFolder = createSpecFolder({
+      materializeImplementationSummaryReferences: false,
+      implementationSummaryReferences: [
+        'safe/../../.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts',
+      ],
+      extraFiles: [
+        'mcp_server/lib/graph/graph-metadata-parser.ts',
+      ],
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+
+    expect(metadata.derived.key_files).not.toContain(
+      'safe/../../.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts',
+    );
+    expect(metadata.derived.key_files).toEqual(expect.arrayContaining([
+      'spec.md',
+      'plan.md',
+      'tasks.md',
+      'implementation-summary.md',
+    ]));
   });
 
   it('prefers canonical path-like key file entities over basename duplicates', () => {
@@ -535,6 +560,40 @@ describe('graph metadata schema and parser', () => {
     expect(metadata.derived.trigger_phrases).toHaveLength(12);
     expect(metadata.derived.trigger_phrases[0]).toBe('graph phrase 1');
     expect(metadata.derived.trigger_phrases[11]).toBe('graph phrase 12');
+  });
+
+  it('enforces derived array caps in the schema validator', () => {
+    const specFolder = createSpecFolder({
+      specTriggerPhrases: Array.from({ length: 12 }, (_, index) => `graph phrase ${index + 1}`),
+      implementationSummaryReferences: Array.from({ length: 20 }, (_, index) => `scripts/files/file-${index + 1}.ts`),
+    });
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+    const oversized: GraphMetadata = {
+      ...metadata,
+      derived: {
+        ...metadata.derived,
+        trigger_phrases: [...metadata.derived.trigger_phrases, 'overflow trigger'],
+        key_topics: [...metadata.derived.key_topics, ...Array.from({ length: 13 }, (_, index) => `overflow topic ${index + 1}`)],
+        key_files: [...metadata.derived.key_files, ...Array.from({ length: 21 }, (_, index) => `overflow/file-${index + 1}.ts`)],
+        entities: [
+          ...metadata.derived.entities,
+          ...Array.from({ length: 25 }, (_, index) => ({
+            name: `OverflowEntity${index + 1}`,
+            kind: 'file',
+            path: `overflow/entity-${index + 1}.ts`,
+            source: 'derived',
+          })),
+        ],
+      },
+    };
+
+    const validation = validateGraphMetadataContent(JSON.stringify(oversized));
+
+    expect(validation.ok).toBe(false);
+    expect(validation.errors.join(' ')).toContain('trigger_phrases');
+    expect(validation.errors.join(' ')).toContain('key_topics');
+    expect(validation.errors.join(' ')).toContain('key_files');
+    expect(validation.errors.join(' ')).toContain('entities');
   });
 
   it('uses distinct temp files for interleaved graph-metadata writes in the same process', () => {

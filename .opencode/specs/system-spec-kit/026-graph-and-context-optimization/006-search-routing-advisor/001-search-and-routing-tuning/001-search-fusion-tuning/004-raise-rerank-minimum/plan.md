@@ -10,10 +10,10 @@ This phase changes the Stage 3 gate only: raise `MIN_RESULTS_FOR_RERANK` from `2
 The implementation should treat this as a Stage 3 policy change, not a provider optimization. That matters because the same guard also affects local GGUF reranking before provider selection happens.
 
 ## Steps
-1. Change `MIN_RESULTS_FOR_RERANK` in `mcp_server/lib/search/pipeline/stage3-rerank.ts:50,321` from `2` to `4`, following `../research/research.md:161-184,275-289`.
-2. Expand the first three regression fixtures in `mcp_server/tests/stage3-rerank-regression.vitest.ts:42,70,93` to 4-result sets and add explicit 3-row / 4-row boundary assertions, as directed by `../research/research.md:172-184`.
+1. Change `MIN_RESULTS_FOR_RERANK` in `mcp_server/lib/search/pipeline/stage3-rerank.ts:50,321` from `2` to `4`, following `../../../../research/010-search-and-routing-tuning-pt-01/research.md:161-184,275-289`.
+2. Expand the first three regression fixtures in `mcp_server/tests/stage3-rerank-regression.vitest.ts:42,70,93` to 4-result sets and add explicit 3-row / 4-row boundary assertions, as directed by `../../../../research/010-search-and-routing-tuning-pt-01/research.md:172-184`.
 3. Leave direct reranker suites such as `mcp_server/tests/cross-encoder.vitest.ts:177` and `mcp_server/tests/cross-encoder-extended.vitest.ts:349` unchanged unless the Stage 3 helper boundary shifts.
-4. Record in the implementation notes that the new minimum also changes local GGUF reranking behavior for 2-result and 3-result candidate sets, per `../research/research.md:247-248,281-283`.
+4. Record in the implementation notes that the new minimum also changes local GGUF reranking behavior for 2-result and 3-result candidate sets, per `../../../../research/010-search-and-routing-tuning-pt-01/research.md:247-248,281-283`.
 
 ## Verification
 - Run `cd .opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit`.

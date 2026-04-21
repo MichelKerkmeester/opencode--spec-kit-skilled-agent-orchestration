@@ -5,10 +5,10 @@ Use this prompt to launch the research via the sk-deep-research workflow.
 ## Invocation
 
 ```
-/spec_kit:deep-research:auto "Search fusion weight optimization and reranking threshold calibration for system-spec-kit MCP server" --max-iterations=15 --spec-folder=.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/001-search-fusion-tuning
+/spec_kit:deep-research:auto "Search fusion weight optimization and reranking threshold calibration for system-spec-kit MCP server" --max-iterations=15 --spec-folder=.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning
 ```
 
-## Research Charter (for strategy.md initialization)
+## Research Charter (current packet)
 
 **Topic:** Investigate whether the hardcoded thresholds, weights, and decay constants in the spec-kit search pipeline (cross-encoder reranking, stage2 fusion, vector-index decay) are optimal for spec-doc retrieval.
 

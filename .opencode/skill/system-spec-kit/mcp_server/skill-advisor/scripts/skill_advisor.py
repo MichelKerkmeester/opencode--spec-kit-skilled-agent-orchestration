@@ -170,6 +170,7 @@ SKILL_GRAPH_SQLITE_PATH = os.path.normpath(os.path.join(
     'skill-graph.sqlite',
 ))
 GRAPH_ADJACENCY_EDGE_TYPES = ("depends_on", "enhances", "siblings", "prerequisite_for")
+GRAPH_ONLY_SKILL_IDS = {"skill-advisor"}
 STRICT_TOPOLOGY_HEADERS = (
     ("DEPENDENCY CYCLE ERRORS", "dependency cycles"),
     ("SYMMETRY WARNINGS", "asymmetric edges"),
@@ -719,13 +720,12 @@ def _load_skill_graph_json() -> Optional[Dict[str, Any]]:
 
 
 def _load_skill_graph() -> Optional[Dict[str, Any]]:
-    """Load compiled skill graph, preferring SQLite with JSON fallback."""
+    """Load the runtime skill graph from the SQLite store."""
     global _SKILL_GRAPH, _SKILL_GRAPH_SOURCE
     if _SKILL_GRAPH is not None:
         return _SKILL_GRAPH
 
     sqlite_exists = os.path.exists(SKILL_GRAPH_SQLITE_PATH)
-    json_exists = os.path.exists(SKILL_GRAPH_PATH)
 
     sqlite_graph = _load_skill_graph_sqlite()
     if sqlite_graph is not None:
@@ -734,32 +734,10 @@ def _load_skill_graph() -> Optional[Dict[str, Any]]:
         _log_skill_graph_warning("Skill graph: loaded from SQLite")
         return _SKILL_GRAPH
 
-    json_graph = _load_skill_graph_json()
-    if json_graph is not None:
-        _SKILL_GRAPH = json_graph
-        _SKILL_GRAPH_SOURCE = "json"
-        _log_skill_graph_warning("Skill graph: SQLite unavailable, using JSON fallback")
-        return _SKILL_GRAPH
-
-    if not sqlite_exists and not json_exists:
-        compile_result = subprocess.run(
-            [sys.executable, SKILL_GRAPH_COMPILER_PATH, '--export-json'],
-            capture_output=True,
-            text=True,
-        )
-        if compile_result.returncode == 0:
-            json_graph = _load_skill_graph_json()
-            if json_graph is not None:
-                _SKILL_GRAPH = json_graph
-                _SKILL_GRAPH_SOURCE = "json"
-                _log_skill_graph_warning(
-                    "Skill graph: auto-compiled JSON (run init-skill-graph.sh for full setup)"
-                )
-                return _SKILL_GRAPH
-        else:
-            compiler_error = (compile_result.stderr or compile_result.stdout).strip()
-            if compiler_error:
-                _log_skill_graph_warning(f"Skill graph: auto-compile failed ({compiler_error})")
+    if sqlite_exists:
+        _log_skill_graph_warning("Skill graph: SQLite exists but could not be loaded")
+    else:
+        _log_skill_graph_warning("Skill graph: SQLite unavailable; JSON export ignored for runtime")
 
     _SKILL_GRAPH_SOURCE = None
     return None
@@ -2460,6 +2438,22 @@ def apply_confidence_calibration(recommendations: List[Dict[str, Any]]) -> None:
         recommendation["confidence"] = round(max(0.0, min(0.95, calibrated)), 2)
 
 
+def apply_graph_evidence_calibration(recommendations: List[Dict[str, Any]]) -> None:
+    """Temper graph-majority recommendations while lowering graph-separated uncertainty."""
+    for recommendation in recommendations:
+        graph_boost_count = recommendation.get("_graph_boost_count", 0)
+        total_matches = recommendation.get("_num_matches", 1)
+        if total_matches <= 0:
+            continue
+
+        graph_fraction = graph_boost_count / total_matches
+        if graph_fraction <= 0.5:
+            continue
+
+        recommendation["confidence"] = round(recommendation["confidence"] * 0.90, 2)
+        recommendation["uncertainty"] = round(max(0.0, recommendation["uncertainty"] * 0.85), 2)
+
+
 def filter_recommendations(
     recommendations: List[Dict[str, Any]],
     confidence_threshold: float,
@@ -2818,11 +2812,7 @@ def analyze_request(
         })
 
     apply_confidence_calibration(recommendations)
-    for recommendation in recommendations:
-        graph_boost_count = recommendation.get("_graph_boost_count", 0)
-        total_matches = recommendation.get("_num_matches", 1)
-        if total_matches > 0 and graph_boost_count / total_matches > 0.5:
-            recommendation["confidence"] = round(recommendation["confidence"] * 0.90, 2)
+    apply_graph_evidence_calibration(recommendations)
 
     # T-SAP-02 (R45-002): disambiguate deep-research vs code-review and
     # deep-review vs code-review before the iteration-loop tiebreaker so the
@@ -2923,7 +2913,18 @@ def _compare_inventories(
     runtime helper.
     """
     graph_ids = _collect_graph_skill_ids(graph)
-    return _runtime_module.compare_inventories(skill_names, graph_ids)
+    parity = _runtime_module.compare_inventories(skill_names, graph_ids)
+    missing_in_discovery = set(parity.get("missing_in_discovery", []))
+    tolerated_graph_only = sorted(missing_in_discovery & GRAPH_ONLY_SKILL_IDS)
+    blocking_missing = sorted(missing_in_discovery - GRAPH_ONLY_SKILL_IDS)
+
+    if tolerated_graph_only:
+        parity = dict(parity)
+        parity["missing_in_discovery"] = blocking_missing
+        parity["graph_only"] = tolerated_graph_only
+        parity["in_sync"] = not parity.get("missing_in_graph") and not blocking_missing
+
+    return parity
 
 
 def health_check() -> Dict[str, Any]:
@@ -3004,8 +3005,10 @@ def health_check() -> Dict[str, Any]:
         graph_path_exists = os.path.exists(SKILL_GRAPH_PATH)
         if sqlite_path_exists:
             result["skill_graph_error"] = "sqlite_unavailable"
+        elif graph_path_exists:
+            result["skill_graph_error"] = "sqlite_missing_json_ignored"
         else:
-            result["skill_graph_error"] = "corrupt" if graph_path_exists else "missing"
+            result["skill_graph_error"] = "missing"
 
     return result
 

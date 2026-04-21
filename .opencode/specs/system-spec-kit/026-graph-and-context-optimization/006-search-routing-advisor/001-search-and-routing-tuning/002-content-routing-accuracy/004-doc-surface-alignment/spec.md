@@ -3,7 +3,7 @@
 title: "Feature Specification: Doc Surface Alignment for Research Content Routing Accuracy"
 description: "This phase aligns the doc surfaces that describe canonical save routing to the shipped runtime behavior. The goal is to remove stale statements about category count, Tier 3 availability, delivery versus progress boundaries, handover versus drop handling, routeAs overrides, and packet_kind derivation."
 trigger_phrases:
-  - "018 phase 004 spec"
+  - "001 002 004 spec"
   - "doc surface alignment"
   - "research content routing accuracy"
   - "save routing docs"
@@ -24,13 +24,13 @@ _memory:
       - ".opencode/skill/system-spec-kit/references/memory/save_workflow.md"
       - ".opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/202-canonical-continuity-save-substrate.md"
     session_dedup:
-      fingerprint: "sha256:018-phase-004-doc-surface-alignment-spec"
-      session_id: "018-phase-004-doc-surface-alignment"
+      fingerprint: "sha256:001-002-004-doc-surface-alignment-spec"
+      session_id: "001-002-004-doc-surface-alignment"
       parent_session_id: null
     completion_pct: 65
     open_questions: []
     answered_questions:
-      - "Which doc surfaces must be aligned for the 018 routing changes"
+      - "Which doc surfaces must be aligned for the 001/002 routing changes"
       - "Which routing details are now source-of-truth from the shipped save handler"
 ---
 # Feature Specification: Doc Surface Alignment for Research Content Routing Accuracy

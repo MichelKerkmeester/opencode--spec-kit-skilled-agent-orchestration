@@ -15,25 +15,24 @@
     "system-spec-kit",
     "026-graph-and-context-optimization",
     "006-search-routing-advisor",
-    "010-search-and-routing-tuning",
+    "001-search-and-routing-tuning",
     "003-graph-metadata-validation"
   ],
   "memorySequence": 0,
   "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
-    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements",
     "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements",
     "consolidation": "026-phase-surface-29-to-9",
     "flattened_at": "2026-04-21T13:00:00Z",
     "layout": "phase-root-local-sequence",
-    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements",
     "local_phase_slug": "001-search-and-routing-tuning",
-    "original_phase_slug": "010-search-and-routing-tuning",
+    "original_phase_slug": "001-search-and-routing-tuning",
     "renumbered_at": "2026-04-21T14:00:00Z",
     "aliases": [
-      "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements",
-      "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements",
+      "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements",
       "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements"
     ]
   }

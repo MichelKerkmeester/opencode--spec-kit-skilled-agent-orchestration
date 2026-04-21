@@ -45,10 +45,10 @@ _memory:
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] Every code edit reads the target file first
-- [ ] CHK-011 [P0] No adjacent cleanup outside CF tasks
-- [ ] CHK-012 [P1] Existing project patterns are preserved
-- [ ] CHK-013 [P1] Remediation notes cite changed surfaces
+- [x] CHK-010 [P0] Every code edit reads the target file first. [EVIDENCE: read skill-graph-db.ts, graph-metadata-schema.ts, graph-metadata-parser.ts, content-router.ts, and adjacent tests before patching]
+- [x] CHK-011 [P0] No adjacent cleanup outside CF tasks. [EVIDENCE: changed files map to CF-181, CF-071, CF-133, and CF-116 only]
+- [x] CHK-012 [P1] Existing project patterns are preserved. [EVIDENCE: reused existing Vitest files and parser/schema/router helpers]
+- [x] CHK-013 [P1] Remediation notes cite changed surfaces. [EVIDENCE: tasks.md and checklist.md cite file:line surfaces]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -56,10 +56,20 @@ _memory:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-020 [P0] All P0 findings closed or documented as not applicable
-- [ ] CHK-021 [P0] validate.sh --strict --no-recursive exits 0
-- [ ] CHK-022 [P1] P1 findings closed or user-approved for deferral
-- [ ] CHK-023 [P1] P2 follow-ups triaged
+- [ ] CHK-020 [P0] All P0 findings closed or documented as not applicable - Blocked: CF-108 still reproduces with strict validation exit 2 and requires editing the historical source packet outside this worker's write authority.
+- [ ] CHK-021 [P0] validate.sh --strict --no-recursive exits 0 - Pending: final packet validation must wait until P0/P1 blockers are cleared.
+- [ ] CHK-022 [P1] P1 findings closed or user-approved for deferral - Blocked: doc/metadata-only source-packet rewrites are outside this worker's write authority.
+- [ ] CHK-023 [P1] P2 follow-ups triaged - Pending: not reached because P0/P1 remediation is blocked.
+
+### Remediation Evidence
+
+- [ ] CF-108 [P0] Blocked: `validate.sh --strict --no-recursive` on `.../003-graph-metadata-validation/005-doc-surface-alignment` exits 2 on `CONTINUITY_FRESHNESS`; fixing it requires writing the source packet's `implementation-summary.md`, outside the requested write boundary.
+- [x] CF-181 [P0] Closed: non-skill recursive graph metadata is skipped before skill parsing. [EVIDENCE: `skill-graph-db.ts:347`, `skill-graph-db.ts:463`, `skill-graph-db.vitest.ts:64`; targeted vitest passed]
+- [x] CF-071 [P1] Closed: `metadata_only` now routes directly to `implementation-summary.md`. [EVIDENCE: `content-router.ts:1075`, `content-router.vitest.ts:198`, `content-router.vitest.ts:662`; targeted vitest passed]
+- [ ] CF-132 [P1] Blocked: the live parser already uses a 24-entity cap, but the cited source packet documentation update is outside the requested write boundary.
+- [x] CF-133 [P1] Closed: derived-field caps are schema-enforced and parser constants are shared. [EVIDENCE: `graph-metadata-schema.ts:12`, `graph-metadata-schema.ts:40`, `graph-metadata-parser.ts:1070`, `graph-metadata-schema.vitest.ts:565`; targeted vitest passed]
+- [x] CF-116 [P1] Closed: key-file candidates with embedded `..` segments are rejected before lookup resolution. [EVIDENCE: `graph-metadata-parser.ts:549`, `graph-metadata-parser.ts:568`, `graph-metadata-parser.ts:738`, `graph-metadata-parser.ts:786`, `graph-metadata-schema.vitest.ts:401`, `graph-metadata-schema.vitest.ts:446`; targeted vitest passed]
+- [ ] Remaining metadata/doc-source findings [P1] blocked: the fixes require writing historical source packet `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `description.json`, or `graph-metadata.json` files outside this worker's write authority.
 <!-- /ANCHOR:testing -->
 
 ---
@@ -98,8 +108,8 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 2 | 0/2 |
-| P1 Items | 42 | 0/42 |
+| P0 Items | 2 | 1/2 |
+| P1 Items | 42 | 3/42 |
 | P2 Items | 35 | 0/35 |
 
 **Verification Date**: 2026-04-21

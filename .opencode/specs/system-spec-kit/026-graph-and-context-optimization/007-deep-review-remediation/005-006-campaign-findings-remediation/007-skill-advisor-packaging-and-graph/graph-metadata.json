@@ -26,17 +26,22 @@
       "findings"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "decision-record.md",
+      "implementation-summary.md",
       ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md",
-      "opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md",
-      "opencode/plugins/spec-kit-skill-advisor-bridge.mjs",
-      "opencode/plugins/spec-kit-skill-advisor.js",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/manual-testing-playbook.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/session-bootstrap.vitest.ts",
+      ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/plugin-bridge.vitest.ts",
+      ".opencode/plugins/spec-kit-skill-advisor.js",
       "live-session-wrapper.ts",
       "LIVE_SESSION_WRAPPER_SETUP.md"
     ],
@@ -80,6 +85,12 @@
         "source": "derived"
       },
       {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
         "name": "consolidated-findings.md",
         "kind": "doc",
         "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md",
@@ -88,19 +99,43 @@
       {
         "name": "manual_testing_playbook.md",
         "kind": "doc",
-        "path": "opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual-testing-playbook.vitest.ts",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/manual-testing-playbook.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.vitest.ts",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/session-bootstrap.vitest.ts",
         "source": "derived"
       },
       {
         "name": "spec-kit-skill-advisor-bridge.mjs",
         "kind": "file",
-        "path": "opencode/plugins/spec-kit-skill-advisor-bridge.mjs",
+        "path": ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs",
+        "source": "derived"
+      },
+      {
+        "name": "plugin-bridge.vitest.ts",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/plugin-bridge.vitest.ts",
         "source": "derived"
       },
       {
         "name": "spec-kit-skill-advisor.js",
         "kind": "file",
-        "path": "opencode/plugins/spec-kit-skill-advisor.js",
+        "path": ".opencode/plugins/spec-kit-skill-advisor.js",
         "source": "derived"
       },
       {

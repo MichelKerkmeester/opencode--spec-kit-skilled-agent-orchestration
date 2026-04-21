@@ -60,4 +60,53 @@ describe('skill graph database indexing', () => {
       rmSync(root, { recursive: true, force: true });
     }
   });
+
+  it('skips non-skill graph metadata fixtures during recursive indexing', () => {
+    const root = mkdtempSync(join(tmpdir(), 'skill-graph-db-'));
+    const dbDir = join(root, 'db');
+    const skillRoot = join(root, 'skills');
+    const fixtureDir = join(skillRoot, 'scripts', 'test-fixtures', '053-template-compliant-level2');
+
+    try {
+      initDb(dbDir);
+      writeGraphMetadata(skillRoot, 'alpha');
+      mkdirSync(fixtureDir, { recursive: true });
+      writeFileSync(join(fixtureDir, 'graph-metadata.json'), JSON.stringify({
+        schema_version: 1,
+        packet_id: 'system-spec-kit/053-template-compliant-level2',
+        spec_folder: 'system-spec-kit/053-template-compliant-level2',
+        parent_id: null,
+        children_ids: [],
+        manual: { depends_on: [], supersedes: [], related_to: [] },
+        derived: {
+          trigger_phrases: ['fixture'],
+          key_topics: ['fixture'],
+          importance_tier: 'normal',
+          status: 'complete',
+          key_files: ['spec.md'],
+          entities: [],
+          causal_summary: 'Non-skill graph metadata fixture.',
+          created_at: '2026-04-21T00:00:00.000Z',
+          last_save_at: '2026-04-21T00:00:00.000Z',
+          last_accessed_at: null,
+          source_docs: ['spec.md'],
+        },
+      }), 'utf8');
+
+      const result = indexSkillMetadata(skillRoot);
+
+      expect(result.scannedFiles).toBe(2);
+      expect(result.indexedFiles).toBe(1);
+      expect(result.skippedFiles).toBe(1);
+      expect(result.warnings).toEqual([
+        expect.stringContaining('NON-SKILL-METADATA'),
+      ]);
+      expect(getDb().prepare('SELECT id FROM skill_nodes').all()).toEqual([
+        { id: 'alpha' },
+      ]);
+    } finally {
+      closeDb();
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
 });

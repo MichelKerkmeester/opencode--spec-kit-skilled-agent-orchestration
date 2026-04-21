@@ -196,7 +196,7 @@ describe('content-router tier 1 classification', () => {
 
     expect(decision.category).toBe('metadata_only');
     expect(decision.target).toMatchObject({
-      docPath: 'spec-frontmatter',
+      docPath: 'implementation-summary.md',
       anchorId: '_memory.continuity',
       mergeMode: 'update-in-place',
     });
@@ -579,7 +579,8 @@ describe('content-router helper contracts', () => {
       },
     });
 
-    expect(system).toContain('drop_candidate');
+    expect(system).toContain('- drop: transcript turns');
+    expect(system).not.toContain('drop_candidate');
     expect(system).toContain('refuse-to-route');
     expect(system).toContain('Context: This system uses a 3-level resume ladder (handover.md -> _memory.continuity in implementation-summary.md -> canonical spec docs). metadata_only saves always target implementation-summary.md. The router classifies into 8 categories: narrative_progress, narrative_delivery, decision, handover_state, research_finding, task_update, metadata_only, drop.');
     expect(system).toContain('implementation-summary.md::_memory.continuity');
@@ -660,7 +661,7 @@ describe('content-router non-progress route categories', () => {
     }, makeContext());
 
     expect(decision.category).toBe('metadata_only');
-    expect(decision.target.docPath).toBe('spec-frontmatter');
+    expect(decision.target.docPath).toBe('implementation-summary.md');
     expect(decision.target.anchorId).toBe('_memory.continuity');
   });
 

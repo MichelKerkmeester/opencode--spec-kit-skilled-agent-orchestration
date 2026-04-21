@@ -2,7 +2,7 @@
 title: "Tasks: SKILL.md Smart-Router Section Efficacy"
 description: "Completed task list for the Smart Routing efficacy research packet."
 trigger_phrases:
-  - "021 002 smart router tasks"
+  - "004 002 smart router tasks"
   - "skill md router efficacy tasks"
 importance_tier: "important"
 contextType: "tasks"

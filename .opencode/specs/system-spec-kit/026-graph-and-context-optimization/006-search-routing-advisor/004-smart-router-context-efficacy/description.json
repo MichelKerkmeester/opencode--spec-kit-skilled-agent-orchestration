@@ -4,7 +4,7 @@
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy",
   "keywords": [
     "smart-router-context-efficacy",
-    "021 smart router efficacy",
+    "004 smart router efficacy",
     "advisor context load measurement",
     "opencode plugin advisor hook"
   ],
@@ -17,12 +17,12 @@
     "006-search-routing-advisor"
   ],
   "migration": {
-    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy",
     "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy",
     "renumbered_at": "2026-04-21T14:30:00Z",
     "layout": "phase-root-local-sequence",
     "aliases": [
-      "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy",
+      "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy",
       "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy"
     ]
   }

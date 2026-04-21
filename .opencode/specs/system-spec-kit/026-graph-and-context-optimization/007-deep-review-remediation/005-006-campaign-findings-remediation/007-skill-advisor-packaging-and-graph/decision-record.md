@@ -27,7 +27,7 @@ _memory:
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-21 |
 | **Deciders** | Orchestrator |
 
@@ -113,6 +113,7 @@ The consolidated 006 campaign review produced a large finding set that needs imp
 **What changes**:
 - Create Level 3 packet docs for the remediation theme.
 - Add graph metadata and description metadata for memory discovery.
+- Close the P1 remediation slice with targeted tests for the playbook inventory, session bootstrap skill graph topology, and native bridge uncertainty rendering.
 
 **How to roll back**: Ask the orchestrator to remove or replace this packet before implementation begins.
 <!-- /ANCHOR:adr-001-impl -->

@@ -6,7 +6,13 @@
   "edges": {
     "depends_on": [],
     "enhances": [],
-    "siblings": [],
+    "siblings": [
+      {
+        "target": "sk-doc",
+        "weight": 0.4,
+        "context": "workflow utility peer for completion and handoff documentation"
+      }
+    ],
     "conflicts_with": [],
     "prerequisite_for": []
   },

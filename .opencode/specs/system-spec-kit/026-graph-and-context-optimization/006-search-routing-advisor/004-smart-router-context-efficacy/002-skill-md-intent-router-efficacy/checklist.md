@@ -2,7 +2,7 @@
 title: "Verification Checklist: SKILL.md Smart-Router Section Efficacy"
 description: "Verification Date: 2026-04-19"
 trigger_phrases:
-  - "021 002 smart router checklist"
+  - "004 002 smart router checklist"
   - "skill md router efficacy verification"
 importance_tier: "important"
 contextType: "checklist"

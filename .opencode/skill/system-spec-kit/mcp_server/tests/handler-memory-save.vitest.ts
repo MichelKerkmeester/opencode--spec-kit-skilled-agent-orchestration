@@ -999,6 +999,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       vi.doUnmock('../core/index.js');
       delete process.env.LLM_REFORMULATION_ENDPOINT;
       delete process.env.LLM_REFORMULATION_API_KEY;
+      delete process.env.SPECKIT_ROUTER_TIER3_ENABLED;
       vi.unstubAllGlobals();
       vi.restoreAllMocks();
       vi.resetModules();
@@ -1622,7 +1623,42 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(checkExistingRowMock).not.toHaveBeenCalled();
     });
 
+    it('does not let full-auto planner mode bypass the Tier 3 rollout flag', async () => {
+      process.env.LLM_REFORMULATION_ENDPOINT = 'http://tier3-router.test';
+      const fetchMock = vi.fn(async () => {
+        throw new Error('Tier 3 should stay disabled without SPECKIT_ROUTER_TIER3_ENABLED.');
+      });
+      vi.stubGlobal('fetch', fetchMock);
+
+      const fixture = createCanonicalRoutingFixture();
+      const parseMemoryContentMock = vi.fn((targetPath: string) => ({
+        ...buildParsedMemory(targetPath),
+        specFolder: fixture.specFolderKey,
+      }));
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock,
+        checkExistingRowMock: vi.fn(() => buildIndexResult({
+          id: 446,
+          specFolder: '999-atomic-save-fi',
+        })),
+      });
+
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          content: 'Packet-local changelog generation derives final changelog structure from packet docs rather than hand-assembling markdown.',
+          plannerMode: 'full-auto',
+        },
+        { force: true }
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.status).toBe('rejected');
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
+
     it('uses natural routing to reach Tier 3 when no explicit routeAs is provided', async () => {
+      process.env.SPECKIT_ROUTER_TIER3_ENABLED = 'true';
       process.env.LLM_REFORMULATION_ENDPOINT = 'http://tier3-router.test';
       const fetchMock = vi.fn(async () => new Response(JSON.stringify({
         choices: [
@@ -1679,6 +1715,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     });
 
     it('labels research root packets correctly in the Tier 3 prompt body', async () => {
+      process.env.SPECKIT_ROUTER_TIER3_ENABLED = 'true';
       process.env.LLM_REFORMULATION_ENDPOINT = 'http://tier3-router.test';
       const fetchMock = vi.fn(async () => new Response(JSON.stringify({
         choices: [
@@ -1733,6 +1770,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     });
 
     it('labels explicit routeAs phase saves with phase packet_kind and route-as save_mode', async () => {
+      process.env.SPECKIT_ROUTER_TIER3_ENABLED = 'true';
       process.env.LLM_REFORMULATION_ENDPOINT = 'http://tier3-router.test';
       const fetchMock = vi.fn(async () => new Response(JSON.stringify({
         choices: [
@@ -1788,6 +1826,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     });
 
     it('fails open to natural Tier 2 routing when Tier 3 transport throws', async () => {
+      process.env.SPECKIT_ROUTER_TIER3_ENABLED = 'true';
       process.env.LLM_REFORMULATION_ENDPOINT = 'http://tier3-router.test';
       const fetchMock = vi.fn(async () => {
         throw new Error('simulated timeout');

@@ -2,7 +2,7 @@
 title: "Implementation Plan: SKILL.md Smart-Router Section Efficacy"
 description: "Plan for completing the 20-iteration deep research packet, generating synthesis artifacts, and validating the packet without editing runtime or skill code."
 trigger_phrases:
-  - "021 002 smart router plan"
+  - "004 002 smart router plan"
   - "skill md router efficacy plan"
 importance_tier: "important"
 contextType: "plan"

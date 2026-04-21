@@ -3,6 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 
 import { spawnSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
@@ -40,7 +41,15 @@ describe('spec-kit skill advisor plugin bridge compat path', () => {
     expect(parsed.status).toBe('ok');
     expect(parsed.brief).toContain('Advisor:');
     expect(parsed.brief).toContain('system-spec-kit');
+    expect(parsed.brief).toMatch(/\d+\.\d{2}\/\d+\.\d{2} pass\./);
     expect(parsed.metadata.route).toBe('native');
+  });
+
+  it('renders native uncertainty from the recommendation instead of a literal zero', () => {
+    const source = readFileSync(bridgePath, 'utf8');
+
+    expect(source).toContain('${formatScore(top.confidence)}/${formatScore(top.uncertainty)} pass.');
+    expect(source).not.toContain('${formatScore(top.confidence)}/0.00 pass.');
   });
 
   it('falls back to the Python-backed brief producer when native is forced local', () => {

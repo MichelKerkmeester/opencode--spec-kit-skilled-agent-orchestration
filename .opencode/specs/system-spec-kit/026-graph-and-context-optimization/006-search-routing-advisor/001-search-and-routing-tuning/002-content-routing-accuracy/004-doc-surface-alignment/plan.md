@@ -3,7 +3,7 @@
 title: "Implementation Plan: Doc Surface Alignment for Research Content Routing Accuracy"
 description: "This phase is a documentation-parity pass anchored to the shipped canonical save router. The approach is to verify runtime behavior first, patch only routing-aware surfaces, then close the phase with strict packet validation."
 trigger_phrases:
-  - "018 phase 004 plan"
+  - "001 002 004 plan"
   - "doc surface alignment plan"
   - "routing doc parity plan"
 importance_tier: "important"
@@ -22,8 +22,8 @@ _memory:
       - ".opencode/command/memory/save.md"
       - ".opencode/skill/system-spec-kit/ARCHITECTURE.md"
     session_dedup:
-      fingerprint: "sha256:018-phase-004-doc-surface-alignment-plan"
-      session_id: "018-phase-004-doc-surface-alignment"
+      fingerprint: "sha256:001-002-004-doc-surface-alignment-plan"
+      session_id: "001-002-004-doc-surface-alignment"
       parent_session_id: null
     completion_pct: 100
     open_questions: []

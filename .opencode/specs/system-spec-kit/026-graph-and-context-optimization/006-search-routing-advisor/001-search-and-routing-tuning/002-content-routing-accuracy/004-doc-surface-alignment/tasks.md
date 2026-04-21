@@ -3,7 +3,7 @@
 title: "Tasks: Doc Surface Alignment for Research Content Routing Accuracy"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
-  - "018 phase 004 tasks"
+  - "001 002 004 tasks"
   - "doc surface alignment tasks"
 importance_tier: "important"
 contextType: "implementation"
@@ -21,8 +21,8 @@ _memory:
       - "checklist.md"
       - "implementation-summary.md"
     session_dedup:
-      fingerprint: "sha256:018-phase-004-doc-surface-alignment-tasks"
-      session_id: "018-phase-004-doc-surface-alignment"
+      fingerprint: "sha256:001-002-004-doc-surface-alignment-tasks"
+      session_id: "001-002-004-doc-surface-alignment"
       parent_session_id: null
     completion_pct: 100
     open_questions: []

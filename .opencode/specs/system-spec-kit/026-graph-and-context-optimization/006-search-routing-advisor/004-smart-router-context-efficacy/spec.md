@@ -2,7 +2,7 @@
 title: "Feature Specification: Smart-Router Context-Load Efficacy Investigation"
 description: "Investigation + measurement phase. Does the Phase 020 advisor hook actually reduce AI-assistant context load? Secondary: design OpenCode plugin packaging for the advisor hook using code-graph plugin as reference."
 trigger_phrases:
-  - "021 smart router efficacy"
+  - "004 smart router efficacy"
   - "advisor context load measurement"
   - "opencode plugin advisor hook"
 importance_tier: "important"
@@ -13,7 +13,7 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy"
     last_updated_at: "2026-04-19T18:15:00Z"
     last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Phase 021 scaffolded as T11 follow-up to 020"
+    recent_action: "Phase 004 scaffolded as T11 follow-up to 020"
     next_safe_action: "Dispatch 001-initial-research deep-research loop"
     dispatch_policy: "cli-codex gpt-5.4 high fast primary; cli-copilot gpt-5.4 high fallback"
 
@@ -26,7 +26,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Parent Track** | 026-graph-and-context-optimization |
-| **Position in track** | 021 — first measurement phase post-advisor-hook |
+| **Position in track** | 004 — first measurement phase post-advisor-hook |
 
 ---
 
@@ -117,5 +117,5 @@ Investigate + measure whether the smart-router effectively reduces AI-assistant 
 
 - Parent: `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/` (shipped 2026-04-19)
 - Reference: `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md` (the shipped hook surface)
-- Corpus: `../research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl` (200 labeled prompts for benchmarks)
+- Corpus: `../../research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl` (200 labeled prompts for benchmarks)
 - Code-graph plugin reference: TBD — codex to locate during research

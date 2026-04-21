@@ -181,15 +181,45 @@ function clamp(
 
 function sliceResults<T>(results: T, limit: number): T {
   if (!Array.isArray(results)) return results;
-  return results.slice(0, limit).map(stripInternalFields) as T;
+  return results.slice(0, limit) as T;
 }
 
-/** Remove internal implementation fields (sourcePath, contentHash) from query output. */
-function stripInternalFields<T extends Record<string, unknown>>(item: T): T {
-  if (item && typeof item === 'object') {
-    const { sourcePath, contentHash, ...rest } = item;
-    return rest as T;
+function sanitizeQueryOutput(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map(sanitizeQueryOutput);
   }
+
+  if (value && typeof value === 'object') {
+    const sanitized: Record<string, unknown> = {};
+    for (const [key, nestedValue] of Object.entries(value)) {
+      if (key === 'sourcePath' || key === 'contentHash') {
+        continue;
+      }
+      sanitized[key] = sanitizeQueryOutput(nestedValue);
+    }
+    return sanitized;
+  }
+
+  return value;
+}
+
+function okResponse(data: Record<string, unknown>): HandlerResponse {
+  return {
+    content: [{
+      type: 'text',
+      text: JSON.stringify({ status: 'ok', data: sanitizeQueryOutput(data) }),
+    }],
+  };
+}
+
+function errorResponse(error: string): HandlerResponse {
+  return {
+    content: [{
+      type: 'text',
+      text: JSON.stringify({ status: 'error', error }),
+    }],
+  };
+}
   return item;
 }
 

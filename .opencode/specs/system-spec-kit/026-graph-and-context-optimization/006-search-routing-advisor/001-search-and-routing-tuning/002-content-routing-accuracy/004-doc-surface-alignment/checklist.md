@@ -3,7 +3,7 @@
 title: "Verification Checklist: Doc Surface Alignment for Research Content Routing Accuracy"
 description: "Verification Date: 2026-04-13"
 trigger_phrases:
-  - "018 phase 004 checklist"
+  - "001 002 004 checklist"
   - "doc surface alignment verification"
 importance_tier: "critical"
 contextType: "verification"
@@ -21,8 +21,8 @@ _memory:
       - "plan.md"
       - "implementation-summary.md"
     session_dedup:
-      fingerprint: "sha256:018-phase-004-doc-surface-alignment-checklist"
-      session_id: "018-phase-004-doc-surface-alignment"
+      fingerprint: "sha256:001-002-004-doc-surface-alignment-checklist"
+      session_id: "001-002-004-doc-surface-alignment"
       parent_session_id: null
     completion_pct: 100
     open_questions: []

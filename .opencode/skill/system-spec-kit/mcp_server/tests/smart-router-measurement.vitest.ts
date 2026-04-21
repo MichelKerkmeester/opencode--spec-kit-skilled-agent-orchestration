@@ -161,7 +161,9 @@ describe('smart-router static measurement harness', () => {
     });
 
     const staticStream = path.join(root, '.opencode', 'reports', 'smart-router-static', 'compliance.jsonl');
+    const liveStream = path.join(root, '.opencode', 'skill', '.smart-router-telemetry', 'compliance.jsonl');
     expect(fs.existsSync(staticStream)).toBe(true);
+    expect(fs.existsSync(liveStream)).toBe(false);
     expect(fs.readFileSync(staticStream, 'utf8')).toContain('"promptId":"p1"');
   });
 

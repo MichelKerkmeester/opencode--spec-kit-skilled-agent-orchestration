@@ -35,9 +35,9 @@ _memory:
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [ ] CHK-001 [P0] Requirements documented in spec.md
-- [ ] CHK-002 [P0] Technical approach defined in plan.md
-- [ ] CHK-003 [P1] Dependencies identified and available
+- [x] CHK-001 [P0] Requirements documented in spec.md. [Evidence: `spec.md:98` through `spec.md:116` define P0/P1/P2 requirements.]
+- [x] CHK-002 [P0] Technical approach defined in plan.md. [Evidence: `plan.md` was read before implementation and remained the phase approach source.]
+- [x] CHK-003 [P1] Dependencies identified and available. [Evidence: consolidated findings source at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md:349`, code under `.opencode/skill/system-spec-kit/mcp_server`, and vitest runner `../scripts/node_modules/.bin/vitest` were available.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -45,10 +45,10 @@ _memory:
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] Every code edit reads the target file first
-- [ ] CHK-011 [P0] No adjacent cleanup outside CF tasks
-- [ ] CHK-012 [P1] Existing project patterns are preserved
-- [ ] CHK-013 [P1] Remediation notes cite changed surfaces
+- [x] CHK-010 [P0] Every code edit reads the target file first. [Evidence: cited implementation surfaces were read before edits, including `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1343`, `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:334`, and `.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:43`.]
+- [x] CHK-011 [P0] No adjacent cleanup outside CF tasks. [Evidence: changes are limited to cited code/test surfaces and this sub-phase packet.]
+- [x] CHK-012 [P1] Existing project patterns are preserved. [Evidence: new coverage follows existing vitest style in `.opencode/skill/system-spec-kit/mcp_server/tests/content-router-cache.vitest.ts:39` and `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1626`.]
+- [x] CHK-013 [P1] Remediation notes cite changed surfaces. [Evidence: `tasks.md` T010-T016 cite changed file:line evidence for each P0/P1 finding.]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -56,10 +56,10 @@ _memory:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-020 [P0] All P0 findings closed or documented as not applicable
-- [ ] CHK-021 [P0] validate.sh --strict --no-recursive exits 0
-- [ ] CHK-022 [P1] P1 findings closed or user-approved for deferral
-- [ ] CHK-023 [P1] P2 follow-ups triaged
+- [x] CHK-020 [P0] All P0 findings closed or documented as not applicable. [Evidence: CF-052 closed by `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1343` and regression `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1626`.]
+- [x] CHK-021 [P0] validate.sh --strict --no-recursive exits 0. [Evidence: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict --no-recursive .../006-routing-accuracy-and-classifier-behavior` PASS with Errors: 0, Warnings: 0.]
+- [x] CHK-022 [P1] P1 findings closed or user-approved for deferral. [Evidence: T011-T016 are marked closed in `tasks.md` with targeted vitest evidence; doc-only historical packet rewrites were not attempted outside the user's write authority.]
+- [x] CHK-023 [P1] P2 follow-ups triaged. [Evidence: P2 tasks T017-T024 remain deferred to a later low-risk batch because this assignment explicitly requested P0 then P1 remediation.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -67,9 +67,9 @@ _memory:
 <!-- ANCHOR:security -->
 ## Security
 
-- [ ] CHK-030 [P0] No secrets copied into evidence or telemetry docs
-- [ ] CHK-031 [P0] Security findings keep P0/P1 precedence
-- [ ] CHK-032 [P1] Prompt and telemetry evidence is redacted where needed
+- [x] CHK-030 [P0] No secrets copied into evidence or telemetry docs. [Evidence: implementation summary and tasks cite paths, line numbers, environment variable names, and test counts only.]
+- [x] CHK-031 [P0] Security findings keep P0/P1 precedence. [Evidence: CF-052 was implemented first, then P1 security items CF-141 and CF-157.]
+- [x] CHK-032 [P1] Prompt and telemetry evidence is redacted where needed. [Evidence: prompt-leakage tests assert absence of raw prompt text at `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/promotion/promotion-gates.vitest.ts:165`; telemetry separation is asserted at `.opencode/skill/system-spec-kit/mcp_server/tests/smart-router-measurement.vitest.ts:163`.]
 <!-- /ANCHOR:security -->
 
 ---
@@ -77,9 +77,9 @@ _memory:
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] CHK-040 [P1] Spec/plan/tasks synchronized
-- [ ] CHK-041 [P1] Decision record updated for deviations
-- [ ] CHK-042 [P2] Implementation summary added after fixes close
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized. [Evidence: `tasks.md` T010-T016 now match the P0/P1 scope in `spec.md:98` through `spec.md:110`.]
+- [x] CHK-041 [P1] Decision record updated for deviations. [Evidence: no architecture deviation was introduced; the existing theme-owned remediation ADR still governs the packet.]
+- [x] CHK-042 [P2] Implementation summary added after fixes close. [Evidence: `implementation-summary.md` added with Status, files modified, verification output, and proposed commit message.]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -87,8 +87,8 @@ _memory:
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [ ] CHK-050 [P1] Temp files stay in scratch/ only
-- [ ] CHK-051 [P1] No generated scratch artifacts are committed by this packet
+- [x] CHK-050 [P1] Temp files stay in scratch/ only. [Evidence: no packet-local temp files were created.]
+- [x] CHK-051 [P1] No generated scratch artifacts are committed by this packet. [Evidence: no generated scratch artifacts were added under this sub-phase.]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -98,9 +98,9 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 1 | 0/1 |
-| P1 Items | 6 | 0/6 |
-| P2 Items | 8 | 0/8 |
+| P0 Items | 1 | 1/1 |
+| P1 Items | 6 | 6/6 |
+| P2 Items | 8 | Deferred for later low-risk batch |
 
 **Verification Date**: 2026-04-21
 <!-- /ANCHOR:summary -->
@@ -110,7 +110,7 @@ _memory:
 <!-- ANCHOR:arch-verify -->
 ## L3+: ARCHITECTURE VERIFICATION
 
-- [ ] CHK-100 [P0] Architecture decisions documented in decision-record.md
-- [ ] CHK-101 [P1] ADR status is current
-- [ ] CHK-102 [P1] Alternatives documented with rejection rationale
+- [x] CHK-100 [P0] Architecture decisions documented in decision-record.md. [Evidence: `decision-record.md:24` documents the theme-owned remediation packet decision.]
+- [x] CHK-101 [P1] ADR status is current. [Evidence: no new architecture decision was introduced during implementation.]
+- [x] CHK-102 [P1] Alternatives documented with rejection rationale. [Evidence: `decision-record.md:50` through `decision-record.md:58` records alternatives and rationale.]
 <!-- /ANCHOR:arch-verify -->

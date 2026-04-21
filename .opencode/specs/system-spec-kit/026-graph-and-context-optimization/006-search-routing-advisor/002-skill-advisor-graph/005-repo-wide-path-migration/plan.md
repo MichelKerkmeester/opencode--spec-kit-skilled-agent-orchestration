@@ -116,8 +116,8 @@ Template requirements drive document structure. Repo reads and command output pr
 |-----------|-------|-------|
 | Structural | Packet template compliance and file presence | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <packet> --strict` |
 | Repository evidence | Shipped path usage in playbooks and READMEs | `rg`, `view` |
-| Runtime | Skill-advisor entrypoint and metadata validation | `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health`, `python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only` |
-| Regression | Skill-advisor behavior after migration | `python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl` |
+| Runtime | Skill-advisor entrypoint and metadata validation | `python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --health`, `python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py --validate-only` |
+| Regression | Skill-advisor behavior after migration | `python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py --dataset .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl` |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -127,10 +127,10 @@ Template requirements drive document structure. Repo reads and command output pr
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../../../../../skill/skill-advisor/README.md` | Internal evidence source | Green | README completion cannot be marked honestly |
-| `../../../../../skill/README.md` | Internal evidence source | Green | Parent skill documentation state becomes unknown |
-| `../../../../../skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md` | Internal evidence source | Green | Playbook completion cannot be verified |
-| `../../../../../skill/skill-advisor/graph-metadata.json` | Internal evidence source | Green | Metadata completion evidence is incomplete |
+| `../../../../../../skill/system-spec-kit/mcp_server/skill-advisor/README.md` | Internal evidence source | Green | README completion cannot be marked honestly |
+| `../../../../../../skill/system-spec-kit/README.md` | Internal evidence source | Green | Parent skill documentation state becomes unknown |
+| `../../../../../../skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md` | Internal evidence source | Green | Playbook completion cannot be verified |
+| `../../../../../../skill/system-spec-kit/mcp_server/skill-advisor/graph-metadata.json` | Internal evidence source | Green | Metadata completion evidence is incomplete |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh` | Internal validation tool | Green | Packet closeout cannot be validated |
 <!-- /ANCHOR:dependencies -->
 

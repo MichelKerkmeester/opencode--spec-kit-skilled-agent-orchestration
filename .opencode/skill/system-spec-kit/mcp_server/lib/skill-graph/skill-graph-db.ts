@@ -313,8 +313,8 @@ function warnWeightBand(edge: SkillEdge, sourcePath: string, warnings: string[])
   console.warn(`[skill-graph] ${warning}`);
 }
 
-function computeContentHash(filePath: string): string {
-  return createHash('sha256').update(readFileSync(filePath)).digest('hex');
+function computeContentHash(content: string): string {
+  return createHash('sha256').update(content).digest('hex');
 }
 
 function discoverGraphMetadataFiles(skillDir: string): string[] {
@@ -344,10 +344,10 @@ function discoverGraphMetadataFiles(skillDir: string): string[] {
   return discovered.sort((left, right) => left.localeCompare(right));
 }
 
-function parseSkillMetadata(sourcePath: string, contentHash: string): ParsedSkillMetadata {
+function readMetadataJson(sourcePath: string, content: string): JsonRecord {
   let parsedJson: unknown;
   try {
-    parsedJson = JSON.parse(readFileSync(sourcePath, 'utf8')) as unknown;
+    parsedJson = JSON.parse(content) as unknown;
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     throw new Error(`${toDisplayPath(sourcePath)}: failed to parse JSON (${message})`);
@@ -357,6 +357,14 @@ function parseSkillMetadata(sourcePath: string, contentHash: string): ParsedSkil
     throw new Error(`${toDisplayPath(sourcePath)}: root must be an object`);
   }
 
+  return parsedJson;
+}
+
+function isSkillGraphMetadata(parsedJson: JsonRecord): boolean {
+  return typeof parsedJson.skill_id === 'string' || typeof parsedJson.family === 'string' || isRecord(parsedJson.edges);
+}
+
+function parseSkillMetadata(sourcePath: string, parsedJson: JsonRecord, contentHash: string): ParsedSkillMetadata {
   const schemaVersion = parsedJson.schema_version;
   if (schemaVersion !== 1 && schemaVersion !== 2) {
     throw new Error(`${toDisplayPath(sourcePath)}: schema_version must be 1 or 2`);
@@ -456,10 +464,20 @@ export function indexSkillMetadata(skillDir: string): SkillGraphIndexResult {
   const database = getDb();
   const discoveredFiles = discoverGraphMetadataFiles(skillDir);
   const parsedMetadata: ParsedSkillMetadata[] = [];
+  const warnings: string[] = [];
+  let nonSkillMetadataFiles = 0;
 
   for (const sourcePath of discoveredFiles) {
-    const contentHash = computeContentHash(sourcePath);
-    parsedMetadata.push(parseSkillMetadata(sourcePath, contentHash));
+    const content = readFileSync(sourcePath, 'utf8');
+    const parsedJson = readMetadataJson(sourcePath, content);
+    if (!isSkillGraphMetadata(parsedJson)) {
+      nonSkillMetadataFiles++;
+      warnings.push(`NON-SKILL-METADATA: skipped ${toDisplayPath(sourcePath)}`);
+      continue;
+    }
+
+    const contentHash = computeContentHash(content);
+    parsedMetadata.push(parseSkillMetadata(sourcePath, parsedJson, contentHash));
   }
 
   const skillIds = parsedMetadata.map((entry) => entry.node.id);
@@ -477,10 +495,8 @@ export function indexSkillMetadata(skillDir: string): SkillGraphIndexResult {
   }
 
   const knownSkillIds = new Set(skillIds);
-  const warnings: string[] = [];
-
   let indexedFiles = 0;
-  let skippedFiles = 0;
+  let skippedFiles = nonSkillMetadataFiles;
   let indexedNodes = 0;
   let indexedEdges = 0;
   let rejectedEdges = 0;

@@ -12,10 +12,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 --
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration"
-    last_updated_at: "2026-04-13T00:00:00Z"
-    last_updated_by: "gpt-5"
-    recent_action: "Closed Phase 005"
-    next_safe_action: "Refresh packet memory metadata"
+    last_updated_at: "2026-04-21T13:00:00Z"
+    last_updated_by: "codex"
+    recent_action: "Refreshed replayable path evidence for Phase 005"
+    next_safe_action: "No action required; packet validation is replayable"
     key_files: ["implementation-summary.md", "tasks.md", "checklist.md"]
 ---
 <!-- SPECKIT_LEVEL: 3 -->
@@ -80,9 +80,9 @@ The closeout followed a strict evidence-first sequence. First, the packet valida
 
 | Check | Result |
 |-------|--------|
-| `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health` | PASS, returned `status: ok`, `skills_found: 20`, `command_bridges_found: 10` |
-| `python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only` | PASS, reported `VALIDATION PASSED: all metadata files are valid` |
-| `python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl` | PASS, reported `44/44` passing and `overall_pass: true` |
+| `python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --health` | PASS, returned `status: ok`, `skills_found: 20`, `command_bridges_found: 10` |
+| `python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py --validate-only` | PASS, reported `VALIDATION PASSED: all metadata files are valid` |
+| `python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py --dataset .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl` | PASS, reported `44/44` passing and `overall_pass: true` |
 | Final scoped `rg` over `011-skill-advisor-graph/` for the forbidden legacy path literals | PASS, returned no matches |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration --strict` | PASS, exit `0` with `0` errors and `0` warnings |
 <!-- /ANCHOR:verification -->

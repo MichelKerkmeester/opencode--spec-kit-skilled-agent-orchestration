@@ -38,9 +38,9 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 [P0] Confirm consolidated findings source is readable
-- [ ] T002 [P0] Verify severity counts against the source report
-- [ ] T003 [P1] Identify target source phases before implementation edits
+- [x] T001 [P0] Confirm consolidated findings source is readable. Evidence: consolidated source read from `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md:349`.
+- [x] T002 [P0] Verify severity counts against the source report. Evidence: this theme lists P0/P1/P2 buckets at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md:357`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md:362`, and `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md:372`.
+- [x] T003 [P1] Identify target source phases before implementation edits. Evidence: target code/test files were read before edits, including `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1343` and `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:334`.
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -48,13 +48,13 @@ _memory:
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T010 [P] [P0] CF-052: [F001] Full-auto canonical saves bypass the advertised Tier 3 rollout gate and can exfiltrate content to the LLM endpoint. _(dimension: security)_ Source phase: 001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier. Evidence: SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1040 SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1343 SOURCE: implementation-summary.md:53
-- [ ] T011 [P] [P1] CF-141: [F005] Tier3 LLM routing research closes without a security objective _(dimension: security)_ Source phase: 001-search-and-routing-tuning. Evidence: 002-content-routing-accuracy/spec.md:14; 002-content-routing-accuracy/spec.md:35-45; 002-content-routing-accuracy/spec.md:67-73
-- [ ] T012 [P] [P1] CF-029: [F001] Continuity fixture validates a handover-first packet state that this packet does not ship _(dimension: correctness)_ Source phase: 001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation. Evidence: spec.md:102, .opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:45-47, .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation:1-7
-- [ ] T013 [P] [P1] CF-053: [F002] Built-in Tier 3 cache keys ignore routing context and can replay stale destinations. _(dimension: correctness)_ Source phase: 001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier. Evidence: SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:313 SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:334 SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:756 SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router-cache.vitest.ts:26
-- [ ] T014 [P] [P1] CF-069: [F001] The Tier 3 prompt still leaks the internal drop_candidate alias inside a contract that says only the existing 8 public categories are valid. _(dimension: correctness)_ Source phase: 001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment. Evidence: spec.md:24; .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1275; .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:582
-- [ ] T015 [P] [P1] CF-157: [F005] Current prompt-leakage release gates are omitted from the packet acceptance scope. _(dimension: security)_ Source phase: 002-skill-advisor-graph/002-manual-testing-playbook. Evidence: spec.md:120, spec.md:132, .opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:101, .opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/01--native-mcp-tools/001-native-recommend-happy-path.md:56
-- [ ] T016 [P] [P1] CF-269: [F002] Analyzer artifact mixes static unknown records into the live telemetry stream while the static stream is absent. _(dimension: traceability)_ Source phase: 007-deferred-remediation-and-telemetry-run. Evidence: smart-router-analyze-report-2026-04-19T17-57-07-192Z.md:3, smart-router-analyze-report-2026-04-19T17-57-07-192Z.md:19, smart-router-analyze-report-2026-04-19T17-57-07-192Z.md:20, smart-router-measurement.ts:107, smart-router-measurement.ts:637, .opencode/skill/.smart-router-telemetry/compliance.jsonl:1
+- [x] T010 [P] [P0] CF-052: [F001] Full-auto canonical saves bypass the advertised Tier 3 rollout gate and can exfiltrate content to the LLM endpoint. _(dimension: security)_ Source phase: 001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier. Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1343` now uses only `isTier3RoutingEnabled()`, and `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1626` asserts full-auto plus an endpoint does not call `fetch` when the rollout flag is absent. Targeted vitest: `tests/handler-memory-save.vitest.ts` PASS, 60 passed / 3 skipped.
+- [x] T011 [P] [P1] CF-141: [F005] Tier3 LLM routing research closes without a security objective _(dimension: security)_ Source phase: 001-search-and-routing-tuning. Evidence: payload-handling guard is now executable at `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1343` and `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1626`; historical source packet docs were not edited because this remediation assignment restricts writes to cited code/tests plus this sub-phase.
+- [x] T012 [P] [P1] CF-029: [F001] Continuity fixture validates a handover-first packet state that this packet does not ship _(dimension: correctness)_ Source phase: 001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation. Evidence: `.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:43` now distinguishes generic handover-present rows from compact continuity fallback rows, and `.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:420` asserts both fixture classes. Targeted vitest: `tests/k-value-optimization.vitest.ts` PASS, 10 passed.
+- [x] T013 [P] [P1] CF-053: [F002] Built-in Tier 3 cache keys ignore routing context and can replay stale destinations. _(dimension: correctness)_ Source phase: 001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier. Evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:334` includes prompt version, spec folder, packet level, packet kind, save mode, and likely phase anchor in cache keys; `.opencode/skill/system-spec-kit/mcp_server/tests/content-router-cache.vitest.ts:39` proves route-shaping context partitions built-in cache entries. Targeted vitest: `tests/content-router-cache.vitest.ts` PASS, 2 passed.
+- [x] T014 [P] [P1] CF-069: [F001] The Tier 3 prompt still leaks the internal drop_candidate alias inside a contract that says only the existing 8 public categories are valid. _(dimension: correctness)_ Source phase: 001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment. Evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1292` publishes `drop` in the prompt contract, and `.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:582` asserts the prompt excludes `drop_candidate`. Targeted vitest: `tests/content-router.vitest.ts` PASS, 30 passed.
+- [x] T015 [P] [P1] CF-157: [F005] Current prompt-leakage release gates are omitted from the packet acceptance scope. _(dimension: security)_ Source phase: 002-skill-advisor-graph/002-manual-testing-playbook. Evidence: `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/promotion/promotion-gates.vitest.ts:165` asserts the root playbook and native MCP scenario keep prompt-leakage as release-blocking acceptance criteria. Targeted vitest: `skill-advisor/tests/promotion/promotion-gates.vitest.ts` PASS, 26 passed.
+- [x] T016 [P] [P1] CF-269: [F002] Analyzer artifact mixes static unknown records into the live telemetry stream while the static stream is absent. _(dimension: traceability)_ Source phase: 007-deferred-remediation-and-telemetry-run. Evidence: `.opencode/skill/system-spec-kit/mcp_server/tests/smart-router-measurement.vitest.ts:163` asserts static measurement writes `.opencode/reports/smart-router-static/compliance.jsonl` and `.opencode/skill/system-spec-kit/mcp_server/tests/smart-router-measurement.vitest.ts:164` asserts the live stream is not created. Targeted vitest: `tests/smart-router-measurement.vitest.ts` PASS, 4 passed.
 - [ ] T017 [P] [P2] CF-031: [F003] Tier 3 prompt contract mixes canonical drop with the internal drop_candidate alias _(dimension: maintainability)_ Source phase: 001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation. Evidence: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1273-1288, .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:582-585, implementation-summary.md:59
 - [ ] T018 [P] [P2] CF-056: [F005] Shared Tier 3 cache keeps session entries forever with no bound or eviction. _(dimension: maintainability)_ Source phase: 001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier. Evidence: SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:171 SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:310 SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:806
 - [ ] T019 [P] [P2] CF-072: [F002] The new continuity paragraph discloses more internal topology to the external Tier 3 classifier than before. _(dimension: security)_ Source phase: 001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment. Evidence: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1273
@@ -70,9 +70,9 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T900 [P0] Run strict packet validation
-- [ ] T901 [P1] Update graph metadata after implementation
-- [ ] T902 [P1] Add implementation summary closeout evidence
+- [x] T900 [P0] Run strict packet validation. Evidence: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict --no-recursive .../006-routing-accuracy-and-classifier-behavior` PASS with Errors: 0, Warnings: 0.
+- [x] T901 [P1] Update graph metadata after implementation. Evidence: `graph-metadata.json` status/key files updated for implementation closeout in this sub-phase.
+- [x] T902 [P1] Add implementation summary closeout evidence. Evidence: `implementation-summary.md` added with status, files modified, verification output, and proposed commit message.
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -80,9 +80,9 @@ _memory:
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]` or explicitly deferred
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All P0/P1 remediation tasks marked `[x]`; P2 tasks remain deferred to a later low-risk batch per this assignment's P0/P1 execution scope.
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---

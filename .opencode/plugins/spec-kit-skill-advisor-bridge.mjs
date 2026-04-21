@@ -119,7 +119,7 @@ function renderNativeBrief(data, maxTokens) {
   }
 
   const parts = [
-    `Advisor: ${data.freshness}; use ${skillLabel} ${formatScore(top.confidence)}/0.00 pass.`,
+    `Advisor: ${data.freshness}; use ${skillLabel} ${formatScore(top.confidence)}/${formatScore(top.uncertainty)} pass.`,
   ];
   const status = sanitizeLabel(top.status);
   if (status && status !== 'active') {

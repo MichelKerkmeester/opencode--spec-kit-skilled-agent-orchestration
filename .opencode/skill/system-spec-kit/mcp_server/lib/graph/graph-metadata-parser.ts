@@ -19,7 +19,11 @@ import {
 import {
   createEmptyGraphMetadataManual,
   type GraphEntityReference,
+  GRAPH_METADATA_ENTITY_LIMIT,
+  GRAPH_METADATA_KEY_FILE_LIMIT,
+  GRAPH_METADATA_KEY_TOPIC_LIMIT,
   GRAPH_METADATA_SCHEMA_VERSION,
+  GRAPH_METADATA_TRIGGER_PHRASE_LIMIT,
   graphMetadataSchema,
   type GraphMetadata,
   type GraphMetadataDerived,
@@ -257,13 +261,13 @@ function parseLegacyGraphMetadataContent(content: string): LegacyGraphMetadataPa
   const lastSaveAt = readLegacyTimestamp(values, ['last save at'], nowIso);
   const lastAccessedAt = readLegacyValue(values, ['last accessed at']);
   const summary = readLegacyValue(values, ['summary', 'causal summary']) ?? '';
-  const keyTopics = parseDelimitedValues(readLegacyValue(values, ['key topics']));
+  const keyTopics = parseDelimitedValues(readLegacyValue(values, ['key topics'])).slice(0, GRAPH_METADATA_KEY_TOPIC_LIMIT);
   const triggerPhrasesFromLegacy = parseDelimitedValues(readLegacyValue(values, ['trigger phrases']));
   const triggerPhrases = Array.from(new Set([
     ...triggerPhrasesFromLegacy,
     ...keyTopics,
     ...extractKeywords(`${packetId} ${specFolder} ${summary}`).slice(0, 8),
-  ]));
+  ])).slice(0, GRAPH_METADATA_TRIGGER_PHRASE_LIMIT);
   const sourceDocs = parseDelimitedValues(readLegacyValue(values, ['source docs']));
   const toPacketReferences = (raw: string | undefined): PacketReference[] => {
     return parseDelimitedValues(raw).map((packet) => ({
@@ -290,7 +294,7 @@ function parseLegacyGraphMetadataContent(content: string): LegacyGraphMetadataPa
         key_topics: keyTopics,
         importance_tier: readLegacyValue(values, ['importance tier']) ?? 'normal',
         status: normalizeDerivedStatus(readLegacyValue(values, ['status'])) ?? 'planned',
-        key_files: parseDelimitedValues(readLegacyValue(values, ['key files'])),
+        key_files: parseDelimitedValues(readLegacyValue(values, ['key files'])).slice(0, GRAPH_METADATA_KEY_FILE_LIMIT),
         entities: [],
         causal_summary: summary,
         created_at: createdAt.value,
@@ -542,6 +546,13 @@ function isAbsolutePathCandidate(candidate: string): boolean {
     || path.win32.isAbsolute(normalized);
 }
 
+function hasParentDirectorySegment(candidate: string): boolean {
+  return candidate
+    .replace(/\\/g, '/')
+    .split('/')
+    .some((segment) => segment === '..');
+}
+
 function keepKeyFile(candidate: string): boolean {
   const normalized = candidate.trim().replace(/\\/g, '/');
   if (!normalized) {
@@ -554,7 +565,7 @@ function keepKeyFile(candidate: string): boolean {
   if (normalized.startsWith('`') && normalized.endsWith('`')) {
     return false;
   }
-  if (normalized.startsWith('../')) {
+  if (hasParentDirectorySegment(normalized)) {
     return false;
   }
   if (KEY_FILE_COMMAND_START_RE.test(normalized)) {
@@ -725,6 +736,9 @@ function buildKeyFileLookupPaths(
   }
 
   const normalized = candidate.replace(/\\/g, '/').replace(/^\.\//, '');
+  if (hasParentDirectorySegment(normalized)) {
+    return [];
+  }
   const lookups = new Set<string>();
 
   lookups.add(path.resolve(specFolderPath, normalized));
@@ -767,6 +781,9 @@ function resolveKeyFileCandidate(
     return null;
   }
   if (isAbsolutePathCandidate(candidate)) {
+    return null;
+  }
+  if (hasParentDirectorySegment(normalized)) {
     return null;
   }
 
@@ -909,7 +926,7 @@ function deriveEntities(
     }
   }
 
-  return Array.from(entities.values()).slice(0, 24);
+  return Array.from(entities.values()).slice(0, GRAPH_METADATA_ENTITY_LIMIT);
 }
 
 function normalizeUnique(values: string[]): string[] {
@@ -939,7 +956,7 @@ function deriveKeyFiles(specFolderPath: string, specFolder: string, docs: Parsed
   const resolved = merged
     .map((candidate) => resolveKeyFileCandidate(specFolderPath, specFolder, candidate))
     .filter((candidate): candidate is string => Boolean(candidate));
-  return normalizeUnique(resolved).slice(0, 20);
+  return normalizeUnique(resolved).slice(0, GRAPH_METADATA_KEY_FILE_LIMIT);
 }
 
 function deriveKeyTopics(docs: ParsedSpecDoc[], triggerPhrases: string[], causalSummary: string): string[] {
@@ -948,7 +965,7 @@ function deriveKeyTopics(docs: ParsedSpecDoc[], triggerPhrases: string[], causal
     causalSummary,
     ...docs.flatMap((doc) => [doc.title, doc.description].filter((value): value is string => Boolean(value))),
   ].join(' ');
-  return extractKeywords(source).slice(0, 12);
+  return extractKeywords(source).slice(0, GRAPH_METADATA_KEY_TOPIC_LIMIT);
 }
 
 function deriveCausalSummary(docs: ParsedSpecDoc[]): string {
@@ -1050,7 +1067,7 @@ export function deriveGraphMetadata(
   const docs = collectedDocs.docs;
   const specFolder = resolveSpecFolderPath(specFolderPath);
   const packetId = specFolder;
-  const triggerPhrases = normalizeUnique(docs.flatMap((doc) => doc.triggerPhrases)).slice(0, 12);
+  const triggerPhrases = normalizeUnique(docs.flatMap((doc) => doc.triggerPhrases)).slice(0, GRAPH_METADATA_TRIGGER_PHRASE_LIMIT);
   const causalSummary = deriveCausalSummary(docs);
   const keyFiles = deriveKeyFiles(specFolderPath, specFolder, docs);
   const keyTopics = deriveKeyTopics(docs, triggerPhrases, causalSummary);

@@ -9,6 +9,10 @@ export const GRAPH_METADATA_DOCUMENT_TYPE = 'graph_metadata' as const;
 export const GRAPH_METADATA_FILENAME = 'graph-metadata.json' as const;
 export const GRAPH_METADATA_MIGRATED_QUALITY_FLAG = 'graph_metadata_migrated' as const;
 export const SAVE_LINEAGE_VALUES = ['description_only', 'graph_only', 'same_pass'] as const;
+export const GRAPH_METADATA_TRIGGER_PHRASE_LIMIT = 12;
+export const GRAPH_METADATA_KEY_TOPIC_LIMIT = 12;
+export const GRAPH_METADATA_KEY_FILE_LIMIT = 20;
+export const GRAPH_METADATA_ENTITY_LIMIT = 24;
 export type GraphMetadataMigrationSource = 'legacy';
 export type SaveLineage = typeof SAVE_LINEAGE_VALUES[number];
 
@@ -34,12 +38,12 @@ export const graphMetadataManualSchema = z.object({
 });
 
 export const graphMetadataDerivedSchema = z.object({
-  trigger_phrases: z.array(z.string().min(1)),
-  key_topics: z.array(z.string().min(1)),
+  trigger_phrases: z.array(z.string().min(1)).max(GRAPH_METADATA_TRIGGER_PHRASE_LIMIT),
+  key_topics: z.array(z.string().min(1)).max(GRAPH_METADATA_KEY_TOPIC_LIMIT),
   importance_tier: z.string().min(1),
   status: z.string().min(1),
-  key_files: z.array(z.string().min(1)),
-  entities: z.array(graphEntityReferenceSchema),
+  key_files: z.array(z.string().min(1)).max(GRAPH_METADATA_KEY_FILE_LIMIT),
+  entities: z.array(graphEntityReferenceSchema).max(GRAPH_METADATA_ENTITY_LIMIT),
   causal_summary: z.string(),
   created_at: z.string().datetime({ offset: true }),
   last_save_at: z.string().datetime({ offset: true }),

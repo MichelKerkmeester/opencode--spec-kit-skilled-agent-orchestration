@@ -10,9 +10,9 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation"
     last_updated_at: "2026-04-21T00:00:00Z"
     last_updated_by: "codex"
-    recent_action: "Generated ADR placeholder"
-    next_safe_action: "Add ADRs during remediation"
-    completion_pct: 0
+    recent_action: "Recorded remediation blocker"
+    next_safe_action: "Resolve source packet docs"
+    completion_pct: 20
 ---
 # Decision Record: 002-spec-structure-and-validation Spec Structure and Validation Remediation
 <!-- SPECKIT_LEVEL: 3 -->
@@ -27,7 +27,7 @@ _memory:
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-21 |
 | **Deciders** | Orchestrator |
 
@@ -117,3 +117,90 @@ The consolidated 006 campaign review produced a large finding set that needs imp
 **How to roll back**: Ask the orchestrator to remove or replace this packet before implementation begins.
 <!-- /ANCHOR:adr-001-impl -->
 <!-- /ANCHOR:adr-001 -->
+
+---
+
+### ADR-002: Runtime Fix With Blocked Recursive Packet Closeout
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-21 |
+| **Deciders** | Codex |
+
+---
+
+### Context
+
+CF-176 named a live compiler validation failure caused by zero-edge graph metadata for `sk-deep-research` and `sk-git`. CF-207 also required recursive validation of the parent `002-skill-advisor-graph` packet, but the current recursive validator output still reports structural and integrity errors in historical child packet docs that are outside this assignment's write authority.
+
+### Constraints
+
+- Writes are limited to cited code files, their tests, and this sub-phase folder.
+- Historical source packet spec docs outside this sub-phase cannot be edited here.
+- Completion claims must reflect current command output.
+
+---
+
+### Decision
+
+**We chose**: Close the runtime graph-health slice and leave recursive packet validation blocked.
+
+**How it works**: The graph metadata now gives `sk-deep-research` and `sk-git` reciprocal sibling edges so compiler validation has no orphan skills. The advisor health wrapper treats the embedded `skill-advisor` graph node as an intentional graph-only node while still reporting any other inventory mismatch as degraded.
+
+---
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| Fix runtime graph slice only | Respects write authority and removes live compiler failure | Leaves historical packet-doc validation failures open | 8/10 |
+| Edit all failing historical packet docs | Could close recursive validation | Violates the user-provided write boundary | 1/10 |
+| Mark CF-207 complete despite recursive failure | Matches requested happy path | False completion claim | 0/10 |
+
+**Why this one**: It is the only option that improves live behavior while preserving the safety boundary and truthfulness of validation evidence.
+
+---
+
+### Consequences
+
+**What improves**:
+- `skill_graph_compiler.py --validate-only` now exits 0.
+- `skill_advisor.py --health` now reports `status: ok` when `skill-advisor` is the only graph-only node.
+
+**What it costs**:
+- CF-207 cannot be closed in this sub-phase until the source packet docs are authorized for repair.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Recursive validation remains red | P0 closeout is blocked | Keep T010 and CHK-020 open with blocker evidence |
+| A future graph-only node appears unintentionally | Health could hide mismatch | Allowlist contains only `skill-advisor`; all other graph-only nodes still degrade health |
+
+---
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Live compiler validation exited 2 before the fix |
+| 2 | **Beyond Local Maxima?** | PASS | Considered source-doc edits and false completion |
+| 3 | **Sufficient?** | PARTIAL | Runtime graph slice is sufficient; recursive packet validation remains blocked |
+| 4 | **Fits Goal?** | PARTIAL | Fixes one P1 runtime blocker without violating scope |
+| 5 | **Open Horizons?** | PASS | Keeps explicit handoff for remaining doc remediation |
+
+**Checks Summary**: 3/5 PASS, 2/5 PARTIAL
+
+---
+
+### Implementation
+
+**What changes**:
+- Add reciprocal graph edges for the two orphan skills named by CF-176.
+- Preserve advisor health parity by allowlisting only the internal `skill-advisor` graph node as graph-only.
+- Add vitest coverage for compiler validation and advisor health status.
+
+**How to roll back**: Revert the graph metadata edge additions, health allowlist, and the new vitest file through orchestrator-owned git flow.

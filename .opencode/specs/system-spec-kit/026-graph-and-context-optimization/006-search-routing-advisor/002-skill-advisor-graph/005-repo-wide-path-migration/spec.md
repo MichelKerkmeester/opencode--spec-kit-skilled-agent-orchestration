@@ -33,7 +33,7 @@ This closeout pass restores the packet to the active Level 3 scaffold, adds the 
 
 **Key Decisions**: Keep packet edits limited to spec docs and packet JSON, preserve migration history without preserving forbidden literals, and mark completion only from direct repo evidence.
 
-**Critical Dependencies**: `../../../../../skill/skill-advisor/README.md`, `../../../../../skill/README.md`, `../../../../../skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md`, `../../../../../skill/skill-advisor/graph-metadata.json`
+**Critical Dependencies**: `../../../../../../skill/system-spec-kit/mcp_server/skill-advisor/README.md`, `../../../../../../skill/system-spec-kit/README.md`, `../../../../../../skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md`, `../../../../../../skill/system-spec-kit/mcp_server/skill-advisor/graph-metadata.json`
 
 <!-- ANCHOR:metadata -->
 ## 1. METADATA
@@ -142,8 +142,8 @@ Finish Phase 005 by making the packet truthfully describe the shipped migration,
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `../../../../../skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md` and the playbook snippets must already use the migrated runtime paths | If playbook work was not actually shipped, this packet would overstate completion | Verify current repo state before marking the relevant tasks and checklist items complete |
-| Dependency | `../../../../../skill/skill-advisor/README.md` and `../../../../../skill/README.md` must already describe the current layout | If either README still points at the retired layout, packet closeout is not truthful | Use direct repo reads and path checks as evidence |
+| Dependency | `../../../../../../skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md` and the playbook snippets must already use the migrated runtime paths | If playbook work was not actually shipped, this packet would overstate completion | Verify current repo state before marking the relevant tasks and checklist items complete |
+| Dependency | `../../../../../../skill/system-spec-kit/mcp_server/skill-advisor/README.md` and `../../../../../../skill/system-spec-kit/README.md` must already describe the current layout | If either README still points at the retired layout, packet closeout is not truthful | Use direct repo reads and path checks as evidence |
 | Risk | A historical note could reintroduce the forbidden literals inside another 007 packet doc | Grep-zero requirement would still fail | Rephrase legacy references in prose and re-run scoped grep before closeout |
 | Risk | Packet docs could claim completion without real validator or runtime proof | The phase would appear closed when it is not | Attach command-backed evidence in checklist and implementation summary only after running the checks |
 | Risk | Cross-reference cleanup could break strict packet integrity checks | Validation would remain blocked even after content rewrites | Prefer existing sibling files and correct relative paths, or replace fragile file references with prose |

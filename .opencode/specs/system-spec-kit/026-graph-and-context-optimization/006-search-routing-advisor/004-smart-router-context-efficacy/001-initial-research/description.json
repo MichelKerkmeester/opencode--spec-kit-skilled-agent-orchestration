@@ -4,7 +4,7 @@
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research",
   "keywords": [
     "initial-research",
-    "021 001 research charter"
+    "004 001 research charter"
   ],
   "lastUpdated": "2026-04-21T14:30:00Z",
   "specId": "001",
@@ -16,12 +16,12 @@
     "004-smart-router-context-efficacy"
   ],
   "migration": {
-    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy/001-initial-research",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research",
     "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research",
     "renumbered_at": "2026-04-21T14:30:00Z",
     "layout": "phase-root-local-sequence",
     "aliases": [
-      "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy/001-initial-research",
+      "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research",
       "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research"
     ]
   }
