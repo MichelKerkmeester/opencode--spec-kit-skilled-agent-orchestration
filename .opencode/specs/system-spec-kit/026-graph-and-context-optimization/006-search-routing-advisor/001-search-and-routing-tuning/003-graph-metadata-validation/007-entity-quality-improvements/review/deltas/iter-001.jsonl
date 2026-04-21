@@ -1,0 +1,1 @@
+{"type":"delta","iteration":1,"dimension":"correctness","newFindings":[{"id":"DR-COR-001","severity":"P2"},{"id":"DR-COR-002","severity":"P2"}],"refinedFindings":[],"resolvedFindings":[],"churn":0.18,"newFindingsRatio":0.18,"summary":"Found two correctness advisories: suffix overmatch risk and incomplete direct test breadth for runtime-name rejection."}

@@ -1,0 +1,1 @@
+{"type":"delta","iteration":4,"dimension":"maintainability","newFindings":["F004"],"refinedFindings":["F001"],"newFindingsRatio":0.14,"churn":0.14,"summary":"Verification summary leaves strict validation as a rerun note rather than result evidence."}

@@ -1,0 +1,1 @@
+{"type":"delta","iteration":1,"dimension":"correctness","filesReviewed":["spec.md","plan.md","tasks.md","checklist.md","implementation-summary.md"],"newFindings":[{"id":"P2-001","severity":"P2","title":"Implementation summary keeps a stale validator-warning limitation"}],"newFindingsRatio":0.08,"churn":0.08,"timestamp":"2026-04-21T17:45:10Z"}

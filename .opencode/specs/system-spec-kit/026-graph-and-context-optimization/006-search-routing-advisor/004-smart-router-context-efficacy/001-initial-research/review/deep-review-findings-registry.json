@@ -1,0 +1,206 @@
+{
+  "mode": "review",
+  "sessionId": "drv-004-smart-router-context-efficacy-001",
+  "target": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research",
+  "iterationsRun": 10,
+  "dimensionCoverage": {
+    "correctness": {
+      "covered": true,
+      "iterations": [
+        1,
+        5,
+        9
+      ]
+    },
+    "security": {
+      "covered": true,
+      "iterations": [
+        2,
+        6,
+        10
+      ]
+    },
+    "traceability": {
+      "covered": true,
+      "iterations": [
+        3,
+        7
+      ]
+    },
+    "maintainability": {
+      "covered": true,
+      "iterations": [
+        4,
+        8
+      ]
+    }
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 3
+  },
+  "openFindings": [
+    {
+      "id": "DR-P1-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "REQ-011 cross-runtime delta table is not delivered",
+      "status": "open",
+      "evidence": [
+        "../spec.md:103",
+        "../spec.md:104",
+        "research/research.md:39",
+        "research/research.md:41",
+        "research/research-validation.md:61",
+        "research/research-validation.md:68"
+      ],
+      "summary": "The parent requires a per-runtime context-load savings table, but the research provides qualitative parity and a future cross-runtime replay plan."
+    },
+    {
+      "id": "DR-P1-002",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Canonical root spec-kit docs are absent for the reviewed packet",
+      "status": "open",
+      "evidence": [
+        "spec.md:21",
+        "spec.md:63",
+        "spec.md:69",
+        "directory listing: only spec.md, description.json, graph-metadata.json at packet root"
+      ],
+      "summary": "The reviewed root lacks plan.md, tasks.md, checklist.md, decision-record.md, and implementation-summary.md, making checklist evidence and completion state unreviewable at the phase root."
+    },
+    {
+      "id": "DR-P1-003",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Completed research state still advertises initialized and legacy 021 lineage",
+      "status": "open",
+      "evidence": [
+        "research/deep-research-config.json:7",
+        "research/deep-research-config.json:9",
+        "research/deep-research-state.jsonl:1",
+        "research/deep-research-state.jsonl:23",
+        "graph-metadata.json:49",
+        "graph-metadata.json:52"
+      ],
+      "summary": "The config remains initialized while the state log is completed, and the first state line still points at the legacy 021 path after migration to the 006/004 layout."
+    },
+    {
+      "id": "DR-P1-004",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Plugin proposal omits explicit manifest and concrete hook registration detail required by REQ-010",
+      "status": "open",
+      "evidence": [
+        "../spec.md:103",
+        "research/research-validation.md:22",
+        "research/research-validation.md:33",
+        "research/research-validation.md:51",
+        "research/research-validation.md:56"
+      ],
+      "summary": "The proposal lists files, settings, and install steps, but does not specify the manifest artifact or exact hook registration contract named in the parent acceptance criteria."
+    },
+    {
+      "id": "DR-P1-005",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Empirical measurement protocol is deferred rather than delivered as fixture prompts plus AI harness",
+      "status": "open",
+      "evidence": [
+        "../spec.md:97",
+        "research/research.md:63",
+        "research/research.md:65",
+        "research/research-validation.md:59",
+        "research/research-validation.md:68",
+        "research/iterations/iteration-018.md:20"
+      ],
+      "summary": "The packet defines the measurements to collect in a future replay, but does not provide a concrete fixture prompt set plus executable AI harness artifact as required by REQ-002."
+    },
+    {
+      "id": "DR-P2-001",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Status diagnostics are called prompt-safe but do not define a redaction allowlist",
+      "status": "open",
+      "evidence": [
+        "research/research-validation.md:31",
+        "research/research-validation.md:33",
+        "research/research-validation.md:46",
+        "research/research-validation.md:49"
+      ],
+      "summary": "The proposed status tool reports sanitized errors, but the packet does not define the sanitation contract that prevents prompt-bearing diagnostics from being exposed."
+    },
+    {
+      "id": "DR-P2-002",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Default-on rollout remains blocked by adversarial and blind-following follow-up tests",
+      "status": "open",
+      "evidence": [
+        "research/research.md:37",
+        "research/research.md:57",
+        "research/iterations/iteration-016.md:20",
+        "research/iterations/iteration-018.md:24"
+      ],
+      "summary": "The research correctly identifies blind-following and adversarial corpus gaps, but those gaps should stay explicit gates before default-on plugin use."
+    },
+    {
+      "id": "DR-P2-003",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "Completion language can read stronger than the convergence evidence",
+      "status": "open",
+      "evidence": [
+        "../spec.md:96",
+        "research/iterations/iteration-020.md:21",
+        "research/deep-research-state.jsonl:23"
+      ],
+      "summary": "The parent asks for converged validation, while the final iteration and state log say the loop stopped by max iteration because the strict rolling threshold was not met."
+    },
+    {
+      "id": "DR-P2-004",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Migrated packet metadata still exposes legacy 021 trigger phrases",
+      "status": "open",
+      "evidence": [
+        "spec.md:3",
+        "spec.md:5",
+        "description.json:3",
+        "description.json:7",
+        "graph-metadata.json:15",
+        "graph-metadata.json:16",
+        "graph-metadata.json:35"
+      ],
+      "summary": "Legacy 021 wording remains in the title metadata and derived graph metadata even after migration to the 006/004 path."
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "convergenceScore": {
+    "newFindingsRatios": [
+      0.46,
+      0.15,
+      0.5,
+      0.03,
+      0.25,
+      0.03,
+      0.2,
+      0.02,
+      0.02,
+      0.01
+    ],
+    "severityWeightedNewFindingsRatioLatest": 0.01,
+    "dimensionCoverageComplete": true,
+    "activeP0": 0,
+    "stuckCount": 3,
+    "stopReason": "maxIterationsReached"
+  },
+  "verdict": {
+    "result": "CONDITIONAL",
+    "hasAdvisories": true,
+    "rule": "P0 -> FAIL; >=5 P1 -> CONDITIONAL; else PASS"
+  }
+}

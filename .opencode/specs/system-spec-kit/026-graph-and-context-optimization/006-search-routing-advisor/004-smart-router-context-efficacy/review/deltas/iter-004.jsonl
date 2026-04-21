@@ -1,0 +1,1 @@
+{"iteration":4,"dimension":"maintainability","newFindings":["DR-MNT-001","DR-MNT-002"],"repeatedFindings":[],"severityCounts":{"P0":0,"P1":2,"P2":0},"newFindingsRatio":0.31,"churn":0.31,"continue":true}

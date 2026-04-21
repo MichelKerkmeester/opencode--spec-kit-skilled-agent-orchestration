@@ -1,0 +1,80 @@
+{
+  "mode": "review",
+  "sessionId": "rvw-2026-04-21T17-45-10Z",
+  "target": "003-skill-advisor-packaging",
+  "dimensionCoverage": {
+    "correctness": 3,
+    "security": 3,
+    "traceability": 2,
+    "maintainability": 2
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 2
+  },
+  "openFindings": [
+    {
+      "id": "P1-001",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Catalog count and snippet-section claims are stale against the shipped catalog",
+      "status": "open",
+      "evidence": [
+        "spec.md:119",
+        "spec.md:218",
+        "checklist.md:83",
+        "decision-record.md:109",
+        "decision-record.md:132",
+        "decision-record.md:134",
+        "decision-record.md:171",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/feature_catalog/feature_catalog.md:31",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/feature_catalog/01--daemon-and-freshness/01-watcher.md:13"
+      ],
+      "summary": "The packet still says 18 per-feature catalog files follow a 4-section snippet contract, while the current root catalog describes 42 features across 8 groups and a sampled feature file has a table of contents plus five numbered sections."
+    },
+    {
+      "id": "P2-001",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "Implementation summary keeps a stale validator-warning limitation",
+      "status": "open",
+      "evidence": [
+        "implementation-summary.md:81",
+        "implementation-summary.md:91"
+      ],
+      "summary": "The current strict validation run passed with 0 errors and 0 warnings, but the implementation summary still records remaining validator warnings."
+    },
+    {
+      "id": "P2-002",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "ADR-002 preserves the pre-Phase-027 catalog model",
+      "status": "open",
+      "evidence": [
+        "decision-record.md:109",
+        "decision-record.md:132",
+        "decision-record.md:171",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/feature_catalog/feature_catalog.md:31"
+      ],
+      "summary": "The decision history still records the old 18-file catalog decision and does not explain the later expansion to the 42-feature catalog."
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [
+    {
+      "id": "P1-001",
+      "iterations": [
+        3,
+        7,
+        8
+      ]
+    }
+  ],
+  "convergenceScore": {
+    "newFindingsRatioLast": 0.02,
+    "dimensionCoverage": 1,
+    "p0Block": false,
+    "stopReason": "maxIterationsReached"
+  }
+}

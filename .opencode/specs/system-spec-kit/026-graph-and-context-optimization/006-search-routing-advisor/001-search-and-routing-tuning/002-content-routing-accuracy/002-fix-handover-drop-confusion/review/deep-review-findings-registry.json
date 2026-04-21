@@ -1,0 +1,296 @@
+{
+  "sessionId": "drv-2026-04-21T17-16-00Z-handover-drop-confusion",
+  "generation": 1,
+  "lineageMode": "new",
+  "openFindings": [
+    {
+      "findingId": "F001",
+      "severity": "P1",
+      "title": "Packet completion surfaces overstate closure while checklist work remains open",
+      "file": "checklist.md",
+      "line": 13,
+      "description": "The packet is marked complete and the continuity block reports 100% completion even though the checklist still contains unresolved P1/P2 verification work.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F002",
+      "severity": "P1",
+      "title": "Renumbered packet still cites a dead sibling research path",
+      "file": "plan.md",
+      "line": 13,
+      "description": "The packet still points at `../research/research.md`, but the preserved research lives under the root `research/010-search-and-routing-tuning-pt-02/` tree after migration.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F003",
+      "severity": "P1",
+      "title": "description.json parentChain still carries the obsolete 010 phase slug",
+      "file": "description.json",
+      "line": 14,
+      "description": "The migrated packet path is `.../001-search-and-routing-tuning/...`, but `parentChain` still records `010-search-and-routing-tuning`, so lineage metadata no longer matches the packet's real location.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F004",
+      "severity": "P1",
+      "title": "Packet evidence anchors still point at pre-growth code line ranges",
+      "file": "plan.md",
+      "line": 13,
+      "description": "The packet docs and checklist still cite `content-router.ts:369-378`, `868-877`, and `904-920`, but the implemented seam now lives at later lines, so the packet's own evidence no longer lands on the claimed code.",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 8,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F005",
+      "severity": "P1",
+      "title": "Continuity metadata hides the packet's remaining verification follow-up",
+      "file": "implementation-summary.md",
+      "line": 26,
+      "description": "The continuity block declares `completion_pct: 100`, `blockers: []`, and no open questions even though the packet still records unresolved evidence work and a broader benchmark follow-up.",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 8,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F006",
+      "severity": "P2",
+      "title": "Decision record frontmatter still says planned after the packet completed",
+      "file": "decision-record.md",
+      "line": 3,
+      "description": "The ADR body reflects a shipped decision, but the frontmatter status remains `planned`, leaving the packet's doc state internally inconsistent.",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 8,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "blockedStopHistory": [],
+  "persistentSameSeverity": [
+    {
+      "findingId": "F001",
+      "severity": "P1",
+      "title": "Packet completion surfaces overstate closure while checklist work remains open",
+      "file": "checklist.md",
+      "line": 13,
+      "description": "The packet is marked complete and the continuity block reports 100% completion even though the checklist still contains unresolved P1/P2 verification work.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F002",
+      "severity": "P1",
+      "title": "Renumbered packet still cites a dead sibling research path",
+      "file": "plan.md",
+      "line": 13,
+      "description": "The packet still points at `../research/research.md`, but the preserved research lives under the root `research/010-search-and-routing-tuning-pt-02/` tree after migration.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F003",
+      "severity": "P1",
+      "title": "description.json parentChain still carries the obsolete 010 phase slug",
+      "file": "description.json",
+      "line": 14,
+      "description": "The migrated packet path is `.../001-search-and-routing-tuning/...`, but `parentChain` still records `010-search-and-routing-tuning`, so lineage metadata no longer matches the packet's real location.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F004",
+      "severity": "P1",
+      "title": "Packet evidence anchors still point at pre-growth code line ranges",
+      "file": "plan.md",
+      "line": 13,
+      "description": "The packet docs and checklist still cite `content-router.ts:369-378`, `868-877`, and `904-920`, but the implemented seam now lives at later lines, so the packet's own evidence no longer lands on the claimed code.",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 8,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F005",
+      "severity": "P1",
+      "title": "Continuity metadata hides the packet's remaining verification follow-up",
+      "file": "implementation-summary.md",
+      "line": 26,
+      "description": "The continuity block declares `completion_pct: 100`, `blockers: []`, and no open questions even though the packet still records unresolved evidence work and a broader benchmark follow-up.",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 8,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F006",
+      "severity": "P2",
+      "title": "Decision record frontmatter still says planned after the packet completed",
+      "file": "decision-record.md",
+      "line": 3,
+      "description": "The ADR body reflects a shipped decision, but the frontmatter status remains `planned`, leaving the packet's doc state internally inconsistent.",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 8,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    }
+  ],
+  "severityChanged": [],
+  "repeatedFindings": [
+    {
+      "findingId": "F001",
+      "severity": "P1"
+    },
+    {
+      "findingId": "F002",
+      "severity": "P1"
+    },
+    {
+      "findingId": "F003",
+      "severity": "P1"
+    },
+    {
+      "findingId": "F004",
+      "severity": "P1"
+    },
+    {
+      "findingId": "F005",
+      "severity": "P1"
+    },
+    {
+      "findingId": "F006",
+      "severity": "P2"
+    }
+  ],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 1
+  },
+  "openFindingsCount": 6,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 0.07,
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "corruptionWarnings": []
+}

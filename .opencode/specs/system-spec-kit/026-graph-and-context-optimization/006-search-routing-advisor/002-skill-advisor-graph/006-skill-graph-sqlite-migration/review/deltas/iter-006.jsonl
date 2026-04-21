@@ -1,0 +1,1 @@
+{"type":"delta","iteration":6,"dimension":"security","newFindings":["F-007"],"severityCounts":{"P0":1,"P1":4,"P2":1},"newFindingsRatio":0.28,"churn":0.28,"coverage":["correctness","security","traceability","maintainability"],"stopDecision":"continue","notes":"Scan root override has destructive behavior without an explicit destructive guard."}

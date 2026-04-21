@@ -1,0 +1,1 @@
+{"type":"delta","iteration":1,"dimension":"correctness","newFindings":["F001","F002"],"refinedFindings":[],"newFindingsRatio":0.32,"churn":0.32,"summary":"Found strict-validation claim mismatch and stale JSONL config path."}

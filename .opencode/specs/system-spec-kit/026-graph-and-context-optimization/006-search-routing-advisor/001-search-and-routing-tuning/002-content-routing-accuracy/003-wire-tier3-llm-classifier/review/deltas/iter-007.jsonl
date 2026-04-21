@@ -1,0 +1,1 @@
+{"type":"delta","mode":"review","run":7,"dimension":"traceability","focus":"Traceability review of migrated packet metadata after phase renumbering","findingRefs":["F004"],"findingsNew":{"P0":0,"P1":1,"P2":0},"findingsSummary":{"P0":1,"P1":3,"P2":1},"newFindingsRatio":0.27,"timestamp":"2026-04-21T17:48:00Z"}

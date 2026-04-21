@@ -1,0 +1,53 @@
+{
+  "topic": "Deep review: graph metadata enrichment packet",
+  "mode": "review",
+  "reviewTarget": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
+  "sessionId": "rvw-2026-04-21T14-45-00Z-004-graph-metadata-enrichment",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "maxIterations": 10,
+  "convergenceThreshold": 0.1,
+  "rollingStopThreshold": 0.08,
+  "noProgressThreshold": 0.05,
+  "stuckThreshold": 3,
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": [
+      "spec_code",
+      "checklist_evidence"
+    ],
+    "overlay": [
+      "feature_catalog_code",
+      "playbook_capability"
+    ]
+  },
+  "qualityGateThreshold": true,
+  "releaseReadinessState": "in-progress",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment",
+  "createdAt": "2026-04-21T14:45:00Z",
+  "completedAt": "2026-04-21T15:20:00Z",
+  "executionMode": "auto",
+  "status": "complete",
+  "stop_reason": "maxIterationsReached",
+  "finalVerdict": "CONDITIONAL",
+  "hasAdvisories": true,
+  "fileProtection": {
+    "deep-review-config.json": "initialized-then-finalized",
+    "deep-review-state.jsonl": "append-only",
+    "deep-review-findings-registry.json": "auto-generated",
+    "deep-review-strategy.md": "mutable",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once",
+    "deltas/iter-*.jsonl": "write-once"
+  },
+  "writeBoundary": "review/** only"
+}

@@ -1,0 +1,159 @@
+{
+  "mode": "review",
+  "target": "006-skill-graph-sqlite-migration",
+  "status": "complete",
+  "dimensionCoverage": {
+    "correctness": {
+      "iterations": [1, 5, 9],
+      "covered": true
+    },
+    "security": {
+      "iterations": [2, 6, 10],
+      "covered": true
+    },
+    "traceability": {
+      "iterations": [3, 7],
+      "covered": true
+    },
+    "maintainability": {
+      "iterations": [4, 8],
+      "covered": true
+    }
+  },
+  "findingsBySeverity": {
+    "P0": ["F-001"],
+    "P1": ["F-002", "F-003", "F-004", "F-005", "F-007"],
+    "P2": ["F-006", "F-008"]
+  },
+  "openFindings": [
+    {
+      "id": "F-001",
+      "severity": "P0",
+      "dimension": "correctness",
+      "title": "Recursive skill graph scan ingests a non-skill graph-metadata fixture and can leave the SQLite graph empty",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts:320",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts:365",
+        ".opencode/skill/system-spec-kit/mcp_server/context-server.ts:1478",
+        ".opencode/skill/system-spec-kit/scripts/test-fixtures/053-template-compliant-level2/graph-metadata.json:1"
+      ],
+      "impact": "The default startup scan walks recursively under .opencode/skill and parses every graph-metadata.json as a skill metadata document. The current tree contains a spec-packet graph-metadata fixture without skill_id/family/category, so parsing throws before the transaction indexes the graph. The server catches the failure and continues, leaving skill_graph_* tools empty or stale.",
+      "recommendation": "Make discovery match the skill surface: top-level .opencode/skill/*/graph-metadata.json plus the explicit nested skill-advisor metadata, or skip known non-skill fixture/spec metadata by schema discriminator before parsing."
+    },
+    {
+      "id": "F-002",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Session bootstrap does not include the required skill graph topology summary",
+      "status": "open",
+      "evidence": [
+        "spec.md:151",
+        "checklist.md:109",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:272"
+      ],
+      "impact": "The spec and checklist require session bootstrap to include skill topology, family distribution, hub skills, edge count, and staleness. The current bootstrap payload only composes resume, health, code-graph structural context, and next actions.",
+      "recommendation": "Add a skill graph section to session_bootstrap using the SQLite graph status/query helpers, with degraded or unavailable certainty when the graph is absent."
+    },
+    {
+      "id": "F-003",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "skill_graph_query leaks nested source paths and content hashes in several response shapes",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/query.ts:113",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/query.ts:120",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/query.ts:134",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/query.ts:182"
+      ],
+      "impact": "The strip helper removes sourcePath/contentHash only from top-level array items. Relationship, hub, transitive_path, and subgraph results contain nested node objects where sourcePath and contentHash remain visible, exposing local filesystem layout and source hashes through MCP responses.",
+      "recommendation": "Normalize all response shapes through a recursive public-node serializer that omits sourcePath/contentHash before JSON serialization."
+    },
+    {
+      "id": "F-004",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Packet documentation is not synchronized with the implemented state",
+      "status": "open",
+      "evidence": [
+        "spec.md:37",
+        "tasks.md:14",
+        "checklist.md:16",
+        "description.json:8",
+        "graph-metadata.json:31"
+      ],
+      "impact": "The packet frontmatter says the migration was implemented, but the spec status is Planned, every task and checklist item is unchecked, and both decision-record.md and implementation-summary.md are absent. Release-readiness and completion claims cannot be audited from the packet.",
+      "recommendation": "Reconcile tasks/checklist with evidence, add implementation-summary.md, add or explicitly defer decision-record.md, and update derived status metadata after validation."
+    },
+    {
+      "id": "F-005",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Advisor runtime still silently falls back to legacy skill-graph.json",
+      "status": "open",
+      "evidence": [
+        "spec.md:140",
+        "checklist.md:78",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:721",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:737",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:744"
+      ],
+      "impact": "The runtime path is specified as SQLite-backed, with JSON export retained for offline compatibility. The advisor currently accepts JSON fallback and even auto-compiles JSON when both SQLite and JSON are absent, which masks SQLite index failures and prevents CHK-050/CHK-055 from proving runtime migration.",
+      "recommendation": "Make SQLite the authoritative runtime path. If compatibility fallback remains, expose it as an explicit degraded mode with a clear health failure and tests proving routing does not silently pass as migrated."
+    },
+    {
+      "id": "F-006",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Skill graph validation rules are duplicated across database, status, validate, and compiler paths",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts:89",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/status.ts:16",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/validate.ts:13",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py:34"
+      ],
+      "impact": "Allowed families, edge types, supported schema versions, and weight bands are copied into multiple modules across TypeScript and Python. Any future rule change can drift between ingest, live validation, health, and export.",
+      "recommendation": "Centralize TypeScript constants and generate or validate the Python compiler's rules against the same canonical contract."
+    },
+    {
+      "id": "F-007",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "skill_graph_scan can erase the live graph when pointed at an empty workspace directory",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/scan.ts:29",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/scan.ts:39",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts:433",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts:520"
+      ],
+      "impact": "The tool allows any skillsRoot under the workspace. If that directory exists but contains no skill metadata, indexSkillMetadata calls deleteMissingNodes with an empty skill id list and deletes all skill_nodes, cascading all edges. A mistaken MCP call can wipe the graph without a confirmation or dry run.",
+      "recommendation": "Reject empty scans for non-default roots unless an explicit destructive flag is set, or scope deletion to nodes previously indexed from the same canonical root."
+    },
+    {
+      "id": "F-008",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "skill_graph_status reports isHealthy true while weight-band violations exist",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/status.ts:189",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/status.ts:194"
+      ],
+      "impact": "The handler computes weightBandViolations but does not include them in isHealthy. Operators can receive a healthy status even when the same payload reports validation drift.",
+      "recommendation": "Either include advisory violation state in a separate hasWarnings field or make isHealthy reflect all validation findings according to the release gate semantics."
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "convergenceScore": {
+    "allDimensionsCovered": true,
+    "p0Open": true,
+    "lastRatios": [0.04, 0.03],
+    "stuckCount": 2,
+    "decision": "stop_max_iterations"
+  },
+  "updatedAt": "2026-04-21T00:00:00Z"
+}

@@ -1,0 +1,1 @@
+{"type":"delta","mode":"review","iteration":4,"dimension":"maintainability","findingsAdded":["DRFC-P2-006","DRFC-P2-007"],"findingsRefined":[],"findingsSummary":{"P0":0,"P1":4,"P2":3},"newFindingsRatio":0.08,"churn":0.08,"notes":"Maintainability pass found catalog-root naming drift and stale continuity metadata."}

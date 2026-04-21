@@ -1,0 +1,7 @@
+{
+  "status": "complete",
+  "stop_reason": "max_iterations_reached_p0_blockers_open",
+  "sessionId": "deep-review-2026-04-21-10iter-skill-advisor-graph",
+  "verdict": "FAIL",
+  "completed_at": "2026-04-21T14:30:00Z"
+}

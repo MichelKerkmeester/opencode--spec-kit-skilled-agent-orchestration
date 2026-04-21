@@ -1,0 +1,169 @@
+{
+  "mode": "review",
+  "sessionId": "rvw-2026-04-21T00-00-00Z-008-deep-skill-feature-catalogs",
+  "status": "complete",
+  "verdict": "CONDITIONAL",
+  "hasAdvisories": true,
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 3
+  },
+  "openFindings": [
+    {
+      "id": "DRFC-P1-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Packet completion state is stale relative to shipped catalogs",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/spec.md:34",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/tasks.md:18",
+        ".opencode/skill/sk-deep-research/feature_catalog/feature_catalog.md:26",
+        ".opencode/skill/sk-deep-review/feature_catalog/feature_catalog.md:26",
+        ".opencode/skill/sk-improve-agent/feature_catalog/feature_catalog.md:25"
+      ],
+      "iterations": [
+        1,
+        5,
+        9
+      ],
+      "status": "open"
+    },
+    {
+      "id": "DRFC-P1-002",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Feature-count acceptance criteria understate the implemented catalog surface",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/spec.md:103",
+        ".opencode/skill/sk-deep-research/feature_catalog/feature_catalog.md:26",
+        ".opencode/skill/sk-deep-review/feature_catalog/feature_catalog.md:26",
+        ".opencode/skill/sk-improve-agent/feature_catalog/feature_catalog.md:25"
+      ],
+      "iterations": [
+        1,
+        5,
+        9
+      ],
+      "status": "open"
+    },
+    {
+      "id": "DRFC-P1-003",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Pattern-source references point to the obsolete skill-advisor path",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/plan.md:36",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/graph-metadata.json:41",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/feature_catalog/feature_catalog.md:13"
+      ],
+      "iterations": [
+        3,
+        7
+      ],
+      "status": "open"
+    },
+    {
+      "id": "DRFC-P1-004",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Level 3 review packet is missing decision-record.md and implementation-summary.md",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/spec.md:24",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/graph-metadata.json:199"
+      ],
+      "iterations": [
+        3,
+        7
+      ],
+      "status": "open"
+    },
+    {
+      "id": "DRFC-P1-008",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "Strict spec validation fails Level 3 structural, anchor, frontmatter, and integrity gates",
+      "evidence": [
+        "review/validation-summary.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/plan.md:1",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/tasks.md:1",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/checklist.md:1"
+      ],
+      "iterations": [
+        10
+      ],
+      "status": "open"
+    },
+    {
+      "id": "DRFC-P2-005",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Checklist has no privacy/security pass for publishing operational source paths",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/checklist.md:18",
+        ".opencode/skill/sk-improve-agent/feature_catalog/feature_catalog.md:25"
+      ],
+      "iterations": [
+        2,
+        6,
+        10
+      ],
+      "status": "open"
+    },
+    {
+      "id": "DRFC-P2-006",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Catalog-root naming guidance conflicts between the packet and sk-doc reference",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/spec.md:66",
+        ".opencode/skill/sk-doc/references/specific/feature_catalog_creation.md:62",
+        ".opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_template.md:82"
+      ],
+      "iterations": [
+        4,
+        8
+      ],
+      "status": "open"
+    },
+    {
+      "id": "DRFC-P2-007",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Continuity frontmatter still routes the next safe action to implementation",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/spec.md:16",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/plan.md:8",
+        ".opencode/skill/sk-deep-review/feature_catalog/feature_catalog.md:26"
+      ],
+      "iterations": [
+        4,
+        8
+      ],
+      "status": "open"
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [
+    "DRFC-P1-001",
+    "DRFC-P1-002",
+    "DRFC-P1-003",
+    "DRFC-P1-004",
+    "DRFC-P1-008",
+    "DRFC-P2-005",
+    "DRFC-P2-006",
+    "DRFC-P2-007"
+  ],
+  "convergenceScore": {
+    "latestNewFindingsRatio": 0.12,
+    "latestChurn": 0.12,
+    "dimensionCoverage": 1,
+    "stopReason": "maxIterationsReached"
+  }
+}

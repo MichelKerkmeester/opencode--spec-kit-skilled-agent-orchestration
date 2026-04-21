@@ -1,0 +1,1 @@
+{"type":"iteration_delta","mode":"review","iteration":10,"dimension":"security","newFindings":[],"refinedFindings":["F006"],"counts":{"P0":0,"P1":5,"P2":5},"newFindingsRatio":0.04,"churn":0.04,"summary":"Final security pass found no code vulnerability; loop stopped at max iterations."}

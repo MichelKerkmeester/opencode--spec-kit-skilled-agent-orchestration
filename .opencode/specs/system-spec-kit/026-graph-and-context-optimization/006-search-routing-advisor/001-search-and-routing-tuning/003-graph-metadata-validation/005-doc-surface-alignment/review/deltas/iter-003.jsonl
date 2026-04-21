@@ -1,0 +1,1 @@
+{"type":"iteration_delta","iteration":3,"dimension":"traceability","newFindings":["DR-P1-001"],"findingsNew":{"P0":0,"P1":1,"P2":0},"findingsSummary":{"P0":1,"P1":1,"P2":0},"newFindingsRatio":0.3333,"churn":0.3333,"filesReviewed":["description.json","graph-metadata.json","spec.md","implementation-summary.md"],"decision":"continue","reason":"new stale parent-chain finding"}

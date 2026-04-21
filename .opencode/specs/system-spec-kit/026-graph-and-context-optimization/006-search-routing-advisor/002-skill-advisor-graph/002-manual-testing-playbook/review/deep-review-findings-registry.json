@@ -1,0 +1,160 @@
+{
+  "mode": "review",
+  "sessionId": "rvw-2026-04-21-manual-testing-playbook",
+  "status": "complete",
+  "dimensionCoverage": {
+    "correctness": 3,
+    "security": 3,
+    "traceability": 2,
+    "maintainability": 2
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 4
+  },
+  "openFindings": [
+    {
+      "id": "F001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Packet routes operators to a non-existent Skill Advisor package root",
+      "evidence": [
+        "spec.md:73",
+        "spec.md:104",
+        "graph-metadata.json:41",
+        "graph-metadata.json:48"
+      ],
+      "summary": "The packet normalizes and references `.opencode/skill/skill-advisor/...`, but the live files are under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/...`."
+    },
+    {
+      "id": "F002",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "The reviewed 24-scenario corpus no longer matches the live 47-scenario playbook",
+      "evidence": [
+        "spec.md:30",
+        "spec.md:56",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:40",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:101"
+      ],
+      "summary": "The packet describes 24 scenarios in four legacy groups, while the live package contains 47 scenarios across ten groups."
+    },
+    {
+      "id": "F003",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Completion metadata contradicts verification state",
+      "evidence": [
+        "spec.md:40",
+        "tasks.md:40",
+        "tasks.md:79",
+        "checklist.md:38",
+        "checklist.md:79",
+        "graph-metadata.json:39"
+      ],
+      "summary": "The spec and tasks claim completion, but the checklist has no checked items, graph metadata still says planned, and implementation-summary.md is absent."
+    },
+    {
+      "id": "F004",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "The specified 5-section RCAF template contract is incompatible with live scenario files",
+      "evidence": [
+        "spec.md:87",
+        "spec.md:95",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/01--native-mcp-tools/001-native-recommend-happy-path.md:13",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/01--native-mcp-tools/001-native-recommend-happy-path.md:24"
+      ],
+      "summary": "The packet requires OVERVIEW/CURRENT REALITY/TEST EXECUTION/SOURCE FILES/SOURCE METADATA snippets, but live scenarios use SCENARIO/SETUP/STEPS/EXPECTED/FAILURE MODES/RELATED."
+    },
+    {
+      "id": "F005",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Current prompt-leakage release gates are omitted from the packet acceptance scope",
+      "evidence": [
+        "spec.md:120",
+        "spec.md:132",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:101",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/01--native-mcp-tools/001-native-recommend-happy-path.md:56"
+      ],
+      "summary": "The live playbook makes prompt leakage a release blocker, but the packet's success criteria only validate template and path shape."
+    },
+    {
+      "id": "F006",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "graph-metadata key_files is stale and truncated against the current surface",
+      "evidence": [
+        "graph-metadata.json:40",
+        "graph-metadata.json:60",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:42",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:55"
+      ],
+      "summary": "The derived key_files list contains legacy sample files and stops before the current 47-scenario package can be represented."
+    },
+    {
+      "id": "F007",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Decision record documents obsolete expansion assumptions",
+      "evidence": [
+        "decision-record.md:40",
+        "decision-record.md:72",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:42"
+      ],
+      "summary": "ADR-001 says 16 files grew from stubs to 5-section snippets; the live package is now native-first and 47 scenarios wide."
+    },
+    {
+      "id": "F008",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "description parentChain still points at the old 011 phase identifier",
+      "evidence": [
+        "description.json:14",
+        "description.json:19",
+        "description.json:30",
+        "description.json:36"
+      ],
+      "summary": "The current path is under `002-skill-advisor-graph`, but parentChain still contains `011-skill-advisor-graph`, increasing resume/navigation ambiguity."
+    },
+    {
+      "id": "F009",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "Task evidence is summary-only and cannot reproduce the claimed checks",
+      "evidence": [
+        "tasks.md:40",
+        "tasks.md:79",
+        "checklist.md:38",
+        "checklist.md:79"
+      ],
+      "summary": "Tasks claim checks such as 48 RCAF prompts and 5 sections verified, but no command output or checked checklist evidence anchors remain in the packet."
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [
+    "F001",
+    "F002",
+    "F003",
+    "F004",
+    "F005"
+  ],
+  "convergenceScore": {
+    "newFindingsRatios": [
+      0.42,
+      0.22,
+      0.24,
+      0.12,
+      0.18,
+      0.07,
+      0.11,
+      0.06,
+      0.05,
+      0.03
+    ],
+    "stopReason": "maxIterationsReached",
+    "verdict": "CONDITIONAL"
+  }
+}

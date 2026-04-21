@@ -1,0 +1,1 @@
+{"type":"delta","iteration":10,"dimension":"security","newFindings":[],"severityCounts":{"P0":1,"P1":5,"P2":2},"newFindingsRatio":0.03,"churn":0.03,"coverage":["correctness","security","traceability","maintainability"],"stopDecision":"stop_max_iterations","notes":"Reached max iterations with open P0; final verdict must be FAIL."}

@@ -1,0 +1,162 @@
+{
+  "sessionId": "rvw-2026-04-21T14-45-00Z-004-graph-metadata-enrichment",
+  "mode": "review",
+  "status": "complete",
+  "stopReason": "maxIterationsReached",
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 6,
+    "P2": 3
+  },
+  "openFindings": [
+    {
+      "id": "F001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Packet claims a review-baseline file that is missing, and strict validation fails on it",
+      "evidence": [
+        "spec.md:51",
+        "spec.md:144",
+        "checklist.md:43",
+        "tasks.md:46"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F002",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Recorded compiler validation command is stale and the current compiler validation does not pass",
+      "evidence": [
+        "spec.md:134",
+        "plan.md:109",
+        "checklist.md:68",
+        "implementation-summary.md:81"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F003",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "The exact corpus-count command recorded as evidence now returns 22, not 21",
+      "evidence": [
+        "checklist.md:65",
+        "tasks.md:106",
+        "implementation-summary.md:78"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F004",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Checklist evidence for graph-metadata key_files does not match the actual graph-metadata.json",
+      "evidence": [
+        "checklist.md:57",
+        "graph-metadata.json:43",
+        "graph-metadata.json:64",
+        "graph-metadata.json:215"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F005",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Moved packet metadata still exposes the old 011 phase as the current parent chain in places",
+      "evidence": [
+        "description.json:2",
+        "description.json:18",
+        "decision-record.md:38",
+        "decision-record.md:136"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F006",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "The recorded regression command writes outside the packet boundary and points at a stale tool path",
+      "evidence": [
+        "plan.md:123",
+        "tasks.md:109",
+        "checklist.md:78"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F007",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "Timestamp terminology is split between packet rules that prefer last_updated_at and graph metadata that stores last_save_at",
+      "evidence": [
+        "spec.md:170",
+        "spec.md:210",
+        "graph-metadata.json:213"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F008",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "The packet hard-codes a point-in-time corpus count without defining the inclusion rule for fixtures",
+      "evidence": [
+        "spec.md:147",
+        "implementation-summary.md:90",
+        "checklist.md:65"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F009",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "ADR-002 lacks the anchor coverage and heading structure used by ADR-001",
+      "evidence": [
+        "decision-record.md:29",
+        "decision-record.md:128"
+      ],
+      "status": "open"
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [
+    {
+      "id": "F001",
+      "repeatedIn": [
+        5,
+        9
+      ]
+    },
+    {
+      "id": "F002",
+      "repeatedIn": [
+        5,
+        10
+      ]
+    },
+    {
+      "id": "F006",
+      "repeatedIn": [
+        6,
+        10
+      ]
+    }
+  ],
+  "convergenceScore": {
+    "latestNewFindingsRatio": 0.02,
+    "dimensionCoverage": 1,
+    "activeP0": 0,
+    "activeP1": 6,
+    "stuckCount": 3,
+    "terminalReason": "maxIterationsReached"
+  }
+}

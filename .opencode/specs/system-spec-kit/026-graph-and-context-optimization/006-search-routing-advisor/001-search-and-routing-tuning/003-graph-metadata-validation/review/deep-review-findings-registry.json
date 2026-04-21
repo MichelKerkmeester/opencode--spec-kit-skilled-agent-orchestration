@@ -1,0 +1,178 @@
+{
+  "sessionId": "rvw-2026-04-21T17-40-00Z-003-graph-metadata-validation",
+  "parentSessionId": null,
+  "generation": 1,
+  "lineageMode": "new",
+  "continuedFromRun": null,
+  "terminalStop": {
+    "stopReason": "maxIterationsReached",
+    "totalIterations": 10,
+    "timestamp": "2026-04-21T19:05:00Z"
+  },
+  "status": "COMPLETE",
+  "openFindings": [
+    {
+      "findingId": "F001",
+      "severity": "P1",
+      "title": "Root packet lineage still points at the pre-renumbering parent in canonical docs",
+      "file": "spec.md",
+      "line": 6,
+      "description": "The root packet still declares the old 010 parent while graph-metadata resolves the packet under the current 001 lineage.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 3,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F002",
+      "severity": "P1",
+      "title": "Packet closeout surfaces overstate root refresh completion",
+      "file": "tasks.md",
+      "line": 13,
+      "description": "Checklist and implementation-summary claims still say the root packet was refreshed even though stale lineage remains in the root docs.",
+      "dimension": "traceability",
+      "firstSeen": 7,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 7,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F003",
+      "severity": "P1",
+      "title": "Documented 16-entity cap drifts from live parser behavior",
+      "file": "spec.md",
+      "line": 30,
+      "description": "The packet documents a 16-entity ceiling, but the parser currently slices derived entities to 24.",
+      "dimension": "correctness",
+      "firstSeen": 1,
+      "lastSeen": 1,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 1,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F004",
+      "severity": "P1",
+      "title": "Documented derived-field caps are not enforced by the schema validator",
+      "file": "spec.md",
+      "line": 27,
+      "description": "The packet documents hard caps for multiple derived arrays, but the schema accepts unbounded arrays for those fields.",
+      "dimension": "correctness",
+      "firstSeen": 5,
+      "lastSeen": 5,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 5,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F005",
+      "severity": "P1",
+      "title": "Level-3 root packet is missing the required decision record surface",
+      "file": "AGENTS.md",
+      "line": 260,
+      "description": "The root packet declares level 3 but does not provide decision-record.md, weakening recoverable rationale.",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 4,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F006",
+      "severity": "P1",
+      "title": "Derived key_files still store the same parser file under mixed path formats",
+      "file": "graph-metadata.json",
+      "line": 41,
+      "description": "The root packet still carries non-canonical duplicate references for the same parser file in derived key_files.",
+      "dimension": "maintainability",
+      "firstSeen": 8,
+      "lastSeen": 8,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 8,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F007",
+      "severity": "P2",
+      "title": "Derived entity list still contains low-signal heading fragments",
+      "file": "graph-metadata.json",
+      "line": 126,
+      "description": "Low-signal fragments such as \"Background Every\" and \"Should Fix\" still survive into derived entities.",
+      "dimension": "correctness",
+      "firstSeen": 9,
+      "lastSeen": 9,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 9,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "blockedStopHistory": [],
+  "persistentSameSeverity": [],
+  "severityChanged": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 6,
+    "P2": 1
+  },
+  "openFindingsCount": 7,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 0.55,
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "corruptionWarnings": []
+}

@@ -1,0 +1,1 @@
+{"type":"delta","mode":"review","run":2,"dimension":"security","focus":"Security review of Tier 3 rollout gating and outbound egress","findingRefs":["F001"],"findingsNew":{"P0":1,"P1":0,"P2":0},"findingsSummary":{"P0":1,"P1":0,"P2":1},"newFindingsRatio":0.58,"timestamp":"2026-04-21T17:24:00Z"}

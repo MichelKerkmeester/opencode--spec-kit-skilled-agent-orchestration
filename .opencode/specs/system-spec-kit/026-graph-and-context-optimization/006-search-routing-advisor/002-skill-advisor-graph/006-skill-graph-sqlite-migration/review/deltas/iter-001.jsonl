@@ -1,0 +1,1 @@
+{"type":"delta","iteration":1,"dimension":"correctness","newFindings":["F-001"],"severityCounts":{"P0":1,"P1":0,"P2":0},"newFindingsRatio":1.0,"churn":1.0,"coverage":["correctness"],"stopDecision":"continue","notes":"Initial pass found a P0 startup/indexing blocker in recursive metadata discovery."}

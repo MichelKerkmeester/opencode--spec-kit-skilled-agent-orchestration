@@ -1,0 +1,1 @@
+{"type":"delta","iteration":2,"dimension":"security","newFindings":["F004"],"refinedFindings":[],"findingsNew":{"P0":0,"P1":0,"P2":1},"newFindingsRatio":0.12,"churn":0.12,"coverage":["correctness","security"],"timestamp":"2026-04-21T15:45:02Z"}

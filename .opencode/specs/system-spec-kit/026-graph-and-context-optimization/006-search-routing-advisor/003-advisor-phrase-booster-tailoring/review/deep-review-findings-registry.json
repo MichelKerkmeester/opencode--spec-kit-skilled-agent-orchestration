@@ -1,0 +1,168 @@
+{
+  "mode": "review",
+  "sessionId": "rvw-2026-04-21T00-00-00Z-advisor-phrase-booster-tailoring",
+  "dimensionCoverage": {
+    "correctness": 3,
+    "security": 3,
+    "traceability": 2,
+    "maintainability": 2
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 5
+  },
+  "convergenceScore": {
+    "latestNewFindingsRatio": 0.04,
+    "lastThreeChurn": [
+      0.07,
+      0.05,
+      0.04
+    ],
+    "stuckThreshold": 3,
+    "dimensionCoverageComplete": true,
+    "stopReason": "maxIterationsReached"
+  },
+  "openFindings": [
+    {
+      "id": "F001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Regression command in the spec omits the required --dataset argument",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py:8",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py:242",
+        "spec.md:122",
+        "tasks.md:54",
+        "tasks.md:80"
+      ],
+      "summary": "The current harness requires --dataset, while the packet's documented REQ-003/T001/T020 commands omit it. The exact command exits 2; the current-path command with --dataset exits 0."
+    },
+    {
+      "id": "F002",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "REQ-001 verification evidence uses stale line ranges that do not include INTENT_BOOSTERS",
+      "evidence": [
+        "spec.md:120",
+        "plan.md:85",
+        "plan.md:120",
+        "scratch/phrase-boost-delta.md:102",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1154",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1418"
+      ],
+      "summary": "The proof command scans lines 496-726, but INTENT_BOOSTERS currently starts at line 1154 and PHRASE_INTENT_BOOSTERS at 1418. The invariant is currently true by AST inspection, but the recorded hard-gate evidence is not testing it."
+    },
+    {
+      "id": "F003",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "REQ-010/CHK-032 claims five confidence uplifts even though four measured rows held at +0.00",
+      "evidence": [
+        "spec.md:130",
+        "tasks.md:82",
+        "checklist.md:84",
+        "scratch/phrase-boost-delta.md:88",
+        "scratch/phrase-boost-delta.md:89",
+        "scratch/phrase-boost-delta.md:90",
+        "scratch/phrase-boost-delta.md:91",
+        "scratch/phrase-boost-delta.md:92"
+      ],
+      "summary": "Only the 5-dimension query shows the required +0.10 uplift/correction. The other four representative rows are valid high-confidence holds, but the checked assertion says all five show uplift or NONE-to-match."
+    },
+    {
+      "id": "F004",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Spec and generated metadata point to a non-existent advisor path",
+      "evidence": [
+        "spec.md:54",
+        "spec.md:106",
+        "spec.md:107",
+        "implementation-summary.md:18",
+        "implementation-summary.md:78",
+        "graph-metadata.json:42",
+        "graph-metadata.json:53",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1154"
+      ],
+      "summary": "The reviewed packet repeatedly names .opencode/skill/skill-advisor/..., which is missing in the current repo. The actual advisor lives under .opencode/skill/system-spec-kit/mcp_server/skill-advisor/...."
+    },
+    {
+      "id": "F005",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "graph-metadata.json still advertises the completed packet as planned",
+      "evidence": [
+        "graph-metadata.json:40",
+        "implementation-summary.md:26",
+        "implementation-summary.md:49",
+        "checklist.md:125",
+        "description.json:11"
+      ],
+      "summary": "Implementation summary and checklist show completion, but memory graph metadata still derives status=planned, which can misroute resume/search surfaces."
+    },
+    {
+      "id": "F006",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Rollback instructions recommend git checkout against stale paths",
+      "evidence": [
+        "plan.md:179",
+        "plan.md:227",
+        "scratch/phrase-boost-delta.md:195"
+      ],
+      "summary": "Rollback guidance uses git checkout and stale paths. That is risky operational advice in this repo's safety model and likely will not target the actual files after the path move."
+    },
+    {
+      "id": "F007",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "Checklist evidence index references scratch/multi-word-inventory.md, but the artifact is absent",
+      "evidence": [
+        "checklist.md:59",
+        "checklist.md:134",
+        "tasks.md:87"
+      ],
+      "summary": "The cleanup task allows transient inventory removal, but the checklist still uses that file as evidence for CHK-010."
+    },
+    {
+      "id": "F008",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "decision-record.md is absent from the requested review corpus",
+      "evidence": [
+        "review invocation requested decision-record.md",
+        "folder listing contains spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, description.json, graph-metadata.json, and scratch files, but no decision-record.md"
+      ],
+      "summary": "Level 2 does not require a decision record, so this is advisory, but the requested corpus includes it and it does not exist."
+    },
+    {
+      "id": "F009",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Delta report uses approximate old line references for new PHRASE additions",
+      "evidence": [
+        "scratch/phrase-boost-delta.md:69",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1418",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1623"
+      ],
+      "summary": "The delta report says to inspect lines ~830-900, but PHRASE entries now live around 1418-1632. This is not behavior-breaking, but slows follow-up verification."
+    },
+    {
+      "id": "F010",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "tasks.md remains entirely unchecked despite implementation-summary/checklist completion",
+      "evidence": [
+        "tasks.md:54",
+        "tasks.md:67",
+        "tasks.md:80",
+        "implementation-summary.md:49",
+        "checklist.md:125"
+      ],
+      "summary": "Completion state is split: checklist and implementation summary say complete, while task rows remain [ ]."
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": []
+}

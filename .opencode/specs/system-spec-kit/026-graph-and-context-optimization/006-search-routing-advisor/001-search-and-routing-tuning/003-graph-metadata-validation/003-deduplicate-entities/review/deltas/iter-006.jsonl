@@ -1,0 +1,1 @@
+{"type":"delta","mode":"review","run":6,"dimension":"security","findingRefs":[],"findingsNew":{"P0":0,"P1":0,"P2":0},"newFindingsRatio":0.1,"summary":"No new security issue after rechecking path handling and generated metadata."}

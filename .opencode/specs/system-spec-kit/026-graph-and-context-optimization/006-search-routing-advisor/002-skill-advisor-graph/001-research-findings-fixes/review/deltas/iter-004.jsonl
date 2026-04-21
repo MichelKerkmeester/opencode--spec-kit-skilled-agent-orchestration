@@ -1,0 +1,1 @@
+{"type":"iteration_delta","iteration":4,"dimension":"maintainability","newFindings":["DR-007"],"refinedFindings":[],"findingsSummary":{"P0":0,"P1":4,"P2":2},"newFindingsRatio":0.16,"churn":0.16,"convergence":{"coveredDimensions":["correctness","security","traceability","maintainability"],"p0Blocks":false,"continue":true}}

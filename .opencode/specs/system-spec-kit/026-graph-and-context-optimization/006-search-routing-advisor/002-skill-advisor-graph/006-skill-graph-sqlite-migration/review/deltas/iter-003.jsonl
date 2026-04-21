@@ -1,0 +1,1 @@
+{"type":"delta","iteration":3,"dimension":"traceability","newFindings":["F-002"],"severityCounts":{"P0":1,"P1":2,"P2":0},"newFindingsRatio":0.5,"churn":0.5,"coverage":["correctness","security","traceability"],"stopDecision":"continue","notes":"Bootstrap success criteria have no implementation in session_bootstrap."}

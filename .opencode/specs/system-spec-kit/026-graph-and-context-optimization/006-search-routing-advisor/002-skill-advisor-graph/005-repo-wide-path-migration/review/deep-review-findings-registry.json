@@ -1,0 +1,194 @@
+{
+  "mode": "review",
+  "sessionId": "rvw-2026-04-21-005-repo-wide-path-migration",
+  "updatedAt": "2026-04-21T14:41:00Z",
+  "dimensionsCovered": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
+  "dimensionCoverage": {
+    "correctness": {
+      "covered": true,
+      "iterations": [
+        1,
+        5,
+        9
+      ]
+    },
+    "security": {
+      "covered": true,
+      "iterations": [
+        2,
+        6,
+        10
+      ]
+    },
+    "traceability": {
+      "covered": true,
+      "iterations": [
+        3,
+        7
+      ]
+    },
+    "maintainability": {
+      "covered": true,
+      "iterations": [
+        4,
+        8
+      ]
+    }
+  },
+  "findingsBySeverity": {
+    "P0": 1,
+    "P1": 4,
+    "P2": 2
+  },
+  "openFindings": [
+    {
+      "id": "F001",
+      "severity": "P0",
+      "dimension": "correctness",
+      "title": "Packet claims strict validation passes, but current strict validation fails",
+      "status": "open",
+      "evidence": [
+        "spec.md:112 defines REQ-001 as strict validation exiting 0 or 1, never 2.",
+        "plan.md:59 marks strict packet validation complete.",
+        "implementation-summary.md:87 claims strict validation passed with exit 0 and 0 warnings.",
+        "Current review run: validate.sh exited 2 with SPEC_DOC_INTEGRITY errors for 15 missing markdown references and one continuity freshness warning."
+      ],
+      "impact": "The packet cannot truthfully remain complete while its primary P0 completion gate fails.",
+      "remediation": "Update stale evidence paths, rerun strict validation, and only then restore complete status."
+    },
+    {
+      "id": "F002",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Runtime verification paths point to a deleted skill-advisor location",
+      "status": "open",
+      "evidence": [
+        "plan.md:119-120 uses .opencode/skill/skill-advisor/scripts/*.py commands.",
+        "tasks.md:69-71 and checklist.md:64-66 mark those commands complete.",
+        "implementation-summary.md:83-85 records PASS results for the same deleted path.",
+        "Current review run: .opencode/skill/skill-advisor does not exist; the live scripts are under .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/."
+      ],
+      "impact": "A future operator following the packet cannot reproduce the recorded verification commands.",
+      "remediation": "Rewrite command evidence to the current nested skill-advisor path and refresh command outputs."
+    },
+    {
+      "id": "F003",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Current compiler validation fails even at the live nested path",
+      "status": "open",
+      "evidence": [
+        "checklist.md:65 claims skill graph metadata validation passes.",
+        "implementation-summary.md:84 records VALIDATION PASSED.",
+        "Current review run at .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py --validate-only returned exit 2 with zero-edge warnings for sk-deep-research and sk-git."
+      ],
+      "impact": "The packet overstates graph metadata health; changing only command paths would still not make the validation evidence true.",
+      "remediation": "Resolve the current graph metadata validation errors or downgrade the packet completion claims until they are resolved."
+    },
+    {
+      "id": "F004",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Grep-zero and scope claims still target the old 011/007 root after the packet moved to 002",
+      "status": "open",
+      "evidence": [
+        "spec.md:32, spec.md:115, and spec.md:133 require checks over 011-skill-advisor-graph.",
+        "decision-record.md:49 and checklist.md:67 repeat the 011-root gate.",
+        "Current review run: no 011-skill-advisor-graph directory exists under the current 006-search-routing-advisor parent; the active phase root is 002-skill-advisor-graph."
+      ],
+      "impact": "The completion gate can be satisfied against a historical alias while missing stale references under the active root.",
+      "remediation": "Rebase the grep-zero gate and related prose to the current 002-skill-advisor-graph root, preserving old paths only as explicit aliases in metadata."
+    },
+    {
+      "id": "F005",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "description.json parentChain disagrees with the current packet location",
+      "status": "open",
+      "evidence": [
+        "description.json:14-19 lists parentChain ending in 011-skill-advisor-graph.",
+        "graph-metadata.json:3-5 correctly places the packet under 006-search-routing-advisor/002-skill-advisor-graph.",
+        "description.json:25 and graph-metadata.json:246 both identify the current spec folder as 002-skill-advisor-graph/005-repo-wide-path-migration."
+      ],
+      "impact": "Memory/search surfaces may route or display this packet under the wrong phase root.",
+      "remediation": "Normalize description.json parentChain to the current path and keep 011 only in aliases/migration history."
+    },
+    {
+      "id": "F006",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Continuity frontmatter is stale relative to refreshed graph metadata",
+      "status": "open",
+      "evidence": [
+        "spec.md:16, plan.md:15, tasks.md:15, checklist.md:15, decision-record.md:15, and implementation-summary.md:15 keep last_updated_at at 2026-04-13T00:00:00Z.",
+        "description.json:11 and graph-metadata.json:219 show April 21 migration/save timestamps.",
+        "Current strict validation emitted CONTINUITY_FRESHNESS warning with deltaMs=738000000."
+      ],
+      "impact": "Resume surfaces will look stale even after the packet was migrated on April 21.",
+      "remediation": "Refresh continuity frontmatter after the packet is corrected and re-saved."
+    },
+    {
+      "id": "F007",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "The packet never names the two forbidden legacy patterns it claims to grep",
+      "status": "open",
+      "evidence": [
+        "spec.md:115 and tasks.md:72 refer to two forbidden patterns without naming them.",
+        "implementation-summary.md:86 records a final scoped grep but omits the actual rg expression.",
+        "The active root now contains many stale .opencode/skill/skill-advisor/scripts references, so the unnamed pattern set is ambiguous."
+      ],
+      "impact": "Future reviewers must reverse-engineer the intended grep gate, which increases the chance of false closure.",
+      "remediation": "Record the exact rg command and patterns in the checklist and implementation summary."
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [
+    {
+      "id": "F001",
+      "iterations": [
+        1,
+        5,
+        9
+      ]
+    },
+    {
+      "id": "F002",
+      "iterations": [
+        1,
+        7,
+        9
+      ]
+    },
+    {
+      "id": "F004",
+      "iterations": [
+        3,
+        7
+      ]
+    }
+  ],
+  "convergenceScore": {
+    "newFindingsRatios": [
+      0.75,
+      0,
+      0.35,
+      0.08,
+      0.25,
+      0,
+      0.05,
+      0.06,
+      0,
+      0
+    ],
+    "stuckCount": 2,
+    "dimensionCoverageComplete": true,
+    "p0BlocksConvergence": true,
+    "stopReason": "maxIterationsReached"
+  }
+}

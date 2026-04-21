@@ -1,0 +1,1 @@
+{"type":"delta","iteration":4,"dimension":"maintainability","newFindings":[{"id":"DR-MTN-001","severity":"P2"}],"refinedFindings":[],"resolvedFindings":[],"churn":0.08,"newFindingsRatio":0.08,"summary":"Found stale graph metadata README guidance for the entity behavior shipped by this packet."}

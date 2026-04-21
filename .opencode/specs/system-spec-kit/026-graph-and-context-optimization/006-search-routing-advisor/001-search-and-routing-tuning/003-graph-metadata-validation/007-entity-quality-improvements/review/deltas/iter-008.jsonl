@@ -1,0 +1,1 @@
+{"type":"delta","iteration":8,"dimension":"maintainability","newFindings":[{"id":"DR-MTN-002","severity":"P2"}],"refinedFindings":[],"resolvedFindings":[],"churn":0.06,"newFindingsRatio":0.06,"summary":"Found ambiguous REQ-002 wording relative to the implemented external-doc skip."}

@@ -1,0 +1,188 @@
+{
+  "mode": "review",
+  "sessionId": "rvw-2026-04-21T17-44-46Z",
+  "dimensionsCovered": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
+  "dimensionCoverage": {
+    "correctness": 3,
+    "security": 3,
+    "traceability": 2,
+    "maintainability": 2
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 5
+  },
+  "openFindings": [
+    {
+      "id": "F001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Completed packet claims active-only default, but implementation is inclusive by default",
+      "evidence": [
+        "tasks.md:6",
+        "implementation-summary.md:39",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:7",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:73",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:78"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F002",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Completed regression-test task describes the opposite of the checked-in test behavior",
+      "evidence": [
+        "tasks.md:8",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:78",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:117"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F003",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Graph metadata causal summary still advertises the retired migration objective",
+      "evidence": [
+        "spec.md:16",
+        "spec.md:18",
+        "graph-metadata.json:189"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F004",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "description.json parentChain retains stale 010 phase segment after renumbering to 001",
+      "evidence": [
+        "description.json:2",
+        "description.json:18",
+        "description.json:26",
+        "description.json:31"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F005",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Checklist completion depends on non-local corpus-scan evidence that is not present in the packet",
+      "evidence": [
+        "checklist.md:10",
+        "checklist.md:16",
+        "plan.md:20",
+        "plan.md:21"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F006",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Malformed --root usage silently falls back to the default root",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:89",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:90",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:91"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F007",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Spec key-files list omits the regression test that the packet relies on",
+      "evidence": [
+        "spec.md:20",
+        "spec.md:22",
+        "graph-metadata.json:34",
+        "graph-metadata.json:36"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F008",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Generated entity extraction contains low-quality placeholder entities",
+      "evidence": [
+        "graph-metadata.json:93",
+        "graph-metadata.json:99",
+        "graph-metadata.json:111",
+        "graph-metadata.json:177"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F009",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "Verification command in the plan is a mutating backfill command, not a scan-only proof",
+      "evidence": [
+        "plan.md:20",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:214",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:216"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F010",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "Requested review scope includes decision-record.md, but the Level 2 packet has no such file",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/SKILL.md:397"
+      ],
+      "status": "open",
+      "note": "Level 2 packets do not require decision-record.md, so this is an audit-scope advisory rather than a packet-completeness blocker."
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [
+    {
+      "id": "F001",
+      "iterations": [
+        1,
+        3,
+        9
+      ]
+    },
+    {
+      "id": "F006",
+      "iterations": [
+        2,
+        6,
+        10
+      ]
+    }
+  ],
+  "convergenceScore": {
+    "newFindingsRatios": [
+      0.5,
+      0.12,
+      0.5,
+      0.18,
+      0.11,
+      0.1,
+      0.1,
+      0.04,
+      0.04,
+      0.03
+    ],
+    "lastThreeChurn": [
+      0.04,
+      0.04,
+      0.03
+    ],
+    "stuckThresholdReachedAt": 10,
+    "stopReason": "maxIterationsReached"
+  }
+}

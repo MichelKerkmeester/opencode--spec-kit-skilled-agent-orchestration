@@ -1,0 +1,1 @@
+{"type":"iteration_delta","iteration":4,"dimension":"maintainability","newFindings":["DR-P1-002"],"findingsNew":{"P0":0,"P1":1,"P2":0},"findingsSummary":{"P0":1,"P1":2,"P2":0},"newFindingsRatio":0.25,"churn":0.25,"filesReviewed":[".opencode/skill/system-spec-kit/mcp_server/lib/graph/README.md"],"decision":"continue","reason":"new broken markdown table finding"}

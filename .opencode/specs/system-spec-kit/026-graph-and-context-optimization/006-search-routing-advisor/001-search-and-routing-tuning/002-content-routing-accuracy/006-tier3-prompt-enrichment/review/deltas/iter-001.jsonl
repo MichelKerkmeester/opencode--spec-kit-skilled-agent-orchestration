@@ -1,0 +1,1 @@
+{"type":"delta","mode":"review","run":1,"dimension":"correctness","findingRefs":["F001"],"findingsNew":{"P0":0,"P1":1,"P2":0},"newFindingsRatio":0.32,"summary":"Found prompt-contract drift: the public 8-category list still exposes internal alias drop_candidate.","timestamp":"2026-04-21T19:34:05+02:00"}

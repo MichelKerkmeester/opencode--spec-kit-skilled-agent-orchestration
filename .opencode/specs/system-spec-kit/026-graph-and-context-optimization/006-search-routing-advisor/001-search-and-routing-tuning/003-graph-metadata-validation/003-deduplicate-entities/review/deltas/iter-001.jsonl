@@ -1,0 +1,1 @@
+{"type":"delta","mode":"review","run":1,"dimension":"correctness","findingRefs":["F002"],"findingsNew":{"P0":0,"P1":1,"P2":0},"newFindingsRatio":0.45,"summary":"Packet cap claims contradict live 24-entity parser/test behavior."}

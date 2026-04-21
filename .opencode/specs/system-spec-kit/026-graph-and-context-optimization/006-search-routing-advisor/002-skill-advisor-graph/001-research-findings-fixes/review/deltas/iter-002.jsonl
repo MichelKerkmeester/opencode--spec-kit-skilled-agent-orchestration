@@ -1,0 +1,1 @@
+{"type":"iteration_delta","iteration":2,"dimension":"security","newFindings":[],"refinedFindings":[],"findingsSummary":{"P0":0,"P1":2,"P2":0},"newFindingsRatio":0.08,"churn":0.08,"convergence":{"coveredDimensions":["correctness","security"],"p0Blocks":false,"continue":true}}

@@ -1,0 +1,221 @@
+{
+  "mode": "review",
+  "sessionId": "deep-review-2026-04-21-10iter-skill-advisor-graph",
+  "updated_at": "2026-04-21T14:30:00Z",
+  "openFindings": [
+    {
+      "id": "F001",
+      "severity": "P0",
+      "dimension": "correctness",
+      "status": "open",
+      "firstSeen": 1,
+      "lastSeen": 9,
+      "title": "Completed compiler validation gate is false in current repo state",
+      "evidence": [
+        "Root checklist CHK-010 marks `skill_graph_compiler.py --validate-only` complete with evidence \"VALIDATION PASSED\".",
+        "Current command `python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py --validate-only` exits 2 and reports ZERO-EDGE WARNINGS for `sk-deep-research` and `sk-git`.",
+        "The same command discovers 21 skill graph-metadata files, so the failure is not from missing discovery."
+      ],
+      "impact": "The packet cannot honestly claim its P0 compiler gate complete; downstream agents following the checklist will get a hard validation failure.",
+      "remediation": "Either add legitimate graph edges for the orphan skills or intentionally downgrade zero-edge warnings so `--validate-only` exits 0, then update checklist evidence with the current command output."
+    },
+    {
+      "id": "F002",
+      "severity": "P0",
+      "dimension": "traceability",
+      "status": "open",
+      "firstSeen": 3,
+      "lastSeen": 10,
+      "title": "Strict recursive packet validation fails with active template and integrity errors",
+      "evidence": [
+        "`bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <packet> --strict` exits 2.",
+        "Root packet errors include missing required anchors, template header deviations, handover links to missing markdown files, and continuity freshness drift.",
+        "Recursive child validation reports additional Level 3 gaps, including missing `decision-record.md` in phases 006 and 008 plus many missing anchors/template sections."
+      ],
+      "impact": "The review target is not a structurally valid completed spec packet, so memory retrieval, handover, and future phase work can route through broken or stale surfaces.",
+      "remediation": "Run a dedicated packet-repair pass before claiming completion: restore active templates/anchors, fix missing handover targets, add required Level 3 files, and rerun strict validation to exit 0 or warning-only 1."
+    },
+    {
+      "id": "F003",
+      "severity": "P1",
+      "dimension": "correctness",
+      "status": "open",
+      "firstSeen": 1,
+      "lastSeen": 9,
+      "title": "Advisor health is degraded even though the packet only records graph-loaded success",
+      "evidence": [
+        "`python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --health` returns `status: degraded`.",
+        "The same output shows `skill_graph_loaded: true`, `skill_graph_source: sqlite`, and `inventory_parity.in_sync: false` because skill discovery reports 20 routable skills while the graph contains 21 nodes including `skill-advisor`.",
+        "Root checklist CHK-020 only asserts `skill_graph_loaded: true`, missing the degraded health status."
+      ],
+      "impact": "Operators can see a passing checklist while the actual health surface is degraded, which weakens Gate 2 operational readiness.",
+      "remediation": "Decide whether `skill-advisor` should be included in health parity; then adjust parity logic or checklist criteria so health status is `ok` or explicitly accepted as degraded with rationale."
+    },
+    {
+      "id": "F004",
+      "severity": "P1",
+      "dimension": "traceability",
+      "status": "open",
+      "firstSeen": 3,
+      "lastSeen": 7,
+      "title": "Parent docs and graph metadata still point at retired skill-advisor runtime paths",
+      "evidence": [
+        "Root `implementation-summary.md`, `handover.md`, and `graph-metadata.json` reference `.opencode/skill/skill-advisor/scripts/*` files.",
+        "Those paths do not exist in the current repo; live files are under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/*`.",
+        "Direct file lookup found `skill_advisor.py`, `skill_graph_compiler.py`, `skill-graph.json`, and regression fixtures only under the `system-spec-kit/mcp_server/skill-advisor` package."
+      ],
+      "impact": "Evidence links and memory metadata lead future agents to nonexistent files, making verification and repair unnecessarily brittle.",
+      "remediation": "Normalize parent docs, graph metadata, handover, and child packet references to the live package path or use a documented alias if one is intentionally supported."
+    },
+    {
+      "id": "F005",
+      "severity": "P1",
+      "dimension": "traceability",
+      "status": "open",
+      "firstSeen": 3,
+      "lastSeen": 7,
+      "title": "The requested parent decision record is absent and handover references missing review artifacts",
+      "evidence": [
+        "The target packet root has no `decision-record.md`, although the review request included it in the parent document set to read.",
+        "Strict validation reports `handover.md` references missing markdown files including `iteration-010.md`, old `011-skill-advisor-graph/...` paths, and old playbook paths.",
+        "A saved memory entry lists `../decision-record.md` and `./review/review-report.md` as canonical sources, but the root decision record and prior review report were not present before this run."
+      ],
+      "impact": "The packet continuity ladder points to unavailable material, so recovery can replay stale context or fail to reconstruct the design decisions behind the current state.",
+      "remediation": "Add or intentionally omit a parent decision record with documented rationale, then repair handover links to current packet-relative paths and existing review artifacts."
+    },
+    {
+      "id": "F006",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "status": "open",
+      "firstSeen": 4,
+      "lastSeen": 8,
+      "title": "Child phase packets mix planned state, implemented runtime state, and incomplete Level 3 scaffolds",
+      "evidence": [
+        "Phase 006 says SQLite migration is planned and has unchecked tasks, while the repo contains `skill-graph.sqlite` with 21 nodes and advisor health loads from SQLite.",
+        "Phase 006 is Level 3 but lacks `decision-record.md`; strict validation also reports missing anchors and template sections.",
+        "Phase 008 has feature catalog tasks unchecked while the three target feature_catalog directories and files exist; it also lacks Level 3 decision-record scaffolding."
+      ],
+      "impact": "Maintainers cannot tell whether these phases are backlog, implemented-but-unclosed, or failed closeout work without re-auditing the repository.",
+      "remediation": "Split truly planned work from completed runtime evidence, close implemented phases with required Level 3 docs, and move remaining tasks into explicit follow-up packets."
+    },
+    {
+      "id": "F007",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "status": "open",
+      "firstSeen": 4,
+      "lastSeen": 8,
+      "title": "Validation and closeout claims are duplicated with stale command paths and obsolete counts",
+      "evidence": [
+        "Multiple packet docs still claim 44/44 regression cases; the current regression run passes 104/104 total cases with 24/24 P0 cases.",
+        "Phase 005 claims repo-wide path migration completion, but scoped search still finds `.opencode/skill/skill-advisor/scripts/*` references across root and child docs.",
+        "Several child checklists mark command evidence against paths that are now nonexistent, so the evidence cannot be rerun as written."
+      ],
+      "impact": "The packet has become expensive to maintain because completion evidence is scattered and stale rather than centralized around the live commands.",
+      "remediation": "Create a single current verification block for compiler, health, regression, and path inventory; reference it from child packets instead of repeating mutable command text."
+    },
+    {
+      "id": "F008",
+      "severity": "P2",
+      "dimension": "correctness",
+      "status": "open",
+      "firstSeen": 1,
+      "lastSeen": 9,
+      "title": "Parent plan still carries obsolete 20-skill and 2KB targets",
+      "evidence": [
+        "Root plan Definition of Done says all 20 graph-metadata files pass validation and compiled graph is under 2KB.",
+        "Root spec and implementation summary describe 21 graph metadata files and a 4667 byte compiled graph under the later 5KB target.",
+        "Current `skill-graph.json` reports `skill_count: 21` and `wc -c` reports 4667 bytes."
+      ],
+      "impact": "This is not blocking by itself, but it causes repeated false positives during review and obscures the real acceptance threshold.",
+      "remediation": "Update the parent plan targets to 21 graph metadata files and the accepted current size budget, or record the 2KB target as a retired constraint."
+    },
+    {
+      "id": "F009",
+      "severity": "P2",
+      "dimension": "traceability",
+      "status": "open",
+      "firstSeen": 7,
+      "lastSeen": 10,
+      "title": "Packet status surfaces disagree between implemented docs and graph metadata",
+      "evidence": [
+        "Root spec marks status `Implemented`, while root `graph-metadata.json` derived status is `in_progress`.",
+        "Description metadata was refreshed on 2026-04-21, but implementation-summary continuity remains dated 2026-04-13, and strict validation flags the freshness gap.",
+        "Child phases also mix `Complete`, `Planned`, and unchecked task ledgers despite existing runtime or catalog artifacts."
+      ],
+      "impact": "Memory search and graph traversal can rank or route this packet as active/incomplete even when local docs say implemented.",
+      "remediation": "Refresh graph metadata and continuity after the packet repair, using one consistent status vocabulary across root and child packets."
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": {
+      "iterations": [
+        1,
+        5,
+        9
+      ],
+      "findings": [
+        "F001",
+        "F003",
+        "F008"
+      ]
+    },
+    "security": {
+      "iterations": [
+        2,
+        6,
+        10
+      ],
+      "findings": []
+    },
+    "traceability": {
+      "iterations": [
+        3,
+        7
+      ],
+      "findings": [
+        "F002",
+        "F004",
+        "F005",
+        "F009"
+      ]
+    },
+    "maintainability": {
+      "iterations": [
+        4,
+        8
+      ],
+      "findings": [
+        "F006",
+        "F007"
+      ]
+    }
+  },
+  "findingsBySeverity": {
+    "P0": [
+      "F001",
+      "F002"
+    ],
+    "P1": [
+      "F003",
+      "F004",
+      "F005",
+      "F006",
+      "F007"
+    ],
+    "P2": [
+      "F008",
+      "F009"
+    ]
+  },
+  "convergenceScore": {
+    "latestNewFindingsRatio": 0,
+    "allDimensionsCovered": true,
+    "p0Open": true,
+    "stuckCount": 3,
+    "finalDecision": "max_iterations_reached"
+  }
+}

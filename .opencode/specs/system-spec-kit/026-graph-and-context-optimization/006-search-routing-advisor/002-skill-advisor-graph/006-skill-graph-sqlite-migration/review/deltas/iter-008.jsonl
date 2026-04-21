@@ -1,0 +1,1 @@
+{"type":"delta","iteration":8,"dimension":"maintainability","newFindings":["F-008"],"severityCounts":{"P0":1,"P1":5,"P2":2},"newFindingsRatio":0.11,"churn":0.11,"coverage":["correctness","security","traceability","maintainability"],"stopDecision":"continue","notes":"Status health semantics under-report advisory validation drift."}

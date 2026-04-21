@@ -1,0 +1,1 @@
+{"type":"delta","iteration":5,"dimension":"correctness","newFindings":[],"refinedFindings":["F001","F002"],"newFindingsRatio":0.12,"churn":0.12,"summary":"Rechecked requirements and research synthesis; no new correctness findings beyond F001/F002."}

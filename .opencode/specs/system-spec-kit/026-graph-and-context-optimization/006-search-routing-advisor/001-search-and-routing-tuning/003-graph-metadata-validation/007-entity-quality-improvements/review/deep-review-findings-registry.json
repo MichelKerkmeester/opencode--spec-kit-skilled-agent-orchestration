@@ -1,0 +1,204 @@
+{
+  "sessionId": "rvw-2026-04-21T17-44-50Z-entity-quality-improvements",
+  "mode": "review",
+  "target": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements",
+  "openFindings": [
+    {
+      "id": "DR-TRC-001",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "description.json parentChain still points at the pre-renumbered 010 phase",
+      "evidence": [
+        "description.json:2",
+        "description.json:18",
+        "description.json:26",
+        "description.json:31"
+      ],
+      "summary": "The packet's specFolder and migration new_spec_folder use 001-search-and-routing-tuning, but parentChain still contains 010-search-and-routing-tuning. Graph traversal or parent-chain consumers can reconstruct the packet under the wrong route.",
+      "recommendation": "Regenerate or patch description.json so parentChain uses 001-search-and-routing-tuning while preserving 010 only in migration aliases."
+    },
+    {
+      "id": "DR-COR-001",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "External canonical-doc filtering can overmatch non-spec support docs by suffix",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:845",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:848",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:885"
+      ],
+      "summary": "isExternalCanonicalDocPath treats any path ending with a canonical packet-doc suffix as external if it is not the current packet, without first proving it lives under a specs root. A legitimate implementation/support file named docs/spec.md, docs/handover.md, or research/research.md could be omitted from entities.",
+      "recommendation": "Gate the external-doc skip on recognized specs-root/track-shaped paths before applying canonical packet-doc suffix matching."
+    },
+    {
+      "id": "DR-COR-002",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "Focused runtime-name test only asserts three of the nine required banned names",
+      "evidence": [
+        "spec.md:24",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:54",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:64",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:521",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:524"
+      ],
+      "summary": "The implementation set includes the required nine runtime names, but the focused test directly checks only python, node, and tsc. The remaining names could regress without this spec's named coverage failing.",
+      "recommendation": "Parameterize the test over all nine banned runtime names from the requirement."
+    },
+    {
+      "id": "DR-TRC-002",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "decision-record.md is absent from the packet reviewed by request",
+      "evidence": [
+        "spec.md:5",
+        "implementation-summary.md:83",
+        "implementation-summary.md:90"
+      ],
+      "summary": "Level 2 does not require a decision-record.md, but this review request included it in the read set and the implementation summary contains decision rationale that has no separate decision-record artifact.",
+      "recommendation": "Either create a short decision-record.md for the canonical-doc scope decisions or document that this Level 2 packet intentionally keeps decisions in implementation-summary.md."
+    },
+    {
+      "id": "DR-TRC-003",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "graph-metadata key_files retain duplicate aliases for the same runtime files",
+      "evidence": [
+        "graph-metadata.json:34",
+        "graph-metadata.json:43",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/README.md:94"
+      ],
+      "summary": "graph-metadata.json includes both .opencode/skill/system-spec-kit/... and mcp_server/... aliases for the parser and test file. Consumers cannot tell which path form is canonical, and duplicate aliases spend key-file budget.",
+      "recommendation": "Normalize key_files to one canonical path style during regeneration, or document why mixed path roots are expected."
+    },
+    {
+      "id": "DR-TRC-004",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "Implementation summary metadata collapses the full migrated packet route to a basename",
+      "evidence": [
+        "implementation-summary.md:14",
+        "implementation-summary.md:44"
+      ],
+      "summary": "Frontmatter keeps the full packet pointer, but the visible metadata table only says 007-entity-quality-improvements. After migration and renumbering, basename-only references are less useful for resume and audit trails.",
+      "recommendation": "Use the full packet pointer, or include both basename and full route in the metadata table."
+    },
+    {
+      "id": "DR-TRC-005",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "description.json lastUpdated predates its own renumbered_at migration event",
+      "evidence": [
+        "description.json:11",
+        "description.json:33"
+      ],
+      "summary": "lastUpdated is 2026-04-21T13:00:00Z while renumbered_at is 2026-04-21T14:00:00Z. Consumers using lastUpdated as freshness evidence can miss the latest migration event.",
+      "recommendation": "Refresh description.json after renumbering so lastUpdated is not older than migration.renumbered_at."
+    },
+    {
+      "id": "DR-MTN-001",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Graph metadata README still describes the older entity behavior",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/README.md:88",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/README.md:95",
+        "implementation-summary.md:58",
+        "implementation-summary.md:61"
+      ],
+      "summary": "The package README mentions deduplication and canonical preference, but does not mention the new 24-entity cap, runtime-name rejection, or external canonical-doc skip that this packet shipped.",
+      "recommendation": "Update the graph metadata derivation highlights so maintainers do not have to reconstruct entity behavior from the implementation summary."
+    },
+    {
+      "id": "DR-MTN-002",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Spec wording leaves a canonical-doc exception ambiguous against the implemented external-doc skip",
+      "evidence": [
+        "spec.md:23",
+        "spec.md:31",
+        "implementation-summary.md:88",
+        "implementation-summary.md:89",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:845",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:850"
+      ],
+      "summary": "REQ-002 says to reject out-of-scope paths unless they are valid canonical doc paths, while the final implementation explicitly skips external canonical packet docs. The success criteria support rejection, but the requirement sentence can be read the other way.",
+      "recommendation": "Clarify REQ-002 to say canonical-doc exceptions apply only to canonical docs inside the current packet."
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [
+    "DR-COR-001",
+    "DR-COR-002",
+    "DR-TRC-002"
+  ],
+  "dimensionCoverage": {
+    "correctness": {
+      "iterations": [
+        1,
+        5,
+        9
+      ],
+      "findings": [
+        "DR-COR-001",
+        "DR-COR-002"
+      ]
+    },
+    "security": {
+      "iterations": [
+        2,
+        6,
+        10
+      ],
+      "findings": []
+    },
+    "traceability": {
+      "iterations": [
+        3,
+        7
+      ],
+      "findings": [
+        "DR-TRC-001",
+        "DR-TRC-002",
+        "DR-TRC-003",
+        "DR-TRC-004",
+        "DR-TRC-005"
+      ]
+    },
+    "maintainability": {
+      "iterations": [
+        4,
+        8
+      ],
+      "findings": [
+        "DR-MTN-001",
+        "DR-MTN-002"
+      ]
+    }
+  },
+  "findingsBySeverity": {
+    "P0": [],
+    "P1": [
+      "DR-TRC-001"
+    ],
+    "P2": [
+      "DR-COR-001",
+      "DR-COR-002",
+      "DR-TRC-002",
+      "DR-TRC-003",
+      "DR-TRC-004",
+      "DR-TRC-005",
+      "DR-MTN-001",
+      "DR-MTN-002"
+    ]
+  },
+  "convergenceScore": {
+    "latestNewFindingsRatio": 0,
+    "lastTwoAverage": 0,
+    "dimensionCoverage": 1,
+    "p0Blocks": false,
+    "consecutiveLowChurnIterations": 2,
+    "stopReason": "maxIterationsReached"
+  },
+  "updatedAt": "2026-04-21T17:44:50Z"
+}

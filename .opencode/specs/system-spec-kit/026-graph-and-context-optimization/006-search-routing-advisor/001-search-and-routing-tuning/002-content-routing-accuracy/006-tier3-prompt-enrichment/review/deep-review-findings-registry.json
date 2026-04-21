@@ -1,0 +1,170 @@
+{
+  "sessionId": "rvw-006-tier3-prompt-enrichment-20260421",
+  "generation": 1,
+  "lineageMode": "new",
+  "status": "COMPLETE",
+  "openFindings": [
+    {
+      "findingId": "F001",
+      "severity": "P1",
+      "title": "Tier 3 prompt still exposes the internal drop_candidate alias",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",
+      "line": 1275,
+      "description": "The public 8-category prompt contract still includes the internal drop_candidate alias and the prompt-shape test freezes that wording.",
+      "dimension": "correctness",
+      "firstSeen": 1,
+      "lastSeen": 9,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 1,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F002",
+      "severity": "P2",
+      "title": "Continuity paragraph discloses more internal topology to Tier 3",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",
+      "line": 1273,
+      "description": "The added continuity paragraph now discloses the resume ladder and canonical continuity host to the external classifier, but no secrets are exposed.",
+      "dimension": "security",
+      "firstSeen": 2,
+      "lastSeen": 10,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 2,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F003",
+      "severity": "P1",
+      "title": "description.json parentChain still points at the old 010 segment",
+      "file": "description.json",
+      "line": 15,
+      "description": "The packet now lives under 001-search-and-routing-tuning, but description.json.parentChain still records 010-search-and-routing-tuning.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F004",
+      "severity": "P2",
+      "title": "graph-metadata key_files mixes canonical and broken shorthand paths",
+      "file": "graph-metadata.json",
+      "line": 33,
+      "description": "derived.key_files contains both canonical repo-relative paths and unresolved shorthand duplicates such as mcp_server/... and tests/....",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 8,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F005",
+      "severity": "P2",
+      "title": "graph-metadata entities retain anchor markup and noise tokens",
+      "file": "graph-metadata.json",
+      "line": 118,
+      "description": "derived.entities still contains low-signal values such as a and raw heading text with anchor comments.",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 8,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F006",
+      "severity": "P1",
+      "title": "metadata_only reaches implementation-summary only after save-handler alias resolution",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts",
+      "line": 197,
+      "description": "The packet describes implementation-summary.md as the canonical metadata_only target, but the router-level contract and tests still publish the spec-frontmatter alias and rely on memory-save.ts to translate it.",
+      "dimension": "correctness",
+      "firstSeen": 5,
+      "lastSeen": 9,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 5,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "blockedStopHistory": [],
+  "persistentSameSeverity": [
+    "F001",
+    "F002",
+    "F003",
+    "F004",
+    "F005",
+    "F006"
+  ],
+  "severityChanged": [],
+  "repeatedFindings": [
+    "F001",
+    "F002",
+    "F003",
+    "F004",
+    "F005",
+    "F006"
+  ],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 3,
+    "P2": 3
+  },
+  "openFindingsCount": 6,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 0.61,
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "terminalStop": {
+    "run": 10,
+    "stopReason": "max_iterations",
+    "timestamp": "2026-04-21T20:18:00+02:00"
+  },
+  "corruptionWarnings": []
+}

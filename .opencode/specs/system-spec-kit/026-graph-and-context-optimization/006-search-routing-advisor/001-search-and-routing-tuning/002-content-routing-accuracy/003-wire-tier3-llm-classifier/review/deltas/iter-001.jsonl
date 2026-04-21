@@ -1,0 +1,1 @@
+{"type":"delta","mode":"review","run":1,"dimension":"correctness","focus":"Correctness review of Tier 3 cache reuse and routing context boundaries","findingRefs":["F002"],"findingsNew":{"P0":0,"P1":0,"P2":1},"findingsSummary":{"P0":0,"P1":0,"P2":1},"newFindingsRatio":0.18,"timestamp":"2026-04-21T17:19:00Z"}

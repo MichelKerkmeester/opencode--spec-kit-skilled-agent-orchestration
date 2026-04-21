@@ -1,0 +1,99 @@
+{
+  "mode": "review",
+  "sessionId": "deep-review-006-key-file-resolution-20260421",
+  "updatedAt": "2026-04-21T00:00:00Z",
+  "dimensionCoverage": {
+    "correctness": 3,
+    "security": 3,
+    "traceability": 2,
+    "maintainability": 2
+  },
+  "findingsBySeverity": {
+    "P0": [],
+    "P1": [
+      "DR-SEC-001",
+      "DR-TRA-001"
+    ],
+    "P2": [
+      "DR-COR-001",
+      "DR-MNT-001",
+      "DR-TRA-002"
+    ]
+  },
+  "openFindings": [
+    {
+      "id": "DR-SEC-001",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Embedded parent-directory segments can escape intended key-file lookup roots",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:557",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:730",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:747",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/checklist.md:18"
+      ],
+      "summary": "The filter rejects candidates that start with ../, but it does not reject embedded parent segments such as a/../../target.ts before path.resolve() checks existence under multiple roots."
+    },
+    {
+      "id": "DR-TRA-001",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "description.json parentChain still points at the pre-renumbered 010 phase",
+      "status": "open",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/description.json:2",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/description.json:15",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/description.json:19",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/description.json:32"
+      ],
+      "summary": "The specFolder and migration fields identify the active path under 001-search-and-routing-tuning, but parentChain still contains 010-search-and-routing-tuning."
+    },
+    {
+      "id": "DR-COR-001",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "Corpus hit-rate evidence is prose-only and not packet-replayable",
+      "status": "open",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/implementation-summary.md:104",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/implementation-summary.md:106",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/implementation-summary.md:115"
+      ],
+      "summary": "The packet records the 100% final active-corpus result, but it does not include a packet-local command transcript or measurement artifact that lets a later reviewer replay the claim."
+    },
+    {
+      "id": "DR-MNT-001",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Stored key_files use duplicate display paths for the same implementation files",
+      "status": "open",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/graph-metadata.json:35",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/graph-metadata.json:40",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/graph-metadata.json:36",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/graph-metadata.json:43"
+      ],
+      "summary": "The same parser and test files appear once as repo-relative .opencode paths and again as system-spec-kit workspace-relative mcp_server paths."
+    },
+    {
+      "id": "DR-TRA-002",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "Requested decision-record.md review input is absent",
+      "status": "open",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution"
+      ],
+      "summary": "The Level 2 packet is not required to have a decision record, but this review request explicitly named decision-record.md as an input and the file is absent."
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "convergenceScore": {
+    "finalNewFindingsRatio": 0.01,
+    "dimensionCoverageComplete": true,
+    "p0Count": 0,
+    "stuckConsecutiveIterations": 3
+  }
+}

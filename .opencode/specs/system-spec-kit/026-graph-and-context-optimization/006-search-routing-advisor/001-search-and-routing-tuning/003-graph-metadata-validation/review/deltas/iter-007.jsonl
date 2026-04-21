@@ -1,0 +1,1 @@
+{"type":"delta","mode":"review","run":7,"dimension":"traceability","findingRefs":["F002"],"findingsNew":{"P0":0,"P1":1,"P2":0},"newFindingsRatio":0.2,"summary":"Closeout evidence still overstates root packet refresh completion."}

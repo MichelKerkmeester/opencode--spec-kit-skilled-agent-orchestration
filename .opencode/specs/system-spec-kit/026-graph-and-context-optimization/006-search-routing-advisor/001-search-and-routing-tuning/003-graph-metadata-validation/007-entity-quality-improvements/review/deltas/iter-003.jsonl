@@ -1,0 +1,1 @@
+{"type":"delta","iteration":3,"dimension":"traceability","newFindings":[{"id":"DR-TRC-001","severity":"P1"},{"id":"DR-TRC-002","severity":"P2"},{"id":"DR-TRC-003","severity":"P2"}],"refinedFindings":[],"resolvedFindings":[],"churn":0.42,"newFindingsRatio":0.42,"summary":"Found stale migrated parentChain, absent decision-record artifact, and duplicate key-file aliases."}

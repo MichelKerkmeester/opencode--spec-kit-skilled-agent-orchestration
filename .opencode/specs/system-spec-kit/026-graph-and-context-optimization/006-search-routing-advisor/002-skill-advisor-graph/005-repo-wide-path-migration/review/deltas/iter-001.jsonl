@@ -1,0 +1,1 @@
+{"type":"iteration","iteration":1,"dimensions":["correctness"],"filesReviewed":["spec.md","plan.md","tasks.md","checklist.md","implementation-summary.md"],"findingsSummary":{"P0":1,"P1":1,"P2":0},"findingsNew":{"P0":1,"P1":1,"P2":0},"newFindingsRatio":0.75,"findingRefs":["F001","F002"],"timestamp":"2026-04-21T14:04:00Z"}

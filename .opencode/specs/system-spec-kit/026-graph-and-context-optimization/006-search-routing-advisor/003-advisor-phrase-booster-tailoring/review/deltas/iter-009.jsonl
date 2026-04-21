@@ -1,0 +1,1 @@
+{"type":"iteration_delta","mode":"review","iteration":9,"dimension":"correctness","newFindings":[],"refinedFindings":["F001","F002"],"counts":{"P0":0,"P1":5,"P2":5},"newFindingsRatio":0.05,"churn":0.05,"summary":"Replayed current-path validation successfully; findings remain documentation/evidence issues."}

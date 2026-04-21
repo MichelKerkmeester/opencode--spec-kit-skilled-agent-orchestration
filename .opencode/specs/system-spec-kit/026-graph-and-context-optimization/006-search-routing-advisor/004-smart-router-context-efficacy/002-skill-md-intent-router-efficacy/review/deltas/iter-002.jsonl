@@ -1,0 +1,1 @@
+{"type":"delta","iteration":2,"dimension":"security","newFindings":["F007"],"refinedFindings":[],"newFindingsRatio":0.18,"churn":0.18,"summary":"Security checklist evidence is assertion-only for no-secret validation."}

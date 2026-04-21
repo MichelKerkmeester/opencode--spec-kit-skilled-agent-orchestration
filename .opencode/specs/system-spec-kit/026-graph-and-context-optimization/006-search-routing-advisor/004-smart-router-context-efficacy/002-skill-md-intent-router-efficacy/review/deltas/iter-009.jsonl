@@ -1,0 +1,1 @@
+{"type":"delta","iteration":9,"dimension":"correctness","newFindings":[],"refinedFindings":["F001","F002"],"newFindingsRatio":0.1,"churn":0.1,"summary":"Replayed acceptance criteria against current artifacts; no additional correctness defects found."}

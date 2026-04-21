@@ -1,0 +1,1 @@
+{"type":"delta","mode":"review","iteration":2,"dimension":"security","findingsAdded":["DRFC-P2-005"],"findingsRefined":[],"findingsSummary":{"P0":0,"P1":2,"P2":1},"newFindingsRatio":0.07,"churn":0.07,"notes":"Security pass found no direct blocker; added checklist advisory for path/privacy review."}

@@ -1,0 +1,209 @@
+{
+  "sessionId": "rvw-20260421-004-doc-surface-alignment",
+  "generation": 1,
+  "lineageMode": "new",
+  "openFindings": [
+    {
+      "findingId": "F001",
+      "severity": "P1",
+      "title": "Strict-validation success claims are stale",
+      "file": "checklist.md",
+      "line": 83,
+      "description": "The packet still claims strict validation passes, but the current validator run fails on spec documentation integrity because multiple docs reference a missing `.opencode/agent/speckit.md` surface.",
+      "dimension": "correctness",
+      "firstSeen": 1,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 1,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ],
+      "evidence": [
+        "tasks.md:79",
+        "checklist.md:83",
+        "implementation-summary.md:117",
+        "tasks.md:58",
+        "checklist.md:71",
+        "implementation-summary.md:104"
+      ]
+    },
+    {
+      "findingId": "F002",
+      "severity": "P1",
+      "title": "Canonical packet surfaces disagree on completion state",
+      "file": "spec.md",
+      "line": 49,
+      "description": "The primary spec still reports `In Progress` and `_memory.continuity.completion_pct: 65`, while implementation-summary and graph metadata report the phase as closed and complete.",
+      "dimension": "correctness",
+      "firstSeen": 1,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 1,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ],
+      "evidence": [
+        "spec.md:30",
+        "spec.md:49",
+        "implementation-summary.md:15",
+        "implementation-summary.md:28",
+        "graph-metadata.json:42"
+      ]
+    },
+    {
+      "findingId": "F003",
+      "severity": "P1",
+      "title": "description.json parentChain still points at the pre-renumber path",
+      "file": "description.json",
+      "line": 22,
+      "description": "The packet was renumbered to `001-search-and-routing-tuning`, but `parentChain` still records `010-search-and-routing-tuning`, so lineage metadata no longer mirrors the current folder path.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ],
+      "evidence": [
+        "description.json:18",
+        "description.json:22",
+        "description.json:30",
+        "description.json:34",
+        "spec.md:14"
+      ]
+    },
+    {
+      "findingId": "F004",
+      "severity": "P1",
+      "title": "Packet-local continuity identity still uses legacy 018/phase-004 markers",
+      "file": "spec.md",
+      "line": 6,
+      "description": "Trigger phrases, fingerprints, and session identifiers still anchor the packet to `018 phase 004` even though the current packet lives under the 026/006/001 migration path. That identity drift weakens resume and retrieval fidelity for the moved packet.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ],
+      "evidence": [
+        "spec.md:6",
+        "spec.md:27",
+        "plan.md:6",
+        "plan.md:25",
+        "tasks.md:6",
+        "tasks.md:24",
+        "checklist.md:6",
+        "checklist.md:24",
+        "implementation-summary.md:25",
+        "graph-metadata.json:14"
+      ]
+    },
+    {
+      "findingId": "F005",
+      "severity": "P1",
+      "title": "Three packet docs cite a non-existent `.opencode/agent/speckit.md` surface",
+      "file": "tasks.md",
+      "line": 58,
+      "description": "The packet preserves a reference to `.opencode/agent/speckit.md`, but that file does not exist in the checkout. These broken references are the immediate reason strict spec-doc integrity now fails.",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ],
+      "evidence": [
+        "tasks.md:58",
+        "checklist.md:71",
+        "checklist.md:72",
+        "implementation-summary.md:104"
+      ]
+    },
+    {
+      "findingId": "F006",
+      "severity": "P2",
+      "title": "graph-metadata entity extraction is carrying low-signal prose fragments",
+      "file": "graph-metadata.json",
+      "line": 193,
+      "description": "The derived entity list includes prose fragments such as `Backfilled Level`, `In Progress`, and `Problem Statement Several`, which lowers the signal quality of packet metadata used for search and review surfaces.",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ],
+      "evidence": [
+        "graph-metadata.json:193",
+        "graph-metadata.json:199",
+        "graph-metadata.json:205"
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "blockedStopHistory": [],
+  "persistentSameSeverity": [
+    "F001",
+    "F002",
+    "F003",
+    "F004",
+    "F005",
+    "F006"
+  ],
+  "severityChanged": [],
+  "repeatedFindings": [
+    "F001",
+    "F002",
+    "F003",
+    "F004",
+    "F005",
+    "F006"
+  ],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 1
+  },
+  "openFindingsCount": 6,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 0.74,
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "corruptionWarnings": []
+}

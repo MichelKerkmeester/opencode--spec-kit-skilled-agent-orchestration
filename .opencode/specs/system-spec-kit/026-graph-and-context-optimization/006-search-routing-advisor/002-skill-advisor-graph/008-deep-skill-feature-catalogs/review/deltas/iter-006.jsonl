@@ -1,0 +1,1 @@
+{"type":"delta","mode":"review","iteration":6,"dimension":"security","findingsAdded":[],"findingsRefined":["DRFC-P2-005"],"findingsSummary":{"P0":0,"P1":4,"P2":3},"newFindingsRatio":0.02,"churn":0.06,"notes":"Security replay found no direct leak or credential exposure in reviewed roots."}

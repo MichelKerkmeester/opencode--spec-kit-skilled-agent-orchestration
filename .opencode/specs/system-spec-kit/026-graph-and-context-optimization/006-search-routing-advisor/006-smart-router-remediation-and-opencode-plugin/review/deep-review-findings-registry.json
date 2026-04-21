@@ -1,0 +1,281 @@
+{
+  "sessionId": "rvw-2026-04-21T17-47-52-424Z",
+  "parentSessionId": null,
+  "generation": 1,
+  "lineageMode": "new",
+  "continuedFromRun": null,
+  "terminalStop": {
+    "stopReason": "max_iterations",
+    "totalIterations": 10,
+    "timestamp": "2026-04-21T17:48:03.424Z"
+  },
+  "status": "COMPLETE",
+  "verdict": {
+    "result": "PASS",
+    "hasAdvisories": true,
+    "reason": "No P0 and fewer than five P1 findings; P2 advisories present."
+  },
+  "openFindings": [
+    {
+      "findingId": "F001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Native-path advisor brief hardcodes the second score as 0.00",
+      "file": ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs",
+      "line": 122,
+      "evidence": ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs:122",
+      "additionalEvidence": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/render.ts:135",
+      "description": "The native bridge renderer emits confidence/0.00 instead of confidence/uncertainty, while the canonical renderer emits confidence/uncertainty. The plugin test fixture also bakes in the misleading 0.00 form, so the native path can inject inaccurate advisor context while tests still pass.",
+      "remediation": "Replace renderNativeBrief with the canonical renderAdvisorBrief path or format top.uncertainty in the native renderer, then update the plugin fixture to reject the hardcoded 0.00 output.",
+      "firstSeen": 1,
+      "lastSeen": 10,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 1,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F002",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "Status reports runtime ready before any bridge/probe validation",
+      "file": ".opencode/plugins/spec-kit-skill-advisor.js",
+      "line": 369,
+      "evidence": ".opencode/plugins/spec-kit-skill-advisor.js:369",
+      "additionalEvidence": ".opencode/plugins/spec-kit-skill-advisor.js:397",
+      "description": "onSessionStart sets runtimeReady=true and lastBridgeStatus=ready without checking the bridge path, node binary, compiled advisor dist, or daemon/native availability. The status tool can therefore report a healthy runtime before the first bridge invocation proves it.",
+      "remediation": "Use a neutral initialized state until a bridge call or explicit probe succeeds, or expose readiness as unverified until first successful bridge response.",
+      "firstSeen": 1,
+      "lastSeen": 9,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 1,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F003",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Prompt-safe status still exposes local executable/path metadata",
+      "file": ".opencode/plugins/spec-kit-skill-advisor.js",
+      "line": 405,
+      "evidence": ".opencode/plugins/spec-kit-skill-advisor.js:405",
+      "additionalEvidence": ".opencode/plugins/spec-kit-skill-advisor.js:407",
+      "description": "The status tool omits raw prompts, stdout, stderr, and secrets, but it prints node_binary and the absolute bridge_path. That is not a prompt leak, but it does expose local filesystem/runtime details through a user-facing plugin tool.",
+      "remediation": "Report only basename or a boolean path_present/path_hash in normal status, with an explicit debug mode for full paths.",
+      "firstSeen": 2,
+      "lastSeen": 10,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 2,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F004",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Telemetry sanitizes control characters but does not bound caller-supplied field length",
+      "file": ".opencode/skill/system-spec-kit/scripts/observability/smart-router-telemetry.ts",
+      "line": 59,
+      "evidence": ".opencode/skill/system-spec-kit/scripts/observability/smart-router-telemetry.ts:59",
+      "additionalEvidence": ".opencode/skill/system-spec-kit/scripts/observability/smart-router-telemetry.ts:148",
+      "description": "Telemetry avoids raw prompt text and strips control characters, but promptId, skill labels, route names, resource paths, and actual reads are appended to JSONL without length caps. A bad or buggy caller can create oversized local records even though enforcement is observe-only.",
+      "remediation": "Apply per-field and per-list caps before appendJsonl, and count truncations in the record metadata.",
+      "firstSeen": 2,
+      "lastSeen": 10,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 2,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F005",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "plan.md completion gates remain unchecked while downstream docs claim completion",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/plan.md",
+      "line": 61,
+      "evidence": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/plan.md:61",
+      "additionalEvidence": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/tasks.md:97",
+      "description": "The plan Definition of Done and implementation phase checklist still contain unchecked items for Areas A-F and verification, but tasks.md, checklist.md, and implementation-summary.md claim 100% completion. That undermines the packet-local source of truth.",
+      "remediation": "Either mark the plan gates complete with evidence or change downstream completion claims to reflect incomplete plan gates.",
+      "firstSeen": 3,
+      "lastSeen": 10,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F006",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Full test suite green acceptance is not evidenced",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/spec.md",
+      "line": 155,
+      "evidence": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/spec.md:155",
+      "additionalEvidence": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/implementation-summary.md:195",
+      "description": "REQ-012 says no runtime-code breakage requires 118/118 Phase 020 tests plus full test suite green. The implementation summary records targeted Phase 020 tests, two new test files, typecheck, and strict validation, but no full mcp_server or root test command.",
+      "remediation": "Run and record the full intended suite or narrow REQ-012/SC-006 to the targeted regression surface that was actually verified.",
+      "firstSeen": 3,
+      "lastSeen": 10,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F007",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "Phase and status metadata are stale after migration/renumbering",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/spec.md",
+      "line": 40,
+      "evidence": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/spec.md:40",
+      "additionalEvidence": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/graph-metadata.json:47",
+      "description": "The folder is now local phase 006 per description.json and graph-metadata aliases, but the docs still call it Phase 023 and spec status remains Spec Ready while graph metadata says in_progress despite implementation-summary completion.",
+      "remediation": "Refresh spec/graph metadata after migration so status, phase label, and completion state agree.",
+      "firstSeen": 7,
+      "lastSeen": 10,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 7,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F008",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "decision-record.md is absent from the requested review corpus",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/decision-record.md",
+      "line": 1,
+      "evidence": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/decision-record.md:1",
+      "additionalEvidence": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/implementation-summary.md:170",
+      "description": "The user requested decision-record.md in the review corpus, but the file is missing. Level 2 does not require it, and decisions are captured inside implementation-summary.md, so this is an artifact completeness advisory rather than a blocker.",
+      "remediation": "Either add a short decision-record.md or document that this Level 2 packet intentionally keeps decisions in implementation-summary.md only.",
+      "firstSeen": 3,
+      "lastSeen": 10,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F009",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Bridge duplicates advisor rendering/sanitization logic for the native path",
+      "file": ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs",
+      "line": 99,
+      "evidence": ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs:99",
+      "additionalEvidence": ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs:110",
+      "description": "The bridge imports renderAdvisorBrief from compat but buildNativeBrief uses local sanitizeLabel/renderNativeBrief logic instead. This duplicates the canonical renderer and already diverges in the score formatting called out by F001.",
+      "remediation": "Make the native path call the shared renderer or a small adapter around it, then delete the duplicate renderer.",
+      "firstSeen": 4,
+      "lastSeen": 10,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F010",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Static router checker has no fixture-level regression coverage for parser variants",
+      "file": ".opencode/skill/system-spec-kit/scripts/spec/check-smart-router.sh",
+      "line": 55,
+      "evidence": ".opencode/skill/system-spec-kit/scripts/spec/check-smart-router.sh:55",
+      "additionalEvidence": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/checklist.md:57",
+      "description": "The checker embeds a sizeable Python parser in a shell script and the packet records successful command runs, but the reviewed tests do not include fixtures proving stale-path detection, dynamic resource expansion, and bloat warning behavior. Parser drift is one of the spec risks.",
+      "remediation": "Add a small fixture-driven test for check-smart-router.sh covering a missing path, dynamic {category}/{folder} expansion, and bloat warning exit behavior.",
+      "firstSeen": 4,
+      "lastSeen": 10,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [
+    "F001",
+    "F002",
+    "F003",
+    "F004",
+    "F005",
+    "F006",
+    "F007",
+    "F008",
+    "F009",
+    "F010"
+  ],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 3,
+    "P2": 7
+  },
+  "openFindingsCount": 10,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 0.96,
+  "blockedStopHistory": [],
+  "toolLimitations": [
+    "CocoIndex MCP cancelled immediately; review used direct reads and rg evidence."
+  ]
+}

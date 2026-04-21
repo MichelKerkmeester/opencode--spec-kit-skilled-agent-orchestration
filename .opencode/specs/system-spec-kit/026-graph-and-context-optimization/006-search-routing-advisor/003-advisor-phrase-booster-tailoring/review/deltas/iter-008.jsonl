@@ -1,0 +1,1 @@
+{"type":"iteration_delta","mode":"review","iteration":8,"dimension":"maintainability","newFindings":[],"refinedFindings":["F009","F010"],"counts":{"P0":0,"P1":5,"P2":5},"newFindingsRatio":0.07,"churn":0.07,"summary":"No new maintainability findings; active risks consolidate around stale docs/evidence."}

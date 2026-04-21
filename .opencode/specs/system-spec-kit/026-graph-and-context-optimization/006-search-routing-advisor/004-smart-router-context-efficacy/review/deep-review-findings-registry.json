@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "mode": "review",
+  "target": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy",
+  "openFindings": [
+    {
+      "id": "DR-COR-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Root packet status and continuity point to already-completed work",
+      "evidence": [
+        "spec.md:14-18",
+        "spec.md:40",
+        "001-initial-research/research/research.md:3-5",
+        "002-skill-md-intent-router-efficacy/spec.md:47-53",
+        "002-skill-md-intent-router-efficacy/implementation-summary.md:55-59"
+      ],
+      "summary": "The root still says Research Dispatched and next_safe_action is to dispatch 001 initial research, while the child research artifacts and 002 packet record completed work.",
+      "status": "open"
+    },
+    {
+      "id": "DR-SEC-001",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Default-on plugin rollout lacks an explicit adversarial corpus gate in the packet requirements",
+      "evidence": [
+        "spec.md:91-104",
+        "001-initial-research/research/research.md:35-37",
+        "001-initial-research/research/research.md:55-57"
+      ],
+      "summary": "The research identifies prompt-poisoning and default-on plugin risks, but the root requirements do not turn the adversarial corpus into an acceptance gate for follow-up plugin work.",
+      "status": "open"
+    },
+    {
+      "id": "DR-TRC-001",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Root Level 3 packet is missing required documents and anchors",
+      "evidence": [
+        "spec.md:23",
+        "spec.md:38",
+        "spec.md:91-112",
+        "validator: missing plan.md, tasks.md, checklist.md, decision-record.md; missing requirements, success-criteria, risks, questions anchors"
+      ],
+      "summary": "The phase root declares Level 3, but the root contains only spec.md, description.json, and graph-metadata.json. Strict validation fails before child phase results can be treated as the complete packet.",
+      "status": "open"
+    },
+    {
+      "id": "DR-TRC-002",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "001-initial-research declares Level 2 but lacks required scaffolding and structured anchors",
+      "evidence": [
+        "001-initial-research/spec.md:1-5",
+        "validator: 001 missing plan.md, tasks.md, checklist.md; no ANCHOR tags; missing core Level 2 template sections"
+      ],
+      "summary": "The initial research phase has research artifacts, but its Level 2 packet shell is incomplete and fails recursive validation.",
+      "status": "open"
+    },
+    {
+      "id": "DR-MNT-001",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "Root graph metadata indexes only spec.md and omits completed child evidence",
+      "evidence": [
+        "graph-metadata.json:6-9",
+        "graph-metadata.json:31-49",
+        "002-skill-md-intent-router-efficacy/graph-metadata.json:43-55"
+      ],
+      "summary": "The root graph knows about children but exposes only spec.md as key/source doc, so memory retrieval at the phase root misses research.md, research-validation.md, checklist, and implementation-summary evidence.",
+      "status": "open"
+    },
+    {
+      "id": "DR-MNT-002",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "Migrated identity still mixes 021 and 004 numbering surfaces",
+      "evidence": [
+        "spec.md:4-7",
+        "spec.md:28-29",
+        "description.json:11-13",
+        "002-skill-md-intent-router-efficacy/description.json:15-20"
+      ],
+      "summary": "The packet path and specId are now 004, but root trigger phrases and the child parentChain still expose 021, increasing lookup and resume ambiguity after the renumbering.",
+      "status": "open"
+    },
+    {
+      "id": "DR-COR-002",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "Implementation summary records strict validation without an explicit pass result",
+      "evidence": [
+        "002-skill-md-intent-router-efficacy/implementation-summary.md:106-115",
+        "validator: current recursive validation exits 2 for the phase root"
+      ],
+      "summary": "The 002 summary says strict spec validation was rerun, but does not record PASS/FAIL evidence. The current root validation failure makes this ambiguous for later completion claims.",
+      "status": "open"
+    },
+    {
+      "id": "DR-TRC-003",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Root corpus reference resolves to a missing path after migration",
+      "evidence": [
+        "spec.md:116-121",
+        "path check: ../research/019-system-hardening-pt-03 from the root resolves under 006-search-routing-advisor/research and is missing",
+        "path check: ../../research/019-system-hardening-pt-03 exists under 026-graph-and-context-optimization/research"
+      ],
+      "summary": "The root spec cites a corpus path that no longer resolves from the migrated location, even though the child synthesis depends on that corpus.",
+      "status": "open"
+    },
+    {
+      "id": "DR-TRC-004",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "Code-graph plugin reference remains TBD after the research resolved it",
+      "evidence": [
+        "spec.md:121",
+        "001-initial-research/research/research.md:47-49"
+      ],
+      "summary": "The root spec still says the code-graph plugin reference is TBD, while the initial research names the concrete plugin and bridge files.",
+      "status": "open"
+    },
+    {
+      "id": "DR-MNT-003",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Follow-up recommendations are not mapped to owning packets or tasks",
+      "evidence": [
+        "002-skill-md-intent-router-efficacy/research/research.md:85-92",
+        "002-skill-md-intent-router-efficacy/spec.md:159-165"
+      ],
+      "summary": "The synthesis has useful recommendations, but they are not linked to concrete follow-up packets or task owners, so they can be lost during future resume or planning flows.",
+      "status": "open"
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [
+    {
+      "id": "DR-COR-001",
+      "iterations": [1, 3, 9]
+    },
+    {
+      "id": "DR-SEC-001",
+      "iterations": [2, 6, 10]
+    },
+    {
+      "id": "DR-TRC-001",
+      "iterations": [3, 7]
+    },
+    {
+      "id": "DR-MNT-001",
+      "iterations": [4, 8]
+    }
+  ],
+  "dimensionCoverage": {
+    "correctness": [1, 5, 9],
+    "security": [2, 6, 10],
+    "traceability": [3, 7],
+    "maintainability": [4, 8]
+  },
+  "findingsBySeverity": {
+    "P0": [],
+    "P1": [
+      "DR-COR-001",
+      "DR-TRC-001",
+      "DR-TRC-002",
+      "DR-MNT-001",
+      "DR-MNT-002",
+      "DR-TRC-003"
+    ],
+    "P2": [
+      "DR-SEC-001",
+      "DR-COR-002",
+      "DR-TRC-004",
+      "DR-MNT-003"
+    ]
+  },
+  "convergenceScore": {
+    "dimensionsCovered": 4,
+    "finalNewFindingsRatio": 0.0,
+    "finalThreeIterationChurn": [0.06, 0.0, 0.0],
+    "p0Blocks": false,
+    "stuckThresholdReached": false,
+    "stopReason": "max_iterations"
+  }
+}

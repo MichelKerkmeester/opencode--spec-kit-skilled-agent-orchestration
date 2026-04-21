@@ -1,0 +1,1 @@
+{"type":"delta","mode":"review","run":1,"dimension":"correctness","findingRefs":["F003"],"findingsNew":{"P0":0,"P1":1,"P2":0},"newFindingsRatio":1,"summary":"Documented entity cap drifted from live parser behavior."}
