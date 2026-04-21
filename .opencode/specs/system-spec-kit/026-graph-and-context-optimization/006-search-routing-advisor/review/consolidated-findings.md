@@ -531,3 +531,160 @@ review_date: "2026-04-21"
 8. Skill Advisor Packaging and Graph (P0=0, P1=3, P2=4) — stabilizes advisor setup and catalog truth before more graph-based advisor work.
 9. Security and Guardrails (P0=0, P1=2, P2=0) — protects rollout and metadata ingestion boundaries.
 10. Telemetry, Measurement, and Rollout Controls (P0=0, P1=0, P2=1) — makes rollout metrics trustworthy enough to guide final prioritization.
+
+## Part 2: Implementation-Focused Review (Second Pass)
+
+## Executive Summary
+- **Implementation reports found:** 34 `review-impl-report.md` files in this packet.
+- **Expected phase surface:** 39 phases from Part 1; 5 phases do not currently have a `review-impl/review-impl-report.md` file.
+- **Raw implementation findings parsed:** 139.
+- **Evidence-compliant implementation findings counted:** 137. Two shell-only findings were excluded from the counted Part 2 set because this pass requires `.ts`, `.py`, `.js`, or `.mjs` file-line evidence.
+- **By severity:** P0=3 P1=84 P2=50.
+- **Verdict distribution:** CONDITIONAL=21 PASS=2 FAIL/CHANGES REQUESTED=4 NO-IMPLEMENTATION=7 MISSING-REPORT=5.
+- **Deduped Part 2 findings:** 129 unique code-focused findings after collapsing repeated parent/child report duplicates.
+- **Main implementation verdict:** not release-clean. Most packets are directionally functional, but Tier 3 routing containment, cache identity, provider/test isolation, and regression coverage need remediation before this campaign can be treated as production-hard.
+
+Missing implementation second-pass reports:
+
+| Phase | Status |
+| --- | --- |
+| `001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty` | Missing `review-impl-report.md` |
+| `001-search-and-routing-tuning/002-content-routing-accuracy` | Missing `review-impl-report.md` |
+| `001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements` | Missing `review-impl-report.md` |
+| `002-skill-advisor-graph/006-skill-graph-sqlite-migration` | Missing `review-impl-report.md` |
+| `004-smart-router-context-efficacy/001-initial-research` | Missing `review-impl-report.md` |
+
+Evidence-rule exclusions:
+
+| Source phase | Finding | Why excluded from counted Part 2 |
+| --- | --- | --- |
+| `002-skill-advisor-graph/007-skill-graph-auto-setup` | Init script aborts before JSON export and health because validation currently exits nonzero under `set -e`. | Source evidence cites only `.sh` file lines. |
+| `006-smart-router-remediation-and-opencode-plugin` | Smart-router checker accepts traversal-shaped router resources because prefix/suffix validation does not reject `..` segments before checking `skill_dir / resource`. | Source evidence cites only `.sh` file lines. |
+
+## Top Themes
+- **Overlap with Part 1:** cache identity and stale routing context; Tier 3 routing/LLM guardrails; graph metadata path and key-file handling; stale telemetry/parser conclusions; test evidence that does not replay cleanly.
+- **New code-specific theme: Tier 3 save containment.** Three P0s converge on the same trust boundary: model-returned routing targets are not sufficiently constrained before canonical save resolution.
+- **New code-specific theme: provider and test isolation.** Reranker fallback tests, provider limits, malformed provider responses, and timeout scope all show that live-provider and response-boundary paths are under-tested.
+- **New code-specific theme: advisor/runtime routing behavior.** Phrase boosters, router style parsing, prompt cache entropy, plugin bridge rendering, and live-session observation all have implementation-level gaps beyond doc drift.
+- **New code-specific theme: graph metadata implementation safety.** Key-file sanitization, legacy migration bypasses, canonical-doc cap survival, and temp-file cleanup recur across parser and writer paths.
+
+## Per-Phase Verdict Table
+| Phase | Second-pass verdict | P0 | P1 | P2 | Impl findings |
+| --- | --- | ---: | ---: | ---: | ---: |
+| `001-search-and-routing-tuning` | FAILING VERIFICATION | 0 | 5 | 3 | 8 |
+| `001-search-and-routing-tuning/001-search-fusion-tuning` | CONDITIONAL | 0 | 1 | 3 | 4 |
+| `001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty` | MISSING REPORT | 0 | 0 | 0 | 0 |
+| `001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry` | CONDITIONAL | 0 | 3 | 3 | 6 |
+| `001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile` | CONDITIONAL | 0 | 4 | 1 | 5 |
+| `001-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum` | PASS WITH ADVISORIES | 0 | 1 | 2 | 3 |
+| `001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment` | NO-IMPLEMENTATION | 0 | 0 | 0 | 0 |
+| `001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation` | CONDITIONAL | 0 | 4 | 2 | 6 |
+| `001-search-and-routing-tuning/002-content-routing-accuracy` | MISSING REPORT | 0 | 0 | 0 | 0 |
+| `001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion` | CONDITIONAL | 0 | 4 | 1 | 5 |
+| `001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion` | CHANGES REQUIRED | 1 | 2 | 2 | 5 |
+| `001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier` | FAIL | 1 | 4 | 1 | 6 |
+| `001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment` | NO-IMPLEMENTATION | 0 | 0 | 0 | 0 |
+| `001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety` | CHANGES REQUESTED | 1 | 2 | 0 | 3 |
+| `001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment` | PASS | 0 | 0 | 0 | 0 |
+| `001-search-and-routing-tuning/003-graph-metadata-validation` | CONDITIONAL | 0 | 1 | 3 | 4 |
+| `001-search-and-routing-tuning/003-graph-metadata-validation/001-fix-status-derivation` | CONDITIONAL | 0 | 2 | 2 | 4 |
+| `001-search-and-routing-tuning/003-graph-metadata-validation/002-sanitize-key-files` | CONDITIONAL | 0 | 5 | 1 | 6 |
+| `001-search-and-routing-tuning/003-graph-metadata-validation/003-deduplicate-entities` | CONDITIONAL PASS | 0 | 2 | 3 | 5 |
+| `001-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files` | CONDITIONAL | 0 | 1 | 3 | 4 |
+| `001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment` | PASS WITH P1 REMEDIATION REQUIRED | 0 | 3 | 2 | 5 |
+| `001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution` | CONDITIONAL PASS WITH P1 REMEDIATION NEEDED | 0 | 3 | 1 | 4 |
+| `001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements` | MISSING REPORT | 0 | 0 | 0 | 0 |
+| `002-skill-advisor-graph` | CONDITIONAL | 0 | 4 | 2 | 6 |
+| `002-skill-advisor-graph/001-research-findings-fixes` | CONDITIONAL | 0 | 3 | 2 | 5 |
+| `002-skill-advisor-graph/002-manual-testing-playbook` | CONDITIONAL | 0 | 4 | 2 | 6 |
+| `002-skill-advisor-graph/003-skill-advisor-packaging` | CONDITIONAL | 0 | 2 | 1 | 3 |
+| `002-skill-advisor-graph/004-graph-metadata-enrichment` | NO-IMPLEMENTATION | 0 | 0 | 0 | 0 |
+| `002-skill-advisor-graph/005-repo-wide-path-migration` | NO-IMPLEMENTATION | 0 | 0 | 0 | 0 |
+| `002-skill-advisor-graph/006-skill-graph-sqlite-migration` | MISSING REPORT | 0 | 0 | 0 | 0 |
+| `002-skill-advisor-graph/007-skill-graph-auto-setup` | CONDITIONAL | 0 | 5 | 2 | 7 |
+| `002-skill-advisor-graph/008-deep-skill-feature-catalogs` | NO-IMPLEMENTATION | 0 | 0 | 0 | 0 |
+| `003-advisor-phrase-booster-tailoring` | CONDITIONAL | 0 | 5 | 1 | 6 |
+| `004-smart-router-context-efficacy` | NO-IMPLEMENTATION | 0 | 0 | 0 | 0 |
+| `004-smart-router-context-efficacy/001-initial-research` | MISSING REPORT | 0 | 0 | 0 | 0 |
+| `004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy` | NO-IMPLEMENTATION | 0 | 0 | 0 | 0 |
+| `005-skill-advisor-docs-and-code-alignment` | CONDITIONAL | 0 | 7 | 3 | 10 |
+| `006-smart-router-remediation-and-opencode-plugin` | CONDITIONAL | 0 | 2 | 3 | 5 |
+| `007-deferred-remediation-and-telemetry-run` | CONDITIONAL | 0 | 5 | 1 | 6 |
+
+## Findings by Dimension
+
+### Correctness
+**Evidence-compliant findings:** 38 (P0=0 P1=32 P2=6)
+
+| Consolidated finding group | Count | Representative evidence |
+| --- | ---: | --- |
+| Reranker and Tier 3 caches reuse stale decisions because cache keys omit content or route-shaping context. | 8 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:254`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:434`; `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:756`; `.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:296` |
+| Routing/parser logic misclassifies shipped forms, prompt IDs, or target lines. | 7 | `.opencode/skill/system-spec-kit/scripts/observability/smart-router-analyze.ts:123`; `.opencode/skill/system-spec-kit/scripts/observability/smart-router-analyze.ts:154`; `.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:285`; `.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:477` |
+| Skill advisor ranking and phrase matching still produce wrong or missing recommendations for review, proposal-only, and implementation-search prompts. | 6 | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1536`; `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1623`; `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2524`; `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:3021` |
+| Task-update and merge matching can select the wrong checklist/task line. | 3 | `.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:542`; `.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:573`; `.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:576` |
+| Graph metadata derivation can evict canonical docs or preserve stale/incorrect status inputs. | 8 | `.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:938`; `.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:942`; `.opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:516` |
+| Tier 3 prompt and classifier semantics expose internal aliases or collapse distinct signals. | 6 | `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1275`; `.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:582`; `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1001`; `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1010` |
+
+### Security
+**Evidence-compliant findings:** 19 (P0=3 P1=8 P2=8)
+
+| Consolidated finding group | Count | Representative evidence |
+| --- | ---: | --- |
+| Tier 3 model-returned `target_doc` can escape the current spec folder before canonical merge/write handling. | 3 | `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:837`; `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:856`; `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1153`; `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1427` |
+| `plannerMode: full-auto` can activate live Tier 3 transport more broadly than the explicit router flag suggests. | 2 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1040`; `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1053`; `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1343`; `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1366` |
+| Prompt/cache/telemetry paths expose weak boundaries: unstable HMAC defaults, unbounded telemetry fields, or unnecessary topology disclosure. | 6 | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/prompt-cache.ts:39`; `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/prompt-cache.ts:41`; `.opencode/skill/system-spec-kit/scripts/observability/smart-router-telemetry.ts:59`; `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1273` |
+| Routing drop/guard phrases can still override intended handover/task-save flows in security-sensitive contexts. | 3 | `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:409`; `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1001`; `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1010` |
+| Reranker cache and provider paths carry collision or external-call risks without enough containment tests. | 5 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:218`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:221`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:405`; `.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts:206` |
+
+### Robustness
+**Evidence-compliant findings:** 38 (P0=0 P1=16 P2=22)
+
+| Consolidated finding group | Count | Representative evidence |
+| --- | ---: | --- |
+| Provider contracts are under-validated: max-document limits, malformed response indexes, and body parsing timeout boundaries are not fully enforced. | 11 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:31`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:304`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:346`; `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1073` |
+| CLI/config inputs accept invalid or extreme values, including NaN/negative limits and unclamped weight factors. | 5 | `.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:597`; `.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:755`; `.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:356` |
+| Graph metadata writer and parser paths can bypass sanitizers, leave temp files, or retain malformed legacy inputs. | 8 | `.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:293`; `.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:350`; `.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:1148`; `.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:1149` |
+| Live-session and observability wrappers can throw or under-observe when runtime input shapes differ from the happy path. | 5 | `.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:118`; `.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:125`; `.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:156`; `.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:209` |
+| Caches are unbounded or have infinite effective lifetime in long-lived MCP processes. | 4 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:171`; `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:310`; `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:326`; `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:806` |
+| Phrase and router matching is brittle around raw substrings, literal regex-looking keys, and unsupported router styles. | 5 | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1509`; `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1524`; `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2701`; `.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:477` |
+
+### Testing
+**Evidence-compliant findings:** 42 (P0=0 P1=28 P2=14)
+
+| Consolidated finding group | Count | Representative evidence |
+| --- | ---: | --- |
+| Scoped tests miss high-risk negative cases for unsafe Tier 3 targets, cache context shifts, task dependency matching, and provider failures. | 13 | `.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:261`; `.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:296`; `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1625`; `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1735` |
+| Provider and fallback tests can inherit live environment or fail to cover malformed response bodies. | 7 | `.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts:213`; `.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts:228`; `.opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts:231`; `.opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts:291` |
+| Adaptive/search tests are non-hermetic or assert only helper-level behavior instead of production-stage paths. | 7 | `.opencode/skill/system-spec-kit/mcp_server/tests/adaptive-fusion.vitest.ts:240`; `.opencode/skill/system-spec-kit/mcp_server/tests/adaptive-fusion.vitest.ts:259`; `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:146`; `.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts:137` |
+| Skill advisor coverage is too happy-path oriented and does not lock ranking, threshold, fixture, or graph-parity regressions. | 8 | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py:148`; `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py:154`; `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2701`; `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/legacy/advisor-corpus-parity.vitest.ts:35` |
+| Observability/live wrapper behavior lacks direct tests across configure, onToolCall, finalize, and alias handling. | 4 | `.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:102`; `.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:209`; `.opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:217`; `.opencode/skill/system-spec-kit/scripts/observability/smart-router-analyze.ts:123` |
+| Graph metadata parser/writer tests miss production bypasses, cap survival, and failed atomic-swap cleanup. | 3 | `.opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:237`; `.opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:514`; `.opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:540` |
+
+## Cross-Phase Patterns
+- **Testing gaps repeat in 22 phases.** The most common implementation pattern is not missing code, but tests that prove only the happy path or helper path while high-risk production paths remain unpinned.
+- **Cache identity/freshness repeats in 8 phases.** Search reranking and Tier 3 routing both reuse decisions across content or context changes.
+- **Tier 3 routing and save-boundary risks repeat in 6 phases.** The highest-severity cluster is the trust boundary around model output, `target_doc`, live transport activation, and prompt/context disclosure.
+- **Graph metadata key-file and parser robustness repeats in 6 phases.** The code pass confirms that Part 1's metadata drift has implementation causes in sanitizer, migration, cap, and writer paths.
+- **Skill advisor routing/packaging behavior repeats in 7 phases.** Phrase boosters, graph auto-setup, package alignment, plugin bridge rendering, and catalog/fixture coverage still need runtime-focused cleanup.
+- **Observability and telemetry assumptions repeat in 5 phases.** Static/live streams, router-style parsing, field sanitization, and wrapper tool-name matching are not robust enough for rollout metrics.
+
+## Updated Grand-Total Summary: Part 1 + Part 2 Combined
+| Metric | Count | Notes |
+| --- | ---: | --- |
+| Part 1 unique findings | 274 | Existing consolidated doc-drift/original deep-review findings. |
+| Part 2 raw implementation findings | 139 | Parsed from 34 available `review-impl-report.md` files. |
+| Part 2 evidence-compliant findings | 137 | Counted only when at least one `.ts`, `.py`, `.js`, or `.mjs` file-line citation exists. |
+| Part 2 internally deduped findings | 129 | Collapses repeated parent/child report instances of the same code-root issue. |
+| Cross-part overlaps removed | 10 | Examples: reranker content cache, Tier 3 routing cache, shared Tier 3 cache lifetime, prompt-cache entropy, telemetry field bounds, static parser unknowns, live wrapper alias observation. |
+| **Combined unique findings after dedupe** | **393** | `274 + 129 - 10`. |
+
+Combined severity after Part 2 evidence filtering:
+
+| Source | P0 | P1 | P2 | Total |
+| --- | ---: | ---: | ---: | ---: |
+| Part 1 | 7 | 165 | 102 | 274 |
+| Part 2 evidence-compliant raw | 3 | 84 | 50 | 137 |
+| Part 2 internally deduped | 2 | 79 | 48 | 129 |
+| Combined deduped estimate | 8 | 239 | 146 | 393 |
+
+The combined remediation priority remains: fix Tier 3 save/routing containment first, then cache identity and provider/test isolation, then graph metadata parser/writer robustness, then advisor/plugin/telemetry accuracy.
