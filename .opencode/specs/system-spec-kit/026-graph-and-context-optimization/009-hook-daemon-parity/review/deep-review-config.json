@@ -2,13 +2,18 @@
   "mode": "review",
   "sessionId": "019db047-hook-parity-30iter",
   "generation": 1,
-  "status": "in_progress",
+  "status": "complete",
   "review_target": "009-hook-daemon-parity + 3 child phases (001-skill-advisor-hook-surface, 002-skill-graph-daemon-and-advisor-unification, 003-hook-parity-remediation)",
   "review_target_type": "spec-folder",
-  "review_dimensions": ["correctness", "security", "traceability", "maintainability"],
+  "review_dimensions": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
   "spec_folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity",
   "maxIterations": 30,
-  "convergenceThreshold": 0.10,
+  "convergenceThreshold": 0.1,
   "stuckThreshold": 3,
   "lineage_mode": "auto",
   "config": {
@@ -36,5 +41,14 @@
     ]
   },
   "concurrency": 2,
-  "created_at": "2026-04-21T16:15:00Z"
+  "created_at": "2026-04-21T16:15:00Z",
+  "stop_reason": "converged",
+  "completed_at": "2026-04-21T14:47:52.318Z",
+  "iterations_completed": 10,
+  "verdict": "CONDITIONAL",
+  "findings_summary": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 0
+  }
 }

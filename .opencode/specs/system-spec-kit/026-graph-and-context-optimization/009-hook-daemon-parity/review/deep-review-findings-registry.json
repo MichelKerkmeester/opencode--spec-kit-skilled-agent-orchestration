@@ -1,9 +1,129 @@
 {
   "session_id": "019db047-hook-parity-30iter",
-  "findings": [],
-  "deduplicated_count": 0,
+  "findings": [
+    {
+      "id": "009-C-001",
+      "dimension": "correctness",
+      "severity": "P1",
+      "title": "OpenCode transform can still silently no-op when the transport plan is absent or unparsable.",
+      "status": "open",
+      "summary": "Phase 003 explicitly requires a visible runtime-status entry when parsing fails, but the plugin only records internal state and returns without injecting any visible status from system, message, or compaction transforms. This preserves part of the original silent-no-op failure mode when the bridge output is missing or invalid.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/tasks.md:57",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/tasks.md:58",
+        ".opencode/plugins/spec-kit-compact-code-graph.js:202",
+        ".opencode/plugins/spec-kit-compact-code-graph.js:203",
+        ".opencode/plugins/spec-kit-compact-code-graph.js:204",
+        ".opencode/plugins/spec-kit-compact-code-graph.js:333",
+        ".opencode/plugins/spec-kit-compact-code-graph.js:334",
+        ".opencode/plugins/spec-kit-compact-code-graph.js:335",
+        ".opencode/plugins/spec-kit-compact-code-graph.js:369",
+        ".opencode/plugins/spec-kit-compact-code-graph.js:370",
+        ".opencode/plugins/spec-kit-compact-code-graph.js:406",
+        ".opencode/plugins/spec-kit-compact-code-graph.js:407",
+        ".opencode/plugins/spec-kit-compact-code-graph.js:408"
+      ],
+      "remediation": "When loadTransportPlan() fails or returns null, inject a bounded runtime-status block or otherwise surface visible diagnostic context in the affected transform path, and add a regression test for malformed/missing transport output."
+    },
+    {
+      "id": "009-T-001",
+      "dimension": "traceability",
+      "severity": "P1",
+      "title": "Phase 003 detailed task evidence remains unchecked despite closing status and implementation claims.",
+      "status": "open",
+      "summary": "The task file marks the high-level closing status complete/deferred, but every detailed Phase A-E implementation task remains unchecked. The implementation summary says Phases A-D are complete and Phase E captured evidence, so a reader cannot trace completed behavior back to the canonical task checklist.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/tasks.md:29",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/tasks.md:30",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/tasks.md:31",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/tasks.md:32",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/tasks.md:33",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/tasks.md:40",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/tasks.md:170",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/implementation-summary.md:25",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/implementation-summary.md:27"
+      ],
+      "remediation": "Mark each completed detailed task with evidence, convert truly deferred items to [~] with blocker text, and keep the high-level closing status as a summary rather than the only completion surface."
+    },
+    {
+      "id": "009-T-002",
+      "dimension": "traceability",
+      "severity": "P1",
+      "title": "Phase 003 checklist claims strict validation passes, but the current strict validation fails.",
+      "status": "open",
+      "summary": "The checklist records strict validation as passing, yet a fresh scoped validation of 003 exits 2 with anchor/template errors and one missing markdown reference. This directly invalidates the packet completion gate.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/checklist.md:96",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/checklist.md:99",
+        "validation: bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation --strict --no-recursive -> exit 2; ANCHORS_VALID missing 34 anchors; TEMPLATE_HEADERS 35 deviations; SPEC_DOC_INTEGRITY missing .opencode/command/spec_kit/debug.md"
+      ],
+      "remediation": "Either migrate 003 docs to the active Level 3 template/anchor contract or intentionally downgrade/annotate the validation mode, then rerun strict validation and update checklist evidence only after it passes."
+    },
+    {
+      "id": "009-T-003",
+      "dimension": "traceability",
+      "severity": "P1",
+      "title": "The context-prime acceptance gate remains deferred and globally unverifiable inside the active spec tree.",
+      "status": "open",
+      "summary": "R-P1-E is marked deferred because broad grep still finds context-prime references, while the spec acceptance criterion requires no stale context-prime references unless the file exists. Active Phase 003 docs still carry those references as finding/decision text, so the release gate is not cleanly closed.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/spec.md:101",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/checklist.md:62",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/checklist.md:65",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/decision-record.md:44",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/decision-record.md:52"
+      ],
+      "remediation": "Tighten AC-5 to distinguish stale claims from historical remediation evidence, or move historical context-prime mentions into an explicitly exempt archive/reference section and rerun the grep evidence command."
+    },
+    {
+      "id": "009-M-001",
+      "dimension": "maintainability",
+      "severity": "P1",
+      "title": "Graph metadata and continuity state are stale relative to the packet summaries.",
+      "status": "open",
+      "summary": "The parent implementation summary records the parent as completed, and 003 records 95% implemented, but graph metadata still says the parent is in_progress and 003 is scaffolded with 5% continuity. Resume/memory surfaces that trust graph metadata will route stale state after the phase consolidation.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/implementation-summary.md:30",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/implementation-summary.md:48",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/graph-metadata.json:71",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/implementation-summary.md:14",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/implementation-summary.md:16",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/graph-metadata.json:74",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/graph-metadata.json:201",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/graph-metadata.json:204"
+      ],
+      "remediation": "Refresh description/graph metadata from canonical summaries after task/checklist repair, ensuring derived.status and _memory.continuity match the chosen release state."
+    }
+  ],
+  "deduplicated_count": 8,
   "p0_count": 0,
-  "p1_count": 0,
+  "p1_count": 5,
   "p2_count": 0,
-  "last_updated": "2026-04-21T16:15:00Z"
+  "findingsBySeverity": {
+    "P1": 5
+  },
+  "findingsByDimension": {
+    "correctness": 1,
+    "traceability": 3,
+    "maintainability": 1
+  },
+  "dimensionCoverage": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
+  "convergenceScore": {
+    "stopped": true,
+    "stop_reason": "converged",
+    "iterations_completed": 10,
+    "threshold": 0.1,
+    "stuckThreshold": 3,
+    "finalChurnWindow": [
+      0,
+      0,
+      0
+    ]
+  },
+  "last_updated": "2026-04-21T14:47:52.318Z"
 }
