@@ -15,6 +15,8 @@ export interface AdvisorThresholds {
   readonly uncertaintyThreshold?: number;
   readonly confidenceOnly?: boolean;
   readonly showRejections?: boolean;
+  readonly includeAttribution?: boolean;
+  readonly includeAbstainReasons?: boolean;
 }
 
 export interface AdvisorPromptCacheKeyParts {
@@ -45,6 +47,8 @@ function stableThresholdConfig(thresholdConfig: AdvisorThresholds | undefined): 
     uncertaintyThreshold: thresholdConfig?.uncertaintyThreshold ?? 0.35,
     confidenceOnly: thresholdConfig?.confidenceOnly ?? false,
     showRejections: thresholdConfig?.showRejections ?? false,
+    includeAttribution: thresholdConfig?.includeAttribution ?? false,
+    includeAbstainReasons: thresholdConfig?.includeAbstainReasons ?? false,
   });
 }
 

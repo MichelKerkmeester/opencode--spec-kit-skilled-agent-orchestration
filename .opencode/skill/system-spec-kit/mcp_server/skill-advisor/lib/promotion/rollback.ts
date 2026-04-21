@@ -20,6 +20,12 @@ export interface RollbackTrace {
   readonly failedWeights: PromotionWeights;
   readonly cacheInvalidated: boolean;
   readonly telemetry: RollbackTelemetryEvent;
+  readonly cacheInvalidationError?: string;
+  readonly telemetryError?: string;
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
 }
 
 export async function rollbackPromotion(args: {
@@ -32,23 +38,37 @@ export async function rollbackPromotion(args: {
   readonly now?: () => string;
 }): Promise<RollbackTrace> {
   await args.applyWeights(args.previousWeights);
-  await args.invalidateCache();
+  let cacheInvalidated = false;
+  let cacheInvalidationError: string | undefined;
+  try {
+    await args.invalidateCache();
+    cacheInvalidated = true;
+  } catch (error: unknown) {
+    cacheInvalidationError = errorMessage(error);
+  }
   const telemetry: RollbackTelemetryEvent = {
     event: 'promotion_rollback',
     reason: args.reason,
     restoredWeights: args.previousWeights,
     failedWeights: args.failedWeights,
-    cacheInvalidated: true,
+    cacheInvalidated,
     rolledBackAt: args.now?.() ?? new Date().toISOString(),
   };
-  await args.emitTelemetry(telemetry);
+  let telemetryError: string | undefined;
+  try {
+    await args.emitTelemetry(telemetry);
+  } catch (error: unknown) {
+    telemetryError = errorMessage(error);
+  }
   return {
     rolledBack: true,
     reason: args.reason,
     restoredWeights: args.previousWeights,
     failedWeights: args.failedWeights,
-    cacheInvalidated: true,
+    cacheInvalidated,
     telemetry,
+    ...(cacheInvalidationError ? { cacheInvalidationError } : {}),
+    ...(telemetryError ? { telemetryError } : {}),
   };
 }
 

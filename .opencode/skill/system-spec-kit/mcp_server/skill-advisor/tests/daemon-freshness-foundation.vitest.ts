@@ -15,8 +15,8 @@ import {
   discoverWatchTargets,
   type SkillGraphFsWatcher,
 } from '../lib/daemon/watcher.js';
-import { clearCacheInvalidationListeners, getLastCacheInvalidation } from '../lib/freshness/cache-invalidation.js';
-import { publishAfterCommit, readSkillGraphGeneration } from '../lib/freshness/generation.js';
+import { clearCacheInvalidationListeners, getLastCacheInvalidation, onCacheInvalidation } from '../lib/freshness/cache-invalidation.js';
+import { publishAfterCommit, publishSkillGraphGeneration, readSkillGraphGeneration } from '../lib/freshness/generation.js';
 import { rebuildFromSource } from '../lib/freshness/rebuild-from-source.js';
 import { createTrustState, failOpenTrustState } from '../lib/freshness/trust-state.js';
 
@@ -161,7 +161,7 @@ describe('skill graph watcher foundation', () => {
     await watcher.close();
   });
 
-  it('AC-7 tolerates ENOENT when an editor rename removes a file before debounce fires', async () => {
+  it('AC-7 reindexes deletion events when a watched file disappears before debounce fires', async () => {
     const root = workspace('skill-graph-enoent');
     writeSkill(root, 'alpha');
     const harness = createWatchHarness();
@@ -178,7 +178,8 @@ describe('skill graph watcher foundation', () => {
     rmSync(changed, { force: true });
     await advance(25);
 
-    expect(reindexSkill).not.toHaveBeenCalled();
+    expect(reindexSkill).toHaveBeenCalledTimes(1);
+    expect(readSkillGraphGeneration(root).generation).toBe(1);
     expect(watcher.status().diagnostics).toEqual([]);
     await watcher.close();
   });
@@ -331,6 +332,21 @@ describe('workspace-scoped single-writer lease', () => {
     first.close();
     second.close();
   });
+
+  it('marks a lease holder inactive when heartbeat observes lease loss', () => {
+    const root = workspace('skill-graph-lost-lease');
+    const leaseDbPath = join(root, 'lease.sqlite');
+    let now = 1_000;
+    const first = acquireSkillGraphLease({ workspaceRoot: root, leaseDbPath, ownerId: 'first', heartbeatMs: 0, staleAfterMs: 50, now: () => now });
+    now = 2_000;
+    const second = acquireSkillGraphLease({ workspaceRoot: root, leaseDbPath, ownerId: 'second', heartbeatMs: 0, staleAfterMs: 50, now: () => now });
+
+    first.heartbeat();
+
+    expect(first.acquired).toBe(false);
+    expect(second.acquired).toBe(true);
+    second.close();
+  });
 });
 
 describe('freshness and generation foundation', () => {
@@ -350,6 +366,30 @@ describe('freshness and generation foundation', () => {
     );
     expect(readSkillGraphGeneration(root).generation).toBe(1);
     expect(getLastCacheInvalidation()?.reason).toBe('successful-commit');
+  });
+
+  it('continues cache invalidation fan-out when one listener throws', () => {
+    const root = workspace('skill-graph-invalidation-fanout');
+    const laterListener = vi.fn();
+    onCacheInvalidation(() => {
+      throw new Error('listener failed');
+    });
+    onCacheInvalidation(laterListener);
+
+    publishSkillGraphGeneration({ workspaceRoot: root, reason: 'fanout-test' });
+
+    expect(laterListener).toHaveBeenCalledTimes(1);
+    expect(getLastCacheInvalidation()?.reason).toBe('fanout-test');
+  });
+
+  it('increments generation monotonically across sequential locked publications', () => {
+    const root = workspace('skill-graph-generation-lock');
+
+    publishSkillGraphGeneration({ workspaceRoot: root, reason: 'first' });
+    publishSkillGraphGeneration({ workspaceRoot: root, reason: 'second' });
+
+    expect(readSkillGraphGeneration(root).generation).toBe(2);
+    expect(readSkillGraphGeneration(root).reason).toBe('second');
   });
 
   it('covers all fail-open trust-state transitions', () => {

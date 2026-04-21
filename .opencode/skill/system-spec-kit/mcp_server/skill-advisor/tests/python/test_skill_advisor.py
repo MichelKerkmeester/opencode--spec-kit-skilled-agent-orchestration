@@ -27,7 +27,7 @@ import tempfile
 # 1. MODULE LOADING
 # ───────────────────────────────────────────────────────────────
 
-SCRIPT_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'scripts')
+SCRIPT_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'scripts')
 SCRIPT_DIR = os.path.realpath(SCRIPT_DIR)
 
 passed = 0
@@ -811,6 +811,58 @@ description: Fixture helper for routing tests
     except Exception as exc:
         fail_test("T243-SA-018: command bridge normalization guard preserves implementation refs", str(exc))
 
+    # T243-SA-019: --stdin-preferred does not read an interactive stdin before argv fallback.
+    try:
+        class FakeTty:
+            def isatty(self):
+                return True
+
+            def read(self):
+                raise AssertionError("stdin-preferred should not read tty stdin")
+
+        class Args:
+            stdin = False
+            stdin_preferred = True
+            prompt = "argv fallback prompt"
+
+        args = Args()
+        advisor.resolve_single_prompt_input(args, FakeTty())
+        if args.prompt == "argv fallback prompt":
+            ok("T243-SA-019: stdin-preferred skips tty reads before argv fallback")
+        else:
+            fail_test("T243-SA-019: stdin-preferred skips tty reads before argv fallback", f"prompt={args.prompt!r}")
+    except Exception as exc:
+        fail_test("T243-SA-019: stdin-preferred skips tty reads before argv fallback", str(exc))
+
+    # T243-SA-020: native legacy bridge preserves parity-critical fields.
+    try:
+        native_output = {
+            "recommendations": [{
+                "skillId": "sk-git",
+                "confidence": 0.91,
+                "uncertainty": 0.12,
+                "score": 1.2,
+                "dominantLane": "explicit_author",
+                "status": "active",
+                "redirectFrom": ["old-git"],
+                "redirectTo": "new-git",
+            }],
+        }
+        legacy = advisor._legacy_recommendations_from_native(native_output)
+        first = legacy[0] if legacy else {}
+        if (
+            first.get("skill") == "sk-git"
+            and first.get("source") == "native"
+            and first.get("dominant_lane") == "explicit_author"
+            and first.get("redirect_from") == ["old-git"]
+            and first.get("redirect_to") == "new-git"
+        ):
+            ok("T243-SA-020: native bridge preserves legacy parity fields")
+        else:
+            fail_test("T243-SA-020: native bridge preserves legacy parity fields", f"legacy={legacy}")
+    except Exception as exc:
+        fail_test("T243-SA-020: native bridge preserves legacy parity fields", str(exc))
+
 
 # ───────────────────────────────────────────────────────────────
 # 3. BENCH HARNESS TESTS
@@ -887,6 +939,33 @@ def test_bench_harness():
             fail_test("T246-BN-004: load_advisor_module returns usable module", "missing analyze_prompt")
     except Exception as exc:
         fail_test("T246-BN-004: load_advisor_module returns usable module", str(exc))
+
+    # T246-BN-005: in-process benchmark disables built-in semantic mode like subprocess paths.
+    try:
+        original_loader = bench.load_advisor_module
+        original_env = os.environ.get(bench.BENCH_ENV_FLAG)
+
+        class FakeAdvisor:
+            def analyze_prompt(self, **kwargs):
+                if os.environ.get(bench.BENCH_ENV_FLAG) != "1":
+                    raise AssertionError("benchmark_inprocess did not set semantic-disable env")
+                return []
+
+        try:
+            bench.load_advisor_module = lambda: FakeAdvisor()
+            summary = bench.benchmark_inprocess(["prompt"], 1, 0.8, 0.35)
+            if summary.get("runtime_mode") == "python_inprocess" and summary.get("total_prompts") == 1:
+                ok("T246-BN-005: in-process benchmark uses comparable semantic-disabled runtime")
+            else:
+                fail_test("T246-BN-005: in-process benchmark uses comparable semantic-disabled runtime", f"summary={summary}")
+        finally:
+            bench.load_advisor_module = original_loader
+            if original_env is None:
+                os.environ.pop(bench.BENCH_ENV_FLAG, None)
+            else:
+                os.environ[bench.BENCH_ENV_FLAG] = original_env
+    except Exception as exc:
+        fail_test("T246-BN-005: in-process benchmark uses comparable semantic-disabled runtime", str(exc))
 
 
 # ───────────────────────────────────────────────────────────────
@@ -1012,6 +1091,28 @@ def test_regression_harness():
         ok("T246-RG-005: regression load_advisor_module raises ImportError (expected in isolated test)", str(exc))
     except Exception as exc:
         fail_test("T246-RG-005: regression load_advisor_module returns usable module", str(exc))
+
+    # T246-RG-006: regression harness can exercise subprocess bridge cases.
+    try:
+        case = {
+            "id": "subprocess-bridge",
+            "prompt": "create a pull request on github",
+            "expected_top_any": ["sk-git"],
+            "expect_kind": "skill",
+        }
+        result = regression.evaluate_case(
+            advisor=regression.load_advisor_module(),
+            case=case,
+            threshold=0.5,
+            uncertainty=1.0,
+            runner="subprocess",
+        )
+        if result.get("runner") == "subprocess" and isinstance(result.get("top"), dict):
+            ok("T246-RG-006: regression harness exercises subprocess bridge", f"top={result['top'].get('skill')}")
+        else:
+            fail_test("T246-RG-006: regression harness exercises subprocess bridge", f"result={result}")
+    except Exception as exc:
+        fail_test("T246-RG-006: regression harness exercises subprocess bridge", str(exc))
 
 
 # ───────────────────────────────────────────────────────────────
@@ -1327,6 +1428,26 @@ def test_graph_compiler():
             )
     except Exception as exc:
         fail_test("T246-GC-009: compile_graph emits conflicts only on mutual declaration", str(exc))
+
+    # T246-GC-010: cross-file validators tolerate invalid edges payloads after schema errors.
+    try:
+        invalid_metadata = [
+            ("alpha", "/tmp/alpha", {"skill_id": "alpha", "edges": []}),
+            ("beta", "/tmp/beta", {"skill_id": "beta", "edges": {"depends_on": ["not-object"]}}),
+        ]
+        symmetry = compiler.validate_edge_symmetry(invalid_metadata)
+        bands = compiler.validate_weight_bands(invalid_metadata)
+        parity = compiler.validate_weight_parity(invalid_metadata)
+        graph = compiler.compile_graph(invalid_metadata)
+        if symmetry == [] and bands == [] and parity == [] and isinstance(graph, dict):
+            ok("T246-GC-010: invalid edge containers do not crash graph validators")
+        else:
+            fail_test(
+                "T246-GC-010: invalid edge containers do not crash graph validators",
+                f"symmetry={symmetry} bands={bands} parity={parity} graph={graph}",
+            )
+    except Exception as exc:
+        fail_test("T246-GC-010: invalid edge containers do not crash graph validators", str(exc))
 
 
 # ───────────────────────────────────────────────────────────────

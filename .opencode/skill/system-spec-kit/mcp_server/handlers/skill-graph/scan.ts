@@ -5,6 +5,7 @@
 
 import { resolve } from 'node:path';
 import { indexSkillMetadata } from '../../lib/skill-graph/skill-graph-db.js';
+import { publishSkillGraphGeneration } from '../../skill-advisor/lib/freshness/generation.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -36,6 +37,12 @@ export async function handleSkillGraphScan(
     }
 
     const scanResult = indexSkillMetadata(skillsRoot);
+    publishSkillGraphGeneration({
+      workspaceRoot: cwd,
+      changedPaths: [skillsRoot],
+      reason: 'skill_graph_scan',
+      state: 'live',
+    });
 
     return okResponse({
       skillsRoot,

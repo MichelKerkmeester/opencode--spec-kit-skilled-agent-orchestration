@@ -231,7 +231,7 @@ Native package checks:
 ```bash
 npm --prefix .opencode/skill/system-spec-kit/mcp_server run typecheck
 npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
-npm --prefix .opencode/skill/system-spec-kit/mcp_server exec -- vitest run skill-advisor/tests --reporter=default
+(cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run skill-advisor/tests/ code-graph/tests/ --reporter=default)
 ```
 
 Manual validation surface: the [playbook](./manual_testing_playbook/manual_testing_playbook.md) ships 47 deterministic scenarios across 10 groups. Automated counterparts include 23 advisor test files / 167 vitest tests and the 52-case Python regression suite.

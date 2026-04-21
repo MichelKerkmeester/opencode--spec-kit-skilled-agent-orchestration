@@ -5,6 +5,7 @@
 import { createHash } from 'node:crypto';
 import {
   existsSync,
+  readFileSync,
   readdirSync,
   statSync,
 } from 'node:fs';
@@ -35,7 +36,9 @@ export type AdvisorFallbackMode = 'sqlite' | 'json' | 'none';
 export interface AdvisorSkillFingerprint {
   readonly skillMdMtime: number;
   readonly skillMdSize: number;
+  readonly skillMdHash: string;
   readonly graphMetaMtime: number | null;
+  readonly graphMetaHash: string | null;
 }
 
 /** Machine-readable probe diagnostic for non-live advisor freshness states. */
@@ -62,6 +65,7 @@ interface FileProbe {
   readonly path: string;
   readonly mtimeMs: number;
   readonly size: number;
+  readonly contentHash: string;
 }
 
 interface SourceSnapshot {
@@ -114,10 +118,12 @@ function fileProbe(filePath: string): FileProbe | null {
   if (!stats.isFile()) {
     throw new Error(`Expected file but found non-file path: ${filePath}`);
   }
+  const contentHash = createHash('sha256').update(readFileSync(filePath)).digest('hex');
   return {
     path: filePath,
     mtimeMs: stats.mtimeMs,
     size: stats.size,
+    contentHash,
   };
 }
 
@@ -126,7 +132,7 @@ function addSignaturePart(hash: ReturnType<typeof createHash>, label: string, pr
     hash.update(`${label}:missing\n`);
     return;
   }
-  hash.update(`${label}:${probe.path}:${probe.mtimeMs}:${probe.size}\n`);
+  hash.update(`${label}:${probe.path}:${probe.mtimeMs}:${probe.size}:${probe.contentHash}\n`);
 }
 
 function listSkillSlugs(skillRoot: string): string[] {
@@ -159,7 +165,9 @@ function buildSourceSnapshot(workspaceRoot: string): SourceSnapshot {
     skillFingerprints.set(skillSlug, {
       skillMdMtime: skillMd.mtimeMs,
       skillMdSize: skillMd.size,
+      skillMdHash: skillMd.contentHash,
       graphMetaMtime: graphMetadata?.mtimeMs ?? null,
+      graphMetaHash: graphMetadata?.contentHash ?? null,
     });
     addSignaturePart(hash, `skill:${skillSlug}:SKILL.md`, skillMd);
     addSignaturePart(hash, `skill:${skillSlug}:graph-metadata.json`, graphMetadata);

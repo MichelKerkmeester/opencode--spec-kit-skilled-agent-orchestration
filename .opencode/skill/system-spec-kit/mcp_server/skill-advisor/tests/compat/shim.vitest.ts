@@ -72,4 +72,28 @@ describe('skill_advisor.py compat shim', () => {
     expect(result.status).toBe(0);
     expect(parseJson(result.stdout)).toEqual([]);
   });
+
+  it('lets --force-native override the shared disabled flag', () => {
+    const result = runShim(['--force-native', 'save this conversation context to memory'], '', {
+      SPECKIT_SKILL_ADVISOR_HOOK_DISABLED: '1',
+    });
+    expect(result.status).toBe(0);
+    expect(parseJson(result.stdout)).toEqual([
+      expect.objectContaining({
+        source: 'native',
+        skill: 'system-spec-kit',
+      }),
+    ]);
+  });
+
+  it('tries native mode when --force-native is combined with semantic flags', () => {
+    const result = runShim(['--force-native', '--semantic', 'save this conversation context to memory']);
+    expect(result.status).toBe(0);
+    expect(parseJson(result.stdout)).toEqual([
+      expect.objectContaining({
+        source: 'native',
+        skill: 'system-spec-kit',
+      }),
+    ]);
+  });
 });

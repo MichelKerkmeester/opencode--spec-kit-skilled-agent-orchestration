@@ -131,6 +131,7 @@ def benchmark_subprocess(prompts: List[str], runs: int, threshold: float, uncert
             total_prompts += 1
     elapsed = time.perf_counter() - t0
     summary = summarize(latencies)
+    summary["runtime_mode"] = "subprocess_one_shot"
     summary["throughput_prompts_per_sec"] = round((total_prompts / elapsed) if elapsed else 0.0, 4)
     summary["total_prompts"] = total_prompts
     return summary
@@ -138,24 +139,33 @@ def benchmark_subprocess(prompts: List[str], runs: int, threshold: float, uncert
 
 def benchmark_inprocess(prompts: List[str], runs: int, threshold: float, uncertainty: float) -> Dict[str, Any]:
     """Benchmark warm in-process advisor calls after module load."""
+    original_semantic = os.environ.get(BENCH_ENV_FLAG)
+    os.environ[BENCH_ENV_FLAG] = "1"
     advisor = load_advisor_module()
     latencies: List[float] = []
     total_prompts = 0
     t0 = time.perf_counter()
-    for _ in range(runs):
-        for prompt in prompts:
-            start = time.perf_counter()
-            advisor.analyze_prompt(
-                prompt=prompt,
-                confidence_threshold=threshold,
-                uncertainty_threshold=uncertainty,
-                confidence_only=False,
-                show_rejections=False,
-            )
-            latencies.append((time.perf_counter() - start) * 1000)
-            total_prompts += 1
+    try:
+        for _ in range(runs):
+            for prompt in prompts:
+                start = time.perf_counter()
+                advisor.analyze_prompt(
+                    prompt=prompt,
+                    confidence_threshold=threshold,
+                    uncertainty_threshold=uncertainty,
+                    confidence_only=False,
+                    show_rejections=False,
+                )
+                latencies.append((time.perf_counter() - start) * 1000)
+                total_prompts += 1
+    finally:
+        if original_semantic is None:
+            os.environ.pop(BENCH_ENV_FLAG, None)
+        else:
+            os.environ[BENCH_ENV_FLAG] = original_semantic
     elapsed = time.perf_counter() - t0
     summary = summarize(latencies)
+    summary["runtime_mode"] = "python_inprocess"
     summary["throughput_prompts_per_sec"] = round((total_prompts / elapsed) if elapsed else 0.0, 4)
     summary["total_prompts"] = total_prompts
     return summary
@@ -203,6 +213,7 @@ def benchmark_batch_mode(prompts: List[str], runs: int, threshold: float, uncert
             pass
 
     summary = summarize(batch_latencies)
+    summary["runtime_mode"] = "subprocess_batch"
     summary["throughput_prompts_per_sec"] = round((total_prompts / elapsed) if elapsed else 0.0, 4)
     summary["total_prompts"] = total_prompts
     summary["batch_size"] = len(prompts)

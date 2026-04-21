@@ -670,7 +670,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   skill_graph_validate: [],
   advisor_recommend: ['prompt', 'options'],
   advisor_status: ['workspaceRoot'],
-  advisor_validate: ['skillSlug'],
+  advisor_validate: ['confirmHeavyRun', 'skillSlug'],
   ccc_status: [],
   ccc_reindex: ['full'],
   ccc_feedback: ['query', 'resultFile', 'rating', 'comment'],

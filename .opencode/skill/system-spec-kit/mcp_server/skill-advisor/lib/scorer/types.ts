@@ -23,6 +23,7 @@ export interface SkillProjection {
   readonly intentSignals: readonly string[];
   readonly derivedTriggers: readonly string[];
   readonly derivedKeywords: readonly string[];
+  readonly derivedDemotion?: number;
   readonly sourcePath: string | null;
   readonly lifecycleStatus: SkillLifecycleStatus;
   readonly redirectTo?: string | null;

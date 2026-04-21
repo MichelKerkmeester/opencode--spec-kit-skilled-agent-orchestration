@@ -37,7 +37,7 @@ function freshness(sourceSignature = 'sig-live'): AdvisorFreshnessResult {
     generation: 1,
     sourceSignature,
     skillFingerprints: new Map([
-      ['sk-code-opencode', { skillMdMtime: 1, skillMdSize: 10, graphMetaMtime: 1 }],
+      ['sk-code-opencode', { skillMdMtime: 1, skillMdSize: 10, skillMdHash: 'hash-opencode', graphMetaMtime: 1, graphMetaHash: 'graph-opencode' }],
     ]),
     fallbackMode: 'sqlite',
     probedAt: '2026-04-19T10:00:00.000Z',

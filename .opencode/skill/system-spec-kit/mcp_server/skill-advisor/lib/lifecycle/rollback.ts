@@ -2,7 +2,8 @@
 // MODULE: Skill Derived Rollback
 // ───────────────────────────────────────────────────────────────
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { closeSync, fsyncSync, mkdirSync, openSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -18,6 +19,30 @@ export interface RollbackResult {
 // ───────────────────────────────────────────────────────────────
 // 2. CORE LOGIC
 // ───────────────────────────────────────────────────────────────
+
+function fsyncPath(targetPath: string): void {
+  let fd: number | null = null;
+  try {
+    fd = openSync(targetPath, 'r');
+    fsyncSync(fd);
+  } finally {
+    if (fd !== null) closeSync(fd);
+  }
+}
+
+function writeJsonAtomic(filePath: string, payload: Record<string, unknown>): void {
+  mkdirSync(dirname(filePath), { recursive: true });
+  const tmpPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
+  try {
+    writeFileSync(tmpPath, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
+    fsyncPath(tmpPath);
+    renameSync(tmpPath, filePath);
+    fsyncPath(dirname(filePath));
+  } catch (error: unknown) {
+    rmSync(tmpPath, { force: true });
+    throw error;
+  }
+}
 
 export function rollbackDerivedBlock(metadata: Record<string, unknown>): RollbackResult {
   const { derived: _derived, ...rest } = metadata;
@@ -38,7 +63,6 @@ export function rollbackGraphMetadataFile(graphMetadataPath: string): RollbackRe
     throw new Error(`graph-metadata root must be an object: ${graphMetadataPath}`);
   }
   const result = rollbackDerivedBlock(parsed as Record<string, unknown>);
-  writeFileSync(graphMetadataPath, `${JSON.stringify(result.metadata, null, 2)}\n`, 'utf8');
+  writeJsonAtomic(graphMetadataPath, result.metadata);
   return result;
 }
-

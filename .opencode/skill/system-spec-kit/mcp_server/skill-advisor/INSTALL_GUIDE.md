@@ -76,7 +76,7 @@ Run before declaring bootstrap complete:
 ```bash
 npm --prefix .opencode/skill/system-spec-kit/mcp_server run typecheck
 npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
-npm --prefix .opencode/skill/system-spec-kit/mcp_server exec -- vitest run skill-advisor/tests --reporter=default
+(cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run skill-advisor/tests/ code-graph/tests/ --reporter=default)
 ```
 
 Current Phase 027 baseline:

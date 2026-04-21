@@ -385,13 +385,15 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
     recoverQuarantinedSkill(workspaceRoot, request.skillSlug, options.quarantineDbPath);
 
     const changedPaths = [...request.changedPaths];
+    const missingChangedPaths = changedPaths.filter((changedPath) => !existsSync(changedPath));
     const changedHashInputs = changedPaths
       .map((changedPath) => [changedPath, hashFile(changedPath)] as const)
       .filter(([, hash]) => hash !== null);
-    if (changedHashInputs.length === 0) {
+    if (changedHashInputs.length === 0 && missingChangedPaths.length === 0) {
       return;
     }
-    const unchanged = changedHashInputs.every(([changedPath, hash]) => fileHashes.get(changedPath) === hash);
+    const unchanged = missingChangedPaths.length === 0
+      && changedHashInputs.every(([changedPath, hash]) => fileHashes.get(changedPath) === hash);
     if (unchanged) {
       return;
     }
@@ -406,6 +408,9 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
 
     for (const [changedPath, hash] of changedHashInputs) {
       if (hash) fileHashes.set(changedPath, hash);
+    }
+    for (const changedPath of missingChangedPaths) {
+      fileHashes.delete(changedPath);
     }
     publishSkillGraphGeneration({
       workspaceRoot,

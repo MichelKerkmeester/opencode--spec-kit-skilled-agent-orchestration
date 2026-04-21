@@ -555,7 +555,9 @@ export function indexSkillMetadata(skillDir: string): SkillGraphIndexResult {
       changedEntries.push(entry);
     }
 
-    for (const entry of changedEntries) {
+    // Re-publish every source edge after all nodes are known so previously
+    // rejected edges can backfill when a target skill appears in a later scan.
+    for (const entry of parsedMetadata) {
       deleteEdgesBySource.run(entry.node.id);
 
       for (const edge of entry.edges) {

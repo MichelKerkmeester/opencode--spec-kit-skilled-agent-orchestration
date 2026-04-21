@@ -128,7 +128,7 @@ describe('runAdvisorSubprocess', () => {
     expect(result.stderr).toBe('ordinary failure');
   });
 
-  it('kills the child on timeout and reports SIGNAL_KILLED', async () => {
+  it('kills the child on timeout and reports TIMEOUT', async () => {
     vi.useFakeTimers();
     const spawnMock = await importSpawnMock();
     const child = mockChild();
@@ -144,7 +144,7 @@ describe('runAdvisorSubprocess', () => {
 
     expect(child.kill).toHaveBeenCalledWith('SIGKILL');
     expect(result.ok).toBe(false);
-    expect(result.errorCode).toBe('SIGNAL_KILLED');
+    expect(result.errorCode).toBe('TIMEOUT');
   });
 
   it('retries SQLITE_BUSY once when timeout budget remains', async () => {

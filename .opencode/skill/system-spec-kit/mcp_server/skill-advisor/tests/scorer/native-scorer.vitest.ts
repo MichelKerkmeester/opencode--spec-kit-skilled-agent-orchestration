@@ -2,11 +2,16 @@
 // MODULE: Native Scorer Tests
 // ───────────────────────────────────────────────────────────────
 
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { runScorerBench } from '../../bench/scorer-bench.js';
 import { applyAmbiguity } from '../../lib/scorer/ambiguity.js';
 import { scoreAdvisorPrompt } from '../../lib/scorer/fusion.js';
-import { createFixtureProjection } from '../../lib/scorer/projection.js';
+import { scoreDerivedLane } from '../../lib/scorer/lanes/derived.js';
+import { scoreGraphCausalLane } from '../../lib/scorer/lanes/graph-causal.js';
+import { createFixtureProjection, loadAdvisorProjection } from '../../lib/scorer/projection.js';
 import {
   DEFAULT_SCORER_WEIGHTS,
   DERIVED_GENERATED_WEIGHT,
@@ -66,6 +71,25 @@ describe('027/003 native scorer units', () => {
     ] satisfies AdvisorScoredRecommendation[]);
     expect(result[0].ambiguousWith).toEqual(['beta']);
     expect(result[1].ambiguousWith).toEqual(['alpha']);
+  });
+
+  it('does not mark top-two recommendations ambiguous when raw confidence is outside the margin', () => {
+    const base = {
+      kind: 'skill' as const,
+      uncertainty: 0.2,
+      passes_threshold: true,
+      reason: 'fixture',
+      score: 0.5,
+      laneContributions: [],
+      dominantLane: 'explicit_author' as const,
+      lifecycleStatus: 'active' as const,
+    };
+    const result = applyAmbiguity([
+      { ...base, skill: 'alpha', confidence: 0.8001 },
+      { ...base, skill: 'beta', confidence: 0.8502 },
+    ] satisfies AdvisorScoredRecommendation[]);
+    expect(result[0].ambiguousWith).toBeUndefined();
+    expect(result[1].ambiguousWith).toBeUndefined();
   });
 
   it('AC-5 semantic shadow scores but contributes 0.00 to live fusion', () => {
@@ -134,6 +158,126 @@ describe('027/003 native scorer units', () => {
       projection,
     });
     expect(result.topSkill).toBeNull();
+  });
+
+  it('ages derived generated evidence from projection generatedAt', () => {
+    const freshProjection = createFixtureProjection([
+      skill({ id: 'derived-skill', derivedTriggers: ['generated metadata route'] }),
+    ]);
+    const staleProjection = {
+      ...freshProjection,
+      generatedAt: '2025-10-23T00:00:00.000Z',
+    };
+    const now = new Date('2026-04-21T00:00:00.000Z');
+
+    const fresh = scoreDerivedLane('generated metadata route', freshProjection, now)[0];
+    const stale = scoreDerivedLane('generated metadata route', staleProjection, now)[0];
+
+    expect(fresh.score).toBeGreaterThan(stale.score);
+    expect(stale.score).toBeLessThanOrEqual(0.25);
+  });
+
+  it('applies derived anti-stuffing demotion in the derived lane', () => {
+    const normalProjection = createFixtureProjection([
+      skill({ id: 'normal-derived', derivedTriggers: ['demoted derived route'] }),
+    ]);
+    const demotedProjection = createFixtureProjection([
+      skill({ id: 'demoted-derived', derivedTriggers: ['demoted derived route'], derivedDemotion: 0.25 }),
+    ]);
+
+    const normal = scoreDerivedLane('demoted derived route', normalProjection)[0];
+    const demoted = scoreDerivedLane('demoted derived route', demotedProjection)[0];
+
+    expect(demoted.score).toBeLessThan(normal.score);
+    expect(demoted.score).toBeCloseTo(normal.score * 0.25, 5);
+  });
+
+  it('includeAllCandidates exposes failed candidates without promoting topSkill', () => {
+    const projection = createFixtureProjection([
+      skill({ id: 'derived-only', derivedTriggers: ['weak derived route'] }),
+    ]);
+
+    const result = scoreAdvisorPrompt('weak derived route', {
+      workspaceRoot: process.cwd(),
+      projection,
+      includeAllCandidates: true,
+    });
+
+    expect(result.recommendations.length).toBeGreaterThan(0);
+    expect(result.recommendations[0].passes_threshold).toBe(false);
+    expect(result.topSkill).toBeNull();
+    expect(result.unknown).toBe(true);
+  });
+
+  it('projects derived keywords consistently from filesystem fallback', () => {
+    const root = mkdtempSync(join(tmpdir(), 'advisor-projection-'));
+    try {
+      const skillDir = join(root, '.opencode', 'skill', 'alpha');
+      mkdirSync(skillDir, { recursive: true });
+      writeFileSync(join(skillDir, 'SKILL.md'), '---\nname: alpha\ndescription: alpha skill\n---\n', 'utf8');
+      writeFileSync(join(skillDir, 'graph-metadata.json'), JSON.stringify({
+        skill_id: 'alpha',
+        family: 'system',
+        category: 'test',
+        derived: {
+          trigger_phrases: ['filesystem derived route'],
+          key_topics: ['projection parity'],
+        },
+      }), 'utf8');
+
+      const projection = loadAdvisorProjection(root);
+      const alpha = projection.skills.find((entry) => entry.id === 'alpha');
+
+      expect(alpha?.derivedTriggers).toEqual(expect.arrayContaining(['filesystem derived route', 'projection parity']));
+      expect(alpha?.derivedKeywords).toEqual(alpha?.derivedTriggers);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it('falls back to filesystem projection when the SQLite graph is corrupt', () => {
+    const root = mkdtempSync(join(tmpdir(), 'advisor-projection-corrupt-'));
+    try {
+      const dbDir = join(root, '.opencode', 'skill', 'system-spec-kit', 'mcp_server', 'database');
+      mkdirSync(dbDir, { recursive: true });
+      writeFileSync(join(dbDir, 'skill-graph.sqlite'), 'not a sqlite database', 'utf8');
+
+      const skillDir = join(root, '.opencode', 'skill', 'alpha');
+      mkdirSync(skillDir, { recursive: true });
+      writeFileSync(join(skillDir, 'SKILL.md'), '---\nname: alpha\ndescription: alpha skill\n---\n', 'utf8');
+      writeFileSync(join(skillDir, 'graph-metadata.json'), JSON.stringify({
+        skill_id: 'alpha',
+        family: 'system',
+        category: 'test',
+        domains: ['fallback'],
+        intent_signals: ['corrupt sqlite fallback'],
+      }), 'utf8');
+
+      const projection = loadAdvisorProjection(root);
+      const alpha = projection.skills.find((entry) => entry.id === 'alpha');
+
+      expect(projection.source).toBe('filesystem');
+      expect(alpha?.intentSignals).toEqual(expect.arrayContaining(['corrupt sqlite fallback']));
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it('does not propagate positive graph causal score through negative edges', () => {
+    const projection = createFixtureProjection([
+      skill({ id: 'alpha' }),
+      skill({ id: 'beta' }),
+      skill({ id: 'gamma' }),
+    ], [
+      { sourceId: 'alpha', targetId: 'beta', edgeType: 'conflicts_with', weight: 1 },
+      { sourceId: 'beta', targetId: 'gamma', edgeType: 'enhances', weight: 1 },
+    ]);
+
+    const matches = scoreGraphCausalLane([
+      { skillId: 'alpha', lane: 'explicit_author', score: 1, evidence: ['seed'] },
+    ], projection);
+
+    expect(matches.map((match) => match.skillId)).not.toContain('gamma');
   });
 
   it('AC-6 scorer latency p95 meets cache-hit and uncached gates', () => {

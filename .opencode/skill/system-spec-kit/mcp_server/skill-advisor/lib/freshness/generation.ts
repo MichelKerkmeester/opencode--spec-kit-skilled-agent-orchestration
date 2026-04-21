@@ -9,6 +9,8 @@ import { invalidateSkillGraphCaches, type CacheInvalidationEvent } from './cache
 import type { SkillGraphTrustState } from './trust-state.js';
 
 const GENERATION_RELATIVE_PATH = join('.opencode', 'skill', '.advisor-state', 'skill-graph-generation.json');
+const GENERATION_LOCK_STALE_MS = 30_000;
+const GENERATION_LOCK_WAIT_MS = 250;
 
 export interface PublishGenerationOptions {
   readonly workspaceRoot: string;
@@ -57,6 +59,38 @@ function writeJsonAtomic(filePath: string, payload: GenerationMetadata): void {
   }
 }
 
+function acquireGenerationLock(filePath: string): () => void {
+  const lockPath = `${filePath}.lock`;
+  mkdirSync(dirname(filePath), { recursive: true });
+  const startedAt = Date.now();
+  while (true) {
+    try {
+      const fd = openSync(lockPath, 'wx');
+      writeFileSync(fd, `${process.pid}:${Date.now()}\n`, 'utf8');
+      closeSync(fd);
+      return () => {
+        rmSync(lockPath, { force: true });
+      };
+    } catch (error: unknown) {
+      const code = error instanceof Error && 'code' in error ? (error as NodeJS.ErrnoException).code : null;
+      if (code !== 'EEXIST') throw error;
+      try {
+        const lockAgeMs = Date.now() - readFileSync(lockPath, 'utf8').split(':').map(Number)[1];
+        if (lockAgeMs > GENERATION_LOCK_STALE_MS) {
+          rmSync(lockPath, { force: true });
+          continue;
+        }
+      } catch {
+        rmSync(lockPath, { force: true });
+        continue;
+      }
+      if (Date.now() - startedAt > GENERATION_LOCK_WAIT_MS) {
+        throw new Error(`Timed out acquiring skill graph generation lock: ${lockPath}`);
+      }
+    }
+  }
+}
+
 export function readSkillGraphGeneration(workspaceRoot: string): GenerationMetadata {
   const filePath = getSkillGraphGenerationPath(workspaceRoot);
   if (!existsSync(filePath)) {
@@ -74,15 +108,22 @@ export function readSkillGraphGeneration(workspaceRoot: string): GenerationMetad
 }
 
 export function publishSkillGraphGeneration(options: PublishGenerationOptions): PublishGenerationResult {
-  const current = readSkillGraphGeneration(options.workspaceRoot);
-  const metadata: GenerationMetadata = {
-    generation: current.generation + 1,
-    updatedAt: new Date().toISOString(),
-    sourceSignature: options.sourceSignature ?? null,
-    reason: options.reason,
-    state: options.state ?? 'live',
-  };
-  writeJsonAtomic(getSkillGraphGenerationPath(options.workspaceRoot), metadata);
+  const generationPath = getSkillGraphGenerationPath(options.workspaceRoot);
+  const releaseLock = acquireGenerationLock(generationPath);
+  let metadata: GenerationMetadata;
+  try {
+    const current = readSkillGraphGeneration(options.workspaceRoot);
+    metadata = {
+      generation: current.generation + 1,
+      updatedAt: new Date().toISOString(),
+      sourceSignature: options.sourceSignature ?? null,
+      reason: options.reason,
+      state: options.state ?? 'live',
+    };
+    writeJsonAtomic(generationPath, metadata);
+  } finally {
+    releaseLock();
+  }
   const invalidation = invalidateSkillGraphCaches({
     generation: metadata.generation,
     changedPaths: options.changedPaths ?? [],

@@ -58,12 +58,14 @@ export function scoreGraphCausalLane(
         entry.score += signed;
         entry.evidence.push(`edge:${current.id}->${edge.targetId}:${edge.edgeType}`);
         scores.set(edge.targetId, entry);
-        queue.push({
-          id: edge.targetId,
-          depth: current.depth + 1,
-          strength: propagated,
-          path: `${current.path}/${edge.targetId}`,
-        });
+        if (signed > 0) {
+          queue.push({
+            id: edge.targetId,
+            depth: current.depth + 1,
+            strength: signed,
+            path: `${current.path}/${edge.targetId}`,
+          });
+        }
       }
     }
   }

@@ -258,6 +258,29 @@ describe('advisor_recommend handler', () => {
     expect((second.data.cache as { hit: boolean }).hit).toBe(true);
   });
 
+  it('keeps threshold and response-shape options isolated in cache keys', async () => {
+    mockReadAdvisorStatus.mockReturnValue(status('live'));
+    mockScoreAdvisorPrompt.mockReturnValue(scoreResult());
+
+    await handleAdvisorRecommend({
+      prompt: 'Implement cache isolation',
+      options: { confidenceThreshold: 0.8, includeAttribution: false },
+    });
+    await handleAdvisorRecommend({
+      prompt: 'Implement cache isolation',
+      options: { confidenceThreshold: 0.95, includeAttribution: false },
+    });
+    const attributed = parseResponse(await handleAdvisorRecommend({
+      prompt: 'Implement cache isolation',
+      options: { confidenceThreshold: 0.95, includeAttribution: true },
+    }));
+
+    expect(mockScoreAdvisorPrompt).toHaveBeenCalledTimes(3);
+    expect(attributed.data.recommendations).toEqual([
+      expect.objectContaining({ laneBreakdown: expect.any(Array) }),
+    ]);
+  });
+
   it('returns stale freshness with warning metadata', async () => {
     mockReadAdvisorStatus.mockReturnValue(status('stale'));
     mockScoreAdvisorPrompt.mockReturnValue(scoreResult());

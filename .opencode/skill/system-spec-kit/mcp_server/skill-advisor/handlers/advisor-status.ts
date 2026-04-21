@@ -20,6 +20,7 @@ type HandlerResponse = { content: Array<{ type: string; text: string }> };
 
 const SKILL_GRAPH_DB = join('.opencode', 'skill', 'system-spec-kit', 'mcp_server', 'database', 'skill-graph.sqlite');
 const SKILL_ROOT = join('.opencode', 'skill');
+const DEFAULT_MAX_METADATA_FILES = 5_000;
 
 function isFreshness(value: string): value is AdvisorFreshness {
   return value === 'live' || value === 'stale' || value === 'absent' || value === 'unavailable';
@@ -32,16 +33,21 @@ function parseDaemonPid(): number | undefined {
   return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : undefined;
 }
 
-function maxMtimeMs(path: string): number {
+function fileMtimeMs(path: string): number {
   if (!existsSync(path)) return 0;
   const stat = statSync(path);
   return stat.mtimeMs;
 }
 
-function countSkillMetadataFiles(skillRoot: string): number {
-  if (!existsSync(skillRoot)) return 0;
+function scanSkillMetadataFiles(
+  skillRoot: string,
+  maxFiles = DEFAULT_MAX_METADATA_FILES,
+): { count: number; maxMtimeMs: number; truncated: boolean } {
+  if (!existsSync(skillRoot)) return { count: 0, maxMtimeMs: 0, truncated: false };
   const pending = [skillRoot];
   let count = 0;
+  let newest = 0;
+  let truncated = false;
   while (pending.length > 0) {
     const current = pending.pop();
     if (!current) continue;
@@ -51,10 +57,15 @@ function countSkillMetadataFiles(skillRoot: string): number {
         pending.push(entryPath);
       } else if (entry.isFile() && entry.name === 'graph-metadata.json') {
         count += 1;
+        newest = Math.max(newest, statSync(entryPath).mtimeMs);
+        if (count >= maxFiles) {
+          truncated = true;
+          return { count, maxMtimeMs: newest, truncated };
+        }
       }
     }
   }
-  return count;
+  return { count, maxMtimeMs: newest, truncated };
 }
 
 export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutput {
@@ -68,8 +79,12 @@ export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutpu
     const generation = readSkillGraphGeneration(workspaceRoot);
     const hasSources = existsSync(skillRoot);
     const hasArtifact = existsSync(dbPath);
+    const sourceScan = scanSkillMetadataFiles(skillRoot, args.maxMetadataFiles ?? DEFAULT_MAX_METADATA_FILES);
+    if (sourceScan.truncated) {
+      errors.push(`advisor_status metadata scan capped at ${sourceScan.count} files`);
+    }
     const sourceChanged = generation.state === 'stale'
-      || (hasArtifact && hasSources && maxMtimeMs(skillRoot) > maxMtimeMs(dbPath));
+      || (hasArtifact && hasSources && sourceScan.maxMtimeMs > fileMtimeMs(dbPath));
     const daemonAvailable = generation.state !== 'unavailable';
     const state = isFreshness(generation.state) ? generation.state : 'unavailable';
     const trustState = createTrustState({
@@ -87,7 +102,7 @@ export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutpu
       trustState,
       lastGenerationBump: generation.updatedAt === new Date(0).toISOString() ? null : generation.updatedAt,
       lastScanAt: generation.updatedAt === new Date(0).toISOString() ? null : generation.updatedAt,
-      skillCount: countSkillMetadataFiles(skillRoot),
+      skillCount: sourceScan.count,
       laneWeights: DEFAULT_SCORER_WEIGHTS,
       ...(parseDaemonPid() ? { daemonPid: parseDaemonPid() } : {}),
       ...(errors.length > 0 ? { errors } : {}),
@@ -95,6 +110,7 @@ export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutpu
     return AdvisorStatusOutputSchema.parse(output);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
+    const sourceScan = scanSkillMetadataFiles(skillRoot, args.maxMetadataFiles ?? DEFAULT_MAX_METADATA_FILES);
     const trustState = createTrustState({
       hasSources: existsSync(skillRoot),
       hasArtifact: existsSync(dbPath),
@@ -109,7 +125,7 @@ export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutpu
       trustState,
       lastGenerationBump: null,
       lastScanAt: null,
-      skillCount: countSkillMetadataFiles(skillRoot),
+      skillCount: sourceScan.count,
       laneWeights: DEFAULT_SCORER_WEIGHTS,
       errors: [message],
     };

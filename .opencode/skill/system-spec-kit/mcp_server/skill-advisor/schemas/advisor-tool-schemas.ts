@@ -65,6 +65,7 @@ export const AdvisorRecommendOutputSchema = z.object({
 
 export const AdvisorStatusInputSchema = z.object({
   workspaceRoot: z.string().min(1),
+  maxMetadataFiles: z.number().int().positive().max(10_000).optional(),
 }).strict();
 
 export const AdvisorStatusOutputSchema = z.object({
@@ -86,6 +87,7 @@ export const AdvisorStatusOutputSchema = z.object({
 }).strict();
 
 export const AdvisorValidateInputSchema = z.object({
+  confirmHeavyRun: z.literal(true),
   skillSlug: z.string().min(1).nullable().optional(),
 }).strict();
 

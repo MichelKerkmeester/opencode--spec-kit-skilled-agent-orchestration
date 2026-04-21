@@ -142,7 +142,8 @@ Package checks:
 
 ```bash
 npm --prefix .opencode/skill/system-spec-kit/mcp_server run typecheck
-npm --prefix .opencode/skill/system-spec-kit/mcp_server exec -- vitest run skill-advisor/tests --reporter=default
+npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
+(cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run skill-advisor/tests/ code-graph/tests/ --reporter=default)
 ```
 
 Python compatibility:

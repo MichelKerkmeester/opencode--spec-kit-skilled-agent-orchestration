@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 
-import { classifyPrompt } from '../../../system-spec-kit/shared/dist/gate-3-classifier.js';
+import { classifyPrompt } from '../../../../shared/dist/gate-3-classifier.js';
 
 const datasetPath = process.argv[2];
 if (!datasetPath) {

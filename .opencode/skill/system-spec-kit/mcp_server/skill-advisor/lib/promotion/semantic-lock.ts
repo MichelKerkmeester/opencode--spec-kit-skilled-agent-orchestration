@@ -16,11 +16,11 @@ export function assertSemanticLiveWeightLocked(
 ): SemanticLockResult {
   const firstPromotionWave = options.firstPromotionWave ?? true;
   const semanticWeight = weights.semantic_shadow ?? 0;
-  if (firstPromotionWave && semanticWeight > 0) {
+  if (firstPromotionWave && semanticWeight !== 0) {
     return {
       accepted: false,
       semanticWeight,
-      reason: 'semantic_shadow live weight must remain 0.00 through the first promotion wave',
+      reason: 'semantic_shadow live weight must remain exactly 0.00 through the first promotion wave',
     };
   }
   return {

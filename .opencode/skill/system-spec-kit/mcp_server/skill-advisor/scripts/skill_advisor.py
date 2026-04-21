@@ -166,8 +166,6 @@ SKILL_GRAPH_SQLITE_PATH = os.path.normpath(os.path.join(
     os.path.dirname(__file__),
     '..',
     '..',
-    'system-spec-kit',
-    'mcp_server',
     'database',
     'skill-graph.sqlite',
 ))
@@ -243,6 +241,8 @@ def _run_native_bridge(payload: Dict[str, Any], timeout: float = NATIVE_TIMEOUT_
         }
 
     try:
+        bridge_env = os.environ.copy()
+        bridge_env.pop(DISABLE_ADVISOR_ENV, None)
         result = subprocess.run(
             ["node", "--input-type=module", "-e", _native_bridge_source()],
             input=json.dumps(payload),
@@ -250,7 +250,7 @@ def _run_native_bridge(payload: Dict[str, Any], timeout: float = NATIVE_TIMEOUT_
             text=True,
             timeout=timeout,
             cwd=REPO_ROOT,
-            env=os.environ.copy(),
+            env=bridge_env,
         )
     except (FileNotFoundError, subprocess.TimeoutExpired, OSError) as exc:
         return {
@@ -1725,6 +1725,7 @@ COMMAND_BRIDGES = {
 }
 
 COMMAND_BRIDGE_OWNER_NORMALIZATION = {
+    "command-memory-save": "system-spec-kit",
     "command-spec-kit-resume": "system-spec-kit",
     "command-spec-kit-deep-research": "sk-deep-research",
     "command-spec-kit-deep-review": "sk-deep-review",
@@ -3063,6 +3064,18 @@ def analyze_batch(
     return results
 
 
+def resolve_single_prompt_input(args: argparse.Namespace, stdin: Any = sys.stdin) -> None:
+    """Apply stdin modes without blocking tty sessions before argv fallback."""
+    if args.stdin:
+        args.prompt = stdin.read()
+        return
+
+    if args.stdin_preferred and not stdin.isatty():
+        stdin_prompt = stdin.read()
+        if stdin_prompt:
+            args.prompt = stdin_prompt
+
+
 # ───────────────────────────────────────────────────────────────
 # 6. CLI ENTRY POINT
 # ───────────────────────────────────────────────────────────────
@@ -3191,20 +3204,22 @@ Examples:
         ), indent=2))
         return 0
 
-    if args.stdin or args.stdin_preferred:
-        stdin_prompt = sys.stdin.read()
-        if args.stdin or stdin_prompt:
-            args.prompt = stdin_prompt
+    resolve_single_prompt_input(args)
 
     if not args.prompt:
         print(json.dumps([]))
         return 0
 
-    if os.environ.get(DISABLE_ADVISOR_ENV) == "1":
+    if os.environ.get(DISABLE_ADVISOR_ENV) == "1" and not args.force_native:
         print(json.dumps([]))
         return 0
 
-    if not args.force_local and pre_computed_hits is None and not args.semantic:
+    should_try_native = (
+        not args.force_local
+        and (args.force_native or (pre_computed_hits is None and not args.semantic))
+    )
+
+    if should_try_native:
         probe = probe_native_advisor()
         if probe.get("available"):
             native_results = recommend_with_native_advisor(

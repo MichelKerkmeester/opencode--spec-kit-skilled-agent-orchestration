@@ -61,7 +61,7 @@ export function createTrustState(input: TrustStateInput): TrustStateSnapshot {
     reason: null,
     generation: input.generation,
     checkedAt,
-    lastLiveAt: checkedAt,
+    lastLiveAt: input.lastLiveAt ?? checkedAt,
   };
 }
 

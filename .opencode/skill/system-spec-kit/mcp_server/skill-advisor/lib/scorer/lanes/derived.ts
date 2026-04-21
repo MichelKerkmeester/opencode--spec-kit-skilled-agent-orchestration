@@ -22,11 +22,10 @@ export function scoreDerivedLane(prompt: string, projection: AdvisorProjection, 
       evidence.push(`derived:${phrase}`);
     }
     score += scoreTokenOverlap(tokens, phrases) * 0.45;
-    const generatedAt = now;
     const adjusted = applyAgeHaircutToLane(
       { trustLane: 'derived_generated', score: Math.min(score, 1) },
       {
-        generatedAt,
+        generatedAt: projection.generatedAt,
         now,
         lifecycleStatus: skill.lifecycleStatus,
       },
@@ -35,7 +34,7 @@ export function scoreDerivedLane(prompt: string, projection: AdvisorProjection, 
     matches.push({
       skillId: skill.id,
       lane: 'derived_generated',
-      score: adjusted.score,
+      score: Number((adjusted.score * (skill.derivedDemotion ?? 1)).toFixed(6)),
       evidence: evidence.slice(0, 6),
     });
   }

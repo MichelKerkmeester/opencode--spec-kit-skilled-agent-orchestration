@@ -84,16 +84,16 @@ function confidenceFor(args: {
   const base = 0.52 + Math.min(1, args.liveNormalized * 1.25) * 0.43;
   if (args.readOnlyExplainer && !args.readOnlyRouteAllowed) return 0.25;
   if (args.readOnlyRouteAllowed) {
-    return Number(Math.max(base, 0.82).toFixed(2));
+    return Number(Math.max(base, 0.82).toFixed(4));
   }
   if (args.derivedDominant && args.directScore < 0.2) return 0.72;
   if (args.hasDeepResearchCycleIntent && args.skillId === 'sk-deep-research' && args.liveNormalized >= 0.12) return 0.84;
   if (args.hasTaskIntent && (args.directScore >= 0.18 || args.liveNormalized >= 0.2)) {
-    return Number(Math.max(base, 0.82).toFixed(2));
+    return Number(Math.max(base, 0.82).toFixed(4));
   }
-  if (args.directScore >= 0.65) return Number(Math.max(base, 0.82).toFixed(2));
+  if (args.directScore >= 0.65) return Number(Math.max(base, 0.82).toFixed(4));
   const directBonus = args.directScore >= 0.85 ? 0.04 : 0;
-  return Number(Math.max(0, Math.min(0.95, base + directBonus)).toFixed(2));
+  return Number(Math.max(0, Math.min(0.95, base + directBonus)).toFixed(4));
 }
 
 function uncertaintyFor(contributions: readonly LaneContribution[], confidence: number, ambiguousPressure: number): number {
@@ -292,10 +292,11 @@ export function scoreAdvisorPrompt(prompt: string, options: AdvisorScoringOption
   });
   ranked = applyAmbiguity(ranked);
 
-  const filtered = options.includeAllCandidates ? ranked : ranked.filter((recommendation) => recommendation.passes_threshold);
-  const top = filtered[0] ?? null;
+  const passing = ranked.filter((recommendation) => recommendation.passes_threshold);
+  const visible = options.includeAllCandidates ? ranked : passing;
+  const top = passing[0] ?? null;
   return {
-    recommendations: filtered,
+    recommendations: visible,
     topSkill: top?.skill ?? null,
     unknown: !top,
     ambiguous: isAmbiguousTopTwo(ranked),

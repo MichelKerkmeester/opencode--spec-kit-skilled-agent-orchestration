@@ -2,7 +2,7 @@
 // MODULE: Advisor Status Tests
 // ───────────────────────────────────────────────────────────────
 
-import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, utimesSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
@@ -43,9 +43,25 @@ describe('advisor_status handler', () => {
 
     expect(status.freshness).toBe('live');
     expect(status.generation).toBe(3);
+    expect(status.trustState.lastLiveAt).toBe('2026-04-20T00:00:00.000Z');
     expect(status.lastScanAt).toBe('2026-04-20T00:00:00.000Z');
     expect(status.skillCount).toBe(1);
     expect(status.laneWeights.explicit_author).toBe(0.45);
+  });
+
+  it('marks live generations stale when nested graph metadata is newer than the database', () => {
+    const root = workspace('nested-mtime');
+    writeDb(root);
+    writeGeneration(root, 'live', 6);
+    const dbPath = join(root, '.opencode', 'skill', 'system-spec-kit', 'mcp_server', 'database', 'skill-graph.sqlite');
+    const metadataPath = join(root, '.opencode', 'skill', 'alpha', 'graph-metadata.json');
+    utimesSync(dbPath, new Date('2026-04-19T00:00:00.000Z'), new Date('2026-04-19T00:00:00.000Z'));
+    utimesSync(metadataPath, new Date('2026-04-21T00:00:00.000Z'), new Date('2026-04-21T00:00:00.000Z'));
+
+    const status = readAdvisorStatus({ workspaceRoot: root });
+
+    expect(status.freshness).toBe('stale');
+    expect(status.trustState.lastLiveAt).toBe('2026-04-20T00:00:00.000Z');
   });
 
   it('reports stale freshness', () => {
@@ -87,5 +103,20 @@ describe('advisor_status handler', () => {
 
     expect(raw).not.toContain('prompt');
     expect(raw).not.toContain('secret@example.com');
+  });
+
+  it('caps metadata scanning when requested to avoid unbounded status walks', () => {
+    const root = workspace('scan-cap');
+    writeDb(root);
+    writeGeneration(root, 'live', 7);
+    mkdirSync(join(root, '.opencode', 'skill', 'beta'), { recursive: true });
+    writeFileSync(join(root, '.opencode', 'skill', 'beta', 'graph-metadata.json'), '{"skill_id":"beta"}\n', 'utf8');
+
+    const status = readAdvisorStatus({ workspaceRoot: root, maxMetadataFiles: 1 });
+
+    expect(status.skillCount).toBe(1);
+    expect(status.errors).toEqual([
+      expect.stringContaining('metadata scan capped at 1 files'),
+    ]);
   });
 });

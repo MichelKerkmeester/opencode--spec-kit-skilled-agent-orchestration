@@ -231,6 +231,21 @@ describe('getAdvisorFreshness', () => {
     expect(third.state).toBe('stale');
   });
 
+  it('changes source signature for same-size same-mtime source rewrites', () => {
+    const workspaceRoot = createLiveWorkspace();
+    workspaces.push(workspaceRoot);
+    const first = getAdvisorFreshness(workspaceRoot);
+    clearAdvisorSourceCache();
+
+    const skillMdPath = join(workspaceRoot, '.opencode', 'skill', 'alpha', 'SKILL.md');
+    writeFile(skillMdPath, '# omega\n', 1_000);
+    const second = getAdvisorFreshness(workspaceRoot);
+
+    expect(second.skillFingerprints.get('alpha')?.skillMdSize).toBe(first.skillFingerprints.get('alpha')?.skillMdSize);
+    expect(second.skillFingerprints.get('alpha')?.skillMdHash).not.toBe(first.skillFingerprints.get('alpha')?.skillMdHash);
+    expect(second.sourceSignature).not.toBe(first.sourceSignature);
+  });
+
   it('AS9 recovers malformed generation.json on writable filesystems without returning live', () => {
     const workspaceRoot = createLiveWorkspace();
     workspaces.push(workspaceRoot);

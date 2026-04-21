@@ -161,17 +161,24 @@ export function acquireSkillGraphLease(options: LeaseOptions): SkillGraphLease {
   function heartbeat(): void {
     if (!acquired) return;
     const currentTime = now();
-    db.prepare(`
+    const result = db.prepare(`
       UPDATE skill_graph_daemon_lease
       SET heartbeat_at = ?, pid = ?
       WHERE workspace_key = ? AND owner_id = ?
     `).run(currentTime, process.pid, workspace, ownerId);
+    if (result.changes === 0) {
+      acquired = false;
+    }
   }
 
   function release(): void {
     if (!acquired) return;
-    db.prepare('DELETE FROM skill_graph_daemon_lease WHERE workspace_key = ? AND owner_id = ?')
+    const result = db.prepare('DELETE FROM skill_graph_daemon_lease WHERE workspace_key = ? AND owner_id = ?')
       .run(workspace, ownerId);
+    if (result.changes === 0) {
+      acquired = false;
+      return;
+    }
     acquired = false;
   }
 

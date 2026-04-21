@@ -89,6 +89,7 @@ import {
   indexSkillMetadata,
   initDb as initSkillGraphDb,
 } from './lib/skill-graph/skill-graph-db.js';
+import { publishSkillGraphGeneration } from './skill-advisor/lib/freshness/generation.js';
 import * as sessionBoost from './lib/search/session-boost.js';
 import * as causalBoost from './lib/search/causal-boost.js';
 import * as bm25Index from './lib/search/bm25-index.js';
@@ -1478,6 +1479,12 @@ async function runSkillGraphIndex(trigger: string): Promise<void> {
   try {
     const result = indexSkillMetadata(skillGraphSourceDir);
     logSkillGraphIndexResult(trigger, result);
+    publishSkillGraphGeneration({
+      workspaceRoot: process.cwd(),
+      changedPaths: [skillGraphSourceDir],
+      reason: `context-server-${trigger}`,
+      state: 'live',
+    });
   } catch (skillGraphIndexErr: unknown) {
     const message = skillGraphIndexErr instanceof Error ? skillGraphIndexErr.message : String(skillGraphIndexErr);
     console.warn('[context-server] Skill graph index failed:', message);

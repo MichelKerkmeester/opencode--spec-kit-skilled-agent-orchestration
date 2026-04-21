@@ -46,6 +46,7 @@ export const SkillDerivedV2Schema = z.object({
   generated_at: z.string().datetime(),
   source_docs: z.array(z.string().min(1)).max(64),
   key_files: z.array(z.string().min(1)).max(64),
+  demotion: z.number().min(0).max(1).default(1),
   trust_lane: SkillTrustLaneSchema.default('derived_generated'),
   sanitizer_version: z.literal(SKILL_DERIVED_SANITIZER_VERSION),
   lifecycle_status: SkillLifecycleStatusSchema.default('active'),
@@ -56,4 +57,3 @@ export const SkillDerivedV2Schema = z.object({
 export type SkillLifecycleStatus = z.infer<typeof SkillLifecycleStatusSchema>;
 export type SkillTrustLane = z.infer<typeof SkillTrustLaneSchema>;
 export type SkillDerivedV2 = z.infer<typeof SkillDerivedV2Schema>;
-

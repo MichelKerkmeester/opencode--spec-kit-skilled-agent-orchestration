@@ -28,7 +28,12 @@ export function invalidateSkillGraphCaches(event: Omit<CacheInvalidationEvent, '
   };
   lastInvalidation = published;
   for (const listener of listeners) {
-    listener(published);
+    try {
+      listener(published);
+    } catch {
+      // Invalidation fan-out is best effort per listener; one bad hook must not
+      // prevent later caches from seeing the generation bump.
+    }
   }
   return published;
 }

@@ -8,7 +8,7 @@
 {"id":"P0-UNC-002","priority":"P0","prompt":"api chain mcp","confidence_only":true,"expect_result":true,"expected_top_any":["mcp-code-mode"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P0-CMD-001","priority":"P0","prompt":"save this conversation context to memory","confidence_only":false,"expect_result":true,"expected_top_any":["system-spec-kit"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P0-CMD-002","priority":"P0","prompt":"/spec_kit:plan create docs","confidence_only":false,"expect_result":true,"expected_top_any":["command-spec-kit"],"expect_kind":"command","allow_command_bridge":true,"non_slash":false}
-{"id":"P0-CMD-003","priority":"P0","prompt":"/memory:save this context","confidence_only":false,"expect_result":true,"expected_top_any":["command-memory-save"],"expect_kind":"command","allow_command_bridge":true,"non_slash":false}
+{"id":"P0-CMD-003","priority":"P0","prompt":"/memory:save this context","confidence_only":false,"expect_result":true,"expected_top_any":["system-spec-kit"],"expect_kind":"skill","allow_command_bridge":false,"non_slash":false}
 {"id":"P0-ABSTAIN-001","priority":"P0","prompt":"find where this function is defined","confidence_only":false,"expect_result":false,"expected_top_any":[],"allow_command_bridge":false}
 {"id":"P1-FIGMA-001","priority":"P1","prompt":"export components from figma design","confidence_only":false,"expect_result":true,"expected_top_any":["mcp-figma"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-MCP-001","priority":"P1","prompt":"update notion page using code mode toolchain","confidence_only":false,"expect_result":true,"expected_top_any":["mcp-code-mode"],"expect_kind":"skill","allow_command_bridge":false}

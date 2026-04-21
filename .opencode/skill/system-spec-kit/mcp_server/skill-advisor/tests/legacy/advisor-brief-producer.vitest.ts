@@ -31,8 +31,8 @@ function freshness(overrides: Partial<AdvisorFreshnessResult> = {}): AdvisorFres
     generation: 1,
     sourceSignature: 'sig-live',
     skillFingerprints: new Map([
-      ['sk-code-opencode', { skillMdMtime: 1, skillMdSize: 10, graphMetaMtime: 1 }],
-      ['sk-doc', { skillMdMtime: 1, skillMdSize: 10, graphMetaMtime: 1 }],
+      ['sk-code-opencode', { skillMdMtime: 1, skillMdSize: 10, skillMdHash: 'hash-opencode', graphMetaMtime: 1, graphMetaHash: 'graph-opencode' }],
+      ['sk-doc', { skillMdMtime: 1, skillMdSize: 10, skillMdHash: 'hash-doc', graphMetaMtime: 1, graphMetaHash: 'graph-doc' }],
     ]),
     fallbackMode: 'sqlite',
     probedAt: '2026-04-19T09:30:00.000Z',
@@ -245,7 +245,7 @@ describe('buildSkillAdvisorBrief', () => {
 
     vi.mocked(getAdvisorFreshness).mockReturnValue(freshness({
       skillFingerprints: new Map([
-        ['sk-doc', { skillMdMtime: 1, skillMdSize: 10, graphMetaMtime: 1 }],
+        ['sk-doc', { skillMdMtime: 1, skillMdSize: 10, skillMdHash: 'hash-doc', graphMetaMtime: 1, graphMetaHash: 'graph-doc' }],
       ]),
     }));
     mockAdvisor('sk-doc');

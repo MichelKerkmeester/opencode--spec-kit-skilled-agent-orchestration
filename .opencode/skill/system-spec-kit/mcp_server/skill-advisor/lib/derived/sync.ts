@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 
 import { closeSync, existsSync, fsyncSync, mkdirSync, openSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, join, relative, resolve, sep } from 'node:path';
 import { SkillDerivedV2Schema, SKILL_DERIVED_SANITIZER_VERSION, type SkillDerivedV2 } from '../../schemas/skill-derived-v2.js';
 import { applyAntiStuffing } from './anti-stuffing.js';
 import { extractDerivedMetadata } from './extract.js';
@@ -68,12 +68,21 @@ function writeJsonAtomic(filePath: string, payload: Record<string, unknown>): vo
   }
 }
 
+function isWithin(parent: string, child: string): boolean {
+  const relativePath = relative(parent, child);
+  return relativePath === '' || (!relativePath.startsWith(`..${sep}`) && relativePath !== '..' && !relativePath.startsWith('/'));
+}
+
 // ───────────────────────────────────────────────────────────────
 // 3. CORE LOGIC
 // ───────────────────────────────────────────────────────────────
 
 export function syncDerivedMetadata(options: SyncDerivedOptions): SyncDerivedResult {
+  const workspaceRoot = resolve(options.workspaceRoot);
   const skillDir = resolve(options.skillDir);
+  if (!isWithin(workspaceRoot, skillDir)) {
+    throw new Error(`skillDir must stay under workspaceRoot: ${skillDir}`);
+  }
   const graphMetadataPath = join(skillDir, 'graph-metadata.json');
   const graphMetadata = readGraphMetadata(graphMetadataPath);
   const extraction = extractDerivedMetadata(options);
@@ -89,6 +98,7 @@ export function syncDerivedMetadata(options: SyncDerivedOptions): SyncDerivedRes
     generated_at: (options.now ?? new Date()).toISOString(),
     source_docs: extraction.sourceDocs,
     key_files: extraction.keyFiles,
+    demotion: antiStuffing.demotion,
     trust_lane: 'derived_generated',
     sanitizer_version: SKILL_DERIVED_SANITIZER_VERSION,
     lifecycle_status: options.lifecycleStatus ?? 'active',
@@ -114,4 +124,3 @@ export function syncDerivedMetadata(options: SyncDerivedOptions): SyncDerivedRes
     diagnostics: [...extraction.diagnostics, ...antiStuffing.diagnostics],
   };
 }
-

@@ -140,6 +140,12 @@ function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecom
     sourceSignature,
     runtime: 'mcp',
     maxTokens: input.options?.topK,
+    thresholdConfig: {
+      confidenceThreshold: input.options?.confidenceThreshold,
+      uncertaintyThreshold: input.options?.uncertaintyThreshold,
+      includeAttribution: input.options?.includeAttribution,
+      includeAbstainReasons: input.options?.includeAbstainReasons,
+    },
   });
   const cached = advisorPromptCache.get(key);
   if (cached) {

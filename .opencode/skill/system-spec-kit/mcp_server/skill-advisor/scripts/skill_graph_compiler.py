@@ -286,6 +286,25 @@ def validate_derived_metadata(folder_name: str, derived: Any) -> List[str]:
     return errors
 
 
+def normalized_edges(data: dict) -> Dict[str, List[dict]]:
+    """Return only well-formed edge lists for cross-file validators."""
+    raw_edges = data.get("edges", {})
+    if not isinstance(raw_edges, dict):
+        return {}
+
+    edge_groups: Dict[str, List[dict]] = {}
+    for edge_type in EDGE_TYPES:
+        raw_edge_list = raw_edges.get(edge_type, [])
+        if not isinstance(raw_edge_list, list):
+            edge_groups[edge_type] = []
+            continue
+        edge_groups[edge_type] = [
+            edge for edge in raw_edge_list
+            if isinstance(edge, dict)
+        ]
+    return edge_groups
+
+
 def validate_edge_symmetry(
     all_metadata: List[Tuple[str, str, dict]],
 ) -> List[str]:
@@ -305,8 +324,7 @@ def validate_edge_symmetry(
     skill_edges = {}
     for folder_name, _, data in all_metadata:
         skill_id = data.get("skill_id", folder_name)
-        edges = data.get("edges", {})
-        skill_edges[skill_id] = edges
+        skill_edges[skill_id] = normalized_edges(data)
 
     # Check depends_on <-> prerequisite_for symmetry
     for skill_id, edges in skill_edges.items():
@@ -377,7 +395,7 @@ def validate_weight_bands(
 
     for folder_name, _, data in all_metadata:
         skill_id = data.get("skill_id", folder_name)
-        edges = data.get("edges", {})
+        edges = normalized_edges(data)
         for edge_type, (lo, hi) in WEIGHT_BANDS.items():
             for i, edge in enumerate(edges.get(edge_type, [])):
                 weight = edge.get("weight")
@@ -404,7 +422,7 @@ def validate_weight_parity(
     skill_edges: Dict[str, dict] = {}
     for folder_name, _, data in all_metadata:
         skill_id = data.get("skill_id", folder_name)
-        skill_edges[skill_id] = data.get("edges", {})
+        skill_edges[skill_id] = normalized_edges(data)
 
     # Check depends_on <-> prerequisite_for weight parity
     for skill_id, edges in skill_edges.items():
@@ -455,9 +473,7 @@ def validate_zero_edge_skills(
 
     for folder_name, _, data in all_metadata:
         skill_id = data.get("skill_id", folder_name)
-        edges = data.get("edges", {})
-        if not isinstance(edges, dict):
-            continue
+        edges = normalized_edges(data)
 
         total_edges = 0
         for edge_type in EDGE_TYPES:
@@ -482,16 +498,13 @@ def validate_dependency_cycles(
 
     for folder_name, _, data in all_metadata:
         skill_id = data.get("skill_id", folder_name)
-        edges = data.get("edges", {})
+        edges = normalized_edges(data)
         targets: Set[str] = set()
 
-        if isinstance(edges, dict):
-            for edge in edges.get("depends_on", []):
-                if not isinstance(edge, dict):
-                    continue
-                target = edge.get("target")
-                if target:
-                    targets.add(target)
+        for edge in edges.get("depends_on", []):
+            target = edge.get("target")
+            if target:
+                targets.add(target)
 
         depends_on_lookup[skill_id] = targets
 
@@ -624,7 +637,7 @@ def compile_graph(
         families[family].append(skill_id)
 
         # Build sparse adjacency
-        edges = data.get("edges", {})
+        edges = normalized_edges(data)
         skill_adj: Dict[str, dict] = {}
 
         # Keep core sparse edge groups in compiled output.

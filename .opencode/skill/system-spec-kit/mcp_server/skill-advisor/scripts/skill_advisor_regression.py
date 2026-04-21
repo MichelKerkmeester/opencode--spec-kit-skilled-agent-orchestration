@@ -19,6 +19,7 @@ import argparse
 import importlib.util
 import json
 import os
+import subprocess
 import sys
 from typing import Any, Dict, List
 
@@ -41,6 +42,8 @@ def load_advisor_module() -> Any:
     Delegates to the canonical implementation in skill_advisor_bench to
     avoid duplicating the same importlib loading logic in two harnesses.
     """
+    if SCRIPT_DIR not in sys.path:
+        sys.path.insert(0, SCRIPT_DIR)
     from skill_advisor_bench import load_advisor_module as _load
     return _load()
 
@@ -74,16 +77,63 @@ def load_jsonl(path: str) -> List[Dict[str, Any]]:
 # 4. EVALUATION LOGIC
 # ───────────────────────────────────────────────────────────────
 
-def evaluate_case(advisor: Any, case: Dict[str, Any], threshold: float, uncertainty: float) -> Dict[str, Any]:
-    """Run a single regression case and record its expectation checks."""
-    prompt = case["prompt"]
+def run_case_inprocess(advisor: Any, case: Dict[str, Any], threshold: float, uncertainty: float) -> List[Dict[str, Any]]:
+    """Evaluate a case through the imported Python module."""
     confidence_only = bool(case.get("confidence_only", False))
-    recommendations = advisor.analyze_prompt(
-        prompt=prompt,
+    return advisor.analyze_prompt(
+        prompt=case["prompt"],
         confidence_threshold=threshold,
         uncertainty_threshold=uncertainty,
         confidence_only=confidence_only,
         show_rejections=False,
+    )
+
+
+def run_case_subprocess(case: Dict[str, Any], threshold: float, uncertainty: float) -> List[Dict[str, Any]]:
+    """Evaluate a case through the CLI subprocess bridge."""
+    confidence_only = bool(case.get("confidence_only", False))
+    command = [
+        "python3",
+        ADVISOR_PATH,
+        "--force-local",
+        "--threshold",
+        str(threshold),
+        "--uncertainty",
+        str(uncertainty),
+    ]
+    if confidence_only:
+        command.append("--confidence-only")
+    command.extend(["--", case["prompt"]])
+    env = os.environ.copy()
+    env["SKILL_ADVISOR_DISABLE_BUILTIN_SEMANTIC"] = "1"
+    completed = subprocess.run(
+        command,
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        encoding="utf-8",
+        env=env,
+    )
+    parsed = json.loads(completed.stdout or "[]")
+    if not isinstance(parsed, list):
+        raise ValueError(f"subprocess advisor returned {type(parsed).__name__}, expected list")
+    return parsed
+
+
+def evaluate_case(
+    advisor: Any,
+    case: Dict[str, Any],
+    threshold: float,
+    uncertainty: float,
+    runner: str = "inprocess",
+) -> Dict[str, Any]:
+    """Run a single regression case and record its expectation checks."""
+    prompt = case["prompt"]
+    confidence_only = bool(case.get("confidence_only", False))
+    recommendations = (
+        run_case_subprocess(case, threshold, uncertainty)
+        if runner == "subprocess"
+        else run_case_inprocess(advisor, case, threshold, uncertainty)
     )
 
     top = recommendations[0] if recommendations else None
@@ -107,6 +157,7 @@ def evaluate_case(advisor: Any, case: Dict[str, Any], threshold: float, uncertai
         "id": case.get("id", "unknown"),
         "priority": case.get("priority", "P1"),
         "prompt": prompt,
+        "runner": runner,
         "confidence_only": confidence_only,
         "expect_result": expect_result,
         "expected_top_any": expected_top,
@@ -196,6 +247,7 @@ def main() -> int:
     parser.add_argument("--max-command-bridge-fp-rate", type=float, default=0.05, help="Maximum command bridge FP rate on non-slash prompts.")
     parser.add_argument("--min-p0-pass-rate", type=float, default=1.0, help="Minimum P0 pass rate.")
     parser.add_argument("--mode", choices=["both", "default", "confidence-only"], default="both", help="Which dataset cases to execute by mode.")
+    parser.add_argument("--runner", choices=["both", "inprocess", "subprocess"], default="both", help="Advisor execution path to exercise.")
     args = parser.parse_args()
 
     advisor = load_advisor_module()
@@ -210,15 +262,19 @@ def main() -> int:
             continue
         filtered_dataset.append(case)
 
-    results = [
-        evaluate_case(
-            advisor=advisor,
-            case=case,
-            threshold=args.threshold,
-            uncertainty=args.uncertainty,
+    runners = ["inprocess", "subprocess"] if args.runner == "both" else [args.runner]
+    results: List[Dict[str, Any]] = []
+    for runner in runners:
+        results.extend(
+            evaluate_case(
+                advisor=advisor,
+                case=case,
+                threshold=args.threshold,
+                uncertainty=args.uncertainty,
+                runner=runner,
+            )
+            for case in filtered_dataset
         )
-        for case in filtered_dataset
-    ]
 
     metrics = compute_metrics(results)
     gates = {
@@ -232,6 +288,8 @@ def main() -> int:
     report = {
         "dataset": args.dataset,
         "mode": args.mode,
+        "runner": args.runner,
+        "runners_exercised": runners,
         "thresholds": {
             "confidence": args.threshold,
             "uncertainty": args.uncertainty,

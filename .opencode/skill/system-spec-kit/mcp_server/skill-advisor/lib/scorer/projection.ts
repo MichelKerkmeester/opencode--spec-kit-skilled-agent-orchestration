@@ -96,6 +96,12 @@ function stringArray(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((entry): entry is string => typeof entry === 'string') : [];
 }
 
+function boundedDemotion(value: unknown): number | undefined {
+  return typeof value === 'number' && Number.isFinite(value)
+    ? Math.max(0, Math.min(1, value))
+    : undefined;
+}
+
 function readJson(filePath: string): Record<string, unknown> {
   if (!existsSync(filePath)) return {};
   const parsed: unknown = JSON.parse(readFileSync(filePath, 'utf8'));
@@ -167,6 +173,7 @@ function projectionFromRow(row: SkillNodeRow): SkillProjection {
     intentSignals: unique(jsonArray(row.intent_signals).flatMap((entry) => phraseVariants(entry))),
     derivedTriggers,
     derivedKeywords: derivedTriggers,
+    derivedDemotion: boundedDemotion(derived.demotion),
     sourcePath: row.source_path,
     lifecycleStatus: lifecycle,
     redirectTo,
@@ -224,6 +231,13 @@ function loadFilesystemProjection(workspaceRoot: string): AdvisorProjection {
     const derived = typeof metadata.derived === 'object' && metadata.derived !== null && !Array.isArray(metadata.derived)
       ? metadata.derived as Record<string, unknown>
       : {};
+    const derivedTriggers = unique([
+      ...stringArray(derived.trigger_phrases),
+      ...stringArray(derived.key_topics),
+      ...stringArray(derived.entities),
+      ...stringArray(derived.key_files),
+      ...stringArray(derived.source_docs),
+    ].flatMap((item) => phraseVariants(item)));
     skills.push({
       id: skillId,
       kind: 'skill',
@@ -234,14 +248,9 @@ function loadFilesystemProjection(workspaceRoot: string): AdvisorProjection {
       keywords: unique(skillMd.keywords.flatMap((item) => phraseVariants(item))),
       domains: unique(stringArray(metadata.domains).flatMap((item) => phraseVariants(item))),
       intentSignals: unique(stringArray(metadata.intent_signals).flatMap((item) => phraseVariants(item))),
-      derivedTriggers: unique([
-        ...stringArray(derived.trigger_phrases),
-        ...stringArray(derived.key_topics),
-        ...stringArray(derived.entities),
-        ...stringArray(derived.key_files),
-        ...stringArray(derived.source_docs),
-      ].flatMap((item) => phraseVariants(item))),
-      derivedKeywords: [],
+      derivedTriggers,
+      derivedKeywords: derivedTriggers,
+      derivedDemotion: boundedDemotion(derived.demotion),
       sourcePath: metadataPath,
       lifecycleStatus: lifecycleStatus(metadata.lifecycle_status ?? derived.lifecycle_status, metadataPath),
       redirectTo: typeof metadata.redirect_to === 'string' ? metadata.redirect_to : undefined,
@@ -253,7 +262,11 @@ function loadFilesystemProjection(workspaceRoot: string): AdvisorProjection {
 
 export function loadAdvisorProjection(workspaceRoot: string): AdvisorProjection {
   const resolvedRoot = resolve(workspaceRoot);
-  return loadSqliteProjection(resolvedRoot) ?? loadFilesystemProjection(resolvedRoot);
+  try {
+    return loadSqliteProjection(resolvedRoot) ?? loadFilesystemProjection(resolvedRoot);
+  } catch {
+    return loadFilesystemProjection(resolvedRoot);
+  }
 }
 
 export function createFixtureProjection(

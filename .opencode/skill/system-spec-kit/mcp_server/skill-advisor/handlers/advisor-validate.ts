@@ -279,7 +279,7 @@ function adversarialStuffingBlocked(workspaceRoot: string): boolean {
   }).topSkill === null;
 }
 
-export function validateAdvisor(input: AdvisorValidateInput = {}): AdvisorValidateOutput {
+export function validateAdvisor(input: AdvisorValidateInput = { confirmHeavyRun: true }): AdvisorValidateOutput {
   const args = AdvisorValidateInputSchema.parse(input);
   const workspaceRoot = findWorkspaceRoot();
   const corpus = loadCorpus(workspaceRoot)

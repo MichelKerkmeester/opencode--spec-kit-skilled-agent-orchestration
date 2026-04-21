@@ -113,7 +113,14 @@ describe('027/006 weight and semantic guards', () => {
     expect(() => requireSemanticLiveWeightLocked({
       ...DEFAULT_PROMOTION_WEIGHTS,
       semantic_shadow: 0.01,
-    })).toThrow(/semantic_shadow live weight must remain 0\.00/);
+    })).toThrow(/semantic_shadow live weight must remain exactly 0\.00/);
+  });
+
+  it('blocks malformed negative semantic live weight during the first promotion wave', () => {
+    expect(() => requireSemanticLiveWeightLocked({
+      ...DEFAULT_PROMOTION_WEIGHTS,
+      semantic_shadow: -0.01,
+    })).toThrow(/semantic_shadow live weight must remain exactly 0\.00/);
   });
 });
 
@@ -200,6 +207,50 @@ describe('027/006 rollback and integration', () => {
     expect(invalidated).toBe(true);
     expect(telemetry).toHaveLength(1);
     expect(trace.cacheInvalidated).toBe(true);
+  });
+
+  it('keeps rollback successful when telemetry throws after restore', async () => {
+    let applied: PromotionWeights | null = null;
+    let invalidated = false;
+    const failedWeights = { ...DEFAULT_PROMOTION_WEIGHTS, lexical: 0.35, explicit_author: 0.40 };
+
+    const trace = await rollbackPromotion({
+      reason: 'telemetry unavailable',
+      previousWeights: DEFAULT_PROMOTION_WEIGHTS,
+      failedWeights,
+      applyWeights: (weights) => { applied = weights; },
+      invalidateCache: () => { invalidated = true; },
+      emitTelemetry: () => { throw new Error('telemetry down'); },
+      now: () => '2026-04-20T00:00:00.000Z',
+    });
+
+    expect(applied).toEqual(DEFAULT_PROMOTION_WEIGHTS);
+    expect(invalidated).toBe(true);
+    expect(trace.rolledBack).toBe(true);
+    expect(trace.cacheInvalidated).toBe(true);
+    expect(trace.telemetryError).toBe('telemetry down');
+  });
+
+  it('keeps rollback successful and audits when cache invalidation throws', async () => {
+    let applied: PromotionWeights | null = null;
+    const telemetry: unknown[] = [];
+    const failedWeights = { ...DEFAULT_PROMOTION_WEIGHTS, lexical: 0.35, explicit_author: 0.40 };
+
+    const trace = await rollbackPromotion({
+      reason: 'cache unavailable',
+      previousWeights: DEFAULT_PROMOTION_WEIGHTS,
+      failedWeights,
+      applyWeights: (weights) => { applied = weights; },
+      invalidateCache: () => { throw new Error('cache down'); },
+      emitTelemetry: (event) => { telemetry.push(event); },
+      now: () => '2026-04-20T00:00:00.000Z',
+    });
+
+    expect(applied).toEqual(DEFAULT_PROMOTION_WEIGHTS);
+    expect(telemetry).toHaveLength(1);
+    expect(trace.rolledBack).toBe(true);
+    expect(trace.cacheInvalidated).toBe(false);
+    expect(trace.cacheInvalidationError).toBe('cache down');
   });
 
   it('runs shadow-to-promotion workflow atomically for bounded learned/adaptive weights', () => {

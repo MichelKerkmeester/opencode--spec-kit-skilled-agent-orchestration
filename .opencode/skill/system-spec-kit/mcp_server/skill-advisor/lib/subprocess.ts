@@ -195,7 +195,7 @@ function runSpawnAttempt(args: {
         stderr,
         exitCode,
         signal,
-        errorCode: timedOut || signal === 'SIGKILL' ? 'SIGNAL_KILLED' : null,
+        errorCode: timedOut ? 'TIMEOUT' : signal === 'SIGKILL' ? 'SIGNAL_KILLED' : null,
         durationMs: performance.now() - startedAt,
       });
     });
