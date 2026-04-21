@@ -1,0 +1,77 @@
+{
+  "mode": "implementation-audit",
+  "sessionId": "rvw-impl-2026-04-21T22-42-00+02-00",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup",
+  "reviewPacketLocation": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup/review-impl",
+  "maxIterations": 10,
+  "dimensions": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing"
+  ],
+  "dimensionRotation": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing",
+    "correctness",
+    "security",
+    "robustness",
+    "testing",
+    "correctness",
+    "security"
+  ],
+  "evidenceRules": {
+    "requiresProductionCodeFileLine": true,
+    "rejectedEvidenceOnlyExtensions": [
+      ".md",
+      ".json"
+    ],
+    "acceptedCodeExtensions": [
+      ".ts",
+      ".tsx",
+      ".mts",
+      ".js",
+      ".mjs",
+      ".py",
+      ".sh"
+    ],
+    "testFilesMaySupportEvidence": true
+  },
+  "codeFilesAudited": [
+    {
+      "claimedPath": ".opencode/skill/skill-advisor/scripts/init-skill-graph.sh",
+      "livePath": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/init-skill-graph.sh",
+      "status": "moved-live-counterpart-audited"
+    },
+    {
+      "claimedPath": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+      "livePath": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py",
+      "status": "moved-live-counterpart-audited"
+    },
+    {
+      "claimedPath": ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+      "livePath": ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+      "status": "audited"
+    },
+    {
+      "claimedPath": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "livePath": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "status": "derived-key-file-audited"
+    }
+  ],
+  "supportingCodeReadForCallGraph": [
+    ".opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py",
+    ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/python-compat.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/skill-graph-db.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/lifecycle-derived-metadata.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/skill-graph-schema.vitest.ts"
+  ],
+  "scopedVitestCommand": "cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run skill-advisor/tests/compat/python-compat.vitest.ts skill-advisor/tests/skill-graph-db.vitest.ts skill-advisor/tests/lifecycle-derived-metadata.vitest.ts tests/skill-graph-schema.vitest.ts --reporter=default",
+  "createdAt": "2026-04-21T22:42:00+02:00",
+  "status": "complete",
+  "completedAt": "2026-04-21T22:55:30+02:00",
+  "verdict": "CONDITIONAL"
+}

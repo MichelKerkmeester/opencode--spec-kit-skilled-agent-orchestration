@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "mode": "implementation-audit",
+  "status": "complete",
+  "verdict": "CONDITIONAL",
+  "dimensionCoverage": {
+    "correctness": 3,
+    "security": 3,
+    "robustness": 2,
+    "testing": 2
+  },
+  "counts": {
+    "P0": 0,
+    "P1": 3,
+    "P2": 2
+  },
+  "openFindings": [
+    {
+      "id": "DR-IMPL-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Python fallback graph signals for nested skill-advisor are dead because discovery only loads top-level SKILL.md files",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_runtime.py:153",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2708",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2754",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2957"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "DR-IMPL-002",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "--semantic-hits accepts non-finite scores, allowing caller-supplied Infinity to force an unrelated high-confidence route",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2096",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2105",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:3165"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "DR-IMPL-003",
+      "severity": "P1",
+      "dimension": "robustness",
+      "title": "The shipped strict validation path currently exits 2 on zero-edge skills, so the claimed validation command is not passing in the current checkout",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py:782",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py:786",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:3158",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/python/test_skill_advisor.py:1179"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "DR-IMPL-004",
+      "severity": "P2",
+      "dimension": "testing",
+      "title": "Regression coverage does not exercise --semantic-hits score validation even though that path can alter routing confidence",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/python-compat.vitest.ts:12",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:3165",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:3246"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "DR-IMPL-005",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Compiler numeric validation accepts JSON booleans as schema versions and weights",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py:123",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py:171",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py:649"
+      ],
+      "status": "open"
+    }
+  ],
+  "resolvedFindings": [],
+  "verification": {
+    "vitestRuns": 10,
+    "vitestStatus": "passed",
+    "additionalChecks": [
+      "git log checked for implementation commits",
+      "current --validate-only behavior checked and recorded"
+    ]
+  },
+  "updatedAt": "2026-04-21T20:44:00Z"
+}

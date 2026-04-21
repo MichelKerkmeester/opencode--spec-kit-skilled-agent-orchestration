@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "reviewMode": "implementation-audit",
+  "scope": "production-code-and-tests-only",
+  "summary": {
+    "p0": 1,
+    "p1": 2,
+    "p2": 0,
+    "total": 3,
+    "verdict": "changes requested"
+  },
+  "findings": [
+    {
+      "id": "P0-IMPL-001",
+      "severity": "P0",
+      "dimension": "security",
+      "title": "Tier 3 target_doc can escape the spec folder before canonical merge writes",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1157",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1160",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1427",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1443",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1503",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:856",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:860"
+      ],
+      "expected": "Tier 3 routed target documents are restricted to the canonical target allowlist and remain inside the resolved spec folder.",
+      "actual": "Validated Tier 3 output preserves arbitrary target_doc strings, and memory-save joins that string to the spec folder without rejecting ../ traversal before reading and merging the target file."
+    },
+    {
+      "id": "P1-IMPL-002",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Task update matching treats dependency mentions as target-task matches",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:542",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:573",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:576",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:464",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:466"
+      ],
+      "expected": "A task update for T002 matches the checklist item's own identifier field, not incidental mentions in other checklist lines.",
+      "actual": "matchUpdateInPlaceLine accepts any word-boundary occurrence of T002 on a structured checklist line, so '- [ ] T003 depends on T002' is counted as another T002 match."
+    },
+    {
+      "id": "P1-IMPL-003",
+      "severity": "P1",
+      "dimension": "testing",
+      "title": "Focused tests miss the two high-risk negative cases introduced by routing and merge safety",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/anchor-merge-operation.vitest.ts:405",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/anchor-merge-operation.vitest.ts:434",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1494",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1528",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1625"
+      ],
+      "expected": "Regression tests cover incidental task-id mentions on other checklist items and malicious Tier 3 target_doc traversal.",
+      "actual": "The packet tests cover zero-match, duplicate own-task lines, and benign Tier 3 targets, but not dependency mentions or escaped target documents."
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"iteration":"008","dimension":"testing","type":"no-new-finding","summary":"Confirmed test gaps for known findings; no additional testing findings.","evidence":[".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:133",".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:535"],"newFindingsRatio":0,"churn":0}

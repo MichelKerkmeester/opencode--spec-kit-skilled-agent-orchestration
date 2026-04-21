@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "mode": "implementation-audit",
+  "status": "no-implementation",
+  "auditedCodeFileCount": 0,
+  "openFindings": [],
+  "resolvedFindings": [],
+  "rejectedFindings": [],
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 0
+  },
+  "findingsByDimension": {
+    "correctness": [],
+    "security": [],
+    "robustness": [],
+    "testing": []
+  },
+  "dimensionCoverage": {
+    "correctness": "not-applicable-no-code-files",
+    "security": "not-applicable-no-code-files",
+    "robustness": "not-applicable-no-code-files",
+    "testing": "not-applicable-no-code-files"
+  },
+  "scopeEvidence": {
+    "implementationSummaryFilesChangedLines": "implementation-summary.md:63-74",
+    "graphMetadataKeyFilesLines": "graph-metadata.json:43-61",
+    "closedByCommit": "254461c386d458a1c81cd5c7e64fccaf26738960"
+  },
+  "convergence": {
+    "newFindingsRatio": 0,
+    "churn": 0,
+    "reason": "no claimed production code files"
+  },
+  "updatedAt": "2026-04-21T00:00:00+02:00"
+}

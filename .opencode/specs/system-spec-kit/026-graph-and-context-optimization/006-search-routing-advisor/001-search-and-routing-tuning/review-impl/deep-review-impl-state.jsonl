@@ -1,0 +1,10 @@
+{"iteration":"001","dimension":"correctness","newFindings":["F-IMPL-P1-001","F-IMPL-P1-002","F-IMPL-P2-001"],"verification":"FAIL","churn":0.38,"notes":"Scoped vitest failed on adaptive-fusion T12; isolated adaptive-fusion rerun passed."}
+{"iteration":"002","dimension":"security","newFindings":["F-IMPL-P1-005"],"verification":"FAIL","churn":0.13,"notes":"Scoped vitest failed on adaptive-fusion T12; cross-encoder tests attempted Voyage fallback path."}
+{"iteration":"003","dimension":"robustness","newFindings":["F-IMPL-P1-003","F-IMPL-P2-002"],"verification":"FAIL","churn":0.25,"notes":"Scoped vitest failed on adaptive-fusion T12."}
+{"iteration":"004","dimension":"testing","newFindings":["F-IMPL-P1-004","F-IMPL-P2-003"],"verification":"PASS","churn":0.25,"notes":"Scoped vitest passed: 318 passed, 3 skipped."}
+{"iteration":"005","dimension":"correctness","newFindings":[],"verification":"PASS","churn":0.00,"notes":"Intent/adaptive-fusion correctness pass found no additional production finding."}
+{"iteration":"006","dimension":"security","newFindings":[],"verification":"PASS","churn":0.00,"notes":"No additional code-level security finding beyond live-provider test leakage."}
+{"iteration":"007","dimension":"robustness","newFindings":[],"verification":"PASS","churn":0.00,"notes":"No additional robustness finding after reranker/cache/provider review."}
+{"iteration":"008","dimension":"testing","newFindings":[],"verification":"PASS","churn":0.00,"notes":"Testing pass confirmed existing findings; no new distinct issue."}
+{"iteration":"009","dimension":"correctness","newFindings":[],"verification":"PASS","churn":0.00,"notes":"No new correctness finding."}
+{"iteration":"010","dimension":"security","newFindings":[],"verification":"FAIL","churn":0.00,"notes":"Scoped vitest again failed on adaptive-fusion T12, confirming intermittent/non-hermetic verification."}

@@ -1,0 +1,60 @@
+{
+  "topic": "Implementation-focused audit for 008-deep-skill-feature-catalogs",
+  "mode": "implementation-audit",
+  "status": "no-implementation",
+  "reviewTarget": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs",
+  "reviewPacketLocation": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/review-impl",
+  "executionMode": "auto",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.1,
+  "stuckThreshold": 3,
+  "dimensions": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing"
+  ],
+  "scopePolicy": {
+    "sourceOfTruth": [
+      "implementation-summary.md",
+      "graph-metadata.json.derived.key_files"
+    ],
+    "eligibleExtensions": [
+      ".ts",
+      ".tsx",
+      ".mts",
+      ".js",
+      ".mjs",
+      ".py",
+      ".sh",
+      ".vitest.ts"
+    ],
+    "rejectSpecDocOnlyFindings": true,
+    "writeBoundary": "review-impl/**"
+  },
+  "scopeResolution": {
+    "implementationSummaryExists": false,
+    "eligibleCodeFiles": [],
+    "graphMetadataKeyFiles": [
+      "feature_catalog/feature_catalog.md",
+      ".opencode/skill/sk-deep-research/feature_catalog/feature_catalog.md",
+      ".opencode/skill/sk-deep-review/feature_catalog/feature_catalog.md",
+      ".opencode/skill/sk-improve-agent/feature_catalog/feature_catalog.md",
+      ".opencode/skill/skill-advisor/feature_catalog/feature_catalog.md",
+      ".opencode/skill/skill-advisor/feature_catalog/02--graph-system/04-transitive-boosts.md",
+      ".opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_template.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "decision": "no-implementation"
+  },
+  "verification": {
+    "vitest": "skipped: no packet-scoped test files were listed by implementation-summary.md or graph-metadata.json.derived.key_files",
+    "gitLogChecked": true,
+    "grepGlobChecked": true,
+    "cocoIndexAttempted": true
+  },
+  "createdAt": "2026-04-21T22:44:49+02:00"
+}

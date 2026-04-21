@@ -1,0 +1,1 @@
+{"iteration":3,"dimension":"robustness","newFindings":["IMPL-F003"],"findingsNew":{"P0":0,"P1":0,"P2":1},"newFindingsRatio":0.1,"churn":0.18,"vitest":"pass","gitLogChecked":true}

@@ -1,0 +1,93 @@
+{
+  "mode": "implementation-audit",
+  "status": "complete",
+  "summary": {
+    "verdict": "CONDITIONAL",
+    "confidence": "medium-high",
+    "auditedCodeFileCount": 3,
+    "activeFindings": {
+      "P0": 0,
+      "P1": 1,
+      "P2": 3
+    },
+    "dimensionsCovered": [
+      "correctness",
+      "security",
+      "robustness",
+      "testing"
+    ],
+    "iterationsCompleted": 10,
+    "stopReason": "maxIterationsReached"
+  },
+  "openFindings": [
+    {
+      "id": "IMPL-COR-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Backfill still defaults to archive-inclusive traversal",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:70",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:73",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:85",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:193",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:78",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:84"
+      ],
+      "impact": "The runtime and tests still treat archive-inclusive traversal as the default. If this packet's intended production behavior is active-only by default with explicit archive opt-in, the shipped implementation has the wrong default semantics and the regression suite protects the opposite behavior.",
+      "remediation": "Decide the intended contract. If active-only default is correct, initialize activeOnly=true, make --include-archive set it false, and invert the default traversal tests."
+    },
+    {
+      "id": "IMPL-ROB-001",
+      "severity": "P2",
+      "dimension": "robustness",
+      "title": "Active-only archive detection uses the absolute path instead of a root-relative path",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:103",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:104",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:121",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:122"
+      ],
+      "impact": "In active-only mode, any parent directory segment named z_archive or z_future above the specs root would cause traversal to return early before inspecting active packets.",
+      "remediation": "Evaluate archive segments on a path relative to the traversal root, or pass root into the predicate and skip only descendants below archive/future segments."
+    },
+    {
+      "id": "IMPL-ROB-002",
+      "severity": "P2",
+      "dimension": "robustness",
+      "title": "CLI argument parsing silently accepts missing values and unknown flags",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:75",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:89",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:90",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:91"
+      ],
+      "impact": "A mistyped flag is ignored, and a bare --root falls back to the default specs root. Operators can get a successful dry-run or write run over the wrong corpus instead of an actionable usage error.",
+      "remediation": "Reject unknown arguments and require a following non-flag value for --root."
+    },
+    {
+      "id": "IMPL-TST-001",
+      "severity": "P2",
+      "dimension": "testing",
+      "title": "Tests cover direct API options but not the CLI flag contract",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:78",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:95",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:117",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:70"
+      ],
+      "impact": "The tests exercise collectSpecFolders/runBackfill options but do not verify parseArgs or CLI behavior for --active-only, --include-archive, missing --root values, or unknown flags.",
+      "remediation": "Expose a small argument parser helper for tests or add CLI-level subprocess tests for the supported flags and failure cases."
+    }
+  ],
+  "resolvedFindings": [],
+  "rejectedFindings": [
+    {
+      "id": "REJECT-DOC-001",
+      "reason": "Doc-only metadata drift was intentionally out of scope for this second pass."
+    }
+  ]
+}

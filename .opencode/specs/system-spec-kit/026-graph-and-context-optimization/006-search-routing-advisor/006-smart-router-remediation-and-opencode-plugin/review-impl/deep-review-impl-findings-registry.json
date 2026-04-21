@@ -1,0 +1,96 @@
+{
+  "mode": "implementation-audit",
+  "verdict": "CONDITIONAL",
+  "counts": {
+    "P0": 0,
+    "P1": 3,
+    "P2": 3
+  },
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "robustness": true,
+    "testing": true
+  },
+  "openFindings": [
+    {
+      "id": "F001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Native bridge ignores the plugin threshold option",
+      "evidence": [
+        ".opencode/plugins/spec-kit-skill-advisor.js:90",
+        ".opencode/plugins/spec-kit-skill-advisor.js:292",
+        ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs:187",
+        ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs:193"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F002",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "Native brief prints fabricated 0.00 uncertainty",
+      "evidence": [
+        ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs:121",
+        ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs:122",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/render.ts:135"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F003",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Smart-router checker accepts traversal-shaped router resources",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/spec/check-smart-router.sh:70",
+        ".opencode/skill/system-spec-kit/scripts/spec/check-smart-router.sh:100",
+        ".opencode/skill/system-spec-kit/scripts/spec/check-smart-router.sh:106",
+        ".opencode/skill/system-spec-kit/scripts/spec/check-smart-router.sh:260"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F004",
+      "severity": "P2",
+      "dimension": "robustness",
+      "title": "Plugin does not drain bridge stderr although bridge forwards console output there",
+      "evidence": [
+        ".opencode/plugins/spec-kit-skill-advisor.js:213",
+        ".opencode/plugins/spec-kit-skill-advisor.js:216",
+        ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs:40",
+        ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs:45"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F005",
+      "severity": "P2",
+      "dimension": "robustness",
+      "title": "Telemetry prompt observations are kept in an unbounded process-global map until finalize",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-telemetry.ts:57",
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-telemetry.ts:254",
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-telemetry.ts:299"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "F006",
+      "severity": "P1",
+      "dimension": "testing",
+      "title": "Packet-scoped plugin tests mock the bridge and miss the native threshold/uncertainty contract",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/spec-kit-skill-advisor-plugin.vitest.ts:8",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/spec-kit-skill-advisor-plugin.vitest.ts:293",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/spec-kit-skill-advisor-plugin.vitest.ts:297",
+        ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs:187"
+      ],
+      "status": "open"
+    }
+  ],
+  "resolvedFindings": [],
+  "createdAt": "2026-04-21T20:56:47Z",
+  "updatedAt": "2026-04-21T20:56:47Z"
+}

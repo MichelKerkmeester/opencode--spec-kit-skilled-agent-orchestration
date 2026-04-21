@@ -1,0 +1,214 @@
+{
+  "mode": "implementation-audit",
+  "sessionId": "rvw-impl-2026-04-21T20-54-00Z",
+  "openFindings": [
+    {
+      "id": "P1-COR-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Subprocess recommendation parser accepts non-finite scores despite declaring a finite-number contract",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/subprocess.ts:116",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/subprocess.ts:119",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/subprocess.ts:125",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/legacy/advisor-subprocess.vitest.ts:101"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P1-COR-002",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Codex prompt wrapper suppresses fallback injection whenever any valid settings JSON exists",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts:219",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts:220",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts:222",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts:116",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts:119",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/codex-hook-policy.vitest.ts:86"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P1-SEC-001",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Codex fallback wraps advisor text inside an HTML comment without escaping comment terminators",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts:104",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts:178",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts:180",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/codex-prompt-wrapper.vitest.ts:97"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P2-SEC-002",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Hook diagnostics accept unsanitized skill labels into stderr JSONL",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts:126",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts:203",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts:227",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts:249"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P1-ROB-001",
+      "severity": "P1",
+      "dimension": "robustness",
+      "title": "Diagnostic serialization accepts non-finite duration/generation values that JSON converts to null",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts:223",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts:228",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts:245",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts:254"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P2-ROB-002",
+      "severity": "P2",
+      "dimension": "robustness",
+      "title": "Subprocess stdin write/end failures are outside the fail-open result path",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/subprocess.ts:167",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/subprocess.ts:168",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/subprocess.ts:182",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/legacy/advisor-subprocess.vitest.ts:201"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P1-TST-001",
+      "severity": "P1",
+      "dimension": "testing",
+      "title": "Codex hook policy tests encode the fallback-suppression bug instead of guarding hook registration",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/codex-hook-policy.vitest.ts:86",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/codex-hook-policy.vitest.ts:90",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/codex-hook-policy.vitest.ts:101",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts:116"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P1-TST-002",
+      "severity": "P1",
+      "dimension": "testing",
+      "title": "Numeric-boundary tests do not cover non-finite subprocess scores or diagnostic telemetry",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/legacy/advisor-subprocess.vitest.ts:101",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/legacy/advisor-observability.vitest.ts:66",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/subprocess.ts:116",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts:245"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P1-COR-003",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Codex prompt wrapper also suppresses fallback when hook policy is partial",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts:16",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts:222",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts:229",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts:116"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P2-TST-003",
+      "severity": "P2",
+      "dimension": "testing",
+      "title": "Codex prompt-wrapper tests cover live/unavailable policy states but omit partial",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/codex-prompt-wrapper.vitest.ts:18",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/codex-prompt-wrapper.vitest.ts:29",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/codex-prompt-wrapper.vitest.ts:40",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/codex-prompt-wrapper.vitest.ts:68",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts:118"
+      ],
+      "status": "open"
+    }
+  ],
+  "resolvedFindings": [],
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 7,
+    "P2": 3
+  },
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "robustness": true,
+    "testing": true
+  },
+  "iterationChurn": [
+    {
+      "iteration": 1,
+      "dimension": "correctness",
+      "newFindingsRatio": 1.0,
+      "churn": 1.0
+    },
+    {
+      "iteration": 2,
+      "dimension": "security",
+      "newFindingsRatio": 0.6,
+      "churn": 0.6
+    },
+    {
+      "iteration": 3,
+      "dimension": "robustness",
+      "newFindingsRatio": 0.38,
+      "churn": 0.38
+    },
+    {
+      "iteration": 4,
+      "dimension": "testing",
+      "newFindingsRatio": 0.29,
+      "churn": 0.29
+    },
+    {
+      "iteration": 5,
+      "dimension": "correctness",
+      "newFindingsRatio": 0.13,
+      "churn": 0.13
+    },
+    {
+      "iteration": 6,
+      "dimension": "security",
+      "newFindingsRatio": 0,
+      "churn": 0
+    },
+    {
+      "iteration": 7,
+      "dimension": "robustness",
+      "newFindingsRatio": 0,
+      "churn": 0
+    },
+    {
+      "iteration": 8,
+      "dimension": "testing",
+      "newFindingsRatio": 0.02,
+      "churn": 0.02
+    },
+    {
+      "iteration": 9,
+      "dimension": "correctness",
+      "newFindingsRatio": 0,
+      "churn": 0
+    },
+    {
+      "iteration": 10,
+      "dimension": "security",
+      "newFindingsRatio": 0,
+      "churn": 0
+    }
+  ],
+  "updatedAt": "2026-04-21T21:05:30Z"
+}

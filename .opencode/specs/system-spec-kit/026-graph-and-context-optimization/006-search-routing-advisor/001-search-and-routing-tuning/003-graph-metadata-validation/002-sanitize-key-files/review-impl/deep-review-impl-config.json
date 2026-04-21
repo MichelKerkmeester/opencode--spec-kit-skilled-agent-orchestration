@@ -1,0 +1,37 @@
+{
+  "mode": "implementation-audit",
+  "topic": "Implementation-focused audit of sanitize key-files graph metadata changes",
+  "reviewTarget": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/002-sanitize-key-files",
+  "reviewPacketLocation": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/002-sanitize-key-files/review-impl",
+  "executionMode": "auto",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.1,
+  "stuckThreshold": 3,
+  "stuckChurnThreshold": 0.05,
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing"
+  ],
+  "scope": {
+    "include": [
+      ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts"
+    ],
+    "exclude": [
+      "spec docs and metadata drift findings"
+    ],
+    "evidenceRule": "Every finding must cite production or test code with file:line evidence."
+  },
+  "verificationCommand": "cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run tests/graph-metadata-schema.vitest.ts --reporter=default",
+  "createdAt": "2026-04-21T22:14:34+02:00",
+  "status": "complete",
+  "completedAt": "2026-04-21T22:20:25+02:00",
+  "verdict": "CONDITIONAL",
+  "findingCounts": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 1
+  }
+}

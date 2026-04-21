@@ -1,0 +1,85 @@
+{
+  "reviewMode": "implementation-audit",
+  "summary": {
+    "p0": 0,
+    "p1": 2,
+    "p2": 3,
+    "total": 5,
+    "codeFilesAudited": 2,
+    "verdict": "CONDITIONAL PASS"
+  },
+  "findings": [
+    {
+      "id": "FIMPL-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Name-keyed entity dedupe drops distinct same-basename code files",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:872",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:879",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:884",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:889",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:445"
+      ],
+      "impact": "Two legitimate implementation files such as src/index.ts and lib/index.ts collapse to one graph entity because the map key is only the lowercased basename."
+    },
+    {
+      "id": "FIMPL-002",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Internal dot-dot path segments are not rejected before key-file existence checks",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:513",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:521",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:557",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:730",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:784"
+      ],
+      "impact": "A spec-controlled reference like nested/../../some-file.ts can be resolved with path.resolve and accepted if the resulting file exists, allowing metadata pollution and limited existence probing outside the intended reference shape."
+    },
+    {
+      "id": "FIMPL-003",
+      "severity": "P2",
+      "dimension": "robustness",
+      "title": "Legacy metadata migration path bypasses the 12 trigger-phrase cap",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:262",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:289",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:1053",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-schema.ts:37"
+      ],
+      "impact": "Fresh derivation caps trigger phrases, but legacy fallback migration can return an uncapped derived.trigger_phrases array because the schema remains permissive."
+    },
+    {
+      "id": "FIMPL-004",
+      "severity": "P2",
+      "dimension": "testing",
+      "title": "Regression tests cover canonical doc basename collisions but not distinct non-canonical file basename collisions",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:445",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:461",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:872",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:889"
+      ],
+      "impact": "The existing test locks in dedupe for spec.md and plan.md, but it would not catch entity loss for two real code files that share a basename."
+    },
+    {
+      "id": "FIMPL-005",
+      "severity": "P2",
+      "dimension": "testing",
+      "title": "Key-file sanitization tests reject leading ../ but miss internal ../ traversal segments",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:386",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:400",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:557",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:730"
+      ],
+      "impact": "The test suite exercises ../spec.md but not nested/../ forms, leaving FIMPL-002 easy to regress or miss."
+    }
+  ]
+}

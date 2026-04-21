@@ -1,0 +1,171 @@
+{
+  "mode": "implementation-audit",
+  "status": "complete",
+  "filesAudited": [
+    ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts"
+  ],
+  "dimensionCoverage": {
+    "correctness": 1,
+    "security": 1,
+    "robustness": 1,
+    "testing": 1
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 1
+  },
+  "openFindings": [
+    {
+      "id": "P1-CORR-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Interior traversal segments can still be accepted as key-file references",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:557",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:581",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:782"
+      ],
+      "status": "open",
+      "firstSeen": 1,
+      "lastSeen": 1
+    },
+    {
+      "id": "P1-ROB-001",
+      "severity": "P1",
+      "dimension": "robustness",
+      "title": "Legacy graph-metadata migration bypasses the new key-file sanitizer",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:293",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:350",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:225"
+      ],
+      "status": "open",
+      "firstSeen": 3,
+      "lastSeen": 3
+    },
+    {
+      "id": "P1-TEST-001",
+      "severity": "P1",
+      "dimension": "testing",
+      "title": "Sanitizer coverage is mostly helper-level and misses the production bypass paths",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:386",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:237",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:929",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:293"
+      ],
+      "status": "open",
+      "firstSeen": 4,
+      "lastSeen": 4
+    },
+    {
+      "id": "P1-CORR-002",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Canonical packet docs can still be evicted by the key-file cap",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:938",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:942",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:32",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:516"
+      ],
+      "status": "open",
+      "firstSeen": 5,
+      "lastSeen": 5
+    },
+    {
+      "id": "P2-ROB-002",
+      "severity": "P2",
+      "dimension": "robustness",
+      "title": "Graph metadata writer leaves temp files behind on rename failure",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:1148",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:1149",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:540"
+      ],
+      "status": "open",
+      "firstSeen": 7,
+      "lastSeen": 7
+    },
+    {
+      "id": "P1-TEST-002",
+      "severity": "P1",
+      "dimension": "testing",
+      "title": "No test locks canonical-doc survival when key_files hits the cap",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:514",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts:521",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:938",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:942"
+      ],
+      "status": "open",
+      "firstSeen": 8,
+      "lastSeen": 8
+    }
+  ],
+  "resolvedFindings": [],
+  "iterationChurn": [
+    {
+      "run": 1,
+      "dimension": "correctness",
+      "newFindingsRatio": 0.5,
+      "churn": 0.5
+    },
+    {
+      "run": 2,
+      "dimension": "security",
+      "newFindingsRatio": 0,
+      "churn": 0
+    },
+    {
+      "run": 3,
+      "dimension": "robustness",
+      "newFindingsRatio": 0.33,
+      "churn": 0.33
+    },
+    {
+      "run": 4,
+      "dimension": "testing",
+      "newFindingsRatio": 0.25,
+      "churn": 0.25
+    },
+    {
+      "run": 5,
+      "dimension": "correctness",
+      "newFindingsRatio": 0.2,
+      "churn": 0.2
+    },
+    {
+      "run": 6,
+      "dimension": "security",
+      "newFindingsRatio": 0,
+      "churn": 0
+    },
+    {
+      "run": 7,
+      "dimension": "robustness",
+      "newFindingsRatio": 0.05,
+      "churn": 0.05
+    },
+    {
+      "run": 8,
+      "dimension": "testing",
+      "newFindingsRatio": 0.17,
+      "churn": 0.17
+    },
+    {
+      "run": 9,
+      "dimension": "correctness",
+      "newFindingsRatio": 0,
+      "churn": 0
+    },
+    {
+      "run": 10,
+      "dimension": "security",
+      "newFindingsRatio": 0,
+      "churn": 0
+    }
+  ]
+}

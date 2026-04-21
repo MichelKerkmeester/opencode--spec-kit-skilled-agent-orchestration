@@ -1,0 +1,43 @@
+{
+  "mode": "implementation-audit",
+  "topic": "Implementation-focused deep review for skill-advisor docs/code alignment packet",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment",
+  "reviewPacket": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment/review-impl",
+  "sessionId": "rvw-impl-2026-04-21T20-54-00Z",
+  "executionMode": "auto",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.1,
+  "stuckThreshold": 3,
+  "noProgressThreshold": 0.05,
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing"
+  ],
+  "evidenceRules": {
+    "requireProductionCodeFileLine": true,
+    "rejectSpecDocOnlyFindings": true,
+    "testFilesAllowedAsCodeEvidence": true
+  },
+  "writeBoundary": "review-impl/**",
+  "codeUnderReview": [
+    ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/generation.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/subprocess.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/normalize-adapter-output.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts"
+  ],
+  "pathNotes": [
+    "implementation-summary.md listed lib/skill-advisor/*.ts paths before commit 1146faeecc migrated advisor files to mcp_server/skill-advisor/lib/*.ts.",
+    "graph-metadata.json derived.key_files lists docs only; implementation-summary.md Files Changed provides the production code scope."
+  ],
+  "vitestCommand": "cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run tests/shared-payload-advisor.vitest.ts skill-advisor/tests/legacy/advisor-freshness.vitest.ts skill-advisor/tests/legacy/advisor-subprocess.vitest.ts skill-advisor/tests/legacy/advisor-brief-producer.vitest.ts skill-advisor/tests/legacy/advisor-renderer.vitest.ts skill-advisor/tests/legacy/advisor-prompt-cache.vitest.ts skill-advisor/tests/legacy/advisor-privacy.vitest.ts skill-advisor/tests/legacy/advisor-timing.vitest.ts skill-advisor/tests/legacy/advisor-corpus-parity.vitest.ts skill-advisor/tests/legacy/advisor-runtime-parity.vitest.ts skill-advisor/tests/legacy/advisor-observability.vitest.ts tests/codex-hook-policy.vitest.ts tests/claude-user-prompt-submit-hook.vitest.ts tests/gemini-user-prompt-submit-hook.vitest.ts tests/copilot-user-prompt-submit-hook.vitest.ts tests/codex-user-prompt-submit-hook.vitest.ts tests/codex-pre-tool-use.vitest.ts tests/codex-prompt-wrapper.vitest.ts tests/hooks-shared-provenance.vitest.ts --reporter=default",
+  "createdAt": "2026-04-21T20:54:00Z",
+  "completedAt": "2026-04-21T21:06:00Z",
+  "status": "complete",
+  "verdict": "CONDITIONAL"
+}

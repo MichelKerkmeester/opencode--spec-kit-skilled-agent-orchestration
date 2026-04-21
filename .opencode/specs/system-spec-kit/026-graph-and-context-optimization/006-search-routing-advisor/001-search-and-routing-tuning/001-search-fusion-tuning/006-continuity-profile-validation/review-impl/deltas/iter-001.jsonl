@@ -1,0 +1,1 @@
+{"iteration":1,"dimension":"correctness","type":"finding_delta","newFindings":["IMPL-P1-001"],"updatedFindings":[],"filesReviewed":[".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts"],"newFindingsRatio":1,"churn":1}

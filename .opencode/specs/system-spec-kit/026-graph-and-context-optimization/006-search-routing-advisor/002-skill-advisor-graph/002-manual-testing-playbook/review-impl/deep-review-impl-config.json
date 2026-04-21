@@ -1,0 +1,66 @@
+{
+  "mode": "implementation-audit",
+  "sessionId": "rvw-impl-2026-04-21-002-skill-advisor-graph-playbook",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook",
+  "reviewPacketLocation": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook/review-impl",
+  "maxIterations": 10,
+  "dimensions": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing"
+  ],
+  "evidenceRules": {
+    "requireProductionCodeFileLine": true,
+    "rejectSpecOnlyFindings": true,
+    "acceptedExtensions": [
+      ".ts",
+      ".tsx",
+      ".mts",
+      ".js",
+      ".mjs",
+      ".py",
+      ".sh"
+    ],
+    "testsCountAsCodeEvidence": true
+  },
+  "scope": {
+    "implementationSummaryFound": false,
+    "graphMetadataFound": true,
+    "staleGraphMetadataPaths": [
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/skill-graph.json"
+    ],
+    "currentProductionPackage": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor",
+    "codeFilesAudited": [
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_runtime.py",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-validate.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/shim.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/python-compat.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/parity/python-ts-parity.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/skill-graph-db.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/handlers/advisor-recommend.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/handlers/advisor-status.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/handlers/advisor-validate.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/daemon-freshness-foundation.vitest.ts"
+    ],
+    "runtimeConfigAudited": [
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill-graph.json"
+    ],
+    "nonGoals": [
+      "No spec-doc drift review",
+      "No manual testing playbook prose review",
+      "No code modifications outside review-impl artifacts"
+    ]
+  },
+  "verification": {
+    "vitestCommand": "cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run skill-advisor/tests/compat/shim.vitest.ts skill-advisor/tests/compat/python-compat.vitest.ts skill-advisor/tests/parity/python-ts-parity.vitest.ts skill-advisor/tests/skill-graph-db.vitest.ts skill-advisor/tests/handlers/advisor-recommend.vitest.ts skill-advisor/tests/handlers/advisor-status.vitest.ts skill-advisor/tests/handlers/advisor-validate.vitest.ts skill-advisor/tests/daemon-freshness-foundation.vitest.ts --reporter=default",
+    "runs": 10,
+    "result": "10/10 passed, 8 files and 54 tests per run"
+  },
+  "createdAt": "2026-04-21T22:31:00+02:00",
+  "status": "complete"
+}

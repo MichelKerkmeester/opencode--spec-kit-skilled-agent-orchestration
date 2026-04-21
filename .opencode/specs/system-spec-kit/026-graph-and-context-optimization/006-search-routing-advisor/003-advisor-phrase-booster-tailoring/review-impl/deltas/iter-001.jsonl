@@ -1,0 +1,1 @@
+{"iteration":1,"dimension":"correctness","newFindings":["F-001","F-002"],"summary":{"P0":0,"P1":2,"P2":0},"churn":0.5,"vitest":"passed"}

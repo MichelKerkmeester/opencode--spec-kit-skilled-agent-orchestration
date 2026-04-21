@@ -1,0 +1,81 @@
+{
+  "findings": [
+    {
+      "id": "IMPL-P1-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Backfill aborts the entire corpus when one existing graph-metadata.json is invalid",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:206",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:208",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:214",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:397",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:401"
+      ],
+      "firstSeenIteration": 1,
+      "lastSeenIteration": 10,
+      "confidence": "high"
+    },
+    {
+      "id": "IMPL-P2-002",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Backfill accepts any --root and recursively scans it without a traversal budget",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:89",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:90",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:121",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:137",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:144"
+      ],
+      "firstSeenIteration": 2,
+      "lastSeenIteration": 10,
+      "confidence": "medium"
+    },
+    {
+      "id": "IMPL-P2-003",
+      "severity": "P2",
+      "dimension": "robustness",
+      "title": "Atomic graph-metadata writes can leave temp files behind when rename fails",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:1145",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:1148",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:1149"
+      ],
+      "firstSeenIteration": 3,
+      "lastSeenIteration": 10,
+      "confidence": "medium"
+    },
+    {
+      "id": "IMPL-P2-004",
+      "severity": "P2",
+      "dimension": "testing",
+      "title": "Backfill tests name z_future coverage but only create z_archive fixtures",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:27",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:60",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:61",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:78",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:117"
+      ],
+      "firstSeenIteration": 4,
+      "lastSeenIteration": 10,
+      "confidence": "high"
+    }
+  ],
+  "summary": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 3
+  },
+  "lastUpdatedIteration": 10,
+  "convergence": {
+    "eligibleAtIteration": 7,
+    "continuedToMaxIterations": true,
+    "reason": "User explicitly requested iteration-001 through iteration-010 artifacts."
+  }
+}

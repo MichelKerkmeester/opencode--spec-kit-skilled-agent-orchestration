@@ -1,0 +1,112 @@
+{
+  "sessionId": "rvw-impl-2026-04-21-advisor-phrase-booster-tailoring",
+  "mode": "implementation-audit",
+  "verdict": "CONDITIONAL",
+  "counts": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 1
+  },
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "robustness": true,
+    "testing": true
+  },
+  "openFindings": [
+    {
+      "id": "F-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Deep-review phrase boosters still lose primary rank to sk-code-review on auto/release review prompts.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1536",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1538",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1540",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1541",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2524",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2525",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2849"
+      ],
+      "impact": "Prompts such as 'auto review audit', 'auto review security audit', 'release readiness review', and 'review convergence' return sk-code-review before sk-deep-review even though dedicated phrase boosters exist for sk-deep-review.",
+      "status": "open"
+    },
+    {
+      "id": "F-002",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "The new proposal-only hyphenated phrase remains below the default confidence threshold.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1623",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1635",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:3021"
+      ],
+      "impact": "'proposal-only candidate evaluation' produces sk-improve-agent at 0.78 with passes_threshold=false, so the default filtered advisor output is empty.",
+      "status": "open"
+    },
+    {
+      "id": "F-003",
+      "severity": "P1",
+      "dimension": "robustness",
+      "title": "Phrase matching is raw substring matching, so new short phrases fire inside unrelated words.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1509",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1510",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1511",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2700",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2701"
+      ],
+      "impact": "Prompts like 'barcode search issue', 'decode search behavior', and 'precode search cleanup' match the 'code search' booster and route to mcp-coco-index at 0.95.",
+      "status": "open"
+    },
+    {
+      "id": "F-004",
+      "severity": "P1",
+      "dimension": "robustness",
+      "title": "Regex-looking phrase booster keys are treated literally and miss natural how-is/how-does code-search prompts.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1524",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1525",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2700",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2701"
+      ],
+      "impact": "'how is auth implemented' and 'how does router work' only reach mcp-coco-index confidence 0.77 and are filtered out at the default 0.8 threshold.",
+      "status": "open"
+    },
+    {
+      "id": "F-005",
+      "severity": "P1",
+      "dimension": "testing",
+      "title": "The added regression coverage is happy-path only and does not lock the failing phrase-boundary or deep-review ranking cases.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py:148",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py:154",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2701"
+      ],
+      "impact": "The harness can catch these issues if cases exist, but current new cases do not include negative substring cases, auto-review deep-review prompts, regex-like how-is/how-does prompts, or proposal-only threshold behavior.",
+      "status": "open"
+    },
+    {
+      "id": "F-006",
+      "severity": "P2",
+      "dimension": "testing",
+      "title": "The scoped Vitest parity tests do not consume the local skill_advisor_regression_cases.jsonl fixture.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/legacy/advisor-corpus-parity.vitest.ts:35",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/legacy/advisor-corpus-parity.vitest.ts:42",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/parity/python-ts-parity.vitest.ts:33",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/parity/python-ts-parity.vitest.ts:39"
+      ],
+      "impact": "The requested Vitest verification can stay green while the packet-local JSONL phrase fixture would need the Python regression harness to exercise it.",
+      "status": "open"
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "verification": {
+    "vitestIterationsPassed": 10,
+    "vitestIterationsFailed": 0,
+    "pythonRegression": "passed",
+    "syntax": "passed"
+  }
+}

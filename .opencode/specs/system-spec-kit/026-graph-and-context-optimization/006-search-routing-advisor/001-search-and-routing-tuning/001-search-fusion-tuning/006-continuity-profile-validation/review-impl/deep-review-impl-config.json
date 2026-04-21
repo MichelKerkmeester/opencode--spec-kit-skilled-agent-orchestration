@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "reviewMode": "implementation-audit",
+  "maxIterations": 10,
+  "dimensions": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing"
+  ],
+  "scope": {
+    "specFolder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation",
+    "artifactRoot": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation/review-impl",
+    "codeOnly": true,
+    "rejectSpecDocOnlyFindings": true,
+    "auditedFiles": [
+      ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts"
+    ]
+  },
+  "verificationCommand": "cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run tests/k-value-optimization.vitest.ts tests/content-router.vitest.ts --reporter=default",
+  "gitHistoryChecked": [
+    "29624f3a71 feat(026): implement all 5 remaining gap phases",
+    "2270dfb71f feat: land prompt quality and continuity updates"
+  ],
+  "convergence": {
+    "newFindingsRatioThreshold": 0.1,
+    "stuckChurnThreshold": 0.05,
+    "stuckIterations": 3
+  }
+}

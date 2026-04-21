@@ -1,0 +1,40 @@
+{
+  "mode": "implementation-audit",
+  "requestedIterations": 10,
+  "status": "synthesized",
+  "scopeRule": "Audit production and test code surfaced by the packet's child implementation summaries and graph-metadata key_files; exclude spec-doc drift findings.",
+  "reviewPacketLocation": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/review-impl",
+  "dimensions": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing"
+  ],
+  "verificationCommand": "cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run tests/adaptive-fusion.vitest.ts tests/adaptive-ranking.vitest.ts tests/anchor-merge-operation.vitest.ts tests/content-router.vitest.ts tests/cross-encoder-extended.vitest.ts tests/cross-encoder.vitest.ts tests/graph-metadata-schema.vitest.ts tests/handler-memory-save.vitest.ts tests/intent-classifier.vitest.ts tests/k-value-optimization.vitest.ts tests/stage3-rerank-regression.vitest.ts ../scripts/tests/graph-metadata-backfill.vitest.ts --reporter=default",
+  "auditedCodeFiles": [
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-schema.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/adaptive-fusion.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/adaptive-ranking.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/anchor-merge-operation.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts",
+    ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts",
+    ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts",
+    ".opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts"
+  ]
+}

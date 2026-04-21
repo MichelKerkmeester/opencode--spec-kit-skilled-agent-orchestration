@@ -1,0 +1,82 @@
+{
+  "mode": "implementation-audit",
+  "status": "synthesized",
+  "counts": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 3
+  },
+  "dimensionCoverage": {
+    "correctness": 3,
+    "security": 3,
+    "robustness": 2,
+    "testing": 2
+  },
+  "openFindings": [
+    {
+      "id": "F-IMPL-P1-001",
+      "severity": "P1",
+      "dimension": "testing",
+      "title": "Fallback tests inherit live provider environment and can call external rerankers",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts:213",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts:228",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts:231",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts:291",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:213",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:219"
+      ],
+      "recommendation": "Clear reranker env vars and reset crossEncoder session/provider state around every fallback-oriented test, or pass through a helper that forces provider resolution to null."
+    },
+    {
+      "id": "F-IMPL-P2-001",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "generateCacheKey keeps a generic optionBits parameter but silently ignores it",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:246",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:252",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:257",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts:147"
+      ],
+      "recommendation": "Rename the parameter to retiredLengthPenaltyOptionBits, remove it from the public helper in a cleanup phase, or constrain it so future option bits cannot be passed and ignored."
+    },
+    {
+      "id": "F-IMPL-P2-002",
+      "severity": "P2",
+      "dimension": "robustness",
+      "title": "Direct provider helpers trust reranker response indexes without validating bounds",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:304",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:308",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:346",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:350",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:382",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:386"
+      ],
+      "recommendation": "Filter or reject response items whose index is not an integer in range before dereferencing documents[item.index]."
+    },
+    {
+      "id": "F-IMPL-P2-003",
+      "severity": "P2",
+      "dimension": "testing",
+      "title": "Malformed provider response paths are not covered by packet-linked tests",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts:150",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts:226",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts:271",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:302",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:344",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:380"
+      ],
+      "recommendation": "Add tests for missing arrays, non-array arrays, out-of-range indexes, and non-numeric relevance scores for Voyage, Cohere, and local provider responses."
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "verification": {
+    "scopedVitestIterations": 10,
+    "scopedVitestResult": "PASS",
+    "typecheck": "PASS"
+  }
+}

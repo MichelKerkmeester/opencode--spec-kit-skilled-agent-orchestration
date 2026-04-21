@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "status": "complete",
+  "verdict": "CONDITIONAL",
+  "counts": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 1
+  },
+  "dimensionCoverage": {
+    "correctness": 3,
+    "security": 3,
+    "robustness": 2,
+    "testing": 2
+  },
+  "openFindings": [
+    {
+      "id": "F-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Static router parser marks shipped router styles as unknown",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:285",
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:477",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/smart-router-measurement.vitest.ts:60"
+      ],
+      "summary": "detectVariant only recognizes three router shapes. Skills using LANGUAGE_KEYWORDS or INTENT_MODEL without LOAD_LEVELS fall into unknown, yielding UNKNOWN routes and allowedResourceCount 0."
+    },
+    {
+      "id": "F-002",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Skill names are joined into filesystem paths without containment validation",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:475",
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:418",
+        ".opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:125"
+      ],
+      "summary": "predictSmartRouterRoute accepts skill as a raw path segment. A crafted selectedSkill can escape .opencode/skill before parseRouterModel reads SKILL.md and resource trees."
+    },
+    {
+      "id": "F-003",
+      "severity": "P1",
+      "dimension": "robustness",
+      "title": "Observe-only wrapper can throw during configure",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:118",
+        ".opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:125",
+        ".opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:156"
+      ],
+      "summary": "onToolCall is fail-closed with try/catch, but configure and configureSmartRouterSession are not. Invalid runtime input can throw before telemetry becomes observe-only."
+    },
+    {
+      "id": "F-004",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Analyzer collapses records by promptId alone",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-analyze.ts:123",
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-analyze.ts:154",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/smart-router-analyze.vitest.ts:75"
+      ],
+      "summary": "Telemetry from different selected skills or sessions sharing a promptId is merged into one row and attributed to the first selectedSkill, undercounting later records."
+    },
+    {
+      "id": "F-005",
+      "severity": "P1",
+      "dimension": "testing",
+      "title": "Live-session wrapper has no direct test coverage",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:102",
+        ".opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:209",
+        ".opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:217"
+      ],
+      "summary": "The exported configure/onToolCall/finalize path is production integration code, but the scoped test suite only exercises measurement and analyzer behavior."
+    },
+    {
+      "id": "F-006",
+      "severity": "P2",
+      "dimension": "robustness",
+      "title": "CLI limit parsing accepts NaN and negative values silently",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:597",
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:755"
+      ],
+      "summary": "--limit is converted with Number() and passed into slice without finite/non-negative validation, so bad input can silently produce empty or truncated measurements."
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "verification": {
+    "vitestRuns": 10,
+    "vitestResult": "PASS",
+    "gitLogChecked": true
+  }
+}

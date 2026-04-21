@@ -1,0 +1,1 @@
+{"iteration":6,"dimension":"security","type":"finding_delta","newFindings":[],"carriedFindings":["IMPL-P1-001","IMPL-P2-002","IMPL-P2-003","IMPL-P2-004"],"resolvedFindings":[],"newFindingsRatio":0,"weightedNewFindingsRatio":0,"churn":0,"vitest":"pass"}

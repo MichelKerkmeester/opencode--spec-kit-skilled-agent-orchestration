@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "mode": "implementation-audit",
+  "sessionId": "rvw-impl-2026-04-21-005-doc-surface-alignment",
+  "reviewPacketLocation": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment/review-impl",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment",
+  "sourceMetadata": [
+    "implementation-summary.md",
+    "graph-metadata.json",
+    "closed_by_commit:254461c386"
+  ],
+  "maxIterationsRequested": 10,
+  "dimensions": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing"
+  ],
+  "evidenceRules": {
+    "findingEvidenceMustBeProductionCode": true,
+    "acceptedExtensions": [
+      ".ts",
+      ".tsx",
+      ".mts",
+      ".js",
+      ".mjs",
+      ".py",
+      ".sh"
+    ],
+    "testFilesMayCountAsCodeEvidence": true,
+    "specDocOnlyFindingsRejected": true
+  },
+  "scopeDecision": {
+    "phase": "no-implementation",
+    "reason": "implementation-summary.md and graph-metadata.json list only documentation/spec/config surfaces for this packet; no claimed modified or added production code files match the accepted evidence extensions.",
+    "claimedCodeFiles": [],
+    "scopedTestFiles": [],
+    "auditedCodeFileCount": 0
+  },
+  "verification": {
+    "gitLogChecked": true,
+    "implementationCommitChecked": "254461c386d458a1c81cd5c7e64fccaf26738960",
+    "vitestStatus": "skipped-no-scoped-test-files"
+  },
+  "createdAt": "2026-04-21T00:00:00+02:00",
+  "status": "no-implementation"
+}

@@ -1,0 +1,1 @@
+{"iteration":1,"dimension":"correctness","newFindings":["IMPL-F001"],"severityDelta":{"P0":0,"P1":1,"P2":0},"churn":0.28,"vitestExitCode":1,"filesReviewed":[".opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts",".opencode/skill/system-spec-kit/mcp_server/tests/adaptive-fusion.vitest.ts"]}

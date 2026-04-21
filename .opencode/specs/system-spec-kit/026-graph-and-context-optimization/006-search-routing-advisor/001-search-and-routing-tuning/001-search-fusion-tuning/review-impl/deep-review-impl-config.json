@@ -1,0 +1,46 @@
+{
+  "mode": "implementation-audit",
+  "sessionId": "deep-review-impl-001-remove-length-penalty-2026-04-21",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty",
+  "reviewPacket": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/review-impl",
+  "scopeRule": "Production code and packet-linked test files listed by implementation-summary.md and graph-metadata.json only; spec-doc drift excluded.",
+  "maxIterations": 10,
+  "dimensions": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing"
+  ],
+  "dimensionRotation": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing",
+    "correctness",
+    "security",
+    "robustness",
+    "testing",
+    "correctness",
+    "security"
+  ],
+  "auditedCodeFiles": [
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/search-extended.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts"
+  ],
+  "contextReadOnlyFiles": [
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts"
+  ],
+  "verificationCommand": "cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run tests/cross-encoder.vitest.ts tests/cross-encoder-extended.vitest.ts tests/search-extended.vitest.ts tests/search-limits-scoring.vitest.ts --reporter=default",
+  "additionalVerification": [
+    "cd .opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit"
+  ],
+  "evidenceRules": {
+    "requireProductionCodeFileLine": true,
+    "specDocsOnlyRejected": true,
+    "testFilesCountAsCodeEvidence": true
+  }
+}

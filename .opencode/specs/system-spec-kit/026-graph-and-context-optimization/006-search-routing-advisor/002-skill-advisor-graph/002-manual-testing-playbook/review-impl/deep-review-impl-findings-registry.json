@@ -1,0 +1,114 @@
+{
+  "mode": "implementation-audit",
+  "summary": {
+    "P0": 0,
+    "P1": 4,
+    "P2": 2,
+    "total": 6,
+    "verdict": "CONDITIONAL",
+    "confidence": "high"
+  },
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "robustness": true,
+    "testing": true
+  },
+  "openFindings": [
+    {
+      "id": "IMPL-F001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Semantic-hit attribution maps nested skill-advisor paths to system-spec-kit",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1846",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1967",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1976",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1981",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2084"
+      ],
+      "impact": "CocoIndex or --semantic-hits evidence pointing at the relocated skill-advisor package is credited to system-spec-kit, causing wrong Gate 2 recommendations in local fallback semantic mode.",
+      "status": "open"
+    },
+    {
+      "id": "IMPL-F002",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Iteration-loop tiebreaker misses the actual deep-review command bridge",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1638",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1670",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1727",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2600",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2624",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2849"
+      ],
+      "impact": "Prompts such as 'use cli-copilot for 10 iterations of deep-review' can still rank cli-copilot above the skill-owned command path despite the tiebreaker note saying command-spec-kit owns the loop.",
+      "status": "open"
+    },
+    {
+      "id": "IMPL-F003",
+      "severity": "P1",
+      "dimension": "robustness",
+      "title": "Freshness probe does not fingerprint nested skill-advisor graph metadata",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness.ts:103",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness.ts:156",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness.ts:163",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness.ts:180",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py:82",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py:89"
+      ],
+      "impact": "The compiler treats nested skill-advisor graph metadata as routing input, but freshness only scans top-level skill directories plus scripts, so changes to the nested metadata can leave advisor_status falsely live.",
+      "status": "open"
+    },
+    {
+      "id": "IMPL-F004",
+      "severity": "P2",
+      "dimension": "robustness",
+      "title": "Fallback graph load can write skill-graph.json during a read-only advisor call",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:721",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:744",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:746",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py:811",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py:815"
+      ],
+      "impact": "A prompt-time routing call can unexpectedly mutate the repo or fail in read-only installations when both SQLite and JSON graph artifacts are absent.",
+      "status": "open"
+    },
+    {
+      "id": "IMPL-F005",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Optional semantic lookup executes PATH-resolved ccc without provenance checks",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1994",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2015",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2020",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2113",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2117"
+      ],
+      "impact": "If the repo-local binary is absent, hook-time semantic routing runs the first ccc on PATH with workspace context. This is bounded by subprocess argv and timeout, but still deserves provenance hardening.",
+      "status": "open"
+    },
+    {
+      "id": "IMPL-F006",
+      "severity": "P1",
+      "dimension": "testing",
+      "title": "Tests do not pin local fallback semantic attribution for nested package paths",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:1967",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2084",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/shim.vitest.ts:89",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/parity/python-ts-parity.vitest.ts:56",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/parity/python-ts-parity.vitest.ts:74"
+      ],
+      "impact": "The scoped tests pass because they disable built-in semantic search in parity paths and the shim semantic test exercises forced native mode, leaving the local --semantic-hits nested-path regression unguarded.",
+      "status": "open"
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "lastUpdatedAt": "2026-04-21T22:37:00+02:00"
+}

@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "reviewMode": "implementation-audit",
+  "summary": {
+    "p0": 0,
+    "p1": 4,
+    "p2": 2,
+    "total": 6,
+    "auditedCodeFileCount": 3,
+    "verdict": "changes need remediation before being treated as production-hard"
+  },
+  "findings": [
+    {
+      "id": "IMPL-P1-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Tier 3 prompt tells the model to target implementation-summary.md while the router target contract uses spec-frontmatter",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1074",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1075",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1273",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1282",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:663"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "IMPL-P1-002",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Tier 3 target_doc and target_anchor are accepted from model output without an allowlist or path normalization",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:683",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:687",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:688",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:837",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:859"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "IMPL-P1-003",
+      "severity": "P1",
+      "dimension": "robustness",
+      "title": "Tier 3 cache key is built from a 2048-character truncated normalized string, allowing distinct chunks to share a cache entry",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:482",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:483",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:756",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:758",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1125",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1130"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "IMPL-P1-004",
+      "severity": "P1",
+      "dimension": "testing",
+      "title": "Continuity K=60 validation is self-fulfilling because the fixture hardcodes all rankings instead of exercising retrieval or fusion code",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:43",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:53",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:417",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:421",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:428"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "IMPL-P2-001",
+      "severity": "P2",
+      "dimension": "robustness",
+      "title": "InMemoryRouterCache ignores the injected clock and uses Date.now for expiry checks",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:319",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:327",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:470",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:504"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "IMPL-P2-002",
+      "severity": "P2",
+      "dimension": "testing",
+      "title": "Prompt-contract tests assert wording but do not exercise a metadata_only Tier 3 decision through router normalization",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:560",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:582",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:584",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:655",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:663"
+      ],
+      "status": "open"
+    }
+  ]
+}

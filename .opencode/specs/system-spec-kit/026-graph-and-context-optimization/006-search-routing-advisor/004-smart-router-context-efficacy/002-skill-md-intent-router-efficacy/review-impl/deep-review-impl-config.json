@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "mode": "implementation-audit",
+  "phase": "no-implementation",
+  "sessionId": "impl-rvw-2026-04-21T20-50-36Z",
+  "createdAt": "2026-04-21T20:50:36Z",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
+  "reviewPacketLocation": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy/review-impl",
+  "reviewMode": "implementation-audit",
+  "maxIterations": 10,
+  "dimensions": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing"
+  ],
+  "scopeRule": "Audit only production code files claimed modified or added by implementation-summary.md and graph-metadata.json derived.key_files.",
+  "evidenceRule": "Findings require production code or test code file:line evidence. Spec-doc-only findings are rejected.",
+  "sourceMetadataFiles": [
+    "implementation-summary.md",
+    "graph-metadata.json"
+  ],
+  "resolvedCodeFiles": [],
+  "resolvedTestFiles": [],
+  "resolutionEvidence": {
+    "implementationSummary": "Files Changed lists research and spec documentation artifacts only, and verification states runtime code and skill files were not modified.",
+    "graphMetadata": "derived.key_files lists spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, and research artifacts only.",
+    "rgCodeFileScan": "No packet-local .ts, .tsx, .mts, .js, .mjs, .py, or .sh files were found."
+  },
+  "verification": {
+    "vitest": {
+      "status": "skipped",
+      "reason": "No packet-local .vitest.ts files were found."
+    },
+    "pythonTests": {
+      "status": "skipped",
+      "reason": "No packet-local test_*.py files were found."
+    },
+    "gitLog": {
+      "status": "checked",
+      "commitsObserved": [
+        "2635c319ec docs(006): campaign COMPLETE - all 39 deep-reviews done (0 failures)",
+        "434e283db4 chore(026): snapshot working-tree reorganization + in-progress codex work"
+      ]
+    }
+  },
+  "convergence": {
+    "status": "terminal",
+    "stopReason": "noImplementationCodeFiles",
+    "severityWeightedNewFindingsRatio": 0,
+    "dimensionCoverage": "not-applicable"
+  }
+}

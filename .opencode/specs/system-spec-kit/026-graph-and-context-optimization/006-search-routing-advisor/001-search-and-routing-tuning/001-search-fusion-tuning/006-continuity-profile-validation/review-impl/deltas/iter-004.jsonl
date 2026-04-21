@@ -1,0 +1,1 @@
+{"iteration":4,"dimension":"testing","type":"finding_delta","newFindings":["IMPL-P1-004","IMPL-P2-002"],"updatedFindings":[],"filesReviewed":[".opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts",".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts"],"newFindingsRatio":0.4,"churn":0.4}

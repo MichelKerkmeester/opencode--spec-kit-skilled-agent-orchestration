@@ -1,0 +1,36 @@
+{
+  "topic": "Implementation-focused audit for 005-repo-wide-path-migration",
+  "mode": "implementation-audit",
+  "reviewTarget": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration",
+  "reviewPacket": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration/review-impl",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": ["correctness", "security", "robustness", "testing"],
+  "maxIterations": 10,
+  "convergenceThreshold": 0.1,
+  "stuckThreshold": 3,
+  "noProgressThreshold": 0.05,
+  "severityThreshold": "P2",
+  "status": "no-implementation",
+  "verdict": "NO_IMPLEMENTATION",
+  "scopeRule": "Audit only production code files listed by implementation-summary.md or graph-metadata.json derived key_files.",
+  "productionExtensions": [".ts", ".tsx", ".mts", ".js", ".mjs", ".py", ".sh"],
+  "testExtensions": [".vitest.ts", "test_*.py"],
+  "codeFilesAudited": [],
+  "packetCodeFilesDiscovered": [],
+  "testFilesDiscovered": [],
+  "verification": {
+    "vitest": "skipped: no packet-scoped .vitest.ts files",
+    "gitLog": "checked per iteration against packet path",
+    "grepGlob": "checked packet for production-code extensions and implementation metadata references"
+  },
+  "createdAt": "2026-04-21T00:00:00Z",
+  "completedAt": "2026-04-21T00:00:00Z",
+  "fileProtection": {
+    "deep-review-impl-config.json": "mutable-for-final-status",
+    "deep-review-impl-state.jsonl": "append-only",
+    "deep-review-impl-findings-registry.json": "auto-generated",
+    "iterations/iteration-*.md": "write-once",
+    "deltas/iter-*.jsonl": "append-only",
+    "review-impl-report.md": "mutable"
+  }
+}

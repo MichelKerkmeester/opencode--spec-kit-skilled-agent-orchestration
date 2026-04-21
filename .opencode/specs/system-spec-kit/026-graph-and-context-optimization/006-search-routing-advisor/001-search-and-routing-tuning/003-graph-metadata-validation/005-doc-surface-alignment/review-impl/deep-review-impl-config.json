@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "review_mode": "implementation-audit",
+  "max_iterations": 10,
+  "requested_at": "2026-04-21T22:23:00+02:00",
+  "scope": {
+    "spec_folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment",
+    "artifact_root": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment/review-impl",
+    "audited_code_files": [
+      ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts"
+    ],
+    "supporting_test_files": [
+      ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts"
+    ],
+    "excluded_scope": [
+      "spec-doc drift findings",
+      "metadata-only findings",
+      "documentation-only findings"
+    ]
+  },
+  "dimensions": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing"
+  ],
+  "evidence_rules": {
+    "requires_code_file_line": true,
+    "reject_spec_doc_only_findings": true,
+    "test_files_count_as_code_evidence": true
+  },
+  "verification": {
+    "vitest_command": "cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run ../scripts/tests/graph-metadata-backfill.vitest.ts --reporter=default",
+    "git_history_checked": [
+      "22c1c33a94 fix(026): resolve all 7 deep review findings + keep backfill inclusive",
+      "254461c386 docs(026): complete doc-surface alignment for 017/018/019 research changes"
+    ],
+    "dry_run_reproductions": [
+      "node .opencode/skill/system-spec-kit/scripts/dist/graph/backfill-graph-metadata.js --dry-run --root /tmp/speckit-missing-root-for-review",
+      "node .opencode/skill/system-spec-kit/scripts/dist/graph/backfill-graph-metadata.js --dry-run --root --active-only"
+    ]
+  },
+  "convergence": {
+    "new_findings_ratio_threshold": 0.1,
+    "required_dimension_coverage": 4,
+    "stuck_churn_threshold": 0.05,
+    "stuck_iterations": 3,
+    "note": "Convergence became eligible after repeated zero-new-finding passes, but the requested artifact contract explicitly asked for iteration-001 through iteration-010, so all 10 passes were recorded."
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "mode": "implementation-audit",
+  "status": "no-implementation",
+  "session_id": "drv-impl-004-smart-router-context-efficacy-2026-04-21",
+  "created_at": "2026-04-21T20:47:23Z",
+  "spec_folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy",
+  "review_packet_location": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/review-impl",
+  "requested_max_iterations": 10,
+  "completed_iterations": 1,
+  "stop_reason": "noImplementation",
+  "dimensions": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing"
+  ],
+  "scope_rule": "Audit only production code files claimed as modified or added by implementation-summary.md and graph-metadata.json. Findings citing only spec docs are rejected.",
+  "code_file_extensions": [
+    ".ts",
+    ".tsx",
+    ".mts",
+    ".js",
+    ".mjs",
+    ".py",
+    ".sh"
+  ],
+  "audited_code_files": [],
+  "scoped_test_files": [],
+  "scope_evidence": [
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/graph-metadata.json",
+      "lines": "31-33",
+      "summary": "Root key_files contains only spec.md."
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy/implementation-summary.md",
+      "lines": "63-70",
+      "summary": "Files Changed table lists only research artifacts and spec docs."
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy/implementation-summary.md",
+      "lines": "111-114",
+      "summary": "Verification states runtime code and skill files were not modified."
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy/graph-metadata.json",
+      "lines": "44-53",
+      "summary": "Child key_files list only spec docs and research artifacts."
+    }
+  ],
+  "verification": {
+    "vitest": "skipped: no scoped implementation test files were identified",
+    "git_log": "checked: git log inspected for packet and system-spec-kit paths",
+    "grep_glob": "checked: searched packet metadata and packet tree for production-code extension claims"
+  }
+}

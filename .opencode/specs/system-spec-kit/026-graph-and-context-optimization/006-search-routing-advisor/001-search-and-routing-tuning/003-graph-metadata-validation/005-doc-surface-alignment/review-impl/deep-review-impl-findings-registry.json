@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "review_mode": "implementation-audit",
+  "audited_code_file_count": 1,
+  "supporting_test_file_count": 1,
+  "counts": {
+    "P0": 0,
+    "P1": 3,
+    "P2": 2,
+    "total": 5
+  },
+  "findings": [
+    {
+      "id": "DRIMPL-P1-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Unreadable or missing roots produce a successful zero-work backfill",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:126",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:129",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:148",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:239"
+      ],
+      "impact": "A typo, deleted specs root, or permission problem returns an empty successful summary instead of failing, so operators can believe a repo-wide refresh completed when no packets were inspected.",
+      "reproduction": "node .opencode/skill/system-spec-kit/scripts/dist/graph/backfill-graph-metadata.js --dry-run --root /tmp/speckit-missing-root-for-review returned exit 0 with totalSpecFolders: 0."
+    },
+    {
+      "id": "DRIMPL-P1-002",
+      "severity": "P1",
+      "dimension": "robustness",
+      "title": "One malformed graph-metadata file aborts the entire batch",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:206",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:208",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:214",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:397",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:401"
+      ],
+      "impact": "A single corrupt packet blocks refresh of every later packet in the sorted traversal and the summary cannot report partial success or per-folder failures.",
+      "reproduction": "Code inspection: runBackfill has no per-folder try/catch around loadGraphMetadata/derive/refresh; loadGraphMetadata throws on invalid content."
+    },
+    {
+      "id": "DRIMPL-P1-003",
+      "severity": "P1",
+      "dimension": "testing",
+      "title": "Regression tests cover happy-path backfill but not failure paths",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:89",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:126",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:208",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:77",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts:126"
+      ],
+      "impact": "The behavior most likely to mislead operators, invalid roots, malformed metadata, and malformed CLI argument order, can regress without the scoped test file catching it.",
+      "reproduction": "Scoped vitest passes 3 tests, all focused on inclusion, writing, and active-only traversal."
+    },
+    {
+      "id": "DRIMPL-P2-004",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "--root consumes the next flag when its value is missing",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:89",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:90",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:91"
+      ],
+      "impact": "A malformed command such as --root --active-only scans a path literally named --active-only and silently drops activeOnly mode, returning a zero-work success.",
+      "reproduction": "node .opencode/skill/system-spec-kit/scripts/dist/graph/backfill-graph-metadata.js --dry-run --root --active-only returned root: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/--active-only and totalSpecFolders: 0."
+    },
+    {
+      "id": "DRIMPL-P2-005",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Traversal is synchronous and unbounded for operator-supplied roots",
+      "status": "open",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:121",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:137",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:144",
+        ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:148"
+      ],
+      "impact": "An accidental broad root can synchronously walk a very large tree without max-depth, max-folder, or elapsed-time guardrails. That is local operator DoS, not an external exploit.",
+      "reproduction": "Code inspection: walk recursively descends all non-excluded directories and only stops on readdir failure or traversal exhaustion."
+    }
+  ]
+}

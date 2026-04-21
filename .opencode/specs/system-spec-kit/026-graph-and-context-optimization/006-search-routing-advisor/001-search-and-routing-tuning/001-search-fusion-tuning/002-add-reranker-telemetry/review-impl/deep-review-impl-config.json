@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "reviewMode": "implementation-audit",
+  "maxIterations": 10,
+  "startedAt": "2026-04-21T21:48:00+02:00",
+  "scope": {
+    "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry",
+    "reviewPacket": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry/review-impl",
+    "mode": "production-code-only",
+    "excluded": [
+      "spec-doc drift findings",
+      "metadata-only findings"
+    ],
+    "codeFilesAudited": [
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts"
+    ],
+    "contextCodeFilesRead": [
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts"
+    ]
+  },
+  "dimensions": [
+    "correctness",
+    "security",
+    "robustness",
+    "testing"
+  ],
+  "verificationCommand": "cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run tests/cross-encoder.vitest.ts tests/cross-encoder-extended.vitest.ts --reporter=default",
+  "gitHistoryCommand": "git log -n 3 --oneline -- .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts .opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts .opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts",
+  "evidenceRules": {
+    "requireCodeFileLine": true,
+    "rejectSpecDocOnlyFindings": true,
+    "testFilesMaySupportFindings": true
+  },
+  "convergence": {
+    "newFindingsRatioThreshold": 0.1,
+    "stuckChurnThreshold": 0.05,
+    "stuckIterations": 3,
+    "result": "max-iterations-completed"
+  }
+}
