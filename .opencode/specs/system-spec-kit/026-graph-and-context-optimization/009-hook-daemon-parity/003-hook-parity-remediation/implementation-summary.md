@@ -9,11 +9,11 @@ contextType: "implementation-summary"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
-    last_updated_at: "2026-04-21T15:42:05Z"
+    last_updated_at: "2026-04-21T16:02:30Z"
     last_updated_by: "codex-gpt-5.4"
-    recent_action: "P1 remediation applied"
-    next_safe_action: "Run verification gates"
-    completion_pct: 95
+    recent_action: "Deferred Vitest baseline failures closed"
+    next_safe_action: "Orchestrator commit"
+    completion_pct: 100
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 3 -->
@@ -28,9 +28,9 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 003-hook-parity-remediation |
-| **Completed** | In progress, 2026-04-21 |
+| **Completed** | 2026-04-21 |
 | **Level** | 3 |
-| **Status** | Implemented with documented blockers under remediation |
+| **Status** | Complete |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -85,8 +85,9 @@ Work proceeded phase-by-phase and each phase wrote a local summary with modified
 | Phase B targeted vitest | PASS in prior phase summary: Codex hook policy and prompt hook suites passed 29 tests. |
 | Phase C targeted vitest | PASS in prior phase summary: Copilot hook wiring passed 3 tests. |
 | Phase D targeted vitest | PASS in prior phase summary: Codex PreToolUse passed 10 tests. |
-| Current strict validation | Pending final rerun after this remediation pass. |
-| Current typecheck/build/targeted vitest | Pending final rerun after plugin diagnostic edits. |
+| Current strict validation | PASS in prior remediation summary. |
+| Current typecheck/build/targeted vitest | PASS in prior remediation summary and Vitest triage phase summaries. |
+| Deferred full Vitest baseline | PASS: final full-suite run reported `578 passed | 3 skipped` test files and `11114 passed | 31 skipped | 11 todo` tests. |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -94,7 +95,7 @@ Work proceeded phase-by-phase and each phase wrote a local summary with modified
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Full-suite baseline** The earlier full workspace vitest run reported failures outside this packet's authorized write scope. This remediation runs the targeted user-requested vitest command and records any remaining broader failures as deferred.
+1. **Full-suite baseline** Closed. The final full workspace Vitest run completed with zero failing files and zero failing tests.
 2. **Sandbox git restrictions** This task forbids `git add`, `git commit`, and `git reset`. The orchestrator will commit using the proposed message recorded in the parent remediation summary.
 3. **Codex policy file writes** Direct `.codex/policy.json` writes were previously blocked by sandbox `EPERM`; runtime/setup defaults cover the safety behavior without editing that file.
 <!-- /ANCHOR:limitations -->
