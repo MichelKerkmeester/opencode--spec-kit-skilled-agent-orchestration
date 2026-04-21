@@ -1,0 +1,41 @@
+{
+  "title": "Feature Specification: Cache-Warning Hook System [template:level_3/spec.md]",
+  "description": "Research-aligned rescope of packet 002 from a six-phase warning prototype to a bounded producer-side continuity prerequisite packet.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks",
+  "keywords": [
+    "feature",
+    "specification",
+    "cache-warning",
+    "hook",
+    "system"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "002",
+  "folderSlug": "cache-warning-hooks",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "002-continuity-memory-runtime"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "06-04-26_17-14__created-level-3-speckit-folder-002-implement.md"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-cache-warning-hooks",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-cache-warning-hooks",
+    "local_phase_slug": "001-cache-warning-hooks",
+    "original_phase_slug": "002-cache-warning-hooks",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/002-cache-warning-hooks",
+      "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-cache-warning-hooks",
+      "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks"
+    ]
+  }
+}

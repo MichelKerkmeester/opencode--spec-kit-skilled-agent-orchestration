@@ -13,8 +13,8 @@ status: converged
 Confirm the three AGENTS targets still contain the requested moved block, line structure, and bounded safety language.
 
 ## Files Reviewed
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails/checklist.md`
 - `AGENTS.md`
 - `AGENTS_example_fs_enterprises.md`
 - `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter/coder/AGENTS.md`

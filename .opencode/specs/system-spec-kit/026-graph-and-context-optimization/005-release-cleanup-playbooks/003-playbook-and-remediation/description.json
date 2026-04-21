@@ -1,0 +1,62 @@
+{
+  "title": "Playbook and Remediation",
+  "type": "coordination-parent",
+  "trigger_phrases": [
+    "playbook prompt rewrite",
+    "manual testing playbook repair",
+    "level 2 packet template restoration",
+    "playbook scaffold alignment",
+    "prompt field documentation",
+    "spec packet integrity",
+    "playbook index reconciliation",
+    "documentation normalization",
+    "phase 014 repair packet",
+    "playbook corpus reference-only"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-04-26_22-57__wave-b-restored-root-spec-for-coordination-parent.md"
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation",
+  "description": "Coordination parent for playbook follow-on work and remediation phases. The primary child packet repairs the Phase 014 documentation scaffold after prompt-field rewrite work already landed in the manual testing playbook corpus, restoring the required Level 2 anchors, missing task and checklist files, and the real playbook index references while keeping the work scoped to packet documentation rather than the playbook content itself.",
+  "keywords": [
+    "playbook documentation",
+    "prompt fields",
+    "manual testing scenarios",
+    "level 2 structure",
+    "packet repair",
+    "template compliance",
+    "validator integration",
+    "documentation audit",
+    "playbook corpus",
+    "scenario documentation",
+    "spec folder repair",
+    "reference integrity",
+    "checklist restoration"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "009",
+  "folderSlug": "playbook-and-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "005-release-cleanup-playbooks"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/009-playbook-and-remediation",
+    "local_phase_slug": "003-playbook-and-remediation",
+    "original_phase_slug": "009-playbook-and-remediation",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/009-playbook-and-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation"
+    ]
+  }
+}

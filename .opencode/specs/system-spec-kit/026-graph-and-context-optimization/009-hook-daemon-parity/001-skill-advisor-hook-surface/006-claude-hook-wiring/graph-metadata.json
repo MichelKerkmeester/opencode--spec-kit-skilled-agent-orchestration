@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "020 claude hook",
+      "UserPromptSubmit advisor",
+      "claude additional context advisor",
+      "advisor prompt submit wire",
+      "020 006 plan",
+      "claude hook plan",
+      "020 006 tasks",
+      "020 006 checklist",
+      "020 006 summary"
+    ],
+    "key_topics": [
+      "020",
+      "claude",
+      "hook",
+      "userpromptsubmit",
+      "advisor",
+      "additional",
+      "context",
+      "prompt",
+      "submit",
+      "wire",
+      "006",
+      "plan"
+    ],
+    "importance_tier": "critical",
+    "status": "in_progress",
+    "key_files": [
+      ".claude/settings.local.json",
+      "hooks/claude/session-prime.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "settings.local.json",
+        "kind": "config",
+        "path": ".claude/settings.local.json",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "hooks/claude/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Claude Hook Wiring",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Ready",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Effort Estimate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement After",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Claude Code",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Hook Event",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Add",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Files Changed",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "error",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: Setup",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "After 002-005 land, the advisor producer + renderer stack exists but is not wired to any runtime. Wave-2 §X2 established that Claude's `UserPromptSubmit` event is the cleanest first-class surface: it accepts `prompt` + standard session fields, supports model-visible context via JSON `hookSpecificOutput.additionalContext`, and uses top-level `decision: \"block\"` (or exit code `2`) for prompt denial. This is distinct from `SessionStart` which takes different input types.",
+    "created_at": "2026-04-19T08:47:06.599Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/006-claude-hook-wiring",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface/006-claude-hook-wiring",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/006-claude-hook-wiring",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/006-claude-hook-wiring",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface/006-claude-hook-wiring",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface/006-claude-hook-wiring",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring",
+    "local_phase_slug": "001-skill-advisor-hook-surface",
+    "original_phase_slug": "020-skill-advisor-hook-surface",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

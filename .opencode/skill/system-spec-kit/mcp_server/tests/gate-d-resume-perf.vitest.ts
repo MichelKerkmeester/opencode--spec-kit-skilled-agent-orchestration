@@ -9,7 +9,8 @@ import { handleSessionResume } from '../handlers/session-resume.js';
 
 const REPO_ROOT = '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public';
 const TEMP_ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'gate-d-resume-perf-'));
-const FIXTURE_SPEC_FOLDER = path.join(TEMP_ROOT, 'reader-ready-happy-path');
+const FIXTURE_SPEC_FOLDER = 'reader-ready-happy-path';
+const FIXTURE_SPEC_PATH = path.join(TEMP_ROOT, '.opencode', 'specs', FIXTURE_SPEC_FOLDER);
 const WARMUP_RUNS = 8;
 const MEASURED_RUNS = 60;
 
@@ -28,8 +29,8 @@ interface BenchReport {
 }
 
 function writeFixtureDocs(): void {
-  fs.mkdirSync(FIXTURE_SPEC_FOLDER, { recursive: true });
-  fs.writeFileSync(path.join(FIXTURE_SPEC_FOLDER, 'handover.md'), [
+  fs.mkdirSync(FIXTURE_SPEC_PATH, { recursive: true });
+  fs.writeFileSync(path.join(FIXTURE_SPEC_PATH, 'handover.md'), [
     '---',
     'title: "Gate D benchmark handover"',
     'last_updated: "2026-04-11T12:00:00Z"',
@@ -41,7 +42,7 @@ function writeFixtureDocs(): void {
     '**Blockers**: none',
     '',
   ].join('\n'));
-  fs.writeFileSync(path.join(FIXTURE_SPEC_FOLDER, 'implementation-summary.md'), [
+  fs.writeFileSync(path.join(FIXTURE_SPEC_PATH, 'implementation-summary.md'), [
     '---',
     'title: "Gate D benchmark implementation summary"',
     '_memory:',
@@ -83,6 +84,7 @@ function mean(values: number[]): number {
 writeFixtureDocs();
 
 afterAll(() => {
+  process.chdir(REPO_ROOT);
   fs.rmSync(TEMP_ROOT, { recursive: true, force: true });
 });
 
@@ -91,7 +93,7 @@ describe('Gate D resume perf benchmark', () => {
   it(
     'measures session-resume happy path using the canonical 3-level ladder',
     async () => {
-      process.chdir(REPO_ROOT);
+      process.chdir(TEMP_ROOT);
       const timings: number[] = [];
       const sourceCounts: Record<string, number> = {};
 

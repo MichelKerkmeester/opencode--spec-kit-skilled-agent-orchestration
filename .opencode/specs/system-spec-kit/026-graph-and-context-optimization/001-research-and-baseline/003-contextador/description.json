@@ -1,0 +1,40 @@
+{
+  "title": "Feature Specification: Contextador Research Phase (003-contextador)",
+  "description": "Research Contextador's MCP query architecture, self-healing feedback loop, and Mainframe shared cache to identify concrete, evidence-backed improvements for Code_Environment/Public's retrieval surfaces.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/003-contextador",
+  "keywords": [
+    "feature",
+    "specification",
+    "contextador",
+    "research",
+    "phase"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "003",
+  "folderSlug": "contextador",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "001-research-and-baseline"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "06-04-26_12-25__completed-deep-research-phase-003-contextador-via.md",
+    "06-04-26_13-49__extended-deep-research-phase-003-contextador-from.md",
+    "08-04-26_08-11__extended-the-003-contextador-deep-research-packet.md"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/003-contextador",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-children",
+    "original_phase_slug": "001-research-graph-context-systems",
+    "local_phase_slug": "003-contextador",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador",
+      "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/003-contextador"
+    ]
+  }
+}

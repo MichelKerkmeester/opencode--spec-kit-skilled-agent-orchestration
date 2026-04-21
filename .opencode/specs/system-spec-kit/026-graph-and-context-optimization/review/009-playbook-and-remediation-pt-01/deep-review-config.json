@@ -1,7 +1,7 @@
 {
   "topic": "Deep review of 014-playbook-prompt-rewrite",
   "mode": "review",
-  "reviewTarget": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite",
+  "reviewTarget": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite",
   "reviewTargetType": "spec-folder",
   "reviewDimensions": [
     "correctness",
@@ -30,7 +30,7 @@
   },
   "qualityGateThreshold": true,
   "releaseReadinessState": "release-blocking",
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite",
   "createdAt": "2026-04-12T20:00:00Z",
   "status": "complete",
   "executionMode": "auto",

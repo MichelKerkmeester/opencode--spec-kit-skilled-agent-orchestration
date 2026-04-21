@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "template validator audit",
+      "ssk-dr-1 joint audit",
+      "validator ruleset hygiene",
+      "template v2.2 review",
+      "ssk-dr-1 dispatch plan",
+      "ssk-dr-1 tasks",
+      "ssk-dr-1 checklist",
+      "ssk-dr-1 summary"
+    ],
+    "key_topics": [
+      "template",
+      "validator",
+      "audit",
+      "ssk-dr-1",
+      "joint",
+      "ruleset",
+      "hygiene",
+      "review",
+      "dispatch",
+      "plan",
+      "tasks",
+      "checklist"
+    ],
+    "importance_tier": "critical",
+    "status": "in_progress",
+    "key_files": [
+      "scripts/spec/validate.sh",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "spec.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Validator Ruleset Joint Audit",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Originating Source",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Ready",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Awaiting Wave",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Validator Joint Audit",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Dispatch",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Protocol",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Rules",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Wait Wave",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: Setup",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Templates under `.opencode/skill/system-spec-kit/templates/level_{1,2,3}/` and validator rules in `scripts/spec/validate.sh` are coupled by design but evolve separately. The 026 root validator run shows 22 `PHASE_LINKS` warnings (child packets 012-018 missing `| **Parent Spec** | ../spec.md |` back-references) and similar mismatches — either the templates under-emit required fields, or the validator is over-strict. No single audit has examined the full coupling end-to-end.",
+    "created_at": "2026-04-18T17:54:55.558Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/006-template-validator-audit",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/019-system-hardening/001-initial-research/006-template-validator-audit",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/006-template-validator-audit",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/006-template-validator-audit",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/019-system-hardening/001-initial-research/006-template-validator-audit",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/019-system-hardening/001-initial-research/006-template-validator-audit",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit",
+    "local_phase_slug": "003-system-hardening",
+    "original_phase_slug": "019-system-hardening",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

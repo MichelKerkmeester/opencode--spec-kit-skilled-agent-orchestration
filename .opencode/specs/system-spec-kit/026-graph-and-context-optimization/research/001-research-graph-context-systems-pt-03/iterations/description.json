@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/001-research-graph-context-systems-002-codesight/iterations",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/001-research-graph-context-systems-pt-03/iterations",
   "description": "Research iteration artifacts for 001-research-graph-context-systems-002-codesight.",
   "keywords": [
     "research",
@@ -10,15 +10,21 @@
     "026-graph-and-context-optimization",
     "iterations"
   ],
-  "lastUpdated": "2026-04-18T16:45:36.880Z",
+  "lastUpdated": "2026-04-21T13:00:00Z",
   "specId": "001",
   "folderSlug": "research-graph-context-systems-002-codesight-iterations",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
     "research",
-    "001-research-graph-context-systems-002-codesight"
+    "001-research-graph-context-systems-pt-03"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/001-research-graph-context-systems-002-codesight/iterations",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/001-research-graph-context-systems-pt-03/iterations",
+    "layout": "phase-root-children"
+  }
 }

@@ -1,0 +1,42 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
+  "description": "Feature Specification: Advisor Freshness + Source Cache",
+  "keywords": [
+    "feature",
+    "specification",
+    "advisor",
+    "freshness",
+    "source",
+    "cache"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "003",
+  "folderSlug": "advisor-freshness-and-source-cache",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity",
+    "020-skill-advisor-hook-surface"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-04-26_09-47__scaffold-003-advisor-freshness-and-source-cache.md"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
+    "local_phase_slug": "001-skill-advisor-hook-surface",
+    "original_phase_slug": "020-skill-advisor-hook-surface",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/004-description-regen-strategy",
+  "description": "Feature Specification: description.json Rich-Content Regen Strategy",
+  "keywords": [
+    "feature",
+    "specification",
+    "description",
+    "json",
+    "rich-content",
+    "regen",
+    "strategy"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "004",
+  "folderSlug": "description-regen-strategy",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening",
+    "019-system-hardening",
+    "001-initial-research"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-04-26_18-54__rr-2-research-packet-scaffolded-wave-2-dispatch.md"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/004-description-regen-strategy",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/004-description-regen-strategy",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/019-system-hardening/001-initial-research/004-description-regen-strategy",
+    "local_phase_slug": "003-system-hardening",
+    "original_phase_slug": "019-system-hardening",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/004-description-regen-strategy",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/019-system-hardening/001-initial-research/004-description-regen-strategy",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/004-description-regen-strategy"
+    ]
+  }
+}

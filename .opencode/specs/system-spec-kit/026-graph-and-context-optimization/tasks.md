@@ -1,21 +1,35 @@
 ---
 title: "Tasks: Graph and Context Optimization"
-description: "Task breakdown for keeping the 026 parent packet aligned with the reorganized 19-phase map (001-014 foundational + 015-018 thematic review/remediation/executor arc + 019-system-hardening research-first umbrella)."
+description: "Task record for the 026 phase consolidation from 29 active folders to 9 thematic wrappers."
 trigger_phrases:
-  - "026 parent tasks"
-  - "graph context optimization tasks"
+  - "026 graph and context optimization"
+  - "026 phase consolidation"
+  - "29 to 9 phase map"
+  - "merged phase map"
+  - "graph context optimization root packet"
 importance_tier: "important"
 contextType: "tasks"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
-    last_updated_at: "2026-04-12T16:16:10Z"
-    last_updated_by: "copilot-gpt-5-4"
-    recent_action: "Reviewed packet docs"
-    next_safe_action: "Run strict validation"
-    key_files: ["tasks.md"]
-
+    last_updated_at: "2026-04-21T13:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Renumbered nested phases"
+    next_safe_action: "Use merged-phase-map.md and context indexes for navigation"
+    blockers: []
+    key_files:
+      - "spec.md"
+      - "plan.md"
+      - "tasks.md"
+      - "implementation-summary.md"
+    session_dedup:
+      fingerprint: "sha256:ca5b8d2f380b05535fae5ba1e81bb50a2045580243d027fbb3b95cc566d927d4"
+      session_id: "026-phase-consolidation-2026-04-21"
+      parent_session_id: null
+    completion_pct: 100
+    open_questions: []
+    answered_questions: []
 ---
 # Tasks: Graph and Context Optimization
 
@@ -42,9 +56,9 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Read the root `spec.md` and capture the strict-validator baseline. [SOURCE: spec.md:1-26]
-- [x] T002 Enumerate the 19 active child packet folders and separate them from local-only residue directories. [SOURCE: spec.md:61-93]
-- [x] T003 Confirm the parent packet needs the full Level 3 companion documents. [SOURCE: spec.md:51-59; plan.md:21-30]
+- [x] T001 Read root packet docs before modifying them. [SOURCE: spec.md; plan.md; tasks.md; implementation-summary.md]
+- [x] T002 Enumerate old direct phase folders `001` through `029`. [SOURCE: merged-phase-map.md]
+- [x] T003 Note existing dirty worktree changes in phases `027` through `029` and root `review/`. [SOURCE: git status]
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -52,11 +66,11 @@ _memory:
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T010 Update the parent `spec.md` to the reorganized 19-phase documentation map. [SOURCE: spec.md:1-214]
-- [x] T011 Create `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` for the root packet. [SOURCE: plan.md:1-198; checklist.md:1-121; decision-record.md:1-83; implementation-summary.md:1-68]
-- [x] T012 Record the research-aligned handoff rules for child packets `001` through `014`, including the split `006` follow-on phases. [SOURCE: spec.md:70-113]
-- [x] T013 Extend the phase map, handoffs, and executive summary to cover the 2026-04-18 consolidation of phases `015-020` into four thematic packets (`015-deep-review-and-remediation`, `016-foundational-runtime`, `017-sk-deep-cli-runtime-execution`, `018-cli-executor-remediation`). [SOURCE: spec.md; decision-record.md ADR-003]
-- [x] T014 Add phase `019-system-hardening` (research-first umbrella) to the phase map with handoff criteria and register its nested `001-initial-research` child. [SOURCE: spec.md phase-map; 019-system-hardening/spec.md]
+- [x] T010 Move every old phase folder into its active wrapper direct-child path. [SOURCE: merged-phase-map.md]
+- [x] T011 Create active wrapper docs for phases `001` through `009`. [SOURCE: 001-research-and-baseline/spec.md; 009-hook-daemon-parity/spec.md]
+- [x] T012 Create per-wrapper context indexes bridge docs. [SOURCE: 001-research-and-baseline/context indexes; 009-hook-daemon-parity/context indexes]
+- [x] T013 Refresh moved `description.json` and `graph-metadata.json` files with new paths and migration aliases. [SOURCE: graph-metadata.json]
+- [x] T014 Update root docs to the nine-phase active map. [SOURCE: spec.md]
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -64,9 +78,10 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T020 Run strict validation on the root parent packet. [SOURCE: implementation-summary.md:52-56]
-- [x] T021 Reconcile any residual phase-link or integrity findings until the root packet validates cleanly. [SOURCE: implementation-summary.md:52-60]
-- [x] T022 Record final verification evidence in the parent checklist and implementation summary. [SOURCE: checklist.md:32-115; implementation-summary.md:52-60]
+- [x] T020 Confirm all old phases `001` through `029` are represented exactly once in `merged-phase-map.md`. [SOURCE: verification command]
+- [x] T021 Parse all `description.json` and `graph-metadata.json` files under the packet. [SOURCE: verification command]
+- [x] T022 Run strict validation on the root packet and each active wrapper. [SOURCE: implementation-summary.md]
+- [x] T023 Check old trigger phrases remain visible in source metadata or wrapper context indexes. [SOURCE: verification command]
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -74,9 +89,10 @@ _memory:
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All parent-packet tasks are marked complete
-- [x] The root packet includes the full Level 3 companion docs
-- [x] Strict validation passes on the root packet
+- [x] Active direct phase surface contains nine wrappers.
+- [x] No original phase folder content was deleted.
+- [x] Root support folders remain at the root.
+- [x] Validation and parse checks completed.
 <!-- /ANCHOR:completion -->
 
 ---
@@ -86,6 +102,7 @@ _memory:
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Merged Phase Map**: See `merged-phase-map.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Record**: See `decision-record.md`
 <!-- /ANCHOR:cross-refs -->

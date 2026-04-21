@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/006-skill-graph-sqlite-migration",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/006-skill-graph-sqlite-migration",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "006-skill-graph-sqlite-migration",
+      "skill graph sqlite",
+      "skill graph mcp",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist"
+    ],
+    "key_topics": [
+      "006-skill-graph-sqlite-migration",
+      "skill",
+      "graph",
+      "sqlite",
+      "mcp",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "migrate",
+      "current"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/lib/skill-graph/skill-graph-db.ts",
+      "mcp_server/handlers/skill-graph/scan.ts",
+      "mcp_server/handlers/skill-graph/query.ts",
+      "mcp_server/handlers/skill-graph/status.ts",
+      "mcp_server/handlers/skill-graph/validate.ts",
+      "mcp_server/tool-schemas.ts",
+      "mcp_server/context-server.ts",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
+      "mcp_server/database/skill-graph.sqlite",
+      "lib/code-graph/code-graph-db.ts",
+      "lib/coverage-graph/coverage-graph-db.ts",
+      "mcp_server/lib/skill-graph/skill-graph-queries.ts",
+      "handlers/skill-graph/scan.ts",
+      "handlers/skill-graph/query.ts",
+      "handlers/skill-graph/status.ts",
+      "handlers/skill-graph/validate.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "skill-graph-db.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/skill-graph/skill-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "scan.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/skill-graph/scan.ts",
+        "source": "derived"
+      },
+      {
+        "name": "query.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/skill-graph/query.ts",
+        "source": "derived"
+      },
+      {
+        "name": "status.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/skill-graph/status.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/skill-graph/validate.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_graph_compiler.py",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill-graph.sqlite",
+        "kind": "file",
+        "path": "mcp_server/database/skill-graph.sqlite",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-db.ts",
+        "kind": "code",
+        "path": "lib/code-graph/code-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-db.ts",
+        "kind": "code",
+        "path": "lib/coverage-graph/coverage-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "skill-graph-queries.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/skill-graph/skill-graph-queries.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Graph",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Compact Code Graph",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Deep Loop Graph",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Query Interface",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Migrate the skill graph from its current architecture (21 per-skill JSON files + compiled `skill-graph.json` + in-memory Python consumption) to a SQLite-backed store with dedicated MCP tools, following the same architectural patterns used by the Compact Code Graph (`code-graph.sqlite`) and the Deep Loop Graph (`deep-loop-graph.sqlite`). This unifies all five graph systems under a consistent storage + query model and enables real-time graph queries from any runtime without re-reading static files.",
+    "created_at": "2026-04-18T15:28:47.526Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/006-skill-graph-sqlite-migration",
+    "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/011-skill-advisor-graph/006-skill-graph-sqlite-migration",
+    "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/006-skill-graph-sqlite-migration"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/006-skill-graph-sqlite-migration",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/006-skill-graph-sqlite-migration",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/006-skill-graph-sqlite-migration",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/011-skill-advisor-graph/006-skill-graph-sqlite-migration",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/011-skill-advisor-graph/006-skill-graph-sqlite-migration",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/006-skill-graph-sqlite-migration",
+    "local_phase_slug": "002-skill-advisor-graph",
+    "original_phase_slug": "011-skill-advisor-graph",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

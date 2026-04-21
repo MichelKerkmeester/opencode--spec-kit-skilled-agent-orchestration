@@ -45,11 +45,11 @@ Why this is real:
 
 Minimal reproduction:
 
-1. `ls .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits`
-2. `ls .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning`
+1. `ls .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits`
+2. `ls .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning`
 3. Confirm both roots lack `spec.md`.
-4. `jq '.derived.source_docs' .../007-release-alignment-revisits/graph-metadata.json`
-5. `jq '.derived.source_docs' .../010-search-and-routing-tuning/graph-metadata.json`
+4. `jq '.derived.source_docs' .../001-release-alignment-revisits/graph-metadata.json`
+5. `jq '.derived.source_docs' .../001-search-and-routing-tuning/graph-metadata.json`
 6. Observe `[]` for both while `description.json` still advertises an active `specFolder`.
 
 Classification: `real`

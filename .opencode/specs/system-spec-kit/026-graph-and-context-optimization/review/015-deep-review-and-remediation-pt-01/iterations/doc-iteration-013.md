@@ -6,20 +6,20 @@
 - timestamp: 2026-04-15T18:09:37.982Z
 
 ## Files Reviewed
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/implementation-summary.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/description.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/description.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/checklist.md
 
 ## Findings — New This Iteration
 ### P0 Findings
@@ -33,16 +33,16 @@
 {
   "claim": "Four 010/001 child packets still mark plan.md as planned after packet-local completion evidence closed the phases.",
   "evidenceRefs": [
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/plan.md:3",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/checklist.md:3",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/implementation-summary.md:10",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/graph-metadata.json:33",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry/plan.md:3",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry/checklist.md:3",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile/plan.md:3",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile/checklist.md:3",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum/plan.md:3",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum/checklist.md:3"
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/plan.md:3",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/checklist.md:3",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/implementation-summary.md:10",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/graph-metadata.json:33",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry/plan.md:3",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry/checklist.md:3",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile/plan.md:3",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile/checklist.md:3",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum/plan.md:3",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum/checklist.md:3"
   ],
   "counterevidenceSought": "I looked for matching planned statuses in each packet's checklist, implementation summary, and generated metadata that would justify keeping the execution plans open.",
   "alternativeExplanation": "The project may treat plan.md status as archival planning metadata rather than a packet-truth surface that must be reconciled at closeout.",
@@ -65,8 +65,8 @@
 - `agent_cross_runtime` (overlay): **notApplicable** — this pass stayed on packet-local documentary truthfulness rather than runtime mirror parity.
 
 ## Confirmed-Clean Surfaces
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/graph-metadata.json:63,270` and `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/description.json:12` are internally consistent for status/recency on this slice.
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/implementation-summary.md:10` and `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/graph-metadata.json:33` still align on `complete`; the defect is the lingering `plan.md` state, not missing closeout evidence.
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/graph-metadata.json:63,270` and `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/description.json:12` are internally consistent for status/recency on this slice.
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/implementation-summary.md:10` and `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/graph-metadata.json:33` still align on `complete`; the defect is the lingering `plan.md` state, not missing closeout evidence.
 
 ## Next Focus (recommendation)
 - Sweep `010/002-content-routing-accuracy/005-task-update-merge-safety` and `010/002-content-routing-accuracy/006-tier3-prompt-enrichment` for the same planned-vs-completed status drift pattern.

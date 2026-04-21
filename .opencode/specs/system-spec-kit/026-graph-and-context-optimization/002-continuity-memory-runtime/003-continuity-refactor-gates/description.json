@@ -1,0 +1,39 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates",
+  "description": "Feature Specification: Phase 6 — Continuity Refactor Gates",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "continuity",
+    "refactor",
+    "gates"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "006",
+  "folderSlug": "continuity-refactor-gates",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "002-continuity-memory-runtime"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/006-continuity-refactor-gates",
+    "local_phase_slug": "003-continuity-refactor-gates",
+    "original_phase_slug": "006-continuity-refactor-gates",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates",
+      "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/006-continuity-refactor-gates",
+      "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates"
+    ]
+  }
+}

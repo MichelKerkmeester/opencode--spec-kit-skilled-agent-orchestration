@@ -1,0 +1,63 @@
+{
+  "title": "Search and Routing Tuning",
+  "type": "coordination-parent",
+  "trigger_phrases": [
+    "search fusion tuning research",
+    "reranker configuration optimization",
+    "cross-encoder pipeline tuning",
+    "vector bm25 fts5 fusion research",
+    "search weights empirical validation",
+    "fsrs decay constant research",
+    "reranking provider latency study",
+    "cache ttl throughput analysis",
+    "search pipeline threshold tuning",
+    "continuity retrieval optimization"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-04-26_22-57__wave-b-restored-root-spec-for-coordination-parent.md"
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning",
+  "description": "Coordination parent for continuity research packets focused on search-pipeline empirical tuning and reranking optimization. The root research packet investigates hardcoded thresholds, weighted fusion, FSRS decay constants, reranker-provider trade-offs, cross-encoder length-penalty behavior, and cache-TTL throughput impact across the vector, BM25, FTS5, and reranking stages, with the intent of producing implementation-ready parameter recommendations rather than speculative theory.",
+  "keywords": [
+    "search research",
+    "pipeline optimization",
+    "cross-encoder",
+    "reranking",
+    "fusion algorithm",
+    "vector search",
+    "bm25",
+    "fts5",
+    "empirical tuning",
+    "configuration constants",
+    "threshold optimization",
+    "provider comparison",
+    "latency profiling",
+    "retrieval tuning"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "010",
+  "folderSlug": "search-and-routing-tuning",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "006-search-routing-advisor"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/010-search-and-routing-tuning",
+    "local_phase_slug": "001-search-and-routing-tuning",
+    "original_phase_slug": "010-search-and-routing-tuning",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning",
+      "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/010-search-and-routing-tuning",
+      "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning"
+    ]
+  }
+}

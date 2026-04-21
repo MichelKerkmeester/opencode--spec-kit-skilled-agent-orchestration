@@ -3,8 +3,8 @@
 ## Files Reviewed
 
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/027-skill-graph-daemon-and-advisor-unification-pt-01/deep-review-strategy.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap/checklist.md`
 - `.opencode/skill/system-spec-kit/mcp_server/package.json`
 - `.opencode/plugins/spec-kit-skill-advisor.js`
 - `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs`
@@ -38,7 +38,7 @@
 
 - Maintainability scope matched the review packet contract for clean package boundaries, import conventions, colocated tests, and regression preservation [SOURCE: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/027-skill-graph-daemon-and-advisor-unification-pt-01/deep-review-strategy.md:27-30`].
 - Compat regression tests remain colocated under `mcp_server/skill-advisor/tests/compat/`, covering both plugin and shim entrypoints [SOURCE: `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/plugin-bridge.vitest.ts:1-20`; `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/shim.vitest.ts:1-20`].
-- The compat packet still claims regression coverage and preserved migration behavior; this advisory is about boundary brittleness, not missing tests [SOURCE: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap/checklist.md:39-42`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap/checklist.md:71-74`].
+- The compat packet still claims regression coverage and preserved migration behavior; this advisory is about boundary brittleness, not missing tests [SOURCE: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap/checklist.md:39-42`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap/checklist.md:71-74`].
 - No dead-code markers (`TODO`, `FIXME`, `XXX`, `HACK`) were found in the reviewed `skill-advisor/` tree during this maintainability pass.
 
 ## Verdict

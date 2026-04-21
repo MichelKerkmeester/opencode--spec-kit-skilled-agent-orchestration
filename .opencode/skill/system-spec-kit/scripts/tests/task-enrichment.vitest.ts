@@ -76,6 +76,7 @@ vi.mock('../spec-folder', () => ({
     });
     return workflowHarness.specFolderPath;
   }),
+  ensureSpecFolderExists: vi.fn(async () => workflowHarness.specFolderPath),
 }));
 
 vi.mock('../extractors', () => ({
@@ -1319,9 +1320,12 @@ describe('workflow seam guardrail', () => {
     }
   });
 
-  it('rejects malformed rendered memories before write when the template contract is violated', async () => {
+  // Obsolete after 8dd4406c77: Path A retired the legacy rendered memory artifact;
+  // canonical-doc template-contract checks now live in memory-save routing.
+  it.skip('rejects malformed rendered memories before write when the template contract is violated', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
-    const specFolderPath = path.join(tempRoot, '009-perfect-session-capturing');
+    const originalCwd = process.cwd();
+    const specFolderPath = path.join(tempRoot, '.opencode', 'specs', '009-perfect-session-capturing');
     const contextDir = path.join(tempRoot, 'memory');
     fs.mkdirSync(specFolderPath, { recursive: true });
     fs.mkdirSync(contextDir, { recursive: true });
@@ -1356,6 +1360,7 @@ describe('workflow seam guardrail', () => {
     const { runWorkflow } = await import('../core/workflow');
 
     try {
+      process.chdir(tempRoot);
       await expect(runWorkflow({
         dataFile: '/tmp/context.json',
         collectedData: {
@@ -1375,6 +1380,7 @@ describe('workflow seam guardrail', () => {
 
       expect(workflowHarness.writtenFiles).toHaveLength(0);
     } finally {
+      process.chdir(originalCwd);
       if (previousImplementation) {
         populateTemplateMock.mockImplementation(previousImplementation);
       }

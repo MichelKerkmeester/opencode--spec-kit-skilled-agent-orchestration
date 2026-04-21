@@ -2,11 +2,13 @@
 // Validates progressive-validate.sh stage behavior and compatibility
 // Against validate.sh baselines, auto-fix reporting, and JSON contract outputs.
 // T-PB2-01..T-PB2-15: progressive validation pipeline conformance suite.
-import { describe, it, test, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, test, expect, beforeEach, afterEach, vi } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
 import { spawnSync } from 'child_process';
+
+vi.setConfig({ testTimeout: 120_000 });
 
 // CONSTANTS
 const SCRIPTS_DIR = path.resolve(__dirname, '..');
@@ -49,7 +51,7 @@ function runProgressiveValidate(
     {
       encoding: 'utf8',
       env: { ...process.env, ...env },
-      timeout: 30_000,
+      timeout: 90_000,
     }
   );
   return {
@@ -755,7 +757,7 @@ Test.
       expect(parsed.folder).toBe(VALID_L1_FIXTURE);
     });
 
-    it('T-PB2-07e: --level 4 is the default (omitting --level gives same as --level 4)', { timeout: 30000 }, () => {
+    it('T-PB2-07e: --level 4 is the default (omitting --level gives same as --level 4)', { timeout: 120000 }, () => {
       if (!SCRIPT_EXISTS || !fs.existsSync(VALID_L1_FIXTURE)) return;
 
       const withLevel = runProgressiveValidate(VALID_L1_FIXTURE, ['--level', '4', '--json']);

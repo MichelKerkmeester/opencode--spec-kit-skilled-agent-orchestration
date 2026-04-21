@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research",
+        "reason": "depends_on relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
+        "reason": "depends_on relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy"
+      }
+    ],
+    "supersedes": [],
+    "related_to": [
+      {
+        "packet_id": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin",
+        "reason": "related_to relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin"
+      }
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "023 smart router remediation",
+      "spec-kit-skill-advisor plugin",
+      "smart router ci check"
+    ],
+    "key_topics": [
+      "smart-router",
+      "opencode-plugin",
+      "skill-advisor",
+      "telemetry",
+      "static-validation",
+      "on-demand-keywords"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/scripts/spec/check-smart-router.sh",
+      ".opencode/skill/system-spec-kit/scripts/observability/smart-router-telemetry.ts",
+      ".opencode/plugins/spec-kit-skill-advisor.js",
+      ".opencode/plugins/spec-kit-skill-advisor-bridge.mjs",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/spec-kit-skill-advisor-plugin.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "spec-kit-skill-advisor.js",
+        "kind": "code",
+        "path": ".opencode/plugins/spec-kit-skill-advisor.js",
+        "source": "derived"
+      },
+      {
+        "name": "check-smart-router.sh",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/check-smart-router.sh",
+        "source": "derived"
+      },
+      {
+        "name": "smart-router-telemetry.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/observability/smart-router-telemetry.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Implements 021/002 smart-router recommendations and the 021/001 V8/V9 OpenCode plugin proposal while preserving Phase 020 runtime code.",
+    "created_at": "2026-04-19T00:00:00.000Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": "2026-04-19T00:00:00.000Z",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/023-smart-router-remediation-and-opencode-plugin",
+    "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/023-smart-router-remediation-and-opencode-plugin",
+    "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/023-smart-router-remediation-and-opencode-plugin",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/023-smart-router-remediation-and-opencode-plugin",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/023-smart-router-remediation-and-opencode-plugin",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/023-smart-router-remediation-and-opencode-plugin",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin",
+    "local_phase_slug": "006-smart-router-remediation-and-opencode-plugin",
+    "original_phase_slug": "023-smart-router-remediation-and-opencode-plugin",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

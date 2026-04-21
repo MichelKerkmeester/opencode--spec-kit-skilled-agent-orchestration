@@ -1,0 +1,44 @@
+{
+  "title": "Spec: Phase 001 - Claude Optimization Settings (Reddit field-report audit)",
+  "description": "Deliver an evidence-anchored recommendation set for reducing Claude Code token spend in Code_Environment/Public, derived from auditing a primary-source Reddit field report covering 858-926 sessions.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings",
+  "keywords": [
+    "spec",
+    "phase",
+    "001",
+    "claude",
+    "optimization",
+    "settings",
+    "reddit",
+    "field-report",
+    "audit"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "001",
+  "folderSlug": "claude-optimization-settings",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "001-research-and-baseline"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "06-04-26_12-05__deep-research-run-8-iterations-via-cli-copilot.md",
+    "06-04-26_13-47__extended-deep-research-run-13-iterations-total-8.md",
+    "07-04-26_16-18__this-session-closed-out-the-research-only-level-3.md"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-children",
+    "original_phase_slug": "001-research-graph-context-systems",
+    "local_phase_slug": "001-claude-optimization-settings",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings",
+      "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings"
+    ]
+  }
+}

@@ -9,13 +9,13 @@
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-config.json`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-strategy.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-state.jsonl`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json,implementation-summary.md}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/{spec.md,plan.md,tasks.md,checklist.md,graph-metadata.json}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-derived-status-checklist-alignment/{spec.md,plan.md,tasks.md,checklist.md,graph-metadata.json}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-active-only-backfill/{spec.md,plan.md,tasks.md,checklist.md,graph-metadata.json}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json,implementation-summary.md,decision-record.md}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json,implementation-summary.md,decision-record.md}`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json,implementation-summary.md}`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-remediation/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json}`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/{spec.md,plan.md,tasks.md,checklist.md,graph-metadata.json}`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-derived-status-checklist-alignment/{spec.md,plan.md,tasks.md,checklist.md,graph-metadata.json}`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-active-only-backfill/{spec.md,plan.md,tasks.md,checklist.md,graph-metadata.json}`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json,implementation-summary.md,decision-record.md}`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json,implementation-summary.md,decision-record.md}`
 
 ## Findings - New This Iteration
 ### P0 Findings

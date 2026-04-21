@@ -99,8 +99,8 @@ Direct grep on `changelog/01--system-spec-kit/v3.4.0.2.md` for `[0-9a-f]{7,10}` 
 ### F3 — 004 graph-metadata.json parent_id prefix divergence — **VERIFIED**
 
 Direct grep confirms:
-- 001/002/003: `"parent_id": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime"`
-- 004: `"parent_id": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime"` (non-canonical prefix)
+- 001/002/003: `"parent_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime"`
+- 004: `"parent_id": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime"` (non-canonical prefix)
 
 Severity P2 stands.
 

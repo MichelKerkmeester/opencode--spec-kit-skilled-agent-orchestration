@@ -8,7 +8,7 @@
 ## Findings
 
 - No new P0, P1, or P2 findings.
-- The coordination-parent metadata still maps the promoted children correctly, so the active drift remains concentrated in prompts, child review artifacts, graph-metadata closeout claims, and promoted task evidence. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/description.json:3] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/graph-metadata.json:6]
+- The coordination-parent metadata still maps the promoted children correctly, so the active drift remains concentrated in prompts, child review artifacts, graph-metadata closeout claims, and promoted task evidence. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/description.json:3] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/graph-metadata.json:6]
 
 ## Ruled Out
 

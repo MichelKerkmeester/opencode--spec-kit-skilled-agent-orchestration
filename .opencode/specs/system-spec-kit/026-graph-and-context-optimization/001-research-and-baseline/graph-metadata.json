@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings",
+    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight",
+    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/003-contextador",
+    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify",
+    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest",
+    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "graph and context optimization",
+      "master research packet",
+      "adoption sequencing",
+      "honest measurement contract",
+      "trust-axis separation",
+      "graph context packet plan",
+      "adoption sequencing plan",
+      "recommendation rollback",
+      "follow-on packets",
+      "graph context packet tasks",
+      "follow-on packet tasks",
+      "root packet conformance"
+    ],
+    "key_topics": [
+      "graph",
+      "context",
+      "optimization",
+      "master",
+      "research",
+      "packet",
+      "adoption",
+      "sequencing",
+      "honest",
+      "measurement",
+      "contract",
+      "trust-axis"
+    ],
+    "importance_tier": "critical",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "002-codesight/description.json",
+      "scratch/spec-doc-phase-2-summary.md",
+      "003-contextador/CONTEXT.md",
+      "001-claude-optimization-settings/spec.md",
+      "002-codesight/spec.md",
+      "003-contextador/spec.md",
+      "004-graphify/spec.md",
+      "005-claudest/spec.md",
+      "006-research-memory-redundancy/spec.md",
+      "scratch/spec-doc-audit.md",
+      "002-codesight/plan.md",
+      "005-claudest/plan.md",
+      "003-contextador/implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": "002-codesight/description.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec-doc-phase-2-summary.md",
+        "kind": "doc",
+        "path": "scratch/spec-doc-phase-2-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "CONTEXT.md",
+        "kind": "doc",
+        "path": "003-contextador/CONTEXT.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec-doc-audit.md",
+        "kind": "doc",
+        "path": "scratch/spec-doc-audit.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Context Systems Master Research Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Protocol",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Checklist",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Status Reporting Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Blocked Task Protocol",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet turns the v2 master synthesis into a Level 3 coordination root for `Public`. The research now says Public should preserve its split semantic, structural, and continuity topology, prioritize seam-hardening contracts ahead of packaging work, and translate the strongest surviving recommendations into follow-on packets instead of treating any external system as a replacement architecture. A later derivative child packet, `006-research-memory-redundancy`, now tightens one local continuity rule for those follow-ons: persisted or cached summary artifacts should act as compact wrappers pointing at canonical packet docs rather than second narrative owners. [SOURCE: research/research.md:20-28] [SOURCE: research/research.md:274-306] [SOURCE: research/recommendations.md:3-101]",
+    "created_at": "2026-04-12T09:02:53.443Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
+    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-children"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

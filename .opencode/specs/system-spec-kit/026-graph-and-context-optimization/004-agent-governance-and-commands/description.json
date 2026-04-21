@@ -1,0 +1,29 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands",
+  "description": "Flattened active phase parent: Agent Governance And Commands",
+  "keywords": [
+    "agent-governance-and-commands",
+    "agents",
+    "guardrails",
+    "canonical",
+    "intake",
+    "and",
+    "command",
+    "cleanup"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "004",
+  "folderSlug": "agent-governance-and-commands",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "child_phase_folders": [
+      "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
+      "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
+    ],
+    "layout": "phase-root-children"
+  }
+}

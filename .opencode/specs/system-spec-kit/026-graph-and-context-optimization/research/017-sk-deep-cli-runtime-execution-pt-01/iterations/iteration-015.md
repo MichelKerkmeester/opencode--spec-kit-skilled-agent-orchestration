@@ -66,7 +66,7 @@ Evidence:
 
 ```text
 ```
-[EVIDENCE: inside unclosed fence)
+[EVIDENCE: inside unclosed fence]
 after fence [EVIDENCE: real outside marker]
 ```
 

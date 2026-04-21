@@ -7,7 +7,7 @@
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 10,
   "progressiveSynthesis": true,
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph",
   "createdAt": "2026-04-13T14:30:00.000Z",
   "status": "initialized",
   "executionMode": "auto",

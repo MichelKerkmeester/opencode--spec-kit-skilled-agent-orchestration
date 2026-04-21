@@ -2,17 +2,14 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { createRequire } from 'module';
-
-const require = createRequire(import.meta.url);
-const {
+import {
   compareDocumentToTemplate,
   inferPhaseSpecAddenda,
   loadTemplateContract,
   loadTemplateContractForDocument,
   normalizeLevel,
   resolveTemplatePath,
-} = require('../utils/template-structure.js');
+} from '../utils/template-structure.js';
 
 const tempDirs: string[] = [];
 

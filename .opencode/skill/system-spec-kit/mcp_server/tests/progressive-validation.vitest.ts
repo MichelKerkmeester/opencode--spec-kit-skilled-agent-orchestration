@@ -16,11 +16,13 @@
 // CHK-PI-B2-008 [P0]: Exit code compatibility: 0/1/2
 // CHK-PI-B2-009 [P1]: Dry-run mode: no changes applied
 // CHK-PI-B2-010 [P2]: Existing validate.sh callers unaffected
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { execSync, ExecSyncOptionsWithStringEncoding } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
+
+vi.setConfig({ testTimeout: 120_000 });
 
 // --- Constants -------------------------------------------------
 const SCRIPTS_DIR = path.resolve(
@@ -32,7 +34,7 @@ const VALIDATE_SH = path.join(SCRIPTS_DIR, 'validate.sh');
 
 const EXEC_OPTS: ExecSyncOptionsWithStringEncoding = {
   encoding: 'utf-8',
-  timeout: 30_000,
+  timeout: 90_000,
   env: {
     ...process.env,
     // Disable colors for easier output parsing

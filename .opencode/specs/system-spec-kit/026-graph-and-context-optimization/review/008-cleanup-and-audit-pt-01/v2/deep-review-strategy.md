@@ -121,8 +121,8 @@ None. Max iterations reached; `review-report.md` synthesized with verdict FAIL b
 | .opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts | D1 | 9 | 0 P0, 0 P1, 0 P2 | complete |
 | .opencode/skill/system-spec-kit/mcp_server/context-server.ts | D1 | 9 | 0 P0, 0 P1, 0 P2 | complete |
 | .opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts | D2, D3 | 4 | 1 P1 | complete |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/spec.md | D3 | 4 | 1 P1 | complete |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/checklist.md | D3 | 4 | 0 active | complete |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md | D3 | 4 | 1 P1 | complete |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/checklist.md | D3 | 4 | 0 active | complete |
 | .opencode/changelog/01--system-spec-kit/v3.4.0.0.md | D3 | 10 | 1 P1 | complete |
 | .opencode/agent/** + .claude/agents/** + .codex/agents/** + .gemini/agents/** | D3 | 5 | 1 P1 | complete |
 | .opencode/command/** | D1, D3, D4 | 7 | 2 P1 | complete |

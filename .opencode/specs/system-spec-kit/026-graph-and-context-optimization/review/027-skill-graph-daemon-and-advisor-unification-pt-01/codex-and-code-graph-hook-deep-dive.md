@@ -45,7 +45,7 @@ Review target paths:
 - `.opencode/skill/system-spec-kit/mcp_server/dist/handlers/session-resume.js`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/`
 - `.opencode/specs/system-spec-kit/024-compact-code-graph/`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/`
 
 Method:
 

@@ -6,19 +6,19 @@
 - timestamp: 2026-04-15T18:51:06.938Z
 
 ## Files Reviewed
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/implementation-summary.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/implementation-summary.md
 
 ## Findings - New This Iteration
 ### P0 Findings

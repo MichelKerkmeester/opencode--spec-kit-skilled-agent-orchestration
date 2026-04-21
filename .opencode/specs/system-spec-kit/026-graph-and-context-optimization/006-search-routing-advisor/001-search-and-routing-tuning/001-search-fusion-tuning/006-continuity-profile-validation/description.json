@@ -1,0 +1,41 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation",
+  "description": "Feature Specification: Validate Continuity Profile Weights",
+  "keywords": [
+    "feature",
+    "specification",
+    "validate",
+    "continuity",
+    "profile",
+    "weights"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "006",
+  "folderSlug": "continuity-profile-validation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "006-search-routing-advisor",
+    "010-search-and-routing-tuning",
+    "001-search-fusion-tuning"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/010-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation",
+    "local_phase_slug": "001-search-and-routing-tuning",
+    "original_phase_slug": "010-search-and-routing-tuning",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation",
+      "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/010-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation",
+      "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation"
+    ]
+  }
+}

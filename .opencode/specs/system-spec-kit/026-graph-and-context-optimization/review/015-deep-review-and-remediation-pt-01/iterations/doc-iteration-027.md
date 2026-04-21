@@ -6,21 +6,21 @@
 - timestamp: 2026-04-15T18:39:35Z
 
 ## Files Reviewed
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/checklist.md
 
 ## Findings - New This Iteration
 ### P0 Findings
@@ -28,7 +28,7 @@ None.
 
 ### P1 Findings
 ### P1-001 [P1] 010/002 phases 005 and 006 still advertise `planned` after their closure surfaces say complete
-- File: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md:4`
+- File: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md:4`
 - Evidence: `005-task-update-merge-safety/spec.md:4` and `plan.md:4` still publish `status: planned`, but `tasks.md:4`, `checklist.md:4`, and `graph-metadata.json:32` record the phase as completed/complete. The same mismatch repeats in `006-tier3-prompt-enrichment/spec.md:4`, `plan.md:4`, `tasks.md:4`, `checklist.md:4`, and `graph-metadata.json:32`, so the canonical spec/plan surfaces disagree with the packet's own closeout evidence.
 - Recommendation: Refresh the 005/006 `spec.md` and `plan.md` frontmatter (and any mirrored status summaries) so they match the already-closed task/checklist/graph state.
 
@@ -36,16 +36,16 @@ None.
 {
   "claim": "010/002 phases 005 and 006 still publish planned status on their canonical spec/plan surfaces even though their execution and metadata surfaces say complete.",
   "evidenceRefs": [
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md:4",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/plan.md:4",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/tasks.md:4",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/checklist.md:4",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/graph-metadata.json:32",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/spec.md:4",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/plan.md:4",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/tasks.md:4",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/checklist.md:4",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/graph-metadata.json:32"
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md:4",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/plan.md:4",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/tasks.md:4",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/checklist.md:4",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/graph-metadata.json:32",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/spec.md:4",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/plan.md:4",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/tasks.md:4",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/checklist.md:4",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/graph-metadata.json:32"
   ],
   "counterevidenceSought": "Looked for matching 'planned' status in tasks/checklist/graph metadata or any unchecked closeout items that would justify leaving these phases open.",
   "alternativeExplanation": "The authors may have intended to leave spec.md and plan.md frozen after implementation, but the neighboring execution surfaces are written as closure artifacts and the graph metadata derives a complete packet state.",

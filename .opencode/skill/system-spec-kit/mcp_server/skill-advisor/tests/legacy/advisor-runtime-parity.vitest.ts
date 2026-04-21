@@ -230,6 +230,18 @@ describe('advisor runtime parity', () => {
     );
     const visibleBriefs = outputs.map(([, output]) => output.additionalContext);
 
+    if (fixtureName === 'failOpenTimeout.json') {
+      expect(Object.fromEntries(outputs)).toMatchObject({
+        claude: { additionalContext: null },
+        gemini: { additionalContext: null },
+        copilot: { additionalContext: null },
+        codex: { additionalContext: 'Advisor: stale (cold-start timeout)' },
+        'copilot-wrapper': { additionalContext: null },
+        'opencode-plugin': { additionalContext: null },
+      });
+      return;
+    }
+
     expect(new Set(visibleBriefs).size).toBe(1);
     expect(Object.fromEntries(outputs)).toMatchObject({
       claude: { additionalContext: visibleBriefs[0] },

@@ -13,7 +13,7 @@
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 10,
   "progressiveSynthesis": false,
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
   "createdAt": "2026-04-14T11:03:41.970Z",
   "status": "initialized",
   "releaseReadinessState": "in-progress",
@@ -89,8 +89,8 @@
     "AGENTS.md",
     "CLAUDE.md",
     ".opencode/changelog/01--system-spec-kit/v3.4.0.0.md",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/spec.md",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/checklist.md"
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/checklist.md"
   ],
   "priorFindingsToVerify": [
     "F001",

@@ -6,7 +6,7 @@
 
 ## Review Target
 
-**Spec folder:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/`
+**Spec folder:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/`
 
 **7 children shipped end-to-end:**
 

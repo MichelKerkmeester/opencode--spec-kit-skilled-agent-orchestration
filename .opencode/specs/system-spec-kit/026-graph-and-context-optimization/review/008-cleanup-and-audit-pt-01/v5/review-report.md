@@ -6,7 +6,7 @@ This v5 deep review did **not** validate the remediation as complete. The runtim
 
 ## 2. Scope and Method
 
-- Packet path: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/review/v5/`
+- Packet path: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/review/v5/`
 - Iterations completed: 10 of 10
 - Dimensions covered: correctness, security, traceability, maintainability
 - Review mode: fresh v5 packet; prior review packets were used only as historical reference, not overwritten
@@ -39,10 +39,10 @@ Stop reason: max-iteration ceiling reached with active blocker findings still op
 | Finding | Status | Severity | Notes |
 |---|---|---|---|
 | F001 | **Closed** | — | Runtime still rejects retired `specs/**/memory/*.md` paths. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts:955] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2083] |
-| F002 | **Open** | P0 (derivative) | Not reopened as a separate active registry item, but it is still not closed because F005 remains open. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/spec.md:47] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:1534] |
+| F002 | **Open** | P0 (derivative) | Not reopened as a separate active registry item, but it is still not closed because F005 remains open. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md:47] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:1534] |
 | F003 | **Open** | P0 | Cross-runtime deep-review manuals still disagree on the iteration artifact schema. [SOURCE: .claude/agents/deep-review.md:148] [SOURCE: .gemini/agents/deep-review.md:148] [SOURCE: .opencode/agent/deep-review.md:140] [SOURCE: .codex/agents/deep-review.toml:139] |
 | F004 | **Closed** | — | Lifecycle docs now keep continuity on canonical spec docs; only a non-blocking wording residue remains. [SOURCE: .opencode/command/spec_kit/handover.md:256] [SOURCE: .opencode/command/spec_kit/plan.md:351] [SOURCE: .opencode/command/spec_kit/complete.md:349] |
-| F005 | **Open** | P0 | `spec.md` still mixes every-startup semantics with one-time / first-launch wording. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/spec.md:47] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/spec.md:65] |
+| F005 | **Open** | P0 | `spec.md` still mixes every-startup semantics with one-time / first-launch wording. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md:47] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md:65] |
 | F006 | **Open** | P0 | `memory/save.md` still uses retired continuity-artifact framing. [SOURCE: .opencode/command/memory/save.md:302] [SOURCE: .opencode/command/memory/save.md:547] [SOURCE: .opencode/command/memory/save.md:602] |
 | F007 | **Closed** | — | The complete workflow pair now routes save/index steps through canonical spec documents and uses scratch checkpoints. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml:1031] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml:1112] |
 | F008 | **Closed** | — | The core feature-catalog/discovery contract remains aligned on warn-only spec-doc indexing and retired-surface removal. [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md:20] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts:401] |
@@ -74,7 +74,7 @@ Stop reason: max-iteration ceiling reached with active blocker findings still op
 ### P0
 
 1. **F003** - cross-runtime deep-review manual parity drift. [SOURCE: .opencode/agent/deep-review.md:140] [SOURCE: .claude/agents/deep-review.md:148]
-2. **F005** - `spec.md` startup-semantics drift. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/spec.md:47] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/spec.md:65]
+2. **F005** - `spec.md` startup-semantics drift. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md:47] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md:65]
 3. **F006** - `memory/save.md` continuity-artifact wording drift. [SOURCE: .opencode/command/memory/save.md:302] [SOURCE: .opencode/command/memory/save.md:547]
 4. **NF002** - remaining README/confirm-workflow wording drift. [SOURCE: .opencode/command/memory/README.txt:157] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml:589]
 
@@ -105,4 +105,4 @@ Stop reason: max-iteration ceiling reached with active blocker findings still op
   - `iterations/iteration-001.md` through `iteration-010.md`
   - `review-report.md`
 
-Final report path: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/review/v5/review-report.md`
+Final report path: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/review/v5/review-report.md`

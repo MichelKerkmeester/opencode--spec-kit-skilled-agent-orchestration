@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "packet_id": "system-spec-kit/026-graph-and-context-optimization/research/003-memory-quality-remediation/iterations",
-  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/003-memory-quality-remediation/iterations",
-  "parent_id": "system-spec-kit/026-graph-and-context-optimization/research/003-memory-quality-remediation",
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/research/003-memory-quality-remediation-pt-01/iterations",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/003-memory-quality-remediation-pt-01/iterations",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
   "children_ids": [],
   "manual": {
     "depends_on": [],
@@ -10,7 +10,9 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
+    "trigger_phrases": [
+      "iterations"
+    ],
     "key_topics": [
       "packet",
       "metadata",
@@ -25,8 +27,20 @@
     "entities": [],
     "causal_summary": "Packet metadata derived from canonical spec documents.",
     "created_at": "2026-04-18T16:45:36.928Z",
-    "last_save_at": "2026-04-18T16:45:36.928Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
     "last_accessed_at": null,
-    "source_docs": []
-  }
+    "source_docs": [],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/research/003-memory-quality-remediation/iterations"
+  ],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/research/003-memory-quality-remediation/iterations",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/research/003-memory-quality-remediation-pt-01/iterations",
+    "layout": "phase-root-children"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
 }

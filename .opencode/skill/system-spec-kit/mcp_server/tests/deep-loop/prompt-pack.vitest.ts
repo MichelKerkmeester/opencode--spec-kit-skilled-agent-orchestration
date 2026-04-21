@@ -113,6 +113,7 @@ describe('prompt-pack', () => {
       state_paths_strategy: '.opencode/skill/sk-deep-research/assets/deep_research_strategy.md',
       state_paths_registry: '.opencode/skill/sk-deep-research/runtime/registry.json',
       state_paths_iteration_pattern: '.opencode/skill/sk-deep-research/runtime/iteration-002.md',
+      state_paths_delta_pattern: '.opencode/skill/sk-deep-research/runtime/deltas/iter-002.jsonl',
     });
 
     const reviewRendered = renderPromptPack(reviewTemplatePath, {
@@ -130,6 +131,7 @@ describe('prompt-pack', () => {
       state_paths_findings_registry: '.opencode/skill/sk-deep-review/runtime/findings.json',
       state_paths_strategy: '.opencode/skill/sk-deep-review/assets/deep_review_strategy.md',
       state_paths_iteration_pattern: '.opencode/skill/sk-deep-review/runtime/iteration-003.md',
+      state_paths_delta_pattern: '.opencode/skill/sk-deep-review/runtime/deltas/iter-003.jsonl',
     });
 
     expect(researchRendered).toContain('Research Topic: Deep loop coverage');

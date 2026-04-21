@@ -4,8 +4,8 @@
 Which file-watching implementation should Phase 027 use for the skill-graph auto-update daemon: raw Node `fs.watch`, `chokidar`, direct macOS `fsevents`, polling, or another approach?
 
 ## Evidence Collected
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/research/deep-research-strategy.md:48` → Iteration 1 is mapped to "A1 Watcher choice".
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/research/deep-research-strategy.md:104` → A1 evidence map calls for Node `fs.watch`, `chokidar`, `fsevents`, atomic-rename editor behavior, and existing repo watcher usage.
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/research/deep-research-strategy.md:48` → Iteration 1 is mapped to "A1 Watcher choice".
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/research/deep-research-strategy.md:104` → A1 evidence map calls for Node `fs.watch`, `chokidar`, `fsevents`, atomic-rename editor behavior, and existing repo watcher usage.
 - `.opencode/skill/system-spec-kit/mcp_server/package.json:43`-`.opencode/skill/system-spec-kit/mcp_server/package.json:50` → The MCP server already depends on `chokidar` `^4.0.3`, so choosing it adds no new dependency to this package.
 - `.opencode/skill/system-spec-kit/mcp_server/lib/ops/file-watcher.ts:23`-`.opencode/skill/system-spec-kit/mcp_server/lib/ops/file-watcher.ts:29` → The existing reusable watcher helper accepts paths, `reindexFn`, optional `removeFn`, debounce, and injectable `watchFactory`.
 - `.opencode/skill/system-spec-kit/mcp_server/lib/ops/file-watcher.ts:49`-`.opencode/skill/system-spec-kit/mcp_server/lib/ops/file-watcher.ts:58` → The helper has a 2-second default debounce, retry delays, metrics counters, and lazy `chokidar` module state.

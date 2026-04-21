@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite/013-audit-snapshot/primary-docs",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/013-audit-snapshot/primary-docs",
   "description": "Feature Specification: [spec]/memory/ Folder Deprecation Audit",
   "keywords": [
     "feature",
@@ -10,16 +10,22 @@
     "deprecation",
     "audit"
   ],
-  "lastUpdated": "2026-04-17T14:42:34.367Z",
+  "lastUpdated": "2026-04-21T13:00:00Z",
   "specId": "",
   "folderSlug": "primary-docs",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
     "research",
-    "014-memory-save-rewrite",
+    "014-memory-save-rewrite-pt-01",
     "013-audit-snapshot"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite/013-audit-snapshot/primary-docs",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/013-audit-snapshot/primary-docs",
+    "layout": "phase-root-children"
+  }
 }

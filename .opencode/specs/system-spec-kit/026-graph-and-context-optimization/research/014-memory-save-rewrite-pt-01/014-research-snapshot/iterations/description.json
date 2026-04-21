@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite/014-research-snapshot/iterations",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/014-research-snapshot/iterations",
   "description": "Research iteration artifacts for 014-research-snapshot.",
   "keywords": [
     "research",
@@ -11,16 +11,22 @@
     "014-memory-save-rewrite",
     "iterations"
   ],
-  "lastUpdated": "2026-04-18T16:45:36.976Z",
+  "lastUpdated": "2026-04-21T13:00:00Z",
   "specId": "014",
   "folderSlug": "research-snapshot-iterations",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
     "research",
-    "014-memory-save-rewrite",
+    "014-memory-save-rewrite-pt-01",
     "014-research-snapshot"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite/014-research-snapshot/iterations",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/014-research-snapshot/iterations",
+    "layout": "phase-root-children"
+  }
 }

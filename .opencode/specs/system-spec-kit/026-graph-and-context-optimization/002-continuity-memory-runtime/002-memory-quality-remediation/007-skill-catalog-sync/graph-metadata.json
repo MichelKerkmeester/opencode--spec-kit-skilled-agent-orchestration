@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/007-skill-catalog-sync",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/007-skill-catalog-sync",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 7 skill catalog sync",
+      "downstream artifact audit",
+      "phase 7 deep review",
+      "catalog sync phase",
+      "phase 7 plan",
+      "skill catalog sync plan",
+      "ten review iterations",
+      "phase 7 tasks",
+      "skill catalog sync tasks",
+      "phase 7 review wave",
+      "phase 7 checklist",
+      "skill catalog sync checklist"
+    ],
+    "key_topics": [
+      "phase",
+      "skill",
+      "catalog",
+      "sync",
+      "downstream",
+      "artifact",
+      "audit",
+      "deep",
+      "review",
+      "plan",
+      "ten",
+      "iterations"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      ".opencode/skill/system-spec-kit/references/templates/template_guide.md",
+      ".opencode/command/memory/save.md",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/memory-save-pipeline-enforcement.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/memory-save-ux-regressions.vitest.ts",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/agent/orchestrate.md",
+      ".claude/agents/orchestrate.md",
+      "implementation-summary.md",
+      "scripts/dist/memory/generate-context.js",
+      ".opencode/skill/system-spec-kit/references/templates/level_specifications.md",
+      ".opencode/skill/system-spec-kit/references/memory/memory_system.md",
+      ".opencode/skill/system-spec-kit/references/workflows/execution_methods.md",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/007-skill-catalog-sync/implementation-summary.md",
+      ".opencode/skill/system-spec-kit/references/config/environment_variables.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_guide.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/templates/template_guide.md",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save-pipeline-enforcement.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/memory-save-pipeline-enforcement.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save-ux-regressions.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/memory-save-ux-regressions.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "orchestrate.md",
+        "kind": "doc",
+        "path": ".opencode/agent/orchestrate.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/007-skill-catalog-sync/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "scripts/dist/memory/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "level_specifications.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/templates/level_specifications.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory_system.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/memory/memory_system.md",
+        "source": "derived"
+      },
+      {
+        "name": "execution_methods.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/workflows/execution_methods.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "environment_variables.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/config/environment_variables.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Catalog Sync",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Tasks",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Checklist",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 7 is the downstream audit phase for `003-memory-quality-remediation`. It starts only after Phase 6 freezes the final compact-wrapper memory contract. Its job is to determine whether Phases 1-6 changed any behavior, contract, or workflow enough that supporting docs, templates, commands, MCP surfaces, or agent definitions now need to be updated for parity.",
+    "created_at": "2026-04-12T09:02:53.462Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/007-skill-catalog-sync",
+    "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/007-skill-catalog-sync",
+    "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/007-skill-catalog-sync"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/007-skill-catalog-sync",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/007-skill-catalog-sync",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/007-skill-catalog-sync",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/007-skill-catalog-sync",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/007-skill-catalog-sync",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/007-skill-catalog-sync",
+    "local_phase_slug": "002-memory-quality-remediation",
+    "original_phase_slug": "003-memory-quality-remediation",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

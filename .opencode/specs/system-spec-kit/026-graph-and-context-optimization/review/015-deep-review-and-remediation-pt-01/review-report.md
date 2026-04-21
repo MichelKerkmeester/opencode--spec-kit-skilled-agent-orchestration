@@ -349,7 +349,7 @@
 
 **3. [P1] [010] P1-006-01 — `010/003` closeout docs still point at the wrong root packet**
   - Layer: doc-layer | Iter: 6
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/plan.md:18`, `checklist.md:15`, `tasks.md:13`
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/plan.md:18`, `checklist.md:15`, `tasks.md:13`
   - #### P1-006-01 — `010/003` closeout docs still point at the wrong root packet
 
 **4. [P1] [010] DR11-P1-001 — `010/003` child packets `006-key-file-resolution` and `007-entity-quality-improvements` still advertise `planned` after closure**
@@ -364,12 +364,12 @@
 
 **6. [P1] [010] ### P1-001 [P1] 010/002 phases 005 and 006 still advertise `planned` after their closure surfaces say complete**
   - Layer: doc-layer | Iter: 27
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md:4`, `005-task-update-merge-safety/spec.md:4`, `plan.md:4`
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md:4`, `005-task-update-merge-safety/spec.md:4`, `plan.md:4`
   - ### P1-001 [P1] 010/002 phases 005 and 006 still advertise `planned` after their closure surfaces say complete
 
 **7. [P1] [cross-cutting] P1**
   - Layer: doc-layer | Iter: 28
-  - Evidence: `tasks.md`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/tasks.md:50`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/tasks.md:226`
+  - Evidence: `tasks.md`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/tasks.md:50`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/tasks.md:226`
   - **P1** - `tasks.md` marks the manual integration-test ledger as completed even though the packet's own evidence says those tests were deferred, so the task-status surface is no longer a truthful ver
 
 **8. [P1] [cross-cutting] `determineSessionStatus()` can mark sessions complete solely because the worktree is clean, even when unresolved next steps are still present.**
@@ -384,7 +384,7 @@
 
 **10. [P1] [010] ### P1-001 [P1] 010/002 sub-phases 005 and 006 still advertise `planned` after their own closure docs marked them done**
   - Layer: doc-layer | Iter: 35
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md:4`, `spec.md`, `plan.md`
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md:4`, `spec.md`, `plan.md`
   - ### P1-001 [P1] 010/002 sub-phases 005 and 006 still advertise `planned` after their own closure docs marked them done
 
 **11. [P1] [cross-cutting] Deep-review still executes a deferred `completed-continue` path on completed sessions**
@@ -429,7 +429,7 @@
 
 **19. [P2] [010] P2-039-01 - Packet 001 stays `planned` because cross-runtime Codex mirror sync is bundled into packet closeout.**
   - Layer: doc-layer | Iter: 39
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/spec.md:3`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/tasks.md:14`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/checklist.md:15`
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/spec.md:3`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/tasks.md:14`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/checklist.md:15`
   - **P2-039-01 - Packet 001 stays `planned` because cross-runtime Codex mirror sync is bundled into packet closeout.** Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-
 
 **20. [P2] [009] Completed `009/003` packet still lacks an implementation summary**
@@ -459,7 +459,7 @@
 
 **25. [P2] [012] Ghost M13 maintenance surface in 012.**
   - Layer: doc-layer | Iter: 44
-  - Evidence: `.opencode/command/spec_kit/resume.md`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md:133`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/decision-record.md:277`
+  - Evidence: `.opencode/command/spec_kit/resume.md`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/spec.md:133`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/decision-record.md:277`
   - **Ghost M13 maintenance surface in 012.** The packet still models `.opencode/command/spec_kit/resume.md` as a maintained delivery surface even though its own closeout docs say no packet-local file c
 
 **26. [P2] [010] Placeholder closeout metadata still lingers across completed 010 phases.**
@@ -484,7 +484,7 @@
 
 **1. [P1] [014] P1-014-001 — `SC-016` misidentifies the validated packet as `016`**
   - Layer: doc-layer | Iter: 5
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md:217`, `validate_document.py`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/description.json:2`
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/spec.md:217`, `validate_document.py`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/description.json:2`
   - #### P1-014-001 — `SC-016` misidentifies the validated packet as `016`
 
 **2. [P1] [014] 014 packet-level traceability still points at a fictitious `016` namespace instead of the live `014` packet.**
@@ -544,7 +544,7 @@
 
 **7. [P1] [010] 010/002/004 still tells operators that Tier 3 is always on and has no operator-controlled flag, which now contradicts 014's shipped opt-in/manual-revi**
   - Layer: doc-layer | Iter: 25
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment/spec.md:164`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment/checklist.md:91`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md:59`
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment/spec.md:164`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment/checklist.md:91`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/spec.md:59`
   - 1. **010/002/004 still tells operators that Tier 3 is always on and has no operator-controlled flag, which now contradicts 014's shipped opt-in/manual-review guard.** Evidence: `.opencode/specs/system
 
 **8. [P1] [cross-cutting] P1-001 [P1] `renderDashboard()` lets unescaped metadata forge the human review surface**
@@ -564,12 +564,12 @@
 
 **11. [P1] [010] P1-036-01 - `010/003/006-key-file-resolution` broadens its delivered pruning rule beyond the approved packet contract**
   - Layer: doc-layer | Iter: 36
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/spec.md:20`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/plan.md:20`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/tasks.md:17`
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/spec.md:20`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/plan.md:20`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/tasks.md:17`
   - #### P1-036-01 - `010/003/006-key-file-resolution` broadens its delivered pruning rule beyond the approved packet contract
 
 **12. [P1] [010] P1-036-02 - `010/003/007-entity-quality-improvements` expands the runtime-name rejection list beyond the approved requirement surface**
   - Layer: doc-layer | Iter: 36
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/spec.md:22`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/plan.md:20`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/tasks.md:20`
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/spec.md:22`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/plan.md:20`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/tasks.md:20`
   - #### P1-036-02 - `010/003/007-entity-quality-improvements` expands the runtime-name rejection list beyond the approved requirement surface
 
 **13. [P1] [cross-cutting] `gate-d-regression-intent-routing.vitest.ts` does not exercise the live canonical-filtering contract it claims to protect.**
@@ -609,7 +609,7 @@
 
 **20. [P2] [010] P2-039-02 - Graph metadata in 010 still carries heading-shaped and stopword-only entities after the entity-quality cleanup.**
   - Layer: doc-layer | Iter: 39
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/graph-metadata.json:138`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/graph-metadata.json:124`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/graph-metadata.json:125`
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/graph-metadata.json:138`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/graph-metadata.json:124`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/graph-metadata.json:125`
   - **P2-039-02 - Graph metadata in 010 still carries heading-shaped and stopword-only entities after the entity-quality cleanup.** Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optim
 
 **21. [P2] [cross-cutting] Canonical packet truth still depends on an excluded review artifact.**
@@ -893,7 +893,7 @@
 
 **2. [P1] [009] P1-002: 001 packet still mixes the live `001-...` identity with stale `Phase 014` / `014-playbook-prompt-rewrite` references**
   - Layer: doc-layer | Iter: 2
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/description.json:2`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/graph-metadata.json:3`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/spec.md:67`
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/description.json:2`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/graph-metadata.json:3`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/spec.md:67`
   - #### P1-002: 001 packet still mixes the live `001-...` identity with stale `Phase 014` / `014-playbook-prompt-rewrite` references
 
 **3. [P1] [cross-cutting] `MEMORY METADATA` inline comments can override the real tier with stale frontmatter defaults**
@@ -913,7 +913,7 @@
 
 **6. [P1] [009] Stale canonical plan link in `009/003`**
   - Layer: doc-layer | Iter: 42
-  - Evidence: `009-playbook-and-remediation/003-deep-review-remediation/plan.md:4`, `016-deep-review-remediation/spec.md`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/plan.md:4`
+  - Evidence: `009-playbook-and-remediation/003-deep-review-remediation/plan.md:4`, `016-deep-review-remediation/spec.md`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-remediation/plan.md:4`
   - **Stale canonical plan link in `009/003`** — `009-playbook-and-remediation/003-deep-review-remediation/plan.md:4` still points `parent_spec` at `016-deep-review-remediation/spec.md`, even though the
 
 **7. [P1] [cross-cutting] Claude Code's agent-delegation reference still advertises removed agent IDs (`speckit`, `research`) as live runtime targets.**
@@ -936,10 +936,10 @@
   - Evidence: `post-save-review.vitest.ts`, `.opencode/skill/system-spec-kit/scripts/tests/post-save-review.vitest.ts:22`, `.opencode/skill/system-spec-kit/scripts/tests/overview-boundary-safe-truncation.vitest.ts:50`
   - **Coverage is too shallow to catch either the dead wiring or the blocker bug above.** `post-save-review.vitest.ts` only asserts the all-green path and penalty cap (`.opencode/skill/system-spec-kit/s
 
-**11. [P2] [009] `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/checklist.md:95` still de**
+**11. [P2] [009] `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/checklist.md:95` still de**
   - Layer: doc-layer | Iter: 26
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/checklist.md:95`
-  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/checklist.md:95` still defers CHK-052 to `memory/`, which is a deprecated
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/checklist.md:95`
+  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/checklist.md:95` still defers CHK-052 to `memory/`, which is a deprecated
 
 **12. [P2] [cross-cutting] Dead branch in adjacency construction hides the real invariant**
   - Layer: code-layer | Iter: 40
@@ -1149,8 +1149,8 @@
 
 **8. [P1] [009] `009/003` execution-plan lineage still points at a non-existent `016` packet**
   - Layer: doc-layer | Iter: 12
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/plan.md:4`, `016-deep-review-remediation/spec.md`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/spec.md:6`
-  - 1. **`009/003` execution-plan lineage still points at a non-existent `016` packet** — `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-r
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-remediation/plan.md:4`, `016-deep-review-remediation/spec.md`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-remediation/spec.md:6`
+  - 1. **`009/003` execution-plan lineage still points at a non-existent `016` packet** — `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-r
 
 **9. [P1] [cross-cutting] `truncateOnWordBoundary` is not actually code-point-safe for astral Unicode input, so it truncates strings that are already within the advertised limi**
   - Layer: code-layer | Iter: 13
@@ -1172,7 +1172,7 @@
 
 **13. [P1] [009] P1-1: `003-deep-review-remediation/plan.md` points the remediation plan at a nonexistent `016-deep-review-remediation/spec.md`, so reviewers cannot tr**
   - Layer: doc-layer | Iter: 26
-  - Evidence: `003-deep-review-remediation/plan.md`, `016-deep-review-remediation/spec.md`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/plan.md:4`
+  - Evidence: `003-deep-review-remediation/plan.md`, `016-deep-review-remediation/spec.md`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-remediation/plan.md:4`
   - #### P1-1: `003-deep-review-remediation/plan.md` points the remediation plan at a nonexistent `016-deep-review-remediation/spec.md`, so reviewers cannot trace the plan to its owning spec packet.
 
 **14. [P1] [cross-cutting] 1. `session_resume(minimal)` does not honor its published minimal-mode contract. The public schema says minimal mode should omit the full memory paylo**
@@ -1225,10 +1225,10 @@
   - Evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/search/deterministic-extractor.ts:114`, `.opencode/skill/system-spec-kit/mcp_server/tests/graph-lifecycle.vitest.ts:521`, `.opencode/skill/system-spec-kit/mcp_server/tests/query-surrogates.vitest.ts:126`
   - **deterministic-extractor parenthetical alias support is missing despite the module contract saying it exists.** `extractAliases()` documents support for `"X (Y)"`, but the implementation only handl
 
-**24. [P2] [010] `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/**
+**24. [P2] [010] `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/**
   - Layer: doc-layer | Iter: 15
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md:2`, `tasks.md:3`, `checklist.md:17`
-  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md:2-5` still marks the task-update safety 
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md:2`, `tasks.md:3`, `checklist.md:17`
+  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md:2-5` still marks the task-update safety 
 
 **25. [P2] [cross-cutting] The exported vector-index write surface does not enforce the same file-boundary checks that the read surface assumes.**
   - Layer: code-layer | Iter: 22
@@ -1242,7 +1242,7 @@
 
 **27. [P2] [012] 012 should add a planner-first caveat anywhere it repositions `/memory:save` as the canonical handover maintainer.**
   - Layer: doc-layer | Iter: 25
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md:53`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md:59`
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/spec.md:53`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/spec.md:59`
   - **012 should add a planner-first caveat anywhere it repositions `/memory:save` as the canonical handover maintainer.** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonic
 
 **28. [P2] [014] `level` is a required public input, but this validator never consumes it.**
@@ -1252,7 +1252,7 @@
 
 **29. [P2] [012] P2 - 012 checklist's internal M10-M15 roll-up comment no longer matches the visible severity labels.**
   - Layer: doc-layer | Iter: 35
-  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/checklist.md:271`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/checklist.md:311`
+  - Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/checklist.md:271`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/checklist.md:311`
   - **P2 - 012 checklist's internal M10-M15 roll-up comment no longer matches the visible severity labels.** The visible body labels `CHK-092` as `[P2]`, but the embedded roll-up comment counts `CHK-092
 
 **30. [P2] [009] P2-038-01 - Phase 015 repeats volatile execution totals in multiple packet docs.**

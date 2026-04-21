@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 018 command revisit",
+      "memory command revisit",
+      "spec kit command revisit",
+      "016 command alignment revisit",
+      "008 revisit plan",
+      "command revisit plan",
+      "phase 018 command parity",
+      "008 revisit tasks",
+      "command revisit tasks",
+      "phase 018 command alignment tasks",
+      "008 checklist",
+      "command revisit checklist"
+    ],
+    "key_topics": [
+      "phase",
+      "018",
+      "command",
+      "revisit",
+      "memory",
+      "spec",
+      "kit",
+      "016",
+      "alignment",
+      "008",
+      "plan",
+      "parity"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Metadata",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Description",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Source Map",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Record Blocked Mirrors",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "strict",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "the",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "1. SUMMARY",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scope Reconstruction",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Drift Review",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Writable Updates",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Only Mirror Audit",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 016 aligned the live `spec_kit` and `memory` command surfaces before Phase 018 replaced memory-file-first continuity with canonical spec-doc continuity, reduced the resume flow to `handover -> _memory.continuity -> spec docs`, and made `generate-context.js` the only canonical save path for session continuity. The Phase 016 command targets therefore needed a second pass to remove pre-018 continuity wording from the authoritative `.opencode/command/**` surfaces and from the repo-wide command references that point at them.",
+    "created_at": "2026-04-12T09:02:53.482Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits/002-cmd-memory-speckit-revisit",
+    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/007-release-alignment-revisits/002-cmd-memory-speckit-revisit",
+    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits/002-cmd-memory-speckit-revisit",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits/002-cmd-memory-speckit-revisit",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/007-release-alignment-revisits/002-cmd-memory-speckit-revisit",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/007-release-alignment-revisits/002-cmd-memory-speckit-revisit",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit",
+    "local_phase_slug": "001-release-alignment-revisits",
+    "original_phase_slug": "007-release-alignment-revisits",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

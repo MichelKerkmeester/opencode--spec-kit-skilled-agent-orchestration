@@ -1,0 +1,32 @@
+{
+  "title": "Research Seed: Save-Flow Backend Relevance Review Post-Memory-Folder Retirement [template:level_1/spec.md]",
+  "description": "Investigate whether generate-context.js and its save-flow backend remain proportionate to the remaining value after [spec]/memory/*.md retirement (v3.4.1.0 + 013 r2), or whether a simpler operator-visible command could do the work with less machinery.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/014-research-snapshot/primary-docs",
+  "keywords": [
+    "primary-docs",
+    "save flow relevance",
+    "generate-context relevance",
+    "backend proportionality",
+    "save path audit",
+    "memory save simplification"
+  ],
+  "lastUpdated": "2026-04-21T14:30:00Z",
+  "specId": "primary",
+  "folderSlug": "primary-docs",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "research",
+    "014-memory-save-rewrite-pt-01",
+    "014-research-snapshot"
+  ],
+  "migration": {
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/014-research-snapshot/primary-docs",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/014-research-snapshot/primary-docs",
+    "renumbered_at": "2026-04-21T14:30:00Z",
+    "layout": "phase-root-local-sequence",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/014-research-snapshot/primary-docs"
+    ]
+  }
+}

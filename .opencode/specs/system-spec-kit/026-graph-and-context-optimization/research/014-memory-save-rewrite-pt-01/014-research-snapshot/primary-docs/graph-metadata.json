@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "packet_id": "system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review",
-  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review",
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/014-research-snapshot/primary-docs",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/014-research-snapshot/primary-docs",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
   "children_ids": [],
   "manual": {
@@ -144,11 +144,23 @@
     ],
     "causal_summary": "Hypothesis (to test in this research, not asserted as truth): maybe an operator-visible command with better output could let the AI manually update canonical docs with less machinery, and some of the save-flow code is now dead weight.",
     "created_at": "2026-04-15T05:20:08.483Z",
-    "last_save_at": "2026-04-15T05:20:08.483Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "research/research.md"
-    ]
-  }
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review"
+  ],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/014-research-snapshot/primary-docs",
+    "layout": "phase-root-children"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
 }

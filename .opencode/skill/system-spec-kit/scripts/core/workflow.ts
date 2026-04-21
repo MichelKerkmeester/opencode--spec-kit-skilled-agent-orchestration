@@ -1169,7 +1169,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   log(`   Content quality: ${filterStats.qualityScore}/100 (${filterStats.noiseFiltered} noise, ${filterStats.duplicatesRemoved} duplicates filtered from ${filterStats.totalProcessed} items)`);
   if (filterPipeline.isLowQuality()) {
-    warn(`   Warning: Low quality content detected (score: ${filterStats.qualityScore}/100, threshold: ${filterPipeline.config.quality?.warnThreshold || 20})`);
+    warn(`   Warning: Low quality content detected (input_completeness_score: ${filterStats.qualityScore}/100, threshold: ${filterPipeline.config.quality?.warnThreshold || 20})`);
   }
 
   const implSummary = generateImplementationSummary(

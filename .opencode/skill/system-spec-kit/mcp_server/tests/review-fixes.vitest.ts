@@ -112,7 +112,7 @@ describe('H5: all tool schemas have additionalProperties: false', () => {
 
   it('total tool count matches expected', () => {
     // Ensures no schema was accidentally dropped during bulk edit
-    expect(TOOL_DEFINITIONS.length).toBe(47);
+    expect(TOOL_DEFINITIONS.length).toBe(50);
   });
 });
 

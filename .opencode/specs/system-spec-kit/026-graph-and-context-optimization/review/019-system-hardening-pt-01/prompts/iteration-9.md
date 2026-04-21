@@ -39,7 +39,7 @@ Write at `026/review/019-system-hardening-001-initial-research-002-delta-review-
 7. **Recommendations for 015 W0+ Restart**: narrowed scope (19 STILL_OPEN instead of 243 original), recommended phasing, interaction with 019/002+ implementation children.
 
 **Deliverable 2 — 015/review/delta-report-2026-04.md**:
-Write an abbreviated delta-report in the 015 packet's review folder at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-deep-review-and-remediation/review/delta-report-2026-04.md` with:
+Write an abbreviated delta-report in the 015 packet's review folder at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation/review/delta-report-2026-04.md` with:
 - Front-matter linking back to this sub-packet
 - Tally summary (242 total, ADDRESSED/STILL_OPEN/SUPERSEDED/UNVERIFIED counts)
 - 015 P0 verdict (ADDRESSED by 104f534bd0)
@@ -55,7 +55,7 @@ Last 3 Iterations Summary: iter 6 38 + STILL_OPEN 14 (0.41), iter 7 43 + STILL_O
 
 Same as prior iterations. Write to:
 - `.../review-report.md` (NEW canonical review synthesis)
-- `.../015-deep-review-and-remediation/review/delta-report-2026-04.md` (NEW cross-packet reference)
+- `.../001-deep-review-and-remediation/review/delta-report-2026-04.md` (NEW cross-packet reference)
 - `.../iterations/iteration-009.md` (iteration delta)
 
 ## CONSTRAINTS
@@ -68,7 +68,7 @@ Same as prior iterations. Write to:
 ## OUTPUT CONTRACT
 
 1. `.../review-report.md` (NEW, canonical synthesis)
-2. `.../015-deep-review-and-remediation/review/delta-report-2026-04.md` (NEW, cross-packet)
+2. `.../001-deep-review-and-remediation/review/delta-report-2026-04.md` (NEW, cross-packet)
 3. `.../iterations/iteration-009.md` (iteration delta)
 4. JSONL delta APPENDED:
 ```json

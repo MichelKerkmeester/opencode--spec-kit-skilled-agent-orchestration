@@ -1,0 +1,40 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives",
+  "description": "Specification: Phase 017 Wave A — Infrastructure Primitives",
+  "keywords": [
+    "specification",
+    "phase",
+    "017",
+    "wave",
+    "infrastructure",
+    "primitives"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "002",
+  "folderSlug": "infrastructure-primitives",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening",
+    "016-foundational-runtime"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime/002-infrastructure-primitives",
+    "local_phase_slug": "001-foundational-runtime",
+    "original_phase_slug": "016-foundational-runtime",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime/002-infrastructure-primitives",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives"
+    ]
+  }
+}

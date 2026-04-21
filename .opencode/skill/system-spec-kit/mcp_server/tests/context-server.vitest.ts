@@ -331,13 +331,23 @@ describe('Context Server', () => {
     })
 
     // T17: All tools dispatched via tool modules
-    it('T17: All expected tools dispatched via modules', () => {
-      const toolsDir = path.join(SERVER_DIR, 'tools')
-      let allToolModulesCode = ''
-      const toolFiles = fs.readdirSync(toolsDir).filter((f: string) => f.endsWith('.ts') && f !== 'types.ts')
-      for (const file of toolFiles) {
-        allToolModulesCode += fs.readFileSync(path.join(toolsDir, file), 'utf8') + '\n'
+    function readDispatchModuleCode(): string {
+      const moduleDirs = [
+        path.join(SERVER_DIR, 'tools'),
+        path.join(SERVER_DIR, 'code-graph', 'tools'),
+      ];
+      let allToolModulesCode = '';
+      for (const moduleDir of moduleDirs) {
+        const toolFiles = fs.readdirSync(moduleDir).filter((f: string) => f.endsWith('.ts') && f !== 'types.ts');
+        for (const file of toolFiles) {
+          allToolModulesCode += fs.readFileSync(path.join(moduleDir, file), 'utf8') + '\n';
+        }
       }
+      return allToolModulesCode;
+    }
+
+    it('T17: All expected tools dispatched via modules', () => {
+      const allToolModulesCode = readDispatchModuleCode()
 
       let caseCount = 0
       for (const caseName of EXPECTED_CASES) {
@@ -352,12 +362,7 @@ describe('Context Server', () => {
     // T18: Each tool dispatch uses parseArgs<T>
     for (const caseName of EXPECTED_CASES) {
       it(`T18: Tool '${caseName}' uses parseArgs<T>`, () => {
-        const toolsDir = path.join(SERVER_DIR, 'tools')
-        let allToolModulesCode = ''
-        const toolFiles = fs.readdirSync(toolsDir).filter((f: string) => f.endsWith('.ts') && f !== 'types.ts')
-        for (const file of toolFiles) {
-          allToolModulesCode += fs.readFileSync(path.join(toolsDir, file), 'utf8') + '\n'
-        }
+        const allToolModulesCode = readDispatchModuleCode()
 
         const parseArgsPattern = new RegExp(`['"]${caseName}['"][\\s\\S]*?parseArgs<`)
         const loosePattern = new RegExp(`${caseName}[\\s\\S]{0,200}parseArgs<|parseArgs<[\\s\\S]{0,200}${caseName}`)
@@ -1237,7 +1242,7 @@ describe('Context Server', () => {
     })
 
     it('T000b: callbacks are triggered after dispatchTool and non-blocking', () => {
-      expect(sourceCode).toMatch(/const\s+result\s*=\s*await\s+dispatchTool\(name,\s*args\)/)
+      expect(sourceCode).toMatch(/const\s+result\s*=\s*await\s+runWithCallerContext\([\s\S]*?dispatchTool\(name,\s*args\)/)
       expect(sourceCode).toMatch(/runAfterToolCallbacks\(name,\s*callId,\s*structuredClone\(result\)\)/)
       expect(sourceCode).toMatch(/queueMicrotask\(\(\)\s*=>\s*\{/)
       expect(sourceCode).not.toMatch(/await\s+runAfterToolCallbacks\(/)

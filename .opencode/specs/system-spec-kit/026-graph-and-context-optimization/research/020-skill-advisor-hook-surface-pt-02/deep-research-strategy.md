@@ -38,7 +38,7 @@ Wave 1 (cli-codex) converged; this wave deep-dives remaining open questions + ne
 - Wave 1 findings registry at `../findings-registry.json`
 - Phase 019/003 NFKC hardening shipped (shared/unicode-normalization.ts canonicalFold)
 - Phase 018 R4 shared-payload contract live
-- 019/004 200-prompt corpus at `../019-system-hardening-001-initial-research-005-routing-accuracy/corpus/labeled-prompts.jsonl`
+- 019/004 200-prompt corpus at `../003-system-hardening-001-initial-research-005-routing-accuracy/corpus/labeled-prompts.jsonl`
 - Existing hooks pattern in `mcp_server/hooks/{claude,gemini,copilot}/`
 - Pattern reference: code-graph `buildStartupBrief()` in `lib/code-graph/startup-brief.ts`
 - Wave-1 rejected kind='skill-advisor' — use neutral envelope kind

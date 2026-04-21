@@ -230,7 +230,7 @@ describe('cached SessionStart consumer corpus', () => {
           schemaVersion: CACHED_SESSION_SUMMARY_SCHEMA_VERSION + 1,
         }),
         specFolder: VALID_SPEC_FOLDER,
-        expected: { status: 'rejected', category: 'fidelity', reason: 'schema_version_mismatch' },
+        expected: { status: 'rejected', category: 'fidelity', reason: 'schema_mismatch' },
       },
       {
         name: 'valid',

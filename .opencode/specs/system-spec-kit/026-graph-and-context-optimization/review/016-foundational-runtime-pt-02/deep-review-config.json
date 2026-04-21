@@ -5,7 +5,7 @@
   "created_at": "2026-04-17T19:00:00Z",
   "review_target": "Phase 017 review-findings-remediation — 32 commits since 4d3af5a8c (v3.4.0.1 deep-review baseline) through 6637c86f5 (v3.4.0.2 changelog restyle). Covers 4 waves (A=5 commits, B=10 commits, C=4 commits, D=3 commits) + 3 support commits + 5 finalization commits + 2 post-finalize commits (sk-code alignment + normalizer-lint dist/ fix). 27 tasks closed across Clusters A/B/C/D/E + standalones. Headline: H-56-1 canonical save metadata no-op eliminated. New primitives: AsyncLocalStorage caller-context, code-graph readiness-contract, hooks shared-provenance, retry-budget, assertNever helper.",
   "review_target_type": "spec-folder",
-  "spec_folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
+  "spec_folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime",
   "artifact_dir": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/016-foundational-runtime",
   "max_iterations": 10,
   "convergence_threshold": 0.08,

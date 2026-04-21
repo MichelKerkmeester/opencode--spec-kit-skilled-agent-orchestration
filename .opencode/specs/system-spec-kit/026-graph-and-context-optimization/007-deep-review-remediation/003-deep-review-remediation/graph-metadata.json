@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface",
+        "reason": "depends_on relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin",
+        "reason": "depends_on relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run",
+        "reason": "depends_on relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run"
+      }
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 025",
+      "deep review remediation",
+      "dr-p1",
+      "dr-p2",
+      "advisor remediation"
+    ],
+    "key_topics": [
+      "privacy-hardening",
+      "cache-correctness",
+      "telemetry-fidelity",
+      "plugin-parity",
+      "operator-docs",
+      "api-hygiene",
+      "test-coverage"
+    ],
+    "status": "draft",
+    "lastRefreshed": "2026-04-19T21:20:00.000Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "save_lineage": "same_pass",
+    "importance_tier": "normal",
+    "key_files": [],
+    "entities": [],
+    "causal_summary": "",
+    "created_at": "2026-04-21T14:30:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md"
+    ]
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/025-deep-review-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/025-deep-review-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/025-deep-review-remediation",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/025-deep-review-remediation",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/025-deep-review-remediation",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/025-deep-review-remediation",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation",
+    "local_phase_slug": "003-deep-review-remediation",
+    "original_phase_slug": "025-deep-review-remediation",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

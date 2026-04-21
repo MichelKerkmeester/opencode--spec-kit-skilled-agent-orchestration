@@ -6,24 +6,24 @@
 - timestamp: 2026-04-15T19:06:45.958Z
 
 ## Files Reviewed
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/graph-metadata.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/description.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/plan.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/tasks.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/graph-metadata.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/description.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/graph-metadata.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/description.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/plan.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/tasks.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/graph-metadata.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/description.json`
 
 ## Findings - New This Iteration
 ### P0 Findings

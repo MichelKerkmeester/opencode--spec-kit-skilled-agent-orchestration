@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
+    "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
+  ],
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
+    "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
+  ],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "active_phase": "004-agent-governance-and-commands",
+    "child_phase_folders": [
+      "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
+      "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
+    ],
+    "layout": "phase-root-children"
+  },
+  "manual": {
+    "depends_on": [],
+    "supersedes": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
+      }
+    ],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "004-agent-governance-and-commands",
+      "agents guardrails, canonical intake, and command cleanup",
+      "001-agent-execution-guardrails",
+      "002-command-graph-consolidation"
+    ],
+    "key_topics": [
+      "agents",
+      "guardrails",
+      "canonical",
+      "intake",
+      "and",
+      "command",
+      "cleanup",
+      "004",
+      "agent",
+      "governance",
+      "commands"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "context-index.md"
+    ],
+    "entities": [
+      {
+        "name": "001-agent-execution-guardrails",
+        "kind": "spec_phase",
+        "path": "001-agent-execution-guardrails",
+        "source": "migration"
+      },
+      {
+        "name": "002-command-graph-consolidation",
+        "kind": "spec_phase",
+        "path": "002-command-graph-consolidation",
+        "source": "migration"
+      }
+    ],
+    "causal_summary": "AGENTS guardrails, canonical intake, and command cleanup. Direct child parent for 001-agent-execution-guardrails, 002-command-graph-consolidation.",
+    "created_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "context-index.md"
+    ]
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

@@ -115,6 +115,7 @@ describe('code graph query trust emission', () => {
         symbolId: 'sym-1',
       }]),
       getDb: vi.fn(),
+      resolveSubjectFilePath: vi.fn((subject: string) => subject),
       queryEdgesFrom: vi.fn(() => []),
       queryEdgesTo: vi.fn(() => []),
       getLastDetectorProvenance: vi.fn(() => 'structured'),
@@ -130,6 +131,7 @@ describe('code graph query trust emission', () => {
     expect(parsed.data.freshnessAuthority).toBe('live');
     expect(parsed.data.graphMetadata).toEqual({
       detectorProvenance: 'structured',
+      detectorProvenanceSource: 'last-persisted-scan',
     });
     expect(parsed.data).not.toHaveProperty('trust');
     expect(parsed.data).not.toHaveProperty('confidence');
@@ -148,6 +150,7 @@ describe('code graph query trust emission', () => {
     vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
       queryOutline: vi.fn(() => []),
       getDb: vi.fn(),
+      resolveSubjectFilePath: vi.fn((subject: string) => subject),
       queryEdgesFrom: vi.fn(() => []),
       queryEdgesTo: vi.fn(() => []),
       getLastDetectorProvenance: vi.fn(() => 'structured'),

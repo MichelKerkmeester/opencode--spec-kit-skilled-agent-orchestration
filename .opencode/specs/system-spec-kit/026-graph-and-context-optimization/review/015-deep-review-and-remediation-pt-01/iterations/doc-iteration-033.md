@@ -9,18 +9,18 @@
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-config.json`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-strategy.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-state.jsonl`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/tasks.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/changelog/changelog-026-014-memory-save-rewrite.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/description.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/graph-metadata.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/tasks.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/graph-metadata.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/tasks.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/changelog/changelog-026-014-memory-save-rewrite.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/description.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/graph-metadata.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/tasks.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/graph-metadata.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/implementation-summary.md`
 
 ## Findings - New This Iteration
 ### P0 Findings

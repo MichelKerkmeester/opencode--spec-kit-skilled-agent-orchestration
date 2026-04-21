@@ -345,7 +345,7 @@
   "maxIterations": 120,
   "convergenceThreshold": 0.1,
   "stuckThreshold": 2,
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-deep-review-and-remediation",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation",
   "createdAt": "2026-04-16T05:18:04Z",
   "status": "complete",
   "executionMode": "auto",

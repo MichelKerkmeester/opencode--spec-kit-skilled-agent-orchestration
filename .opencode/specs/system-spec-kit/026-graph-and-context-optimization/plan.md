@@ -1,22 +1,35 @@
 ---
 title: "Implementation Plan: Graph and Context Optimization"
-description: "Coordination plan for keeping the 026 parent packet aligned with the reorganized 19-phase child map (001-014 foundational + 015-018 consolidated review/remediation/executor arc + 019-system-hardening research-first umbrella)."
+description: "Plan for consolidating the 026 packet from 29 active top-level phase folders to 9 thematic wrappers."
 trigger_phrases:
-  - "026 parent plan"
-  - "graph context optimization plan"
-  - "026 coordination plan"
+  - "026 graph and context optimization"
+  - "026 phase consolidation"
+  - "29 to 9 phase map"
+  - "merged phase map"
+  - "graph context optimization root packet"
 importance_tier: "important"
 contextType: "plan"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
-    last_updated_at: "2026-04-12T16:16:10Z"
-    last_updated_by: "copilot-gpt-5-4"
-    recent_action: "Reviewed packet docs"
-    next_safe_action: "Run strict validation"
-    key_files: ["plan.md"]
-
+    last_updated_at: "2026-04-21T13:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Renumbered nested phases"
+    next_safe_action: "Use merged-phase-map.md and context indexes for navigation"
+    blockers: []
+    key_files:
+      - "spec.md"
+      - "plan.md"
+      - "tasks.md"
+      - "implementation-summary.md"
+    session_dedup:
+      fingerprint: "sha256:4444376370874cffcd64400f8f337ddcd48cdd862ce7981137ac69bbf1abbd3c"
+      session_id: "026-phase-consolidation-2026-04-21"
+      parent_session_id: null
+    completion_pct: 100
+    open_questions: []
+    answered_questions: []
 ---
 # Implementation Plan: Graph and Context Optimization
 
@@ -32,14 +45,13 @@ _memory:
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown packet docs |
-| **Framework** | Spec Kit Level 3 parent packet |
-| **Storage** | Parent packet docs plus child packet spec folders |
-| **Testing** | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <folder> --strict` |
+| **Language/Stack** | Markdown and JSON metadata |
+| **Framework** | Spec Kit Level 3 parent packet with Level 1 active wrappers |
+| **Storage** | Root packet docs plus wrapper direct-child folders history |
+| **Testing** | Strict spec validation, JSON parse scan, folder/map consistency checks |
 
 ### Overview
-
-This plan keeps the `026-graph-and-context-optimization` root aligned with the reorganized 19-phase child packet dependency graph. The April 2026 reorganization split `006` into five focused packets (phases 6-10), then added phases 11-14 for skill-advisor-graph, command-graph consolidation, advisor phrase boosters, and the memory-save rewrite. The 2026-04-18 consolidation folded the former 015-020 range into four thematic packets (phases 15-18) covering deep-review-and-remediation, foundational-runtime, sk-deep-cli-runtime-execution, and cli-executor-remediation. The same day added `019-system-hardening` as a research-first umbrella for the Tier 1 candidates surfaced in `scratch/deep-review-research-suggestions.md`. The work remains coordination-only: sync the root packet docs to the shipped child folders, update phase-map references, and verify strict validation for the parent packet surface.
+This plan consolidates the active 026 phase surface from 29 direct phase folders into nine thematic wrappers. Original packets are moved intact into wrapper direct-child folders; root support folders stay in place; docs and metadata become the bridge from old paths to active homes.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -48,17 +60,16 @@ This plan keeps the `026-graph-and-context-optimization` root aligned with the r
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-
-- [x] The active child packet set under `026-graph-and-context-optimization/` is enumerated.
-- [x] The root packet drift is understood: missing Level 3 companion docs, missing anchors, and no validator-compliant phase map.
-- [x] Child packet dependency order is documented in existing packet materials.
+- [x] Existing direct phase folders `001` through `029` enumerated.
+- [x] Root docs read before modification.
+- [x] Existing uncommitted changes noted and preserved.
 
 ### Definition of Done
-
-- [x] The parent packet has all required Level 3 docs.
-- [x] The parent spec includes a validator-compliant phase documentation map.
-- [x] Parent docs distinguish coordination responsibilities from child-owned authority.
-- [x] Strict validation passes for the parent packet after the doc refresh.
+- [x] Root direct phase folders reduced to the nine approved wrappers.
+- [x] Every old phase appears exactly once in `merged-phase-map.md`.
+- [x] Every wrapper has context indexes.
+- [x] JSON metadata parse checks pass.
+- [x] Strict validation has been run on root and wrappers.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -67,30 +78,30 @@ This plan keeps the `026-graph-and-context-optimization` root aligned with the r
 
 ### Pre-Task Checklist
 
-- Re-read the parent `spec.md` and the child packet directory list before editing the phase map.
-- Keep root wording scoped to coordination, sequencing, and verification.
-- Treat any directory without a root `spec.md` as local residue, not as a packet phase.
+- Re-read root docs and enumerate phase folders before moving anything.
+- Move child packets intact before generating wrappers.
+- Keep root `research/`, `review/`, and `scratch/` where they are.
 
 ### Execution Rules
 
 | Rule ID | Rule | Why |
 |---------|------|-----|
-| AI-SCOPE-001 | Edit only parent packet docs in this pass | Prevents child-packet scope drift |
-| AI-SOURCE-001 | Derive sequencing from child packet docs, not numeric slug order | Keeps the parent map truthful |
-| AI-VERIFY-001 | Re-run strict validation after every structural parent change | Catches template drift immediately |
-| AI-CLEAN-001 | Keep local stale directories out of the parent phase surface | Prevents false-negative recursive validation |
+| AI-SCOPE-001 | Do not change runtime code | This is a documentation and metadata consolidation. |
+| AI-PRESERVE-001 | Keep child packet narratives intact | Historical context should remain auditable. |
+| AI-METADATA-001 | Preserve old packet IDs as aliases or migration sources | Memory and graph lookup need continuity. |
+| AI-VERIFY-001 | Validate root and active wrappers after the move | The active surface must be structurally usable. |
 
 ### Status Reporting Format
 
-- Start state: which parent doc is being rebuilt and why it failed validation
-- Work state: which phase-map or template gap was corrected
-- End state: parent packet strict-validation result
+- Start state: direct phase count and dirty worktree notes.
+- Work state: wrappers generated and metadata migrated.
+- End state: validation and map coverage results.
 
 ### Blocked Task Protocol
 
-1. Stop if a proposed parent claim cannot be traced back to an existing child packet.
-2. Prefer narrowing the parent language over guessing child intent.
-3. If local residue folders break validation, remove them from the parent surface before claiming success.
+1. Stop if an expected old phase folder is missing.
+2. Stop if a target active wrapper already exists before migration.
+3. Report any validation failure with the exact rule and file.
 
 ---
 
@@ -98,17 +109,17 @@ This plan keeps the `026-graph-and-context-optimization` root aligned with the r
 ## 3. ARCHITECTURE
 
 ### Pattern
-Coordination-only parent packet over independently owned child packets
+Nine active wrapper packets over preserved historical child packets.
 
 ### Key Components
 
-- **Parent coordination layer**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
-- **Child packet map**: folders `001` through `019`
-- **Verification layer**: strict packet validation on the parent folder
+- **Root map**: `spec.md` and `merged-phase-map.md`.
+- **Wrapper packets**: `001` through `009`, each with Level 1 docs and context indexes.
+- **Child phase folders**: original phase roots nested under thematic wrappers.
+- **Metadata continuity**: moved JSON files record current paths plus migration aliases.
 
 ### Data Flow
-
-Child packet docs define packet-local truth. The parent packet aggregates only the dependency graph, the handoff rules, and the completion surface that links back to those child docs. Strict validation enforces the structure at the root.
+Root phase map points to wrapper docs. Wrapper context indexes point to preserved original phase folders. Metadata aliases preserve old packet IDs for memory and graph traversal.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -117,19 +128,19 @@ Child packet docs define packet-local truth. The parent packet aggregates only t
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [x] Re-read the existing root packet and enumerate the child packet folders.
-- [x] Capture the strict-validator baseline for the parent folder.
-- [x] Confirm which directories are real packet phases versus local residue.
+- [x] Enumerate current direct phase folders.
+- [x] Read root docs and representative metadata.
+- [x] Capture old phase status and titles.
 
 ### Phase 2: Core Implementation
-- [x] Rebuild `spec.md` to the active Level 3 template.
-- [x] Create the missing Level 3 companion docs for the parent packet.
-- [x] Add the phase documentation map and handoff rules for the active child packets.
+- [x] Move all old phase packets into wrapper direct-child folders.
+- [x] Generate active wrapper docs and context indexes.
+- [x] Rewrite root docs and metadata for the nine-phase map.
 
 ### Phase 3: Verification
-- [x] Re-run strict validation on the parent packet.
-- [x] Reconcile any phase-link or integrity drift that remains after the doc rebuild.
-- [x] Capture final parent verification evidence in `implementation-summary.md`.
+- [x] Check old phase map coverage.
+- [x] Parse all `description.json` and `graph-metadata.json` files.
+- [x] Run strict validation on root and wrappers.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -139,9 +150,11 @@ Child packet docs define packet-local truth. The parent packet aggregates only t
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Structural validation | Parent packet docs | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization --strict` |
-| Phase-map review | Child folders `001` through `019` | Manual review plus `find` and `rg` sweeps |
-| Drift check | Parent-doc references and handoff rules | `rg -n "Parent Spec\|Phase Documentation Map\|002-cache-warning-hooks\|006-continuity-refactor-gates\|011-skill-advisor-graph\|015-deep-review-and-remediation\|016-foundational-runtime\|017-sk-deep-cli-runtime-execution\|018-cli-executor-remediation"` |
+| Folder shape | Root direct phase folders | `find` |
+| Map coverage | Old phases `001` through `029` | Node/regex scan over `merged-phase-map.md` |
+| Metadata | All moved and active JSON files | Node `JSON.parse` scan |
+| Spec validation | Root and nine wrappers | `validate.sh --strict` |
+| Trigger continuity | Old phase phrases | `rg` over context indexes and metadata |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -151,9 +164,9 @@ Child packet docs define packet-local truth. The parent packet aggregates only t
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Child packet folders `001` through `019` | Internal | Green | Parent map cannot be reconciled honestly |
-| Spec validator | Internal | Green | Parent packet cannot prove compliance |
-| Existing child packet docs | Internal | Green | Parent packet would have to guess sequencing or status |
+| Existing old phase folders `001`-`029` | Internal | Green | Cannot prove preservation if any are missing |
+| Spec validator | Internal | Green | Cannot claim structural completion without it |
+| JSON metadata files | Internal | Green | Memory/search continuity depends on valid metadata |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -161,8 +174,8 @@ Child packet docs define packet-local truth. The parent packet aggregates only t
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Parent validation still fails after the doc rebuild, or the new phase map contradicts child packet docs.
-- **Procedure**: Revert the affected parent-doc edits, re-read the child packet evidence, and re-apply the smallest structure-only patch needed to restore validator compliance.
+- **Trigger**: The migration leaves old phases unmapped, metadata unparsable, or active wrapper validation unrecoverable.
+- **Procedure**: Move folders from wrapper direct-child folders back to their old root paths and restore root docs/metadata from version control.
 <!-- /ANCHOR:rollback -->
 
 ---
@@ -171,23 +184,23 @@ Child packet docs define packet-local truth. The parent packet aggregates only t
 ## L2: PHASE DEPENDENCIES
 
 ```text
-Enumerate child packets
+Enumerate old phases
         |
         v
-Rebuild parent docs
+Move child packets into wrappers
         |
         v
-Restore phase map
+Generate bridge docs and metadata
         |
         v
-Run strict validation
+Validate root and wrappers
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Setup | None | Parent doc rebuild |
-| Core Implementation | Setup | Verification |
-| Verification | Core Implementation | None |
+| Setup | None | Migration |
+| Migration | Setup | Verification |
+| Verification | Migration | Completion |
 <!-- /ANCHOR:phase-deps -->
 
 ---
@@ -197,8 +210,8 @@ Run strict validation
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Low | 0.25 day |
-| Core Implementation | Medium | 0.5 day |
+| Setup | Medium | 0.25 day |
+| Migration | High | 0.5 day |
 | Verification | Medium | 0.25 day |
 | **Total** |  | **1 day** |
 <!-- /ANCHOR:effort -->
@@ -209,19 +222,19 @@ Run strict validation
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [x] Child packet list captured
-- [x] Parent validator baseline captured
-- [x] Scope limited to root packet docs
+- [x] Original folder map captured.
+- [x] Existing dirty worktree noted.
+- [x] Migration script checks all expected old folders before moving.
 
 ### Rollback Procedure
-1. Revert the parent-doc edits that introduced the mismatch.
-2. Re-run parent strict validation to confirm the baseline state.
-3. Re-apply only the missing template sections or phase-map entries.
-4. Re-validate the parent packet.
+1. Restore root docs and metadata from version control.
+2. Move each child folder from `00N-*/OLD` back to `OLD`.
+3. Remove generated wrapper folders.
+4. Re-run folder coverage and JSON parse checks.
 
 ### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A. This packet changes docs only.
+- **Has data migrations?** Yes, metadata path fields are rewritten.
+- **Reversal procedure**: Restore metadata from version control or reverse the migration fields using `migration.source_spec_folder`.
 <!-- /ANCHOR:enhanced-rollback -->
 
 ---
@@ -230,26 +243,29 @@ Run strict validation
 ## L3: DEPENDENCY GRAPH
 
 ```text
-child packet truth
+old child packets
        |
        v
-parent phase map
+direct child folders
        |
        v
-parent verification docs
+context-index bridge docs
        |
        v
-strict validation
+root nine-phase map
+       |
+       v
+validation and continuity checks
 ```
 
 ### Dependency Matrix
 
 | Component | Depends On | Produces | Blocks |
 |-----------|------------|----------|--------|
-| `spec.md` | Child packet list | Parent phase map | `tasks.md`, `checklist.md` |
-| `plan.md` | `spec.md` | Coordination workflow | `implementation-summary.md` |
-| `tasks.md` | `plan.md` | Parent execution record | `checklist.md` |
-| `checklist.md` | `spec.md`, `plan.md`, `tasks.md` | Parent verification evidence | Completion claim |
+| `merged-phase-map.md` | Old-to-new map | Root bridge table | Completion claim |
+| Wrapper docs | Original phase move | Active validation surface | Root validation |
+| Metadata rewrite | Original phase move | Resolvable packet IDs | Memory/search continuity |
+| Root docs | Wrapper docs | Active phase map | Final verification |
 <!-- /ANCHOR:dependency-graph -->
 
 ---
@@ -257,15 +273,15 @@ strict validation
 <!-- ANCHOR:critical-path -->
 ## L3: CRITICAL PATH
 
-1. **Enumerate real child packet phases** - short - CRITICAL
-2. **Rebuild parent spec and companion docs** - medium - CRITICAL
-3. **Run strict parent validation and clear residual drift** - medium - CRITICAL
+1. **Move child packets intact** - medium - CRITICAL
+2. **Generate wrapper docs and context indexes** - medium - CRITICAL
+3. **Refresh metadata aliases and paths** - high - CRITICAL
+4. **Run validation checks** - medium - CRITICAL
 
 **Total Critical Path**: 1 day
 
 **Parallel Opportunities**:
-- Root companion docs can be drafted while phase-map evidence is being organized.
-- Reference sweeps can run alongside validation.
+- JSON parse and trigger continuity checks can run independently after migration.
 <!-- /ANCHOR:critical-path -->
 
 ---
@@ -275,26 +291,26 @@ strict validation
 
 | Milestone | Description | Success Criteria | Target |
 |-----------|-------------|------------------|--------|
-| M1 | Parent packet scaffold restored | Level 3 docs exist in the root folder | Same session |
-| M2 | Phase map aligned | Active child folders are listed with correct handoff rules | Same session |
-| M3 | Parent validation clean | `validate.sh --strict` passes on the root folder | Same session |
+| M1 | Original folders moved | Old phases nested under wrappers | Same session |
+| M2 | Bridge docs generated | Root and wrapper docs expose old-to-new paths | Same session |
+| M3 | Validation complete | Root and wrappers pass strict validation or failures are documented | Same session |
 <!-- /ANCHOR:milestones -->
 
 ---
 
 ## L3: ARCHITECTURE DECISION RECORD
 
-### ADR-001: Keep the root packet coordination-only
+### ADR-001: Consolidate by theme, not chronology
 
 **Status**: Accepted
 
-**Context**: The parent packet has to describe many child folders without taking ownership of their runtime or research behavior.
+**Context**: Follow-up phases were added chronologically even when they continued older themes.
 
-**Decision**: Keep the root packet limited to sequencing, handoff, and validation coordination.
+**Decision**: Use nine thematic wrappers and preserve chronological folders as child phase folders.
 
 **Consequences**:
-- The parent packet stays readable and auditable.
-- Child packet truth remains local, so the parent must cite rather than restate detailed behavior.
+- Active navigation becomes smaller and clearer.
+- Historical folder names remain available under thematic wrappers.
 
 **Alternatives Rejected**:
-- Restating child packet details in the root packet: rejected because it would create immediate drift pressure.
+- Keep 29 active top-level folders: rejected because it preserves the navigation problem.

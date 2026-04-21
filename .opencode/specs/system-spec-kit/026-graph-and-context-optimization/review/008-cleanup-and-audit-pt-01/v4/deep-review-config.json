@@ -13,7 +13,7 @@
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 10,
   "progressiveSynthesis": false,
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
   "createdAt": "2026-04-14T14:50:40.643Z",
   "status": "initialized",
   "releaseReadinessState": "in-progress",

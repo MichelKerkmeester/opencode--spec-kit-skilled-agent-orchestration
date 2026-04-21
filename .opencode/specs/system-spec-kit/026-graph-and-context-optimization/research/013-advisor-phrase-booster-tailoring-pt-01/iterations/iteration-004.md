@@ -110,7 +110,7 @@ Why this exact wording:
 
 - It names the tokenizer contract directly (`re.findall(...)`). [SOURCE: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1634-1635`]
 - It names the phrase matcher directly (`if phrase in prompt_lower`). [SOURCE: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1674-1677`]
-- It explains the failure mode that created the 24-key dead-code inventory from Iteration 1. [SOURCE: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-advisor-phrase-booster-tailoring/research/iterations/iteration-001.md:13-18,54-70`]
+- It explains the failure mode that created the 24-key dead-code inventory from Iteration 1. [SOURCE: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/003-advisor-phrase-booster-tailoring/research/iterations/iteration-001.md:13-18,54-70`]
 
 ## 5. Ordered migration script for Phase 2
 
@@ -455,7 +455,7 @@ That means deleting the 24 multi-word INTENT keys does **not** break any hidden 
 - The `code audit` schema violation is fully resolved: **keep `sk-code-review`** as the target and delete the dead INTENT declaration. The current PHRASE route is already the semantically correct runtime source of truth. [SOURCE: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:560,807,1634-1680`]
 - Phase 2 can be implemented as a **data-only migration** in `skill_advisor.py`: one guard comment, four INTENT deletion clusters, and seven PHRASE insertion clusters. No caller code changes are required. [SOURCE: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1634-1680`] [SOURCE: `rg 'INTENT_BOOSTERS\\[|...|PHRASE_INTENT_BOOSTERS' .opencode/skill/skill-advisor` run on 2026-04-15]
 - The tuple-to-list conversion rule is exact and simple: any migrated single-target INTENT entry becomes a singleton PHRASE list `[(skill, weight)]`; existing PHRASE lists are preserved unchanged. [SOURCE: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1659-1677`]
-- All 15 Iteration 3 candidate additions fit cleanly into existing PHRASE clusters without requiring score-formula or tokenizer changes. [SOURCE: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-advisor-phrase-booster-tailoring/research/iterations/iteration-003.md:45-95`] [SOURCE: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:798-900`]
+- All 15 Iteration 3 candidate additions fit cleanly into existing PHRASE clusters without requiring score-formula or tokenizer changes. [SOURCE: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/003-advisor-phrase-booster-tailoring/research/iterations/iteration-003.md:45-95`] [SOURCE: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:798-900`]
 
 ### Updated Next Focus
 

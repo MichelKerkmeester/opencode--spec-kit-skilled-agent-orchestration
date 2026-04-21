@@ -69,7 +69,7 @@ function runValidateStrict(specFolder: string): { exitCode: number; stdout: stri
     encoding: 'utf-8',
     env: {
       ...process.env,
-      SPECKIT_RULES: 'GRAPH_METADATA_PRESENT',
+      SPECKIT_RULES: 'GRAPH_METADATA_PRESENT,CONTINUITY_FRESHNESS',
     },
   });
 

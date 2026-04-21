@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/review/015-deep-review-and-remediation/merged-015-archive",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/review/015-deep-review-and-remediation-pt-01/merged-015-archive",
   "description": "Feature Specification: Combined Deep Review — 009 + 010 + 012 + 014",
   "keywords": [
     "feature",
@@ -12,15 +12,21 @@
     "012",
     "014"
   ],
-  "lastUpdated": "2026-04-17T14:42:34.382Z",
+  "lastUpdated": "2026-04-21T13:00:00Z",
   "specId": "",
   "folderSlug": "merged-015-archive",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
     "review",
-    "015-deep-review-and-remediation"
+    "015-deep-review-and-remediation-pt-01"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/review/015-deep-review-and-remediation/merged-015-archive",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/review/015-deep-review-and-remediation-pt-01/merged-015-archive",
+    "layout": "phase-root-children"
+  }
 }

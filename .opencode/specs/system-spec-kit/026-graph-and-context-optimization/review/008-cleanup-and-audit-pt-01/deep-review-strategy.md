@@ -99,9 +99,9 @@ None. Max iterations reached; synthesize review-report.md and route remediation 
 | .opencode/skill/system-spec-kit/mcp_server/context-server.ts | D1 | 17 | 1 P0 | complete |
 | .opencode/skill/system-spec-kit/mcp_server/lib/errors/recovery-hints.ts | D1 | 13 | 1 P0 | complete |
 | .opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts | D1, D3 | 7 | 1 P1 | complete |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/spec.md | D3 | 19 | 1 P1 | complete |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/checklist.md | D3 | 7 | 1 P1 | complete |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/implementation-summary.md | D3 | 19 | 1 P1 | complete |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md | D3 | 19 | 1 P1 | complete |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/checklist.md | D3 | 7 | 1 P1 | complete |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/implementation-summary.md | D3 | 19 | 1 P1 | complete |
 | .opencode/changelog/01--system-spec-kit/v3.4.0.0.md | D3 | 19 | 1 P1 | complete |
 | .opencode/agent/orchestrate.md | D4 | 20 | 1 P1 | complete |
 | .claude/agents/orchestrate.md | D4 | 16 | 1 P1 | complete |

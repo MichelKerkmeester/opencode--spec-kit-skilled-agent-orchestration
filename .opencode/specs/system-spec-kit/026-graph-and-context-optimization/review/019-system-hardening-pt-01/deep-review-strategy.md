@@ -85,7 +85,7 @@ Iteration 1 focus: Read `015/review/review-report.md` to index the 243 findings 
 <!-- ANCHOR:known-context -->
 ## 12. KNOWN CONTEXT
 
-Source findings: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-deep-review-and-remediation/review/review-report.md` (1535 lines, 120 iterations, 243 findings).
+Source findings: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation/review/review-report.md` (1535 lines, 120 iterations, 243 findings).
 
 Phase 016/002 shipped 10 architectural primitives that likely address subsets of 015 findings:
 - typed `OperationResult<T>`

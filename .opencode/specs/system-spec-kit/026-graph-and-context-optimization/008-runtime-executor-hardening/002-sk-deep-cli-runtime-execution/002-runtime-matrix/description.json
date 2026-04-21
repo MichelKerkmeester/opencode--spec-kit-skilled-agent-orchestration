@@ -1,0 +1,41 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix",
+  "description": "Feature Specification: CLI Runtime Matrix for Iterative Skills",
+  "keywords": [
+    "feature",
+    "specification",
+    "cli",
+    "runtime",
+    "matrix",
+    "iterative",
+    "skills"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "002",
+  "folderSlug": "runtime-matrix",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening",
+    "017-sk-deep-cli-runtime-execution"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/002-runtime-matrix",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/017-sk-deep-cli-runtime-execution/002-runtime-matrix",
+    "local_phase_slug": "002-sk-deep-cli-runtime-execution",
+    "original_phase_slug": "017-sk-deep-cli-runtime-execution",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/002-runtime-matrix",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/017-sk-deep-cli-runtime-execution/002-runtime-matrix",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix"
+    ]
+  }
+}

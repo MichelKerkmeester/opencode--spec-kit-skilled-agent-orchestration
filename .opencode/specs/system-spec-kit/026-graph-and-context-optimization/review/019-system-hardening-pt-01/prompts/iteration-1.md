@@ -32,7 +32,7 @@ All paths are relative to the repo root.
 - State Log: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/019-system-hardening-001-initial-research-002-delta-review-015/deep-review-state.jsonl
 - Strategy: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/019-system-hardening-001-initial-research-002-delta-review-015/deep-review-strategy.md
 - Registry: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/019-system-hardening-001-initial-research-002-delta-review-015/findings-registry.json
-- Source findings: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-deep-review-and-remediation/review/review-report.md
+- Source findings: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation/review/review-report.md
 - Write findings to: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/019-system-hardening-001-initial-research-002-delta-review-015/iterations/iteration-001.md
 
 ## CONSTRAINTS

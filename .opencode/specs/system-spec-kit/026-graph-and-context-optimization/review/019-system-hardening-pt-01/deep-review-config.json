@@ -7,7 +7,7 @@
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 30,
   "progressiveSynthesis": true,
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/002-delta-review-015",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015",
   "createdAt": "2026-04-18T18:20:28Z",
   "status": "complete",
   "executionMode": "auto",

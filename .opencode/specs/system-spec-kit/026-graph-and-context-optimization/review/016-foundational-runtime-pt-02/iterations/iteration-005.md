@@ -24,9 +24,9 @@ Test 6 compound hypotheses H1–H6 that combine findings from iter 1–3. Iterat
 - `.opencode/skill/system-spec-kit/scripts/core/workflow.ts:1240-1395`
 - `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/shared.ts` (full)
 - `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts:95-112`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/tasks.md` (parent)
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/description.json` (stub)
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research/description.json` (stub)
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/tasks.md` (parent)
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/description.json` (stub)
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/description.json` (stub)
 - `.opencode/changelog/01--system-spec-kit/v3.4.0.2.md` (hash sweep)
 
 ## 2. Findings

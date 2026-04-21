@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-pt-03",
+        "reason": "Supplied the labeled prompt corpus used for V4 and V7.",
+        "source": "user-provided known context",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-pt-03"
+      }
+    ],
+    "supersedes": [],
+    "related_to": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research",
+        "reason": "Adjacent Smart Routing efficacy research surface, explicitly not reopened in this packet.",
+        "source": "user-provided scope boundary",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research"
+      }
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "021 002 skill md smart router",
+      "skill-md intent router efficacy",
+      "resource loading tier effectiveness"
+    ],
+    "key_topics": [
+      "smart routing",
+      "skill md",
+      "resource loading",
+      "intent signals",
+      "resource map",
+      "on demand",
+      "always tier",
+      "telemetry harness"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md",
+      "research/research-validation.md",
+      "research/findings-registry.json",
+      "research/deep-research-state.jsonl"
+    ],
+    "entities": [
+      {
+        "name": "SKILL.md Smart Routing",
+        "kind": "concept",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "findings-registry.json",
+        "kind": "doc",
+        "path": "research/findings-registry.json",
+        "source": "derived"
+      },
+      {
+        "name": "research-validation.md",
+        "kind": "doc",
+        "path": "research/research-validation.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet establishes Smart Routing as advisory and recommends observe-only telemetry before enforcement.",
+    "created_at": "2026-04-19T19:45:00Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md",
+      "research/research-validation.md",
+      "research/findings-registry.json"
+    ]
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
+    "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/021-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
+    "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/021-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/021-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
+    "local_phase_slug": "004-smart-router-context-efficacy",
+    "original_phase_slug": "021-smart-router-context-efficacy",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

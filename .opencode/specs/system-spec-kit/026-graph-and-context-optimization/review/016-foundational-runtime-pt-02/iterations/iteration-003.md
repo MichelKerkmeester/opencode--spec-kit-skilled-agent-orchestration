@@ -77,7 +77,7 @@ manifest table keyed by short-SHA → task-ID → finding-ID.
 
 ```
 001-infrastructure-primitives/graph-metadata.json:
-  "parent_id": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime"
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime"
 002-cluster-consumers:      "system-spec-kit/026-..."
 003-rollout-sweeps:         "system-spec-kit/026-..."
 004-p2-maintainability:     ".opencode/specs/system-spec-kit/026-..."   ← NON-CANONICAL

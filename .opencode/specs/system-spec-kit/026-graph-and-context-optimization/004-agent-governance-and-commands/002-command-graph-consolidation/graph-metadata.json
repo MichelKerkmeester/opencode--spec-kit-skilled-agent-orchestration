@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates",
+        "reason": "Continuity refactor gates work defines the spec-folder lifecycle this command-graph evolution plugs into.",
+        "source": "spec.md:Scope",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph",
+        "reason": "Skill advisor graph surfaces the /spec_kit:* commands whose intake contract this packet consolidates.",
+        "source": "spec.md:Scope",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph"
+      }
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "canonical intake",
+      "spec kit intake",
+      "intake contract module",
+      "spec_kit plan intake only",
+      "deep research spec check",
+      "interview spec folder",
+      "spec folder interview",
+      "middleware cleanup",
+      "handover debug deprecation",
+      "distributed governance",
+      "delegated intake",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification"
+    ],
+    "key_topics": [
+      "canonical",
+      "intake",
+      "contract",
+      "module",
+      "plan",
+      "complete",
+      "deep",
+      "research",
+      "middleware",
+      "cleanup",
+      "handover",
+      "debug",
+      "governance",
+      "interview",
+      "folder",
+      "command",
+      "implementation",
+      "spec",
+      "kit"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/references/intake-contract.md",
+      ".opencode/command/spec_kit/plan.md",
+      ".opencode/command/spec_kit/complete.md",
+      ".opencode/command/spec_kit/resume.md",
+      ".opencode/command/spec_kit/deep-research.md",
+      ".opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+      ".opencode/skill/sk-deep-research/SKILL.md",
+      ".opencode/skill/sk-deep-research/references/spec_check_protocol.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/command/memory/save.md",
+      ".opencode/agent/orchestrate.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/changelog/changelog-026-012-command-graph-consolidation.md",
+      ".opencode/changelog/01--system-spec-kit/v3.4.0.0.md",
+      "review/review-report.md"
+    ],
+    "entities": [
+      {
+        "name": "intake-contract.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/intake-contract.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "complete.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/complete.md",
+        "source": "derived"
+      },
+      {
+        "name": "resume.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/resume.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_plan_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_plan_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_complete_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_complete_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec_check_protocol.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/spec_check_protocol.md",
+        "source": "derived"
+      },
+      {
+        "name": "system-spec-kit SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "orchestrate.md",
+        "kind": "doc",
+        "path": ".opencode/agent/orchestrate.md",
+        "source": "derived"
+      },
+      {
+        "name": "v3.4.0.0.md",
+        "kind": "doc",
+        "path": ".opencode/changelog/01--system-spec-kit/v3.4.0.0.md",
+        "source": "derived"
+      },
+      {
+        "name": "review-report.md",
+        "kind": "doc",
+        "path": "review/review-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec-Kit Command Graph",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Canonical Intake and Merger",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Middleware Cleanup",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Five Checks",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Protocol",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Decision Record",
+        "kind": "proper_noun",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet establishes a single canonical intake surface for spec-folder creation and repair, anchors /spec_kit:deep-research to a real spec.md, and hard-deletes deprecated middleware in favor of distributed governance. Canonical intake logic lives at .opencode/skill/system-spec-kit/references/intake-contract.md; /spec_kit:plan and /spec_kit:complete reference that module in place of inline duplication, and /spec_kit:plan --intake-only provides the standalone intake invocation path with an explicit YAML gate. /spec_kit:resume routes intake re-entry reasons to /spec_kit:plan --intake-only with prefilled state. /spec_kit:deep-research acquires an advisory lock during late INIT, classifies folder state, and writes back abridged findings through a machine-owned generated fence, per .opencode/skill/sk-deep-research/references/spec_check_protocol.md. The deprecated middleware wrappers (/spec_kit:handover, /spec_kit:debug, @handover, @speckit × 4 runtime mirrors each) are hard-deleted; @debug survives with Task-tool dispatch; a distributed-governance rule replaces the former @speckit exclusivity across CLAUDE.md, AGENTS.md, AGENTS_example_fs_enterprises.md, and system-spec-kit SKILL; /memory:save owns packet handover maintenance via handover_state routing; the :auto-debug flag is removed with explicit user escalation replacing it. Delivery spanned 15 milestones (M1-M9 delivered 2026-04-14, M10-M15 delivered 2026-04-15) including a 26-file downstream documentation sweep delegated to cli-copilot GPT-5.4 which completed 56 edits in one pass. A 10-iteration deep review flagged 12 findings (4 P0 / 4 P1 / 4 P2); five parallel Opus remediation agents fixed all 12 before closeout.",
+    "created_at": "2026-04-14T00:00:00.000Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md",
+      "review/review-report.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation",
+    "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/012-command-graph-consolidation",
+    "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/012-command-graph-consolidation",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/012-command-graph-consolidation",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation",
+    "local_phase_slug": "002-command-graph-consolidation",
+    "original_phase_slug": "012-command-graph-consolidation",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

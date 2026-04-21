@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits",
+    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
+    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation"
+  ],
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits",
+    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
+    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation"
+  ],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "active_phase": "005-release-cleanup-playbooks",
+    "child_phase_folders": [
+      "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits",
+      "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
+      "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation"
+    ],
+    "layout": "phase-root-children"
+  },
+  "manual": {
+    "depends_on": [],
+    "supersedes": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation"
+      }
+    ],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "005-release-cleanup-playbooks",
+      "release alignment, cleanup/audit, and playbook repair/remediation",
+      "001-release-alignment-revisits",
+      "002-cleanup-and-audit",
+      "003-playbook-and-remediation"
+    ],
+    "key_topics": [
+      "release",
+      "alignment",
+      "cleanup",
+      "audit",
+      "and",
+      "playbook",
+      "repair",
+      "remediation",
+      "005",
+      "playbooks"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "context-index.md"
+    ],
+    "entities": [
+      {
+        "name": "001-release-alignment-revisits",
+        "kind": "spec_phase",
+        "path": "001-release-alignment-revisits",
+        "source": "migration"
+      },
+      {
+        "name": "002-cleanup-and-audit",
+        "kind": "spec_phase",
+        "path": "002-cleanup-and-audit",
+        "source": "migration"
+      },
+      {
+        "name": "003-playbook-and-remediation",
+        "kind": "spec_phase",
+        "path": "003-playbook-and-remediation",
+        "source": "migration"
+      }
+    ],
+    "causal_summary": "Release alignment, cleanup/audit, and playbook repair/remediation. Direct child parent for 001-release-alignment-revisits, 002-cleanup-and-audit, 003-playbook-and-remediation.",
+    "created_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "context-index.md"
+    ]
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

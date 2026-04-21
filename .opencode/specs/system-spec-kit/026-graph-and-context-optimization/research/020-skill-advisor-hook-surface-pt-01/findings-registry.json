@@ -1,6 +1,6 @@
 {
   "sessionId": "dr-020-skill-advisor-hook-20260419T065000Z",
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research",
   "findings": [
     {
       "id": "F-002-001",

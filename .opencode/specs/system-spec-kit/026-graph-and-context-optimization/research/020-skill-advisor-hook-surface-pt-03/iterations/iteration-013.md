@@ -43,8 +43,8 @@ This is still the **only open P0** from iterations 001-010. It is a pure contrac
 #### Proposed parent patch
 
 ```diff
---- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
-+++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
+--- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
++++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
 @@
 +### Pre-implementation patch queue
 +
@@ -78,8 +78,8 @@ This remains the **highest-blast-radius open P1** because it affects cache corre
 #### Proposed parent patch
 
 ```diff
---- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
-+++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
+--- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
++++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
 @@
 +2. **Children 003-004 migration/freshness corrections**
 +   - Patch child `003` to add an acceptance scenario for malformed or unreadable `.opencode/skill/.advisor-state/generation.json`.
@@ -109,8 +109,8 @@ This is the highest-impact remaining runtime P1 because `007` can otherwise look
 #### Proposed parent patch
 
 ```diff
---- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
-+++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
+--- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
++++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
 @@
 +3. **Child 007 Copilot proof gate**
 +   - Promote Copilot transport proof to a P0 merge gate.

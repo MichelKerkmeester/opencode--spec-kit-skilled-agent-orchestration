@@ -13,7 +13,7 @@
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 15,
   "progressiveSynthesis": false,
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification",
   "createdAt": "2026-04-20T17:45:25Z",
   "status": "initialized",
   "releaseReadinessState": "in-progress",
@@ -27,7 +27,7 @@
     "timeoutSeconds": 900
   },
   "mode": "review",
-  "reviewTarget": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification",
+  "reviewTarget": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification",
   "reviewTargetType": "spec-folder",
   "reviewDimensions": [
     "correctness",

@@ -15,7 +15,7 @@ Auto-generated from JSONL state log, iteration files, findings registry, and str
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:status -->
 ## 2. STATUS
-- Target: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/`
+- Target: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/`
 - Target Type: `spec-folder`
 - Started: `2026-04-13T16:59:27Z`
 - Session: `2026-04-13T16:59:27Z-010-search-and-routing-tuning-root-review` (generation `1`, lineage `new`)

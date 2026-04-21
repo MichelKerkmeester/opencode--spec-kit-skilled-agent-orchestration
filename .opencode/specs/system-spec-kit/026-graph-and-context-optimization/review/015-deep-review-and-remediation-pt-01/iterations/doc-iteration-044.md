@@ -6,21 +6,21 @@
 - timestamp: 2026-04-15T19:05:39Z
 
 ## Files Reviewed
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/implementation-summary.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/decision-record.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-remediation/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-remediation/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-remediation/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/decision-record.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/implementation-summary.md
 
 ## Findings - New This Iteration
 ### P0 Findings
@@ -30,12 +30,12 @@ None.
 None.
 
 ### P2 Findings
-- **Ghost M13 maintenance surface in 012.** The packet still models `.opencode/command/spec_kit/resume.md` as a maintained delivery surface even though its own closeout docs say no packet-local file change was needed. That leaves five canonical docs carrying a synchronized narrative about a non-edit, which is avoidable maintenance churn and raises future drift risk around the M13 story [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md:133-135`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/decision-record.md:277-283`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/tasks.md:198`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/checklist.md:121`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/implementation-summary.md:108-110`].
+- **Ghost M13 maintenance surface in 012.** The packet still models `.opencode/command/spec_kit/resume.md` as a maintained delivery surface even though its own closeout docs say no packet-local file change was needed. That leaves five canonical docs carrying a synchronized narrative about a non-edit, which is avoidable maintenance churn and raises future drift risk around the M13 story [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/spec.md:133-135`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/decision-record.md:277-283`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/tasks.md:198`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/checklist.md:121`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/implementation-summary.md:108-110`].
 
 ## Findings - Confirming / Re-validating Prior
-- **P2 revalidated:** `009/001` checklist evidence is still maintenance-hostile because key rows point to shorthand placeholders such as `target phase folder` and `target phase folder contents` instead of self-locating artifacts, so replaying the proof still requires extra packet hopping [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/checklist.md:83-95`].
+- **P2 revalidated:** `009/001` checklist evidence is still maintenance-hostile because key rows point to shorthand placeholders such as `target phase folder` and `target phase folder contents` instead of self-locating artifacts, so replaying the proof still requires extra packet hopping [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/checklist.md:83-95`].
 - **P2 revalidated:** `009/002` still duplicates live coverage totals across multiple packet surfaces, so any future recount has to touch spec, task ledger, and closeout summary in lockstep [`.../002-full-playbook-execution/spec.md:131-134`; `.../002-full-playbook-execution/tasks.md:69,92`; `.../002-full-playbook-execution/implementation-summary.md:58,104,115`].
-- **P2 revalidated:** `012` still treats `review/review-report.md` as a maintained evidence dependency across canonical docs and generated metadata, so packet upkeep remains coupled to a nested review artifact after closeout [`.../012-command-graph-consolidation/spec.md:551`; `.../012-command-graph-consolidation/tasks.md:232,262`; `.../012-command-graph-consolidation/checklist.md:287`].
+- **P2 revalidated:** `012` still treats `review/review-report.md` as a maintained evidence dependency across canonical docs and generated metadata, so packet upkeep remains coupled to a nested review artifact after closeout [`.../002-command-graph-consolidation/spec.md:551`; `.../002-command-graph-consolidation/tasks.md:232,262`; `.../002-command-graph-consolidation/checklist.md:287`].
 
 ## Traceability Checks
 - **core / spec_code - partial:** `012` still spreads the M13 `resume.md` story across spec, ADR, tasks, checklist, and implementation summary even though the packet says no file edit occurred; `009/002` still repeats live scenario totals across three packet surfaces, increasing synchronization cost.

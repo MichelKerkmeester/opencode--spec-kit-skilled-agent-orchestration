@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/004-gate-d-reader-ready",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/004-gate-d-reader-ready",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "gate d",
+      "reader ready",
+      "resume ladder",
+      "session resume",
+      "memory search",
+      "canonical continuity",
+      "implementation plan",
+      "reader handlers",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision record"
+    ],
+    "key_topics": [
+      "gate",
+      "reader",
+      "ready",
+      "resume",
+      "ladder",
+      "session",
+      "memory",
+      "search",
+      "canonical",
+      "continuity",
+      "implementation",
+      "plan"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "mcp_server/handlers/memory-search.ts",
+      "mcp_server/handlers/memory-context.ts",
+      "mcp_server/handlers/session-resume.ts",
+      "mcp_server/handlers/session-bootstrap.ts",
+      "mcp_server/handlers/memory-index-discovery.ts",
+      "mcp_server/handlers/memory-triggers.ts",
+      "mcp_server/lib/resume/resume-ladder.ts",
+      "lib/resume/resume-ladder.ts",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "spec.md",
+      "tests/gate-d-benchmark-session-resume.vitest.ts",
+      "tests/gate-d-benchmark-memory-search.vitest.ts",
+      "tests/gate-d-trigger-perf-benchmark.vitest.ts",
+      "tests/session-bootstrap-gate-d.vitest.ts",
+      "tests/gate-d-regression-ablation-drift.vitest.ts",
+      "tests/gate-d-resume-perf.vitest.ts",
+      "tests/memory-context.resume-gate-d.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-context.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/session-resume.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-index-discovery.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-index-discovery.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-triggers.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-triggers.ts",
+        "source": "derived"
+      },
+      {
+        "name": "resume-ladder.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/resume/resume-ladder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "gate-d-benchmark-session-resume.vitest.ts",
+        "kind": "test",
+        "path": "tests/gate-d-benchmark-session-resume.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "gate-d-benchmark-memory-search.vitest.ts",
+        "kind": "test",
+        "path": "tests/gate-d-benchmark-memory-search.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "gate-d-trigger-perf-benchmark.vitest.ts",
+        "kind": "test",
+        "path": "tests/gate-d-trigger-perf-benchmark.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap-gate-d.vitest.ts",
+        "kind": "test",
+        "path": "tests/session-bootstrap-gate-d.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "gate-d-regression-ablation-drift.vitest.ts",
+        "kind": "test",
+        "path": "tests/gate-d-regression-ablation-drift.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "gate-d-resume-perf.vitest.ts",
+        "kind": "test",
+        "path": "tests/gate-d-resume-perf.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-context.resume-gate-d.vitest.ts",
+        "kind": "test",
+        "path": "tests/memory-context.resume-gate-d.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Reader Ready",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Recorded Gate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Gate D moves the phase 018 read path onto the canonical continuity substrate defined in [`../implementation-design.md`](../implementation-design.md) and [`../resource-map.md`](../resource-map.md) section 4. The work keeps the existing 4-stage search pipeline, replaces memory-file primacy with a doc-first `resumeLadder`, and proves the new reader behavior through the 13-feature regression suite, resume fallback tests, and the latency budgets from iterations 013, 017, 025, 027, 029, and 039.",
+    "created_at": "2026-04-12T09:02:53.480Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/004-gate-d-reader-ready",
+    "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/006-continuity-refactor-gates/004-gate-d-reader-ready",
+    "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/004-gate-d-reader-ready"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/004-gate-d-reader-ready",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/004-gate-d-reader-ready",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/004-gate-d-reader-ready",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/006-continuity-refactor-gates/004-gate-d-reader-ready",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/006-continuity-refactor-gates/004-gate-d-reader-ready",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/004-gate-d-reader-ready",
+    "local_phase_slug": "003-continuity-refactor-gates",
+    "original_phase_slug": "006-continuity-refactor-gates",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

@@ -10,27 +10,27 @@
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-strategy.md
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-state.jsonl
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-findings-registry.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/implementation-summary.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/description.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/description.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/description.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/implementation-summary.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/description.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/description.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/description.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/description.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/description.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/graph-metadata.json
 
 ## Findings — New This Iteration
 ### P0 Findings
@@ -38,15 +38,15 @@ None.
 
 ### P1 Findings
 #### P1-006-01 — `010/003` closeout docs still point at the wrong root packet
-`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/plan.md:18` and `checklist.md:15` still claim the packet refreshed `root 019`, but `tasks.md:13` closes out `root 003` for the same packet. This leaves the closeout contract internally incorrect and can misdirect later verification or remediation to the wrong packet lineage.
+`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/plan.md:18` and `checklist.md:15` still claim the packet refreshed `root 019`, but `tasks.md:13` closes out `root 003` for the same packet. This leaves the closeout contract internally incorrect and can misdirect later verification or remediation to the wrong packet lineage.
 
 ```json
 {
   "claim": "010/003 closeout docs still identify the packet as root 019 instead of root 003.",
   "evidenceRefs": [
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/plan.md:18",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/checklist.md:15",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/tasks.md:13"
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/plan.md:18",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/checklist.md:15",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/tasks.md:13"
   ],
   "counterevidenceSought": "Checked the sibling closeout surfaces in the same packet for an intentional 019 alias or renumbering note; the in-scope task ledger instead closes out root 003 and no alias justification surfaced.",
   "alternativeExplanation": "Residual renumbering text from an earlier packet ID survived into plan/checklist during the final closeout refresh.",

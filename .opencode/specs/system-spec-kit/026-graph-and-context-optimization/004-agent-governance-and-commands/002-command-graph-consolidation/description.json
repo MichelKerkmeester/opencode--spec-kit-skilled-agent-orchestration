@@ -1,0 +1,54 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation",
+  "description": "Feature Specification: Canonical Intake and Middleware Cleanup",
+  "keywords": [
+    "feature",
+    "specification",
+    "canonical",
+    "intake",
+    "middleware",
+    "cleanup"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "012",
+  "folderSlug": "command-graph-consolidation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "004-agent-governance-and-commands"
+  ],
+  "memorySequence": 14,
+  "memoryNameHistory": [
+    "14-04-26_10-41__completed-10-iteration-spec-kit-deep-research.md",
+    "14-04-26_16-49__extended-packet-012-spec-kit-commands-with-m9.md",
+    "14-04-26_17-32__verification-save-for-new-step-11-5-auto-indexing.md",
+    "14-04-26_17-33__verification-save-for-new-step-11-5-auto-indexing.md",
+    "14-04-26_17-34__verification-save-for-new-step-11-5-auto-indexing.md",
+    "14-04-26_17-36__verification-save-for-new-step-11-5-auto-indexing.md",
+    "14-04-26_17-36__verification-save-for-new-step-11-5-auto-indexing-1.md",
+    "14-04-26_17-38__verification-save-for-new-step-11-5-auto-indexing.md",
+    "14-04-26_17-38__verification-save-for-new-step-11-5-auto-indexing-1.md",
+    "14-04-26_17-39__verification-save-for-new-step-11-5-auto-indexing.md",
+    "14-04-26_17-45__verification-save-for-new-step-11-5-auto-indexing.md",
+    "14-04-26_17-45__verification-save-for-new-step-11-5-auto-indexing-1.md",
+    "14-04-26_17-48__verification-save-for-new-step-11-5-auto-indexing.md",
+    "14-04-26_17-49__verification-save-for-new-step-11-5-auto-indexing.md"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/012-command-graph-consolidation",
+    "local_phase_slug": "002-command-graph-consolidation",
+    "original_phase_slug": "012-command-graph-consolidation",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation",
+      "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/012-command-graph-consolidation",
+      "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
+    ]
+  }
+}

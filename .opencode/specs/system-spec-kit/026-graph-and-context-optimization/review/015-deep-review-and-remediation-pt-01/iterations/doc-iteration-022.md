@@ -9,12 +9,12 @@
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-config.json`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-strategy.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-state.jsonl`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/implementation-summary.md`
 
 ## Findings - New This Iteration
 ### P0 Findings

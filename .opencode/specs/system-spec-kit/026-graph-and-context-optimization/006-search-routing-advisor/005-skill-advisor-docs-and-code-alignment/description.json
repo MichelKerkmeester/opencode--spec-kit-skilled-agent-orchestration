@@ -1,0 +1,41 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment",
+  "description": "Feature Specification: Skill-Advisor Docs + Phase 020 Code Alignment",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill-advisor",
+    "docs",
+    "phase",
+    "020",
+    "code",
+    "alignment"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "022",
+  "folderSlug": "skill-advisor-docs-and-code-alignment",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "006-search-routing-advisor"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/022-skill-advisor-docs-and-code-alignment",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/022-skill-advisor-docs-and-code-alignment",
+    "local_phase_slug": "005-skill-advisor-docs-and-code-alignment",
+    "original_phase_slug": "022-skill-advisor-docs-and-code-alignment",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/022-skill-advisor-docs-and-code-alignment",
+      "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/022-skill-advisor-docs-and-code-alignment",
+      "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment"
+    ]
+  }
+}

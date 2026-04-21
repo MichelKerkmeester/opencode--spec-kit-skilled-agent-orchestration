@@ -1,0 +1,40 @@
+{
+  "title": "Feature Specification: 004-graphify Research Phase",
+  "description": "Read-only research investigation of the graphify external Python skill to identify two-pass AST+LLM extraction, Leiden clustering, evidence-tagging, multimodal, and PreToolUse hook patterns Public should adopt, adapt, or reject.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify",
+  "keywords": [
+    "feature",
+    "specification",
+    "004-graphify",
+    "research",
+    "phase"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "004",
+  "folderSlug": "graphify",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "001-research-and-baseline"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "06-04-26_15-37__deep-research-on-graphify-external-repo-python.md",
+    "06-04-26_18-17__completed-10-iteration-deep-research-audit-of.md",
+    "08-04-26_08-42__extended-the-004-graphify-deep-research-packet.md"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-children",
+    "original_phase_slug": "001-research-graph-context-systems",
+    "local_phase_slug": "004-graphify",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify",
+      "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify"
+    ]
+  }
+}

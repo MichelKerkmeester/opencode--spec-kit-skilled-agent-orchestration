@@ -111,8 +111,8 @@ None. No maintainability gap rises to P0. Every concern is a drift/duplication/m
         ".opencode/skill/system-spec-kit/scripts/dist/memory/*.js (zero lastUpdated hits across 9 scripts)",
         ".git/hooks/ (all 14 entries are .sample; zero active)",
         "no .husky/ or .githooks/ directory",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research/description.json:37 (stale lastUpdated)",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research/graph-metadata.json:162 (fresh last_save_at)"
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/description.json:37 (stale lastUpdated)",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/graph-metadata.json:162 (fresh last_save_at)"
       ],
       "counterevidenceSought": "Checked whether generate-context.js has a lastUpdated-writing helper under a different name (e.g., refreshDescriptionMetadata) — no such helper exists; the file is 571 lines and none of its functions reference the string 'lastUpdated'. Checked whether /memory:save is documented as the exclusive path for keeping description.json fresh — CLAUDE.md §3 says 'description.json and graph-metadata.json are auto-generated/refreshed by generate-context.js during canonical saves' but this is only accurate for graph-metadata.json, not description.json.",
       "alternativeExplanation": "The team may consider description.json.lastUpdated a manual-edit field (like a README). However, description.json is a machine-parsed canonical surface cited in graph-metadata.json.authoritativeSources — treating it as manually maintained while citing it as authoritative is contradictory. No documented policy in CLAUDE.md or system-spec-kit SKILL.md declares manual-maintenance as the intent.",

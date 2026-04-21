@@ -1,0 +1,30 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package",
+  "description": "Flattened active phase parent: Code Graph Package",
+  "keywords": [
+    "code-graph-package",
+    "code",
+    "graph",
+    "upgrades",
+    "and",
+    "self",
+    "contained",
+    "package",
+    "migration"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "003",
+  "folderSlug": "code-graph-package",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "child_phase_folders": [
+      "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades",
+      "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package"
+    ],
+    "layout": "phase-root-children"
+  }
+}

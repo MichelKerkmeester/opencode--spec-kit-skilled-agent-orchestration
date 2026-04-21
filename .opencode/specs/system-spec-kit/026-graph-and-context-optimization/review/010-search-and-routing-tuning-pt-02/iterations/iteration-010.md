@@ -8,7 +8,7 @@
 ## Findings
 
 - No new P0, P1, or P2 findings.
-- The promoted coordination-parent metadata still maps the correct child packet ids and does not introduce a separate root-mapping correctness issue. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/description.json:2] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/graph-metadata.json:3]
+- The promoted coordination-parent metadata still maps the correct child packet ids and does not introduce a separate root-mapping correctness issue. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/description.json:2] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/graph-metadata.json:3]
 
 ## Ruled Out
 

@@ -7,7 +7,7 @@
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 30,
   "progressiveSynthesis": true,
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/003-q4-nfkc-robustness",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/003-q4-nfkc-robustness",
   "createdAt": "2026-04-18T19:14:43Z",
   "status": "complete",
   "executionMode": "auto",

@@ -1,6 +1,6 @@
 {
   "topic": "Foundational runtime deep review -- investigate 19 under-audited runtime seams across 5 cross-cutting domains",
-  "spec_folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research",
+  "spec_folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research",
   "research_folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/016-foundational-runtime-001-initial-research",
   "execution_mode": "MANUAL_WAVE_DISPATCH",
   "dispatched_by": "cli-copilot gpt-5.4 high (manual wave dispatch)",
@@ -137,12 +137,12 @@
       ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
       ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
       ".opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml",
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-deep-review-and-remediation/implementation-summary.md"
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation/implementation-summary.md"
     ],
     "low_priority": [
       ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/001-research-graph-context-systems/recommendations.md",
       "AGENTS.md",
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/implementation-summary.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/implementation-summary.md",
       ".opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts"
     ]
   },
@@ -167,7 +167,7 @@
         "reviewIterations": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/016-foundational-runtime-001-initial-research/iterations/",
         "priorResearchPacket": "research/016-foundational-runtime-001-initial-research/ (iterations 1-50, FINAL-synthesis-and-review.md)",
         "phase017Commits": "afbb3bc7f..HEAD (27 fix(016) commits)",
-        "phaseSpec": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research/"
+        "phaseSpec": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/"
       },
       "key_questions": {
         "KQ-51-1": "Does the Cluster B infrastructure gap extend to other canonical-save surfaces not yet audited (graph-metadata.json.derived, implementation-summary.md._memory.continuity, checklist.md CHK evidence)?",

@@ -69,7 +69,7 @@ None yet.
 
 ## 11. RULED OUT DIRECTIONS
 - A runtime regression from the new helper comment was ruled out because the executable body still only returns early or swallows unsupported `DROP COLUMN` failures. (iteration 1, evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:1538`)
-- A spec/checklist mismatch was ruled out for F005; the remaining drift is isolated to the changelog wording. (iteration 2, evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/spec.md:47`)
+- A spec/checklist mismatch was ruled out for F005; the remaining drift is isolated to the changelog wording. (iteration 2, evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md:47`)
 - F008 was ruled out as an active issue because both catalog surfaces now describe the same three-source discovery pipeline as the runtime. (iteration 5, evidence: `.opencode/skill/system-spec-kit/feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md:22`)
 - F003 was ruled out as an active issue because the four runtime deep-review manuals still agree on the single-iteration contract and `review/`-only write boundary. (iteration 6, evidence: `.opencode/agent/deep-review.md:29`)
 - A security regression in path validation or canonical-source filtering was ruled out because validators and enforcement tests still reject traversal and non-canonical inputs. (iteration 7, evidence: `.opencode/skill/system-spec-kit/mcp_server/utils/validators.ts:122`)
@@ -121,8 +121,8 @@ Synthesis complete - final report written to `review-report.md`.
 | `.codex/agents/**` | [D3] | 6 | 0 P0, 0 P1, 0 P2 | complete |
 | `.gemini/agents/**` | [D3] | 6 | 0 P0, 0 P1, 0 P2 | complete |
 | `.opencode/changelog/01--system-spec-kit/v3.4.0.0.md` | [D3] | 2 | 1 P0, 0 P1, 0 P2 | partial |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/spec.md` | [D1,D3] | 2 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/checklist.md` | [D3] | 2 | 0 P0, 0 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md` | [D1,D3] | 2 | 0 P0, 0 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/checklist.md` | [D3] | 2 | 0 P0, 0 P1, 0 P2 | complete |
 <!-- MACHINE-OWNED: END -->
 
 ## 16. REVIEW BOUNDARIES

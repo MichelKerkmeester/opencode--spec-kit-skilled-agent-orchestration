@@ -1,7 +1,7 @@
 {
   "topic": "Deep review of 013-dead-code-and-architecture-audit",
   "mode": "review",
-  "reviewTarget": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/004-dead-code-and-architecture-audit",
+  "reviewTarget": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit",
   "reviewTargetType": "spec-folder",
   "reviewDimensions": [
     "correctness",
@@ -30,7 +30,7 @@
   },
   "qualityGateThreshold": true,
   "releaseReadinessState": "converged",
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/004-dead-code-and-architecture-audit",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit",
   "createdAt": "2026-04-12T19:40:00Z",
   "status": "complete",
   "executionMode": "auto",

@@ -1,23 +1,35 @@
 ---
 title: "Feature Specification: Graph and Context Optimization"
-description: "Root coordination packet for the 026 graph-and-context optimization train. It records the research-aligned phase topology, the orthogonal support lanes, and the validation contract that keeps child packets auditable as one integrated program."
+description: "Root coordination packet for the consolidated nine-phase graph-and-context optimization surface, with historical phases preserved under child phase folders."
 trigger_phrases:
   - "026 graph and context optimization"
+  - "026 phase consolidation"
+  - "29 to 9 phase map"
+  - "merged phase map"
   - "graph context optimization root packet"
-  - "026 phase map"
-  - "research aligned dependency graph"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
-    last_updated_at: "2026-04-13T15:56:37Z"
-    last_updated_by: "copilot-gpt-5-4"
-    recent_action: "Reviewed packet docs"
-    next_safe_action: "Run strict validation"
-    key_files: ["spec.md"]
-
+    last_updated_at: "2026-04-21T13:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Renumbered nested phases"
+    next_safe_action: "Use merged-phase-map.md and context indexes for navigation"
+    blockers: []
+    key_files:
+      - "spec.md"
+      - "plan.md"
+      - "tasks.md"
+      - "implementation-summary.md"
+    session_dedup:
+      fingerprint: "sha256:34d7c4f4d31b681d4b022a352a2ae7723fe35f46bc94788bd5f4d070e520b594"
+      session_id: "026-phase-consolidation-2026-04-21"
+      parent_session_id: null
+    completion_pct: 100
+    open_questions: []
+    answered_questions: []
 ---
 # Feature Specification: Graph and Context Optimization
 
@@ -28,11 +40,11 @@ _memory:
 
 ## EXECUTIVE SUMMARY
 
-Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It coordinates a 19-phase child train covering the runtime pipeline, memory-quality remediation, AGENTS guardrails, continuity refactoring, search/routing tuning, command-graph consolidation, advisor tuning, the memory-save rewrite, the follow-on review-and-remediation waves, the foundational-runtime arc, the CLI runtime executor matrix, and the post-consolidation hardening train -- all aligned to one dependency-aware execution map.
+Packet `026-graph-and-context-optimization` now presents a nine-phase active navigation surface instead of twenty-nine top-level sibling packets. The original phase packets `001` through `029` remain preserved as direct child folders under each active wrapper, with metadata aliases recording their former packet IDs and paths.
 
-**Key Decisions**: Keep the runtime phases ordered by prerequisite relationships, treat `003-memory-quality-remediation` and `004-agent-execution-guardrails` as orthogonal support lanes, and track child-packet completion through a 19-phase map plus packet-local strict validation. The 2026-04-18 reorganization consolidated the former phases 015-020 into four thematic packets (`015-deep-review-and-remediation`, `016-foundational-runtime`, `017-sk-deep-cli-runtime-execution`, `018-cli-executor-remediation`) and added `019-system-hardening` as the research-first umbrella for the Tier 1 candidates surfaced by `scratch/deep-review-research-suggestions.md`.
+**Key Decisions**: Consolidate by theme rather than chronology, keep root `research/`, `review/`, and `scratch/` folders in place, and use `merged-phase-map.md` plus per-phase context index files as the bridge from old paths to active homes.
 
-**Critical Dependencies**: The fourteen foundational child packets `001` through `014` remain the implementation and research authorities for their own scopes. Packet `015-deep-review-and-remediation` is a cross-cutting review-and-remediation packet that audited packets 009/010/012/014 and produced 243 findings (1 P0, 114 P1, 133 P2). Packet `016-foundational-runtime` merges the 50-iteration foundational-runtime research charter with its 4-wave remediation arc and shipped v3.4.0.0 through v3.4.0.2 (H-56-1 canonical-save metadata fix plus 63-finding closeout plus 27-task review-findings remediation). Packet `017-sk-deep-cli-runtime-execution` merges the executor feature (native + cli-codex) with the runtime matrix (cli-copilot + cli-gemini + cli-claude-code) into one first-class YAML-owned executor-dispatch surface for `sk-deep-research` and `sk-deep-review`. Packet `018-cli-executor-remediation` closes R1-R11 of the R1-R12 findings from the 30-iteration deep-research dogfood against 017's research root (R12 deferred). Packet `019-system-hardening` is the research-first umbrella for the six Tier 1 candidates surfaced by `scratch/deep-review-research-suggestions.md`; its `001-initial-research` child runs the research wave and future `002+` siblings carry the resulting implementation. This root packet owns coordination, sequencing, and completion truth only.
+**Critical Dependencies**: The preserved child packets remain the authority for historical implementation details. The active nine wrappers own navigation, status rollup, and continuity pointers only.
 
 ---
 
@@ -43,11 +55,11 @@ Packet `026-graph-and-context-optimization` is the parent program for the graph-
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | In Progress |
 | **Created** | 2026-04-08 |
+| **Updated** | 2026-04-21 |
 | **Branch** | `026-graph-and-context-optimization` |
 <!-- /ANCHOR:metadata -->
-
 
 ---
 
@@ -55,12 +67,10 @@ Packet `026-graph-and-context-optimization` is the parent program for the graph-
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-
-The 026 child phases were created from multiple research and remediation streams, so numeric folder order no longer explains the real prerequisite graph. Without a parent packet that records the actual topology, packet owners have to infer sequencing from scattered child docs, which makes resume, audit, and closeout work brittle.
+The root packet still described an older 19-phase map while the filesystem exposed 29 direct top-level phases. New follow-up packets were added as siblings even when they belonged to established thematic tracks, which made resume, validation, and memory lookup noisier than the actual program structure.
 
 ### Purpose
-
-Provide one canonical root packet that maps the 026 phase train, documents the orthogonal lanes, and keeps the child packets verifiable as a coordinated program.
+Provide one canonical nine-phase active map while preserving every original packet as child phase folders with clear old-to-new bridges.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -69,28 +79,24 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 ## 3. SCOPE
 
 ### In Scope
-
-- Record the dependency-aware execution order for the nineteen active child packets `001` through `019`.
-- Track the parent packet's coordination contract, success criteria, and packet-level risks.
-- Maintain the phase documentation map and child handoff rules for strict validation.
-- Keep the parent `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` aligned with the shipped child packet set.
+- Consolidate the active direct-child phase surface from 29 folders to 9 thematic wrappers.
+- Move original phase packets into direct child folders under their new thematic home.
+- Update root docs, metadata, `merged-phase-map.md`, and per-wrapper context indexes bridge docs.
+- Refresh moved packet metadata with new paths plus migration aliases for old packet IDs.
 
 ### Out of Scope
-
-- Rewriting child packet requirements, research findings, or runtime behavior. Those remain owned by the child folders.
-- Editing packet lifecycle artifacts under `review/`, `scratch/`, or `description.json`.
-- Treating stale local-only directories as real packet phases.
+- Changing runtime code.
+- Rewriting historical child packet narratives.
+- Moving root `research/`, `review/`, or `scratch/` support folders.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `spec.md` | Modify | Restore the root parent packet to the active Level 3 template and document the phase map. |
-| `plan.md` | Create | Define the parent coordination and verification plan. |
-| `tasks.md` | Create | Track the parent packet setup, packet-map sync, and verification work. |
-| `checklist.md` | Create | Capture parent-packet verification evidence. |
-| `decision-record.md` | Create | Record the coordination decisions that shape the 026 packet train. |
-| `implementation-summary.md` | Create | Record how the root packet was established and verified. |
+| `spec.md`, `plan.md`, `tasks.md`, `decision-record.md`, `implementation-summary.md`, `checklist.md` | Modify | Align root packet docs to the nine-phase map. |
+| `merged-phase-map.md` | Create | Map every old phase `001` through `029` to its active home. |
+| `00N-*/context indexes` | Create | Per-theme context bridge for original phases. |
+| `00N-*/` | Move | Preserved original child packets. |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -98,60 +104,39 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 <!-- ANCHOR:phase-map -->
 ## PHASE DOCUMENTATION MAP
 
-> This spec uses phased decomposition. Each phase is an independently executable child spec folder.
-> Active children are `001` through `019`. Packets 012-014 were added after the initial 011 train shipped. Packets 015-018 were consolidated on 2026-04-18 from the former 015-020 range into four thematic packets (deep-review-and-remediation, foundational-runtime, sk-deep-cli-runtime-execution, cli-executor-remediation). Packet 019 was added the same day as the research-first umbrella for the Tier 1 candidates surfaced by `scratch/deep-review-research-suggestions.md`.
+> Active children are the nine thematic wrappers below. Historical phases `001` through `029` are preserved as direct child folders under each wrapper and mapped in `merged-phase-map.md`.
 
-| Phase | Folder | Focus | Status |
-|-------|--------|-------|--------|
-| 1 | `001-research-graph-context-systems/` | External-systems research root and recommendation synthesis | Complete |
-| 2 | `002-cache-warning-hooks/` | Cache warning hooks implementation lane | Complete |
-| 3 | `003-memory-quality-remediation/` | Memory pipeline fixes and quality remediation train | Complete |
-| 4 | `004-agent-execution-guardrails/` | AGENTS execution-policy alignment | Complete |
-| 5 | `005-code-graph-upgrades/` | Code graph upgrade runtime and validation lane | Complete |
-| 6 | `006-continuity-refactor-gates/` | Core continuity refactor gates A-F | Complete |
-| 7 | `007-release-alignment-revisits/` | Release-alignment revisit passes | Complete |
-| 8 | `008-cleanup-and-audit/` | Removal, config alignment, and dead-code audit lane | Complete |
-| 9 | `009-playbook-and-remediation/` | Verification playbook and deep-review remediation lane | Complete |
-| 10 | `010-search-and-routing-tuning/` | Search fusion tuning, content routing accuracy, graph metadata validation | Complete |
-| 11 | `011-skill-advisor-graph/` | Skill advisor graph implementation lane | Complete |
-| 12 | `012-command-graph-consolidation/` | Folded `/start` into `/plan`, extracted intake contract, removed redundant commands/agents | Complete |
-| 13 | `013-advisor-phrase-booster-tailoring/` | Migrated 36 dead INTENT keys to PHRASE boosters in skill advisor | Complete |
-| 14 | `014-memory-save-rewrite/` | Planner-first `/memory:save` default, retired legacy `memory/*.md`, opt-in mutation flags | Complete |
-| 15 | `015-deep-review-and-remediation/` | 120-iteration deep review of packets 009/010/012/014 plus remediation plan (243 findings: 1 P0, 114 P1, 133 P2, 11 workstreams) | In Progress |
-| 16 | `016-foundational-runtime/` | Merged foundational-runtime arc: 50-iter research charter (sub-phase 001) plus 4-wave remediation (sub-phases 002-005). Shipped v3.4.0.0 through v3.4.0.2 including the H-56-1 canonical-save metadata fix | Complete |
-| 17 | `017-sk-deep-cli-runtime-execution/` | Merged CLI runtime executor matrix: native + cli-codex (sub-phase 001) plus cli-copilot + cli-gemini + cli-claude-code (sub-phase 002). First-class YAML-owned executor dispatch for `sk-deep-research` and `sk-deep-review` | Complete |
-| 18 | `018-cli-executor-remediation/` | R1-R12 remediation from the 30-iteration deep-research dogfood against packet 017's research root. R1-R11 shipped, R12 deferred | Complete |
-| 19 | `019-system-hardening/` | Research-first umbrella for post-consolidation hardening. Nested `001-initial-research` dispatches 6 Tier 1 iterations from `scratch/deep-review-research-suggestions.md` (DR-1, RR-1, RR-2, SSK-RR-1, SSK-DR-1, SSK-RR-2); future `002+` siblings carry the resulting implementation | Planned |
+| Phase | Folder | Theme | Child Phase Location | Status |
+|-------|--------|-------|----------------------|--------|
+| 001 | `001-research-and-baseline/` | External research, adoption decisions, and initial graph/context baselines | Merged into phase root | In Progress |
+| 002 | `002-continuity-memory-runtime/` | Cache hooks, memory quality, continuity refactor, and memory-save rewrite | `002-continuity-memory-runtime/001-cache-warning-hooks/`, `002-continuity-memory-runtime/002-memory-quality-remediation/`, `002-continuity-memory-runtime/003-continuity-refactor-gates/`, `002-continuity-memory-runtime/004-memory-save-rewrite/` | In Progress |
+| 003 | `003-code-graph-package/` | Code graph upgrades and self-contained package migration | `003-code-graph-package/001-code-graph-upgrades/`, `003-code-graph-package/002-code-graph-self-contained-package/` | In Progress |
+| 004 | `004-agent-governance-and-commands/` | AGENTS guardrails, canonical intake, and command cleanup | `004-agent-governance-and-commands/001-agent-execution-guardrails/`, `004-agent-governance-and-commands/002-command-graph-consolidation/` | In Progress |
+| 005 | `005-release-cleanup-playbooks/` | Release alignment, cleanup/audit, and playbook repair/remediation | `005-release-cleanup-playbooks/001-release-alignment-revisits/`, `005-release-cleanup-playbooks/002-cleanup-and-audit/`, `005-release-cleanup-playbooks/003-playbook-and-remediation/` | In Progress |
+| 006 | `006-search-routing-advisor/` | Search/routing tuning, skill advisor graph, phrase boosters, and smart-router work | `006-search-routing-advisor/001-search-and-routing-tuning/`, `006-search-routing-advisor/002-skill-advisor-graph/`, `006-search-routing-advisor/003-advisor-phrase-booster-tailoring/`, `006-search-routing-advisor/004-smart-router-context-efficacy/`, `006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment/`, `006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/`, `006-search-routing-advisor/007-deferred-remediation-and-telemetry-run/` | In Progress |
+| 007 | `007-deep-review-remediation/` | Deep review waves and post-review remediation | `007-deep-review-remediation/001-deep-review-and-remediation/`, `007-deep-review-remediation/002-cli-executor-remediation/`, `007-deep-review-remediation/003-deep-review-remediation/`, `007-deep-review-remediation/004-r03-post-remediation/` | In Progress |
+| 008 | `008-runtime-executor-hardening/` | Foundational runtime, CLI executor matrix, and system hardening | `008-runtime-executor-hardening/001-foundational-runtime/`, `008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/`, `008-runtime-executor-hardening/003-system-hardening/` | In Progress |
+| 009 | `009-hook-daemon-parity/` | Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation | `009-hook-daemon-parity/001-skill-advisor-hook-surface/`, `009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/`, `009-hook-daemon-parity/003-hook-parity-remediation/` | In Progress |
 
 ### Phase Transition Rules
 
-- Each active child packet MUST pass `validate.sh --strict` independently before the parent packet can claim integrated completion.
-- The live child graph follows research-aligned prerequisites rather than simple numeric slug order.
-- `003-memory-quality-remediation` and `004-agent-execution-guardrails` are orthogonal support lanes and do not block unrelated runtime or documentation closeout unless a child packet explicitly depends on them.
-- Archived packets under `z_archive/` remain historical references only and do not count as live children.
-- Local-only empty directories do not become packet phases unless they contain a valid `spec.md` root.
+- Each active wrapper owns navigation and context bridging for its theme.
+- Historical child packets preserved as direct children remain evidence and are not flattened into the wrapper docs.
+- Root `research/`, `review/`, and `scratch/` folders remain root-level support surfaces.
+- New follow-up work should attach to the relevant active wrapper unless it starts a genuinely new top-level theme.
 
 ### Phase Handoff Criteria
 
 | From | To | Criteria | Verification |
 |------|----|----------|--------------|
-| `001-research-graph-context-systems` | `002-cache-warning-hooks` | Research outputs clarified the continuity producer boundary and sequencing assumptions for the first runtime hardening lane | Child packets `001` and `002` validate cleanly |
-| `001-research-graph-context-systems` | `005-code-graph-upgrades` | Research outputs established the graph-first and detector-provenance direction that Phase 005 implements | Child packets `001` and `005` validate cleanly |
-| `003-memory-quality-remediation` + `004-agent-execution-guardrails` | `006-continuity-refactor-gates` | Memory-save quality fixes and guardrail alignment are documented before the refactor-gates lane closes the first continuity split | Child packets `003`, `004`, and `006` validate cleanly |
-| `002-cache-warning-hooks` + `005-code-graph-upgrades` | `006-continuity-refactor-gates` | Producer-boundary and graph/documentation foundations are stable enough for the continuity-gates lane | Child packets `002`, `005`, and `006` validate cleanly |
-| `006-continuity-refactor-gates` | `007-release-alignment-revisits` | Gate delivery outputs are revisited for release alignment before cleanup and remediation work fans out | Child packets `006` and `007` validate cleanly |
-| `007-release-alignment-revisits` | `008-cleanup-and-audit` | Revisit findings define the cleanup, config, and dead-code audit backlog | Child packets `007` and `008` validate cleanly |
-| `008-cleanup-and-audit` | `009-playbook-and-remediation` | Cleanup outputs establish the stable surface for the playbook pass and deep-review remediation follow-up | Child packets `008` and `009` validate cleanly |
-| `006-continuity-refactor-gates` | `010-search-and-routing-tuning` | Post-refactor investigations begin once the gate split lands and the continuity surface is stable enough to study | Child packets `006` and `010` validate cleanly |
-| `005-code-graph-upgrades` + `010-search-and-routing-tuning` | `011-skill-advisor-graph` | The skill-advisor graph lane depends on graph upgrades plus the post-refactor continuity findings | Child packets `005`, `010`, and `011` validate cleanly |
-| `008-cleanup-and-audit` + `011-skill-advisor-graph` | `012-command-graph-consolidation` | Command-graph consolidation follows after cleanup and advisor graph are stable | Child packets `008`, `011`, and `012` validate cleanly |
-| `011-skill-advisor-graph` | `013-advisor-phrase-booster-tailoring` | Phrase booster migration depends on the skill advisor graph being in place | Child packets `011` and `013` validate cleanly |
-| `012-command-graph-consolidation` + `010-search-and-routing-tuning` | `014-memory-save-rewrite` | Memory save rewrite depends on the consolidated command graph and search tuning outcomes | Child packets `012`, `010`, and `014` validate cleanly |
-| `009-playbook-and-remediation` + `010-search-and-routing-tuning` + `012-command-graph-consolidation` + `014-memory-save-rewrite` | `015-deep-review-and-remediation` | Deep review targets the shipped code and docs produced by these four packets; the 243-finding remediation plan depends on the review verdict | Child packet `015` validates cleanly; review-report.md records 1 P0, 114 P1, 133 P2 |
-| `015-deep-review-and-remediation` | `016-foundational-runtime` | The foundational-runtime research charter (sub-phase `001-initial-research`) audits seams that 015 did not cover deeply (002, 003, 005, 008, 010, 014); the 4-wave remediation ships v3.4.0.0 through v3.4.0.2 | Child packets `015` and `016` validate cleanly |
-| `016-foundational-runtime` | `017-sk-deep-cli-runtime-execution` | Executor-selection surface depends on the runtime primitives shipped in 016 (typed OperationResult, readiness-contract, shared-provenance, retry-budget, caller-context) | Child packets `016` and `017` validate cleanly |
-| `017-sk-deep-cli-runtime-execution` | `018-cli-executor-remediation` | 30-iter deep-research dogfood against 017's research root surfaces R1-R12 findings; 018 closes R1-R11 and defers R12 | Child packets `017` and `018` validate cleanly |
-| `018-cli-executor-remediation` | `019-system-hardening` | Post-consolidation review of the 2026-04-18 reorganization identifies six Tier 1 candidates worth dedicated investigation; 019 umbrella coordinates research-first dispatch via nested `001-initial-research` | Child packet `019` validates cleanly; `scratch/deep-review-research-suggestions.md` is the source record |
+| `001-research-and-baseline` | `002-continuity-memory-runtime` | Research and baseline findings remain available before runtime/memory consolidation. | Both wrappers validate and expose context indexes. |
+| `002-continuity-memory-runtime` | `003-code-graph-package` | Continuity and memory surfaces are stable enough for graph-package migration context. | Child packets `002`, `003`, `006`, `014`, `005`, and `028` are mapped. |
+| `003-code-graph-package` | `004-agent-governance-and-commands` | Code graph package work remains distinct from command/governance policy. | Wrappers preserve old packet metadata aliases. |
+| `004-agent-governance-and-commands` | `005-release-cleanup-playbooks` | Governance and command cleanup feed release and playbook repair work. | Context indexes list old statuses and open items. |
+| `005-release-cleanup-playbooks` | `006-search-routing-advisor` | Cleanup/playbook outcomes precede advisor and routing follow-ups. | Old phases `010`, `011`, `013`, and `021`-`024` are nested under phase 006. |
+| `006-search-routing-advisor` | `007-deep-review-remediation` | Search/advisor work is the main target surface for later review remediation. | Old phases `015`, `018`, `025`, and `026` are nested under phase 007. |
+| `007-deep-review-remediation` | `008-runtime-executor-hardening` | Remediation findings inform foundational runtime and executor hardening. | Old phases `016`, `017`, and `019` are nested under phase 008. |
+| `008-runtime-executor-hardening` | `009-hook-daemon-parity` | Runtime/executor hardening precedes hook, daemon, and parity remediation. | Old phases `020`, `027`, and `029` are nested under phase 009. |
 <!-- /ANCHOR:phase-map -->
 
 ---
@@ -163,46 +148,46 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | The root packet must declare the 026 child train with a validator-compliant phase map. | `spec.md` contains a `PHASE DOCUMENTATION MAP` that lists the active child packets and their status. |
-| REQ-002 | The root packet must distinguish the runtime train from the orthogonal support lanes. | `spec.md`, `plan.md`, and `implementation-summary.md` all explain the role of `003` and `004` separately from the R1-R10 runtime flow. |
-| REQ-003 | The parent packet must include the full Level 3 companion documents. | `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` exist and validate cleanly. |
+| REQ-001 | Reduce active top-level phase navigation to nine thematic wrappers. | Root direct phase folders are `001` through `009` only. |
+| REQ-002 | Preserve every original phase packet. | Every old phase `001` through `029` appears exactly once in `merged-phase-map.md` and exists in its mapped wrapper root or is merged into the phase `001` root. |
+| REQ-003 | Keep metadata resolvable after moves. | All migrated `description.json` and `graph-metadata.json` files parse and record migration aliases or source fields. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | The root packet must capture the dependency-aware execution order already used by the child packets. | The phase map and plan identify the actual prerequisite edges between child folders. |
-| REQ-005 | The parent packet must record child-packet completion as packet-local evidence rather than inferred prose. | `checklist.md` and `implementation-summary.md` cite child folders and validation results directly. |
-| REQ-006 | The parent packet must stay coordination-only and avoid claiming child-owned runtime or research authority. | `scope` and `decision-record.md` keep child implementation ownership explicit. |
-| REQ-007 | The root packet must expose validator-friendly parent/child phase links. | Direct child specs can point back to the parent spec and plan without custom exceptions. |
-| REQ-008 | The root packet must distinguish numeric phase order from the real dependency graph. | Metadata can preserve phase order while the body text and phase map explain the true prerequisite graph. |
+| REQ-004 | Bridge old context to new homes. | Every active wrapper has a context index with old phase names, statuses, summaries, open items, and original/current paths. |
+| REQ-005 | Keep support folders in place. | Root `research/`, `review/`, and `scratch/` remain at the root and are referenced rather than moved. |
+| REQ-006 | Validate active wrappers independently. | The root and each active wrapper are run through strict validation. |
+| REQ-007 | Avoid rewriting historical narratives. | Child packet docs remain intact except for metadata path refreshes. |
+| REQ-008 | Preserve old trigger visibility. | Old phase names and trigger phrases remain available in context indexes or source metadata. |
 <!-- /ANCHOR:requirements -->
 
 ---
 
 ### Acceptance Scenarios
 
-**Given** the parent packet is open, **when** a maintainer checks the phase map, **then** they can see the active child folders and their parent coordination contract in one place.
+**Given** a maintainer opens the root packet, **when** they inspect the phase map, **then** they see nine active thematic wrappers instead of twenty-nine siblings.
 
-**Given** a child packet is reviewed, **when** it points back to the parent, **then** the validator can resolve the parent spec and plan cleanly.
+**Given** a maintainer needs an old phase, **when** they search `merged-phase-map.md`, **then** they can find its current wrapper or phase-root path.
 
-**Given** the runtime train depends on research sequencing rather than numeric order, **when** someone reads the parent packet, **then** they can see the true dependency graph described explicitly.
+**Given** memory tooling reads moved metadata, **when** it sees aliases and migration fields, **then** the old packet ID remains traceable to the new path.
 
-**Given** an orthogonal support lane such as `003-memory-quality-remediation` is reviewed, **when** the phase map is read, **then** it is visible without being mistaken for a runtime prerequisite.
+**Given** a validator runs on active wrappers, **when** it inspects wrapper docs, **then** each wrapper has a parent link and adjacent phase links.
 
-**Given** local stale directories appear under the parent folder, **when** strict validation runs, **then** only real packet phases are included in the active phase surface.
+**Given** child phase folders are inspected, **when** a maintainer opens a mapped wrapper root, **then** original implementation summaries, decisions, and handovers are still present.
 
-**Given** the root packet claims the train is complete, **when** a reviewer checks the parent docs, **then** those claims point back to child packet evidence instead of parent-only prose.
+**Given** support evidence is needed, **when** a maintainer reads the root map, **then** root `research/`, `review/`, and `scratch/` are still identified as root-level support folders.
 
 ---
 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: The root `026` folder validates as a real Level 3 parent packet.
-- **SC-002**: The phase documentation map reflects the active child packet train and its handoff rules.
-- **SC-003**: The parent packet cleanly separates coordination responsibilities from child-packet authority.
-- **SC-004**: Parent docs provide enough structure for resume, audit, and closeout work without reopening child scopes.
+- **SC-001**: Root direct child phase folders are the nine approved thematic wrappers.
+- **SC-002**: Every old phase `001` through `029` is represented exactly once in `merged-phase-map.md`.
+- **SC-003**: JSON metadata parse checks pass for all descriptions and graph metadata under the packet.
+- **SC-004**: Strict validation passes for the root packet and each active wrapper.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -212,10 +197,9 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Child packet docs remain the source of truth for packet-local behavior | High | Keep root docs limited to sequencing, handoff, and completion truth |
-| Risk | Numeric folder order gets mistaken for actual execution order | Medium | Capture the dependency-aware phase map and transition rules directly in the root packet |
-| Risk | Local stale directories are treated like packet phases | Medium | Exclude any folder without a root `spec.md` from the phase map and validation claims |
-| Risk | Parent docs drift from child completion state | Medium | Tie checklist evidence and implementation summary claims to child packet docs and strict validation |
+| Risk | Historical citations still mention old top-level paths | Medium | Preserve old paths in context indexes and metadata migration fields; do not rewrite child phase folders blindly. |
+| Risk | Recursive validation starts treating child phase folders as active phase work | Medium | Keep child folders under their thematic wrappers, not as root direct children. |
+| Dependency | Existing child packets | High | Move folders intact before generating wrappers. |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -225,43 +209,38 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 ### Performance
 
-- **NFR-P01**: Root coordination docs must stay concise enough to scan quickly during resume and audit work.
+- **NFR-P01**: Active root navigation should be scannable in one screen of folder names.
 
 ### Security
 
-- **NFR-S01**: The parent packet must not broaden scope into runtime code or external trees.
+- **NFR-S01**: The consolidation must not change runtime code or external trees.
 
 ### Reliability
 
-- **NFR-R01**: The phase map and handoff rules must remain stable under strict validation.
-- **NFR-R02**: Parent packet claims must be traceable to child packet docs rather than memory or scratch artifacts alone.
-
----
+- **NFR-R01**: Metadata path rewrites must preserve old IDs in migration fields.
 
 ## 8. EDGE CASES
 
 ### Data Boundaries
 
-- Empty local directories under the parent packet do not count as phases unless they contain a valid root `spec.md`.
-- Orthogonal support packets may complete independently of the runtime train but still need to remain visible in the phase map.
+- Child packet internal prose may retain historical references when those references describe past work.
+- Root support folders stay root-level even when their content concerns a specific historical phase.
 
 ### Error Scenarios
 
-- If a child packet is temporarily missing required docs, the parent packet should fail validation rather than guessing a status.
-- If a child packet changes prerequisite wording, the parent phase map must be updated to match the child-owned truth.
-
----
+- If a moved packet lacks metadata, the wrapper context index remains the bridge of record.
+- If validation finds historical source issues, active wrapper validation takes priority because child packets are preserved history.
 
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 23/25 | Nineteen active child packets plus parent coordination docs |
-| Risk | 14/25 | Mis-sequencing or coordination drift can mislead later runtime work |
-| Research | 14/20 | Requires aligning research-derived order with shipped child packets |
-| Multi-Agent | 4/15 | Coordination-only packet with no runtime implementation |
-| Coordination | 14/15 | Parent packet depends on many child packet states and handoffs |
-| **Total** | **69/100** | **Level 3** |
+| Scope | 23/25 | Twenty-nine historical phase folders consolidated into nine wrappers |
+| Risk | 14/25 | Metadata and memory continuity can drift if old IDs vanish |
+| Research | 12/20 | Existing research/review/scratch support folders remain root references |
+| Multi-Agent | 4/15 | Documentation and metadata only |
+| Coordination | 15/15 | Cross-phase navigation and validation surface |
+| **Total** | **68/100** | **Level 3** |
 
 ---
 
@@ -269,41 +248,38 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
 |---------|-------------|--------|------------|------------|
-| R-001 | Parent docs claim a child sequence that the child packets do not support | H | M | Reconcile the phase map against child packet docs before updating the parent |
-| R-002 | Support lanes are hidden or treated like runtime prerequisites | M | M | Keep the phase map explicit about orthogonal support packets |
-| R-003 | Local-only stale folders pollute recursive validation | M | M | Remove or ignore directories without packet docs before re-running strict validation |
-
----
+| R-001 | Original phase context becomes hard to find | H | M | Maintain `merged-phase-map.md` and per-wrapper context indexes. |
+| R-002 | Old packet metadata points to dead top-level paths | H | M | Rewrite metadata paths and preserve aliases. |
+| R-003 | Source-history docs get rewritten unnecessarily | M | L | Generate wrappers and metadata only; keep source narratives intact. |
 
 ## 11. USER STORIES
 
-### US-001: Maintainer needs one canonical parent map (Priority: P0)
+### US-001: Maintainer needs a smaller active map (Priority: P0)
 
-**As a** maintainer, **I want** one root packet that explains the 026 dependency graph, **so that** I can resume or audit the train without reconstructing it from many child specs.
+**As a** maintainer, **I want** nine thematic phase folders, **so that** I can navigate the packet without scanning twenty-nine sibling folders.
 
 **Acceptance Criteria**:
-1. Given the parent packet is open, When I inspect `spec.md`, Then I can see the active child packet map and handoff rules in one place.
+1. Given the root packet folder is listed, When I inspect direct numeric children, Then I see phases `001` through `009` only.
 
 ---
 
-### US-002: Reviewer needs child completion truth (Priority: P1)
+### US-002: Maintainer needs old context preserved (Priority: P0)
 
-**As a** reviewer, **I want** the parent packet to point back to child-owned evidence, **so that** I can verify the train without the parent inventing new scope.
+**As a** maintainer, **I want** every old phase mapped to a new child-phase path, **so that** no implementation or review evidence is lost.
 
 **Acceptance Criteria**:
-1. Given the parent checklist and implementation summary, When I review them, Then their claims cite child packet docs and validation outcomes directly.
-
----
+1. Given I search `merged-phase-map.md`, When I look for any old phase `001` through `029`, Then exactly one row gives its active home and source path.
 
 ## 12. OPEN QUESTIONS
 
-- None. The parent packet records the shipped topology rather than proposing new packet phases.
+- None. The consolidation map is fixed by the implementation plan.
 <!-- /ANCHOR:questions -->
 
 ---
 
 ## RELATED DOCUMENTS
 
+- **Merged Phase Map**: See `merged-phase-map.md`
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`

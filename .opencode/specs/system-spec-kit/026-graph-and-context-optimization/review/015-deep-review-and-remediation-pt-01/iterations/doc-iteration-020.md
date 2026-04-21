@@ -6,18 +6,18 @@
 - timestamp: 2026-04-15T18:27:34Z
 
 ## Files Reviewed
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/plan.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/plan.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/tasks.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/decision-record.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/plan.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-remediation/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/plan.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/tasks.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/decision-record.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/implementation-summary.md`
 
 ## Findings - New This Iteration
 ### P0 Findings

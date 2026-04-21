@@ -2,7 +2,7 @@
 
 ## 1. STATUS
 <!-- MACHINE-OWNED: START -->
-- Target: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit`
+- Target: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit`
 - Target Type: `spec-folder`
 - Started: `2026-04-14T12:37:42.135Z`
 - Session: `rvw-2026-04-14T12-37-42Z-v3` (generation 1, lineage new)

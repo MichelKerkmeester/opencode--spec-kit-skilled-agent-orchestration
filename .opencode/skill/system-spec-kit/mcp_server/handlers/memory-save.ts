@@ -1838,6 +1838,7 @@ function buildAtomicPlannerReadyResult(
   params: AtomicSaveParams,
   prepared: CanonicalAtomicPrepared,
   validation: { ok: true; warnings: string[] } | { ok: false; rejection: IndexResult },
+  options: AtomicSaveOptions = {},
 ): AtomicSaveResult {
   const routeTarget = buildAtomicPlannerRouteTarget(prepared);
   const blockers: PlannerBlocker[] = [];
@@ -1846,7 +1847,7 @@ function buildAtomicPlannerReadyResult(
     prepared.preparedMemory.sufficiencyResult,
     prepared.preparedMemory.templateContract,
   );
-  if (!validation.ok) {
+  if (!validation.ok && options.force !== true) {
     blockers.push(serializePlannerBlocker(buildPlannerBlocker({
       code: 'SPEC_DOC_STRUCTURE_BLOCKER',
       message: validation.rejection.message ?? validation.rejection.rejectionReason ?? 'Planner blocked canonical save.',
@@ -1855,7 +1856,7 @@ function buildAtomicPlannerReadyResult(
       targetAnchorId: routeTarget.targetAnchorId ?? null,
     })));
   }
-  if (!prepared.preparedMemory.templateContract.valid && !templateContractBypassed) {
+  if (!prepared.preparedMemory.templateContract.valid && !templateContractBypassed && options.force !== true) {
     blockers.push(serializePlannerBlocker(buildPlannerBlocker({
       code: 'TEMPLATE_CONTRACT_BLOCKER',
       message: prepared.preparedMemory.templateContract.violations
@@ -3046,6 +3047,7 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
       params,
       canonicalPrepared.prepared,
       validateCanonicalPreparedSave(canonicalPrepared.prepared),
+      options,
     );
   }
 

@@ -1,0 +1,43 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants",
+  "description": "Feature Specification: Canonical-Save Pipeline Invariant Research",
+  "keywords": [
+    "feature",
+    "specification",
+    "canonical-save",
+    "pipeline",
+    "invariant",
+    "research"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "001",
+  "folderSlug": "canonical-save-invariants",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening",
+    "019-system-hardening",
+    "001-initial-research"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-04-26_18-54__ssk-rr-2-research-packet-scaffolded-wave-1.md"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/001-canonical-save-invariants",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/019-system-hardening/001-initial-research/001-canonical-save-invariants",
+    "local_phase_slug": "003-system-hardening",
+    "original_phase_slug": "019-system-hardening",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/001-canonical-save-invariants",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/019-system-hardening/001-initial-research/001-canonical-save-invariants",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants"
+    ]
+  }
+}

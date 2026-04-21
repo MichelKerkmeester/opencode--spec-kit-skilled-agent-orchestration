@@ -7,7 +7,7 @@
 
 ## Findings
 
-- P1 `R010-F005`: Promoted `003-graph-metadata-validation` still cites the retired `019` root docs as completion evidence, and its dashboard still points at the old `019` review target instead of the promoted `010` path. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/tasks.md:13] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/review/deep-review-dashboard.md:18]
+- P1 `R010-F005`: Promoted `003-graph-metadata-validation` still cites the retired `019` root docs as completion evidence, and its dashboard still points at the old `019` review target instead of the promoted `010` path. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/tasks.md:13] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/review/deep-review-dashboard.md:18]
 
 ## Ruled Out
 

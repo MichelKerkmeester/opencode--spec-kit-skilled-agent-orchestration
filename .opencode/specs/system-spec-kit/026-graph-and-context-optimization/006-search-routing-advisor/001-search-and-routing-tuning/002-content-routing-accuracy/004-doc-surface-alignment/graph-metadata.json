@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "018 phase 004 spec",
+      "doc surface alignment",
+      "research content routing accuracy",
+      "save routing docs",
+      "018 phase 004 plan",
+      "doc surface alignment plan",
+      "routing doc parity plan",
+      "018 phase 004 tasks",
+      "doc surface alignment tasks",
+      "018 phase 004 checklist",
+      "doc surface alignment verification",
+      "phase 004 implementation summary"
+    ],
+    "key_topics": [
+      "018",
+      "phase",
+      "004",
+      "spec",
+      "doc",
+      "surface",
+      "alignment",
+      "research",
+      "content",
+      "routing",
+      "accuracy",
+      "save"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+      ".opencode/command/memory/save.md",
+      ".opencode/command/memory/manage.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/references/memory/save_workflow.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/02--mutation/01-memory-indexing-memorysave.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/02--mutation/006-memory-indexing-memory-save.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/202-canonical-continuity-save-substrate.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
+      ".claude/mcp.json",
+      ".vscode/mcp.json",
+      ".gemini/settings.json",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment/spec.md"
+    ],
+    "entities": [
+      {
+        "name": "ARCHITECTURE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "manage.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/manage.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "save_workflow.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/memory/save_workflow.md",
+        "source": "derived"
+      },
+      {
+        "name": "01-memory-indexing-memorysave.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/02--mutation/01-memory-indexing-memorysave.md",
+        "source": "derived"
+      },
+      {
+        "name": "01-1-search-pipeline-features-speckit.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "006-memory-indexing-memory-save.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/02--mutation/006-memory-indexing-memory-save.md",
+        "source": "derived"
+      },
+      {
+        "name": "202-canonical-continuity-save-substrate.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/202-canonical-continuity-save-substrate.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "derived"
+      },
+      {
+        "name": "mcp.json",
+        "kind": "config",
+        "path": ".claude/mcp.json",
+        "source": "derived"
+      },
+      {
+        "name": "settings.json",
+        "kind": "config",
+        "path": ".gemini/settings.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Doc Surface Alignment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Content Routing Accuracy",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Backfilled Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Several",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Several user-facing documentation surfaces still describe an older canonical save-routing contract. Before this phase, the docs could misstate the routing category count, present Tier 3 as dormant instead of live behind an env flag, blur delivery cues with narrative progress, blur handover with hard-drop cases, omit `routeAs` override semantics, or describe `packet_kind` too heavily as a path-driven heuristic.",
+    "created_at": "2026-04-13T08:18:57.065Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+    "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+    "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+    "local_phase_slug": "001-search-and-routing-tuning",
+    "original_phase_slug": "010-search-and-routing-tuning",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

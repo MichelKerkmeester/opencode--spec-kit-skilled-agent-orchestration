@@ -1,0 +1,42 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research",
+  "description": "Feature Specification: 020 Initial Research Wave",
+  "keywords": [
+    "feature",
+    "specification",
+    "020",
+    "initial",
+    "research",
+    "wave"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "001",
+  "folderSlug": "initial-research",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity",
+    "020-skill-advisor-hook-surface"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-04-26_07-05__research-sub-packet-for-020-skill-advisor-hook.md"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface/001-initial-research",
+    "local_phase_slug": "001-skill-advisor-hook-surface",
+    "original_phase_slug": "020-skill-advisor-hook-surface",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface/001-initial-research",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research"
+    ]
+  }
+}

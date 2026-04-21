@@ -75,7 +75,7 @@ None yet.
 - Legacy `/memory/` parsing support in `extractSpecFolder()` is not an active correctness bug because acceptance is still gated by `isMemoryFile()` and `memory-save`. (iteration 1, evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts:955`)
 - The startup helper/comment remediation did not introduce an obvious destructive side effect; the helper remains idempotent and swallows unsupported `DROP COLUMN` failures. (iteration 1, evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:1534`)
 - The changelog no longer carries the old first-launch-only wording; both reviewed entries now match the runtime helper's every-startup idempotent retry semantics. (iteration 2, evidence: `.opencode/changelog/01--system-spec-kit/v3.4.0.0.md:94`)
-- The checklist/runtime pairing remains aligned; the traceability blocker is isolated to `spec.md` in this pass. (iteration 2, evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/checklist.md:53`)
+- The checklist/runtime pairing remains aligned; the traceability blocker is isolated to `spec.md` in this pass. (iteration 2, evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/checklist.md:53`)
 
 ## 12. NEXT FOCUS
 <!-- MACHINE-OWNED: START -->
@@ -114,8 +114,8 @@ Synthesis complete - final report should capture 4 blocker findings, 0 active P1
 | `.codex/agents/**` | [] | 0 | 0 P0, 0 P1, 0 P2 | pending |
 | `.gemini/agents/**` | [] | 0 | 0 P0, 0 P1, 0 P2 | pending |
 | `.opencode/changelog/01--system-spec-kit/v3.4.0.0.md` | [D3] | 2 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/spec.md` | [D1,D3] | 2 | 1 P0, 0 P1, 0 P2 | partial |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/checklist.md` | [D1,D3] | 2 | 0 P0, 0 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md` | [D1,D3] | 2 | 1 P0, 0 P1, 0 P2 | partial |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/checklist.md` | [D1,D3] | 2 | 0 P0, 0 P1, 0 P2 | complete |
 <!-- MACHINE-OWNED: END -->
 
 ## 16. REVIEW BOUNDARIES

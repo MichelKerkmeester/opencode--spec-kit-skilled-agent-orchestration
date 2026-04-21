@@ -1,0 +1,40 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability",
+  "description": "Spec: Phase 017 Wave D — P2 Maintainability (Deferrable)",
+  "keywords": [
+    "spec",
+    "phase",
+    "017",
+    "wave",
+    "maintainability",
+    "deferrable"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "005",
+  "folderSlug": "p2-maintainability",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening",
+    "016-foundational-runtime"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/005-p2-maintainability",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime/005-p2-maintainability",
+    "local_phase_slug": "001-foundational-runtime",
+    "original_phase_slug": "016-foundational-runtime",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/005-p2-maintainability",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime/005-p2-maintainability",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability"
+    ]
+  }
+}

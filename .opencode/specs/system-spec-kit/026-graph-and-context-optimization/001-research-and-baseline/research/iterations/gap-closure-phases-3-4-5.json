@@ -1,0 +1,896 @@
+{
+  "iteration": 3,
+  "generated_at": "2026-04-07T09:55:00Z",
+  "scope": [
+    "phase-3",
+    "phase-4",
+    "phase-5"
+  ],
+  "gaps": [
+    {
+      "id": "G3.T93",
+      "title": "93% token reduction is estimated from fixed constants, not benchmarked against Public's typed stack",
+      "phase": 3,
+      "status": "partial",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "003-contextador/research/research.md",
+            "003-contextador/implementation-summary.md"
+          ],
+          "result": "Phase 3 already said the 93% headline comes from fixed constants and explicitly treated it as estimated rather than benchmarked."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "003-contextador/external/src/lib/core/stats.ts",
+            "003-contextador/external/README.md"
+          ],
+          "result": "Source confirms both savings constants are hard-coded at 25000 tokens while the README markets 50k-to-500 and 93% fewer tokens; no task-quality or Public-stack benchmark exists."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-3/research/research.md",
+          "lines": "145-153",
+          "quote": "Finding 10 says stats.ts reports estimated token savings and rejects measured-93%-savings framing."
+        },
+        {
+          "file": "phase-3/implementation-summary.md",
+          "lines": "91-91",
+          "quote": "The implementation summary says the 93% headline is estimated, not benchmarked."
+        },
+        {
+          "file": "003-contextador/external/src/lib/core/stats.ts",
+          "lines": "26-28",
+          "quote": "AVG_MANUAL_EXPLORATION_TOKENS and AVG_CACHE_SAVINGS_TOKENS are both fixed at 25000."
+        },
+        {
+          "file": "003-contextador/external/README.md",
+          "lines": "13-19",
+          "quote": "README claims 50,000-token exploration drops to ~500 tokens and markets 93% fewer tokens."
+        }
+      ],
+      "answer": "The 93% figure is not a benchmark. It is synthetic arithmetic over two hard-coded 25k-token constants plus recorded usage counters, and the repo does not contain any side-by-side task benchmark against Public's CocoIndex+CodeGraph+Memory stack.",
+      "confidence": "high",
+      "residual_unknowns": "A real closure still needs paired task runs measuring answer quality plus actual token counts against Public's typed retrieval stack.",
+      "tag": "phase-1-extended",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G3.MF",
+      "title": "Mainframe privacy model is weakened by public_chat room creation and plaintext local credentials",
+      "phase": 3,
+      "status": "closed",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "003-contextador/research/research.md"
+          ],
+          "result": "Phase 3 already identified plaintext local credentials, raw query/pointer broadcast payloads, and the private-visibility/public-chat room mismatch as real risks."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "003-contextador/external/src/lib/mainframe/bridge.ts",
+            "003-contextador/external/src/lib/mainframe/client.ts",
+            "003-contextador/external/src/lib/mainframe/rooms.ts"
+          ],
+          "result": "Source confirms `.contextador/mainframe-agent.json` stores agentId+password in plaintext, room creation uses `visibility: private` with `preset: public_chat`, and broadcasts carry raw query, scopes, pointers, and token metadata."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-3/research/research.md",
+          "lines": "135-143",
+          "quote": "Finding 9 says Mainframe persists plaintext credentials and creates rooms with private visibility but public_chat preset."
+        },
+        {
+          "file": "003-contextador/external/src/lib/mainframe/bridge.ts",
+          "lines": "26-55",
+          "quote": "getOrCreateAgentId writes agentId, password, and createdAt to `.contextador/mainframe-agent.json`."
+        },
+        {
+          "file": "003-contextador/external/src/lib/mainframe/client.ts",
+          "lines": "182-188",
+          "quote": "createRoom sets `visibility: \"private\"` and `preset: \"public_chat\"` with a comment allowing any registered user to join."
+        },
+        {
+          "file": "003-contextador/external/src/lib/mainframe/rooms.ts",
+          "lines": "37-53",
+          "quote": "Broadcast envelopes include query, scopes, pointers, tokens_used, and agent_id."
+        }
+      ],
+      "answer": "Closed negatively: the privacy weakness is real, not speculative. Mainframe stores reusable local credentials in plaintext, shares rich query metadata in room history, and uses a room preset that weakens the intent of private visibility.",
+      "confidence": "high",
+      "residual_unknowns": "The repo still does not show any redaction, retention, or access-audit layer that would narrow this risk in practice.",
+      "tag": "phase-1-confirmed",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G3.MX",
+      "title": "Matrix room-state writes use optimistic blind updates with no atomic conflict semantics",
+      "phase": 3,
+      "status": "closed",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "003-contextador/research/research.md",
+            "003-contextador/implementation-summary.md"
+          ],
+          "result": "Phase 3 already described best-effort room-state writes for janitor locks and budgets without explicit reconciliation."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "003-contextador/external/src/lib/mainframe/bridge.ts",
+            "003-contextador/external/src/lib/mainframe/client.ts"
+          ],
+          "result": "Source proves get-then-set updates for budget and lock state with no CAS/version token; lock acquisition falls back to local sweep on error."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-3/research/research.md",
+          "lines": "138-143",
+          "quote": "Finding 9 says Mainframe coordinates janitor and budget state through blind Matrix room-state writes."
+        },
+        {
+          "file": "phase-3/implementation-summary.md",
+          "lines": "125-125",
+          "quote": "Known limitation 4 says Mainframe uses best-effort room-state writes for janitor locks and budget without reconciliation."
+        },
+        {
+          "file": "003-contextador/external/src/lib/mainframe/bridge.ts",
+          "lines": "169-175",
+          "quote": "Budget state is read, incremented in memory, then written back with setState."
+        },
+        {
+          "file": "003-contextador/external/src/lib/mainframe/bridge.ts",
+          "lines": "217-237",
+          "quote": "Janitor lock acquisition checks current state, then claims the lock via setState; on error it allows a local sweep."
+        }
+      ],
+      "answer": "The contention question closes negatively. Mainframe has no atomic lock or merge protocol: budget and janitor state are optimistic read-modify-write records, so concurrent agents can overwrite each other or both proceed after transient errors.",
+      "confidence": "high",
+      "residual_unknowns": "No real contention trace or integration test quantifies how often lost updates occur under multi-agent load.",
+      "tag": "phase-1-extended",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G3.GH",
+      "title": "GitHub webhook automation lacks idempotency tracking, secret rotation, and routed failure notification",
+      "phase": 3,
+      "status": "closed",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "003-contextador/research/research.md"
+          ],
+          "result": "Phase 3 described GitHub automation as a real but lightly proven workflow with weak integration coverage."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "003-contextador/external/src/lib/github/webhook.ts",
+            "003-contextador/external/src/lib/github/triage.ts"
+          ],
+          "result": "The handler verifies one configured HMAC secret and logs events, but it never checks delivery IDs for dedupe, never supports multiple active secrets, and reports sweep failures only in local actions/log output."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-3/research/research.md",
+          "lines": "215-223",
+          "quote": "Finding 17 calls the GitHub layer real but lightly proven, with no meaningful integration testing."
+        },
+        {
+          "file": "003-contextador/external/src/lib/github/webhook.ts",
+          "lines": "35-40",
+          "quote": "Signature verification accepts exactly one configured secret and skips verification entirely when the secret is empty."
+        },
+        {
+          "file": "003-contextador/external/src/lib/github/webhook.ts",
+          "lines": "73-90",
+          "quote": "Webhook events are only appended to `.contextador/webhook-events.json`."
+        },
+        {
+          "file": "003-contextador/external/src/lib/github/webhook.ts",
+          "lines": "231-275",
+          "quote": "Each push is triaged and swept directly; there is no delivery-id dedupe or replay ledger."
+        }
+      ],
+      "answer": "Closed negatively at the source level. The webhook flow is deterministic enough to understand, but it is not hardened: no idempotency keying, no secret-rotation lane, and no explicit out-of-band failure notification beyond local logs, action strings, and HTTP responses.",
+      "confidence": "high",
+      "residual_unknowns": "End-to-end robustness is still unproven because the checkout lacks integration tests for real webhook retries, signature failures, or sweep-side failures.",
+      "tag": "phase-1-extended",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G3.RQ",
+      "title": "Repair queue has no completion guarantee after regeneration failures",
+      "phase": 3,
+      "status": "closed",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "003-contextador/research/research.md"
+          ],
+          "result": "Phase 3 already said regeneration quality, queue retry behavior, and end-to-end eventual success were still source-only."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "003-contextador/external/src/lib/core/janitor.ts",
+            "003-contextador/external/src/lib/core/feedback.ts",
+            "003-contextador/external/src/lib/core/generator.ts"
+          ],
+          "result": "The queue is processed once per sweep, failures are rewritten back for later runs, and regeneration falls back to stub/stamp behavior with no retry cap, backoff, or success proof."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-3/research/research.md",
+          "lines": "105-113",
+          "quote": "Finding 6 says the loop is only locally bounded and has no retry cutoff or backoff."
+        },
+        {
+          "file": "003-contextador/external/src/lib/core/feedback.ts",
+          "lines": "73-97",
+          "quote": "Feedback only appends repair entries and deduplicates exact scope+reason pairs."
+        },
+        {
+          "file": "003-contextador/external/src/lib/core/janitor.ts",
+          "lines": "89-146",
+          "quote": "processRepairQueue rewrites failed entries back to repair-queue.json and returns after one pass."
+        },
+        {
+          "file": "003-contextador/external/src/lib/core/janitor.ts",
+          "lines": "216-223",
+          "quote": "Freshness regeneration failures fall back to stamping instead of proving successful regeneration."
+        }
+      ],
+      "answer": "The repair queue does not provide completion guarantees. It offers eventual reattempt opportunity, not eventual success: failures are carried forward, some paths degrade to stubs or stamps, and nothing enforces bounded retries, backoff, or post-regeneration validation.",
+      "confidence": "high",
+      "residual_unknowns": "Hand-edit preservation and regeneration quality remain unmeasured even where queue processing itself is now clear.",
+      "tag": "phase-1-extended",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G4.T715",
+      "title": "71.5x token reduction is heuristic math, not Anthropic count_tokens-grounded",
+      "phase": 4,
+      "status": "partial",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "004-graphify/research/research.md",
+            "004-graphify/implementation-summary.md"
+          ],
+          "result": "Phase 4 already documented the three load-bearing assumptions behind 71.5x and explicitly left real tokenization counts unmeasured."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "004-graphify/external/graphify/benchmark.py"
+          ],
+          "result": "The benchmark script uses a 4-chars-per-token estimate, heuristic corpus-word conversion, and BFS subgraph rendering; no model token API is called."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-4/research/research.md",
+          "lines": "68-68",
+          "quote": "The 71.5x claim is mathematically reproducible but depends on naive baseline, 4-char token heuristic, and BFS subgraph cost model."
+        },
+        {
+          "file": "phase-4/implementation-summary.md",
+          "lines": "118-119",
+          "quote": "Known limitation 4 says real Claude tokenization counts were not measured and suggests Anthropic count_tokens as future work."
+        },
+        {
+          "file": "004-graphify/external/graphify/benchmark.py",
+          "lines": "9-18",
+          "quote": "Benchmarking uses `_CHARS_PER_TOKEN = 4` and estimates query tokens from a rendered BFS subgraph."
+        },
+        {
+          "file": "004-graphify/external/graphify/benchmark.py",
+          "lines": "81-98",
+          "quote": "Corpus tokens are derived from estimated word counts and per-question reduction ratios are computed from those estimates."
+        }
+      ],
+      "answer": "The 71.5x number remains a heuristic, not a token-API-grounded benchmark. Phase 4 was correct to treat it as directionally interesting but not credibility-grade evidence for Public without count_tokens validation.",
+      "confidence": "high",
+      "residual_unknowns": "A real closure still needs Anthropic count_tokens or equivalent model-grounded counts on the same corpus and query set.",
+      "tag": "phase-1-confirmed",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G4.CG",
+      "title": "Graphify cache has monotonic growth, mtime-only incremental detection, and no deletion tombstones",
+      "phase": 4,
+      "status": "closed",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "004-graphify/research/research.md",
+            "004-graphify/implementation-summary.md"
+          ],
+          "result": "Phase 4 already described two-layer invalidation but also called out monotonic growth and missing tombstones."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "004-graphify/external/graphify/cache.py",
+            "004-graphify/external/graphify/detect.py"
+          ],
+          "result": "Source confirms cache files are content-addressed and only clearable globally, while detect_incremental partitions only new vs unchanged files using mtimes."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-4/research/research.md",
+          "lines": "127-131",
+          "quote": "Architectural weaknesses include cache grows monotonically and no deletion tombstones."
+        },
+        {
+          "file": "phase-4/research/research.md",
+          "lines": "679-679",
+          "quote": "K24 says detect_incremental is mtime-only and has no deleted_files partition."
+        },
+        {
+          "file": "004-graphify/external/graphify/cache.py",
+          "lines": "41-63",
+          "quote": "save_cached only adds hash-keyed JSON files and clear_cache deletes everything at once."
+        },
+        {
+          "file": "004-graphify/external/graphify/detect.py",
+          "lines": "237-274",
+          "quote": "detect_incremental compares mtimes and only emits new_files and unchanged_files."
+        }
+      ],
+      "answer": "Closed negatively. Graphify does have a useful content-hash cache layer, but the maintenance story is weak: cache entries accumulate indefinitely, deletion is all-or-nothing, and incremental detection has no deletion or orphan accounting.",
+      "confidence": "high",
+      "residual_unknowns": "The repo does not quantify how much stale-cache residue accumulates over long-lived update cycles.",
+      "tag": "phase-1-confirmed",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G4.LP",
+      "title": "Cross-language extraction parity is uneven and Swift is detected but never extracted",
+      "phase": 4,
+      "status": "closed",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "004-graphify/research/research.md",
+            "004-graphify/implementation-summary.md"
+          ],
+          "result": "Phase 4 already said Python is the only rich extractor and that Swift is detected but omitted from collection and dispatch."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "004-graphify/external/graphify/detect.py",
+            "004-graphify/external/graphify/extract.py"
+          ],
+          "result": "Source confirms `.swift` appears in CODE_EXTENSIONS, but collect_files and the extractor dispatch chain omit Swift while Python alone adds rationale and cross-file inference."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-4/research/research.md",
+          "lines": "621-623",
+          "quote": "K4 and K5 say Python gets call graph, uses edges, and rationale while Swift is never extracted."
+        },
+        {
+          "file": "phase-4/implementation-summary.md",
+          "lines": "62-62",
+          "quote": "K28 summary says Swift is detected but not extracted and only Python has cross-file inference and rationale."
+        },
+        {
+          "file": "004-graphify/external/graphify/detect.py",
+          "lines": "19-22",
+          "quote": "CODE_EXTENSIONS includes `.swift`."
+        },
+        {
+          "file": "004-graphify/external/graphify/extract.py",
+          "lines": "2367-2477",
+          "quote": "The dispatch chain has extractors for 12 languages but no Swift branch."
+        },
+        {
+          "file": "004-graphify/external/graphify/extract.py",
+          "lines": "2499-2506",
+          "quote": "collect_files globs many code extensions but omits `*.swift`."
+        }
+      ],
+      "answer": "Closed. The parity gap is structural, not anecdotal: Python has the only rich extractor surface, the other 11 extractors are materially thinner, and Swift support is advertised at detection time but absent from both file collection and extraction dispatch.",
+      "confidence": "high",
+      "residual_unknowns": "The repo still does not benchmark task impact per language, but the implementation gap itself is no longer ambiguous.",
+      "tag": "phase-1-confirmed",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G4.IE",
+      "title": "INFERRED confidence-score inconsistency does not drive built-in ranking, but it leaks into reports and exports",
+      "phase": 4,
+      "status": "closed",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "004-graphify/research/research.md"
+          ],
+          "result": "Phase 4 identified the two sources of truth but did not yet answer whether ranking used the numeric score."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "004-graphify/external/graphify/analyze.py",
+            "004-graphify/external/graphify/report.py",
+            "004-graphify/external/graphify/export.py"
+          ],
+          "result": "Ranking code uses categorical confidence only, while report/export compute or display confidence_score values; the inconsistency affects surfaced numerics, not current surprise/community ordering."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-4/research/research.md",
+          "lines": "128-128",
+          "quote": "Architectural weakness 3 says AST INFERRED edges default to 0.5 while semantic edges emit 0.4-0.9."
+        },
+        {
+          "file": "004-graphify/external/graphify/analyze.py",
+          "lines": "143-146",
+          "quote": "Surprise scoring uses categorical confidence bonuses: AMBIGUOUS 3, INFERRED 2, EXTRACTED 1."
+        },
+        {
+          "file": "004-graphify/external/graphify/analyze.py",
+          "lines": "229-236",
+          "quote": "Candidates are sorted by `_score`; no numeric confidence_score is consulted."
+        },
+        {
+          "file": "004-graphify/external/graphify/report.py",
+          "lines": "27-29",
+          "quote": "report.py averages `confidence_score` for inferred edges."
+        },
+        {
+          "file": "004-graphify/external/graphify/export.py",
+          "lines": "250-272",
+          "quote": "export.py backfills confidence_score defaults when a link lacks one."
+        }
+      ],
+      "answer": "The inconsistency is real, but it does not currently harm graphify's built-in ranking quality. Ranking and surprise ordering use categorical confidence only; the mixed 0.5 vs 0.4-0.9 numerics mainly affect exported `graph.json` values, report averages, and any downstream consumer that trusts numeric scores.",
+      "confidence": "high",
+      "residual_unknowns": "If future consumers rank on `confidence_score`, the two-source-of-truth problem becomes operational rather than cosmetic.",
+      "tag": "phase-1-extended",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G4.MM",
+      "title": "mixed-corpus multimodal claim is not supported by the checked-in worked artifact",
+      "phase": 4,
+      "status": "partial",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "004-graphify/research/research.md",
+            "004-graphify/implementation-summary.md"
+          ],
+          "result": "Phase 4 already called the checked-in mixed-corpus example inconsistent and explicitly avoided claiming that graphify lacks multimodal capability outright."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "004-graphify/external/worked/mixed-corpus/GRAPH_REPORT.md",
+            "004-graphify/external/worked/mixed-corpus/review.md",
+            "004-graphify/external/worked/karpathy-repos/GRAPH_REPORT.md"
+          ],
+          "result": "The checked-in mixed-corpus report is code-only with 0 token spend, while another worked corpus shows non-zero multimodal cost and the mixed-corpus review still describes image extraction behavior."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-4/research/research.md",
+          "lines": "683-685",
+          "quote": "K26 says mixed-corpus does not show the multimodal evidence its README claims."
+        },
+        {
+          "file": "phase-4/implementation-summary.md",
+          "lines": "118-119",
+          "quote": "Known limitations say mixed-corpus was not regenerated and the 71.5x verdict still uses heuristic tokenization."
+        },
+        {
+          "file": "004-graphify/external/worked/mixed-corpus/GRAPH_REPORT.md",
+          "lines": "3-10",
+          "quote": "The checked-in report shows 4 files, 22 nodes, and 0 input / 0 output tokens."
+        },
+        {
+          "file": "004-graphify/external/worked/karpathy-repos/GRAPH_REPORT.md",
+          "lines": "7-10",
+          "quote": "Another worked corpus shows 285 nodes and non-zero 6,000 input / 3,500 output token cost."
+        },
+        {
+          "file": "004-graphify/external/worked/mixed-corpus/review.md",
+          "lines": "96-122",
+          "quote": "The review still narrates Arabic image OCR and image-derived nodes for the mixed corpus."
+        }
+      ],
+      "answer": "The artifact-level issue is real: the checked-in `mixed-corpus` report is stale or mislabeled relative to the narrative around it. What remains unclosed is whether a fresh rerun would show the promised multimodal nodes; the repo does not provide that regenerated proof in this checkout.",
+      "confidence": "high",
+      "residual_unknowns": "A true closure needs either a regenerated mixed-corpus artifact or honest relabeling of the example as code-only packaging drift.",
+      "tag": "phase-1-confirmed",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G4.PT",
+      "title": "PreToolUse Glob|Grep nudge effectiveness is still unmeasured",
+      "phase": 4,
+      "status": "UNKNOWN",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "004-graphify/research/research.md",
+            "004-graphify/implementation-summary.md"
+          ],
+          "result": "Phase 4 treated the hook as a strong steering pattern, but it did not report any measured change in tool selection, latency, or answer quality."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "004-graphify/external/graphify/__main__.py",
+            "004-graphify/external/README.md"
+          ],
+          "result": "Source and README prove the hook exists and explain the intended effect, but they contain no telemetry, experiment log, or behavioral verification."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-4/research/research.md",
+          "lines": "76-76",
+          "quote": "Phase 4 calls the hook a one-line conditional nudge against Glob and Grep."
+        },
+        {
+          "file": "phase-4/implementation-summary.md",
+          "lines": "46-46",
+          "quote": "Implementation summary describes the hook as conditional, non-blocking, and surgical."
+        },
+        {
+          "file": "004-graphify/external/graphify/__main__.py",
+          "lines": "9-21",
+          "quote": "The installed PreToolUse hook matches `Glob|Grep` and only echoes guidance when `graphify-out/graph.json` exists."
+        },
+        {
+          "file": "004-graphify/external/README.md",
+          "lines": "54-60",
+          "quote": "README says the hook makes Claude navigate via the graph instead of grepping raw files."
+        }
+      ],
+      "answer": "UNKNOWN. The repo proves the hook mechanism and the intended behavioral nudge, but it contains no measured evidence that Claude actually changes tool-selection behavior or improves outcomes because of it.",
+      "confidence": "medium",
+      "residual_unknowns": "Closure would require before/after telemetry on Glob/Grep usage, graph-report reads, or task-quality outcomes with the hook enabled.",
+      "tag": "phase-1-confirmed",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G5.FT",
+      "title": "Claudest truly supports PRAGMA-based FTS4 fallback, but Public's safe v1 remains FTS5 BM25 to LIKE",
+      "phase": 5,
+      "status": "closed",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "005-claudest/research/research.md",
+            "005-claudest/implementation-summary.md"
+          ],
+          "result": "Phase 5 continuation docs already resolved the trust question: Claudest has real probe-driven FTS4/FTS5 support, while Public still creates only FTS5 tables and therefore must narrow its first packet."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py"
+          ],
+          "result": "Source confirms both FTS5 and FTS4 schemas exist and that `detect_fts_support()` reads `PRAGMA compile_options` before selecting the schema."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-5/research/research.md",
+          "lines": "107-113",
+          "quote": "Section 6.2 says detect_fts_support reads PRAGMA compile_options and prefers FTS5, then FTS4, then None."
+        },
+        {
+          "file": "phase-5/implementation-summary.md",
+          "lines": "73-73",
+          "quote": "Implementation summary narrows Public's first follow-on packet to `fts5_bm25 -> like_scan`."
+        },
+        {
+          "file": "phase-5/implementation-summary.md",
+          "lines": "125-125",
+          "quote": "Key decision 4 says iter 12 confirmed Public still creates only `memory_fts USING fts5`."
+        },
+        {
+          "file": "005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py",
+          "lines": "115-188",
+          "quote": "The repo ships both FTS5 and FTS4 virtual-table schemas with matching triggers."
+        },
+        {
+          "file": "005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/db.py",
+          "lines": "195-205",
+          "quote": "detect_fts_support chooses `fts5`, `fts4`, or None from PRAGMA compile_options."
+        }
+      ],
+      "answer": "Closed. Claudest's own pattern is real: it probes SQLite capabilities and can create either FTS5 or FTS4 tables. That strengthens phase 5's narrowed conclusion that Public's smallest safe v1 is `fts5_bm25 -> like_scan` unless the same packet also adds alternate FTS4 schema creation.",
+      "confidence": "medium",
+      "residual_unknowns": "Public-side runtime verification still lives in the continuation packet docs rather than a fresh iteration-3 code read, so this is a documented-resolution closure, not a new live retest.",
+      "tag": "phase-1-extended",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G5.SH",
+      "title": "Stop hook still omits transcript_path persistence, cache-token carry-forward, and turn-level offsets",
+      "phase": 5,
+      "status": "closed",
+      "closure_method": "phase-1-doc-reread",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "005-claudest/research/research.md"
+          ],
+          "result": "The continuation research already recorded the exact producer gap: transcript identity is not persisted, cache token fields are dropped, and replay remains session-level."
+        },
+        {
+          "n": 2,
+          "kind": "phase-doc-reread",
+          "files": [
+            "005-claudest/implementation-summary.md"
+          ],
+          "result": "The implementation summary turns that into an entry condition: Brief B must wait for a bounded producer metadata patch before normalized analytics can be trusted."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-5/research/research.md",
+          "lines": "613-616",
+          "quote": "Iteration 12 says transcript_path is not persisted, cache token fields are not stored, and replay uses only session-level lastTranscriptOffset."
+        },
+        {
+          "file": "phase-5/implementation-summary.md",
+          "lines": "126-126",
+          "quote": "Brief B entry conditions require transcriptPath persistence, replay fingerprinting, and cache-read/cache-write fields."
+        },
+        {
+          "file": "phase-5/implementation-summary.md",
+          "lines": "158-158",
+          "quote": "Known limitation says the producer patch has not landed yet."
+        }
+      ],
+      "answer": "Closed negatively. Phase 5's continuation docs already resolved the ambiguity: Public's current Stop hook is not yet a trustworthy producer for normalized analytics, and Brief B remains blocked until that producer metadata patch lands.",
+      "confidence": "low",
+      "residual_unknowns": "A fresh code reread was unnecessary because the packet already captured the direct code evidence in iteration 12 and no newer producer patch is referenced here.",
+      "tag": "phase-1-confirmed",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G5.CMD",
+      "title": "The claude-memory plugin-specific CLAUDE.md is absent in this checkout",
+      "phase": 5,
+      "status": "closed",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "005-claudest/research/research.md"
+          ],
+          "result": "Phase 5 already flagged that `external/plugins/claude-memory/CLAUDE.md` was missing and that the per-plugin layer had to be reconstructed indirectly."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "005-claudest/external/CLAUDE.md",
+            "005-claudest/external/plugins/claude-memory/CLAUDE.md"
+          ],
+          "result": "Direct inspection matches the anomaly: the checkout contains a root `external/CLAUDE.md` but no plugin-local `claude-memory/CLAUDE.md` file."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-5/research/research.md",
+          "lines": "444-444",
+          "quote": "Phase 5 says `external/plugins/claude-memory/CLAUDE.md` does not exist in this checkout."
+        },
+        {
+          "file": "005-claudest/external/CLAUDE.md",
+          "lines": "1-5",
+          "quote": "The checkout does contain a root-level `external/CLAUDE.md` describing the Claudest project as a whole."
+        }
+      ],
+      "answer": "Closed. The anomaly stands: there is no plugin-local `claude-memory/CLAUDE.md` to inspect in this checkout, so any per-plugin layer model still has to be reconstructed from the root CLAUDE, README material, and skill/agent files.",
+      "confidence": "medium",
+      "residual_unknowns": "None for this checkout. The only remaining uncertainty would be whether another branch or release adds the missing file.",
+      "tag": "phase-1-confirmed",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G5.FB",
+      "title": "Fallback-context docstring contradicts the implemented first-2 plus last-6 renderer",
+      "phase": 5,
+      "status": "closed",
+      "closure_method": "combined",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "005-claudest/research/research.md"
+          ],
+          "result": "Phase 5 already said the fallback docstring was wrong and that the implementation should be trusted instead."
+        },
+        {
+          "n": 2,
+          "kind": "external-source",
+          "files": [
+            "005-claudest/external/plugins/claude-memory/hooks/memory-context.py",
+            "005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/summarizer.py"
+          ],
+          "result": "Source confirms the docstring still says 'last-3 exchanges' while both fallback rendering and the summary renderer use short-session full render or long-session first-2 plus last-6."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-5/research/research.md",
+          "lines": "198-200",
+          "quote": "Phase 5 says `_build_fallback_context()` advertises last 3 exchanges but actually mirrors first-2 plus last-6 rendering."
+        },
+        {
+          "file": "005-claudest/external/plugins/claude-memory/hooks/memory-context.py",
+          "lines": "253-257",
+          "quote": "The docstring says the fallback renders truncated last-3 exchanges."
+        },
+        {
+          "file": "005-claudest/external/plugins/claude-memory/hooks/memory-context.py",
+          "lines": "311-346",
+          "quote": "Implementation renders all exchanges for short sessions or first 2 plus last 6 for longer ones."
+        },
+        {
+          "file": "005-claudest/external/plugins/claude-memory/skills/recall-conversations/scripts/memory_lib/summarizer.py",
+          "lines": "343-349",
+          "quote": "render_context_summary documents the same long-session first-2 plus last-6 structure."
+        }
+      ],
+      "answer": "Closed. The drift is real and source-proven: the docstring is stale, but the actual fallback behavior matches the summarizer's full-or-first/last rendering scheme rather than a last-3-exchanges view.",
+      "confidence": "high",
+      "residual_unknowns": "None. This is a direct code-vs-doc contradiction, not a behavioral ambiguity.",
+      "tag": "phase-1-confirmed",
+      "depends_on_other_gaps": []
+    },
+    {
+      "id": "G5.SE",
+      "title": "Public's 008-signal-extraction packet is a monolithic extractor unification, not an auditor/discoverer split",
+      "phase": 5,
+      "status": "closed",
+      "closure_method": "cross-repo",
+      "attempts": [
+        {
+          "n": 1,
+          "kind": "phase-doc-reread",
+          "files": [
+            "005-claudest/research/research.md"
+          ],
+          "result": "Phase 5 treated `008-signal-extraction` as a direct comparison target and recommended adding the Claudest auditor/discoverer split to it."
+        },
+        {
+          "n": 2,
+          "kind": "cross-repo",
+          "files": [
+            "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/spec.md",
+            "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md"
+          ],
+          "result": "The Public packet unifies several extraction engines behind one `SemanticSignalExtractor` and thin adapters; it does not define separate verifier and discoverer roles."
+        }
+      ],
+      "evidence": [
+        {
+          "file": "phase-5/research/research.md",
+          "lines": "219-235",
+          "quote": "Phase 5 recommends adding a bounded-candidate contract plus auditor/discoverer split to `008-signal-extraction`."
+        },
+        {
+          "file": "phase-5/research/research.md",
+          "lines": "438-438",
+          "quote": "`008-signal-extraction` is listed as the direct comparison target for the consolidation pattern."
+        },
+        {
+          "file": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/spec.md",
+          "lines": "69-84",
+          "quote": "The spec builds one `SemanticSignalExtractor` and converts trigger/topic/session/summary paths into thin adapters over it."
+        },
+        {
+          "file": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/implementation-summary.md",
+          "lines": "35-40",
+          "quote": "The implementation summary says the phase shipped script-side semantic signal unification across the existing extraction entrypoints."
+        }
+      ],
+      "answer": "Closed. Public's `008-signal-extraction` packet is a monolithic extractor-unification effort: one canonical `SemanticSignalExtractor` plus thin adapters. It does not already embody Claudest's verifier/discoverer split, so phase 5's recommendation remains additive rather than already satisfied.",
+      "confidence": "medium",
+      "residual_unknowns": "None at the packet level. The only open question is whether a later Public packet introduced a separate consolidation split elsewhere.",
+      "tag": "new-cross-phase",
+      "depends_on_other_gaps": []
+    }
+  ],
+  "summary": {
+    "total_gaps": 16,
+    "closed": 12,
+    "partial": 3,
+    "unknown": 1,
+    "by_phase": {
+      "3": {
+        "closed": 4,
+        "partial": 1,
+        "unknown": 0
+      },
+      "4": {
+        "closed": 3,
+        "partial": 2,
+        "unknown": 1
+      },
+      "5": {
+        "closed": 5,
+        "partial": 0,
+        "unknown": 0
+      }
+    }
+  }
+}

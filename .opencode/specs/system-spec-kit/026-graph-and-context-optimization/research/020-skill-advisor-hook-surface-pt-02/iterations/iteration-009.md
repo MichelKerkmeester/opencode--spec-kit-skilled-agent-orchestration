@@ -12,8 +12,8 @@ Determine whether the future skill-advisor brief renderer should treat brief gen
   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-skill-advisor-hook-surface-001-initial-research-extended-copilot/deep-research-strategy.md`
   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-skill-advisor-hook-surface-001-initial-research/research.md`
 - Phase 019/003 hardening packet:
-  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/003-nfkc-unification-hardening/spec.md`
-  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/003-nfkc-unification-hardening/implementation-summary.md`
+  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening/spec.md`
+  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening/implementation-summary.md`
 - Live runtime sources:
   - `.opencode/skill/skill-advisor/scripts/skill_advisor.py`
   - `.opencode/skill/skill-advisor/scripts/skill_advisor_runtime.py`

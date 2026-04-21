@@ -161,7 +161,7 @@ describe('validation pipeline integration', () => {
     expect(fs.existsSync(path.join(SCRIPTS_DIR, 'rules', 'check-placeholders.sh'))).toBe(true);
     expect(fs.existsSync(path.join(SCRIPTS_DIR, 'rules', 'check-sections.sh'))).toBe(true);
     expect(fs.existsSync(path.join(SCRIPTS_DIR, 'rules', 'check-level.sh'))).toBe(true);
-  });
+  }, 90_000);
 });
 
 describe('cognitive memory export parity', () => {

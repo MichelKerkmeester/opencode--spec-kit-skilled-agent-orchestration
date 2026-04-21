@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "007-skill-graph-auto-setup",
+      "skill graph auto setup",
+      "init skill graph",
+      "skill graph startup logging",
+      "skill advisor setup guide",
+      "phase 007 plan",
+      "skill graph auto setup plan",
+      "packet repair plan",
+      "startup logging plan",
+      "phase 007 tasks",
+      "skill graph auto setup tasks",
+      "packet repair tasks"
+    ],
+    "key_topics": [
+      "007-skill-graph-auto-setup",
+      "skill",
+      "graph",
+      "auto",
+      "setup",
+      "init",
+      "startup",
+      "logging",
+      "advisor",
+      "guide",
+      "phase",
+      "007"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/skill/skill-advisor/scripts/init-skill-graph.sh",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+      ".opencode/skill/skill-advisor/SET-UP_GUIDE.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "init-skill-graph.sh",
+        "kind": "script",
+        "path": ".opencode/skill/skill-advisor/scripts/init-skill-graph.sh",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "SET-UP_GUIDE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/SET-UP_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Graph Auto",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Restore",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Documentation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 007 implementation work is already present in the runtime files, but the packet drifted away from the active Level 2 template. That drift breaks strict validation, removes structured anchors needed for retrieval, and incorrectly implies a packet-local setup guide instead of the real guide at `.opencode/skill/skill-advisor/SET-UP_GUIDE.md`.",
+    "created_at": "2026-04-18T15:28:47.529Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup",
+    "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/011-skill-advisor-graph/007-skill-graph-auto-setup",
+    "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/011-skill-advisor-graph/007-skill-graph-auto-setup",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/011-skill-advisor-graph/007-skill-graph-auto-setup",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup",
+    "local_phase_slug": "002-skill-advisor-graph",
+    "original_phase_slug": "011-skill-advisor-graph",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

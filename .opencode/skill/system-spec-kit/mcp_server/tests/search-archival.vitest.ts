@@ -31,23 +31,25 @@ describe('T206 - vector_search accepts includeArchived [deferred - DB dependency
   });
 });
 
-describe('T206 - multi_concept_search accepts includeArchived [deferred - DB dependency]', () => {
+describe('T206 - multi_concept_search archival compatibility [deferred - DB dependency]', () => {
   it('T206-MC1: multiConceptSearch is exported', () => {
     expect(VECTOR_INDEX_QUERIES_SOURCE).toContain('export { multi_concept_search as multiConceptSearch };');
   });
 
-  it('T206-MC2: multiConceptSearch accepts includeArchived', () => {
-    expect(VECTOR_INDEX_QUERIES_SOURCE).toMatch(/export function multi_concept_search\([\s\S]*?includeArchived = false/);
+  it('T206-MC2: multiConceptSearch no longer accepts includeArchived after cleanup', () => {
+    expect(VECTOR_INDEX_QUERIES_SOURCE).toMatch(/export function multi_concept_search/);
+    expect(VECTOR_INDEX_QUERIES_SOURCE).not.toMatch(/export function multi_concept_search\([\s\S]*?includeArchived = false/);
   });
 });
 
-describe('T206 - keyword_search accepts includeArchived [deferred - DB dependency]', () => {
+describe('T206 - keyword_search archival compatibility [deferred - DB dependency]', () => {
   it('T206-KW1: keywordSearch is exported', () => {
     expect(VECTOR_INDEX_QUERIES_SOURCE).toContain('export { keyword_search as keywordSearch };');
   });
 
-  it('T206-KW2: keywordSearch accepts includeArchived', () => {
-    expect(VECTOR_INDEX_QUERIES_SOURCE).toMatch(/export function keyword_search\([\s\S]*?includeArchived = false/);
+  it('T206-KW2: keywordSearch no longer accepts includeArchived after cleanup', () => {
+    expect(VECTOR_INDEX_QUERIES_SOURCE).toMatch(/export function keyword_search/);
+    expect(VECTOR_INDEX_QUERIES_SOURCE).not.toMatch(/export function keyword_search\([\s\S]*?includeArchived = false/);
   });
 });
 

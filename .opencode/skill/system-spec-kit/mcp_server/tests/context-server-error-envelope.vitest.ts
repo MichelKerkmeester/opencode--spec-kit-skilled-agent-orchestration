@@ -13,7 +13,7 @@ describe('context-server error envelope handling', () => {
     expect(response).toHaveProperty('summary');
     expect(response).toHaveProperty('data');
     expect(response.data).toHaveProperty('error');
-    expect(response.data.error).toContain('something broke');
+    expect(response.data.error).toBe('An unexpected error occurred. Please check logs for details.');
     expect(response).toHaveProperty('hints');
     expect(Array.isArray(response.hints)).toBe(true);
   });

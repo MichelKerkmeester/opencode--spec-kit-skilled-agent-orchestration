@@ -7,7 +7,7 @@
       "findingId": "F005",
       "severity": "P0",
       "title": "F005 remains open: spec.md still mixes every-startup semantics with one-time and first-launch wording",
-      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/spec.md",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md",
       "line": 47,
       "description": "The runtime, checklist, and changelog now match the every-startup idempotent retry contract, but spec.md still describes the drop as one-time / first launch in multiple places.",
       "dimension": "traceability",

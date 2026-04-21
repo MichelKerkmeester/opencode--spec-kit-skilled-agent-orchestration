@@ -322,7 +322,7 @@ describe('C138 Stage: Adaptive Fusion Weights', () => {
     const { INTENT_WEIGHT_PROFILES } = await import('../../shared/algorithms/adaptive-fusion');
     const intents = Object.keys(INTENT_WEIGHT_PROFILES);
 
-    expect(intents.length).toBe(7);
+    expect(intents.length).toBe(8);
     for (const intent of intents) {
       const profile = INTENT_WEIGHT_PROFILES[intent];
       expect(typeof profile.graphWeight).toBe('number');

@@ -75,7 +75,7 @@ Iteration 3's standalone `TEMPLATE_SOURCE` documentation gap does not remain ope
 
 Primary handoff target:
 
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/002-template-validator-contract-alignment/`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-template-validator-contract-alignment/`
 
 Suggested scope for that child packet:
 

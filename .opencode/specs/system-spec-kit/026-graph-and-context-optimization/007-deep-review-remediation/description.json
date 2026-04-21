@@ -1,0 +1,31 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation",
+  "description": "Flattened active phase parent: Deep Review Remediation",
+  "keywords": [
+    "deep-review-remediation",
+    "deep",
+    "review",
+    "waves",
+    "and",
+    "post",
+    "review",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "007",
+  "folderSlug": "deep-review-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "child_phase_folders": [
+      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation"
+    ],
+    "layout": "phase-root-children"
+  }
+}

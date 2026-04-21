@@ -34,6 +34,7 @@ function createSandbox(prefix: string): CliSandbox {
     env: {
       ...process.env,
       SPEC_KIT_DB_DIR: dbDir,
+      MEMORY_DB_PATH: join(dbDir, 'context-index.sqlite'),
       MEMORY_BASE_PATH: workspaceDir,
       MEMORY_ALLOWED_PATHS: [workspaceDir, repoRoot].join(delimiter),
     },
@@ -234,6 +235,7 @@ describe('standalone admin CLI', () => {
       env: {
         ...sandbox.env,
         SPEC_KIT_DB_DIR: brokenDbRoot,
+        MEMORY_DB_PATH: join(brokenDbRoot, 'context-index.sqlite'),
       },
     });
 

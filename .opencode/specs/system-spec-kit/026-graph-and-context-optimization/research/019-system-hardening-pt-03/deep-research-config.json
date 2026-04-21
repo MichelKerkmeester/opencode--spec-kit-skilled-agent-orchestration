@@ -1,5 +1,5 @@
 {
-  "topic": "Gate 3 classifier + skill-advisor routing accuracy research. Build ~200-prompt labeled corpus (anonymized real transcripts + synthetic edge cases). For each prompt, compute gate-3-classifier.ts classifyPrompt() verdict + skill_advisor.py top-1 recommendation. Compare to human ground truth. Report precision/recall/F1 per classifier. Enumerate error classes including known CLAUDE.md false-positive tokens (analyze, decompose, phase). Compute compound Gate 3 * skill-advisor joint error rate. Rank rule-change proposals with simulated before/after delta on labeled corpus. Dispatch on spec folder .opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/005-routing-accuracy/ with iteration budget 15.",
+  "topic": "Gate 3 classifier + skill-advisor routing accuracy research. Build ~200-prompt labeled corpus (anonymized real transcripts + synthetic edge cases). For each prompt, compute gate-3-classifier.ts classifyPrompt() verdict + skill_advisor.py top-1 recommendation. Compare to human ground truth. Report precision/recall/F1 per classifier. Enumerate error classes including known CLAUDE.md false-positive tokens (analyze, decompose, phase). Compute compound Gate 3 * skill-advisor joint error rate. Rank rule-change proposals with simulated before/after delta on labeled corpus. Dispatch on spec folder .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy/ with iteration budget 15.",
   "maxIterations": 15,
   "convergenceThreshold": 0.05,
   "stuckThreshold": 3,
@@ -7,7 +7,7 @@
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 30,
   "progressiveSynthesis": true,
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/005-routing-accuracy",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy",
   "createdAt": "2026-04-18T20:39:41Z",
   "status": "in_progress",
   "executionMode": "auto",

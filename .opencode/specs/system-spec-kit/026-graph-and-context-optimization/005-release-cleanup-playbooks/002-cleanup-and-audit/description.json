@@ -1,0 +1,63 @@
+{
+  "title": "Cleanup and Audit",
+  "type": "coordination-parent",
+  "trigger_phrases": [
+    "shared memory feature removal",
+    "hard delete shared memory",
+    "shared-space collaboration cleanup",
+    "lifecycle tool deprecation",
+    "governance filter retirement",
+    "mcp tool catalog cleanup",
+    "feature catalog entry deletion",
+    "shared-memory test removal",
+    "schema column preservation",
+    "idempotent data migration"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-04-26_22-57__wave-b-restored-root-spec-for-coordination-parent.md"
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
+  "description": "Coordination parent for cleanup and audit work promoted from the old continuity refactor lane. The primary packet in this tree executes deletion-first shared-memory removal across lifecycle tools, runtime handlers, routing and governance branches, documentation catalog entries, playbook scenarios, and tests, while preserving only the unavoidable schema-column compatibility shim needed for older SQLite variants that cannot drop columns in place.",
+  "keywords": [
+    "feature removal",
+    "hard delete",
+    "shared memory",
+    "shared spaces",
+    "lifecycle tools",
+    "mcp server",
+    "governance scope",
+    "runtime cleanup",
+    "documentation cleanup",
+    "schema migration",
+    "backward compatibility",
+    "sqlite support",
+    "dropped column fallback",
+    "cleanup audit"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "008",
+  "folderSlug": "cleanup-and-audit",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "005-release-cleanup-playbooks"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/008-cleanup-and-audit",
+    "local_phase_slug": "002-cleanup-and-audit",
+    "original_phase_slug": "008-cleanup-and-audit",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit",
+      "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/008-cleanup-and-audit",
+      "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit"
+    ]
+  }
+}

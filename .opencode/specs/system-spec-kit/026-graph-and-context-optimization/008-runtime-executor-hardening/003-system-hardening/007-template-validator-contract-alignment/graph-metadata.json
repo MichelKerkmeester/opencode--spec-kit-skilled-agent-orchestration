@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "validator contract alignment",
+      "rule registry canonicalization",
+      "semantic frontmatter validation",
+      "validator alignment plan",
+      "validator alignment tasks",
+      "validator alignment checklist",
+      "validator alignment summary"
+    ],
+    "key_topics": [
+      "validator",
+      "contract",
+      "alignment",
+      "rule",
+      "registry",
+      "canonicalization",
+      "semantic",
+      "frontmatter",
+      "validation",
+      "plan",
+      "tasks",
+      "checklist"
+    ],
+    "importance_tier": "critical",
+    "status": "in_progress",
+    "key_files": [
+      "scripts/spec/validate.sh",
+      "scripts/rules/check-frontmatter.sh",
+      "scripts/rules/check-anchors.sh",
+      "templates/level_3/decision-record.md",
+      "scripts/rules/README.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-frontmatter.sh",
+        "kind": "script",
+        "path": "scripts/rules/check-frontmatter.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-anchors.sh",
+        "kind": "script",
+        "path": "scripts/rules/check-anchors.sh",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "scripts/rules/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Validator Contract Alignment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Source Review",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Ready",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Effort Estimate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Source Audit",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Extract",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Dispatch Command",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "all",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "cutoff",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: Setup",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 2: Rank 1 — Rule registry",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Land 5 ranked proposals from research:",
+    "created_at": "2026-04-18T21:45:31.777Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/007-template-validator-contract-alignment",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/019-system-hardening/007-template-validator-contract-alignment",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/007-template-validator-contract-alignment",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/007-template-validator-contract-alignment",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/019-system-hardening/007-template-validator-contract-alignment",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/019-system-hardening/007-template-validator-contract-alignment",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment",
+    "local_phase_slug": "003-system-hardening",
+    "original_phase_slug": "019-system-hardening",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

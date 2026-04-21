@@ -13,8 +13,8 @@ status: thought
 Audit the live code-graph query, context, scan, and status handlers plus their focused tests against the main packet scope.
 
 ## Files Reviewed
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/implementation-summary.md`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/scan.ts`

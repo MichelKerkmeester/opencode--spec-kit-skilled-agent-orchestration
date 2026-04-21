@@ -25,4 +25,4 @@ The live files still expose the same structure the packet documents: `AGENTS.md:
 
 ## 5. Cross-References
 
-- Packet-local checklist evidence remains consistent with the live AGENTS files. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/checklist.md:65] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/checklist.md:68]
+- Packet-local checklist evidence remains consistent with the live AGENTS files. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails/checklist.md:65] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails/checklist.md:68]

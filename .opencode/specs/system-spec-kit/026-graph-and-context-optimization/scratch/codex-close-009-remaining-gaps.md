@@ -33,7 +33,7 @@ After the initial 009 scaffold+fix run (all uncommitted in working tree), a wild
 ## MANDATORY READS (read once at start)
 
 1. The wild-verified successful save (your ground truth for what the current pipeline produces):
-   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/memory/09-04-26_12-40__shipped-the-005-code-graph-upgrades-runtime-lane.md`
+   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/memory/09-04-26_12-40__shipped-the-005-code-graph-upgrades-runtime-lane.md`
 2. The clean 014-only test payload already in place:
    - `/tmp/save-context-data.json` (do NOT edit unless you discover the Lane F fix requires specific payload field names and the test needs them)
 3. The 009 packet docs (scope context):
@@ -119,7 +119,7 @@ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 # Re-run the wild save (the payload is already clean 014-only)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
   /tmp/save-context-data.json \
-  /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades
+  /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades
 ```
 
 If the payload doesn't exercise Lane F (it's currently missing `phase`/`status`/`completionPercent` because those were flagged as unknown last time), after your Lane F fix ADD those fields to `/tmp/save-context-data.json` so the test payload actually triggers the new code path:
@@ -188,7 +188,7 @@ BUILD:
   dist rebuild timestamp: <time>
 
 WILD_RE_SAVE:
-  command: node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .../005-code-graph-upgrades
+  command: node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .../001-code-graph-upgrades
   exit code: <n>
   new memory file: <path>
 

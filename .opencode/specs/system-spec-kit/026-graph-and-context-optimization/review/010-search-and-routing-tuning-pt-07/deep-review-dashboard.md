@@ -15,7 +15,7 @@ Root 10-iteration deep review for `002-content-routing-accuracy` after implement
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:status -->
 ## 2. STATUS
-- Review Target: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/` (spec-folder)
+- Review Target: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/` (spec-folder)
 - Started: `2026-04-13T12:45:00Z`
 - Status: `CONVERGED`
 - Iteration: `10 of 10`

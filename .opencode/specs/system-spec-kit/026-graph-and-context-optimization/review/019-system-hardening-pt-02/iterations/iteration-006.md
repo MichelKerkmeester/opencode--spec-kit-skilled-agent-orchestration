@@ -15,8 +15,8 @@
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/019-system-hardening-001-initial-research-006-template-validator-audit/iterations/iteration-004.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/019-system-hardening-001-initial-research-006-template-validator-audit/iterations/iteration-005.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/019-system-hardening-001-initial-research-002-delta-review-015/review-report.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/plan.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/plan.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/implementation-summary.md`
 - `.opencode/skill/system-spec-kit/templates/level_3/decision-record.md`
 - `.opencode/skill/system-spec-kit/scripts/spec/validate.sh`
 - `.opencode/skill/system-spec-kit/scripts/rules/README.md`
@@ -36,7 +36,7 @@
 
 ## Concrete Handoff Target
 
-- Primary target: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/002-template-validator-contract-alignment/`
+- Primary target: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-template-validator-contract-alignment/`
 - Expected scope:
   - unify rule inventory so `show_help()`, severity mapping, and dispatch stop drifting
   - add semantic validation for authored frontmatter and continuity bookkeeping fields

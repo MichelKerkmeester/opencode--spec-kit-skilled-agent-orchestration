@@ -13,7 +13,7 @@ Track the post-remediation deep review for the skill advisor graph packet, start
 ---
 
 ## 2. TOPIC
-Review of `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph` after remediation, with this restart session re-checking corrected defects and adjacent trust-boundary surfaces.
+Review of `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph` after remediation, with this restart session re-checking corrected defects and adjacent trust-boundary surfaces.
 
 ---
 

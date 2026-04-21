@@ -1,0 +1,40 @@
+{
+  "title": "Feature Specification: Post-Save Render Fixes",
+  "description": "Level 3 sub-phase for nine render-layer fixes in the memory-save pipeline so compact-wrapper saves match the 006 wrapper contract.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes",
+  "keywords": [
+    "feature",
+    "specification",
+    "post-save",
+    "render",
+    "fixes"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "009",
+  "folderSlug": "post-save-render-fixes",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "002-continuity-memory-runtime",
+    "003-memory-quality-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/009-post-save-render-fixes",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/009-post-save-render-fixes",
+    "local_phase_slug": "002-memory-quality-remediation",
+    "original_phase_slug": "003-memory-quality-remediation",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/009-post-save-render-fixes",
+      "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/009-post-save-render-fixes",
+      "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes"
+    ]
+  }
+}

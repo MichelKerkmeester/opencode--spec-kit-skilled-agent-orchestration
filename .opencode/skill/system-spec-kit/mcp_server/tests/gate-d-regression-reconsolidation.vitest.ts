@@ -132,7 +132,10 @@ describe('Gate D regression reconsolidation', () => {
       {
         id: 11,
         similarity: 96.1,
+        file_path: '/tmp/specs/025/previous-implementation-summary.md',
+        title: 'Previous canonical implementation summary',
         content_text: 'Older canonical content.',
+        spec_folder: 'specs/025-gate-d',
       },
     ]);
 
@@ -167,7 +170,10 @@ describe('Gate D regression reconsolidation', () => {
       {
         id: 12,
         similarity: 95.9,
+        file_path: '/tmp/specs/025/review-band-summary.md',
+        title: 'Review-band canonical implementation summary',
         content_text: 'Short canonical review-band text.',
+        spec_folder: 'specs/025-gate-d',
       },
     ]);
 

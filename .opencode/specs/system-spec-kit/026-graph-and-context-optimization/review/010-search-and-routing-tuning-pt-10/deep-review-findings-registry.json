@@ -13,7 +13,7 @@
       "title": "Tier3 prompt hardcodes phase context for non-phase packets",
       "file": "mcp_server/handlers/memory-save.ts",
       "line": 1165,
-      "description": "The handler derives `packet_kind` from `parsed.specFolder.includes('/')`, so root research/remediation packets lose their real kind before `buildTier3Prompt()` forwards `PACKET_KIND` at `mcp_server/lib/routing/content-router.ts:1222-1224`; the 018 parent packet is explicitly `type: research` in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/spec.md:5`.",
+      "description": "The handler derives `packet_kind` from `parsed.specFolder.includes('/')`, so root research/remediation packets lose their real kind before `buildTier3Prompt()` forwards `PACKET_KIND` at `mcp_server/lib/routing/content-router.ts:1222-1224`; the 018 parent packet is explicitly `type: research` in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/spec.md:5`.",
       "dimension": "correctness",
       "firstSeen": 1,
       "lastSeen": 1,

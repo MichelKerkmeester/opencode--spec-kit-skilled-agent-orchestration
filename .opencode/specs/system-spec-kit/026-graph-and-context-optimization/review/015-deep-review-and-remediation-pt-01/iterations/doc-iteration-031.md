@@ -6,19 +6,19 @@
 - timestamp: 2026-04-15T18:45:33Z
 
 ## Files Reviewed
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/implementation-summary.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/description.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/implementation-summary.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/decision-record.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/description.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/description.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/decision-record.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/description.json
 
 ## Findings - New This Iteration
 ### P0 Findings

@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/016-foundational-runtime-001-initial-research/iterations",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/016-foundational-runtime-pt-01/iterations",
   "description": "Research iteration artifacts for 016-foundational-runtime-001-initial-research.",
   "keywords": [
     "research",
@@ -10,15 +10,21 @@
     "026-graph-and-context-optimization",
     "iterations"
   ],
-  "lastUpdated": "2026-04-18T16:45:36.982Z",
+  "lastUpdated": "2026-04-21T13:00:00Z",
   "specId": "016",
   "folderSlug": "foundational-runtime-001-initial-research-iterations",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
     "research",
-    "016-foundational-runtime-001-initial-research"
+    "016-foundational-runtime-pt-01"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/016-foundational-runtime-001-initial-research/iterations",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/016-foundational-runtime-pt-01/iterations",
+    "layout": "phase-root-children"
+  }
 }

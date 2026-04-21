@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 017 wave a",
+      "017 wave a infrastructure primitives",
+      "wave a critical path",
+      "t-cns-01 t-w1-cns-04 merged pr",
+      "readiness-contract extract",
+      "shared-provenance extract",
+      "normalizer collapse wave a",
+      "016 checklist evidence rewrap prep",
+      "017 wave a plan",
+      "phase 017 wave a implementation plan",
+      "t-cns-01 implementation plan",
+      "readiness-contract extraction plan"
+    ],
+    "key_topics": [
+      "phase",
+      "017",
+      "wave",
+      "infrastructure",
+      "primitives",
+      "critical",
+      "path",
+      "t-cns-01",
+      "t-w1-cns-04",
+      "merged",
+      "readiness-contract",
+      "extract"
+    ],
+    "importance_tier": "critical",
+    "status": "in_progress",
+    "key_files": [
+      "scripts/core/workflow.ts",
+      "scripts/tests/workflow-canonical-save-metadata.vitest.ts",
+      "mcp_server/lib/code-graph/readiness-contract.ts",
+      "mcp_server/tests/readiness-contract.vitest.ts",
+      "mcp_server/hooks/shared-provenance.ts",
+      "mcp_server/tests/hooks-shared-provenance.vitest.ts",
+      "lib/governance/scope-governance.ts",
+      "mcp_server/tests/scope-governance-normalizer-parity.vitest.ts",
+      "scripts/validation/evidence-marker-audit.ts",
+      "scripts/tests/evidence-marker-audit.vitest.ts",
+      "plan.md",
+      "tasks.md",
+      "hooks/claude/shared.ts",
+      "lib/code-graph/readiness-contract.ts",
+      "hooks/shared-provenance.ts",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/checklist.md",
+      "scripts/memory/generate-context.ts",
+      "handlers/code-graph/query.ts",
+      "hooks/gemini/shared.ts",
+      "handlers/save/reconsolidation-bridge.ts"
+    ],
+    "entities": [
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow-canonical-save-metadata.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/workflow-canonical-save-metadata.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "readiness-contract.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/code-graph/readiness-contract.ts",
+        "source": "derived"
+      },
+      {
+        "name": "readiness-contract.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/readiness-contract.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-provenance.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/shared-provenance.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hooks-shared-provenance.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/hooks-shared-provenance.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "scope-governance.ts",
+        "kind": "code",
+        "path": "lib/governance/scope-governance.ts",
+        "source": "derived"
+      },
+      {
+        "name": "scope-governance-normalizer-parity.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/scope-governance-normalizer-parity.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "evidence-marker-audit.ts",
+        "kind": "code",
+        "path": "scripts/validation/evidence-marker-audit.ts",
+        "source": "derived"
+      },
+      {
+        "name": "evidence-marker-audit.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/evidence-marker-audit.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "shared.ts",
+        "kind": "code",
+        "path": "hooks/claude/shared.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": "scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "query.ts",
+        "kind": "code",
+        "path": "handlers/code-graph/query.ts",
+        "source": "derived"
+      },
+      {
+        "name": "reconsolidation-bridge.ts",
+        "kind": "code",
+        "path": "handlers/save/reconsolidation-bridge.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Infrastructure Primitives",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Without Wave",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Every Wave",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Cluster Inventory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "a",
+        "kind": "key_phrase",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "subtly",
+        "kind": "key_phrase",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "After Wave",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 017 remediation requires five foundational primitives to land before any consumer work can begin. Without Wave A:",
+    "created_at": "2026-04-18T14:40:19.038Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime/002-infrastructure-primitives",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime/002-infrastructure-primitives",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime/002-infrastructure-primitives",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives",
+    "local_phase_slug": "001-foundational-runtime",
+    "original_phase_slug": "016-foundational-runtime",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

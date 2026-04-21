@@ -14,6 +14,7 @@ const workflowHarness = vi.hoisted(() => ({
 
 vi.mock('../spec-folder', () => ({
   detectSpecFolder: vi.fn(async () => workflowHarness.specFolderPath),
+  ensureSpecFolderExists: vi.fn(async () => workflowHarness.specFolderPath),
 }));
 
 vi.mock('@spec-kit/mcp-server/api/providers', () => ({
@@ -76,10 +77,15 @@ describe('trigger phrase workflow fixes', () => {
       expect(result.contextDir).toBe(specFolderPath);
       expect(result).not.toHaveProperty('contextFilename');
       expect(result.writtenFiles).toEqual([]);
-      expect(triggerPhrases).toEqual(['014 code graph upgrades runtime', 'render quality', 'canonical sources', 'memory save']);
-      expect(triggerPhrases).not.toContain('taxonomy additive');
-      expect(triggerPhrases).not.toContain('additive edge');
-      expect(triggerPhrases).not.toContain('edge evidence');
+      expect(triggerPhrases).toEqual([
+        'render quality',
+        'canonical sources',
+        'memory save',
+        'taxonomy additive',
+        'additive edge',
+        'edge evidence',
+      ]);
+      expect(triggerPhrases).not.toContain('014 code graph upgrades runtime');
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }

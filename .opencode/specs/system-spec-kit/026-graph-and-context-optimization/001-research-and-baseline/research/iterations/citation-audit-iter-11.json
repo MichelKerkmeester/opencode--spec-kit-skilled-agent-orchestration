@@ -1,0 +1,476 @@
+{
+  "iteration": 11,
+  "generated_at": "2026-04-07T11:21:45Z",
+  "findings_audited": 30,
+  "selection_method": "top by impact (recommendations evidence, killer-combo participation, cross-phase synthesis anchors, and iter-9 flags)",
+  "audits": [
+    {
+      "finding_id": "F-CROSS-036",
+      "title": "Benchmark-honest token reporting",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "31-31",
+          "verdict": "weak",
+          "actual_content_summary": "Q-C table row says the token-reporting rubric layers cleanly onto existing telemetry/reporting.",
+          "suggested_fix": "Prefer research/iterations/q-a-token-honesty.md:115-125 for the actual methodology claim."
+        }
+      ],
+      "overall_severity": "mostly-solid"
+    },
+    {
+      "finding_id": "F-CROSS-028",
+      "title": "AST-first / regex-fallback / confidence labels",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "23-23",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says AST-first/regex-fallback stays inside Code Graph and avoids semantic or memory overlap."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-047",
+      "title": "Deterministic summary computation at Stop time",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "42-42",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row calls Stop-time summaries a producer-side improvement inside the same memory pipeline."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-064",
+      "title": "Evidence labeling is a transport-level guarantee, not a UI convention",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "phase-4/research/research.md",
+          "lines": "633-634",
+          "verdict": "missing",
+          "actual_content_summary": "Literal path phase-4/research/research.md does not exist in this checkout.",
+          "suggested_fix": "Replace with 004-graphify/research/research.md:633-633."
+        }
+      ],
+      "overall_severity": "broken"
+    },
+    {
+      "finding_id": "F-CROSS-046",
+      "title": "Cached `context_summary` SessionStart fast path",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "41-41",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says cached context_summary is a continuity-only fit with no semantic overlap."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-038",
+      "title": "Graph-first PreToolUse hook",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "33-33",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says the hook nudges toward the existing split instead of replacing it."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-041",
+      "title": "`validate.py` schema-boundary validator",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "36-36",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says validate.py is a local interchange validator with no routing conflict."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-055",
+      "title": "Public should only publish token-savings headlines from frozen, quality-gated tasks",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-a-token-honesty.md",
+          "lines": "115-125",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-A requires frozen tasks, quality gates, and provider-counted totals before any headline metric."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-030",
+      "title": "Static artifacts as default + MCP as overlay",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "25-25",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says artifact-plus-overlay packaging needs careful source-of-truth boundaries."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-029",
+      "title": "Per-tool profile overlay split",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "24-24",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says per-tool overlays sit beside the three core retrieval surfaces."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-050",
+      "title": "Per-tier pricing and cache normalization",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "45-45",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says pricing/cache normalization is a one-surface analytics schema extension."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-026",
+      "title": "Public's 008-signal-extraction packet is a monolithic extractor unification, not an auditor/discoverer split",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "phase-5/research/research.md",
+          "lines": "219-235",
+          "verdict": "missing",
+          "actual_content_summary": "Literal path phase-5/research/research.md does not exist in this checkout.",
+          "suggested_fix": "Replace with research/iterations/iteration-3.md:129-133 or 005-claudest/research/research.md:219-235 plus the 008 packet citation."
+        }
+      ],
+      "overall_severity": "broken"
+    },
+    {
+      "finding_id": "F-CROSS-033",
+      "title": "SQLAlchemy AST schema extraction",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "28-28",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says SQLAlchemy AST extraction is detector/schema work inside one surface."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-045",
+      "title": "Runtime FTS capability cascade",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "40-40",
+          "verdict": "weak",
+          "actual_content_summary": "Q-C row says the FTS cascade is a one-surface change with migration and fallback costs.",
+          "suggested_fix": "Prefer 005-claudest/research/research.md:395-405 for the concrete runtime fallback contract."
+        }
+      ],
+      "overall_severity": "mostly-solid"
+    },
+    {
+      "finding_id": "F-CROSS-005",
+      "title": "Cross-phase validation of phase 005 auditor/parser vs F14-F17 expectations",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "phase-1/research/research.md",
+          "lines": "179-196",
+          "verdict": "missing",
+          "actual_content_summary": "Literal path phase-1/research/research.md does not exist in this checkout.",
+          "suggested_fix": "Replace with 001-claude-optimization-settings/research/research.md:179-196 and add 001-claude-optimization-settings/research/research.md:335-339 if the F17 portability point is intended."
+        }
+      ],
+      "overall_severity": "broken"
+    },
+    {
+      "finding_id": "F-CROSS-052",
+      "title": "Dashboard JSON contracts",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "47-47",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says dashboard JSON contracts are safe if Public borrows contracts, not HTML."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-056",
+      "title": "Public already leads structural and semantic query, so adoption should reinforce routing",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/cross-phase-matrix.md",
+          "lines": "40-56",
+          "verdict": "weak",
+          "actual_content_summary": "Matrix rows prove Public leads structural and semantic query, not the uncited 'that matter most' weighting.",
+          "suggested_fix": "Either narrow the claim to Public's lead itself or add research/iterations/q-c-composition-risk.md:16 for the routing inference."
+        }
+      ],
+      "overall_severity": "mostly-solid"
+    },
+    {
+      "finding_id": "F-CROSS-037",
+      "title": "Evidence-tagging contract + `confidence_score`",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "32-32",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says evidence tags are safe if confidence stays surface-local, not one truth scale."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-054",
+      "title": "Search/browse separation",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "49-49",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says search/browse separation strengthens API clarity and fits Public's mode split."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-044",
+      "title": "Stable JSON interchange artifact",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "39-39",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says a stable JSON artifact adds a durable projection boundary but needs provenance rules."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-060",
+      "title": "The strongest combo is warm-start memory plus graph-first routing, not a new super-surface",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-f-killer-combos.md",
+          "lines": "11-29",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-F combo 1 ranks cached summaries plus graph-first routing as the top topology-safe combo."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-031",
+      "title": "F1 fixture harness for detector regression",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "26-26",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says the F1 detector harness is test-only utility with zero routing conflict."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-035",
+      "title": "Generated `.mcp.json` scaffold plus setup hints",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "30-30",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says generated .mcp.json scaffolding is activation ergonomics, not a schema conflict."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-049",
+      "title": "4-phase consolidation contract",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "44-44",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C row says the 4-phase consolidation contract is workflow scaffolding for memory review."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-061",
+      "title": "ENABLE_TOOL_SEARCH is already the baseline win in Public",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "phase-1/research/research.md",
+          "lines": "36-48",
+          "verdict": "missing",
+          "actual_content_summary": "Literal path phase-1/research/research.md does not exist in this checkout.",
+          "suggested_fix": "Replace with 001-claude-optimization-settings/research/research.md:36-47."
+        }
+      ],
+      "overall_severity": "broken"
+    },
+    {
+      "finding_id": "F-CROSS-062",
+      "title": "generateAIConfigs ships one shared summary into 5 assistant files with safe append semantics",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "phase-2/research/research.md",
+          "lines": "283-291",
+          "verdict": "missing",
+          "actual_content_summary": "Literal path phase-2/research/research.md does not exist in this checkout.",
+          "suggested_fix": "Replace with 002-codesight/research/research.md:283-286."
+        }
+      ],
+      "overall_severity": "broken"
+    },
+    {
+      "finding_id": "F-CROSS-065",
+      "title": "Cached summary fast path turns startup recall into a DB lookup",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "phase-5/research/research.md",
+          "lines": "171-185",
+          "verdict": "missing",
+          "actual_content_summary": "Literal path phase-5/research/research.md does not exist in this checkout.",
+          "suggested_fix": "Replace with 005-claudest/research/research.md:171-185."
+        }
+      ],
+      "overall_severity": "broken"
+    },
+    {
+      "finding_id": "F-CROSS-057",
+      "title": "Monolithic scan or bootstrap facades are the main architecture risk in this packet",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-c-composition-risk.md",
+          "lines": "11-16",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-C TLDR says the main risk is any scan/bootstrap facade that sits above all three owners."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-058",
+      "title": "P0 should front-load measurement, producer summaries, and schema discipline before feature scale",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-d-adoption-sequencing.md",
+          "lines": "6-11",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-D TLDR puts measurement, Stop-time summaries, and schema rails first before scaling features."
+        }
+      ],
+      "overall_severity": "solid"
+    },
+    {
+      "finding_id": "F-CROSS-059",
+      "title": "Contextador is a concept-transfer-only reference because AGPL and Bun are both real gates",
+      "evidence_count": 1,
+      "citation_results": [
+        {
+          "evidence_index": 0,
+          "file": "research/iterations/q-e-license-runtime.md",
+          "lines": "50-69",
+          "verdict": "accurate",
+          "actual_content_summary": "Q-E says Contextador's AGPL license and Bun runtime block source lift and limit reuse to ideas."
+        }
+      ],
+      "overall_severity": "solid"
+    }
+  ],
+  "summary": {
+    "solid": 21,
+    "mostly_solid": 3,
+    "needs_fix": 0,
+    "broken": 6,
+    "total_drifted_citations": 0,
+    "total_missing_citations": 6,
+    "audit_pass_rate": 0.8
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening",
+  "description": "Flattened active phase parent: Runtime Executor Hardening",
+  "keywords": [
+    "runtime-executor-hardening",
+    "foundational",
+    "runtime",
+    "cli",
+    "executor",
+    "matrix",
+    "and",
+    "system",
+    "hardening"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "008",
+  "folderSlug": "runtime-executor-hardening",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "child_phase_folders": [
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening"
+    ],
+    "layout": "phase-root-children"
+  }
+}

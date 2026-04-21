@@ -40,8 +40,8 @@ This remains the **only open P0** from iterations 001-010. It is a pure spec bug
 ### Proposed parent patch
 
 ```diff
---- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
-+++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
+--- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
++++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
 @@ Pre-implementation patch queue for child 005
 +- Patch child 005 before implementation:
 +  - Replace the overloaded replay gate with one of two consistent forms:
@@ -70,8 +70,8 @@ This is still a **pre-implementation P1**, not a new P0. The graph-staleness sig
 ### Proposed parent patch
 
 ```diff
---- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
-+++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
+--- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
++++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
 @@ Pre-implementation patch queue for children 003-004
 +- Patch child 003 before implementation:
 +  - add an acceptance scenario for malformed or unreadable `.opencode/skill/.advisor-state/generation.json`;
@@ -101,8 +101,8 @@ This is the highest-impact remaining runtime P1 because it can otherwise let `00
 ### Proposed parent patch
 
 ```diff
---- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
-+++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
+--- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
++++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
 @@ Pre-implementation patch queue for child 007
 +- Promote Copilot transport proof to a P0 merge gate:
 +  - the default SDK path is allowed only after a checked-in fixture or captured runtime artifact proves that the repo-supported Copilot version exposes model-visible `onUserPromptSubmitted` `additionalContext`;

@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 2 single-owner metadata",
+      "importance-tier ssot",
+      "d4 metadata drift",
+      "d7 provenance injection",
+      "f-ac4",
+      "f-ac6",
+      "phase 2 implementation plan",
+      "pr-3",
+      "pr-4",
+      "importance-tier ssot plan",
+      "provenance-only injection plan",
+      "phase 2 tasks"
+    ],
+    "key_topics": [
+      "phase",
+      "single-owner",
+      "metadata",
+      "importance-tier",
+      "ssot",
+      "drift",
+      "provenance",
+      "injection",
+      "f-ac4",
+      "f-ac6",
+      "implementation",
+      "plan"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts",
+      ".opencode/skill/system-spec-kit/scripts/lib/frontmatter-migration.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase2-pr3.test.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC4-importance-tier.json",
+      ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC6-provenance.json",
+      "checklist.md",
+      "implementation-summary.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "scripts/core/workflow.ts",
+      "tests/fixtures/memory-quality/F-AC6-provenance.json",
+      "tests/memory-quality-phase2-pr3.test.ts",
+      "tests/fixtures/memory-quality/F-AC4-importance-tier.json"
+    ],
+    "entities": [
+      {
+        "name": "session-extractor.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "frontmatter-migration.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/frontmatter-migration.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-save-review.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-quality-phase2-pr3.test.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase2-pr3.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "F-AC4-importance-tier.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC4-importance-tier.json",
+        "source": "derived"
+      },
+      {
+        "name": "F-AC6-provenance.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC6-provenance.json",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Owner Metadata Fixes",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Overview",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Folder",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Primary Defects",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Primary Fixtures",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Primary Runtime",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Exit",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Single",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 2 is the P1 child packet for the two metadata defects that the parent research grouped into the same rollout band: D4 importance-tier mismatch and D7 empty git provenance. The phase exists to land PR-3 and PR-4 without pulling in the broader heuristic or refactor work reserved for later phases. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/research/research.md:1156-1157]",
+    "created_at": "2026-04-12T09:02:53.457Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/002-single-owner-metadata",
+    "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/002-single-owner-metadata",
+    "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/002-single-owner-metadata",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/002-single-owner-metadata",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/002-single-owner-metadata",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/002-single-owner-metadata",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata",
+    "local_phase_slug": "002-memory-quality-remediation",
+    "original_phase_slug": "003-memory-quality-remediation",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

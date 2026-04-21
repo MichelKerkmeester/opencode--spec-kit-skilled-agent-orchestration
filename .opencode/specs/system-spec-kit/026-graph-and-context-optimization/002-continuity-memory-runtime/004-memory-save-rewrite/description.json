@@ -1,0 +1,60 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite",
+  "specId": "014",
+  "folderSlug": "memory-save-rewrite",
+  "title": "/memory:save Planner-First Default",
+  "description": "Feature specification for the `/memory:save` planner-first default contract. This packet rewrites the save path so plan-only becomes the honest default, legacy `[spec]/memory/*.md` behavior is retired end-to-end, full-auto mutation is preserved only as an explicit fallback, and metadata freshness, enrichment, and indexing work move behind callable follow-up APIs rather than riding the default save path by accident.",
+  "trigger_phrases": [
+    "memory save planner-first default",
+    "planner-first save contract",
+    "full-auto fallback preservation",
+    "legacy memory file retirement",
+    "save-flow architecture simplification",
+    "metadata freshness decoupling",
+    "content router honesty",
+    "SPECKIT_SAVE_PLANNER_MODE configuration",
+    "planner mode hybrid reserved",
+    "post-save follow-up apis"
+  ],
+  "keywords": [
+    "memory save system",
+    "planner-first architecture",
+    "full-auto fallback",
+    "save workflow",
+    "continuity validation",
+    "atomic writer",
+    "content routing",
+    "legacy path retirement",
+    "metadata refresh",
+    "follow-up APIs",
+    "env configuration",
+    "save quality gate",
+    "freshness services",
+    "save rewrite"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "002-continuity-memory-runtime"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/014-memory-save-rewrite",
+    "local_phase_slug": "004-memory-save-rewrite",
+    "original_phase_slug": "014-memory-save-rewrite",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite",
+      "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/014-memory-save-rewrite",
+      "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite"
+    ]
+  }
+}

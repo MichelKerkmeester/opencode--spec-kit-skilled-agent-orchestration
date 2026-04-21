@@ -2,7 +2,7 @@
 title: 015 Delta Review Summary
 date: 2026-04-18
 source_review_packet: 019-system-hardening-001-initial-research-002-delta-review-015
-source_review_report: ../019-system-hardening-001-initial-research-002-delta-review-015/review-report.md
+source_review_report: ../003-system-hardening-001-initial-research-002-delta-review-015/review-report.md
 status: conditional
 ---
 
@@ -46,4 +46,4 @@ Do not reopen the original 015 backlog wholesale. Restart 015 as a narrowed hard
 
 See the canonical synthesis report:
 
-- `../019-system-hardening-001-initial-research-002-delta-review-015/review-report.md`
+- `../003-system-hardening-001-initial-research-002-delta-review-015/review-report.md`

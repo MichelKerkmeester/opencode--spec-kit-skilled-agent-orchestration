@@ -7,7 +7,7 @@
 
 ## Findings
 
-- P1 `R010-F002`: The promoted `001` root review report still says the Stage 3 continuity handoff defect is active, but the live rerank code now prefers `adaptiveFusionIntent` before `detectedIntent`, so the promoted review artifact is stale after promotion. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/review/review-report.md:11] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:209]
+- P1 `R010-F002`: The promoted `001` root review report still says the Stage 3 continuity handoff defect is active, but the live rerank code now prefers `adaptiveFusionIntent` before `detectedIntent`, so the promoted review artifact is stale after promotion. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/review/review-report.md:11] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:209]
 
 ## Ruled Out
 

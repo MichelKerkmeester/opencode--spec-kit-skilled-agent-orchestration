@@ -1,18 +1,21 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization",
-  "description": "Feature Specification: Graph and Context Optimization",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/",
+  "description": "Feature Specification: Graph and Context Optimization, consolidated to nine active thematic phases with source history preserved",
   "keywords": [
     "feature",
     "specification",
     "graph",
     "context",
-    "optimization"
+    "optimization",
+    "phase-consolidation",
+    "source-history"
   ],
-  "lastUpdated": "2026-04-18T16:45:36.845Z",
+  "lastUpdated": "2026-04-21T13:00:00Z",
   "specId": "026",
   "folderSlug": "graph-and-context-optimization",
   "parentChain": [
-    "system-spec-kit"
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
   ],
   "memorySequence": 5,
   "memoryNameHistory": [
@@ -21,5 +24,15 @@
     "09-04-26_21-41__verified-the-026-graph-and-context-optimization.md",
     "09-04-26_21-41__verified-the-026-graph-and-context-optimization-1.md",
     "18-04-26_17-45__refresh-description-json-graph-metadata-json.md"
-  ]
+  ],
+  "migration": {
+    "consolidated_at": "2026-04-21T12:00:00Z",
+    "old_top_level_phase_count": 29,
+    "active_top_level_phase_count": 9,
+    "map_doc": "system-spec-kit/026-graph-and-context-optimization/merged-phase-map.md",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/",
+    "layout": "phase-root-children"
+  }
 }

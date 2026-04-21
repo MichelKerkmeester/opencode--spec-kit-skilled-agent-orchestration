@@ -19,7 +19,7 @@ Q2: preserve-field analysis for `generate-description.js`. Determine the exact o
 Reproduction path:
 - Read `.opencode/skill/system-spec-kit/scripts/spec-folder/generate-description.ts`.
 - Read `.opencode/skill/system-spec-kit/mcp_server/lib/search/folder-discovery.ts:39-41` and `:636-757`.
-- Compare the generated object shape with a rich packet file such as `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/003-cluster-consumers/description.json`.
+- Compare the generated object shape with a rich packet file such as `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers/description.json`.
 
 Evidence:
 - `PerFolderDescription` only defines `specFolder`, `description`, `keywords`, `lastUpdated`, `specId`, `folderSlug`, `parentChain`, `memorySequence`, and `memoryNameHistory`.

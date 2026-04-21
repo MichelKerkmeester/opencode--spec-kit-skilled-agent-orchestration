@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph",
+        "reason": "Legacy manual depends_on entry normalized for schema-valid backfill.",
+        "source": "manual",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph"
+      }
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "001-research-findings-fixes",
+      "skill graph fixes",
+      "graph findings fixes",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "graph fixes decisions",
+      "summary"
+    ],
+    "key_topics": [
+      "001-research-findings-fixes",
+      "skill",
+      "graph",
+      "fixes",
+      "findings",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "decisions"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
+      ".opencode/skill/system-spec-kit/graph-metadata.json",
+      ".opencode/skill/sk-doc/graph-metadata.json",
+      ".opencode/skill/mcp-coco-index/graph-metadata.json",
+      ".opencode/skill/sk-improve-prompt/graph-metadata.json",
+      ".opencode/skill/sk-deep-review/graph-metadata.json",
+      ".opencode/skill/sk-deep-research/graph-metadata.json",
+      ".opencode/skill/skill-advisor/scripts/skill-graph.json",
+      ".opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_graph_compiler.py",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/graph-metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "skill-graph.json",
+        "kind": "config",
+        "path": ".opencode/skill/skill-advisor/scripts/skill-graph.json",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor_regression_cases.jsonl",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Graph Research Findings Fixes",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Blocking Issues",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Should Fix",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Fix",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Guard Against Ghost Candidates",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Fill Edge Gaps",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Fix the issues found by a 10-iteration GPT-5.4 deep research audit of the skill graph system. The audit concluded the system is safe as an assist layer but not production-ready. This phase addresses 5 blocking (P0) issues and 5 important (P1) issues to bring the graph to production quality.",
+    "created_at": "2026-04-13T16:00:00.000Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/001-research-findings-fixes",
+    "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/011-skill-advisor-graph/001-research-findings-fixes",
+    "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/001-research-findings-fixes",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/001-research-findings-fixes",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/011-skill-advisor-graph/001-research-findings-fixes",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/011-skill-advisor-graph/001-research-findings-fixes",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes",
+    "local_phase_slug": "002-skill-advisor-graph",
+    "original_phase_slug": "011-skill-advisor-graph",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

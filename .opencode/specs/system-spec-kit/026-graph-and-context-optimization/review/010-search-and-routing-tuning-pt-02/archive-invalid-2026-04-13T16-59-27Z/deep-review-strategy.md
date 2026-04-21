@@ -72,7 +72,7 @@ Root review of `010-search-and-routing-tuning` covering the promoted parent meta
 - Why blocked: The runtime now prefers `implementation-summary.md` and the targeted regression proves that behavior.
 - Do NOT retry: `002-content-routing-accuracy/review/review-report.md` as evidence for a live metadata-only host bug.
 
-### Additional old-path runtime wiring beyond prompts, review artifacts, and stale root packet metadata: ruled out after config, description, and code sweeps. [SOURCE: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/description.json:3`] [SOURCE: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/graph-metadata.json:3`] -- BLOCKED (iteration 18, 1 attempts)
+### Additional old-path runtime wiring beyond prompts, review artifacts, and stale root packet metadata: ruled out after config, description, and code sweeps. [SOURCE: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/description.json:3`] [SOURCE: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/graph-metadata.json:3`] -- BLOCKED (iteration 18, 1 attempts)
 - What was tried: Look for deeper runtime-path migration failures outside the promoted packet artifacts themselves.
 - Why blocked: The high-signal drift concentrated in prompts, review outputs, and root metadata/state, not in an additional hidden runtime path.
 - Do NOT retry: Broad speculative runtime path hunting without a concrete stale reference.
@@ -112,24 +112,24 @@ Stop iteration. Open a promotion-integrity remediation pass that regenerates roo
 ## 15. FILES UNDER REVIEW
 | File | Dimensions Reviewed | Last Iteration | Findings | Status |
 |------|---------------------|----------------|----------|--------|
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/description.json` | D1, D3, D4 | 18 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/graph-metadata.json` | D1, D3, D4 | 18 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/graph-metadata.json` | D1, D3 | 17 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/review/review-report.md` | D3, D4 | 13 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/review/deep-review-dashboard.md` | D3, D4 | 13 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/tasks.md` | D3, D4 | 12 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/spec.md` | D3 | 12 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/tasks.md` | D3, D4 | 12 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/checklist.md` | D3 | 12 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/graph-metadata.json` | D1, D3 | 17 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/prompts/deep-research-prompt.md` | D3 | 18 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/review/review-report.md` | D3, D4 | 13 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/review/deep-review-config.json` | D3, D4 | 13 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/graph-metadata.json` | D1, D3 | 17 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/tasks.md` | D3, D4 | 15 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/implementation-summary.md` | D1, D3 | 17 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/review/deep-review-dashboard.md` | D3, D4 | 13 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/review/deep-review-config.json` | D3, D4 | 13 | 0 P0, 0 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/description.json` | D1, D3, D4 | 18 | 0 P0, 0 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/graph-metadata.json` | D1, D3, D4 | 18 | 0 P0, 0 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/graph-metadata.json` | D1, D3 | 17 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/review/review-report.md` | D3, D4 | 13 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/review/deep-review-dashboard.md` | D3, D4 | 13 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/tasks.md` | D3, D4 | 12 | 0 P0, 0 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/spec.md` | D3 | 12 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/tasks.md` | D3, D4 | 12 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/checklist.md` | D3 | 12 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/graph-metadata.json` | D1, D3 | 17 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/prompts/deep-research-prompt.md` | D3 | 18 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/review/review-report.md` | D3, D4 | 13 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/review/deep-review-config.json` | D3, D4 | 13 | 0 P0, 0 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/graph-metadata.json` | D1, D3 | 17 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/tasks.md` | D3, D4 | 15 | 0 P0, 0 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/implementation-summary.md` | D1, D3 | 17 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/review/deep-review-dashboard.md` | D3, D4 | 13 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/review/deep-review-config.json` | D3, D4 | 13 | 0 P0, 0 P1, 0 P2 | complete |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts` | D1, D3 | 17 | 0 P0, 0 P1, 0 P2 | complete |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts` | D1 | 17 | 0 P0, 0 P1, 0 P2 | complete |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts` | D1, D3 | 17 | 0 P0, 0 P1, 0 P2 | complete |

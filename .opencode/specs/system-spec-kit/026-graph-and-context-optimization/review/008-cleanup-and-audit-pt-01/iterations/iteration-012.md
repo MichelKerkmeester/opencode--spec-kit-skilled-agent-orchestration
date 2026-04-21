@@ -2,7 +2,7 @@
 
 - Timestamp: 2026-04-14T10:19:00.000Z
 - Focus dimension: maintainability
-- Files reviewed: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/memory, .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/memory
+- Files reviewed: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/memory, .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/memory
 - Outcome: No new findings. The sampled packet memory directories were historical or empty, so they do not contradict the deprecation on their own.
 
 ## Findings

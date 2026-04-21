@@ -2416,7 +2416,7 @@
     {
       "id": "R45-004",
       "iteration": 45,
-      "file": ".opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts; .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/spec.md",
+      "file": ".opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts; .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/spec.md",
       "lines": "manual-playbook-runner.ts:245-271; manual-playbook-runner.ts:1203-1217; manual_testing_playbook.md:196-230; spec.md:131-134",
       "severity": "P1",
       "description": "The manual playbook runner silently drops active scenario files when their markdown no longer matches the parser's expected prompt/expected-signals shapes. Parse failure returns `null`, `main()` filters those entries out before coverage totals, and the runner logs only the reduced definition count as the \"active scenario\" set.",
@@ -2536,7 +2536,7 @@
     {
       "id": "R50-002",
       "iteration": 50,
-      "file": ".opencode/skill/system-spec-kit/manual_testing_playbook/05--lifecycle/097-async-ingestion-job-lifecycle-p0-3.md; .opencode/skill/system-spec-kit/manual_testing_playbook/05--lifecycle/144-advisory-ingest-lifecycle-forecast.md; .opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts; .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/spec.md",
+      "file": ".opencode/skill/system-spec-kit/manual_testing_playbook/05--lifecycle/097-async-ingestion-job-lifecycle-p0-3.md; .opencode/skill/system-spec-kit/manual_testing_playbook/05--lifecycle/144-advisory-ingest-lifecycle-forecast.md; .opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts; .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/spec.md",
       "lines": "097-async-ingestion-job-lifecycle-p0-3.md:35-37; 144-advisory-ingest-lifecycle-forecast.md:35-36; manual-playbook-runner.ts:438-445,544-548,612-616; manual_testing_playbook.md:194-199; 002-full-playbook-execution/spec.md:131-134",
       "severity": "P2",
       "description": "The manual playbook's executable argument grammar is already inconsistent inside the live corpus. One checked-in lifecycle scenario uses explicit string syntax (`memory_ingest_status({ jobId:\"<job-id>\" })`), but another uses JavaScript shorthand (`memory_ingest_status({jobId})` / `memory_ingest_cancel({jobId})`). The runner does not define or inject a `jobId` variable into the evaluation scope; for any brace-prefixed arg source it bypasses default-tool args and executes the raw object literal with `Function(...)`. That makes the shorthand form dependent on undocumented JS scoping rather than a mechanically validated playbook DSL.",

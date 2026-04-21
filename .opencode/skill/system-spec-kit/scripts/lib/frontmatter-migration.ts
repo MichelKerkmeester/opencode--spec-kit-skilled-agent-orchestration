@@ -1024,6 +1024,19 @@ function inferImportanceTier(
   classification: ClassifiedDocument
 ): string {
   if (existingTier) {
+    if (existingTier === 'normal') {
+      const metadataTier = extractMemoryMetadataImportanceTier(content);
+      const tableMatch = content.match(/\|\s*Importance\s*Tier\s*\|\s*([^|\n]+)\|/i);
+      const tableTier = normalizeImportanceTier(tableMatch?.[1]?.trim());
+      const nonDefaultTier = metadataTier && metadataTier !== 'normal'
+        ? metadataTier
+        : tableTier && tableTier !== 'normal'
+          ? tableTier
+          : null;
+      if (nonDefaultTier) {
+        return nonDefaultTier;
+      }
+    }
     return existingTier;
   }
 

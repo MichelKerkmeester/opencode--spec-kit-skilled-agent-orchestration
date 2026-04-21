@@ -26,11 +26,9 @@ describe('/memory:learn command docs', () => {
       '.opencode/command/README.txt',
       '.opencode/command/memory/README.txt',
       '.opencode/command/memory/search.md',
-      '.opencode/command/spec_kit/debug.md',
       '.opencode/command/spec_kit/complete.md',
       'README.md',
       '.opencode/README.md',
-      '.opencode/agent/speckit.md',
     ];
 
     const contents = docPaths.map((docPath) => ({

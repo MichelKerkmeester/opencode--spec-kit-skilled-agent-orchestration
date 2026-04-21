@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation",
+        "reason": "depends_on relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/003-lifecycle-and-derived-metadata",
+        "reason": "depends_on relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/003-lifecycle-and-derived-metadata"
+      }
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "027/003",
+      "native advisor core",
+      "5-lane fusion",
+      "python to ts port",
+      "parity harness",
+      "skill projection"
+    ],
+    "key_topics": [
+      "analytical-fusion",
+      "lane-separation",
+      "causal-traversal",
+      "skill-edges",
+      "ambiguity-top-two",
+      "attribution",
+      "ablation",
+      "200-prompt-parity",
+      "cache-hit-p95"
+    ],
+    "status": "draft",
+    "lastRefreshed": "2026-04-20T14:00:00.000Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "save_lineage": "same_pass",
+    "importance_tier": "normal",
+    "key_files": [],
+    "entities": [],
+    "causal_summary": "",
+    "created_at": "2026-04-21T14:30:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md"
+    ]
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/027-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/027-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/027-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
+    "local_phase_slug": "002-skill-graph-daemon-and-advisor-unification",
+    "original_phase_slug": "027-skill-graph-daemon-and-advisor-unification",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

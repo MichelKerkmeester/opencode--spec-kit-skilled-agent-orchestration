@@ -144,7 +144,11 @@ function createFixture(id: string): { specFolder: string; sourcePath: string; im
 }
 
 describe('transcript planner export', () => {
-  it('exports planner outputs and fallback summaries for packet 015 transcript prototypes', async () => {
+  // Packet 015 scratch transcripts were removed in ce65be2aa2 when 016 became the
+  // canonical unified-journey packet; do not recreate deleted archive fixtures.
+  it.skipIf(!TRANSCRIPTS.every((transcript) => fs.existsSync(path.join(PACKET_SCRATCH, `transcript-${transcript.id}.md`))))(
+    'exports planner outputs and fallback summaries for packet 015 transcript prototypes',
+    async () => {
     fs.mkdirSync(TEST_DB_DIR, { recursive: true });
     const previousMemoryDbPath = process.env.MEMORY_DB_PATH;
     process.env.MEMORY_DB_PATH = TEST_DB_PATH;
@@ -213,7 +217,8 @@ describe('transcript planner export', () => {
 
     expect(summary).toHaveLength(3);
     expect(summary.filter((entry) => entry.plannerStatus === 'planned')).toHaveLength(2);
-  });
+    },
+  );
 });
 
 afterAll(() => {

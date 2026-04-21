@@ -7,7 +7,7 @@
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 20,
   "progressiveSynthesis": true,
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research/003-implementation-plan-validation-copilot",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/003-implementation-plan-validation-copilot",
   "createdAt": "2026-04-19T10:00:00Z",
   "status": "complete",
   "executionMode": "auto",

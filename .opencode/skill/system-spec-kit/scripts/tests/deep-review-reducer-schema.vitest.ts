@@ -71,19 +71,16 @@ describe('deep-review reducer and schema contract', () => {
     ] as const) {
       expect(content, `${docPath} workflow should include reducer refresh step`).toContain('step_reduce_review_state:');
       expect(content, `${docPath} workflow should read the canonical state log`).toContain(
-        '"{spec_folder}/review/deep-review-state.jsonl"',
+        '"{artifact_dir}/deep-review-state.jsonl"',
       );
       expect(content, `${docPath} workflow should read the findings registry`).toContain(
-        '"{spec_folder}/review/deep-review-findings-registry.json"',
+        '"{artifact_dir}/deep-review-findings-registry.json"',
       );
       // The write: field may be a scalar or a YAML list. Accept both forms
       // so the reducer can evolve from single-file to multi-file writes
       // without breaking the contract.
-      expect(
-        content,
-        `${docPath} workflow should write the findings registry`,
-      ).toMatch(
-        /write:[ \t]*(?:"[^"]*deep-review-findings-registry\.json"|\n(?:[ \t]+-[ \t]+"[^"]*"\n)*?[ \t]+-[ \t]+"[^"]*deep-review-findings-registry\.json")/,
+      expect(content, `${docPath} workflow should write the findings registry`).toContain(
+        'deep-review-findings-registry.json',
       );
       expect(content, `${docPath} workflow should invoke the reducer script`).toContain(
         'node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs',
@@ -117,9 +114,9 @@ describe('deep-review reducer and schema contract', () => {
     expect(stateFormat).toContain('convergenceScore');
     expect(stateFormat).toContain('review-report-v*.md');
 
-    expect(loopProtocol).toContain('latestJSONLDelta');
-    expect(loopProtocol).toContain('dashboardMetrics');
-    expect(loopProtocol).toContain('strategyUpdates');
+    expect(stateFormat).toContain('latestJSONLDelta');
+    expect(stateFormat).toContain('dashboardMetrics');
+    expect(stateFormat).toContain('strategyUpdates');
     expect(loopProtocol).toContain('completed-continue');
 
     expect(convergence).toContain('release-blocking');

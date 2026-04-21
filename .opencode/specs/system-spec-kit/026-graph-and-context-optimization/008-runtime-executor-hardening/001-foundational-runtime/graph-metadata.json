@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening",
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "foundational runtime remediation",
+      "phase 017 remediation",
+      "017 review findings",
+      "h-56-1 canonical save fix",
+      "cluster d code-graph asymmetry",
+      "cluster e copilot observability",
+      "50-iter foundational research",
+      "017 phase 017 plan",
+      "wave a infrastructure",
+      "wave b consumers",
+      "wave c rollout",
+      "phase 017 implementation plan"
+    ],
+    "key_topics": [
+      "foundational",
+      "runtime",
+      "remediation",
+      "phase",
+      "017",
+      "review",
+      "findings",
+      "h-56-1",
+      "canonical",
+      "save",
+      "fix",
+      "cluster"
+    ],
+    "importance_tier": "critical",
+    "status": "in_progress",
+    "key_files": [
+      "mcp_server/lib/code-graph/readiness-contract.ts",
+      "mcp_server/lib/context/caller-context.ts",
+      "mcp_server/lib/enrichment/retry-budget.ts",
+      "handlers/save/post-insert.ts",
+      "scripts/validation/continuity-freshness.ts",
+      "handlers/code-graph/context.ts",
+      "scripts/validation/evidence-marker-lint.ts",
+      "hooks/shared-provenance.ts",
+      "hooks/claude/shared.ts",
+      "hooks/copilot/compact-cache.ts",
+      "lib/governance/scope-governance.ts",
+      "scripts/tests/gate-3-classifier.vitest.ts",
+      "lib/utils/exhaustiveness.ts",
+      "scripts/validation/evidence-marker-audit.ts",
+      "shared/gate-3-classifier.ts",
+      "lib/context/caller-context.ts",
+      "handlers/session-resume.ts",
+      "handlers/code-graph/query.ts",
+      "lib/code-graph/readiness-contract.ts",
+      "hooks/copilot/session-prime.ts"
+    ],
+    "entities": [
+      {
+        "name": "readiness-contract.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/code-graph/readiness-contract.ts",
+        "source": "derived"
+      },
+      {
+        "name": "caller-context.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/context/caller-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "retry-budget.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/enrichment/retry-budget.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-insert.ts",
+        "kind": "code",
+        "path": "handlers/save/post-insert.ts",
+        "source": "derived"
+      },
+      {
+        "name": "continuity-freshness.ts",
+        "kind": "code",
+        "path": "scripts/validation/continuity-freshness.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context.ts",
+        "kind": "code",
+        "path": "handlers/code-graph/context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "evidence-marker-lint.ts",
+        "kind": "code",
+        "path": "scripts/validation/evidence-marker-lint.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-provenance.ts",
+        "kind": "code",
+        "path": "hooks/shared-provenance.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared.ts",
+        "kind": "code",
+        "path": "hooks/claude/shared.ts",
+        "source": "derived"
+      },
+      {
+        "name": "compact-cache.ts",
+        "kind": "code",
+        "path": "hooks/copilot/compact-cache.ts",
+        "source": "derived"
+      },
+      {
+        "name": "scope-governance.ts",
+        "kind": "code",
+        "path": "lib/governance/scope-governance.ts",
+        "source": "derived"
+      },
+      {
+        "name": "gate-3-classifier.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/gate-3-classifier.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "exhaustiveness.ts",
+        "kind": "code",
+        "path": "lib/utils/exhaustiveness.ts",
+        "source": "derived"
+      },
+      {
+        "name": "evidence-marker-audit.ts",
+        "kind": "code",
+        "path": "scripts/validation/evidence-marker-audit.ts",
+        "source": "derived"
+      },
+      {
+        "name": "gate-3-classifier.ts",
+        "kind": "code",
+        "path": "shared/gate-3-classifier.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": "handlers/session-resume.ts",
+        "source": "derived"
+      },
+      {
+        "name": "query.ts",
+        "kind": "code",
+        "path": "handlers/code-graph/query.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "hooks/copilot/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Foundational Runtime",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Findings Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Ready",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Awaiting Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implement Approval",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 017 (27 `fix(016)` commits landing P0-A/B/C/D, S1-S7 structural refactors, M3-M13 medium refactors, 21 quick wins, 34 test migrations) completed the remediation scoped from the 50-iteration Phase 016 research. A 7-iteration deep-review then meta-audited Phase 017 and produced verdict **CONDITIONAL** with 10 P1 + 18 P2 findings across 3 clusters (A scope-normalization, B canonical-save-surface, C ASCII-only sanitization) + 4 standalone P1s. A subsequent 7-iteration deep-research segment (iters 51-57) extended that inventory by 14 new findings (9 P1, 5 P2), confirmed 3 compound-hypothesis attack chains, refuted all 5 P2→P1 upgrade candidates, and ruled out P0 escalation under expanded threat models.",
+    "created_at": "2026-04-18T14:40:19.024Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime",
+    "local_phase_slug": "001-foundational-runtime",
+    "original_phase_slug": "016-foundational-runtime",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

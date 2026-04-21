@@ -30,7 +30,7 @@ I re-audited the remaining Domain 4 seams that were still unclaimed after iterat
 - **Downstream Impact:** A graph with known topology degradations can look fully healthy to operators and automation as soon as it loads. That hides routing-authority degradation behind a success-shaped health probe and makes warning triage ephemeral instead of inspectable at runtime.
 
 ### Finding R45-004
-- **File:** `.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts`; `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution/spec.md`
+- **File:** `.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts`; `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/spec.md`
 - **Lines:** `manual-playbook-runner.ts:245-271`; `manual-playbook-runner.ts:1203-1217`; `manual_testing_playbook.md:196-230`; `spec.md:131-134`
 - **Severity:** P1
 - **Description:** The manual playbook runner silently drops active scenario files when their markdown no longer matches the parser's expected prompt/expected-signals shapes. Parse failure returns `null`, `main()` filters those entries out before coverage totals, and the runner logs only the reduced definition count as the "active scenario" set.

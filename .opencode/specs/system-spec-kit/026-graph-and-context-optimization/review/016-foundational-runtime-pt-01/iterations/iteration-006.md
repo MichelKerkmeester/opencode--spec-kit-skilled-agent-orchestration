@@ -18,7 +18,7 @@
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/session-health.ts:1-120` (focus-file sample, unreviewed until now)
 - `.opencode/skill/system-spec-kit/mcp_server/lib/context/opencode-transport.ts:1-200` (focus-file sample, unreviewed until now)
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/016-foundational-runtime-001-initial-research/closing-pass-notes.md` (CP-001/CP-003 re-read)
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research/implementation-summary.md`, `tasks.md`, `spec.md`, `phase-4-quick-wins-summary.md`, `phase-017-p0-composites-summary.md` (T-RBD-01/T-RBD-02 intent trace)
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/implementation-summary.md`, `tasks.md`, `spec.md`, `phase-4-quick-wins-summary.md`, `phase-017-p0-composites-summary.md` (T-RBD-01/T-RBD-02 intent trace)
 
 ## Investigation Thread
 
@@ -153,8 +153,8 @@ None. Recovery sweep confirmed no hidden P0 across 3/9 sampled unreviewed focus 
       "evidenceRefs": [
         ".opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts:352-369",
         ".opencode/skill/system-spec-kit/mcp_server/handlers/save/response-builder.ts:160-175",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research/phase-4-quick-wins-summary.md:58 (T-RBD-01 R21-001 description)",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research/tasks.md:299 (T-RBD-01 evidence marker)"
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/phase-4-quick-wins-summary.md:58 (T-RBD-01 R21-001 description)",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/tasks.md:299 (T-RBD-01 evidence marker)"
       ],
       "counterevidenceSought": "Checked if the comment at response-builder.ts:131-135 (T-RBD-02 block) explains the divergence — it explains the M13 shape migration, not the rollup divergence from post-insert. Checked if there is a unit test asserting the divergence (to serve as implicit spec) — no test covers the mixed case where post-insert reports 'failed' and response reports 'partial' for the same input. Checked if implementation-summary.md documents this — row for 709727e98 mentions 'preserve post-insert enrichment truth' without the specific divergence contract.",
       "alternativeExplanation": "None — this is a documentation gap, not a behavioral ambiguity."

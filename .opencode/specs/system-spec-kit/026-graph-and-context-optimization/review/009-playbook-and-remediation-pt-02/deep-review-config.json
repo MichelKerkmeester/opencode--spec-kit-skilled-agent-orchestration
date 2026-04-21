@@ -1,7 +1,7 @@
 {
   "topic": "Deep review of 015-full-playbook-execution",
   "mode": "review",
-  "reviewTarget": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution",
+  "reviewTarget": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution",
   "reviewTargetType": "spec-folder",
   "reviewDimensions": [
     "correctness",
@@ -30,7 +30,7 @@
   },
   "qualityGateThreshold": true,
   "releaseReadinessState": "release-blocking",
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution",
   "createdAt": "2026-04-12T20:20:00Z",
   "status": "complete",
   "executionMode": "auto",

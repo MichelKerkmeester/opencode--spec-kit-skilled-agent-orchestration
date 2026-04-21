@@ -22,7 +22,7 @@ The "thin continuity layer" is the lightweight metadata artifact that carries th
 _memory:
   continuity:
     # Packet state pointer
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates"
     last_updated_at: "2026-04-11T13:55:00Z"
     last_updated_by: "claude-opus-4-6"
     

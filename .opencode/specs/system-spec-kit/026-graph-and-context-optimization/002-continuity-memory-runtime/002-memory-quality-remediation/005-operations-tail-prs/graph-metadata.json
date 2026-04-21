@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 5 operations tail prs",
+      "pr-10 safe subset migration",
+      "pr-11 cross process save lock",
+      "memory save telemetry",
+      "capture mode parity release notes",
+      "operations closeout phase",
+      "phase 5 plan",
+      "tail prs implementation plan",
+      "telemetry migration save lock rollout",
+      "pr-10 pr-11 plan",
+      "phase 5 tasks",
+      "operations tail prs tasks"
+    ],
+    "key_topics": [
+      "phase",
+      "operations",
+      "tail",
+      "prs",
+      "pr-10",
+      "safe",
+      "subset",
+      "migration",
+      "pr-11",
+      "cross",
+      "process",
+      "save"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "checklist.md",
+      "implementation-summary.md",
+      ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+      ".opencode/skill/system-spec-kit/scripts/lib/memory-telemetry.ts",
+      "spec.md",
+      "plan.md",
+      "scripts/core/post-save-review.ts",
+      "scripts/core/workflow.ts",
+      "scratch/pr10-dry-run-report.json",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "post-save-review.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-telemetry.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/memory-telemetry.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "pr10-dry-run-report.json",
+        "kind": "config",
+        "path": "scratch/pr10-dry-run-report.json",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Tasks",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Checklist",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executive Summary The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Operational",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Add Phase",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 5 is the packet closeout phase for `003-memory-quality-remediation/`. It does not reopen the core nine-PR train. Instead, it packages the operational work that Gen-3 added after the main remediation plan was already frozen: telemetry folded into PR-9, optional safe-subset migration for 82 historical JSON-mode files, optional D9 save-lock hardening, release-note parity framing, and final parent closure. [SOURCE: ../research/research.md:1418-1447] [SOURCE: ../research/research.md:1520-1537]",
+    "created_at": "2026-04-12T09:02:53.460Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/005-operations-tail-prs",
+    "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/005-operations-tail-prs",
+    "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/005-operations-tail-prs",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/005-operations-tail-prs",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/005-operations-tail-prs",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/005-operations-tail-prs",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs",
+    "local_phase_slug": "002-memory-quality-remediation",
+    "original_phase_slug": "003-memory-quality-remediation",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}

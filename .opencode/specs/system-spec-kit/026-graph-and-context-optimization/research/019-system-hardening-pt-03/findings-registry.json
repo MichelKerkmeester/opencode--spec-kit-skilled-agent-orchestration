@@ -1,6 +1,6 @@
 {
   "sessionId": "dr-005-routing-accuracy-20260418T203941Z",
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/005-routing-accuracy",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy",
   "findings": [
     {
       "findingId": "iter5-system-spec-kit-fragmented-routing",

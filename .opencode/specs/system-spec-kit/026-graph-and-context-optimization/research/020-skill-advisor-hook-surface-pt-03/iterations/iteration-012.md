@@ -45,8 +45,8 @@ No open **P0** finding survived iteration-001 through iteration-010. The scaffol
 **Proposed parent patch**
 
 ```diff
---- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
-+++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
+--- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
++++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
 @@
 - - [ ] 004-advisor-brief-producer-cache-policy (`buildSkillAdvisorBrief()` + prompt policy + HMAC exact cache + fail-open contract)
 + - [ ] 004-advisor-brief-producer-cache-policy (`buildSkillAdvisorBrief()` + prompt policy + HMAC exact cache + fail-open contract + exact `80/120` brief bands only; remove `semanticModeEnabled` / `60`-token floor before implementation; spell out stale/degraded reuse for SQLite-busy, deleted-skill suppression, and `brief: null` no-op parity)
@@ -71,8 +71,8 @@ No open **P0** finding survived iteration-001 through iteration-010. The scaffol
 **Proposed parent patch**
 
 ```diff
---- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
-+++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
+--- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
++++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
 @@
 - - [ ] 007-gemini-copilot-hook-wiring (Gemini JSON `additionalContext` + Copilot SDK + wrapper fallback)
 + - [ ] 007-gemini-copilot-hook-wiring (Gemini JSON `additionalContext` + Copilot SDK + wrapper fallback; Copilot may ship the SDK path only after a committed proof artifact shows model-visible `additionalContext` for the supported runtime/version floor; notification-only `{}` does not satisfy this gate)
@@ -97,8 +97,8 @@ No open **P0** finding survived iteration-001 through iteration-010. The scaffol
 **Proposed parent patch**
 
 ```diff
---- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
-+++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/spec.md
+--- a/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
++++ b/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec.md
 @@
 - - [ ] 008-codex-integration-and-hook-policy (Codex `UserPromptSubmit` + dynamic hook-policy detection + Bash-only `PreToolUse deny`)
 + - [ ] 008-codex-integration-and-hook-policy (Codex `UserPromptSubmit` + dynamic hook-policy detection + Bash-only `PreToolUse deny` + `PostToolUse` audit/repair context; remove optional `session-prime` drift from the child before implementation dispatch)

@@ -1,7 +1,7 @@
 # Deep Review Strategy - Session Tracking
 
 ## 1. TOPIC
-Fresh v3 audit of `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit` to verify that F001-F004 and NF001-NF003 are truly closed, re-check retired `memory/*.md` path rejection across public entry points, and surface any residual correctness, security, traceability, or maintainability issues without reading state from `review/` or `review/v2/`.
+Fresh v3 audit of `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit` to verify that F001-F004 and NF001-NF003 are truly closed, re-check retired `memory/*.md` path rejection across public entry points, and surface any residual correctness, security, traceability, or maintainability issues without reading state from `review/` or `review/v2/`.
 
 ---
 
@@ -164,8 +164,8 @@ Final report only — no further review iteration needed; review converged on re
 | `.opencode/skill/system-spec-kit/feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md` | [traceability] | 7 | 0 P0, 1 P1, 0 P2 | reviewed |
 | `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | [traceability] | 7 | 0 P0, 1 P1, 0 P2 | reviewed |
 | `.opencode/changelog/01--system-spec-kit/v3.4.0.0.md` | [traceability, maintainability] | 4 | 0 P0, 1 P1, 0 P2 | reviewed |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/spec.md` | [traceability, maintainability] | 4 | 0 P0, 1 P1, 0 P2 | reviewed |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory/checklist.md` | [traceability, maintainability] | 4 | 0 P0, 1 P1, 0 P2 | reviewed |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md` | [traceability, maintainability] | 4 | 0 P0, 1 P1, 0 P2 | reviewed |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/checklist.md` | [traceability, maintainability] | 4 | 0 P0, 1 P1, 0 P2 | reviewed |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/05--lifecycle/097-async-ingestion-job-lifecycle-p0-3.md` | [traceability] | 3 | 0 P0, 0 P1, 0 P2 | reviewed |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/05--lifecycle/144-advisory-ingest-lifecycle-forecast.md` | [traceability] | 3 | 0 P0, 0 P1, 0 P2 | reviewed |
 <!-- MACHINE-OWNED: END -->

@@ -1,0 +1,36 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy",
+  "description": "Feature Specification: Research Memory Redundancy Follow-On",
+  "keywords": [
+    "feature",
+    "specification",
+    "research",
+    "memory",
+    "redundancy",
+    "follow-on"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "006",
+  "folderSlug": "research-memory-redundancy",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "001-research-and-baseline"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-children",
+    "original_phase_slug": "001-research-graph-context-systems",
+    "local_phase_slug": "006-research-memory-redundancy",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy",
+      "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy"
+    ]
+  }
+}

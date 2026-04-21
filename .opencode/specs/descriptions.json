@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-04-21T06:00:35.508Z",
+  "generated": "2026-04-21T10:49:04.269Z",
   "folders": [
     {
       "specFolder": "00--ai-systems/001-global-shared",
@@ -420,7 +420,7 @@
         "table",
         "content"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T10:49:04.269Z"
     },
     {
       "specFolder": "00--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy",
@@ -621,7 +621,7 @@
         "dropdown",
         "fix"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T10:49:04.269Z"
     },
     {
       "specFolder": "00--anobel.com/z_archive/019-form-attribute-audit",
@@ -671,7 +671,7 @@
         "anobel",
         "com"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T10:49:04.269Z"
     },
     {
       "specFolder": "00--anobel.com/z_archive/023-performance-review",
@@ -1333,7 +1333,7 @@
         "folder",
         "convention"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T10:49:04.269Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/043-cli-skill-improved-prompting",
@@ -5030,7 +5030,7 @@
         "runtime",
         "merged"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.617Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research",
@@ -5045,7 +5045,7 @@
         "016",
         "charter"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.626Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives",
@@ -5072,7 +5072,7 @@
         "cluster",
         "consumers"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.631Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/004-rollout-sweeps",
@@ -5086,7 +5086,7 @@
         "rollout",
         "sweeps"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.638Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/005-p2-maintainability",
@@ -5114,7 +5114,7 @@
         "skills",
         "merged"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.648Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/001-executor-feature",
@@ -5156,7 +5156,7 @@
         "research-findings",
         "remediation"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.656Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening",
@@ -5287,7 +5287,7 @@
         "unification",
         "hardening"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.661Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/004-routing-accuracy-hardening",
@@ -5299,7 +5299,7 @@
         "accuracy",
         "hardening"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.671Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/005-description-regen-contract",
@@ -5311,7 +5311,7 @@
         "regen",
         "contract"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.676Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/006-residual-015-backlog",
@@ -5323,7 +5323,7 @@
         "residuals",
         "restart"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.681Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/007-template-validator-contract-alignment",
@@ -5348,7 +5348,7 @@
         "hook",
         "surface"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.694Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research",
@@ -5374,7 +5374,7 @@
         "research",
         "cli-copilot"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T10:49:04.269Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research/003-implementation-plan-validation-copilot",
@@ -5401,7 +5401,7 @@
         "advisor",
         "contract"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.699Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
@@ -5414,7 +5414,7 @@
         "source",
         "cache"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.704Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
@@ -5428,7 +5428,7 @@
         "cache",
         "policy"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.709Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness",
@@ -5442,7 +5442,7 @@
         "regression",
         "harness"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.713Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/006-claude-hook-wiring",
@@ -5455,7 +5455,7 @@
         "wiring",
         "userpromptsubmit"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.721Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring",
@@ -5468,7 +5468,7 @@
         "hook",
         "wiring"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.729Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/008-codex-integration-and-hook-policy",
@@ -5481,7 +5481,7 @@
         "hook",
         "policy"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.734Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/009-documentation-and-release-contract",
@@ -5493,7 +5493,7 @@
         "release",
         "contract"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.741Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy",
@@ -5506,7 +5506,7 @@
         "efficacy",
         "investigation"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T10:49:04.269Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy/001-initial-research",
@@ -5518,7 +5518,7 @@
         "context-load",
         "efficacy"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T10:49:04.269Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
@@ -5531,7 +5531,7 @@
         "section",
         "efficacy"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.746Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/022-skill-advisor-docs-and-code-alignment",
@@ -5546,7 +5546,7 @@
         "code",
         "alignment"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.751Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/023-smart-router-remediation-and-opencode-plugin",
@@ -5574,7 +5574,7 @@
         "measurement",
         "run"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.756Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/025-deep-review-remediation",
@@ -5620,7 +5620,7 @@
         "advisor",
         "unification"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T08:26:35.784Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/000-validator-esm-fix",
@@ -5647,7 +5647,7 @@
         "freshness",
         "foundation"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.776Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/002-lifecycle-and-derived-metadata",
@@ -5661,7 +5661,7 @@
         "derived",
         "metadata"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.785Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/003-native-advisor-core",
@@ -5675,7 +5675,7 @@
         "advisor",
         "core"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.791Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/004-mcp-advisor-surface",
@@ -5689,7 +5689,7 @@
         "advisor",
         "surface"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.804Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap",
@@ -5703,7 +5703,7 @@
         "migration",
         "bootstrap"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.809Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/006-promotion-gates",
@@ -5716,7 +5716,7 @@
         "promotion",
         "gates"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T06:00:35.816Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/028-code-graph-self-contained-package",
@@ -5730,7 +5730,21 @@
         "git-mv",
         "skill-advisor-pattern"
       ],
-      "lastUpdated": "2026-04-20T20:00:00.000Z"
+      "lastUpdated": "2026-04-21T08:26:39.041Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/029-hook-parity-remediation",
+      "description": "Feature Specification: 029 — Runtime Hook Parity Remediation",
+      "keywords": [
+        "feature",
+        "specification",
+        "029",
+        "runtime",
+        "hook",
+        "parity",
+        "remediation"
+      ],
+      "lastUpdated": "2026-04-21T10:49:04.269Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/013-audit-snapshot/primary-docs",
@@ -5759,7 +5773,7 @@
         "post-memory-folder",
         "retirement"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.508Z"
+      "lastUpdated": "2026-04-21T10:49:04.269Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/review/014-memory-save-rewrite-pt-01/primary-docs",

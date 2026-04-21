@@ -2,10 +2,12 @@
 // MODULE: Template Structure Utilities
 // ───────────────────────────────────────────────────────────────
 
-'use strict';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'node:url';
 
-const fs = require('fs');
-const path = require('path');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const OPTIONAL_TEMPLATE_PREFIX_RE = /^L(?:2|3\+?)\s*:/i;
 const NUMBERED_HEADER_RE = /^\d+\.\s*/;
@@ -665,11 +667,11 @@ function runCli(argv) {
   return 2;
 }
 
-if (require.main === module) {
+if (process.argv[1] === __filename) {
   process.exitCode = runCli(process.argv.slice(2));
 }
 
-module.exports = {
+export {
   compareDocumentToTemplate,
   extractH2Headers,
   inferPhaseSpecAddenda,

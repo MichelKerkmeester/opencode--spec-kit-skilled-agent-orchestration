@@ -4,8 +4,9 @@ import path from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { loadMostRecentStateMock } = vi.hoisted(() => ({
+const { loadMostRecentStateMock, loadMatchingStatesMock } = vi.hoisted(() => ({
   loadMostRecentStateMock: vi.fn(() => ({ states: [], errors: [] })),
+  loadMatchingStatesMock: vi.fn(() => ({ states: [], errors: [] })),
 }));
 
 vi.mock('../code-graph/lib/code-graph-db.js', () => ({
@@ -38,6 +39,7 @@ vi.mock('../lib/session/context-metrics.js', () => ({
 
 vi.mock('../hooks/claude/hook-state.js', () => ({
   loadMostRecentState: loadMostRecentStateMock,
+  loadMatchingStates: loadMatchingStatesMock,
 }));
 
 import { handleSessionResume } from '../handlers/session-resume.js';

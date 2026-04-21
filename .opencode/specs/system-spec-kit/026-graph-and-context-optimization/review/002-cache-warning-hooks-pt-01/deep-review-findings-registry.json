@@ -7,10 +7,10 @@
       "dimension": "traceability",
       "summary": "Packet `002` still documents `session-stop.ts` as a narrower writer-only boundary, but the live Stop path invokes `runContextAutosave()` by default and shells into `generate-context.js` whenever the state carries a spec folder and summary.",
       "evidenceRefs": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-cache-warning-hooks/spec.md:124",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-cache-warning-hooks/tasks.md:69",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-cache-warning-hooks/checklist.md:61",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-cache-warning-hooks/implementation-summary.md:63",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks/spec.md:124",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks/tasks.md:69",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks/checklist.md:61",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks/implementation-summary.md:63",
         ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:60",
         ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:85",
         ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:308"

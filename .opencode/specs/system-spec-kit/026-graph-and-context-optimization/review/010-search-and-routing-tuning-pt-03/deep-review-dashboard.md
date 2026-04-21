@@ -15,7 +15,7 @@ Reducer-generated observability surface for the active review packet.
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:status -->
 ## 2. STATUS
-- Review Target: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/ (spec-folder)
+- Review Target: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/ (spec-folder)
 - Started: 2026-04-13T11:05:00Z
 - Status: COMPLETE
 - Iteration: 10 of 10

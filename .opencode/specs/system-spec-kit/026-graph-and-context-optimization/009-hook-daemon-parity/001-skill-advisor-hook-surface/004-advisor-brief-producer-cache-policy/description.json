@@ -1,0 +1,43 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
+  "description": "Feature Specification: Advisor Brief Producer + Cache Policy",
+  "keywords": [
+    "feature",
+    "specification",
+    "advisor",
+    "brief",
+    "producer",
+    "cache",
+    "policy"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "004",
+  "folderSlug": "advisor-brief-producer-cache-policy",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity",
+    "020-skill-advisor-hook-surface"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-04-26_09-47__scaffold-004-advisor-brief-producer-cache-policy.md"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
+    "local_phase_slug": "001-skill-advisor-hook-surface",
+    "original_phase_slug": "020-skill-advisor-hook-surface",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy"
+    ]
+  }
+}

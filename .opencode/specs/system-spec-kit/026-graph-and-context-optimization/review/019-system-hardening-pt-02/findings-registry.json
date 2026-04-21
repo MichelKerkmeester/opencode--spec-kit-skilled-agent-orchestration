@@ -1,6 +1,6 @@
 {
   "sessionId": "dr-006-template-validator-20260418T203941Z",
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/006-template-validator-audit",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit",
   "findings": [
     {
       "id": "P1-001",

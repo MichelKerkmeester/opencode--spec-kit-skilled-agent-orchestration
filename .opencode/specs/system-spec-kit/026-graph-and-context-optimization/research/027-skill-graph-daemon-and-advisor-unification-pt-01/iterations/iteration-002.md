@@ -4,8 +4,8 @@
 Which files and metadata surfaces should Phase 027 treat as change-detection inputs for the skill-graph auto-update daemon?
 
 ## Evidence Collected
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/research/deep-research-strategy.md:49` → Iteration 2 is mapped to "A2 Scope of change detection".
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/research/deep-research-strategy.md:105` → A2 evidence map requires reading `skill_graph_compiler.py`, grepping `generate-context.js` invocations, and inventorying SKILL.md frontmatter template fields.
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/research/deep-research-strategy.md:49` → Iteration 2 is mapped to "A2 Scope of change detection".
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/research/deep-research-strategy.md:105` → A2 evidence map requires reading `skill_graph_compiler.py`, grepping `generate-context.js` invocations, and inventorying SKILL.md frontmatter template fields.
 - `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:50`-`.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:89` → The legacy compiler scans skill folders only for per-skill `graph-metadata.json` files and silently skips skills without one.
 - `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:107`-`.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:179` → Validation requires `schema_version`, `skill_id`, `family`, `category`, `edges`, `domains`, and `intent_signals`, with schema v2 delegating `derived` validation.
 - `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:189`-`.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:207` → Schema v2 derived metadata requires `trigger_phrases`, `key_topics`, `key_files`, `entities`, `source_docs`, `causal_summary`, `created_at`, and `last_updated_at`.

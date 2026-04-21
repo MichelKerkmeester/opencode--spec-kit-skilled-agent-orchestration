@@ -2,7 +2,7 @@
 
 Dispatched via `codex exec gpt-5.4 --reasoning-effort=high --service-tier=fast`.
 
-**Gate 3 pre-answered**: Option **E** (phase folder). Target packet already established at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/002-delta-review-015/`. All writes this iteration are within the canonical review artifact directory `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/019-system-hardening-001-initial-research-002-delta-review-015/`. Proceed without asking.
+**Gate 3 pre-answered**: Option **E** (phase folder). Target packet already established at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015/`. All writes this iteration are within the canonical review artifact directory `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/019-system-hardening-001-initial-research-002-delta-review-015/`. Proceed without asking.
 
 ## STATE
 

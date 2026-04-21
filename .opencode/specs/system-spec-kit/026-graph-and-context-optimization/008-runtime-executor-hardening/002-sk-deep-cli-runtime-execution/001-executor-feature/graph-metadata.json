@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution",
+  "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "cli executor selection",
+      "deep-loop cli executor",
+      "sk-deep-research executor",
+      "sk-deep-review executor",
+      "cli-codex deep research",
+      "executor kind config",
+      "018 plan",
+      "deep-loop executor plan",
+      "cli executor implementation plan",
+      "018 tasks",
+      "deep-loop executor tasks",
+      "executor kind tasks"
+    ],
+    "key_topics": [
+      "cli",
+      "executor",
+      "selection",
+      "deep-loop",
+      "sk-deep-research",
+      "sk-deep-review",
+      "cli-codex",
+      "deep",
+      "research",
+      "kind",
+      "config",
+      "018"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl",
+      ".opencode/skill/sk-deep-review/assets/prompt_pack_iteration.md.tmpl",
+      ".opencode/command/spec_kit/deep-research.md",
+      ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+      ".opencode/skill/sk-deep-review/references/loop_protocol.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/prompt-pack.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/post-dispatch-validate.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/executor-config.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/prompt-pack.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/post-dispatch-validate.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/executor-audit.vitest.ts",
+      ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+      ".opencode/skill/sk-deep-review/assets/deep_review_config.json",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml",
+      ".opencode/skill/sk-deep-research/SKILL.md"
+    ],
+    "entities": [
+      {
+        "name": "prompt_pack_iteration.md.tmpl",
+        "kind": "file",
+        "path": ".opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "loop_protocol.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+        "source": "derived"
+      },
+      {
+        "name": "executor-config.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "prompt-pack.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/prompt-pack.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-dispatch-validate.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/post-dispatch-validate.ts",
+        "source": "derived"
+      },
+      {
+        "name": "executor-audit.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts",
+        "source": "derived"
+      },
+      {
+        "name": "executor-config.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/executor-config.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "prompt-pack.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/prompt-pack.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-dispatch-validate.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/post-dispatch-validate.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "executor-audit.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/executor-audit.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "deep_research_config.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep_review_config.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-review/assets/deep_review_config.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-review_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-review_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executor Selection",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Iterative Skills",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Ready",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Both iterative skills (`sk-deep-research`, `sk-deep-review`) statically dispatch `@deep-research` / `@deep-review` LEAF agents with `model: opus` hardcoded in their YAML workflows (`spec_kit_deep-research_auto.yaml:469`, `spec_kit_deep-review_auto.yaml:578`). SKILL.md explicitly forbids direct CLI-in-a-loop (line 47-50 in both skills) to protect the state machine, convergence detector, and reducer. However, SKILL.md:61 (deep-research) / :63 (deep-review) acknowledges executor selection as forward-looking design — *\"the executor still runs INSIDE the command's workflow\"* — without wiring the mechanism.",
+    "created_at": "2026-04-18T00:00:00Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": "2026-04-18T00:00:00Z",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/001-executor-feature",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/017-sk-deep-cli-runtime-execution/001-executor-feature",
+    "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/001-executor-feature",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/001-executor-feature",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/017-sk-deep-cli-runtime-execution/001-executor-feature",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/017-sk-deep-cli-runtime-execution/001-executor-feature",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature",
+    "local_phase_slug": "002-sk-deep-cli-runtime-execution",
+    "original_phase_slug": "017-sk-deep-cli-runtime-execution",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  }
+}

@@ -119,7 +119,7 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:5`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
         "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:76`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/spec.md:12`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/spec.md:12`"
       ]
     },
     {
@@ -130,29 +130,29 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:5`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
         "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:76`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/spec.md:12`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/spec.md:12`"
       ]
     },
     {
       "id": "finding-1-1-the-live-router-defines-eight-routing-categories-and-four-confidence-related-con",
-      "text": "The live router defines eight routing categories and four confidence-related constants: `0.70` for Tier1, `0.70` for Tier2, `0.50` for Tier3, and a `0.15` Tier2 fallback penalty. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:5] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/spec.md:12]",
+      "text": "The live router defines eight routing categories and four confidence-related constants: `0.70` for Tier1, `0.70` for Tier2, `0.50` for Tier3, and a `0.15` Tier2 fallback penalty. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:5] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/spec.md:12]",
       "addedAtIteration": 1,
       "sources": [
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:5`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
         "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:76`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/spec.md:12`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/spec.md:12`"
       ]
     },
     {
       "id": "finding-1-4-the-spec-packet-s-rq-wording-says-7-tier1-rules-which-is-already-stale-against-t",
-      "text": "The spec packet's RQ wording says \"7 Tier1 rules,\" which is already stale against the current source and should be treated as a documentation mismatch, not an implementation bug. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/spec.md:28] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286]",
+      "text": "The spec packet's RQ wording says \"7 Tier1 rules,\" which is already stale against the current source and should be treated as a documentation mismatch, not an implementation bug. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/spec.md:28] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286]",
       "addedAtIteration": 1,
       "sources": [
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:5`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
         "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:76`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/spec.md:12`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/spec.md:12`"
       ]
     },
     {
@@ -614,7 +614,7 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:341`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:842`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:37`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
       ]
     },
     {
@@ -625,18 +625,18 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:341`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:842`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:37`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
       ]
     },
     {
       "id": "finding-11-4-phase-001-fix-delivery-progress-confusion-is-pointed-at-the-correct-file-but-is-",
-      "text": "Phase `001-fix-delivery-progress-confusion` is pointed at the correct file but is too coarse about the change. The concrete implementation seam is not only the delivery regex block at `RULE_CUES.narrative_delivery`; it is also the progress-specific override at `scoreCategories()` lines `853-860`, because that floor lets implementation verbs beat delivery cues before Tier2 can correct the route. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:853]",
+      "text": "Phase `001-fix-delivery-progress-confusion` is pointed at the correct file but is too coarse about the change. The concrete implementation seam is not only the delivery regex block at `RULE_CUES.narrative_delivery`; it is also the progress-specific override at `scoreCategories()` lines `853-860`, because that floor lets implementation verbs beat delivery cues before Tier2 can correct the route. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:853]",
       "addedAtIteration": 11,
       "sources": [
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:341`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:842`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:37`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
       ]
     },
     {
@@ -647,7 +647,7 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:341`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:842`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:37`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
       ]
     },
     {
@@ -696,13 +696,13 @@
     },
     {
       "id": "finding-13-4-phase-002-fix-handover-drop-confusion-should-therefore-split-the-drop-heuristic-",
-      "text": "Phase `002-fix-handover-drop-confusion` should therefore split the drop heuristic into two classes: hard wrapper evidence that still deserves the `0.92` floor, and soft operational commands that should either score much lower or defer to handover when strong stop-state cues (`current state`, `next session`, `resume`, `blocker`) are also present. That is the smallest change that matches the phase scope without touching downstream handover handling. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:10] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369]",
+      "text": "Phase `002-fix-handover-drop-confusion` should therefore split the drop heuristic into two classes: hard wrapper evidence that still deserves the `0.92` floor, and soft operational commands that should either score much lower or defer to handover when strong stop-state cues (`current state`, `next session`, `resume`, `blocker`) are also present. That is the smallest change that matches the phase scope without touching downstream handover handling. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:10] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369]",
       "addedAtIteration": 13,
       "sources": [
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:868`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:892`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:10`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:10`"
       ]
     },
     {
@@ -713,7 +713,7 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:868`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:892`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:10`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:10`"
       ]
     },
     {
@@ -724,7 +724,7 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:868`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:892`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:10`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:10`"
       ]
     },
     {
@@ -735,7 +735,7 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:868`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:892`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:10`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:10`"
       ]
     },
     {
@@ -746,18 +746,18 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:83`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:91`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:165`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:15`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:15`"
       ]
     },
     {
       "id": "finding-14-4-phase-002-should-treat-hs-02-and-hs-05-as-the-stronger-handover-templates-and-re",
-      "text": "Phase `002` should treat `HS-02` and `HS-05` as the stronger handover templates and reduce reliance on `HS-04`-style command-first phrasing. The existing phase spec says not to reclassify correct drop prototypes, and that aligns with the evidence: the cleaner fix is to make handover prototypes more state-centric, not to weaken the drop prototypes that already capture wrappers and telemetry well. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:15] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:91]",
+      "text": "Phase `002` should treat `HS-02` and `HS-05` as the stronger handover templates and reduce reliance on `HS-04`-style command-first phrasing. The existing phase spec says not to reclassify correct drop prototypes, and that aligns with the evidence: the cleaner fix is to make handover prototypes more state-centric, not to weaken the drop prototypes that already capture wrappers and telemetry well. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:15] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:91]",
       "addedAtIteration": 14,
       "sources": [
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:83`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:91`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:165`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:15`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:15`"
       ]
     },
     {
@@ -768,7 +768,7 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:83`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:91`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:165`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:15`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:15`"
       ]
     },
     {
@@ -779,12 +779,12 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:83`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:91`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:165`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:15`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:15`"
       ]
     },
     {
       "id": "finding-15-4-phase-003-wire-tier3-llm-classifier-therefore-needs-two-concrete-code-changes-no",
-      "text": "Phase `003-wire-tier3-llm-classifier` therefore needs two concrete code changes, not one. First, add a real classifier adapter that calls the Tier3 prompt contract and returns `Tier3RawResponse | null`. Second, inject that adapter into the router constructor in `memory-save.ts` and, ideally, pass a cache implementation so repeated ambiguous saves can hit the existing session/spec-folder cache layer. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier/spec.md:10] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:630]",
+      "text": "Phase `003-wire-tier3-llm-classifier` therefore needs two concrete code changes, not one. First, add a real classifier adapter that calls the Tier3 prompt contract and returns `Tier3RawResponse | null`. Second, inject that adapter into the router constructor in `memory-save.ts` and, ideally, pass a cache implementation so repeated ambiguous saves can hit the existing session/spec-folder cache layer. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier/spec.md:10] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:630]",
       "addedAtIteration": 15,
       "sources": [
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:386`",
@@ -878,18 +878,18 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:131`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:165`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
       ]
     },
     {
       "id": "finding-17-4-the-best-near-term-prototype-work-is-surgical-not-wholesale-refresh-2-3-delivery",
-      "text": "The best near-term prototype work is surgical, not wholesale: refresh 2-3 delivery examples and 1-2 handover examples to emphasize category-specific nouns, then leave the rest of the library stable so the before/after benchmark stays attributable. This aligns with phases `001` and `002` and avoids turning the routing benchmark into a full corpus rewrite. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:10]",
+      "text": "The best near-term prototype work is surgical, not wholesale: refresh 2-3 delivery examples and 1-2 handover examples to emphasize category-specific nouns, then leave the rest of the library stable so the before/after benchmark stays attributable. This aligns with phases `001` and `002` and avoids turning the routing benchmark into a full corpus rewrite. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/spec.md:10]",
       "addedAtIteration": 17,
       "sources": [
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:131`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:165`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
       ]
     },
     {
@@ -900,7 +900,7 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:131`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:165`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
       ]
     },
     {
@@ -911,7 +911,7 @@
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:131`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:165`",
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10`"
       ]
     },
     {
@@ -1037,7 +1037,7 @@
     },
     {
       "id": "finding-20-5-the-prototype-library-and-tests-are-good-enough-to-support-a-narrow-remediation-",
-      "text": "The prototype library and tests are good enough to support a narrow remediation wave, but not good enough to verify it without new regression cases. The highest-value sequence is: phase `001` cue plus prototype tuning, phase `002` drop relaxation plus state-first handover examples, and phase `003` Tier3 wiring only after the heuristic fixes are benchmarked. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier/spec.md:10]",
+      "text": "The prototype library and tests are good enough to support a narrow remediation wave, but not good enough to verify it without new regression cases. The highest-value sequence is: phase `001` cue plus prototype tuning, phase `002` drop relaxation plus state-first handover examples, and phase `003` Tier3 wiring only after the heuristic fixes are benchmarked. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec.md:10] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier/spec.md:10]",
       "addedAtIteration": 20,
       "sources": [
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:341`",
@@ -1398,17 +1398,17 @@
       "text": "A best-effort `132`-sample replay using the preserved full prototypes, preserved first-sentence variants, and reconstructed compact clauses lands at `86.36%` accuracy. That replay is diagnostic, not apples-to-apples comparable to the old `87.88%` baseline. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48] [INFERENCE: packet-local reconstructed 132-sample replay over dist/lib/routing/content-router.js]",
       "addedAtIteration": 27,
       "sources": [
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/research/iterations/iteration-005.md:7`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/research/iterations/iteration-005.md:7`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
         "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48`"
       ]
     },
     {
       "id": "finding-27-1-the-packet-preserves-the-earlier-corpus-counts-but-not-the-exact-compact-variant",
-      "text": "The packet preserves the earlier corpus counts but not the exact compact-variant generator. That means the old `132`-sample baseline is only partially reproducible from current artifacts. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/research/iterations/iteration-005.md:7] [INFERENCE: packet-local artifact inspection]",
+      "text": "The packet preserves the earlier corpus counts but not the exact compact-variant generator. That means the old `132`-sample baseline is only partially reproducible from current artifacts. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/research/iterations/iteration-005.md:7] [INFERENCE: packet-local artifact inspection]",
       "addedAtIteration": 27,
       "sources": [
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/research/iterations/iteration-005.md:7`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/research/iterations/iteration-005.md:7`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
         "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48`"
       ]
@@ -1418,7 +1418,7 @@
       "text": "The reconstructed compact errors are refusal-heavy rather than seam-heavy: `narrative_delivery -> refusal` (`4`), `research_finding -> refusal` (`3`), and `metadata_only -> refusal` (`3`) lead the list. [INFERENCE: packet-local reconstructed 132-sample replay over dist/lib/routing/content-router.js]",
       "addedAtIteration": 27,
       "sources": [
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/research/iterations/iteration-005.md:7`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/research/iterations/iteration-005.md:7`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
         "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48`"
       ]
@@ -1428,7 +1428,7 @@
       "text": "The reconstructed replay still supports the main post-implementation conclusion: the old delivery/progress and handover/drop seams are no longer the dominant source of error. The remaining fragility lives in ultra-short fragments that shed too much category-defining context. [INFERENCE: packet-local reconstructed 132-sample replay over dist/lib/routing/content-router.js]",
       "addedAtIteration": 27,
       "sources": [
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/research/iterations/iteration-005.md:7`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/research/iterations/iteration-005.md:7`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
         "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48`"
       ]
@@ -1438,7 +1438,7 @@
       "text": "The right answer to \"did accuracy improve?\" is therefore split. Yes, materially, on the preserved and reproducible part of the old corpus; no firm full-corpus statement is possible without recovering the original compact-generator logic. [INFERENCE: synthesis across preserved and reconstructed replays]",
       "addedAtIteration": 27,
       "sources": [
-        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/research/iterations/iteration-005.md:7`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/research/iterations/iteration-005.md:7`",
         "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
         "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48`"
       ]

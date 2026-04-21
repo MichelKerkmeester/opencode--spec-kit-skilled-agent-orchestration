@@ -1,6 +1,6 @@
 {
   "sessionId": "dr-020-extended-copilot-20260419T090500Z",
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research/002-extended-wave-copilot",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-extended-wave-copilot",
   "findings": [],
   "summary": {"P0":0,"P1":0,"P2":0,"total":0},
   "lastUpdated": "2026-04-19T09:05:00Z"

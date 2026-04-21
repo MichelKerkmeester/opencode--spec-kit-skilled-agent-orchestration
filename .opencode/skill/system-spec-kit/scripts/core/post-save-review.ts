@@ -665,7 +665,7 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
       if (missingPhrases.length > 0 && pathFragments.length === 0) {
         issues.push({
           checkId: 'PSR-2',
-          severity: 'MEDIUM',
+          severity: 'HIGH',
           field: 'trigger_phrases',
           message: `missing manual phrases: ${JSON.stringify(missingPhrases.slice(0, 3))}`,
           fix: `Add to trigger_phrases: ${JSON.stringify(missingPhrases.slice(0, 5))}`,

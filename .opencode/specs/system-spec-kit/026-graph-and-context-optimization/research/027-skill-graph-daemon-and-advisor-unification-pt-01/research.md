@@ -8,7 +8,7 @@ Phase 027 r01 converged after 40 planned iterations: 31 A-D sub-question verdict
 
 ## 2. SCOPE
 
-This synthesis covers the research packet for `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/`, with source scope defined by the local `spec.md`. It includes the skill-graph auto-update daemon, advisor trigger and keyword derivation, advanced advisor matching through hybrid and causal-style signals, and consolidation into the system-spec-kit MCP server. It does not authorize code changes, broad support-file watching by default, prompt-time embedding lookup, learned ranking promotion, Python CLI removal, or plugin deprecation without the later gates defined below.
+This synthesis covers the research packet for `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/`, with source scope defined by the local `spec.md`. It includes the skill-graph auto-update daemon, advisor trigger and keyword derivation, advanced advisor matching through hybrid and causal-style signals, and consolidation into the system-spec-kit MCP server. It does not authorize code changes, broad support-file watching by default, prompt-time embedding lookup, learned ranking promotion, Python CLI removal, or plugin deprecation without the later gates defined below.
 
 ## 3. METHODOLOGY
 

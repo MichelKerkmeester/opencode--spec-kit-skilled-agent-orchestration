@@ -23,10 +23,10 @@
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/lifecycle-derived-metadata.vitest.ts`
 - `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs`
 - `.opencode/skill/skill-advisor/scripts/skill_advisor.py`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/002-lifecycle-and-derived-metadata/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/003-native-advisor-core/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/004-mcp-advisor-surface/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-lifecycle-and-derived-metadata/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/003-native-advisor-core/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-mcp-advisor-surface/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap/spec.md`
 
 ## Findings by Severity (P0/P1/P2)
 
@@ -40,7 +40,7 @@ None.
 
 - **Claim:** The A7/prompt-safe contract is enforced in derived metadata generation and compat brief rendering, but the native recommendation publication path still forwards `redirectTo` / `redirectFrom` values from projection into MCP output and bridge metadata without re-sanitizing them. A poisoned or manually edited `graph-metadata.json` can therefore surface instruction-shaped redirect labels in JSON output even though the human-readable brief is sanitized.
 - **Evidence refs:**  
-  - Spec requires sanitizer coverage at every advisor-visible publication boundary, including envelope publication and prompt-safe status surfaces: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/002-lifecycle-and-derived-metadata/spec.md:89-91`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/004-mcp-advisor-surface/spec.md:101-105`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap/spec.md:124-129`
+  - Spec requires sanitizer coverage at every advisor-visible publication boundary, including envelope publication and prompt-safe status surfaces: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-lifecycle-and-derived-metadata/spec.md:89-91`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-mcp-advisor-surface/spec.md:101-105`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap/spec.md:124-129`
   - Projection reads root `graph-metadata.json` redirect fields without sanitization and prefers them over sanitized derived values: `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/projection.ts:146-149`, `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/projection.ts:247-248`
   - Fusion copies those redirect fields into recommendation objects unchanged: `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/fusion.ts:256-268`
   - `advisor_recommend` serializes recommendation redirect metadata directly into MCP output: `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-recommend.ts:79-107`

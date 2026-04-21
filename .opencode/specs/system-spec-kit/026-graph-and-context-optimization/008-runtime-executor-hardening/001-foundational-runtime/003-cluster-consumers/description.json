@@ -1,0 +1,41 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers",
+  "description": "Feature Specification: Phase 017 Wave B — Cluster Consumers",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "017",
+    "wave",
+    "cluster",
+    "consumers"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "003",
+  "folderSlug": "cluster-consumers",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening",
+    "016-foundational-runtime"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/003-cluster-consumers",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime/003-cluster-consumers",
+    "local_phase_slug": "001-foundational-runtime",
+    "original_phase_slug": "016-foundational-runtime",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/003-cluster-consumers",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime/003-cluster-consumers",
+      "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers"
+    ]
+  }
+}

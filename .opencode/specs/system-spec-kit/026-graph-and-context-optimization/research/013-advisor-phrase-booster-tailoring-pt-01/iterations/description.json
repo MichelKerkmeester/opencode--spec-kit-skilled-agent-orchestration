@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/013-advisor-phrase-booster-tailoring/iterations",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/013-advisor-phrase-booster-tailoring-pt-01/iterations",
   "description": "Research iteration artifacts for 013-advisor-phrase-booster-tailoring.",
   "keywords": [
     "research",
@@ -10,15 +10,21 @@
     "026-graph-and-context-optimization",
     "iterations"
   ],
-  "lastUpdated": "2026-04-18T16:45:36.965Z",
+  "lastUpdated": "2026-04-21T13:00:00Z",
   "specId": "013",
   "folderSlug": "advisor-phrase-booster-tailoring-iterations",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
     "research",
-    "013-advisor-phrase-booster-tailoring"
+    "013-advisor-phrase-booster-tailoring-pt-01"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/013-advisor-phrase-booster-tailoring/iterations",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/013-advisor-phrase-booster-tailoring-pt-01/iterations",
+    "layout": "phase-root-children"
+  }
 }
