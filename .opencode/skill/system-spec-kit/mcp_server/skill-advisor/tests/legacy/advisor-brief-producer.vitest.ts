@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Brief Producer Tests
+// ───────────────────────────────────────────────────────────────
+
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   buildSkillAdvisorBrief,

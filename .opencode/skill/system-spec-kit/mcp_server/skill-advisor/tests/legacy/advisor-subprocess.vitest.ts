@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Subprocess Tests
+// ───────────────────────────────────────────────────────────────
+
 import { EventEmitter } from 'node:events';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';

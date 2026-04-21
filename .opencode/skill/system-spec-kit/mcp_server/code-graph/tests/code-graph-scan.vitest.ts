@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Code Graph Scan Tests
+// ───────────────────────────────────────────────────────────────
+
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({

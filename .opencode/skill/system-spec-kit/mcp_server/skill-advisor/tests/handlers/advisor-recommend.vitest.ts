@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Recommend Tests
+// ───────────────────────────────────────────────────────────────
+
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 const { mockScoreAdvisorPrompt, mockReadAdvisorStatus } = vi.hoisted(() => ({

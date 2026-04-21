@@ -7,7 +7,14 @@ import { fileURLToPath } from 'node:url';
 
 import { runScorerBench } from './scorer-bench.js';
 
-export function runPromotionLatencyBench(workspaceRoot?: string) {
+export interface PromotionLatencyBenchReport {
+  readonly cacheHitP95Ms: number;
+  readonly uncachedP95Ms: number;
+  readonly passed: boolean;
+  readonly gatePassed: boolean;
+}
+
+export function runPromotionLatencyBench(workspaceRoot?: string): PromotionLatencyBenchReport {
   const report = runScorerBench(workspaceRoot);
   return {
     ...report,

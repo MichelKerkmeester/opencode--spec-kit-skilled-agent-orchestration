@@ -175,6 +175,7 @@ export function initDb(dbDir: string): Database.Database {
 /** Get the current database instance (lazy-initializes if needed) */
 export function getDb(): Database.Database {
   if (!db) initDb(DATABASE_DIR);
+  // initDb either assigns the singleton database or throws before this return.
   return db!;
 }
 
@@ -368,7 +369,12 @@ export function isFileStale(filePath: string): boolean {
 }
 
 /** Batch stale check for a set of file paths */
-export function ensureFreshFiles(filePaths: string[]): { stale: string[]; fresh: string[] } {
+export interface FreshFilesResult {
+  readonly stale: string[];
+  readonly fresh: string[];
+}
+
+export function ensureFreshFiles(filePaths: string[]): FreshFilesResult {
   const uniquePaths = [...new Set(filePaths)];
   if (uniquePaths.length === 0) {
     return { stale: [], fresh: [] };
@@ -501,7 +507,12 @@ export function queryStartupHighlights(limit: number = 5): StartupHighlight[] {
 }
 
 /** Query: get edges from a symbol */
-export function queryEdgesFrom(symbolId: string, edgeType?: string): { edge: CodeEdge; targetNode: CodeNode | null }[] {
+export interface CodeEdgeTargetResult {
+  readonly edge: CodeEdge;
+  readonly targetNode: CodeNode | null;
+}
+
+export function queryEdgesFrom(symbolId: string, edgeType?: string): CodeEdgeTargetResult[] {
   const d = getDb();
   let sql = 'SELECT * FROM code_edges WHERE source_id = ?';
   const params: unknown[] = [symbolId];
@@ -519,7 +530,12 @@ export function queryEdgesFrom(symbolId: string, edgeType?: string): { edge: Cod
 }
 
 /** Query: get edges to a symbol */
-export function queryEdgesTo(symbolId: string, edgeType?: string): { edge: CodeEdge; sourceNode: CodeNode | null }[] {
+export interface CodeEdgeSourceResult {
+  readonly edge: CodeEdge;
+  readonly sourceNode: CodeNode | null;
+}
+
+export function queryEdgesTo(symbolId: string, edgeType?: string): CodeEdgeSourceResult[] {
   const d = getDb();
   let sql = 'SELECT * FROM code_edges WHERE target_id = ?';
   const params: unknown[] = [symbolId];

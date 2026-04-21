@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Daemon Status Schema
+// ───────────────────────────────────────────────────────────────
+
 import { z } from 'zod';
 
 export const DaemonHealthStateSchema = z.enum([

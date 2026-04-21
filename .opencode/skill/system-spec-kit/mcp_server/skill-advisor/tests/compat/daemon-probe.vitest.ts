@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Daemon Probe Tests
+// ───────────────────────────────────────────────────────────────
+
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { probeAdvisorDaemon } from '../../lib/compat/daemon-probe.js';

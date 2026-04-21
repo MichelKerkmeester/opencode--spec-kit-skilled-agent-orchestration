@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Redirect Metadata Tests
+// ───────────────────────────────────────────────────────────────
+
 import { describe, expect, it } from 'vitest';
 
 import { renderRedirectMetadata } from '../../lib/compat/redirect-metadata.js';

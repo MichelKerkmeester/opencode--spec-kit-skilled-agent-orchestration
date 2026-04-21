@@ -160,6 +160,7 @@ function walkFiles(root: string): string[] {
   const found: string[] = [];
   const stack = [root];
   while (stack.length > 0) {
+    // stack.length was checked immediately before popping the next directory.
     const current = stack.pop()!;
     for (const entry of readdirSync(current, { withFileTypes: true })) {
       const path = join(current, entry.name);

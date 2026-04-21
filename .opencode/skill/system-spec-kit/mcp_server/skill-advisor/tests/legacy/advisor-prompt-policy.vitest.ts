@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Prompt Policy Tests
+// ───────────────────────────────────────────────────────────────
+
 import { describe, expect, it } from 'vitest';
 import {
   extractMetalinguisticSkillMentions,

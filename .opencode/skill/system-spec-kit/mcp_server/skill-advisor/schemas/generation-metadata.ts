@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Generation Metadata Schema
+// ───────────────────────────────────────────────────────────────
+
 import { z } from 'zod';
 
 export const GenerationMetadataSchema = z.object({

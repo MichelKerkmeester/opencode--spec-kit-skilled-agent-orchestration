@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Freshness Cache Invalidation
+// ───────────────────────────────────────────────────────────────
+
 export interface CacheInvalidationEvent {
   readonly generation: number;
   readonly changedPaths: readonly string[];

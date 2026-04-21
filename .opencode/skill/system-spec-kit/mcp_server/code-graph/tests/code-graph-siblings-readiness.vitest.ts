@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Code Graph Siblings Readiness Tests
+// ───────────────────────────────────────────────────────────────
+
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const LAST_PERSISTED_AT = '2026-04-17T00:00:00.000Z';

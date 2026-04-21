@@ -41,6 +41,7 @@ export function scoreGraphCausalLane(
     const queue: Array<{ id: string; depth: number; strength: number; path: string }> = [{ id: seedId, depth: 0, strength: seedScore, path: seedId }];
     const seen = new Set([seedId]);
     while (queue.length > 0) {
+      // queue.length was checked immediately before shifting the next item.
       const current = queue.shift()!;
       if (current.depth >= maxDepth) continue;
       const outgoing = [...(adjacency.get(current.id) ?? [])]

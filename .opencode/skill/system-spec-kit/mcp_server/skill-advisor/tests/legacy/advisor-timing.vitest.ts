@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Timing Tests
+// ───────────────────────────────────────────────────────────────
+
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   buildSkillAdvisorBrief,

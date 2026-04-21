@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Validate Tests
+// ───────────────────────────────────────────────────────────────
+
 import { describe, expect, it } from 'vitest';
 
 import { AdvisorValidateInputSchema, AdvisorValidateOutputSchema } from '../../schemas/advisor-tool-schemas.js';

@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Code Graph Ops Hardening Tests
+// ───────────────────────────────────────────────────────────────
+
 import { describe, expect, it } from 'vitest';
 import {
   buildCodeGraphOpsContract,

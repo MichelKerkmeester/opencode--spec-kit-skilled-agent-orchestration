@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Freshness Trust State
+// ───────────────────────────────────────────────────────────────
+
 export type SkillGraphTrustState = 'live' | 'stale' | 'absent' | 'unavailable';
 
 export interface TrustStateSnapshot {

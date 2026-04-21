@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Native Scorer Tests
+// ───────────────────────────────────────────────────────────────
+
 import { describe, expect, it } from 'vitest';
 import { runScorerBench } from '../../bench/scorer-bench.js';
 import { applyAmbiguity } from '../../lib/scorer/ambiguity.js';

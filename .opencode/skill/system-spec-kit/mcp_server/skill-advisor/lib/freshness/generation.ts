@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Freshness Generation
+// ───────────────────────────────────────────────────────────────
+
 import { closeSync, existsSync, fsyncSync, mkdirSync, openSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { GenerationMetadataSchema, type GenerationMetadata } from '../../schemas/generation-metadata.js';

@@ -113,6 +113,7 @@ function detectState(rootDir: string): {
   const currentHead = getCurrentGitHead(rootDir);
   const storedHead = getLastGitHead();
   const headChanged = Boolean(currentHead && storedHead && currentHead !== storedHead);
+  // headChanged proves both git refs are present before formatting the transition.
   const headChangedReason = headChanged
     ? `git HEAD changed: ${storedHead!.slice(0, 8)} -> ${currentHead!.slice(0, 8)}`
     : null;

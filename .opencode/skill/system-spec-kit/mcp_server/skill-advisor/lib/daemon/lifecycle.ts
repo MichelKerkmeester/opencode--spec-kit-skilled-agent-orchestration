@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Daemon Lifecycle
+// ───────────────────────────────────────────────────────────────
+
 import { resolve } from 'node:path';
 import { acquireSkillGraphLease, type SkillGraphLease } from './lease.js';
 import { createSkillGraphWatcher, type SkillGraphWatcher, type SkillGraphWatcherOptions } from './watcher.js';

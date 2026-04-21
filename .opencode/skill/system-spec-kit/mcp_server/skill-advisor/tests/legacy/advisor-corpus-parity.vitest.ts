@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Corpus Parity Tests
+// ───────────────────────────────────────────────────────────────
+
 import { execFileSync } from 'node:child_process';
 import {
   readFileSync,

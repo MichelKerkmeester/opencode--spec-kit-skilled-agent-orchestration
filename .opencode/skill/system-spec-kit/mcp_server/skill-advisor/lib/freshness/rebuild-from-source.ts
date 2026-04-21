@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Freshness Rebuild From Source
+// ───────────────────────────────────────────────────────────────
+
 import Database from 'better-sqlite3';
 import { existsSync, renameSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';

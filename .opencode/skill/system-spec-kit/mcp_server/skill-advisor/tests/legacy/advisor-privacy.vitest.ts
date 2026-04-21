@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Advisor Privacy Tests
+// ───────────────────────────────────────────────────────────────
+
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { createAdvisorPromptCacheKey } from '../../lib/prompt-cache.js';
 import {
