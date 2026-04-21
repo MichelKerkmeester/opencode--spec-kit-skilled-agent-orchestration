@@ -551,7 +551,7 @@ The Skill Advisor is the native Gate 2 routing surface for matching prompts to s
 | `advisor_status` | Report freshness, generation, trust state, `skillCount`, `lastScanAt`, lane weights, and daemon availability. |
 | `advisor_validate` | Return measured corpus, holdout, parity, safety, and latency slices. |
 
-**Architecture:** the native package owns scorer fusion, daemon freshness, lifecycle redirects, promotion gates, compatibility entrypoints, Zod schemas, and package-local tests. The Python script at `.opencode/skill/skill-advisor/scripts/skill_advisor.py` is a compatibility shim: it probes the native path first, translates native output to the legacy JSON-array shape, and falls back to local Python scoring when native routing is unavailable.
+**Architecture:** the native package owns scorer fusion, daemon freshness, lifecycle redirects, promotion gates, compatibility entrypoints, Zod schemas, and package-local tests. The Python script at `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py` is a compatibility shim: it probes the native path first, translates native output to the legacy JSON-array shape, and falls back to local Python scoring when native routing is unavailable.
 
 **Fusion lanes:** explicit_author 0.45, lexical 0.30, graph_causal 0.15, derived_generated 0.10, semantic_shadow 0.00. The semantic lane is shadow-only until the promotion bundle passes the required cycles and the semantic lock is lifted.
 

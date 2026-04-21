@@ -784,7 +784,7 @@ Run these quick checks to confirm the configuration is sound:
 head -20 AGENTS.md
 
 # Verify skill routing script works
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "help me debug CSS"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "help me debug CSS"
 
 # Verify MCP tools are configured
 cat opencode.json | jq '.mcp.servers | keys'
@@ -801,7 +801,7 @@ ls .opencode/command/
 ```bash
 # All commands should succeed:
 head -5 AGENTS.md                                   # -> H1 title visible
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "save context"  # -> system-spec-kit
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "save context"  # -> system-spec-kit
 cat opencode.json | python3 -m json.tool            # -> valid JSON
 ls .opencode/skill/                                 # -> skill directories listed
 ```
@@ -1062,10 +1062,10 @@ Remove any tool references from AGENTS.md that do not appear in the output above
 
 ```bash
 # Verify skill_advisor.py exists
-ls .opencode/skill/skill-advisor/scripts/skill_advisor.py
+ls .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py
 
 # Run a test routing check
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "save my context" --threshold 0.8
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "save my context" --threshold 0.8
 
 # List actual skills installed
 ls .opencode/skill/
@@ -1223,7 +1223,7 @@ Update AGENTS.md to reference only the commands that exist in your `.opencode/co
 | `.utcp_config.json`                           | Code Mode external tools configuration   |
 | `.opencode/skill/`                            | Installed skills directory               |
 | `.opencode/command/`                          | Available slash commands directory       |
-| `.opencode/skill/skill-advisor/scripts/skill_advisor.py`    | Gate 2 skill routing script              |
+| `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`    | Gate 2 skill routing script              |
 
 ### External Links
 

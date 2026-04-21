@@ -338,7 +338,7 @@ See [`03--semantic-search/02-auto-triggers.md`](03--semantic-search/02-auto-trig
 
 ## 5. HOOK SURFACE
 
-These entries cover the Phase 020 prompt-time hook surface. The hook path is now the primary Gate 2 invocation route, while `skill_advisor.py` remains the direct CLI fallback for diagnostics and scripted checks. The operator contract lives in the [Skill Advisor Hook Reference](../../system-spec-kit/references/hooks/skill-advisor-hook.md).
+These entries cover the Phase 020 prompt-time hook surface. The hook path is now the primary Gate 2 invocation route, while `skill_advisor.py` remains the direct CLI fallback for diagnostics and scripted checks. The operator contract lives in the [Skill Advisor Hook Reference](../../../references/hooks/skill-advisor-hook.md).
 
 ### User-prompt-submit hook adapters
 
@@ -464,7 +464,7 @@ Setting `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` makes every runtime adapter bypa
 
 #### Source Files
 
-Primary contract: [Skill Advisor Hook Reference §9](../../system-spec-kit/references/hooks/skill-advisor-hook.md#9--disable-flag).
+Primary contract: [Skill Advisor Hook Reference §5](../../../references/hooks/skill-advisor-hook.md#5-control-flags).
 
 ---
 
@@ -528,7 +528,7 @@ Raw prompts, prompt excerpts, prompt fingerprints, subprocess stdout, and subpro
 
 #### Source Files
 
-Primary contract: [Skill Advisor Hook Reference §10](../../system-spec-kit/references/hooks/skill-advisor-hook.md#10--privacy-contract).
+Primary contract: [Skill Advisor Hook Reference §7](../../../references/hooks/skill-advisor-hook.md#7-privacy-and-diagnostics).
 
 ---
 

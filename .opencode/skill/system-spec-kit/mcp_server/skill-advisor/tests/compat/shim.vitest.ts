@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..', '..', '..', '..', '..', '..', '..');
-const shimPath = resolve(repoRoot, '.opencode/skill/skill-advisor/scripts/skill_advisor.py');
+const shimPath = resolve(repoRoot, '.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py');
 
 function runShim(args: string[], input = '', env: NodeJS.ProcessEnv = {}) {
   return spawnSync('python3', [shimPath, ...args], {

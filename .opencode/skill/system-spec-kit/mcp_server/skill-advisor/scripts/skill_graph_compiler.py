@@ -28,7 +28,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 # ───────────────────────────────────────────────────────────────
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-SKILLS_DIR = os.path.dirname(os.path.dirname(SCRIPT_DIR))
+SKILLS_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..", "..", ".."))
 DEFAULT_OUTPUT = os.path.join(SCRIPT_DIR, "skill-graph.json")
 
 COMPILED_SCHEMA_VERSION = 1
@@ -78,6 +78,21 @@ def discover_graph_metadata(skills_dir: str) -> List[Tuple[str, str, dict]]:
             results.append((entry, meta_path, data))
         except (json.JSONDecodeError, OSError) as exc:
             corrupt.append((meta_path, str(exc)))
+
+    advisor_meta_path = os.path.join(
+        skills_dir,
+        "system-spec-kit",
+        "mcp_server",
+        "skill-advisor",
+        "graph-metadata.json",
+    )
+    if os.path.isfile(advisor_meta_path) and not any(folder == "skill-advisor" for folder, _, _ in results):
+        try:
+            with open(advisor_meta_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            results.append(("skill-advisor", advisor_meta_path, data))
+        except (json.JSONDecodeError, OSError) as exc:
+            corrupt.append((advisor_meta_path, str(exc)))
 
     if corrupt:
         details = "; ".join(f"{path}: {err}" for path, err in corrupt)
@@ -206,6 +221,8 @@ def validate_derived_metadata(folder_name: str, derived: Any) -> List[str]:
             errors.append(f"derived.{field_name} must be valid ISO 8601, got {timestamp!r}")
 
     skill_dir = os.path.join(SKILLS_DIR, folder_name)
+    if folder_name == "skill-advisor" and not os.path.isdir(skill_dir):
+        skill_dir = os.path.join(SKILLS_DIR, "system-spec-kit", "mcp_server", "skill-advisor")
     repo_root = os.path.dirname(os.path.dirname(SKILLS_DIR))
 
     for index, phrase in enumerate(derived.get("trigger_phrases", [])):

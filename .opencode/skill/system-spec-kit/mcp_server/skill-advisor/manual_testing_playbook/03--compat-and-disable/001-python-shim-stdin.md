@@ -24,13 +24,13 @@ Validate that `skill_advisor.py --stdin` reads exactly one prompt from stdin and
 1. Run:
 
 ```bash
-printf '%s' "save this conversation context to memory" | python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --stdin --threshold 0.8
+printf '%s' "save this conversation context to memory" | python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --stdin --threshold 0.8
 ```
 
 2. Repeat with native required:
 
 ```bash
-printf '%s' "save this conversation context to memory" | python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --stdin --force-native --threshold 0.8
+printf '%s' "save this conversation context to memory" | python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --stdin --force-native --threshold 0.8
 ```
 
 ---
@@ -56,5 +56,5 @@ printf '%s' "save this conversation context to memory" | python3 .opencode/skill
 
 ## 6. SOURCE FILES
 
-- `.opencode/skill/skill-advisor/scripts/skill_advisor.py`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/shim.vitest.ts`

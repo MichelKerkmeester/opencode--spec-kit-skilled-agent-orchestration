@@ -1,5 +1,5 @@
 {
-  "dataset": ".opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+  "dataset": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
   "mode": "both",
   "thresholds": {
     "confidence": 0.8,

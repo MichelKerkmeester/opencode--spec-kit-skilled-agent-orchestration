@@ -215,7 +215,16 @@ export async function runAdvisorSubprocess(
 ): Promise<AdvisorSubprocessResult> {
   const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   const scriptPath = options.scriptPath
-    ?? join(options.workspaceRoot, '.opencode', 'skill', 'skill-advisor', 'scripts', 'skill_advisor.py');
+    ?? join(
+      options.workspaceRoot,
+      '.opencode',
+      'skill',
+      'system-spec-kit',
+      'mcp_server',
+      'skill-advisor',
+      'scripts',
+      'skill_advisor.py',
+    );
   const startedAt = performance.now();
   let retriesAttempted = 0;
 

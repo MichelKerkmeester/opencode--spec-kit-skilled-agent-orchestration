@@ -64,7 +64,7 @@ function loadCorpus(workspaceRoot: string): CorpusRow[] {
 function loadRegressionCases(workspaceRoot: string): RegressionCase[] {
   const fixturePath = resolve(
     workspaceRoot,
-    '.opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl',
+    '.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl',
   );
   return readFileSync(fixturePath, 'utf8')
     .trim()
@@ -143,7 +143,7 @@ function runPythonTopSkills(rows: readonly CorpusRow[], workspaceRoot: string): 
   const script = `
 import importlib.util, json, os, sys
 workspace = sys.argv[1]
-path = os.path.join(workspace, '.opencode/skill/skill-advisor/scripts/skill_advisor.py')
+path = os.path.join(workspace, '.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py')
 spec = importlib.util.spec_from_file_location('skill_advisor', path)
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)

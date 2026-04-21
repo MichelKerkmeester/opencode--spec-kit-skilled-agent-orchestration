@@ -41,7 +41,15 @@ function writeSkill(workspaceRoot: string, slug: string, mtimeMs: number): void 
 }
 
 function writeAdvisorSources(workspaceRoot: string, mtimeMs: number): void {
-  const scriptDirectory = join(workspaceRoot, '.opencode', 'skill', 'skill-advisor', 'scripts');
+  const scriptDirectory = join(
+    workspaceRoot,
+    '.opencode',
+    'skill',
+    'system-spec-kit',
+    'mcp_server',
+    'skill-advisor',
+    'scripts',
+  );
   writeFile(join(scriptDirectory, 'skill_advisor.py'), '# advisor\n', mtimeMs);
   writeFile(join(scriptDirectory, 'skill_advisor_runtime.py'), '# runtime\n', mtimeMs);
   writeFile(join(scriptDirectory, 'skill_graph_compiler.py'), '# compiler\n', mtimeMs);
@@ -57,7 +65,16 @@ function writeSqliteArtifact(workspaceRoot: string, mtimeMs: number): void {
 
 function writeJsonFallback(workspaceRoot: string, mtimeMs: number): void {
   writeFile(
-    join(workspaceRoot, '.opencode', 'skill', 'skill-advisor', 'scripts', 'skill-graph.json'),
+    join(
+      workspaceRoot,
+      '.opencode',
+      'skill',
+      'system-spec-kit',
+      'mcp_server',
+      'skill-advisor',
+      'scripts',
+      'skill-graph.json',
+    ),
     '{}\n',
     mtimeMs,
   );

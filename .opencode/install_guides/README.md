@@ -1151,7 +1151,7 @@ The Skill Advisor (`skill_advisor.py`) powers Gate 2 in AGENTS.md, routing reque
 
 ```bash
 # Verify skill advisor
-python .opencode/skill/skill-advisor/scripts/skill_advisor.py "help me write documentation"
+python .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "help me write documentation"
 ```
 
 If confidence > 0.8, the AI agent MUST use the recommended skill.
@@ -1222,7 +1222,7 @@ You have completed the installation. Here is your roadmap for getting started.
 | ---- | ---------------------- | ---------------------------------------------------------------- |
 | 1    | Verify installation    | Run health check script from Section 14.5                        |
 | 2    | Customize AGENTS.md    | Edit `AGENTS.md` for your project type                           |
-| 3    | Test skill invocation  | `python .opencode/skill/skill-advisor/scripts/skill_advisor.py "your task"`          |
+| 3    | Test skill invocation  | `python .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "your task"`          |
 | 4    | Save first memory      | Use `/memory:save` or "save context" in conversation             |
 
 ### 16.2 Common Workflows

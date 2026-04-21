@@ -78,7 +78,13 @@ interface SourceSnapshot {
 // ───────────────────────────────────────────────────────────────
 
 const SKILL_ROOT_RELATIVE_PATH = join('.opencode', 'skill');
-const ADVISOR_SCRIPT_ROOT_RELATIVE_PATH = join(SKILL_ROOT_RELATIVE_PATH, 'skill-advisor', 'scripts');
+const ADVISOR_SCRIPT_ROOT_RELATIVE_PATH = join(
+  SKILL_ROOT_RELATIVE_PATH,
+  'system-spec-kit',
+  'mcp_server',
+  'skill-advisor',
+  'scripts',
+);
 const SQLITE_ARTIFACT_RELATIVE_PATH = join(
   SKILL_ROOT_RELATIVE_PATH,
   'system-spec-kit',

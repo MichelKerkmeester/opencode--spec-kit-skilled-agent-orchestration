@@ -5,7 +5,7 @@ T243: skill-advisor harnesses lacking direct automated coverage
 T246: Add automated test files for skill_advisor scripts
 
 Finding #27: These harnesses appear to have no direct automated coverage.
-Finding #32: .opencode/skill/skill-advisor currently has no automated test
+Finding #32: .opencode/skill/system-spec-kit/mcp_server/skill-advisor currently has no automated test
 files adjacent to the reviewed scripts.
 
 This test suite provides direct automated coverage for:

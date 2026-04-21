@@ -24,19 +24,19 @@ Validate `--force-local` and `--force-native` behavior in the compatibility shim
 1. Force local:
 
 ```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local "help me commit my changes"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local "help me commit my changes"
 ```
 
 2. Force native:
 
 ```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-native "help me commit my changes"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-native "help me commit my changes"
 ```
 
 3. Invalid combination:
 
 ```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local --force-native "help me commit my changes"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local --force-native "help me commit my changes"
 ```
 
 ---
@@ -61,4 +61,4 @@ python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local --f
 
 ## 6. SOURCE FILES
 
-- `.opencode/skill/skill-advisor/scripts/skill_advisor.py`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`

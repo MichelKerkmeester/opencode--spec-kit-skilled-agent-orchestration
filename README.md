@@ -622,7 +622,7 @@ Claude Code, Copilot CLI, Gemini CLI, and Codex CLI call prompt-time hook adapte
 - Manual testing playbook now contains 17 scenarios across native MCP tools, runtime hooks/plugin, compatibility controls, and H5 operator states
 - `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` disables all prompt-time advisor surfaces
 
-For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README.md).
+For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_server/skill-advisor/README.md).
 
 ---
 

@@ -23,7 +23,7 @@ Validate two fallback paths: the Python shim routes to local scoring when native
 1. Python local fallback:
 
 ```bash
-SPECKIT_SKILL_ADVISOR_FORCE_LOCAL=1 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "help me commit my changes"
+SPECKIT_SKILL_ADVISOR_FORCE_LOCAL=1 python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "help me commit my changes"
 ```
 
 2. Native absent check in disposable workspace:
@@ -57,4 +57,4 @@ advisor_recommend({"prompt":"help me commit my changes","options":{"topK":1,"inc
 ## 6. SOURCE FILES
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-recommend.ts`
-- `.opencode/skill/skill-advisor/scripts/skill_advisor.py`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`

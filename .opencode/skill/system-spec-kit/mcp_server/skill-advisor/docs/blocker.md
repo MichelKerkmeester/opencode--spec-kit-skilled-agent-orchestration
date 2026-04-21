@@ -2,50 +2,84 @@
 
 ## Blocker
 
-`git add` could not create `.git/index.lock` inside this sandbox:
+`git mv` could not create `.git/index.lock` inside this sandbox:
 
 ```text
 fatal: Unable to create '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.git/index.lock': Operation not permitted
 ```
 
+The consolidation has been applied in the working tree using ordinary filesystem
+moves after the index lock failure. Changes are intentionally left uncommitted
+for the orchestrator to stage and commit.
+
 ## Status
 
-- Changes are intentionally left uncommitted.
-- Verification completed successfully before the commit attempt:
-  - `npm run typecheck`: exit `0`
-  - `npm run build`: exit `0`
-  - Targeted Vitest: `219/219` tests passed
-  - Python regression: `52/52`, `overall_pass: true`
-- Audit artifact: `/tmp/skco-audit-report.json`
-- Alignment report: `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/docs/skco-alignment-report.md`
+- `.opencode/skill/skill-advisor` has been removed after moving its live
+  contents into `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/`.
+- `README.md` was merged into the package-local README at
+  `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/README.md`.
+- Python shim and graph compiler path logic was updated for the deeper package
+  location.
+- Live references were updated across AGENTS/CLAUDE, hook docs, package docs,
+  sibling skill docs, plugin bridge references, and TypeScript tests.
+
+## Verification
+
+- `npm run typecheck`: exit `0`
+- `npm run build`: exit `0`
+- Vitest advisor + code-graph suite: `219/219` tests passed
+- Python regression: `52/52`, `overall_pass: true`
+- Python shim one-shot: valid JSON output
+- Python shim `--stdin`: valid JSON output
+- Exact live scan for the old skill-advisor package path: empty
+- Full grep scan: only historical snapshots/artifacts remained
 
 ## Recommended Commit
 
 ```text
-style(027+028): align skill-advisor + code-graph packages with sk-code-opencode
+refactor: consolidate skill-advisor into self-contained mcp_server/skill-advisor/
 
-Apply TS + Python checklist P0/P1 fixes:
-- Add missing box headers to 42 files
-- Replace any `any` in public API with concrete types or unknown+narrowing
-- Rename interfaces/types to PascalCase where needed
-- Add explicit return types on 1 exported function
-- Extract inline object shapes into named interfaces at module boundaries
-- Remove commented-out code blocks
-- Add justification comments on non-null assertions
+Complete the Phase 027 architecture by moving the remaining operator-facing
+surfaces from .opencode/skill/skill-advisor into the self-contained
+mcp_server/skill-advisor/ package:
 
-Zero behavior changes. All fixes style-only.
+- scripts/ (Python shim + runtime + regression + bench + compiler + fixtures + routing-accuracy + shell scripts)
+- feature_catalog/ (19 docs across 4 groups)
+- manual_testing_playbook/ (17 NC/CL/CP/OP scenarios + root)
+- SET-UP_GUIDE.md
+- graph-metadata.json
+- tests/python/test_skill_advisor.py
+
+README.md merged: operator-facing content combined with package-local
+content into a single README at mcp_server/skill-advisor/README.md.
+
+Updated path references across:
+- AGENTS.md + CLAUDE.md (Gate 2 fallback command)
+- Plugin bridge (spec-kit-skill-advisor.js + bridge.mjs)
+- TS test files (compat, legacy parity, Python<->TS parity)
+- Hook reference docs
+- Other live *.md docs
+
+Python scripts' REPO_ROOT parents[N] indices updated for new depth.
+
+Deleted .opencode/skill/skill-advisor (empty post-move).
+
+Historical specs under .opencode/specs/ retain their time-of-writing
+paths as documentation artifacts.
 
 Verification:
-- npm run typecheck + build: exit 0
-- advisor + code-graph vitest: 219/219 passed
-- Python regression: 52/52 overall_pass
+- npm typecheck + build: exit 0
+- vitest: 219/219 tests passed (167 advisor + 52 code-graph)
+- Python regression: 52/52 overall_pass: true
+- Shim one-shot + --stdin paths: both valid output
+- grep for the old skill-advisor package path in live code: empty
 
 Co-Authored-By: Codex gpt-5.4 <noreply@openai.com>
 ```
 
-## Notes
+## Notes For Orchestrator
 
-- No public TypeScript `any` signatures were found during triage, so no `any` replacement was needed.
-- No non-PascalCase type/interface/enum names were found.
-- No actionable commented-out code blocks were found; the scanner hit was prose in `readiness-contract.ts`.
-- The OpenCode plugin `.js` file remains ESM by design; converting `export default` to `module.exports` should be handled as a runtime compatibility decision, not as a mechanical style pass.
+- Do not push from this step.
+- The working tree may show delete/add pairs instead of renames because `git mv`
+  could not acquire the index lock. Git rename detection should recover these
+  during review, or the orchestrator can re-stage as desired.

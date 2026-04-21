@@ -44,7 +44,7 @@ An agent is not just its `.md` file. It exists across canonical, mirrors, comman
 | YAML workflows | `.opencode/command/**/assets/*.yaml` | Files referencing `@{name}` |
 | Skills | `.opencode/skill/*/SKILL.md` | Files referencing the agent |
 | Global docs | `CLAUDE.md`, `.claude/CLAUDE.md` | Agent name references |
-| Skill advisor | `.opencode/skill/skill-advisor/scripts/skill_advisor.py` | Routing entries |
+| Skill advisor | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py` | Routing entries |
 
 ---
 

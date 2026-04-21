@@ -37,9 +37,9 @@ from typing import Any, Dict, List, Optional, Set
 # ───────────────────────────────────────────────────────────────
 
 # Path to skill directory.
-# This script lives in .opencode/skill/skill-advisor/scripts/, so skills are two levels up.
+# This script lives in .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/.
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-SKILLS_DIR = os.path.dirname(os.path.dirname(SCRIPT_DIR))
+SKILLS_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..", "..", ".."))
 REPO_ROOT = os.path.dirname(os.path.dirname(SKILLS_DIR))
 LOCAL_CCC_BIN = os.path.join(
     SKILLS_DIR,

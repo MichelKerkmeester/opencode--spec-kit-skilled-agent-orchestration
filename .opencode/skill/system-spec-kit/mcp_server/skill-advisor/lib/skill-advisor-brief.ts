@@ -176,7 +176,7 @@ function freshnessTrustState(freshness: AdvisorHookFreshness): SharedPayloadTrus
 
 function sourceRefsForFreshness(freshness: AdvisorFreshnessResult): SharedPayloadSourceRef[] {
   const refs: SharedPayloadSourceRef[] = [
-    { kind: 'advisor-runtime' as const, path: '.opencode/skill/skill-advisor/scripts/skill_advisor.py' },
+    { kind: 'advisor-runtime' as const, path: '.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py' },
   ];
   for (const skillLabel of [...freshness.skillFingerprints.keys()].sort().slice(0, 8)) {
     refs.push({ kind: 'skill-inventory' as const, path: `.opencode/skill/${skillLabel}/SKILL.md` });

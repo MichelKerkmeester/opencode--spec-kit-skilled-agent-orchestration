@@ -40,7 +40,7 @@ function directPythonTopSkills(rows: readonly CorpusRow[]): Array<string | null>
   const script = `
 import importlib.util, json, os, sys
 workspace = sys.argv[1]
-path = os.path.join(workspace, '.opencode/skill/skill-advisor/scripts/skill_advisor.py')
+path = os.path.join(workspace, '.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py')
 spec = importlib.util.spec_from_file_location('skill_advisor', path)
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)

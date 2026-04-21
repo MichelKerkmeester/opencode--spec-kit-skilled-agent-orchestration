@@ -5,7 +5,7 @@ description: "Setup, validation, rollback, and operator guidance for the Phase 0
 
 # Skill Advisor Setup Guide
 
-This guide covers the current setup for `.opencode/skill/skill-advisor/` after Phase 027. The canonical runtime is the native TypeScript package under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/`; the Python script remains for compatibility and diagnostics.
+This guide covers the current setup for `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/` after Phase 027. The canonical runtime is the native TypeScript package under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/`; the Python script remains for compatibility and diagnostics.
 
 ---
 
@@ -50,7 +50,7 @@ Current baseline:
 
 Use the native bootstrap guide as the source of truth:
 
-[Native Skill Advisor Install Guide](../system-spec-kit/mcp_server/skill-advisor/INSTALL_GUIDE.md)
+[Native Skill Advisor Install Guide](./INSTALL_GUIDE.md)
 
 Minimum setup:
 
@@ -80,17 +80,17 @@ Expected:
 The stable Python entry remains:
 
 ```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "help me commit my changes"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "help me commit my changes"
 ```
 
 Important modes:
 
 ```bash
 printf '%s' "save this conversation context to memory" | \
-  python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --stdin
+  python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --stdin
 
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-native "save this context"
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local "save this context"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-native "save this context"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local "save this context"
 ```
 
 Mode meanings:
@@ -148,14 +148,14 @@ npm --prefix .opencode/skill/system-spec-kit/mcp_server exec -- vitest run skill
 Python compatibility:
 
 ```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py \
-  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py \
+  --dataset .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl
 ```
 
 Manual validation:
 
 ```text
-.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md
+.opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md
 ```
 
 ---
@@ -176,7 +176,7 @@ Examples:
 ```bash
 export SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1
 export SPECKIT_SKILL_ADVISOR_FORCE_LOCAL=1
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local "help me commit my changes"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local "help me commit my changes"
 ```
 
 Restore normal operation:
@@ -213,19 +213,19 @@ npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 npm --prefix .opencode/skill/system-spec-kit/mcp_server run typecheck
 
 # Python shim default
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "create a pull request on github"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "create a pull request on github"
 
 # Python shim stdin
 printf '%s' "save this conversation context to memory" | \
-  python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --stdin
+  python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --stdin
 
 # Native required
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-native "save this context"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-native "save this context"
 
 # Python fallback required
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local "save this context"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local "save this context"
 
 # Regression compatibility
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py \
-  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py \
+  --dataset .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl
 ```

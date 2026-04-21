@@ -175,7 +175,7 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 
 ####  GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
 1. A) Primary: use the automatic Skill Advisor Hook brief already surfaced by the runtime when present. See `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md`.
-2. B) Fallback: run `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "[request]" --threshold 0.8` when no hook brief is present, when scripting a check, or when diagnosing hook behavior.
+2. B) Fallback: run `python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "[request]" --threshold 0.8` when no hook brief is present, when scripting a check, or when diagnosing hook behavior.
 3. C) Cite user's explicit direction: "User specified: [exact quote]"
 - Confidence ≥ 0.8 → MUST invoke skill | < 0.8 → general approach | User names skill → cite and proceed
 - Output: `SKILL ROUTING: [result]` or `SKILL ROUTING: User directed → [name]`

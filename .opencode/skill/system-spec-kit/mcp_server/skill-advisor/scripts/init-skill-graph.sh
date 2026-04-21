@@ -12,7 +12,7 @@ set -euo pipefail
 # ───────────────────────────────────────────────────────────────
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "${SCRIPT_DIR}/../../../.." && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../../../../../.." && pwd)"
 SQLITE_PATH="${REPO_ROOT}/.opencode/skill/system-spec-kit/mcp_server/database/skill-graph.sqlite"
 JSON_PATH="${SCRIPT_DIR}/skill-graph.json"
 
@@ -51,12 +51,12 @@ else
 fi
 
 log_step "Validating graph metadata"
-run_from_repo python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
+run_from_repo python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py --validate-only
 
 log_step "Exporting JSON skill graph"
-run_from_repo python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --export-json
+run_from_repo python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py --export-json
 
 log_step "Running advisor health check"
-run_from_repo python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health
+run_from_repo python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --health
 
 log_step "Skill graph initialization complete"

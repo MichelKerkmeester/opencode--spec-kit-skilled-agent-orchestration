@@ -46,21 +46,21 @@
       "calibration", "regression", "benchmark", "compiler", "discovery"
     ],
     "key_files": [
-      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
-      ".opencode/skill/skill-advisor/scripts/skill_advisor_runtime.py",
-      ".opencode/skill/skill-advisor/scripts/skill_advisor_regression.py",
-      ".opencode/skill/skill-advisor/scripts/skill_advisor_bench.py",
-      ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
-      ".opencode/skill/skill-advisor/scripts/skill-graph.json",
-      ".opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
-      ".opencode/skill/skill-advisor/README.md"
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_runtime.py",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_bench.py",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill-graph.json",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/README.md"
     ],
     "entities": [
-      { "name": "skill-advisor", "kind": "skill", "path": ".opencode/skill/skill-advisor/README.md", "source": "derived" },
-      { "name": "skill_advisor.py", "kind": "script", "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py", "source": "derived" },
-      { "name": "skill_graph_compiler.py", "kind": "script", "path": ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py", "source": "derived" },
-      { "name": "skill_advisor_regression.py", "kind": "script", "path": ".opencode/skill/skill-advisor/scripts/skill_advisor_regression.py", "source": "derived" },
-      { "name": "skill-graph.json", "kind": "config", "path": ".opencode/skill/skill-advisor/scripts/skill-graph.json", "source": "derived" }
+      { "name": "skill-advisor", "kind": "skill", "path": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/README.md", "source": "derived" },
+      { "name": "skill_advisor.py", "kind": "script", "path": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py", "source": "derived" },
+      { "name": "skill_graph_compiler.py", "kind": "script", "path": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_graph_compiler.py", "source": "derived" },
+      { "name": "skill_advisor_regression.py", "kind": "script", "path": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py", "source": "derived" },
+      { "name": "skill-graph.json", "kind": "config", "path": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill-graph.json", "source": "derived" }
     ],
     "causal_summary": "The skill advisor is the Gate 2 routing engine that scores user requests against all 20 skill descriptions using token normalization, synonym expansion, intent boosting, graph-derived transitive boosts, and confidence calibration. It returns ranked recommendations with dual-threshold filtering so the calling AI can invoke the right skill with measured certainty.",
     "source_docs": [

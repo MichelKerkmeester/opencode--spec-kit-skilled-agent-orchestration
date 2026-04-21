@@ -63,7 +63,7 @@ This playbook provides 23 deterministic scenarios across 7 categories validating
 - CocoIndex daemon is available via `ccc` and `ccc status` responds.
 - Project is initialized and indexed so `ccc status` reports non-zero file and chunk counts.
 - The MCP search tool is available in the current session.
-- The shared skill advisor exists at `.opencode/skill/skill-advisor/scripts/skill_advisor.py`.
+- The shared skill advisor exists at `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`.
 - Destructive scenario `CCC-005` runs only against rebuildable, non-production data.
 
 ---

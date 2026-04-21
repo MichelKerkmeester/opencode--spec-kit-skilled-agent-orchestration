@@ -30,7 +30,7 @@ SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1 advisor_recommend({"prompt":"help me commi
 2. Python shim:
 
 ```bash
-SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "help me commit my changes"
+SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1 python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "help me commit my changes"
 ```
 
 3. Plugin bridge:
@@ -69,5 +69,5 @@ printf '%s' '{"prompt":"help me commit my changes","cwd":"'"$PWD"'"}' | SPECKIT_
 ## 6. SOURCE FILES
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-recommend.ts`
-- `.opencode/skill/skill-advisor/scripts/skill_advisor.py`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`
 - `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs`

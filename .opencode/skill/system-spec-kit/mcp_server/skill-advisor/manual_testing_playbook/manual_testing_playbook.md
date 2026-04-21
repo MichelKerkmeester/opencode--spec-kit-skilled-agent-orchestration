@@ -5,7 +5,7 @@ description: "Operator-facing validation package for the Phase 027 native skill 
 
 # Skill Advisor Native-First Manual Testing Playbook
 
-This playbook validates the post-Phase-027 Skill Advisor surface as shipped at remediation SHA `97a318d83`, with the Phase 028 code-graph migration treated as complete. The source of truth is the native TypeScript advisor package under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/`; the Python script in `.opencode/skill/skill-advisor/scripts/skill_advisor.py` is now a compatibility shim.
+This playbook validates the post-Phase-027 Skill Advisor surface as shipped at remediation SHA `97a318d83`, with the Phase 028 code-graph migration treated as complete. The source of truth is the native TypeScript advisor package under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/`; the Python script in `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py` is now a compatibility shim.
 
 ---
 
@@ -160,7 +160,7 @@ Primary sources:
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-validate.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/schemas/advisor-tool-schemas.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/compat/index.ts`
-- `.opencode/skill/skill-advisor/scripts/skill_advisor.py`
+- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`
 - `.opencode/plugins/spec-kit-skill-advisor.js`
 - `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs`
 - `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md`

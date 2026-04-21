@@ -97,15 +97,15 @@ Current Phase 027 baseline:
 `skill_advisor.py` remains the CLI compatibility surface. In one-shot mode it probes the native advisor first and translates `advisor_recommend` output back to the legacy JSON-array shape. If the native probe is unavailable, it falls back to the local Python scorer.
 
 ```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "help me commit my changes"
-printf '%s' "help me commit my changes" | python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --stdin
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "help me commit my changes"
+printf '%s' "help me commit my changes" | python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --stdin
 ```
 
 Testing controls:
 
 ```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-native "save this context"
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local "save this context"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-native "save this context"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local "save this context"
 ```
 
 The OpenCode plugin bridge follows the same pattern: native probe, `advisor_recommend` delegation, then Python-backed brief fallback. Plugin consumers must use the stable entrypoint:
@@ -134,7 +134,7 @@ export SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1
 export SPECKIT_SKILL_ADVISOR_FORCE_LOCAL=1
 
 # CLI-only Python path.
-python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-local "your prompt"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local "your prompt"
 ```
 
 Unset variables after recovery:
@@ -168,7 +168,7 @@ State interpretation:
 Manual recovery scenarios live at:
 
 ```text
-.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md
+.opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md
 ```
 
 ---
@@ -178,5 +178,5 @@ Manual recovery scenarios live at:
 | Document | Purpose |
 | --- | --- |
 | [README.md](./README.md) | Package-local architecture and public API entrypoints. |
-| [Skill Advisor README](../../../skill-advisor/README.md) | Operator overview, quick start, runtime integrations. |
+| [README.md](./README.md) | Operator overview, quick start, runtime integrations. |
 | [Hook reference](../../references/hooks/skill-advisor-hook.md) | Claude, Copilot, Gemini, Codex, and OpenCode plugin hook contract. |

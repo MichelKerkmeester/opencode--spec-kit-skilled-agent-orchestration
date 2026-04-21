@@ -41,4 +41,4 @@
 - `cd .opencode/skill/system-spec-kit/mcp_server && npm run typecheck`: exit `0`.
 - `cd .opencode/skill/system-spec-kit/mcp_server && npm run build`: exit `0`.
 - `cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run mcp_server/skill-advisor/tests/ mcp_server/code-graph/tests/ --reporter=default`: `30` files passed, `219/219` tests passed.
-- `python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl`: `52/52` cases passed, `overall_pass: true`.
+- `python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py --dataset .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl`: `52/52` cases passed, `overall_pass: true`.

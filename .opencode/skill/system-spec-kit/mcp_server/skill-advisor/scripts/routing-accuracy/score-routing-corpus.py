@@ -18,11 +18,20 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-# Path layout: .opencode/skill/skill-advisor/scripts/routing-accuracy/<script>
-# parents[0]=routing-accuracy, [1]=scripts, [2]=skill-advisor, [3]=skill, [4]=.opencode, [5]=repo root
-REPO_ROOT = SCRIPT_DIR.parents[4]
+# Path layout: .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/routing-accuracy/<script>
+# parents[0]=scripts, [1]=skill-advisor, [2]=mcp_server, [3]=system-spec-kit, [4]=skill, [5]=.opencode, [6]=repo root
+REPO_ROOT = SCRIPT_DIR.parents[6]
 DEFAULT_DATASET = SCRIPT_DIR / "labeled-prompts.jsonl"
-ADVISOR_PATH = REPO_ROOT / ".opencode" / "skill" / "skill-advisor" / "scripts" / "skill_advisor.py"
+ADVISOR_PATH = (
+    REPO_ROOT
+    / ".opencode"
+    / "skill"
+    / "system-spec-kit"
+    / "mcp_server"
+    / "skill-advisor"
+    / "scripts"
+    / "skill_advisor.py"
+)
 GATE3_RUNNER = SCRIPT_DIR / "gate3-corpus-runner.mjs"
 
 HISTORICAL_FALSE_POSITIVE_TOKENS = ("analyze", "decompose", "phase")
