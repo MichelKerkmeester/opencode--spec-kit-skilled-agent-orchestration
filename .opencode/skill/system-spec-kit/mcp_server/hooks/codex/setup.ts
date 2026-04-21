@@ -10,6 +10,7 @@ import {
   mkdirSync,
   writeFileSync,
 } from 'node:fs';
+import { execSync } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -22,6 +23,22 @@ const IS_CLI_ENTRY = process.argv[1]
   ? resolve(process.argv[1]) === fileURLToPath(import.meta.url)
   : false;
 
+// Setup writes policy at the repo-root `.codex/policy.json` regardless of cwd.
+// Runtime hooks still read via defaultCodexPolicyPath() which resolves against
+// the live process.cwd(), matching Codex CLI's own path semantics.
+function repoRootPolicyPath(): string {
+  try {
+    const root = execSync('git rev-parse --show-toplevel', {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+    if (root) return resolve(root, '.codex', 'policy.json');
+  } catch {
+    /* fall through to cwd-based default */
+  }
+  return defaultCodexPolicyPath();
+}
+
 export function defaultPolicyBootstrap(): CodexPolicyFile {
   return {
     version: 1,
@@ -31,7 +48,7 @@ export function defaultPolicyBootstrap(): CodexPolicyFile {
   };
 }
 
-export function ensurePolicyBootstrap(policyPath = defaultCodexPolicyPath()): { readonly created: boolean; readonly policyPath: string } {
+export function ensurePolicyBootstrap(policyPath = repoRootPolicyPath()): { readonly created: boolean; readonly policyPath: string } {
   if (existsSync(policyPath)) {
     return { created: false, policyPath };
   }
