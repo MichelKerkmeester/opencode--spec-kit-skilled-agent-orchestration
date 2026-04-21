@@ -109,3 +109,17 @@ code-graph.sqlite
 
 # Skill-advisor runtime output artifacts
 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/out/*.json
+
+# system-spec-kit runtime artifacts (from 2026-04-21 audit)
+.opencode/skill/system-spec-kit/shared/mcp_server/database/*.sqlite
+.opencode/skill/system-spec-kit/shared/mcp_server/database/*.sqlite-shm
+.opencode/skill/system-spec-kit/shared/mcp_server/database/*.sqlite-wal
+.opencode/skill/system-spec-kit/mcp_server/database/*.sqlite
+.opencode/skill/system-spec-kit/mcp_server/database/*.sqlite-shm
+.opencode/skill/system-spec-kit/mcp_server/database/*.sqlite-wal
+**/.advisor-state/
+**/.advisor-state/**
+
+# Generated vitest source maps
+.opencode/skill/system-spec-kit/scripts/tests/*.vitest.d.ts.map
+.opencode/skill/system-spec-kit/scripts/tests/*.vitest.js.map

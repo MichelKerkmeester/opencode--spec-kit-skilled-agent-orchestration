@@ -26,7 +26,9 @@
     "test:file-watcher": "vitest run tests/file-watcher.vitest.ts",
     "test:task-enrichment": "echo 'Task-enrichment tests run in @spec-kit/scripts workspace'",
     "test:hydra:phase1": "vitest run tests/memory-roadmap-flags.vitest.ts tests/memory-state-baseline.vitest.ts tests/migration-checkpoint-scripts.vitest.ts tests/vector-index-schema-compatibility.vitest.ts",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "bench:safety": "node dist/skill-advisor/bench/safety-bench.js",
+    "bench:watcher": "node dist/skill-advisor/bench/watcher-benchmark.js"
   },
   "keywords": [
     "mcp",

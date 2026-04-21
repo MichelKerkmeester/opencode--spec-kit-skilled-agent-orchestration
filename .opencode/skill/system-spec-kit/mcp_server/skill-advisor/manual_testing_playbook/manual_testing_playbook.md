@@ -33,6 +33,7 @@ This playbook validates the post-Phase-027 Skill Advisor surface as shipped at r
 - [15. PYTHON COMPAT SCENARIOS (`PC-001..PC-005`)](#15--python-compat-scenarios-pc-001pc-005)
 - [16. AUTOMATED TEST CROSS-REFERENCE](#16--automated-test-cross-reference)
 - [17. SOURCE CROSS-REFERENCE](#17--source-cross-reference)
+- [18. SCENARIO RUN HISTORY](#18--scenario-run-history)
 
 ---
 
@@ -265,3 +266,18 @@ Primary sources:
 - `.opencode/plugins/spec-kit-skill-advisor.js`
 - `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs`
 - `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md`
+
+---
+
+<!-- ANCHOR:scenario-run-history -->
+## 18. SCENARIO RUN HISTORY
+
+Archived scenario-execution reports. Each report captures a dated end-to-end pass across all 47 scenarios with PASS/FAIL evidence, test counts, and known gaps.
+
+| Date | Report | Result |
+| --- | --- | --- |
+| 2026-04-21 | [SCENARIO_RUN_2026-04-21.md](./SCENARIO_RUN_2026-04-21.md) | 47/47 PASS; 167 advisor vitest + 52/52 Python regression + 52 code-graph vitest green |
+
+Add a new row whenever a full scenario-execution pass is archived.
+
+<!-- /ANCHOR:scenario-run-history -->
