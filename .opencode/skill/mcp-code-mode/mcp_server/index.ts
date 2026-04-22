@@ -8,6 +8,7 @@
 import path, { dirname } from 'path';
 import { promises as fs } from 'fs';
 import { fileURLToPath } from 'url';
+import { format } from 'util';
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
@@ -29,6 +30,19 @@ import { CodeModeUtcpClient } from '@utcp/code-mode';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+function redirectConsoleStdoutToStderr(): void {
+    const writeToStderr = (...args: unknown[]): void => {
+        process.stderr.write(`${format(...args)}\n`);
+    };
+
+    // MCP stdio reserves stdout for JSON-RPC frames; library logs must not corrupt it.
+    console.log = writeToStderr;
+    console.info = writeToStderr;
+    console.debug = writeToStderr;
+}
+
+redirectConsoleStdoutToStderr();
 
 ensureCorePluginsInitialized();
 
