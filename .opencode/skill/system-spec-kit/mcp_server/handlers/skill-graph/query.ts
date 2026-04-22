@@ -220,23 +220,3 @@ function errorResponse(error: string): HandlerResponse {
     }],
   };
 }
-  return item;
-}
-
-function okResponse(data: Record<string, unknown>): HandlerResponse {
-  return {
-    content: [{
-      type: 'text',
-      text: JSON.stringify({ status: 'ok', data }),
-    }],
-  };
-}
-
-function errorResponse(error: string): HandlerResponse {
-  return {
-    content: [{
-      type: 'text',
-      text: JSON.stringify({ status: 'error', error }),
-    }],
-  };
-}

@@ -36,7 +36,7 @@ This packet organizes 1 consolidated 006 campaign findings for the Telemetry, Me
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-04-21 |
 | **Branch** | orchestrator-managed |
 | **Parent Spec** | ../spec.md |
@@ -72,8 +72,8 @@ Success means future implementation can pick up this theme without re-reading th
 ## 3. SCOPE
 
 ### In Scope
-- 1 findings from the Telemetry, Measurement, and Rollout Controls theme.
-- P0=0, P1=0, P2=1 remediation planning.
+- 1 finding from the Telemetry, Measurement, and Rollout Controls theme.
+- P0=0, P1=0, P2=1 remediation implementation and closeout.
 - Evidence-derived graph metadata for this theme.
 
 ### Out of Scope
@@ -90,7 +90,8 @@ Success means future implementation can pick up this theme without re-reading th
 | tasks.md | Create | Per-finding remediation task ledger |
 | checklist.md | Create | Verification gates for remediation closeout |
 | decision-record.md | Create | ADR for theme-owned remediation |
-| graph-metadata.json | Create | Evidence-derived key file index |
+| graph-metadata.json | Update | Evidence-derived key file index |
+| implementation-summary.md | Create | Closeout evidence and verification output |
 
 
 <!-- /ANCHOR:scope -->

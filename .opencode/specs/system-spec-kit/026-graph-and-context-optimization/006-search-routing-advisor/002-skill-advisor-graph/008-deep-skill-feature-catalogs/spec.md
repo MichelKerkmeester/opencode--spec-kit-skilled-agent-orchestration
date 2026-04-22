@@ -101,9 +101,9 @@ Create a `feature_catalog/` directory in each skill folder with:
 ## 4. SCOPE
 
 ### In Scope
-- `sk-deep-research/feature_catalog/` -- root catalog + ~12 per-feature files across 4 categories
-- `sk-deep-review/feature_catalog/` -- root catalog + ~12 per-feature files across 4 categories
-- `sk-improve-agent/feature_catalog/` -- root catalog + ~8 per-feature files across 3 categories
+- `sk-deep-research/feature_catalog/` -- root catalog + 14 feature entries across 4 categories
+- `sk-deep-review/feature_catalog/` -- root catalog + 19 feature entries across 4 categories
+- `sk-improve-agent/feature_catalog/` -- root catalog + 13 feature entries across 3 categories
 
 ### Out of Scope
 - Modifying SKILL.md files or runtime code

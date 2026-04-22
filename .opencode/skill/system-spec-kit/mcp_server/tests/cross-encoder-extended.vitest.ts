@@ -459,6 +459,86 @@ describe('Cross Encoder Extended Tests', () => {
       expect(status.cache.staleHits).toBe(0);
     });
 
+    it('same IDs with changed content miss cache', async () => {
+      process.env.VOYAGE_API_KEY = 'voyage-key';
+
+      let fetchCallCount = 0;
+      globalThis.fetch = vi.fn(async (..._args: Parameters<typeof fetch>): Promise<Response> => {
+        fetchCallCount++;
+        const relevanceScore = fetchCallCount === 1 ? 0.25 : 0.91;
+        return new Response(JSON.stringify({ data: [{ index: 0, relevance_score: relevanceScore }] }), {
+          status: 200,
+          statusText: 'OK',
+          headers: { 'Content-Type': 'application/json' },
+        });
+      });
+
+      const firstDocs = [{ id: 'content-drift', content: 'original payload' }];
+      const secondDocs = [{ id: 'content-drift', content: 'updated payload' }];
+
+      const firstResults = await crossEncoder.rerankResults('content-aware cache', firstDocs, { useCache: true });
+      const secondResults = await crossEncoder.rerankResults('content-aware cache', secondDocs, { useCache: true });
+
+      expect(fetchCallCount).toBe(2);
+      expect(firstResults[0].rerankerScore).toBeCloseTo(0.25, 9);
+      expect(secondResults[0].rerankerScore).toBeCloseTo(0.91, 9);
+
+      const status = crossEncoder.getRerankerStatus();
+      expect(status.cache.hits).toBe(0);
+      expect(status.cache.misses).toBe(2);
+      expect(status.cache.staleHits).toBe(0);
+    });
+
+    it('expired cache entry records stale-hit and eviction telemetry', async () => {
+      process.env.VOYAGE_API_KEY = 'voyage-key';
+
+      let fetchCallCount = 0;
+      globalThis.fetch = vi.fn(async (..._args: Parameters<typeof fetch>): Promise<Response> => {
+        fetchCallCount++;
+        return new Response(JSON.stringify({ data: [{ index: 0, relevance_score: 0.8 }] }), {
+          status: 200,
+          statusText: 'OK',
+          headers: { 'Content-Type': 'application/json' },
+        });
+      });
+
+      const docs = [{ id: 'stale-1', content: 'cache me' }];
+      await crossEncoder.rerankResults('stale query', docs, { useCache: true });
+
+      const cacheKey = crossEncoder.generateCacheKey('stale query', docs, 'voyage');
+      const cached = crossEncoder.__testables.cache.get(cacheKey);
+      expect(cached).toBeDefined();
+      if (cached) {
+        crossEncoder.__testables.cache.set(cacheKey, {
+          ...cached,
+          timestamp: Date.now() - 300_001,
+        });
+      }
+
+      await crossEncoder.rerankResults('stale query', docs, { useCache: true });
+
+      expect(fetchCallCount).toBe(2);
+      const status = crossEncoder.getRerankerStatus();
+      expect(status.cache.hits).toBe(0);
+      expect(status.cache.misses).toBe(2);
+      expect(status.cache.staleHits).toBe(1);
+      expect(status.cache.evictions).toBe(1);
+    });
+
+    it('cache bound enforcement evicts the oldest entry and records telemetry', () => {
+      const { cache, enforceCacheBound, MAX_CACHE_ENTRIES } = crossEncoder.__testables;
+      for (let i = 0; i <= MAX_CACHE_ENTRIES; i++) {
+        cache.set(`entry-${i}`, { results: [], timestamp: i });
+      }
+
+      enforceCacheBound();
+
+      expect(cache.size).toBe(MAX_CACHE_ENTRIES);
+      expect(cache.has('entry-0')).toBe(false);
+      const status = crossEncoder.getRerankerStatus();
+      expect(status.cache.evictions).toBe(1);
+    });
+
     it('useCache=false bypasses cache', async () => {
       process.env.VOYAGE_API_KEY = 'voyage-key';
 

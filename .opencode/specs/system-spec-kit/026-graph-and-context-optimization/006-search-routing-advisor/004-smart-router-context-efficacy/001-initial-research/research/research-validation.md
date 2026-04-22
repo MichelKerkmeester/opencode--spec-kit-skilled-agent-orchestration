@@ -23,12 +23,26 @@ Files:
 
 - `.opencode/plugins/spec-kit-skill-advisor.js`
 - `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs`
+- `.opencode/plugins/spec-kit-skill-advisor.manifest.json`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/opencode-skill-advisor-plugin.vitest.ts`
+
+Manifest:
+
+- `id`: `spec-kit-skill-advisor`
+- `entrypoint`: `.opencode/plugins/spec-kit-skill-advisor.js`
+- `bridgeCommand`: `node .opencode/plugins/spec-kit-skill-advisor-bridge.mjs`
+- `hooks`: `onSessionStart`, `onUserPromptSubmitted`, `onSessionEnd`
+- `tools`: `spec_kit_skill_advisor_status`
+- `settings`: `enabled`, `cacheTTLMs`, `nodeBinaryOverride`, `bridgeTimeoutMs`, `maxTokens`, `thresholdConfidence`, `sourceSignatureOverride`
+- `disable`: `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` or `enabled: false`
 
 Hook shape:
 
-- Use OpenCode prompt/message context injection when available.
-- Reuse Phase 020 `buildSkillAdvisorBrief()` and `renderAdvisorBrief()`.
+- Register `onUserPromptSubmitted(input)` as the prompt hook.
+- Extract the submitted prompt from `input.prompt`, `input.text`, `input.userPrompt`, `input.message`, or equivalent nested request fields.
+- Call the bridge with `{ prompt, workspaceRoot: ctx.directory, runtime: "codex", maxTokens, thresholdConfidence }`.
+- Return `{ additionalContext: brief }` when the bridge status is `ok`; return `{ additionalContext: null }` for skipped, degraded, fail-open, disabled, or empty-prompt cases.
+- Reuse Phase 020 `buildSkillAdvisorBrief()` and `renderAdvisorBrief()` inside the bridge.
 - Do not persist prompts.
 - Fail open on bridge, Python, SQLite, or freshness failures.
 

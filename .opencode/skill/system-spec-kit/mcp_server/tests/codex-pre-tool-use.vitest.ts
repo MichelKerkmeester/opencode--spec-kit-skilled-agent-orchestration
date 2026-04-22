@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   clearCodexPreToolUsePolicyCacheForTests,
+  DEFAULT_POLICY,
   handleCodexPreToolUse,
   type CodexPolicyFile,
 } from '../hooks/codex/pre-tool-use.js';
@@ -159,5 +160,11 @@ describe('Codex PreToolUse Bash deny policy', () => {
     } finally {
       rmSync(tempDir, { recursive: true, force: true });
     }
+  });
+
+  it('documents starter scope rather than comprehensive shell-safety enforcement', () => {
+    expect(DEFAULT_POLICY.notes).toContain('starter Bash denylist');
+    expect(DEFAULT_POLICY.notes).toContain('not a comprehensive destructive-command policy');
+    expect(DEFAULT_POLICY.notes).toContain('shell-safety parser');
   });
 });

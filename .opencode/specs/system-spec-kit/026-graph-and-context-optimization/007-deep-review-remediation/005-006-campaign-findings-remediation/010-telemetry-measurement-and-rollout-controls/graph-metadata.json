@@ -26,16 +26,18 @@
       "findings"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "decision-record.md",
+      "implementation-summary.md",
       ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md",
-      "codex/policy.json",
-      "pre-tool-use.ts"
+      ".codex/policy.json",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/pre-tool-use.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/codex-pre-tool-use.vitest.ts"
     ],
     "source_docs": [
       ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md",
@@ -43,7 +45,8 @@
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "decision-record.md"
+      "decision-record.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -77,6 +80,12 @@
         "source": "derived"
       },
       {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
         "name": "consolidated-findings.md",
         "kind": "doc",
         "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md",
@@ -85,13 +94,19 @@
       {
         "name": "policy.json",
         "kind": "config",
-        "path": "codex/policy.json",
+        "path": ".codex/policy.json",
         "source": "derived"
       },
       {
         "name": "pre-tool-use.ts",
         "kind": "file",
-        "path": "pre-tool-use.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/pre-tool-use.ts",
+        "source": "derived"
+      },
+      {
+        "name": "codex-pre-tool-use.vitest.ts",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/codex-pre-tool-use.vitest.ts",
         "source": "derived"
       }
     ]

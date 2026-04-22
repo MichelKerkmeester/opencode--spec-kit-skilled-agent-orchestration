@@ -3,7 +3,7 @@
 // MODULE: Codex PreToolUse Hook — Bash Deny Policy
 // ───────────────────────────────────────────────────────────────
 // Codex PreToolUse is intentionally narrow here: only Bash commands can
-// be denied, and only when they match the repo-local denylist.
+// be denied, and only when they match starter policy phrases.
 
 import {
   existsSync,
@@ -83,7 +83,7 @@ export const DEFAULT_CODEX_BASH_DENYLIST: readonly string[] = [
 
 export const DEFAULT_POLICY: CodexPolicyFile = {
   version: 1,
-  notes: 'In-memory default Bash denylist for Codex PreToolUse. Run npm run setup:codex-policy to write a repo-local policy file.',
+  notes: 'In-memory starter Bash denylist for Codex PreToolUse; this is not a comprehensive destructive-command policy or shell-safety parser. Run npm run setup:codex-policy to write a repo-local policy file.',
   bashDenylist: DEFAULT_CODEX_BASH_DENYLIST,
 };
 

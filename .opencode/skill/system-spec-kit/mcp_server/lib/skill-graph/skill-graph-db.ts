@@ -494,13 +494,34 @@ export function indexSkillMetadata(skillDir: string): SkillGraphIndexResult {
     throw new Error(`Duplicate skill_ids discovered: ${[...duplicateIds].sort().join(', ')}`);
   }
 
-  const knownSkillIds = new Set(skillIds);
   let indexedFiles = 0;
   let skippedFiles = nonSkillMetadataFiles;
   let indexedNodes = 0;
   let indexedEdges = 0;
   let rejectedEdges = 0;
   let deletedNodes = 0;
+
+  if (skillIds.length === 0) {
+    warnings.push(`EMPTY-SKILL-SCAN: no skill metadata discovered under ${toDisplayPath(skillDir)}; preserving existing graph`);
+    const summary: SkillGraphIndexResult = {
+      scannedFiles: discoveredFiles.length,
+      indexedFiles,
+      skippedFiles,
+      indexedNodes,
+      indexedEdges,
+      rejectedEdges,
+      deletedNodes,
+      warnings,
+    };
+
+    setMetadata('last_scan_timestamp', new Date().toISOString());
+    setMetadata('last_scan_skill_dir', skillDir);
+    setMetadata('last_scan_summary', JSON.stringify(summary));
+
+    return summary;
+  }
+
+  const knownSkillIds = new Set(skillIds);
 
   const selectExisting = database.prepare(`
     SELECT content_hash, source_path

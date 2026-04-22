@@ -38,9 +38,9 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 [P0] Confirm consolidated findings source is readable
-- [ ] T002 [P0] Verify severity counts against the source report
-- [ ] T003 [P1] Identify target source phases before implementation edits
+- [x] T001 [P0] Confirm consolidated findings source is readable. Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md:406`
+- [x] T002 [P0] Verify severity counts against the source report. Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md:408`
+- [x] T003 [P1] Identify target source phases before implementation edits. Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md:419`
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -48,11 +48,11 @@ _memory:
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T010 [P] [P1] CF-008: [F001] Cache key ignores document content _(dimension: correctness)_ Source phase: 001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry. Evidence: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:248-265, .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:433-439
-- [ ] T011 [P] [P1] CF-011: [F004] Stale-hit and eviction telemetry remain unprotected by targeted regression tests _(dimension: maintainability)_ Source phase: 001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry. Evidence: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:140-153, .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:442-444, .opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts:433-460, .opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts:193-200
-- [ ] T012 [P] [P1] CF-200: [DRFC-P1-002] Feature-count acceptance criteria understate the implemented catalog surface. _(dimension: correctness)_ Source phase: 002-skill-advisor-graph/008-deep-skill-feature-catalogs. Evidence: spec.md:103-106; .opencode/skill/sk-deep-research/feature_catalog/feature_catalog.md:26-31; .opencode/skill/sk-deep-review/feature_catalog/feature_catalog.md:26-31; .opencode/skill/sk-improve-agent/feature_catalog/feature_catalog.md:25-29
-- [ ] T013 [P] [P1] CF-228: [DR-P1-004] Plugin proposal omits explicit manifest and concrete hook registration detail required by REQ-010. _(dimension: correctness)_ Source phase: 004-smart-router-context-efficacy/001-initial-research. Evidence: ../spec.md:103, research/research-validation.md:22, research/research-validation.md:33, research/research-validation.md:51, research/research-validation.md:56
-- [ ] T014 [P] [P2] CF-007: [DR-P2-001] No-op LENGTH_PENALTY, calculateLengthPenalty(), and applyLengthPenalty() remain public compatibility exports, extending the contract and test surface. _(dimension: maintainability)_ Source phase: 001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty. Evidence: SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:62-67 SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:230-239 SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:569-577
+- [x] T010 [P] [P1] CF-008: [F001] Cache key ignores document content _(dimension: correctness)_ Source phase: 001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry. Fixed by content-aware cache key and changed-content regression. Evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:248`, `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:445`, `.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts:462`
+- [x] T011 [P] [P1] CF-011: [F004] Stale-hit and eviction telemetry remain unprotected by targeted regression tests _(dimension: maintainability)_ Source phase: 001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry. Fixed by stale expiry and oldest-entry eviction telemetry tests. Evidence: `.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts:492`, `.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts:528`
+- [x] T012 [P] [P1] CF-200: [DRFC-P1-002] Feature-count acceptance criteria understate the implemented catalog surface. _(dimension: correctness)_ Source phase: 002-skill-advisor-graph/008-deep-skill-feature-catalogs. Fixed by updating live counts and locking them with docs regression coverage. Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/spec.md:104`, `.opencode/skill/system-spec-kit/mcp_server/tests/remediation-008-docs.vitest.ts:15`
+- [x] T013 [P] [P1] CF-228: [DR-P1-004] Plugin proposal omits explicit manifest and concrete hook registration detail required by REQ-010. _(dimension: correctness)_ Source phase: 004-smart-router-context-efficacy/001-initial-research. Fixed by adding manifest, hook, bridge, tool, settings, and disable-path details plus docs regression coverage. Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research/research/research-validation.md:26`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research/research/research-validation.md:41`, `.opencode/skill/system-spec-kit/mcp_server/tests/remediation-008-docs.vitest.ts:25`
+- [x] T014 [P] [P2] CF-007: [DR-P2-001] No-op LENGTH_PENALTY, calculateLengthPenalty(), and applyLengthPenalty() remain public compatibility exports, extending the contract and test surface. _(dimension: maintainability)_ Source phase: 001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty. Triaged as deferred P2 compatibility debt because the user requested P0/P1 implementation only and the exports preserve existing callers. Evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:232`, `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:237`, `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:571`
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -60,9 +60,9 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T900 [P0] Run strict packet validation
-- [ ] T901 [P1] Update graph metadata after implementation
-- [ ] T902 [P1] Add implementation summary closeout evidence
+- [x] T900 [P0] Run strict packet validation. Evidence: `implementation-summary.md:91`
+- [x] T901 [P1] Update graph metadata after implementation. Evidence: `graph-metadata.json:31`
+- [x] T902 [P1] Add implementation summary closeout evidence. Evidence: `implementation-summary.md:30`
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -70,9 +70,9 @@ _memory:
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]` or explicitly deferred
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All tasks marked `[x]` or explicitly deferred. Evidence: `tasks.md:51`
+- [x] No `[B]` blocked tasks remaining. Evidence: `tasks.md:1`
+- [x] Manual verification passed. Evidence: `implementation-summary.md:91`
 <!-- /ANCHOR:completion -->
 
 ---

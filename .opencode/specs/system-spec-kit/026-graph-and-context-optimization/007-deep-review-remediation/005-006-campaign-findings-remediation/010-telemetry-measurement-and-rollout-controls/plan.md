@@ -11,8 +11,8 @@ _memory:
     last_updated_at: "2026-04-21T00:00:00Z"
     last_updated_by: "codex"
     recent_action: "Generated implementation plan"
-    next_safe_action: "Start P0 remediation"
-    completion_pct: 0
+    next_safe_action: "Remediation complete; orchestrator may commit"
+    completion_pct: 100
 ---
 # Implementation Plan: 010-telemetry-measurement-and-rollout-controls Telemetry, Measurement, and Rollout Controls Remediation
 <!-- SPECKIT_LEVEL: 3 -->
@@ -33,7 +33,7 @@ _memory:
 | **Testing** | validate.sh --strict --no-recursive |
 
 ### Overview
-Work through 1 Telemetry, Measurement, and Rollout Controls findings by severity, refreshing evidence and packet metadata as each fix lands.
+Work through the single Telemetry, Measurement, and Rollout Controls finding by severity, refreshing evidence and packet metadata as each fix lands. This packet has no P0 or P1 findings; CF-271 is the only scoped P2 item.
 
 ### Implementation Notes
 - Start with P0 findings, then P1, then P2.
@@ -106,9 +106,9 @@ Consolidated finding rows feed the task ledger, task closure feeds checklist evi
 - [ ] Identify source phase owners
 
 ### Phase 2: Core Implementation
-- [ ] Fix P0 findings: 0
-- [ ] Fix or defer P1 findings: 0
-- [ ] Triage P2 findings: 1
+- [x] Fix P0 findings: 0
+- [x] Fix or defer P1 findings: 0
+- [x] Triage P2 findings: 1
 
 
 ### Phase 3: Verification

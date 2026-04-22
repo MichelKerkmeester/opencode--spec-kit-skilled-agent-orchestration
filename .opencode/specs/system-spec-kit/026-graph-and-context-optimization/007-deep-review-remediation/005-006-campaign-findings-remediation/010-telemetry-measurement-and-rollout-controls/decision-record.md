@@ -11,8 +11,8 @@ _memory:
     last_updated_at: "2026-04-21T00:00:00Z"
     last_updated_by: "codex"
     recent_action: "Generated ADR placeholder"
-    next_safe_action: "Add ADRs during remediation"
-    completion_pct: 0
+    next_safe_action: "Orchestrator may commit remediation"
+    completion_pct: 100
 ---
 # Decision Record: 010-telemetry-measurement-and-rollout-controls Telemetry, Measurement, and Rollout Controls Remediation
 <!-- SPECKIT_LEVEL: 3 -->
@@ -27,7 +27,7 @@ _memory:
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-04-21 |
 | **Deciders** | Orchestrator |
 
@@ -111,8 +111,9 @@ The consolidated 006 campaign review produced a large finding set that needs imp
 ### Implementation
 
 **What changes**:
-- Create Level 3 packet docs for the remediation theme.
-- Add graph metadata and description metadata for memory discovery.
+- Keep Level 3 packet docs for the remediation theme.
+- Add closeout evidence for CF-271 in tasks.md, checklist.md, and implementation-summary.md.
+- Update runtime default policy notes and regression coverage for the Codex PreToolUse starter-scope contract.
 
 **How to roll back**: Ask the orchestrator to remove or replace this packet before implementation begins.
 <!-- /ANCHOR:adr-001-impl -->

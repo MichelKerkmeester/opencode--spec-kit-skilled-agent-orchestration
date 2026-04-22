@@ -24,13 +24,17 @@
       "findings"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "decision-record.md",
+      "implementation-summary.md",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/query.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/skill-graph-handlers.vitest.ts",
       ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md"
     ],
     "source_docs": [
@@ -39,7 +43,8 @@
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "decision-record.md"
+      "decision-record.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -70,6 +75,30 @@
         "name": "decision-record.md",
         "kind": "doc",
         "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "query.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/query.ts",
+        "source": "derived"
+      },
+      {
+        "name": "skill-graph-db.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "skill-graph-handlers.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/skill-graph-handlers.vitest.ts",
         "source": "derived"
       },
       {
