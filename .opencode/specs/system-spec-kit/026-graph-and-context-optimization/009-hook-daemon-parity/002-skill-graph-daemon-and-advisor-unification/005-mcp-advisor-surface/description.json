@@ -1,26 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface",
-  "description": "Feature Specification: 027/004 — MCP Advisor Surface",
-  "keywords": [
-    "feature",
-    "specification",
-    "027",
-    "004",
-    "mcp",
-    "advisor",
-    "surface"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "004",
-  "folderSlug": "mcp-advisor-surface",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "009-hook-daemon-parity",
-    "027-skill-graph-daemon-and-advisor-unification"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface",
@@ -37,5 +15,27 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/027-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface",
+  "description": "Feature Specification: 027/004 — MCP Advisor Surface",
+  "keywords": [
+    "feature",
+    "specification",
+    "027",
+    "004",
+    "mcp",
+    "advisor",
+    "surface"
+  ],
+  "lastUpdated": "2026-04-22T06:06:03.055Z",
+  "specId": "005",
+  "folderSlug": "mcp-advisor-surface",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity",
+    "002-skill-graph-daemon-and-advisor-unification"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

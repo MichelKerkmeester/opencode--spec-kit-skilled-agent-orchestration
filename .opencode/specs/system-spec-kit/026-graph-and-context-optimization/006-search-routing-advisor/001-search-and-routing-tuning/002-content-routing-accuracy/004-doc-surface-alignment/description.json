@@ -1,29 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
-  "description": "Feature Specification: Doc Surface Alignment for Research Content Routing Accuracy",
-  "keywords": [
-    "feature",
-    "specification",
-    "doc",
-    "surface",
-    "alignment",
-    "research",
-    "content",
-    "routing",
-    "accuracy"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "004",
-  "folderSlug": "doc-surface-alignment",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "006-search-routing-advisor",
-    "001-search-and-routing-tuning",
-    "002-content-routing-accuracy"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
@@ -39,5 +14,30 @@
       "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
       "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+  "description": "Feature Specification: Doc Surface Alignment for Research Content Routing Accuracy",
+  "keywords": [
+    "feature",
+    "specification",
+    "doc",
+    "surface",
+    "alignment",
+    "research",
+    "content",
+    "routing",
+    "accuracy"
+  ],
+  "lastUpdated": "2026-04-22T06:06:02.941Z",
+  "specId": "004",
+  "folderSlug": "doc-surface-alignment",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "006-search-routing-advisor",
+    "001-search-and-routing-tuning",
+    "002-content-routing-accuracy"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

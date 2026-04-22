@@ -141,7 +141,7 @@ Baseline numbers (Phase 027 remediation SHA `97a318d83`):
 | Claude Code `user-prompt-submit` hook | [07--hooks-and-plugin/01-claude-hook.md](./07--hooks-and-plugin/01-claude-hook.md) |
 | Copilot CLI `user-prompt-submit` hook | [07--hooks-and-plugin/02-copilot-hook.md](./07--hooks-and-plugin/02-copilot-hook.md) |
 | Gemini CLI `user-prompt-submit` hook | [07--hooks-and-plugin/03-gemini-hook.md](./07--hooks-and-plugin/03-gemini-hook.md) |
-| Codex CLI hook with prompt-wrapper fallback | [07--hooks-and-plugin/04-codex-hook.md](./07--hooks-and-plugin/04-codex-hook.md) |
+| Codex CLI native SessionStart/UserPromptSubmit hooks with prompt-wrapper fallback | [07--hooks-and-plugin/04-codex-hook.md](./07--hooks-and-plugin/04-codex-hook.md) |
 | OpenCode plugin bridge | [07--hooks-and-plugin/05-opencode-plugin-bridge.md](./07--hooks-and-plugin/05-opencode-plugin-bridge.md) |
 
 ---

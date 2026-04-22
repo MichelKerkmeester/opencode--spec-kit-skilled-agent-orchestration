@@ -111,7 +111,7 @@ describe('Spec Kit compact code graph plugin', () => {
   it('parses the real minimal bridge stdout without a mocked transport payload', async () => {
     const { spawnSync } = await vi.importActual<typeof import('node:child_process')>('node:child_process');
     const workspaceRoot = path.resolve(process.cwd(), '../../../..');
-    const bridgePath = path.join(workspaceRoot, '.opencode/plugins/spec-kit-compact-code-graph-bridge.mjs');
+    const bridgePath = path.join(workspaceRoot, '.opencode/plugin-helpers/spec-kit-compact-code-graph-bridge.mjs');
 
     const result = spawnSync(process.execPath, [bridgePath, '--minimal'], {
       cwd: workspaceRoot,
@@ -125,6 +125,10 @@ describe('Spec Kit compact code graph plugin', () => {
     const plan = parseTransportPlan(result.stdout.trim());
     expect(plan?.transportOnly).toBe(true);
     expect(plan?.messagesTransform.length).toBeGreaterThan(0);
+  });
+
+  it('does not return a null hook if the legacy plugin loader invokes the parser export', () => {
+    expect(parseTransportPlan({ directory: process.cwd() } as never)).toEqual({});
   });
 
   it('adds schema-aligned synthetic text parts and avoids duplicates', async () => {

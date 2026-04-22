@@ -1,26 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime",
-  "description": "Flattened active phase parent: Continuity Memory Runtime",
-  "keywords": [
-    "continuity-memory-runtime",
-    "cache",
-    "hooks",
-    "memory",
-    "quality",
-    "continuity",
-    "refactor",
-    "and",
-    "memory",
-    "save",
-    "rewrite"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "002",
-  "folderSlug": "continuity-memory-runtime",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization"
-  ],
   "migration": {
     "flattened_at": "2026-04-21T13:00:00Z",
     "child_phase_folders": [
@@ -30,5 +8,23 @@
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite"
     ],
     "layout": "phase-root-children"
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime",
+  "description": "Feature Specification: Continuity Memory Runtime",
+  "keywords": [
+    "feature",
+    "specification",
+    "continuity",
+    "memory",
+    "runtime"
+  ],
+  "lastUpdated": "2026-04-22T06:06:02.908Z",
+  "specId": "002",
+  "folderSlug": "continuity-memory-runtime",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

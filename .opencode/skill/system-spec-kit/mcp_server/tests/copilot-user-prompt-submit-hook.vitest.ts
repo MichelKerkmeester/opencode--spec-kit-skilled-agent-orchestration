@@ -1,23 +1,27 @@
 import { readFileSync } from 'node:fs';
-import { performance } from 'node:perf_hooks';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
-  copilotSdkAvailability,
-  createCopilotWrappedPrompt,
-  handleCopilotSdkUserPromptSubmitted,
   handleCopilotUserPromptSubmit,
-  handleCopilotWrapperFallback,
   parseCopilotUserPromptSubmitInput,
-  sdkAvailable,
+  refreshCopilotAdvisorInstructions,
   type CopilotUserPromptSubmitInput,
 } from '../hooks/copilot/user-prompt-submit.js';
+import {
+  mergeSpecKitCopilotContextBlock,
+  renderSpecKitCopilotContextBlock,
+  SPEC_KIT_COPILOT_CONTEXT_BEGIN,
+  SPEC_KIT_COPILOT_CONTEXT_END,
+} from '../hooks/copilot/custom-instructions.js';
 import { normalizeRuntimeOutput } from '../skill-advisor/lib/normalize-adapter-output.js';
 import { renderAdvisorBrief } from '../skill-advisor/lib/render.js';
 import { validateAdvisorHookDiagnosticRecord } from '../skill-advisor/lib/metrics.js';
 import type { AdvisorHookResult } from '../skill-advisor/lib/skill-advisor-brief.js';
 
 const fixturesDir = join(import.meta.dirname, 'advisor-fixtures');
+const tempDirs: string[] = [];
 
 function fixture(name: string): AdvisorHookResult {
   return JSON.parse(readFileSync(join(fixturesDir, name), 'utf8')) as AdvisorHookResult;
@@ -35,193 +39,177 @@ function parseDiagnostic(line: string): Record<string, unknown> {
   return JSON.parse(line) as Record<string, unknown>;
 }
 
-async function runSdkHook(input: CopilotUserPromptSubmitInput, result: AdvisorHookResult) {
+async function tempInstructionsPath(): Promise<string> {
+  const dir = await mkdtemp(join(tmpdir(), 'speckit-copilot-'));
+  tempDirs.push(dir);
+  return join(dir, '.copilot', 'copilot-instructions.md');
+}
+
+async function runHook(input: CopilotUserPromptSubmitInput, result: AdvisorHookResult) {
   const diagnostics = diagnosticsSink();
+  const instructionsPath = await tempInstructionsPath();
   const buildBrief = vi.fn(async () => result);
-  const output = await handleCopilotSdkUserPromptSubmitted(input, {
+  const output = await handleCopilotUserPromptSubmit(input, {
     buildBrief,
+    buildStartup: () => ({
+      graphOutline: null,
+      sessionContinuity: null,
+      graphSummary: null,
+      graphState: 'missing',
+      cocoIndexAvailable: false,
+      startupSurface: 'Session context received. Current state:\n\n- Code Graph: unavailable',
+      sharedPayload: null,
+    }),
+    instructionsPath,
     renderBrief: renderAdvisorBrief,
     writeDiagnostic: diagnostics.writeDiagnostic,
   });
-  return { output, buildBrief, diagnostics };
+  const written = await readFile(instructionsPath, 'utf8');
+  return { output, buildBrief, diagnostics, instructionsPath, written };
 }
 
-async function runWrapperHook(input: CopilotUserPromptSubmitInput, result: AdvisorHookResult) {
-  const diagnostics = diagnosticsSink();
-  const buildBrief = vi.fn(async () => result);
-  const output = await handleCopilotWrapperFallback(input, {
-    buildBrief,
-    renderBrief: renderAdvisorBrief,
-    writeDiagnostic: diagnostics.writeDiagnostic,
-  });
-  return { output, buildBrief, diagnostics };
-}
-
-afterEach(() => {
+afterEach(async () => {
   delete process.env.SPECKIT_SKILL_ADVISOR_HOOK_DISABLED;
-  vi.doUnmock('@github/copilot-sdk');
+  for (const dir of tempDirs.splice(0)) {
+    await rm(dir, { recursive: true, force: true });
+  }
 });
 
-describe('Copilot UserPromptSubmitted advisor hook', () => {
-  it('AS1 exposes SDK detection at module load and activates the installed SDK path', async () => {
-    expect(copilotSdkAvailability).toEqual({
-      available: true,
-      moduleName: '@github/copilot-sdk',
-      reason: 'available',
-    });
-    expect(sdkAvailable).toBe(true);
-  });
-
-  it('AS1b defaults to wrapper fallback when SDK module resolution fails', async () => {
-    vi.resetModules();
-    vi.doMock('@github/copilot-sdk', () => {
-      throw new Error('mocked module resolution failure');
-    });
-
-    const unavailableModule = await import('../hooks/copilot/user-prompt-submit.js') as typeof import('../hooks/copilot/user-prompt-submit.js');
-    const diagnostics = diagnosticsSink();
-    expect(unavailableModule.copilotSdkAvailability).toEqual({
-      available: false,
-      moduleName: null,
-      reason: 'module_not_found',
-    });
-    expect(unavailableModule.sdkAvailable).toBe(false);
-
-    const output = await unavailableModule.handleCopilotUserPromptSubmit({
+describe('Copilot UserPromptSubmitted advisor workaround', () => {
+  it('AS1 writes startup context and advisor brief to the managed custom-instructions block', async () => {
+    const { output, buildBrief, diagnostics, written } = await runHook({
       prompt: 'implement a TypeScript hook',
       cwd: '/workspace/project',
-    }, {
-      buildBrief: vi.fn(async () => fixture('livePassingSkill.json')),
-      renderBrief: renderAdvisorBrief,
-      writeDiagnostic: diagnostics.writeDiagnostic,
-    });
-
-    expect(output).toHaveProperty('promptWrapper');
-  });
-
-  it('AS2 SDK path returns additionalContext for model-visible injection', async () => {
-    const { output, buildBrief, diagnostics } = await runSdkHook({
-      prompt: 'implement a TypeScript hook',
-      cwd: '/workspace/project',
-      timestamp: '2026-04-19T00:00:00Z',
+      timestamp: '2026-04-22T00:00:00Z',
     }, fixture('livePassingSkill.json'));
 
-    expect(output).toEqual({
-      additionalContext: 'Advisor: live; use sk-code-opencode 0.91/0.23 pass.',
+    expect(output).toEqual({});
+    expect(normalizeRuntimeOutput('copilot', output)).toEqual({
+      runtime: 'copilot',
+      transport: 'json_additional_context',
+      additionalContext: null,
+      stderrVisible: false,
     });
     expect(buildBrief).toHaveBeenCalledWith('implement a TypeScript hook', {
       runtime: 'copilot',
       workspaceRoot: '/workspace/project',
     });
+    expect(written).toContain(SPEC_KIT_COPILOT_CONTEXT_BEGIN);
+    expect(written).toContain('Session context received. Current state:');
+    expect(written).toContain('Advisor: live; use sk-code-opencode 0.91/0.23 pass.');
+    expect(written).toContain('Copilot CLI reads custom instructions on the next submitted prompt');
+
     const diagnostic = parseDiagnostic(diagnostics.records[0] ?? '{}');
     expect(validateAdvisorHookDiagnosticRecord(diagnostic)).toBe(true);
     expect(diagnostic.runtime).toBe('copilot');
     expect(diagnostics.records[0]).not.toMatch(/prompt|stdout|stderr|promptFingerprint|promptExcerpt/);
   });
 
-  it('AS3 SDK path returns {} when brief is null', async () => {
-    const { output, buildBrief } = await runSdkHook({
+  it('AS2 preserves human instructions outside the managed block and replaces stale generated content', () => {
+    const oldBlock = renderSpecKitCopilotContextBlock({
+      startupSurface: 'old startup',
+      advisorBrief: 'old advisor',
+      generatedAt: '2026-04-21T00:00:00.000Z',
+    });
+    const newBlock = renderSpecKitCopilotContextBlock({
+      startupSurface: 'new startup',
+      advisorBrief: 'new advisor',
+      generatedAt: '2026-04-22T00:00:00.000Z',
+    });
+    const merged = mergeSpecKitCopilotContextBlock([
+      '# Personal Copilot Notes',
+      '',
+      'Keep this human note.',
+      '',
+      oldBlock,
+      'Keep this footer.',
+      '',
+    ].join('\n'), newBlock);
+
+    expect(merged).toContain('Keep this human note.');
+    expect(merged).toContain('Keep this footer.');
+    expect(merged).toContain('new startup');
+    expect(merged).toContain('new advisor');
+    expect(merged).not.toContain('old startup');
+    expect(merged.match(new RegExp(SPEC_KIT_COPILOT_CONTEXT_BEGIN, 'g'))).toHaveLength(1);
+    expect(merged.match(new RegExp(SPEC_KIT_COPILOT_CONTEXT_END, 'g'))).toHaveLength(1);
+  });
+
+  it('AS3 writes startup-only fallback when the advisor renderer returns null', async () => {
+    const { output, written } = await runHook({
       prompt: '/help',
       cwd: '/workspace/project',
     }, fixture('skippedShortCasual.json'));
 
     expect(output).toEqual({});
-    expect(JSON.stringify(output)).not.toContain('additionalContext');
-    expect(buildBrief).toHaveBeenCalledTimes(1);
+    expect(written).toContain('Session context received. Current state:');
+    expect(written).toContain('No live advisor brief is available for the latest prompt.');
   });
 
-  it('AS4 wrapper fallback creates an in-memory prompt preamble and normalizes as prompt_wrapper', async () => {
-    const { output, diagnostics } = await runWrapperHook({
-      prompt: 'implement a TypeScript hook',
-      cwd: '/workspace/project',
-    }, fixture('livePassingSkill.json'));
-
-    expect(output).toEqual({
-      promptWrapper: 'Advisor: live; use sk-code-opencode 0.91/0.23 pass.',
-      modifiedPrompt: [
-        '[Advisor brief]',
-        'Advisor: live; use sk-code-opencode 0.91/0.23 pass.',
-        '[/Advisor brief]',
-        '',
-        'implement a TypeScript hook',
-      ].join('\n'),
-    });
-    expect(normalizeRuntimeOutput('copilot', output)).toEqual({
-      runtime: 'copilot',
-      transport: 'prompt_wrapper',
-      additionalContext: 'Advisor: live; use sk-code-opencode 0.91/0.23 pass.',
-      stderrVisible: false,
-    });
-    expect(diagnostics.records.join('\n')).not.toContain('implement a TypeScript hook');
-  });
-
-  it('AS5 wrapper fallback does not modify the prompt when brief is null or fail-open', async () => {
-    const skipped = await runWrapperHook({
-      prompt: '/help',
-      cwd: '/workspace/project',
-    }, fixture('skippedShortCasual.json'));
-    expect(skipped.output).toEqual({});
-
-    const failOpen = await runWrapperHook({
-      prompt: 'implement a TypeScript hook',
-      cwd: '/workspace/project',
-    }, fixture('failOpenTimeout.json'));
-    expect(failOpen.output).toEqual({});
-    expect(parseDiagnostic(failOpen.diagnostics.records[0] ?? '{}').status).toBe('fail_open');
-  });
-
-  it('AS6 rejects notification-only success as model-visible injection', async () => {
-    const notificationOnly = normalizeRuntimeOutput('copilot', {});
-    expect(notificationOnly.additionalContext).toBeNull();
-
-    const { output } = await runWrapperHook({
-      prompt: 'implement a TypeScript hook',
-      cwd: '/workspace/project',
-    }, fixture('livePassingSkill.json'));
-    expect(normalizeRuntimeOutput('copilot', output).additionalContext).toBe(
-      'Advisor: live; use sk-code-opencode 0.91/0.23 pass.',
-    );
-  });
-
-  it('AS7 respects SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1 without calling the producer', async () => {
+  it('AS4 respects SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1 without calling the producer or writer', async () => {
     process.env.SPECKIT_SKILL_ADVISOR_HOOK_DISABLED = '1';
     const diagnostics = diagnosticsSink();
     const buildBrief = vi.fn(async () => fixture('livePassingSkill.json'));
+    const writeInstructions = vi.fn();
 
-    const output = await handleCopilotSdkUserPromptSubmitted({
+    const output = await handleCopilotUserPromptSubmit({
       prompt: 'implement a TypeScript hook',
       cwd: '/workspace/project',
     }, {
       buildBrief,
+      writeInstructions,
       writeDiagnostic: diagnostics.writeDiagnostic,
     });
 
     expect(output).toEqual({});
     expect(buildBrief).not.toHaveBeenCalled();
+    expect(writeInstructions).not.toHaveBeenCalled();
     expect(validateAdvisorHookDiagnosticRecord(parseDiagnostic(diagnostics.records[0] ?? '{}'))).toBe(true);
   });
 
-  it('AS8 emits {} for invalid JSON stdin without throwing', async () => {
+  it('AS5 emits {} for invalid JSON stdin without writing custom instructions', async () => {
     const diagnostics = diagnosticsSink();
+    const writeInstructions = vi.fn();
     const input = parseCopilotUserPromptSubmitInput('{not-json');
 
-    const output = await handleCopilotSdkUserPromptSubmitted(input, {
+    const output = await handleCopilotUserPromptSubmit(input, {
+      writeInstructions,
       writeDiagnostic: diagnostics.writeDiagnostic,
     });
 
     expect(input).toBeNull();
     expect(output).toEqual({});
+    expect(writeInstructions).not.toHaveBeenCalled();
     expect(parseDiagnostic(diagnostics.records[0] ?? '{}').errorCode).toBe('PARSE_FAIL');
   });
 
-  it('CHK-012 wrapper fallback privacy keeps rewritten prompt out of diagnostics', () => {
-    const wrapped = createCopilotWrappedPrompt(
-      'secret user prompt content',
-      'Advisor: live; use sk-code-opencode 0.91/0.23 pass.',
-    );
+  it('CHK-012 keeps prompt text out of diagnostics and writes only sanitized managed context', async () => {
+    const diagnostics = diagnosticsSink();
+    const instructionsPath = await tempInstructionsPath();
+    const result = await refreshCopilotAdvisorInstructions({
+      prompt: 'secret user prompt content',
+      cwd: '/workspace/project',
+    }, {
+      buildBrief: vi.fn(async () => fixture('livePassingSkill.json')),
+      buildStartup: () => ({
+        graphOutline: null,
+        sessionContinuity: null,
+        graphSummary: null,
+        graphState: 'missing',
+        cocoIndexAvailable: false,
+        startupSurface: `${SPEC_KIT_COPILOT_CONTEXT_BEGIN}\nstartup`,
+        sharedPayload: null,
+      }),
+      instructionsPath,
+      renderBrief: renderAdvisorBrief,
+      writeDiagnostic: diagnostics.writeDiagnostic,
+    });
+    const written = await readFile(instructionsPath, 'utf8');
 
-    expect(wrapped).toContain('secret user prompt content');
-    expect(JSON.stringify({ wrapperFallbackInvoked: true })).not.toContain('secret user prompt content');
+    expect(result?.brief).toBe('Advisor: live; use sk-code-opencode 0.91/0.23 pass.');
+    expect(diagnostics.records.join('\n')).not.toContain('secret user prompt content');
+    expect(written).not.toContain('secret user prompt content');
+    expect(written).toContain('[managed block marker removed]');
   });
 
   it('CHK-008 keeps adapter cache-hit p95 under 60 ms with cached producer output', async () => {
@@ -237,17 +225,31 @@ describe('Copilot UserPromptSubmitted advisor hook', () => {
     for (let index = 0; index < 30; index += 1) {
       const diagnostics = diagnosticsSink();
       const startedAt = performance.now();
-      const output = await handleCopilotSdkUserPromptSubmitted({
+      const output = await handleCopilotUserPromptSubmit({
         sessionId: `s-${index}`,
         prompt: 'implement a TypeScript hook',
         cwd: '/workspace/project',
       }, {
         buildBrief,
+        buildStartup: () => ({
+          graphOutline: null,
+          sessionContinuity: null,
+          graphSummary: null,
+          graphState: 'missing',
+          cocoIndexAvailable: false,
+          startupSurface: 'Session context received.',
+          sharedPayload: null,
+        }),
+        writeInstructions: vi.fn(async () => ({
+          path: '/tmp/copilot-instructions.md',
+          written: true,
+          changed: true,
+        })),
         renderBrief: renderAdvisorBrief,
         writeDiagnostic: diagnostics.writeDiagnostic,
       });
       durations.push(performance.now() - startedAt);
-      expect(output).toHaveProperty('additionalContext');
+      expect(output).toEqual({});
     }
 
     const sorted = [...durations].sort((left, right) => left - right);

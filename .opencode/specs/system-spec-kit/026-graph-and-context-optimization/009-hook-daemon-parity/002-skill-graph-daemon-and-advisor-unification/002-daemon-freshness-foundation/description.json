@@ -1,26 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation",
-  "description": "Feature Specification: 027/001 — Daemon + Freshness Foundation",
-  "keywords": [
-    "feature",
-    "specification",
-    "027",
-    "001",
-    "daemon",
-    "freshness",
-    "foundation"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "001",
-  "folderSlug": "daemon-freshness-foundation",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "009-hook-daemon-parity",
-    "027-skill-graph-daemon-and-advisor-unification"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation",
@@ -37,5 +15,27 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/027-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation",
+  "description": "Feature Specification: 027/001 — Daemon + Freshness Foundation",
+  "keywords": [
+    "feature",
+    "specification",
+    "027",
+    "001",
+    "daemon",
+    "freshness",
+    "foundation"
+  ],
+  "lastUpdated": "2026-04-22T06:06:03.040Z",
+  "specId": "002",
+  "folderSlug": "daemon-freshness-foundation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity",
+    "002-skill-graph-daemon-and-advisor-unification"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

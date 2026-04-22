@@ -1,6 +1,8 @@
 // ╔══════════════════════════════════════════════════════════════════════════╗
 // ║ Spec Kit OpenCode Message Schema Helper                                  ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
+// Helper for packet 026/007/009. This file intentionally lives outside
+// `.opencode/plugins/` so OpenCode discovers only real plugin entrypoints.
 'use strict';
 
 // ─────────────────────────────────────────────────────────────────────────────

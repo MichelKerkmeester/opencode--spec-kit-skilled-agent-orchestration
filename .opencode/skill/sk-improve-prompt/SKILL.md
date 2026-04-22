@@ -5,7 +5,7 @@ allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 version: 1.3.0.0
 ---
 
-<!-- Keywords: prompt-engineering, prompt-improvement, DEPTH, RICCE, CLEAR-scoring, framework-selection, RCAF, COSTAR, CRAFT, TIDD-EC, CRISPE -->
+<!-- Keywords: prompt-engineering, prompt-improvement, improve prompt, improve this prompt, improve the prompt, enhance prompt, prompt improvement, DEPTH, RICCE, CLEAR-scoring, framework-selection, RCAF, COSTAR, CRAFT, TIDD-EC, CRISPE -->
 
 # Prompt Engineering Specialist - Multi-Framework Enhancement with DEPTH Processing
 

@@ -1,16 +1,15 @@
 #!/usr/bin/env node
 // ───────────────────────────────────────────────────────────────
-// MODULE: Copilot UserPromptSubmitted Hook — Skill Advisor Brief
+// MODULE: Copilot UserPromptSubmitted Hook — Custom Instructions
 // ───────────────────────────────────────────────────────────────
-// Preferred path: Copilot SDK onUserPromptSubmitted returns
-// { additionalContext }. SDK packages are probed at module load, and the
-// CLI entrypoint routes to the wrapper fallback when no SDK package exists.
-// Wrapper fallback keeps rewritten prompts in memory and emits diagnostics
-// without prompt text.
+// Copilot CLI ignores userPromptSubmitted hook output for prompt
+// mutation. The hook therefore refreshes Copilot's local custom
+// instructions file and returns an empty JSON object.
 
 import { performance } from 'node:perf_hooks';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildStartupBrief } from '../../code-graph/lib/startup-brief.js';
 import {
   buildSkillAdvisorBrief,
   type AdvisorHookFreshness,
@@ -22,24 +21,17 @@ import {
   createAdvisorHookDiagnosticRecord,
   serializeAdvisorHookDiagnosticRecord,
 } from '../../skill-advisor/lib/metrics.js';
+import {
+  writeCopilotCustomInstructions,
+  type CopilotCustomInstructionsWriteResult,
+} from './custom-instructions.js';
 
 const IS_CLI_ENTRY = process.argv[1]
   ? resolve(process.argv[1]) === fileURLToPath(import.meta.url)
   : false;
-const COPILOT_SDK_MODULE_CANDIDATES = [
-  '@github/copilot-cli',
-  '@github/copilot-sdk',
-  '@ai-sdk/github-copilot',
-] as const;
-
-export interface CopilotSdkAvailability {
-  readonly available: boolean;
-  readonly moduleName: string | null;
-  readonly reason: 'available' | 'module_not_found';
-}
 
 export interface CopilotUserPromptSubmitInput {
-  readonly timestamp?: string;
+  readonly timestamp?: string | number;
   readonly cwd?: string;
   readonly prompt?: string;
   readonly userPrompt?: string;
@@ -48,27 +40,16 @@ export interface CopilotUserPromptSubmitInput {
   readonly [key: string]: unknown;
 }
 
-export type CopilotSdkUserPromptSubmitOutput =
-  | { readonly additionalContext: string }
-  | Record<string, never>;
-
-export type CopilotWrapperUserPromptSubmitOutput =
-  | {
-    readonly promptWrapper: string;
-    readonly modifiedPrompt: string;
-  }
-  | Record<string, never>;
-
-export type CopilotUserPromptSubmitOutput =
-  | CopilotSdkUserPromptSubmitOutput
-  | CopilotWrapperUserPromptSubmitOutput;
+export type CopilotUserPromptSubmitOutput = Record<string, never>;
 
 export interface CopilotUserPromptSubmitDependencies {
   readonly buildBrief?: typeof buildSkillAdvisorBrief;
   readonly renderBrief?: typeof renderAdvisorBrief;
+  readonly buildStartup?: typeof buildStartupBrief;
+  readonly writeInstructions?: typeof writeCopilotCustomInstructions;
+  readonly instructionsPath?: string;
   readonly now?: () => number;
   readonly writeDiagnostic?: (line: string) => void;
-  readonly sdkAvailable?: boolean;
 }
 
 interface HookDiagnosticInput {
@@ -82,28 +63,10 @@ interface HookDiagnosticInput {
   readonly generation?: number;
 }
 
-async function detectCopilotSdkAvailability(): Promise<CopilotSdkAvailability> {
-  for (const moduleName of COPILOT_SDK_MODULE_CANDIDATES) {
-    try {
-      await import(moduleName);
-      return {
-        available: true,
-        moduleName,
-        reason: 'available',
-      };
-    } catch {
-      // Try the next known SDK package name.
-    }
-  }
-  return {
-    available: false,
-    moduleName: null,
-    reason: 'module_not_found',
-  };
+export interface CopilotInstructionsRefreshResult {
+  readonly brief: string | null;
+  readonly writeResult: CopilotCustomInstructionsWriteResult;
 }
-
-export const copilotSdkAvailability = await detectCopilotSdkAvailability();
-export const sdkAvailable = copilotSdkAvailability.available;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -146,18 +109,45 @@ function emitDiagnostic(
   }
 }
 
-async function buildRenderedBrief(
-  input: CopilotUserPromptSubmitInput | null,
+function buildStartupSurface(dependencies: CopilotUserPromptSubmitDependencies): string | null {
+  try {
+    return (dependencies.buildStartup ?? buildStartupBrief)().startupSurface;
+  } catch {
+    return null;
+  }
+}
+
+async function refreshCopilotInstructions(
+  brief: string | null,
   dependencies: CopilotUserPromptSubmitDependencies,
-  elapsed: () => number,
-): Promise<{
-  readonly prompt: string;
-  readonly brief: string | null;
-  readonly failOpen: false;
-} | {
-  readonly failOpen: true;
-}> {
+): Promise<CopilotCustomInstructionsWriteResult> {
+  const writeInstructions = dependencies.writeInstructions ?? writeCopilotCustomInstructions;
+  return writeInstructions({
+    advisorBrief: brief,
+    startupSurface: buildStartupSurface(dependencies),
+    source: 'system-spec-kit copilot userPromptSubmitted hook',
+  }, {
+    instructionsPath: dependencies.instructionsPath,
+  });
+}
+
+export function parseCopilotUserPromptSubmitInput(raw: string): CopilotUserPromptSubmitInput | null {
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    return isRecord(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function refreshCopilotAdvisorInstructions(
+  input: CopilotUserPromptSubmitInput | null,
+  dependencies: CopilotUserPromptSubmitDependencies = {},
+): Promise<CopilotInstructionsRefreshResult | null> {
+  const startedAt = dependencies.now?.() ?? performance.now();
+  const elapsed = (): number => Number(((dependencies.now?.() ?? performance.now()) - startedAt).toFixed(3));
   const writeDiagnostic = dependencies.writeDiagnostic;
+
   if (process.env.SPECKIT_SKILL_ADVISOR_HOOK_DISABLED === '1') {
     emitDiagnostic({
       status: 'skipped',
@@ -165,7 +155,7 @@ async function buildRenderedBrief(
       durationMs: elapsed(),
       cacheHit: false,
     }, writeDiagnostic);
-    return { failOpen: true };
+    return null;
   }
 
   if (!input) {
@@ -177,7 +167,7 @@ async function buildRenderedBrief(
       errorCode: 'PARSE_FAIL',
       errorDetails: 'Invalid Copilot userPromptSubmitted JSON payload',
     }, writeDiagnostic);
-    return { failOpen: true };
+    return null;
   }
 
   const prompt = promptFor(input);
@@ -190,65 +180,30 @@ async function buildRenderedBrief(
       errorCode: 'PARSE_FAIL',
       errorDetails: 'Missing Copilot prompt string',
     }, writeDiagnostic);
-    return { failOpen: true };
-  }
-
-  const buildBrief = dependencies.buildBrief ?? buildSkillAdvisorBrief;
-  const renderBrief = dependencies.renderBrief ?? renderAdvisorBrief;
-  const result = await buildBrief(prompt, {
-    runtime: 'copilot',
-    workspaceRoot: workspaceRootFor(input),
-  });
-  const brief = renderBrief(result);
-  emitDiagnostic({
-    status: result.status,
-    freshness: result.freshness,
-    durationMs: result.metrics.durationMs,
-    cacheHit: result.metrics.cacheHit,
-    errorCode: result.diagnostics?.errorCode,
-    errorDetails: result.diagnostics?.errorMessage ?? result.diagnostics?.policyReason ?? result.diagnostics?.staleReason,
-    skillLabel: skillLabelFor(result),
-  }, writeDiagnostic);
-  return {
-    prompt,
-    brief,
-    failOpen: false,
-  };
-}
-
-export function parseCopilotUserPromptSubmitInput(raw: string): CopilotUserPromptSubmitInput | null {
-  try {
-    const parsed = JSON.parse(raw) as unknown;
-    return isRecord(parsed) ? parsed : null;
-  } catch {
     return null;
   }
-}
-
-export function createCopilotWrappedPrompt(prompt: string, brief: string): string {
-  return [
-    '[Advisor brief]',
-    brief,
-    '[/Advisor brief]',
-    '',
-    prompt,
-  ].join('\n');
-}
-
-export async function handleCopilotSdkUserPromptSubmitted(
-  input: CopilotUserPromptSubmitInput | null,
-  dependencies: CopilotUserPromptSubmitDependencies = {},
-): Promise<CopilotSdkUserPromptSubmitOutput> {
-  const startedAt = dependencies.now?.() ?? performance.now();
-  const elapsed = (): number => Number(((dependencies.now?.() ?? performance.now()) - startedAt).toFixed(3));
 
   try {
-    const result = await buildRenderedBrief(input, dependencies, elapsed);
-    if (result.failOpen || !result.brief) {
-      return {};
-    }
+    const buildBrief = dependencies.buildBrief ?? buildSkillAdvisorBrief;
+    const renderBrief = dependencies.renderBrief ?? renderAdvisorBrief;
+    const result = await buildBrief(prompt, {
+      runtime: 'copilot',
+      workspaceRoot: workspaceRootFor(input),
+    });
+    const brief = renderBrief(result);
+    emitDiagnostic({
+      status: result.status,
+      freshness: result.freshness,
+      durationMs: result.metrics.durationMs,
+      cacheHit: result.metrics.cacheHit,
+      errorCode: result.diagnostics?.errorCode,
+      errorDetails: result.diagnostics?.errorMessage ?? result.diagnostics?.policyReason ?? result.diagnostics?.staleReason,
+      skillLabel: skillLabelFor(result),
+    }, writeDiagnostic);
+
     return {
-      additionalContext: result.brief,
+      brief,
+      writeResult: await refreshCopilotInstructions(brief, dependencies),
     };
   } catch {
     emitDiagnostic({
@@ -257,38 +212,9 @@ export async function handleCopilotSdkUserPromptSubmitted(
       durationMs: elapsed(),
       cacheHit: false,
       errorCode: 'UNKNOWN',
-      errorDetails: 'Unhandled Copilot SDK UserPromptSubmitted hook exception',
-    }, dependencies.writeDiagnostic);
-    return {};
-  }
-}
-
-export async function handleCopilotWrapperFallback(
-  input: CopilotUserPromptSubmitInput | null,
-  dependencies: CopilotUserPromptSubmitDependencies = {},
-): Promise<CopilotWrapperUserPromptSubmitOutput> {
-  const startedAt = dependencies.now?.() ?? performance.now();
-  const elapsed = (): number => Number(((dependencies.now?.() ?? performance.now()) - startedAt).toFixed(3));
-
-  try {
-    const result = await buildRenderedBrief(input, dependencies, elapsed);
-    if (result.failOpen || !result.brief) {
-      return {};
-    }
-    return {
-      promptWrapper: result.brief,
-      modifiedPrompt: createCopilotWrappedPrompt(result.prompt, result.brief),
-    };
-  } catch {
-    emitDiagnostic({
-      status: 'fail_open',
-      freshness: 'unavailable',
-      durationMs: elapsed(),
-      cacheHit: false,
-      errorCode: 'UNKNOWN',
-      errorDetails: 'Unhandled Copilot wrapper UserPromptSubmitted hook exception',
-    }, dependencies.writeDiagnostic);
-    return {};
+      errorDetails: 'Unhandled Copilot custom-instructions refresh exception',
+    }, writeDiagnostic);
+    return null;
   }
 }
 
@@ -296,13 +222,11 @@ export async function handleCopilotUserPromptSubmit(
   input: CopilotUserPromptSubmitInput | null,
   dependencies: CopilotUserPromptSubmitDependencies = {},
 ): Promise<CopilotUserPromptSubmitOutput> {
-  const shouldUseSdk = dependencies.sdkAvailable ?? sdkAvailable;
-  return shouldUseSdk
-    ? handleCopilotSdkUserPromptSubmitted(input, dependencies)
-    : handleCopilotWrapperFallback(input, dependencies);
+  await refreshCopilotAdvisorInstructions(input, dependencies);
+  return {};
 }
 
-export const onUserPromptSubmitted = handleCopilotSdkUserPromptSubmitted;
+export const onUserPromptSubmitted = handleCopilotUserPromptSubmit;
 
 async function readStdin(): Promise<string> {
   const chunks: Buffer[] = [];

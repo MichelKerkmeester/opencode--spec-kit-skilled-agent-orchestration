@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-04-21T10:49:04.269Z",
+  "generated": "2026-04-22T11:00:04.491Z",
   "folders": [
     {
       "specFolder": "00--ai-systems/001-global-shared",
@@ -420,7 +420,7 @@
         "table",
         "content"
       ],
-      "lastUpdated": "2026-04-21T10:49:04.269Z"
+      "lastUpdated": "2026-04-22T11:00:04.491Z"
     },
     {
       "specFolder": "00--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy",
@@ -621,7 +621,7 @@
         "dropdown",
         "fix"
       ],
-      "lastUpdated": "2026-04-21T10:49:04.269Z"
+      "lastUpdated": "2026-04-22T11:00:04.491Z"
     },
     {
       "specFolder": "00--anobel.com/z_archive/019-form-attribute-audit",
@@ -671,7 +671,7 @@
         "anobel",
         "com"
       ],
-      "lastUpdated": "2026-04-21T10:49:04.269Z"
+      "lastUpdated": "2026-04-22T11:00:04.491Z"
     },
     {
       "specFolder": "00--anobel.com/z_archive/023-performance-review",
@@ -1333,7 +1333,7 @@
         "folder",
         "convention"
       ],
-      "lastUpdated": "2026-04-21T10:49:04.269Z"
+      "lastUpdated": "2026-04-22T11:00:04.491Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/043-cli-skill-improved-prompting",
@@ -3993,11 +3993,11 @@
         "context",
         "optimization"
       ],
-      "lastUpdated": "2026-04-18T16:45:36.845Z"
+      "lastUpdated": "2026-04-22T06:06:02.895Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
-      "description": "Level 3 coordination packet for the v2 cross-phase synthesis, adoption decisions, and downstream sequencing for graph and context optimization in Public.",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
+      "description": "Feature Specification: Graph and Context Systems Master Research Packet",
       "keywords": [
         "feature",
         "specification",
@@ -4008,10 +4008,10 @@
         "research",
         "packet"
       ],
-      "lastUpdated": "2026-04-17T15:45:19.000Z"
+      "lastUpdated": "2026-04-22T06:06:02.903Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings",
       "description": "Deliver an evidence-anchored recommendation set for reducing Claude Code token spend in Code_Environment/Public, derived from auditing a primary-source Reddit field report covering 858-926 sessions.",
       "keywords": [
         "spec",
@@ -4024,10 +4024,10 @@
         "field-report",
         "audit"
       ],
-      "lastUpdated": "2026-04-13T10:39:18.676Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight",
       "description": "Read-only 20-iteration research investigation of the codesight external Node.js/TypeScript skill covering detector discipline, MCP/cache semantics, profile generation safety, scanner heuristics, and adoption patterns Public should adopt, adapt, or reject.",
       "keywords": [
         "feature",
@@ -4036,10 +4036,10 @@
         "research",
         "phase"
       ],
-      "lastUpdated": "2026-04-13T10:39:18.680Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/003-contextador",
       "description": "Research Contextador's MCP query architecture, self-healing feedback loop, and Mainframe shared cache to identify concrete, evidence-backed improvements for Code_Environment/Public's retrieval surfaces.",
       "keywords": [
         "feature",
@@ -4048,10 +4048,10 @@
         "research",
         "phase"
       ],
-      "lastUpdated": "2026-04-13T10:39:18.685Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify",
       "description": "Read-only research investigation of the graphify external Python skill to identify two-pass AST+LLM extraction, Leiden clustering, evidence-tagging, multimodal, and PreToolUse hook patterns Public should adopt, adapt, or reject.",
       "keywords": [
         "feature",
@@ -4060,10 +4060,10 @@
         "research",
         "phase"
       ],
-      "lastUpdated": "2026-04-13T10:39:18.690Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest",
       "description": "Read-only 20-iteration research investigation of the Claudest external Claude Code plugin marketplace and the claude-memory plugin (FTS5/BM25 conversation recall, SessionStart context injection, extract-learnings consolidation, get-token-insights observability) to identify adopt/prototype/reject patterns and execution-ready follow-on packet contracts for Code_Environment/Public's Spec Kit Memory and Code Graph stack.",
       "keywords": [
         "feature",
@@ -4072,10 +4072,10 @@
         "research",
         "phase"
       ],
-      "lastUpdated": "2026-04-13T10:39:18.695Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy",
       "description": "Feature Specification: Research Memory Redundancy Follow-On",
       "keywords": [
         "feature",
@@ -4085,10 +4085,22 @@
         "redundancy",
         "follow-on"
       ],
-      "lastUpdated": "2026-04-14T08:02:29.246Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-cache-warning-hooks",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime",
+      "description": "Feature Specification: Continuity Memory Runtime",
+      "keywords": [
+        "feature",
+        "specification",
+        "continuity",
+        "memory",
+        "runtime"
+      ],
+      "lastUpdated": "2026-04-22T06:06:02.908Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks",
       "description": "Research-aligned rescope of packet 002 from a six-phase warning prototype to a bounded producer-side continuity prerequisite packet.",
       "keywords": [
         "feature",
@@ -4097,10 +4109,10 @@
         "hook",
         "system"
       ],
-      "lastUpdated": "2026-04-17T15:45:19.000Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation",
       "description": "Parent packet spec for the shipped remediation train plus the scoped Phase 8 and Phase 9 follow-ons triggered by later packet audits.",
       "keywords": [
         "feature",
@@ -4110,10 +4122,10 @@
         "backend",
         "improvements"
       ],
-      "lastUpdated": "2026-04-17T15:45:19.000Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/001-foundation-templates-truncation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/001-foundation-templates-truncation",
       "description": "Phase 1 defines the P0 foundation slice for memory-quality remediation: fix the OVERVIEW anchor mismatch, introduce the shared truncation helper, and preserve OVERVIEW text on word boundaries before later metadata and heuristic phases build on it.",
       "keywords": [
         "feature",
@@ -4123,10 +4135,10 @@
         "templates",
         "truncation"
       ],
-      "lastUpdated": "2026-04-13T10:39:18.710Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/002-single-owner-metadata",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata",
       "description": "Phase 2 specifies the P1 metadata fixes for D4 importance-tier drift and D7 empty git provenance, using the parent research packet as the sole planning authority.",
       "keywords": [
         "feature",
@@ -4136,10 +4148,10 @@
         "metadata",
         "fixes"
       ],
-      "lastUpdated": "2026-04-13T10:39:18.715Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/003-sanitization-precedence",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/003-sanitization-precedence",
       "description": "Phase 3 of the memory-quality remediation train scopes PR-5 and PR-6 only: trigger-phrase sanitization plus a precedence-only gate for decision extraction.",
       "keywords": [
         "feature",
@@ -4149,10 +4161,10 @@
         "decision",
         "precedence"
       ],
-      "lastUpdated": "2026-04-13T10:39:18.727Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/004-heuristics-refactor-guardrails",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails",
       "description": "Phase 4 of the memory quality remediation train: D5 auto-supersedes with continuation gating, SaveMode enum refactor, and post-save reviewer CHECK-D1..D8 coverage.",
       "keywords": [
         "feature",
@@ -4162,10 +4174,10 @@
         "refactor",
         "guardrails"
       ],
-      "lastUpdated": "2026-04-13T10:39:18.733Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/005-operations-tail-prs",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs",
       "description": "Feature Specification: Phase 5 — Operations & Tail PRs",
       "keywords": [
         "feature",
@@ -4175,10 +4187,10 @@
         "tail",
         "prs"
       ],
-      "lastUpdated": "2026-04-17T14:42:34.116Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/006-memory-duplication-reduction",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/006-memory-duplication-reduction",
       "description": "Phase 6 defines the narrowed implementation-owner follow-on that turns generated memory saves into compact retrieval wrappers while restoring canonical ownership to packet docs.",
       "keywords": [
         "feature",
@@ -4188,10 +4200,10 @@
         "duplication",
         "reduction"
       ],
-      "lastUpdated": "2026-04-13T10:39:18.742Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/007-skill-catalog-sync",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/007-skill-catalog-sync",
       "description": "Phase 7 defines the downstream audit and update pass that checks whether Phase 1-6 changes require parity updates across docs, commands, templates, MCP surfaces, and agent definitions.",
       "keywords": [
         "feature",
@@ -4201,10 +4213,10 @@
         "catalog",
         "sync"
       ],
-      "lastUpdated": "2026-04-13T10:39:18.747Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/008-input-normalizer-fastpath-fix",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/008-input-normalizer-fastpath-fix",
       "description": "Feature Specification: Input Normalizer Fast-Path Fix",
       "keywords": [
         "feature",
@@ -4214,10 +4226,10 @@
         "fast-path",
         "fix"
       ],
-      "lastUpdated": "2026-04-14T08:02:29.256Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/009-post-save-render-fixes",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes",
       "description": "Level 3 sub-phase for nine render-layer fixes in the memory-save pipeline so compact-wrapper saves match the 006 wrapper contract.",
       "keywords": [
         "feature",
@@ -4226,10 +4238,10 @@
         "render",
         "fixes"
       ],
-      "lastUpdated": "2026-04-13T10:39:18.753Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/010-memory-save-heuristic-calibration",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration",
       "description": "Level 3 packet for closing the remaining memory-save schema, sanitizer, validator, and D5 continuation defects identified by the 2026-04-09 RCA and skipped-recommendation audits.",
       "keywords": [
         "feature",
@@ -4239,35 +4251,10 @@
         "heuristic",
         "calibration"
       ],
-      "lastUpdated": "2026-04-12T18:30:00Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails",
-      "description": "Phase 4 defines the execution-guardrail update for three AGENTS files so the moved request-analysis block under Critical Rules is leaner, later sections remain renumbered cleanly, and agents keep the same operational execution behavior without duplicate scaffolding.",
-      "keywords": [
-        "feature",
-        "specification",
-        "phase",
-        "agent",
-        "execution",
-        "guardrails"
-      ],
-      "lastUpdated": "2026-04-17T15:45:19.000Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades",
-      "description": "Feature Specification: Code Graph Upgrades",
-      "keywords": [
-        "feature",
-        "specification",
-        "code",
-        "graph",
-        "upgrades"
-      ],
-      "lastUpdated": "2026-04-17T15:45:19.000Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates",
       "description": "Feature Specification: Phase 6 — Continuity Refactor Gates",
       "keywords": [
         "feature",
@@ -4277,10 +4264,10 @@
         "refactor",
         "gates"
       ],
-      "lastUpdated": "2026-04-17T15:45:19.000Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/001-gate-a-prework",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/001-gate-a-prework",
       "description": "Remove known template and packet-prep blockers before Gate B schema and runtime work begins.",
       "keywords": [
         "feature",
@@ -4288,10 +4275,10 @@
         "gate",
         "pre-work"
       ],
-      "lastUpdated": "2026-04-13T16:13:03Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/002-gate-b-foundation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/002-gate-b-foundation",
       "description": "Establish the irreversible foundation for phase 018 by rehearsing the migration on a copy, adding the approved causal-edge anchor fields, executing the rebaselined archive flip, and preserving the post-cleanup compatibility contract before writer and reader retargeting begins.",
       "keywords": [
         "feature",
@@ -4299,10 +4286,10 @@
         "gate",
         "foundation"
       ],
-      "lastUpdated": "2026-04-13T16:13:03Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/003-gate-c-writer-ready",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/003-gate-c-writer-ready",
       "description": "Gate C defines the writer-critical path for phase 018: validator, routed save path, merge engine, template continuity rollout, and parity-plus-rollback proof readiness.",
       "keywords": [
         "feature",
@@ -4311,10 +4298,10 @@
         "writer",
         "ready"
       ],
-      "lastUpdated": "2026-04-13T16:13:03Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/004-gate-d-reader-ready",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/004-gate-d-reader-ready",
       "description": "Retarget the phase 018 reader surfaces onto canonical spec docs and thin continuity records, then prove the new resume ladder with regression and latency gates.",
       "keywords": [
         "feature",
@@ -4323,10 +4310,10 @@
         "reader",
         "ready"
       ],
-      "lastUpdated": "2026-04-13T16:13:03Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/005-gate-e-runtime-migration",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration",
       "description": "Feature Specification: Gate E — Runtime Migration",
       "keywords": [
         "feature",
@@ -4335,10 +4322,10 @@
         "runtime",
         "migration"
       ],
-      "lastUpdated": "2026-04-14T08:02:29.272Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/006-gate-f-cleanup-verification",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/006-gate-f-cleanup-verification",
       "description": "Verify Gate B cleanup completeness, confirm no orphan references remain, and record whether archived-tier runtime cleanup is already complete or still needs follow-up.",
       "keywords": [
         "feature",
@@ -4347,647 +4334,10 @@
         "cleanup",
         "verification"
       ],
-      "lastUpdated": "2026-04-13T16:13:03Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits",
-      "description": "Coordination parent for the three release-alignment revisit packets promoted from the legacy continuity refactor lane. This packet re-anchors 63 existing SKILL guide, reference, template, and MCP documentation files to the Phase 018 continuity contract, retiring pre-018 save and recovery language while preserving legitimate archive-status guidance, packet lifecycle language, and generated-artifact references as supporting outputs instead of primary context surfaces.",
-      "keywords": [
-        "continuity-contract verification",
-        "phase-018 alignment",
-        "skill documentation",
-        "reference surfaces",
-        "template modernization",
-        "active continuity states",
-        "generated artifacts",
-        "save recovery language",
-        "manual session continuity",
-        "packet lifecycle documentation",
-        "drift detection",
-        "doc validation",
-        "archive guidance",
-        "resume workflow"
-      ],
-      "lastUpdated": "2026-04-18T21:56:49.293Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits/001-sk-system-speckit-revisit",
-      "description": "Feature Specification: 018 / 007 — system-spec-kit release-alignment revisit",
-      "keywords": [
-        "feature",
-        "specification",
-        "018",
-        "007",
-        "system-spec-kit",
-        "release-alignment",
-        "revisit"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.277Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits/002-cmd-memory-speckit-revisit",
-      "description": "Feature Specification: 018 / 008 — command release-alignment revisit",
-      "keywords": [
-        "feature",
-        "specification",
-        "018",
-        "008",
-        "command",
-        "release-alignment",
-        "revisit"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.282Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits/003-readme-alignment-revisit",
-      "description": "Feature Specification: 018 / 009 — README release-alignment revisit",
-      "keywords": [
-        "feature",
-        "specification",
-        "018",
-        "009",
-        "readme",
-        "release-alignment",
-        "revisit"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.287Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit",
-      "description": "Coordination parent for cleanup and audit work promoted from the old continuity refactor lane. The primary packet in this tree executes deletion-first shared-memory removal across lifecycle tools, runtime handlers, routing and governance branches, documentation catalog entries, playbook scenarios, and tests, while preserving only the unavoidable schema-column compatibility shim needed for older SQLite variants that cannot drop columns in place.",
-      "keywords": [
-        "feature removal",
-        "hard delete",
-        "shared memory",
-        "shared spaces",
-        "lifecycle tools",
-        "mcp server",
-        "governance scope",
-        "runtime cleanup",
-        "documentation cleanup",
-        "schema migration",
-        "backward compatibility",
-        "sqlite support",
-        "dropped column fallback",
-        "cleanup audit"
-      ],
-      "lastUpdated": "2026-04-18T21:57:15.640Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory",
-      "description": "Feature Specification: 018 / 010 — Remove shared memory feature surface",
-      "keywords": [
-        "feature",
-        "specification",
-        "018",
-        "010",
-        "remove",
-        "shared",
-        "memory",
-        "surface"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.126Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/002-spec-folder-graph-metadata",
-      "description": "Feature Specification: 018 / 011 — graph-metadata.json packet contract",
-      "keywords": [
-        "feature",
-        "specification",
-        "018",
-        "011",
-        "graph-metadata",
-        "json",
-        "packet",
-        "contract"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.297Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup",
-      "description": "Feature Specification: 018 / 012 — MCP config and feature-flag cleanup",
-      "keywords": [
-        "feature",
-        "specification",
-        "018",
-        "012",
-        "mcp",
-        "config",
-        "feature-flag",
-        "cleanup"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.303Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/004-dead-code-and-architecture-audit",
-      "description": "Feature Specification: 018 / 013 — dead code and architecture audit",
-      "keywords": [
-        "feature",
-        "specification",
-        "018",
-        "013",
-        "dead",
-        "code",
-        "architecture",
-        "audit"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.309Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation",
-      "description": "Coordination parent for playbook follow-on work and remediation phases. The primary child packet repairs the Phase 014 documentation scaffold after prompt-field rewrite work already landed in the manual testing playbook corpus, restoring the required Level 2 anchors, missing task and checklist files, and the real playbook index references while keeping the work scoped to packet documentation rather than the playbook content itself.",
-      "keywords": [
-        "playbook documentation",
-        "prompt fields",
-        "manual testing scenarios",
-        "level 2 structure",
-        "packet repair",
-        "template compliance",
-        "validator integration",
-        "documentation audit",
-        "playbook corpus",
-        "scenario documentation",
-        "spec folder repair",
-        "reference integrity",
-        "checklist restoration"
-      ],
-      "lastUpdated": "2026-04-18T21:57:19.716Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite",
-      "description": "Feature Specification: Playbook Prompt Rewrite",
-      "keywords": [
-        "feature",
-        "specification",
-        "playbook",
-        "prompt",
-        "rewrite"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.134Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution",
-      "description": "Feature Specification: Phase 015 Playbook Coverage Accounting and Partial Execution",
-      "keywords": [
-        "feature",
-        "specification",
-        "phase",
-        "015",
-        "playbook",
-        "coverage",
-        "accounting",
-        "partial",
-        "execution"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.139Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation",
-      "description": "Deep Review Remediation",
-      "keywords": [
-        "deep",
-        "review",
-        "remediation"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.145Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning",
-      "description": "Coordination parent for continuity research packets focused on search-pipeline empirical tuning and reranking optimization. The root research packet investigates hardcoded thresholds, weighted fusion, FSRS decay constants, reranker-provider trade-offs, cross-encoder length-penalty behavior, and cache-TTL throughput impact across the vector, BM25, FTS5, and reranking stages, with the intent of producing implementation-ready parameter recommendations rather than speculative theory.",
-      "keywords": [
-        "search research",
-        "pipeline optimization",
-        "cross-encoder",
-        "reranking",
-        "fusion algorithm",
-        "vector search",
-        "bm25",
-        "fts5",
-        "empirical tuning",
-        "configuration constants",
-        "threshold optimization",
-        "provider comparison",
-        "latency profiling",
-        "retrieval tuning"
-      ],
-      "lastUpdated": "2026-04-18T21:57:19.717Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning",
-      "description": "Research: Search Fusion & Reranking Configuration Tuning",
-      "keywords": [
-        "research",
-        "search",
-        "fusion",
-        "reranking",
-        "configuration",
-        "tuning"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.150Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty",
-      "description": "Remove Cross-Encoder Length Penalty",
-      "keywords": [
-        "remove",
-        "cross-encoder",
-        "length",
-        "penalty"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.333Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry",
-      "description": "Add Reranker Cache Telemetry",
-      "keywords": [
-        "add",
-        "reranker",
-        "cache",
-        "telemetry"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.339Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile",
-      "description": "Add Continuity Search Intent Profile",
-      "keywords": [
-        "add",
-        "continuity",
-        "search",
-        "intent",
-        "profile"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.343Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum",
-      "description": "Raise Minimum Rerank Candidate Threshold",
-      "keywords": [
-        "raise",
-        "minimum",
-        "rerank",
-        "candidate",
-        "threshold"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.349Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment",
-      "description": "Feature Specification: Doc Surface Alignment: Search Fusion Changes",
-      "keywords": [
-        "feature",
-        "specification",
-        "doc",
-        "surface",
-        "alignment",
-        "search",
-        "fusion",
-        "changes"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.157Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation",
-      "description": "Feature Specification: Validate Continuity Profile Weights",
-      "keywords": [
-        "feature",
-        "specification",
-        "validate",
-        "continuity",
-        "profile",
-        "weights"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.162Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy",
-      "description": "Research: Content Routing Classification Accuracy",
-      "keywords": [
-        "research",
-        "content",
-        "routing",
-        "classification",
-        "accuracy"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.168Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion",
-      "description": "Fix Delivery vs Progress Routing Confusion",
-      "keywords": [
-        "fix",
-        "delivery",
-        "progress",
-        "routing",
-        "confusion"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.368Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion",
-      "description": "Fix Handover vs Drop Routing Confusion",
-      "keywords": [
-        "fix",
-        "handover",
-        "drop",
-        "routing",
-        "confusion"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.374Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier",
-      "description": "Wire Tier3 LLM Classifier into Save Handler",
-      "keywords": [
-        "wire",
-        "tier3",
-        "llm",
-        "classifier",
-        "save",
-        "handler"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.378Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
-      "description": "Feature Specification: Doc Surface Alignment for Research Content Routing Accuracy",
-      "keywords": [
-        "feature",
-        "specification",
-        "doc",
-        "surface",
-        "alignment",
-        "research",
-        "content",
-        "routing",
-        "accuracy"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.174Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety",
-      "description": "Add Task Update Merge Safety Guard",
-      "keywords": [
-        "add",
-        "task",
-        "update",
-        "merge",
-        "safety",
-        "guard"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.179Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment",
-      "description": "Enrich Tier3 Prompt with Continuity Model Context",
-      "keywords": [
-        "enrich",
-        "tier3",
-        "prompt",
-        "continuity",
-        "model",
-        "context"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.185Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation",
-      "description": "Research: Graph Metadata Quality & Relationship Validation",
-      "keywords": [
-        "research",
-        "graph",
-        "metadata",
-        "quality",
-        "relationship",
-        "validation"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.191Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/001-fix-status-derivation",
-      "description": "Fix Graph Metadata Status Derivation",
-      "keywords": [
-        "fix",
-        "graph",
-        "metadata",
-        "status",
-        "derivation"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.404Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/002-sanitize-key-files",
-      "description": "Sanitize Key Files in Graph Metadata",
-      "keywords": [
-        "sanitize",
-        "key",
-        "files",
-        "graph",
-        "metadata"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.409Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/003-deduplicate-entities",
-      "description": "Deduplicate Graph Metadata Entities",
-      "keywords": [
-        "deduplicate",
-        "graph",
-        "metadata",
-        "entities"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.423Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files",
-      "description": "Normalize Legacy Graph Metadata Files",
-      "keywords": [
-        "normalize",
-        "legacy",
-        "graph",
-        "metadata",
-        "files"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.429Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment",
-      "description": "Feature Specification: Doc Surface Alignment: Graph Metadata Changes",
-      "keywords": [
-        "feature",
-        "specification",
-        "doc",
-        "surface",
-        "alignment",
-        "graph",
-        "metadata",
-        "changes"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.198Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution",
-      "description": "Improve Graph Metadata Key File Resolution",
-      "keywords": [
-        "improve",
-        "graph",
-        "metadata",
-        "key",
-        "file",
-        "resolution"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.206Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements",
-      "description": "Improve Graph Metadata Entity Quality",
-      "keywords": [
-        "improve",
-        "graph",
-        "metadata",
-        "entity",
-        "quality"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.211Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph",
-      "description": "Feature Specification: Skill Advisor Graph",
-      "keywords": [
-        "feature",
-        "specification",
-        "skill",
-        "advisor",
-        "graph"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.216Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/001-research-findings-fixes",
-      "description": "Feature Specification: Skill Graph Research Findings Fixes",
-      "keywords": [
-        "feature",
-        "specification",
-        "skill",
-        "graph",
-        "research",
-        "findings",
-        "fixes"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.453Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/002-manual-testing-playbook",
-      "description": "Feature Specification: Playbook Template Alignment",
-      "keywords": [
-        "feature",
-        "specification",
-        "playbook",
-        "template",
-        "alignment"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.458Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/003-skill-advisor-packaging",
-      "description": "Feature Specification: Skill Advisor Packaging",
-      "keywords": [
-        "feature",
-        "specification",
-        "skill",
-        "advisor",
-        "packaging"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.464Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/004-graph-metadata-enrichment",
-      "description": "Feature Specification: Graph Metadata Enrichment",
-      "keywords": [
-        "feature",
-        "specification",
-        "graph",
-        "metadata",
-        "enrichment"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.468Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/005-repo-wide-path-migration",
-      "description": "Feature Specification: Repo-Wide Path Migration",
-      "keywords": [
-        "feature",
-        "specification",
-        "repo-wide",
-        "path",
-        "migration"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.474Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/006-skill-graph-sqlite-migration",
-      "description": "Feature Specification: Skill Graph SQLite Migration",
-      "keywords": [
-        "feature",
-        "specification",
-        "skill",
-        "graph",
-        "sqlite",
-        "migration"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.479Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup",
-      "description": "Feature Specification: Skill Graph Auto-Setup",
-      "keywords": [
-        "feature",
-        "specification",
-        "skill",
-        "graph",
-        "auto-setup"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.484Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/008-deep-skill-feature-catalogs",
-      "description": "Feature Specification: Deep Skill Feature Catalogs",
-      "keywords": [
-        "feature",
-        "specification",
-        "deep",
-        "skill",
-        "catalogs"
-      ],
-      "lastUpdated": "2026-04-14T08:02:29.488Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation",
-      "description": "Feature Specification: Canonical Intake and Middleware Cleanup",
-      "keywords": [
-        "feature",
-        "specification",
-        "canonical",
-        "intake",
-        "middleware",
-        "cleanup"
-      ],
-      "lastUpdated": "2026-04-17T14:42:34.242Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/013-advisor-phrase-booster-tailoring",
-      "description": "Feature Specification: Advisor Phrase-Booster Tailoring",
-      "keywords": [
-        "feature",
-        "specification",
-        "advisor",
-        "phrase-booster",
-        "tailoring"
-      ],
-      "lastUpdated": "2026-04-17T15:45:19.000Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite",
       "description": "Feature specification for the `/memory:save` planner-first default contract. This packet rewrites the save path so plan-only becomes the honest default, legacy `[spec]/memory/*.md` behavior is retired end-to-end, full-auto mutation is preserved only as an explicit fallback, and metadata freshness, enrichment, and indexing work move behind callable follow-up APIs rather than riding the default save path by accident.",
       "keywords": [
         "memory save system",
@@ -5005,523 +4355,754 @@
         "freshness services",
         "save rewrite"
       ],
-      "lastUpdated": "2026-04-17T18:43:49.606Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/015-deep-review-and-remediation",
-      "description": "Remediation Plan: 120-Iteration Deep Review Findings",
-      "keywords": [
-        "remediation",
-        "plan",
-        "120-iteration",
-        "deep",
-        "review",
-        "findings"
-      ],
-      "lastUpdated": "2026-04-18T14:47:57.179Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
-      "description": "Feature Specification: Foundational Runtime (merged)",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package",
+      "description": "Feature Specification: Code Graph Package",
       "keywords": [
         "feature",
         "specification",
-        "foundational",
-        "runtime",
-        "merged"
+        "code",
+        "graph",
+        "package"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.617Z"
+      "lastUpdated": "2026-04-22T06:06:02.916Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/001-initial-research",
-      "description": "Feature Specification: Foundational Runtime Remediation (Phase 016 → Phase 016 remediation Charter)",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades",
+      "description": "Feature Specification: Code Graph Upgrades",
       "keywords": [
         "feature",
         "specification",
-        "foundational",
-        "runtime",
-        "remediation",
-        "phase",
-        "016",
-        "charter"
+        "code",
+        "graph",
+        "upgrades"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.626Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives",
-      "description": "Specification: Phase 017 Wave A — Infrastructure Primitives",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package",
+      "description": "Feature Specification: 028 — Code-Graph Self-Contained Package Migration",
       "keywords": [
+        "feature",
         "specification",
-        "phase",
-        "017",
-        "wave",
-        "infrastructure",
-        "primitives"
+        "028",
+        "code-graph",
+        "self-contained",
+        "package",
+        "migration"
       ],
-      "lastUpdated": "2026-04-18T14:38:53.407Z"
+      "lastUpdated": "2026-04-22T06:06:02.921Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/003-cluster-consumers",
-      "description": "Feature Specification: Phase 017 Wave B — Cluster Consumers",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands",
+      "description": "Feature Specification: Agent Governance And Commands",
+      "keywords": [
+        "feature",
+        "specification",
+        "agent",
+        "governance",
+        "commands"
+      ],
+      "lastUpdated": "2026-04-22T06:06:02.926Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
+      "description": "Phase 4 defines the execution-guardrail update for three AGENTS files so the moved request-analysis block under Critical Rules is leaner, later sections remain renumbered cleanly, and agents keep the same operational execution behavior without duplicate scaffolding.",
       "keywords": [
         "feature",
         "specification",
         "phase",
-        "017",
-        "wave",
-        "cluster",
-        "consumers"
+        "agent",
+        "execution",
+        "guardrails"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.631Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/004-rollout-sweeps",
-      "description": "Feature Specification: Phase 017 Wave C — Rollout + Sweeps",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation",
+      "description": "Feature Specification: Canonical Intake and Middleware Cleanup",
       "keywords": [
         "feature",
         "specification",
-        "phase",
-        "017",
-        "wave",
-        "rollout",
-        "sweeps"
+        "canonical",
+        "intake",
+        "middleware",
+        "cleanup"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.638Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/005-p2-maintainability",
-      "description": "Spec: Phase 017 Wave D — P2 Maintainability (Deferrable)",
-      "keywords": [
-        "spec",
-        "phase",
-        "017",
-        "wave",
-        "maintainability",
-        "deferrable"
-      ],
-      "lastUpdated": "2026-04-18T14:38:53.745Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution",
-      "description": "Feature Specification: CLI Runtime Executors for Iterative Skills (merged)",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks",
+      "description": "Feature Specification: Release Cleanup Playbooks",
       "keywords": [
         "feature",
         "specification",
-        "cli",
-        "runtime",
-        "executors",
-        "iterative",
-        "skills",
-        "merged"
+        "release",
+        "cleanup",
+        "playbooks"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.648Z"
+      "lastUpdated": "2026-04-22T06:06:02.931Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/001-executor-feature",
-      "description": "Feature Specification: Deep-Loop CLI Executor Selection for Iterative Skills",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits",
+      "description": "Coordination parent for the three release-alignment revisit packets promoted from the legacy continuity refactor lane. This packet re-anchors 63 existing SKILL guide, reference, template, and MCP documentation files to the Phase 018 continuity contract, retiring pre-018 save and recovery language while preserving legitimate archive-status guidance, packet lifecycle language, and generated-artifact references as supporting outputs instead of primary context surfaces.",
+      "keywords": [
+        "continuity-contract verification",
+        "phase-018 alignment",
+        "skill documentation",
+        "reference surfaces",
+        "template modernization",
+        "active continuity states",
+        "generated artifacts",
+        "save recovery language",
+        "manual session continuity",
+        "packet lifecycle documentation",
+        "drift detection",
+        "doc validation",
+        "archive guidance",
+        "resume workflow"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/001-sk-system-speckit-revisit",
+      "description": "Feature Specification: 018 / 007 — system-spec-kit release-alignment revisit",
       "keywords": [
         "feature",
         "specification",
-        "deep-loop",
-        "cli",
-        "executor",
-        "selection",
-        "iterative",
-        "skills"
+        "018",
+        "007",
+        "system-spec-kit",
+        "release-alignment",
+        "revisit"
       ],
-      "lastUpdated": "2026-04-18T14:47:57.474Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/002-runtime-matrix",
-      "description": "Feature Specification: CLI Runtime Matrix for Iterative Skills",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit",
+      "description": "Feature Specification: 018 / 008 — command release-alignment revisit",
       "keywords": [
         "feature",
         "specification",
-        "cli",
-        "runtime",
-        "matrix",
-        "iterative",
-        "skills"
+        "018",
+        "008",
+        "command",
+        "release-alignment",
+        "revisit"
       ],
-      "lastUpdated": "2026-04-18T14:47:57.640Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/018-cli-executor-remediation",
-      "description": "Feature Specification: Phase 020 Research-Findings Remediation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/003-readme-alignment-revisit",
+      "description": "Feature Specification: 018 / 009 — README release-alignment revisit",
       "keywords": [
         "feature",
         "specification",
-        "phase",
-        "020",
-        "research-findings",
-        "remediation"
+        "018",
+        "009",
+        "readme",
+        "release-alignment",
+        "revisit"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.656Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening",
-      "description": "Feature Specification: System Hardening (Post-Consolidation Research + Remediation Train)",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
+      "description": "Coordination parent for cleanup and audit work promoted from the old continuity refactor lane. The primary packet in this tree executes deletion-first shared-memory removal across lifecycle tools, runtime handlers, routing and governance branches, documentation catalog entries, playbook scenarios, and tests, while preserving only the unavoidable schema-column compatibility shim needed for older SQLite variants that cannot drop columns in place.",
+      "keywords": [
+        "feature removal",
+        "hard delete",
+        "shared memory",
+        "shared spaces",
+        "lifecycle tools",
+        "mcp server",
+        "governance scope",
+        "runtime cleanup",
+        "documentation cleanup",
+        "schema migration",
+        "backward compatibility",
+        "sqlite support",
+        "dropped column fallback",
+        "cleanup audit"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory",
+      "description": "Feature Specification: 018 / 010 — Remove shared memory feature surface",
       "keywords": [
         "feature",
         "specification",
-        "system",
-        "hardening",
-        "post-consolidation",
-        "research",
-        "remediation",
-        "train"
-      ],
-      "lastUpdated": "2026-04-19T07:17:54.226Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research",
-      "description": "Feature Specification: 019 Initial Research Wave",
-      "keywords": [
-        "feature",
-        "specification",
-        "019",
-        "initial",
-        "research",
-        "wave"
-      ],
-      "lastUpdated": "2026-04-19T07:17:54.231Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/001-canonical-save-invariants",
-      "description": "Feature Specification: Canonical-Save Pipeline Invariant Research",
-      "keywords": [
-        "feature",
-        "specification",
-        "canonical-save",
-        "pipeline",
-        "invariant",
-        "research"
-      ],
-      "lastUpdated": "2026-04-19T07:17:54.235Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/002-delta-review-015",
-      "description": "Feature Specification: Delta-Review of 015's 243 Findings",
-      "keywords": [
-        "feature",
-        "specification",
-        "delta-review",
-        "015",
-        "243",
-        "findings"
-      ],
-      "lastUpdated": "2026-04-19T07:17:54.239Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/003-q4-nfkc-robustness",
-      "description": "Feature Specification: Q4 NFKC Robustness Research",
-      "keywords": [
-        "feature",
-        "specification",
-        "nfkc",
-        "robustness",
-        "research"
-      ],
-      "lastUpdated": "2026-04-19T07:17:54.243Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/004-description-regen-strategy",
-      "description": "Feature Specification: description.json Rich-Content Regen Strategy",
-      "keywords": [
-        "feature",
-        "specification",
-        "description",
-        "json",
-        "rich-content",
-        "regen",
-        "strategy"
-      ],
-      "lastUpdated": "2026-04-19T07:17:54.247Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/005-routing-accuracy",
-      "description": "Feature Specification: Gate 3 + Skill-Advisor Routing Accuracy Research",
-      "keywords": [
-        "feature",
-        "specification",
-        "gate",
-        "skill-advisor",
-        "routing",
-        "accuracy",
-        "research"
-      ],
-      "lastUpdated": "2026-04-19T07:17:54.252Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/006-template-validator-audit",
-      "description": "Feature Specification: Template v2.2 + Validator Ruleset Joint Audit",
-      "keywords": [
-        "feature",
-        "specification",
-        "template",
-        "validator",
-        "ruleset",
-        "joint",
-        "audit"
-      ],
-      "lastUpdated": "2026-04-19T07:17:54.262Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/002-canonical-save-hardening",
-      "description": "Feature Specification: Canonical-Save Hardening",
-      "keywords": [
-        "feature",
-        "specification",
-        "canonical-save",
-        "hardening"
-      ],
-      "lastUpdated": "2026-04-18T21:45:15.450Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/003-nfkc-unification-hardening",
-      "description": "Feature Specification: NFKC Unification Hardening",
-      "keywords": [
-        "feature",
-        "specification",
-        "nfkc",
-        "unification",
-        "hardening"
-      ],
-      "lastUpdated": "2026-04-21T06:00:35.661Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/004-routing-accuracy-hardening",
-      "description": "Feature Specification: Routing Accuracy Hardening",
-      "keywords": [
-        "feature",
-        "specification",
-        "routing",
-        "accuracy",
-        "hardening"
-      ],
-      "lastUpdated": "2026-04-21T06:00:35.671Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/005-description-regen-contract",
-      "description": "Feature Specification: Description Regen Contract",
-      "keywords": [
-        "feature",
-        "specification",
-        "description",
-        "regen",
-        "contract"
-      ],
-      "lastUpdated": "2026-04-21T06:00:35.676Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/006-residual-015-backlog",
-      "description": "Feature Specification: 015 Residuals Restart",
-      "keywords": [
-        "feature",
-        "specification",
-        "015",
-        "residuals",
-        "restart"
-      ],
-      "lastUpdated": "2026-04-21T06:00:35.681Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/007-template-validator-contract-alignment",
-      "description": "Feature Specification: Template/Validator Contract Alignment",
-      "keywords": [
-        "feature",
-        "specification",
-        "template",
-        "validator",
-        "contract",
-        "alignment"
-      ],
-      "lastUpdated": "2026-04-19T07:17:54.283Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface",
-      "description": "Feature Specification: Skill-Advisor Hook Surface",
-      "keywords": [
-        "feature",
-        "specification",
-        "skill-advisor",
-        "hook",
+        "018",
+        "010",
+        "remove",
+        "shared",
+        "memory",
         "surface"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.694Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research",
-      "description": "Feature Specification: 020 Initial Research Wave",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata",
+      "description": "Feature Specification: 018 / 011 — graph-metadata.json packet contract",
       "keywords": [
         "feature",
         "specification",
-        "020",
-        "initial",
-        "research",
-        "wave"
-      ],
-      "lastUpdated": "2026-04-19T07:17:54.292Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research/002-extended-wave-copilot",
-      "description": "Feature Specification: 020 Extended Research (cli-copilot)",
-      "keywords": [
-        "feature",
-        "specification",
-        "020",
-        "extended",
-        "research",
-        "cli-copilot"
-      ],
-      "lastUpdated": "2026-04-21T10:49:04.269Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research/003-implementation-plan-validation-copilot",
-      "description": "Feature Specification: 020 Wave-3 Implementation Plan Validation (cli-copilot)",
-      "keywords": [
-        "feature",
-        "specification",
-        "020",
-        "wave-3",
-        "implementation",
-        "plan",
-        "validation",
-        "cli-copilot"
-      ],
-      "lastUpdated": "2026-04-19T09:53:00.868Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/002-shared-payload-advisor-contract",
-      "description": "Feature Specification: Shared-Payload Advisor Contract",
-      "keywords": [
-        "feature",
-        "specification",
-        "shared-payload",
-        "advisor",
+        "018",
+        "011",
+        "graph-metadata",
+        "json",
+        "packet",
         "contract"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.699Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
-      "description": "Feature Specification: Advisor Freshness + Source Cache",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup",
+      "description": "Feature Specification: 018 / 012 — MCP config and feature-flag cleanup",
       "keywords": [
         "feature",
         "specification",
-        "advisor",
-        "freshness",
-        "source",
-        "cache"
+        "018",
+        "012",
+        "mcp",
+        "config",
+        "feature-flag",
+        "cleanup"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.704Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
-      "description": "Feature Specification: Advisor Brief Producer + Cache Policy",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit",
+      "description": "Feature Specification: 018 / 013 — dead code and architecture audit",
       "keywords": [
         "feature",
         "specification",
-        "advisor",
-        "brief",
-        "producer",
+        "018",
+        "013",
+        "dead",
+        "code",
+        "architecture",
+        "audit"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation",
+      "description": "Coordination parent for playbook follow-on work and remediation phases. The primary child packet repairs the Phase 014 documentation scaffold after prompt-field rewrite work already landed in the manual testing playbook corpus, restoring the required Level 2 anchors, missing task and checklist files, and the real playbook index references while keeping the work scoped to packet documentation rather than the playbook content itself.",
+      "keywords": [
+        "playbook documentation",
+        "prompt fields",
+        "manual testing scenarios",
+        "level 2 structure",
+        "packet repair",
+        "template compliance",
+        "validator integration",
+        "documentation audit",
+        "playbook corpus",
+        "scenario documentation",
+        "spec folder repair",
+        "reference integrity",
+        "checklist restoration"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite",
+      "description": "Feature Specification: Playbook Prompt Rewrite",
+      "keywords": [
+        "feature",
+        "specification",
+        "playbook",
+        "prompt",
+        "rewrite"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution",
+      "description": "Feature Specification: Phase 015 Playbook Coverage Accounting and Partial Execution",
+      "keywords": [
+        "feature",
+        "specification",
+        "phase",
+        "015",
+        "playbook",
+        "coverage",
+        "accounting",
+        "partial",
+        "execution"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-remediation",
+      "description": "Deep Review Remediation",
+      "keywords": [
+        "deep",
+        "review",
+        "remediation"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor",
+      "description": "Feature Specification: Search Routing Advisor",
+      "keywords": [
+        "feature",
+        "specification",
+        "search",
+        "routing",
+        "advisor"
+      ],
+      "lastUpdated": "2026-04-22T06:06:02.936Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning",
+      "description": "Coordination parent for continuity research packets focused on search-pipeline empirical tuning and reranking optimization. The root research packet investigates hardcoded thresholds, weighted fusion, FSRS decay constants, reranker-provider trade-offs, cross-encoder length-penalty behavior, and cache-TTL throughput impact across the vector, BM25, FTS5, and reranking stages, with the intent of producing implementation-ready parameter recommendations rather than speculative theory.",
+      "keywords": [
+        "search research",
+        "pipeline optimization",
+        "cross-encoder",
+        "reranking",
+        "fusion algorithm",
+        "vector search",
+        "bm25",
+        "fts5",
+        "empirical tuning",
+        "configuration constants",
+        "threshold optimization",
+        "provider comparison",
+        "latency profiling",
+        "retrieval tuning"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning",
+      "description": "Research: Search Fusion & Reranking Configuration Tuning",
+      "keywords": [
+        "research",
+        "search",
+        "fusion",
+        "reranking",
+        "configuration",
+        "tuning"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty",
+      "description": "Remove Cross-Encoder Length Penalty",
+      "keywords": [
+        "remove",
+        "cross-encoder",
+        "length",
+        "penalty"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry",
+      "description": "Add Reranker Cache Telemetry",
+      "keywords": [
+        "add",
+        "reranker",
         "cache",
-        "policy"
+        "telemetry"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.709Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness",
-      "description": "Feature Specification: Advisor Renderer + 200-Prompt Regression Harness",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile",
+      "description": "Add Continuity Search Intent Profile",
+      "keywords": [
+        "add",
+        "continuity",
+        "search",
+        "intent",
+        "profile"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum",
+      "description": "Raise Minimum Rerank Candidate Threshold",
+      "keywords": [
+        "raise",
+        "minimum",
+        "rerank",
+        "candidate",
+        "threshold"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment",
+      "description": "Feature Specification: Doc Surface Alignment: Search Fusion Changes",
+      "keywords": [
+        "feature",
+        "specification",
+        "doc",
+        "surface",
+        "alignment",
+        "search",
+        "fusion",
+        "changes"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation",
+      "description": "Feature Specification: Validate Continuity Profile Weights",
+      "keywords": [
+        "feature",
+        "specification",
+        "validate",
+        "continuity",
+        "profile",
+        "weights"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy",
+      "description": "Research: Content Routing Classification Accuracy",
+      "keywords": [
+        "research",
+        "content",
+        "routing",
+        "classification",
+        "accuracy"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion",
+      "description": "Fix Delivery vs Progress Routing Confusion",
+      "keywords": [
+        "fix",
+        "delivery",
+        "progress",
+        "routing",
+        "confusion"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion",
+      "description": "Fix Handover vs Drop Routing Confusion",
+      "keywords": [
+        "fix",
+        "handover",
+        "drop",
+        "routing",
+        "confusion"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier",
+      "description": "Wire Tier3 LLM Classifier into Save Handler",
+      "keywords": [
+        "wire",
+        "tier3",
+        "llm",
+        "classifier",
+        "save",
+        "handler"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
+      "description": "Feature Specification: Doc Surface Alignment for Research Content Routing Accuracy",
+      "keywords": [
+        "feature",
+        "specification",
+        "doc",
+        "surface",
+        "alignment",
+        "research",
+        "content",
+        "routing",
+        "accuracy"
+      ],
+      "lastUpdated": "2026-04-22T06:06:02.941Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety",
+      "description": "Add Task Update Merge Safety Guard",
+      "keywords": [
+        "add",
+        "task",
+        "update",
+        "merge",
+        "safety",
+        "guard"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment",
+      "description": "Enrich Tier3 Prompt with Continuity Model Context",
+      "keywords": [
+        "enrich",
+        "tier3",
+        "prompt",
+        "continuity",
+        "model",
+        "context"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation",
+      "description": "Research: Graph Metadata Quality & Relationship Validation",
+      "keywords": [
+        "research",
+        "graph",
+        "metadata",
+        "quality",
+        "relationship",
+        "validation"
+      ],
+      "lastUpdated": "2026-04-22T06:06:02.945Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/001-fix-status-derivation",
+      "description": "Fix Graph Metadata Status Derivation",
+      "keywords": [
+        "fix",
+        "graph",
+        "metadata",
+        "status",
+        "derivation"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/002-sanitize-key-files",
+      "description": "Sanitize Key Files in Graph Metadata",
+      "keywords": [
+        "sanitize",
+        "key",
+        "files",
+        "graph",
+        "metadata"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/003-deduplicate-entities",
+      "description": "Deduplicate Graph Metadata Entities",
+      "keywords": [
+        "deduplicate",
+        "graph",
+        "metadata",
+        "entities"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files",
+      "description": "Normalize Legacy Graph Metadata Files",
+      "keywords": [
+        "normalize",
+        "legacy",
+        "graph",
+        "metadata",
+        "files"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment",
+      "description": "Feature Specification: Doc Surface Alignment: Graph Metadata Changes",
+      "keywords": [
+        "feature",
+        "specification",
+        "doc",
+        "surface",
+        "alignment",
+        "graph",
+        "metadata",
+        "changes"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution",
+      "description": "Improve Graph Metadata Key File Resolution",
+      "keywords": [
+        "improve",
+        "graph",
+        "metadata",
+        "key",
+        "file",
+        "resolution"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements",
+      "description": "Improve Graph Metadata Entity Quality",
+      "keywords": [
+        "improve",
+        "graph",
+        "metadata",
+        "entity",
+        "quality"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph",
+      "description": "Feature Specification: Skill Advisor Graph",
+      "keywords": [
+        "feature",
+        "specification",
+        "skill",
+        "advisor",
+        "graph"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes",
+      "description": "Feature Specification: Skill Graph Research Findings Fixes",
+      "keywords": [
+        "feature",
+        "specification",
+        "skill",
+        "graph",
+        "research",
+        "findings",
+        "fixes"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook",
+      "description": "Feature Specification: Playbook Template Alignment",
+      "keywords": [
+        "feature",
+        "specification",
+        "playbook",
+        "template",
+        "alignment"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging",
+      "description": "Feature Specification: Skill Advisor Packaging",
+      "keywords": [
+        "feature",
+        "specification",
+        "skill",
+        "advisor",
+        "packaging"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment",
+      "description": "Feature Specification: Graph Metadata Enrichment",
+      "keywords": [
+        "feature",
+        "specification",
+        "graph",
+        "metadata",
+        "enrichment"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration",
+      "description": "Feature Specification: Repo-Wide Path Migration",
+      "keywords": [
+        "feature",
+        "specification",
+        "repo-wide",
+        "path",
+        "migration"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/006-skill-graph-sqlite-migration",
+      "description": "Feature Specification: Skill Graph SQLite Migration",
+      "keywords": [
+        "feature",
+        "specification",
+        "skill",
+        "graph",
+        "sqlite",
+        "migration"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup",
+      "description": "Feature Specification: Skill Graph Auto-Setup",
+      "keywords": [
+        "feature",
+        "specification",
+        "skill",
+        "graph",
+        "auto-setup"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs",
+      "description": "Feature Specification: Deep Skill Feature Catalogs",
+      "keywords": [
+        "feature",
+        "specification",
+        "deep",
+        "skill",
+        "catalogs"
+      ],
+      "lastUpdated": "2026-04-22T06:06:02.956Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/003-advisor-phrase-booster-tailoring",
+      "description": "Feature Specification: Advisor Phrase-Booster Tailoring",
       "keywords": [
         "feature",
         "specification",
         "advisor",
-        "renderer",
-        "200-prompt",
-        "regression",
-        "harness"
+        "phrase-booster",
+        "tailoring"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.713Z"
+      "lastUpdated": "2026-04-22T06:06:02.962Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/006-claude-hook-wiring",
-      "description": "Feature Specification: Claude Hook Wiring (UserPromptSubmit)",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy",
+      "description": "Investigation + measurement phase. Does the Phase 020 advisor hook actually reduce AI-assistant context load? Secondary: design OpenCode plugin packaging for the advisor hook using code-graph plugin as reference.",
       "keywords": [
-        "feature",
-        "specification",
-        "claude",
-        "hook",
-        "wiring",
-        "userpromptsubmit"
+        "smart-router-context-efficacy",
+        "004 smart router efficacy",
+        "advisor context load measurement",
+        "opencode plugin advisor hook"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.721Z"
+      "lastUpdated": "2026-04-21T14:30:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring",
-      "description": "Feature Specification: Gemini + Copilot Hook Wiring",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research",
+      "description": "Research charter for 021/001 — 20-iteration deep-research on V1-V10 questions covering context-load measurement + OpenCode plugin design.",
       "keywords": [
-        "feature",
-        "specification",
-        "gemini",
-        "copilot",
-        "hook",
-        "wiring"
+        "initial-research",
+        "004 001 research charter"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.729Z"
+      "lastUpdated": "2026-04-21T14:30:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/008-codex-integration-and-hook-policy",
-      "description": "Feature Specification: Codex Integration + Hook Policy",
-      "keywords": [
-        "feature",
-        "specification",
-        "codex",
-        "integration",
-        "hook",
-        "policy"
-      ],
-      "lastUpdated": "2026-04-21T06:00:35.734Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/009-documentation-and-release-contract",
-      "description": "Feature Specification: Documentation + Release Contract",
-      "keywords": [
-        "feature",
-        "specification",
-        "documentation",
-        "release",
-        "contract"
-      ],
-      "lastUpdated": "2026-04-21T06:00:35.741Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy",
-      "description": "Feature Specification: Smart-Router Context-Load Efficacy Investigation",
-      "keywords": [
-        "feature",
-        "specification",
-        "smart-router",
-        "context-load",
-        "efficacy",
-        "investigation"
-      ],
-      "lastUpdated": "2026-04-21T10:49:04.269Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy/001-initial-research",
-      "description": "Research Charter: Smart-Router Context-Load Efficacy",
-      "keywords": [
-        "research",
-        "charter",
-        "smart-router",
-        "context-load",
-        "efficacy"
-      ],
-      "lastUpdated": "2026-04-21T10:49:04.269Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/021-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
       "description": "Feature Specification: SKILL.md Smart-Router Section Efficacy",
       "keywords": [
         "feature",
@@ -5531,10 +5112,10 @@
         "section",
         "efficacy"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.746Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/022-skill-advisor-docs-and-code-alignment",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment",
       "description": "Feature Specification: Skill-Advisor Docs + Phase 020 Code Alignment",
       "keywords": [
         "feature",
@@ -5546,24 +5127,23 @@
         "code",
         "alignment"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.751Z"
+      "lastUpdated": "2026-04-22T06:06:02.966Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/023-smart-router-remediation-and-opencode-plugin",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin",
       "description": "Feature Specification: Smart-Router Remediation + OpenCode Plugin",
       "keywords": [
+        "feature",
+        "specification",
         "smart-router",
         "remediation",
         "opencode",
-        "plugin",
-        "skill-advisor",
-        "telemetry",
-        "ci-check"
+        "plugin"
       ],
-      "lastUpdated": "2026-04-19T00:00:00.000Z"
+      "lastUpdated": "2026-04-22T06:06:02.971Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/024-deferred-remediation-and-telemetry-run",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run",
       "description": "Feature Specification: Deferred Remediation + Telemetry Measurement Run",
       "keywords": [
         "feature",
@@ -5574,69 +5154,764 @@
         "measurement",
         "run"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.756Z"
+      "lastUpdated": "2026-04-22T06:06:02.975Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/025-deep-review-remediation",
-      "description": "Feature Specification: Phase 025 — Deep-Review Remediation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation",
+      "description": "Feature Specification: Deep Review Remediation",
       "keywords": [
-        "deep-review",
+        "feature",
+        "specification",
+        "deep",
+        "review",
+        "remediation"
+      ],
+      "lastUpdated": "2026-04-22T06:06:02.979Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation",
+      "description": "Remediation Plan: 120-Iteration Deep Review Findings",
+      "keywords": [
         "remediation",
-        "skill-advisor",
-        "privacy",
-        "cache",
-        "telemetry",
-        "plugin-parity",
-        "operator-docs"
+        "plan",
+        "120-iteration",
+        "deep",
+        "review",
+        "findings"
       ],
-      "lastUpdated": "2026-04-19T21:20:00.000Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/026-r03-post-remediation",
-      "description": "Feature Specification: Phase 026 — R03 Post-Remediation Remediation",
-      "keywords": [
-        "r03-remediation",
-        "post-remediation",
-        "cli-copilot",
-        "per-finding",
-        "plugin-cache",
-        "docs-drift",
-        "finalize-prompt",
-        "sanitizer"
-      ],
-      "lastUpdated": "2026-04-20T04:20:00.000Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification",
-      "description": "Feature Specification: Phase 027 — Skill-Graph Auto-Update Daemon + Advisor Unification",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation",
+      "description": "Feature Specification: Phase 020 Research-Findings Remediation",
       "keywords": [
         "feature",
         "specification",
         "phase",
+        "020",
+        "research-findings",
+        "remediation"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation",
+      "description": "Feature Specification: Phase 025 — Deep-Review Remediation",
+      "keywords": [
+        "feature",
+        "specification",
+        "phase",
+        "025",
+        "deep-review",
+        "remediation"
+      ],
+      "lastUpdated": "2026-04-22T06:06:02.984Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation",
+      "description": "Feature Specification: Phase 026 — R03 Post-Remediation Remediation",
+      "keywords": [
+        "feature",
+        "specification",
+        "phase",
+        "026",
+        "r03",
+        "post-remediation",
+        "remediation"
+      ],
+      "lastUpdated": "2026-04-22T06:06:02.989Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation",
+      "description": "006 campaign findings remediation parent packet",
+      "keywords": [
+        "006",
+        "campaign",
+        "findings",
+        "remediation",
+        "deep-review"
+      ],
+      "lastUpdated": "2026-04-21T00:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality",
+      "description": "Graph and Metadata Quality remediation packet",
+      "keywords": [
+        "graph",
+        "and",
+        "metadata",
+        "quality",
+        "remediation",
+        "findings"
+      ],
+      "lastUpdated": "2026-04-21T00:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation",
+      "description": "Spec Structure and Validation remediation packet",
+      "keywords": [
+        "spec",
+        "structure",
+        "and",
+        "validation",
+        "remediation",
+        "findings"
+      ],
+      "lastUpdated": "2026-04-21T00:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/003-evidence-references-and-replayability",
+      "description": "Evidence, References, and Replayability remediation packet",
+      "keywords": [
+        "evidence",
+        "references",
+        "and",
+        "replayability",
+        "remediation",
+        "findings"
+      ],
+      "lastUpdated": "2026-04-21T00:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/004-migration-lineage-and-identity-drift",
+      "description": "Migration, Lineage, and Identity Drift remediation packet",
+      "keywords": [
+        "migration",
+        "lineage",
+        "and",
+        "identity",
+        "drift",
+        "remediation",
+        "findings"
+      ],
+      "lastUpdated": "2026-04-21T00:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/005-packet-state-continuity-and-closeout",
+      "description": "Packet State, Continuity, and Closeout remediation packet",
+      "keywords": [
+        "packet",
+        "state",
+        "continuity",
+        "and",
+        "closeout",
+        "remediation",
+        "findings"
+      ],
+      "lastUpdated": "2026-04-21T00:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/006-routing-accuracy-and-classifier-behavior",
+      "description": "Routing Accuracy and Classifier Behavior remediation packet",
+      "keywords": [
+        "routing",
+        "accuracy",
+        "and",
+        "classifier",
+        "behavior",
+        "remediation",
+        "findings"
+      ],
+      "lastUpdated": "2026-04-21T00:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/007-skill-advisor-packaging-and-graph",
+      "description": "Skill Advisor Packaging and Graph remediation packet",
+      "keywords": [
+        "skill",
+        "advisor",
+        "packaging",
+        "and",
+        "graph",
+        "remediation",
+        "findings"
+      ],
+      "lastUpdated": "2026-04-21T00:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/008-search-fusion-and-reranker-tuning",
+      "description": "Search Fusion and Reranker Tuning remediation packet",
+      "keywords": [
+        "search",
+        "fusion",
+        "and",
+        "reranker",
+        "tuning",
+        "remediation",
+        "findings"
+      ],
+      "lastUpdated": "2026-04-21T21:43:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/009-security-and-guardrails",
+      "description": "Security and Guardrails remediation packet",
+      "keywords": [
+        "security",
+        "and",
+        "guardrails",
+        "remediation",
+        "findings"
+      ],
+      "lastUpdated": "2026-04-21T00:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/010-telemetry-measurement-and-rollout-controls",
+      "description": "Telemetry, Measurement, and Rollout Controls remediation packet complete",
+      "keywords": [
+        "telemetry",
+        "measurement",
+        "and",
+        "rollout",
+        "controls",
+        "remediation",
+        "findings"
+      ],
+      "lastUpdated": "2026-04-21T21:50:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/007-copilot-hook-parity-remediation",
+      "description": "Feature Specification: Copilot CLI Hook Parity Remediation",
+      "keywords": [
+        "feature",
+        "specification",
+        "copilot",
+        "cli",
+        "hook",
+        "parity",
+        "remediation"
+      ],
+      "lastUpdated": "2026-04-22T08:29:52.150Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/008-codex-hook-parity-remediation",
+      "description": "Feature Specification: Codex CLI Hook Parity Remediation",
+      "keywords": [
+        "feature",
+        "specification",
+        "codex",
+        "cli",
+        "hook",
+        "parity",
+        "remediation"
+      ],
+      "lastUpdated": "2026-04-22T11:00:04.491Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening",
+      "description": "Feature Specification: Runtime Executor Hardening",
+      "keywords": [
+        "feature",
+        "specification",
+        "runtime",
+        "executor",
+        "hardening"
+      ],
+      "lastUpdated": "2026-04-22T06:06:02.994Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime",
+      "description": "Feature Specification: Foundational Runtime (merged)",
+      "keywords": [
+        "feature",
+        "specification",
+        "foundational",
+        "runtime",
+        "merged"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research",
+      "description": "Feature Specification: Foundational Runtime Remediation (Phase 016 → Phase 016 remediation Charter)",
+      "keywords": [
+        "feature",
+        "specification",
+        "foundational",
+        "runtime",
+        "remediation",
+        "phase",
+        "016",
+        "charter"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives",
+      "description": "Specification: Phase 017 Wave A — Infrastructure Primitives",
+      "keywords": [
+        "specification",
+        "phase",
+        "017",
+        "wave",
+        "infrastructure",
+        "primitives"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers",
+      "description": "Feature Specification: Phase 017 Wave B — Cluster Consumers",
+      "keywords": [
+        "feature",
+        "specification",
+        "phase",
+        "017",
+        "wave",
+        "cluster",
+        "consumers"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps",
+      "description": "Feature Specification: Phase 017 Wave C — Rollout + Sweeps",
+      "keywords": [
+        "feature",
+        "specification",
+        "phase",
+        "017",
+        "wave",
+        "rollout",
+        "sweeps"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability",
+      "description": "Spec: Phase 017 Wave D — P2 Maintainability (Deferrable)",
+      "keywords": [
+        "spec",
+        "phase",
+        "017",
+        "wave",
+        "maintainability",
+        "deferrable"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution",
+      "description": "Feature Specification: CLI Runtime Executors for Iterative Skills (merged)",
+      "keywords": [
+        "feature",
+        "specification",
+        "cli",
+        "runtime",
+        "executors",
+        "iterative",
+        "skills",
+        "merged"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature",
+      "description": "Feature Specification: Deep-Loop CLI Executor Selection for Iterative Skills",
+      "keywords": [
+        "feature",
+        "specification",
+        "deep-loop",
+        "cli",
+        "executor",
+        "selection",
+        "iterative",
+        "skills"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix",
+      "description": "Feature Specification: CLI Runtime Matrix for Iterative Skills",
+      "keywords": [
+        "feature",
+        "specification",
+        "cli",
+        "runtime",
+        "matrix",
+        "iterative",
+        "skills"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening",
+      "description": "Feature Specification: System Hardening (Post-Consolidation Research + Remediation Train)",
+      "keywords": [
+        "feature",
+        "specification",
+        "system",
+        "hardening",
+        "post-consolidation",
+        "research",
+        "remediation",
+        "train"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research",
+      "description": "Feature Specification: 019 Initial Research Wave",
+      "keywords": [
+        "feature",
+        "specification",
+        "019",
+        "initial",
+        "research",
+        "wave"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants",
+      "description": "Feature Specification: Canonical-Save Pipeline Invariant Research",
+      "keywords": [
+        "feature",
+        "specification",
+        "canonical-save",
+        "pipeline",
+        "invariant",
+        "research"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015",
+      "description": "Feature Specification: Delta-Review of 015's 243 Findings",
+      "keywords": [
+        "feature",
+        "specification",
+        "delta-review",
+        "015",
+        "243",
+        "findings"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/003-q4-nfkc-robustness",
+      "description": "Feature Specification: Q4 NFKC Robustness Research",
+      "keywords": [
+        "feature",
+        "specification",
+        "nfkc",
+        "robustness",
+        "research"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/004-description-regen-strategy",
+      "description": "Feature Specification: description.json Rich-Content Regen Strategy",
+      "keywords": [
+        "feature",
+        "specification",
+        "description",
+        "json",
+        "rich-content",
+        "regen",
+        "strategy"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy",
+      "description": "Feature Specification: Gate 3 + Skill-Advisor Routing Accuracy Research",
+      "keywords": [
+        "feature",
+        "specification",
+        "gate",
+        "skill-advisor",
+        "routing",
+        "accuracy",
+        "research"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit",
+      "description": "Feature Specification: Template v2.2 + Validator Ruleset Joint Audit",
+      "keywords": [
+        "feature",
+        "specification",
+        "template",
+        "validator",
+        "ruleset",
+        "joint",
+        "audit"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening",
+      "description": "Feature Specification: Canonical-Save Hardening",
+      "keywords": [
+        "feature",
+        "specification",
+        "canonical-save",
+        "hardening"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening",
+      "description": "Feature Specification: NFKC Unification Hardening",
+      "keywords": [
+        "feature",
+        "specification",
+        "nfkc",
+        "unification",
+        "hardening"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/004-routing-accuracy-hardening",
+      "description": "Feature Specification: Routing Accuracy Hardening",
+      "keywords": [
+        "feature",
+        "specification",
+        "routing",
+        "accuracy",
+        "hardening"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/005-description-regen-contract",
+      "description": "Feature Specification: Description Regen Contract",
+      "keywords": [
+        "feature",
+        "specification",
+        "description",
+        "regen",
+        "contract"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/006-residual-015-backlog",
+      "description": "Feature Specification: 015 Residuals Restart",
+      "keywords": [
+        "feature",
+        "specification",
+        "015",
+        "residuals",
+        "restart"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment",
+      "description": "Feature Specification: Template/Validator Contract Alignment",
+      "keywords": [
+        "feature",
+        "specification",
+        "template",
+        "validator",
+        "contract",
+        "alignment"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity",
+      "description": "Feature Specification: Hook Daemon Parity",
+      "keywords": [
+        "feature",
+        "specification",
+        "hook",
+        "daemon",
+        "parity"
+      ],
+      "lastUpdated": "2026-04-22T06:06:03.000Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface",
+      "description": "Feature Specification: Skill-Advisor Hook Surface",
+      "keywords": [
+        "feature",
+        "specification",
+        "skill-advisor",
+        "hook",
+        "surface"
+      ],
+      "lastUpdated": "2026-04-22T06:06:03.005Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research",
+      "description": "Feature Specification: 020 Initial Research Wave",
+      "keywords": [
+        "feature",
+        "specification",
+        "020",
+        "initial",
+        "research",
+        "wave"
+      ],
+      "lastUpdated": "2026-04-22T06:06:03.010Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot",
+      "description": "Second 10-iteration research wave dispatched via cli-copilot gpt-5.4 high. Deep-dives on wave-1 remaining open questions + new architectural angles (adversarial advisor, observability, migration, concurrent sessions, NFKC interaction).",
+      "keywords": [
+        "extended-wave-copilot",
+        "020 extended research",
+        "skill advisor copilot wave"
+      ],
+      "lastUpdated": "2026-04-21T14:30:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot",
+      "description": "Feature Specification: 020 Wave-3 Implementation Plan Validation (cli-copilot)",
+      "keywords": [
+        "feature",
+        "specification",
+        "020",
+        "wave-3",
+        "implementation",
+        "plan",
+        "validation",
+        "cli-copilot"
+      ],
+      "lastUpdated": "2026-04-22T06:06:03.015Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract",
+      "description": "Feature Specification: Shared-Payload Advisor Contract",
+      "keywords": [
+        "feature",
+        "specification",
+        "shared-payload",
+        "advisor",
+        "contract"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
+      "description": "Feature Specification: Advisor Freshness + Source Cache",
+      "keywords": [
+        "feature",
+        "specification",
+        "advisor",
+        "freshness",
+        "source",
+        "cache"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
+      "description": "Feature Specification: Advisor Brief Producer + Cache Policy",
+      "keywords": [
+        "feature",
+        "specification",
+        "advisor",
+        "brief",
+        "producer",
+        "cache",
+        "policy"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness",
+      "description": "Feature Specification: Advisor Renderer + 200-Prompt Regression Harness",
+      "keywords": [
+        "feature",
+        "specification",
+        "advisor",
+        "renderer",
+        "200-prompt",
+        "regression",
+        "harness"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring",
+      "description": "Feature Specification: Claude Hook Wiring (UserPromptSubmit)",
+      "keywords": [
+        "feature",
+        "specification",
+        "claude",
+        "hook",
+        "wiring",
+        "userpromptsubmit"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring",
+      "description": "Feature Specification: Gemini + Copilot Hook Wiring",
+      "keywords": [
+        "feature",
+        "specification",
+        "gemini",
+        "copilot",
+        "hook",
+        "wiring"
+      ],
+      "lastUpdated": "2026-04-21T13:00:00Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy",
+      "description": "Feature Specification: Codex Integration + Hook Policy",
+      "keywords": [
+        "feature",
+        "specification",
+        "codex",
+        "integration",
+        "hook",
+        "policy"
+      ],
+      "lastUpdated": "2026-04-22T06:06:03.020Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract",
+      "description": "Feature Specification: Documentation + Release Contract",
+      "keywords": [
+        "feature",
+        "specification",
+        "documentation",
+        "release",
+        "contract"
+      ],
+      "lastUpdated": "2026-04-22T06:06:03.025Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification",
+      "description": "Feature Specification: 027 - Skill Graph Daemon and Advisor Unification",
+      "keywords": [
+        "feature",
+        "specification",
         "027",
-        "skill-graph",
-        "auto-update",
+        "skill",
+        "graph",
         "daemon",
         "advisor",
         "unification"
       ],
-      "lastUpdated": "2026-04-21T08:26:35.784Z"
+      "lastUpdated": "2026-04-22T06:06:03.030Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/000-validator-esm-fix",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix",
       "description": "Feature Specification: 027/000 — Validator ESM Migration (Node 25 Compat)",
       "keywords": [
-        "validator-esm-fix",
-        "node-25-compat",
-        "commonjs-to-esm",
-        "require-main-migration",
-        "scripts-package-migration",
-        "type-module"
+        "feature",
+        "specification",
+        "027",
+        "000",
+        "validator",
+        "esm",
+        "migration",
+        "node",
+        "compat"
       ],
-      "lastUpdated": "2026-04-20T15:00:00.000Z"
+      "lastUpdated": "2026-04-22T06:06:03.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/001-daemon-freshness-foundation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation",
       "description": "Feature Specification: 027/001 — Daemon + Freshness Foundation",
       "keywords": [
         "feature",
@@ -5647,10 +5922,10 @@
         "freshness",
         "foundation"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.776Z"
+      "lastUpdated": "2026-04-22T06:06:03.040Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/002-lifecycle-and-derived-metadata",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/003-lifecycle-and-derived-metadata",
       "description": "Feature Specification: 027/002 — Lifecycle + Derived Metadata",
       "keywords": [
         "feature",
@@ -5661,10 +5936,10 @@
         "derived",
         "metadata"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.785Z"
+      "lastUpdated": "2026-04-22T06:06:03.045Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/003-native-advisor-core",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
       "description": "Feature Specification: 027/003 — Native Advisor Core",
       "keywords": [
         "feature",
@@ -5675,10 +5950,10 @@
         "advisor",
         "core"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.791Z"
+      "lastUpdated": "2026-04-22T06:06:03.050Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/004-mcp-advisor-surface",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface",
       "description": "Feature Specification: 027/004 — MCP Advisor Surface",
       "keywords": [
         "feature",
@@ -5689,10 +5964,10 @@
         "advisor",
         "surface"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.804Z"
+      "lastUpdated": "2026-04-22T06:06:03.055Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/005-compat-migration-and-bootstrap",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap",
       "description": "Feature Specification: 027/005 — Compat Migration + Bootstrap",
       "keywords": [
         "feature",
@@ -5703,10 +5978,10 @@
         "migration",
         "bootstrap"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.809Z"
+      "lastUpdated": "2026-04-22T06:06:03.060Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/006-promotion-gates",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/007-promotion-gates",
       "description": "Feature Specification: 027/006 — Promotion Gates",
       "keywords": [
         "feature",
@@ -5716,25 +5991,11 @@
         "promotion",
         "gates"
       ],
-      "lastUpdated": "2026-04-21T06:00:35.816Z"
+      "lastUpdated": "2026-04-22T06:06:03.065Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/028-code-graph-self-contained-package",
-      "description": "Feature Specification: 028 — Code-Graph Self-Contained Package Migration",
-      "keywords": [
-        "code-graph",
-        "self-contained-package",
-        "migration",
-        "mcp_server",
-        "refactor",
-        "git-mv",
-        "skill-advisor-pattern"
-      ],
-      "lastUpdated": "2026-04-21T08:26:39.041Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/029-hook-parity-remediation",
-      "description": "Feature Specification: 029 — Runtime Hook Parity Remediation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
+      "description": "Feature Specification: 029 - Runtime Hook Parity Remediation",
       "keywords": [
         "feature",
         "specification",
@@ -5744,7 +6005,7 @@
         "parity",
         "remediation"
       ],
-      "lastUpdated": "2026-04-21T10:49:04.269Z"
+      "lastUpdated": "2026-04-22T06:06:03.070Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/013-audit-snapshot/primary-docs",
@@ -5758,22 +6019,20 @@
         "deprecation",
         "audit"
       ],
-      "lastUpdated": "2026-04-17T14:42:34.367Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/014-research-snapshot/primary-docs",
-      "description": "Research Seed: Save-Flow Backend Relevance Review Post-Memory-Folder Retirement",
+      "description": "Investigate whether generate-context.js and its save-flow backend remain proportionate to the remaining value after [spec]/memory/*.md retirement (v3.4.1.0 + 013 r2), or whether a simpler operator-visible command could do the work with less machinery.",
       "keywords": [
-        "research",
-        "seed",
-        "save-flow",
-        "backend",
-        "relevance",
-        "review",
-        "post-memory-folder",
-        "retirement"
+        "primary-docs",
+        "save flow relevance",
+        "generate-context relevance",
+        "backend proportionality",
+        "save path audit",
+        "memory save simplification"
       ],
-      "lastUpdated": "2026-04-21T10:49:04.269Z"
+      "lastUpdated": "2026-04-21T14:30:00Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/review/014-memory-save-rewrite-pt-01/primary-docs",
@@ -5786,7 +6045,7 @@
         "planner-first",
         "trim"
       ],
-      "lastUpdated": "2026-04-17T14:42:34.376Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/review/015-deep-review-and-remediation-pt-01/merged-015-archive",
@@ -5802,7 +6061,7 @@
         "012",
         "014"
       ],
-      "lastUpdated": "2026-04-17T14:42:34.382Z"
+      "lastUpdated": "2026-04-21T13:00:00Z"
     },
     {
       "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch",

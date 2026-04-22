@@ -1,25 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
-  "description": "Feature Specification: 029 — Runtime Hook Parity Remediation",
-  "keywords": [
-    "feature",
-    "specification",
-    "029",
-    "runtime",
-    "hook",
-    "parity",
-    "remediation"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "029",
-  "folderSlug": "hook-parity-remediation",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "009-hook-daemon-parity"
-  ],
-  "memorySequence": 1,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/029-hook-parity-remediation",
@@ -36,5 +15,26 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/029-hook-parity-remediation",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
+  "description": "Feature Specification: 029 - Runtime Hook Parity Remediation",
+  "keywords": [
+    "feature",
+    "specification",
+    "029",
+    "runtime",
+    "hook",
+    "parity",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-22T06:06:03.070Z",
+  "specId": "003",
+  "folderSlug": "hook-parity-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
 }

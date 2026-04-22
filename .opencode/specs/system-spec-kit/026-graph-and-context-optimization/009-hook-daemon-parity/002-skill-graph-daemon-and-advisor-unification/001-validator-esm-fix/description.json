@@ -1,25 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix",
-  "description": "Feature Specification: 027/000 — Validator ESM Migration (Node 25 Compat)",
-  "keywords": [
-    "validator-esm-fix",
-    "node-25-compat",
-    "commonjs-to-esm",
-    "require-main-migration",
-    "scripts-package-migration",
-    "type-module"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "000",
-  "folderSlug": "validator-esm-fix",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "009-hook-daemon-parity",
-    "027-skill-graph-daemon-and-advisor-unification"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix",
@@ -36,5 +15,29 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/027-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix",
+  "description": "Feature Specification: 027/000 — Validator ESM Migration (Node 25 Compat)",
+  "keywords": [
+    "feature",
+    "specification",
+    "027",
+    "000",
+    "validator",
+    "esm",
+    "migration",
+    "node",
+    "compat"
+  ],
+  "lastUpdated": "2026-04-22T06:06:03.035Z",
+  "specId": "001",
+  "folderSlug": "validator-esm-fix",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity",
+    "002-skill-graph-daemon-and-advisor-unification"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

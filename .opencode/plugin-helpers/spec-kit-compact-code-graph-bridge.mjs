@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// Helper for packet 026/007/009. This file intentionally lives outside
+// `.opencode/plugins/` so OpenCode discovers only real plugin entrypoints.
 
 import { handleSessionResume } from '../skill/system-spec-kit/mcp_server/dist/handlers/session-resume.js';
 import * as vectorIndex from '../skill/system-spec-kit/mcp_server/dist/lib/search/vector-index.js';

@@ -1,26 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface",
-  "description": "Feature Specification: Skill-Advisor Hook Surface",
-  "keywords": [
-    "feature",
-    "specification",
-    "skill-advisor",
-    "hook",
-    "surface"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "020",
-  "folderSlug": "skill-advisor-hook-surface",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "009-hook-daemon-parity"
-  ],
-  "memorySequence": 2,
-  "memoryNameHistory": [
-    "19-04-26_06-20__scaffolded-phase-020-research-first-umbrella-for.md",
-    "19-04-26_09-47__phase-020-research-converged-waves-1-2-children.md"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface",
@@ -37,5 +15,27 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface",
+  "description": "Feature Specification: Skill-Advisor Hook Surface",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill-advisor",
+    "hook",
+    "surface"
+  ],
+  "lastUpdated": "2026-04-22T06:06:03.005Z",
+  "specId": "001",
+  "folderSlug": "skill-advisor-hook-surface",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "19-04-26_06-20__scaffolded-phase-020-research-first-umbrella-for.md",
+    "19-04-26_09-47__phase-020-research-converged-waves-1-2-children.md"
+  ]
 }

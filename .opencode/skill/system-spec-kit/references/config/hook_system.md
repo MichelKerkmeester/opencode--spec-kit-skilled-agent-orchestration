@@ -53,13 +53,13 @@ Prompt hooks and lifecycle hooks are separate capabilities. A runtime can suppor
 | --- | --- | --- | --- | --- |
 | Claude | yes | yes | yes | yes |
 | Codex | yes | no | no | no |
-| Copilot | yes | yes (wrapper) | yes | n/a |
+| Copilot | yes (file-based custom instructions) | yes (repo wrapper, file-based startup refresh) | yes | n/a |
 | Gemini | yes | yes | yes | yes |
 | OpenCode | n/a (advisor separate) | yes (plugin) | yes (plugin) | n/a |
 
 ## Cross-Runtime Fallback
 
-Claude Code, Copilot CLI, and Gemini CLI use shell-script `session-prime.ts` style lifecycle hooks. OpenCode uses plugin-based hooks (`@opencode-ai/plugin` at `.opencode/plugins/spec-kit-compact-code-graph.js`). Codex CLI has prompt hooks but does not support lifecycle hooks; it relies on the explicit operator recovery path instead. If hook context is unavailable in any runtime for any reason, fall back to the canonical operator path: start with `/spec_kit:resume`, rebuild packet continuity from `handover.md -> _memory.continuity -> spec docs`, then use `session_bootstrap()` or `session_resume()` only when you need lower-level structural health or merged recovery detail.
+Claude Code and Gemini CLI use shell-script `session-prime.ts` style lifecycle hooks that can return runtime-visible context. Copilot CLI uses repo hook wiring too, but its prompt-time parity is file-based: `userPromptSubmitted` returns `{}` and refreshes the Spec Kit managed block in local Copilot custom instructions, while `sessionStart` refreshes startup context into the same block. OpenCode uses plugin-based hooks (`@opencode-ai/plugin` at `.opencode/plugins/spec-kit-compact-code-graph.js`). Codex CLI has prompt hooks but does not support lifecycle hooks; it relies on the explicit operator recovery path instead. If hook context is unavailable in any runtime for any reason, fall back to the canonical operator path: start with `/spec_kit:resume`, rebuild packet continuity from `handover.md -> _memory.continuity -> spec docs`, then use `session_bootstrap()` or `session_resume()` only when you need lower-level structural health or merged recovery detail.
 
 ## Retrieval Primitives
 

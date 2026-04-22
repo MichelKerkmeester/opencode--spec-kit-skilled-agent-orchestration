@@ -55,7 +55,7 @@ Native tool baseline:
 | Runtime | Source Hook | Output Shape | Notes |
 | --- | --- | --- | --- |
 | Claude Code | `mcp_server/hooks/claude/user-prompt-submit.ts` | `hookSpecificOutput.additionalContext` | Reads `prompt` and `cwd`. |
-| Copilot CLI | `mcp_server/hooks/copilot/user-prompt-submit.ts` | SDK `additionalContext` or wrapper `promptWrapper` | SDK preferred; wrapper fallback stays in memory. |
+| Copilot CLI | `mcp_server/hooks/copilot/user-prompt-submit.ts` | managed block in `$HOME/.copilot/copilot-instructions.md`; hook stdout remains `{}` | Copilot customer hook output is not prompt-mutating, so the advisor brief is refreshed through local custom instructions. |
 | Gemini CLI | `mcp_server/hooks/gemini/user-prompt-submit.ts` | `hookSpecificOutput.additionalContext` | Reads `prompt`, `userPrompt`, or `request.prompt`. |
 | Codex CLI | `mcp_server/hooks/codex/user-prompt-submit.ts` | `hookSpecificOutput.additionalContext` | Stdin JSON is canonical and wins over argv JSON. |
 | Codex fallback | `mcp_server/hooks/codex/prompt-wrapper.ts` | `promptWrapper` and `wrappedPrompt` | Runs only when Codex hook policy reports hooks unavailable. |
@@ -98,11 +98,14 @@ Expected: `{}` or `hookSpecificOutput.additionalContext` beginning with `Advisor
 ### Copilot CLI
 
 ```bash
+SPECKIT_COPILOT_INSTRUCTIONS_PATH="$(mktemp -d)/copilot-instructions.md"
+export SPECKIT_COPILOT_INSTRUCTIONS_PATH
 printf '%s' '{"prompt":"create a pull request on github","cwd":"'"$PWD"'"}' | \
   node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/user-prompt-submit.js
+cat "$SPECKIT_COPILOT_INSTRUCTIONS_PATH"
 ```
 
-Expected: SDK `additionalContext` when SDK is available, otherwise wrapper output.
+Expected: hook stdout is `{}` and the custom-instructions file contains `SPEC-KIT-COPILOT-CONTEXT` plus an `Active Advisor Brief` section.
 
 ### Gemini CLI
 
@@ -143,6 +146,8 @@ Expected: `status: "ok"` with `metadata.route: "native"` when native is availabl
 | Control | Applies To | Behavior |
 | --- | --- | --- |
 | `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` | native MCP recommendation path, runtime hooks, plugin bridge, Python shim | Disables prompt-time advisor work and returns empty/skipped prompt-safe output. |
+| `SPECKIT_COPILOT_INSTRUCTIONS_PATH` | Copilot CLI | Overrides the local custom-instructions target path; useful for tests and sandboxes. |
+| `SPECKIT_COPILOT_INSTRUCTIONS_DISABLED=1` | Copilot CLI | Skips writing the Spec Kit managed custom-instructions block while leaving the hook fail-open. |
 | `SPECKIT_SKILL_ADVISOR_FORCE_LOCAL=1` | Python shim and OpenCode bridge diagnostics | Forces local Python fallback where supported. |
 | `--force-native` | Python shim | Requires native `advisor_recommend`; exits nonzero if unavailable. |
 | `--force-local` | Python shim | Bypasses native routing and uses local Python scoring. |

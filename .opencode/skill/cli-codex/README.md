@@ -81,6 +81,7 @@ The skill includes a self-invocation guard: if you are already running inside Co
 | **Image Input** | `--image` flag attaches screenshots or designs as visual context |
 | **Session Fork** | Branch from any prior session to explore alternative approaches |
 | **Agent Profiles** | TOML-based profiles in `config.toml` with model and sandbox overrides |
+| **Native Hooks** | `SessionStart` startup context and `UserPromptSubmit` advisor briefs via `~/.codex/hooks.json` |
 
 ### Requirements
 
@@ -208,6 +209,7 @@ cli-codex/
     agent_delegation.md                 # Agent profiles, routing, invocation patterns
     codex_tools.md                      # Unique capabilities and comparison table
     cli_reference.md                    # CLI flags, commands, models, sandbox, config
+    hook_contract.md                    # Hook contract, codex_hooks flag, startup/advisor parity
     integration_patterns.md             # Cross-AI orchestration workflows
 ```
 
@@ -248,6 +250,22 @@ model = "gpt-5.4"
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 ```
+
+### Native Hooks
+
+Codex native hooks require the feature flag in `~/.codex/config.toml`:
+
+```toml
+[features]
+codex_hooks = true
+```
+
+Spec Kit Memory registers two model-visible hooks in `~/.codex/hooks.json`:
+`SessionStart` injects startup context with code-graph and recovery status, and
+`UserPromptSubmit` injects the compact `Advisor: ...` skill-routing line. Keep
+existing Superset `notify.sh` entries in place; append Spec Kit Memory entries
+beside them. See [hook_contract.md](./references/hook_contract.md) for the
+stdin/stdout schema, exit semantics, and smoke checks.
 
 <!-- /ANCHOR:configuration -->
 
@@ -340,6 +358,9 @@ A: Use `-c model_reasoning_effort="high"` on the command line, or set `model_rea
 **Q: Can I use local models instead of OpenAI?**
 A: Yes. The `--oss` flag switches to local open-source models via Ollama.
 
+**Q: Why does a Codex session say no startup context or advisor brief was injected?**
+A: Check `codex features list` and confirm `codex_hooks` is `true`. Then inspect `~/.codex/hooks.json` for Spec Kit Memory `SessionStart` and `UserPromptSubmit` commands. The required command shapes and smoke tests live in [hook_contract.md](./references/hook_contract.md).
+
 ### Sessions
 
 **Q: How do I resume a previous session?**
@@ -372,6 +393,7 @@ A: No — they're complementary. The project `AGENTS.md` is authoritative for ga
 - [SKILL.md](./SKILL.md): Skill definition, smart routing logic, and activation triggers
 - [cli_reference.md](./references/cli_reference.md): CLI flags, commands, models, sandbox, and config
 - [codex_tools.md](./references/codex_tools.md): Unique capabilities and cross-CLI comparison
+- [hook_contract.md](./references/hook_contract.md): Native hook contract and startup/advisor parity wiring
 - [agent_delegation.md](./references/agent_delegation.md): Agent profiles, routing, and invocation patterns
 - [integration_patterns.md](./references/integration_patterns.md): Cross-AI orchestration workflows
 - [prompt_templates.md](./assets/prompt_templates.md): Copy-paste ready prompts

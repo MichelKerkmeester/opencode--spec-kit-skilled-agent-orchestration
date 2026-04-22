@@ -336,12 +336,12 @@ The contract normalizes `ensure-ready` freshness (`fresh|stale|empty`) onto the 
 |---|---|---|---|---|---|
 | Claude Code | `hooks/claude/` | `user-prompt-submit.ts` | `session-prime.ts` | `compact-inject.ts` | `claude-transcript.ts`, `session-stop.ts` |
 | Gemini CLI | `hooks/gemini/` | `user-prompt-submit.ts` | `session-prime.ts` | `compact-inject.ts`, `compact-cache.ts` | `session-stop.ts` |
-| Copilot CLI | `hooks/copilot/` | `user-prompt-submit.ts` | `session-prime.ts` | `compact-cache.ts` | — |
-| Codex CLI | `hooks/codex/` | `user-prompt-submit.ts` | — | — | `pre-tool-use.ts`, `prompt-wrapper.ts` |
+| Copilot CLI | `hooks/copilot/` | `user-prompt-submit.ts` writes managed custom instructions | `session-prime.ts` writes startup context to managed custom instructions | `compact-cache.ts` | `custom-instructions.ts` |
+| Codex CLI | `hooks/codex/` | `user-prompt-submit.ts` | `session-start.ts` | — | `pre-tool-use.ts`, `prompt-wrapper.ts` |
 
 Shared infrastructure: `hooks/index.ts`, `hooks/memory-surface.ts`, `hooks/mutation-feedback.ts`, `hooks/response-hints.ts`, `hooks/shared-provenance.ts`.
 
-All hooks surface startup or compaction context, but they point operators back to the canonical resume chain instead of inventing an alternate source of truth.
+All hooks surface startup or compaction context, but they point operators back to the canonical resume chain instead of inventing an alternate source of truth. Copilot is the exception in transport shape only: its prompt and startup hooks refresh a managed block in `$HOME/.copilot/copilot-instructions.md` because Copilot hook output is not a prompt-mutation channel.
 
 ### OpenCode plugin bridge
 

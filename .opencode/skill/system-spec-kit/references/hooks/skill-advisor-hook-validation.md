@@ -76,10 +76,21 @@ Check each runtime:
 |---------|-------|
 | Claude | Start a prompt with the hook registered and confirm an advisor brief or documented no-op path |
 | Gemini | Trigger `BeforeAgent` and confirm JSON `additionalContext` |
-| Copilot | Use SDK callback or wrapper fallback and confirm model-visible advisor preamble |
+| Copilot | Trigger `userPromptSubmitted` with `SPECKIT_COPILOT_INSTRUCTIONS_PATH` pointed at a temp file; confirm stdout is `{}` and the file contains the managed advisor block |
 | Codex | Use native `UserPromptSubmit` or documented fallback and confirm `additionalContext` |
 
 Pass condition: every runtime shows the same brief when the fixture is live, or the no-brief state is documented by current freshness.
+
+Copilot deterministic smoke:
+
+```bash
+export SPECKIT_COPILOT_INSTRUCTIONS_PATH="$(mktemp -d)/copilot-instructions.md"
+printf '%s' '{"prompt":"implement a TypeScript hook","cwd":"'"$PWD"'"}' | \
+  node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/user-prompt-submit.js
+rg -n "SPEC-KIT-COPILOT-CONTEXT|Active Advisor Brief|Advisor:" "$SPECKIT_COPILOT_INSTRUCTIONS_PATH"
+```
+
+Expected: the hook prints `{}` and the managed custom-instructions block carries the advisor brief. For live Copilot CLI verification, run one follow-up `copilot -p` prompt and confirm it can read the refreshed `Active Advisor Brief` from custom instructions.
 
 ### Step 3: Disable-Flag Verification
 
@@ -182,10 +193,10 @@ Pass condition: only closed labels appear in the metrics contract.
 Verify the rollback path:
 
 1. Enable runtime hook registration.
-2. Confirm an advisor brief appears for a work-intent prompt.
+2. Confirm an advisor brief appears for a work-intent prompt, or for Copilot confirm the managed custom-instructions block is refreshed.
 3. Set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1`.
 4. Repeat the prompt.
-5. Confirm no advisor brief appears and no producer call occurs.
+5. Confirm no advisor brief appears and no producer call occurs. For Copilot, also confirm the managed custom-instructions block is not rewritten while the flag is set.
 6. Unset the flag.
 7. Repeat the prompt and confirm normal behavior returns.
 
@@ -200,7 +211,7 @@ Pass condition: rollback and re-enable need no state cleanup.
 | Symptom | Root Cause | Fix |
 |---------|------------|-----|
 | No brief appears in any runtime | Disable flag set, advisor script missing, or prompt policy skipped | Unset `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED`, check `skill_advisor.py`, use a work-intent prompt |
-| Brief appears in Claude but not Gemini or Copilot | Runtime registration drift | Check `.gemini/settings.json`, Copilot SDK or wrapper config, then run `advisor-runtime-parity.vitest.ts` |
+| Brief appears in Claude but not Gemini or Copilot | Runtime registration drift or Copilot custom-instructions target mismatch | Check `.gemini/settings.json`, `.github/hooks/*.json`, `SPECKIT_COPILOT_INSTRUCTIONS_PATH`, and the managed block in `$HOME/.copilot/copilot-instructions.md`, then run `advisor-runtime-parity.vitest.ts` |
 | `freshness: "unavailable"` persists | Probe failure, missing graph, or corrupt generation counter | Check `.opencode/skill/.advisor-state/generation.json`, `skill-graph.sqlite`, and JSONL `errorCode` |
 | p95 latency exceeds 100 ms | Cache misses increased or subprocess path is hot | Inspect cache hit metrics, source-signature churn and graph rebuild frequency |
 | Fail-open rate exceeds 5% | Python missing, timeout, invalid JSON, SQLite busy or script missing | Inspect `speckit_advisor_hook_fail_open_total` by `errorCode`, then fix the top code |

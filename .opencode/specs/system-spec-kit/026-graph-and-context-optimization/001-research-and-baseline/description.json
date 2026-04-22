@@ -1,31 +1,6 @@
 {
   "title": "Feature Specification: Graph and Context Systems Master Research Packet",
-  "description": "Level 3 coordination packet for the v2 cross-phase synthesis, adoption decisions, and downstream sequencing for graph and context optimization in Public.",
   "type": "coordination-parent",
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
-  "keywords": [
-    "feature",
-    "specification",
-    "graph",
-    "context",
-    "systems",
-    "master",
-    "research",
-    "packet"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "001",
-  "folderSlug": "research-graph-context-systems",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization"
-  ],
-  "memorySequence": 3,
-  "memoryNameHistory": [
-    "07-04-26_11-57__master-consolidation-of-5-system-external.md",
-    "07-04-26_13-31__extended-master-consolidation-of-5-system.md",
-    "07-04-26_14-55__spec-documentation-perfection-task-used-cli.md"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
@@ -39,5 +14,30 @@
       "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
       "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
+  "description": "Feature Specification: Graph and Context Systems Master Research Packet",
+  "keywords": [
+    "feature",
+    "specification",
+    "graph",
+    "context",
+    "systems",
+    "master",
+    "research",
+    "packet"
+  ],
+  "lastUpdated": "2026-04-22T06:06:02.903Z",
+  "specId": "001",
+  "folderSlug": "research-and-baseline",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "07-04-26_11-57__master-consolidation-of-5-system-external.md",
+    "07-04-26_13-31__extended-master-consolidation-of-5-system.md",
+    "07-04-26_14-55__spec-documentation-perfection-task-used-cli.md"
+  ]
 }

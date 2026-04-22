@@ -1,0 +1,32 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/009-opencode-plugin-loader-remediation",
+  "description": "Feature Specification: OpenCode Plugin Loader Remediation",
+  "keywords": [
+    "feature",
+    "specification",
+    "opencode",
+    "plugin",
+    "loader",
+    "remediation",
+    "tui",
+    "crash",
+    "isolation"
+  ],
+  "lastUpdated": "2026-04-22T16:03:25.104Z",
+  "specId": "009",
+  "folderSlug": "opencode-plugin-loader-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-deep-review-remediation"
+  ],
+  "memorySequence": 7,
+  "memoryNameHistory": [
+    "22-04-26_16-26__implemented-opencode-plugin-loader-remediation.md",
+    "22-04-26_16-27__finalized-opencode-plugin-loader-remediation.md",
+    "22-04-26_16-38__new-phase-here.md",
+    "22-04-26_16-38__new-phase-here.md",
+    "22-04-26_17-01__applied-four-p1-follow-up-fixes-from-the-ultra.md",
+    "22-04-26_17-03__applied-four-p1-follow-up-fixes-from-the-ultra.md"
+  ]
+}

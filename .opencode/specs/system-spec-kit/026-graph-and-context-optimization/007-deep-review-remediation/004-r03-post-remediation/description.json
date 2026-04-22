@@ -1,26 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation",
-  "description": "Feature Specification: Phase 026 — R03 Post-Remediation Remediation",
-  "keywords": [
-    "r03-remediation",
-    "post-remediation",
-    "cli-copilot",
-    "per-finding",
-    "plugin-cache",
-    "docs-drift",
-    "finalize-prompt",
-    "sanitizer"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "026",
-  "folderSlug": "r03-post-remediation",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "007-deep-review-remediation"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/026-r03-post-remediation",
@@ -37,5 +15,26 @@
       "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/026-r03-post-remediation",
       "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation",
+  "description": "Feature Specification: Phase 026 — R03 Post-Remediation Remediation",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "026",
+    "r03",
+    "post-remediation",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-22T06:06:02.989Z",
+  "specId": "004",
+  "folderSlug": "r03-post-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-deep-review-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

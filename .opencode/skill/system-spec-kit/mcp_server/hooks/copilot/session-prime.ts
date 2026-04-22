@@ -18,6 +18,7 @@ import {
   type HookStateCompactPrimeIdentity,
 } from '../claude/hook-state.js';
 import { wrapRecoveredCompactPayload } from '../shared-provenance.js';
+import { writeCopilotCustomInstructions } from './custom-instructions.js';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
 const IS_CLI_ENTRY = process.argv[1]
@@ -164,6 +165,14 @@ function buildStartupBanner(): string {
   return startupBrief?.startupSurface ?? fallbackBanner();
 }
 
+async function refreshStartupInstructions(startupSurface: string): Promise<void> {
+  await writeCopilotCustomInstructions({
+    startupSurface,
+    advisorBrief: null,
+    source: 'system-spec-kit copilot sessionStart hook',
+  });
+}
+
 async function main(): Promise<void> {
   ensureStateDir();
   const input = await parseCopilotStdin();
@@ -175,6 +184,10 @@ async function main(): Promise<void> {
   const output = source === 'compact' && sessionId
     ? handleCompact(sessionId)
     : buildStartupBanner();
+
+  if (source !== 'compact') {
+    await refreshStartupInstructions(output);
+  }
 
   process.stdout.write(`${output}\n`);
   if (source === 'compact' && sessionId) {

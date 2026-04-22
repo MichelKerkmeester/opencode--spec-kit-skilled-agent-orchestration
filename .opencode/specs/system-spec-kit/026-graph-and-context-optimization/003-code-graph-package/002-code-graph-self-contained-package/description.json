@@ -1,28 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package",
-  "description": "Feature Specification: 028 — Code-Graph Self-Contained Package Migration",
-  "keywords": [
-    "code-graph",
-    "self-contained-package",
-    "migration",
-    "mcp_server",
-    "refactor",
-    "git-mv",
-    "skill-advisor-pattern"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "028",
-  "folderSlug": "code-graph-self-contained-package",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "003-code-graph-package"
-  ],
-  "memorySequence": 2,
-  "memoryNameHistory": [
-    "21-04-26_09-25__executed-comprehensive-dead-code-legacy-content.md",
-    "21-04-26_09-26__executed-comprehensive-dead-code-legacy-content.md"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/028-code-graph-self-contained-package",
@@ -39,5 +15,29 @@
       "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/028-code-graph-self-contained-package",
       "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package",
+  "description": "Feature Specification: 028 — Code-Graph Self-Contained Package Migration",
+  "keywords": [
+    "feature",
+    "specification",
+    "028",
+    "code-graph",
+    "self-contained",
+    "package",
+    "migration"
+  ],
+  "lastUpdated": "2026-04-22T06:06:02.921Z",
+  "specId": "002",
+  "folderSlug": "code-graph-self-contained-package",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-code-graph-package"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "21-04-26_09-25__executed-comprehensive-dead-code-legacy-content.md",
+    "21-04-26_09-26__executed-comprehensive-dead-code-legacy-content.md"
+  ]
 }

@@ -1,27 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity",
-  "description": "Flattened active phase parent: Hook Daemon Parity",
-  "keywords": [
-    "hook-daemon-parity",
-    "skill",
-    "graph",
-    "daemon",
-    "hook",
-    "parity",
-    "plugin",
-    "runtime",
-    "parity",
-    "and",
-    "parity",
-    "remediation"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "009",
-  "folderSlug": "hook-daemon-parity",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization"
-  ],
   "migration": {
     "flattened_at": "2026-04-21T13:00:00Z",
     "child_phase_folders": [
@@ -30,5 +7,23 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
     ],
     "layout": "phase-root-children"
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity",
+  "description": "Feature Specification: Hook Daemon Parity",
+  "keywords": [
+    "feature",
+    "specification",
+    "hook",
+    "daemon",
+    "parity"
+  ],
+  "lastUpdated": "2026-04-22T06:06:03.000Z",
+  "specId": "009",
+  "folderSlug": "hook-daemon-parity",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

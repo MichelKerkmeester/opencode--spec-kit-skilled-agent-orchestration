@@ -19,7 +19,7 @@ const DEFAULT_BRIDGE_TIMEOUT_MS = 1000;
 const DEFAULT_NODE_BINARY = 'node';
 const DISABLED_ENV = 'SPECKIT_SKILL_ADVISOR_HOOK_DISABLED';
 const LEGACY_DISABLED_ENV = 'SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED';
-const BRIDGE_PATH = fileURLToPath(new URL('./spec-kit-skill-advisor-bridge.mjs', import.meta.url));
+const BRIDGE_PATH = fileURLToPath(new URL('../plugin-helpers/spec-kit-skill-advisor-bridge.mjs', import.meta.url));
 const ADVISOR_SOURCE_PATHS = [
   BRIDGE_PATH,
   fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/dist/skill-advisor/compat/index.js', import.meta.url)),

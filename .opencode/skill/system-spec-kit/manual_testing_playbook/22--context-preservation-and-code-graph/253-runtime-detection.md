@@ -14,7 +14,7 @@ This scenario validates Runtime detection.
 
 ## 2. CURRENT REALITY
 
-- **Objective**: Verify that `detectRuntime()` correctly identifies all 4 supported runtimes (claude-code, codex-cli, copilot-cli, gemini-cli) plus the unknown fallback from environment variables, and assigns the correct `hookPolicy` to each. Also verify the helper functions `areHooksAvailable()` and `getRecoveryApproach()` return correct values per runtime.
+- **Objective**: Verify that `detectRuntime()` correctly identifies all 4 supported runtimes (claude-code, codex-cli, copilot-cli, gemini-cli) plus the unknown fallback from environment variables, and assigns the correct `hookPolicy` to each. Also verify the helper functions `areHooksAvailable()` and `getRecoveryApproach()` return correct values per runtime, with Copilot interpreted as file-based hook transport through custom instructions.
 - **Prerequisites**:
   - Node.js installed and `npx vitest` available
   - Working directory is the project root
@@ -23,13 +23,13 @@ This scenario validates Runtime detection.
 - **Expected signals**:
   - All vitest tests in `runtime-detection.vitest.ts` pass
   - Claude Code: `{ runtime: 'claude-code', hookPolicy: 'enabled' }` — `areHooksAvailable()` returns `true`, `getRecoveryApproach()` returns `'hooks'`
-  - Codex CLI: `{ runtime: 'codex-cli', hookPolicy: 'unavailable' }` — `areHooksAvailable()` returns `false`
-  - Copilot CLI: `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.github/hooks/*.json` exposes `sessionStart`; `disabled_by_scope` when the repo hook config is absent
+  - Codex CLI: `{ runtime: 'codex-cli', hookPolicy: 'live' }` when Codex is installed and repo `.codex/settings.json` is valid; `partial` when settings are missing/invalid; `unavailable` only when the Codex probe fails
+  - Copilot CLI: `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.github/hooks/*.json` exposes repo hook wiring; prompt-time context is expected in the managed custom-instructions block, not in hook stdout; `disabled_by_scope` when the repo hook config is absent
   - Gemini CLI: hook policy is config-driven from `.gemini/settings.json`, not hardcoded
   - Unknown: `{ runtime: 'unknown', hookPolicy: 'unknown' }` — `areHooksAvailable()` returns `false`
   - Detection priority: claude-code checked first, then codex, copilot, gemini (first match wins)
 - **Pass/fail criteria**:
-  - PASS: All 5 runtime/hookPolicy combinations correct, helper functions return expected values, detection priority respected
+  - PASS: All 5 runtime/hookPolicy combinations correct, helper functions return expected values, detection priority respected, and Copilot enabled policy is documented as custom-instructions transport rather than prompt-output injection
   - FAIL: Any runtime misidentified, hookPolicy wrong, or detection order incorrect (e.g., codex env vars matching claude-code)
 
 ---
@@ -68,7 +68,7 @@ Check env var checks: CLAUDE_CODE, CLAUDE_SESSION_ID, MCP_SERVER_NAME
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate All 4 runtimes produce correct hookPolicy values against cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts. Verify claude-code=enabled, codex-cli=unavailable, copilot-cli=enabled in this repo plus disabled_by_scope in the no-hook temp repo, gemini-cli=config-driven. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate All 4 runtimes produce correct hookPolicy values against cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts. Verify claude-code=enabled, codex-cli=live or partial based on local Codex/settings availability, copilot-cli=enabled in this repo plus disabled_by_scope in the no-hook temp repo, gemini-cli=config-driven. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -77,7 +77,7 @@ As a context-and-code-graph validation operator, validate All 4 runtimes produce
 
 ### Expected
 
-claude-code=enabled, codex-cli=unavailable, copilot-cli=enabled in this repo plus disabled_by_scope in the no-hook temp repo, gemini-cli=config-driven
+claude-code=enabled, codex-cli=live/partial according to local Codex/settings availability, copilot-cli=enabled in this repo plus disabled_by_scope in the no-hook temp repo, gemini-cli=config-driven
 
 ### Evidence
 

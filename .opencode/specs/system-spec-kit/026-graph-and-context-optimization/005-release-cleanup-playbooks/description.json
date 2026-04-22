@@ -1,24 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks",
-  "description": "Flattened active phase parent: Release Cleanup Playbooks",
-  "keywords": [
-    "release-cleanup-playbooks",
-    "release",
-    "alignment",
-    "cleanup",
-    "audit",
-    "and",
-    "playbook",
-    "repair",
-    "remediation"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "005",
-  "folderSlug": "release-cleanup-playbooks",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization"
-  ],
   "migration": {
     "flattened_at": "2026-04-21T13:00:00Z",
     "child_phase_folders": [
@@ -27,5 +7,23 @@
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation"
     ],
     "layout": "phase-root-children"
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks",
+  "description": "Feature Specification: Release Cleanup Playbooks",
+  "keywords": [
+    "feature",
+    "specification",
+    "release",
+    "cleanup",
+    "playbooks"
+  ],
+  "lastUpdated": "2026-04-22T06:06:02.931Z",
+  "specId": "005",
+  "folderSlug": "release-cleanup-playbooks",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

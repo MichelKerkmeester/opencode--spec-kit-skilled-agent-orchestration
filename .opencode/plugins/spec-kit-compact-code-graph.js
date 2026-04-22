@@ -27,7 +27,7 @@ import {
   hasUnsafeMessageTransformParts,
   hasSyntheticTextPartMarker,
   isMessageAnchorLike,
-} from './spec-kit-opencode-message-schema.mjs';
+} from '../plugin-helpers/spec-kit-opencode-message-schema.mjs';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. CONSTANTS AND TYPES
@@ -41,7 +41,7 @@ const RESUME_MODE = 'minimal';
 const MESSAGES_TRANSFORM_ENABLED = true;
 const MESSAGES_TRANSFORM_MODE = 'schema_aligned';
 const SYNTHETIC_METADATA_KEY = 'specKitCompactCodeGraph';
-const BRIDGE_PATH = fileURLToPath(new URL('./spec-kit-compact-code-graph-bridge.mjs', import.meta.url));
+const BRIDGE_PATH = fileURLToPath(new URL('../plugin-helpers/spec-kit-compact-code-graph-bridge.mjs', import.meta.url));
 
 /**
  * @typedef {{
@@ -122,6 +122,11 @@ function cacheKeyForSession(sessionID, specFolder) {
 }
 
 export function parseTransportPlan(responseText) {
+  if (typeof responseText !== 'string') {
+    // OpenCode 1.3.17's legacy loader invokes named function exports as plugins.
+    // Return an empty hook object rather than a null hook if it calls this parser.
+    return {};
+  }
   if (!responseText) {
     return null;
   }

@@ -1,26 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap",
-  "description": "Feature Specification: 027/005 — Compat Migration + Bootstrap",
-  "keywords": [
-    "feature",
-    "specification",
-    "027",
-    "005",
-    "compat",
-    "migration",
-    "bootstrap"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "005",
-  "folderSlug": "compat-migration-and-bootstrap",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "009-hook-daemon-parity",
-    "027-skill-graph-daemon-and-advisor-unification"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap",
@@ -37,5 +15,27 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/027-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap",
+  "description": "Feature Specification: 027/005 — Compat Migration + Bootstrap",
+  "keywords": [
+    "feature",
+    "specification",
+    "027",
+    "005",
+    "compat",
+    "migration",
+    "bootstrap"
+  ],
+  "lastUpdated": "2026-04-22T06:06:03.060Z",
+  "specId": "006",
+  "folderSlug": "compat-migration-and-bootstrap",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity",
+    "002-skill-graph-daemon-and-advisor-unification"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

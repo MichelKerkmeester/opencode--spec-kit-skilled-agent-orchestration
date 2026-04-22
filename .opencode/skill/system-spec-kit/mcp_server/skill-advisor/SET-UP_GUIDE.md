@@ -113,7 +113,7 @@ Prompt-time routing is available across runtime adapters:
 | Claude Code | `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts` |
 | Copilot CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts` |
 | Gemini CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/user-prompt-submit.ts` |
-| Codex CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts` plus `prompt-wrapper.ts` |
+| Codex CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts`, `user-prompt-submit.ts`, plus `prompt-wrapper.ts` fallback |
 | OpenCode | `.opencode/plugins/spec-kit-skill-advisor.js` plus `spec-kit-skill-advisor-bridge.mjs` |
 
 The OpenCode bridge must use the stable package entrypoint:

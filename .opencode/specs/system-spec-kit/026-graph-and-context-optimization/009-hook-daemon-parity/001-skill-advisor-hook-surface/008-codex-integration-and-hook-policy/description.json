@@ -1,27 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy",
-  "description": "Feature Specification: Codex Integration + Hook Policy",
-  "keywords": [
-    "feature",
-    "specification",
-    "codex",
-    "integration",
-    "hook",
-    "policy"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "008",
-  "folderSlug": "codex-integration-and-hook-policy",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "009-hook-daemon-parity",
-    "020-skill-advisor-hook-surface"
-  ],
-  "memorySequence": 1,
-  "memoryNameHistory": [
-    "19-04-26_09-47__scaffold-008-codex-integration-and-hook-policy.md"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/008-codex-integration-and-hook-policy",
@@ -38,5 +15,28 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface/008-codex-integration-and-hook-policy",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy",
+  "description": "Feature Specification: Codex Integration + Hook Policy",
+  "keywords": [
+    "feature",
+    "specification",
+    "codex",
+    "integration",
+    "hook",
+    "policy"
+  ],
+  "lastUpdated": "2026-04-22T06:06:03.020Z",
+  "specId": "008",
+  "folderSlug": "codex-integration-and-hook-policy",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity",
+    "001-skill-advisor-hook-surface"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-04-26_09-47__scaffold-008-codex-integration-and-hook-policy.md"
+  ]
 }

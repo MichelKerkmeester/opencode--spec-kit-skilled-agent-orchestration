@@ -15,22 +15,22 @@ This scenario validates Cross-runtime fallback.
 
 ## 2. CURRENT REALITY
 
-- **Objective**: Verify that runtime detection reports the correct hook policy per runtime. Claude Code must report native hooks, Codex CLI must remain hookless, and Copilot CLI / Gemini CLI must follow repo-configured hook wiring before falling back to `/spec_kit:resume`.
+- **Objective**: Verify that runtime detection reports the correct hook policy per runtime. Claude Code must report native hooks, Codex CLI must report `live` or `partial` based on local Codex/settings availability, Copilot CLI must report repo hook wiring while delivering prompt-time context through the managed custom-instructions block, and Gemini CLI must follow repo-configured hook wiring before falling back to `/spec_kit:resume`.
 - **Prerequisites**:
   - Node.js installed and `npx vitest` available
   - Working directory is the project root
   - Environment variables can be simulated in test fixtures (e.g., `CODEX_CLI=1`, `COPILOT_CLI=1`, `GEMINI_CLI=1`)
-- **Prompt**: `As a context-and-code-graph validation operator, validate Cross-runtime fallback against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify Claude Code reports native hooks, Codex CLI remains hookless, and Copilot CLI plus Gemini CLI derive hookPolicy from repo/config wiring before falling back to /spec_kit:resume. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- **Prompt**: `As a context-and-code-graph validation operator, validate Cross-runtime fallback against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify Claude Code reports native hooks, Codex CLI reports live or partial hook policy from local Codex/settings availability, and Copilot CLI plus Gemini CLI derive hookPolicy from repo/config wiring before falling back to /spec_kit:resume. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - **Expected signals**:
   - All vitest tests in `runtime-detection.vitest.ts` pass
   - Claude Code: `{ runtime: 'claude-code', hookPolicy: 'enabled' }`
-  - Codex CLI: `{ runtime: 'codex-cli', hookPolicy: 'unavailable' }`
-  - Copilot CLI: `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.github/hooks/*.json` contains `sessionStart`; otherwise `disabled_by_scope`
+  - Codex CLI: `{ runtime: 'codex-cli', hookPolicy: 'live' }` when Codex is installed and repo `.codex/settings.json` is valid; `partial` when Codex is installed but settings are missing or invalid; `unavailable` only when the probe fails.
+  - Copilot CLI: `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.github/hooks/*.json` contains repo hook wiring; `userPromptSubmitted` should print `{}` and refresh `SPEC-KIT-COPILOT-CONTEXT` in custom instructions; otherwise `disabled_by_scope`
   - Gemini CLI: `{ runtime: 'gemini-cli', hookPolicy: 'enabled' }` only when `.gemini/settings.json` contains hooks; otherwise `disabled_by_scope` or `unavailable`
   - `areHooksAvailable()` and `getRecoveryApproach()` follow the detected hookPolicy instead of a hardcoded per-runtime answer
 - **Pass/fail criteria**:
-  - PASS: Each runtime is correctly detected from env vars, hookPolicy matches the current runtime/config reality, and fallback only appears when hooks are unavailable or disabled_by_scope and routes through /spec_kit:resume
-  - FAIL: Any runtime misidentified, hookPolicy incorrect, or hooks reported as available for non-Claude runtime
+  - PASS: Each runtime is correctly detected from env vars, hookPolicy matches the current runtime/config reality, Copilot custom-instructions refresh is recognized as the enabled prompt-time transport, and fallback only appears when hooks are unavailable or disabled_by_scope and routes through /spec_kit:resume
+  - FAIL: Any runtime misidentified, hookPolicy incorrect, or hooks reported as available for a runtime/config state that should fall back
 
 ---
 
@@ -68,7 +68,7 @@ Check env var detection order in `runtime-detection.ts` for `CLAUDE_CODE`, `CLAU
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate Codex CLI detected with hookPolicy=unavailable against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify detectRuntime() with CODEX_CLI=1 returns { runtime: 'codex-cli', hookPolicy: 'unavailable' }. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate Codex CLI detected with hookPolicy=live or partial against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify detectRuntime() with CODEX_CLI=1 returns { runtime: 'codex-cli', hookPolicy: 'live' } when Codex is installed and repo .codex/settings.json is valid, or partial when settings are missing/invalid. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -77,7 +77,7 @@ As a context-and-code-graph validation operator, validate Codex CLI detected wit
 
 ### Expected
 
-detectRuntime()` with `CODEX_CLI=1` returns `{ runtime: 'codex-cli', hookPolicy: 'unavailable' }
+detectRuntime()` with `CODEX_CLI=1` returns `{ runtime: 'codex-cli', hookPolicy: 'live' }` in a repo with valid `.codex/settings.json`, or `partial` when settings are absent/invalid.
 
 ### Evidence
 
@@ -85,7 +85,7 @@ Test output showing detection result
 
 ### Pass / Fail
 
-- **Pass**: codex-cli detected with unavailable hookPolicy
+- **Pass**: codex-cli detected with live/partial hookPolicy according to local Codex/settings availability
 - **Fail**: Any contradicting evidence appears or the pass condition is not met.
 
 ### Failure Triage
@@ -119,7 +119,20 @@ Test output showing both branches
 
 ### Failure Triage
 
-Check repo `.github/hooks/*.json` and temp-dir no-hook branch
+Check repo `.github/hooks/*.json`, the temp-dir no-hook branch, and the `SPECKIT_COPILOT_INSTRUCTIONS_PATH` target when validating prompt-time Copilot context.
+
+### Copilot custom-instructions transport check
+
+When the runtime detection branch reports Copilot hooks as enabled, verify the prompt-time transport separately:
+
+```bash
+export SPECKIT_COPILOT_INSTRUCTIONS_PATH="$(mktemp -d)/copilot-instructions.md"
+printf '%s' '{"prompt":"implement TypeScript hook remediation","cwd":"'"$PWD"'"}' | \
+  node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/user-prompt-submit.js
+rg -n "SPEC-KIT-COPILOT-CONTEXT|Active Advisor Brief|Advisor:" "$SPECKIT_COPILOT_INSTRUCTIONS_PATH"
+```
+
+Pass when stdout is `{}` and the temp custom-instructions file contains the managed Spec Kit block with an advisor brief.
 
 ---
 

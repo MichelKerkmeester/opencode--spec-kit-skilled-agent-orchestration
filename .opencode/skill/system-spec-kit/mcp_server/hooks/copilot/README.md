@@ -4,46 +4,51 @@ description: "GitHub Copilot CLI hook scripts used by the MCP package."
 trigger_phrases:
   - "copilot hooks"
   - "copilot session prime"
+  - "copilot custom instructions"
 ---
 
 # Copilot Hooks
 
 ## 1. OVERVIEW
 
-`hooks/copilot/` contains the Copilot CLI SessionStart banner hook and the Phase 020 prompt-time skill-advisor adapter.
+`hooks/copilot/` contains Copilot CLI hook helpers for the file-based Spec Kit context workaround.
 
-- `session-prime.ts` drains stdin, loads the shared startup brief when available, and emits the same high-level startup banner shape used by the other CLI hook surfaces.
-- `user-prompt-submit.ts` supports an SDK `onUserPromptSubmitted` path and a wrapper fallback. Both call `buildSkillAdvisorBrief()` and use the shared renderer.
+GitHub's Copilot CLI hook contract currently ignores `sessionStart` output and ignores `userPromptSubmitted` output for prompt modification. Because of that, these hooks do not try to return model-visible `additionalContext`. They refresh Copilot's supported custom-instructions surface instead.
 
-The hook is intentionally read-only and does not mutate packet continuity state.
+- `custom-instructions.ts` owns the managed block in `$HOME/.copilot/copilot-instructions.md`.
+- `session-prime.ts` builds the startup context and refreshes the managed block during `sessionStart`.
+- `user-prompt-submit.ts` builds the advisor brief during `userPromptSubmitted`, refreshes the same managed block, and returns `{}`.
+- `compact-cache.ts` keeps compact recovery state available for wrapper surfaces.
 
-## 2. ADVISOR REGISTRATION
+The managed block is bounded by `SPEC-KIT-COPILOT-CONTEXT` markers so human instructions outside the block are preserved.
 
-Prefer the SDK callback when the Copilot runtime exposes it:
+## 2. HOOK REGISTRATION
 
-```ts
-import { handleCopilotSdkUserPromptSubmitted } from './dist/hooks/copilot/user-prompt-submit.js';
-
-export async function onUserPromptSubmitted(input) {
-  return handleCopilotSdkUserPromptSubmitted(input);
-}
-```
-
-Use the command wrapper fallback when the SDK path is unavailable:
+Use repo-local wrappers so the writer runs before any notification-only hook:
 
 ```json
 {
-  "userPromptSubmitted": [
-    {
-      "type": "command",
-      "bash": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/user-prompt-submit.js'",
-      "timeoutSec": 5
-    }
-  ]
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": ".github/hooks/scripts/session-start.sh",
+        "timeoutSec": 5
+      }
+    ],
+    "userPromptSubmitted": [
+      {
+        "type": "command",
+        "bash": ".github/hooks/scripts/user-prompt-submitted.sh",
+        "timeoutSec": 5
+      }
+    ]
+  }
 }
 ```
 
-Set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` to skip the advisor path for the current process session. Wrapper prompt text remains in memory only.
+Set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` to skip advisor generation for the current process. Set `SPECKIT_COPILOT_INSTRUCTIONS_DISABLED=1` to skip the custom-instructions writer. Set `SPECKIT_COPILOT_INSTRUCTIONS_PATH` when tests need an isolated target file.
 
 ## 3. RELATED
 

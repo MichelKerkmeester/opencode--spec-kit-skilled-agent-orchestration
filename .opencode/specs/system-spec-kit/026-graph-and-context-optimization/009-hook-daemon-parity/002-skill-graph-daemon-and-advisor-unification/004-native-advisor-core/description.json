@@ -1,26 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
-  "description": "Feature Specification: 027/003 — Native Advisor Core",
-  "keywords": [
-    "feature",
-    "specification",
-    "027",
-    "003",
-    "native",
-    "advisor",
-    "core"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "003",
-  "folderSlug": "native-advisor-core",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "009-hook-daemon-parity",
-    "027-skill-graph-daemon-and-advisor-unification"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
@@ -37,5 +15,27 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/027-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
+  "description": "Feature Specification: 027/003 — Native Advisor Core",
+  "keywords": [
+    "feature",
+    "specification",
+    "027",
+    "003",
+    "native",
+    "advisor",
+    "core"
+  ],
+  "lastUpdated": "2026-04-22T06:06:03.050Z",
+  "specId": "004",
+  "folderSlug": "native-advisor-core",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity",
+    "002-skill-graph-daemon-and-advisor-unification"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

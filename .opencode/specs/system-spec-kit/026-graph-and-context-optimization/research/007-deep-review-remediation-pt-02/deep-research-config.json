@@ -1,0 +1,28 @@
+{
+  "topic": "Codex CLI hook parity: nail down the exact stdin/stdout/exit-code/timeout/ordering contract for ~/.codex/hooks.json so we can port the Claude UserPromptSubmit + SessionStart hooks without shipping against assumptions.",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 15,
+  "progressiveSynthesis": true,
+  "specFolder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/008-codex-hook-parity-remediation",
+  "createdAt": "2026-04-22T07:26:42.676662Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.4",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "sandboxMode": "workspace-write",
+    "timeoutSeconds": 900
+  },
+  "lineage": {
+    "sessionId": "046-1776842802-codex-hook-parity",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "generation": 1
+  }
+}

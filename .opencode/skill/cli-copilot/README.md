@@ -81,6 +81,7 @@ The skill includes a self-invocation guard: if you are already running inside Co
 | **Explore Agent** | Read-only codebase analysis for architecture mapping and onboarding |
 | **Task Agent** | Full-capability agent for implementation, refactoring, and testing |
 | **Spec Kit handoff** | Return packet recovery through `/spec_kit:resume` and packet docs, not generated memory artifacts |
+| **Spec Kit context workaround** | Reads startup context and advisor brief through a managed custom-instructions block |
 | **Repo Memory** | Persistent memory of project conventions and prior decisions across sessions |
 | **MCP Support** | Connect to Model Context Protocol servers for external data access |
 
@@ -196,6 +197,12 @@ Set via `~/.copilot/config.json` under `"reasoning_effort"`. No CLI flag exists.
 | **Multi-Model** | Toggle between 3 providers mid-session |
 | **MCP Support** | Connect to external data via Model Context Protocol |
 
+#### Spec Kit Startup Context and Advisor Brief
+
+Copilot CLI hooks currently cannot inject model-visible prompt text: `sessionStart` output is ignored, and `userPromptSubmitted` output is ignored for prompt modification. Spec Kit therefore refreshes `$HOME/.copilot/copilot-instructions.md` with a marked, auto-generated block containing the current startup context and advisor brief.
+
+The block is bounded by `SPEC-KIT-COPILOT-CONTEXT` markers, and human instructions outside those markers are preserved. Copilot applies updates on the next prompt after the file changes. For non-interactive `copilot -p` calls that need the freshest context in the same command, see [assets/shell_wrapper.md](./assets/shell_wrapper.md).
+
 <!-- /ANCHOR:features -->
 
 ---
@@ -208,6 +215,7 @@ cli-copilot/
   SKILL.md                              # Skill definition and smart routing logic
   README.md                             # This file
   assets/
+    shell_wrapper.md                    # Optional cpx() wrapper for programmatic context prepending
     prompt_templates.md                 # Copy-paste ready prompts for common tasks
   references/
     agent_delegation.md                 # Explore/Task agents, custom agents, routing
@@ -256,6 +264,16 @@ with open(cfg_path, 'w') as f: json.dump(cfg, f, indent=2)
 ```
 
 Or select interactively: `/model` in interactive mode, choose GPT-5.x, select effort level.
+
+### Spec Kit Custom Instructions File
+
+Spec Kit writes its Copilot context workaround to:
+
+```text
+$HOME/.copilot/copilot-instructions.md
+```
+
+Set `SPECKIT_COPILOT_INSTRUCTIONS_PATH` to test or redirect the writer. Set `SPECKIT_COPILOT_INSTRUCTIONS_DISABLED=1` to skip the managed block writer for the current process.
 
 <!-- /ANCHOR:configuration -->
 
@@ -356,6 +374,14 @@ A: Cloud agents run on GitHub's infrastructure with access to repository metadat
 **Q: Is cloud delegation free?**
 A: Cloud delegation uses your Copilot plan's compute allocation. Usage limits depend on your plan tier.
 
+### Spec Kit Context
+
+**Q: Does Copilot CLI receive the same startup context and advisor brief as Claude Code?**
+A: Not through hooks. Copilot hook stdout is not a prompt-injection channel, so Spec Kit writes a managed block to `$HOME/.copilot/copilot-instructions.md`. Copilot reads that block on the next submitted prompt.
+
+**Q: Can I keep my own Copilot instructions?**
+A: Yes. Keep human instructions outside the `SPEC-KIT-COPILOT-CONTEXT` markers; the writer only replaces the managed block.
+
 <!-- /ANCHOR:faq -->
 
 ---
@@ -370,6 +396,7 @@ A: Cloud delegation uses your Copilot plan's compute allocation. Usage limits de
 - [agent_delegation.md](./references/agent_delegation.md): Explore/Task agents and custom agent creation
 - [integration_patterns.md](./references/integration_patterns.md): Cross-AI orchestration workflows
 - [prompt_templates.md](./assets/prompt_templates.md): Copy-paste ready prompts
+- [shell_wrapper.md](./assets/shell_wrapper.md): Optional programmatic wrapper for fresh Spec Kit context
 
 ### Related Skills
 - [cli-claude-code](../cli-claude-code/): Anthropic Claude Code CLI orchestrator

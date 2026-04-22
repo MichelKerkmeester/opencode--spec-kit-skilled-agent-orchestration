@@ -170,7 +170,7 @@ The Phase 028 code graph lives in its own package at `.opencode/skill/system-spe
 | Claude Code | `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts` |
 | Copilot CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts` |
 | Gemini CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/user-prompt-submit.ts` |
-| Codex CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts` and `hooks/codex/prompt-wrapper.ts` |
+| Codex CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts`, `hooks/codex/user-prompt-submit.ts`, and `hooks/codex/prompt-wrapper.ts` fallback |
 | OpenCode | `.opencode/plugins/spec-kit-skill-advisor.js` and `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs` |
 
 All hook paths fail open. When `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` is set, the adapters skip advisor work and return no context or a prompt-safe disabled status.

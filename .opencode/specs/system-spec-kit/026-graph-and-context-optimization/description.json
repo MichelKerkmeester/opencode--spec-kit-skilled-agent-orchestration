@@ -1,30 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/",
-  "description": "Feature Specification: Graph and Context Optimization, consolidated to nine active thematic phases with source history preserved",
-  "keywords": [
-    "feature",
-    "specification",
-    "graph",
-    "context",
-    "optimization",
-    "phase-consolidation",
-    "source-history"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "026",
-  "folderSlug": "graph-and-context-optimization",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization"
-  ],
-  "memorySequence": 5,
-  "memoryNameHistory": [
-    "09-04-26_07-37__ran-15-deep-review-iterations-on-the-full-026.md",
-    "09-04-26_20-18__post-compaction-continuation-session-that-landed.md",
-    "09-04-26_21-41__verified-the-026-graph-and-context-optimization.md",
-    "09-04-26_21-41__verified-the-026-graph-and-context-optimization-1.md",
-    "18-04-26_17-45__refresh-description-json-graph-metadata-json.md"
-  ],
   "migration": {
     "consolidated_at": "2026-04-21T12:00:00Z",
     "old_top_level_phase_count": 29,
@@ -34,5 +8,28 @@
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization",
     "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/",
     "layout": "phase-root-children"
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization",
+  "description": "Feature Specification: Graph and Context Optimization",
+  "keywords": [
+    "feature",
+    "specification",
+    "graph",
+    "context",
+    "optimization"
+  ],
+  "lastUpdated": "2026-04-22T06:06:02.895Z",
+  "specId": "026",
+  "folderSlug": "graph-and-context-optimization",
+  "parentChain": [
+    "system-spec-kit"
+  ],
+  "memorySequence": 5,
+  "memoryNameHistory": [
+    "09-04-26_07-37__ran-15-deep-review-iterations-on-the-full-026.md",
+    "09-04-26_20-18__post-compaction-continuation-session-that-landed.md",
+    "09-04-26_21-41__verified-the-026-graph-and-context-optimization.md",
+    "09-04-26_21-41__verified-the-026-graph-and-context-optimization-1.md",
+    "18-04-26_17-45__refresh-description-json-graph-metadata-json.md"
+  ]
 }

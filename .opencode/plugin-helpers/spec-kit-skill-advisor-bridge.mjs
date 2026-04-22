@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// Helper for packet 026/007/009. This file intentionally lives outside
+// `.opencode/plugins/` so OpenCode discovers only real plugin entrypoints.
 
 const STATUS_VALUES = new Set(['ok', 'skipped', 'degraded', 'fail_open']);
 const DISABLED_ENV = 'SPECKIT_SKILL_ADVISOR_HOOK_DISABLED';

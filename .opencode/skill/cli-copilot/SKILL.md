@@ -273,6 +273,19 @@ copilot -p "prompt" --allow-all-tools 2>&1
 | `/delegate` | Push task to GitHub Cloud Coding Agent |
 | `&prompt` | Inline shorthand for cloud delegation |
 
+### Spec Kit Context Parity
+
+Copilot CLI does **not** receive Spec Kit's startup context or advisor brief through hook stdout. GitHub's hook contract currently ignores `sessionStart` output and ignores `userPromptSubmitted` output for prompt modification, so the Claude-style `additionalContext` path is unavailable.
+
+Spec Kit uses the supported file-based workaround instead:
+
+- The repository `userPromptSubmitted` hook refreshes a managed block in `$HOME/.copilot/copilot-instructions.md` with the latest startup context and advisor brief.
+- Human Copilot instructions are preserved outside the `SPEC-KIT-COPILOT-CONTEXT` markers.
+- Copilot reads the refreshed custom instructions on the next submitted prompt in the current or a future session.
+- For scripted `copilot -p` calls that need same-invocation context, use [assets/shell_wrapper.md](./assets/shell_wrapper.md).
+
+This means Copilot parity is file-based and next-prompt fresh, not true in-turn prompt injection. Use `--no-custom-instructions` only when intentionally bypassing this context surface.
+
 ### Model Selection
 
 Copilot CLI supports 5 recommended models across 3 providers:

@@ -96,6 +96,7 @@ The router discovers markdown resources recursively from `references/` and `asse
 references/cli_reference.md            — CLI flags, commands, subcommands, config
 references/integration_patterns.md     — Cross-AI orchestration patterns
 references/codex_tools.md              — Built-in tools and capabilities comparison
+references/hook_contract.md            — Native hook contract, `codex_hooks` flag, startup context, advisor brief wiring
 references/agent_delegation.md         — Codex agent routing and invocation
 assets/prompt_templates.md             — Copy-paste ready templates
 assets/prompt_quality_card.md          — Framework-per-task selector, CLEAR 5-check, escalation triggers
@@ -126,6 +127,7 @@ INTENT_SIGNALS = {
     "AGENT_DELEGATION":  {"weight": 4, "keywords": ["delegate", "agent", "background", "parallel", "offload", "codex agent"]},
     "TEMPLATES":         {"weight": 3, "keywords": ["template", "prompt", "how to ask", "codex prompt"]},
     "PATTERNS":          {"weight": 3, "keywords": ["pattern", "workflow", "orchestrate", "session", "resume", "fork"]},
+    "HOOKS":             {"weight": 4, "keywords": ["hook", "hooks", "advisor brief", "startup context", "userpromptsubmit", "sessionstart", "codex_hooks"]},
 }
 
 RESOURCE_MAP = {
@@ -136,11 +138,12 @@ RESOURCE_MAP = {
     "AGENT_DELEGATION":  ["references/agent_delegation.md", "references/integration_patterns.md"],
     "TEMPLATES":         ["assets/prompt_templates.md", "references/cli_reference.md"],
     "PATTERNS":          ["references/integration_patterns.md", "references/cli_reference.md"],
+    "HOOKS":             ["references/hook_contract.md", "references/cli_reference.md"],
 }
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE, "assets/prompt_quality_card.md"],
-    "ON_DEMAND_KEYWORDS": ["full reference", "all templates", "deep dive", "complete guide", "codex agent", "codex prompt", "web research", "review command", "fork session"],
+    "ON_DEMAND_KEYWORDS": ["full reference", "all templates", "deep dive", "complete guide", "codex agent", "codex prompt", "web research", "review command", "fork session", "hook contract"],
     "ON_DEMAND": ["references/codex_tools.md", "assets/prompt_templates.md"],
 }
 
@@ -355,6 +358,7 @@ These capabilities are available only through Codex CLI or provide a meaningfull
 | `/review` command | Built-in diff-aware code review in TUI | `codex` then type `/review` |
 | `--search` flag | Live web browsing during exec | `codex exec "..." --search` |
 | `codex mcp` | Connect to Model Context Protocol servers | `codex mcp` subcommand |
+| Native hooks | Inject startup context and advisor briefs when `[features].codex_hooks = true` | `~/.codex/hooks.json` |
 | Session resume | Continue a previous Codex session | `codex resume [session-id]` |
 | Session fork | Branch from an existing session | `codex fork [session-id]` |
 | `--image` / `-i` | Attach images for visual input | `codex exec "..." -i screenshot.png` |
@@ -400,6 +404,7 @@ codex exec -p research "Research latest security advisories for Express.js" --mo
 | Task ran but no files changed | `codex exec` defaults to `read-only` sandbox — add `--sandbox workspace-write` or `--full-auto` for edit tasks |
 | Agent asks for spec folder / approval | Non-interactive `exec` cannot answer prompts — include `(pre-approved, skip Gate 3)` in prompt and use `--full-auto` |
 | Context too large | Specify files explicitly with `@./path` rather than broad prompts |
+| No startup context or advisor brief | Enable `[features].codex_hooks = true` and verify `~/.codex/hooks.json` has Spec Kit Memory `SessionStart` and `UserPromptSubmit` entries. See `references/hook_contract.md`. |
 
 ---
 
@@ -536,6 +541,7 @@ When the calling AI needs to preserve session context from a Codex CLI delegatio
 - [cli_reference.md](./references/cli_reference.md) - Complete CLI subcommands, flags, sandbox modes, and config reference
 - [integration_patterns.md](./references/integration_patterns.md) - Cross-AI orchestration patterns and workflows
 - [codex_tools.md](./references/codex_tools.md) - Built-in capabilities documentation (/review, --search, MCP, session management)
+- [hook_contract.md](./references/hook_contract.md) - Native hook contract and Spec Kit Memory startup/advisor wiring
 - [agent_delegation.md](./references/agent_delegation.md) - Codex agent roster, routing table, and invocation patterns
 
 ### Templates and Assets
@@ -621,6 +627,7 @@ Key integrations:
 - [cli_reference.md](./references/cli_reference.md) - CLI subcommands, flags, sandbox modes, and configuration
 - [integration_patterns.md](./references/integration_patterns.md) - Cross-AI orchestration patterns
 - [codex_tools.md](./references/codex_tools.md) - Built-in tools (/review, --search, MCP, session management)
+- [hook_contract.md](./references/hook_contract.md) - Native hooks, startup context, and advisor brief wiring
 - [agent_delegation.md](./references/agent_delegation.md) - Agent routing and invocation
 
 ### Templates

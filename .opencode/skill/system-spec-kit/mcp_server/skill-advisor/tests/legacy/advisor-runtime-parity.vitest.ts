@@ -9,10 +9,7 @@ import { pathToFileURL } from 'node:url';
 import { describe, expect, it, vi } from 'vitest';
 import { handleClaudeUserPromptSubmit } from '../../../hooks/claude/user-prompt-submit.js';
 import { handleGeminiUserPromptSubmit } from '../../../hooks/gemini/user-prompt-submit.js';
-import {
-  handleCopilotSdkUserPromptSubmitted,
-  handleCopilotWrapperFallback,
-} from '../../../hooks/copilot/user-prompt-submit.js';
+import { handleCopilotUserPromptSubmit } from '../../../hooks/copilot/user-prompt-submit.js';
 import { handleCodexUserPromptSubmit } from '../../../hooks/codex/user-prompt-submit.js';
 import {
   normalizeRuntimeOutput,
@@ -181,7 +178,14 @@ async function runRuntimeVariant(
   }
 
   if (variant === 'copilot') {
-    const output = await handleCopilotSdkUserPromptSubmitted(promptInput('copilot'), dependencies);
+    const output = await handleCopilotUserPromptSubmit(promptInput('copilot'), {
+      ...dependencies,
+      writeInstructions: vi.fn(async () => ({
+        path: '/tmp/copilot-instructions.md',
+        written: true,
+        changed: true,
+      })),
+    });
     return normalizeRuntimeOutput(runtime, output);
   }
 
@@ -213,7 +217,14 @@ async function runRuntimeVariant(
     return normalizeRuntimeOutput(runtime, output);
   }
 
-  const output = await handleCopilotWrapperFallback(promptInput('copilot'), dependencies);
+  const output = await handleCopilotUserPromptSubmit(promptInput('copilot'), {
+    ...dependencies,
+    writeInstructions: vi.fn(async () => ({
+      path: '/tmp/copilot-instructions.md',
+      written: true,
+      changed: true,
+    })),
+  });
   return normalizeRuntimeOutput(runtime, output);
 }
 
@@ -222,13 +233,14 @@ describe('advisor runtime parity', () => {
     expect(RUNTIMES).toEqual(['claude', 'gemini', 'copilot', 'codex']);
   });
 
-  it.each(CANONICAL_FIXTURES)('%s produces identical visible brief text across Claude, Gemini, Copilot, Codex, and plugin', async (fixtureName) => {
+  it.each(CANONICAL_FIXTURES)('%s preserves visible brief parity where hooks can inject and keeps Copilot file-only', async (fixtureName) => {
     const result = fixture(fixtureName);
     const variants: readonly RuntimeVariant[] = [...RUNTIMES, 'copilot-wrapper', 'opencode-plugin'];
     const outputs = await Promise.all(
       variants.map(async (variant) => [variant, await runRuntimeVariant(variant, result)] as const),
     );
-    const visibleBriefs = outputs.map(([, output]) => output.additionalContext);
+    const directInjectionOutputs = outputs.filter(([variant]) => variant !== 'copilot' && variant !== 'copilot-wrapper');
+    const visibleBriefs = directInjectionOutputs.map(([, output]) => output.additionalContext);
 
     if (fixtureName === 'failOpenTimeout.json') {
       expect(Object.fromEntries(outputs)).toMatchObject({
@@ -246,9 +258,9 @@ describe('advisor runtime parity', () => {
     expect(Object.fromEntries(outputs)).toMatchObject({
       claude: { additionalContext: visibleBriefs[0] },
       gemini: { additionalContext: visibleBriefs[0] },
-      copilot: { additionalContext: visibleBriefs[0] },
+      copilot: { additionalContext: null },
       codex: { additionalContext: visibleBriefs[0] },
-      'copilot-wrapper': { additionalContext: visibleBriefs[0] },
+      'copilot-wrapper': { additionalContext: null },
       'opencode-plugin': { additionalContext: visibleBriefs[0] },
     });
   });

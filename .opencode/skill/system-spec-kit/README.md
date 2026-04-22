@@ -115,7 +115,7 @@ For full tool reference with parameters, see [MCP Server README](mcp_server/READ
 
 ### Skill Advisor
 
-Phase 027 moved Gate 2 skill routing into the native MCP server package at `mcp_server/skill-advisor/`. The public tools are `advisor_recommend`, `advisor_status`, and `advisor_validate`; the Python script under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/` remains a compatibility shim with native-first routing and local fallback. The shipped baseline is 80.5% full-corpus accuracy, 77.5% holdout accuracy, UNKNOWN <= 10, and zero regressions on Python-correct prompts. Runtime hooks cover Claude Code, Copilot CLI, Gemini CLI, Codex CLI, and the OpenCode plugin bridge.
+Phase 027 moved Gate 2 skill routing into the native MCP server package at `mcp_server/skill-advisor/`. The public tools are `advisor_recommend`, `advisor_status`, and `advisor_validate`; the Python script under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/` remains a compatibility shim with native-first routing and local fallback. The shipped baseline is 80.5% full-corpus accuracy, 77.5% holdout accuracy, UNKNOWN <= 10, and zero regressions on Python-correct prompts. Runtime hooks cover Claude Code, Copilot CLI, Gemini CLI, Codex CLI, and the OpenCode plugin bridge. Copilot CLI is file-based: its hooks refresh a Spec Kit managed block in local custom instructions because Copilot hook stdout is not prompt-mutating.
 
 For install and API details, see [Skill Advisor Native Package README](mcp_server/skill-advisor/README.md).
 
