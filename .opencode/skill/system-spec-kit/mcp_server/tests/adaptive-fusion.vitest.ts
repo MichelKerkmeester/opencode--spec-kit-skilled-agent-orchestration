@@ -239,9 +239,9 @@ describe('C136-10 Adaptive Fusion', () => {
   // ---- T12: degraded contract is emitted by the real adaptive failure branch ----
   it('T12: degraded contract is assembled by hybridAdaptiveFuse when adaptive fusion throws', async () => {
     vi.resetModules();
-    vi.doMock('../../shared/algorithms/rrf-fusion.js', async () => {
-      const actual = await vi.importActual<typeof import('../../shared/algorithms/rrf-fusion.js')>(
-        '../../shared/algorithms/rrf-fusion.js'
+    vi.doMock('@spec-kit/shared/algorithms/rrf-fusion', async () => {
+      const actual = await vi.importActual<typeof import('@spec-kit/shared/algorithms/rrf-fusion')>(
+        '@spec-kit/shared/algorithms/rrf-fusion'
       );
       let invocationCount = 0;
       return {
@@ -256,7 +256,7 @@ describe('C136-10 Adaptive Fusion', () => {
       };
     });
 
-    const dynamicFusion = await import('../../shared/algorithms/adaptive-fusion.js');
+    const dynamicFusion = await import('@spec-kit/shared/algorithms/adaptive-fusion');
     setEnv(dynamicFusion.FEATURE_FLAG, 'true');
     setEnv('SPECKIT_ROLLOUT_PERCENT', '100');
     const semantic = makeItems(3, 'sem');
