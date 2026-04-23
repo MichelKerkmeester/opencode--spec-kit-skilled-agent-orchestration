@@ -2,11 +2,11 @@
 // ───────────────────────────────────────────────────────────────
 // 1. RECORD NODE VERSION
 // ───────────────────────────────────────────────────────────────
-'use strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const fs = require('fs');
-const path = require('path');
-
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '../..');
 const markerPath = path.join(rootDir, '.node-version-marker');
 
