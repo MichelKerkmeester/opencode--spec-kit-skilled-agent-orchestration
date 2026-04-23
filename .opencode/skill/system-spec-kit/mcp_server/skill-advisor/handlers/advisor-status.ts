@@ -5,6 +5,7 @@
 import { existsSync, readdirSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
+import { computeAdvisorSourceSignature } from '../lib/freshness.js';
 import { readSkillGraphGeneration } from '../lib/freshness/generation.js';
 import { createTrustState } from '../lib/freshness/trust-state.js';
 import { DEFAULT_SCORER_WEIGHTS } from '../lib/scorer/weights-config.js';
@@ -84,7 +85,11 @@ export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutpu
       errors.push(`advisor_status metadata scan capped at ${sourceScan.count} files`);
     }
     const sourceChanged = generation.state === 'stale'
-      || (hasArtifact && hasSources && sourceScan.maxMtimeMs > fileMtimeMs(dbPath));
+      || (
+        generation.sourceSignature
+          ? computeAdvisorSourceSignature(workspaceRoot) !== generation.sourceSignature
+          : hasArtifact && hasSources && sourceScan.maxMtimeMs > fileMtimeMs(dbPath)
+      );
     const daemonAvailable = generation.state !== 'unavailable';
     const state = isFreshness(generation.state) ? generation.state : 'unavailable';
     const trustState = createTrustState({

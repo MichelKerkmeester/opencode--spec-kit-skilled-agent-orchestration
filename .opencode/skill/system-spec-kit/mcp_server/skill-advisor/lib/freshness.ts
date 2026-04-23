@@ -16,6 +16,7 @@ import {
 } from './source-cache.js';
 import {
   readAdvisorGeneration,
+  type AdvisorGenerationSnapshot,
   type AdvisorGenerationRecoveryPath,
 } from './generation.js';
 import type { AdvisorEnvelopeMetadata } from '../../lib/context/shared-payload.js';
@@ -202,6 +203,10 @@ function buildSourceSnapshot(workspaceRoot: string): SourceSnapshot {
   };
 }
 
+export function computeAdvisorSourceSignature(workspaceRoot: string): string {
+  return buildSourceSnapshot(workspaceRoot).sourceSignature;
+}
+
 function nonLiveDiagnostics(
   reason: string,
   missingSources: string[] = [],
@@ -234,11 +239,13 @@ function resultFromSnapshot(
   };
 }
 
-function deriveFreshness(snapshot: SourceSnapshot, generation: number): AdvisorFreshnessResult {
+function deriveFreshness(snapshot: SourceSnapshot, generation: AdvisorGenerationSnapshot): AdvisorFreshnessResult {
+  const generationNumber = generation.generation;
+
   if (snapshot.missingSources.length > 0) {
     return resultFromSnapshot(
       snapshot,
-      generation,
+      generationNumber,
       'absent',
       snapshot.sqliteArtifact ? 'sqlite' : snapshot.jsonArtifact ? 'json' : 'none',
       nonLiveDiagnostics('ADVISOR_SOURCE_MISSING', snapshot.missingSources),
@@ -249,7 +256,7 @@ function deriveFreshness(snapshot: SourceSnapshot, generation: number): AdvisorF
     if (snapshot.jsonArtifact) {
       return resultFromSnapshot(
         snapshot,
-        generation,
+        generationNumber,
         'stale',
         'json',
         nonLiveDiagnostics('JSON_FALLBACK_ONLY', [SQLITE_ARTIFACT_RELATIVE_PATH]),
@@ -257,24 +264,36 @@ function deriveFreshness(snapshot: SourceSnapshot, generation: number): AdvisorF
     }
     return resultFromSnapshot(
       snapshot,
-      generation,
+      generationNumber,
       'absent',
       'none',
       nonLiveDiagnostics('SKILL_GRAPH_SQLITE_MISSING', [SQLITE_ARTIFACT_RELATIVE_PATH]),
     );
   }
 
+  if (generation.sourceSignature) {
+    return generation.sourceSignature === snapshot.sourceSignature
+      ? resultFromSnapshot(snapshot, generationNumber, 'live', 'sqlite', null)
+      : resultFromSnapshot(
+        snapshot,
+        generationNumber,
+        'stale',
+        'sqlite',
+        nonLiveDiagnostics('SOURCE_NEWER_THAN_SKILL_GRAPH'),
+      );
+  }
+
   if (snapshot.maxSourceMtimeMs > snapshot.sqliteArtifact.mtimeMs) {
     return resultFromSnapshot(
       snapshot,
-      generation,
+      generationNumber,
       'stale',
       'sqlite',
       nonLiveDiagnostics('SOURCE_NEWER_THAN_SKILL_GRAPH'),
     );
   }
 
-  return resultFromSnapshot(snapshot, generation, 'live', 'sqlite', null);
+  return resultFromSnapshot(snapshot, generationNumber, 'live', 'sqlite', null);
 }
 
 function unavailableResult(
@@ -346,13 +365,13 @@ export function getAdvisorFreshness(workspaceRoot: string): AdvisorFreshnessResu
   }
 
   if (generation.status === 'recovered') {
-    return degradeRecoveredGeneration(deriveFreshness(snapshot, generation.generation));
+    return degradeRecoveredGeneration(deriveFreshness(snapshot, generation));
   }
 
   const cacheKey = `${resolve(workspaceRoot)}:${snapshot.sourceSignature}:${generation.generation}`;
   return getOrCompute(
     cacheKey,
     ADVISOR_SOURCE_CACHE_TTL_MS,
-    () => deriveFreshness(snapshot, generation.generation),
+    () => deriveFreshness(snapshot, generation),
   );
 }

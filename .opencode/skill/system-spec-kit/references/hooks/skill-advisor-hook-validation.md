@@ -239,3 +239,69 @@ Advisor hook validation evidence:
 ---
 
 <!-- /ANCHOR:evidence-log-template -->
+
+---
+
+<!-- ANCHOR:multi-turn-regression-harness -->
+## 9. Multi-turn Regression Harness
+
+Use this harness when validating hook behavior across several advisor prompts. It keeps the prompts in one Claude Code session so the run pays one cache-creation cost instead of one fresh cache-creation per prompt.
+
+Create the fixture:
+
+```bash
+cat > /tmp/speckit-advisor-regression.jsonl <<'JSONL'
+{"type":"user","message":{"role":"user","content":[{"type":"text","text":"help me commit my current changes"}]}}
+{"type":"user","message":{"role":"user","content":[{"type":"text","text":"implement a TypeScript MCP handler"}]}}
+{"type":"user","message":{"role":"user","content":[{"type":"text","text":"review this pull request for correctness and tests"}]}}
+{"type":"user","message":{"role":"user","content":[{"type":"text","text":"write documentation for the skill advisor hook"}]}}
+{"type":"user","message":{"role":"user","content":[{"type":"text","text":"fix the failing advisor freshness regression"}]}}
+JSONL
+```
+
+Run the fixture:
+
+```bash
+claude -p \
+  --input-format stream-json \
+  --output-format stream-json \
+  --include-hook-events \
+  --max-budget-usd 0.30 \
+  < /tmp/speckit-advisor-regression.jsonl | tee /tmp/speckit-advisor-regression.out.jsonl
+```
+
+Inspect the cost and hook evidence:
+
+```bash
+jq -r 'select(.type=="result") | .total_cost_usd' /tmp/speckit-advisor-regression.out.jsonl
+jq -r 'select(.type=="hook_started") | [.hook_event_name, .hook_name] | @tsv' \
+  /tmp/speckit-advisor-regression.out.jsonl | sort | uniq -c
+jq -r 'select(.type=="assistant") | tostring' /tmp/speckit-advisor-regression.out.jsonl | rg "Advisor:|skipped|fail_open"
+```
+
+Pass condition:
+
+- The final `result.total_cost_usd` is `<= 0.30`.
+- Each of the five work-intent prompts produces an `Advisor:` brief or a documented skip/fail-open reason.
+- Hook events remain stable for `UserPromptSubmit`, `SessionStart`, and `Stop`.
+
+Cost rationale: five separate `claude -p` sessions each create a fresh prompt cache and can repeat the cache-creation tax. One stream-json session creates the cache once, then spends mostly incremental input and output tokens for the remaining four prompts. This is the expected pattern for the 17-test hook pack: one cache-creation per session instead of `N` cache-creations for `N` one-shot prompts.
+
+Disable-flag note: `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` is read by the hook process environment. Do not flip it midway through a stream-json session and expect deterministic mixed behavior. Run a separate disabled fixture for rollback verification:
+
+```bash
+SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1 claude -p \
+  --input-format stream-json \
+  --output-format stream-json \
+  --include-hook-events \
+  --max-budget-usd 0.30 \
+  < /tmp/speckit-advisor-regression.jsonl
+```
+
+Remove temporary fixtures after recording evidence:
+
+```bash
+rm -f /tmp/speckit-advisor-regression.jsonl /tmp/speckit-advisor-regression.out.jsonl
+```
+
+<!-- /ANCHOR:multi-turn-regression-harness -->

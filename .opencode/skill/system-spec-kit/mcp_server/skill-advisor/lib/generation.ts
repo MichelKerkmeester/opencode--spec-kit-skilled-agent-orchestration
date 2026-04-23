@@ -26,6 +26,7 @@ export type AdvisorGenerationRecoveryPath = 'regenerate' | 'unrecoverable';
 /** Persistent workspace generation counter status for advisor freshness probes. */
 export interface AdvisorGenerationSnapshot {
   readonly generation: number;
+  readonly sourceSignature: string | null;
   readonly status: AdvisorGenerationStatus;
   readonly reason: string | null;
   readonly recoveryPath: AdvisorGenerationRecoveryPath | null;
@@ -55,9 +56,10 @@ function workspaceKey(workspaceRoot: string): string {
   return resolve(workspaceRoot);
 }
 
-function ok(generation: number): AdvisorGenerationSnapshot {
+function ok(generation: number, sourceSignature: string | null): AdvisorGenerationSnapshot {
   return {
     generation,
+    sourceSignature,
     status: 'ok',
     reason: null,
     recoveryPath: null,
@@ -67,6 +69,7 @@ function ok(generation: number): AdvisorGenerationSnapshot {
 function recovered(generation: number): AdvisorGenerationSnapshot {
   return {
     generation,
+    sourceSignature: null,
     status: 'recovered',
     reason: 'GENERATION_COUNTER_RECOVERED',
     recoveryPath: 'regenerate',
@@ -79,6 +82,7 @@ function unavailable(
 ): AdvisorGenerationSnapshot {
   return {
     generation: 0,
+    sourceSignature: null,
     status: 'unavailable',
     reason,
     recoveryPath: 'unrecoverable',
@@ -94,15 +98,20 @@ function isGenerationFilePayload(value: unknown): value is GenerationFilePayload
   return typeof record.generation === 'number'
     && Number.isSafeInteger(record.generation)
     && record.generation >= 0
-    && typeof record.updatedAt === 'string';
+    && typeof record.updatedAt === 'string'
+    && (
+      record.sourceSignature === undefined
+      || record.sourceSignature === null
+      || typeof record.sourceSignature === 'string'
+    );
 }
 
-function writeGenerationAtomic(filePath: string, generation: number): void {
+function writeGenerationAtomic(filePath: string, generation: number, sourceSignature: string | null = null): void {
   mkdirSync(dirname(filePath), { recursive: true });
   const payload: GenerationFilePayload = {
     generation,
     updatedAt: new Date().toISOString(),
-    sourceSignature: null,
+    sourceSignature,
     reason: 'LEGACY_ADVISOR_GENERATION_BUMP',
     state: 'live',
   };
@@ -120,7 +129,7 @@ function writeGenerationAtomic(filePath: string, generation: number): void {
   }
 }
 
-function parseGenerationFile(filePath: string): number {
+function parseGenerationFile(filePath: string): GenerationFilePayload {
   const raw = readFileSync(filePath, 'utf8');
   const payload: unknown = JSON.parse(raw);
   if (!isGenerationFilePayload(payload)) {
@@ -128,7 +137,10 @@ function parseGenerationFile(filePath: string): number {
       `Invalid generation counter payload at ${filePath}: expected {generation: safe integer >= 0, updatedAt: string}; actual ${typeof payload}.`,
     );
   }
-  return payload.generation;
+  return {
+    ...payload,
+    sourceSignature: payload.sourceSignature ?? null,
+  };
 }
 
 function recoverMalformedCounter(workspaceRoot: string, filePath: string): AdvisorGenerationSnapshot {
@@ -144,11 +156,16 @@ function recoverMalformedCounter(workspaceRoot: string, filePath: string): Advis
   }
 }
 
-function setGeneration(workspaceRoot: string, filePath: string, generation: number): AdvisorGenerationSnapshot {
+function setGeneration(
+  workspaceRoot: string,
+  filePath: string,
+  generation: number,
+  sourceSignature: string | null = null,
+): AdvisorGenerationSnapshot {
   try {
-    writeGenerationAtomic(filePath, generation);
+    writeGenerationAtomic(filePath, generation, sourceSignature);
     observedGenerations.set(workspaceKey(workspaceRoot), generation);
-    return ok(generation);
+    return ok(generation, sourceSignature);
   } catch (error: unknown) {
     return unavailable('GENERATION_COUNTER_UNAVAILABLE', classifyAdvisorException(error));
   }
@@ -167,9 +184,9 @@ export function getAdvisorGenerationPath(workspaceRoot: string): string {
 export function readAdvisorGeneration(workspaceRoot: string): AdvisorGenerationSnapshot {
   const filePath = getAdvisorGenerationPath(workspaceRoot);
   try {
-    const generation = parseGenerationFile(filePath);
-    observedGenerations.set(workspaceKey(workspaceRoot), generation);
-    return ok(generation);
+    const payload = parseGenerationFile(filePath);
+    observedGenerations.set(workspaceKey(workspaceRoot), payload.generation);
+    return ok(payload.generation, payload.sourceSignature ?? null);
   } catch (error: unknown) {
     const code = error instanceof Error && 'code' in error
       ? String((error as NodeJS.ErrnoException).code)

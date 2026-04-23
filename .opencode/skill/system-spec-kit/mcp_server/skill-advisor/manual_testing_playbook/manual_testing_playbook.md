@@ -134,6 +134,8 @@ Scenario acceptance:
 | CL-004 | Codex CLI hook and prompt wrapper | [004-codex-hook-and-wrapper.md](02--cli-hooks-and-plugin/004-codex-hook-and-wrapper.md) |
 | CL-005 | OpenCode plugin bridge | [005-opencode-plugin-bridge.md](02--cli-hooks-and-plugin/005-opencode-plugin-bridge.md) |
 
+For cost-sensitive Claude hook regression runs, use the §9 multi-turn fixture in the hook validation playbook: [Multi-turn regression harness](../../../references/hooks/skill-advisor-hook-validation.md#9-multi-turn-regression-harness). It covers five advisor prompts in one stream-json session and documents why the disable flag should be tested in a separate session.
+
 ---
 
 ## 8. COMPAT AND DISABLE SCENARIOS (`CP-001..CP-004`)

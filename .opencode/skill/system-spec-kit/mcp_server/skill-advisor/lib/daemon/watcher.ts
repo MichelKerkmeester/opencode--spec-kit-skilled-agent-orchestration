@@ -9,6 +9,7 @@ import Database from 'better-sqlite3';
 import chokidar from 'chokidar';
 import { indexSkillMetadata } from '../../../lib/skill-graph/skill-graph-db.js';
 import { workspaceRelativeFilePath } from '../derived/provenance.js';
+import { computeAdvisorSourceSignature } from '../freshness.js';
 import { publishSkillGraphGeneration } from '../freshness/generation.js';
 
 export interface WatchTarget {
@@ -417,6 +418,7 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
       changedPaths,
       reason: options.generationReason ?? 'skill-graph-daemon-reindex',
       state: 'live',
+      sourceSignature: computeAdvisorSourceSignature(workspaceRoot),
     });
     lastReindexAt = new Date().toISOString();
     refreshTargets();

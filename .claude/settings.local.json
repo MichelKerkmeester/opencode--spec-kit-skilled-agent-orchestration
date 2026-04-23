@@ -24,9 +24,6 @@
   "hooks": {
     "UserPromptSubmit": [
       {
-        "type": "command",
-        "bash": "cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/user-prompt-submit.js",
-        "timeoutSec": 5,
         "hooks": [
           {
             "type": "command",
@@ -38,9 +35,6 @@
     ],
     "PreCompact": [
       {
-        "type": "command",
-        "bash": "true",
-        "timeoutSec": 3,
         "hooks": [
           {
             "type": "command",
@@ -52,9 +46,6 @@
     ],
     "SessionStart": [
       {
-        "type": "command",
-        "bash": "cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/session-prime.js",
-        "timeoutSec": 5,
         "hooks": [
           {
             "type": "command",
@@ -66,9 +57,6 @@
     ],
     "Stop": [
       {
-        "type": "command",
-        "bash": "true",
-        "timeoutSec": 3,
         "hooks": [
           {
             "type": "command",

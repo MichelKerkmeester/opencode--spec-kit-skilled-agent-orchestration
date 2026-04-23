@@ -5,6 +5,7 @@
 
 import { resolve } from 'node:path';
 import { indexSkillMetadata } from '../../lib/skill-graph/skill-graph-db.js';
+import { computeAdvisorSourceSignature } from '../../skill-advisor/lib/freshness.js';
 import { publishSkillGraphGeneration } from '../../skill-advisor/lib/freshness/generation.js';
 
 // ───────────────────────────────────────────────────────────────
@@ -37,11 +38,13 @@ export async function handleSkillGraphScan(
     }
 
     const scanResult = indexSkillMetadata(skillsRoot);
+    const sourceSignature = computeAdvisorSourceSignature(cwd);
     publishSkillGraphGeneration({
       workspaceRoot: cwd,
       changedPaths: [skillsRoot],
       reason: 'skill_graph_scan',
       state: 'live',
+      sourceSignature,
     });
 
     return okResponse({

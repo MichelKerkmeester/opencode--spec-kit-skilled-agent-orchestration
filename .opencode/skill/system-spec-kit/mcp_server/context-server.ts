@@ -89,6 +89,7 @@ import {
   indexSkillMetadata,
   initDb as initSkillGraphDb,
 } from './lib/skill-graph/skill-graph-db.js';
+import { computeAdvisorSourceSignature } from './skill-advisor/lib/freshness.js';
 import { publishSkillGraphGeneration } from './skill-advisor/lib/freshness/generation.js';
 import * as sessionBoost from './lib/search/session-boost.js';
 import * as causalBoost from './lib/search/causal-boost.js';
@@ -1479,11 +1480,13 @@ async function runSkillGraphIndex(trigger: string): Promise<void> {
   try {
     const result = indexSkillMetadata(skillGraphSourceDir);
     logSkillGraphIndexResult(trigger, result);
+    const sourceSignature = computeAdvisorSourceSignature(process.cwd());
     publishSkillGraphGeneration({
       workspaceRoot: process.cwd(),
       changedPaths: [skillGraphSourceDir],
       reason: `context-server-${trigger}`,
       state: 'live',
+      sourceSignature,
     });
   } catch (skillGraphIndexErr: unknown) {
     const message = skillGraphIndexErr instanceof Error ? skillGraphIndexErr.message : String(skillGraphIndexErr);
