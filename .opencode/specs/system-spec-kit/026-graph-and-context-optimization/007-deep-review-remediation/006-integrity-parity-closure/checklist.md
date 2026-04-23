@@ -33,25 +33,25 @@ _memory:
 
 ### P0 Blockers
 
-- [ ] T-001 / CF-001 root state model refreshed and operational acceptance separated from research convergence. [Evidence: ]
-- [ ] T-002 / CF-002 live memory-index and code-graph acceptance reruns completed and recorded. [Evidence: ]
-- [ ] T-003 / CF-005 merge preparation moved or regenerated under lock. [Evidence: ]
-- [ ] T-004 / CF-009 manual scan and ensure-ready share one staged persistence path. [Evidence: ]
-- [ ] T-005 / CF-014 child-phase deep-research artifact root unified. [Evidence: ]
-- [ ] T-006 / CF-017 playbook, runner, and packet result vocabulary normalized. [Evidence: ]
-- [ ] T-007 / CF-019 skill-advisor pass/fail computed after all mutators complete. [Evidence: ]
-- [ ] T-008 / CF-022 blocker closed through write-authorized follow-up or explicit defer decision. [Evidence: ]
-- [ ] T-009 / CF-025 executor metadata and typed failure events emitted before validation. [Evidence: ]
+- [x] T-001 / CF-001root state model refreshed and operational acceptance separated from research convergence. [Evidence: applied/CF-001.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-002 / CF-002live memory-index and code-graph acceptance reruns completed and recorded. [Evidence: applied/CF-002.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-003 / CF-005merge preparation moved or regenerated under lock. [Evidence: applied/CF-005.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-004 / CF-009manual scan and ensure-ready share one staged persistence path. [Evidence: applied/CF-009.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-005 / CF-014child-phase deep-research artifact root unified. [Evidence: applied/CF-014.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-006 / CF-017playbook, runner, and packet result vocabulary normalized. [Evidence: applied/CF-017.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-007 / CF-019skill-advisor pass/fail computed after all mutators complete. [Evidence: applied/CF-019.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-008 / CF-022blocker closed through write-authorized follow-up or explicit defer decision. [Evidence: applied/CF-022.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-009 / CF-025executor metadata and typed failure events emitted before validation. [Evidence: applied/CF-025.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
 
 ### P1 Required
 
-- [ ] T-010 / CF-003 live routing telemetry replaces predictive-only readiness proof. [Evidence: ]
-- [ ] T-011 / CF-004 Copilot parity work reapplied and 007 backlog reconciled to 009 truth. [Evidence: ]
-- [ ] T-012 / CF-006 resume contract aligned across runtime, tests, and docs. [Evidence: ]
-- [ ] T-013 / CF-007 save/index guardrails promoted to explicit contracts with regressions. [Evidence: ]
-- [ ] T-014 / CF-010 code-graph trust metadata routed through one provenance layer. [Evidence: ]
-- [ ] T-015 / CF-011 public schemas and handlers brought into parity. [Evidence: ]
-- [ ] T-016 / CF-012 stale-file refresh and debounce scoping hardened. [Evidence: ]
+- [x] T-010 / CF-003live routing telemetry replaces predictive-only readiness proof. [Evidence: applied/CF-003.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-011 / CF-004Copilot parity work reapplied and 007 backlog reconciled to 009 truth. [Evidence: applied/CF-004.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-012 / CF-006resume contract aligned across runtime, tests, and docs. [Evidence: applied/CF-006.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-013 / CF-007save/index guardrails promoted to explicit contracts with regressions. [Evidence: applied/CF-007.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-014 / CF-010code-graph trust metadata routed through one provenance layer. [Evidence: applied/CF-010.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-015 / CF-011public schemas and handlers brought into parity. [Evidence: applied/CF-011.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
+- [x] T-016 / CF-012stale-file refresh and debounce scoping hardened. [Evidence: applied/CF-012.md (fix landed), target_files modified per applied report, commit cd766a05f + downstream]
 
 ### P2 Optional
 

@@ -287,9 +287,12 @@ workflow:
             scope_host: "Seed Scope from the research ask without inventing implementation details"
             set:
               folder_state: "spec-just-created-by-this-run"
+              validate_spec_doc: true
             append_to_jsonl: '{"type":"spec_mutation","event":"spec_seed_created","folder_state":"spec-just-created-by-this-run","anchors_touched":["Requirements","Scope"],"diff_summary":"Seeded Level 1 spec.md from research topic with DR seed markers.","seed_markers":["DR-SEED:REQUIREMENTS","DR-SEED:SCOPE"],"timestamp":"{ISO_8601_NOW}"}'
           spec-present:
             edit: "{spec_folder}/spec.md"
+            set:
+              validate_spec_doc: true
             idempotency_check:
               host_anchor: "Open Questions"
               normalized_match: "Normalize the existing anchor text by lowercasing, stripping punctuation, collapsing whitespace, and trimming before comparing with {normalized_topic}."
@@ -307,10 +310,18 @@ workflow:
             verify_markers:
               - "<!-- DR-SEED:REQUIREMENTS -->"
               - "<!-- DR-SEED:SCOPE -->"
+            set:
+              validate_spec_doc: false
             note: "Treat already-seeded spec.md as a no-op guard and continue."
           conflict-detected:
             append_to_jsonl: '{"type":"spec_mutation","event":"spec_mutation_conflict","folder_state":"conflict-detected","reason":"Pre-init spec.md mutation is ambiguous or unsafe.","specPath":"{spec_folder}/spec.md","timestamp":"{ISO_8601_NOW}"}'
             halt: true
+
+      step_validate_preinit_spec_doc:
+        action: "Run targeted strict validation after any deep-research pre-init spec.md mutation"
+        condition: "validate_spec_doc"
+        command: "SPECKIT_RULES=FRONTMATTER_VALID,LEVEL_DECLARED,TEMPLATE_SOURCE,TEMPLATE_HEADERS,PLACEHOLDER_FILLED,SECTIONS_PRESENT,ANCHORS_VALID,SPEC_DOC_INTEGRITY,TOC_POLICY bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh {spec_folder} --strict"
+        note: "This enforces the authored-spec markdown structural contract without applying full-packet required-file or completeness checks to workflow-owned research artifacts."
 
       step_init_complete:
         log: "Initialization complete. Config, state, and strategy files created."
@@ -893,6 +904,11 @@ workflow:
           - "Do not overwrite a generated block that fails checksum validation or carries an explicit MANUAL-EDIT marker."
           - "Emit `spec_synthesis_deferred` instead of partial output when synthesis cannot safely write back."
         append_to_jsonl: '{"type":"spec_mutation","event":"spec_mutation","phase":"post-synthesis","anchors_touched":["<chosen host anchor>"],"diff_summary":"Replaced generated deep-research findings fence from research/research.md.","generatedFence":"deep-research/spec-findings","timestamp":"{ISO_8601_NOW}"}'
+
+      step_validate_post_synthesis_spec_doc:
+        action: "Run targeted strict validation after deep-research writes back into spec.md"
+        command: "SPECKIT_RULES=FRONTMATTER_VALID,LEVEL_DECLARED,TEMPLATE_SOURCE,TEMPLATE_HEADERS,PLACEHOLDER_FILLED,SECTIONS_PRESENT,ANCHORS_VALID,SPEC_DOC_INTEGRITY,TOC_POLICY bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh {spec_folder} --strict"
+        note: "Fail closed before completion if the deep-research spec.md sync breaks the authored-spec structural contract."
 
       step_update_config_status:
         action: "Mark config as complete"

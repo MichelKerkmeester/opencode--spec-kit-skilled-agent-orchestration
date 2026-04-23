@@ -60,7 +60,7 @@ Status: ✅ This requirement applies immediately once file edits are requested.
 
 ### Distributed Governance Rule
 
-Any agent writing spec folder docs (*.md) MUST use templates from .opencode/skill/system-spec-kit/templates/level_N/, run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [spec_folder] --strict` after each file write, and route continuity updates through /memory:save. @deep-research retains exclusive write access for research/research.md; @debug retains exclusive write access for debug-delegation.md.
+Any agent writing authored spec folder docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`, `decision-record.md`, `handover.md`, `review-report.md`, `debug-delegation.md`) MUST use templates from .opencode/skill/system-spec-kit/templates/level_N/, run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [spec_folder] --strict` after each file write, and route continuity updates through /memory:save. Deep-research workflow-owned packet markdown (`research/iterations/*.md`, `research/deep-research-*.md`, and progressive `research/research.md` loop updates) is exempt from that generic per-write rule; `/spec_kit:deep-research` must instead run targeted strict validation after every `spec.md` mutation it performs. @deep-research retains exclusive write access for `research/research.md`; @debug retains exclusive write access for `debug-delegation.md`.
 
 - `handover.md` stays in the canonical recovery ladder and is maintained through `/memory:save` handover_state routing using `.opencode/skill/system-spec-kit/templates/handover.md` for initial creation.
 - `review-report.md` remains owned by `@deep-review` when deep review workflows synthesize findings.
