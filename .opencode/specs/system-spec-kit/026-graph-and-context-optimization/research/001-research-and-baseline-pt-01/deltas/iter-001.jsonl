@@ -1,0 +1,71 @@
+{"type":"iteration","iteration":1,"newInfoRatio":0.92,"status":"insight","focus":"Gap inventory","findingsCount":67}
+{"type":"finding","id":"f-iter001-001","severity":"P2","label":"ENABLE_TOOL_SEARCH latency remains unmeasured","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-002","severity":"P1","label":"Edit-retry root-cause bucketing remains UNKNOWN-confirmed","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-003","severity":"P1","label":"Net-cost audit for /clear remedy bundle is still missing","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-004","severity":"P2","label":"Reddit arithmetic still has denominator drift","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-005","severity":"P1","label":"Phase-001 to phase-005 contract validation is still only partial","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-006","severity":"P2","label":"CodeSight 11.2x claim is closed only as heuristic-not-benchmarked","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-007","severity":"P2","label":"tRPC and Fastify contract enrichment gap is real and bounded","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-008","severity":"P1","label":"Go regex extraction is still mislabeled as ast","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-009","severity":"P2","label":"Monorepo support remains limited to standard workspace manifests","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-010","severity":"P1","label":"Blast-radius false-positive rate is still unmeasured","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-011","severity":"P2","label":"Contextador 93% reduction is closed only as estimate math","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-012","severity":"P1","label":"Mainframe privacy weakness remains a hard rejection lane","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-013","severity":"P1","label":"Matrix room-state writes still lack atomic conflict semantics","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-014","severity":"P1","label":"Webhook automation still lacks idempotency and secret-rotation rigor","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-015","severity":"P1","label":"Repair queue still lacks a completion guarantee","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-016","severity":"P2","label":"Graphify 71.5x claim is closed only as heuristic math","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-017","severity":"P2","label":"Graphify cache invalidation still has deletion and tombstone debt","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-018","severity":"P2","label":"Cross-language extraction parity remains uneven","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-019","severity":"P2","label":"INFERRED confidence semantics still leak into reports","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-020","severity":"P2","label":"Mixed-corpus multimodal claim is not reproducible from checked-in artifacts","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-021","severity":"P1","label":"Graphify PreToolUse effectiveness remains UNKNOWN-confirmed","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-022","severity":"P2","label":"FTS fallback story is only closed at the narrower runtime-contract seam","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-023","severity":"P1","label":"Stop hook still omits transcript and cache-token carry-forward fields","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-024","severity":"P2","label":"Plugin-specific CLAUDE.md ownership was inferred rather than directly proven","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-025","severity":"P2","label":"Fallback-context docstring still drifted from the renderer implementation","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-026","severity":"P1","label":"008-signal-extraction conclusion still needs corrected citation and metadata","iteration":1,"source":"first-pass-exit"}
+{"type":"finding","id":"f-iter001-027","severity":"P2","label":"v1 overstated Claudest as the most practically reusable system","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-028","severity":"P2","label":"Matrix prose used uncited priority language","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-029","severity":"P1","label":"v1 flattened evidence-gap and measurement-gap UNKNOWNs together","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-030","severity":"P1","label":"Activation scaffolding still lacks a top-level owned recommendation","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-031","severity":"P1","label":"v1 license scoring contradicted its own portability standard","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-032","severity":"P2","label":"v1 overall confidence overstated deliverable correctness","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-033","severity":"P1","label":"Registry summary integrity remains compromised by taxonomy drift","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-034","severity":"P2","label":"F-CROSS-005 needed adoption downgrading and still needs retagging hygiene","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-035","severity":"P2","label":"F-CROSS-036 still carries a weak methodology citation","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-036","severity":"P2","label":"F-CROSS-045 still carries a weak runtime-fallback citation","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-037","severity":"P2","label":"F-CROSS-055 confidence had to be reduced in v2","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-038","severity":"P2","label":"F-CROSS-056 still needs stronger support than synthesis-only wording","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-039","severity":"P2","label":"F-CROSS-061 needed present-tense baseline language narrowed","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-040","severity":"P2","label":"F-CROSS-062 still overlaps adjacent overlay-packaging findings","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-041","severity":"P2","label":"F-CROSS-065 still overlaps the cached-summary fast-path finding","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-042","severity":"P2","label":"R2 still carries unresolved dependency-justification debt","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-043","severity":"P1","label":"R4 only became coherent once the missing dependency edge was restored","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-044","severity":"P2","label":"R5 had to narrow to split trust axes and shared payload validation","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-045","severity":"P2","label":"R6 had to stay bounded to detector regression as a floor","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-046","severity":"P2","label":"R8 needed dependency-adjusted ranking language to stay defensible","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-047","severity":"P1","label":"Old R10 had to be replaced, not merely downgraded","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-048","severity":"P2","label":"Matrix tie-break and ecosystem-leakage language remains fragile","iteration":1,"source":"iter-9"}
+{"type":"finding","id":"f-iter001-049","severity":"P1","label":"F-CROSS-064 had a broken literal-path citation","iteration":1,"source":"iter-11"}
+{"type":"finding","id":"f-iter001-050","severity":"P1","label":"F-CROSS-026 had a broken literal-path citation","iteration":1,"source":"iter-11"}
+{"type":"finding","id":"f-iter001-051","severity":"P1","label":"F-CROSS-005 had a broken literal-path citation","iteration":1,"source":"iter-11"}
+{"type":"finding","id":"f-iter001-052","severity":"P1","label":"F-CROSS-061 had a broken literal-path citation","iteration":1,"source":"iter-11"}
+{"type":"finding","id":"f-iter001-053","severity":"P1","label":"F-CROSS-062 had a broken literal-path citation","iteration":1,"source":"iter-11"}
+{"type":"finding","id":"f-iter001-054","severity":"P1","label":"F-CROSS-065 had a broken literal-path citation","iteration":1,"source":"iter-11"}
+{"type":"finding","id":"f-iter001-055","severity":"P2","label":"F-CROSS-036 remained mostly-solid rather than citation-clean","iteration":1,"source":"iter-11"}
+{"type":"finding","id":"f-iter001-056","severity":"P2","label":"F-CROSS-045 remained mostly-solid rather than citation-clean","iteration":1,"source":"iter-11"}
+{"type":"finding","id":"f-iter001-057","severity":"P2","label":"F-CROSS-056 remained mostly-solid rather than citation-clean","iteration":1,"source":"iter-11"}
+{"type":"finding","id":"f-iter001-058","severity":"P1","label":"Combo 1 survived only as a conditional warm-start bundle","iteration":1,"source":"iter-12"}
+{"type":"finding","id":"f-iter001-059","severity":"P0","label":"Combo 3 was falsified by incompatible trust semantics","iteration":1,"source":"iter-12"}
+{"type":"finding","id":"f-iter001-060","severity":"P0","label":"Registry validation still fails on new-cross-phase over-assignment","iteration":1,"source":"iter-18"}
+{"type":"finding","id":"f-iter001-061","severity":"P2","label":"Registry still carries Q2 as only partial despite stronger discoverability evidence","iteration":1,"source":"registry"}
+{"type":"finding","id":"f-iter001-062","severity":"P1","label":"Registry still carries Q8 as UNKNOWN-confirmed","iteration":1,"source":"registry"}
+{"type":"finding","id":"f-iter001-063","severity":"P1","label":"Registry still carries Q9 as only partial","iteration":1,"source":"registry"}
+{"type":"finding","id":"f-iter001-064","severity":"P2","label":"Registry still carries the Reddit arithmetic lane as partial","iteration":1,"source":"registry"}
+{"type":"finding","id":"f-iter001-065","severity":"P1","label":"Registry still carries blast-radius quality as partial","iteration":1,"source":"registry"}
+{"type":"finding","id":"f-iter001-066","severity":"P1","label":"Registry still carries PreToolUse effectiveness as UNKNOWN-confirmed","iteration":1,"source":"registry"}
+{"type":"finding","id":"f-iter001-067","severity":"P1","label":"Registry still carries an incorrectly tagged cross-phase block","iteration":1,"source":"registry"}
+{"type":"observation","id":"obs-iter001-001","label":"Tag taxonomy: 31/88 findings are `new-cross-phase` vs 15 target","iteration":1}
+{"type":"observation","id":"obs-iter001-002","label":"Citations: 6/6 broken citations verified fixed in v2; 3 mostly-solid findings remain weakly supported","iteration":1}
+{"type":"observation","id":"obs-iter001-003","label":"Convergence: 0.94→0.62→0.80→0.67→0.82 non-monotonic; final plateau disputed","iteration":1}

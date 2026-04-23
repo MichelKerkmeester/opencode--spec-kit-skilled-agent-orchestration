@@ -153,5 +153,14 @@ Keep this theme as an active parent while making each original phase packet a di
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- None. This parent records the requested flattened layout.
+- None for the flattened layout itself.
+- Deep-research active: 026 continuity-memory-runtime — correctness gaps, concurrency/race conditions, and doc-code drift across the parent and its four direct children.
 <!-- /ANCHOR:questions -->
+
+---
+
+<!-- ANCHOR:research-context -->
+## 8. RESEARCH CONTEXT
+
+Deep-research is active for this packet (session `dr-002cmr-20260423-200456`). Canonical findings live in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/002-continuity-memory-runtime-pt-01/research.md`; this spec will carry only a bounded post-synthesis generated findings fence.
+<!-- /ANCHOR:research-context -->

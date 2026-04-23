@@ -1,0 +1,5 @@
+{"type":"iteration","iteration":4,"newInfoRatio":0.24,"status":"insight","focus":"Recommendation survival audit","findingsCount":12}
+{"type":"finding","id":"f-iter004-001","severity":"P1","label":"Combo 1 withdrawn after fresh audit: unresolved freshness/lossiness plus BS-003/BS-005 make the bundle indefensible","iteration":4,"source":"combined"}
+{"type":"observation","id":"obs-iter004-001","label":"Temporal-drift: 10 recs affected by recent commits","iteration":4}
+{"type":"observation","id":"obs-iter004-002","label":"Blind-spot pressure: 6 recs weakened, 1 invalidated","iteration":4}
+{"type":"observation","id":"obs-iter004-003","label":"FINAL: KEEP=6, DOWNGRADE=4, REPLACE=1, WITHDRAW=1","iteration":4}

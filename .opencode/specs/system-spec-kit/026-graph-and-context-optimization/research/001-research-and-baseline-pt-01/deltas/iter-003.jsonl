@@ -1,0 +1,76 @@
+{"type":"iteration","iteration":3,"newInfoRatio":0.39,"status":"insight","focus":"Severity firming + blind-spot audit","findingsCount":73}
+{"type":"finding","id":"f-iter003-001","severity":"P2","label":"measure first-tool latency and fallback discoverability under `ENABLE_TOOL_SEARCH=true`","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-002","severity":"P1","label":"recover chain-level retry examples or stop claiming causal attribution","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-003","severity":"P1","label":"count `/clear` remedy overhead against the stale-resume baseline","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-004","severity":"P2","label":"reconcile the 926/858 session and 11,357 denominator drift with explicit arithmetic","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-005","severity":"P1","label":"re-open the phase-001 vs phase-005 contract fit with corrected tagging and citations","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-006","severity":"P2","label":"keep the closure but add provider-counted token benchmarking before any multiplier language","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-007","severity":"P2","label":"treat tRPC/Fastify enrichment as a detector gap, not as evidence of broader contract maturity","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-008","severity":"P1","label":"split `ast` from regex/brace-tracked provenance instead of overloading one label","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-009","severity":"P2","label":"document the real workspace boundary and explicitly exclude nx/turbo/lerna/rush-only metadata","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-010","severity":"P1","label":"add a blast-radius precision/recall harness before using schema-impact rhetoric","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-011","severity":"P2","label":"preserve the closure: the 93% figure is estimate math, not a benchmark","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-012","severity":"P1","label":"keep the privacy weakness explicit and avoid treating Mainframe as a portable source lane","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-013","severity":"P0","label":"add atomic conflict semantics or clearly bound Matrix multi-agent writes as non-authoritative","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-014","severity":"P0","label":"add webhook idempotency, secret rotation, and routed failure notification to close the lane","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-015","severity":"P1","label":"add post-regeneration completion guarantees or explicitly downgrade repair-queue claims","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-016","severity":"P2","label":"keep the closure: the 71.5x claim is heuristic unless token counting is grounded","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-017","severity":"P2","label":"treat cache deletion/invalidation debt as a bounded maintenance lane, not solved infrastructure","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-018","severity":"P2","label":"preserve the parity warning: Swift detection without extraction is still an honesty gap","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-019","severity":"P2","label":"separate ranking semantics from report semantics for INFERRED confidence values","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-020","severity":"P2","label":"keep the worked artifact labeled as non-reproducible multimodal evidence","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-021","severity":"P1","label":"add before/after tool-choice telemetry or stop implying the hook changed behavior","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-022","severity":"P2","label":"keep FTS fallback claims bounded to the runtime contract actually verified","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-023","severity":"P1","label":"persist `transcript_path`, cache-token fields, and turn offsets before claiming analytics readiness","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-024","severity":"P2","label":"replace inferred plugin-doc ownership with direct file proof or keep it marked absent","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-025","severity":"P2","label":"align `_build_fallback_context()` docs with the implemented first-2/last-6 renderer","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-026","severity":"P1","label":"re-cite the `008-signal-extraction` conclusion with literal paths and stable source_phase metadata","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-027","severity":"P2","label":"keep Claudest framed as the strongest pattern source, not the cleanest portable codebase","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-028","severity":"P2","label":"keep matrix prose literal to scored rows instead of value-judgment language","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-029","severity":"P1","label":"preserve the split between evidence-shape UNKNOWNs and measurement-bounded UNKNOWNs","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-030","severity":"P1","label":"promote activation scaffolding from an implicit prerequisite to an explicit tracked work item","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-031","severity":"P0","label":"keep Q-E's two-column portability rule as the authoritative standard","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-032","severity":"P2","label":"keep confidence anchored to correctness plus coverage, not coverage alone","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-033","severity":"P1","label":"re-run registry summary and tag validation after retagging cross-phase findings","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-034","severity":"P2","label":"preserve the `adapt` downgrade for F-CROSS-005 unless stronger evidence appears","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-035","severity":"P2","label":"replace table-row citations on token-reporting claims with method-section evidence","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-036","severity":"P2","label":"re-cite the FTS cascade with runtime fallback evidence, not a one-line Q-C row","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-037","severity":"P2","label":"keep F-CROSS-055's confidence provisional and evidence-backed","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-038","severity":"P2","label":"strip \"lanes that matter most\" language from cross-phase routing claims","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-039","severity":"P2","label":"keep `ENABLE_TOOL_SEARCH` phrased as upstream evidence, not as live Public proof","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-040","severity":"P2","label":"de-duplicate F-CROSS-062 against adjacent overlay-packaging findings","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-041","severity":"P2","label":"collapse cached-summary overlap between F-CROSS-065 and F-CROSS-046","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-042","severity":"P2","label":"re-justify R2's remaining `Depends on: R1` edge or make the policy gate explicit","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-043","severity":"P1","label":"keep R4's activation-scaffold prerequisite explicit","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-044","severity":"P2","label":"preserve R5's evidence split and R10 dependency; do not fall back to one trust scalar","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-045","severity":"P2","label":"keep R6 bounded to detector regression as a floor, not a proxy for user quality","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-046","severity":"P2","label":"preserve dependency-adjusted ordering language for R8","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-047","severity":"P1","label":"keep old R10 retired; replacement R10 is prerequisite contract work, not packaging","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-048","severity":"P2","label":"keep ecosystem leakage and tie-break inferences out of future matrix renders","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-049","severity":"P1","label":"preserve the literal-path repair for F-CROSS-064 and spot-check the content claim again","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-050","severity":"P1","label":"keep F-CROSS-026 on literal folder paths and correct `source_phase` handling","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-051","severity":"P1","label":"keep F-CROSS-005 on literal folder paths and add the intended phase-001 portability lines","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-052","severity":"P1","label":"preserve the literal-path repair for F-CROSS-061","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-053","severity":"P1","label":"preserve the literal-path repair for F-CROSS-062","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-054","severity":"P1","label":"preserve the literal-path repair for F-CROSS-065","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-055","severity":"P2","label":"replace F-CROSS-036's weak Q-C row with Q-A methodology evidence","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-056","severity":"P2","label":"replace F-CROSS-045's weak Q-C row with phase-005 runtime fallback evidence","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-057","severity":"P2","label":"re-support F-CROSS-056 with matrix/runtime evidence instead of synthesis-only wording","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-058","severity":"P1","label":"only test Combo 1 on frozen resume corpora with freshness and fidelity gates","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-059","severity":"P0","label":"keep artifact-default structural packaging blocked until trust axes are separated","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-060","severity":"P0","label":"retag the over-assigned `new-cross-phase` findings and rerun registry validation","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-061","severity":"P2","label":"keep Q2 open until first-tool latency is measured, not inferred from discoverability","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-062","severity":"P1","label":"leave Q8 explicitly UNKNOWN unless new chain-level evidence appears","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-063","severity":"P1","label":"close Q9 only after stale-resume costs include remediation overhead","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-064","severity":"P2","label":"resolve the Reddit arithmetic with one auditable denominator narrative","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-065","severity":"P1","label":"add a blast-radius quality corpus or keep false-positive claims qualitative","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-066","severity":"P1","label":"add behavior-change telemetry before presenting the PreToolUse nudge as effective","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-067","severity":"P1","label":"reclassify moat-style cross findings out of `new-cross-phase` before any reuse","iteration":3,"source":"severity-firming"}
+{"type":"finding","id":"f-iter003-068","severity":"P1","label":"multi-tenant deployment model absent","iteration":3,"source":"blind-spot-audit"}
+{"type":"finding","id":"f-iter003-069","severity":"P1","label":"team governance and access control absent","iteration":3,"source":"blind-spot-audit"}
+{"type":"finding","id":"f-iter003-070","severity":"P1","label":"rollback and corruption recovery unexamined","iteration":3,"source":"blind-spot-audit"}
+{"type":"finding","id":"f-iter003-071","severity":"P2","label":"cost of discarded recommendations unpriced","iteration":3,"source":"blind-spot-audit"}
+{"type":"finding","id":"f-iter003-072","severity":"P1","label":"public substrate churn risk unmodeled","iteration":3,"source":"blind-spot-audit"}
+{"type":"finding","id":"f-iter003-073","severity":"P1","label":"retention and deletion obligations under-specified","iteration":3,"source":"blind-spot-audit"}
+{"type":"observation","id":"obs-iter003-001","label":"Severity distribution: P0=5, P1=27, P2=35","iteration":3}
+{"type":"observation","id":"obs-iter003-002","label":"Blind spots: 6 material; top materiality=Rollback / corruption recovery behavior","iteration":3}
