@@ -43,7 +43,7 @@ function allocateShortSubfolder(rootDir, phaseSlug) {
 }
 
 /**
- * Resolve the root-level artifact directory for review or research output.
+ * Resolve the canonical artifact directory for review or research output.
  * Walks up from specFolder to find the top-level parent spec (highest folder
  * with spec.md) and stops at the specs/ directory boundary.
  *
@@ -61,7 +61,18 @@ function allocateShortSubfolder(rootDir, phaseSlug) {
  *
  * @param {string} specFolder - Absolute or relative path to the target spec folder
  * @param {'review'|'research'} [mode='review'] - Which artifact type to resolve
- * @returns {{ rootDir: string, subfolder: string|null }} Resolved packet root and child-phase subfolder
+ *
+ * For child phases, all workflow-owned artifacts for a single run must share
+ * the same packet directory under the spec tree root:
+ *   - review:   {root}/review/{phaseSlug}-pt-{NN}/
+ *   - research: {root}/research/{phaseSlug}-pt-{NN}/
+ *
+ * @returns {{
+ *   rootDir: string,
+ *   subfolder: string|null,
+ *   artifactDir: string,
+ *   artifactArchiveRoot: string
+ * }} Resolved packet root plus canonical packet/archive directories
  */
 function resolveArtifactRoot(specFolder, mode = 'review') {
   const resolved = path.resolve(specFolder);
@@ -89,15 +100,29 @@ function resolveArtifactRoot(specFolder, mode = 'review') {
   const rootDir = path.join(root, mode);
 
   if (resolved === root) {
-    return { rootDir, subfolder: null };
+    return {
+      rootDir,
+      subfolder: null,
+      artifactDir: rootDir,
+      artifactArchiveRoot: path.join(
+        path.dirname(rootDir),
+        `${path.basename(rootDir)}_archive`,
+      ),
+    };
   }
 
   // Derive phase slug: full first path segment under root (e.g. "019-system-hardening")
   const relative = path.relative(root, resolved);
   const phaseSlug = relative.split(path.sep)[0];
   const subfolder = allocateShortSubfolder(rootDir, phaseSlug);
+  const artifactDir = path.join(rootDir, subfolder);
+  const artifactArchiveRoot = path.join(
+    path.dirname(rootDir),
+    `${path.basename(rootDir)}_archive`,
+    subfolder,
+  );
 
-  return { rootDir, subfolder };
+  return { rootDir, subfolder, artifactDir, artifactArchiveRoot };
 }
 
 module.exports = { resolveArtifactRoot, allocateShortSubfolder };

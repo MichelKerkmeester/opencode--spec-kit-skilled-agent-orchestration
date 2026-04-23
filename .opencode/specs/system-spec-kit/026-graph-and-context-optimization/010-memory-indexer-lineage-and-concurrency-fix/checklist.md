@@ -12,9 +12,9 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix"
     last_updated_at: "2026-04-23T18:07:07Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Replaced Fix B1 with Fix B2 after live acceptance showed B1 insufficient"
-    next_safe_action: "User restart MCP and run memory_index_scan on 009 to confirm zero candidate_changed"
-    completion_pct: 90
+    recent_action: "Readiness gate reset pending live rerun"
+    next_safe_action: "Restart MCP, rerun memory_index_scan on 026/009, record counts"
+    completion_pct: 85
 ---
 # Verification Checklist: Memory Indexer Lineage and Concurrency Fix
 
@@ -34,6 +34,7 @@ _memory:
 - [x] **P0-04** `npm run typecheck` passed after the B2 patch. [EVIDENCE: exit 0 on 2026-04-23.]
 - [x] **P0-05** `npm run build` passed after the B2 patch. [EVIDENCE: exit 0 on 2026-04-23.]
 - [x] **P0-06** Strict packet validation passed after the B2 doc update. [EVIDENCE: `validate.sh --strict --no-recursive` exit 0.]
+- [ ] **P0-07** Live-capable packet acceptance was rerun and recorded before readiness was promoted. [BLOCKED: requires MCP restart plus a fresh `memory_index_scan` on `026/009-hook-daemon-parity` in an embedding-capable runtime.]
 <!-- /ANCHOR:protocol -->
 
 ---
@@ -103,7 +104,7 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
+| P0 Items | 8 | 7/8 |
 | P1 Items | 15 | 14/15 |
 | P2 Items | 0 | 0/0 |
 
@@ -115,5 +116,5 @@ _memory:
 - 2026-04-23: `npm run build` exited 0.
 - 2026-04-23: `timeout 240 npm run test:core` exited 124 after surfacing an unrelated failure in `tests/copilot-hook-wiring.vitest.ts`.
 - 2026-04-23: `npx vitest run tests/copilot-hook-wiring.vitest.ts` reproduced the unrelated failure with exit 1.
-- 2026-04-23: live acceptance still requires user restart of MCP followed by `memory_index_scan` on `026/009-hook-daemon-parity`.
+- 2026-04-23: live acceptance still requires user restart of MCP followed by `memory_index_scan` on `026/009-hook-daemon-parity`; until that rerun is recorded, readiness and scan/index counts remain non-authoritative.
 <!-- /ANCHOR:summary -->

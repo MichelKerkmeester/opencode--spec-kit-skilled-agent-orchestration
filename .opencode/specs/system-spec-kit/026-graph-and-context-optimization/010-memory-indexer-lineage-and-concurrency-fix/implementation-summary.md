@@ -12,11 +12,11 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix"
     last_updated_at: "2026-04-23T18:07:07Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Replaced Fix B1 with Fix B2 after live acceptance showed B1 insufficient"
-    next_safe_action: "User restart MCP and run memory_index_scan on 009 to confirm zero candidate_changed"
+    recent_action: "Readiness gate reset pending live rerun"
+    next_safe_action: "Restart MCP, rerun memory_index_scan on 026/009, record counts"
     blockers:
       - "Live packet acceptance still requires an MCP restart plus a fresh scan of 026/009."
-    completion_pct: 90
+    completion_pct: 85
     open_questions: []
     answered_questions:
       - "A2 was chosen over A1 to preserve the existing similarity search surface and localize the safety rule to PE orchestration."
@@ -37,7 +37,7 @@ _memory:
 | **Spec Folder** | 010-memory-indexer-lineage-and-concurrency-fix |
 | **Completed** | 2026-04-23T18:07:07Z |
 | **Level** | 2 |
-| **Outcome** | B2 code landed; live packet scan acceptance still needs an MCP restart and rerun |
+| **Outcome** | B2 code landed, but readiness remains blocked until a live-capable packet scan rerun is recorded |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -86,7 +86,7 @@ Acceptance summary:
 |---|---|---|---|
 | Before fix | 68 | 58 | baseline |
 | After A+B1 | 0 | 159 | B1 insufficient, A converted `E_LINEAGE` to `candidate_changed` |
-| After A+B2 | 0 | 0 (expected) | proper fix once live acceptance reruns |
+| After A+B2 code/tests | not rerun | not rerun | focused regressions passed locally, but packet acceptance is still blocked until the live-capable rerun is recorded |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -101,7 +101,7 @@ Acceptance summary:
 | Build | `npm run build` | passed (exit 0) |
 | Full core suite | `timeout 240 npm run test:core` | timed out (exit 124) after surfacing unrelated `tests/copilot-hook-wiring.vitest.ts` failure |
 | Isolated unrelated failure | `npx vitest run tests/copilot-hook-wiring.vitest.ts` | failed (exit 1) in untouched code |
-| Operational packet scan | restart MCP, then rerun `memory_index_scan` on `026/009-hook-daemon-parity` | pending user restart / live acceptance |
+| Operational packet scan | restart MCP in a live-capable runtime, then rerun `memory_index_scan` on `026/009-hook-daemon-parity` | blocked; until this rerun is recorded, packet readiness and scan counts are not authoritative |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -109,6 +109,6 @@ Acceptance summary:
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-- The user-requested live acceptance run against `026/009-hook-daemon-parity` still must be rerun after the MCP restart because this session only applies the B2 code change locally.
+- The user-requested live acceptance run against `026/009-hook-daemon-parity` still must be rerun after the MCP restart in a live-capable runtime; until that proof is recorded here, readiness and scan/index counts are not authoritative.
 - `npm run test:core` still has an unrelated failure in `tests/copilot-hook-wiring.vitest.ts`, which asserts an unexpected hook path in untouched code.
 <!-- /ANCHOR:limitations -->

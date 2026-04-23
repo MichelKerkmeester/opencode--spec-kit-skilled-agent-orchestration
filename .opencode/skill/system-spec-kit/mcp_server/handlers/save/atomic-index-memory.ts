@@ -68,6 +68,9 @@ export interface AtomicIndexDependencies<TPrepared = unknown> {
     params: AtomicSaveParams,
     context: AtomicIndexAttemptContext,
   ) => Promise<AtomicIndexPreparation<TPrepared>> | AtomicIndexPreparation<TPrepared>;
+  prepareLocked?: (
+    context: AtomicIndexLockedContext<TPrepared>,
+  ) => Promise<AtomicIndexPreparation<TPrepared>> | AtomicIndexPreparation<TPrepared>;
   indexPrepared: (
     context: AtomicIndexLockedContext<TPrepared>,
   ) => Promise<IndexResult> | IndexResult;
@@ -300,6 +303,7 @@ export async function atomicIndexMemory<TPrepared = unknown>(
     let promotedToFinalPath = false;
     let handledFailureWhileLocked = false;
     let rollbackSucceededAfterRejectedSave = false;
+    let lockedContext: AtomicIndexLockedContext<TPrepared> | null = null;
 
     try {
       const prepared = await dependencies.prepare(params, { attempt, force });
@@ -307,24 +311,47 @@ export async function atomicIndexMemory<TPrepared = unknown>(
         return prepared.result;
       }
 
-      const effectiveFilePath = prepared.persistedFilePath ?? file_path;
-      const persistedContent = prepared.persistedContent ?? content;
-      const pendingPath = (dependencies.getPendingPath ?? defaultPendingPath)(effectiveFilePath);
-      const originalState = (dependencies.captureOriginalState ?? captureOriginalState)(effectiveFilePath);
-      lastEffectiveFilePath = effectiveFilePath;
-      lastPendingPath = pendingPath;
-      const lockedContext: AtomicIndexLockedContext<TPrepared> = {
-        attempt,
-        force,
-        params,
-        ready: prepared,
-        specFolderLockAlreadyHeld: true,
-      };
-
       const runWithLock = dependencies.withSpecFolderLock ?? withSpecFolderLock;
-
-      indexResult = await runWithLock(prepared.specFolder, async () => {
+      const lockedResult = await runWithLock(prepared.specFolder, async () => {
+        let effectiveFilePath = lastEffectiveFilePath;
+        let pendingPath = lastPendingPath;
+        let originalState: AtomicIndexOriginalState | null = null;
         try {
+          let ready = prepared;
+          lockedContext = {
+            attempt,
+            force,
+            params,
+            ready,
+            specFolderLockAlreadyHeld: true,
+          };
+
+          if (dependencies.prepareLocked) {
+            const preparedLocked = await dependencies.prepareLocked(lockedContext);
+            if (preparedLocked.status !== 'ready') {
+              return {
+                kind: 'terminal',
+                result: preparedLocked.result,
+              } as const;
+            }
+
+            ready = preparedLocked;
+            lockedContext = {
+              attempt,
+              force,
+              params,
+              ready,
+              specFolderLockAlreadyHeld: true,
+            };
+          }
+
+          effectiveFilePath = ready.persistedFilePath ?? file_path;
+          const persistedContent = ready.persistedContent ?? content;
+          pendingPath = (dependencies.getPendingPath ?? defaultPendingPath)(effectiveFilePath);
+          originalState = (dependencies.captureOriginalState ?? captureOriginalState)(effectiveFilePath);
+          lastEffectiveFilePath = effectiveFilePath;
+          lastPendingPath = pendingPath;
+
           (dependencies.writePendingAndPromote ?? writePendingAndPromote)(pendingPath, effectiveFilePath, persistedContent);
           promotedToFinalPath = true;
           anyPromotionAttempted = true;
@@ -333,14 +360,21 @@ export async function atomicIndexMemory<TPrepared = unknown>(
 
           if (lockedIndexResult.status === 'rejected') {
             handledFailureWhileLocked = true;
-            const rollbackResult = (dependencies.restoreOriginalState ?? restoreOriginalState)(effectiveFilePath, originalState);
+            const rollbackResult = (dependencies.restoreOriginalState ?? restoreOriginalState)(
+              effectiveFilePath,
+              originalState ?? captureOriginalState(effectiveFilePath),
+            );
             rollbackSucceededAfterRejectedSave = rollbackResult.restored;
             if (!rollbackResult.restored && rollbackResult.error) {
               mergeErrorMetadata({ rollbackError: rollbackResult.error });
             }
           }
 
-          return lockedIndexResult;
+          return {
+            kind: 'indexed',
+            indexResult: lockedIndexResult,
+            context: lockedContext,
+          } as const;
         } catch (lockedError: unknown) {
           handledFailureWhileLocked = true;
           const pendingCleanupResult = (dependencies.cleanupPendingFile ?? cleanupPendingFile)(pendingPath);
@@ -349,7 +383,10 @@ export async function atomicIndexMemory<TPrepared = unknown>(
           }
 
           if (promotedToFinalPath) {
-            const rollbackResult = (dependencies.restoreOriginalState ?? restoreOriginalState)(effectiveFilePath, originalState);
+            const rollbackResult = (dependencies.restoreOriginalState ?? restoreOriginalState)(
+              effectiveFilePath,
+              originalState ?? captureOriginalState(effectiveFilePath),
+            );
             restoredOriginalAfterFailure = rollbackResult.restored;
             if (!rollbackResult.restored && rollbackResult.error) {
               mergeErrorMetadata({ rollbackError: rollbackResult.error });
@@ -364,15 +401,21 @@ export async function atomicIndexMemory<TPrepared = unknown>(
         }
       });
 
+      if (lockedResult.kind === 'terminal') {
+        return lockedResult.result;
+      }
+
+      indexResult = lockedResult.indexResult;
+
       if (indexResult.status === 'error') {
         throw new Error(indexResult.message ?? indexResult.error ?? 'atomicIndexMemory indexPrepared returned status=error');
       }
 
       if (indexResult.status === 'rejected') {
-        return buildRejectedResult(effectiveFilePath, indexResult, rollbackSucceededAfterRejectedSave, errorMetadata);
+        return buildRejectedResult(lastEffectiveFilePath, indexResult, rollbackSucceededAfterRejectedSave, errorMetadata);
       }
 
-      successfulLockedContext = lockedContext;
+      successfulLockedContext = lockedResult.context;
       indexError = null;
       break;
     } catch (error: unknown) {

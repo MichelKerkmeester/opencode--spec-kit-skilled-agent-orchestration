@@ -1,5 +1,6 @@
 // MODULE: Deep-Loop Executor Audit
 
+import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 
 import type { ExecutorConfig } from './executor-config.js';
@@ -146,6 +147,81 @@ export function emitDispatchFailure(
     ...(detail ? { detail } : {}),
     timestamp: new Date().toISOString(),
   });
+}
+
+type RunAuditedExecutorCommandInput = {
+  command: string;
+  args: string[];
+  cwd: string;
+  timeoutSeconds: number;
+  stateLogPath: string;
+  executor: ExecutorConfig;
+  iteration: number;
+  input?: string;
+};
+
+/**
+ * Run a non-native executor command and translate timeout or crash paths into
+ * typed dispatch_failure events before the validator checks the iteration.
+ */
+export function runAuditedExecutorCommand(input: RunAuditedExecutorCommandInput): number {
+  const timeoutMs = Number.isFinite(input.timeoutSeconds)
+    ? Math.max(1000, Math.trunc(input.timeoutSeconds * 1000) - 1000)
+    : 1000;
+  const result = spawnSync(input.command, input.args, {
+    cwd: input.cwd,
+    encoding: 'utf8',
+    timeout: timeoutMs,
+    ...(typeof input.input === 'string' ? { input: input.input } : {}),
+  });
+
+  if (typeof result.stdout === 'string' && result.stdout.length > 0) {
+    process.stdout.write(result.stdout);
+  }
+  if (typeof result.stderr === 'string' && result.stderr.length > 0) {
+    process.stderr.write(result.stderr);
+  }
+
+  if (result.error) {
+    const isTimeoutError =
+      result.error.name === 'TimeoutError' ||
+      (typeof result.error === 'object' &&
+        result.error !== null &&
+        'code' in result.error &&
+        result.error.code === 'ETIMEDOUT');
+    emitDispatchFailure(
+      input.stateLogPath,
+      input.executor,
+      isTimeoutError ? 'timeout' : 'crash',
+      input.iteration,
+      result.error.message,
+    );
+    return 0;
+  }
+
+  if (typeof result.status === 'number' && result.status !== 0) {
+    emitDispatchFailure(
+      input.stateLogPath,
+      input.executor,
+      'crash',
+      input.iteration,
+      `executor exited with status ${result.status}`,
+    );
+    return 0;
+  }
+
+  if (typeof result.signal === 'string' && result.signal.length > 0) {
+    emitDispatchFailure(
+      input.stateLogPath,
+      input.executor,
+      'crash',
+      input.iteration,
+      `executor terminated by signal ${result.signal}`,
+    );
+    return 0;
+  }
+
+  return 0;
 }
 
 export function appendExecutorAuditToLastRecord(stateLogPath: string, executor: ExecutorConfig): void {

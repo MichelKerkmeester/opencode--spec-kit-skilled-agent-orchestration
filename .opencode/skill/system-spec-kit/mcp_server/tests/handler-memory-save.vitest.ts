@@ -644,6 +644,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       causalEdgesModuleFactory?: () => unknown | Promise<unknown>;
       vectorIndexMutationsModuleFactory?: () => unknown | Promise<unknown>;
       nodeFsModuleFactory?: () => unknown | Promise<unknown>;
+      specFolderMutexModuleFactory?: () => unknown | Promise<unknown>;
     } = {}) {
       vi.resetModules();
 
@@ -786,6 +787,11 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       if (options.nodeFsModuleFactory) {
         vi.doMock('node:fs', options.nodeFsModuleFactory as any);
+      }
+
+      if (options.specFolderMutexModuleFactory) {
+        vi.doMock('../handlers/save/spec-folder-mutex', options.specFolderMutexModuleFactory as any);
+        vi.doMock('../handlers/save/spec-folder-mutex.js', options.specFolderMutexModuleFactory as any);
       }
 
       vi.doMock('../utils/validators', async (importOriginal) => {
@@ -984,6 +990,8 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       vi.doUnmock('../lib/storage/causal-edges');
       vi.doUnmock('../lib/search/vector-index-mutations');
       vi.doUnmock('node:fs');
+      vi.doUnmock('../handlers/save/spec-folder-mutex');
+      vi.doUnmock('../handlers/save/spec-folder-mutex.js');
       vi.doUnmock('../lib/validation/save-quality-gate');
       vi.doUnmock('../lib/validation/save-quality-gate.js');
       vi.doUnmock('../lib/search/search-flags');
@@ -1194,6 +1202,95 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         expect.anything(),
         expect.anything(),
       );
+    });
+
+    it('rebuilds canonical routed merges after acquiring the spec-folder lock', async () => {
+      const fixture = createCanonicalRoutingFixture();
+      const parseMemoryContentMock = vi.fn((targetPath: string) => ({
+        ...buildParsedMemory(targetPath),
+        specFolder: 'system-spec-kit/999-atomic-save-fi',
+      }));
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({
+        id: 445,
+        specFolder: '999-atomic-save-fi',
+      }));
+      let lockCallCount = 0;
+      let releaseFirstLock: (() => void) | null = null;
+      let releaseSecondLock: (() => void) | null = null;
+      let signalFirstLockCall: (() => void) | null = null;
+      let signalSecondLockCall: (() => void) | null = null;
+      const firstLockCalled = new Promise<void>((resolve) => {
+        signalFirstLockCall = resolve;
+      });
+      const secondLockCalled = new Promise<void>((resolve) => {
+        signalSecondLockCall = resolve;
+      });
+      const firstLockReleased = new Promise<void>((resolve) => {
+        releaseFirstLock = resolve;
+      });
+      const secondLockReleased = new Promise<void>((resolve) => {
+        releaseSecondLock = resolve;
+      });
+
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock,
+        checkExistingRowMock,
+        specFolderMutexModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../handlers/save/spec-folder-mutex')>(
+            '../handlers/save/spec-folder-mutex'
+          );
+          return {
+            ...actual,
+            withSpecFolderLock: vi.fn(async (specFolder: string, callback: () => Promise<unknown>) => {
+              lockCallCount += 1;
+              if (lockCallCount === 1) {
+                signalFirstLockCall?.();
+                await firstLockReleased;
+              } else if (lockCallCount === 2) {
+                signalSecondLockCall?.();
+                await secondLockReleased;
+              }
+              return actual.withSpecFolderLock(specFolder, callback);
+            }),
+          };
+        },
+      });
+
+      const firstContent = 'Implemented first routed canonical merge in `atomic-index-memory.ts`.';
+      const secondContent = 'Implemented second routed canonical merge in `memory-save.ts`.';
+
+      const firstSavePromise = harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          content: firstContent,
+          routeAs: 'narrative_progress',
+          plannerMode: 'full-auto',
+        },
+        { force: true }
+      );
+      await firstLockCalled;
+
+      const secondSavePromise = harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          content: secondContent,
+          routeAs: 'narrative_progress',
+          plannerMode: 'full-auto',
+        },
+        { force: true }
+      );
+      await secondLockCalled;
+
+      releaseFirstLock?.();
+      const firstResult = await firstSavePromise;
+      releaseSecondLock?.();
+      const secondResult = await secondSavePromise;
+
+      const targetContent = fs.readFileSync(fixture.targetPath, 'utf8');
+      expect(firstResult.success).toBe(true);
+      expect(secondResult.success).toBe(true);
+      expect(targetContent).toContain(firstContent);
+      expect(targetContent).toContain(secondContent);
     });
 
     it('returns a non-mutating planner result for routed canonical saves by default', async () => {

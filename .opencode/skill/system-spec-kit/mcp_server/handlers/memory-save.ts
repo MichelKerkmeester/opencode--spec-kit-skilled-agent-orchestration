@@ -3109,6 +3109,26 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
           : currentContent,
       } as const;
     },
+    prepareLocked: async ({ ready, params: currentParams }) => {
+      if (!isCanonicalAtomicPrepared(ready.prepared)) {
+        return ready;
+      }
+
+      // Rebuild the canonical merge while the spec-folder lock is held so
+      // concurrent routed saves always merge against the latest on-disk doc.
+      const canonicalPrepared = await buildCanonicalAtomicPreparedSave(currentParams, database);
+      if (canonicalPrepared.status !== 'ready') {
+        return canonicalPrepared;
+      }
+
+      return {
+        status: 'ready',
+        prepared: canonicalPrepared.prepared,
+        specFolder: canonicalPrepared.prepared.preparedMemory.parsed.specFolder,
+        persistedContent: canonicalPrepared.persistedContent,
+        persistedFilePath: canonicalPrepared.persistedFilePath,
+      } as const;
+    },
     indexPrepared: ({ ready, params: currentParams, force }) => {
       const effectiveFilePath = ready.persistedFilePath ?? currentParams.file_path;
       const routedPrepared = isCanonicalAtomicPrepared(ready.prepared)

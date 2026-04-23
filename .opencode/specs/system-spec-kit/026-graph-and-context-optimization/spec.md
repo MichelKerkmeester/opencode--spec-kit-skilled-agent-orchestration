@@ -104,7 +104,7 @@ Provide one canonical nine-phase active map while preserving every original pack
 <!-- ANCHOR:phase-map -->
 ## PHASE DOCUMENTATION MAP
 
-> Active children are the nine thematic wrappers below. Historical phases `001` through `029` are preserved as direct child folders under each wrapper and mapped in `merged-phase-map.md`.
+> Active children are the nine thematic wrappers below. Historical phases `001` through `029` are preserved as direct child folders under each wrapper and mapped in `merged-phase-map.md`. The `Status` column tracks wrapper activity only; use the current-state model below to distinguish implemented, narrowed, reopened, and still-open follow-on work.
 
 | Phase | Folder | Theme | Child Phase Location | Status |
 |-------|--------|-------|----------------------|--------|
@@ -117,6 +117,17 @@ Provide one canonical nine-phase active map while preserving every original pack
 | 007 | `007-deep-review-remediation/` | Deep review waves and post-review remediation | `007-deep-review-remediation/001-deep-review-and-remediation/`, `007-deep-review-remediation/002-cli-executor-remediation/`, `007-deep-review-remediation/003-deep-review-remediation/`, `007-deep-review-remediation/004-r03-post-remediation/` | In Progress |
 | 008 | `008-runtime-executor-hardening/` | Foundational runtime, CLI executor matrix, and system hardening | `008-runtime-executor-hardening/001-foundational-runtime/`, `008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/`, `008-runtime-executor-hardening/003-system-hardening/` | In Progress |
 | 009 | `009-hook-daemon-parity/` | Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation | `009-hook-daemon-parity/001-skill-advisor-hook-surface/`, `009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/`, `009-hook-daemon-parity/003-hook-parity-remediation/` | In Progress |
+
+### Current State Model
+
+| State | Meaning For Sequencing | Current Root Examples |
+|-------|------------------------|-----------------------|
+| `implemented` | Shipped substrate exists and should not be treated as missing prerequisite work. | Shared trust axes and readiness primitives, planner-first memory-save substrate, Codex hook injection, search-routing measurement scaffolding |
+| `narrowed` | The original blocker framing was broader than the remaining work, which is now bounded to cleanup or acceptance follow-through. | Continuity artifact framing, trust-axis narrative cleanup, additive graph-enrichment guidance |
+| `reopened` | Later packet truth or reverts reopened a lane that once looked settled enough to de-prioritize. | Copilot wrapper parity reapply, code-graph scan-correctness recovery, release-evidence reconciliation |
+| `still-open` | Live acceptance or unresolved defects still block readiness promotion. | Memory-index acceptance reruns, full code-graph scan recovery, live routing telemetry, completion-proof governance |
+
+Research convergence in the archived `001-research-and-baseline` corpus means synthesis coverage closure only. Operational acceptance must be read from the active wrapper packets and their live verification evidence.
 
 ### Phase Transition Rules
 

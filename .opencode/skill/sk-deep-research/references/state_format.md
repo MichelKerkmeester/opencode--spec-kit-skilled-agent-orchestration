@@ -21,12 +21,12 @@ The deep research loop uses 6 primary state files plus one reducer-generated reg
 | `deep-research-strategy.md` | Markdown | Agent context ("persistent brain") | Updated each iteration |
 | `deep-research-dashboard.md` | Markdown | Auto-generated session summary | Auto-generated (read-only) |
 | `findings-registry.json` | JSON | Reducer-owned open/resolved questions and key findings | Auto-generated (read-only) |
-| `research/iterations/iteration-NNN.md` | Markdown | Detailed findings per iteration | Write-once |
-| `research/research.md` | Markdown | Workflow-owned canonical synthesis output | Updated incrementally only when `progressiveSynthesis` is enabled |
+| `{artifact_dir}/iterations/iteration-NNN.md` | Markdown | Detailed findings per iteration | Write-once |
+| `{artifact_dir}/research.md` | Markdown | Workflow-owned canonical synthesis output | Updated incrementally only when `progressiveSynthesis` is enabled |
 
-Research mode stores its runtime packet under `{spec_folder}/research/`, with iteration findings under `{spec_folder}/research/iterations/` and canonical synthesis at `{spec_folder}/research/research.md`. `research/research.md` is workflow-owned canonical synthesis output.
+Research mode stores its runtime packet under the canonical `{artifact_dir}` resolved by `resolveArtifactRoot(specFolder, 'research')` from `.opencode/skill/system-spec-kit/shared/review-research-paths.cjs`. For root packets this resolves to `{spec_folder}/research/`. For child phases it resolves to `{spec_tree_root}/research/{phaseSlug}-pt-{NN}/`, and prompts, state, deltas, iteration findings, and canonical synthesis all live under that same packet directory. `{artifact_dir}/research.md` is workflow-owned canonical synthesis output.
 
-The canonical pause sentinel is `research/.deep-research-pause`. Legacy names may be consumed during the migration window, but new writes must use the canonical `deep-research-*` names.
+The canonical pause sentinel is `{artifact_dir}/.deep-research-pause`. Legacy names may be consumed during the migration window, but new writes must use the canonical `deep-research-*` names.
 
 Runtime capability matrix references for parity-sensitive surfaces:
 - Human-readable matrix: `.opencode/skill/sk-deep-research/references/capability_matrix.md`

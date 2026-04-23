@@ -93,8 +93,8 @@ agent_config:
 # ─────────────────────────────────────────────────────────────────
 state_paths:
   # Template paths document the canonical packet layout. Runtime resolution happens via
-  # step_resolve_artifact_root plus the shared resolver, so child phases write into the
-  # spec tree root's research/ folder with a phase-path subfolder when needed.
+  # step_resolve_artifact_root plus the shared resolver, so child phases write every
+  # workflow-owned artifact into one root-level packet directory when needed.
   packet_dir: "{artifact_dir}"
   config: "{artifact_dir}/deep-research-config.json"
   state_log: "{artifact_dir}/deep-research-state.jsonl"
@@ -103,6 +103,7 @@ state_paths:
   dashboard: "{artifact_dir}/deep-research-dashboard.md"
   pause_sentinel: "{artifact_dir}/.deep-research-pause"
   lock_file: "{artifact_dir}/.deep-research.lock"
+  prompt_dir: "{artifact_dir}/prompts"
   iteration_dir: "{artifact_dir}/iterations"
   iteration_pattern: "{artifact_dir}/iterations/iteration-{NNN}.md"
   # Per-iteration structured delta stream (one file per iteration) — complement to the
@@ -123,8 +124,8 @@ workflow:
 
   step_resolve_artifact_root:
     description: "Resolve the root-level artifact directory for this spec tree"
-    note: "research/ folders are always resolved at the spec tree root, not inside nested child phases. If the target spec is a child phase, artifacts go to {root}/research/{phaseSlug}-pt-{NN}/ (phaseSlug = full child-phase segment, e.g. 019-system-hardening; NN = sequential zero-padded counter) and archives go to {root}/research_archive/{phaseSlug}-pt-{NN}/. Runtime also exposes the legacy child-local research directory for migration-only reads."
-    command: "node -e \"const path = require('node:path'); const { resolveArtifactRoot } = require('.opencode/skill/system-spec-kit/shared/review-research-paths.cjs'); const resolved = resolveArtifactRoot('{spec_folder}', 'research'); const artifactDir = resolved.subfolder ? path.join(resolved.rootDir, resolved.subfolder) : resolved.rootDir; const artifactArchiveRoot = resolved.subfolder ? path.join(path.dirname(resolved.rootDir), path.basename(resolved.rootDir) + '_archive', resolved.subfolder) : path.join(path.dirname(resolved.rootDir), path.basename(resolved.rootDir) + '_archive'); console.log(JSON.stringify({ ...resolved, artifactDir, artifactArchiveRoot, legacyLocalArtifactDir: '{spec_folder}/research' }));\""
+    note: "research/ folders are always resolved at the spec tree root, not inside nested child phases. If the target spec is a child phase, prompts, state, deltas, and synthesis all go to the same canonical packet at {root}/research/{phaseSlug}-pt-{NN}/ (phaseSlug = full child-phase segment, e.g. 019-system-hardening; NN = sequential zero-padded counter) and archives go to {root}/research_archive/{phaseSlug}-pt-{NN}/. Runtime also exposes the legacy child-local research directory for migration-only reads."
+    command: "node -e \"const { resolveArtifactRoot } = require('.opencode/skill/system-spec-kit/shared/review-research-paths.cjs'); const resolved = resolveArtifactRoot('{spec_folder}', 'research'); console.log(JSON.stringify({ ...resolved, legacyLocalArtifactDir: '{spec_folder}/research' }));\""
     outputs:
       - artifact_root_dir: "Resolved spec-tree root research directory"
       - artifact_subfolder: "Child phase subfolder ({phaseSlug}-pt-{NN}), else null"
@@ -150,7 +151,7 @@ workflow:
 
       step_create_directories:
         action: "Create spec folder and research packet directories if they don't exist"
-        command: "mkdir -p {state_paths.iteration_dir} {state_paths.delta_dir} {state_paths.archive_root}"
+        command: "mkdir -p {state_paths.prompt_dir} {state_paths.iteration_dir} {state_paths.delta_dir} {state_paths.archive_root}"
 
       step_resolve_canonical_names:
         action: "Resolve canonical research packet artifact names before classification"
@@ -484,7 +485,7 @@ workflow:
           render_prompt_pack:
             template_path: ".opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl"
             renderer: ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/prompt-pack.ts#renderPromptPack"
-            output_path: "{spec_folder}/research/prompts/iteration-{current_iteration}.md"
+            output_path: "{state_paths.prompt_dir}/iteration-{current_iteration}.md"
             variables:
               state_summary: "{state_summary}"
               research_topic: "{research_topic}"
@@ -515,33 +516,90 @@ workflow:
           wait_for_completion: true
         if_cli_codex:
           command: |
-            codex exec \
-              --model "{config.executor.model}" \
-              -c model_reasoning_effort="{config.executor.reasoningEffort}" \
-              -c service_tier="{config.executor.serviceTier}" \
-              -c approval_policy=never \
-              --sandbox workspace-write \
-              - < "{spec_folder}/research/prompts/iteration-{current_iteration}.md"
+            node --experimental-strip-types --input-type=module <<'EOF'
+            import { readFileSync } from 'node:fs';
+
+            import { runAuditedExecutorCommand } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts';
+
+            const executor = {
+              kind: 'cli-codex',
+              model: '{config.executor.model}',
+              reasoningEffort: '{config.executor.reasoningEffort}' === 'null' ? null : '{config.executor.reasoningEffort}',
+              serviceTier: '{config.executor.serviceTier}' === 'null' ? null : '{config.executor.serviceTier}',
+              sandboxMode: '{config.executor.sandboxMode}' === 'null' ? null : '{config.executor.sandboxMode}',
+              timeoutSeconds: Number('{config.executor.timeoutSeconds}'),
+            };
+
+            process.exit(
+              runAuditedExecutorCommand({
+                command: 'codex',
+                args: [
+                  'exec',
+                  '--model',
+                  executor.model,
+                  '-c',
+                  `model_reasoning_effort=${executor.reasoningEffort}`,
+                  '-c',
+                  `service_tier=${executor.serviceTier}`,
+                  '-c',
+                  'approval_policy=never',
+                  '--sandbox',
+                  'workspace-write',
+                  '-',
+                ],
+                cwd: '{repo_root}',
+                timeoutSeconds: executor.timeoutSeconds,
+                stateLogPath: '{state_paths.state_log}',
+                executor,
+                iteration: Number('{current_iteration}'),
+                input: readFileSync('{state_paths.prompt_dir}/iteration-{current_iteration}.md', 'utf8'),
+              }),
+            );
+            EOF
           working_directory: "{repo_root}"
           timeout_seconds: "{config.executor.timeoutSeconds}"
           wait_for_completion: true
         if_cli_copilot:
           command: |
-            PROMPT_PATH='{spec_folder}/research/prompts/iteration-{current_iteration}.md'
-            PROMPT_SIZE=$(wc -c < "$PROMPT_PATH" | tr -d ' ')
-            if [ "$PROMPT_SIZE" -le 16384 ]; then
-              copilot \
-                -p "$(cat "$PROMPT_PATH")" \
-                --model "{config.executor.model}" \
-                --allow-all-tools \
-                --no-ask-user
-            else
-              copilot \
-                -p "Read the instructions in @$PROMPT_PATH and follow them exactly. Do not deviate." \
-                --model "{config.executor.model}" \
-                --allow-all-tools \
-                --no-ask-user
-            fi
+            node --experimental-strip-types --input-type=module <<'EOF'
+            import { readFileSync } from 'node:fs';
+
+            import { runAuditedExecutorCommand } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts';
+
+            const promptPath = '{state_paths.prompt_dir}/iteration-{current_iteration}.md';
+            const prompt = readFileSync(promptPath, 'utf8');
+            const promptArg =
+              Buffer.byteLength(prompt, 'utf8') <= 16384
+                ? prompt
+                : `Read the instructions in @${promptPath} and follow them exactly. Do not deviate.`;
+            const executor = {
+              kind: 'cli-copilot',
+              model: '{config.executor.model}',
+              reasoningEffort: '{config.executor.reasoningEffort}' === 'null' ? null : '{config.executor.reasoningEffort}',
+              serviceTier: '{config.executor.serviceTier}' === 'null' ? null : '{config.executor.serviceTier}',
+              sandboxMode: '{config.executor.sandboxMode}' === 'null' ? null : '{config.executor.sandboxMode}',
+              timeoutSeconds: Number('{config.executor.timeoutSeconds}'),
+            };
+
+            process.exit(
+              runAuditedExecutorCommand({
+                command: 'copilot',
+                args: [
+                  '-p',
+                  promptArg,
+                  '--model',
+                  executor.model,
+                  '--allow-all-tools',
+                  '--no-ask-user',
+                ],
+                cwd: '{repo_root}',
+                timeoutSeconds: executor.timeoutSeconds,
+                stateLogPath: '{state_paths.state_log}',
+                executor,
+                iteration: Number('{current_iteration}'),
+              }),
+            );
+            EOF
           working_directory: "{repo_root}"
           timeout_seconds: "{config.executor.timeoutSeconds}"
           wait_for_completion: true
@@ -551,38 +609,105 @@ workflow:
             - "Large-prompt path relies on copilot honoring @path references within its prompt string"
         if_cli_gemini:
           command: |
-            gemini \
-              "$(cat '{spec_folder}/research/prompts/iteration-{current_iteration}.md')" \
-              -m "{config.executor.model}" \
-              -s none \
-              -y \
-              -o text
+            node --experimental-strip-types --input-type=module <<'EOF'
+            import { readFileSync } from 'node:fs';
+
+            import { runAuditedExecutorCommand } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts';
+
+            const executor = {
+              kind: 'cli-gemini',
+              model: '{config.executor.model}',
+              reasoningEffort: '{config.executor.reasoningEffort}' === 'null' ? null : '{config.executor.reasoningEffort}',
+              serviceTier: '{config.executor.serviceTier}' === 'null' ? null : '{config.executor.serviceTier}',
+              sandboxMode: '{config.executor.sandboxMode}' === 'null' ? null : '{config.executor.sandboxMode}',
+              timeoutSeconds: Number('{config.executor.timeoutSeconds}'),
+            };
+
+            process.exit(
+              runAuditedExecutorCommand({
+                command: 'gemini',
+                args: [
+                  readFileSync('{state_paths.prompt_dir}/iteration-{current_iteration}.md', 'utf8'),
+                  '-m',
+                  executor.model,
+                  '-s',
+                  'none',
+                  '-y',
+                  '-o',
+                  'text',
+                ],
+                cwd: '{repo_root}',
+                timeoutSeconds: executor.timeoutSeconds,
+                stateLogPath: '{state_paths.state_log}',
+                executor,
+                iteration: Number('{current_iteration}'),
+              }),
+            );
+            EOF
           working_directory: "{repo_root}"
           timeout_seconds: "{config.executor.timeoutSeconds}"
           wait_for_completion: true
           notes:
-            - "gemini accepts positional prompt or stdin; we use positional via command substitution"
+            - "gemini accepts positional prompt or stdin; the audited wrapper passes prompt text as the first positional argument"
             - "gemini has no reasoningEffort or serviceTier flags; model is the only lever"
             - "gemini model whitelist enforced at config parse (currently only gemini-3.1-pro-preview)"
         if_cli_claude_code:
           command: |
-            claude \
-              -p "$(cat '{spec_folder}/research/prompts/iteration-{current_iteration}.md')" \
-              --model "{config.executor.model}" \
-              --permission-mode acceptEdits \
-              --output-format text \
-              {optional_effort_flag}
+            node --experimental-strip-types --input-type=module <<'EOF'
+            import { readFileSync } from 'node:fs';
+
+            import { runAuditedExecutorCommand } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts';
+
+            const executor = {
+              kind: 'cli-claude-code',
+              model: '{config.executor.model}',
+              reasoningEffort: '{config.executor.reasoningEffort}' === 'null' ? null : '{config.executor.reasoningEffort}',
+              serviceTier: '{config.executor.serviceTier}' === 'null' ? null : '{config.executor.serviceTier}',
+              sandboxMode: '{config.executor.sandboxMode}' === 'null' ? null : '{config.executor.sandboxMode}',
+              timeoutSeconds: Number('{config.executor.timeoutSeconds}'),
+            };
+            const args = [
+              '-p',
+              readFileSync('{state_paths.prompt_dir}/iteration-{current_iteration}.md', 'utf8'),
+              '--model',
+              executor.model,
+              '--permission-mode',
+              'acceptEdits',
+              '--output-format',
+              'text',
+            ];
+            if (executor.reasoningEffort) {
+              args.push('--effort', executor.reasoningEffort);
+            }
+
+            process.exit(
+              runAuditedExecutorCommand({
+                command: 'claude',
+                args,
+                cwd: '{repo_root}',
+                timeoutSeconds: executor.timeoutSeconds,
+                stateLogPath: '{state_paths.state_log}',
+                executor,
+                iteration: Number('{current_iteration}'),
+              }),
+            );
+            EOF
           working_directory: "{repo_root}"
           timeout_seconds: "{config.executor.timeoutSeconds}"
           wait_for_completion: true
-          render_hint:
-            optional_effort_flag: |
-              If config.executor.reasoningEffort is set and non-null, expand to: --effort {config.executor.reasoningEffort}
-              Otherwise expand to empty string.
           notes:
             - "claude-code default permission-mode is 'plan' (read-only); we override to 'acceptEdits' for iteration writes"
             - "claude-code has no serviceTier flag"
             - "claude-code supports --effort for reasoning depth"
+        record_executor_audit:
+          skip_when: "config.executor.kind == 'native'"
+          target: "{state_paths.state_log}"
+          field: "executor"
+          value:
+            kind: "{config.executor.kind}"
+            model: "{config.executor.model}"
+            reasoningEffort: "{config.executor.reasoningEffort}"
+            serviceTier: "{config.executor.serviceTier}"
         post_dispatch_validate:
           validator: ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/post-dispatch-validate.ts#validateIterationOutputs"
           assert_exists: "{state_paths.iteration_pattern}"
@@ -606,15 +731,6 @@ workflow:
             - "delta_file_missing_iteration_record — delta file lacks any record with type='iteration'"
             - "executor_missing — non-native executor did not record provenance"
             - "dispatch_failure_logged — last record is an explicit dispatch_failure event"
-        record_executor_audit:
-          skip_when: "config.executor.kind == 'native'"
-          target: "{state_paths.state_log}"
-          field: "executor"
-          value:
-            kind: "{config.executor.kind}"
-            model: "{config.executor.model}"
-            reasoningEffort: "{config.executor.reasoningEffort}"
-            serviceTier: "{config.executor.serviceTier}"
 
       step_reduce_state:
         action: "Run the reducer to synchronize registry, dashboard, and strategy"

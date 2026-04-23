@@ -5,6 +5,9 @@ import type { FixtureToolContext } from './fixtures/manual-playbook-fixture.js';
 import { createManualPlaybookFixture } from './fixtures/manual-playbook-fixture.js';
 import { isMainModule } from '../lib/esm-entry.js';
 
+// Runner output stays aligned with the playbook contract: `UNAUTOMATABLE`
+// captures truthful manual-only boundaries, while packet summaries may layer on
+// `PARTIAL` separately when human review finds incomplete supporting evidence.
 type ScenarioStatus = 'PASS' | 'FAIL' | 'SKIP' | 'UNAUTOMATABLE';
 type StepKind = 'tool' | 'slash' | 'shell' | 'narrative';
 

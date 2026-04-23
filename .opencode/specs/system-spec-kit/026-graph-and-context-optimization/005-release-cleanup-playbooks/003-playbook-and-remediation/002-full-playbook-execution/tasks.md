@@ -89,6 +89,8 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
+Result-class contract for this packet: `PASS`, `FAIL`, `SKIP`, and `UNAUTOMATABLE` are the canonical playbook/runner scenario statuses; `PARTIAL` is a packet-summary overlay for scenarios where core behavior was observed but the evidence set stayed incomplete.
+
 | Category | Total | PASS | PARTIAL | FAIL | SKIP | UNAUTOMATABLE |
 |---|---:|---:|---:|---:|---:|---:|
 | 01--retrieval | 16 | 2 | 1 | 0 | 0 | 13 |

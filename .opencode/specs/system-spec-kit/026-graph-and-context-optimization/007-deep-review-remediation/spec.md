@@ -100,7 +100,7 @@ Keep this theme as an active parent while making each original phase packet a di
 | 2 | `002-cli-executor-remediation/` | Spec Ready | Feature Specification: Phase 020 Research-Findings Remediation |
 | 3 | `003-deep-review-remediation/` | Draft | Feature Specification: Phase 025 — Deep-Review Remediation |
 | 4 | `004-r03-post-remediation/` | Draft | Feature Specification: Phase 026 — R03 Post-Remediation Remediation |
-| 5 | `005-006-campaign-findings-remediation/` | Draft | Feature Specification: 005-006 Campaign Findings Remediation |
+| 5 | `005-006-campaign-findings-remediation/` | Blocked | Feature Specification: 005-006 Campaign Findings Remediation. Historical-source follow-up or ADR deferral required for CF-108 closure. |
 <!-- /ANCHOR:phase-map -->
 
 ---
@@ -113,6 +113,7 @@ Keep this theme as an active parent while making each original phase packet a di
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Preserve original child packet evidence. | Every mapped old phase exists as a direct child folder with root docs and metadata retained. |
+| REQ-004 | Route blocked historical-packet fixes to an authorized owner. | The `005-006-campaign-findings-remediation` blocker for CF-108 is tracked as a write-authorized follow-up that can edit the historical source packets, or an ADR records intentional immutability with owner and rationale. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -148,6 +149,7 @@ Keep this theme as an active parent while making each original phase packet a di
 |------|------|--------|------------|
 | Risk | Direct child folders may contain older validation debt | Medium | Validate the active parent separately and preserve child docs unchanged unless requested. |
 | Dependency | Root packet phase map | High | Root docs own the active nine-phase map. |
+| Dependency | Historical source-packet write authority for CF-108 | High | Route the blocked `005-006` remediation through a write-authorized follow-up, or ADR-defer the blocker if those source packets are intentionally immutable. |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -155,5 +157,5 @@ Keep this theme as an active parent while making each original phase packet a di
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- None. This parent records the requested flattened layout.
+- If the historical source packets needed for CF-108 are intentionally immutable, which ADR will record the deferral owner and rationale?
 <!-- /ANCHOR:questions -->

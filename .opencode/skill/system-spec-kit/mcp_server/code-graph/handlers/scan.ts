@@ -9,6 +9,7 @@ import { resolve, sep } from 'node:path';
 import { getDefaultConfig, type DetectorProvenance, type CodeEdge } from '../lib/indexer-types.js';
 import { indexFiles } from '../lib/structural-indexer.js';
 import * as graphDb from '../lib/code-graph-db.js';
+import { persistIndexedFileResult } from '../lib/ensure-ready.js';
 import { buildReadinessBlock } from '../lib/readiness-contract.js';
 
 export interface ScanArgs {
@@ -211,14 +212,7 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     }
 
     try {
-      const fileId = graphDb.upsertFile(
-        result.filePath, result.language, result.contentHash,
-        result.nodes.length, result.edges.length,
-        result.parseHealth, result.parseDurationMs,
-      );
-      graphDb.replaceNodes(fileId, result.nodes);
-      const sourceIds = result.nodes.map(n => n.symbolId);
-      graphDb.replaceEdges(sourceIds, result.edges);
+      persistIndexedFileResult(result);
 
       filesIndexed++;
       totalNodes += result.nodes.length;

@@ -2409,6 +2409,21 @@ def passes_dual_threshold(
     return confidence >= conf_threshold and uncertainty <= uncert_threshold
 
 
+def refresh_passes_threshold(
+    recommendations: List[Dict[str, Any]],
+    conf_threshold: float = DEFAULT_CONFIDENCE_THRESHOLD,
+    uncert_threshold: float = DEFAULT_UNCERTAINTY_THRESHOLD,
+) -> None:
+    """Recompute threshold state after score or uncertainty mutators run."""
+    for recommendation in recommendations:
+        recommendation["passes_threshold"] = passes_dual_threshold(
+            recommendation["confidence"],
+            recommendation["uncertainty"],
+            conf_threshold=conf_threshold,
+            uncert_threshold=uncert_threshold,
+        )
+
+
 def apply_confidence_calibration(recommendations: List[Dict[str, Any]]) -> None:
     """Adjust confidence using score margin and ambiguity pressure."""
     if not recommendations:
@@ -2826,15 +2841,9 @@ def analyze_request(
     # See CLAUDE.md / AGENTS.md Gate 4: SKILL-OWNED WORKFLOW ENFORCEMENT.
     _apply_iteration_loop_tiebreaker(recommendations, prompt_lower)
 
-    for recommendation in recommendations:
-        recommendation["passes_threshold"] = passes_dual_threshold(
-            recommendation["confidence"],
-            recommendation["uncertainty"],
-            conf_threshold=DEFAULT_CONFIDENCE_THRESHOLD,
-            uncert_threshold=DEFAULT_UNCERTAINTY_THRESHOLD,
-        )
-
+    refresh_passes_threshold(recommendations)
     _apply_graph_conflict_penalty(recommendations)
+    refresh_passes_threshold(recommendations)
 
     ranked = sorted(
         recommendations,
@@ -2848,6 +2857,7 @@ def analyze_request(
         reverse=True,
     )
     ranked = normalize_command_bridge_recommendations(ranked, prompt_lower)
+    refresh_passes_threshold(ranked)
 
     # Internal sort metadata should not leak in advisor output.
     for rec in ranked:

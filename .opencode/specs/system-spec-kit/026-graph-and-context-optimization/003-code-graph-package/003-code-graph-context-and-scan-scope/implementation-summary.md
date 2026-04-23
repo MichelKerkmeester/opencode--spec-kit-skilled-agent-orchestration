@@ -10,14 +10,14 @@ contextType: "spec"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
-    last_updated_at: "2026-04-23T13:30:00Z"
-    last_updated_by: "claude-opus-4-7-via-cli-codex-gpt-5.4"
-    recent_action: "Deep research (5 iters) identified 2 P0 bugs blocking the post-012 operator-driven scan: indexFiles() ignores caller's incremental flag (DB pruned to 33 stale-only files) and capturesToNodes() emits duplicate symbolIds for 3 indexer-self files (UNIQUE constraint failures)"
-    next_safe_action: "Open nested packet 012/002-incremental-fullscan-recovery and implement T-001..T-011 from research/007-deep-review-remediation-pt-04/research.md"
+    last_updated_at: "2026-04-23T14:30:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Full-scan readiness reopened pending recovery rerun"
+    next_safe_action: "Land 012/002, rerun full code_graph_scan, record baseline"
     blockers:
       - "Operator-driven code_graph_scan returns 33 files instead of expected ~1425 due to stale-gate bug in indexFiles()"
       - "3 UNIQUE constraint errors during scan persistence for indexer-self files"
-    completion_pct: 100
+    completion_pct: 85
     open_questions: []
     answered_questions:
       - "Stale graphs use the same getGraphStats() aggregate path as ready graphs and mark summary freshness with (stale)."
@@ -49,7 +49,7 @@ _memory:
 | **Spec Folder** | 003-code-graph-context-and-scan-scope |
 | **Completed** | 2026-04-23 |
 | **Level** | 2 |
-| **Outcome** | Complete |
+| **Outcome** | Code and docs landed, but authoritative full-scan readiness remains blocked until the recovery rerun is recorded |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -112,7 +112,7 @@ The implementation stayed inside the approved source/test/doc scope. I read the 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-- The existing graph DB was not rescanned, by request. Operators can apply the smaller scope later with `code_graph_scan` from the Public repo root.
+- The existing graph DB was not rescanned, and the later 33-file regression/duplicate-symbol recovery work means current scan counts are not authoritative until a live full-scan rerun is recorded after the recovery packet lands.
 - The local sandbox could not complete a registry-backed `npm install`; package metadata is updated, and a normal dependency refresh should install `ignore` directly.
 - `.gitignore` matching is additive with default excludes. Explicit custom `excludeGlobs` remain the caller override surface for scan policy.
 <!-- /ANCHOR:limitations -->

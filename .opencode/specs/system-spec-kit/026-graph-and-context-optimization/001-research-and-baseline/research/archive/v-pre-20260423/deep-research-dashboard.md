@@ -1,7 +1,7 @@
 # Deep Research Dashboard — Master Consolidation
 
 **Last updated:** 2026-04-08T08:17:02Z (canonical root refresh after the `002-codesight`, `003-contextador`, `004-graphify`, and `005-claudest` 20-iteration closeouts, plus bounded `006-research-memory-redundancy` follow-on visibility sync)
-**Status:** ✅ **COMPLETE** — 18 master iterations complete, the 002-005 closeout feed-ins are reflected in the canonical root synthesis, the derivative `006-research-memory-redundancy` follow-on is now visible in the continuity lane without changing the capability matrix, superseded snapshots are archived under `research/archive/`, and validation still **STRICT-FAILED WITH WARNINGS** from known decision-record anchor deviations outside the synced research files
+**Status:** ✅ **RESEARCH COMPLETE** — 18 master iterations complete, the 002-005 closeout feed-ins are reflected in the canonical root synthesis, the derivative `006-research-memory-redundancy` follow-on is now visible in the continuity lane without changing the capability matrix, superseded snapshots are archived under `research/archive/`, and validation still **STRICT-FAILED WITH WARNINGS** from known decision-record anchor deviations outside the synced research files. This archived dashboard records research convergence, not a clean operational-acceptance verdict for later implementation packets.
 **Iteration:** 18 / 18 complete; canonical refresh applied
 
 ---
@@ -13,7 +13,8 @@
 | Iterations completed | **18 / 18** (full ceiling reached) |
 | Final composite score | **0.82** (rigor-lane stable) |
 | Final new-info ratio | **0.08** (below 0.15 — natural convergence) |
-| Convergence flag | **CONVERGED** (v1: question-coverage + composite; v2: rigor-lane stable) |
+| Research convergence flag | **CONVERGED** (v1: question-coverage + composite; v2: rigor-lane stable) |
+| Operational acceptance | **NOT IMPLIED BY THIS ARCHIVE** — current packet reality now splits into implemented substrate, narrowed follow-on work, reopened lanes, and still-open live acceptance |
 | Gaps closed (after iter-10 re-attempt) | 20 closed / 4 partial / 2 UNKNOWN-confirmed of 26 |
 | Cross-phase questions answered | **6 / 6 ✓** + **4 new patterns** (iter-15) |
 | Current findings registry | **98** (promoted from the rigor-lane registry snapshot into `findings-registry.json`) |
@@ -21,7 +22,7 @@
 | Killer combos | 2 surviving / 1 falsified (Combo 3 failed the iter-12 stress-test) |
 | Canonical research citations | current `research.md` remains the citation-clean rigor-lane synthesis, now with 002-005 closeout framing folded in |
 | Public moats identified (iter-13) | 8 |
-| Public hidden prereqs (iter-13) | 11 |
+| Historical hidden prereqs snapshot (iter-13) | 11 in the archived corpus; do not treat this row as the current blocker ledger |
 | Effort corrections (iter-14) | 5 under-sized + 1 over-sized + 2 speculative |
 | Tokens spent (codex total) | ~3.45M (1.87M v1 + 1.58M rigor lane) |
 | Post-closeout feed-in | `002-codesight`, `003-contextador`, `004-graphify`, and `005-claudest` now 20 / 20; tightened projection-lane boundaries, ergonomics-vs-substrate boundary, additive graph enrichment guidance, and the Claudest six-packet train with no master verdict reversal |

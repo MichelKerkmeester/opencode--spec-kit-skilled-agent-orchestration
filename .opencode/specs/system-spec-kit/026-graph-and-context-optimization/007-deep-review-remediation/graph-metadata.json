@@ -8,7 +8,8 @@
     "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation",
     "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation",
     "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation",
-    "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation"
+    "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure"
   ],
   "migrated": true,
   "migration_source": "legacy",
@@ -137,7 +138,8 @@
       "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation",
       "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation",
       "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation",
-      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation"
+      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure"
     ]
   }
 }

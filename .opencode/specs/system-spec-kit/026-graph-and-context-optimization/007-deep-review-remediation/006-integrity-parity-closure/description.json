@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure",
+  "description": "Level 3 remediation sub-phase for closing integrity defects, parity drift, and governance gaps identified by the 026 cross-phase synthesis.",
+  "keywords": [
+    "feature",
+    "specification",
+    "integrity",
+    "parity",
+    "closure",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-23T21:53:25Z",
+  "specId": "006",
+  "folderSlug": "integrity-parity-closure",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-deep-review-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}
