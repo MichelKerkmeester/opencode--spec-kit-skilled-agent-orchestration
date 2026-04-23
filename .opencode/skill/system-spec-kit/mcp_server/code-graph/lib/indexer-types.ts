@@ -114,7 +114,7 @@ export function getDefaultConfig(rootDir: string): IndexerConfig {
   return {
     rootDir,
     includeGlobs: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts', '**/*.js', '**/*.jsx', '**/*.mjs', '**/*.cjs', '**/*.py', '**/*.sh', '**/*.bash', '**/*.zsh'],
-    excludeGlobs: ['**/node_modules/**', '**/dist/**', '**/.git/**', '**/vendor/**'],
+    excludeGlobs: ['**/node_modules/**', '**/dist/**', '**/.git/**', '**/vendor/**', '**/z_future/**', '**/z_archive/**', '**/mcp-coco-index/mcp_server/**'],
     maxFileSizeBytes: 102_400,
     languages: ['javascript', 'typescript', 'python', 'bash'],
   };

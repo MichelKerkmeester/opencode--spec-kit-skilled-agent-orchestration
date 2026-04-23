@@ -50,6 +50,7 @@
     "@spec-kit/shared": "file:../shared",
     "better-sqlite3": "^12.6.2",
     "chokidar": "^4.0.3",
+    "ignore": "^5.3.2",
     "onnxruntime-common": "^1.21.0",
     "sqlite-vec": "^0.1.7-alpha.2",
     "tree-sitter-wasms": "^0.1.13",

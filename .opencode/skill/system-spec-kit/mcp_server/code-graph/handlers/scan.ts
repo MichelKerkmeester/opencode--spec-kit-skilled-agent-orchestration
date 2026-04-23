@@ -26,6 +26,8 @@ export interface ScanResult {
   totalEdges: number;
   errors: string[];
   durationMs: number;
+  fullScanRequested: boolean;
+  effectiveIncremental: boolean;
   fullReindexTriggered?: boolean;
   currentGitHead?: string | null;
   previousGitHead?: string | null;
@@ -180,7 +182,7 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     console.error(`[code-graph-scan] Git HEAD changed (${previousGitHead} -> ${currentGitHead}); forcing full reindex`);
   }
 
-  const results = await indexFiles(config);
+  const results = await indexFiles(config, { skipFreshFiles: effectiveIncremental });
   const detectorProvenanceSummary = summarizeDetectorProvenance(results);
   const graphEdgeEnrichmentSummary = summarizeGraphEdgeEnrichment(results);
 
@@ -253,6 +255,8 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     totalEdges,
     errors: errors.slice(0, 10),
     durationMs: Date.now() - startTime,
+    fullScanRequested: args.incremental === false,
+    effectiveIncremental,
     fullReindexTriggered,
     currentGitHead,
     previousGitHead,

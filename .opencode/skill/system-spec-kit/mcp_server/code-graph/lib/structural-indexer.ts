@@ -7,13 +7,59 @@
 // Extracts symbols and relationships from JS/TS/Python/Shell.
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { relative, resolve } from 'node:path';
+import { createRequire } from 'node:module';
+import { dirname, join, relative, resolve } from 'node:path';
 import type {
   CodeNode, CodeEdge, ParseResult, SupportedLanguage,
   IndexerConfig, SymbolKind, DetectorProvenance,
 } from './indexer-types.js';
 import { generateSymbolId, generateContentHash, detectLanguage } from './indexer-types.js';
 import { isFileStale } from './code-graph-db.js';
+
+interface IgnoreInstance {
+  add(patterns: string | string[]): IgnoreInstance;
+  ignores(pathname: string): boolean;
+}
+
+type IgnoreFactory = () => IgnoreInstance;
+
+interface GitignoreContext {
+  baseDir: string;
+  matcher: IgnoreInstance;
+}
+
+interface FileFindResult {
+  files: string[];
+  excludedByDefault: number;
+  excludedByGitignore: number;
+}
+
+export interface IndexFilesOptions {
+  skipFreshFiles?: boolean;
+}
+
+const require = createRequire(import.meta.url);
+let ignoreFactory: IgnoreFactory | null = null;
+
+function resolveIgnoreFactory(ignoreModule: unknown): IgnoreFactory | null {
+  let candidate = ignoreModule;
+  for (let i = 0; i < 4; i++) {
+    if (
+      candidate
+      && (typeof candidate === 'object' || typeof candidate === 'function')
+      && 'default' in Object(candidate)
+      && (candidate as { default?: unknown }).default !== candidate
+    ) {
+      candidate = (candidate as { default?: unknown }).default;
+      continue;
+    }
+    if (typeof candidate === 'function') {
+      return candidate as IgnoreFactory;
+    }
+    break;
+  }
+  return null;
+}
 
 interface ParserAdapter {
   parse(content: string, language: SupportedLanguage): ParseResult;
@@ -751,12 +797,17 @@ export function capturesToNodes(
     contentHash: generateContentHash(content),
   };
 
-  const symbolNodes = captures.map(c => {
+  const seenSymbolIds = new Set<string>([moduleNode.symbolId]);
+  const symbolNodes = captures.flatMap(c => {
+    const fqName = getCaptureFqName(c);
+    const symbolId = generateSymbolId(filePath, fqName, c.kind);
+    if (seenSymbolIds.has(symbolId)) return [];
+    seenSymbolIds.add(symbolId);
     const rangeText = lines.slice(c.startLine - 1, c.endLine).join('\n');
-    return {
-      symbolId: generateSymbolId(filePath, getCaptureFqName(c), c.kind),
+    return [{
+      symbolId,
       filePath,
-      fqName: getCaptureFqName(c),
+      fqName,
       kind: c.kind,
       name: c.name,
       startLine: c.startLine,
@@ -766,7 +817,7 @@ export function capturesToNodes(
       language,
       signature: c.signature,
       contentHash: generateContentHash(rangeText),
-    };
+    }];
   });
 
   if (content.trim().length === 0) {
@@ -1076,14 +1127,75 @@ function shouldExcludePath(
   return excludePatterns.some(pattern => pattern.test(candidatePath));
 }
 
+function loadIgnoreFactory(): IgnoreFactory {
+  if (ignoreFactory) {
+    return ignoreFactory;
+  }
+
+  try {
+    ignoreFactory = resolveIgnoreFactory(require('ignore'));
+  } catch {
+    const eslintPackagePath = require.resolve('eslint/package.json');
+    ignoreFactory = resolveIgnoreFactory(require(join(dirname(eslintPackagePath), 'node_modules/ignore/index.js')));
+  }
+
+  if (!ignoreFactory) {
+    throw new Error('ignore package did not export a factory function');
+  }
+  return ignoreFactory;
+}
+
+function loadGitignore(
+  directoryPath: string,
+  gitignoreCache: Map<string, IgnoreInstance | null>,
+): IgnoreInstance | null {
+  if (gitignoreCache.has(directoryPath)) {
+    return gitignoreCache.get(directoryPath) ?? null;
+  }
+
+  try {
+    const content = readFileSync(resolve(directoryPath, '.gitignore'), 'utf-8');
+    const factory = loadIgnoreFactory();
+    const matcher = factory();
+    matcher.add(content.split(/\r?\n/));
+    gitignoreCache.set(directoryPath, matcher);
+    return matcher;
+  } catch {
+    gitignoreCache.set(directoryPath, null);
+    return null;
+  }
+}
+
+function isGitignored(
+  fullPath: string,
+  isDirectory: boolean,
+  contexts: GitignoreContext[],
+): boolean {
+  return contexts.some(({ baseDir, matcher }) => {
+    const relativePath = normalizeGlobPath(relative(baseDir, fullPath));
+    if (relativePath.startsWith('../') || relativePath === '..' || relativePath === '') {
+      return false;
+    }
+    const candidatePath = isDirectory ? `${relativePath}/` : relativePath;
+    return matcher.ignores(candidatePath);
+  });
+}
+
 /** Recursive file finder matching extension from glob pattern */
-function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], maxSize: number): string[] {
+function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], maxSize: number): FileFindResult {
   const extMatch = pattern.match(/\*\.(\w+)$/);
   const targetExt = extMatch ? '.' + extMatch[1] : null;
   const results: string[] = [];
   const excludePatterns = excludeGlobs.map(globToRegExp);
+  const gitignoreCache = new Map<string, IgnoreInstance | null>();
+  let excludedByDefault = 0;
+  let excludedByGitignore = 0;
 
-  function walk(currentDir: string): void {
+  function walk(currentDir: string, inheritedGitignores: GitignoreContext[]): void {
+    const localGitignore = loadGitignore(currentDir, gitignoreCache);
+    const activeGitignores = localGitignore
+      ? [...inheritedGitignores, { baseDir: currentDir, matcher: localGitignore }]
+      : inheritedGitignores;
     let entries;
     try {
       entries = readdirSync(currentDir, { withFileTypes: true });
@@ -1091,10 +1203,17 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
 
     for (const entry of entries) {
       const fullPath = resolve(currentDir, entry.name);
-      if (shouldExcludePath(rootDir, fullPath, excludePatterns, entry.isDirectory())) continue;
+      if (shouldExcludePath(rootDir, fullPath, excludePatterns, entry.isDirectory())) {
+        excludedByDefault++;
+        continue;
+      }
+      if (isGitignored(fullPath, entry.isDirectory(), activeGitignores)) {
+        excludedByGitignore++;
+        continue;
+      }
 
       if (entry.isDirectory()) {
-        walk(fullPath);
+        walk(fullPath, activeGitignores);
       } else if (entry.isFile()) {
         if (targetExt && !entry.name.endsWith(targetExt)) continue;
         try {
@@ -1109,19 +1228,26 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
     }
   }
 
-  walk(rootDir);
-  return results;
+  walk(rootDir, []);
+  return { files: results, excludedByDefault, excludedByGitignore };
 }
 
 /** Index all matching files in the workspace */
-export async function indexFiles(config: IndexerConfig): Promise<ParseResult[]> {
+export async function indexFiles(config: IndexerConfig, options: IndexFilesOptions = {}): Promise<ParseResult[]> {
   const results: ParseResult[] = [];
+  const skipFreshFiles = options.skipFreshFiles ?? true;
   const allFiles = new Set<string>();
+  let excludedByDefault = 0;
+  let excludedByGitignore = 0;
 
   for (const pattern of config.includeGlobs) {
     const found = findFiles(config.rootDir, pattern, config.excludeGlobs, config.maxFileSizeBytes);
-    found.forEach(f => allFiles.add(f));
+    excludedByDefault += found.excludedByDefault;
+    excludedByGitignore += found.excludedByGitignore;
+    found.files.forEach(f => allFiles.add(f));
   }
+
+  console.info(`[structural-indexer] scanned ${allFiles.size} files (excluded: gitignored=${excludedByGitignore}, default=${excludedByDefault})`);
 
   for (const file of allFiles) {
     const language = detectLanguage(file);
@@ -1130,7 +1256,7 @@ export async function indexFiles(config: IndexerConfig): Promise<ParseResult[]> 
     // P1 perf: skip read+parse for files whose mtime matches the DB record.
     // isFileStale returns true when the file is absent from the DB or its
     // mtime has changed — only then do we pay the I/O + parse cost.
-    if (!isFileStale(file)) continue;
+    if (skipFreshFiles && !isFileStale(file)) continue;
 
     try {
       const content = readFileSync(file, 'utf-8');

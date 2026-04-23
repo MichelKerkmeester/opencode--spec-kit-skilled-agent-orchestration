@@ -224,10 +224,11 @@ export function buildStructuralBootstrapContract(
   let summary: string;
   let highlights: string[] | undefined;
 
-  if (status === 'ready') {
+  if (status === 'ready' || status === 'stale') {
     try {
       const stats = getGraphStats();
-      summary = `Code graph: ${stats.totalFiles} files, ${stats.totalNodes} nodes, ${stats.totalEdges} edges (fresh)`;
+      const freshnessLabel = status === 'stale' ? 'stale' : 'fresh';
+      summary = `Code graph: ${stats.totalFiles} files, ${stats.totalNodes} nodes, ${stats.totalEdges} edges (${freshnessLabel})`;
       const topKinds = Object.entries(stats.nodesByKind)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 5);
@@ -235,14 +236,9 @@ export function buildStructuralBootstrapContract(
         highlights = topKinds.map(([kind, count]) => `${kind}: ${count}`);
       }
     } catch {
-      summary = 'Code graph available (structural context ready)';
-    }
-  } else if (status === 'stale') {
-    try {
-      const stats = getGraphStats();
-      summary = `Code graph: ${stats.totalFiles} files, ${stats.totalNodes} nodes (stale — structural reads may refresh inline or recommend code_graph_scan)`;
-    } catch {
-      summary = 'Code graph data is stale — structural context may be outdated';
+      summary = status === 'stale'
+        ? 'Code graph data is stale — structural context may be outdated'
+        : 'Code graph available (structural context ready)';
     }
   } else {
     summary = 'No structural context available — code graph is empty or unavailable';

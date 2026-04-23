@@ -1,7 +1,25 @@
 // ───────────────────────────────────────────────────────────────
 // TEST: Phase 027 — Structural Bootstrap Contract
 // ───────────────────────────────────────────────────────────────
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join, relative } from 'node:path';
+import { afterEach, describe, it, expect, vi, beforeEach } from 'vitest';
+
+const tempDirs: string[] = [];
+
+function createTempRoot(): string {
+  const tempRoot = mkdtempSync(join(tmpdir(), 'structural-contract-'));
+  tempDirs.push(tempRoot);
+  return tempRoot;
+}
+
+function writeFixture(root: string, relativePath: string, content = 'export function fixture() { return 1; }\n'): string {
+  const filePath = join(root, relativePath);
+  mkdirSync(dirname(filePath), { recursive: true });
+  writeFileSync(filePath, content);
+  return filePath;
+}
 
 function freshGraphMock(overrides: Record<string, unknown> = {}) {
   return {
@@ -33,6 +51,19 @@ function setupSharedMocks() {
     getLastToolCallAt: vi.fn(() => null),
   }));
 }
+
+afterEach(() => {
+  for (const dir of tempDirs.splice(0)) {
+    rmSync(dir, { recursive: true, force: true });
+  }
+  delete process.env.SPECKIT_PARSER;
+  vi.doUnmock('node:child_process');
+  vi.doUnmock('node:fs');
+  vi.doUnmock('../code-graph/lib/code-graph-db.js');
+  vi.doUnmock('../code-graph/lib/structural-indexer.js');
+  vi.resetModules();
+  vi.restoreAllMocks();
+});
 
 describe('buildStructuralBootstrapContract', () => {
   beforeEach(() => {
@@ -81,10 +112,30 @@ describe('buildStructuralBootstrapContract', () => {
 
     expect(contract.status).toBe('stale');
     expect(contract.summary).toContain('stale');
-    expect(contract.highlights).toBeUndefined();
     expect(contract.recommendedAction).toContain('bounded inline refresh');
     expect(contract.sourceSurface).toBe('session_bootstrap');
     expect(contract.provenance?.trustState).toBe('stale');
+  });
+
+  it('returns stale highlights and freshness marker for populated stale graphs', async () => {
+    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+      getStats: vi.fn(() => freshGraphMock({
+        nodesByKind: { function: 9, class: 4, interface: 2 },
+      })),
+    }));
+    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
+      getGraphFreshness: vi.fn(() => 'stale'),
+    }));
+    setupSharedMocks();
+
+    const { buildStructuralBootstrapContract } = await import('../lib/session/session-snapshot.js');
+    const contract = buildStructuralBootstrapContract('session_resume');
+
+    expect(contract.status).toBe('stale');
+    expect(contract.summary).toContain('(stale)');
+    expect(contract.highlights).toBeDefined();
+    expect(contract.highlights!.length).toBeGreaterThan(0);
+    expect(contract.highlights).toContain('function: 9');
   });
 
   it('returns missing status when graph is empty', async () => {
@@ -191,5 +242,180 @@ describe('buildStructuralBootstrapContract', () => {
     }).length / 4);
 
     expect(estimatedTokens).toBeLessThanOrEqual(500);
+  });
+});
+
+describe('indexFiles options', () => {
+  beforeEach(() => {
+    vi.resetModules();
+    vi.restoreAllMocks();
+    process.env.SPECKIT_PARSER = 'regex';
+  });
+
+  it('returns all post-exclude files when skipFreshFiles=false', async () => {
+    const tempRoot = createTempRoot();
+    writeFixture(tempRoot, 'one.ts');
+    writeFixture(tempRoot, 'two.ts');
+    writeFixture(tempRoot, 'three.ts');
+
+    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+      isFileStale: vi.fn(() => false),
+    }));
+
+    const { getDefaultConfig } = await import('../code-graph/lib/indexer-types.js');
+    const { indexFiles } = await import('../code-graph/lib/structural-indexer.js');
+    const results = await indexFiles({
+      ...getDefaultConfig(tempRoot),
+      includeGlobs: ['**/*.ts'],
+      languages: ['typescript'],
+    }, { skipFreshFiles: false });
+
+    const indexedPaths = results.map(result => relative(tempRoot, result.filePath).replace(/\\/g, '/')).sort();
+    expect(indexedPaths).toEqual(['one.ts', 'two.ts', 'three.ts'].sort());
+  });
+
+  it('skips fresh files when skipFreshFiles=true', async () => {
+    const tempRoot = createTempRoot();
+    const staleFile = writeFixture(tempRoot, 'stale.ts');
+    writeFixture(tempRoot, 'fresh-a.ts');
+    writeFixture(tempRoot, 'fresh-b.ts');
+
+    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+      isFileStale: vi.fn((filePath: string) => filePath === staleFile),
+    }));
+
+    const { getDefaultConfig } = await import('../code-graph/lib/indexer-types.js');
+    const { indexFiles } = await import('../code-graph/lib/structural-indexer.js');
+    const results = await indexFiles({
+      ...getDefaultConfig(tempRoot),
+      includeGlobs: ['**/*.ts'],
+      languages: ['typescript'],
+    }, { skipFreshFiles: true });
+
+    expect(results.map(result => relative(tempRoot, result.filePath).replace(/\\/g, '/'))).toEqual(['stale.ts']);
+  });
+
+  it('preserves stale-only behavior when option omitted', async () => {
+    const tempRoot = createTempRoot();
+    const staleFile = writeFixture(tempRoot, 'stale.ts');
+    writeFixture(tempRoot, 'fresh.ts');
+
+    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+      isFileStale: vi.fn((filePath: string) => filePath === staleFile),
+    }));
+
+    const { getDefaultConfig } = await import('../code-graph/lib/indexer-types.js');
+    const { indexFiles } = await import('../code-graph/lib/structural-indexer.js');
+    const results = await indexFiles({
+      ...getDefaultConfig(tempRoot),
+      includeGlobs: ['**/*.ts'],
+      languages: ['typescript'],
+    });
+
+    expect(results.map(result => relative(tempRoot, result.filePath).replace(/\\/g, '/'))).toEqual(['stale.ts']);
+  });
+});
+
+describe('scan handler integration - incremental:false', () => {
+  beforeEach(() => {
+    vi.resetModules();
+    vi.restoreAllMocks();
+  });
+
+  function setupScanMocks(indexResults: unknown[]) {
+    const indexFilesMock = vi.fn(async () => indexResults);
+    const removeFileMock = vi.fn();
+
+    vi.doMock('node:child_process', () => ({
+      execSync: vi.fn(() => 'same-head\n'),
+    }));
+    vi.doMock('node:fs', () => ({
+      existsSync: vi.fn(() => true),
+      realpathSync: vi.fn((pathValue: string) => pathValue),
+    }));
+    vi.doMock('../code-graph/lib/structural-indexer.js', () => ({
+      indexFiles: indexFilesMock,
+    }));
+    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+      getLastGitHead: vi.fn(() => 'same-head'),
+      setLastDetectorProvenance: vi.fn(),
+      setLastDetectorProvenanceSummary: vi.fn(),
+      setLastGraphEdgeEnrichmentSummary: vi.fn(),
+      setLastGitHead: vi.fn(),
+      isFileStale: vi.fn(() => false),
+      upsertFile: vi.fn(() => 1),
+      replaceNodes: vi.fn(),
+      replaceEdges: vi.fn(),
+      removeFile: removeFileMock,
+      getTrackedFiles: vi.fn(() => indexResults.map(result => (result as { filePath: string }).filePath)),
+      getStats: vi.fn(() => ({ lastScanTimestamp: '2026-04-23T00:00:00.000Z' })),
+    }));
+
+    return { indexFilesMock, removeFileMock };
+  }
+
+  function parseScanPayload(response: { content: Array<{ text: string }> }) {
+    return JSON.parse(response.content[0].text) as {
+      status: string;
+      data: {
+        filesScanned: number;
+        filesIndexed: number;
+        fullScanRequested: boolean;
+        effectiveIncremental: boolean;
+      };
+    };
+  }
+
+  it('passes skipFreshFiles=false for caller-requested full scans', async () => {
+    const scanResults = Array.from({ length: 3 }, (_, index) => ({
+      filePath: `/workspace/file-${index}.ts`,
+      language: 'typescript',
+      contentHash: `hash-${index}`,
+      nodes: [{ symbolId: `symbol-${index}` }],
+      edges: [],
+      detectorProvenance: 'structured',
+      parseHealth: 'clean',
+      parseDurationMs: 1,
+      parseErrors: [],
+    }));
+    const { indexFilesMock } = setupScanMocks(scanResults);
+
+    const { handleCodeGraphScan } = await import('../code-graph/handlers/scan.js');
+    const response = await handleCodeGraphScan({ rootDir: process.cwd(), incremental: false });
+    const payload = parseScanPayload(response);
+
+    expect(indexFilesMock).toHaveBeenCalledWith(expect.any(Object), { skipFreshFiles: false });
+    expect(payload.status).toBe('ok');
+    expect(payload.data.filesScanned).toBe(3);
+    expect(payload.data.filesIndexed).toBe(3);
+    expect(payload.data.fullScanRequested).toBe(true);
+    expect(payload.data.effectiveIncremental).toBe(false);
+  });
+
+  it('is idempotent for repeated caller-requested full scans with the same indexer results', async () => {
+    const scanResults = [
+      {
+        filePath: '/workspace/current.ts',
+        language: 'typescript',
+        contentHash: 'hash-current',
+        nodes: [{ symbolId: 'current-symbol' }],
+        edges: [],
+        detectorProvenance: 'structured',
+        parseHealth: 'clean',
+        parseDurationMs: 1,
+        parseErrors: [],
+      },
+    ];
+    const { indexFilesMock } = setupScanMocks(scanResults);
+
+    const { handleCodeGraphScan } = await import('../code-graph/handlers/scan.js');
+    const first = parseScanPayload(await handleCodeGraphScan({ rootDir: process.cwd(), incremental: false }));
+    const second = parseScanPayload(await handleCodeGraphScan({ rootDir: process.cwd(), incremental: false }));
+
+    expect(indexFilesMock).toHaveBeenCalledTimes(2);
+    expect(second.data.filesScanned).toBe(first.data.filesScanned);
+    expect(second.data.filesIndexed).toBe(first.data.filesIndexed);
+    expect(second.data.fullScanRequested).toBe(true);
+    expect(second.data.effectiveIncremental).toBe(false);
   });
 });
