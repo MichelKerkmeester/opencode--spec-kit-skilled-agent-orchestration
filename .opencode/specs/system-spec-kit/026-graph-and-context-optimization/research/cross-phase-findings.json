@@ -1,0 +1,708 @@
+{
+  "generated_at": "2026-04-23T00:00:00+02:00",
+  "phases": [
+    "001-research-and-baseline",
+    "002-continuity-memory-runtime",
+    "003-code-graph-package",
+    "004-agent-governance-and-commands",
+    "005-release-cleanup-playbooks",
+    "006-search-routing-advisor",
+    "007-deep-review-remediation",
+    "008-runtime-executor-hardening",
+    "009-hook-daemon-parity",
+    "010-memory-indexer-lineage-and-concurrency-fix"
+  ],
+  "total_unique_findings": 28,
+  "by_severity": {
+    "P0": 9,
+    "P1": 16,
+    "P2": 3
+  },
+  "cross_cutting_themes": [
+    {
+      "title": "Operational proof trails implementation",
+      "severity": "P0",
+      "phases": [
+        "001",
+        "003",
+        "005",
+        "006",
+        "008",
+        "010"
+      ]
+    },
+    {
+      "title": "Documentation and status surfaces drift from runtime truth",
+      "severity": "P1",
+      "phases": [
+        "001",
+        "002",
+        "004",
+        "005",
+        "007",
+        "009"
+      ]
+    },
+    {
+      "title": "Cross-runtime parity remains uneven",
+      "severity": "P1",
+      "phases": [
+        "001",
+        "007",
+        "008",
+        "009"
+      ]
+    },
+    {
+      "title": "Concurrency and freshness guards rely on partial contracts",
+      "severity": "P0",
+      "phases": [
+        "001",
+        "002",
+        "003",
+        "010"
+      ]
+    },
+    {
+      "title": "Deep-loop governance is not self-enforcing",
+      "severity": "P0",
+      "phases": [
+        "004",
+        "007",
+        "008"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "CF-001",
+      "severity": "P0",
+      "phases": [
+        "001"
+      ],
+      "category": "architecture",
+      "summary": "The archived root roadmap and convergence labels are stale enough to mis-sequence follow-on work because shipped substrate is still represented as missing or unfinished.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/research/iterations/iteration-01.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/research/archive/v-pre-20260423/deep-research-dashboard.md:13-29",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/research/iterations/iteration-09.md#Findings"
+      ],
+      "recommended_fix": "Refresh the root packet state model so it distinguishes implemented, narrowed, reopened, and still-open work, and separate research convergence from operational acceptance.",
+      "target_files": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/research/archive/v-pre-20260423/deep-research-dashboard.md"
+      ]
+    },
+    {
+      "id": "CF-002",
+      "severity": "P0",
+      "phases": [
+        "001",
+        "010"
+      ],
+      "category": "correctness",
+      "summary": "Operational acceptance for indexing and scan recovery is still open even after the major design-level fixes landed, so current scan/index results are not yet authoritative.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/research/iterations/iteration-04.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/research/iterations/iteration-07.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix/research/iterations/iteration-09.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix/implementation-summary.md:97-104"
+      ],
+      "recommended_fix": "Rerun the blocked memory-index and code-graph acceptance flows in a live-capable runtime and only promote readiness claims after the reruns are recorded in packet docs.",
+      "target_files": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix/implementation-summary.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix/checklist.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/implementation-summary.md"
+      ]
+    },
+    {
+      "id": "CF-003",
+      "severity": "P1",
+      "phases": [
+        "001",
+        "006"
+      ],
+      "category": "performance",
+      "summary": "Search-routing efficacy is still backed mostly by predictive or observe-only telemetry, so the current routing quality story lacks operational proof.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/research/iterations/iteration-05.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/research/iterations/iteration-07.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/research/iterations/iteration-09.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run/implementation-summary.md:48-64"
+      ],
+      "recommended_fix": "Finish the blocked live-routing measurement path, record real wrapper telemetry, and make readiness claims depend on live measurement rather than predictive counters alone.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-telemetry.ts",
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run/implementation-summary.md"
+      ]
+    },
+    {
+      "id": "CF-004",
+      "severity": "P1",
+      "phases": [
+        "001",
+        "007",
+        "009"
+      ],
+      "category": "correctness",
+      "summary": "Cross-runtime hook parity remains incomplete because Copilot wrapper/schema reapply work is still reverted and the remediation backlog has drifted behind current 009 truth.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/research/iterations/iteration-06.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/research/iterations/iteration-08.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/research/iterations/iteration-03.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix/implementation-summary.md:24",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring/implementation-summary.md:24"
+      ],
+      "recommended_fix": "Reapply the reverted Copilot wrapper and writer wiring, then rebuild the 007 backlog so it tracks the actual 009 parity map rather than the frozen cleanup packet.",
+      "target_files": [
+        ".claude/settings.local.json",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix/implementation-summary.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring/implementation-summary.md"
+      ]
+    },
+    {
+      "id": "CF-005",
+      "severity": "P0",
+      "phases": [
+        "002"
+      ],
+      "category": "correctness",
+      "summary": "Concurrent routed full-auto saves can lose earlier writes because canonical merge preparation happens before the folder lock is acquired.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/research/iterations/iteration-05.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:299-332",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1427-1563"
+      ],
+      "recommended_fix": "Move canonical merge preparation under the folder lock, or regenerate the merge inside the locked section before any promoted write occurs.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts"
+      ]
+    },
+    {
+      "id": "CF-006",
+      "severity": "P1",
+      "phases": [
+        "002"
+      ],
+      "category": "correctness",
+      "summary": "The resume ladder contract has drifted across code, tests, and docs: precedence, archive fallback, and parent-handover traversal no longer describe the same behavior.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/research/iterations/iteration-02.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/research/iterations/iteration-03.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/research/iterations/iteration-04.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/resume/resume-ladder.ts:601-688",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:902-916"
+      ],
+      "recommended_fix": "Choose one resume contract, implement it end-to-end, and update the Gate D and Gate E packet docs and tests to match the shipped selection logic.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/resume/resume-ladder.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/004-gate-d-reader-ready/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration/spec.md"
+      ]
+    },
+    {
+      "id": "CF-007",
+      "severity": "P1",
+      "phases": [
+        "002",
+        "010"
+      ],
+      "category": "architecture",
+      "summary": "Save and index concurrency safeguards still rely on partial contracts: the mutex is process-local, fromScan remains a soft boolean bypass, and the riskiest routed or scoped regressions are still missing.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/research/iterations/iteration-06.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/research/iterations/iteration-07.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix/research/iterations/iteration-08.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix/research/iterations/iteration-09.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/spec-folder-mutex.ts:9-27",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/types.ts:282-301"
+      ],
+      "recommended_fix": "Promote the save/index guardrails from convention to hard contract by adding interprocess coordination or explicit limits, replacing fromScan with an internal-only wrapper, and covering routed plus scoped regressions.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/spec-folder-mutex.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/types.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-index.vitest.ts"
+      ]
+    },
+    {
+      "id": "CF-008",
+      "severity": "P2",
+      "phases": [
+        "002"
+      ],
+      "category": "docs",
+      "summary": "The continuity packet still has packet-local traceability drift in its research path and flattened numbering, which weakens discovery and search alignment.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/research/iterations/iteration-01.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/research/iterations/iteration-09.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/spec.md:157-165",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/spec.md:2-14"
+      ],
+      "recommended_fix": "Repair the packet-local research pointer and normalize the flattened packet numbering so discovery and traceability surfaces point at the same artifact set.",
+      "target_files": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/implementation-summary.md"
+      ]
+    },
+    {
+      "id": "CF-009",
+      "severity": "P0",
+      "phases": [
+        "001",
+        "003"
+      ],
+      "category": "correctness",
+      "summary": "The manual code_graph_scan path still bypasses the staged persistence discipline used by ensure-ready, so failed writes can mark broken files fresh and hide stale structural data.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/research/iterations/iteration-07.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/research/iterations/iteration-01.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ensure-ready.ts:198-233",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts:213-228"
+      ],
+      "recommended_fix": "Extract one staged persistence helper and force both ensure-ready refreshes and manual scans through the same commit path.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ensure-ready.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts"
+      ]
+    },
+    {
+      "id": "CF-010",
+      "severity": "P1",
+      "phases": [
+        "001",
+        "003"
+      ],
+      "category": "correctness",
+      "summary": "The code-graph trust surface is internally inconsistent because parser provenance, freshness labels, and detector vocabulary do not stay aligned across query, context, and startup payloads.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/research/iterations/iteration-02.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/research/iterations/iteration-06.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:198-212",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/readiness-contract.ts:119-157",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts:612-713"
+      ],
+      "recommended_fix": "Route all trust metadata through one provenance mapping layer and make query, context, startup, and docs consume the same emitted values.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/readiness-contract.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md"
+      ]
+    },
+    {
+      "id": "CF-011",
+      "severity": "P1",
+      "phases": [
+        "003"
+      ],
+      "category": "architecture",
+      "summary": "The code-graph public schemas lag the runtime handlers, so validated inputs cannot reach unionMode or the richer seed shapes accepted by the implementation.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/research/iterations/iteration-02.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/research/iterations/iteration-03.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:452-476",
+        ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:570-585"
+      ],
+      "recommended_fix": "Bring the code-graph schemas into parity with the handler interfaces, or intentionally narrow the handlers and remove the dead fields.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts"
+      ]
+    },
+    {
+      "id": "CF-012",
+      "severity": "P1",
+      "phases": [
+        "003"
+      ],
+      "category": "performance",
+      "summary": "Code-graph refresh performance is still under-hardened because selective reindexing walks the full tree and the short readiness debounce is not keyed by workspace or options.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/research/iterations/iteration-05.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ensure-ready.ts:324-329",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts:1185-1260",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/research/findings-registry.json#F-006"
+      ],
+      "recommended_fix": "Add a direct stale-file refresh path and key readiness debounce entries by root and scan options so unrelated requests cannot reuse the same freshness decision.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ensure-ready.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts"
+      ]
+    },
+    {
+      "id": "CF-013",
+      "severity": "P2",
+      "phases": [
+        "003"
+      ],
+      "category": "correctness",
+      "summary": "Residual code-graph cleanup debt remains in dangling-edge reconciliation and in post-migration docs and regression coverage.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/research/iterations/iteration-08.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/research/iterations/iteration-09.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/research/iterations/iteration-10.md#Findings"
+      ],
+      "recommended_fix": "Add targeted regression coverage for edge reconciliation after dedup and refresh the package docs to match the migrated runtime contract.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/README.md",
+        ".opencode/skill/system-spec-kit/mcp_server/tests"
+      ]
+    },
+    {
+      "id": "CF-014",
+      "severity": "P0",
+      "phases": [
+        "004"
+      ],
+      "category": "architecture",
+      "summary": "Child-phase deep-research runs use a split artifact layout: docs promise phase-local research roots while the live resolver writes state into the root packet and leaves prompts elsewhere.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/research/iterations/iteration-06.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/research/iterations/iteration-07.md#Findings",
+        ".opencode/skill/sk-deep-research/references/state_format.md:24-27",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:94-133",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:45-100"
+      ],
+      "recommended_fix": "Pick one artifact-root contract for child phases and route prompts, state, deltas, and synthesis through the same canonical location.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        ".opencode/skill/sk-deep-research/references/state_format.md"
+      ]
+    },
+    {
+      "id": "CF-015",
+      "severity": "P1",
+      "phases": [
+        "004"
+      ],
+      "category": "docs",
+      "summary": "Agent-governance and command documentation is inconsistent with the live runtime contract across Codex agent extensions, mode syntax, convergence math, README indexes, and cleanup status claims.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/research/iterations/iteration-01.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/research/iterations/iteration-04.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/research/iterations/iteration-05.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/research/iterations/iteration-10.md#Findings",
+        ".codex/agents/orchestrate.toml:154-163"
+      ],
+      "recommended_fix": "Make one runtime contract authoritative and regenerate the operator surfaces from it so syntax, agent tables, READMEs, and cleanup status stay synchronized.",
+      "target_files": [
+        "AGENTS.md",
+        ".opencode/skill/sk-deep-research/SKILL.md",
+        ".opencode/command/spec_kit/deep-research.md",
+        ".opencode/command/spec_kit/deep-review.md",
+        ".opencode/skill/sk-deep-research/references/quick_reference.md",
+        ".opencode/skill/sk-deep-research/references/convergence.md",
+        ".opencode/agent/README.txt",
+        ".codex/agents/README.txt",
+        ".gemini/agents/README.txt",
+        ".codex/agents/context.toml",
+        ".codex/agents/orchestrate.toml"
+      ]
+    },
+    {
+      "id": "CF-016",
+      "severity": "P1",
+      "phases": [
+        "004"
+      ],
+      "category": "architecture",
+      "summary": "Deep-research governance rules for spec-folder markdown writes are stronger in policy than in workflow enforcement, so research outputs can bypass the same validation discipline they are supposed to follow.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/research/iterations/iteration-08.md#Findings",
+        "AGENTS.md:325-327",
+        ".opencode/skill/system-spec-kit/SKILL.md:61-63",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:213-240",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:728-739"
+      ],
+      "recommended_fix": "Either codify a research-specific governance exemption or add explicit validation hooks so the workflow enforces the same markdown-write rules it advertises.",
+      "target_files": [
+        "AGENTS.md",
+        ".opencode/skill/system-spec-kit/SKILL.md",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml"
+      ]
+    },
+    {
+      "id": "CF-017",
+      "severity": "P0",
+      "phases": [
+        "005"
+      ],
+      "category": "correctness",
+      "summary": "The release-cleanup manual-testing contract is internally inconsistent because the playbook forbids UNAUTOMATABLE while the runner and packet evidence depend on it as a core result class.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/research/iterations/iteration-06.md#Findings",
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:9",
+        ".opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts:8",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/tasks.md:92"
+      ],
+      "recommended_fix": "Normalize the playbook, runner, and packet-level result-class vocabulary before using the wrapper as a release gate.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
+        ".opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/tasks.md"
+      ]
+    },
+    {
+      "id": "CF-018",
+      "severity": "P1",
+      "phases": [
+        "005"
+      ],
+      "category": "docs",
+      "summary": "Release-cleanup packet evidence has drifted from current reality: prompt-rewrite validation is stale, former blockers no longer reproduce, artifact roots still point at retired packets, and scenario counts disagree.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/research/iterations/iteration-02.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/research/iterations/iteration-04.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/research/iterations/iteration-05.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/research/iterations/iteration-07.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/research/iterations/iteration-08.md#Findings"
+      ],
+      "recommended_fix": "Re-run the wrapper-level release sweep on the current tree and then rewrite packet docs, artifact roots, and count summaries from live runner output rather than inherited prose.",
+      "target_files": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/checklist.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/tasks.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/implementation-summary.md",
+        ".opencode/skill/system-spec-kit/scripts/tests/fixtures/manual-playbook-fixture.ts"
+      ]
+    },
+    {
+      "id": "CF-019",
+      "severity": "P0",
+      "phases": [
+        "006"
+      ],
+      "category": "correctness",
+      "summary": "Skill-advisor threshold decisions freeze before graph conflict penalties are applied, so conflicting skills can remain marked as passing.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/research/iterations/iteration-06.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:972-975",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py:2829-2837"
+      ],
+      "recommended_fix": "Recompute passes_threshold after all score and uncertainty mutators run, or derive pass/fail only once at the very end of recommendation assembly.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py"
+      ]
+    },
+    {
+      "id": "CF-020",
+      "severity": "P1",
+      "phases": [
+        "006"
+      ],
+      "category": "correctness",
+      "summary": "The live search-routing pipeline has contract drift: continuity intent is hidden behind internal injection, adaptiveFuse behavior is bypassed, graph attribution is only partially calibrated, and small-list rerank skips leave mistakes uncorrected.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/research/iterations/iteration-01.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/research/iterations/iteration-02.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/research/iterations/iteration-03.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/research/iterations/iteration-04.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1221-1253",
+        ".opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:138-249"
+      ],
+      "recommended_fix": "Make the public classifier and live pipeline use the same intent and fusion contract, expose per-signal graph attribution, and only skip rerank when the fallback quality is proven equivalent.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/search-utils.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts",
+        ".opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/graph-calibration.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts"
+      ]
+    },
+    {
+      "id": "CF-021",
+      "severity": "P1",
+      "phases": [
+        "006",
+        "009"
+      ],
+      "category": "docs",
+      "summary": "Hook lifecycle naming is still inconsistent across routing and parity docs, implementation summaries, and fallback tests, so operators are shown surfaces that do not match the tested contract.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/research/iterations/iteration-08.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/research/iterations/iteration-05.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/implementation-summary.md:117-123",
+        ".opencode/skill/system-spec-kit/references/config/hook_system.md:59-67",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/cross-runtime-fallback.vitest.ts:102"
+      ],
+      "recommended_fix": "Freeze the canonical runtime hook vocabulary in one shared source and update implementation summaries, operator docs, and fallback fixtures from that source.",
+      "target_files": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/implementation-summary.md",
+        ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/cross-runtime-fallback.vitest.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/spec-kit-skill-advisor-plugin.vitest.ts"
+      ]
+    },
+    {
+      "id": "CF-022",
+      "severity": "P0",
+      "phases": [
+        "007"
+      ],
+      "category": "correctness",
+      "summary": "The 005-006 campaign remediation still has a live P0 blocker (CF-108) because the strict-validation failure reproduces and the fix requires historical source-packet authority that the prior remediation pass did not have.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/research/iterations/iteration-06.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality/checklist.md:59",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality/checklist.md:66"
+      ],
+      "recommended_fix": "Create a write-authorized follow-up that can edit the historical source packets needed by CF-108, or formally defer the blocker with an ADR if those packets are intentionally immutable.",
+      "target_files": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality/checklist.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/spec.md"
+      ]
+    },
+    {
+      "id": "CF-023",
+      "severity": "P1",
+      "phases": [
+        "007"
+      ],
+      "category": "docs",
+      "summary": "Deep-review remediation status surfaces are stale against landed work and current 009 truth: shipped packets still read as draft or spec-ready, and the old cleanup backlog no longer matches the live parity map.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/research/iterations/iteration-02.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/research/iterations/iteration-04.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/research/iterations/iteration-07.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/research/iterations/iteration-08.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/spec.md:106-115"
+      ],
+      "recommended_fix": "Rebuild the 007 remediation ledger from current child packet state, then reconcile 007 and 009 parent surfaces so they stop advertising stale completion or stale backlog items.",
+      "target_files": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation/tasks.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation/tasks.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/spec.md"
+      ]
+    },
+    {
+      "id": "CF-024",
+      "severity": "P1",
+      "phases": [
+        "007"
+      ],
+      "category": "correctness",
+      "summary": "Session-completion governance still permits false completion and false routing because status extraction can auto-complete without explicit proof and /complete still advertises @debug while dispatching a generic agent.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/research/iterations/iteration-09.md#Findings",
+        ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:443-524",
+        ".opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml:920-929"
+      ],
+      "recommended_fix": "Require explicit completion evidence before auto-complete and align the complete-confirm dispatch path with the documented debug escalation behavior.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts",
+        ".opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml"
+      ]
+    },
+    {
+      "id": "CF-025",
+      "severity": "P0",
+      "phases": [
+        "008"
+      ],
+      "category": "correctness",
+      "summary": "The non-native executor runtime is still fail-by-contract because canonical iteration records omit executor metadata while validation requires it, and timeout/crash helpers are not wired into live dispatch.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/research/iterations/iteration-01.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/research/iterations/iteration-05.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/research/iterations/iteration-10.md#Findings",
+        ".opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl:38-48",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/post-dispatch-validate.ts:145-150",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:586-617"
+      ],
+      "recommended_fix": "Write executor metadata into the first canonical non-native iteration record and emit typed timeout or dispatch-failure events before validator and recovery logic runs.",
+      "target_files": [
+        ".opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/post-dispatch-validate.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml"
+      ]
+    },
+    {
+      "id": "CF-026",
+      "severity": "P1",
+      "phases": [
+        "008"
+      ],
+      "category": "security",
+      "summary": "CLI executor hardening is still incomplete because permission controls are not consistently executable, Copilot's large-prompt wrapper lacks live proof, and failure-path coverage is still mostly unit-level.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/research/iterations/iteration-02.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/research/iterations/iteration-03.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/research/iterations/iteration-08.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/research/iterations/iteration-09.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts:30-35",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:516-585"
+      ],
+      "recommended_fix": "Either make sandbox and permission controls real in every CLI branch or remove them from the public contract, then add live smoke coverage for Copilot wrapper and failure-path behavior.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/cli-matrix.vitest.ts",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix/implementation-summary.md"
+      ]
+    },
+    {
+      "id": "CF-027",
+      "severity": "P1",
+      "phases": [
+        "009"
+      ],
+      "category": "architecture",
+      "summary": "Hook-runtime readiness detection and operator guidance are still inconsistent across runtimes: Codex can report live too easily, Gemini docs lag checked-in events, Copilot detection keys off generic hooks, and startup or daemon status is still inferred from weak proxies.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/research/iterations/iteration-02.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/research/iterations/iteration-04.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/research/iterations/iteration-05.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/research/iterations/iteration-06.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/research/iterations/iteration-07.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts:219"
+      ],
+      "recommended_fix": "Tighten readiness detection to the documented prerequisites, normalize runtime hook naming and startup inputs, and stop treating freshness artifacts as sufficient proof of daemon availability.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts",
+        ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/runtime-detection.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-status.ts"
+      ]
+    },
+    {
+      "id": "CF-028",
+      "severity": "P2",
+      "phases": [
+        "010"
+      ],
+      "category": "correctness",
+      "summary": "Memory-indexer hardening still lacks direct regression proof for null canonical-path fallback and tenant or session scoped fromScan flows.",
+      "evidence": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix/research/iterations/iteration-03.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix/research/iterations/iteration-09.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/pe-orchestration.ts:28-40",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-index.vitest.ts:742-819"
+      ],
+      "recommended_fix": "Add direct regressions for null canonical_file_path fallback and scoped fromScan saves so the hardening claims are packet-local and explicit.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/pe-orchestration.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/pe-orchestration.vitest.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-index.vitest.ts"
+      ]
+    }
+  ]
+}
