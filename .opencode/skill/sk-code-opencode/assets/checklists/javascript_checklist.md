@@ -130,6 +130,8 @@ module.exports = { functionName, CONSTANT };
 module.exports = functionName;
 ```
 
+**Exception**: Files in `.opencode/plugins/` and `.opencode/plugin-helpers/` MUST use ESM (`export default`) — see `quality_standards.md` §10 OpenCode Plugin Exemption Tier.
+
 **Wrong** (for Node.js in this codebase):
 ```javascript
 export { function_name };

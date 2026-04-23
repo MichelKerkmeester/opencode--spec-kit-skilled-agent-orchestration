@@ -500,8 +500,89 @@ console.log('PASS: All config tests passed');
 ---
 
 <!-- /ANCHOR:test-file-exemption-tier -->
+<!-- ANCHOR:opencode-plugin-exemption-tier -->
+## 10. OPENCODE PLUGIN EXEMPTION TIER
+
+OpenCode plugin entrypoints and helper modules are exempt from the CommonJS export standard because the OpenCode plugin loader requires ESM default exports. This exemption is narrow and does not relax other JavaScript quality standards.
+
+### Scope
+
+This exemption applies to:
+- `.opencode/plugins/*.{js,mjs,ts}`
+- `.opencode/plugin-helpers/*.{js,mjs,ts}`
+
+### Exempted Standards
+
+| Standard                           | Reason for Exemption                                                               |
+|------------------------------------|------------------------------------------------------------------------------------|
+| `module.exports` requirement       | OpenCode plugin loader requires ESM default export per `@opencode-ai/plugin/dist/index.d.ts` |
+
+### What Still Applies
+
+All other quality standards remain in effect for OpenCode plugin files, including:
+- `'use strict'` directive
+- JSDoc on exports
+- Guard clauses
+- Security patterns
+- Error handling
+- Bracketed logging if logging exists
+- Numbered ALL-CAPS section dividers
+- `UPPER_SNAKE_CASE` constants
+- `camelCase` functions
+
+### Brief Example
+
+```javascript
+// ╔══════════════════════════════════════════════════════════════════════════╗
+// ║ COMPONENT: Example OpenCode Plugin                                      ║
+// ╠══════════════════════════════════════════════════════════════════════════╣
+// ║ PURPOSE: Show the allowed ESM default export with required structure.    ║
+// ╚══════════════════════════════════════════════════════════════════════════╝
+'use strict';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 1. IMPORTS
+// ─────────────────────────────────────────────────────────────────────────────
+
+import { tool } from '@opencode-ai/plugin';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 2. CONSTANTS
+// ─────────────────────────────────────────────────────────────────────────────
+
+const PLUGIN_ID = 'example-plugin';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 3. PLUGIN FACTORY
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Create the example OpenCode plugin hooks.
+ *
+ * @param {Object} ctx - OpenCode plugin context
+ * @param {Object} [options] - Plugin options
+ * @returns {Promise<Object>} Hooks object for the OpenCode plugin loader
+ */
+export default async function ExamplePlugin(ctx, options = {}) {
+  return {
+    tool: {
+      example_status: tool({
+        description: 'Show example plugin status',
+        args: {},
+        async execute() {
+          return `plugin_id=${PLUGIN_ID}`;
+        },
+      }),
+    },
+  };
+}
+```
+
+---
+
+<!-- /ANCHOR:opencode-plugin-exemption-tier -->
 <!-- ANCHOR:related-resources -->
-## 10. RELATED RESOURCES
+## 11. RELATED RESOURCES
 
 - [style_guide.md](./style_guide.md) - Formatting and naming conventions
 - [quick_reference.md](./quick_reference.md) - Copy-paste templates and cheat sheets
