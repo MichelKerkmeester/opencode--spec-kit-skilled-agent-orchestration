@@ -26,13 +26,13 @@
     "postinstall": "node scripts/setup/record-node-version.js"
   },
   "overrides": {
-    "hono": "^4.12.12",
+    "hono": "^4.12.14",
     "@hono/node-server": "^1.19.13",
     "vite": "^8.0.5",
     "picomatch": "^4.0.4",
     "path-to-regexp": "^8.4.0",
     "@modelcontextprotocol/sdk": {
-      "hono": "^4.12.12",
+      "hono": "^4.12.14",
       "@hono/node-server": "^1.19.13"
     },
     "onnxruntime-node": {
