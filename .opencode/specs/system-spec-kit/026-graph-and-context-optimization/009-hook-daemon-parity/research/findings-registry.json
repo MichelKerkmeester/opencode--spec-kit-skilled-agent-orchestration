@@ -1,0 +1,83 @@
+{
+  "phase": "009-hook-daemon-parity",
+  "findings": [
+    {
+      "id": "F-001",
+      "severity": "P1",
+      "category": "architecture",
+      "summary": "Codex readiness is overstated because docs require codex_hooks plus hooks.json, but the checked-in config omits codex_hooks and the detector still returns live from .codex/settings.json alone.",
+      "evidence": [
+        "iteration-02.md#Findings",
+        ".codex/config.toml:43",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts:219",
+        ".opencode/skill/system-spec-kit/references/config/hook_system.md:67"
+      ],
+      "recommended_fix": "Make the checked-in Codex contract and the detector agree: either add the missing activation prerequisites or tighten detectCodexHookPolicy so live requires the documented feature flag and hook registration."
+    },
+    {
+      "id": "F-002",
+      "severity": "P1",
+      "category": "correctness",
+      "summary": "Copilot wrapper parity is still reverted: the live .claude/settings.local.json lacks the top-level wrapper fields and writer commands that packets 010 and 011 say must be reapplied.",
+      "evidence": [
+        "iteration-03.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix/implementation-summary.md:24",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring/implementation-summary.md:24",
+        ".claude/settings.local.json:24"
+      ],
+      "recommended_fix": "Reapply packets 010 and 011 in .claude/settings.local.json and add a regression test that asserts the top-level Copilot wrapper fields and writer commands remain present."
+    },
+    {
+      "id": "F-003",
+      "severity": "P1",
+      "category": "docs",
+      "summary": "Gemini's live hook surface uses BeforeAgent, PreCompress, and SessionEnd, but docs and fallback tests still describe older or Claude-shaped names and availability assumptions.",
+      "evidence": [
+        "iteration-05.md#Findings",
+        ".gemini/settings.json:83",
+        ".gemini/settings.json:95",
+        ".opencode/skill/system-spec-kit/references/config/hook_system.md:59",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/cross-runtime-fallback.vitest.ts:102"
+      ],
+      "recommended_fix": "Align Gemini docs and runtime fixtures to the checked-in event names, or introduce a single normalization layer that both docs and tests consume."
+    },
+    {
+      "id": "F-004",
+      "severity": "P2",
+      "category": "architecture",
+      "summary": "Copilot readiness detection keys off generic .github hook files, so unrelated Copilot hooks such as Superset can make Spec Kit parity appear enabled.",
+      "evidence": [
+        "iteration-04.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/runtime-detection.ts:82",
+        ".github/hooks/superset-notify.json:4",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/README.md:64"
+      ],
+      "recommended_fix": "Detect Spec Kit Copilot readiness from .claude/settings.local.json wrapper presence, not from any .github/hooks sessionStart file."
+    },
+    {
+      "id": "F-005",
+      "severity": "P2",
+      "category": "architecture",
+      "summary": "Startup parity is still uneven: Claude and Codex thread cached-summary and spec-folder-aware continuity into startup context, while Gemini and Copilot use thinner startup builders.",
+      "evidence": [
+        "iteration-06.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:218",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:129",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:153"
+      ],
+      "recommended_fix": "Refactor a shared startup-state adapter so Gemini and Copilot can pass the same continuity inputs as Claude, even if their transport output stays runtime-specific."
+    },
+    {
+      "id": "F-006",
+      "severity": "P2",
+      "category": "other",
+      "summary": "advisor_status conflates daemon availability with freshness readability, so operators can read daemonAvailable as true even when no daemon PID or process evidence is present.",
+      "evidence": [
+        "iteration-07.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-status.ts:93",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness/trust-state.ts:29"
+      ],
+      "recommended_fix": "Split freshness from daemon process presence in advisor_status and back daemon-running reporting with a real PID/lease/heartbeat source."
+    }
+  ]
+}

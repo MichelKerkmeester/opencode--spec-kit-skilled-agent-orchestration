@@ -1,0 +1,11 @@
+{"type":"config","topic":"command-surface drift, agent-definition inconsistencies across runtimes, runtime-directory gaps, and governance rule enforcement","maxIterations":10,"convergenceThreshold":0.05,"createdAt":"2026-04-23T21:03:42Z","specFolder":".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands"}
+{"type":"iteration","iteration":1,"newInfoRatio":1.0,"status":"new-territory","focus":"Codex runtime agent path references still point to .md copies","timestamp":"2026-04-23T21:10:00Z"}
+{"type":"iteration","iteration":2,"newInfoRatio":0.86,"status":"new-territory","focus":"Runtime README drift after handover/speckit cleanup","timestamp":"2026-04-23T21:12:00Z"}
+{"type":"iteration","iteration":3,"newInfoRatio":0.77,"status":"new-territory","focus":"@general runtime-directory gap versus built-in behavior","timestamp":"2026-04-23T21:14:00Z"}
+{"type":"iteration","iteration":4,"newInfoRatio":0.68,"status":"new-territory","focus":"Command invocation syntax drift for deep-research and deep-review","timestamp":"2026-04-23T21:16:00Z"}
+{"type":"iteration","iteration":5,"newInfoRatio":0.58,"status":"new-territory","focus":"Convergence model weight drift across deep-research references","timestamp":"2026-04-23T21:18:00Z"}
+{"type":"iteration","iteration":6,"newInfoRatio":0.47,"status":"new-territory","focus":"Research artifact root contract drift for child-phase packets","timestamp":"2026-04-23T21:20:00Z"}
+{"type":"iteration","iteration":7,"newInfoRatio":0.35,"status":"converging","focus":"Prompt-pack output path splits deep-research artifacts across directories","timestamp":"2026-04-23T21:22:00Z"}
+{"type":"iteration","iteration":8,"newInfoRatio":0.24,"status":"converging","focus":"Distributed-governance enforcement gap in deep-research writes","timestamp":"2026-04-23T21:24:00Z"}
+{"type":"iteration","iteration":9,"newInfoRatio":0.18,"status":"converging","focus":"Runtime-source-of-truth ambiguity between AGENTS and workflow assets","timestamp":"2026-04-23T21:26:00Z"}
+{"type":"iteration","iteration":10,"newInfoRatio":0.12,"status":"converging","focus":"Phase 002 completion claims versus current live runtime surfaces","timestamp":"2026-04-23T21:28:00Z"}

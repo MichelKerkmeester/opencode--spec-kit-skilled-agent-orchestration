@@ -1,0 +1,10 @@
+{"type":"iteration","iteration":1,"newInfoRatio":0.82,"status":"new-territory","focus":"Packet baseline and child-state map","timestamp":"2026-04-23T14:00:00Z"}
+{"type":"iteration","iteration":2,"newInfoRatio":0.71,"status":"new-territory","focus":"Phase 020 stale closeout surfaces","timestamp":"2026-04-23T14:07:00Z"}
+{"type":"iteration","iteration":3,"newInfoRatio":0.44,"status":"converging","focus":"Phase 025 residuals after shipped remediation","timestamp":"2026-04-23T14:14:00Z"}
+{"type":"iteration","iteration":4,"newInfoRatio":0.63,"status":"new-territory","focus":"Phase 026 contradictory scaffold versus closure","timestamp":"2026-04-23T14:22:00Z"}
+{"type":"iteration","iteration":5,"newInfoRatio":0.47,"status":"new-territory","focus":"005-006 parent and child status drift","timestamp":"2026-04-23T14:31:00Z"}
+{"type":"iteration","iteration":6,"newInfoRatio":0.31,"status":"converging","focus":"Real unresolved blockers in 005-006 early child packets","timestamp":"2026-04-23T14:40:00Z"}
+{"type":"iteration","iteration":7,"newInfoRatio":0.28,"status":"converging","focus":"Reconcile 007/001 status-cleanup tasks against current 009 state","timestamp":"2026-04-23T14:49:00Z"}
+{"type":"iteration","iteration":8,"newInfoRatio":0.22,"status":"new-territory","focus":"Drift introduced after 009 landed that 007 no longer models","timestamp":"2026-04-23T14:58:00Z"}
+{"type":"iteration","iteration":9,"newInfoRatio":0.11,"status":"converging","focus":"Live code versus stale-task audit for cross-cutting status issues","timestamp":"2026-04-23T15:08:00Z"}
+{"type":"iteration","iteration":10,"newInfoRatio":0.07,"status":"converging","focus":"Prioritization and synthesis readiness","timestamp":"2026-04-23T15:17:00Z"}

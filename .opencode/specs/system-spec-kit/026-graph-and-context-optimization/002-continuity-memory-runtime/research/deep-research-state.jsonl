@@ -1,0 +1,10 @@
+{"type":"iteration","iteration":1,"newInfoRatio":0.72,"status":"new-territory","focus":"Baseline packet audit and research/discoverability surface drift","timestamp":"2026-04-23T14:00:00Z"}
+{"type":"iteration","iteration":2,"newInfoRatio":0.58,"status":"new-territory","focus":"Resume precedence mismatch between handover-first docs and freshness-winner code","timestamp":"2026-04-23T14:08:00Z"}
+{"type":"iteration","iteration":3,"newInfoRatio":0.51,"status":"new-territory","focus":"Gate D archived and legacy fallback doc-code drift","timestamp":"2026-04-23T14:16:00Z"}
+{"type":"iteration","iteration":4,"newInfoRatio":0.34,"status":"new-territory","focus":"Gate E parent-handover recovery contract drift","timestamp":"2026-04-23T14:24:00Z"}
+{"type":"iteration","iteration":5,"newInfoRatio":0.47,"status":"new-territory","focus":"Routed concurrent full-auto save lost-update window","timestamp":"2026-04-23T14:32:00Z"}
+{"type":"iteration","iteration":6,"newInfoRatio":0.26,"status":"converging","focus":"Process-local lock scope and cross-runtime race exposure","timestamp":"2026-04-23T14:40:00Z"}
+{"type":"iteration","iteration":7,"newInfoRatio":0.18,"status":"converging","focus":"Concurrency verification debt in Gate C save-path coverage","timestamp":"2026-04-23T14:48:00Z"}
+{"type":"iteration","iteration":8,"newInfoRatio":0.14,"status":"converging","focus":"Canonical filtering and fallback coverage gaps in Gate D","timestamp":"2026-04-23T14:56:00Z"}
+{"type":"iteration","iteration":9,"newInfoRatio":0.11,"status":"converging","focus":"Packet renumbering and identity drift in 004-memory-save-rewrite","timestamp":"2026-04-23T15:04:00Z"}
+{"type":"iteration","iteration":10,"newInfoRatio":0.07,"status":"converging","focus":"Severity ranking and convergence across the continuity-memory runtime findings","timestamp":"2026-04-23T15:12:00Z"}

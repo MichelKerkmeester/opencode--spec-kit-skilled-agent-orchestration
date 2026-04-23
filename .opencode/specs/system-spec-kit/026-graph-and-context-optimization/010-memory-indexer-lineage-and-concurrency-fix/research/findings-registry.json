@@ -1,0 +1,56 @@
+{
+  "phase": "010-memory-indexer-lineage-and-concurrency-fix",
+  "findings": [
+    {
+      "id": "F-001",
+      "severity": "P1",
+      "category": "architecture",
+      "summary": "The scan-only transactional bypass is implemented as a plain internal boolean on exported indexMemoryFile(), so its safety still depends on current call sites rather than a hardened API contract.",
+      "evidence": [
+        "iteration-08.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/types.ts:282-301",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2546-2590",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:3238-3245"
+      ],
+      "recommended_fix": "Replace fromScan with a scan-only wrapper, branded token, or equivalent internal-only contract so future callers cannot silently bypass the transactional recheck."
+    },
+    {
+      "id": "F-002",
+      "severity": "P1",
+      "category": "docs",
+      "summary": "The packet still lacks the live acceptance rerun against 026/009-hook-daemon-parity, so the expected zero candidate_changed outcome after B2 is not yet operationally verified.",
+      "evidence": [
+        "iteration-01.md#Findings",
+        "iteration-09.md#Findings",
+        "implementation-summary.md §Verification",
+        "checklist.md §Testing"
+      ],
+      "recommended_fix": "Restart the MCP runtime in an embedding-enabled environment, rerun memory_index_scan on 026/009-hook-daemon-parity, and record exact outcomes in the packet docs."
+    },
+    {
+      "id": "F-003",
+      "severity": "P2",
+      "category": "correctness",
+      "summary": "The PE downgrade logic now falls back from canonical_file_path to file_path, but there is no direct packet regression proving that behavior when the candidate row has a null canonical path.",
+      "evidence": [
+        "iteration-03.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/pe-orchestration.ts:28-40",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/pe-orchestration.vitest.ts:51-60"
+      ],
+      "recommended_fix": "Add a PE orchestration regression where the sibling candidate has canonical_file_path: null and only file_path populated."
+    },
+    {
+      "id": "F-004",
+      "severity": "P2",
+      "category": "correctness",
+      "summary": "The packet's fromScan regressions cover the real transactional bypass but do not directly exercise tenant/session-scoped saves even though scope shapes both candidate filtering and lineage logical keys.",
+      "evidence": [
+        "iteration-09.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts:235-291",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:247-272",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-index.vitest.ts:742-819"
+      ],
+      "recommended_fix": "Add a scoped fromScan regression that proves tenant/session-governed scan saves keep the intended reconsolidation and lineage behavior."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+## Iteration 01
+
+### Focus
+Establish the post-012 baseline: what the 009 parent and its child packets say is current, and which runtime surfaces are explicitly flagged as still reverted or incomplete.
+
+### Findings
+- The 009 parent already records that Copilot packets `010` and `011` are not shipped state but "Reverted - Reapply Required", so residual parity drift is an acknowledged live condition rather than a new regression. Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/spec.md:115`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/spec.md:116`
+- The parent implementation summary repeats that the live story is asymmetric: Codex is described as natively wired, Claude is only partially live because auth/global hooks block full parity, and Copilot wrapper/writer packets must be reapplied. Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/implementation-summary.md:72`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/implementation-summary.md:73`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/implementation-summary.md:74`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/implementation-summary.md:78`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/implementation-summary.md:79`
+- Packet `012-docs-impact-remediation` deliberately refreshed the operator docs to present Codex native hooks, Copilot wrapper-based parity, and OpenCode plugin transport as current contract surfaces. That means the next question is whether the checked-in code/config still matches those remediated docs. Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation/implementation-summary.md:43`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation/implementation-summary.md:48`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation/implementation-summary.md:91`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation/implementation-summary.md:112`
+- The 006 Claude packet is the only child that still names live blockers in its continuity metadata, and both blockers are operator-surface issues rather than advisor-core defects: user-global hook count and missing Claude auth. Evidence: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation/implementation-summary.md:16`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation/implementation-summary.md:18`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation/implementation-summary.md:19`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation/implementation-summary.md:164`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation/implementation-summary.md:165`
+
+### New Questions
+- Does the checked-in Codex config actually satisfy the `codex_hooks`-gated contract the docs now describe?
+- Are the Copilot wrapper fields and writer commands really absent in the live repo config, or only absent from packet prose?
+- Do Gemini docs, config, and tests agree on which hook names are canonical?
+- Is the remaining drift mostly in runtime configs, or are the shared hook/daemon status helpers also overstating parity?
+
+### Status
+new-territory

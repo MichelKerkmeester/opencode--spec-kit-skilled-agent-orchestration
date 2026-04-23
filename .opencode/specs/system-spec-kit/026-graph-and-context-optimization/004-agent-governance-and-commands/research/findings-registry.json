@@ -1,0 +1,136 @@
+{
+  "phase": "004-agent-governance-and-commands",
+  "findings": [
+    {
+      "id": "F-001",
+      "severity": "P1",
+      "category": "correctness",
+      "summary": "Codex runtime agent docs still point to `.md` files even though the Codex runtime contract and live agent files use `.toml`.",
+      "evidence": [
+        "iterations/iteration-01.md#Findings",
+        ".codex/agents/deep-research.toml:19",
+        ".codex/agents/context.toml:15",
+        ".codex/agents/context.toml:364-372",
+        ".codex/agents/orchestrate.toml:154-163"
+      ],
+      "recommended_fix": "Normalize all active Codex runtime references to `.codex/agents/*.toml` and add a parity guard that rejects `.md` references in Codex runtime docs."
+    },
+    {
+      "id": "F-002",
+      "severity": "P2",
+      "category": "docs",
+      "summary": "OpenCode, Codex, and Gemini runtime README indexes still list deleted `handover` and `speckit` agents.",
+      "evidence": [
+        "iterations/iteration-02.md#Findings",
+        ".opencode/agent/README.txt:10-20",
+        ".codex/agents/README.txt:10-20",
+        ".gemini/agents/README.txt:10-20",
+        ".claude/agents/README.txt:10-20"
+      ],
+      "recommended_fix": "Regenerate or hand-edit the stale runtime README indexes from the current directory contents so deleted agents cannot be advertised as live."
+    },
+    {
+      "id": "F-003",
+      "severity": "P2",
+      "category": "architecture",
+      "summary": "`@general` is treated as a directory-routed agent in AGENTS but as a built-in in runtime docs, leaving no single authoritative definition model.",
+      "evidence": [
+        "iterations/iteration-03.md#Findings",
+        "AGENTS.md:300-316",
+        ".codex/agents/context.toml:370-374",
+        ".opencode/agent/orchestrate.md:162-171",
+        ".codex/agents/orchestrate.toml:154-163"
+      ],
+      "recommended_fix": "Either document `@general` as explicitly built-in everywhere or add a dedicated runtime-backed definition and include it in agent-file tables."
+    },
+    {
+      "id": "F-004",
+      "severity": "P1",
+      "category": "docs",
+      "summary": "Deep-research and deep-review mode suffix syntax is inconsistent across AGENTS, skill docs, quick references, and command cards.",
+      "evidence": [
+        "iterations/iteration-04.md#Findings",
+        "AGENTS.md:196-205",
+        ".opencode/skill/sk-deep-research/SKILL.md:54-56",
+        ".opencode/command/spec_kit/deep-research.md:196-200",
+        ".opencode/command/spec_kit/deep-review.md:205-211",
+        ".opencode/skill/sk-deep-research/references/quick_reference.md:19-23"
+      ],
+      "recommended_fix": "Choose one suffix syntax in the parser contract and update every published example to match it."
+    },
+    {
+      "id": "F-005",
+      "severity": "P1",
+      "category": "correctness",
+      "summary": "Deep-research quick-reference convergence weights disagree with the detailed convergence reference.",
+      "evidence": [
+        "iterations/iteration-05.md#Findings",
+        ".opencode/skill/sk-deep-research/references/quick_reference.md:128-136",
+        ".opencode/skill/sk-deep-research/references/convergence.md:146-154"
+      ],
+      "recommended_fix": "Make one convergence document authoritative and generate or prune the duplicated weight table from the other surface."
+    },
+    {
+      "id": "F-006",
+      "severity": "P0",
+      "category": "architecture",
+      "summary": "Child-phase deep-research runs use a split artifact layout: docs promise `{spec_folder}/research`, the resolver writes state into track-root `research/{phaseSlug}-pt-{NN}`, and prompt files still write phase-local.",
+      "evidence": [
+        "iterations/iteration-06.md#Findings",
+        "iterations/iteration-07.md#Findings",
+        ".opencode/skill/sk-deep-research/references/state_format.md:24-27",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:94-117",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:124-133",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:484-487",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:523-555",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:45-100"
+      ],
+      "recommended_fix": "Route prompts, state, and synthesis through the same resolved artifact directory and update the state-format docs to match the live contract."
+    },
+    {
+      "id": "F-007",
+      "severity": "P1",
+      "category": "architecture",
+      "summary": "Distributed-governance rules for markdown writes are not enforced by the deep-research workflow that owns `research/research.md`.",
+      "evidence": [
+        "iterations/iteration-08.md#Findings",
+        "AGENTS.md:325-327",
+        ".opencode/skill/system-spec-kit/SKILL.md:61-63",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:213-240",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:728-739",
+        ".opencode/command/spec_kit/deep-research.md:189-192"
+      ],
+      "recommended_fix": "Add explicit deep-research validation hooks or document a formal exemption for research-owned markdown outputs."
+    },
+    {
+      "id": "F-009",
+      "severity": "P2",
+      "category": "architecture",
+      "summary": "Workflow assets treat the OpenCode deep-loop agent copies as canonical while AGENTS tells operators to stay inside the active runtime directory.",
+      "evidence": [
+        "iterations/iteration-09.md#Findings",
+        "AGENTS.md:300-311",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:81-84",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:69-72"
+      ],
+      "recommended_fix": "Document the source-generation model for deep-loop agents or align the workflow assets with the runtime-local loading rule."
+    },
+    {
+      "id": "F-010",
+      "severity": "P1",
+      "category": "docs",
+      "summary": "Phase 002 completion claims overstate the live cleanup state because active runtime docs still expose stale agent surfaces.",
+      "evidence": [
+        "iterations/iteration-10.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/spec.md:49-55",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/implementation-summary.md:70-71",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/implementation-summary.md:88-93",
+        ".opencode/agent/README.txt:10-20",
+        ".codex/agents/README.txt:10-20",
+        ".gemini/agents/README.txt:10-20",
+        ".codex/agents/orchestrate.toml:154-163"
+      ],
+      "recommended_fix": "Track the remaining runtime-surface cleanup in a follow-up packet or reopen phase 002 so closeout evidence matches the current tree."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{"type":"iteration","iteration":1,"newInfoRatio":0.82,"status":"new-territory","focus":"Manual code_graph_scan persistence safety versus staged write discipline","timestamp":"2026-04-23T21:03:24Z"}
+{"type":"iteration","iteration":2,"newInfoRatio":0.74,"status":"new-territory","focus":"code_graph_query contract reachability for blast-radius multi-file union mode","timestamp":"2026-04-23T21:03:25Z"}
+{"type":"iteration","iteration":3,"newInfoRatio":0.69,"status":"new-territory","focus":"code_graph_context seed-schema parity and seed provenance loss","timestamp":"2026-04-23T21:03:26Z"}
+{"type":"iteration","iteration":4,"newInfoRatio":0.63,"status":"converging","focus":"ensureCodeGraphReady debounce behavior across roots and option sets","timestamp":"2026-04-23T21:03:27Z"}
+{"type":"iteration","iteration":5,"newInfoRatio":0.52,"status":"converging","focus":"Selective reindex efficiency and stale-file refresh narrowing","timestamp":"2026-04-23T21:03:28Z"}
+{"type":"iteration","iteration":6,"newInfoRatio":0.44,"status":"converging","focus":"Parser-contract correctness on the query trust surface","timestamp":"2026-04-23T21:03:29Z"}
+{"type":"iteration","iteration":7,"newInfoRatio":0.31,"status":"converging","focus":"Detector-provenance vocabulary drift between specs and runtime","timestamp":"2026-04-23T21:03:30Z"}
+{"type":"iteration","iteration":8,"newInfoRatio":0.21,"status":"converging","focus":"Cross-surface freshness drift between readiness, context metadata, and startup/session surfaces","timestamp":"2026-04-23T21:03:31Z"}
+{"type":"iteration","iteration":9,"newInfoRatio":0.16,"status":"converging","focus":"Cross-file dedup defense and residual dangling-edge integrity hazards","timestamp":"2026-04-23T21:03:32Z"}
+{"type":"iteration","iteration":10,"newInfoRatio":0.11,"status":"converging","focus":"Production-readiness sweep for docs drift and missing regression nets","timestamp":"2026-04-23T21:03:33Z"}

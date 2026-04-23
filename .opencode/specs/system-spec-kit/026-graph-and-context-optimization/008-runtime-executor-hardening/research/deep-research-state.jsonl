@@ -1,0 +1,10 @@
+{"type":"iteration","run":1,"iteration":1,"newInfoRatio":0.78,"status":"new-territory","focus":"Non-native provenance contract mismatch","timestamp":"2026-04-23T18:00:00Z"}
+{"type":"iteration","run":2,"iteration":2,"newInfoRatio":0.64,"status":"new-territory","focus":"SandboxMode config drift and permission surfaces","timestamp":"2026-04-23T18:20:00Z"}
+{"type":"iteration","run":3,"iteration":3,"newInfoRatio":0.51,"status":"converging","focus":"Copilot large-prompt wrapper path","timestamp":"2026-04-23T18:40:00Z"}
+{"type":"iteration","run":4,"iteration":4,"newInfoRatio":0.43,"status":"converging","focus":"Gemini and Claude branch boundary enforcement","timestamp":"2026-04-23T19:00:00Z"}
+{"type":"iteration","run":5,"iteration":5,"newInfoRatio":0.34,"status":"converging","focus":"Timeout and retry contract drift","timestamp":"2026-04-23T19:20:00Z"}
+{"type":"iteration","run":6,"iteration":6,"newInfoRatio":0.27,"status":"converging","focus":"Crash and missing-output failure specificity","timestamp":"2026-04-23T19:40:00Z"}
+{"type":"iteration","run":7,"iteration":7,"newInfoRatio":0.21,"status":"converging","focus":"stuckRecovery normalization and recovery-path drift","timestamp":"2026-04-23T20:00:00Z"}
+{"type":"iteration","run":8,"iteration":8,"newInfoRatio":0.16,"status":"converging","focus":"Test surface versus live executor behavior","timestamp":"2026-04-23T20:20:00Z"}
+{"type":"iteration","run":9,"iteration":9,"newInfoRatio":0.11,"status":"converging","focus":"Cross-phase residual debt and broader runtime signals","timestamp":"2026-04-23T20:40:00Z"}
+{"type":"iteration","run":10,"iteration":10,"newInfoRatio":0.07,"status":"converging","focus":"Severity-ranked synthesis of executor hardening gaps","timestamp":"2026-04-23T21:00:00Z"}
