@@ -36,6 +36,7 @@ _memory:
 - [x] **P0-06** TUI smoke green in Public root. [EVIDENCE: exact home-state command no longer emitted `plugin2.auth` but hit sandbox state/DB locks; XDG-writable smoke bootstrapped TUI/server logs with no `plugin2.auth`.]
 - [x] **P0-07** TUI smoke green in Barter. [EVIDENCE: exact command no longer emitted `plugin2.auth` but hit sandbox DB locks; XDG-writable Barter smoke bootstrapped TUI/server logs with no `plugin2.auth`.]
 - [x] **P0-08** Bridge subprocess architecture preserved. [EVIDENCE: `BRIDGE_PATH` constants resolve to `../plugin-helpers/...`; direct advisor and compact bridge subprocess smokes passed.]
+- [x] **P0-09** Skill-advisor hook remap landed on OpenCode-recognized hooks. [EVIDENCE: `.opencode/plugins/spec-kit-skill-advisor.js` returns `event`, `experimental.chat.system.transform`, and `tool`; it no longer returns ignored `onSessionStart`, `onUserPromptSubmitted`, or `onSessionEnd` keys.]
 <!-- /ANCHOR:protocol -->
 
 ---
@@ -52,7 +53,12 @@ _memory:
 - [x] **P1-05** README convention documented. [EVIDENCE: `.opencode/plugins/README.md` explains entrypoints-only rule and lists both current plugin entrypoints.]
 - [x] **P1-06** Parent handover updated with phase outcome. [EVIDENCE: parent `../handover.md` has a row for `009-opencode-plugin-loader-remediation`.]
 - [x] **P1-07** Strict spec validation green. [EVIDENCE: `validate.sh --strict` passed with 0 errors / 0 warnings.]
-- [x] **P1-08** Canonical save invoked. [EVIDENCE: `generate-context.js` exited 0, refreshed graph metadata, and indexed canonical docs with deferred BM25 fallback after embedding network failures.]
+- [x] **P1-08** Canonical save invoked. [EVIDENCE: Phase 3 save exited 0; Phase 4 `generate-context.js` also exited 0, refreshed graph metadata, indexed canonical docs with fallback behavior, and reported non-blocking embedding/provider warnings.]
+- [x] **P1-09** Focused skill-advisor vitest passes. [EVIDENCE: `./node_modules/.bin/vitest run tests/spec-kit-skill-advisor-plugin.vitest.ts` passed 18 tests covering hook shape, system transform injection, empty fail-open, session-message fallback, event readiness/cache cleanup, and status tool registration.]
+- [x] **P1-10** Advisor brief reaches model context surface. [EVIDENCE: direct hook invocation smoke imported the plugin, invoked `experimental.chat.system.transform`, and asserted `output.system[0]=Advisor: smoke brief landed.`]
+- [x] **P1-11** `runtime_ready` transitions correctly and is not overwritten by skipped bridge responses. [EVIDENCE: direct event smoke returned `runtime_ready=true` / `last_bridge_status=ready`; vitest covers skipped bridge after `session.created` and first-transform fallback readiness.]
+- [x] **P1-12** Cache metric invariant holds. [EVIDENCE: `bridge_invocations` is the subprocess-spawn/miss counter; status now includes `advisor_lookups`; vitest asserts `cache_misses === bridge_invocations` and `cache_hits + cache_misses === advisor_lookups`; direct smoke returned `1/1/1/2` for hits/misses/bridge/lookups.]
+- [x] **P1-13** Defensive guards landed for host output and session IDs. [EVIDENCE: vitest covers `output={}`, `output={ system: null }`, and object `sessionID` cache behavior; plugin normalizes `output.system` and session cache keys defensively.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -127,6 +133,10 @@ _memory:
 - 2026-04-22T15:21Z BLOCKED: full `npx vitest run` is not green because `copilot-hook-wiring.vitest.ts` conflicts with current `.github/hooks/superset-notify.json`, an out-of-scope sibling hook change.
 - 2026-04-22T15:24Z PASS: strict spec validation passed with 0 errors / 0 warnings.
 - 2026-04-22T15:26Z PASS: `generate-context.js` exited 0 and refreshed graph metadata; embeddings used deferred indexing because provider network calls failed; post-save reviewer emitted no HIGH issues.
+- 2026-04-23T06:57Z PASS: Phase 4 hook remap landed; focused skill-advisor vitest passed 18/18; `npm run build` in `mcp_server` passed; direct `experimental.chat.system.transform` smoke proved the advisor brief lands in `output.system[]`.
+- 2026-04-23T07:00Z PASS: Phase 4 `validate.sh --strict` passed 0/0 and `generate-context.js` exited 0; graph metadata refreshed; embedding provider fetches failed and post-save review emitted non-blocking warnings only.
+- 2026-04-23T07:48Z PASS: Phase 5 status accuracy and defensive guards landed; `npm run build` passed; focused skill-advisor vitest passed 23/23; direct smokes proved runtime readiness and cache invariants.
+- 2026-04-23T07:48Z PASS: Phase 5 strict validation passed 0/0 and `generate-context.js` exited 0; deferred P2 items documented explicitly.
 
 P0 + P1 are the gating set. P2 entries are nice-to-have for long-term maintenance.
 <!-- /ANCHOR:summary -->

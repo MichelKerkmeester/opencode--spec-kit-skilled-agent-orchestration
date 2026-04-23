@@ -1,7 +1,7 @@
 ---
 template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
-title: "Feature Specification: OpenCode Plugin Loader Remediation"
-description: "OpenCode 1.3.17 TUI crashes on launch with `TypeError: null is not an object (evaluating 'plugin2.auth')` because the legacy plugin-function loader path invokes the named `parseTransportPlan` export from `spec-kit-compact-code-graph.js`; the parser previously returned null for non-string plugin input. This phase ships helper isolation as cleanup/prevention and hardens the parser to return `{}` for non-string input."
+title: "Feature Specification: OpenCode Plugin Loader + Skill-Advisor Hook Remediation"
+description: "OpenCode 1.3.17 TUI crash remediation plus Phase 4 skill-advisor hook remap: plugin helpers live outside `.opencode/plugins/`, `parseTransportPlan()` fail-opens for legacy loader invocation, and the skill-advisor plugin now uses OpenCode `event` + `experimental.chat.system.transform` hooks so advisor briefs reach model context."
 trigger_phrases:
   - "opencode plugin loader"
   - "opencode plugin crash"
@@ -75,7 +75,7 @@ The direct crash fix is the `parseTransportPlan` hardening: non-string input now
 | ------------ | --------------------------------------- |
 | **Level**    | 3                                       |
 | **Priority** | P0 (TUI is unusable across all directories) |
-| **Status**   | Draft                                   |
+| **Status**   | Complete (Phase 4 verified)             |
 | **Created**  | 2026-04-22                              |
 | **Parent**   | `026-graph-and-context-optimization/007-deep-review-remediation/` |
 | **Siblings** | `007-copilot-hook-parity-remediation/`, `008-codex-hook-parity-remediation/` (same parent, different runtimes) |
@@ -131,6 +131,7 @@ Restore OpenCode TUI startup by hardening the named parser export against legacy
 - **Phase 1 — Discovery contract investigation**: confirm OpenCode 1.3.17's plugin discovery rules (glob patterns, extension filtering, opt-out mechanisms, expected default-export shape, error semantics when a file resolves to undefined). Single source of truth: probe the bundled binary + check upstream OpenCode docs/source.
 - **Phase 2 — Isolation implementation**: relocate or otherwise hide the 3 non-plugin helper modules from the loader. Update import paths in the 2 real plugins. Validate that `opencode --version` succeeds and that `cd <repo> && opencode` reaches the TUI prompt without the crash.
 - **Phase 3 — Documentation + regression guard**: update a new README inside `.opencode/plugins/` (if it exists) or add one documenting the "plugins folder = plugin entrypoints only" convention. Add a guard test (vitest or shell) that fails CI if a non-plugin file lands in `.opencode/plugins/`. Update parent handover.
+- **Phase 4 — Skill-advisor hook remap**: update the loaded skill-advisor plugin from Claude-Code-style hook names to OpenCode-recognized `event` and `experimental.chat.system.transform` hooks so the advisor brief reaches `output.system[]`.
 
 ### Out of Scope
 
@@ -146,11 +147,12 @@ Restore OpenCode TUI startup by hardening the named parser export against legacy
 | `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs`                             | Move/rename    | Relocate out of plugin discovery scope (target path TBD in Phase 1)          |
 | `.opencode/plugins/spec-kit-compact-code-graph-bridge.mjs`                        | Move/rename    | Same as above                                                                |
 | `.opencode/plugins/spec-kit-opencode-message-schema.mjs`                          | Move/rename    | Same as above                                                                |
-| `.opencode/plugins/spec-kit-skill-advisor.js`                                     | Modify (imports) | Update `BRIDGE_PATH` constant to point to relocated bridge                  |
+| `.opencode/plugins/spec-kit-skill-advisor.js`                                     | Modify (imports + hooks) | Update `BRIDGE_PATH` constant to point to relocated bridge; remap ignored Claude-style hooks to OpenCode `event` and `experimental.chat.system.transform` hooks |
 | `.opencode/plugins/spec-kit-compact-code-graph.js`                                | Modify (imports) | Update bridge path + schema-helper import                                   |
 | a new README inside `.opencode/plugins/`                                                     | Create or Modify | Document the "plugins folder = entrypoints only" convention                  |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/opencode-plugins-folder-purity.vitest.ts` | Create | Regression guard: fail if `.opencode/plugins/` contains files without a default export |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/opencode-plugin.vitest.ts`       | Modify         | Updated to reflect helper relocation and parseTransportPlan guard behavior   |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/spec-kit-skill-advisor-plugin.vitest.ts` | Modify | Focused OpenCode hook-shape, system-transform injection, fail-open, event cleanup, and status-tool coverage |
 | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/plugin-bridge.vitest.ts` | Modify | Updated bridge import path to `../plugin-helpers/`                           |
 | Parent handover (sibling-level handover.md in `007-deep-review-remediation/`)     | Modify         | Record phase outcome                                                         |
 | `decision-record.md` (this packet)                                                | Create         | ADRs for discovery contract + chosen remediation path                        |

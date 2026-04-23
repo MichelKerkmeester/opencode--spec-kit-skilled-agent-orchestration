@@ -1,7 +1,7 @@
 ---
 template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record + level3-arch | v2.2 -->"
-title: "Decision Record: OpenCode Plugin Loader Remediation"
-description: "ADRs for scoping decisions. ADR-001 captures the OpenCode 1.3.17 plugin discovery contract (lands after Phase 1 probe). ADR-002 selects the remediation outcome (A, B, or C)."
+title: "Decision Record: OpenCode Plugin Loader + Skill-Advisor Hook Remediation"
+description: "ADRs for scoping decisions. ADR-001 captures the OpenCode 1.3.17 plugin discovery contract, ADR-002/003 record loader remediation, and ADR-004 records the skill-advisor hook remap from ignored Claude-style hooks to OpenCode `event` + `experimental.chat.system.transform`."
 trigger_phrases:
   - "026/007/009 adr"
   - "opencode plugin loader decisions"
@@ -162,9 +162,137 @@ Ship Outcome A with these implementation details:
 
 ---
 
+### ADR-004: Skill-advisor plugin hook-name remap to OpenCode API
+
+**Status**: Accepted (2026-04-23, follow-up to ADR-003 after live TUI smoke).
+
+### Context
+
+After Outcome A shipped and the loader crash was fixed, a real OpenCode TUI session was used to test plugin behavior using natural prompts. The skill-advisor plugin's `spec_kit_skill_advisor_status` tool was registered correctly (`tool:` key is in OpenCode's `Hooks` API), but the per-prompt advisor brief never appeared in any conversation turn. Investigation of `.opencode/node_modules/@opencode-ai/plugin/dist/index.d.ts` (Hooks interface, lines 142-260) showed the cause:
+
+The skill-advisor plugin returns Claude-Code-style hook names that OpenCode 1.3.17 silently ignores:
+
+| Plugin returns                | OpenCode `Hooks` recognizes |
+|-------------------------------|-----------------------------|
+| `onSessionStart()`            | NOT in API — silently ignored |
+| `onUserPromptSubmitted(input)`| NOT in API — silently ignored |
+| `onSessionEnd(input)`         | NOT in API — silently ignored |
+| `tool: { ... }`               | RECOGNIZED — tool registered |
+
+OpenCode's actual API for the equivalent surfaces:
+- Per-prompt brief injection → `'experimental.chat.system.transform'(input, { system })` push the brief into `output.system[]`, OR `'chat.message'(input, output)` (read-only — cannot inject context)
+- Session lifecycle observation → `event:` listener filtering for session-start/end events
+- Tool registration → already correct (`tool:` key)
+
+Comparison with the sibling compact plugin in the same folder confirms this: that plugin uses `'experimental.session.compacting'`, `'experimental.chat.system.transform'`, `'experimental.chat.messages.transform'`, and `event:` correctly and its hooks fire as expected. The skill-advisor plugin is the only OpenCode plugin in the repo with this Claude-Code-API drift.
+
+This is a pre-existing latent bug independent of packet 009's loader crash. The plugin appeared installed and the status tool worked, but the headline feature (advisor brief on every prompt) was always a no-op in OpenCode. It worked in Claude Code because `onUserPromptSubmitted` is the Claude Code hook name.
+
+### Decision
+
+Remap the skill-advisor plugin's three lifecycle hooks to OpenCode's `Hooks` API:
+
+| Current (Claude Code style) | New (OpenCode API)                                | Behavior                              |
+|-----------------------------|---------------------------------------------------|---------------------------------------|
+| `onSessionStart()`          | `event:` listener filtered to session-start event | Set `runtimeReady = true`             |
+| `onUserPromptSubmitted()`   | `'experimental.chat.system.transform'`            | Push advisor brief into `system[]`    |
+| `onSessionEnd()`            | `event:` listener filtered to session-end event   | Cache cleanup                         |
+
+Keep the `tool:` registration unchanged — already correct.
+
+Keep all existing helper functions (`getAdvisorContext`, `extractPrompt`, `sessionIdFrom`, etc.) unchanged — only the hook surface changes.
+
+Mirror the compact plugin's event-listener pattern for the lifecycle observers.
+
+Add a focused vitest covering: the plugin returns the OpenCode-shaped hook keys; `experimental.chat.system.transform` populates `system[]` with the brief; the `event:` handler filters correctly; the status tool still works.
+
+### Evidence
+
+| Check | Result |
+|-------|--------|
+| Hook-shape vitest | PASS — `./node_modules/.bin/vitest run tests/spec-kit-skill-advisor-plugin.vitest.ts` passed 18/18, including returned hook keys `event`, `experimental.chat.system.transform`, and `tool`, and absence of `onSessionStart`, `onUserPromptSubmitted`, and `onSessionEnd`. |
+| Direct `experimental.chat.system.transform` smoke | PASS — minimal Node smoke imported the plugin, invoked `experimental.chat.system.transform`, and asserted `output.system[0]=Advisor: smoke brief landed.` |
+| Real OpenCode session shows advisor brief in conversation | NOT RUN — sandbox-friendly direct hook smoke plus focused vitest is accepted Phase 4 evidence; a real TUI smoke remains optional because the hook surface itself was invoked directly. |
+| Compact plugin behavior unchanged | PASS BY SCOPE — `.opencode/plugins/spec-kit-compact-code-graph.js` was read as the reference pattern only and not modified in Phase 4. |
+| Strict spec validation | PASS — `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/009-opencode-plugin-loader-remediation --strict` passed with 0 errors / 0 warnings. |
+| `npm run build` in `mcp_server` | PASS — `tsc --build` completed successfully. |
+
+### Consequences
+
+- **Positive**: The advisor brief actually fires on every prompt in OpenCode (matches Claude Code parity).
+- **Positive**: Single-file change, scoped, low blast radius.
+- **Positive**: Documents OpenCode vs Claude Code hook API drift for future plugin authors.
+- **Negative**: The plugin diverges from its Claude Code variant; if a shared codebase is ever desired, both sets of hook names would need to coexist.
+- **Negative**: Hook semantics differ subtly — `experimental.chat.system.transform` runs before each LLM call; legacy `onUserPromptSubmitted` ran on user submission. The brief content is recomputed on each LLM turn, which is what we want, but cache hit-rate metrics may rise.
+
+### References
+
+- OpenCode `Hooks` interface: `.opencode/node_modules/@opencode-ai/plugin/dist/index.d.ts:142-260`
+- Compact plugin reference implementation: `.opencode/plugins/spec-kit-compact-code-graph.js:329` (event listener) and `:364` (`experimental.chat.system.transform`)
+- Skill-advisor current hooks: `.opencode/plugins/spec-kit-skill-advisor.js:369-390`
+- Live finding: 2026-04-23 OpenCode session in Public root, where natural prompts surfaced no `Advisor:` line in any turn
+
+---
+
+### ADR-005: Phase 5 follow-ups from real OpenCode TUI smoke
+
+**Status**: Accepted (2026-04-23, post-Phase-4 live verification).
+
+### Context
+
+After Phase 4 shipped, a real OpenCode TUI session in Public root verified the hook remap by running natural prompts (code review, improve prompt, architecture walkthrough, status tool). Headline result: the remap works — `bridge_invocations=8`, model exhibits skill-routing behavior (sk-code-review structure, sk-improve-prompt clarifying-question pattern). Briefs reach the model context.
+
+The status tool surfaced three quantified anomalies and Codex independently raised five code-quality findings during the test 1 review.
+
+### Quantified anomalies (status tool snapshot)
+
+```
+runtime_ready=false       <- should be true after session.created
+last_bridge_status=skipped  <- last call returned no brief (env, not bug)
+cache_hits=8 AND cache_misses=8 with bridge_invocations=8 and cache_entries=4
+```
+
+### Decision
+
+Address four scoped fixes in Phase 5 and explicitly defer the larger architectural changes:
+
+| Finding | Action | Rationale |
+|---------|--------|-----------|
+| `runtime_ready=false` despite session events firing | Fix: investigate the actual `@opencode-ai/sdk` Event type discriminant; retain the real `type` discriminant; stop bridge status from overwriting lifecycle readiness; mirror compact plugin pattern more precisely | Cosmetic flag is misleading; correct readiness semantics prove event hook works as designed |
+| `cache_hits == cache_misses == bridge_invocations` accounting bug | Fix: audit increment paths; ensure exactly one counter increments per lookup; expose total lookups separately when `bridge_invocations` is confirmed to mean subprocess spawns | Clear logic bug; metrics are operator-facing |
+| `output.system.push()` would throw on `output={}` or `{ system: null }` | Fix: defensive guard — initialize `output.system = output.system ?? []` at top of handler | Cheap, idiomatic, matches OpenCode contract reality |
+| Session IDs not normalized to strings before cache use | Fix: coerce `String(sessionID)` in `sessionIdFrom()` and at cache key construction sites | Defensive, cheap |
+| Module-global state can race across plugin instances | DEFER | Bigger refactor (per-instance state via WeakMap or closure capture); single-instance use is the dominant case; flag as P2 follow-up |
+| No in-flight promise dedup for concurrent identical bridge calls | DEFER | Real concern but multi-process bridge already fail-opens; flag as P2 follow-up |
+| Unbounded prompt/brief sizes | DEFER | Add later as part of broader plugin hardening if observed in production |
+
+### Evidence (to be filled post-implementation)
+
+| Check | Result |
+|-------|--------|
+| `runtime_ready` reaches `true` after first session event | PASS — SDK `Event` uses `type`; direct Node smoke with `{ type: 'session.created' }` returned `runtime_ready=true` and `last_bridge_status=ready`. Vitest also proves skipped bridge responses no longer reset readiness to false. |
+| `cache_hits + cache_misses == bridge_invocations` invariant in vitest | REFRAMED + PASS — code audit showed `bridge_invocations` counts subprocess spawns/cache misses. Status now emits `advisor_lookups`; vitest asserts `cache_misses === bridge_invocations` and `cache_hits + cache_misses === advisor_lookups`. Direct smoke returned `cache_hits=1`, `cache_misses=1`, `bridge_invocations=1`, `advisor_lookups=2`. |
+| `output.system` defensive guard handles `{}` input | PASS — `appendAdvisorBrief()` initializes `output.system = Array.isArray(output?.system) ? output.system : []`; vitest covers both `{}` and `{ system: null }`. |
+| `sessionIdFrom()` returns a string for object inputs | PASS — session IDs normalize through stable stringification; vitest passes reordered object session IDs and observes deterministic cache hits. |
+| Strict spec validation | PASS — Phase 5 `validate.sh --strict` passed 0 errors / 0 warnings. |
+
+### Consequences
+
+- **Positive**: Status tool numbers are trustworthy (operator-visible).
+- **Positive**: Plugin handler is robust to host-contract drift (defensive `output.system` guard).
+- **Positive**: P2 deferrals are explicitly tracked as follow-ups, not silent.
+- **Negative**: Module-global state and in-flight dedup remain as latent concerns; if a future change loads the plugin twice or hits high-concurrency request patterns, those issues will surface.
+
+### References
+
+- Real-session evidence: 2026-04-23 OpenCode TUI in Public root, status tool output captured by user.
+- Codex independent review (during Phase 5 test 1): 5 findings; this ADR addresses 4 directly + defers 1.
+
+---
+
 ### Cross-References
 
-- **Spec**: `spec.md` §2 (problem), §4 (requirements REQ-001..REQ-011)
-- **Plan**: `plan.md` §2 quality gates, §4 phases
-- **Tasks**: `tasks.md` T-01..T-09 (Phase 1 contract investigation), T-10..T-19 (Phase 2 isolation), T-20..T-29 (Phase 3 guard + docs)
+- **Spec**: `spec.md` §2 (problem), §4 (requirements REQ-001..REQ-013)
+- **Plan**: `plan.md` §2 quality gates, §4 phases (now 5 phases)
+- **Tasks**: `tasks.md` T-01..T-09 (Phase 1), T-10..T-19 (Phase 2), T-20..T-29 (Phase 3), T-30..T-35 (Phase 4 — hook remap), T-36..T-41 (Phase 5 — status accuracy + defensive guards)
 - **Sibling phases**: `../007-copilot-hook-parity-remediation/`, `../008-codex-hook-parity-remediation/`
