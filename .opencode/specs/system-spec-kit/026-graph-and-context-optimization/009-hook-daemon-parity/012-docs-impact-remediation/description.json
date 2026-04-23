@@ -1,0 +1,29 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation",
+  "description": "Feature Specification: Documentation Impact Remediation for 009 Hook/Daemon Parity",
+  "keywords": [
+    "feature",
+    "specification",
+    "documentation",
+    "impact",
+    "remediation",
+    "hook",
+    "daemon",
+    "parity",
+    "advisor",
+    "copilot",
+    "codex",
+    "claude",
+    "opencode"
+  ],
+  "lastUpdated": "2026-04-23T19:40:00Z",
+  "specId": "012",
+  "folderSlug": "docs-impact-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

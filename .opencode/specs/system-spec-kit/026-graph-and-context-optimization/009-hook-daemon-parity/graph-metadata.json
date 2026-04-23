@@ -14,7 +14,8 @@
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix",
-    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring"
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation"
   ],
   "migrated": true,
   "migration_source": "legacy",
@@ -104,7 +105,8 @@
       "008-skill-advisor-plugin-hardening",
       "009-skill-advisor-standards-alignment",
       "010-copilot-wrapper-schema-fix",
-      "011-copilot-writer-wiring"
+      "011-copilot-writer-wiring",
+      "012-docs-impact-remediation"
     ],
     "key_topics": [
       "skill",
@@ -135,7 +137,8 @@
       "008-skill-advisor-plugin-hardening/implementation-summary.md",
       "009-skill-advisor-standards-alignment/implementation-summary.md",
       "010-copilot-wrapper-schema-fix/implementation-summary.md",
-      "011-copilot-writer-wiring/implementation-summary.md"
+      "011-copilot-writer-wiring/implementation-summary.md",
+      "012-docs-impact-remediation/implementation-summary.md"
     ],
     "entities": [
       {
@@ -203,11 +206,17 @@
         "kind": "spec_phase",
         "path": "011-copilot-writer-wiring",
         "source": "migration"
+      },
+      {
+        "name": "012-docs-impact-remediation",
+        "kind": "folder",
+        "path": "012-docs-impact-remediation",
+        "source": "derived"
       }
     ],
     "causal_summary": "Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation. Direct child parent for 001-skill-advisor-hook-surface through 011-copilot-writer-wiring.",
     "created_at": "2026-04-21T13:00:00Z",
-    "last_save_at": "2026-04-23T14:47:43.368Z",
+    "last_save_at": "2026-04-23T18:59:32Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -229,7 +238,8 @@
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix",
-    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring"
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation"
   ],
   "migration": {
     "active_phase": "009-hook-daemon-parity",
@@ -244,7 +254,8 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring"
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation"
     ],
     "layout": "phase-root-children"
   }
