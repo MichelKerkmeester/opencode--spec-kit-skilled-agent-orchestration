@@ -8,7 +8,7 @@ import path from 'path';
 ──────────────────────────────────────────────────────────────── */
 
 import { checkDatabaseUpdated } from '../core/index.js';
-import { INDEX_SCAN_COOLDOWN, DEFAULT_BASE_PATH, BATCH_SIZE } from '../core/config.js';
+import { INDEX_SCAN_COOLDOWN, DEFAULT_BASE_PATH } from '../core/config.js';
 import { acquireIndexScanLease, completeIndexScanLease } from '../core/db-state.js';
 import { processBatches, requireDb, toErrorMessage, type RetryErrorResult } from '../utils/index.js';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
@@ -395,6 +395,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
   // Before indexing would cause silent data loss — a failed file would be
   // Marked "already indexed" and permanently skipped.
   const successfullyIndexedFiles: string[] = [];
+  const scanBatchSize = 1;
 
   if (filesToIndex.length > 0) {
     const batchResults = await processBatches(filesToIndex, async (filePath: string) => {
@@ -404,7 +405,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
       // older files created before current templates were established.
       const useWarnOnly = force || isSpecDoc;
       return await indexSingleFile(filePath, force, useWarnOnly ? { qualityGateMode: 'warn-only' } : undefined);
-    });
+    }, scanBatchSize);
 
     for (let i = 0; i < batchResults.length; i++) {
       const result = batchResults[i];
@@ -633,7 +634,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     summary,
     data: {
       status: 'complete',
-      batchSize: BATCH_SIZE,
+      batchSize: scanBatchSize,
       ...results,
       ...(process.env.SPECKIT_DEBUG_INDEX_SCAN === 'true'
         ? {

@@ -2,7 +2,7 @@
 title: "Deep Research — Code Graph Scan Scope Anomaly (33 vs 1425 files)"
 description: "Root-cause investigation of why mcp__spec_kit_memory__code_graph_scan returned 33 files / 809 nodes / 376 edges after packet 012, when the predicted post-exclude count was 1000-3000."
 sessionId: dr-2026-04-23-130100-pt04
-specFolder: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/012-code-graph-context-and-scan-scope
+specFolder: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope
 iterations: 5
 stop_reason: maxIterationsReached
 trigger_phrases:
@@ -23,7 +23,7 @@ trigger_phrases:
 
 **Fix:** Add `IndexFilesOptions { skipFreshFiles?: boolean }` (default `true`) and make the scan handler pass `{ skipFreshFiles: effectiveIncremental }` so caller-requested full scans parse every post-exclude candidate. Add a minimal `seenSymbolIds` dedupe guard inside `capturesToNodes()`, preserving the first-seen node and preventing duplicate IDs from reaching `replaceNodes()`. Supplement the scan response with additive `fullScanRequested` and `effectiveIncremental` fields (keep `fullReindexTriggered` unchanged).
 
-**Implementation:** Host the remediation under nested packet `007-deep-review-remediation/012-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`, following ordered tasks T-001 → T-011 (indexer options → scan handler mode → dedupe → response metadata → tests → build → runtime scan).
+**Implementation:** Host the remediation under nested packet `003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`, following ordered tasks T-001 → T-011 (indexer options → scan handler mode → dedupe → response metadata → tests → build → runtime scan).
 
 **Verification:** Acceptance requires focused tests plus a real `incremental:false` scan that returns `filesScanned >= 1000`, zero duplicate-symbol errors, stable repeat-scan behavior, and passing status/query/context smoke checks.
 
@@ -243,9 +243,9 @@ Iteration 3 verdict: Option A's dedup is the right minimal-crash-guard; richer p
 
 ### 7.1 Spec folder topology
 
-**Recommended host:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/012-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`
+**Recommended host:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`
 
-**Why nested under packet 012:** This is a direct remediation of packet 012's behavior interaction. A sibling `013-...` slot is taken (`013-claude-hook-findings-remediation` exists). Nesting under 012 also keeps the lineage explicit for future readers.
+**Why nested under packet 012:** This is a direct remediation of packet 012's behavior interaction. A sibling `013-...` slot is taken (`006-claude-hook-findings-remediation` exists). Nesting under 012 also keeps the lineage explicit for future readers.
 
 **Level:** 3 (≥500 LOC across indexer + handler + tests + dist + docs; affects observability surfaces).
 
@@ -447,7 +447,7 @@ describe('capturesToNodes dedupe (Bug #2 regression)', () => {
 - `.opencode/skill/system-spec-kit/mcp_server/dist/code-graph/handlers/scan.js:133-137,141,203`
 
 ### Packet 012 source
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/012-code-graph-context-and-scan-scope/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/implementation-summary.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/session-handover-2026-04-23.md`
 
 ---

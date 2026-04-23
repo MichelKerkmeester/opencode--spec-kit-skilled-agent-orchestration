@@ -83,6 +83,7 @@ export interface SimilarMemory {
   stability: number;
   difficulty: number;
   file_path: string;
+  canonical_file_path?: string | null;
   [key: string]: unknown;
 }
 

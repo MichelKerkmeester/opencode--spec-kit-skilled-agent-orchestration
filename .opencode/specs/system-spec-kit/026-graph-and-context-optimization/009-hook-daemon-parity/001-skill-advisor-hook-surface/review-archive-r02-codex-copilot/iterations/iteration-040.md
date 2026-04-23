@@ -5,7 +5,7 @@ Reviewed the final D5 integration/cross-runtime surface because the default rota
 
 ## Evidence read
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/review/deep-review-state.jsonl:41 → iteration 39 ended with cumulative counts P0=0, P1=19, P2=17 and `stuck=1`.
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-039.md:38-39 → prior handoff explicitly requested a final D5 parity/plugin check.
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/review-archive-r02-codex-copilot/iterations/iteration-039.md:38-39 → prior handoff explicitly requested a final D5 parity/plugin check.
 - .opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts:21-23 → the parity harness runtime list is still only `claude`, `gemini`, `copilot`, and `codex`.
 - .opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts:119-135 → the visible-brief equality assertion still covers those four runtimes plus `copilot-wrapper`, with no OpenCode plugin variant.
 - .opencode/plugins/spec-kit-skill-advisor.js:291-309 → the shipped OpenCode plugin still injects advisor text through `onUserPromptSubmitted()` by returning `additionalContext`.

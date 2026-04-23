@@ -2,7 +2,7 @@
 title: "Implementation Summary: Skill-Advisor Hook Surface"
 description: "Phase 020 complete: cross-runtime advisor hook surface shipped across Claude/Gemini/Copilot/Codex with 4-runtime parity, 200/200 corpus parity, cache-hit p95 0.016ms, hit rate 66.7%, DQI 97 reference doc."
 trigger_phrases:
-  - "020 implementation summary"
+  - "026/009/001 implementation summary"
   - "skill advisor hook summary"
 importance_tier: "critical"
 contextType: "implementation-summary"

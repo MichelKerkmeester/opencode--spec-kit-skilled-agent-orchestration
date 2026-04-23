@@ -1,6 +1,6 @@
 ---
 title: "Deep Research Synthesis — Copilot CLI Hook Schema & userPromptSubmitted Failure"
-description: "Synthesis of 8 iterations converging on the root cause of the 'Neither bash nor powershell specified in hook command configuration' error blocking 026/007/007. Root cause: Copilot 1.0.34 merges .claude/settings.local.json into its hook pipeline and executes the Claude matcher wrapper as a command; the wrapper lacks top-level bash/powershell. Fix: add top-level no-op bash to the Claude wrapper — empirically cross-runtime safe."
+description: "Synthesis of 8 iterations converging on the root cause of the 'Neither bash nor powershell specified in hook command configuration' error blocking 026/009/004. Root cause: Copilot 1.0.34 merges .claude/settings.local.json into its hook pipeline and executes the Claude matcher wrapper as a command; the wrapper lacks top-level bash/powershell. Fix: add top-level no-op bash to the Claude wrapper — empirically cross-runtime safe."
 importance_tier: "high"
 contextType: "research"
 _memory:
@@ -15,7 +15,7 @@ _memory:
 
 # Deep Research Synthesis — Copilot CLI Hook Schema & userPromptSubmitted Failure
 
-**Parent spec phase**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/007-copilot-hook-parity-remediation/`
+**Parent spec phase**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation/`
 **Research packet**: `007-deep-review-remediation-pt-03/`
 **Prior research**: `007-deep-review-remediation-pt-01/research.md` (outcome B file-based workaround; did not touch schema)
 **Iterations**: 8 (10 configured; converged early at iter-8 with stuck_count=3)
@@ -265,7 +265,7 @@ Option 2 is the smallest repo-local change. Recommend for the implementation pac
 
 ## 10. NEXT STEPS
 
-1. **Open implementation packet** as a sibling of `007-copilot-hook-parity-remediation/`: e.g. `008-copilot-wrapper-schema-fix/` or as a follow-on within the same parent remediation tree.
+1. **Open implementation packet** as a sibling of `004-copilot-hook-parity-remediation/`: e.g. `008-copilot-wrapper-schema-fix/` or as a follow-on within the same parent remediation tree.
 2. **Patch `.claude/settings.local.json`** per §4.2. Include `UserPromptSubmit`, `SessionStart`, and any other events Copilot maps.
 3. **Decide writer integration strategy** (§7, option 2 recommended).
 4. **Smoke test**: in a fresh shell, `copilot -p "hook smoke"`, confirm:

@@ -1,6 +1,6 @@
 ---
 title: Deep Research Strategy — Codex CLI Hook Parity Contract
-description: Session tracking for 008-codex-hook-parity-remediation deep-research with cli-codex executor.
+description: Session tracking for 005-codex-hook-parity-remediation deep-research with cli-codex executor.
 ---
 
 # Deep Research Strategy — Codex Hook Contract

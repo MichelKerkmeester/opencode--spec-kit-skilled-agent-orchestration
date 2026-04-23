@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Deep Review Remediation"
-description: "Deep review waves and post-review remediation. Consolidated active parent for 4 direct child phase packet(s)."
+description: "Deep review waves and post-review remediation. Consolidated active parent for 5 direct child phase packet(s)."
 trigger_phrases:
   - "007-deep-review-remediation"
   - "deep review waves and post-review remediation"
@@ -8,6 +8,7 @@ trigger_phrases:
   - "002-cli-executor-remediation"
   - "003-deep-review-remediation"
   - "004-r03-post-remediation"
+  - "005-006-campaign-findings-remediation"
 importance_tier: "important"
 contextType: "implementation"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
@@ -99,6 +100,7 @@ Keep this theme as an active parent while making each original phase packet a di
 | 2 | `002-cli-executor-remediation/` | Spec Ready | Feature Specification: Phase 020 Research-Findings Remediation |
 | 3 | `003-deep-review-remediation/` | Draft | Feature Specification: Phase 025 — Deep-Review Remediation |
 | 4 | `004-r03-post-remediation/` | Draft | Feature Specification: Phase 026 — R03 Post-Remediation Remediation |
+| 5 | `005-006-campaign-findings-remediation/` | Draft | Feature Specification: 005-006 Campaign Findings Remediation |
 <!-- /ANCHOR:phase-map -->
 
 ---

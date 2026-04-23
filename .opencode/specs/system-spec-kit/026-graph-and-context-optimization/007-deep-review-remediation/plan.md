@@ -8,6 +8,7 @@ trigger_phrases:
   - "002-cli-executor-remediation"
   - "003-deep-review-remediation"
   - "004-r03-post-remediation"
+  - "005-006-campaign-findings-remediation"
 importance_tier: "important"
 contextType: "plan"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
@@ -52,7 +53,7 @@ _memory:
 | **Testing** | Strict parent validation and JSON parse checks |
 
 ### Overview
-This parent groups `001-deep-review-and-remediation/`, `002-cli-executor-remediation/`, `003-deep-review-remediation/`, `004-r03-post-remediation/` as direct child folders. It keeps the active theme concise while avoiding an extra archive layer.
+This parent groups `001-deep-review-and-remediation/`, `002-cli-executor-remediation/`, `003-deep-review-remediation/`, `004-r03-post-remediation/`, and `005-006-campaign-findings-remediation/` as direct child folders. It keeps the active theme concise while avoiding an extra archive layer.
 <!-- /ANCHOR:summary -->
 
 ---

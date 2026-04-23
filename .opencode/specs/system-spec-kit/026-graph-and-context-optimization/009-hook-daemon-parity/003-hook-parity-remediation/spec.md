@@ -2,7 +2,7 @@
 title: "029 - Runtime Hook Parity Remediation"
 description: "Fix 10 hook findings from the 2026-04-21 hook parity review, including OpenCode transport, Codex hook reliability, Copilot startup wiring, and documentation truth-sync."
 trigger_phrases:
-  - "029 hook parity"
+  - "026/009/003 hook parity"
   - "opencode plugin bridge"
   - "codex advisor hook"
 importance_tier: "high"
@@ -13,9 +13,9 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
     last_updated_at: "2026-04-21T15:33:58Z"
     last_updated_by: "codex-gpt-5.4"
-    recent_action: "Phase 003 remediation evidence and validation shape repaired"
+    recent_action: "Deferred Vitest baseline failures closed"
     next_safe_action: "Run strict validation and close remaining review remediation gates"
-    completion_pct: 95
+    completion_pct: 100
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 <!-- SPECKIT_LEVEL: 3 -->
@@ -40,11 +40,12 @@ This phase closes hook parity defects discovered on 2026-04-21 across the OpenCo
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 remediation |
-| **Status** | In Progress |
+| **Status** | Complete |
 | **Created** | 2026-04-21 |
 | **Branch** | `009-hook-daemon-parity` |
 | **Parent Spec** | `../spec.md` |
 | **Predecessor** | `../002-skill-graph-daemon-and-advisor-unification/spec.md` |
+| **Successor** | `../004-copilot-hook-parity-remediation/spec.md` |
 <!-- /ANCHOR:metadata -->
 
 ---

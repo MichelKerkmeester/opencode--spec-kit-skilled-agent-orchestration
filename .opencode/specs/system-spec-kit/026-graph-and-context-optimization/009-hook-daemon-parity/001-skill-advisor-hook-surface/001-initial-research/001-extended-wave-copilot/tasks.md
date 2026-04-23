@@ -56,6 +56,6 @@ _memory:
 
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
-- Wave 1 research: `../../research/020-skill-advisor-hook-surface-pt-01/research.md`
-- Artifact tree: `../../../research/020-skill-advisor-hook-surface-pt-02/`
+- Wave 1 research: `../../../../research/020-skill-advisor-hook-surface-pt-01/research.md`
+- Artifact tree: `../../../../research/020-skill-advisor-hook-surface-pt-02/`
 <!-- /ANCHOR:cross-refs -->

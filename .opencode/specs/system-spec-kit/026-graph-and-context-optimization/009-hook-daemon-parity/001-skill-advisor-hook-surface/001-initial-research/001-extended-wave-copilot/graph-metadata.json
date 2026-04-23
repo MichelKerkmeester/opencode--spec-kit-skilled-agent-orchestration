@@ -44,12 +44,12 @@
     ]
   },
   "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research/002-extended-wave-copilot",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-extended-wave-copilot",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot"
   ],
   "migration": {
-    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research/002-extended-wave-copilot",
-    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/001-initial-research/002-extended-wave-copilot",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-extended-wave-copilot",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-extended-wave-copilot",
     "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot",
     "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot",
     "renumbered_at": "2026-04-21T14:30:00Z",

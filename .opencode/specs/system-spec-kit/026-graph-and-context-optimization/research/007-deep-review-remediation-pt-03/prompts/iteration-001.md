@@ -8,7 +8,7 @@ Questions: 0/10 answered | Last focus: none yet
 Last 2 ratios: N/A -> N/A | Stuck count: 0
 Next focus: Ground-truth the current Copilot CLI 1.0.34 hook-config schema from primary sources.
 
-Research Topic: Copilot CLI 1.0.34 hook-config JSON schema. Resolve the `"Neither 'bash' nor 'powershell' specified in hook command configuration"` execution failure blocking 026/007/007 copilot-hook-parity-remediation. Identify the schema Copilot CLI accepts for sessionStart / userPromptSubmitted / sessionEnd / postToolUse / preToolUse hooks, confirm the config-file discovery rules, and produce a concrete JSON patch to `.github/hooks/superset-notify.json` with an empirical reproducer.
+Research Topic: Copilot CLI 1.0.34 hook-config JSON schema. Resolve the `"Neither 'bash' nor 'powershell' specified in hook command configuration"` execution failure blocking 026/009/004 copilot-hook-parity-remediation. Identify the schema Copilot CLI accepts for sessionStart / userPromptSubmitted / sessionEnd / postToolUse / preToolUse hooks, confirm the config-file discovery rules, and produce a concrete JSON patch to `.github/hooks/superset-notify.json` with an empirical reproducer.
 
 Iteration: 1 of 10
 Focus Area: Ground-truth the current Copilot CLI 1.0.34 hook-config schema from primary sources

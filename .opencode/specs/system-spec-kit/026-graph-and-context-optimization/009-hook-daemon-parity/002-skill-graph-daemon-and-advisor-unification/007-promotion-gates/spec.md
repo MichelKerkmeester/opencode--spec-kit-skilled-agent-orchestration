@@ -21,7 +21,7 @@ _memory:
     key_files:
       - ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/"
       - ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/promotion/"
-      - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-001-initial-research-005-routing-accuracy/corpus/labeled-prompts.jsonl"
+      - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "027-006-scaffold-r01"

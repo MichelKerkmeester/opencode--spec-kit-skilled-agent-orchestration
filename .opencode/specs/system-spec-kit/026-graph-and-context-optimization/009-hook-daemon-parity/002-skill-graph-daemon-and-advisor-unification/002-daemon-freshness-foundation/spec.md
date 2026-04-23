@@ -46,7 +46,7 @@ _memory:
 | **Parent Spec** | `../spec.md` |
 | **Predecessor** | `../001-validator-esm-fix/spec.md` |
 | **Successor** | `../003-lifecycle-and-derived-metadata/spec.md` |
-| **Research source** | `../../research/027-skill-graph-daemon-and-advisor-unification-pt-01/research.md` §4 Track A + §13.2 Track E + §13.6 delta row `027/001`; iterations 001-008 + 041-044 + 056 (Y1) |
+| **Research source** | `../../../research/027-skill-graph-daemon-and-advisor-unification-pt-01/research.md` §4 Track A + §13.2 Track E + §13.6 delta row `027/001`; iterations 001-008 + 041-044 + 056 (Y1) |
 
 ## 2. PROBLEM & PURPOSE
 

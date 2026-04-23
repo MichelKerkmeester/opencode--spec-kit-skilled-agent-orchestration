@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. HANDLER MEMORY INDEX TESTS
 // ───────────────────────────────────────────────────────────────
-import { describe, it, expect, afterAll } from 'vitest';
+import { describe, it, expect, afterAll, vi } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
@@ -209,6 +209,141 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
         expect(result).toHaveLength(1);
         expect(result[0].includes('910-target')).toBe(true);
       } finally {
+        fs.rmSync(root, { recursive: true, force: true });
+      }
+    });
+  });
+
+  describe('scan batch concurrency regressions', () => {
+    it('serializes sibling spec-doc saves so scan batches do not self-trigger candidate_changed', async () => {
+      const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-index-scan-serial-'));
+      const previousBasePath = process.env.MEMORY_BASE_PATH;
+      let inFlight = 0;
+      let maxInFlight = 0;
+      let nextId = 1000;
+
+      try {
+        const specFolder = path.join(
+          root,
+          '.opencode',
+          'specs',
+          'system-spec-kit',
+          '026-graph-and-context-optimization',
+          '009-hook-daemon-parity',
+        );
+        fs.mkdirSync(specFolder, { recursive: true });
+        for (const fileName of ['spec.md', 'plan.md', 'tasks.md', 'implementation-summary.md', 'checklist.md']) {
+          fs.writeFileSync(path.join(specFolder, fileName), `# ${fileName}\n`, 'utf8');
+        }
+
+        process.env.MEMORY_BASE_PATH = root;
+        vi.resetModules();
+
+        const indexMemoryFileMock = vi.fn(async () => {
+          inFlight += 1;
+          maxInFlight = Math.max(maxInFlight, inFlight);
+          try {
+            if (inFlight > 1) {
+              throw new Error('candidate_changed');
+            }
+            await new Promise((resolve) => setTimeout(resolve, 5));
+            nextId += 1;
+            return {
+              status: 'indexed',
+              id: nextId,
+              title: 'Indexed spec doc',
+            };
+          } finally {
+            inFlight -= 1;
+          }
+        });
+
+        vi.doMock('../handlers/memory-save.js', () => ({
+          indexMemoryFile: indexMemoryFileMock,
+        }));
+        vi.doMock('../core/index.js', () => ({
+          checkDatabaseUpdated: vi.fn(async () => {}),
+        }));
+        vi.doMock('../core/db-state.js', async (importOriginal) => {
+          const actual = await importOriginal<typeof import('../core/db-state.js')>();
+          return {
+            ...actual,
+            acquireIndexScanLease: vi.fn(async () => ({ acquired: true, waitSeconds: 0, reason: null })),
+            completeIndexScanLease: vi.fn(async () => {}),
+          };
+        });
+        vi.doMock('../lib/storage/checkpoints.js', () => ({
+          getRestoreBarrierStatus: vi.fn(() => null),
+        }));
+        vi.doMock('../lib/providers/embeddings.js', () => ({
+          getEmbeddingProfile: vi.fn(() => null),
+        }));
+        vi.doMock('../handlers/mutation-hooks.js', () => ({
+          runPostMutationHooks: vi.fn(() => {}),
+        }));
+        vi.doMock('../handlers/memory-index-alias.js', () => ({
+          EMPTY_ALIAS_CONFLICT_SUMMARY: {
+            groups: 0,
+            rows: 0,
+            identicalHashGroups: 0,
+            divergentHashGroups: 0,
+            samples: [],
+          },
+          createDefaultDivergenceReconcileSummary: () => ({
+            retriesScheduled: 0,
+            escalated: 0,
+            errors: [],
+            attempted: 0,
+          }),
+          detectAliasConflictsFromIndex: vi.fn(() => ({
+            groups: 0,
+            rows: 0,
+            identicalHashGroups: 0,
+            divergentHashGroups: 0,
+            samples: [],
+          })),
+          summarizeAliasConflicts: vi.fn(() => ({
+            groups: 0,
+            rows: 0,
+            identicalHashGroups: 0,
+            divergentHashGroups: 0,
+            samples: [],
+          })),
+          runDivergenceReconcileHooks: vi.fn(() => ({
+            retriesScheduled: 0,
+            escalated: 0,
+            errors: [],
+            attempted: 0,
+          })),
+        }));
+
+        const isolatedHandler = await import('../handlers/memory-index');
+        const response = await isolatedHandler.handleMemoryIndexScan({
+          specFolder: 'system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity',
+          includeConstitutional: false,
+          includeSpecDocs: true,
+          incremental: false,
+        });
+        const envelope = JSON.parse((response as any).content[0].text) as {
+          data: {
+            batchSize: number;
+            failed: number;
+            files: Array<{ error?: string }>;
+          };
+        };
+
+        expect(indexMemoryFileMock).toHaveBeenCalledTimes(5);
+        expect(maxInFlight).toBe(1);
+        expect(envelope.data.batchSize).toBe(1);
+        expect(envelope.data.failed).toBe(0);
+        expect(envelope.data.files.some((entry) => entry.error === 'candidate_changed')).toBe(false);
+      } finally {
+        if (previousBasePath === undefined) {
+          delete process.env.MEMORY_BASE_PATH;
+        } else {
+          process.env.MEMORY_BASE_PATH = previousBasePath;
+        }
+        vi.resetModules();
         fs.rmSync(root, { recursive: true, force: true });
       }
     });

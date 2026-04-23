@@ -1,9 +1,9 @@
 # Deep Research Strategy — Copilot CLI 1.0.34 Hook-Config Schema Resolution
 
-**Topic**: Copilot CLI 1.0.34 hook-config JSON schema. Resolve the `"Neither 'bash' nor 'powershell' specified in hook command configuration"` execution failure blocking `026/007/007 copilot-hook-parity-remediation`. Identify the current schema that Copilot CLI accepts for `sessionStart` / `userPromptSubmitted` / `sessionEnd` / `postToolUse` / `preToolUse` hooks, confirm the config-file path and discovery rules, and produce a concrete JSON patch to `.github/hooks/superset-notify.json` with an empirical reproducer.
+**Topic**: Copilot CLI 1.0.34 hook-config JSON schema. Resolve the `"Neither 'bash' nor 'powershell' specified in hook command configuration"` execution failure blocking `026/009/004 copilot-hook-parity-remediation`. Identify the current schema that Copilot CLI accepts for `sessionStart` / `userPromptSubmitted` / `sessionEnd` / `postToolUse` / `preToolUse` hooks, confirm the config-file path and discovery rules, and produce a concrete JSON patch to `.github/hooks/superset-notify.json` with an empirical reproducer.
 
 **Research packet**: `007-deep-review-remediation-pt-03/`
-**Parent spec phase**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/007-copilot-hook-parity-remediation/`
+**Parent spec phase**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation/`
 **Prior research**: `../007-deep-review-remediation-pt-01/research.md` (outcome B file-based workaround; no hook-schema investigation)
 **Max iterations**: 10
 **Convergence threshold**: 0.05
@@ -54,7 +54,7 @@ Stop when ALL three are satisfied:
 
 ### From memory / prior packet
 - `007-deep-review-remediation-pt-01` converged on Outcome B (file-based workaround) in April 2026 with 30+ primary-source citations. It did NOT investigate the hook-config schema — only confirmed that Copilot customer hooks cannot mutate prompts per GitHub docs.
-- `007-copilot-hook-parity-remediation/implementation-summary.md` reports a successful `copilot -p` smoke on 2026-04-22 that returned the advisor line. The session in which that smoke ran used the same `.github/hooks/superset-notify.json` file shape that is now failing.
+- `004-copilot-hook-parity-remediation/implementation-summary.md` reports a successful `copilot -p` smoke on 2026-04-22 that returned the advisor line. The session in which that smoke ran used the same `.github/hooks/superset-notify.json` file shape that is now failing.
 - The compiled writer (`dist/hooks/copilot/user-prompt-submit.js`) is verified working via temp-file smoke (`SPECKIT_COPILOT_INSTRUCTIONS_PATH` override) — producing the managed block with a live advisor line. The breakage is specifically at the Copilot-CLI-to-hook-script edge.
 
 ### Observed failure

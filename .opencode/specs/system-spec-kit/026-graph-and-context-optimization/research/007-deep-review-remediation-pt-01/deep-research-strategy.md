@@ -1,6 +1,6 @@
 ---
 title: Deep Research Strategy — Copilot CLI Hook Parity
-description: Session tracking for 007-copilot-hook-parity-remediation deep-research.
+description: Session tracking for 004-copilot-hook-parity-remediation deep-research.
 ---
 
 # Deep Research Strategy — Copilot CLI Hook Parity

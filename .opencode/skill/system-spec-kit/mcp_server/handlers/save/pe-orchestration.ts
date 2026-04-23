@@ -5,6 +5,7 @@ import type Database from 'better-sqlite3';
 
 import * as predictionErrorGate from '../../lib/cognitive/prediction-error-gate.js';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser.js';
+import { getCanonicalPathKey } from '../../lib/utils/canonical-path.js';
 import { getMemoryHashSnapshot, appendMutationLedgerSafe } from '../memory-crud-utils.js';
 import {
   findSimilarMemories,
@@ -22,6 +23,20 @@ export interface PeOrchestrationResult {
   decision: PeDecision;
   earlyReturn: IndexResult | null;
   supersededId: number | null;
+}
+
+function getCandidateCanonicalPath(candidate: SimilarMemory | undefined): string | null {
+  if (!candidate) {
+    return null;
+  }
+
+  const rawPath = typeof candidate.canonical_file_path === 'string' && candidate.canonical_file_path.length > 0
+    ? candidate.canonical_file_path
+    : candidate.file_path;
+
+  return typeof rawPath === 'string' && rawPath.length > 0
+    ? getCanonicalPathKey(rawPath)
+    : null;
 }
 
 export function evaluateAndApplyPeDecision(
@@ -58,6 +73,27 @@ export function evaluateAndApplyPeDecision(
       candidates,
       { specFolder: parsed.specFolder }
     );
+
+    if (
+      peDecision.existingMemoryId != null &&
+      (peDecision.action === predictionErrorGate.ACTION.UPDATE ||
+        peDecision.action === predictionErrorGate.ACTION.REINFORCE)
+    ) {
+      const targetCanonicalPath = getCanonicalPathKey(filePath);
+      const matchedCandidate = candidates.find((candidate) => candidate.id === peDecision.existingMemoryId);
+      const candidateCanonicalPath = getCandidateCanonicalPath(matchedCandidate);
+
+      if (candidateCanonicalPath !== targetCanonicalPath) {
+        const previousAction = peDecision.action;
+        peDecision = {
+          action: predictionErrorGate.ACTION.CREATE,
+          similarity: peDecision.similarity,
+          existingMemoryId: null,
+          contradiction: peDecision.contradiction ?? null,
+          reason: `Cross-file ${previousAction.toLowerCase()} candidate did not match current canonical path; creating a new lineage chain instead.`,
+        };
+      }
+    }
 
     logPeDecision(peDecision, parsed.contentHash, parsed.specFolder);
 

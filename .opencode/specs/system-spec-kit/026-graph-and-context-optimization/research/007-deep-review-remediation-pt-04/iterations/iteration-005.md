@@ -39,7 +39,7 @@ Verdict: dist matches the source-level findings. This is the current shipped/run
 
 **Fix:** Add `IndexFilesOptions { skipFreshFiles?: boolean }` with a default of `true`, and make the scan handler pass `{ skipFreshFiles: effectiveIncremental }` so caller-requested full scans parse every post-exclude candidate. Add a minimal `seenSymbolIds` dedupe guard inside `capturesToNodes()`, preserving the first node and preventing duplicate IDs from reaching `replaceNodes()`. Supplement the scan response with additive `fullScanRequested` and `effectiveIncremental` fields while keeping `fullReindexTriggered` unchanged.
 
-**Implementation:** Host the remediation under packet `007-deep-review-remediation/012-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`, following ordered tasks T-001 through T-011 for docs, indexer options, scan handler mode, dedupe, response metadata, tests, build, and runtime scan.
+**Implementation:** Host the remediation under packet `003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`, following ordered tasks T-001 through T-011 for docs, indexer options, scan handler mode, dedupe, response metadata, tests, build, and runtime scan.
 
 **Verification:** Acceptance requires focused tests plus a real `incremental:false` scan that returns `filesScanned >= 1000`, zero duplicate-symbol errors, stable repeat-scan behavior, and passing status/query/context smoke checks.
 

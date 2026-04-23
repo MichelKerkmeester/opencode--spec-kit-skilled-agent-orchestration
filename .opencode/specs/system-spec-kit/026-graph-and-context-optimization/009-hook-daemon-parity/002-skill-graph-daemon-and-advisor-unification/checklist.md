@@ -11,9 +11,9 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification"
     last_updated_at: "2026-04-21T15:42:05Z"
     last_updated_by: "codex-gpt-5.4"
-    recent_action: "Already shipped"
+    recent_action: "Shipped implementation preserved; strict validation follow-up still pending"
     next_safe_action: "Keep validation green"
-    completion_pct: 100
+    completion_pct: 95
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 <!-- SPECKIT_LEVEL: 3 -->

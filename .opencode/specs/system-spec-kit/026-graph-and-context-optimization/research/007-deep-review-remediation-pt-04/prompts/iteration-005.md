@@ -22,7 +22,7 @@ Research Topic: Why mcp__spec_kit_memory__code_graph_scan returned 33 files / 80
 - Response payload supplement: `fullScanRequested`, `effectiveIncremental` (additive only).
 
 **Implementation handoff:**
-- Spec folder: nested Level 3 packet `007-deep-review-remediation/012-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`.
+- Spec folder: nested Level 3 packet `003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`.
 - Tasks T-001..T-011 ordered (indexFiles options → scan handler mode → capturesToNodes dedup → response fields → tests → build → runtime scan).
 - Risks R1-R6 with mitigations.
 - Acceptance criteria AC-1..AC-8 with concrete pass/fail.

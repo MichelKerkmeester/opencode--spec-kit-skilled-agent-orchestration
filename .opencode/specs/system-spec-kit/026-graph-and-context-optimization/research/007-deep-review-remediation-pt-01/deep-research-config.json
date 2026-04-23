@@ -7,7 +7,7 @@
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 15,
   "progressiveSynthesis": true,
-  "specFolder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/007-copilot-hook-parity-remediation",
+  "specFolder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation",
   "createdAt": "2026-04-22T06:22:33.203974Z",
   "status": "initialized",
   "executionMode": "auto",

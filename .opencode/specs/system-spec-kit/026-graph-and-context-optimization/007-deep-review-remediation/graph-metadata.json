@@ -7,25 +7,11 @@
     "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation",
     "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation",
     "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation",
-    "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation"
+    "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation"
   ],
-  "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation",
-    "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation",
-    "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation",
-    "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation"
-  ],
-  "migration": {
-    "flattened_at": "2026-04-21T13:00:00Z",
-    "active_phase": "007-deep-review-remediation",
-    "child_phase_folders": [
-      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation",
-      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation",
-      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation",
-      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation"
-    ],
-    "layout": "phase-root-children"
-  },
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [
@@ -52,6 +38,12 @@
         "reason": "supersedes relationship preserved during phase consolidation",
         "source": "026-phase-consolidation",
         "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation"
       }
     ],
     "related_to": []
@@ -63,25 +55,36 @@
       "001-deep-review-and-remediation",
       "002-cli-executor-remediation",
       "003-deep-review-remediation",
-      "004-r03-post-remediation"
+      "004-r03-post-remediation",
+      "005-006-campaign-findings-remediation"
     ],
     "key_topics": [
+      "007-deep-review-remediation",
       "deep",
       "review",
       "waves",
-      "and",
-      "post",
+      "post-review",
       "remediation",
-      "007"
+      "001-deep-review-and-remediation",
+      "002-cli-executor-remediation",
+      "003-deep-review-remediation",
+      "004-r03-post-remediation",
+      "handover",
+      "copilot"
     ],
     "importance_tier": "important",
-    "status": "in_progress",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "implementation-summary.md",
-      "context-index.md"
+      "context-index.md",
+      "001-deep-review-and-remediation/implementation-summary.md",
+      "002-cli-executor-remediation/implementation-summary.md",
+      "003-deep-review-remediation/implementation-summary.md",
+      "004-r03-post-remediation/implementation-summary.md",
+      "005-006-campaign-findings-remediation/implementation-summary.md"
     ],
     "entities": [
       {
@@ -107,11 +110,17 @@
         "kind": "spec_phase",
         "path": "004-r03-post-remediation",
         "source": "migration"
+      },
+      {
+        "name": "005-006-campaign-findings-remediation",
+        "kind": "spec_phase",
+        "path": "005-006-campaign-findings-remediation",
+        "source": "migration"
       }
     ],
-    "causal_summary": "Deep review waves and post-review remediation. Direct child parent for 001-deep-review-and-remediation, 002-cli-executor-remediation, 003-deep-review-remediation, 004-r03-post-remediation.",
+    "causal_summary": "Deep review waves and post-review remediation. Direct child parent for 001-deep-review-and-remediation through 005-006-campaign-findings-remediation.",
     "created_at": "2026-04-21T13:00:00Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-23T14:47:43.368Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -119,9 +128,16 @@
       "plan.md",
       "tasks.md",
       "implementation-summary.md",
-      "context-index.md"
+      "handover.md"
     ]
   },
-  "migrated": true,
-  "migration_source": "legacy"
+  "migration": {
+    "child_phase_folders": [
+      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation"
+    ]
+  }
 }

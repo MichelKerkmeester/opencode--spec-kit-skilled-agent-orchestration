@@ -7,7 +7,7 @@ contextType: "research"
 
 # Deep Research Synthesis — Copilot CLI Hook Parity
 
-**Spec phase**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/007-copilot-hook-parity-remediation/`
+**Spec phase**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation/`
 **Research packet**: `007-deep-review-remediation-pt-01/`
 **Iterations**: 10 (all completed; rolling newInfoRatio saturation curve 0.85 → 0.10)
 **Executor**: `cli-copilot` with gpt-5.4, reasoning high
@@ -269,9 +269,9 @@ The research methodology that worked for this packet — reusable for Gemini CLI
 
 ## 11. RELATED DOCUMENTS
 
-- **Spec**: `../007-copilot-hook-parity-remediation/spec.md`
-- **Plan**: `../007-copilot-hook-parity-remediation/plan.md`
-- **Tasks**: `../007-copilot-hook-parity-remediation/tasks.md`
-- **Decisions**: `../007-copilot-hook-parity-remediation/decision-record.md` — ADR-003 populated from §5 above
-- **Sibling phase**: `../008-codex-hook-parity-remediation/` — Codex has native hooks with DIFFERENT semantics; separate synthesis
+- **Spec**: `../../009-hook-daemon-parity/004-copilot-hook-parity-remediation/spec.md`
+- **Plan**: `../../009-hook-daemon-parity/004-copilot-hook-parity-remediation/plan.md`
+- **Tasks**: `../../009-hook-daemon-parity/004-copilot-hook-parity-remediation/tasks.md`
+- **Decisions**: `../../009-hook-daemon-parity/004-copilot-hook-parity-remediation/decision-record.md` — ADR-003 populated from §5 above
+- **Sibling phase**: `../../009-hook-daemon-parity/005-codex-hook-parity-remediation/` — Codex has native hooks with DIFFERENT semantics; separate synthesis
 - **Reference implementation**: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts` — the Claude-side hook this phase parity-matches (implementation tracked against outcome B path)

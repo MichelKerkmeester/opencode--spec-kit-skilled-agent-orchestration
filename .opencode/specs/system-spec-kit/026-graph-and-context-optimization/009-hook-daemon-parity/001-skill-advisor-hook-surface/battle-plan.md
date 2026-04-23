@@ -519,8 +519,8 @@ A child should be rolled back (not just patched) if:
 
 ### Rollback procedure (template)
 
-1. **Identify boundary commits**: `git log --oneline 020-skill-advisor-hook-surface/<child>/` — find the first commit of the child's implementation work
-2. **Verify predecessor is clean**: `git log --oneline 020-skill-advisor-hook-surface/<predecessor>/` — confirm predecessor's final commit is older than the rollback target
+1. **Identify boundary commits**: `git log --oneline 001-skill-advisor-hook-surface/<child>/` — find the first commit of the child's implementation work
+2. **Verify predecessor is clean**: `git log --oneline 001-skill-advisor-hook-surface/<predecessor>/` — confirm predecessor's final commit is older than the rollback target
 3. **Revert in reverse order**: `git revert <newest-commit-sha> <...> <oldest-commit-sha>` (one revert per commit, reverse chronological)
 4. **Verify state**: `bash validate.sh --strict --no-recursive` on the rolled-back child + `vitest run` to confirm no residual test breakage
 5. **Update 020 parent**: record rollback in `implementation-summary.md` Dispatch Log with reason + evidence

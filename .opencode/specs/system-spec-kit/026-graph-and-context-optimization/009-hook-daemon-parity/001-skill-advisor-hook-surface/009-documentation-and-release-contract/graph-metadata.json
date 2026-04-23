@@ -204,23 +204,23 @@
     ]
   },
   "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/009-documentation-and-release-contract",
-    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface/009-documentation-and-release-contract",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract"
   ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
-    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/009-documentation-and-release-contract",
-    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/009-documentation-and-release-contract",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract",
     "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract",
     "consolidation": "026-phase-surface-29-to-9",
     "flattened_at": "2026-04-21T13:00:00Z",
     "layout": "phase-root-local-sequence",
-    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface/009-documentation-and-release-contract",
-    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/020-skill-advisor-hook-surface/009-documentation-and-release-contract",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract",
     "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract",
     "local_phase_slug": "001-skill-advisor-hook-surface",
-    "original_phase_slug": "020-skill-advisor-hook-surface",
+    "original_phase_slug": "001-skill-advisor-hook-surface",
     "renumbered_at": "2026-04-21T14:00:00Z"
   },
   "migrated": true,

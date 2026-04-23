@@ -7,7 +7,7 @@
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 15,
   "progressiveSynthesis": true,
-  "specFolder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/008-codex-hook-parity-remediation",
+  "specFolder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation",
   "createdAt": "2026-04-22T07:26:42.676662Z",
   "status": "initialized",
   "executionMode": "auto",

@@ -16,13 +16,28 @@
     "specification",
     "graph",
     "context",
-    "optimization"
+    "optimization",
+    "memory-indexer",
+    "lineage",
+    "candidate_changed"
   ],
-  "lastUpdated": "2026-04-22T06:06:02.895Z",
+  "lastUpdated": "2026-04-23T17:48:00.000Z",
   "specId": "026",
   "folderSlug": "graph-and-context-optimization",
   "parentChain": [
     "system-spec-kit"
+  ],
+  "childTopology": [
+    "001-research-and-baseline",
+    "002-continuity-memory-runtime",
+    "003-code-graph-package",
+    "004-agent-governance-and-commands",
+    "005-release-cleanup-playbooks",
+    "006-search-routing-advisor",
+    "007-deep-review-remediation",
+    "008-runtime-executor-hardening",
+    "009-hook-daemon-parity",
+    "010-memory-indexer-lineage-and-concurrency-fix"
   ],
   "memorySequence": 5,
   "memoryNameHistory": [

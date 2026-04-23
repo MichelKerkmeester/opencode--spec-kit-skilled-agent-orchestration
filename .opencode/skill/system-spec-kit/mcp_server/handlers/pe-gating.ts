@@ -41,6 +41,7 @@ interface SimilarMemory {
   stability: number;
   difficulty: number;
   file_path: string;
+  canonical_file_path?: string | null;
   [key: string]: unknown;
 }
 
@@ -143,6 +144,7 @@ function findSimilarMemories(
           stability: (r.stability as number) || fsrsScheduler.DEFAULT_INITIAL_STABILITY,
           difficulty: (r.difficulty as number) || fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
           file_path: r.file_path as string,
+          canonical_file_path: typeof r.canonical_file_path === 'string' ? r.canonical_file_path : null,
         });
 
         if (typeof r.id === 'number') {

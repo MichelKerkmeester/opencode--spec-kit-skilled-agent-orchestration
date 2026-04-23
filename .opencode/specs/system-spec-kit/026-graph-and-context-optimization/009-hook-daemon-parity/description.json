@@ -4,7 +4,15 @@
     "child_phase_folders": [
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring"
     ],
     "layout": "phase-root-children"
   },
@@ -17,7 +25,7 @@
     "daemon",
     "parity"
   ],
-  "lastUpdated": "2026-04-22T06:06:03.000Z",
+  "lastUpdated": "2026-04-23T14:47:43.368Z",
   "specId": "009",
   "folderSlug": "hook-daemon-parity",
   "parentChain": [

@@ -12,7 +12,8 @@
     "system-spec-kit/026-graph-and-context-optimization//006-search-routing-advisor",
     "system-spec-kit/026-graph-and-context-optimization//007-deep-review-remediation",
     "system-spec-kit/026-graph-and-context-optimization//008-runtime-executor-hardening",
-    "system-spec-kit/026-graph-and-context-optimization//009-hook-daemon-parity"
+    "system-spec-kit/026-graph-and-context-optimization//009-hook-daemon-parity",
+    "system-spec-kit/026-graph-and-context-optimization//010-memory-indexer-lineage-and-concurrency-fix"
   ],
   "manual": {
     "depends_on": [],
@@ -25,7 +26,8 @@
       "026 phase consolidation",
       "29 to 9 phase map",
       "merged phase map",
-      "graph context optimization root packet"
+      "graph context optimization root packet",
+      "026/010 memory indexer lineage fix"
     ],
     "key_topics": [
       "026",
@@ -37,7 +39,9 @@
       "source",
       "history",
       "metadata",
-      "memory"
+      "memory",
+      "lineage",
+      "candidate_changed"
     ],
     "importance_tier": "important",
     "status": "in_progress",

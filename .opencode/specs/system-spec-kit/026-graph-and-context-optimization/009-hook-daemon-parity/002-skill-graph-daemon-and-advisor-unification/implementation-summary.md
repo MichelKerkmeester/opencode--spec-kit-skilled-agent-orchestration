@@ -2,7 +2,7 @@
 title: "027 - Skill Graph Daemon and Advisor Unification Implementation Summary"
 description: "Phase 027 shipped the skill-graph daemon, derived metadata, native advisor, MCP tools, compatibility shims, and promotion gates."
 trigger_phrases:
-  - "027 implementation summary"
+  - "026/009/002 implementation summary"
   - "advisor daemon shipped"
 importance_tier: "high"
 contextType: "implementation-summary"
@@ -11,9 +11,9 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification"
     last_updated_at: "2026-04-21T15:42:05Z"
     last_updated_by: "codex-gpt-5.4"
-    recent_action: "Already shipped"
-    next_safe_action: "Keep validation green"
-    completion_pct: 100
+    recent_action: "Shipped implementation preserved; strict validation follow-up still pending"
+    next_safe_action: "Run strict validation follow-up and close the remaining checklist items"
+    completion_pct: 95
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 3 -->
@@ -30,7 +30,7 @@ _memory:
 | **Spec Folder** | 002-skill-graph-daemon-and-advisor-unification |
 | **Completed** | 2026-04-20 |
 | **Level** | 3 |
-| **Status** | Complete |
+| **Status** | In Progress |
 <!-- /ANCHOR:metadata -->
 
 ---

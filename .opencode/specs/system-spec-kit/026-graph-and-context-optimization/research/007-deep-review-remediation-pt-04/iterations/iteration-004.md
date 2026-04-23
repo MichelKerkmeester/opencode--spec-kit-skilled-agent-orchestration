@@ -39,7 +39,7 @@ Rationale:
 
 - Packet 012 introduced the `.gitignore`-aware walk and new scan excludes, and the failure is a direct behavioral remediation of that packet rather than an independent campaign item.
 - `system-spec-kit` says spec folders may be nested as coordination-root packets with child phase folders, and the sub-folder versioning guide explicitly supports returning to old work, separating implementation iterations, and preserving historical context.
-- The current campaign already contains sibling `013-claude-hook-findings-remediation`, so a new sibling named `013-code-graph-scan-incremental-flag-fix` would collide. A new sibling would need to be `014-...`, but that would make the remediation look independent of packet 012.
+- The current campaign already contains sibling `006-claude-hook-findings-remediation`, so a new sibling named `013-code-graph-scan-incremental-flag-fix` would collide. A new sibling would need to be `014-...`, but that would make the remediation look independent of packet 012.
 - A nested `002-...` preserves packet 012 as the completed original implementation and records this as the second temporal iteration. Existing root docs do not need to be moved.
 
 Recommended documentation level: Level 3.
@@ -59,7 +59,7 @@ Canonical spec-doc skeleton:
 
 Ruled out:
 
-- `007-deep-review-remediation/013-code-graph-scan-incremental-flag-fix/`: rejected because sibling `013-claude-hook-findings-remediation` already exists.
+- `007-deep-review-remediation/013-code-graph-scan-incremental-flag-fix/`: rejected because sibling `006-claude-hook-findings-remediation` already exists.
 - Amending packet 012 root docs in place only: rejected because packet 012 is already completed and the new fix needs its own task/checklist evidence and ADR trail.
 - New sibling `014-code-graph-scan-incremental-flag-fix/`: viable fallback if nested packets are operationally inconvenient, but less precise than nesting under the packet that introduced the regression.
 

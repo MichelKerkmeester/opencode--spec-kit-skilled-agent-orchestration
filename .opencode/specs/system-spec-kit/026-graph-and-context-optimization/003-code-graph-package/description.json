@@ -3,7 +3,8 @@
     "flattened_at": "2026-04-21T13:00:00Z",
     "child_phase_folders": [
       "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades",
-      "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package"
+      "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package",
+      "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
     ],
     "layout": "phase-root-children"
   },
@@ -16,7 +17,7 @@
     "graph",
     "package"
   ],
-  "lastUpdated": "2026-04-22T06:06:02.916Z",
+  "lastUpdated": "2026-04-23T14:47:43.368Z",
   "specId": "003",
   "folderSlug": "code-graph-package",
   "parentChain": [

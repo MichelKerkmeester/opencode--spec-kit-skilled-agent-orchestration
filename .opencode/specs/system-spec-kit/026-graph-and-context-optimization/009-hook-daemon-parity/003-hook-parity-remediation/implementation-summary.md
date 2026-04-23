@@ -2,7 +2,7 @@
 title: "029 - Runtime Hook Parity Remediation Implementation Summary"
 description: "Runtime hook parity remediation across OpenCode transport, Codex advisor and pre-tool hooks, Copilot startup wiring, and documentation truth-sync."
 trigger_phrases:
-  - "029 summary"
+  - "026/009/003 implementation summary"
   - "hook parity summary"
 importance_tier: "high"
 contextType: "implementation-summary"

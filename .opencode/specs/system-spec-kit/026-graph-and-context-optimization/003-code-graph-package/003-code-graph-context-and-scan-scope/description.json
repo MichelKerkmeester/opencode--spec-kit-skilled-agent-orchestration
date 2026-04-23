@@ -1,0 +1,28 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope",
+  "description": "Feature Specification: Code Graph Context + Scan Scope Remediation",
+  "keywords": [
+    "feature",
+    "specification",
+    "code-graph",
+    "session-snapshot",
+    "stale-highlights",
+    "scan-scope",
+    "gitignore",
+    "indexer-excludes",
+    "surface-matrix"
+  ],
+  "lastUpdated": "2026-04-23T14:47:43.368Z",
+  "specId": "003",
+  "folderSlug": "code-graph-context-and-scan-scope",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-code-graph-package"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "23-04-26_11-21__implemented-packet-012-code-graph-remediation.md",
+    "23-04-26_11-22__final-save-for-packet-012-after-docs-were-updated.md"
+  ]
+}

@@ -2,7 +2,7 @@
 title: "029 - Hook Parity Remediation Plan"
 description: "Implementation plan for hook parity remediation across OpenCode, Codex, Copilot, and packet-local validation evidence."
 trigger_phrases:
-  - "029 plan"
+  - "026/009/003 plan"
   - "hook parity plan"
 importance_tier: "high"
 contextType: "implementation-plan"
@@ -11,9 +11,9 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
     last_updated_at: "2026-04-21T15:33:58Z"
     last_updated_by: "codex-gpt-5.4"
-    recent_action: "Phase 003 plan reshaped to strict Level 3 template"
+    recent_action: "Deferred Vitest baseline failures closed"
     next_safe_action: "Run strict validation and close remaining review remediation gates"
-    completion_pct: 95
+    completion_pct: 100
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 3 -->

@@ -8,6 +8,7 @@ trigger_phrases:
   - "002-cli-executor-remediation"
   - "003-deep-review-remediation"
   - "004-r03-post-remediation"
+  - "005-006-campaign-findings-remediation"
 importance_tier: "important"
 contextType: "tasks"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
@@ -57,7 +58,7 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Read child packet roots for `001-deep-review-and-remediation/`, `002-cli-executor-remediation/`, `003-deep-review-remediation/`, `004-r03-post-remediation/`.
+- [x] T001 Read child packet roots for `001-deep-review-and-remediation/`, `002-cli-executor-remediation/`, `003-deep-review-remediation/`, `004-r03-post-remediation/`, and `005-006-campaign-findings-remediation/`.
 - [x] T002 Capture status, summaries, unchecked item counts, and current paths.
 <!-- /ANCHOR:phase-1 -->
 

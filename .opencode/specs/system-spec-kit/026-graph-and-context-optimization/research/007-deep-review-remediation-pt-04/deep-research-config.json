@@ -7,7 +7,7 @@
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 15,
   "progressiveSynthesis": true,
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/012-code-graph-context-and-scan-scope",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope",
   "createdAt": "2026-04-23T13:01:00Z",
   "status": "initialized",
   "executionMode": "auto",

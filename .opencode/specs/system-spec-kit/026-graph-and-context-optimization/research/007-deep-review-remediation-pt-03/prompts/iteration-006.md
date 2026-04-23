@@ -6,7 +6,7 @@ STATE SUMMARY:
 Segment: 1 | Iteration: 6 of 10
 Last iteration newInfoRatio: 0.64 | Stuck count: 0
 
-Research Topic (unchanged): Copilot CLI 1.0.34 hook-config JSON schema resolution. Resolve the `"Neither 'bash' nor 'powershell' specified in hook command configuration"` execution failure blocking 026/007/007 copilot-hook-parity-remediation. Deliver a primary-source-backed schema explanation, a concrete JSON patch to `.github/hooks/superset-notify.json`, AND an empirical reproducer where the patch makes Copilot log successful hook execution.
+Research Topic (unchanged): Copilot CLI 1.0.34 hook-config JSON schema resolution. Resolve the `"Neither 'bash' nor 'powershell' specified in hook command configuration"` execution failure blocking 026/009/004 copilot-hook-parity-remediation. Deliver a primary-source-backed schema explanation, a concrete JSON patch to `.github/hooks/superset-notify.json`, AND an empirical reproducer where the patch makes Copilot log successful hook execution.
 
 ## PRIOR ITERATION STATE
 

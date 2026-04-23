@@ -76,7 +76,7 @@ _memory:
 
 - Parent: `../spec.md` (020/001-initial-research)
 - Grandparent: `../../spec.md` (020 umbrella)
-- Wave-1: `../../../research/020-skill-advisor-hook-surface-pt-01/research.md`
-- Wave-2: `../../../research/020-skill-advisor-hook-surface-pt-02/research-extended.md`
+- Wave-1: `../../../../research/020-skill-advisor-hook-surface-pt-01/research.md`
+- Wave-2: `../../../../research/020-skill-advisor-hook-surface-pt-02/research-extended.md`
 - Targets: `../../002-shared-payload-advisor-contract/` through `../../009-documentation-and-release-contract/`
 <!-- /ANCHOR:cross-refs -->

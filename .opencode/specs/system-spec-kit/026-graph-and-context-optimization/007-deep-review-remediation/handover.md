@@ -1,6 +1,6 @@
 ---
 title: "Session Handover: Deep Review Remediation"
-description: "Packet-level handover for 007-deep-review-remediation child phases, including Copilot hook parity, Codex hook parity, and OpenCode plugin loader remediation outcomes."
+description: "Packet-level handover for 007-deep-review-remediation child phases. Copilot and Codex hook parity outcomes migrated to 009-hook-daemon-parity."
 trigger_phrases:
   - "007-deep-review-remediation handover"
   - "copilot hook parity outcome"
@@ -19,8 +19,8 @@ _memory:
       - "009 full vitest gate is blocked by `copilot-hook-wiring.vitest.ts` expecting repo-local hook commands while `.github/hooks/superset-notify.json` points to Superset hook commands."
     key_files:
       - "handover.md"
-      - "007-copilot-hook-parity-remediation/implementation-summary.md"
-      - "008-codex-hook-parity-remediation/implementation-summary.md"
+      - "../009-hook-daemon-parity/004-copilot-hook-parity-remediation/implementation-summary.md"
+      - "../009-hook-daemon-parity/005-codex-hook-parity-remediation/implementation-summary.md"
       - "009-opencode-plugin-loader-remediation/implementation-summary.md"
       - "010-skill-advisor-plugin-hardening/implementation-summary.md"
       - "011-skill-advisor-standards-alignment/implementation-summary.md"
@@ -88,12 +88,12 @@ _memory:
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/*.ts` | Adds custom-instructions writer and rewires prompt/session hooks around file-based context. | complete |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/copilot-*.vitest.ts` | Updates tests to assert file-based context instead of prompt mutation. | complete |
 | `.opencode/skill/cli-copilot/` | Documents Copilot hook limitation, managed custom-instructions workaround, and programmatic wrapper. | complete |
-| `007-copilot-hook-parity-remediation/` | Updates tasks, checklist, and implementation summary with final evidence. | complete |
+| `../009-hook-daemon-parity/004-copilot-hook-parity-remediation/` | Migrated out of this parent; contains tasks, checklist, and implementation summary with final evidence. | complete |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts` | New Codex SessionStart adapter emitting startup context through `hookSpecificOutput.additionalContext`. | complete |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts` | Codex UserPromptSubmit adapter emits compact skill advisor brief as developer context. | complete |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/codex-*.vitest.ts` | Codex hook tests for parsing, fail-open behavior, CLI execution, and compiled output. | complete |
 | `.opencode/skill/cli-codex/` | Documents native hooks, `codex_hooks` flag, smoke checks, and hook contract reference. | complete |
-| `008-codex-hook-parity-remediation/` | Updates tasks, checklist, and implementation summary with final evidence. | complete |
+| `../009-hook-daemon-parity/005-codex-hook-parity-remediation/` | Migrated out of this parent; contains tasks, checklist, and implementation summary with final evidence. | complete |
 | `~/.codex/hooks.json` | Appends Spec Kit Memory SessionStart/UserPromptSubmit commands beside Superset notify hooks. | complete |
 | `~/.codex/config.toml` | Enables `[features].codex_hooks = true`. | complete |
 | `.opencode/plugin-helpers/` | New helper location for the advisor bridge, compact-code-graph bridge, and OpenCode message schema helper. | complete |
@@ -114,7 +114,7 @@ _memory:
 
 ### 3.1 Recommended Starting Point
 
-- **File:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/008-codex-hook-parity-remediation/implementation-summary.md`
+- **File:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation/implementation-summary.md`
 - **Context:** Review the verification section first; Codex native hook parity is implemented, registered, and smoke-tested.
 
 ### 3.2 Priority Tasks Remaining
@@ -128,12 +128,12 @@ _memory:
 
 ### 3.3 Critical Context to Load
 
-- [x] Indexed save target: `007-copilot-hook-parity-remediation`
-- [x] Spec file: `007-copilot-hook-parity-remediation/spec.md`
-- [x] Plan file: `007-copilot-hook-parity-remediation/plan.md`
-- [x] Indexed save target: `008-codex-hook-parity-remediation`
-- [x] Spec file: `008-codex-hook-parity-remediation/spec.md`
-- [x] Plan file: `008-codex-hook-parity-remediation/plan.md`
+- [x] Indexed save target: `../009-hook-daemon-parity/004-copilot-hook-parity-remediation`
+- [x] Spec file: `../009-hook-daemon-parity/004-copilot-hook-parity-remediation/spec.md`
+- [x] Plan file: `../009-hook-daemon-parity/004-copilot-hook-parity-remediation/plan.md`
+- [x] Indexed save target: `../009-hook-daemon-parity/005-codex-hook-parity-remediation`
+- [x] Spec file: `../009-hook-daemon-parity/005-codex-hook-parity-remediation/spec.md`
+- [x] Plan file: `../009-hook-daemon-parity/005-codex-hook-parity-remediation/plan.md`
 - [x] Indexed save target: `009-opencode-plugin-loader-remediation`
 - [x] Spec file: `009-opencode-plugin-loader-remediation/spec.md`
 - [x] Plan file: `009-opencode-plugin-loader-remediation/plan.md`

@@ -10,7 +10,7 @@
 - `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts`
 - `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/dist/handlers/session-resume.js`
 - `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/plugins/spec-kit-compact-code-graph.js`
-- `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/plugins/spec-kit-compact-code-graph-bridge.mjs`
+- `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/plugin-helpers/spec-kit-compact-code-graph-bridge.mjs`
 - `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/session-resume.vitest.ts`
 - `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/opencode-plugin.vitest.ts`
 - `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/phase-A-fix-summary.md`
@@ -41,7 +41,7 @@ exit 0
 ```
 
 ```text
-$ node .opencode/plugins/spec-kit-compact-code-graph-bridge.mjs --minimal | node -e '...'
+$ node .opencode/plugin-helpers/spec-kit-compact-code-graph-bridge.mjs --minimal | node -e '...'
 {"status":"ok","transportOnly":true,"messages":1}
 exit 0
 ```

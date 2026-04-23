@@ -8,6 +8,7 @@ trigger_phrases:
   - "002-cli-executor-remediation"
   - "003-deep-review-remediation"
   - "004-r03-post-remediation"
+  - "005-006-campaign-findings-remediation"
 importance_tier: "important"
 contextType: "implementation-summary"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
@@ -55,7 +56,7 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This parent now holds 4 original phase packet(s) directly in its root. You can open `007-deep-review-remediation/` for the active story and inspect each old packet without going through an extra archive layer.
+This parent now holds 5 active phase packet(s) directly in its root. You can open `007-deep-review-remediation/` for the active story and inspect each old packet without going through an extra archive layer.
 
 ### Direct Children
 
@@ -63,6 +64,7 @@ This parent now holds 4 original phase packet(s) directly in its root. You can o
 - **`002-cli-executor-remediation/`**: All eleven P0/P1/P2 remediations from `research.md §10` shipped. R12 (YAML evolution cleanup for Phase 017 `R55-P2-004`) deferred per ADR because it was never coupled to the active hardening work.
 - **`003-deep-review-remediation/`**: Baseline: 147+ tests passing on commit c6d3fcc2c. Result: focused Phase 025 remediation cluster passed 58 tests; TypeScript build passed. The full project-configured suite was attempted and continued to surface unrelated legacy failures outside Phase 025 sc...
 - **`004-r03-post-remediation/`**: (Populated by driver script.)
+- **`005-006-campaign-findings-remediation/`**: Generated remediation packet that maps 274 consolidated 006 campaign findings into 10 Level 3 remediation sub-phases.
 
 ### Files Changed
 

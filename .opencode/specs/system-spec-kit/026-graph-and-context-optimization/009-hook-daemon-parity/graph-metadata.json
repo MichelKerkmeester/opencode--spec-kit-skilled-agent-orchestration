@@ -6,23 +6,18 @@
   "children_ids": [
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification",
-    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring"
   ],
-  "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface",
-    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification",
-    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
-  ],
-  "migration": {
-    "flattened_at": "2026-04-21T13:00:00Z",
-    "active_phase": "009-hook-daemon-parity",
-    "child_phase_folders": [
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
-    ],
-    "layout": "phase-root-children"
-  },
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [
@@ -43,6 +38,54 @@
         "reason": "supersedes relationship preserved during phase consolidation",
         "source": "026-phase-consolidation",
         "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring",
+        "reason": "supersedes relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring"
       }
     ],
     "related_to": []
@@ -53,7 +96,15 @@
       "skill graph daemon, hook parity, plugin/runtime parity, and parity remediation",
       "001-skill-advisor-hook-surface",
       "002-skill-graph-daemon-and-advisor-unification",
-      "003-hook-parity-remediation"
+      "003-hook-parity-remediation",
+      "004-copilot-hook-parity-remediation",
+      "005-codex-hook-parity-remediation",
+      "006-claude-hook-findings-remediation",
+      "007-opencode-plugin-loader-remediation",
+      "008-skill-advisor-plugin-hardening",
+      "009-skill-advisor-standards-alignment",
+      "010-copilot-wrapper-schema-fix",
+      "011-copilot-writer-wiring"
     ],
     "key_topics": [
       "skill",
@@ -63,7 +114,6 @@
       "parity",
       "plugin",
       "runtime",
-      "and",
       "remediation",
       "009"
     ],
@@ -75,11 +125,17 @@
       "tasks.md",
       "implementation-summary.md",
       "context-index.md",
-      "review/review-report.md",
-      "review/remediation-summary.md",
       "001-skill-advisor-hook-surface/implementation-summary.md",
       "002-skill-graph-daemon-and-advisor-unification/implementation-summary.md",
-      "003-hook-parity-remediation/implementation-summary.md"
+      "003-hook-parity-remediation/implementation-summary.md",
+      "004-copilot-hook-parity-remediation/implementation-summary.md",
+      "005-codex-hook-parity-remediation/implementation-summary.md",
+      "006-claude-hook-findings-remediation/implementation-summary.md",
+      "007-opencode-plugin-loader-remediation/implementation-summary.md",
+      "008-skill-advisor-plugin-hardening/implementation-summary.md",
+      "009-skill-advisor-standards-alignment/implementation-summary.md",
+      "010-copilot-wrapper-schema-fix/implementation-summary.md",
+      "011-copilot-writer-wiring/implementation-summary.md"
     ],
     "entities": [
       {
@@ -99,11 +155,59 @@
         "kind": "spec_phase",
         "path": "003-hook-parity-remediation",
         "source": "migration"
+      },
+      {
+        "name": "004-copilot-hook-parity-remediation",
+        "kind": "spec_phase",
+        "path": "004-copilot-hook-parity-remediation",
+        "source": "migration"
+      },
+      {
+        "name": "005-codex-hook-parity-remediation",
+        "kind": "spec_phase",
+        "path": "005-codex-hook-parity-remediation",
+        "source": "migration"
+      },
+      {
+        "name": "006-claude-hook-findings-remediation",
+        "kind": "spec_phase",
+        "path": "006-claude-hook-findings-remediation",
+        "source": "migration"
+      },
+      {
+        "name": "007-opencode-plugin-loader-remediation",
+        "kind": "spec_phase",
+        "path": "007-opencode-plugin-loader-remediation",
+        "source": "migration"
+      },
+      {
+        "name": "008-skill-advisor-plugin-hardening",
+        "kind": "spec_phase",
+        "path": "008-skill-advisor-plugin-hardening",
+        "source": "migration"
+      },
+      {
+        "name": "009-skill-advisor-standards-alignment",
+        "kind": "spec_phase",
+        "path": "009-skill-advisor-standards-alignment",
+        "source": "migration"
+      },
+      {
+        "name": "010-copilot-wrapper-schema-fix",
+        "kind": "spec_phase",
+        "path": "010-copilot-wrapper-schema-fix",
+        "source": "migration"
+      },
+      {
+        "name": "011-copilot-writer-wiring",
+        "kind": "spec_phase",
+        "path": "011-copilot-writer-wiring",
+        "source": "migration"
       }
     ],
-    "causal_summary": "Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation. Direct child parent for 001-skill-advisor-hook-surface, 002-skill-graph-daemon-and-advisor-unification, and 003-hook-parity-remediation. Current work is closing the 2026-04-21 deep-review P1 remediation after post-029 Phases A-E, scan-findings, and policy repair.",
+    "causal_summary": "Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation. Direct child parent for 001-skill-advisor-hook-surface through 011-copilot-writer-wiring.",
     "created_at": "2026-04-21T13:00:00Z",
-    "last_save_at": "2026-04-21T15:42:05Z",
+    "last_save_at": "2026-04-23T14:47:43.368Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -111,11 +215,37 @@
       "plan.md",
       "tasks.md",
       "implementation-summary.md",
-      "context-index.md",
-      "review/review-report.md",
-      "review/remediation-summary.md"
+      "context-index.md"
     ]
   },
-  "migrated": true,
-  "migration_source": "legacy"
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring"
+  ],
+  "migration": {
+    "active_phase": "009-hook-daemon-parity",
+    "child_phase_folders": [
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring"
+    ],
+    "layout": "phase-root-children"
+  }
 }

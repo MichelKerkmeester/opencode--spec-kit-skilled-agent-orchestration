@@ -1,0 +1,28 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening",
+  "description": "Feature Specification: Skill-Advisor Plugin Hardening",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill-advisor",
+    "plugin",
+    "hardening",
+    "state-isolation",
+    "dedup",
+    "lru",
+    "size-caps"
+  ],
+  "lastUpdated": "2026-04-23T08:15:26.567Z",
+  "specId": "008",
+  "folderSlug": "skill-advisor-plugin-hardening",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "23-04-26_09-13__implemented-packet-010-skill-advisor-plugin.md",
+    "23-04-26_09-15__final-canonical-save-for-packet-010-after.md"
+  ]
+}

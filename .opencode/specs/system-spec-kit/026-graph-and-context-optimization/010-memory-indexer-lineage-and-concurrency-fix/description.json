@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix",
+  "description": "Feature Specification: Memory Indexer Lineage and Concurrency Fix",
+  "keywords": [
+    "feature",
+    "specification",
+    "memory-indexer",
+    "lineage",
+    "concurrency",
+    "e_lineage",
+    "candidate_changed",
+    "pe-gating",
+    "batch-serialization"
+  ],
+  "lastUpdated": "2026-04-23T17:48:00.000Z",
+  "specId": "010",
+  "folderSlug": "memory-indexer-lineage-and-concurrency-fix",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

@@ -2,7 +2,7 @@
 title: "Tasks: Skill-Advisor Hook Surface"
 description: "Task list for 020 umbrella — research wave + implementation cluster spawning."
 trigger_phrases:
-  - "020 tasks"
+  - "026/009/001 tasks"
 importance_tier: "critical"
 contextType: "tasks"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
@@ -11,8 +11,9 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface"
     last_updated_at: "2026-04-19T06:40:00Z"
     last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Tasks scaffolded"
+    recent_action: "Already shipped"
     next_safe_action: "Begin T001"
+    completion_pct: 100
 
 ---
 # Tasks: Skill-Advisor Hook Surface

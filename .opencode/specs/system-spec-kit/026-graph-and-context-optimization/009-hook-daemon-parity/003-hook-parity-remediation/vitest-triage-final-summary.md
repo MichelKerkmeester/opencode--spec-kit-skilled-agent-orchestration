@@ -5,7 +5,7 @@
 - Baseline input: `/tmp/vitest-full-clean.log` and `/tmp/vitest-failures.txt`.
 - Initial baseline: 30 failing files, 47 failing tests.
 - Active packet path: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation`.
-- Requested packet alias `026-graph-and-context-optimization/029-hook-parity-remediation` was not present in this working tree; existing Phase 029 summaries were found under the active packet path above.
+- Requested packet alias `026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation` was not present in this working tree; existing Phase 029 summaries were found under the active packet path above.
 
 ## Fix Summary
 

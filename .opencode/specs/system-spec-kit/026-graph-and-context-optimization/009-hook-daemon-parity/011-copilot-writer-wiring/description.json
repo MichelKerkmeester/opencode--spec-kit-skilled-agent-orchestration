@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring",
+  "description": "Feature Specification: Copilot Writer Wiring via Claude Wrapper",
+  "keywords": [
+    "feature",
+    "specification",
+    "copilot",
+    "writer",
+    "wiring"
+  ],
+  "lastUpdated": "2026-04-23T14:47:43.368Z",
+  "specId": "011",
+  "folderSlug": "copilot-writer-wiring",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "22-04-26_17-05__diagnosed-and-fixed-the-copilot-cli-1-0-34.md"
+  ]
+}

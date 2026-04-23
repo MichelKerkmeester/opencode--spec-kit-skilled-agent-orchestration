@@ -46,7 +46,7 @@ All paths are relative to the repo root: `/Users/michelkerkmeester/MEGA/Developm
 1. `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts` — primary indexer; packet 012 added .gitignore-aware walk
 2. `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/indexer-types.ts` — defines DEFAULT_EXCLUDES list (look for z_future, z_archive, mcp-coco-index/mcp_server)
 3. `.opencode/skill/system-spec-kit/mcp_server/dist/code-graph/lib/structural-indexer.js` — built output (the running server uses this)
-4. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/012-code-graph-context-and-scan-scope/implementation-summary.md` — packet 012 changes summary
+4. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/implementation-summary.md` — packet 012 changes summary
 5. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/session-handover-2026-04-23.md` — full session context
 
 Recommended actions for this iteration (pick 3-5):

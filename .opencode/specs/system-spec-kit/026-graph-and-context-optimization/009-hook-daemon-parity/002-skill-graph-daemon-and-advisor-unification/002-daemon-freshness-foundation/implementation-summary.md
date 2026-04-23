@@ -89,4 +89,4 @@ _memory:
 - `spec.md` — requirements + acceptance scenarios
 - `plan.md` — phase breakdown
 - `tasks.md` — task ladder
-- Research: `../research/027-skill-graph-daemon-and-advisor-unification-pt-01/research.md` §4 Track A + §13.2 Track E + §13.6 delta
+- Research: `../../../research/027-skill-graph-daemon-and-advisor-unification-pt-01/research.md` §4 Track A + §13.2 Track E + §13.6 delta

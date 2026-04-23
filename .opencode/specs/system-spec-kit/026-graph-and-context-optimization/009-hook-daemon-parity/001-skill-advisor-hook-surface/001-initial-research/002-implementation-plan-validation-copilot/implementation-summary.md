@@ -49,10 +49,10 @@ Converged at iter 13 (early, rolling avg 0.0367 < 0.05). research-validation.md 
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `../../../research/020-skill-advisor-hook-surface-pt-03/research-validation.md` | Created | Full synthesis with 7 sections |
-| `../../../research/020-skill-advisor-hook-surface-pt-03/deep-research-state.jsonl` | Appended | 14 records (13 iter + 1 synthesis) |
-| `../../../research/020-skill-advisor-hook-surface-pt-03/iterations/iteration-001.md` through `iteration-013.md` | Created | Per-iter narratives |
-| `../../../research/020-skill-advisor-hook-surface-pt-03/` folder | Renamed | From long canonical name to pt-03 short form |
+| `../../../../research/020-skill-advisor-hook-surface-pt-03/research-validation.md` | Created | Full synthesis with 7 sections |
+| `../../../../research/020-skill-advisor-hook-surface-pt-03/deep-research-state.jsonl` | Appended | 14 records (13 iter + 1 synthesis) |
+| `../../../../research/020-skill-advisor-hook-surface-pt-03/iterations/iteration-001.md` through `iteration-013.md` | Created | Per-iter narratives |
+| `../../../../research/020-skill-advisor-hook-surface-pt-03/` folder | Renamed | From long canonical name to pt-03 short form |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -76,7 +76,7 @@ Inherits wave-1 ADR-001 (research-first) + wave-2 extended framing. This wave ex
 <!-- ANCHOR:verification -->
 ## Verification
 
-Converged at iter 13 with final rolling-avg newInfoRatio = 0.0367 (threshold 0.05). 10 of 10 V-angles answered. research-validation.md exists at `../../../research/020-skill-advisor-hook-surface-pt-03/research-validation.md`. Verification command: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot --strict --no-recursive`.
+Converged at iter 13 with final rolling-avg newInfoRatio = 0.0367 (threshold 0.05). 10 of 10 V-angles answered. research-validation.md exists at `../../../../research/020-skill-advisor-hook-surface-pt-03/research-validation.md`. Verification command: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot --strict --no-recursive`.
 <!-- /ANCHOR:verification -->
 
 ---

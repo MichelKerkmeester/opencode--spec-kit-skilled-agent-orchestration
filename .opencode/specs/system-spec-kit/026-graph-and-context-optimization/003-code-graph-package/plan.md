@@ -6,13 +6,14 @@ trigger_phrases:
   - "code graph upgrades and self-contained package migration"
   - "001-code-graph-upgrades"
   - "002-code-graph-self-contained-package"
+  - "003-code-graph-context-and-scan-scope"
 importance_tier: "important"
 contextType: "plan"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package"
-    last_updated_at: "2026-04-21T13:00:00Z"
+    last_updated_at: "2026-04-23T14:51:15Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Renumbered nested phases"
     next_safe_action: "Use context-index.md for local phase navigation"
@@ -50,7 +51,7 @@ _memory:
 | **Testing** | Strict parent validation and JSON parse checks |
 
 ### Overview
-This parent groups `001-code-graph-upgrades/`, `002-code-graph-self-contained-package/` as direct child folders. It keeps the active theme concise while avoiding an extra archive layer.
+This parent groups `001-code-graph-upgrades/`, `002-code-graph-self-contained-package/`, and `003-code-graph-context-and-scan-scope/` as direct child folders. It keeps the active theme concise while avoiding an extra archive layer.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -97,6 +98,7 @@ Root navigation points to this parent. The parent points to child folders direct
 
 ### Phase 2: Core Implementation
 - [x] Move child packets to direct children.
+- [x] Migrate code-graph context and scan-scope packet from `007-deep-review-remediation/` into this parent as child 003.
 - [x] Regenerate parent docs and context bridge.
 
 ### Phase 3: Verification
@@ -125,6 +127,7 @@ Root navigation points to this parent. The parent points to child folders direct
 |------------|------|--------|-------------------|
 | Root nine-phase map | Internal | Green | Parent would not have an active navigation role |
 | Child phase folders | Internal | Green | Historical context would be incomplete |
+| Migrated code-graph context packet | Internal | Green | Code-graph scan-scope remediation would remain split across the wrong parent |
 <!-- /ANCHOR:dependencies -->
 
 ---

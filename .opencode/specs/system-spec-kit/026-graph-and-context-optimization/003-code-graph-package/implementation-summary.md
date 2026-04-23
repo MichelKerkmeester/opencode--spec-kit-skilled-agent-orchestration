@@ -6,13 +6,14 @@ trigger_phrases:
   - "code graph upgrades and self-contained package migration"
   - "001-code-graph-upgrades"
   - "002-code-graph-self-contained-package"
+  - "003-code-graph-context-and-scan-scope"
 importance_tier: "important"
 contextType: "implementation-summary"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package"
-    last_updated_at: "2026-04-21T13:00:00Z"
+    last_updated_at: "2026-04-23T14:51:15Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Renumbered nested phases"
     next_safe_action: "Use context-index.md for local phase navigation"
@@ -53,12 +54,13 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This parent now holds 2 original phase packet(s) directly in its root. You can open `003-code-graph-package/` for the active story and inspect each old packet without going through an extra archive layer.
+This parent now holds 3 active phase packet(s) directly in its root. You can open `003-code-graph-package/` for the active story and inspect each old packet without going through an extra archive layer.
 
 ### Direct Children
 
 - **`001-code-graph-upgrades/`**: Packet `014` now ships the adopt-now code-graph runtime lane instead of staying planning-only. The implementation added a dedicated detector provenance vocabulary, fixed blast-radius depth handling at traversal time, exposed explicit multi-file union mode, ...
 - **`002-code-graph-self-contained-package/`**: Implementation and verification are complete in the filesystem. Commit/staging is blocked by sandboxed git-index permissions; see `002-code-graph-self-contained-package/blocker.md`.
+- **`003-code-graph-context-and-scan-scope/`**: Stale-highlight surfacing, scan-scope excludes, .gitignore awareness, and code-graph surface documentation shipped.
 
 ### Files Changed
 
@@ -67,6 +69,7 @@ This parent now holds 2 original phase packet(s) directly in its root. You can o
 | `spec.md` | Modified | Active parent specification. |
 | `context-index.md` | Modified | Bridge from old phase identity to direct child folders. |
 | `00N-*/` | Moved | Preserved original packet folders as direct children. |
+| `003-code-graph-context-and-scan-scope/` | Moved | Code-graph context and scan-scope packet migrated from the deep-review parent. |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -74,7 +77,7 @@ This parent now holds 2 original phase packet(s) directly in its root. You can o
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The child folders were moved into the phase root, then metadata was updated with migration aliases so old packet IDs remain discoverable. Root research, review, and scratch folders stayed at the 026 packet root.
+The child folders were moved into the phase root, then metadata was updated with migration aliases so old packet IDs remain discoverable. The code-graph context and scan-scope packet was migrated here from `007-deep-review-remediation/` because its scope belongs to the code-graph package. Root research, review, and scratch folders stayed at the 026 packet root.
 <!-- /ANCHOR:how-delivered -->
 
 ---

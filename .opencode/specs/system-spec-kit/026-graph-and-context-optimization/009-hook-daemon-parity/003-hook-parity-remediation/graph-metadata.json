@@ -71,7 +71,7 @@
       "session-start"
     ],
     "importance_tier": "high",
-    "status": "in_progress",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "plan.md",
@@ -202,32 +202,32 @@
   },
   "_memory": {
     "continuity": {
-      "recent_action": "Post-029 Phases A-E documented; strict validation, task evidence, startup-gate cleanup, and OpenCode diagnostic remediation applied",
+      "recent_action": "Deferred Vitest baseline failures closed",
       "next_safe_action": "Run full verification gate and write review remediation summary",
-      "completion_pct": 95,
-      "status": "in_progress",
+      "completion_pct": 100,
+      "status": "complete",
       "last_updated_at": "2026-04-21T15:42:05Z",
       "last_updated_by": "codex-gpt-5.4"
     }
   },
   "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/029-hook-parity-remediation",
-    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/029-hook-parity-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
   ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
-    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/029-hook-parity-remediation",
-    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/029-hook-parity-remediation",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
     "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
     "consolidation": "026-phase-surface-29-to-9",
     "flattened_at": "2026-04-21T13:00:00Z",
     "layout": "phase-root-local-sequence",
-    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/029-hook-parity-remediation",
-    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/029-hook-parity-remediation",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
     "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
     "local_phase_slug": "003-hook-parity-remediation",
-    "original_phase_slug": "029-hook-parity-remediation",
+    "original_phase_slug": "003-hook-parity-remediation",
     "renumbered_at": "2026-04-21T14:00:00Z"
   },
   "migration_source": "legacy"

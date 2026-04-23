@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": "manual",
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-04"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "code graph scan stale gate",
+      "incremental false full scan",
+      "duplicate symbol id",
+      "IndexFilesOptions skipFreshFiles",
+      "fullScanRequested effectiveIncremental",
+      "012/002 incremental fullscan recovery"
+    ],
+    "key_topics": [
+      "code graph",
+      "incremental scan",
+      "full scan",
+      "stale gate",
+      "duplicate symbols",
+      "vitest",
+      "MCP scan handler"
+    ],
+    "importance_tier": "critical",
+    "status": "blocked",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/structural-contract.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/tree-sitter-parser.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/code-graph/README.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ],
+    "entities": [
+      {
+        "name": "structural-indexer.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts",
+        "source": "manual"
+      },
+      {
+        "name": "scan.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts",
+        "source": "manual"
+      },
+      {
+        "name": "structural-contract.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/structural-contract.vitest.ts",
+        "source": "manual"
+      },
+      {
+        "name": "tree-sitter-parser.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/tree-sitter-parser.vitest.ts",
+        "source": "manual"
+      }
+    ],
+    "causal_summary": "Deep research found that explicit full scans still used the stale-file gate and duplicate parser captures could violate code_nodes.symbol_id uniqueness. This packet implements the minimal recovery.",
+    "created_at": "2026-04-23T00:00:00.000Z",
+    "last_save_at": "2026-04-23T00:00:00.000Z",
+    "save_lineage": "new_child_packet",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ],
+    "evidence_refs": [
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-04/research.md"
+    ]
+  }
+}

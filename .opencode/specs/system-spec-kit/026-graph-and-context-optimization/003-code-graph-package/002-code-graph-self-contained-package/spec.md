@@ -46,6 +46,7 @@ _memory:
 | **Parent Spec** | ../spec.md |
 | **Parent** | `../` (003-code-graph-package) |
 | **Predecessor** | ../001-code-graph-upgrades/spec.md |
+| **Successor** | ../003-code-graph-context-and-scan-scope/spec.md |
 | **Predecessor / Pattern** | Phase 027 (skill-advisor self-contained package under `mcp_server/skill-advisor/`). This phase applies the same architectural pattern to code-graph. |
 | **Related** | `005-code-graph-upgrades` (original code-graph feature), `027/003 migration prep` (11 skill-advisor files moved with same pattern, SHA `1146faeec`) |
 

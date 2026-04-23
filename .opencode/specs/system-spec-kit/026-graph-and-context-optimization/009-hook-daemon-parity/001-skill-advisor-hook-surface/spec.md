@@ -2,7 +2,7 @@
 title: "Feature Specification: Skill-Advisor Hook Surface (cross-runtime, context-efficient)"
 description: "Research-first umbrella for proactive skill-advisor integration across all CLI runtimes (Claude, Codex, Copilot, Gemini). Goal: run advisor on every relevant prompt via hook infrastructure (not explicit AI invocation), surface minimal context (top-1 skill + confidence only), cache within session to avoid redundant calls. Follows the code-graph buildStartupBrief pattern."
 trigger_phrases:
-  - "020 skill advisor hook"
+  - "026/009/001 skill advisor hook"
   - "skill advisor hook surface"
   - "proactive skill routing"
   - "cross-runtime skill advisor"
@@ -16,8 +16,9 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface"
     last_updated_at: "2026-04-19T06:40:00Z"
     last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Phase 020 charter scaffolded — skill-advisor hook surface across all CLI runtimes"
+    recent_action: "Already shipped"
     next_safe_action: "Scaffold 020/001-initial-research for hook architecture + context-budget investigation"
+    completion_pct: 100
     blockers: []
     key_files:
       - "spec.md"
@@ -58,7 +59,7 @@ The 019/004 routing-accuracy hardening that just landed (Gate 3 F1 68.6%→97.66
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 (major UX improvement + cross-runtime equality; not release-blocking) |
-| **Status** | Spec Ready, Awaiting Plan/Research Approval |
+| **Status** | Complete |
 | **Created** | 2026-04-19 |
 | **Branch** | `main` |
 | **Parent Packet** | `../` (026-graph-and-context-optimization) |

@@ -8,6 +8,7 @@ trigger_phrases:
   - "002-cli-executor-remediation"
   - "003-deep-review-remediation"
   - "004-r03-post-remediation"
+  - "005-006-campaign-findings-remediation"
 importance_tier: "important"
 contextType: "implementation"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
@@ -48,6 +49,7 @@ Deep review waves and post-review remediation. The original phase packets are di
 | `002-cli-executor-remediation/` | Feature Specification: Phase 020 Research-Findings Remediation | In Progress | `007-deep-review-remediation/002-cli-executor-remediation/` |
 | `003-deep-review-remediation/` | Feature Specification: Phase 025 — Deep-Review Remediation | Draft | `007-deep-review-remediation/003-deep-review-remediation/` |
 | `004-r03-post-remediation/` | Feature Specification: Phase 026 — R03 Post-Remediation Remediation | Draft | `007-deep-review-remediation/004-r03-post-remediation/` |
+| `005-006-campaign-findings-remediation/` | Feature Specification: 005-006 Campaign Findings Remediation | Draft | `007-deep-review-remediation/005-006-campaign-findings-remediation/` |
 
 ## Key Implementation Summaries
 
@@ -55,6 +57,7 @@ Deep review waves and post-review remediation. The original phase packets are di
 - **`002-cli-executor-remediation/`**: All eleven P0/P1/P2 remediations from `research.md §10` shipped. R12 (YAML evolution cleanup for Phase 017 `R55-P2-004`) deferred per ADR because it was never coupled to the active hardening work.
 - **`003-deep-review-remediation/`**: Baseline: 147+ tests passing on commit c6d3fcc2c. Result: focused Phase 025 remediation cluster passed 58 tests; TypeScript build passed. The full project-configured suite was attempted and continued to surface unrelated legacy failures outside Phase 025 sc...
 - **`004-r03-post-remediation/`**: (Populated by driver script.)
+- **`005-006-campaign-findings-remediation/`**: Generated remediation packet that maps 274 consolidated 006 campaign findings into 10 Level 3 remediation sub-phases.
 
 ## Open Or Deferred Items
 
@@ -62,6 +65,7 @@ Deep review waves and post-review remediation. The original phase packets are di
 - **`002-cli-executor-remediation/`**: status before consolidation was In Progress; 94 unchecked task/checklist item(s) remain in the child packet docs.
 - **`003-deep-review-remediation/`**: status before consolidation was Draft; 7 unchecked task/checklist item(s) remain in the child packet docs.
 - **`004-r03-post-remediation/`**: status before consolidation was Draft; 10 unchecked task/checklist item(s) remain in the child packet docs.
+- **`005-006-campaign-findings-remediation/`**: status before consolidation was Draft; implementation remediation remains open across the generated sub-phase task ledger.
 
 ## Root Support References
 

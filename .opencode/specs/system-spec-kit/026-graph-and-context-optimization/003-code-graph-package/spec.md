@@ -1,18 +1,19 @@
 ---
 title: "Feature Specification: Code Graph Package"
-description: "Code graph upgrades and self-contained package migration. Consolidated active parent for 2 direct child phase packet(s)."
+description: "Code graph upgrades and self-contained package migration. Consolidated active parent for 3 direct child phase packet(s)."
 trigger_phrases:
   - "003-code-graph-package"
   - "code graph upgrades and self-contained package migration"
   - "001-code-graph-upgrades"
   - "002-code-graph-self-contained-package"
+  - "003-code-graph-context-and-scan-scope"
 importance_tier: "important"
 contextType: "implementation"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package"
-    last_updated_at: "2026-04-21T13:00:00Z"
+    last_updated_at: "2026-04-23T14:51:15Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Renumbered nested phases"
     next_safe_action: "Use context-index.md for local phase navigation"
@@ -95,6 +96,7 @@ Keep this theme as an active parent while making each original phase packet a di
 |-------|--------|--------|-------------|
 | 1 | `001-code-graph-upgrades/` | Implemented | Feature Specification: Code Graph Upgrades |
 | 2 | `002-code-graph-self-contained-package/` | Draft | Feature Specification: 028 — Code-Graph Self-Contained Package Migration |
+| 3 | `003-code-graph-context-and-scan-scope/` | Complete | Feature Specification: Code Graph Context + Scan Scope Remediation |
 <!-- /ANCHOR:phase-map -->
 
 ---

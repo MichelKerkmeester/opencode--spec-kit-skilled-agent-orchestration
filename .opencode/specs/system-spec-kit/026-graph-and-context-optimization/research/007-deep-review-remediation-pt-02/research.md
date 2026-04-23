@@ -7,7 +7,7 @@ contextType: "research"
 
 # Deep Research Synthesis — Codex CLI Hook Parity Contract
 
-**Spec phase**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/008-codex-hook-parity-remediation/`
+**Spec phase**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation/`
 **Research packet**: `007-deep-review-remediation-pt-02/`
 **Iterations**: 10 (all completed; newInfoRatio trajectory 0.90 → 0.10 over final 7 iterations)
 **Executor**: `cli-codex` with gpt-5.4, reasoning `high`, service_tier `fast`, sandbox `workspace-write`
@@ -321,10 +321,10 @@ Key trick for this research: the codex agent itself running with `--sandbox work
 
 ## 11. RELATED DOCUMENTS
 
-- **Spec**: `../008-codex-hook-parity-remediation/spec.md`
-- **Plan**: `../008-codex-hook-parity-remediation/plan.md`
-- **Tasks**: `../008-codex-hook-parity-remediation/tasks.md`
-- **Decisions**: `../008-codex-hook-parity-remediation/decision-record.md` — ADR-003 populated from §5 above
-- **Sibling phase**: `../007-copilot-hook-parity-remediation/` — Copilot has NO dynamic hook-based injection (outcome B); this is the contrast case
+- **Spec**: `../../009-hook-daemon-parity/005-codex-hook-parity-remediation/spec.md`
+- **Plan**: `../../009-hook-daemon-parity/005-codex-hook-parity-remediation/plan.md`
+- **Tasks**: `../../009-hook-daemon-parity/005-codex-hook-parity-remediation/tasks.md`
+- **Decisions**: `../../009-hook-daemon-parity/005-codex-hook-parity-remediation/decision-record.md` — ADR-003 populated from §5 above
+- **Sibling phase**: `../../009-hook-daemon-parity/004-copilot-hook-parity-remediation/` — Copilot has NO dynamic hook-based injection (outcome B); this is the contrast case
 - **Reference implementation (Claude-side)**: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts` — the implementation Phase 2 ports to `hooks/codex/`
 - **User's existing config**: `~/.codex/hooks.json` (notify.sh registered), `~/.codex/config.toml` (feature flag ABSENT — must be added in Phase 2)
