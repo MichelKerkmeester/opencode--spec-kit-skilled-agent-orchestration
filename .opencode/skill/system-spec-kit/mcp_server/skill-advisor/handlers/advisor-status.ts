@@ -34,6 +34,18 @@ function parseDaemonPid(): number | undefined {
   return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : undefined;
 }
 
+function hasRunningDaemon(pid: number | undefined): boolean {
+  if (!pid) {
+    return false;
+  }
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function fileMtimeMs(path: string): number {
   if (!existsSync(path)) return 0;
   const stat = statSync(path);
@@ -90,7 +102,11 @@ export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutpu
           ? computeAdvisorSourceSignature(workspaceRoot) !== generation.sourceSignature
           : hasArtifact && hasSources && sourceScan.maxMtimeMs > fileMtimeMs(dbPath)
       );
-    const daemonAvailable = generation.state !== 'unavailable';
+    const daemonPid = parseDaemonPid();
+    const daemonAvailable = hasRunningDaemon(daemonPid);
+    if (!daemonAvailable && generation.state !== 'unavailable') {
+      errors.push('advisor_status found freshness artifacts, but no live daemon PID/process evidence');
+    }
     const state = isFreshness(generation.state) ? generation.state : 'unavailable';
     const trustState = createTrustState({
       hasSources,
@@ -109,7 +125,7 @@ export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutpu
       lastScanAt: generation.updatedAt === new Date(0).toISOString() ? null : generation.updatedAt,
       skillCount: sourceScan.count,
       laneWeights: DEFAULT_SCORER_WEIGHTS,
-      ...(parseDaemonPid() ? { daemonPid: parseDaemonPid() } : {}),
+      ...(daemonPid ? { daemonPid } : {}),
       ...(errors.length > 0 ? { errors } : {}),
     };
     return AdvisorStatusOutputSchema.parse(output);

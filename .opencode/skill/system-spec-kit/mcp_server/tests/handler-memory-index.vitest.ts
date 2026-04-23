@@ -303,11 +303,16 @@ async function loadRealMemorySaveGuardHarness(database: InstanceType<typeof Bett
     return {
       ...actual,
       findScopeFilteredCandidates: findScopeFilteredCandidatesMock,
-      getRequestedScope: vi.fn(() => ({
-        tenantId: null,
-        userId: null,
-        agentId: null,
-        sessionId: null,
+      getRequestedScope: vi.fn((scope: {
+        tenantId?: string | null;
+        userId?: string | null;
+        agentId?: string | null;
+        sessionId?: string | null;
+      } = {}) => ({
+        tenantId: scope.tenantId ?? null,
+        userId: scope.userId ?? null,
+        agentId: scope.agentId ?? null,
+        sessionId: scope.sessionId ?? null,
       })),
       runReconsolidationIfEnabled: runReconsolidationIfEnabledMock,
     };
@@ -775,6 +780,47 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
       }
     });
 
+    it('keeps tenant and session scoped scan-originated saves on the scan-only wrapper path', async () => {
+      const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-index-real-fromscan-scoped-'));
+      const filePath = path.join(
+        root,
+        '.opencode',
+        'specs',
+        'system-spec-kit',
+        '026-graph-and-context-optimization',
+        '010-memory-indexer-lineage-and-concurrency-fix',
+        'implementation-summary.md',
+      );
+      fs.mkdirSync(path.dirname(filePath), { recursive: true });
+      fs.writeFileSync(filePath, '# placeholder\n', 'utf8');
+
+      const database = new BetterSqlite3(':memory:');
+
+      try {
+        const harness = await loadRealMemorySaveGuardHarness(database);
+        const result = await harness.module.indexMemoryFileFromScan(filePath, {
+          force: true,
+          asyncEmbedding: false,
+          scope: {
+            tenantId: 'tenant-scan',
+            userId: 'user-scan',
+            agentId: 'agent-scan',
+            sessionId: 'session-scan',
+          },
+        });
+
+        expect(harness.runReconsolidationIfEnabledMock).toHaveBeenCalledTimes(1);
+        expect(harness.findScopeFilteredCandidatesMock).not.toHaveBeenCalled();
+        expect(harness.createMemoryRecordMock).toHaveBeenCalledTimes(1);
+        expect(result.status).toBe('indexed');
+        expect(result.id).toBe(4101);
+      } finally {
+        database.close();
+        resetRealMemorySaveHarnessMocks();
+        fs.rmSync(root, { recursive: true, force: true });
+      }
+    });
+
     it('keeps the real memory-save transactional recheck active when fromScan is omitted', async () => {
       const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-index-real-nonscan-'));
       const filePath = path.join(
@@ -796,6 +842,55 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
         const result = await harness.module.indexMemoryFile(filePath, {
           force: true,
           asyncEmbedding: false,
+        });
+
+        expect(harness.runReconsolidationIfEnabledMock).toHaveBeenCalledTimes(1);
+        expect(harness.findScopeFilteredCandidatesMock).toHaveBeenCalledTimes(1);
+        expect(harness.createMemoryRecordMock).not.toHaveBeenCalled();
+        expect(result.status).toBe('error');
+        expect(result.error).toContain('candidate_changed');
+        expect(result.saveTimeReconsolidation).toMatchObject({
+          status: 'failed',
+          reason: 'candidate_changed',
+          persistedState: {
+            kind: expect.any(String),
+            candidateMemoryIds: [77],
+          },
+        });
+      } finally {
+        database.close();
+        resetRealMemorySaveHarnessMocks();
+        fs.rmSync(root, { recursive: true, force: true });
+      }
+    });
+
+    it('keeps the scoped transactional recheck active when scan origin is omitted', async () => {
+      const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-index-real-nonscan-scoped-'));
+      const filePath = path.join(
+        root,
+        '.opencode',
+        'specs',
+        'system-spec-kit',
+        '026-graph-and-context-optimization',
+        '010-memory-indexer-lineage-and-concurrency-fix',
+        'implementation-summary.md',
+      );
+      fs.mkdirSync(path.dirname(filePath), { recursive: true });
+      fs.writeFileSync(filePath, '# placeholder\n', 'utf8');
+
+      const database = new BetterSqlite3(':memory:');
+
+      try {
+        const harness = await loadRealMemorySaveGuardHarness(database);
+        const result = await harness.module.indexMemoryFile(filePath, {
+          force: true,
+          asyncEmbedding: false,
+          scope: {
+            tenantId: 'tenant-direct',
+            userId: 'user-direct',
+            agentId: 'agent-direct',
+            sessionId: 'session-direct',
+          },
         });
 
         expect(harness.runReconsolidationIfEnabledMock).toHaveBeenCalledTimes(1);

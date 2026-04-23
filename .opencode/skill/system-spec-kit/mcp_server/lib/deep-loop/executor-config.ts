@@ -14,7 +14,9 @@ export const SERVICE_TIERS = ['priority', 'standard', 'fast'] as const;
 export type ServiceTier = typeof SERVICE_TIERS[number];
 
 const SANDBOX_MODES = ['read-only', 'workspace-write', 'danger-full-access'] as const;
-type SandboxMode = typeof SANDBOX_MODES[number];
+export type SandboxMode = typeof SANDBOX_MODES[number];
+export type GeminiSandboxMode = 'docker' | 'none';
+export type ClaudePermissionMode = 'plan' | 'acceptEdits' | 'bypassPermissions';
 
 export const executorConfigSchema = z.object({
   kind: z.enum(EXECUTOR_KINDS).default('native'),
@@ -37,6 +39,35 @@ export const EXECUTOR_KIND_FLAG_SUPPORT: Record<ExecutorKind, readonly (keyof Ex
 
 export const GEMINI_SUPPORTED_MODELS = ['gemini-3.1-pro-preview'] as const;
 export type GeminiSupportedModel = typeof GEMINI_SUPPORTED_MODELS[number];
+
+function normalizeSandboxMode(mode: SandboxMode | null | undefined): SandboxMode {
+  return mode ?? 'workspace-write';
+}
+
+export function resolveCodexSandboxMode(mode: SandboxMode | null | undefined): SandboxMode {
+  return normalizeSandboxMode(mode);
+}
+
+export function resolveGeminiSandboxMode(mode: SandboxMode | null | undefined): GeminiSandboxMode {
+  return normalizeSandboxMode(mode) === 'danger-full-access' ? 'none' : 'docker';
+}
+
+export function resolveClaudePermissionMode(mode: SandboxMode | null | undefined): ClaudePermissionMode {
+  switch (normalizeSandboxMode(mode)) {
+    case 'read-only':
+      return 'plan';
+    case 'danger-full-access':
+      return 'bypassPermissions';
+    default:
+      return 'acceptEdits';
+  }
+}
+
+export function resolveCopilotPromptArg(promptPath: string, prompt: string, thresholdBytes = 16384): string {
+  return Buffer.byteLength(prompt, 'utf8') <= thresholdBytes
+    ? prompt
+    : `Read the instructions in @${promptPath} and follow them exactly. Do not deviate.`;
+}
 
 type ExecutorConfigIssue = {
   path: PropertyKey[];

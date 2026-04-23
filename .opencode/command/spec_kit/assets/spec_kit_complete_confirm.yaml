@@ -926,7 +926,7 @@ workflow:
         on_C: mark_task_skipped, next_task
         on_D: pause_workflow
       debug_dispatch:
-        subagent_type: "general-purpose"
+        subagent_type: "debug"
         timeout_ms: 120000
         context_includes: [error_message, affected_files, previous_attempts, current_task_id]
         on_complete: "show_checkpoint"

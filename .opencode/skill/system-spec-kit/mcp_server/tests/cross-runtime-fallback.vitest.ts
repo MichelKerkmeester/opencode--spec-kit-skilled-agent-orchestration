@@ -6,6 +6,33 @@ import { createRuntimeFixture, setRuntimeEnv, clearRuntimeEnv } from './fixtures
 import { clearCodexHookPolicyCacheForTests } from '../lib/codex-hook-policy.js';
 import { detectRuntime, areHooksAvailable, getRecoveryApproach } from '../code-graph/lib/runtime-detection.js';
 
+const CANONICAL_RUNTIME_HOOK_VOCABULARY = {
+  'claude-code': {
+    prompt: 'UserPromptSubmit',
+    lifecycle: 'SessionStart',
+    compaction: 'PreCompact',
+    stop: 'Stop',
+  },
+  'codex-cli': {
+    prompt: 'UserPromptSubmit',
+    lifecycle: 'SessionStart',
+    compaction: null,
+    stop: null,
+  },
+  'copilot-cli': {
+    prompt: 'UserPromptSubmit',
+    lifecycle: 'SessionStart',
+    compaction: null,
+    stop: null,
+  },
+  'gemini-cli': {
+    prompt: 'BeforeAgent',
+    lifecycle: 'SessionStart',
+    compaction: 'PreCompress',
+    stop: 'SessionEnd',
+  },
+} as const;
+
 describe('cross-runtime fallback', () => {
   afterEach(() => {
     clearRuntimeEnv();
@@ -26,6 +53,11 @@ describe('cross-runtime fallback', () => {
         const detected = detectRuntime();
         const fixture = createRuntimeFixture(runtime);
         expect(detected.runtime).toBe(fixture.runtime);
+        if (runtime === 'gemini-cli') {
+          expect(detected.hookPolicy).toBe('unavailable');
+          expect(CANONICAL_RUNTIME_HOOK_VOCABULARY[runtime].prompt).toBe('BeforeAgent');
+          return;
+        }
         expect(detected.hookPolicy).toBe(fixture.hookPolicy);
       });
     }
@@ -55,8 +87,9 @@ describe('cross-runtime fallback', () => {
       setRuntimeEnv('copilot-cli');
       expect(getRecoveryApproach()).toBe('hooks');
     });
-    it('gemini-cli uses tool_fallback', () => {
+    it('gemini-cli falls back when the fixture does not load repo-root BeforeAgent/SessionStart config', () => {
       setRuntimeEnv('gemini-cli');
+      expect(CANONICAL_RUNTIME_HOOK_VOCABULARY['gemini-cli'].lifecycle).toBe('SessionStart');
       expect(getRecoveryApproach()).toBe('tool_fallback');
     });
   });
@@ -98,12 +131,18 @@ describe('cross-runtime fallback', () => {
       expect(getRecoveryApproach()).toBe('hooks');
     });
 
-    // Scenario 5: Gemini CLI (Phase 024: hookPolicy is dynamic, 'unavailable' without .gemini/settings.json)
-    it('gemini-cli: runtime is gemini-cli, hookPolicy is unavailable (no settings.json), recovery is tool_fallback', () => {
+    // Scenario 5: Gemini CLI
+    it('gemini-cli: runtime is gemini-cli, canonical names stay BeforeAgent/SessionStart/PreCompress/SessionEnd, but fixture recovery is tool_fallback without repo-root settings.json', () => {
       setRuntimeEnv('gemini-cli');
       const detected = detectRuntime();
       expect(detected.runtime).toBe('gemini-cli');
       expect(detected.hookPolicy).toBe('unavailable');
+      expect(CANONICAL_RUNTIME_HOOK_VOCABULARY['gemini-cli']).toEqual({
+        prompt: 'BeforeAgent',
+        lifecycle: 'SessionStart',
+        compaction: 'PreCompress',
+        stop: 'SessionEnd',
+      });
       expect(getRecoveryApproach()).toBe('tool_fallback');
     });
 

@@ -45,15 +45,15 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 024 now has the measurement machinery that Phases 020-023 deferred: a static 200-prompt harness, an observe-only live-session wrapper, and a JSONL analyzer. The static report is deliberately honest: it measures predicted routes and advisor top-1 labels, not live AI behavior.
+Phase 024 now has the measurement machinery that Phases 020-023 deferred: a static 200-prompt harness, an observe-only live-session wrapper, and a JSONL analyzer. The static report remains deliberately honest, and the measurement path now keeps static telemetry separate from live-wrapper evidence so readiness stays blocked until actual reads are captured.
 
 ### Static Measurement Harness
 
-`smart-router-measurement.ts` runs the 019/004 labeled corpus through `buildSkillAdvisorBrief`, predicts the selected skill's SMART ROUTING resource set, emits a markdown report, and writes per-prompt JSONL plus static `unknown_unparsed` compliance records. The full local run processed 200/200 prompts and measured 112/200 advisor top-1 matches against corpus labels.
+`smart-router-measurement.ts` runs the 019/004 labeled corpus through `buildSkillAdvisorBrief`, predicts the selected skill's SMART ROUTING resource set, emits a markdown report, and writes per-prompt JSONL plus static `unknown_unparsed` compliance records to the dedicated static stream. The report now also inspects the live wrapper telemetry file and blocks routing-readiness claims until real wrapper records include observed reads. The full local run processed 200/200 prompts and measured 112/200 advisor top-1 matches against corpus labels.
 
 ### Live-Session Wrapper
 
-`live-session-wrapper.ts` exposes `configureSmartRouterSession()` and `onToolCall()` so runtime-specific adapters can record `Read` calls against `.opencode/skill/*` resources. The wrapper is observe-only and catches all errors.
+`live-session-wrapper.ts` exposes `configureSmartRouterSession()` and `onToolCall()` so runtime-specific adapters can record `Read` calls against `.opencode/skill/*` resources. Those records now remain identifiable as live-wrapper evidence, which lets downstream measurement distinguish operational telemetry from predictive static runs without changing runtime behavior.
 
 ### Telemetry Analyzer
 
@@ -98,6 +98,7 @@ The implementation reused the Phase 023 telemetry primitive and ported the Phase
 | Decision | Why |
 |----------|-----|
 | Classify static measurement telemetry as `unknown_unparsed` | Static runs cannot observe actual AI reads, so any stronger compliance class would overclaim. |
+| Gate readiness on live-wrapper evidence | Predictive counters can describe expected routing, but operational claims require real `actualReads` telemetry from the wrapper stream. |
 | Keep live wrapper observe-only | Telemetry should collect evidence before any enforcement decision. |
 | Mirror Codex policy keys when Track 1 is retried | The user-facing contract used `bash_denylist`; the shipped adapter reads `bashDenylist`. A future writable pass should include both unless the adapter contract changes. |
 | Leave Phase 020-023 runtime code untouched | The mission scoped this phase to additive files and docs. |
@@ -129,5 +130,5 @@ The implementation reused the Phase 023 telemetry primitive and ported the Phase
 
 1. **Track 1 is blocked by filesystem permissions.** The two `.codex` files still need to be created in a session where `.codex` is writable.
 2. **Strict validation needs a loader workaround in this environment.** The clean run used `NODE_OPTIONS` with the local tsx loader so compiled validator files load correctly under Node 25.
-3. **Static telemetry is predictive only.** The measurement report does not prove live AI behavior; live sessions must use the wrapper to support compliance claims.
+3. **Static telemetry is predictive only.** The measurement report now blocks readiness claims until live wrapper telemetry captures actual reads, but it still cannot prove live AI behavior on its own without those runtime records.
 <!-- /ANCHOR:limitations -->

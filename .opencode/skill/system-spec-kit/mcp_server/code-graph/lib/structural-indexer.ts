@@ -36,6 +36,7 @@ interface FileFindResult {
 
 export interface IndexFilesOptions {
   skipFreshFiles?: boolean;
+  specificFiles?: string[];
 }
 
 const require = createRequire(import.meta.url);
@@ -1232,39 +1233,42 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
   return { files: results, excludedByDefault, excludedByGitignore };
 }
 
-/** Index all matching files in the workspace */
-export async function indexFiles(config: IndexerConfig, options: IndexFilesOptions = {}): Promise<ParseResult[]> {
-  const results: ParseResult[] = [];
-  const skipFreshFiles = options.skipFreshFiles ?? true;
-  const allFiles = new Set<string>();
-  let excludedByDefault = 0;
-  let excludedByGitignore = 0;
+function collectSpecificFiles(rootDir: string, specificFiles: string[], maxSize: number): string[] {
+  const dedupedFiles: string[] = [];
+  const seenFiles = new Set<string>();
 
-  for (const pattern of config.includeGlobs) {
-    const found = findFiles(config.rootDir, pattern, config.excludeGlobs, config.maxFileSizeBytes);
-    excludedByDefault += found.excludedByDefault;
-    excludedByGitignore += found.excludedByGitignore;
-    found.files.forEach(f => allFiles.add(f));
-  }
+  for (const filePath of specificFiles) {
+    const absolutePath = resolve(filePath);
+    if (seenFiles.has(absolutePath)) {
+      continue;
+    }
 
-  console.info(`[structural-indexer] scanned ${allFiles.size} files (excluded: gitignored=${excludedByGitignore}, default=${excludedByDefault})`);
-
-  for (const file of allFiles) {
-    const language = detectLanguage(file);
-    if (!language || !config.languages.includes(language)) continue;
-
-    // P1 perf: skip read+parse for files whose mtime matches the DB record.
-    // isFileStale returns true when the file is absent from the DB or its
-    // mtime has changed — only then do we pay the I/O + parse cost.
-    if (skipFreshFiles && !isFileStale(file)) continue;
+    const relativePath = normalizeGlobPath(relative(rootDir, absolutePath));
+    if (relativePath === '..' || relativePath.startsWith('../')) {
+      continue;
+    }
 
     try {
-      const content = readFileSync(file, 'utf-8');
-      const result = await parseFile(file, content, language);
-      results.push(result);
-    } catch { /* skip unreadable */ }
+      const stat = statSync(absolutePath);
+      if (!stat.isFile()) {
+        continue;
+      }
+      if (stat.size > maxSize) {
+        console.warn(`[structural-indexer] Skipping large file (${(stat.size / 1024).toFixed(1)}KB > ${(maxSize / 1024).toFixed(1)}KB): ${absolutePath}`);
+        continue;
+      }
+    } catch {
+      continue;
+    }
+
+    seenFiles.add(absolutePath);
+    dedupedFiles.push(absolutePath);
   }
 
+  return dedupedFiles;
+}
+
+function finalizeIndexResults(results: ParseResult[]): ParseResult[] {
   // Cross-file TESTED_BY edges (heuristic, confidence 0.6)
   const testPattern = /[./](?:test|spec|vitest)\./;
   const nodesByFile = new Map<string, CodeNode[]>();
@@ -1309,4 +1313,48 @@ export async function indexFiles(config: IndexerConfig, options: IndexFilesOptio
   }
 
   return results;
+}
+
+/** Index all matching files in the workspace */
+export async function indexFiles(config: IndexerConfig, options: IndexFilesOptions = {}): Promise<ParseResult[]> {
+  const results: ParseResult[] = [];
+  const skipFreshFiles = options.skipFreshFiles ?? true;
+  let candidateFiles: string[];
+
+  if (options.specificFiles && options.specificFiles.length > 0) {
+    candidateFiles = collectSpecificFiles(config.rootDir, options.specificFiles, config.maxFileSizeBytes);
+    console.info(`[structural-indexer] refreshed ${candidateFiles.length} specific file(s)`);
+  } else {
+    const allFiles = new Set<string>();
+    let excludedByDefault = 0;
+    let excludedByGitignore = 0;
+
+    for (const pattern of config.includeGlobs) {
+      const found = findFiles(config.rootDir, pattern, config.excludeGlobs, config.maxFileSizeBytes);
+      excludedByDefault += found.excludedByDefault;
+      excludedByGitignore += found.excludedByGitignore;
+      found.files.forEach(f => allFiles.add(f));
+    }
+
+    console.info(`[structural-indexer] scanned ${allFiles.size} files (excluded: gitignored=${excludedByGitignore}, default=${excludedByDefault})`);
+    candidateFiles = [...allFiles];
+  }
+
+  for (const file of candidateFiles) {
+    const language = detectLanguage(file);
+    if (!language || !config.languages.includes(language)) continue;
+
+    // P1 perf: skip read+parse for files whose mtime matches the DB record.
+    // isFileStale returns true when the file is absent from the DB or its
+    // mtime has changed — only then do we pay the I/O + parse cost.
+    if (skipFreshFiles && !isFileStale(file)) continue;
+
+    try {
+      const content = readFileSync(file, 'utf-8');
+      const result = await parseFile(file, content, language);
+      results.push(result);
+    } catch { /* skip unreadable */ }
+  }
+
+  return finalizeIndexResults(results);
 }

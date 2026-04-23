@@ -13,6 +13,8 @@ export type ComplianceClass =
   | 'missing_expected'
   | 'unknown_unparsed';
 
+export type TelemetryEvidenceSource = 'live_wrapper' | 'static_prediction';
+
 export type ComplianceRecord = {
   promptId: string;
   selectedSkill: string;
@@ -21,6 +23,7 @@ export type ComplianceRecord = {
   predictedRoute: string[];
   allowedResources: string[];
   actualReads: string[];
+  evidenceSource?: TelemetryEvidenceSource;
   complianceClass: ComplianceClass;
   timestamp: string;
 };
@@ -52,7 +55,9 @@ const TIER_PREFIXES: Record<string, ResourceTier> = {
 const TELEMETRY_PATH_ENV = 'SPECKIT_SMART_ROUTER_TELEMETRY_PATH';
 const TELEMETRY_DIR_ENV = 'SPECKIT_SMART_ROUTER_TELEMETRY_DIR';
 
-type ComplianceInput = Omit<ComplianceRecord, 'complianceClass' | 'timestamp'>;
+type ComplianceInput = Omit<ComplianceRecord, 'complianceClass' | 'timestamp' | 'evidenceSource'> & {
+  evidenceSource?: TelemetryEvidenceSource;
+};
 
 const activePromptInputs = new Map<string, ComplianceInput>();
 
@@ -68,6 +73,32 @@ function sanitizeList(values: string[]): string[] {
   return values
     .map((value) => sanitizeValue(String(value)))
     .filter((value) => value.length > 0);
+}
+
+function inferEvidenceSource(input: {
+  readonly evidenceSource?: TelemetryEvidenceSource;
+  readonly actualReads?: readonly string[];
+  readonly observedSkill?: string | null;
+  readonly observedSkills?: readonly string[];
+  readonly allowedResources?: readonly string[];
+}): TelemetryEvidenceSource {
+  if (input.evidenceSource === 'live_wrapper' || input.evidenceSource === 'static_prediction') {
+    return input.evidenceSource;
+  }
+
+  if ((input.actualReads ?? []).length > 0) {
+    return 'live_wrapper';
+  }
+
+  if (sanitizeValue(input.observedSkill ?? '').length > 0 || (input.observedSkills ?? []).length > 0) {
+    return 'live_wrapper';
+  }
+
+  if ((input.allowedResources ?? []).some((resource) => UNKNOWN_MARKERS.has(sanitizeValue(resource).toLowerCase()))) {
+    return 'static_prediction';
+  }
+
+  return 'live_wrapper';
 }
 
 function parseAllowedResource(value: string): ParsedResource {
@@ -236,6 +267,7 @@ function buildRecord(input: ComplianceInput): ComplianceRecord {
     predictedRoute: sanitizeList(input.predictedRoute),
     allowedResources: sanitizeList(input.allowedResources),
     actualReads: sanitizeList(input.actualReads),
+    evidenceSource: inferEvidenceSource(input),
     complianceClass: classForInput(input),
     timestamp: new Date().toISOString(),
   };
@@ -259,6 +291,7 @@ export function startSmartRouterCompliancePrompt(input: ComplianceInput): void {
     predictedRoute: sanitizeList(input.predictedRoute),
     allowedResources: sanitizeList(input.allowedResources),
     actualReads: sanitizeList(input.actualReads),
+    evidenceSource: inferEvidenceSource(input),
     observedSkills: unique([
       ...(input.observedSkills ?? []),
       ...(input.observedSkill ? [input.observedSkill] : []),
@@ -279,12 +312,88 @@ export function recordSmartRouterPromptObservation(input: ComplianceInput): void
     predictedRoute: unique([...existing.predictedRoute, ...sanitizeList(input.predictedRoute)]),
     allowedResources: unique([...existing.allowedResources, ...sanitizeList(input.allowedResources)]),
     actualReads: unique([...existing.actualReads, ...sanitizeList(input.actualReads)]),
+    evidenceSource: inferEvidenceSource({
+      evidenceSource: existing.evidenceSource ?? input.evidenceSource,
+      actualReads: unique([...existing.actualReads, ...sanitizeList(input.actualReads)]),
+      observedSkill: input.observedSkill,
+      observedSkills: [
+        ...(existing.observedSkills ?? []),
+        ...(input.observedSkills ?? []),
+      ],
+      allowedResources: unique([...existing.allowedResources, ...sanitizeList(input.allowedResources)]),
+    }),
     observedSkills: unique([
       ...(existing.observedSkills ?? []),
       ...(input.observedSkills ?? []),
       ...(input.observedSkill ? [input.observedSkill] : []),
     ]),
   });
+}
+
+function isTelemetryEvidenceSource(value: unknown): value is TelemetryEvidenceSource {
+  return value === 'live_wrapper' || value === 'static_prediction';
+}
+
+function isStringList(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === 'string');
+}
+
+export function parseSmartRouterComplianceRecord(line: string): ComplianceRecord | null {
+  try {
+    const parsed = JSON.parse(line) as Record<string, unknown>;
+    if (
+      typeof parsed.promptId !== 'string'
+      || typeof parsed.selectedSkill !== 'string'
+      || !isStringList(parsed.predictedRoute)
+      || !isStringList(parsed.allowedResources)
+      || !isStringList(parsed.actualReads)
+      || typeof parsed.timestamp !== 'string'
+    ) {
+      return null;
+    }
+
+    const observedSkill = typeof parsed.observedSkill === 'string' ? parsed.observedSkill : null;
+    const observedSkills = isStringList(parsed.observedSkills) ? parsed.observedSkills : [];
+    return {
+      promptId: parsed.promptId,
+      selectedSkill: parsed.selectedSkill,
+      ...(observedSkill ? { observedSkill } : {}),
+      ...(observedSkills.length > 0 ? { observedSkills } : {}),
+      predictedRoute: parsed.predictedRoute,
+      allowedResources: parsed.allowedResources,
+      actualReads: parsed.actualReads,
+      ...(typeof parsed.complianceClass === 'string' ? { complianceClass: parsed.complianceClass as ComplianceClass } : { complianceClass: 'unknown_unparsed' }),
+      evidenceSource: isTelemetryEvidenceSource(parsed.evidenceSource)
+        ? parsed.evidenceSource
+        : inferEvidenceSource({
+          actualReads: parsed.actualReads,
+          observedSkill,
+          observedSkills,
+          allowedResources: parsed.allowedResources,
+        }),
+      timestamp: parsed.timestamp,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function readSmartRouterComplianceJsonl(inputPath: string): ComplianceRecord[] {
+  if (!fs.existsSync(inputPath)) {
+    return [];
+  }
+
+  const records: ComplianceRecord[] = [];
+  for (const line of fs.readFileSync(inputPath, 'utf8').split('\n')) {
+    if (line.trim().length === 0) {
+      continue;
+    }
+    const record = parseSmartRouterComplianceRecord(line);
+    if (record) {
+      records.push(record);
+    }
+  }
+  return records;
 }
 
 export function finalizeSmartRouterCompliancePrompt(

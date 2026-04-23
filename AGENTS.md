@@ -196,9 +196,9 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 #### GATE 4: SKILL-OWNED WORKFLOW ENFORCEMENT [HARD] BLOCK
 Trigger phrases: "deep-research", "deep-review", "iterations", ":auto" suffix, "convergence", "autoresearch", "research loop", "review loop", iterative investigation/audit at scale (>5 iterations).
 
-**RULE:** Iterative investigation or review loops MUST use the canonical skill-owned command surface:
-- Deep research → `/spec_kit:deep-research :auto`
-- Deep review → `/spec_kit:deep-review :auto`
+**RULE:** Iterative investigation or review loops MUST use the canonical skill-owned command surface with attached mode suffixes:
+- Deep research → `/spec_kit:deep-research:auto`
+- Deep review → `/spec_kit:deep-review:auto`
 
 **FORBIDDEN** (these lose skill-owned state, convergence detection, delta tracking, and auditability):
 - Manually managing iteration state in `/tmp` or anywhere outside the skill's `research/` or `review/` folder

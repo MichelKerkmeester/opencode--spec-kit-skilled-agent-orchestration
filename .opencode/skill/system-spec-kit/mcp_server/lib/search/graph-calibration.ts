@@ -123,6 +123,13 @@ export interface ScoringContext {
   communityBoost: number;
 }
 
+export interface GraphContributionSignals {
+  causalDelta: number;
+  coActivationDelta: number;
+  communityDelta: number;
+  graphSignalDelta: number;
+}
+
 /** Search function signature for ablation harness. */
 export type AblationSearchFn = (
   query: string,
@@ -349,6 +356,34 @@ export function calibrateGraphWeight(
   };
 }
 
+function normalizeGraphSignal(value: number): number {
+  if (!Number.isFinite(value) || value <= 0) return 0;
+  return value;
+}
+
+export function calibrateGraphContributionSignals(
+  signals: GraphContributionSignals,
+  profile: CalibrationProfile = DEFAULT_PROFILE,
+): GraphContributionSignals {
+  const graphSignalDelta = Math.min(
+    normalizeGraphSignal(signals.graphSignalDelta),
+    profile.graphWeightCap,
+    profile.n2aCap + profile.n2bCap,
+  );
+  const causalDelta = normalizeGraphSignal(signals.causalDelta);
+  const coActivationDelta = normalizeGraphSignal(signals.coActivationDelta);
+  const graphTotal = causalDelta + coActivationDelta + graphSignalDelta;
+  const cappedGraphTotal = applyGraphWeightCap(graphTotal, profile.graphWeightCap);
+  const ratio = graphTotal > 0 ? cappedGraphTotal / graphTotal : 1;
+
+  return {
+    causalDelta: causalDelta * ratio,
+    coActivationDelta: coActivationDelta * ratio,
+    graphSignalDelta: graphSignalDelta * ratio,
+    communityDelta: Math.min(normalizeGraphSignal(signals.communityDelta), COMMUNITY_SCORE_CAP),
+  };
+}
+
 /* ---------------------------------------------------------------
    9. CALIBRATION PROFILE LOADING
 ---------------------------------------------------------------- */
@@ -414,6 +449,23 @@ export function applyCalibrationProfile(
 
   const activeProfile = profile ?? loadCalibrationProfile();
   return calibrateGraphWeight(context, activeProfile);
+}
+
+export function applyGraphContributionCalibration(
+  signals: GraphContributionSignals,
+  profile?: CalibrationProfile,
+): GraphContributionSignals {
+  if (!isGraphCalibrationEnabled()) {
+    return {
+      causalDelta: normalizeGraphSignal(signals.causalDelta),
+      coActivationDelta: normalizeGraphSignal(signals.coActivationDelta),
+      communityDelta: normalizeGraphSignal(signals.communityDelta),
+      graphSignalDelta: normalizeGraphSignal(signals.graphSignalDelta),
+    };
+  }
+
+  const activeProfile = profile ?? loadCalibrationProfile();
+  return calibrateGraphContributionSignals(signals, activeProfile);
 }
 
 /* ---------------------------------------------------------------

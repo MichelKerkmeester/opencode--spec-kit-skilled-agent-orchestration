@@ -409,6 +409,7 @@ function determineSessionStatus(
     ? collectedData.repositoryState.toLowerCase()
     : '';
   const completionKeywords = /\b(?:done|complete[d]?|finish(?:ed)?|success(?:ful(?:ly)?)?)\b/i;
+  const verificationCompletionKeywords = /\b(?:verified|validated|confirmed)\b[^.!?\n]{0,80}\b(?:final|complete|completed|done|ready|checks?\s+pass(?:ed)?)\b/i;
   const resolutionKeywords = /\b(?:resolved|fixed|unblocked|works?\s+now|workaround)\b/i;
   const pendingWorkKeywords = /\b(?:todo|remaining|pending|left to do|follow-?up|next(?:\s+step|\s+action)?|need(?:s)? to|still need(?:s)?|still pending)\b/i;
   const observationTexts = observations
@@ -427,6 +428,11 @@ function determineSessionStatus(
     ? collectedData.nextSteps.map((step) => JSON.stringify(step)).join(' ')
     : '';
   const summaryText = collectedData?.sessionSummary || '';
+  const hasCompletedNextSteps = Array.isArray(collectedData?.nextSteps)
+    && collectedData.nextSteps.length > 0
+    && unresolvedNextSteps.length === 0;
+  const hasExplicitCompletionEvidence = hasCompletedNextSteps || [summaryText, ...observationTexts]
+    .some((text) => completionKeywords.test(text) || verificationCompletionKeywords.test(text));
   const pendingObservationTexts = (
     Array.isArray(collectedData?.nextSteps) && collectedData.nextSteps.length > 0
       ? observations
@@ -443,7 +449,7 @@ function determineSessionStatus(
   if (repositoryState.includes('clean') && (
     typeof collectedData?.commitRef === 'string'
     || typeof collectedData?.headRef === 'string'
-  ) && !hasUnresolvedNextSteps && !hasPendingWorkIndicators) {
+  ) && !hasUnresolvedNextSteps && !hasPendingWorkIndicators && hasExplicitCompletionEvidence) {
     return 'COMPLETED';
   }
 
@@ -458,13 +464,14 @@ function determineSessionStatus(
       || hasObservationNextSteps;
     const saveMode = resolveSaveMode(collectedData);
 
-    // If explicit JSON data has summary + decisions + next steps, session is complete
-    // But if there are pending nextSteps, downgrade to partial (IN_PROGRESS)
+    // Require explicit completion evidence before JSON-mode data can auto-complete.
     if (saveMode === SaveMode.Json && hasSessionSummary && (hasKeyDecisions || hasNextSteps)) {
       if (hasUnresolvedNextSteps) {
         return 'IN_PROGRESS';
       }
-      return 'COMPLETED';
+      if (hasExplicitCompletionEvidence) {
+        return 'COMPLETED';
+      }
     }
   }
 
@@ -498,11 +505,7 @@ function determineSessionStatus(
     }
   }
 
-  if (
-    observationTexts.some((text) => completionKeywords.test(text))
-    && !hasUnresolvedNextSteps
-    && !hasPendingWorkIndicators
-  ) {
+  if (hasExplicitCompletionEvidence && !hasUnresolvedNextSteps && !hasPendingWorkIndicators) {
     return 'COMPLETED';
   }
 
@@ -521,7 +524,7 @@ function determineSessionStatus(
   );
   const hasNoBlockers = !blockers || blockers === 'None';
 
-  if (hasNoBlockers && highActivity && !hasPendingWorkIndicators) {
+  if (hasNoBlockers && highActivity && !hasPendingWorkIndicators && hasExplicitCompletionEvidence) {
     return 'COMPLETED';
   }
 

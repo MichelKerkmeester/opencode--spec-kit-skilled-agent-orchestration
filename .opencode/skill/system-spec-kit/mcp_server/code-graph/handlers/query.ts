@@ -13,7 +13,7 @@ import {
   type HotFileBreadcrumb,
 } from '../../lib/context/shared-payload.js';
 import {
-  buildQueryGraphMetadata,
+  buildQueryTrustMetadata,
   buildReadinessBlock,
 } from '../lib/readiness-contract.js';
 
@@ -195,30 +195,6 @@ function resolveSubject(subject: string): ResolvedSubject {
   return { symbolId: null };
 }
 
-function buildQueryStructuralTrust(readiness: ReadyResult) {
-  if (readiness.freshness === 'fresh') {
-    return {
-      parserProvenance: 'ast',
-      evidenceStatus: 'confirmed',
-      freshnessAuthority: 'live',
-    } as const;
-  }
-
-  if (readiness.freshness === 'stale') {
-    return {
-      parserProvenance: 'ast',
-      evidenceStatus: 'probable',
-      freshnessAuthority: 'stale',
-    } as const;
-  }
-
-  return {
-    parserProvenance: 'unknown',
-    evidenceStatus: 'unverified',
-    freshnessAuthority: 'unknown',
-  } as const;
-}
-
 // Phase 017 / T-CGC-01: readiness helpers extracted to
 // lib/code-graph/readiness-contract.ts so the 6 sibling
 // code-graph handlers (scan, status, context, ccc-status,
@@ -237,13 +213,13 @@ function buildGraphQueryPayload<T extends Record<string, unknown>>(
   } | null,
 ) {
   const { readiness: _incomingReadiness, ...rest } = payload as Record<string, unknown>;
-  const graphMetadata = buildQueryGraphMetadata(readiness);
+  const { graphMetadata, structuralTrust } = buildQueryTrustMetadata(readiness);
   const base = graphMetadata
     ? { ...rest, graphMetadata, readiness: buildReadinessBlock(readiness) }
     : { ...rest, readiness: buildReadinessBlock(readiness) };
   const withTrust = attachStructuralTrustFields(
     base as T & { readiness: ReturnType<typeof buildReadinessBlock> },
-    buildQueryStructuralTrust(readiness),
+    structuralTrust,
     { label },
   );
 

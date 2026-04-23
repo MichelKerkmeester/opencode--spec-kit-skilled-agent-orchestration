@@ -12,9 +12,13 @@ import { fileURLToPath } from 'node:url';
 
 import {
   buildSkillAdvisorBrief,
-  type AdvisorHookResult,
 } from '../../mcp_server/skill-advisor/lib/skill-advisor-brief.js';
-import { recordSmartRouterCompliance } from './smart-router-telemetry.js';
+import {
+  readSmartRouterComplianceJsonl,
+  recordSmartRouterCompliance,
+  type ComplianceClass,
+  type ComplianceRecord,
+} from './smart-router-telemetry.js';
 
 export interface CorpusRow {
   readonly id: string;
@@ -71,6 +75,7 @@ export interface MeasurementSummary {
   readonly accuracy: number;
   readonly perSkill: SkillMeasurementSummary[];
   readonly allowedResourceDistribution: Record<string, number>;
+  readonly liveReadiness: LiveReadinessSummary;
   readonly results: MeasurementPromptResult[];
   readonly generatedAt: string;
   readonly caveat: string;
@@ -89,6 +94,15 @@ export interface MeasurementOptions {
   readonly buildBrief?: typeof buildSkillAdvisorBrief;
 }
 
+export interface LiveReadinessSummary {
+  readonly inputPath: string;
+  readonly liveWrapperRecords: number;
+  readonly promptsWithObservedReads: number;
+  readonly classDistribution: Record<ComplianceClass, number>;
+  readonly readinessStatus: 'blocked' | 'ready';
+  readonly readinessReason: string;
+}
+
 interface RouterModel {
   readonly variant: string;
   readonly routerText: string;
@@ -105,6 +119,7 @@ const DEFAULT_CORPUS_PATH = '.opencode/specs/system-spec-kit/026-graph-and-conte
 const DEFAULT_REPORT_PATH = '.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement-report.md';
 const DEFAULT_JSONL_PATH = '.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement-results.jsonl';
 const DEFAULT_STATIC_COMPLIANCE_PATH = '.opencode/reports/smart-router-static/compliance.jsonl';
+const DEFAULT_LIVE_COMPLIANCE_PATH = '.opencode/skill/.smart-router-telemetry/compliance.jsonl';
 const UNKNOWN_RESOURCE = '__unknown_unparsed__';
 const IS_CLI_ENTRY = process.argv[1]
   ? path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
@@ -153,6 +168,38 @@ function average(values: readonly number[]): number {
 
 function round(value: number, digits = 4): number {
   return Number(value.toFixed(digits));
+}
+
+function emptyClassDistribution(): Record<ComplianceClass, number> {
+  return {
+    always: 0,
+    conditional_expected: 0,
+    on_demand_expected: 0,
+    extra: 0,
+    missing_expected: 0,
+    unknown_unparsed: 0,
+  };
+}
+
+function summarizeLiveReadiness(records: readonly ComplianceRecord[], inputPath: string): LiveReadinessSummary {
+  const liveRecords = records.filter((record) => record.evidenceSource !== 'static_prediction');
+  const classDistribution = emptyClassDistribution();
+
+  for (const record of liveRecords) {
+    classDistribution[record.complianceClass] += 1;
+  }
+
+  const promptsWithObservedReads = liveRecords.filter((record) => record.actualReads.length > 0).length;
+  return {
+    inputPath,
+    liveWrapperRecords: liveRecords.length,
+    promptsWithObservedReads,
+    classDistribution,
+    readinessStatus: promptsWithObservedReads > 0 ? 'ready' : 'blocked',
+    readinessReason: promptsWithObservedReads > 0
+      ? 'Live wrapper telemetry with actual reads is present.'
+      : 'No live wrapper telemetry with actual reads has been captured yet; readiness stays blocked.',
+  };
 }
 
 function readTextIfExists(filePath: string): string | null {
@@ -594,6 +641,7 @@ function summarizeBySkill(results: readonly MeasurementPromptResult[]): SkillMea
 export async function runMeasurement(options: MeasurementOptions = {}): Promise<MeasurementSummary> {
   const workspaceRoot = options.workspaceRoot ?? locateWorkspaceRoot();
   const corpusPath = path.resolve(workspaceRoot, options.corpusPath ?? DEFAULT_CORPUS_PATH);
+  const liveTelemetryPath = path.resolve(workspaceRoot, DEFAULT_LIVE_COMPLIANCE_PATH);
   const rows = (options.corpusRows ? [...options.corpusRows] : loadCorpus(corpusPath))
     .slice(0, options.limit ?? undefined);
   const buildBrief = options.buildBrief ?? buildSkillAdvisorBrief;
@@ -633,24 +681,28 @@ export async function runMeasurement(options: MeasurementOptions = {}): Promise<
         predictedRoute: prediction.predictedRoute,
         allowedResources: [UNKNOWN_RESOURCE, ...prediction.allowedResources],
         actualReads: [],
+        evidenceSource: 'static_prediction',
       }, {
-        outputPath: options.liveStream
-          ? undefined
-          : path.resolve(workspaceRoot, options.telemetryOutputPath ?? DEFAULT_STATIC_COMPLIANCE_PATH),
+        outputPath: path.resolve(workspaceRoot, options.telemetryOutputPath ?? DEFAULT_STATIC_COMPLIANCE_PATH),
       });
     }
   }
 
   const correct = results.filter((result) => result.correct).length;
+  const liveReadiness = summarizeLiveReadiness(
+    readSmartRouterComplianceJsonl(liveTelemetryPath),
+    liveTelemetryPath,
+  );
   return {
     totalPrompts: results.length,
     correct,
     accuracy: results.length > 0 ? round(correct / results.length) : 0,
     perSkill: summarizeBySkill(results),
     allowedResourceDistribution: distributionFor(results),
+    liveReadiness,
     results,
     generatedAt: new Date().toISOString(),
-    caveat: 'Static measurement only: predicted routes and advisor labels were measured. No live AI read behavior was observed.',
+    caveat: 'Static measurement still covers predicted routes and advisor labels only. Routing readiness claims now remain blocked until live wrapper telemetry captures actual reads.',
   };
 }
 
@@ -668,7 +720,16 @@ export function formatMeasurementReport(summary: MeasurementSummary): string {
     '',
     `- Total prompts: ${summary.totalPrompts}`,
     `- Advisor top-1 accuracy vs corpus labels: ${summary.correct}/${summary.totalPrompts} (${percent(summary.accuracy)})`,
+    `- Live readiness gate: ${summary.liveReadiness.readinessStatus.toUpperCase()} (${summary.liveReadiness.promptsWithObservedReads} prompts with observed reads from ${summary.liveReadiness.liveWrapperRecords} live records)`,
     `- Methodology caveat: ${summary.caveat}`,
+    '',
+    '## Live Readiness Gate',
+    '',
+    `- Input: ${summary.liveReadiness.inputPath}`,
+    `- Status: ${summary.liveReadiness.readinessStatus.toUpperCase()}`,
+    `- Reason: ${summary.liveReadiness.readinessReason}`,
+    `- Live wrapper records: ${summary.liveReadiness.liveWrapperRecords}`,
+    `- Prompts with observed reads: ${summary.liveReadiness.promptsWithObservedReads}`,
     '',
     '## Per-Skill Accuracy And Savings',
     '',
@@ -711,8 +772,8 @@ export function formatMeasurementReport(summary: MeasurementSummary): string {
     '',
     '- This report measures advisor output and the predicted SMART ROUTING resource route only.',
     '- It does not measure actual AI tool reads, skipped SKILL.md behavior, or whether a model followed a route.',
-    '- Compliance JSONL records emitted by this static harness intentionally classify as `unknown_unparsed` to avoid implying live-session compliance.',
-    '- Causal claims about AI reasoning require live-session telemetry collected with the wrapper.',
+    '- Compliance JSONL records emitted by this static harness intentionally stay on the static stream and classify as `unknown_unparsed` to avoid implying live-session compliance.',
+    '- Readiness stays blocked until the live wrapper captures actual reads in `.opencode/skill/.smart-router-telemetry/compliance.jsonl`.',
     '',
   );
 
@@ -737,6 +798,7 @@ export function writeMeasurementOutputs(summary: MeasurementSummary, options: Me
       accuracy: summary.accuracy,
       perSkill: summary.perSkill,
       allowedResourceDistribution: summary.allowedResourceDistribution,
+      liveReadiness: summary.liveReadiness,
       generatedAt: summary.generatedAt,
       caveat: summary.caveat,
     }),

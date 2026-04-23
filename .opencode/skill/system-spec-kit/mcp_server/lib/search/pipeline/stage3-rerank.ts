@@ -46,8 +46,8 @@ import { compareDeterministicRows, sortDeterministicRows } from './ranking-contr
 
 // -- Constants --------------------------------------------------
 
-/** Minimum number of results required before cross-encoder is worth invoking. Reranking 2-3 docs wastes API calls with minimal ordering gain. */
-const MIN_RESULTS_FOR_RERANK = 4;
+/** Minimum number of results required before reranking can change ordering. 0-1 row sets are already equivalent without a reranker. */
+const MIN_RESULTS_FOR_RERANK = 2;
 
 /** Minimum number of candidates required before MMR diversity pruning is worthwhile. */
 const MMR_MIN_CANDIDATES = 2;

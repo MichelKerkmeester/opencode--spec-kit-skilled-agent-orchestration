@@ -32,11 +32,13 @@ type StartupBrief = {
 export interface CopilotHookInput {
   session_id?: string;
   sessionId?: string;
+  cwd?: string;
+  specFolder?: string;
   source?: 'startup' | 'resume' | 'clear' | 'compact' | string;
   [key: string]: unknown;
 }
 
-let buildStartupBrief: (() => StartupBrief) | null = null;
+let buildStartupBrief: ((highlightCount?: number, stateScope?: { specFolder?: string; claudeSessionId?: string }) => StartupBrief) | null = null;
 try {
   const mod = await import('../../code-graph/lib/startup-brief.js');
   buildStartupBrief = mod.buildStartupBrief;
@@ -72,6 +74,22 @@ function readSessionId(input: CopilotHookInput | null): string | null {
     return input.sessionId;
   }
   return null;
+}
+
+function readRequestedSpecFolder(input: CopilotHookInput | null): string | undefined {
+  if (typeof input?.specFolder === 'string' && input.specFolder.trim().length > 0) {
+    return input.specFolder;
+  }
+  if (typeof input?.cwd !== 'string' || input.cwd.trim().length === 0) {
+    return undefined;
+  }
+  const normalized = input.cwd.replace(/\\/g, '/');
+  const marker = '/.opencode/specs/';
+  const markerIndex = normalized.indexOf(marker);
+  if (markerIndex === -1) {
+    return undefined;
+  }
+  return normalized.slice(markerIndex + 1);
 }
 
 function fallbackBanner(memoryLine = 'startup summary unavailable'): string {
@@ -150,10 +168,19 @@ export function handleCompact(sessionId: string): string {
   return sections.join('\n');
 }
 
-function buildStartupBanner(): string {
+function buildStartupBanner(input: CopilotHookInput | null): string {
   let startupBrief: StartupBrief | null = null;
   try {
-    startupBrief = buildStartupBrief ? buildStartupBrief() : null;
+    const sessionId = readSessionId(input);
+    const specFolder = readRequestedSpecFolder(input);
+    startupBrief = buildStartupBrief
+      ? buildStartupBrief(undefined, sessionId || specFolder
+        ? {
+          ...(sessionId ? { claudeSessionId: sessionId } : {}),
+          ...(specFolder ? { specFolder } : {}),
+        }
+        : undefined)
+      : null;
   } catch (err: unknown) {
     process.stderr.write(`[copilot:session-prime] buildStartupBrief threw: ${err instanceof Error ? err.message : String(err)}\n`);
   }
@@ -183,7 +210,7 @@ async function main(): Promise<void> {
     : null;
   const output = source === 'compact' && sessionId
     ? handleCompact(sessionId)
-    : buildStartupBanner();
+    : buildStartupBanner(input);
 
   if (source !== 'compact') {
     await refreshStartupInstructions(output);

@@ -13,6 +13,16 @@ import SpecKitSkillAdvisorPlugin from '../../../../plugins/spec-kit-skill-adviso
 
 const DEFAULT_MAX_PROMPT_BYTES = 64 * 1024;
 const DEFAULT_MAX_BRIEF_CHARS = 2 * 1024;
+const CANONICAL_OPENCODE_PLUGIN_SURFACE = [
+  'event',
+  'experimental.chat.system.transform',
+  'tool',
+] as const;
+const LEGACY_OPENCODE_LIFECYCLE_KEYS = [
+  'onSessionStart',
+  'onUserPromptSubmitted',
+  'onSessionEnd',
+] as const;
 
 function bridgeResponse(brief = 'Advisor: live; use sk-code-opencode 0.91/0.23 pass.') {
   return JSON.stringify({
@@ -123,15 +133,15 @@ describe('Spec Kit skill advisor OpenCode plugin', () => {
     mockBridgeSuccess();
   });
 
-  it('returns OpenCode hook keys and keeps status tool registration', async () => {
+  it('returns the canonical OpenCode hook surface and keeps status tool registration', async () => {
     const hooks = await makePlugin();
 
-    expect(hooks).toHaveProperty('event');
-    expect(hooks).toHaveProperty('experimental.chat.system.transform');
-    expect(hooks).toHaveProperty('tool');
-    expect(hooks).not.toHaveProperty('onSessionStart');
-    expect(hooks).not.toHaveProperty('onUserPromptSubmitted');
-    expect(hooks).not.toHaveProperty('onSessionEnd');
+    for (const key of CANONICAL_OPENCODE_PLUGIN_SURFACE) {
+      expect(hooks).toHaveProperty(key);
+    }
+    for (const key of LEGACY_OPENCODE_LIFECYCLE_KEYS) {
+      expect(hooks).not.toHaveProperty(key);
+    }
     expect(hooks.tool?.spec_kit_skill_advisor_status).toBeDefined();
   });
 

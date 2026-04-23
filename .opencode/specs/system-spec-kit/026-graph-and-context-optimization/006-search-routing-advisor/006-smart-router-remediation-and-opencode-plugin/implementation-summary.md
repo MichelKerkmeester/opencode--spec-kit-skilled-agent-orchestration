@@ -117,9 +117,9 @@ Created `.opencode/plugins/spec-kit-skill-advisor.js` and `.opencode/plugins/spe
 Plugin behavior:
 
 - default-export OpenCode plugin function
-- `onSessionStart` initializes a per-session prompt cache
-- `onUserPromptSubmitted` sends the prompt to the bridge over stdin and returns `{ additionalContext }`
-- `onSessionEnd` clears the session cache
+- `event` handles per-session cache lifecycle, including startup and cleanup events
+- `experimental.chat.system.transform` sends the prompt to the bridge over stdin and appends the advisor brief to `output.system`
+- `tool.spec_kit_skill_advisor_status` reports settings, readiness, cache counts, and bridge state
 - prompt-safe `spec_kit_skill_advisor_status` tool reports settings, readiness, cache counts, and bridge state without raw prompts
 - opt-out via `SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED=1` or `{ enabled: false }`
 - settings: `cacheTTLMs`, `thresholdConfidence`, `maxTokens`, `nodeBinaryOverride`, `bridgeTimeoutMs`

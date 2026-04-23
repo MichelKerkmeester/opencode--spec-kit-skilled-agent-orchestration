@@ -1,7 +1,7 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
 title: "Implementation Summary: Phase 015 Playbook Coverage Accounting and Partial Execution"
-description: "This phase turned the live system-spec-kit playbook into packet-local evidence, showed where handler automation really works, and documented the large partial-execution surface that still needs follow-on work."
+description: "This phase now distinguishes the historical 297-scenario packet-local run from the current 300-scenario wrapper revalidation sweep, which cleared former Vitest blockers but exposed parser and fixture drift."
 trigger_phrases:
   - "phase 015 implementation summary"
   - "playbook coverage accounting summary"
@@ -10,13 +10,13 @@ contextType: "verification"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution"
-    last_updated_at: "2026-04-12T00:00:00Z"
+    last_updated_at: "2026-04-24T00:00:00Z"
     last_updated_by: "codex"
-    recent_action: "Published coverage accounting and partial execution results"
-    next_safe_action: "Fix the two automated-suite failures and decide whether to expand playbook automation"
+    recent_action: "Re-ran the wrapper release sweep and replaced stale blocker and count summaries with current live evidence"
+    next_safe_action: "Fix the live parse failures and fixture seeding failure, then regenerate a fresh packet-local run for all 300 active scenarios"
     blockers:
-      - "handler-helpers suite import failure"
-      - "spec-doc-structure strict-validation mismatch"
+      - "Current runner resweep discovers 300 active scenario files but only parses 290 before 10 parse failures are reported"
+      - "Fresh manual execution aborts during fixture seeding, so the stored 297-row result bundle is historical evidence only"
     key_files:
       - "implementation-summary.md"
       - "tasks.md"
@@ -28,7 +28,8 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions:
-      - "How many live playbook files are still truthfully direct-handler automatable"
+      - "Do the former handler-helpers and spec-doc-structure blockers still reproduce on the current tree"
+      - "What active scenario count does the live runner discover today"
 ---
 # Implementation Summary: Phase 015 Playbook Coverage Accounting and Partial Execution
 
@@ -51,18 +52,18 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This phase replaced assumptions with a live coverage-accounting record. The runner now writes packet-local evidence for Phase 015, understands the current playbook prose formats, and can account for every active scenario file in the live filesystem instead of dropping edge cases like split Section 2/Section 3 scenarios.
+This phase now separates historical packet-local evidence from the current wrapper-level release sweep. The original Phase 015 bundle still captures the 2026-04-12 execution state, while the 2026-04-24 resweep refreshed validation, blocker, artifact-root, and count claims against the live tree.
 
 ### Execution outcome
 
-You can now inspect a packet-local manual result set for all `297` active scenario files. That run produced `22 PASS`, `1 PARTIAL`, `1 FAIL`, `0 SKIP`, and `273 UNAUTOMATABLE`, which makes the current automation boundary obvious instead of pretending shell-, source-, or transport-driven scenarios are cleanly handler-automatable.
+The stored packet-local result set remains the historical `297`-scenario run from 2026-04-12. A fresh wrapper-level sweep on 2026-04-24 no longer matches that baseline: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <phase-folder> --strict` still fails Phase 014 on `CONTINUITY_FRESHNESS`, `npx vitest run tests/handler-helpers.vitest.ts tests/spec-doc-structure.vitest.ts` now passes `2` files and `78` tests, and the live runner discovers `300` active scenario files, parses `290`, reports `10` parse failures, and then aborts during fixture seeding before a new packet-local bundle is written.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
 | `.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts` | Modified | Retarget output to Phase 015 and parse the live playbook formats |
-| `.opencode/skill/system-spec-kit/scripts/tests/fixtures/manual-playbook-fixture.ts` | Modified | Keep fixture report metadata aligned to the packet-local output root |
+| `.opencode/skill/system-spec-kit/scripts/tests/fixtures/manual-playbook-fixture.ts` | Modified | Retarget the default report root from the retired `006-.../015-full-playbook-execution` lineage to the active `005-.../002-full-playbook-execution` packet |
 | `spec.md` | Modified | Mark the phase complete and keep the packet state current |
 | `plan.md` | Created | Capture the execution strategy and rollback path |
 | `tasks.md` | Created | Record automated and manual execution results |
@@ -87,8 +88,8 @@ The delivery path stayed deliberately narrow. First, the existing runner and fix
 |----------|-----|
 | Keep the existing runner instead of replacing it | The current runner already knew how to seed the fixture and dispatch live handlers, so surgical fixes were safer than a rewrite |
 | Record unsupported flows as `UNAUTOMATABLE` | That keeps the packet honest when a scenario depends on shell commands, source inspection, flag catalogs, or MCP transport hooks |
-| Use a bail-stable rerun for automated reporting | The raw full-suite command did not produce a bounded summary in this sandbox, but the bail rerun surfaced concrete blockers without inventing totals |
-| Preserve the stale playbook count mismatch in the report | The root playbook still claims `305` active entries, while the live filesystem has `297`; hiding that would make the packet misleading |
+| Refresh blocker claims from targeted reruns | The old `handler-helpers` and `spec-doc-structure` failures no longer reproduce, so release notes must cite the live `78/78` rerun instead of inherited blocker prose |
+| Treat the `297`-row packet bundle as historical evidence only | The live runner now discovers `300` active files and stops before fresh execution, so the old totals cannot remain the current release baseline |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -98,11 +99,11 @@ The delivery path stayed deliberately narrow. First, the existing runner and fix
 
 | Check | Result |
 |-------|--------|
-| `npm run build` | PASS |
-| Requested Vitest command | PARTIAL: raw run executed, but packet totals use the bail-stable subset |
-| Automated executed subset | PARTIAL: `345` pass and `1` fail across `346` executed tests |
-| Manual runner full sweep | PARTIAL: `297/297` active scenario files accounted for, but most remain `UNAUTOMATABLE` |
-| Strict phase validation | See checklist for current packet-template status after the first validation pass and follow-up alignment |
+| `npm run build` | Historical PASS from the 2026-04-12 packet; not re-run as part of the 2026-04-24 wrapper revalidation |
+| Targeted Vitest blocker rerun | PASS: `2` files and `78` tests passed on 2026-04-24 |
+| Live runner discovery pass | FAIL: `300` active files discovered, `290` parsed, `10` parse failures reported before execution |
+| Fresh manual runner execution | FAIL: current resweep aborts during fixture seeding before a new packet-local result bundle is written |
+| Strict phase validation (`001-playbook-prompt-rewrite`) | FAIL: 2026-04-24 strict rerun exits `2` on `CONTINUITY_FRESHNESS` only |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -110,8 +111,8 @@ The delivery path stayed deliberately narrow. First, the existing runner and fix
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Automated suite not green.** `mcp_server/tests/handler-helpers.vitest.ts` fails at import time because its config mock no longer exports `resolveDatabasePaths`.
-2. **Strict-validation fixture drift remains.** `mcp_server/tests/spec-doc-structure.vitest.ts` expects `validate.sh --strict` to return `0`, but the live result is `2`.
-3. **Manual automation coverage is low.** `273/297` active scenarios are still truthful `UNAUTOMATABLE` cases under direct-handler execution.
-4. **Two optimistic PASS rows were corrected.** `EX-001` is now `PARTIAL` because the resume surfaces only returned unresolved diagnostics, and `EX-006` is now `FAIL` because the save was rejected before indexing.
+1. **Phase 014 still fails strict validation.** The current strict rerun exits `2` on `CONTINUITY_FRESHNESS`, so the prompt-rewrite packet remains in progress.
+2. **The live runner no longer matches the stored packet totals.** Current discovery finds `300` active scenario files, not the historical `297`.
+3. **Fresh manual execution currently stops before results are written.** The 2026-04-24 resweep reports `10` parse failures and then aborts during fixture seeding.
+4. **The stored `297`-row result bundle is historical evidence only.** A fresh packet-local run is still required before this packet can claim current full-playbook coverage.
 <!-- /ANCHOR:limitations -->

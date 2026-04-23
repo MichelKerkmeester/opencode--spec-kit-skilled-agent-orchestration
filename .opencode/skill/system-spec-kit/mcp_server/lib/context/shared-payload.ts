@@ -620,6 +620,23 @@ export function detectorProvenanceToParserProvenance(
   return assertParserProvenance(value);
 }
 
+export function buildStructuralTrustFromProvenance(input: {
+  evidenceStatus: EvidenceStatus;
+  freshnessAuthority: FreshnessAuthority;
+  detectorProvenance?: DetectorProvenance | null;
+  fallbackParserProvenance?: ParserProvenance;
+}): StructuralTrust {
+  const parserProvenance = input.detectorProvenance
+    ? detectorProvenanceToParserProvenance(input.detectorProvenance)
+    : input.fallbackParserProvenance ?? 'unknown';
+
+  return makeStructuralTrust({
+    parserProvenance,
+    evidenceStatus: input.evidenceStatus,
+    freshnessAuthority: input.freshnessAuthority,
+  });
+}
+
 export function createPublicationMethodologyMetadata(
   metadata: PublicationMethodologyMetadata,
 ): PublicationMethodologyMetadata {
@@ -718,26 +735,33 @@ export function makeStructuralTrust(input: StructuralTrust): StructuralTrust {
 }
 
 export function buildStructuralContextTrust(
-  structuralContext: { status: string },
+  structuralContext: { status: string; detectorProvenance?: unknown },
 ): StructuralTrust {
+  const detectorProvenance = isRecord(structuralContext)
+    && isDetectorProvenance(structuralContext.detectorProvenance)
+    ? structuralContext.detectorProvenance
+    : null;
+
   if (structuralContext.status === 'ready') {
-    return makeStructuralTrust({
-      parserProvenance: 'ast',
+    return buildStructuralTrustFromProvenance({
+      detectorProvenance,
+      fallbackParserProvenance: 'ast',
       evidenceStatus: 'confirmed',
       freshnessAuthority: 'live',
     });
   }
 
   if (structuralContext.status === 'stale') {
-    return makeStructuralTrust({
-      parserProvenance: 'ast',
+    return buildStructuralTrustFromProvenance({
+      detectorProvenance,
+      fallbackParserProvenance: 'ast',
       evidenceStatus: 'probable',
       freshnessAuthority: 'stale',
     });
   }
 
-  return makeStructuralTrust({
-    parserProvenance: 'unknown',
+  return buildStructuralTrustFromProvenance({
+    fallbackParserProvenance: 'unknown',
     evidenceStatus: 'unverified',
     freshnessAuthority: 'unknown',
   });

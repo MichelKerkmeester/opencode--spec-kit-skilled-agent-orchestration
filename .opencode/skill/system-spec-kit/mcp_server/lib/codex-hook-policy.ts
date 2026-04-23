@@ -6,6 +6,7 @@
 
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
+import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { performance } from 'node:perf_hooks';
 
@@ -44,6 +45,8 @@ export interface CodexProbeResult {
 export interface CodexHookPolicyOptions {
   readonly command?: string;
   readonly timeoutMs?: number;
+  readonly configPath?: string;
+  readonly hooksPath?: string;
   readonly settingsPath?: string;
   readonly workspaceRoot?: string;
   readonly runCommand?: (command: CodexProbeCommand) => CodexProbeResult;
@@ -122,17 +125,81 @@ function settingsPathFor(options: CodexHookPolicyOptions): string {
     ?? join(options.workspaceRoot ?? process.cwd(), '.codex', 'settings.json');
 }
 
-function hasValidCodexSettings(settingsPath: string): boolean {
-  if (!existsSync(settingsPath)) {
+function configPathFor(options: CodexHookPolicyOptions): string {
+  if (options.configPath) {
+    return options.configPath;
+  }
+  const workspacePath = join(options.workspaceRoot ?? process.cwd(), '.codex', 'config.toml');
+  return existsSync(workspacePath)
+    ? workspacePath
+    : join(homedir(), '.codex', 'config.toml');
+}
+
+function hooksPathFor(options: CodexHookPolicyOptions): string {
+  if (options.hooksPath) {
+    return options.hooksPath;
+  }
+  const homePath = join(homedir(), '.codex', 'hooks.json');
+  return existsSync(homePath)
+    ? homePath
+    : join(options.workspaceRoot ?? process.cwd(), '.codex', 'hooks.json');
+}
+
+function hasCodexHooksFeatureEnabled(configPath: string): boolean {
+  if (!existsSync(configPath)) {
     return false;
   }
 
   try {
-    JSON.parse(readFileSync(settingsPath, 'utf8'));
-    return true;
+    const lines = readFileSync(configPath, 'utf8').split(/\r?\n/);
+    let inFeatures = false;
+    for (const line of lines) {
+      const stripped = line.replace(/#.*$/, '').trim();
+      if (!stripped) {
+        continue;
+      }
+      if (stripped.startsWith('[') && stripped.endsWith(']')) {
+        inFeatures = stripped === '[features]';
+        continue;
+      }
+      if (!inFeatures) {
+        continue;
+      }
+      if (/^codex_hooks\s*=\s*true\b/i.test(stripped)) {
+        return true;
+      }
+      if (/^codex_hooks\s*=/.test(stripped)) {
+        return false;
+      }
+    }
   } catch {
     return false;
   }
+
+  return false;
+}
+
+function hasValidHookRegistration(hooksPath: string): boolean {
+  if (!existsSync(hooksPath)) {
+    return false;
+  }
+
+  try {
+    const parsed = JSON.parse(readFileSync(hooksPath, 'utf8')) as unknown;
+    return typeof parsed === 'object' && parsed !== null;
+  } catch {
+    return false;
+  }
+}
+
+function partialReason(hasFeatureFlag: boolean, hasHooksRegistration: boolean): string {
+  if (!hasFeatureFlag && !hasHooksRegistration) {
+    return 'CODEX_HOOKS_FLAG_AND_REGISTRATION_MISSING';
+  }
+  if (!hasFeatureFlag) {
+    return 'CODEX_HOOKS_FEATURE_DISABLED';
+  }
+  return 'CODEX_HOOKS_REGISTRATION_MISSING_OR_INVALID';
 }
 
 function firstOutputLine(output: string): string | undefined {
@@ -217,16 +284,25 @@ export function detectCodexHookPolicy(options: CodexHookPolicyOptions = {}): Cod
 
   const codexVersion = firstOutputLine(versionProbe.stdout) ?? firstOutputLine(versionProbe.stderr);
   const settingsPath = settingsPathFor(options);
-  const settingsValid = hasValidCodexSettings(settingsPath);
-
-  const hooks: CodexHookAvailability = settingsValid ? 'live' : 'partial';
+  const configPath = configPathFor(options);
+  const hooksPath = hooksPathFor(options);
+  const hasFeatureFlag = hasCodexHooksFeatureEnabled(configPath);
+  const hasHooksRegistration = hasValidHookRegistration(hooksPath);
+  const hooks: CodexHookAvailability = hasFeatureFlag && hasHooksRegistration ? 'live' : 'partial';
   return cachePolicy({
     hooks,
     probedAt: currentDate().toISOString(),
     diagnostics: {
       probeDurationMs: Number((now() - startedAt).toFixed(3)),
       ...(codexVersion ? { codexVersion } : {}),
-      ...(settingsValid ? {} : { reason: 'CODEX_SETTINGS_MISSING_OR_INVALID' }),
+      ...(hooks === 'live'
+        ? {}
+        : {
+          reason: [
+            partialReason(hasFeatureFlag, hasHooksRegistration),
+            ...(existsSync(settingsPath) ? [] : ['CODEX_SETTINGS_MISSING_OR_INVALID']),
+          ].join(';'),
+        }),
     },
   }, useCache);
 }

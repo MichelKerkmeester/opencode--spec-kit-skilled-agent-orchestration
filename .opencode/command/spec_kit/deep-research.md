@@ -30,6 +30,8 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_conte
 - **YAML START CONDITION**: do not load YAML until ALL required inputs are bound:
   - `research_topic`, `spec_folder`, `execution_mode`, `maxIterations`, `convergenceThreshold`
 
+> **Canonical mode syntax:** use attached command suffixes (`/spec_kit:deep-research:auto`, `/spec_kit:deep-research:confirm`) and keep AGENTS, skills, and quick references synchronized to this entrypoint.
+
 > **Note:** Late-INIT `spec.md` detection and bounded `spec.md` mutations follow
 > `.opencode/skill/sk-deep-research/references/spec_check_protocol.md`.
 > Acquire `{spec_folder}/research/.deep-research.lock` before `folder_state` classification and keep `research/research.md` as the source of truth for any generated findings sync.

@@ -904,6 +904,9 @@ async function executeResumeStrategy(input: string, intent: string | null, optio
         levels: [...RESUME_LADDER_ORDER],
         specFolder: ladder.specFolder,
         specFolderPath: ladder.resolution.folderPath,
+        selectionPolicy: 'freshest_handover_or_continuity_then_spec_docs',
+        handoverTraversal: 'resolved-folder-only',
+        freshnessWinner: ladder.freshnessWinner === 'spec-docs' ? 'spec_docs' : ladder.freshnessWinner,
         legacyMemoryFallback: false,
         archivedTierEnabled: false,
         warnings: ladder.hints,
@@ -911,7 +914,7 @@ async function executeResumeStrategy(input: string, intent: string | null, optio
       },
     },
     hints: [
-      'Resume mode reads canonical docs directly: handover.md -> _memory.continuity -> spec docs.',
+      'Resume mode reads folder-local canonical docs directly: handover.md and _memory.continuity are compared first, then spec docs.',
       'No archived tier or legacy memory fallback is enabled in Gate D resume mode.',
       ...ladder.hints.slice(0, 3),
     ],

@@ -46,7 +46,7 @@ const SKILL_ROOT = path.resolve(SCRIPT_DIR, '..', '..');
 const REPO_ROOT = path.resolve(SKILL_ROOT, '..', '..', '..', '..');
 const DEFAULT_REPORT_DIR = path.join(
   REPO_ROOT,
-  '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/015-full-playbook-execution/scratch/manual-playbook-results',
+  '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/scratch/manual-playbook-results',
 );
 
 type ContinuitySeed = {

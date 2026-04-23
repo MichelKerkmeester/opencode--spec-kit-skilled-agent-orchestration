@@ -1,17 +1,18 @@
 ---
 title: "Implementation Summary: CLI Runtime Matrix for Iterative Skills"
-description: "Phase 019 shipped: cli-copilot + cli-gemini + cli-claude-code wired as executors alongside cli-codex. Per-kind flag-compatibility validation. Cross-CLI delegation documented. 54/54 tests green. tsc clean."
+description: "Phase 019 shipped the CLI runtime matrix, and the 2026-04-24 CF-026 remediation made codex/gemini/claude permission controls executable while adding subprocess smoke coverage for the Copilot wrapper and audited failure paths."
 trigger_phrases: ["019 implementation summary", "cli matrix shipped", "phase 019 verdict"]
 importance_tier: "high"
 contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix"
-    last_updated_at: "2026-04-18T11:55:00Z"
-    last_updated_by: "claude-opus-4.7"
-    recent_action: "Phase 019 shipped: 4 CLI executors wired, per-kind validation, cross-CLI delegation documented"
-    next_safe_action: "Commit + push; optional Track 2 deep-research follow-up"
-    blockers: []
+    last_updated_at: "2026-04-24T00:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "CF-026 remediation shipped"
+    next_safe_action: "Run broader executor-matrix smoke only in environments with real vendor CLIs installed"
+    blockers:
+      - "cli-copilot still requires fixed --allow-all-tools; there is no narrower CLI permission surface to wire today"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
@@ -58,9 +59,11 @@ The `ExecutorNotWiredError` class is preserved as a type export even though it i
 
 Each of the 4 YAMLs (`spec_kit_deep-research_auto.yaml`, `..._confirm.yaml`, `spec_kit_deep-review_auto.yaml`, `..._confirm.yaml`) gained three new branches:
 
-- `if_cli_copilot`: `copilot -p "$(cat PROMPT)" --model X --allow-all-tools --no-ask-user`
-- `if_cli_gemini`: `gemini "$(cat PROMPT)" -m X -s none -y -o text`
-- `if_cli_claude_code`: `claude -p "$(cat PROMPT)" --model X --permission-mode acceptEdits --output-format text [--effort Y]`
+- `if_cli_copilot`: `copilot -p ... --model X --allow-all-tools --no-ask-user`, with a 16 KB `@PROMPT_PATH` wrapper fallback for oversized prompts. This branch keeps a fixed broad permission posture because the CLI exposes no narrower autonomous mode in this packet.
+- `if_cli_gemini`: `gemini "$(cat PROMPT)" -m X -s {docker|none} -y -o text`, with `sandboxMode` now mapped into the live `-s` flag instead of being ignored.
+- `if_cli_claude_code`: `claude -p "$(cat PROMPT)" --model X --permission-mode {plan|acceptEdits|bypassPermissions} --output-format text [--effort Y]`, with `sandboxMode` now mapped into the live permission mode instead of always forcing `acceptEdits`.
+
+The `cli-codex` branch now also consumes `sandboxMode` directly instead of hardcoding `workspace-write`.
 
 All three new branches share the Phase 018 pre-dispatch prompt rendering, post-dispatch validation, and executor audit steps. Review YAMLs use `review/prompts/` instead of `research/prompts/`.
 
@@ -76,7 +79,7 @@ Both skill docs (`.opencode/skill/sk-deep-research/SKILL.md` and `.opencode/skil
 
 ### 2.5 New test suite
 
-`tests/deep-loop/cli-matrix.vitest.ts` (new, 6 tests) verifies the expected dispatch command shape per kind. The suite uses a helper function that mirrors the YAML dispatch logic: given a parsed `ExecutorConfig` + a prompt path, it returns the expected shell command string. The assertions check per-kind flag presence and absence.
+`tests/deep-loop/cli-matrix.vitest.ts` now does two jobs: it still verifies the expected dispatch command shape per kind, and it also runs subprocess smoke checks for the two CF-026 gaps that were previously only unit-covered. The smoke layer exercises the Copilot large-prompt `@path` wrapper with real temp files and validates that audited crash/timeout paths append `dispatch_failure` events to the state log.
 
 `tests/deep-loop/executor-config.vitest.ts` was extended from 16 to 28 cases covering acceptance paths for the 3 new kinds, unsupported-flag rejections per kind, and the gemini model whitelist rejection.
 <!-- /ANCHOR:what-built -->
@@ -137,7 +140,7 @@ Every dispatch used `codex exec --model gpt-5.4 -c model_reasoning_effort="high"
 ---
 
 <!-- ANCHOR:decisions -->
-## 5. Decisions Respected
+## 5. Key Decisions
 
 See `decision-record.md` for the four ADRs that drove this implementation:
 
@@ -180,7 +183,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/sy
 <!-- ANCHOR:limitations -->
 ## 7. Known Limitations
 
-1. **No live-dispatch smoke tests**: The cli-matrix test suite uses a command-shape builder helper that mirrors the YAML dispatch logic, not the YAML runtime itself. Live dispatch of each CLI against a real iteration is deferred to Track 2 (the 30-iter research pass) or a dedicated smoke-test packet.
+1. **No vendor-CLI end-to-end smoke tests**: The matrix now has subprocess smoke coverage for the Copilot wrapper plus audited crash/timeout failure paths, but it still does not prove a real `copilot`, `gemini`, `claude`, or `codex` binary can complete the full iteration artifact contract in this packet's automated suite.
 2. **Cross-CLI delegation is prose-only**: No runtime detection of self-recursive invocation. A user who tells a cli-codex iteration to invoke `codex exec ...` recursively gets no guardrail. ADR-007 explains why.
 3. **cli-gemini model whitelist requires code updates**: When Google ships a new Gemini CLI model, the whitelist in `executor-config.ts` needs a one-line update. Users cannot bypass the whitelist at config-time. ADR-009 explains why.
 4. **cli-copilot reasoning-effort surface**: Copilot has no CLI-level reasoning-effort flag. Users who want it must set `~/.copilot/config.json` ahead of time. The config rejects `reasoningEffort` with cli-copilot at parse time, pointing to config.json.
@@ -193,7 +196,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/sy
 
 | Item | Reason | Deferred to |
 |------|--------|-------------|
-| Full live-dispatch integration test per CLI | Unit + command-shape coverage is strong; live dispatch is better tested via Track 2 | Track 2 or dedicated smoke-test packet |
+| Full vendor-CLI end-to-end test per CLI | Local subprocess smoke now covers wrapper/failure behavior, but real vendor binaries still need an environment-owned smoke gate | Track 2 or dedicated smoke-test packet |
 | Runtime cross-CLI recursion detection | ADR-007 documents why; complicated to implement correctly | Separate future spec if users report issues |
 | Gemini model whitelist update mechanism (e.g., env-var bypass) | Strict enum is the right default; bypass complicates testing | ADR-009 |
 | Per-kind timeout defaults (instead of flat 900) | Current flat default is adequate; per-kind tuning is premature optimization | Phase 020 if latency data warrants |
@@ -204,7 +207,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/sy
 <!-- ANCHOR:handoff -->
 ## 9. Handoff
 
-Phase 019 ships a complete executor matrix: native + 4 CLIs. Users can now invoke either iterative skill with any of the four CLI runtimes as executor, subject to per-kind flag compatibility.
+Phase 019 ships a complete executor matrix: native + 4 CLIs. After CF-026 remediation, `sandboxMode` is executable for `cli-codex`, `cli-gemini`, and `cli-claude-code`, while `cli-copilot` is explicitly documented as fixed to `--allow-all-tools`.
 
-Track 2 from the original approved plan (30-iteration deep-research on Phase 017 refinements via cli-codex) is still pending and now has the option of using any of the four CLIs instead.
+Track 2 from the original approved plan (30-iteration deep-research on Phase 017 refinements via cli-codex) is still pending and now has the option of using any of the four CLIs instead, with local smoke coverage in place for the Copilot wrapper and audited failure logging before broader vendor-CLI proof is attempted.
 <!-- /ANCHOR:handoff -->

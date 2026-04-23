@@ -247,6 +247,10 @@ export interface AtomicIndexOptions {
   force?: boolean;
 }
 
+// Internal-only save/index provenance marker. Public tool schemas intentionally
+// do not expose scan-originated transactional bypass control.
+export type IndexingOrigin = 'direct' | 'scan';
+
 export interface AtomicIndexResult {
   success: boolean;
   filePath: string;

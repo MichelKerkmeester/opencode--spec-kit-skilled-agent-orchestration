@@ -11,13 +11,13 @@ contextType: "verification"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution"
-    last_updated_at: "2026-04-12T00:00:00Z"
+    last_updated_at: "2026-04-24T00:00:00Z"
     last_updated_by: "codex"
-    recent_action: "Recorded the coverage-accounting task inventory and category result matrix"
-    next_safe_action: "Use the failure inventory to drive follow-on remediation"
+    recent_action: "Re-ran the wrapper release sweep and reconciled stale blocker and count claims against the current tree"
+    next_safe_action: "Fix the live parse failures and fixture seeding path so a fresh 300-scenario packet-local run can replace the historical 297-row bundle"
     blockers:
-      - "Automated suite still has two concrete MCP-side failures"
-      - "273 manual scenarios remain truthful direct-handler UNAUTOMATABLE cases"
+      - "Current runner resweep discovers 300 active scenario files but only parses 290 before 10 parse failures are recorded"
+      - "Fresh manual execution still stops during fixture seeding, so the stored 297-row packet bundle is historical evidence only"
     key_files:
       - "tasks.md"
       - "implementation-summary.md"
@@ -28,7 +28,8 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions:
-      - "Did the final runner pass account for every live scenario file"
+      - "Do the former handler-helpers and spec-doc-structure blockers still reproduce on the current tree"
+      - "What active scenario count does the live runner discover today"
 ---
 # Tasks: Phase 015 Playbook Coverage Accounting and Partial Execution
 
@@ -55,7 +56,7 @@ _memory:
 
 - [x] T001 Audit the live playbook inventory and packet state (`manual_testing_playbook/`, `015-full-playbook-execution/`)
 - [x] T002 Read the existing runner and fixture before modifying them (`scripts/tests/manual-playbook-runner.ts`, `scripts/tests/fixtures/manual-playbook-fixture.ts`)
-- [x] T003 Confirm the live active scenario count from the filesystem (`297` active files)
+- [x] T003 Confirm the live active scenario count from the current runner discovery pass (`300` active files discovered, `290` parsed, `10` parse failures)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -66,22 +67,20 @@ _memory:
 - [x] T004 Retarget runner output to the Phase 015 scratch folder (`manual-playbook-runner.ts`)
 - [x] T005 Retarget fixture report metadata to the same packet-local root (`manual-playbook-fixture.ts`)
 - [x] T006 Extend the runner parser for live prose-style scenarios (`manual-playbook-runner.ts`)
-- [x] T007 Rerun the manual sweep until all active scenario files are accounted for (`297/297`)
+- [x] T007 Re-run the wrapper-level release sweep on the current tree and record the live runner delta (`300` discovered versus the historical `297/297` packet-local bundle)
 
 ### Automated Suite Results
 
-| Surface | Files discovered | Files executed before bail | Tests executed | Pass | Fail | Skip |
-|---|---:|---:|---:|---:|---:|---:|
-| `mcp_server` | 402 | 8 | 286 | 285 | 1 | 0 |
-| `scripts` | 105 | 2 | 60 | 60 | 0 | 0 |
-| **TOTAL** | **507** | **10** | **346** | **345** | **1** | **0** |
+| Surface | Files run | Tests executed | Pass | Fail | Skip | Notes |
+|---|---:|---:|---:|---:|---:|---|
+| `handler-helpers.vitest.ts` + `spec-doc-structure.vitest.ts` | 2 | 78 | 78 | 0 | 0 | `npx vitest run tests/handler-helpers.vitest.ts tests/spec-doc-structure.vitest.ts` from `.opencode/skill/system-spec-kit/mcp_server` on 2026-04-24 |
 
-### Automated Failure Inventory
+### Former Blocker Recheck
 
-| File | Result | Evidence |
+| File | Current result | Evidence |
 |---|---|---|
-| `mcp_server/tests/handler-helpers.vitest.ts` | Suite import failure | Mocked `../core/config` omits `resolveDatabasePaths`, which `vector-index-store.ts` now requires |
-| `mcp_server/tests/spec-doc-structure.vitest.ts` | 1 failing test | `validate.sh --strict` fixture returned exit code `2` instead of expected `0` |
+| `mcp_server/tests/handler-helpers.vitest.ts` | PASS | Targeted Vitest rerun passed in the current `78`-test sweep on 2026-04-24 |
+| `mcp_server/tests/spec-doc-structure.vitest.ts` | PASS | Targeted Vitest rerun passed in the current `78`-test sweep on 2026-04-24 |
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -90,6 +89,10 @@ _memory:
 ## Phase 3: Verification
 
 Result-class contract for this packet: `PASS`, `FAIL`, `SKIP`, and `UNAUTOMATABLE` are the canonical playbook/runner scenario statuses; `PARTIAL` is a packet-summary overlay for scenarios where core behavior was observed but the evidence set stayed incomplete.
+
+Current 2026-04-24 wrapper-level revalidation note: the live runner now discovers `300` active scenario files, parses `290`, and records `10` parse failures before execution can start. The `297`-row matrix below is retained as historical 2026-04-12 packet-local evidence only and should not be treated as the current live scenario count.
+
+### Historical packet-local result matrix (2026-04-12)
 
 | Category | Total | PASS | PARTIAL | FAIL | SKIP | UNAUTOMATABLE |
 |---|---:|---:|---:|---:|---:|---:|
@@ -131,9 +134,9 @@ Result-class contract for this packet: `PASS`, `FAIL`, `SKIP`, and `UNAUTOMATABL
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All active scenario files accounted for
-- [x] Packet-local reporting docs written
-- [x] Failure inventory documented for follow-on work
+- [x] Historical packet-local reporting docs preserved for the 2026-04-12 run
+- [x] Former automated blockers rechecked against the current tree
+- [ ] Fresh `300`-scenario packet-local run captured after parser and fixture-seeding issues are resolved
 <!-- /ANCHOR:completion -->
 
 ---

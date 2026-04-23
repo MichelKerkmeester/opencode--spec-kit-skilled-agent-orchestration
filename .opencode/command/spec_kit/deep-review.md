@@ -32,6 +32,8 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory
 - **YAML START CONDITION**: do not load YAML until ALL required inputs are bound:
   - `review_target`, `review_target_type`, `review_dimensions`, `spec_folder`, `execution_mode`, `maxIterations`, `convergenceThreshold`
 
+> **Canonical mode syntax:** use attached command suffixes (`/spec_kit:deep-review:auto`, `/spec_kit:deep-review:confirm`) and keep AGENTS, skills, and quick references synchronized to this entrypoint.
+
 # SINGLE CONSOLIDATED SETUP PROMPT
 
 This workflow gathers all setup inputs in one prompt. Confirm mode still includes multiple approval gates after setup; only the setup round-trip is consolidated here.

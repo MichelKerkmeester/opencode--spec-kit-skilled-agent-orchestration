@@ -19,6 +19,11 @@ Runtime path resolution:
 - Codex runtime: `.codex/agents/*.toml`
 - Gemini runtime: `.gemini/agents/*.md`
 
+Operator contract precedence for this skill surface:
+- Command entrypoint syntax in `.opencode/command/spec_kit/deep-research.md`
+- Convergence math in `references/convergence.md` and the deep-research YAML workflow
+- Runtime agent inventories from the checked-in runtime directories above
+
 <!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
@@ -52,7 +57,7 @@ This skill is invoked EXCLUSIVELY through the `/spec_kit:deep-research` command.
 - Manage iteration state outside `{spec_folder}/research/` or `{spec_tree_root}/research/{phaseSlug}-pt-{NN}/`
 
 **ALWAYS:**
-- Invoke via `/spec_kit:deep-research :auto` or `/spec_kit:deep-research :confirm`
+- Invoke via `/spec_kit:deep-research:auto` or `/spec_kit:deep-research:confirm`
 - Let the command's YAML workflow own dispatch (auto: `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`)
 - Let `scripts/reduce-state.cjs` be the SINGLE state writer
 - Require every iteration to produce BOTH the markdown narrative AND the JSONL delta (dispatch scripts must fail if either is missing)

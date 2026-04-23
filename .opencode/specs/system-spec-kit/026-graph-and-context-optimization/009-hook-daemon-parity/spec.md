@@ -103,7 +103,7 @@ Keep this theme as an active parent while making each original phase packet a di
 
 | Phase | Folder | Status | Description |
 |-------|--------|--------|-------------|
-| 1 | `001-skill-advisor-hook-surface/` | Complete | Feature Specification: Skill-Advisor Hook Surface |
+| 1 | `001-skill-advisor-hook-surface/` | In Progress | Skill-Advisor Hook Surface implementation is shipped, but the child checklist and closeout surfaces are still scaffolded and need reconciliation before this row can claim complete. |
 | 2 | `002-skill-graph-daemon-and-advisor-unification/` | In Progress | Feature Specification: Phase 027 — Skill-Graph Auto-Update Daemon + Advisor Unification |
 | 3 | `003-hook-parity-remediation/` | Complete | Feature Specification: 029 — Runtime Hook Parity Remediation |
 | 4 | `004-copilot-hook-parity-remediation/` | Complete | Feature Specification: Copilot CLI Hook Parity Remediation |
@@ -112,8 +112,8 @@ Keep this theme as an active parent while making each original phase packet a di
 | 7 | `007-opencode-plugin-loader-remediation/` | Complete | Feature Specification: OpenCode Plugin Loader Remediation |
 | 8 | `008-skill-advisor-plugin-hardening/` | Complete | Feature Specification: Skill-Advisor Plugin Hardening |
 | 9 | `009-skill-advisor-standards-alignment/` | Complete | Feature Specification: Skill-Advisor Standards Alignment |
-| 10 | `010-copilot-wrapper-schema-fix/` | Reverted - Reapply Required | Feature Specification: Copilot Wrapper Schema Fix |
-| 11 | `011-copilot-writer-wiring/` | Reverted - Reapply Required | Feature Specification: Copilot Writer Wiring |
+| 10 | `010-copilot-wrapper-schema-fix/` | Reverted - Reapply Required | Copilot Wrapper Schema Fix landed historically, then reverted; the top-level wrapper fields must be reapplied. |
+| 11 | `011-copilot-writer-wiring/` | Reverted - Reapply Required | Copilot Writer Wiring landed historically, then reverted; reapply after packet 010 restores the wrapper shape. |
 <!-- /ANCHOR:phase-map -->
 
 ---

@@ -28,7 +28,12 @@
 import * as graphDb from './code-graph-db.js';
 import type { ReadyResult } from './ensure-ready.js';
 import type { StructuralReadiness } from './ops-hardening.js';
-import type { SharedPayloadTrustState } from '../../lib/context/shared-payload.js';
+import {
+  buildStructuralTrustFromProvenance,
+  type DetectorProvenance,
+  type SharedPayloadTrustState,
+  type StructuralTrust,
+} from '../../lib/context/shared-payload.js';
 import { assertNever } from '../../lib/utils/exhaustiveness.js';
 
 // Re-export the surface types that downstream consumers (query.ts
@@ -37,6 +42,11 @@ import { assertNever } from '../../lib/utils/exhaustiveness.js';
 export type { ReadyResult } from './ensure-ready.js';
 export type { StructuralReadiness } from './ops-hardening.js';
 export type { SharedPayloadTrustState } from '../../lib/context/shared-payload.js';
+
+interface QueryTrustMetadata {
+  graphMetadata?: Record<string, unknown>;
+  structuralTrust: StructuralTrust;
+}
 
 /** Readiness payload shared by code-graph handler responses. */
 export interface CodeGraphReadinessBlock extends ReadyResult {
@@ -116,22 +126,78 @@ export function queryTrustStateFromFreshness(
  *
  * Origin: M8 / T-CGQ-09 (R18-001, R20-003).
  */
+function getPersistedDetectorProvenance(
+  readiness: ReadyResult,
+): DetectorProvenance | null {
+  if (readiness.freshness === 'empty') {
+    return null;
+  }
+
+  return graphDb.getLastDetectorProvenance();
+}
+
+function buildQueryTrustArtifacts(
+  readiness: ReadyResult,
+  detectorProvenance: DetectorProvenance | null = getPersistedDetectorProvenance(readiness),
+): QueryTrustMetadata {
+  const graphMetadata = detectorProvenance
+    ? {
+      detectorProvenance,
+      detectorProvenanceSource: 'last-persisted-scan',
+    }
+    : undefined;
+
+  switch (readiness.freshness) {
+    case 'fresh':
+      return {
+        graphMetadata,
+        structuralTrust: buildStructuralTrustFromProvenance({
+          detectorProvenance,
+          fallbackParserProvenance: 'unknown',
+          evidenceStatus: 'confirmed',
+          freshnessAuthority: 'live',
+        }),
+      };
+    case 'stale':
+      return {
+        graphMetadata,
+        structuralTrust: buildStructuralTrustFromProvenance({
+          detectorProvenance,
+          fallbackParserProvenance: 'unknown',
+          evidenceStatus: 'probable',
+          freshnessAuthority: 'stale',
+        }),
+      };
+    case 'empty':
+      return {
+        graphMetadata,
+        structuralTrust: buildStructuralTrustFromProvenance({
+          fallbackParserProvenance: 'unknown',
+          evidenceStatus: 'unverified',
+          freshnessAuthority: 'unknown',
+        }),
+      };
+    default:
+      return assertNever(readiness.freshness, 'graph-freshness');
+  }
+}
+
 export function buildQueryGraphMetadata(
   readiness: ReadyResult,
 ): Record<string, unknown> | undefined {
-  if (readiness.freshness === 'empty') {
-    return undefined;
-  }
+  return buildQueryTrustArtifacts(readiness).graphMetadata;
+}
 
-  const detectorProvenance = graphDb.getLastDetectorProvenance();
-  if (!detectorProvenance) {
-    return undefined;
-  }
+export function buildQueryStructuralTrust(
+  readiness: ReadyResult,
+): StructuralTrust {
+  return buildQueryTrustArtifacts(readiness).structuralTrust;
+}
 
-  return {
-    detectorProvenance,
-    detectorProvenanceSource: 'last-persisted-scan',
-  };
+export function buildQueryTrustMetadata(
+  readiness: ReadyResult,
+): QueryTrustMetadata {
+  return buildQueryTrustArtifacts(readiness);
 }
 
 /**

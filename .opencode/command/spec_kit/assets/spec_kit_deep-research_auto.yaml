@@ -520,6 +520,7 @@ workflow:
             import { readFileSync } from 'node:fs';
 
             import { runAuditedExecutorCommand } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts';
+            import { resolveCodexSandboxMode } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts';
 
             const executor = {
               kind: 'cli-codex',
@@ -544,7 +545,7 @@ workflow:
                   '-c',
                   'approval_policy=never',
                   '--sandbox',
-                  'workspace-write',
+                  resolveCodexSandboxMode(executor.sandboxMode),
                   '-',
                 ],
                 cwd: '{repo_root}',
@@ -565,13 +566,11 @@ workflow:
             import { readFileSync } from 'node:fs';
 
             import { runAuditedExecutorCommand } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts';
+            import { resolveCopilotPromptArg } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts';
 
             const promptPath = '{state_paths.prompt_dir}/iteration-{current_iteration}.md';
             const prompt = readFileSync(promptPath, 'utf8');
-            const promptArg =
-              Buffer.byteLength(prompt, 'utf8') <= 16384
-                ? prompt
-                : `Read the instructions in @${promptPath} and follow them exactly. Do not deviate.`;
+            const promptArg = resolveCopilotPromptArg(promptPath, prompt);
             const executor = {
               kind: 'cli-copilot',
               model: '{config.executor.model}',
@@ -605,6 +604,7 @@ workflow:
           wait_for_completion: true
           notes:
             - "copilot has no stdin support; prompt is positional"
+            - "cli-copilot keeps a fixed permission posture via --allow-all-tools; sandboxMode is intentionally unsupported"
             - "Size check uses 16KB threshold; above that uses @PROMPT_PATH wrapper prompt"
             - "Large-prompt path relies on copilot honoring @path references within its prompt string"
         if_cli_gemini:
@@ -613,6 +613,7 @@ workflow:
             import { readFileSync } from 'node:fs';
 
             import { runAuditedExecutorCommand } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts';
+            import { resolveGeminiSandboxMode } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts';
 
             const executor = {
               kind: 'cli-gemini',
@@ -631,7 +632,7 @@ workflow:
                   '-m',
                   executor.model,
                   '-s',
-                  'none',
+                  resolveGeminiSandboxMode(executor.sandboxMode),
                   '-y',
                   '-o',
                   'text',
@@ -657,6 +658,7 @@ workflow:
             import { readFileSync } from 'node:fs';
 
             import { runAuditedExecutorCommand } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts';
+            import { resolveClaudePermissionMode } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts';
 
             const executor = {
               kind: 'cli-claude-code',
@@ -672,7 +674,7 @@ workflow:
               '--model',
               executor.model,
               '--permission-mode',
-              'acceptEdits',
+              resolveClaudePermissionMode(executor.sandboxMode),
               '--output-format',
               'text',
             ];
@@ -696,7 +698,7 @@ workflow:
           timeout_seconds: "{config.executor.timeoutSeconds}"
           wait_for_completion: true
           notes:
-            - "claude-code default permission-mode is 'plan' (read-only); we override to 'acceptEdits' for iteration writes"
+            - "sandboxMode maps to permission-mode: read-only -> plan, workspace-write -> acceptEdits, danger-full-access -> bypassPermissions"
             - "claude-code has no serviceTier flag"
             - "claude-code supports --effort for reasoning depth"
         record_executor_audit:

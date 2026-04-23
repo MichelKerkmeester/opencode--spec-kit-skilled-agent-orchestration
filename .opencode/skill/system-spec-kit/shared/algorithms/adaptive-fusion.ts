@@ -55,6 +55,11 @@ export interface DarkRunDiff {
   topResultChanged: boolean;
 }
 
+export interface AdaptiveFuseOptions {
+  graphResults?: RrfItem[];
+  additionalLists?: RankedList[];
+}
+
 /* --- 2. WEIGHT PROFILES --- */
 
 const INTENT_WEIGHT_PROFILES: Record<string, FusionWeights> = {
@@ -203,8 +208,10 @@ export function getAdaptiveWeights(
 export function adaptiveFuse(
   semanticResults: RrfItem[],
   keywordResults: RrfItem[],
-  weights: FusionWeights
+  weights: FusionWeights,
+  options: AdaptiveFuseOptions = {},
 ): FusionResult[] {
+  const { graphResults = [], additionalLists = [] } = options;
   const lists: RankedList[] = [];
 
   if (semanticResults.length > 0 && weights.semanticWeight > 0) {
@@ -220,6 +227,30 @@ export function adaptiveFuse(
       source: 'keyword',
       results: keywordResults,
       weight: weights.keywordWeight,
+    });
+  }
+
+  if (graphResults.length > 0 && typeof weights.graphWeight === 'number' && weights.graphWeight > 0) {
+    lists.push({
+      source: 'graph',
+      results: graphResults,
+      weight: weights.graphWeight,
+    });
+  }
+
+  for (const list of additionalLists) {
+    if (!list || !Array.isArray(list.results) || list.results.length === 0) {
+      continue;
+    }
+    const weight = typeof list.weight === 'number' && Number.isFinite(list.weight)
+      ? list.weight
+      : 1;
+    if (weight <= 0) {
+      continue;
+    }
+    lists.push({
+      ...list,
+      weight,
     });
   }
 

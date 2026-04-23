@@ -26,7 +26,7 @@ _memory:
 
 Gate E is the canonical cutover for phase 018. The runtime no longer uses a staged rollout ladder, shadow mode, observation windows, or archived-tier continuity semantics. This phase flips the new path to the only live continuity path immediately, removes rollout-era framing from the active surfaces, and updates the mapped command, agent, skill, and README files so the repo describes the shipped contract honestly.
 
-The operator-facing recovery surface is `/spec_kit:resume`. Canonical continuity is sourced from packet artifacts in this order: `../handover.md`, `_memory.continuity`, then the canonical spec docs. Legacy memory files are supporting artifacts only, not the source of truth.
+The operator-facing recovery surface is `/spec_kit:resume`. Canonical continuity is sourced from folder-local packet artifacts: the handover document and `_memory.continuity` are read directly, the fresher of the two wins, then the canonical spec docs. Legacy memory files are supporting artifacts only, not the source of truth.
 
 <!-- ANCHOR:metadata -->
 ## 1. Metadata
@@ -77,6 +77,7 @@ Make the new continuity path canonical immediately, remove the retired rollout m
   - `sk-*` skills and system-spec-kit internal docs
   - top-level docs and sub-READMEs
 - Keep `/spec_kit:resume` as the recovery surface and make canonical spec docs the continuity source of truth.
+- Keep handover traversal folder-local; Gate E does not walk to a parent packet handover during resume.
 - Update packet-local closeout docs for truthful implementation and verification reporting.
 
 ### Out of Scope
@@ -107,7 +108,7 @@ Make the new continuity path canonical immediately, remove the retired rollout m
 |----|-------------|---------------------|
 | REQ-001 | Canonical continuity is the only live runtime path | Feature-flag or routing behavior is set to canonical unconditionally, or the retired flag path is removed entirely |
 | REQ-002 | No rollout-era continuity model remains in active Gate E guidance | Packet docs and updated repo surfaces no longer instruct operators to use shadow, dual-write, observation, EWMA, or archived-tier continuity behavior |
-| REQ-003 | Recovery guidance uses canonical continuity sources | `/spec_kit:resume` is the recovery surface and packet continuity resolves from `handover.md -> _memory.continuity -> spec docs` |
+| REQ-003 | Recovery guidance uses canonical continuity sources | `/spec_kit:resume` is the recovery surface and packet continuity resolves from the folder-local handover document and `_memory.continuity`, with freshness arbitration before spec docs |
 | REQ-004 | Broad doc parity remains tied to the mapped surface inventory | The Gate E fanout updates the required command, agent, skill, CLI, and README surfaces or records honest remaining gaps |
 
 ### P1 - Required
@@ -158,7 +159,7 @@ Make the new continuity path canonical immediately, remove the retired rollout m
 - If a sample save still depends on retired flag plumbing, the packet remains in progress and the runtime validation items stay open.
 - If some doc slices are complete but the full mapped fanout is not, the packet may report partial progress but not close the parity requirement.
 - If `generate-context.js` behavior changes again before final closeout, the CLI contract checks must be rerun before completion is claimed.
-- If the parent `../handover.md` or `_memory.continuity` guidance drifts from the packet docs, `/spec_kit:resume` guidance must be re-synced before closeout.
+- If the folder-local handover guidance or `_memory.continuity` guidance drifts from the packet docs, `/spec_kit:resume` guidance must be re-synced before closeout.
 
 ## 9. COMPLEXITY ASSESSMENT
 
@@ -187,7 +188,7 @@ As an operator, I want Gate E to describe one canonical continuity path, so I ca
 
 ### US-002: Agent Resumes from Canonical Continuity
 
-As an agent or delegated CLI, I want continuity recovery to prioritize `../handover.md`, `_memory.continuity`, and canonical spec docs, so resume behavior follows the actual source of truth.
+As an agent or delegated CLI, I want continuity recovery to compare the folder-local handover document and `_memory.continuity` before canonical spec docs, so resume behavior follows the actual source of truth.
 
 ### US-003: Documentation Matches Runtime Reality
 
@@ -196,7 +197,7 @@ As a repo reader, I want command, skill, agent, and README docs to match the liv
 ### Acceptance Scenarios
 
 1. **Given** the old rollout ladder text still appears in the packet, **when** Gate E packet docs are rewritten, **then** the phase describes an immediate canonical migration instead of staged rollout buckets.
-2. **Given** `/spec_kit:resume` is the operator recovery surface, **when** continuity guidance is read, **then** it points to `../handover.md`, `_memory.continuity`, and canonical spec docs in that order.
+2. **Given** `/spec_kit:resume` is the operator recovery surface, **when** continuity guidance is read, **then** it points to the folder-local handover document and `_memory.continuity`, promotes the fresher of the two, and falls back to canonical spec docs.
 3. **Given** the CLI handback files are part of the Gate E fanout, **when** the packet describes contract alignment, **then** it references the current JSON-primary `generate-context.js` behavior.
 4. **Given** runtime validation is rerun in the completion pass, **when** checklist and summary files are updated, **then** the packet closes only with attached validator, sample-save, and CLI-contract evidence.
 5. **Given** some doc slices were updated outside this packet, **when** implementation progress is summarized, **then** the packet records those slices as supporting evidence without inflating final update counts.

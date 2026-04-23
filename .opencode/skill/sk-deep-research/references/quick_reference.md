@@ -10,6 +10,10 @@ description: One-page cheat sheet for the autonomous deep research loop.
 
 One-page cheat sheet for the autonomous deep research loop.
 
+Operator contract source of truth for this page:
+- command syntax → `.opencode/command/spec_kit/deep-research.md`
+- convergence math → `references/convergence.md` and the deep-research YAML workflow
+
 ---
 <!-- /ANCHOR:overview -->
 
@@ -129,9 +133,9 @@ Otherwise --> CONTINUE
 
 | Signal | Weight | Min Iterations | Votes STOP When |
 |--------|--------|---------------|-----------------|
-| Rolling Average | 0.45 | 3 | avg(last 3 newInfoRatios) < convergenceThreshold |
-| MAD Noise Floor | 0.30 | 4 | latest ratio <= MAD * 1.4826 |
-| Coverage / Age | 0.25 | 1 | answered / total questions >= 0.85 |
+| Rolling Average | 0.30 | 3 | avg(last 3 newInfoRatios) < convergenceThreshold |
+| MAD Noise Floor | 0.35 | 4 | latest ratio <= MAD * 1.4826 |
+| Question Entropy | 0.35 | 1 | answered / total questions >= 0.85 |
 
 **Composite stop threshold:** 0.60 -- weighted stop score must exceed this before quality guards are evaluated.
 

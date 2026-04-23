@@ -11,10 +11,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite"
-    last_updated_at: "2026-04-12T00:00:00Z"
-    last_updated_by: "speckit"
-    recent_action: "Reopened packet closeout after the required manual prompt spot-check stayed deferred"
-    next_safe_action: "Complete or explicitly re-scope CHK-023 before closing the packet"
+    last_updated_at: "2026-04-24T00:00:00Z"
+    last_updated_by: "codex"
+    recent_action: "Recorded freshness-only strict-validation failure"
+    next_safe_action: "Refresh continuity evidence; resolve or re-scope CHK-020 and CHK-023"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
@@ -47,8 +47,10 @@ _memory:
 ### Problem Statement
 The playbook prompt rewrite already rewrote prompt fields across the manual testing playbook, but this spec packet drifted away from the active Level 2 template. The packet was missing required anchors, the `_memory` continuity block, `tasks.md`, `checklist.md`, and a valid reference to the playbook index.
 
+A 2026-04-24 rerun of `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <phase-folder> --strict` no longer found structural drift, but strict mode still fails because `_memory.continuity.last_updated_at` lags the packet graph metadata by more than the freshness budget. The packet's earlier strict-validation-passed evidence is therefore stale.
+
 ### Purpose
-Restore this packet so it truthfully documents the prompt rewrite work, references the real playbook index at `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, and validates cleanly as a Level 2 packet.
+Restore this packet so it truthfully documents the prompt rewrite work, references the real playbook index at `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, and replaces stale validation claims with the current strict-validator state for this Level 2 packet.
 
 This packet remains in progress until the required manual prompt spot-check in `CHK-023` is either completed or explicitly re-scoped.
 <!-- /ANCHOR:problem -->

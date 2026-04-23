@@ -111,6 +111,7 @@ import {
   serializePlannerRouteTarget,
 } from './save/response-builder.js';
 import type {
+  IndexingOrigin,
   ReconsolidationFailureReason,
   ReconsolidationOperationState,
 } from './save/types.js';
@@ -1973,6 +1974,13 @@ function isCanonicalAtomicPrepared(value: unknown): value is CanonicalAtomicPrep
     && candidate.routing !== null;
 }
 
+function resolveIndexingOrigin(options: {
+  origin?: IndexingOrigin;
+  fromScan?: boolean;
+}): IndexingOrigin {
+  return options.origin ?? (options.fromScan ? 'scan' : 'direct');
+}
+
 async function processPreparedMemory(
   prepared: PreparedParsedMemory,
   filePath: string,
@@ -1980,6 +1988,7 @@ async function processPreparedMemory(
     force?: boolean;
     asyncEmbedding?: boolean;
     plannerMode?: AtomicSaveParams['plannerMode'];
+    origin?: IndexingOrigin;
     fromScan?: boolean;
     persistQualityLoopContent?: boolean;
     refreshFromDiskAfterLock?: boolean;
@@ -1993,6 +2002,7 @@ async function processPreparedMemory(
     force = false,
     asyncEmbedding = false,
     plannerMode: requestedPlannerMode,
+    origin,
     fromScan = false,
     persistQualityLoopContent = true,
     refreshFromDiskAfterLock = false,
@@ -2002,6 +2012,7 @@ async function processPreparedMemory(
     routing = {},
   } = options;
   const plannerMode = requestedPlannerMode ?? resolveSavePlannerMode();
+  const indexingOrigin = resolveIndexingOrigin({ origin, fromScan });
 
   const evaluatePreparedMemory = (currentPrepared: PreparedParsedMemory): IndexResult | null => {
     const {
@@ -2364,7 +2375,7 @@ async function processPreparedMemory(
 
     const requestedScope = getRequestedScope(scope);
     const writeTransaction = database.transaction((): number => {
-      if (!fromScan && embedding) {
+      if (indexingOrigin !== 'scan' && embedding) {
         const complementRecheck = findScopeFilteredCandidates({
           database,
           embedding,
@@ -2542,6 +2553,26 @@ async function processPreparedMemory(
 
 /* --- 8. INDEX MEMORY FILE --- */
 
+type BaseIndexMemoryFileOptions = {
+  force?: boolean;
+  parsedOverride?: ReturnType<typeof memoryParser.parseMemoryFile> | null;
+  asyncEmbedding?: boolean;
+  plannerMode?: AtomicSaveParams['plannerMode'];
+  scope?: MemoryScopeMatch;
+  qualityGateMode?: 'enforce' | 'warn-only';
+  routing?: RoutedSaveOptions;
+};
+
+type IndexMemoryFileOptions = BaseIndexMemoryFileOptions & {
+  origin?: IndexingOrigin;
+  fromScan?: never;
+};
+
+type LegacyIndexMemoryFileOptions = BaseIndexMemoryFileOptions & {
+  fromScan?: boolean;
+  origin?: never;
+};
+
 /** Parse, validate, and index a memory file with PE gating, FSRS scheduling, and causal links */
 async function indexMemoryFile(
   filePath: string,
@@ -2550,22 +2581,14 @@ async function indexMemoryFile(
     parsedOverride = null as ReturnType<typeof memoryParser.parseMemoryFile> | null,
     asyncEmbedding = false,
     plannerMode,
-    fromScan = false,
     scope = {} as MemoryScopeMatch,
     qualityGateMode = 'enforce' as 'enforce' | 'warn-only',
     routing,
-  }: {
-    force?: boolean;
-    parsedOverride?: ReturnType<typeof memoryParser.parseMemoryFile> | null;
-    asyncEmbedding?: boolean;
-    plannerMode?: AtomicSaveParams['plannerMode'];
-    fromScan?: boolean;
-    scope?: MemoryScopeMatch;
-    qualityGateMode?: 'enforce' | 'warn-only';
-    routing?: RoutedSaveOptions;
-  } = {},
+    ...originOptions
+  }: IndexMemoryFileOptions | LegacyIndexMemoryFileOptions = {},
 ): Promise<IndexResult> {
   // Reuse parsed content when provided by caller to avoid a second parse.
+  const indexingOrigin = resolveIndexingOrigin(originOptions);
   const parsed = parsedOverride || memoryParser.parseMemoryFile(filePath);
   const database = requireDb();
   const prepared = prepareParsedMemoryForIndexing(parsed, database);
@@ -2581,12 +2604,22 @@ async function indexMemoryFile(
     force,
     asyncEmbedding,
     plannerMode,
-    fromScan,
+    origin: indexingOrigin,
     persistQualityLoopContent: true,
     refreshFromDiskAfterLock: parsedOverride !== null,
     scope,
     qualityGateMode,
     routing,
+  });
+}
+
+async function indexMemoryFileFromScan(
+  filePath: string,
+  options: BaseIndexMemoryFileOptions = {},
+): Promise<IndexResult> {
+  return indexMemoryFile(filePath, {
+    ...options,
+    origin: 'scan',
   });
 }
 
@@ -3258,6 +3291,7 @@ function getAtomicityMetrics(): Record<string, unknown> {
 export {
   // Primary exports (defined in this module)
   indexMemoryFile,
+  indexMemoryFileFromScan,
   indexChunkedMemoryFile,
   handleMemorySave,
   atomicSaveMemory,
@@ -3266,6 +3300,7 @@ export {
 
 // Backward-compatible aliases (snake_case) — only for symbols defined in this module
 const index_memory_file = indexMemoryFile;
+const index_memory_file_from_scan = indexMemoryFileFromScan;
 const index_chunked_memory_file = indexChunkedMemoryFile;
 const handle_memory_save = handleMemorySave;
 const atomic_save_memory = atomicSaveMemory;
@@ -3273,6 +3308,7 @@ const get_atomicity_metrics = getAtomicityMetrics;
 
 export {
   index_memory_file,
+  index_memory_file_from_scan,
   index_chunked_memory_file,
   handle_memory_save,
   atomic_save_memory,

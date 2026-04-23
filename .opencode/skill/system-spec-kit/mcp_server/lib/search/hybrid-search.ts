@@ -8,7 +8,7 @@
 // Local
 import { getIndex, isBm25Enabled } from './bm25-index.js';
 import { fuseResultsMulti } from '@spec-kit/shared/algorithms/rrf-fusion';
-import { getAdaptiveWeights, isAdaptiveFusionEnabled } from '@spec-kit/shared/algorithms/adaptive-fusion';
+import { adaptiveFuse, getAdaptiveWeights, isAdaptiveFusionEnabled } from '@spec-kit/shared/algorithms/adaptive-fusion';
 import { CO_ACTIVATION_CONFIG, spreadActivation } from '../cognitive/co-activation.js';
 import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
 import { INTENT_LAMBDA_MAP, classifyIntent } from './intent-classifier.js';
@@ -45,6 +45,7 @@ import {
   isDynamicTokenBudgetEnabled,
   DEFAULT_TOKEN_BUDGET_CONFIG,
 } from './dynamic-token-budget.js';
+import { resolveFusionIntentContract } from './search-utils.js';
 import { ensureDescriptionCache, getSpecsBasePaths } from './folder-discovery.js';
 import {
   isFolderScoringEnabled,
@@ -742,6 +743,32 @@ interface HybridFusionExecution {
   vectorEmbeddingCache: Map<number, Float32Array>;
 }
 
+function resolveAdaptiveDocumentType(
+  lists: Array<{ results: Array<Record<string, unknown>> }>,
+): string | undefined {
+  const counts = new Map<string, number>();
+  for (const list of lists) {
+    for (const result of list.results.slice(0, 3)) {
+      const candidate = result.documentType ?? result.document_type;
+      if (typeof candidate !== 'string' || candidate.length === 0) {
+        continue;
+      }
+      counts.set(candidate, (counts.get(candidate) ?? 0) + 1);
+    }
+  }
+
+  let topType: string | undefined;
+  let topCount = 0;
+  for (const [documentType, count] of counts) {
+    if (count > topCount) {
+      topType = documentType;
+      topCount = count;
+    }
+  }
+
+  return topType;
+}
+
 function markFallbackRetry(results: HybridSearchResult[]): HybridSearchResult[] {
   for (const result of results) {
     (result as Record<string, unknown>).fallbackRetry = true;
@@ -1220,10 +1247,19 @@ async function collectAndFuseHybridResults(
 
     // C138/T315: Build weighted fusion lists once from lightweight adaptive
     // weights, avoiding the heavier hybridAdaptiveFuse() standard-first path.
-    const intent = options.intent || classifyIntent(query).intent;
+    const detectedIntent = classifyIntent(query).intent;
+    const intent = resolveFusionIntentContract({
+      detectedIntent,
+      adaptiveFusionIntent: options.intent ?? null,
+      query,
+    })
+      ?? detectedIntent;
     const adaptiveEnabled = isAdaptiveFusionEnabled();
+    const documentType = resolveAdaptiveDocumentType(lists.map((list) => ({
+      results: list.results as Array<Record<string, unknown>>,
+    })));
     const fusionWeights = adaptiveEnabled
-      ? getAdaptiveWeights(intent)
+      ? getAdaptiveWeights(intent, documentType)
       : { semanticWeight: 1.0, keywordWeight: 1.0, recencyWeight: 0 };
     const { semanticWeight, keywordWeight, graphWeight: adaptiveGraphWeight } = fusionWeights;
     const keywordFusionResults = keywordResults.map((result) => ({
@@ -1250,7 +1286,28 @@ async function collectAndFuseHybridResults(
       });
     }
 
-    const fused = fuseResultsMulti(fusionLists);
+    const graphList = fusionLists.find((list) => list.source === 'graph');
+    const vectorList = fusionLists.find((list) => list.source === 'vector');
+    const passthroughLists = fusionLists.filter((list) => list.source !== 'graph' && list.source !== 'vector' && list.source !== 'keyword');
+    const fused = adaptiveEnabled
+      ? (adaptiveFuse as unknown as (
+        semanticResults: Array<Record<string, unknown>>,
+        keywordResults: Array<Record<string, unknown>>,
+        weights: typeof fusionWeights,
+        options: {
+          graphResults?: Array<Record<string, unknown>>;
+          additionalLists?: typeof passthroughLists;
+        },
+      ) => FusionResult[])(
+        (vectorList?.results ?? []) as Array<Record<string, unknown>>,
+        keywordFusionResults,
+        fusionWeights,
+        {
+          graphResults: (graphList?.results ?? []) as Array<Record<string, unknown>>,
+          additionalLists: passthroughLists,
+        },
+      )
+      : fuseResultsMulti(fusionLists);
 
     const fusedResults = fused.map(toHybridResult).map((row) => {
       const rowRecord = row as Record<string, unknown>;

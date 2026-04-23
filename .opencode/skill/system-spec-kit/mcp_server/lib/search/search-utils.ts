@@ -8,6 +8,7 @@
 
 import { applyRoutingWeights } from './artifact-routing.js';
 import type { RoutingResult, WeightedResult } from './artifact-routing.js';
+import { isContinuityQuery } from './intent-classifier.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
@@ -54,6 +55,26 @@ interface CacheArgsInput {
   enableCausalBoost: boolean;
   includeTrace?: boolean;
   cacheVersion?: string;
+}
+
+function resolveFusionIntentContract(
+  args: {
+    detectedIntent: string | null;
+    adaptiveFusionIntent?: string | null;
+    query?: string | null;
+  },
+): string | null {
+  const { detectedIntent, adaptiveFusionIntent, query } = args;
+  if (typeof adaptiveFusionIntent === 'string' && adaptiveFusionIntent.trim().length > 0) {
+    return adaptiveFusionIntent;
+  }
+  if (typeof query === 'string' && isContinuityQuery(query)) {
+    return 'continuity';
+  }
+  if (typeof detectedIntent === 'string' && detectedIntent.trim().length > 0) {
+    return detectedIntent;
+  }
+  return null;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -139,6 +160,11 @@ function buildCacheArgs({
   includeTrace = false,
   cacheVersion,
 }: CacheArgsInput): Record<string, unknown> {
+  const resolvedFusionIntent = resolveFusionIntentContract({
+    detectedIntent,
+    adaptiveFusionIntent,
+    query: normalizedQuery,
+  });
   return {
     query: normalizedQuery,
     concepts: hasValidConcepts ? concepts : undefined,
@@ -158,8 +184,8 @@ function buildCacheArgs({
     includeConstitutional,
     includeContent,
     anchors,
-    intent: detectedIntent,
-    fusionIntent: adaptiveFusionIntent,
+    intent: resolvedFusionIntent ?? detectedIntent,
+    fusionIntent: resolvedFusionIntent,
     minState,
     rerank,
     applyLengthPenalty,
@@ -211,6 +237,7 @@ export {
   resolveRowContextType,
   filterByMinQualityScore,
   resolveQualityThreshold,
+  resolveFusionIntentContract,
   buildCacheArgs,
   resolveArtifactRoutingQuery,
   applyArtifactRouting,

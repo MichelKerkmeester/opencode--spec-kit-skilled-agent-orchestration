@@ -649,6 +649,24 @@ const INTENT_LAMBDA_MAP: Readonly<Record<string, number>> = {
   security_audit: 0.75,
 } as const;
 
+const CONTINUITY_QUERY_PATTERNS: RegExp[] = [
+  /\bresume\b/i,
+  /\bcontinue\b/i,
+  /\bpick\s+(?:this|it)?\s*back\s+up\b/i,
+  /\bwhere\s+was\s+i\b/i,
+  /\bwhat(?:'s| is)\s+next\b/i,
+  /\blast\s+session\b/i,
+  /\bcontinue\s+(?:the\s+)?(?:work|task|implementation|review|session)\b/i,
+  /\b(?:handover|checkpoint|continuity)\b/i,
+];
+
+function isContinuityQuery(query: string): boolean {
+  if (!query || typeof query !== 'string') {
+    return false;
+  }
+  return CONTINUITY_QUERY_PATTERNS.some((pattern) => pattern.test(query));
+}
+
 export {
   INTENT_TYPES,
   INTENT_KEYWORDS,
@@ -675,6 +693,7 @@ export {
   getValidIntents,
   getIntentDescription,
   getProfileForIntent,
+  isContinuityQuery,
 };
 
 export type {

@@ -1,20 +1,20 @@
 ---
 title: "Verification Checklist: Phase 014 — Manual Testing Playbook Prompt Rewrite [template:level_2/checklist.md]"
-description: "Verification Date: 2026-04-12"
+description: "Verification Date: 2026-04-24"
 trigger_phrases: ["verification", "checklist", "phase 014"]
 importance_tier: "important"
 contextType: "implementation"
 level: 2
-status: "complete"
+status: "in_progress"
 parent: "009-playbook-and-remediation"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite"
-    last_updated_at: "2026-04-12T00:00:00Z"
-    last_updated_by: "speckit"
-    recent_action: "Checklist added"
-    next_safe_action: "Update evidence as needed"
+    last_updated_at: "2026-04-24T00:00:00Z"
+    last_updated_by: "codex"
+    recent_action: "Re-ran strict validation and refreshed the packet evidence after the wrapper-level release sweep"
+    next_safe_action: "Refresh continuity freshness evidence and resolve or re-scope the remaining open checklist items"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
@@ -59,7 +59,7 @@ _memory:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Strict validation passes without Level 2 structural errors [EVIDENCE: validate.sh --strict]
+- [ ] CHK-020 [P0] Strict validation passes without Level 2 structural errors [CURRENT: 2026-04-24 strict rerun exits 2 on `CONTINUITY_FRESHNESS`; structural checks still pass]
 - [x] CHK-021 [P0] Packet references to the playbook index resolve to an existing markdown file [EVIDENCE: .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md]
 - [x] CHK-022 [P1] Acceptance scenarios were added for packet review and validation behavior [EVIDENCE: spec.md]
 - [ ] CHK-023 [P1] Every rewritten playbook scenario prompt was manually spot-checked in this repair [DEFERRED: outside this documentation-only task]
@@ -102,11 +102,11 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
+| P0 Items | 8 | 7/8 |
 | P1 Items | 9 | 8/9 |
 | P2 Items | 2 | 1/2 |
 
-**Verification Date**: 2026-04-12
+**Verification Date**: 2026-04-24
 <!-- /ANCHOR:summary -->
 
 ---

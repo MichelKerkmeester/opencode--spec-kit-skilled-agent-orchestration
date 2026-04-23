@@ -1,11 +1,13 @@
 ---
 title: "Phase 026 — Tasks"
-description: "12 per-finding remediation tasks, sequential cli-copilot dispatch."
+description: "12 per-finding remediation tasks closed; verification and admin closeout still pending."
 importance_tier: "normal"
 contextType: "implementation"
 ---
 
 # Phase 026 Tasks
+
+Status sync: T01-T12 are already closed in the packet evidence. The only remaining open items below are packet-level verification and admin closeout.
 
 ## T01 — P1-007-01 (D7): Hook reference config drift
 - [x] Read `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-007.md`
@@ -70,8 +72,8 @@ contextType: "implementation"
 ## T13 — Verification
 - [ ] TS build passes: `npm --prefix ../../../../../skill/system-spec-kit/mcp_server run build`
 - [ ] Focused test suite passes (8 baseline files + T06/T10/T11 new tests)
-- [ ] Implementation-summary.md populated with per-finding evidence
-- [ ] Checklist.md marked [x]
+- [x] Implementation-summary.md populated with per-finding evidence
+- [x] Checklist.md marked [x]
 
 ## T14 — Commit + Push
 - [ ] Single commit with all 12 fixes

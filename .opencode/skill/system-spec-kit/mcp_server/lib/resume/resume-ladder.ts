@@ -600,9 +600,10 @@ function resolveSpecFolder(options: ResumeLadderOptions, workspacePath: string):
 /**
  * Resolve the canonical three-step resume ladder for a spec folder.
  *
- * Preference order is `handover.md` first, then `_memory.continuity` inside
- * `implementation-summary.md`, then canonical spec documents as the final
- * fallback when fresher packet-local recovery data is unavailable.
+ * The helper reads packet-local `handover.md` and `_memory.continuity` inside
+ * `implementation-summary.md`, promotes whichever of those two sources is
+ * fresher when both exist, then falls back to canonical spec documents when
+ * no fresher packet-local recovery data is available.
  *
  * @param options - Optional spec-folder and workspace overrides for resolution
  * @returns Resume payload describing the best recovery source and hints
@@ -679,6 +680,7 @@ export function buildResumeLadder(options: ResumeLadderOptions = {}): ResumeLadd
   if (handoverSignal && continuitySignal) {
     const primary = continuitySignal.updatedAtMs > handoverSignal.updatedAtMs ? continuitySignal : handoverSignal;
     const secondary = primary === handoverSignal ? continuitySignal : handoverSignal;
+    hints.push(`Compared folder-local handover.md and _memory.continuity; selected ${primary.source} as the fresher resume source.`);
     return synthesizeResult({
       primary,
       secondary,

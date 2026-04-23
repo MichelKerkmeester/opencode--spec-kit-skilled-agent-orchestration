@@ -14,6 +14,8 @@ Algorithms and protocols for determining when the deep research loop should stop
 
 Convergence detection prevents infinite loops and stops research when additional iterations yield diminishing returns. The algorithm evaluates multiple signals to make a stop/continue/recovery decision, while the reducer publishes the resulting `convergenceScore` and `coverageBySources` into the dashboard and findings registry after every iteration.
 
+For operator-facing docs, this reference and the deep-research YAML workflow are the authoritative 3-signal contract. Quick references and command-adjacent summaries should mirror the weights and signal names published here.
+
 ### Shared Stop Contract
 
 Both deep-loop products normalize their terminal and blocked-stop outcomes through the same completion-gate contract before any stop decision is persisted to JSONL, dashboards, or synthesis output.

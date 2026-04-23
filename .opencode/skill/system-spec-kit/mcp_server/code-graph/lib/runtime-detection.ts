@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 // Detects the active AI runtime and its hook policy.
 
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { detectCodexHookPolicy } from '../../lib/codex-hook-policy.js';
 
@@ -57,8 +57,8 @@ export function detectRuntime(): RuntimeInfo {
 }
 
 /**
- * Detect whether Gemini CLI has hooks configured.
- * Checks .gemini/settings.json for a 'hooks' or 'hooksConfig' block.
+ * Detect whether Gemini CLI has Spec Kit hook surfaces configured.
+ * Accepts both Gemini-native names and the normalized aliases used in docs/tests.
  */
 function detectGeminiHookPolicy(): HookPolicy {
   try {
@@ -66,11 +66,17 @@ function detectGeminiHookPolicy(): HookPolicy {
     if (!existsSync(settingsPath)) return 'unavailable';
     const raw = readFileSync(settingsPath, 'utf-8');
     const parsed = JSON.parse(raw);
-    const hasHooksBlock = parsed && (
-      (parsed.hooks !== null && typeof parsed.hooks === 'object') ||
-      (parsed.hooksConfig !== null && typeof parsed.hooksConfig === 'object')
+    const hooks = parsed?.hooks;
+    const hasHookSurface = hooks && typeof hooks === 'object' && (
+      hasNamedHookEntries(hooks, 'BeforeAgent')
+      || hasNamedHookEntries(hooks, 'SessionStart')
+      || hasNamedHookEntries(hooks, 'PreCompress')
+      || hasNamedHookEntries(hooks, 'SessionEnd')
+      || hasNamedHookEntries(hooks, 'UserPromptSubmit')
+      || hasNamedHookEntries(hooks, 'PreCompact')
+      || hasNamedHookEntries(hooks, 'Stop')
     );
-    if (hasHooksBlock) {
+    if (hasHookSurface) {
       return 'enabled';
     }
     return 'disabled_by_scope';
@@ -80,34 +86,58 @@ function detectGeminiHookPolicy(): HookPolicy {
 }
 
 /**
- * Detect whether Copilot CLI has a repo-local sessionStart hook configured.
- * Checks .github/hooks/*.json for a sessionStart hook entry.
+ * Detect whether Copilot CLI has Spec Kit wrapper parity configured.
+ * Reads the shared .claude/settings.local.json matcher wrappers instead of
+ * generic .github/hooks/*.json files that may belong to unrelated tools.
  */
 function detectCopilotHookPolicy(): HookPolicy {
   try {
-    const hooksDir = resolve(process.cwd(), '.github', 'hooks');
-    if (!existsSync(hooksDir)) return 'disabled_by_scope';
+    const settingsPath = resolve(process.cwd(), '.claude', 'settings.local.json');
+    if (!existsSync(settingsPath)) return 'disabled_by_scope';
 
-    const hookFiles = readdirSync(hooksDir).filter((name) => name.endsWith('.json'));
-    if (hookFiles.length === 0) return 'disabled_by_scope';
-
-    for (const fileName of hookFiles) {
-      try {
-        const raw = readFileSync(resolve(hooksDir, fileName), 'utf-8');
-        const parsed = JSON.parse(raw);
-        const sessionStartHooks = parsed?.hooks?.sessionStart;
-        if (Array.isArray(sessionStartHooks) && sessionStartHooks.length > 0) {
-          return 'enabled';
-        }
-      } catch {
-        // Ignore malformed or unrelated hook files and keep scanning.
-      }
+    const raw = readFileSync(settingsPath, 'utf-8');
+    const parsed = JSON.parse(raw);
+    const hooks = parsed?.hooks;
+    if (!hooks || typeof hooks !== 'object') {
+      return 'disabled_by_scope';
     }
 
-    return 'disabled_by_scope';
+    const hasPromptWrapper = hasCopilotWrapper(hooks, 'UserPromptSubmit', '/hooks/copilot/user-prompt-submit.js');
+    const hasStartupWrapper = hasCopilotWrapper(hooks, 'SessionStart', '/hooks/copilot/session-prime.js');
+    return hasPromptWrapper && hasStartupWrapper ? 'enabled' : 'disabled_by_scope';
   } catch {
     return 'unavailable';
   }
+}
+
+function hasNamedHookEntries(hooks: unknown, eventName: string): boolean {
+  if (typeof hooks !== 'object' || hooks === null) {
+    return false;
+  }
+  const entries = (hooks as Record<string, unknown>)[eventName];
+  return Array.isArray(entries) && entries.length > 0;
+}
+
+function hasCopilotWrapper(hooks: unknown, eventName: string, bashNeedle: string): boolean {
+  if (typeof hooks !== 'object' || hooks === null) {
+    return false;
+  }
+  const entries = (hooks as Record<string, unknown>)[eventName];
+  if (!Array.isArray(entries)) {
+    return false;
+  }
+  return entries.some((entry) => {
+    if (typeof entry !== 'object' || entry === null) {
+      return false;
+    }
+    const record = entry as Record<string, unknown>;
+    return record.type === 'command'
+      && typeof record.bash === 'string'
+      && record.bash.includes(bashNeedle)
+      && typeof record.timeoutSec === 'number'
+      && Number.isFinite(record.timeoutSec)
+      && record.timeoutSec > 0;
+  });
 }
 
 /** Check if hooks are available for the current runtime */

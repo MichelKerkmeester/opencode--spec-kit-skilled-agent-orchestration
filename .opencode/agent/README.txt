@@ -1,21 +1,21 @@
 AGENTS DIRECTORY
 ================
 
-This directory contains agent definitions for the OpenCode Copilot runtime.
-Each .md file defines one agent with frontmatter (tools, permissions, model)
+This directory contains agent definitions for the OpenCode runtime.
+Each .md file defines one live agent surface with frontmatter (tools, permissions, model)
 and behavioral instructions.
 
-Mirrored to: .claude/agents/, .gemini/agents/, .codex/agents/
+Sibling runtimes: .claude/agents/ (.md), .gemini/agents/ (.md), .codex/agents/ (.toml)
+Inventory rule: if an agent file is not present in this directory, it is not a live runtime surface here.
 
 Agents:
   context       — Retrieval-first codebase exploration
   debug         — Fresh-perspective debugging
   deep-research — Autonomous research iterations
   deep-review   — Autonomous code review iterations
-  handover      — Session continuation
+  improve-agent — Evaluator-first bounded agent improvement
+  improve-prompt — Prompt engineering
   orchestrate   — Multi-agent coordination
   review        — Code review (read-only)
-  speckit       — Spec folder documentation
   ultra-think   — Multi-strategy planning
   write         — Documentation generation
-  improve-prompt — Prompt engineering

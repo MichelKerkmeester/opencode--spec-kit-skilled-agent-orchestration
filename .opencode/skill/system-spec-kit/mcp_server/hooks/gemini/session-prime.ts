@@ -6,7 +6,7 @@
 // with additionalContext for Gemini to inject into the conversation.
 //
 // Gemini stdin contract:
-//   { session_id, transcript_path, cwd, hook_event_name, timestamp, source }
+//   { session_id, transcript_path, cwd, hook_event_name, timestamp, source, specFolder? }
 //   source: "startup" | "resume" | "clear"
 //
 // Gemini stdout contract:
@@ -126,12 +126,36 @@ function readCompactPrimeIdentity(sessionId: string): { cachedAt: string; opaque
   };
 }
 
+function readRequestedSpecFolder(
+  input: { cwd?: unknown; specFolder?: unknown },
+): string | undefined {
+  if (typeof input.specFolder === 'string' && input.specFolder.trim().length > 0) {
+    return input.specFolder;
+  }
+  if (typeof input.cwd !== 'string' || input.cwd.trim().length === 0) {
+    return undefined;
+  }
+  const normalized = input.cwd.replace(/\\/g, '/');
+  const marker = '/.opencode/specs/';
+  const markerIndex = normalized.indexOf(marker);
+  if (markerIndex === -1) {
+    return undefined;
+  }
+  return normalized.slice(markerIndex + 1);
+}
+
 /** Handle source=startup: prime new session with tool overview */
-function handleStartup(sessionId?: string): OutputSection[] {
+function handleStartup(input: { sessionId?: string; cwd?: unknown; specFolder?: unknown } = {}): OutputSection[] {
+  const requestedSpecFolder = readRequestedSpecFolder(input);
   let startupBrief: StartupBrief | null = null;
   try {
     startupBrief = buildStartupBrief
-      ? buildStartupBrief(undefined, sessionId ? { claudeSessionId: sessionId } : undefined)
+      ? buildStartupBrief(undefined, input.sessionId || requestedSpecFolder
+        ? {
+          ...(input.sessionId ? { claudeSessionId: input.sessionId } : {}),
+          ...(requestedSpecFolder ? { specFolder: requestedSpecFolder } : {}),
+        }
+        : undefined)
       : null;
   } catch (err: unknown) {
     hookLog('error', 'gemini:session-prime', `buildStartupBrief threw: ${err instanceof Error ? err.message : String(err)}`);
@@ -247,7 +271,11 @@ async function main(): Promise<void> {
       budget = COMPACTION_TOKEN_BUDGET;
       break;
     case 'startup':
-      sections = handleStartup(sessionId);
+      sections = handleStartup({
+        sessionId,
+        cwd: input.cwd,
+        specFolder: input.specFolder,
+      });
       budget = SESSION_PRIME_TOKEN_BUDGET;
       break;
     case 'resume':
@@ -259,7 +287,11 @@ async function main(): Promise<void> {
       budget = SESSION_PRIME_TOKEN_BUDGET;
       break;
     default:
-      sections = handleStartup(sessionId);
+      sections = handleStartup({
+        sessionId,
+        cwd: input.cwd,
+        specFolder: input.specFolder,
+      });
       budget = SESSION_PRIME_TOKEN_BUDGET;
   }
 

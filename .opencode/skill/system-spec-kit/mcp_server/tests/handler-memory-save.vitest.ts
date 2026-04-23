@@ -22,6 +22,10 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(typeof handler.indexMemoryFile).toBe('function');
     });
 
+    it('T518-2a: indexMemoryFileFromScan exported', () => {
+      expect(typeof handler.indexMemoryFileFromScan).toBe('function');
+    });
+
     it('T518-3: atomicSaveMemory exported', () => {
       expect(typeof handler.atomicSaveMemory).toBe('function');
     });
@@ -38,6 +42,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       const aliases = [
         'handle_memory_save',
         'index_memory_file',
+        'index_memory_file_from_scan',
         'atomic_save_memory',
         'get_atomicity_metrics',
       ] as const satisfies readonly (keyof typeof handler)[];
@@ -87,6 +92,64 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     it('T518-12: Escapes % character', () => {
       const result = escapeLikePattern('100% done');
       expect(result).toBe('100\\% done');
+    });
+  });
+
+  describe('spec-folder mutex hardening', () => {
+    it('retries through a filesystem-backed lock when another process already holds the spec-folder lock', async () => {
+      vi.resetModules();
+      vi.useFakeTimers();
+
+      const actualFs = await vi.importActual<typeof import('node:fs')>('node:fs');
+      let lockAttempts = 0;
+      const mkdirSyncMock = vi.fn((targetPath: fs.PathLike, options?: fs.MakeDirectoryOptions & { recursive?: boolean }) => {
+        if (options?.recursive) {
+          return undefined;
+        }
+        if (String(targetPath).includes('spec-kit-memory-save-locks')) {
+          lockAttempts += 1;
+          if (lockAttempts === 1) {
+            const error = new Error('lock busy') as NodeJS.ErrnoException;
+            error.code = 'EEXIST';
+            throw error;
+          }
+        }
+        return undefined;
+      });
+      const statSyncMock = vi.fn(() => ({ mtimeMs: Date.now() }) as fs.Stats);
+      const rmSyncMock = vi.fn();
+      const writeFileSyncMock = vi.fn();
+
+      vi.doMock('node:fs', () => ({
+        ...actualFs,
+        default: {
+          ...actualFs,
+          mkdirSync: mkdirSyncMock,
+          statSync: statSyncMock,
+          rmSync: rmSyncMock,
+          writeFileSync: writeFileSyncMock,
+        },
+        mkdirSync: mkdirSyncMock,
+        statSync: statSyncMock,
+        rmSync: rmSyncMock,
+        writeFileSync: writeFileSyncMock,
+      }));
+
+      try {
+        const mutexModule = await import('../handlers/save/spec-folder-mutex');
+        const lockPromise = mutexModule.withSpecFolderLock('system-spec-kit/999-lock-fixture', async () => 'locked');
+        await vi.advanceTimersByTimeAsync(30);
+
+        await expect(lockPromise).resolves.toBe('locked');
+        expect(lockAttempts).toBe(2);
+        expect(statSyncMock).toHaveBeenCalledTimes(1);
+        expect(writeFileSyncMock).toHaveBeenCalledTimes(1);
+        expect(rmSyncMock).toHaveBeenCalledTimes(1);
+      } finally {
+        vi.useRealTimers();
+        vi.doUnmock('node:fs');
+        vi.resetModules();
+      }
     });
   });
 

@@ -7,7 +7,7 @@
 
 import { execSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { relative } from 'node:path';
+import { resolve } from 'node:path';
 import { getDb, getLastGitHead, setLastGitHead, ensureFreshFiles } from './code-graph-db.js';
 import { indexFiles } from './structural-indexer.js';
 import { getDefaultConfig } from './indexer-types.js';
@@ -181,13 +181,17 @@ function detectState(rootDir: string): {
 }
 
 /** Run indexFiles with a timeout guard */
-async function indexWithTimeout(config: IndexerConfig, timeoutMs: number): Promise<void> {
+async function indexWithTimeout(
+  config: IndexerConfig,
+  timeoutMs: number,
+  indexOptions?: Parameters<typeof indexFiles>[1],
+): Promise<void> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     const results = await Promise.race([
-      indexFiles(config),
+      indexFiles(config, indexOptions),
       new Promise<never>((_, reject) => {
         controller.signal.addEventListener('abort', () =>
           reject(new Error(`Auto-indexing timed out after ${timeoutMs}ms`)),
@@ -250,51 +254,74 @@ export function persistIndexedFileResult(result: ParseResult): void {
  */
 /** Debounce: skip re-check if last check was within this window */
 const DEBOUNCE_MS = 5_000;
-let lastCheckAt = 0;
-let lastCheckResult: ReadyResult | null = null;
+interface ReadyDebounceEntry {
+  checkedAt: number;
+  result: ReadyResult;
+}
+
+const readinessDebounce = new Map<string, ReadyDebounceEntry>();
+
+function buildReadinessDebounceKey(
+  rootDir: string,
+  allowInlineIndex: boolean,
+  allowInlineFullScan: boolean,
+): string {
+  return JSON.stringify({
+    rootDir: resolve(rootDir),
+    allowInlineIndex,
+    allowInlineFullScan,
+  });
+}
+
+function cacheReadyResult(cacheKey: string, result: ReadyResult): ReadyResult {
+  readinessDebounce.set(cacheKey, {
+    checkedAt: Date.now(),
+    result,
+  });
+  return result;
+}
 
 export async function ensureCodeGraphReady(rootDir: string, options: EnsureReadyOptions = {}): Promise<ReadyResult> {
-  // Debounce: skip if checked recently (prevents redundant work on rapid queries)
-  const now = Date.now();
-  if (lastCheckResult && (now - lastCheckAt) < DEBOUNCE_MS) {
-    return lastCheckResult;
-  }
-  lastCheckAt = now;
   const allowInlineIndex = options.allowInlineIndex ?? true;
   const allowInlineFullScan = options.allowInlineFullScan ?? allowInlineIndex;
+  const cacheKey = buildReadinessDebounceKey(rootDir, allowInlineIndex, allowInlineFullScan);
+
+  // Debounce: skip if the same workspace + option shape was checked recently.
+  const now = Date.now();
+  const cachedEntry = readinessDebounce.get(cacheKey);
+  if (cachedEntry && (now - cachedEntry.checkedAt) < DEBOUNCE_MS) {
+    return cachedEntry.result;
+  }
 
   const state = detectState(rootDir);
   const removedDeletedCount = cleanupDeletedTrackedFiles(state.deletedFiles);
 
   if (state.action === 'none') {
-    lastCheckResult = {
+    return cacheReadyResult(cacheKey, {
       freshness: state.freshness,
       action: 'none',
       inlineIndexPerformed: false,
       reason: appendCleanupReason(state.reason, removedDeletedCount),
-    };
-    return lastCheckResult;
+    });
   }
 
   if (state.action === 'selective_reindex' && !allowInlineIndex) {
-    lastCheckResult = {
+    return cacheReadyResult(cacheKey, {
       freshness: state.freshness,
       action: state.action,
       ...(state.action === 'selective_reindex' ? { files: state.staleFiles } : {}),
       inlineIndexPerformed: false,
       reason: appendCleanupReason(`${state.reason}; inline auto-index skipped for read path`, removedDeletedCount),
-    };
-    return lastCheckResult;
+    });
   }
 
   if (state.action === 'full_scan' && !allowInlineFullScan) {
-    lastCheckResult = {
+    return cacheReadyResult(cacheKey, {
       freshness: state.freshness,
       action: state.action,
       inlineIndexPerformed: false,
       reason: appendCleanupReason(`${state.reason}; inline full scan skipped for read path`, removedDeletedCount),
-    };
-    return lastCheckResult;
+    });
   }
 
   try {
@@ -307,56 +334,50 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       if (head) setLastGitHead(head);
 
       const refreshedState = detectState(rootDir);
-      lastCheckResult = {
+      return cacheReadyResult(cacheKey, {
         freshness: refreshedState.freshness,
         action: refreshedState.action,
         ...(refreshedState.action === 'selective_reindex' ? { files: refreshedState.staleFiles } : {}),
         inlineIndexPerformed: true,
         reason: appendCleanupReason(refreshedState.reason, removedDeletedCount),
-      };
-      return lastCheckResult;
+      });
     }
 
     // selective_reindex: only re-parse stale files
     if (state.action === 'selective_reindex' && state.staleFiles.length > 0) {
       const config = getDefaultConfig(rootDir);
-      // F048: Convert absolute stale file paths to rootDir-relative globs
-      config.includeGlobs = state.staleFiles.map(f => relative(rootDir, f));
-      await indexWithTimeout(config, AUTO_INDEX_TIMEOUT_MS);
+      await indexWithTimeout(config, AUTO_INDEX_TIMEOUT_MS, { specificFiles: state.staleFiles });
 
       const head = getCurrentGitHead(rootDir);
       if (head) setLastGitHead(head);
 
       const refreshedState = detectState(rootDir);
-      lastCheckResult = {
+      return cacheReadyResult(cacheKey, {
         freshness: refreshedState.freshness,
         action: refreshedState.action,
         ...(refreshedState.action === 'selective_reindex' ? { files: refreshedState.staleFiles } : {}),
         inlineIndexPerformed: true,
         reason: appendCleanupReason(refreshedState.reason, removedDeletedCount),
-      };
-      return lastCheckResult;
+      });
     }
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`[ensure-ready] Auto-index failed: ${msg}`);
-    lastCheckResult = {
+    return cacheReadyResult(cacheKey, {
       freshness: state.freshness,
       action: state.action,
       files: state.staleFiles,
       inlineIndexPerformed: false,
       reason: appendCleanupReason(`${state.reason} (auto-index failed: ${msg})`, removedDeletedCount),
-    };
-    return lastCheckResult;
+    });
   }
 
-  lastCheckResult = {
+  return cacheReadyResult(cacheKey, {
     freshness: state.freshness,
     action: 'none',
     inlineIndexPerformed: false,
     reason: appendCleanupReason(state.reason, removedDeletedCount),
-  };
-  return lastCheckResult;
+  });
 }
 
 /**

@@ -75,9 +75,10 @@ import {
   isLearnedStage2CombinerEnabled,
   isResultProvenanceEnabled,
 } from '../search-flags.js';
-import { applyCalibrationProfile } from '../graph-calibration.js';
+import { applyGraphContributionCalibration } from '../graph-calibration.js';
 import { shadowScore, extractFeatureVector, loadModel } from '@spec-kit/shared/ranking/learned-combiner';
 import type { LearnedModel } from '@spec-kit/shared/ranking/learned-combiner';
+import { getAdaptiveWeights, isAdaptiveFusionEnabled } from '@spec-kit/shared/algorithms/adaptive-fusion';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers.js';
 import { computeRecencyScore } from '../../scoring/folder-scoring.js';
@@ -90,6 +91,7 @@ import { applyGraphSignals } from '../../graph/graph-signals.js';
 import { computeUsageBoost } from '../../graph/usage-ranking-signal.js';
 import { ensureUsageColumn } from '../../graph/usage-tracking.js';
 import { isGraphUnifiedEnabled } from '../graph-flags.js';
+import { resolveFusionIntentContract } from '../search-utils.js';
 import { sortDeterministicRows } from './ranking-contract.js';
 
 // Feature catalog: 4-stage pipeline architecture
@@ -348,46 +350,48 @@ function resolveGraphContributionValue(
   return typeof value === 'number' && Number.isFinite(value) ? value : 0;
 }
 
+function resolveRowDocumentType(row: PipelineRow): string | undefined {
+  const candidate = row.documentType ?? row.document_type;
+  return typeof candidate === 'string' && candidate.length > 0 ? candidate : undefined;
+}
+
 function applyGraphCalibrationProfileToResults(results: PipelineRow[]): PipelineRow[] {
   return results.map((row) => {
     const graphContribution = row.graphContribution as Record<string, unknown> | undefined;
-    const originalGraphSignalDelta = Math.max(0, resolveGraphContributionValue(graphContribution, 'graphSignalDelta'));
-    const originalCommunityDelta = Math.max(0, resolveGraphContributionValue(graphContribution, 'communityDelta'));
+    const originalSignals = {
+      causalDelta: Math.max(0, resolveGraphContributionValue(graphContribution, 'causalDelta')),
+      coActivationDelta: Math.max(0, resolveGraphContributionValue(graphContribution, 'coActivationDelta')),
+      graphSignalDelta: Math.max(0, resolveGraphContributionValue(graphContribution, 'graphSignalDelta')),
+      communityDelta: Math.max(0, resolveGraphContributionValue(graphContribution, 'communityDelta')),
+    };
+    const originalTotalDelta = Object.values(originalSignals).reduce((sum, value) => sum + value, 0);
 
-    if (originalGraphSignalDelta === 0 && originalCommunityDelta === 0) {
+    if (originalTotalDelta === 0) {
       return row;
     }
 
-    const calibrated = applyCalibrationProfile({
-      graphWeightBoost: originalGraphSignalDelta,
-      // Stage 2 currently tracks graph-signal contribution as one aggregate delta.
-      // Feed the same bounded value through the N2a/N2b caps until per-signal
-      // attribution is exposed on PipelineRow graphContribution.
-      n2aScore: originalGraphSignalDelta,
-      n2bScore: originalGraphSignalDelta,
-      communityBoost: originalCommunityDelta,
-    });
+    const calibrated = applyGraphContributionCalibration(originalSignals);
+    const calibratedTotalDelta =
+      calibrated.causalDelta +
+      calibrated.coActivationDelta +
+      calibrated.communityDelta +
+      calibrated.graphSignalDelta;
 
     const adjustedScore = resolveBaseScore(row)
-      - originalGraphSignalDelta
-      - originalCommunityDelta
-      + calibrated.graphWeightBoost
-      + calibrated.communityBoost;
+      - originalTotalDelta
+      + calibratedTotalDelta;
 
     const calibratedRow = withSyncedScoreAliases(row, adjustedScore);
-    const causalDelta = resolveGraphContributionValue(graphContribution, 'causalDelta');
-    const coActivationDelta = resolveGraphContributionValue(graphContribution, 'coActivationDelta');
 
     return {
       ...calibratedRow,
       graphContribution: {
         ...(graphContribution ?? {}),
-        graphSignalDelta: calibrated.graphWeightBoost,
-        communityDelta: calibrated.communityBoost,
-        totalDelta: causalDelta
-          + coActivationDelta
-          + calibrated.communityBoost
-          + calibrated.graphWeightBoost,
+        causalDelta: calibrated.causalDelta,
+        coActivationDelta: calibrated.coActivationDelta,
+        graphSignalDelta: calibrated.graphSignalDelta,
+        communityDelta: calibrated.communityDelta,
+        totalDelta: calibratedTotalDelta,
       },
     };
   });
@@ -1001,13 +1005,22 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
   // Bonus is capped at RECENCY_FUSION_CAP and clamped to keep score in [0, 1].
   try {
     let recencyBoostedCount = 0;
+    const fusionIntent = resolveFusionIntentContract({
+      detectedIntent: config.detectedIntent,
+      adaptiveFusionIntent: config.adaptiveFusionIntent,
+      query: config.query,
+    });
+    const adaptiveRecencyEnabled = Boolean(fusionIntent) && isAdaptiveFusionEnabled();
     results = results.map((row) => {
       const recencyTimestamp = (row.created_at as string | undefined) ?? '';
       const importanceTier = (row.importance_tier as string | undefined) ?? 'normal';
       if (!recencyTimestamp) return row;
 
       const recencyScore = computeRecencyScore(recencyTimestamp, importanceTier);
-      const bonus = Math.min(RECENCY_FUSION_CAP, recencyScore * RECENCY_FUSION_WEIGHT);
+      const recencyWeight = adaptiveRecencyEnabled && fusionIntent
+        ? getAdaptiveWeights(fusionIntent, resolveRowDocumentType(row)).recencyWeight
+        : RECENCY_FUSION_WEIGHT;
+      const bonus = Math.min(RECENCY_FUSION_CAP, recencyScore * recencyWeight);
       if (bonus <= 0) return row;
 
       const baseScore = resolveBaseScore(row);
