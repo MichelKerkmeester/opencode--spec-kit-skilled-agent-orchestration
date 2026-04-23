@@ -24,29 +24,44 @@ The managed block is bounded by `SPEC-KIT-COPILOT-CONTEXT` markers so human inst
 
 ## 2. HOOK REGISTRATION
 
-Use repo-local wrappers so the writer runs before any notification-only hook:
+Use the shared `.claude/settings.local.json` matcher wrappers so Copilot can execute the top-level writer command while Claude keeps the nested `hooks` commands in the same matcher group:
 
 ```json
 {
-  "version": 1,
   "hooks": {
-    "sessionStart": [
+    "UserPromptSubmit": [
       {
         "type": "command",
-        "bash": ".github/hooks/scripts/session-start.sh",
-        "timeoutSec": 5
+        "bash": "cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/user-prompt-submit.js",
+        "timeoutSec": 5,
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/user-prompt-submit.js'",
+            "timeout": 3
+          }
+        ]
       }
     ],
-    "userPromptSubmitted": [
+    "SessionStart": [
       {
         "type": "command",
-        "bash": ".github/hooks/scripts/user-prompt-submitted.sh",
-        "timeoutSec": 5
+        "bash": "cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/session-prime.js",
+        "timeoutSec": 5,
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/session-prime.js'",
+            "timeout": 3
+          }
+        ]
       }
     ]
   }
 }
 ```
+
+For Copilot, the effective writer path is the outer `.claude/settings.local.json` wrapper. Claude continues to use the nested `hooks` entries in the same matcher groups.
 
 Set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` to skip advisor generation for the current process. Set `SPECKIT_COPILOT_INSTRUCTIONS_DISABLED=1` to skip the custom-instructions writer. Set `SPECKIT_COPILOT_INSTRUCTIONS_PATH` when tests need an isolated target file.
 

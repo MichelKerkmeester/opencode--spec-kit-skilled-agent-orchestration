@@ -330,24 +330,24 @@ The contract normalizes `ensure-ready` freshness (`fresh|stale|empty`) onto the 
 
 ### Hook integration matrix
 
-`mcp_server/hooks/` contains per-runtime lifecycle integrations. Each runtime has its own subfolder with prompt-submit, session-prime, and (where applicable) compact-inject / compact-cache / session-stop entry points.
+`mcp_server/hooks/` contains per-runtime lifecycle integrations. Each runtime has its own subfolder with prompt-submit, session-prime or session-start, and (where applicable) compact-inject / compact-cache / session-stop entry points.
 
 | Runtime | Hook folder | Prompt-submit | Session-prime | Compact handling | Other |
 |---|---|---|---|---|---|
 | Claude Code | `hooks/claude/` | `user-prompt-submit.ts` | `session-prime.ts` | `compact-inject.ts` | `claude-transcript.ts`, `session-stop.ts` |
 | Gemini CLI | `hooks/gemini/` | `user-prompt-submit.ts` | `session-prime.ts` | `compact-inject.ts`, `compact-cache.ts` | `session-stop.ts` |
-| Copilot CLI | `hooks/copilot/` | `user-prompt-submit.ts` writes managed custom instructions | `session-prime.ts` writes startup context to managed custom instructions | `compact-cache.ts` | `custom-instructions.ts` |
+| Copilot CLI | `hooks/copilot/` | `user-prompt-submit.ts` refreshes `$HOME/.copilot/copilot-instructions.md` via `custom-instructions.ts` | `session-prime.ts` refreshes startup context in the same managed custom-instructions file | `compact-cache.ts` | `custom-instructions.ts` |
 | Codex CLI | `hooks/codex/` | `user-prompt-submit.ts` | `session-start.ts` | — | `pre-tool-use.ts`, `prompt-wrapper.ts` |
 
 Shared infrastructure: `hooks/index.ts`, `hooks/memory-surface.ts`, `hooks/mutation-feedback.ts`, `hooks/response-hints.ts`, `hooks/shared-provenance.ts`.
 
-All hooks surface startup or compaction context, but they point operators back to the canonical resume chain instead of inventing an alternate source of truth. Copilot is the exception in transport shape only: its prompt and startup hooks refresh a managed block in `$HOME/.copilot/copilot-instructions.md` because Copilot hook output is not a prompt-mutation channel.
+All hooks surface startup or compaction context, but they point operators back to the canonical resume chain instead of inventing an alternate source of truth. Copilot is the exception in transport shape only: `user-prompt-submit.ts` and `session-prime.ts` call `custom-instructions.ts` to refresh a managed block in `$HOME/.copilot/copilot-instructions.md`, and the hook responses remain informational or empty rather than acting as a prompt-mutation channel.
 
 ### OpenCode plugin bridge
 
 For runtimes without native hook support, the plugin bridge provides native-first delegation:
 
-- **Bridge entry**: `.opencode/plugins/spec-kit-skill-advisor.js` (CommonJS entrypoint)
+- **Bridge entry**: `.opencode/plugins/spec-kit-skill-advisor.js` (OpenCode plugin ESM entrypoint with a default-export factory)
 - **Bridge runtime**: `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs` (delegation logic)
 - **Import target**: `mcp_server/skill-advisor/compat/index.ts` (stable public API — never `lib/*`)
 
@@ -356,6 +356,8 @@ Delegation order:
 1. Daemon probe → if live, return brief from daemon state.
 2. Native fallback → invoke `compat/index.ts` inline.
 3. Python shim fallback → spawn `mcp_server/skill-advisor/scripts/skill_advisor.py`.
+
+The bridge keeps runtime state inside each plugin instance, dedups concurrent identical in-flight requests before spawning a second bridge call, caps prompt stdin / rendered brief / cache entry sizes, and evicts the oldest cached entry when the configured cache cap is exceeded.
 
 A companion bridge `spec-kit-compact-code-graph-bridge.mjs` + `spec-kit-compact-code-graph.js` wires the code-graph compaction surface.
 

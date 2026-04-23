@@ -115,9 +115,9 @@ For full tool reference with parameters, see [MCP Server README](mcp_server/READ
 
 ### Skill Advisor
 
-Phase 027 moved Gate 2 skill routing into the native MCP server package at `mcp_server/skill-advisor/`. The public tools are `advisor_recommend`, `advisor_status`, and `advisor_validate`; the Python script under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/` remains a compatibility shim with native-first routing and local fallback. The shipped baseline is 80.5% full-corpus accuracy, 77.5% holdout accuracy, UNKNOWN <= 10, and zero regressions on Python-correct prompts. Runtime hooks cover Claude Code, Copilot CLI, Gemini CLI, Codex CLI, and the OpenCode plugin bridge. Copilot CLI is file-based: its hooks refresh a Spec Kit managed block in local custom instructions because Copilot hook stdout is not prompt-mutating.
+Phase 027 moved Gate 2 skill routing into the native MCP server package at `mcp_server/skill-advisor/`. The public tools are `advisor_recommend`, `advisor_status`, and `advisor_validate`; the Python script under `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/` remains a compatibility shim, while runtime hook briefs are the primary surface when the active runtime supports them. The shipped baseline is 80.5% full-corpus accuracy, 77.5% holdout accuracy, UNKNOWN <= 10, and zero regressions on Python-correct prompts. Runtime capability is intentionally split by transport: Claude Code and Gemini CLI inject prompt-time briefs directly, Codex supports native `SessionStart` and `UserPromptSubmit` hooks when `[features].codex_hooks = true` in `~/.codex/config.toml` and `~/.codex/hooks.json` is wired, OpenCode delivers advisor context through the plugin bridge, and Copilot CLI refreshes a Spec Kit managed block in `$HOME/.copilot/copilot-instructions.md` for next-prompt freshness because Copilot hook stdout is not prompt-mutating. When native hooks are unavailable, fall back to `/spec_kit:resume` for recovery or the Python shim for scripted checks.
 
-For install and API details, see [Skill Advisor Native Package README](mcp_server/skill-advisor/README.md).
+For install and API details, see [Skill Advisor Native Package README](mcp_server/skill-advisor/README.md). For runtime wiring and operator checks, see the [Skill Advisor hook reference](references/hooks/skill-advisor-hook.md), the [validation playbook](references/hooks/skill-advisor-hook-validation.md), and the [hook system matrix](references/config/hook_system.md).
 
 ### Requirements
 
@@ -131,7 +131,7 @@ For install and API details, see [Skill Advisor Native Package README](mcp_serve
 Workspace module profile:
 
 - `shared/` and `mcp_server/` are ESM packages (`"type": "module"`) using NodeNext TypeScript settings.
-- `scripts/` remains CommonJS (`"type": "commonjs"`) with explicit ESM interop where runtime cross-package loading is required.
+- `scripts/` is also ESM (`"type": "module"`), with built CLI entrypoints under `dist/` for shell workflows and cross-package loading.
 
 <!-- /ANCHOR:overview -->
 

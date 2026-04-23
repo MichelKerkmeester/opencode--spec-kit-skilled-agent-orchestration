@@ -134,9 +134,9 @@ The repo contains checked-in MCP wiring for OpenCode, Claude Code, Codex, Gemini
 |---|---|---|
 | OpenCode | `opencode.json` | MCP wiring is checked in. A plugin-based startup digest implementation exists under `.opencode/plugins/`, but repo registration of that plugin is runtime-dependent and not shown in `opencode.json`. |
 | Claude Code | `.claude/mcp.json` | Checked-in SessionStart / PreCompact / Stop hooks in `.claude/settings.local.json`. |
-| Codex | `.codex/config.toml` | Checked-in MCP config and prompt hooks. Startup recovery is explicit via the `session_bootstrap` MCP tool, not a native SessionStart lifecycle hook. |
+| Codex | `.codex/config.toml` | Checked-in MCP config plus native `SessionStart` and `UserPromptSubmit` hooks when `[features].codex_hooks = true` in `~/.codex/config.toml` and `~/.codex/hooks.json` is wired. When those hooks are unavailable, recover via `/spec_kit:resume` or `session_bootstrap`. |
 | Gemini | `.gemini/settings.json` | Checked-in MCP config plus SessionStart / PreCompress / BeforeAgent / SessionEnd hook wiring. |
-| Copilot | `.vscode/mcp.json` | Checked-in MCP wrapper config plus `.github/hooks/superset-notify.json` sessionStart routing through `.github/hooks/scripts/session-start.sh`, which fans out to Superset after emitting the repo-local banner. |
+| Copilot | `.vscode/mcp.json` | Checked-in MCP wrapper config plus merged `.claude/settings.local.json` matcher wrappers. Copilot reads the top-level `type` / `bash` / `timeoutSec` fields there, with writer-backed `UserPromptSubmit` and `SessionStart` commands handling managed custom-instructions refresh. |
 
 `Claude Desktop` remains documented here as a generic MCP configuration example, but it is outside the repo-checked runtime set above. Treat this table as repository configuration evidence, not as a blanket claim of live startup parity in every client.
 
@@ -437,6 +437,13 @@ You should see `spec_kit_memory` tools listed, including:
 - `session_bootstrap` (complete session bootstrap)
 - `session_resume` (combined session resume)
 
+For a fresh native Skill Advisor install, also verify these public tools are present:
+- `advisor_recommend` (native skill routing recommendations)
+- `advisor_status` (daemon freshness and trust-state health)
+- `advisor_validate` (measured corpus, parity, safety, and latency slices)
+
+Use [skill-advisor/INSTALL_GUIDE.md](./skill-advisor/INSTALL_GUIDE.md) for the native bootstrap checklist and [skill-advisor/README.md](./skill-advisor/README.md) for the API/tool contract while validating a new install.
+
 Then verify the structural side too. Ask your AI assistant:
 
 ```
@@ -462,6 +469,7 @@ You should get relevant memories about Gate 3 (the spec folder question) from AG
 
 Checklist:
 - [ ] MCP server appears in the tool list
+- [ ] `advisor_recommend`, `advisor_status`, and `advisor_validate` appear when the native Skill Advisor surface is installed
 - [ ] `memory_search()` returns results (or empty if no memories are indexed yet)
 - [ ] No connection errors in responses
 - [ ] No `ERR_DLOPEN_FAILED` or module resolution errors

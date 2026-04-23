@@ -100,6 +100,7 @@ Packet `009-auditable-savings-publication-contract` adds a row-eligibility gate 
 | `SPECKIT_RECONSOLIDATION_ENABLED` | `false` | boolean | Opt-in save-time reconsolidation for planner-first flows. Disabled by default on saves. | `lib/search/search-flags.ts` |
 | `SPECKIT_POST_INSERT_ENRICHMENT_ENABLED` | `false` | boolean | Opt-in save-time post-insert enrichment bundle for planner-first flows. Disabled by default on saves. | `lib/search/search-flags.ts` |
 | `SPECKIT_QUALITY_AUTO_FIX` | `false` | boolean | Opt-in save-time quality auto-fix retries for planner-first flows. Disabled by default on saves. | `lib/search/search-flags.ts` |
+| `SPECKIT_CODEX_HOOK_TIMEOUT_MS` | `3000` | number | Timeout (ms) for the Codex `UserPromptSubmit` hook and the skill-advisor subprocess execution when invoked from Codex. On timeout, the Codex hook returns a stale advisory brief instead of empty output, so operators who raise this value trade responsiveness for fresher advisor data. Set via environment variable before launching Codex. [026/009/012, flagged by 03] | `hooks/codex/user-prompt-submit.ts`, `skill-advisor/lib/subprocess.ts` |
 <!-- /ANCHOR:infrastructure -->
 
 ---

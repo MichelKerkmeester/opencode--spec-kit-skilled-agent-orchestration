@@ -89,7 +89,7 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 
 ### Session Start & Recovery
 
-Runtime startup behavior depends on the runtime hook matrix in `.opencode/skill/system-spec-kit/references/config/hook_system.md`; prompt hooks and lifecycle/startup hooks are separate capabilities. Codex has prompt hooks but no lifecycle startup hook.
+Runtime startup behavior depends on the runtime hook matrix in `.opencode/skill/system-spec-kit/references/config/hook_system.md`; prompt hooks and lifecycle/startup hooks are separate capabilities. Codex supports native `SessionStart` and `UserPromptSubmit` hooks when `[features].codex_hooks = true` in `~/.codex/config.toml` and `~/.codex/hooks.json` is wired; `/spec_kit:resume` remains the fallback when those hooks fail or are unavailable.
 **Fallback** - when lifecycle hooks fail or are unavailable in any runtime:
 
 1. Use `/spec_kit:resume` as the canonical recovery surface
@@ -370,13 +370,13 @@ Task Received → Gate 2: Read hook brief, or run skill_advisor.py fallback
 
 ### Primary Skill: sk-code-opencode
 
-For ALL OpenCode system code (`.opencode/`, MCP servers, scripts), `sk-code-opencode` provides multi-language standards. Includes the `system-spec-kit` skill for spec folder workflows and the Spec Kit Memory system for context preservation across sessions.
+For OpenCode system code (`.opencode/`, MCP servers, scripts), `sk-code-opencode` provides multi-language standards. Includes the `system-spec-kit` skill for spec folder workflows and the Spec Kit Memory system for context preservation across sessions. OpenCode plugins and plugin helpers still use this skill, but their JavaScript entrypoints follow the plugin-loader ESM exemption rather than the blanket CommonJS pattern.
 
 **Supported Languages:**
 
 | Language   | Target                        | Key Patterns                                |
 | ---------- | ----------------------------- | ------------------------------------------- |
-| JavaScript | MCP servers, CommonJS modules | `require`/`module.exports`, strict mode     |
+| JavaScript | MCP servers, CommonJS modules, non-plugin JS | `require`/`module.exports`, strict mode; OpenCode plugins/plugin helpers use ESM default export |
 | TypeScript | Type-safe modules, configs    | Interfaces, strict tsconfig, type guards    |
 | Python     | Validators, advisors, tests   | snake_case, argparse, pytest, docstrings    |
 | Shell      | Automation, deployment        | `set -euo pipefail`, shebang, quoting       |

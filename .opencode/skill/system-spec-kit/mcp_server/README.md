@@ -561,6 +561,16 @@ The Skill Advisor is the native Gate 2 routing surface for matching prompts to s
 
 For package-local details, see [Skill Advisor Native Package README](skill-advisor/README.md) and [Skill Advisor Native Bootstrap](skill-advisor/INSTALL_GUIDE.md).
 
+**Runtime hook surface:** prompt-time Skill Advisor adapters now ship for Claude, Gemini, Copilot, and Codex. Claude, Gemini, and Codex inject the brief through runtime hook output; Copilot refreshes its managed local custom-instructions block and keeps hook stdout as `{}`. When native routing is unavailable, use the documented runtime fallback paths rather than treating the Python shim as the primary operator surface.
+
+- [hooks/README.md](./hooks/README.md) - runtime hook overview for the MCP server package
+- [hooks/claude/README.md](./hooks/claude/README.md) - Claude registration and `UserPromptSubmit` behavior
+- [hooks/gemini/README.md](./hooks/gemini/README.md) - Gemini registration and prompt-time advisor wiring
+- [hooks/copilot/README.md](./hooks/copilot/README.md) - Copilot wrapper/custom-instructions path and fallback behavior
+- [hooks/codex/README.md](./hooks/codex/README.md) - Codex native hook wiring and deferred config guidance
+- [../references/hooks/skill-advisor-hook.md](../references/hooks/skill-advisor-hook.md) - canonical cross-runtime hook reference and capability matrix
+- [../references/hooks/skill-advisor-hook-validation.md](../references/hooks/skill-advisor-hook-validation.md) - manual validation playbook for hook setup and troubleshooting
+
 ---
 
 ### 3.2 TOOL REFERENCE
@@ -1661,7 +1671,9 @@ Set the flag to `false` or `0` in your environment, restart the server and the p
 |----------|---------------|
 | [INSTALL_GUIDE.md](./INSTALL_GUIDE.md) | Full installation: embedding providers, database setup, MCP client config, verification |
 | [lib/search/README.md](./lib/search/README.md) | Per-stage module mapping for the 4-stage search pipeline |
-| [hooks/README.md](./hooks/README.md) | Lifecycle hook documentation for post-mutation wiring |
+| [hooks/README.md](./hooks/README.md) | Runtime hook overview, lifecycle/helper boundaries, and links to per-runtime registration docs |
+| [../references/hooks/skill-advisor-hook.md](../references/hooks/skill-advisor-hook.md) | Canonical cross-runtime Skill Advisor hook reference, capability matrix, and fallback contract |
+| [../references/hooks/skill-advisor-hook-validation.md](../references/hooks/skill-advisor-hook-validation.md) | Manual validation playbook for hook setup, smoke tests, and troubleshooting |
 | [../README.md](../README.md) | Parent skill README: system-spec-kit overview |
 | [../SKILL.md](../SKILL.md) | AI agent workflow instructions for this skill |
 | [../feature_catalog/FEATURE_CATALOG.md](../feature_catalog/FEATURE_CATALOG.md) | Complete feature inventory: 22 categories, 291 features with code references |

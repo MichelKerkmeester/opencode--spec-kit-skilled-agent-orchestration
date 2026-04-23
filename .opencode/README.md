@@ -73,7 +73,7 @@ Together, these systems enable context-aware development with traceability, hard
 ├── agent/           — 12 specialized AI agent definitions for task delegation
 ├── command/         — 21 slash command entry points for workflow automation (spec_kit, memory, create, improve, agent_router)
 ├── install_guides/  — Setup and configuration guides for framework installation
-├── skill/scripts/   — Skill routing scripts (skill_advisor.py) and setup guides
+├── skill/system-spec-kit/mcp_server/skill-advisor/ — Native Skill Advisor package, runtime adapters and MCP tools
 ├── skill/           — 20 domain expertise skill modules with bundled resources
 └── specs/           — Spec folder storage for canonical packet docs and supporting generated context artifacts
 ```
@@ -83,7 +83,7 @@ Together, these systems enable context-aware development with traceability, hard
 - **`agent/`**: Agent definition files (`.md`) that provide specialized capabilities for orchestration, research, debugging, code review, documentation and session handover.
 - **`command/`**: Slash command definitions organized by domain (spec_kit, memory, create) that provide workflow shortcuts and automation.
 - **`install_guides/`**: Comprehensive setup documentation including `SET-UP - AGENTS.md`, skill installation guides and configuration examples.
-- **`skill/scripts/`**: Skill routing utilities including `skill_advisor.py` (routing engine) and setup guides. Agent provider scripts are in `agent/scripts/`.
+- **`skill/system-spec-kit/mcp_server/skill-advisor/`**: Native Skill Advisor package with hook-first/runtime-adapter delivery and MCP tools such as `advisor_recommend`; compatibility callers still include `skill_advisor.py`. Agent provider scripts are in `agent/scripts/`.
 - **`skill/`**: Self-contained skill modules with `SKILL.md` entry points, bundled references, scripts and assets for domain-specific workflows.
 - **`specs/`**: Repository-owned or system-level spec folders. User spec folders typically live in project root `/specs/`.
 
@@ -110,7 +110,7 @@ This is a 12-agent / 4-runtime model (OpenCode, Claude, Codex, Gemini) with alig
 | `@ultra-think` | Multi-strategy planning architect | Complex planning that benefits from comparing multiple solution strategies |
 | `@improve-agent` | Proposal-only mutator for bounded agent improvement | Agent evaluation via `/improve:agent` command loop |
 
-**Agent Routing:** Automatic via Gate 2 (`skill_advisor.py`) or manual via `@agent_name` syntax. Current agent state keeps runtime frontmatter aligned across the supported runtimes.
+**Agent Routing:** Automatic via Gate 2 hook briefs when the active runtime surfaces them, with native advisor tools and `skill_advisor.py` available as compatibility/scripted fallbacks; manual routing still works via `@agent_name` syntax. Current agent state keeps runtime frontmatter aligned across the supported runtimes.
 
 <!-- /ANCHOR:agents-overview -->
 
@@ -272,7 +272,7 @@ All AI interactions pass through 3 mandatory gates to ensure quality and traceab
 
 ### Gate 2: Skill Routing (Required for Non-Trivial Tasks)
 - Trigger: Complex tasks
-- Action: Run `skill_advisor.py "[request]" --threshold 0.8` OR cite user's explicit direction
+- Action: Use the automatic Skill Advisor hook brief when the runtime surfaces it; otherwise use the native advisor surface (for example `advisor_recommend`) or `skill_advisor.py` as the compatibility/scripted fallback, or cite the user's explicit direction
 - Pass: Confidence >= 0.8, MUST invoke recommended skill
 - Fail: Confidence < 0.8, proceed with general approach
 
@@ -302,7 +302,7 @@ All AI interactions pass through 3 mandatory gates to ensure quality and traceab
 ### Using the Framework
 
 **Invoking Skills:**
-- Automatic: Gate 2 auto-routes based on `skill_advisor.py` confidence scores
+- Automatic: Gate 2 uses runtime hook briefs first when available, then falls back to the native advisor surface or `skill_advisor.py` for scripted compatibility
 - Manual: Reference skill name in request (e.g., "Use sk-doc to create README")
 
 **Running Commands:**

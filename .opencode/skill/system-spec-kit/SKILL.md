@@ -730,19 +730,22 @@ Automated validation of spec folder contents via `validate.sh`.
 
 ### Startup Injection and Recovery Surfaces
 
-Automated context preservation starts with runtime-specific startup surfaces. Claude still has the richest hook lifecycle, but packet 024 now also ships Gemini startup hooks, OpenCode transport formatting, Codex bootstrap parity, and optional Copilot startup helpers.
+Automated context preservation starts with runtime-specific startup and prompt-hook surfaces. Claude still has the richest project-local lifecycle surface. Codex now supports native `SessionStart` and `UserPromptSubmit` when `[features].codex_hooks = true` in `~/.codex/config.toml` and `~/.codex/hooks.json` registers the compiled Spec Kit hooks; `/spec_kit:resume` and `session_bootstrap()` remain the fallback when native hooks are unavailable. OpenCode exposes prompt-time advisor delivery through the skill-advisor plugin bridge, while Copilot refreshes managed custom instructions through shared wrapper wiring instead of mutating the active prompt.
 
 **Claude hooks registered in `.claude/settings.local.json`:**
 
+Project-local Claude settings use nested Claude `hooks` groups per event. Keep the executable command entries inside those nested groups; do not add outer `bash` / `timeoutSec` wrappers for the Claude-only registration shape.
+
 | Hook | Script | Behavior |
 |------|--------|----------|
+| UserPromptSubmit | `dist/hooks/claude/user-prompt-submit.js` | Builds the advisor brief and injects prompt-time `additionalContext` |
 | PreCompact | `dist/hooks/claude/compact-inject.js` | Precomputes context from transcript, caches to temp state |
 | SessionStart | `dist/hooks/claude/session-prime.js` | Injects context via stdout (routes by source: compact/startup/resume/clear) |
 | Stop | `dist/hooks/claude/session-stop.js` | Parses transcript for token usage, stores snapshots (async) |
 
-**Claude lifecycle flow:** PreCompact → cache → SessionStart(compact) → inject cached context. On startup, the shared startup snapshot covers memory continuity, code-graph state, CocoIndex availability, and an explicit note that later structural reads may differ if the repo state changed. On resume, the runtime loads prior session state.
+**Claude lifecycle flow:** `UserPromptSubmit` covers prompt-time advisor delivery. `PreCompact -> SessionStart(compact)` handles cached context reinjection. On startup, the shared snapshot covers memory continuity, code-graph state, CocoIndex availability, and an explicit note that later structural reads may differ if the repo state changed. On resume, the runtime loads prior session state.
 
-**Cross-runtime handling:** Claude, Gemini, and Codex use SessionStart hook scripts when their runtime hook configuration is enabled. Codex requires `[features].codex_hooks = true` in `~/.codex/config.toml` plus user-level `~/.codex/hooks.json` entries for the compiled Spec Kit hooks; the prompt-wrapper remains a fallback when Codex hook policy is unavailable. OpenCode has a transport/plugin implementation, but operationally should still be treated as bootstrap-first when startup surfacing is unavailable. Copilot startup context depends on local hook configuration or wrapper wiring when present, and now has compact-cache parity through `hooks/copilot/compact-cache.ts` plus the shared recovered-payload wrapper in `hooks/shared-provenance.ts`. Use `session_bootstrap()` for fresh start or after `/clear`, `session_resume()` for reconnect-style recovery when bootstrap is unnecessary, and `session_health()` only to re-check drift or readiness mid-session.
+**Cross-runtime handling:** Claude and Gemini use runtime hook configuration for prompt-time advice and startup injection. Codex supports native `SessionStart` + `UserPromptSubmit` when `[features].codex_hooks = true` in `~/.codex/config.toml` and `~/.codex/hooks.json` is wired; when native Codex hooks are unavailable, recover with `/spec_kit:resume` or `session_bootstrap()` rather than assuming lifecycle parity. OpenCode exposes prompt-time advisor delivery through the skill-advisor plugin bridge and should still be treated as bootstrap-first when startup surfacing is unavailable. Copilot uses the shared `.claude/settings.local.json` wrapper contract to run writer commands that refresh the managed block in `$HOME/.copilot/copilot-instructions.md`; this is file-based, next-prompt fresh, and not true in-turn prompt mutation. See `references/config/hook_system.md` for the current cross-runtime matrix and wrapper contract. Use `session_bootstrap()` for fresh start or after `/clear`, `session_resume()` for reconnect-style recovery when bootstrap is unnecessary, and `session_health()` only to re-check drift or readiness mid-session.
 
 `session_resume()` auth now binds `args.sessionId` to the transport-layer caller identity from `lib/context/caller-context.ts` (`getCallerContext()` inside handlers). Default mode is strict rejection for mismatches; `MCP_SESSION_RESUME_AUTH_MODE=permissive` is the canary override.
 

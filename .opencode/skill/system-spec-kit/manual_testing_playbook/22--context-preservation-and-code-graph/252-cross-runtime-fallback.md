@@ -15,17 +15,17 @@ This scenario validates Cross-runtime fallback.
 
 ## 2. CURRENT REALITY
 
-- **Objective**: Verify that runtime detection reports the correct hook policy per runtime. Claude Code must report native hooks, Codex CLI must report `live` or `partial` based on local Codex/settings availability, Copilot CLI must report repo hook wiring while delivering prompt-time context through the managed custom-instructions block, and Gemini CLI must follow repo-configured hook wiring before falling back to `/spec_kit:resume`.
+- **Objective**: Verify that runtime detection reports the correct hook policy per runtime. Claude Code must report native hooks, Codex CLI must report `live` or `partial` based on local Codex/settings availability, Copilot CLI must report wrapper-backed hook wiring from `.claude/settings.local.json` while delivering prompt-time context through the managed custom-instructions block, and Gemini CLI must follow repo-configured hook wiring before falling back to `/spec_kit:resume`.
 - **Prerequisites**:
   - Node.js installed and `npx vitest` available
   - Working directory is the project root
   - Environment variables can be simulated in test fixtures (e.g., `CODEX_CLI=1`, `COPILOT_CLI=1`, `GEMINI_CLI=1`)
-- **Prompt**: `As a context-and-code-graph validation operator, validate Cross-runtime fallback against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify Claude Code reports native hooks, Codex CLI reports live or partial hook policy from local Codex/settings availability, and Copilot CLI plus Gemini CLI derive hookPolicy from repo/config wiring before falling back to /spec_kit:resume. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- **Prompt**: `As a context-and-code-graph validation operator, validate Cross-runtime fallback against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify Claude Code reports native hooks, Codex CLI reports live or partial hook policy from local Codex/settings availability, Copilot CLI derives hookPolicy from `.claude/settings.local.json` wrapper wiring plus managed custom-instructions refresh, and Gemini CLI derives hookPolicy from repo config before falling back to /spec_kit:resume. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - **Expected signals**:
   - All vitest tests in `runtime-detection.vitest.ts` pass
   - Claude Code: `{ runtime: 'claude-code', hookPolicy: 'enabled' }`
   - Codex CLI: `{ runtime: 'codex-cli', hookPolicy: 'live' }` when Codex is installed and repo `.codex/settings.json` is valid; `partial` when Codex is installed but settings are missing or invalid; `unavailable` only when the probe fails.
-  - Copilot CLI: `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.github/hooks/*.json` contains repo hook wiring; `userPromptSubmitted` should print `{}` and refresh `SPEC-KIT-COPILOT-CONTEXT` in custom instructions; otherwise `disabled_by_scope`
+  - Copilot CLI: `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.claude/settings.local.json` exposes Copilot-safe top-level `type` / `bash` / `timeoutSec` wrapper fields and the `UserPromptSubmit` / `SessionStart` writer commands; `userPromptSubmitted` should print `{}` and refresh `SPEC-KIT-COPILOT-CONTEXT` in custom instructions; otherwise `disabled_by_scope`
   - Gemini CLI: `{ runtime: 'gemini-cli', hookPolicy: 'enabled' }` only when `.gemini/settings.json` contains hooks; otherwise `disabled_by_scope` or `unavailable`
   - `areHooksAvailable()` and `getRecoveryApproach()` follow the detected hookPolicy instead of a hardcoded per-runtime answer
 - **Pass/fail criteria**:
@@ -97,42 +97,44 @@ Check env var detection order in `runtime-detection.ts` — CODEX_CLI or CODEX_S
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate Copilot CLI detects repo hook wiring dynamically against cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts. Verify detectRuntime() with COPILOT_CLI=1 returns { runtime: 'copilot-cli', hookPolicy: 'enabled' } in this repo and disabled_by_scope in a temp repo without .github/hooks/*.json. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate Copilot CLI detects wrapper-backed hook wiring dynamically against cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts. Verify detectRuntime() with COPILOT_CLI=1 returns { runtime: 'copilot-cli', hookPolicy: 'enabled' } in this repo when `.claude/settings.local.json` carries the Copilot-safe top-level wrapper fields plus the `UserPromptSubmit` / `SessionStart` writer commands, and disabled_by_scope in a temp repo without that wrapper config. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
 
-1. cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts
+1. jq '{UserPromptSubmit: (.hooks.UserPromptSubmit[0] | {type, bash, timeoutSec}), SessionStart: (.hooks.SessionStart[0] | {type, bash, timeoutSec})}' .claude/settings.local.json
+2. cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts
 
 ### Expected
 
-detectRuntime()` with `COPILOT_CLI=1` returns `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo and `disabled_by_scope` in a temp repo without `.github/hooks/*.json
+detectRuntime()` with `COPILOT_CLI=1` returns `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.claude/settings.local.json` exposes top-level `type` / `bash` / `timeoutSec` fields and the Copilot writer commands, and `disabled_by_scope` in a temp repo without that wrapper config.
 
 ### Evidence
 
-Test output showing both branches
+Wrapper-field inspection plus test output showing both branches
 
 ### Pass / Fail
 
-- **Pass**: both enabled and missing-config branches are covered
+- **Pass**: both enabled and missing-config branches are covered, and the checked-in wrapper fields point `UserPromptSubmit` / `SessionStart` at the Copilot writers
 - **Fail**: Any contradicting evidence appears or the pass condition is not met.
 
 ### Failure Triage
 
-Check repo `.github/hooks/*.json`, the temp-dir no-hook branch, and the `SPECKIT_COPILOT_INSTRUCTIONS_PATH` target when validating prompt-time Copilot context.
+Check `.claude/settings.local.json` for top-level `type`, `bash`, and `timeoutSec` on `UserPromptSubmit` / `SessionStart`, confirm those wrappers invoke `dist/hooks/copilot/user-prompt-submit.js` and `dist/hooks/copilot/session-prime.js`, then re-check the temp-dir missing-wrapper branch and the `SPECKIT_COPILOT_INSTRUCTIONS_PATH` target.
 
 ### Copilot custom-instructions transport check
 
-When the runtime detection branch reports Copilot hooks as enabled, verify the prompt-time transport separately:
+When the runtime detection branch reports Copilot hooks as enabled, verify the prompt-time transport separately through the wrapper-configured `UserPromptSubmit` path:
 
 ```bash
 export SPECKIT_COPILOT_INSTRUCTIONS_PATH="$(mktemp -d)/copilot-instructions.md"
+jq '.hooks.UserPromptSubmit[0] | {type, bash, timeoutSec}' .claude/settings.local.json
 printf '%s' '{"prompt":"implement TypeScript hook remediation","cwd":"'"$PWD"'"}' | \
-  node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/user-prompt-submit.js
+  bash -lc "$(jq -r '.hooks.UserPromptSubmit[0].bash' .claude/settings.local.json)"
 rg -n "SPEC-KIT-COPILOT-CONTEXT|Active Advisor Brief|Advisor:" "$SPECKIT_COPILOT_INSTRUCTIONS_PATH"
 ```
 
-Pass when stdout is `{}` and the temp custom-instructions file contains the managed Spec Kit block with an advisor brief.
+Pass when the wrapper inspection shows the top-level Copilot-safe fields, stdout is `{}`, and the temp custom-instructions file contains the managed Spec Kit block with an advisor brief.
 
 ---
 

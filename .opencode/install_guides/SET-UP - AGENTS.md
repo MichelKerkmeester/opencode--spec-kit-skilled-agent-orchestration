@@ -537,7 +537,7 @@ Discovery: search_tools(), list_tools(), or read .utcp_config.json
 
 #### Skill Routing Table
 
-When Gate 2 runs `skill_advisor.py`, it maps user intent to skills:
+When the runtime surfaces the automatic Skill Advisor Hook brief, Gate 2 uses that as the primary routing signal. When you need the scripted or diagnostic path, `skill_advisor.py` maps user intent to skills:
 
 | User Says                         | Skill Triggered       | Confidence |
 | --------------------------------- | --------------------- | ---------- |
@@ -571,7 +571,7 @@ OpenCode has built-in skill discovery. No manual skills table is required.
 ```markdown
 ### Skill Routing (Gate 2)
 
-Gate 2 routes tasks to skills via `skill_advisor.py`. When confidence > 0.8, you MUST invoke the recommended skill.
+Gate 2 uses the automatic Skill Advisor Hook brief when the runtime surfaces it. If the hook brief is unavailable, run `skill_advisor.py` as the compatibility fallback. When confidence > 0.8, you MUST invoke the recommended skill.
 
 **How to use skills:**
 - OpenCode v1.0.190+ auto-discovers skills from `.opencode/skill/*/SKILL.md` frontmatter
@@ -783,8 +783,10 @@ Run these quick checks to confirm the configuration is sound:
 # Verify AGENTS.md exists and is readable
 head -20 AGENTS.md
 
-# Verify skill routing script works
+# Verify CLI compatibility shim works
 python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "help me debug CSS"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-native "help me debug CSS"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local "help me debug CSS"
 
 # Verify MCP tools are configured
 cat opencode.json | jq '.mcp.servers | keys'
@@ -796,19 +798,37 @@ ls .opencode/skill/
 ls .opencode/command/
 ```
 
+Verify the native advisor tool surface in a hook-capable runtime or MCP console:
+
+```text
+advisor_status({"workspaceRoot":"/absolute/path/to/repo"})
+advisor_recommend({"prompt":"help me debug CSS","options":{"topK":1}})
+advisor_validate({"skillSlug":null})
+```
+
+If your runtime supports prompt hooks, start a fresh session and confirm the Skill Advisor Hook brief appears before falling back to the CLI shim. If you previously set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` for rollback testing, unset it before this check.
+
 ### Validation: `phase_4_complete`
 
 ```bash
 # All commands should succeed:
 head -5 AGENTS.md                                   # -> H1 title visible
-python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "save context"  # -> system-spec-kit
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-native "save context"  # -> native advisor path
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local "save context"   # -> Python fallback path
 cat opencode.json | python3 -m json.tool            # -> valid JSON
 ls .opencode/skill/                                 # -> skill directories listed
 ```
 
+```text
+advisor_status({"workspaceRoot":"/absolute/path/to/repo"})      -> freshness/trustState visible
+advisor_recommend({"prompt":"save context","options":{"topK":1}}) -> recommendation surface visible
+advisor_validate({"skillSlug":null})                               -> validation surface visible
+```
+
 **Checklist:**
 - [ ] AGENTS.md is readable and starts with expected H1?
-- [ ] `skill_advisor.py` routes correctly (test with sample request)?
+- [ ] Skill Advisor Hook brief or native advisor tools are available in the target runtime?
+- [ ] `skill_advisor.py` fallback works for default, `--force-native`, and `--force-local` checks?
 - [ ] `opencode.json` contains valid JSON?
 - [ ] Tool references in AGENTS.md resolve to actual installed tools?
 - [ ] Memory system accessible (no connection errors)?
@@ -835,7 +855,7 @@ Expected responses:
 ### Success Criteria (`phase_5_complete`)
 
 - [ ] AI reads AGENTS.md on session start
-- [ ] Skill routing works (Gate 2 activates with sample request)
+- [ ] Hook-first skill routing works (brief appears or fallback diagnostics pass)
 - [ ] Tool references resolve to actual tools
 - [ ] Memory system functions correctly
 - [ ] Spec folder workflow operates as expected
@@ -855,7 +875,7 @@ Quick reference for the mandatory gates defined in AGENTS.md. Gates are checkpoi
 | Gate/Rule                               | Trigger                        | Action                                             | Block Type |
 | --------------------------------------- | ------------------------------ | -------------------------------------------------- | ---------- |
 | **Gate 1:** Understanding               | Each new user message          | `memory_match_triggers()` -> Classify intent       | SOFT       |
-| **Gate 2:** Skill Routing               | Every task                     | Run `skill_advisor.py` -> Route if confidence > 0.8 | REQUIRED   |
+| **Gate 2:** Skill Routing               | Every task                     | Use hook brief when available -> else `skill_advisor.py` | REQUIRED   |
 | **Gate 3:** Spec Folder                 | File modification detected     | Ask A/B/C/D options before tools                   | HARD BLOCK |
 | **Memory Context Loading** (rule)       | User selects A or C in Gate 3  | Load memory when using existing spec folder        | SOFT       |
 | **Memory Save Rule** (post-exec)        | "save context", "/memory:save" | Validate folder -> Execute `generate-context.js`   | HARD       |
@@ -871,7 +891,7 @@ User Message
 +----------+----------------+
            |
 +---------------------------+
-| Gate 2: Skill Routing     |---> skill_advisor.py -> Route if >0.8
+| Gate 2: Skill Routing     |---> Hook brief if available -> else skill_advisor.py
 +----------+----------------+
            |
 +---------------------------+
@@ -923,7 +943,7 @@ User Message
 | Gate                  | Trigger Condition              | Required Action                                  | What Happens if Skipped              |
 | --------------------- | ------------------------------ | ------------------------------------------------ | ------------------------------------ |
 | Gate 1: Understanding | Every new user message         | Run `memory_match_triggers()`, classify intent   | Missing context, potential wrong answer |
-| Gate 2: Skill Routing | Every non-trivial task         | Run `skill_advisor.py` with 0.8 threshold        | Wrong tool used, quality degraded    |
+| Gate 2: Skill Routing | Every non-trivial task         | Use automatic hook brief when available; otherwise run `skill_advisor.py` with 0.8 threshold | Wrong tool used, quality degraded    |
 | Gate 3: Spec Folder   | Any file modification detected | Ask A/B/C/D before any tool use                  | Untracked changes, no documentation  |
 
 ### Block Types Explained
@@ -1054,9 +1074,9 @@ Remove any tool references from AGENTS.md that do not appear in the output above
 
 ### Skill Routing Fails
 
-**Error:** Gate 2 does not activate, or `skill_advisor.py` returns no recommendation.
+**Error:** Gate 2 hook routing does not activate, or `skill_advisor.py` returns no recommendation.
 
-**Cause:** The skill referenced is not present in `.opencode/skill/`, or the `skill_advisor.py` script is missing or misconfigured.
+**Cause:** The runtime hook/plugin path is not wired, native advisor tools are unavailable or disabled, or the `skill_advisor.py` compatibility shim is missing or misconfigured.
 
 **Fix:**
 
@@ -1064,12 +1084,25 @@ Remove any tool references from AGENTS.md that do not appear in the output above
 # Verify skill_advisor.py exists
 ls .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py
 
-# Run a test routing check
-python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "save my context" --threshold 0.8
+# Test native delegation through the compat shim
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-native "save my context"
+
+# Test local fallback explicitly
+python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local "save my context"
+
+# If rollback testing disabled hook-first behavior, restore it
+unset SPECKIT_SKILL_ADVISOR_HOOK_DISABLED
 
 # List actual skills installed
 ls .opencode/skill/
 ```
+
+```text
+advisor_status({"workspaceRoot":"/absolute/path/to/repo"})
+advisor_recommend({"prompt":"save my context","options":{"topK":1}})
+```
+
+If `--force-native` fails but `--force-local` succeeds, recheck runtime MCP/bootstrap wiring. If both CLI modes work but the hook brief is still absent, inspect the runtime's hook/plugin registration.
 
 Update the skills table in AGENTS.md to match only what is installed.
 
@@ -1223,7 +1256,8 @@ Update AGENTS.md to reference only the commands that exist in your `.opencode/co
 | `.utcp_config.json`                           | Code Mode external tools configuration   |
 | `.opencode/skill/`                            | Installed skills directory               |
 | `.opencode/command/`                          | Available slash commands directory       |
-| `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`    | Gate 2 skill routing script              |
+| `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`    | Gate 2 compatibility shim and diagnostics |
+| `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/INSTALL_GUIDE.md`             | Native advisor bootstrap, verification, and rollback |
 
 ### External Links
 
