@@ -8,7 +8,7 @@ import path from 'path';
 ──────────────────────────────────────────────────────────────── */
 
 import { checkDatabaseUpdated } from '../core/index.js';
-import { INDEX_SCAN_COOLDOWN, DEFAULT_BASE_PATH } from '../core/config.js';
+import { INDEX_SCAN_COOLDOWN, DEFAULT_BASE_PATH, BATCH_SIZE } from '../core/config.js';
 import { acquireIndexScanLease, completeIndexScanLease } from '../core/db-state.js';
 import { processBatches, requireDb, toErrorMessage, type RetryErrorResult } from '../utils/index.js';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
@@ -138,8 +138,19 @@ interface ScanArgs {
 import { indexMemoryFile } from './memory-save.js';
 
 /** Index a single memory file, delegating to the shared indexMemoryFile logic */
-async function indexSingleFile(filePath: string, force: boolean = false, options?: { qualityGateMode?: 'enforce' | 'warn-only' }): Promise<IndexResult> {
-  return indexMemoryFile(filePath, { force, qualityGateMode: options?.qualityGateMode });
+async function indexSingleFile(
+  filePath: string,
+  force: boolean = false,
+  options?: {
+    qualityGateMode?: 'enforce' | 'warn-only';
+    fromScan?: boolean;
+  },
+): Promise<IndexResult> {
+  return indexMemoryFile(filePath, {
+    force,
+    qualityGateMode: options?.qualityGateMode,
+    fromScan: options?.fromScan,
+  });
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -395,7 +406,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
   // Before indexing would cause silent data loss — a failed file would be
   // Marked "already indexed" and permanently skipped.
   const successfullyIndexedFiles: string[] = [];
-  const scanBatchSize = 1;
+  const scanBatchSize = BATCH_SIZE;
 
   if (filesToIndex.length > 0) {
     const batchResults = await processBatches(filesToIndex, async (filePath: string) => {
@@ -404,7 +415,10 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
       // everything that has valid frontmatter, not to enforce template contracts on
       // older files created before current templates were established.
       const useWarnOnly = force || isSpecDoc;
-      return await indexSingleFile(filePath, force, useWarnOnly ? { qualityGateMode: 'warn-only' } : undefined);
+      return await indexSingleFile(filePath, force, {
+        ...(useWarnOnly ? { qualityGateMode: 'warn-only' as const } : {}),
+        fromScan: true,
+      });
     }, scanBatchSize);
 
     for (let i = 0; i < batchResults.length; i++) {

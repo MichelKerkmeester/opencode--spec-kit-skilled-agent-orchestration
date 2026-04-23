@@ -10,9 +10,11 @@
     "e_lineage",
     "candidate_changed",
     "pe-gating",
-    "batch-serialization"
+    "fromscan",
+    "transactional-recheck-bypass"
   ],
-  "lastUpdated": "2026-04-23T17:48:00.000Z",
+  "summary": "Fix A keeps PE candidate discovery intact while downgrading cross-file UPDATE/REINFORCE decisions to CREATE, and Fix B2 threads fromScan from memory_index_scan into memory_save so scan-originated saves bypass the transactional complement recheck instead of relying on batch serialization.",
+  "lastUpdated": "2026-04-23T18:55:00.000Z",
   "specId": "010",
   "folderSlug": "memory-indexer-lineage-and-concurrency-fix",
   "parentChain": [

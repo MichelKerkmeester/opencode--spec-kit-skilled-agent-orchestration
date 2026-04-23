@@ -18,7 +18,7 @@
       "026/010 memory indexer lineage fix",
       "e_lineage fix",
       "candidate_changed fix",
-      "spec-kit-memory batch concurrency",
+      "spec-kit-memory fromScan recheck bypass",
       "026/010 plan",
       "memory indexer lineage concurrency plan",
       "026/010 tasks",
@@ -34,7 +34,8 @@
       "candidate_changed",
       "pe-gating",
       "scan",
-      "serialization",
+      "fromscan",
+      "transactional-recheck",
       "026"
     ],
     "importance_tier": "high",
@@ -47,6 +48,7 @@
       "implementation-summary.md",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/save/pe-orchestration.ts",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/pe-orchestration.vitest.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-index.vitest.ts"
     ],
@@ -61,6 +63,12 @@
         "name": "memory-index.ts",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
         "source": "derived"
       },
       {
@@ -82,9 +90,9 @@
         "source": "derived"
       }
     ],
-    "causal_summary": "This packet fixes cross-file PE lineage reuse and scan-triggered candidate churn in the spec-kit-memory indexer by downgrading unsafe PE decisions to CREATE and serializing scan saves.",
+    "causal_summary": "This packet fixes cross-file PE lineage reuse and scan-triggered candidate_changed failures in the spec-kit-memory indexer by downgrading unsafe PE decisions to CREATE and threading fromScan into memory_save so scan-originated saves bypass the transactional complement recheck.",
     "created_at": "2026-04-23T17:48:00.000Z",
-    "last_save_at": "2026-04-23T17:48:00.000Z",
+    "last_save_at": "2026-04-23T18:07:07.000Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

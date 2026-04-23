@@ -1980,6 +1980,7 @@ async function processPreparedMemory(
     force?: boolean;
     asyncEmbedding?: boolean;
     plannerMode?: AtomicSaveParams['plannerMode'];
+    fromScan?: boolean;
     persistQualityLoopContent?: boolean;
     refreshFromDiskAfterLock?: boolean;
     specFolderLockAlreadyHeld?: boolean;
@@ -1992,6 +1993,7 @@ async function processPreparedMemory(
     force = false,
     asyncEmbedding = false,
     plannerMode: requestedPlannerMode,
+    fromScan = false,
     persistQualityLoopContent = true,
     refreshFromDiskAfterLock = false,
     specFolderLockAlreadyHeld = false,
@@ -2362,7 +2364,7 @@ async function processPreparedMemory(
 
     const requestedScope = getRequestedScope(scope);
     const writeTransaction = database.transaction((): number => {
-      if (embedding) {
+      if (!fromScan && embedding) {
         const complementRecheck = findScopeFilteredCandidates({
           database,
           embedding,
@@ -2548,6 +2550,7 @@ async function indexMemoryFile(
     parsedOverride = null as ReturnType<typeof memoryParser.parseMemoryFile> | null,
     asyncEmbedding = false,
     plannerMode,
+    fromScan = false,
     scope = {} as MemoryScopeMatch,
     qualityGateMode = 'enforce' as 'enforce' | 'warn-only',
     routing,
@@ -2556,6 +2559,7 @@ async function indexMemoryFile(
     parsedOverride?: ReturnType<typeof memoryParser.parseMemoryFile> | null;
     asyncEmbedding?: boolean;
     plannerMode?: AtomicSaveParams['plannerMode'];
+    fromScan?: boolean;
     scope?: MemoryScopeMatch;
     qualityGateMode?: 'enforce' | 'warn-only';
     routing?: RoutedSaveOptions;
@@ -2577,6 +2581,7 @@ async function indexMemoryFile(
     force,
     asyncEmbedding,
     plannerMode,
+    fromScan,
     persistQualityLoopContent: true,
     refreshFromDiskAfterLock: parsedOverride !== null,
     scope,

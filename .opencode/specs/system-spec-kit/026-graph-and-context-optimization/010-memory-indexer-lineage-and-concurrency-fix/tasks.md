@@ -10,11 +10,11 @@ contextType: "spec"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix"
-    last_updated_at: "2026-04-23T17:48:00Z"
+    last_updated_at: "2026-04-23T18:07:07Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Completed code changes and recorded verification outcomes"
-    next_safe_action: "Rerun the live packet scan after restarting the MCP runtime"
-    completion_pct: 95
+    recent_action: "Replaced Fix B1 with Fix B2 after live acceptance showed B1 insufficient"
+    next_safe_action: "User restart MCP and run memory_index_scan on 009 to confirm zero candidate_changed"
+    completion_pct: 90
 ---
 # Task Breakdown: Memory Indexer Lineage and Concurrency Fix
 
@@ -46,7 +46,8 @@ _memory:
 
 - [x] **T-03** Add canonical path plumbing to `SimilarMemory` so PE orchestration can reason about same-file identity. [EVIDENCE: `handlers/save/types.ts`, `handlers/pe-gating.ts`.]
 - [x] **T-04** Implement Fix A with A2: downgrade cross-file `UPDATE` and `REINFORCE` decisions to `CREATE`. [EVIDENCE: `handlers/save/pe-orchestration.ts`.]
-- [x] **T-05** Implement Fix B with B1: force `memory_index_scan` batch size to 1. [EVIDENCE: `handlers/memory-index.ts`.]
+- [x] **T-05** Roll back Fix B1 by removing the forced `scanBatchSize = 1` override. [EVIDENCE: `handlers/memory-index.ts` now uses `BATCH_SIZE`.]
+- [x] **T-06** Implement Fix B2 by marking scan-originated saves with `fromScan: true` and skipping the transactional reconsolidation recheck only for those saves. [EVIDENCE: `handlers/memory-index.ts`, `handlers/memory-save.ts`.]
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -54,15 +55,14 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] **T-06** Add a PE regression for `tasks.md` vs sibling `checklist.md`. [EVIDENCE: `tests/pe-orchestration.vitest.ts`.]
-- [x] **T-07** Add a scan regression that would throw `candidate_changed` if sibling saves overlapped. [EVIDENCE: `tests/handler-memory-index.vitest.ts`.]
-- [x] **T-08** Run the focused regression pair and confirm both pass. [EVIDENCE: `npx vitest run tests/pe-orchestration.vitest.ts tests/handler-memory-index.vitest.ts` returned 25 passed.]
-- [x] **T-09** Run `npm run typecheck`. [EVIDENCE: exit 0.]
-- [x] **T-10** Run `npm run build`. [EVIDENCE: exit 0.]
-- [x] **T-11** Run `npm run test:core` and isolate any unrelated failures. [EVIDENCE: full run timed out under `timeout 180`; isolated repro shows unrelated `tests/copilot-hook-wiring.vitest.ts` assertion failure.]
-- [x] **T-12** Attempt the operational acceptance scan on `026/009-hook-daemon-parity` and record the environment blocker. [EVIDENCE: direct CLI-style run hit external Voyage embedding retries and could not finish usefully in this sandbox.]
-- [x] **T-13** Create this packet and update the 026 parent metadata. [EVIDENCE: packet docs plus parent `description.json` and `graph-metadata.json` include `010-memory-indexer-lineage-and-concurrency-fix`.]
-- [ ] **T-14** Rerun `memory_index_scan` on `026/009-hook-daemon-parity` in a network-enabled MCP runtime and confirm zero `E_LINEAGE` and zero `candidate_changed` failures. [BLOCKED: not achievable in this sandbox without live embedding access and a fully initialized runtime.]
+- [x] **T-07** Preserve the Fix A regression for `tasks.md` vs sibling `checklist.md`. [EVIDENCE: `tests/pe-orchestration.vitest.ts`.]
+- [x] **T-08** Replace the old B1 scan serialization test with B2 coverage for `fromScan` propagation and the non-scan control path. [EVIDENCE: `tests/handler-memory-index.vitest.ts`.]
+- [x] **T-09** Run the focused regression pair and confirm both pass after the B2 patch. [EVIDENCE: `npx vitest run tests/pe-orchestration.vitest.ts tests/handler-memory-index.vitest.ts` returned `26 passed (26)`.]
+- [x] **T-10** Run `npm run typecheck` after the B2 patch. [EVIDENCE: exit 0.]
+- [x] **T-11** Run `npm run build` after the B2 patch. [EVIDENCE: exit 0.]
+- [x] **T-12** Run `timeout 240 npm run test:core` and isolate any unrelated failures. [EVIDENCE: full run exited 124 after surfacing untouched `tests/copilot-hook-wiring.vitest.ts`; isolated repro exits 1 with the same assertion.]
+- [x] **T-13** Validate this packet with `validate.sh --strict --no-recursive` after the B2 doc update. [EVIDENCE: exit 0.]
+- [ ] **T-14** Restart MCP, rerun `memory_index_scan` on `026/009-hook-daemon-parity`, and confirm zero `E_LINEAGE` plus zero `candidate_changed`. [BLOCKED: requires user restart / live runtime acceptance.]
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -73,7 +73,7 @@ _memory:
 - Code fixes landed for both root causes
 - Regression coverage added for both failure classes
 - Required compile/build commands passed
-- Packet and parent metadata updated
+- Packet docs updated for B2
 - Remaining live acceptance rerun is documented, not hidden
 <!-- /ANCHOR:completion -->
 

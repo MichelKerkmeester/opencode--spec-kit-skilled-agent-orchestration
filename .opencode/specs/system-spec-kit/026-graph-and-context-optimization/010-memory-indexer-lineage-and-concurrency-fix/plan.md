@@ -10,11 +10,11 @@ contextType: "spec"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix"
-    last_updated_at: "2026-04-23T17:48:00Z"
+    last_updated_at: "2026-04-23T18:07:07Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Verified the code patch and documented the remaining operational acceptance blocker"
-    next_safe_action: "Restart MCP and rerun the packet scan in a network-enabled runtime"
-    completion_pct: 95
+    recent_action: "Replaced Fix B1 with Fix B2 after live acceptance showed B1 insufficient"
+    next_safe_action: "User restart MCP and run memory_index_scan on 009 to confirm zero candidate_changed"
+    completion_pct: 90
 ---
 # Implementation Plan: Memory Indexer Lineage and Concurrency Fix
 
@@ -30,7 +30,7 @@ Keep the patch narrow:
 
 1. Preserve canonical file path on PE candidates.
 2. Downgrade cross-file `UPDATE` and `REINFORCE` decisions to `CREATE`.
-3. Serialize `memory_index_scan` batches to remove scan-originated reconsolidation churn.
+3. Mark scan-originated saves with `fromScan: true` and skip only the save-time transactional reconsolidation recheck.
 4. Prove both behaviors with targeted regressions before writing the packet.
 <!-- /ANCHOR:summary -->
 
@@ -75,21 +75,21 @@ Implementation shape:
 - After `evaluateMemory()` chooses a candidate, compare the candidate's canonical path with the current save target.
 - If the paths differ, rewrite the PE decision to `CREATE`.
 
-### Fix B choice: B1
+### Fix B choice: B2
 
-Chosen path: serialize scan-triggered saves by forcing `memory_index_scan` batch size to 1.
+Chosen path: keep the normal scan batch size, but mark scan-originated saves and skip the transactional reconsolidation recheck that compares planner-time vs commit-time candidates.
 
 Reason:
 
-- It is the least invasive change that fixes the race immediately.
-- It avoids threading a new `fromScan` flag through the save pipeline.
-- It keeps normal `memory_save` reconsolidation behavior unchanged.
+- Live acceptance proved B1 was ineffective because the failure happened inside the save transaction, not in outer batch overlap.
+- It keeps normal `memory_save` behavior unchanged.
+- It removes the scan-only false positive without touching Fix A or broadening PE behavior.
 
 Implementation shape:
 
-- Keep `processBatches()` generic.
-- In `handlers/memory-index.ts`, set a local `scanBatchSize = 1` and pass it to `processBatches()`.
-- Return the effective scan batch size in the MCP response envelope.
+- Restore `memory_index_scan` to the default `BATCH_SIZE`.
+- Thread `fromScan: true` from `handlers/memory-index.ts` into `indexMemoryFile()`.
+- Guard the `candidate_changed` transactional recheck in `handlers/memory-save.ts` with `!fromScan`.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -107,12 +107,14 @@ Implementation shape:
 
 - Add canonical path plumbing to `SimilarMemory`.
 - Add the A2 downgrade guard in PE orchestration.
-- Force scan-triggered batch size to 1.
+- Revert the forced scan batch size override.
+- Thread `fromScan: true` through scan-originated saves.
+- Skip the save-time transactional reconsolidation recheck for scan-originated saves only.
 
 ### Phase 3: Regression coverage
 
 - Add a PE orchestration regression for `tasks.md` vs sibling `checklist.md`.
-- Add a scan regression that would throw `candidate_changed` if saves overlapped.
+- Replace the old scan serialization regression with a scan-originated `fromScan` propagation test and a non-scan control.
 
 ### Phase 4: Verification and docs
 
@@ -130,7 +132,7 @@ Implementation shape:
 | Test | Asserts |
 |------|---------|
 | `tests/pe-orchestration.vitest.ts` | A sibling `checklist.md` candidate cannot drive `UPDATE` or `REINFORCE` for `tasks.md` |
-| `tests/handler-memory-index.vitest.ts` | Scan-shaped sibling docs never overlap in flight and never surface `candidate_changed` |
+| `tests/handler-memory-index.vitest.ts` | Scan-originated saves pass `fromScan: true`, avoid the fake transactional `candidate_changed` abort, and keep non-scan saves on the normal path |
 | `npm run typecheck` | New typings and mocks compile cleanly |
 | `npm run build` | Dist output rebuilds cleanly |
 | `npm run test:core` | Full suite result recorded exactly, including unrelated failures |
@@ -146,7 +148,7 @@ Implementation shape:
 |------------|--------|
 | `/tmp/codex-lineage-investigation-output.txt` | Read and used as the root-cause source |
 | Existing PE gating and lineage invariants | Preserved |
-| Existing `SPEC_KIT_BATCH_SIZE` default | Left intact for general batching; overridden only in `memory_index_scan` |
+| Existing `SPEC_KIT_BATCH_SIZE` default | Restored as the effective `memory_index_scan` batch size after rolling back B1 |
 | External embedding access for live packet acceptance | Blocked in this sandbox |
 <!-- /ANCHOR:dependencies -->
 

@@ -5,13 +5,375 @@ import { describe, it, expect, afterAll, vi } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
+import BetterSqlite3 from 'better-sqlite3';
 
 import * as handler from '../handlers/memory-index';
+import { BATCH_SIZE } from '../core/config';
 
 let tempDir: string | null = null;
 
 function workspaceSpecPath(rootFolder: string, specId: string, fileName: string): string {
   return path.posix.join('/workspace', rootFolder, 'system-spec-kit', specId, fileName);
+}
+
+function buildSaveGuardParsedMemory(filePath: string) {
+  return {
+    specFolder: 'system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix',
+    filePath,
+    title: 'Memory Indexer Lineage and Concurrency Fix',
+    triggerPhrases: ['candidate_changed fix', 'fromScan guard'],
+    content: [
+      '---',
+      'title: "Memory Indexer Lineage and Concurrency Fix"',
+      'description: "Regression fixture for the save-time reconsolidation guard."',
+      'trigger_phrases:',
+      '  - "candidate_changed fix"',
+      '  - "fromScan guard"',
+      'importance_tier: "high"',
+      'contextType: "spec"',
+      '---',
+      '',
+      '# Memory Indexer Lineage and Concurrency Fix',
+      '',
+      '## SESSION SUMMARY',
+      '',
+      '| **Meta Data** | **Value** |',
+      '|:--------------|:----------|',
+      '| Total Messages | 4 |',
+      '',
+      '<!-- ANCHOR:continue-session -->',
+      '',
+      '## CONTINUE SESSION',
+      '',
+      'Continue validating the scan-originated save guard regression.',
+      '',
+      '<!-- /ANCHOR:continue-session -->',
+      '',
+      '<!-- ANCHOR:canonical-docs -->',
+      '',
+      '## CANONICAL SOURCES',
+      '',
+      '- `plan.md` - B2 fromScan guard narrative',
+      '- `implementation-summary.md` - Verification story for the transactional recheck bypass',
+      '',
+      '<!-- /ANCHOR:canonical-docs -->',
+      '',
+      '<!-- ANCHOR:overview -->',
+      '',
+      '## OVERVIEW',
+      '',
+      'This fixture exists only to exercise the real save-time reconsolidation guard path.',
+      '',
+      '<!-- /ANCHOR:overview -->',
+      '',
+      '<!-- ANCHOR:evidence -->',
+      '',
+      '## DISTINGUISHING EVIDENCE',
+      '',
+      '- The scan path must bypass the transactional complement recheck.',
+      '- The non-scan path must still surface candidate_changed.',
+      '',
+      '<!-- /ANCHOR:evidence -->',
+      '',
+      '<!-- ANCHOR:metadata -->',
+      '',
+      '## MEMORY METADATA',
+      '',
+      '```yaml',
+      'session_id: "handler-memory-index-fromscan-guard"',
+      '```',
+      '',
+      '<!-- /ANCHOR:metadata -->',
+    ].join('\n'),
+    contentHash: 'fromscan-guard-fixture',
+    contextType: 'spec',
+    importanceTier: 'high',
+    hasCausalLinks: false,
+    qualityFlags: [],
+  };
+}
+
+function resetRealMemorySaveHarnessMocks(): void {
+  const mockedModules = [
+    '../handlers/memory-save',
+    '../handlers/memory-save.js',
+    '../core/index.js',
+    '../utils/validators.js',
+    '../utils/index.js',
+    '../lib/parsing/memory-parser.js',
+    '../handlers/v-rule-bridge.js',
+    '../handlers/quality-loop.js',
+    '../lib/validation/save-quality-gate.js',
+    '../lib/search/search-flags.js',
+    '../handlers/save/embedding-pipeline.js',
+    '../handlers/save/dedup.js',
+    '../handlers/save/pe-orchestration.js',
+    '../handlers/save/reconsolidation-bridge.js',
+    '../handlers/save/create-record.js',
+    '../handlers/save/post-insert.js',
+    '../handlers/save/response-builder.js',
+    '../lib/storage/lineage-state.js',
+    '@spec-kit/shared/parsing/memory-sufficiency',
+    '@spec-kit/shared/parsing/memory-template-contract',
+    '@spec-kit/shared/parsing/spec-doc-health',
+  ];
+
+  for (const moduleId of mockedModules) {
+    vi.doUnmock(moduleId);
+  }
+  vi.restoreAllMocks();
+  vi.resetModules();
+}
+
+async function loadRealMemorySaveGuardHarness(database: InstanceType<typeof BetterSqlite3>) {
+  vi.resetModules();
+  vi.doUnmock('../handlers/memory-save');
+  vi.doUnmock('../handlers/memory-save.js');
+
+  const createMemoryRecordMock = vi.fn(() => 4101);
+  const findScopeFilteredCandidatesMock = vi.fn(() => ({
+    candidates: [
+      {
+        id: 77,
+        file_path: '/workspace/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix/plan.md',
+        title: 'Candidate surfaced during transaction',
+        content_text: 'Transaction-only candidate',
+        similarity: 95,
+        spec_folder: 'system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix',
+      },
+    ],
+    suppressedCandidateIds: [],
+    malformedCandidateCount: 0,
+    rawCandidateCount: 1,
+  }));
+  const runReconsolidationIfEnabledMock = vi.fn(async () => ({
+    earlyReturn: null,
+    warnings: [],
+    saveTimeReconsolidation: {
+      status: 'skipped' as const,
+      persistedState: { kind: 'create' as const },
+    },
+  }));
+
+  vi.doMock('../core/index.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../core/index.js')>();
+    return {
+      ...actual,
+      checkDatabaseUpdated: vi.fn(async () => false),
+    };
+  });
+
+  vi.doMock('../utils/validators.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../utils/validators.js')>();
+    return {
+      ...actual,
+      createFilePathValidator: vi.fn(() => ((candidatePath: string) => candidatePath)),
+    };
+  });
+
+  vi.doMock('../utils/index.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../utils/index.js')>();
+    return {
+      ...actual,
+      requireDb: vi.fn(() => database),
+    };
+  });
+
+  vi.doMock('../lib/parsing/memory-parser.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../lib/parsing/memory-parser.js')>();
+    return {
+      ...actual,
+      parseMemoryFile: vi.fn((filePath: string) => buildSaveGuardParsedMemory(filePath)),
+      validateParsedMemory: vi.fn(() => ({ valid: true, errors: [], warnings: [] })),
+      isMemoryFile: vi.fn(() => true),
+    };
+  });
+
+  vi.doMock('../handlers/v-rule-bridge.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../handlers/v-rule-bridge.js')>();
+    return {
+      ...actual,
+      validateMemoryQualityContent: vi.fn(() => ({ valid: true, failedRules: [] })),
+      determineValidationDisposition: vi.fn(() => 'allow'),
+    };
+  });
+
+  vi.doMock('@spec-kit/shared/parsing/memory-sufficiency', () => ({
+    MEMORY_SUFFICIENCY_REJECTION_CODE: 'INSUFFICIENT_CONTEXT_ABORT',
+    evaluateMemorySufficiency: vi.fn(() => ({
+      pass: true,
+      rejectionCode: 'INSUFFICIENT_CONTEXT_ABORT',
+      reasons: [],
+      evidenceCounts: {
+        primary: 2,
+        support: 2,
+        total: 4,
+        semanticChars: 420,
+        uniqueWords: 72,
+        anchors: 2,
+        triggerPhrases: 2,
+      },
+      score: 0.97,
+    })),
+  }));
+
+  vi.doMock('@spec-kit/shared/parsing/memory-template-contract', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('@spec-kit/shared/parsing/memory-template-contract')>();
+    return {
+      ...actual,
+      validateMemoryTemplateContract: vi.fn(() => ({
+        valid: true,
+        violations: [],
+        missingAnchors: [],
+        unexpectedTemplateArtifacts: [],
+      })),
+    };
+  });
+
+  vi.doMock('@spec-kit/shared/parsing/spec-doc-health', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('@spec-kit/shared/parsing/spec-doc-health')>();
+    return {
+      ...actual,
+      evaluateSpecDocHealth: vi.fn(() => null),
+    };
+  });
+
+  vi.doMock('../handlers/quality-loop.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../handlers/quality-loop.js')>();
+    return {
+      ...actual,
+      runQualityLoop: vi.fn(() => ({
+        score: { total: 0.92, issues: [] },
+        fixes: [],
+        passed: true,
+        rejected: false,
+        fixedTriggerPhrases: undefined,
+      })),
+    };
+  });
+
+  vi.doMock('../lib/validation/save-quality-gate.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../lib/validation/save-quality-gate.js')>();
+    return {
+      ...actual,
+      runQualityGate: vi.fn(() => ({ pass: true, warnOnly: false, reasons: [], layers: {} })),
+      isQualityGateEnabled: vi.fn(() => true),
+    };
+  });
+
+  vi.doMock('../lib/search/search-flags.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../lib/search/search-flags.js')>();
+    return {
+      ...actual,
+      isSaveQualityGateEnabled: vi.fn(() => false),
+      isPostInsertEnrichmentEnabled: vi.fn(() => false),
+      isSaveReconsolidationEnabled: vi.fn(() => true),
+    };
+  });
+
+  vi.doMock('../handlers/save/embedding-pipeline.js', () => ({
+    generateOrCacheEmbedding: vi.fn(async () => ({
+      embedding: new Float32Array([0.25, 0.25]),
+      status: 'success',
+      failureReason: null,
+      pendingCacheWrite: null,
+    })),
+    persistPendingEmbeddingCacheWrite: vi.fn(),
+  }));
+
+  vi.doMock('../handlers/save/dedup.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../handlers/save/dedup.js')>();
+    return {
+      ...actual,
+      checkExistingRow: vi.fn(() => null),
+      checkContentHashDedup: vi.fn(() => null),
+    };
+  });
+
+  vi.doMock('../handlers/save/pe-orchestration.js', () => ({
+    evaluateAndApplyPeDecision: vi.fn(() => ({
+      decision: { action: 'CREATE', similarity: 0, reason: 'guard regression fixture' },
+      earlyReturn: null,
+      supersededId: null,
+    })),
+  }));
+
+  vi.doMock('../handlers/save/reconsolidation-bridge.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../handlers/save/reconsolidation-bridge.js')>();
+    return {
+      ...actual,
+      findScopeFilteredCandidates: findScopeFilteredCandidatesMock,
+      getRequestedScope: vi.fn(() => ({
+        tenantId: null,
+        userId: null,
+        agentId: null,
+        sessionId: null,
+      })),
+      runReconsolidationIfEnabled: runReconsolidationIfEnabledMock,
+    };
+  });
+
+  vi.doMock('../handlers/save/create-record.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../handlers/save/create-record.js')>();
+    return {
+      ...actual,
+      createMemoryRecord: createMemoryRecordMock,
+      findSamePathExistingMemory: vi.fn(() => undefined),
+    };
+  });
+
+  vi.doMock('../lib/storage/lineage-state.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../lib/storage/lineage-state.js')>();
+    return {
+      ...actual,
+      createAppendOnlyMemoryRecord: vi.fn(() => 4102),
+      recordLineageVersion: vi.fn(),
+    };
+  });
+
+  vi.doMock('../handlers/save/post-insert.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../handlers/save/post-insert.js')>();
+    return {
+      ...actual,
+      runPostInsertEnrichmentIfEnabled: vi.fn(async () => ({
+        causalLinksResult: null,
+        enrichmentStatus: {
+          causalLinks: { status: 'skipped' as const },
+          entityExtraction: { status: 'skipped' as const },
+          summaries: { status: 'skipped' as const },
+          entityLinking: { status: 'skipped' as const },
+          graphLifecycle: { status: 'skipped' as const },
+        },
+        executionStatus: { status: 'skipped' as const },
+      })),
+    };
+  });
+
+  vi.doMock('../handlers/save/response-builder.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../handlers/save/response-builder.js')>();
+    return {
+      ...actual,
+      buildIndexResult: vi.fn(({ id, parsed }) => ({
+        status: 'indexed',
+        id,
+        specFolder: parsed.specFolder,
+        title: parsed.title,
+        triggerPhrases: parsed.triggerPhrases,
+        contextType: parsed.contextType,
+        importanceTier: parsed.importanceTier,
+        message: 'Indexed successfully',
+        embeddingStatus: 'success',
+      })),
+    };
+  });
+
+  const module = await import('../handlers/memory-save');
+  return {
+    module,
+    createMemoryRecordMock,
+    findScopeFilteredCandidatesMock,
+    runReconsolidationIfEnabledMock,
+  };
 }
 
 afterAll(() => {
@@ -214,13 +576,12 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
     });
   });
 
-  describe('scan batch concurrency regressions', () => {
-    it('serializes sibling spec-doc saves so scan batches do not self-trigger candidate_changed', async () => {
+  describe('scan-originated save guard regressions', () => {
+    it('passes fromScan=true for scan-originated saves so the fake recheck never fires', async () => {
       const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-index-scan-serial-'));
       const previousBasePath = process.env.MEMORY_BASE_PATH;
-      let inFlight = 0;
-      let maxInFlight = 0;
       let nextId = 1000;
+      let transactionalRecheckCalls = 0;
 
       try {
         const specFolder = path.join(
@@ -239,23 +600,17 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
         process.env.MEMORY_BASE_PATH = root;
         vi.resetModules();
 
-        const indexMemoryFileMock = vi.fn(async () => {
-          inFlight += 1;
-          maxInFlight = Math.max(maxInFlight, inFlight);
-          try {
-            if (inFlight > 1) {
-              throw new Error('candidate_changed');
-            }
-            await new Promise((resolve) => setTimeout(resolve, 5));
-            nextId += 1;
-            return {
-              status: 'indexed',
-              id: nextId,
-              title: 'Indexed spec doc',
-            };
-          } finally {
-            inFlight -= 1;
+        const indexMemoryFileMock = vi.fn(async (_filePath: string, options?: { fromScan?: boolean }) => {
+          if (!options?.fromScan) {
+            transactionalRecheckCalls += 1;
+            throw new Error('candidate_changed');
           }
+          nextId += 1;
+          return {
+            status: 'indexed',
+            id: nextId,
+            title: 'Indexed spec doc',
+          };
         });
 
         vi.doMock('../handlers/memory-save.js', () => ({
@@ -333,8 +688,9 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
         };
 
         expect(indexMemoryFileMock).toHaveBeenCalledTimes(5);
-        expect(maxInFlight).toBe(1);
-        expect(envelope.data.batchSize).toBe(1);
+        expect(indexMemoryFileMock.mock.calls.every(([, options]) => (options as { fromScan?: boolean } | undefined)?.fromScan === true)).toBe(true);
+        expect(transactionalRecheckCalls).toBe(0);
+        expect(envelope.data.batchSize).toBe(BATCH_SIZE);
         expect(envelope.data.failed).toBe(0);
         expect(envelope.data.files.some((entry) => entry.error === 'candidate_changed')).toBe(false);
       } finally {
@@ -344,6 +700,120 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
           process.env.MEMORY_BASE_PATH = previousBasePath;
         }
         vi.resetModules();
+        fs.rmSync(root, { recursive: true, force: true });
+      }
+    });
+
+    it('keeps non-scan indexSingleFile calls on the normal path so the guard stays conditional', async () => {
+      vi.resetModules();
+      let transactionalRecheckCalls = 0;
+
+      const indexMemoryFileMock = vi.fn(async (_filePath: string, options?: { fromScan?: boolean }) => {
+        if (!options?.fromScan) {
+          transactionalRecheckCalls += 1;
+          throw new Error('candidate_changed');
+        }
+        return {
+          status: 'indexed',
+          id: 2001,
+          title: 'Indexed spec doc',
+        };
+      });
+
+      vi.doMock('../handlers/memory-save.js', () => ({
+        indexMemoryFile: indexMemoryFileMock,
+      }));
+
+      const isolatedHandler = await import('../handlers/memory-index');
+
+      await expect(
+        isolatedHandler.indexSingleFile('/workspace/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/spec.md'),
+      ).rejects.toThrow('candidate_changed');
+
+      expect(transactionalRecheckCalls).toBe(1);
+      expect(indexMemoryFileMock).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.not.objectContaining({ fromScan: true }),
+      );
+
+      vi.resetModules();
+    });
+
+    it('bypasses the real memory-save transactional recheck when fromScan=true', async () => {
+      const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-index-real-fromscan-'));
+      const filePath = path.join(
+        root,
+        '.opencode',
+        'specs',
+        'system-spec-kit',
+        '026-graph-and-context-optimization',
+        '010-memory-indexer-lineage-and-concurrency-fix',
+        'implementation-summary.md',
+      );
+      fs.mkdirSync(path.dirname(filePath), { recursive: true });
+      fs.writeFileSync(filePath, '# placeholder\n', 'utf8');
+
+      const database = new BetterSqlite3(':memory:');
+
+      try {
+        const harness = await loadRealMemorySaveGuardHarness(database);
+        const result = await harness.module.indexMemoryFile(filePath, {
+          force: true,
+          asyncEmbedding: false,
+          fromScan: true,
+        });
+
+        expect(harness.runReconsolidationIfEnabledMock).toHaveBeenCalledTimes(1);
+        expect(harness.findScopeFilteredCandidatesMock).not.toHaveBeenCalled();
+        expect(harness.createMemoryRecordMock).toHaveBeenCalledTimes(1);
+        expect(result.status).toBe('indexed');
+        expect(result.id).toBe(4101);
+      } finally {
+        database.close();
+        resetRealMemorySaveHarnessMocks();
+        fs.rmSync(root, { recursive: true, force: true });
+      }
+    });
+
+    it('keeps the real memory-save transactional recheck active when fromScan is omitted', async () => {
+      const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-index-real-nonscan-'));
+      const filePath = path.join(
+        root,
+        '.opencode',
+        'specs',
+        'system-spec-kit',
+        '026-graph-and-context-optimization',
+        '010-memory-indexer-lineage-and-concurrency-fix',
+        'implementation-summary.md',
+      );
+      fs.mkdirSync(path.dirname(filePath), { recursive: true });
+      fs.writeFileSync(filePath, '# placeholder\n', 'utf8');
+
+      const database = new BetterSqlite3(':memory:');
+
+      try {
+        const harness = await loadRealMemorySaveGuardHarness(database);
+        const result = await harness.module.indexMemoryFile(filePath, {
+          force: true,
+          asyncEmbedding: false,
+        });
+
+        expect(harness.runReconsolidationIfEnabledMock).toHaveBeenCalledTimes(1);
+        expect(harness.findScopeFilteredCandidatesMock).toHaveBeenCalledTimes(1);
+        expect(harness.createMemoryRecordMock).not.toHaveBeenCalled();
+        expect(result.status).toBe('error');
+        expect(result.error).toContain('candidate_changed');
+        expect(result.saveTimeReconsolidation).toMatchObject({
+          status: 'failed',
+          reason: 'candidate_changed',
+          persistedState: {
+            kind: expect.any(String),
+            candidateMemoryIds: [77],
+          },
+        });
+      } finally {
+        database.close();
+        resetRealMemorySaveHarnessMocks();
         fs.rmSync(root, { recursive: true, force: true });
       }
     });
