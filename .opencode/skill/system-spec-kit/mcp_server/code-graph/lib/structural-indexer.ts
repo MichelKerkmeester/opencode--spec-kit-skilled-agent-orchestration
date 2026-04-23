@@ -1289,5 +1289,24 @@ export async function indexFiles(config: IndexerConfig, options: IndexFilesOptio
     }
   }
 
+  const globalSeenIds = new Set<string>();
+  let droppedDuplicateNodes = 0;
+  for (const result of results) {
+    const dedupedNodes: CodeNode[] = [];
+    for (const node of result.nodes) {
+      if (globalSeenIds.has(node.symbolId)) {
+        droppedDuplicateNodes++;
+        continue;
+      }
+      globalSeenIds.add(node.symbolId);
+      dedupedNodes.push(node);
+    }
+    result.nodes = dedupedNodes;
+  }
+
+  if (droppedDuplicateNodes > 0) {
+    console.info(`[structural-indexer] dropped ${droppedDuplicateNodes} cross-file duplicate symbol nodes`);
+  }
+
   return results;
 }

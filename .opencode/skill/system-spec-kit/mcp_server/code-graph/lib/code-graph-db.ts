@@ -306,7 +306,7 @@ export function upsertFile(
 export function replaceNodes(fileId: number, nodes: CodeNode[]): void {
   const d = getDb();
   const insert = d.prepare(`
-    INSERT INTO code_nodes (symbol_id, file_id, file_path, fq_name, kind, name,
+    INSERT OR IGNORE INTO code_nodes (symbol_id, file_id, file_path, fq_name, kind, name,
       start_line, end_line, start_column, end_column, language, signature, docstring, content_hash)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);

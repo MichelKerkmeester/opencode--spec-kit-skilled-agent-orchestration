@@ -59,6 +59,7 @@ afterEach(() => {
   delete process.env.SPECKIT_PARSER;
   vi.doUnmock('node:child_process');
   vi.doUnmock('node:fs');
+  vi.doUnmock('../code-graph/lib/indexer-types.js');
   vi.doUnmock('../code-graph/lib/code-graph-db.js');
   vi.doUnmock('../code-graph/lib/structural-indexer.js');
   vi.resetModules();
@@ -313,6 +314,95 @@ describe('indexFiles options', () => {
     });
 
     expect(results.map(result => relative(tempRoot, result.filePath).replace(/\\/g, '/'))).toEqual(['stale.ts']);
+  });
+});
+
+describe('indexFiles cross-file dedup (Layer 1)', () => {
+  beforeEach(() => {
+    vi.resetModules();
+    vi.restoreAllMocks();
+    process.env.SPECKIT_PARSER = 'regex';
+  });
+
+  function mockSymbolCollisionForSharedFunction() {
+    vi.doMock('../code-graph/lib/indexer-types.js', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('../code-graph/lib/indexer-types.js')>();
+      return {
+        ...actual,
+        generateSymbolId: vi.fn((
+          filePath: string,
+          fqName: string,
+          kind: import('../code-graph/lib/indexer-types.js').SymbolKind,
+        ) => {
+          if (kind === 'function' && fqName.endsWith('shared')) {
+            return 'shared-symbol-id';
+          }
+          return actual.generateSymbolId(filePath, fqName, kind);
+        }),
+      };
+    });
+  }
+
+  async function indexTempTypescriptFiles(tempRoot: string) {
+    const { getDefaultConfig } = await import('../code-graph/lib/indexer-types.js');
+    const { indexFiles } = await import('../code-graph/lib/structural-indexer.js');
+    return indexFiles({
+      ...getDefaultConfig(tempRoot),
+      includeGlobs: ['**/*.ts'],
+      languages: ['typescript'],
+    }, { skipFreshFiles: false });
+  }
+
+  it('drops nodes whose symbol_id collides with previously-processed file', async () => {
+    mockSymbolCollisionForSharedFunction();
+    const tempRoot = createTempRoot();
+    writeFixture(tempRoot, 'a.ts', 'export function shared() { return 1; }\n');
+    writeFixture(tempRoot, 'b.ts', 'export function shared() { return 2; }\n');
+
+    const results = await indexTempTypescriptFiles(tempRoot);
+    const sorted = results
+      .map(result => ({
+        path: relative(tempRoot, result.filePath).replace(/\\/g, '/'),
+        sharedNodes: result.nodes.filter(node => node.symbolId === 'shared-symbol-id'),
+      }))
+      .sort((a, b) => a.path.localeCompare(b.path));
+
+    expect(sorted).toEqual([
+      expect.objectContaining({ path: 'a.ts', sharedNodes: [expect.objectContaining({ symbolId: 'shared-symbol-id' })] }),
+      expect.objectContaining({ path: 'b.ts', sharedNodes: [] }),
+    ]);
+    expect(results.flatMap(result => result.nodes).filter(node => node.symbolId === 'shared-symbol-id')).toHaveLength(1);
+  });
+
+  it('preserves all nodes when no cross-file collision exists', async () => {
+    const tempRoot = createTempRoot();
+    writeFixture(tempRoot, 'alpha.ts', 'export function alpha() { return 1; }\n');
+    writeFixture(tempRoot, 'beta.ts', 'export function beta() { return 2; }\n');
+
+    const results = await indexTempTypescriptFiles(tempRoot);
+    const nodesByFile = Object.fromEntries(
+      results.map(result => [
+        relative(tempRoot, result.filePath).replace(/\\/g, '/'),
+        result.nodes.length,
+      ]),
+    );
+
+    expect(nodesByFile['alpha.ts']).toBeGreaterThanOrEqual(2);
+    expect(nodesByFile['beta.ts']).toBeGreaterThanOrEqual(2);
+    expect(new Set(results.flatMap(result => result.nodes.map(node => node.symbolId))).size)
+      .toBe(results.flatMap(result => result.nodes).length);
+  });
+
+  it('logs dropped count', async () => {
+    mockSymbolCollisionForSharedFunction();
+    const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => undefined);
+    const tempRoot = createTempRoot();
+    writeFixture(tempRoot, 'a.ts', 'export function shared() { return 1; }\n');
+    writeFixture(tempRoot, 'b.ts', 'export function shared() { return 2; }\n');
+
+    await indexTempTypescriptFiles(tempRoot);
+
+    expect(infoSpy).toHaveBeenCalledWith('[structural-indexer] dropped 1 cross-file duplicate symbol nodes');
   });
 });
 

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/012-code-graph-context-and-scan-scope/003-cross-file-dedup-defense",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/012-code-graph-context-and-scan-scope/003-cross-file-dedup-defense",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/012-code-graph-context-and-scan-scope",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": "manual",
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/012-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-04"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "code_nodes symbol_id unique constraint",
+      "cross-file symbol dedup defense",
+      "globalSeenIds",
+      "INSERT OR IGNORE code_nodes",
+      "012/003 cross file dedup"
+    ],
+    "key_topics": [
+      "code graph",
+      "symbol identity",
+      "SQLite persistence",
+      "defense in depth",
+      "Vitest",
+      "MCP scan"
+    ],
+    "importance_tier": "critical",
+    "status": "complete_operator_scan_deferred",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/structural-contract.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-db.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ],
+    "entities": [
+      {
+        "name": "structural-indexer.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts",
+        "source": "manual"
+      },
+      {
+        "name": "code-graph-db.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts",
+        "source": "manual"
+      },
+      {
+        "name": "structural-contract.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/structural-contract.vitest.ts",
+        "source": "manual"
+      },
+      {
+        "name": "code-graph-db.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-db.vitest.ts",
+        "source": "manual"
+      }
+    ],
+    "causal_summary": "Packet 012/002 restored full-scan parsing, but live scans still reported many code_nodes.symbol_id UNIQUE failures. This packet adds scan-batch deduplication and DB-level ignore semantics to prevent duplicate symbol rows from aborting file persistence.",
+    "created_at": "2026-04-23T00:00:00.000Z",
+    "last_save_at": "2026-04-23T00:00:00.000Z",
+    "save_lineage": "new_child_packet",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ],
+    "evidence_refs": [
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-04/research.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/012-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/implementation-summary.md"
+    ]
+  }
+}
