@@ -266,6 +266,10 @@
   "resolvedFindingsCount": 8,
   "convergenceScore": 0.0,
   "pass": 2,
+  "status": "complete",
+  "verdict": "CONDITIONAL",
+  "completedAt": "2026-04-24T12:20:00Z",
+  "stopReason": "converged+maxIterations",
   "waveOneVerification": {
     "P0-001": "CLOSED",
     "P0-002": "CLOSED",
