@@ -433,27 +433,33 @@ codex exec -p research "Research latest security advisories for Express.js" --mo
 
 5. **ALWAYS capture stderr** with `2>&1` to catch rate limit messages and errors
 
-6. **ALWAYS specify the model explicitly** — choose based on task type
+6. **ALWAYS redirect codex stdin from `/dev/null`** when dispatching in a `while read` loop
+   - Pattern: `codex exec "$PROMPT" > "$LOG" 2>&1 </dev/null &`
+   - Without `</dev/null`, the backgrounded codex process inherits the loop's stdin (the file after `done < input.jsonl`) and silently consumes the remaining lines — the loop exits after 3-6 iterations with no error, dropping the rest of the batch
+   - This is silent failure: `.pid` file count falls short of expected and there is no error message
+   - See `references/integration_patterns.md#background-execution` → "Silent Stdin Consumption" for full details
+
+7. **ALWAYS specify the model explicitly** — choose based on task type
    - Use `--model gpt-5.4` for reasoning-heavy tasks (architecture, security, planning)
    - Use `--model gpt-5.3-codex` for code-focused tasks (generation, review, implementation)
 
-7. **ALWAYS route to the appropriate Codex profile** when the task matches a profile specialization
+8. **ALWAYS route to the appropriate Codex profile** when the task matches a profile specialization
    - Use `-p <profile>` flag; see profile routing table in Section 3
    - Use `codex exec review` (built-in subcommand) for git diff reviews
 
-8. **ALWAYS pass the spec folder to the delegated agent** in the prompt
+9. **ALWAYS pass the spec folder to the delegated agent** in the prompt
    - If the calling AI has an active spec folder (from Gate 3), include it in the prompt: `Spec folder: <path> (pre-approved, skip Gate 3)`
    - If the calling AI does NOT have a spec folder, it MUST ask the user for one BEFORE delegating — the delegated agent cannot answer Gate 3 interactively
    - This prevents the delegated agent from halting at the Gate 3 spec folder question in `--full-auto` or non-interactive mode
    - Example prompt suffix: `\n\nSpec folder: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/ (pre-approved, skip Gate 3)`
 
-9. **ALWAYS load `assets/prompt_quality_card.md` before building any dispatch prompt**
-   - Apply the CLEAR 5-question check from the card
-   - Tag the selected framework in the Bash invocation comment
-   - If complexity is `>= 7/10` or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline
-   - Use the returned `ENHANCED_PROMPT` as the final Codex prompt
+10. **ALWAYS load `assets/prompt_quality_card.md` before building any dispatch prompt**
+    - Apply the CLEAR 5-question check from the card
+    - Tag the selected framework in the Bash invocation comment
+    - If complexity is `>= 7/10` or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline
+    - Use the returned `ENHANCED_PROMPT` as the final Codex prompt
 
-10. **NEVER inject user-level voice/personalization content into AI-orchestrated Codex delegations**
+11. **NEVER inject user-level voice/personalization content into AI-orchestrated Codex delegations**
     - Codex CLI reads user-level voice guidance from `~/.codex/AGENTS.md` (the human's own global settings). That file is the user's personal voice/tone tuning and is loaded automatically by Codex at session start.
     - When an AI (Claude Code, Gemini CLI, Copilot CLI, or any orchestrator using this skill) delegates a task to Codex via `codex exec`, the calling AI's own voice rules already govern the response. Do not read `~/.codex/AGENTS.md` and paste its contents into delegation prompts — it's the user's environment, not a dispatch payload.
     - Keep delegations focused on the task, model, sandbox, reasoning effort, and (if applicable) spec folder pre-approval. Voice is the calling AI's responsibility, not Codex's.

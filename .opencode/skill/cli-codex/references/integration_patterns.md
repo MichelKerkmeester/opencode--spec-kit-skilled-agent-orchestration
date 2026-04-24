@@ -211,6 +211,37 @@ codex exec "..." --full-auto -o /tmp/result.txt
 3. The orchestrator gets notified when each codex process genuinely finishes
 4. Verify output files exist and have content before reading results
 
+### Silent Stdin Consumption When Dispatching in a `while read` Loop
+
+When a dispatcher script iterates over lines of input (e.g. a findings JSONL file) with `while IFS= read -r line; do ... done < input.jsonl` and launches `codex exec ... &` inside the loop body, **codex silently consumes the loop's stdin**. The loop exits after the first 3-6 iterations with no error, dropping most dispatches.
+
+**Symptom:** You dispatch a 27-finding batch; only 3-6 codex processes actually launch. No error, no warning. `ls *.pid | wc -l` returns a small number instead of the expected count.
+
+**Root cause:** `codex exec` inherits the script's stdin by default. Because the `done < input.jsonl` redirection attaches the input file as the loop's stdin, each backgrounded codex process reads from that same file descriptor and races with the `read` command for lines — codex usually wins and consumes the remaining input.
+
+```bash
+# BAD: codex inherits the loop's stdin, drains input.jsonl after iteration ~3
+while IFS= read -r line; do
+  codex exec "$PROMPT" > "$LOG" 2>&1 &
+  echo "$!" > "pid-$LINE_ID.pid"
+done < input.jsonl
+# Result: 3 dispatches, 24 missing. No error output.
+
+# GOOD: redirect codex stdin from /dev/null so the loop keeps its own
+while IFS= read -r line; do
+  codex exec "$PROMPT" > "$LOG" 2>&1 </dev/null &
+  echo "$!" > "pid-$LINE_ID.pid"
+done < input.jsonl
+# Result: all N dispatches launch cleanly.
+```
+
+**When to remember this:**
+- Any `while read ... done < file` or `while read ... done < <(cmd)` pattern that launches `codex exec` in its body.
+- Any fan-out dispatcher that reads a per-finding / per-task / per-phase JSONL or list file and dispatches one codex per line.
+- The bug is silent (no error), so you won't notice until you count `.pid` files or `applied/` reports and see a shortfall.
+
+**Always pair `codex exec ... &` inside a read-loop with `</dev/null` on the redirection.** This is independent of whether codex itself uses stdin — the issue is shared FD consumption, not a feature.
+
 <!-- /ANCHOR:background-execution -->
 
 <!-- ANCHOR:model-selection-strategy -->
