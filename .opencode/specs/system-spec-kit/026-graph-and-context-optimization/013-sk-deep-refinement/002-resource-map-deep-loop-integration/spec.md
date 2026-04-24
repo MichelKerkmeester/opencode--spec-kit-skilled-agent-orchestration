@@ -12,18 +12,22 @@ importance_tier: "important"
 contextType: "spec"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration"
-    last_updated_at: "2026-04-24T00:00:00Z"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/013-sk-deep-refinement/002-resource-map-deep-loop-integration"
+    last_updated_at: "2026-04-24T14:30:00+02:00"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "Scaffolded phase 013"
-    next_safe_action: "Implement shared evidence extractor"
+    recent_action: "Canonical resource-map integration shipped across sk-deep-research and sk-deep-review skills; artifact_dir terminology polished across 30 downstream surfaces; sk-doc DQI pass lifted 11 touched skill files to 88+/good with 9 at excellent; 2627-file tree sync reconciled research packet reorganization + path references. Commits 2d190c0bd, 146682e2c, 9a1dbe481, 80b66dff2 on main."
+    next_safe_action: "Future packets with resource-map.md now get the integration automatically — no per-run prompt wiring needed. Monitor first autonomous deep-research/deep-review run that carries a resource-map.md to verify strategy.md Known Context injection and Coverage Gate section rendering behave as specified."
     blockers: []
-    completion_pct: 10
+    completion_pct: 100
+    status: "complete"
     open_questions: []
     answered_questions:
       - "Emission happens at convergence (not per-iteration) so partial state never shows misleading coverage."
       - "Review map carries findings counts; research map carries citation counts — distinct shapes under one template."
       - "Shared extractor lives under scripts/resource-map/ and both skills call it from reduce-state.cjs."
+      - "resource_map_present persists in deep-research-config.json and deep-review-config.json so iterations read the flag without re-detecting."
+      - "{artifact_dir} is the canonical resolver-output variable across agent definitions, READMEs, state schemas, dashboards, command YAMLs — replaces mixed {spec_folder}/research|review|{review_root}|{research_root}."
+      - "Spec packet files (spec/plan/tasks/checklist) stay out of sk-doc DQI lift per loose-enforcement rule for in-progress spec docs."
 ---
 # Feature Specification: Resource Map Integration for sk-deep-review and sk-deep-research
 
