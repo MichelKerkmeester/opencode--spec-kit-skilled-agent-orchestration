@@ -4,36 +4,11 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
   "children_ids": [],
-  "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
-    "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
-  ],
-  "migration": {
-    "flattened_at": "2026-04-24T17:45:00Z",
-    "active_phase": "004-agent-governance-and-commands",
-    "prior_child_phase_folders": [
-      "001-agent-execution-guardrails",
-      "002-command-graph-consolidation"
-    ],
-    "layout": "flat-level3-root",
-    "notes": "Two phase packets merged into a single Level 3 root. Aliases preserve prior packet IDs for graph/memory traversal continuity."
-  },
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
-    "supersedes": [
-      {
-        "packet_id": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
-        "reason": "Workstream A (AGENTS execution guardrails) merged into unified root docs on 2026-04-24",
-        "source": "026-phase-flatten-merge",
-        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails"
-      },
-      {
-        "packet_id": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation",
-        "reason": "Workstreams B + C (canonical intake + middleware cleanup) merged into unified root docs on 2026-04-24",
-        "source": "026-phase-flatten-merge",
-        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
-      }
-    ],
+    "supersedes": [],
     "related_to": []
   },
   "derived": {
@@ -47,79 +22,198 @@
       "deep research spec anchoring",
       "middleware cleanup",
       "handover debug deprecation",
-      "distributed governance"
+      "distributed governance",
+      "plan",
+      "implementation"
     ],
     "key_topics": [
+      "004-agent-governance-and-commands",
       "agent",
-      "governance",
-      "commands",
       "execution",
       "guardrails",
+      "agents",
       "critical",
       "rules",
+      "request",
+      "analysis",
       "canonical",
       "intake",
-      "middleware",
-      "cleanup",
-      "distributed",
-      "spec-kit"
+      "contract"
     ],
     "importance_tier": "important",
-    "status": "complete",
+    "status": "in_progress",
     "key_files": [
-      "spec.md",
-      "plan.md",
-      "tasks.md",
-      "checklist.md",
-      "decision-record.md",
-      "implementation-summary.md",
       ".opencode/skill/system-spec-kit/references/intake-contract.md",
+      "spec.md",
       ".opencode/skill/sk-deep-research/references/spec_check_protocol.md",
+      "plan.md",
+      ".opencode/command/improve/agent.md",
+      ".opencode/skill/sk-doc/assets/agents/agent_template.md",
+      ".opencode/command/memory/save.md",
+      ".opencode/skill/system-spec-kit/templates/debug-delegation.md",
+      ".opencode/command/README.txt",
+      ".opencode/command/spec_kit/README.txt",
       ".opencode/command/spec_kit/plan.md",
       ".opencode/command/spec_kit/complete.md",
       ".opencode/command/spec_kit/resume.md",
       ".opencode/command/spec_kit/deep-research.md",
-      ".opencode/command/memory/save.md",
-      "AGENTS.md",
-      "AGENTS_example_fs_enterprises.md",
-      "CLAUDE.md"
+      ".opencode/command/spec_kit/implement.md",
+      ".opencode/command/spec_kit/deep-review.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/README.md",
+      ".opencode/changelog/01--system-spec-kit/v3.4.0.0.md",
+      "tasks.md"
     ],
     "entities": [
       {
         "name": "intake-contract.md",
-        "kind": "shared_reference_module",
+        "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/references/intake-contract.md",
-        "source": "m10-m11"
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
       },
       {
         "name": "spec_check_protocol.md",
-        "kind": "shared_reference_module",
+        "kind": "doc",
         "path": ".opencode/skill/sk-deep-research/references/spec_check_protocol.md",
-        "source": "m2"
+        "source": "derived"
       },
       {
-        "name": "/spec_kit:plan --intake-only",
-        "kind": "command_flag",
-        "path": ".opencode/command/spec_kit/plan.md",
-        "source": "m11"
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
       },
       {
-        "name": "distributed-governance rule",
-        "kind": "governance_contract",
-        "path": "CLAUDE.md + AGENTS.md + AGENTS_example_fs_enterprises.md + .opencode/skill/system-spec-kit/SKILL.md",
-        "source": "m9"
+        "name": "agent.md",
+        "kind": "doc",
+        "path": ".opencode/command/improve/agent.md",
+        "source": "derived"
       },
       {
-        "name": "AGENTS Request Analysis & Execution block",
-        "kind": "instruction_block",
-        "path": "AGENTS.md + AGENTS_example_fs_enterprises.md + Barter/coder/AGENTS.md",
-        "source": "workstream-a"
+        "name": "agent_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/assets/agents/agent_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "debug-delegation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/debug-delegation.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": ".opencode/command/README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "complete.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/complete.md",
+        "source": "derived"
+      },
+      {
+        "name": "resume.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/resume.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "implement.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/implement.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "v3.4.0.0.md",
+        "kind": "doc",
+        "path": ".opencode/changelog/01--system-spec-kit/v3.4.0.0.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Agent Governance And Commands",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Request Analysis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Behavior",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Flattened Into Root",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
-    "causal_summary": "Agent governance and command-graph cleanup. Workstream A (REQ-401..REQ-414) moved the request-analysis framework under ## 1. CRITICAL RULES in three AGENTS files with the lean Flow + Execution Behavior block. Workstream B (REQ-001..REQ-010, REQ-018..REQ-021) consolidated canonical intake into a single shared module at .opencode/skill/system-spec-kit/references/intake-contract.md, added /spec_kit:plan --intake-only with explicit YAML gate, anchored /spec_kit:deep-research to real spec.md via spec_check_protocol.md. Workstream C (REQ-011..REQ-017, REQ-022..REQ-030) hard-deleted /spec_kit:handover, /spec_kit:debug, @handover, @speckit across 4 runtime mirrors each, replaced @speckit exclusivity with distributed-governance rule, repositioned /memory:save as canonical packet handover maintainer, removed :auto-debug flag from /spec_kit:complete. Deep review flagged 12 findings (4 P0 / 4 P1 / 4 P2); 5 parallel Opus agents resolved all 12. Flattened from two phase packets into one Level 3 root on 2026-04-24.",
+    "causal_summary": "This packet closes three coordinated surgery passes on the agent and command graph for `026-graph-and-context-optimization`. All three passes landed together because they reshape the same surface: who speaks for SpecKit, how agents are told to behave, and which commands still exist.",
     "created_at": "2026-04-08T00:00:00Z",
-    "last_save_at": "2026-04-24T17:45:00Z",
-    "save_lineage": "phase_flatten_merge",
+    "last_save_at": "2026-04-24T19:15:08.618Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
@@ -129,7 +223,5 @@
       "decision-record.md",
       "implementation-summary.md"
     ]
-  },
-  "migrated": true,
-  "migration_source": "phase-flatten-merge-2026-04-24"
+  }
 }
