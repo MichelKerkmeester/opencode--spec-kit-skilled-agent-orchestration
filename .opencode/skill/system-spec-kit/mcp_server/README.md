@@ -108,6 +108,14 @@ Module/runtime profile in this package:
 - `package.json` sets `"type": "module"` (ESM runtime output from `dist/`).
 - `tsconfig.json` uses `"module": "nodenext"` and `"moduleResolution": "nodenext"`.
 
+### Index Scope Invariants
+
+The memory and code-graph scanners now share one path-policy source at `lib/utils/index-scope.ts`.
+
+- Memory indexing must never admit any path with a `z_future/`, `external/`, or `z_archive/` segment.
+- Code-graph scanning must never admit any path with an `external/` segment, and it preserves the existing `.git/`, `node_modules/`, `dist/`, `vendor/`, `z_future/`, `z_archive/`, and `mcp-coco-index/mcp_server/` exclusions.
+- `importanceTier: constitutional` is only valid for files inside `/constitutional/`; non-constitutional saves are downgraded to `important` at save time instead of failing hard.
+
 <!-- /ANCHOR:overview -->
 
 ---

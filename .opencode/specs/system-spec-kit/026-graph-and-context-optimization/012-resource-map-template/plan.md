@@ -1,12 +1,24 @@
 ---
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 title: "Implementation Plan: Resource Map Template"
-description: "Step-by-step plan for authoring templates/resource-map.md and wiring it through level READMEs, SKILL.md, references, feature_catalog, manual_testing_playbook, spec-doc-paths.ts, and CLAUDE.md."
+description: "Author the new template at the templates root and wire it through every discovery surface, with one constant edit in the MCP spec-doc classifier."
 trigger_phrases:
-  - "026/012 resource-map plan"
-  - "resource-map.md plan"
+  - "026/012 resource map plan"
+  - "resource map plan"
   - "template wiring plan"
 importance_tier: "normal"
 contextType: "plan"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/012-resource-map-template"
+    last_updated_at: "2026-04-24T00:00:00Z"
+    last_updated_by: "claude-opus-4-7"
+    recent_action: "Authored Level 2 plan"
+    next_safe_action: "Rerun validator"
+    blockers: []
+    completion_pct: 90
+    open_questions: []
+    answered_questions: []
 ---
 # Implementation Plan: Resource Map Template
 
@@ -15,92 +27,160 @@ contextType: "plan"
 
 ---
 
-## 1. APPROACH
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-Work in two passes:
+### Technical Context
 
-1. **Core authoring pass** (already complete when this plan is read): scaffold `templates/resource-map.md`, Level-2 packet docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`), and `description.json` / `graph-metadata.json`.
-2. **Surface-wiring pass**: dispatch a single `cli-codex gpt-5.4 high fast` agent (with `cli-copilot` fallback) to apply coordinated edits across every discovery surface so the new template is consistently referenced. Surfaces are editorially dependent on each other — a single coordinated pass keeps wording aligned.
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown + TypeScript (one constant edit) |
+| **Framework** | system-spec-kit template architecture v2.2 |
+| **Storage** | File system only |
+| **Testing** | validate.sh --strict, npm run typecheck, grep audit |
 
-Keep the template **optional at every level**. No `validate.sh` hard blocks. No backfill into existing packets.
-
----
-
-## 2. WORK BREAKDOWN
-
-### Pass 1 — Core authoring (this packet, inline)
-
-| Step | File | Action |
-|------|------|--------|
-| 1 | `templates/resource-map.md` | Write template with frontmatter + 10 categories + author notes. |
-| 2 | `specs/.../012-resource-map-template/spec.md` | Author Level 2 spec (done above). |
-| 3 | `specs/.../012-resource-map-template/plan.md` | This document. |
-| 4 | `specs/.../012-resource-map-template/tasks.md` | Ordered task list. |
-| 5 | `specs/.../012-resource-map-template/checklist.md` | P0/P1/P2 verification. |
-| 6 | `specs/.../012-resource-map-template/description.json` | Spec-folder description metadata. |
-| 7 | `specs/.../012-resource-map-template/graph-metadata.json` | Graph metadata for packet discovery. |
-
-### Pass 2 — Surface wiring (dispatched to cli-codex)
-
-| Step | File | Edit |
-|------|------|------|
-| 8 | `templates/README.md` | Add `resource-map.md` row in Structure table; mention in Workflow Notes and Related. |
-| 9 | `templates/level_1/README.md` | Add `## OPTIONAL FILES` subsection listing `resource-map.md` (alongside any future optional files). |
-| 10 | `templates/level_2/README.md` | Same pattern. |
-| 11 | `templates/level_3/README.md` | Same pattern. |
-| 12 | `templates/level_3+/README.md` | Same pattern. |
-| 13 | `.opencode/skill/system-spec-kit/SKILL.md` | §3 Canonical Spec Docs: add optional row; §9 / distributed governance: list among cross-cutting templates as optional. |
-| 14 | `.opencode/skill/system-spec-kit/README.md` | Add `resource-map.md` to the template architecture section where `handover.md` and `research.md` are listed. |
-| 15 | `references/templates/level_specifications.md` | §9 Cross-cutting Templates: add row with Template/Purpose/When-to-use/Created-by columns; each LEVEL N section: add `resource-map.md (optional)` under Optional Files. |
-| 16 | `mcp_server/lib/config/spec-doc-paths.ts` | Append `'resource-map.md'` to `SPEC_DOCUMENT_FILENAMES` set. |
-| 17 | `feature_catalog/22--context-preservation-and-code-graph/25-resource-map-template.md` | Create — mirror format of neighbor `23-tool-routing-enforcement.md`. |
-| 18 | `manual_testing_playbook/22--context-preservation-and-code-graph/270-resource-map-template.md` | Create — mirror format of neighbor `267-tool-routing-enforcement.md`. |
-| 19 | `CLAUDE.md` | Documentation Levels section: mention `resource-map.md` as optional cross-cutting doc. |
-
-### Pass 3 — Verification
-
-| Step | Action |
-|------|--------|
-| 20 | Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-resource-map-template --strict`. |
-| 21 | Run `cd .opencode/skill/system-spec-kit/mcp_server && npm run typecheck` to confirm the spec-doc-paths edit type-checks. |
-| 22 | Grep discovery surfaces for `resource-map.md` — expect matches in all 15 target files. |
-| 23 | Finalize `implementation-summary.md` with Files Changed table + Verification table. |
-| 24 | Refresh `description.json` / `graph-metadata.json` for parent 026 topology and this packet via the usual backfill path. |
+### Overview
+Author the new template at the templates root and apply coordinated edits across ~12 discovery surfaces so the template is referenced consistently. One line in the MCP spec-doc classifier changes so memory indexing recognizes the new filename.
+<!-- /ANCHOR:summary -->
 
 ---
 
-## 3. TEST STRATEGY
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-- **Validator pass**: `validate.sh --strict` exit code 0 on this packet.
-- **Typecheck pass**: `mcp_server` `npm run typecheck` passes with the new `SPEC_DOCUMENT_FILENAMES` entry.
-- **Grep audit**: every discovery surface listed in Files to Change contains at least one `resource-map.md` reference.
-- **Smoke read**: open the template in isolation — frontmatter parses, 10 categories present, no broken anchors.
+### Definition of Ready
+- [x] Problem statement clear and scope documented in spec.md
+- [x] Success criteria measurable (SC-001 through SC-004)
+- [x] Dependencies identified (MCP typecheck, validate.sh, template precedent)
 
----
-
-## 4. ROLLBACK
-
-Edits are content-only plus one TypeScript constant append. Rollback path:
-
-1. `git restore .opencode/skill/system-spec-kit/templates/` — undoes the template and README edits.
-2. `git restore .opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts` — undoes the constant change.
-3. `git restore CLAUDE.md` and the references/feature_catalog/manual_testing_playbook edits.
-4. `rm -rf .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-resource-map-template` — removes the phase folder.
-
-No data migration, no schema change, no runtime state affected.
+### Definition of Done
+- [ ] All P0 acceptance criteria met
+- [ ] validate.sh --strict on this packet exits 0
+- [ ] npm run typecheck inside mcp_server exits 0
+- [ ] Discovery-surface grep audit confirms references in every target file
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
-## 5. DEPENDENCIES
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-- `cli-codex` skill for the surface-wiring pass (primary).
-- `cli-copilot` skill as fallback if codex dispatch fails or returns partial edits.
-- Existing `validate.sh` — unchanged.
-- Existing `generate-context.js` — unchanged.
+### Pattern
+Cross-cutting template peer (alongside handover, research, debug-delegation) at the templates root, not under level_N.
+
+### Key Components
+- **Template file**: lives at the templates root; level-agnostic.
+- **Discovery surfaces**: templates README, each level README, SKILL.md, skill README, references guide, feature catalog entry, manual testing playbook entry, CLAUDE.md.
+- **Classifier integration**: one additional entry in the SPEC_DOCUMENT_FILENAMES Set so memory-save and discovery treat it as a canonical spec doc.
+
+### Data Flow
+Operator copies the template into a packet, fills path rows grouped by category, commits. Memory-save classifies the new file as a spec doc and indexes it. Reviewers open the file for a flat blast-radius view.
+<!-- /ANCHOR:architecture -->
 
 ---
 
-## 6. SEQUENCING NOTES
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-- Pass 2 surfaces can be edited in any order, but the agent dispatched should apply them atomically (one PR-style commit) to avoid intermediate docs referencing `resource-map.md` without the file existing. The template itself was written first so any discovery reference has a real target from the first edit.
-- `spec-doc-paths.ts` can be edited at any point after the template file exists; classification only matters at save/index time, so the order relative to README edits is not load-bearing.
+### Phase 1: Setup
+- [x] Inventory existing cross-cutting templates (handover, research, debug-delegation) for the file-location precedent.
+- [x] Confirm Level 2 packet template structure for this phase's own docs.
+- [x] Read the 005/009 path-references-audit artifact to lock in the category model.
+
+### Phase 2: Core Implementation
+- [x] Author the template at the templates root with frontmatter and ten category sections.
+- [x] Append the new filename to SPEC_DOCUMENT_FILENAMES in the MCP classifier.
+- [x] Update every level README and the main templates README to list the template.
+- [x] Update SKILL.md, the skill README, and references/templates/level_specifications.md.
+- [x] Create the feature catalog and manual testing playbook entries.
+- [x] Update CLAUDE.md Documentation Levels block.
+
+### Phase 3: Verification
+- [ ] Run validate.sh --strict on this packet and capture exit 0.
+- [ ] Run npm run typecheck inside mcp_server and capture exit 0.
+- [ ] Grep every target surface and confirm the new filename appears.
+- [ ] Finalize implementation-summary.md with Files Changed + Verification tables.
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Validator | This phase packet | validate.sh --strict |
+| Unit/Typecheck | MCP server spec-doc-paths Set | npm run typecheck |
+| Manual | Discovery surface coverage | grep audit |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| mcp_server tsc | Internal | Green | Cannot land the classifier edit; template work still proceeds |
+| validate.sh | Internal | Green | Required to confirm P0 exit 0 |
+| cli-codex (with cli-copilot fallback) | External executor | Green | Surface-wiring pass cannot run autonomously; manual edits still possible |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: typecheck fails, validator does not pass, or a downstream consumer breaks on the new SPEC_DOCUMENT_FILENAMES entry.
+- **Procedure**: git restore the template, README edits, references edits, classifier edit, feature catalog and playbook entries, and CLAUDE.md. Remove the phase folder if the packet is being abandoned.
+<!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Setup) ──► Phase 2 (Core) ──► Phase 3 (Verify)
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Core |
+| Core | Setup | Verify |
+| Verify | Core | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | 30 min |
+| Core Implementation | Medium | 2-3 hours (coordinated across ~12 surfaces) |
+| Verification | Low | 30 min |
+| **Total** | | **~3-4 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [ ] Backup not required (file-system-only change).
+- [ ] No feature flag (content addition, additive classifier entry).
+- [ ] No monitoring changes needed.
+
+### Rollback Procedure
+1. git restore changes to templates/, SKILL.md, skill README, references/, feature_catalog/, manual_testing_playbook/, and the mcp_server classifier file.
+2. git restore CLAUDE.md.
+3. Remove the phase folder if abandoning the packet.
+4. No smoke test required; no user-facing behavior changes.
+
+### Data Reversal
+- **Has data migrations?** No.
+- **Reversal procedure**: N/A.
+<!-- /ANCHOR:enhanced-rollback -->

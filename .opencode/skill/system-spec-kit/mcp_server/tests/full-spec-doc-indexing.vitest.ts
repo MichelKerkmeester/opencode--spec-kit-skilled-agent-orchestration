@@ -182,8 +182,8 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
   });
 
   describe('SPEC_DOCUMENT_FILENAMES set', () => {
-    it('Has 9 entries', () => {
-      expect(SPEC_DOCUMENT_FILENAMES.size).toBe(9);
+    it('Has 10 entries', () => {
+      expect(SPEC_DOCUMENT_FILENAMES.size).toBe(10);
     });
 
     const expectedFilenames = [

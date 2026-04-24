@@ -1,11 +1,23 @@
 ---
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 title: "Tasks: Resource Map Template"
-description: "Ordered task list for authoring templates/resource-map.md and wiring it into every discovery surface."
+description: "Ordered task list for authoring the new cross-cutting template and wiring it into every discovery surface."
 trigger_phrases:
   - "026/012 tasks"
-  - "resource-map tasks"
+  - "resource map tasks"
 importance_tier: "normal"
 contextType: "tasks"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/012-resource-map-template"
+    last_updated_at: "2026-04-24T00:00:00Z"
+    last_updated_by: "claude-opus-4-7"
+    recent_action: "Authored Level 2 tasks"
+    next_safe_action: "Rerun validator"
+    blockers: []
+    completion_pct: 90
+    open_questions: []
+    answered_questions: []
 ---
 # Tasks: Resource Map Template
 
@@ -14,59 +26,80 @@ contextType: "tasks"
 
 ---
 
-## US-001: Reviewer Blast-Radius Scan (P0)
+<!-- ANCHOR:notation -->
+## Task Notation
 
-- **T-001**: Author `.opencode/skill/system-spec-kit/templates/resource-map.md` with frontmatter, SPECKIT_TEMPLATE_SOURCE marker, summary block, and 10 category sections. [Dep: none] [Est: S]
-- **T-002**: Append `'resource-map.md'` to `SPEC_DOCUMENT_FILENAMES` in `.opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts`. [Dep: T-001] [Est: XS]
-- **T-003**: Run `npm run typecheck` inside `mcp_server/` to verify the constant edit. [Dep: T-002] [Est: XS]
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
----
-
-## US-002: Successor-Phase Handoff (P1)
-
-- **T-010**: Update `.opencode/skill/system-spec-kit/templates/README.md` — add `resource-map.md` row to Structure table; mention in Workflow Notes and Related. [Dep: T-001] [Est: S]
-- **T-011**: Update `.opencode/skill/system-spec-kit/templates/level_1/README.md` — add Optional Files subsection naming `resource-map.md`. [Dep: T-001] [Est: XS]
-- **T-012**: Update `.opencode/skill/system-spec-kit/templates/level_2/README.md` — same pattern. [Dep: T-001] [Est: XS]
-- **T-013**: Update `.opencode/skill/system-spec-kit/templates/level_3/README.md` — same pattern. [Dep: T-001] [Est: XS]
-- **T-014**: Update `.opencode/skill/system-spec-kit/templates/level_3+/README.md` — same pattern. [Dep: T-001] [Est: XS]
-- **T-015**: Update `.opencode/skill/system-spec-kit/SKILL.md` — reference in §3 Canonical Spec Docs / §9 Cross-cutting templates and the distributed-governance note as optional. [Dep: T-001] [Est: S]
-- **T-016**: Update `.opencode/skill/system-spec-kit/README.md` — list `resource-map.md` in the template architecture section. [Dep: T-001] [Est: XS]
-- **T-017**: Update `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` — add row in §9 and per-level Optional Files mentions. [Dep: T-001] [Est: S]
-- **T-018**: Create `.opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/25-resource-map-template.md`. [Dep: T-001] [Est: S]
-- **T-019**: Create `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/270-resource-map-template.md`. [Dep: T-018] [Est: S]
-- **T-020**: Update `CLAUDE.md` — note `resource-map.md` in the Documentation Levels section. [Dep: T-001] [Est: XS]
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
 ---
 
-## US-003: Verification & Packaging (P1/P2)
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-- **T-030**: Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-resource-map-template --strict` and capture output. [Dep: T-001..T-020] [Est: XS]
-- **T-031**: `grep -rn "resource-map.md"` across the 15 target files — confirm every discovery surface cites the template. [Dep: T-010..T-020] [Est: XS]
-- **T-032**: Backfill `description.json` + `graph-metadata.json` for the parent `026-graph-and-context-optimization` to include the new phase child. [Dep: T-001..T-020] [Est: XS]
-- **T-033**: Author `implementation-summary.md` with Files Changed + Verification tables. [Dep: T-030..T-032] [Est: S]
-- **T-034** (P2): Drop `../changelog/012-resource-map-template.md` using the packet-local changelog template. [Dep: T-033] [Est: XS]
+- [x] T001 Read the 005/009 path-references-audit artifact for category baseline.
+- [x] T002 Read existing cross-cutting templates (handover, research, debug-delegation) for location precedent.
+- [x] T003 Read Level 2 template shapes to confirm this packet's own doc structure.
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-## DEPENDENCIES
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
-```
-T-001 ──► T-002 ──► T-003
-  │
-  ├──► T-010..T-017 (README + SKILL + references + CLAUDE.md)
-  ├──► T-018 ──► T-019
-  └──► T-020
-            │
-            ▼
-         T-030 ─┬─ T-031
-                └─ T-032 ──► T-033 ──► T-034
-```
+- [x] T010 Author the new template at the templates root with frontmatter and ten category sections.
+- [x] T011 Append the new filename to SPEC_DOCUMENT_FILENAMES in mcp_server/lib/config/spec-doc-paths.ts.
+- [x] T012 [P] Update main templates README (Structure + Workflow Notes + Related).
+- [x] T013 [P] Update level_1 README with Optional Files subsection.
+- [x] T014 [P] Update level_2 README with Optional Files subsection.
+- [x] T015 [P] Update level_3 README with Optional Files subsection.
+- [x] T016 [P] Update level_3+ README with Optional Files subsection.
+- [x] T017 Update SKILL.md canonical spec docs, cross-cutting templates, and distributed governance blocks.
+- [x] T018 Update the skill root README template architecture section.
+- [x] T019 Update references/templates/level_specifications.md Cross-cutting Templates and per-level Optional Files.
+- [x] T020 Create the feature catalog entry under category 22.
+- [x] T021 Create the manual testing playbook entry under category 22.
+- [x] T022 Update CLAUDE.md Documentation Levels block.
+<!-- /ANCHOR:phase-2 -->
 
-## ESTIMATES
+---
 
-- XS: <30 min edit
-- S: 30 min – 2 hr
-- M: 2 – 4 hr (none in this packet)
-- L: > 4 hr (none in this packet)
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
-Total: roughly 1 day of focused work (most time in the coordinated surface-wiring pass).
+- [ ] T030 Run validate.sh --strict on this packet; capture exit 0.
+- [ ] T031 Run npm run typecheck inside mcp_server; capture exit 0.
+- [ ] T032 Grep every target surface for the new filename; confirm a hit per file.
+- [ ] T033 Finalize implementation-summary.md with Files Changed + Verification tables.
+- [ ] T034 (P2) Drop packet-local changelog file using the nested changelog template.
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [ ] All tasks marked `[x]`.
+- [ ] No `[B]` blocked tasks remaining.
+- [ ] validate.sh --strict exits 0.
+- [ ] npm run typecheck exits 0.
+- [ ] Manual grep audit confirms coverage across every discovery surface.
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Reference shape**: see 005-release-cleanup-playbooks/path-references-audit artifact inside this same parent packet.
+<!-- /ANCHOR:cross-refs -->

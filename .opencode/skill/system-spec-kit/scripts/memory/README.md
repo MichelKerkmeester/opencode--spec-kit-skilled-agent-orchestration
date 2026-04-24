@@ -38,6 +38,7 @@ Other locations point here: `mcp_server/scripts/README.md`, `mcp_server/database
 - `generate-context.ts` - update canonical packet continuity and supporting generated context artifacts from spec-folder or JSON input
 - `rank-memories.ts` - rank memory candidates by scoring rules
 - `cleanup-orphaned-vectors.ts` - remove stale vector rows not linked to active memories
+- `cleanup-index-scope-violations.ts` - delete `z_future` and `external` pollution, repair the `gate-enforcement.md` duplicate, and downgrade invalid constitutional tiers
 - `validate-memory-quality.ts` - validates post-render memory quality against scoring thresholds before indexing/reporting; includes post-save quality gates (structure, semantic sufficiency, duplicate detection), heuristic calibration, and trigger sanitization
 - `reindex-embeddings.ts` - force full embedding reindex across memory/spec documents
 - `ast-parser.ts` - parse markdown into heading/code/table-aware sections
@@ -80,6 +81,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 ```bash
 node .opencode/skill/system-spec-kit/scripts/dist/memory/rank-memories.js /tmp/memories.json
 node .opencode/skill/system-spec-kit/scripts/dist/memory/cleanup-orphaned-vectors.js
+node .opencode/skill/system-spec-kit/scripts/dist/memory/cleanup-index-scope-violations.js
 node .opencode/skill/system-spec-kit/scripts/dist/memory/reindex-embeddings.js
 node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js --dry-run --include-archive
 node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js --apply --include-archive --report /tmp/frontmatter-apply.json

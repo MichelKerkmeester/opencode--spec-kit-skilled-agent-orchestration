@@ -1,57 +1,116 @@
 ---
-title: "Checklist: Resource Map Template"
-description: "P0/P1/P2 verification for the resource-map.md template and its wiring across every discovery surface."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+title: "Verification Checklist: Resource Map Template"
+description: "P0/P1/P2 verification for the new template and its wiring across every discovery surface."
 trigger_phrases:
   - "026/012 checklist"
-  - "resource-map checklist"
+  - "resource map checklist"
 importance_tier: "normal"
 contextType: "checklist"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/012-resource-map-template"
+    last_updated_at: "2026-04-24T00:00:00Z"
+    last_updated_by: "claude-opus-4-7"
+    recent_action: "Authored Level 2 checklist"
+    next_safe_action: "Rerun validator"
+    blockers: []
+    completion_pct: 90
+    open_questions: []
+    answered_questions: []
 ---
-# Checklist: Resource Map Template
+# Verification Checklist: Resource Map Template
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist-level2 | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
-## P0 — Blockers
+<!-- ANCHOR:protocol -->
+## Verification Protocol
 
-- [ ] `.opencode/skill/system-spec-kit/templates/resource-map.md` exists [EVIDENCE: file path]
-- [ ] Template frontmatter contains `title`, `description`, `trigger_phrases`, `importance_tier`, `contextType` [EVIDENCE: `head -20 templates/resource-map.md`]
-- [ ] Template body contains 10 category sections (READMEs, Documents, Commands, Agents, Skills, Specs, Scripts, Tests, Config, Meta) [EVIDENCE: `grep '^## [0-9]' templates/resource-map.md | wc -l`]
-- [ ] `SPEC_DOCUMENT_FILENAMES` in `mcp_server/lib/config/spec-doc-paths.ts` includes `'resource-map.md'` [EVIDENCE: `grep resource-map.md mcp_server/lib/config/spec-doc-paths.ts`]
-- [ ] `cd mcp_server && npm run typecheck` exits 0 [EVIDENCE: command output]
-
----
-
-## P1 — Required
-
-- [ ] `templates/README.md` Structure table includes a `resource-map.md` row [EVIDENCE: grep]
-- [ ] `templates/level_1/README.md` mentions `resource-map.md` as optional [EVIDENCE: grep]
-- [ ] `templates/level_2/README.md` mentions `resource-map.md` as optional [EVIDENCE: grep]
-- [ ] `templates/level_3/README.md` mentions `resource-map.md` as optional [EVIDENCE: grep]
-- [ ] `templates/level_3+/README.md` mentions `resource-map.md` as optional [EVIDENCE: grep]
-- [ ] `SKILL.md` references `resource-map.md` in at least one of §3 / §9 / distributed governance blocks [EVIDENCE: grep]
-- [ ] `.opencode/skill/system-spec-kit/README.md` references `resource-map.md` [EVIDENCE: grep]
-- [ ] `references/templates/level_specifications.md` §9 has a resource-map row [EVIDENCE: grep]
-- [ ] Each Level N section in `level_specifications.md` mentions `resource-map.md (optional)` [EVIDENCE: grep]
-- [ ] `feature_catalog/22--context-preservation-and-code-graph/25-resource-map-template.md` exists with neighbor-matching format [EVIDENCE: `ls -la`]
-- [ ] `manual_testing_playbook/22--context-preservation-and-code-graph/270-resource-map-template.md` exists with neighbor-matching format [EVIDENCE: `ls -la`]
-- [ ] `CLAUDE.md` mentions `resource-map.md` as optional cross-cutting doc [EVIDENCE: grep]
-- [ ] `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-resource-map-template --strict` exits 0 [EVIDENCE: exit code]
-- [ ] `description.json` + `graph-metadata.json` exist for this phase folder [EVIDENCE: `ls`]
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
 ---
 
-## P2 — Nice to Have
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-- [ ] Parent `026` `description.json` / `graph-metadata.json` updated to include `012-resource-map-template` child [EVIDENCE: diff]
-- [ ] `../changelog/012-resource-map-template.md` created using packet-local changelog template [EVIDENCE: file exists]
-- [ ] `implementation-summary.md` finalized with Files Changed + Verification tables [EVIDENCE: file sections]
+- [x] CHK-001 [P0] Requirements documented in spec.md
+- [x] CHK-002 [P0] Technical approach defined in plan.md
+- [x] CHK-003 [P1] Dependencies identified (mcp_server tsc, validate.sh, cli-codex/cli-copilot executors)
+<!-- /ANCHOR:pre-impl -->
 
 ---
 
-## DEFERRED
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-- Optional `scripts/resource-map/emit-from-diff.sh` auto-generator (future work — not required for this packet).
-- Backfilling `resource-map.md` into historical packets (explicit non-goal).
+- [x] CHK-010 [P0] spec-doc-paths.ts append is syntactically valid (npm run typecheck exits 0)
+- [x] CHK-011 [P0] No console errors or warnings in the classifier edit
+- [x] CHK-012 [P1] Error handling unchanged (additive-only constant edit)
+- [x] CHK-013 [P1] Template file follows the repo's markdown frontmatter pattern (title, description, trigger_phrases, importance_tier, contextType)
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [ ] CHK-020 [P0] validate.sh --strict on this packet exits 0
+- [x] CHK-021 [P0] Manual smoke read of the new template (frontmatter parses, ten category sections present)
+- [x] CHK-022 [P1] Edge cases documented in spec L2:EDGE CASES (phase-child splits, aggregated parent shape)
+- [x] CHK-023 [P1] Error scenarios documented (typecheck fail rollback, placeholder leftovers)
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-030 [P0] No hardcoded secrets (content-only edit)
+- [x] CHK-031 [P0] No new input surfaces to validate
+- [x] CHK-032 [P1] No auth/authz changes
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-040 [P1] spec/plan/tasks synchronized
+- [x] CHK-041 [P1] New template includes author instructions block at the bottom
+- [x] CHK-042 [P2] READMEs updated (all five across templates/, plus skill README and CLAUDE.md)
+- [x] CHK-043 [P1] SKILL.md updated in canonical spec docs, cross-cutting templates, and distributed governance blocks
+- [x] CHK-044 [P1] references/templates/level_specifications.md updated in Cross-cutting Templates and each level Optional Files
+- [x] CHK-045 [P1] feature_catalog entry created (category 22)
+- [x] CHK-046 [P1] manual_testing_playbook entry created (category 22)
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] No temp files outside scratch/
+- [x] CHK-051 [P1] scratch/ clean (none created for this packet)
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 7 | 6/7 (CHK-020 pending validator rerun) |
+| P1 Items | 12 | 12/12 |
+| P2 Items | 1 | 1/1 |
+
+**Verification Date**: 2026-04-24
+<!-- /ANCHOR:summary -->

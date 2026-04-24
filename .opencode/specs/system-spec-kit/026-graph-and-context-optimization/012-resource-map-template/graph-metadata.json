@@ -1,44 +1,94 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/012-resource-map-template",
-  "title": "Resource Map Template",
-  "level": 2,
-  "status": "in-progress",
-  "phase": {
-    "number": "012",
-    "parent": "system-spec-kit/026-graph-and-context-optimization",
-    "predecessor": "011-index-scope-and-constitutional-tier-invariants",
-    "successor": null
-  },
-  "tags": [
-    "templates",
-    "documentation",
-    "path-catalog",
-    "discovery",
-    "context-preservation"
-  ],
-  "edges": {
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/012-resource-map-template",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/012-resource-map-template",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": "local",
+  "manual": {
     "depends_on": [
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks"
     ],
-    "touches": [
-      ".opencode/skill/system-spec-kit/templates/",
-      ".opencode/skill/system-spec-kit/SKILL.md",
-      ".opencode/skill/system-spec-kit/README.md",
-      ".opencode/skill/system-spec-kit/references/templates/",
-      ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/",
-      ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
-      "CLAUDE.md"
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity"
     ]
   },
-  "canonical_docs": [
-    "spec.md",
-    "plan.md",
-    "tasks.md",
-    "checklist.md",
-    "description.json",
-    "graph-metadata.json"
-  ],
-  "created": "2026-04-24",
-  "updated": "2026-04-24"
+  "derived": {
+    "trigger_phrases": [
+      "026/012 resource map template",
+      "resource map template",
+      "path catalog template",
+      "files touched summary",
+      "lean path ledger"
+    ],
+    "key_topics": [
+      "templates",
+      "path-catalog",
+      "documentation",
+      "discovery",
+      "context-preservation",
+      "spec-doc-paths",
+      "feature-catalog",
+      "manual-testing-playbook",
+      "cross-cutting-template",
+      "026"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/templates/README.md",
+      ".opencode/skill/system-spec-kit/references/templates/level_specifications.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/25-resource-map-template.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/270-resource-map-template.md",
+      "CLAUDE.md"
+    ],
+    "entities": [
+      {
+        "name": "resource-map.md",
+        "kind": "template",
+        "path": ".opencode/skill/system-spec-kit/templates/resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec-doc-paths.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
+        "source": "derived"
+      },
+      {
+        "name": "25-resource-map-template.md",
+        "kind": "feature-catalog",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/25-resource-map-template.md",
+        "source": "derived"
+      },
+      {
+        "name": "270-resource-map-template.md",
+        "kind": "manual-testing-playbook",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/270-resource-map-template.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This phase promotes the 005/path-references-audit shape into a reusable cross-cutting template, wires it into every discovery surface (level READMEs, SKILL.md, references, feature catalog, manual testing playbook, CLAUDE.md), and teaches the MCP spec-doc classifier to recognize the new filename.",
+    "created_at": "2026-04-24T00:00:00.000Z",
+    "last_save_at": "2026-04-24T00:00:00.000Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
 }
