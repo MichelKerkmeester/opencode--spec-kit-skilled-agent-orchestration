@@ -12,7 +12,7 @@ State file schemas for the autonomous deep review loop.
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The deep review loop uses 8 state files under `{spec_folder}/review/`:
+The deep review loop uses 8 state files under the resolved `{artifact_dir}/` owned by the target spec:
 
 | File | Format | Mutability |
 |------|--------|------------|
@@ -26,20 +26,21 @@ The deep review loop uses 8 state files under `{spec_folder}/review/`:
 | `iterations/iteration-NNN.md` | Markdown | Write-once |
 
 ```
-{spec_folder}/
-  review/
-    deep-review-config.json
-    deep-review-state.jsonl
-    deep-review-findings-registry.json
-    deep-review-strategy.md
-    deep-review-dashboard.md
-    .deep-review-pause
-    review-report.md
-    iterations/
-      iteration-001.md
-      iteration-002.md
-      ...
+{artifact_dir}/
+  deep-review-config.json
+  deep-review-state.jsonl
+  deep-review-findings-registry.json
+  deep-review-strategy.md
+  deep-review-dashboard.md
+  .deep-review-pause
+  review-report.md
+  iterations/
+    iteration-001.md
+    iteration-002.md
+    ...
 ```
+
+`{artifact_dir}` comes from `resolveArtifactRoot(specFolder, 'review')`. Root-spec runs resolve directly to `{spec_folder}/review/`. Child-phase and sub-phase runs resolve to a packet directory inside the owning phase's local `review/` folder.
 
 ---
 
@@ -654,7 +655,7 @@ The review synthesis output contains 9 core sections plus a conditional `## Reso
 
 Auto-generated summary. Never manually edited.
 
-- **Path**: `{spec_folder}/review/deep-review-dashboard.md`
+- **Path**: `{artifact_dir}/deep-review-dashboard.md`
 - **Generated from**: JSONL state log + strategy + findings registry
 - **Refresh**: Regenerated after every iteration
 - **Protection**: `auto-generated` in fileProtection

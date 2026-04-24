@@ -67,7 +67,7 @@ One-page cheat sheet for the autonomous deep review loop.
 <!-- ANCHOR:state-files -->
 ## 4. STATE FILES
 
-Review mode stores its packet under `{spec_folder}/review/`:
+Review mode stores its packet under the resolved local review path rooted at `{spec_folder}/review/`:
 
 | File | Location | Format | Purpose |
 |------|----------|--------|---------|

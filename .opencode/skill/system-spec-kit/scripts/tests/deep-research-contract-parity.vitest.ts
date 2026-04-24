@@ -63,6 +63,8 @@ describe('deep-research contract parity', () => {
       expect(content, `${docPath} should read the canonical state log`).toContain('research/deep-research-state.jsonl');
       expect(content, `${docPath} should read the findings registry`).toContain('research/findings-registry.json');
       expect(content, `${docPath} should mention reducer ownership`).toContain('workflow reducer');
+      expect(content, `${docPath} should mention local-owner packet resolution`).toContain('local-owner research packet');
+      expect(content, `${docPath} should not mention root-level packet ownership`).not.toContain('resolved root-level `research/` packet');
       expect(content, `${docPath} should mention completed-continue`).toContain('completed-continue');
       expect(content, `${docPath} should not claim direct strategy writes in the completion report`).not.toContain(
         'research/deep-research-strategy.md (updated)',

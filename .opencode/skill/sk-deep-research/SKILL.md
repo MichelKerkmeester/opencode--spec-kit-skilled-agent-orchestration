@@ -54,7 +54,7 @@ This skill is invoked EXCLUSIVELY through the `/spec_kit:deep-research` command.
 - Manually write iteration prompts to `/tmp` and dispatch them via `copilot -p`
 - Dispatch the `@deep-research` LEAF agent via the Task tool for iteration loops (the agent is LEAF — a single iteration — and MUST be driven by the command's workflow)
 - Skip the state machine: `deep-research-state.jsonl`, `deep-research-config.json`, `deltas/`, `prompts/`, `logs/`
-- Manage iteration state outside `{spec_folder}/research/` or `{spec_tree_root}/research/{phaseSlug}-pt-{NN}/`
+- Manage iteration state outside the resolved local research packet under `{spec_folder}/research/`
 
 **ALWAYS:**
 - Invoke via `/spec_kit:deep-research:auto` or `/spec_kit:deep-research:confirm`
@@ -290,13 +290,13 @@ User invokes: /spec_kit:deep-research "topic"
 
 ### State Packet Location
 
-The research state packet always lives in the spec tree root's `research/` folder. Root-spec targets use `{spec_folder}/research/`. Child-phase targets resolve `{spec_tree_root}/research/{phaseSlug}-pt-{NN}/`, where `{phaseSlug}` is the FULL immediate child-phase segment under the spec tree root (e.g. "019-system-hardening") and `{NN}` is a zero-padded sequential counter scoped to that phase within the artifact root.
+The research state packet always lives under the target spec's local `research/` folder. Root-spec targets use `{spec_folder}/research/` directly. Child-phase and sub-phase targets use `{spec_folder}/research/{packet}/`, where `{packet}` is the resolved local packet directory. Existing packet directories are reused when the resolver finds one for the same target spec; new packet directories default to `{basename(spec_folder)}-pt-{NN}`.
 
-Example: `.../026-graph.../019-system-hardening/001-initial-research/004-desc-regen/` → `research/019-system-hardening-pt-03/`
+Example: `.../026-graph.../019-system-hardening/001-initial-research/004-desc-regen/` → `004-desc-regen/research/004-desc-regen-pt-01/`
 
 ```text
-research/
-  [{phaseSlug}-pt-{NN}/]            # Present only when the target spec is a nested child phase
+{spec_folder}/research/
+  [packet-dir/]                      # Present only when the target spec is a nested child phase
     deep-research-config.json        # Immutable after init: loop parameters
     deep-research-state.jsonl        # Append-only research iteration log
     deep-research-strategy.md        # Reducer-synchronized investigation plan

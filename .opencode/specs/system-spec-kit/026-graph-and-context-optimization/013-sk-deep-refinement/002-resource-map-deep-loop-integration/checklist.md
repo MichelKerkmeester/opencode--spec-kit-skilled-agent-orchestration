@@ -43,7 +43,7 @@ _memory:
 
 - [ ] CHK-001 [P0] Requirements documented in spec.md
 - [ ] CHK-002 [P0] Technical approach defined in plan.md
-- [ ] CHK-003 [P1] Phase 012 template shape confirmed stable
+- [ ] CHK-003 [P1] Phase 001 local-owner rollback completed and phase 012 template shape confirmed stable
 - [ ] CHK-004 [P1] Delta shape fields for both skills confirmed
 <!-- /ANCHOR:pre-impl -->
 

@@ -86,6 +86,8 @@ Operator contract source of truth for this page:
 
 > **Live lifecycle branches:** `resume`, `restart`. (`fork` and `completed-continue` are deferred and not runtime-wired.) `progressiveSynthesis` defaults to `true`, so `research/research.md` is updated during the loop and finalized at synthesis.
 
+> **Path contract:** root-spec runs write directly to `{spec_folder}/research/`; child-phase and sub-phase runs write to a local packet directory under `{spec_folder}/research/{packet}/`
+
 > **Canonical pause sentinel:** `research/.deep-research-pause`
 
 > **Runtime capability matrix:** `.opencode/skill/sk-deep-research/references/capability_matrix.md` and `.opencode/skill/sk-deep-research/assets/runtime_capabilities.json`

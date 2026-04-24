@@ -111,5 +111,5 @@ _memory:
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
-- **Prerequisite phase**: 012-resource-map-template (template shape is locked)
+- **Prerequisite phases**: 001-reverse-parent-research-review-folders (path-policy rollback) and 012-resource-map-template (template shape is locked)
 <!-- /ANCHOR:cross-refs -->

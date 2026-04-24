@@ -213,11 +213,11 @@ sk-deep-review/
 
 ### Review Runtime State
 
-Created in the spec tree root's `review/` folder during initialization. Root-spec targets write directly to `{spec_folder}/review/`. Child-phase targets write to `{spec_tree_root}/review/{phase-subfolder}/`, where `{phase-subfolder}` joins the child phase path with hyphens. All files are scoped to this packet; the review target is never written to.
+Created under the target spec's local `review/` folder during initialization. Root-spec targets write directly to `{spec_folder}/review/`. Child-phase and sub-phase targets write to `{spec_folder}/review/{packet}/`, where `{packet}` is the resolved local packet directory for that target. All files are scoped to this packet; the review target is never written to.
 
 ```text
-{spec_tree_root}/review/
-└── [phase-subfolder/]                  # Present only for nested child-phase targets
+{spec_folder}/review/
+└── [packet-dir/]                       # Present only for nested child-phase targets
     ├── deep-review-config.json         # Immutable after init: loop parameters + lineage metadata
     ├── deep-review-state.jsonl         # Append-only structured log of all iterations
     ├── deep-review-findings-registry.json  # Reducer-owned canonical findings state

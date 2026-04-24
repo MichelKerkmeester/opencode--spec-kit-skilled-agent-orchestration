@@ -244,7 +244,7 @@ contract:
   # Output contracts consumed by synthesis and replay tooling.
   outputs:
     config:
-      pathPattern: "{spec_folder}/review/deep-review-config.json"
+      pathPattern: "{artifact_dir}/deep-review-config.json"
       machineOwned: false
       fields:
         - sessionId
@@ -254,7 +254,7 @@ contract:
         - continuedFromRun
         - releaseReadinessState
     findingsRegistry:
-      pathPattern: "{spec_folder}/review/deep-review-findings-registry.json"
+      pathPattern: "{artifact_dir}/deep-review-findings-registry.json"
       machineOwned: true
       sections:
         - openFindings
@@ -264,7 +264,7 @@ contract:
         - findingsBySeverity
         - convergenceScore
     reviewReport:
-      pathPattern: "{spec_folder}/review/review-report.md"
+      pathPattern: "{artifact_dir}/review-report.md"
       sections:
         - executive-summary
         - planning-trigger
@@ -276,7 +276,7 @@ contract:
         - deferred-items
         - audit-appendix
     strategy:
-      pathPattern: "{spec_folder}/review/deep-review-strategy.md"
+      pathPattern: "{artifact_dir}/deep-review-strategy.md"
       requiredSections:
         - topic
         - review-dimensions
@@ -292,7 +292,7 @@ contract:
         - files-under-review
         - review-boundaries
     dashboard:
-      pathPattern: "{spec_folder}/review/deep-review-dashboard.md"
+      pathPattern: "{artifact_dir}/deep-review-dashboard.md"
       machineOwned: true
       sections:
         - status
@@ -301,11 +301,11 @@ contract:
         - progress
         - next-focus
     pauseSentinel:
-      pathPattern: "{spec_folder}/review/.deep-review-pause"
+      pathPattern: "{artifact_dir}/.deep-review-pause"
       machineOwned: false
       description: Operator-controlled sentinel checked between iterations to pause the loop without discarding state.
     jsonl:
-      pathPattern: "{spec_folder}/review/deep-review-state.jsonl"
+      pathPattern: "{artifact_dir}/deep-review-state.jsonl"
       iterationRecord:
         required:
           - type

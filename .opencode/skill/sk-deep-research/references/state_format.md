@@ -24,7 +24,7 @@ The deep research loop uses 6 primary state files plus one reducer-generated reg
 | `{artifact_dir}/iterations/iteration-NNN.md` | Markdown | Detailed findings per iteration | Write-once |
 | `{artifact_dir}/research.md` | Markdown | Workflow-owned canonical synthesis output | Updated incrementally only when `progressiveSynthesis` is enabled |
 
-Research mode stores its runtime packet under the canonical `{artifact_dir}` resolved by `resolveArtifactRoot(specFolder, 'research')` from `.opencode/skill/system-spec-kit/shared/review-research-paths.cjs`. For root packets this resolves to `{spec_folder}/research/`. For child phases it resolves to `{spec_tree_root}/research/{phaseSlug}-pt-{NN}/`, and prompts, state, deltas, iteration findings, and canonical synthesis all live under that same packet directory. `{artifact_dir}/research.md` is workflow-owned canonical synthesis output.
+Research mode stores its runtime packet under the canonical `{artifact_dir}` resolved by `resolveArtifactRoot(specFolder, 'research')` from `.opencode/skill/system-spec-kit/shared/review-research-paths.cjs`. For root packets this resolves to `{spec_folder}/research/`. For child phases and sub-phases it resolves to a local packet directory under `{spec_folder}/research/{packet}/`, and prompts, state, deltas, iteration findings, and canonical synthesis all live under that same packet directory. `{artifact_dir}/research.md` is workflow-owned canonical synthesis output.
 
 The canonical pause sentinel is `{artifact_dir}/.deep-research-pause`. Legacy names may be consumed during the migration window, but new writes must use the canonical `deep-research-*` names.
 
@@ -604,7 +604,7 @@ This keeps the strategy file aligned with the latest recovery path instead of re
 
 Write-once files. One per iteration, named with zero-padded 3-digit number.
 
-Review mode writes the equivalent files to `{spec_folder}/review/iterations/iteration-NNN.md`.
+Review mode writes the equivalent files to its own resolved review `{artifact_dir}/iterations/iteration-NNN.md`.
 
 ### Naming Convention
 
@@ -649,7 +649,7 @@ research/iterations/iteration-003.md
 <!-- ANCHOR:research-output -->
 ## 6. RESEARCH OUTPUT (research/research.md)
 
-Progressive synthesis updated after each iteration when `progressiveSynthesis` is enabled. Follows the standard 17-section research template. Lives at `{spec_folder}/research/research.md` (not in scratch/). `research/research.md` is workflow-owned canonical synthesis output.
+Progressive synthesis updated after each iteration when `progressiveSynthesis` is enabled. Follows the standard 17-section research template. Lives at `{artifact_dir}/research.md` (not in scratch/). `research.md` is workflow-owned canonical synthesis output.
 
 ### Progressive Update Rules
 
@@ -669,11 +669,11 @@ Progressive synthesis updated after each iteration when `progressiveSynthesis` i
 
 Auto-generated summary view of the research session. Never manually edited.
 
-Review mode writes the equivalent dashboard to `{spec_folder}/review/deep-review-dashboard.md`.
+Review mode writes the equivalent dashboard to its own resolved review packet path.
 
 ### Location and Lifecycle
 
-- **Path**: `{spec_folder}/research/deep-research-dashboard.md`
+- **Path**: `{artifact_dir}/deep-research-dashboard.md`
 - **Generated from**: JSONL state log + strategy data only
 - **Refresh**: Regenerated after every iteration evaluation
 - **Protection**: `"deep-research-dashboard.md": "auto-generated"` in `fileProtection`
@@ -726,18 +726,17 @@ The `auto-generated` protection level means the file is system-managed and overw
 ## 8. FILE LOCATION SUMMARY
 
 ```
-{spec_folder}/
-  research/
-    research/research.md               # Workflow-owned progressive synthesis
-    deep-research-config.json          # Loop configuration
-    deep-research-state.jsonl          # Structured iteration log
-    deep-research-strategy.md          # Agent context / persistent brain
-    deep-research-dashboard.md         # Auto-generated session summary (read-only)
-    findings-registry.json             # Reducer-owned question/finding registry
-    iterations/
-      iteration-001.md                 # Iteration 1 findings
-      iteration-002.md                 # Iteration 2 findings
-      ...
+{artifact_dir}/
+  research.md                        # Workflow-owned progressive synthesis
+  deep-research-config.json          # Loop configuration
+  deep-research-state.jsonl          # Structured iteration log
+  deep-research-strategy.md          # Agent context / persistent brain
+  deep-research-dashboard.md         # Auto-generated session summary (read-only)
+  findings-registry.json             # Reducer-owned question/finding registry
+  iterations/
+    iteration-001.md                 # Iteration 1 findings
+    iteration-002.md                 # Iteration 2 findings
+    ...
 ```
 
 <!-- /ANCHOR:file-location-summary -->
@@ -939,7 +938,7 @@ Sections carried forward unchanged: Topic, Non-Goals, Stop Conditions, What Work
 
 ### review-report.md Section List
 
-The review synthesis output (`{spec_folder}/review/review-report.md`) contains 9 core sections plus a conditional `## Resource Map Coverage Gate` section when `resource_map_present` is true:
+The review synthesis output lives at the review-mode `{artifact_dir}/review-report.md` and contains 9 core sections plus a conditional `## Resource Map Coverage Gate` section when `resource_map_present` is true:
 
 | # | Section | Description |
 |---|---------|-------------|

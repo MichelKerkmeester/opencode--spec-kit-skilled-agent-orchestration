@@ -64,6 +64,8 @@ describe('deep-review contract parity', () => {
 
       expect(content, `${docPath} should read the canonical state log`).toContain('review/deep-review-state.jsonl');
       expect(content, `${docPath} should mention the reducer-owned registry`).toContain('review/deep-review-findings-registry.json');
+      expect(content, `${docPath} should mention local-owner packet resolution`).toContain('local-owner review packet');
+      expect(content, `${docPath} should not mention root-level packet ownership`).not.toContain('resolved root-level `review/` packet');
       expect(content, `${docPath} should mention completed-continue`).toContain('completed-continue');
       expect(content, `${docPath} should mention lineageMode`).toContain('lineageMode');
       expect(content, `${docPath} should mention releaseReadinessState`).toContain('releaseReadinessState');
@@ -123,6 +125,18 @@ describe('deep-review contract parity', () => {
     const confirmContent = readWorkspaceFile(commandAssets[1]);
     expect(confirmContent).toContain('options: [resume, restart, cancel]');
     expect(confirmContent).toContain('fork and completed-continue branches are deferred');
+  });
+
+  it('keeps the generated review contract aligned on artifact_dir semantics', () => {
+    const content = readWorkspaceFile('.opencode/skill/sk-deep-review/assets/review_mode_contract.yaml');
+
+    expect(content).toContain('{artifact_dir}/deep-review-config.json');
+    expect(content).toContain('{artifact_dir}/deep-review-state.jsonl');
+    expect(content).toContain('{artifact_dir}/deep-review-findings-registry.json');
+    expect(content).toContain('{artifact_dir}/deep-review-dashboard.md');
+    expect(content).toContain('{artifact_dir}/review-report.md');
+    expect(content).toContain('{artifact_dir}/.deep-review-pause');
+    expect(content).not.toContain('{spec_folder}/review/deep-review-config.json');
   });
 
   it('uses the same canonical agent_file path in both auto and confirm YAMLs', () => {

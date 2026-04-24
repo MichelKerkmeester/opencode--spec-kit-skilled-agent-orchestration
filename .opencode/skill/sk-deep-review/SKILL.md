@@ -51,7 +51,7 @@ This skill is invoked EXCLUSIVELY through the `/spec_kit:deep-review` command. T
 - Manually write iteration prompts to `/tmp` and dispatch them via `copilot -p`
 - Dispatch the `@deep-review` LEAF agent via the Task tool for iteration loops (the agent is LEAF — a single iteration — and MUST be driven by the command's workflow)
 - Skip the state machine: `deep-review-state.jsonl`, `deep-review-config.json`, `deltas/`, `prompts/`, `logs/`
-- Manage iteration state outside `{spec_folder}/review/` or `{spec_tree_root}/review/{phaseSlug}-pt-{NN}/`
+- Manage iteration state outside the resolved local review packet under `{spec_folder}/review/`
 
 **ALWAYS:**
 - Invoke via `/spec_kit:deep-review :auto` or `/spec_kit:deep-review :confirm`
@@ -299,13 +299,13 @@ User invokes: /spec_kit:deep-review "target"
 
 ### State Packet Location
 
-The review state packet always lives in the spec tree root's `review/` folder. Root-spec targets use `{spec_folder}/review/`. Child-phase targets resolve `{spec_tree_root}/review/{phaseSlug}-pt-{NN}/`, where `{phaseSlug}` is the FULL immediate child-phase segment under the spec tree root (e.g. "006-continuity-refactor-gates") and `{NN}` is a zero-padded sequential counter scoped to that phase within the artifact root.
+The review state packet always lives under the target spec's local `review/` folder. Root-spec targets use `{spec_folder}/review/` directly. Child-phase and sub-phase targets use `{spec_folder}/review/{packet}/`, where `{packet}` is the resolved local packet directory. Existing packet directories are reused when the resolver finds one for the same target spec; new packet directories default to `{basename(spec_folder)}-pt-{NN}`.
 
-Example: `.../026-graph.../006-continuity-refactor-gates/003-gate-c-writer-ready/` → `review/006-continuity-refactor-gates-pt-04/`
+Example: `.../026-graph.../006-continuity-refactor-gates/003-gate-c-writer-ready/` → `003-gate-c-writer-ready/review/003-gate-c-writer-ready-pt-01/`
 
 ```text
-review/
-  [{phaseSlug}-pt-{NN}/]            # Present only when the target spec is a nested child phase
+{spec_folder}/review/
+  [packet-dir/]                      # Present only when the target spec is a nested child phase
     deep-review-config.json          # Immutable after init: review parameters
     deep-review-state.jsonl          # Append-only review iteration log
     deep-review-strategy.md          # Review dimensions, findings, next focus

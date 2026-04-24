@@ -77,7 +77,7 @@ Reuse-don't-rescan: convergence-time aggregation of evidence already captured in
 
 - **`extract-from-evidence.cjs` (new)**: pure CJS module exporting `emitResourceMap({ shape, deltas, packet, scope, createdAt }) -> string`. Takes normalized evidence, categorizes each path via the phase-012 ten-category taxonomy, computes per-file findings/citation counts, renders the template.
 - **`reduce-state.cjs` (sk-deep-review)**: convergence branch calls the extractor with `shape: 'review'` and writes to `{review_root}/resource-map.md`.
-- **`reduce-state.cjs` (sk-deep-research)**: convergence branch calls the extractor with `shape: 'research'` and writes to `{research_root}/resource-map.md`.
+- **`reduce-state.cjs` (sk-deep-research)**: convergence branch calls the extractor with `shape: 'research'` and writes to the resolved local-owner `{artifact_dir}/resource-map.md`.
 - **YAML `resource_map` config block**: adds `resource_map: { emit: true }` default under `config:` in all four YAML workflow assets.
 - **`--no-resource-map` CLI flag**: passed through by the command MD files to the YAML config at dispatch time.
 - **Test fixtures**: synthetic delta arrays covering both shapes, with expected map snapshots.
@@ -93,7 +93,7 @@ iteration 01..NN deltas (JSON) ──► reduce-state.cjs (per-iter JSONL append
                                         ▼
                          extract-from-evidence.cjs
                                         ▼
-                         resource-map.md written to {artifact_root}/
+                         resource-map.md written to resolved {artifact_dir}/
 ```
 <!-- /ANCHOR:architecture -->
 
@@ -177,7 +177,7 @@ Phase 1 (Setup) ──► Phase 2 (Core) ──► Phase 3 (Verify)
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Setup | Phase 012 landed | Core |
+| Setup | Phase 001 rollback complete + phase 012 landed | Core |
 | Core | Setup | Verify |
 | Verify | Core | None |
 <!-- /ANCHOR:phase-deps -->

@@ -52,7 +52,7 @@ Set up all state files for a new research session.
    - Read legacy aliases during the migration window if needed
    - Write only canonical `deep-research-*` names
    - Emit a `migration` event for every legacy alias consumed
-3. **Create spec folder** (if needed): `mkdir -p {spec_folder}/research/iterations`
+3. **Resolve local artifact owner**: `artifact_dir = resolveArtifactRoot(specFolder, 'research').artifactDir`, then `mkdir -p {artifact_dir}/iterations`
 4. **Write config**: `research/deep-research-config.json` from template + user parameters
 5. **Initialize state log**: First line of `research/deep-research-state.jsonl` with config record
 6. **Initialize strategy**: `research/deep-research-strategy.md` from template with:
@@ -165,7 +165,7 @@ Before dispatching, check for a pause sentinel file:
 
 1. Check if `research/.deep-research-pause` exists
 2. If present:
-   - Log event to JSONL: `{"type":"event","event":"userPaused","mode":"research","run":N,"stopReason":"userPaused","sentinelPath":"{spec_folder}/research/.deep-research-pause","timestamp":"<ISO8601>","sessionId":"<sid>","generation":G}`
+   - Log event to JSONL: `{"type":"event","event":"userPaused","mode":"research","run":N,"stopReason":"userPaused","sentinelPath":"{artifact_dir}/.deep-research-pause","timestamp":"<ISO8601>","sessionId":"<sid>","generation":G}`
    - Halt the loop with message:
      ```
      Research paused. Delete research/.deep-research-pause to resume.
@@ -207,10 +207,10 @@ Remaining Questions: {strategy.remainingQuestions}
 Last 3 Iterations Summary: {brief summaries}
 Resource Map: if `config.resource_map_present == true`, prior-inventoried files are listed in `{spec_folder}/resource-map.md`; treat them as the exclusion set when hunting for net-new files; flag only missed-from-map candidates as gaps.
 State Files:
-  - Config: {spec_folder}/research/deep-research-config.json
-  - State: {spec_folder}/research/deep-research-state.jsonl
-  - Strategy: {spec_folder}/research/deep-research-strategy.md
-Output: Write findings to {spec_folder}/research/iterations/iteration-{NNN}.md
+  - Config: {artifact_dir}/deep-research-config.json
+  - State: {artifact_dir}/deep-research-state.jsonl
+  - Strategy: {artifact_dir}/deep-research-strategy.md
+Output: Write findings to {artifact_dir}/iterations/iteration-{NNN}.md
 CONSTRAINT: LEAF agent -- do NOT dispatch sub-agents
 ```
 
@@ -225,7 +225,7 @@ Before dispatching, the YAML resolves the executor via `parseExecutorConfig` fro
 - `cli-claude-code` (spec 019): `claude -p "$(cat prompt)" --model X --permission-mode acceptEdits --output-format text` with optional `--effort Y`. Default permission-mode is `plan` (read-only); we override to `acceptEdits` so iteration writes succeed.
 
 All branches share:
-1. Pre-dispatch prompt rendering via `renderPromptPack` (writes to `{spec_folder}/research/prompts/iteration-{n}.md`).
+1. Pre-dispatch prompt rendering via `renderPromptPack` (writes to `{artifact_dir}/prompts/iteration-{n}.md`).
 2. Post-dispatch validation via `validateIterationOutputs` (asserts iteration file + JSONL delta + required fields).
 3. Executor audit append via `appendExecutorAuditToLastRecord` (skipped when kind=='native').
 
@@ -250,7 +250,7 @@ After dispatch, the orchestrator monitors the running iteration against budget l
 
 #### Step 4: Evaluate Results
 After agent completes:
-1. Verify `{spec_folder}/research/iterations/iteration-{NNN}.md` was created
+1. Verify `{artifact_dir}/iterations/iteration-{NNN}.md` was created
 2. Verify JSONL was appended with iteration record
 3. Run reducer with `{ latestJSONLDelta, newIterationFile, priorReducedState }`
    - This is a **delta refresh**, not a full replay of every historical JSONL row on each iteration.
@@ -574,7 +574,7 @@ Hook-capable and non-hook runtimes must follow the same state machine. Hooks may
 | JSONL malformed | Loop | Skip malformed lines, reconstruct from valid entries |
 | 3+ consecutive failures | Loop | Halt loop, enter synthesis with partial findings |
 | Agent dispatch failure (API overload, timeout) | Loop | Escalate through the documented recovery ladder in order. Direct mode fallback is reference-only unless the runtime explicitly supports it. |
-| Memory save fails | Save | Preserve the current `research/` or `review/` packet as backup, then log the error |
+| Memory save fails | Save | Preserve the current `{artifact_dir}` packet as backup, then log the error |
 
 ### State Recovery Protocol
 
@@ -622,7 +622,7 @@ Set up all state files for a new review session. Discover the scope, order dimen
 #### Steps
 
 1. **Classify session state**: Same as research mode (fresh, resume, completed-session, invalid-state)
-2. **Create spec folder** (if needed): `mkdir -p {spec_folder}/review/iterations`
+2. **Resolve local review artifact owner**: `review_artifact_dir = resolveArtifactRoot(specFolder, 'review').artifactDir`, then `mkdir -p {review_artifact_dir}/iterations`
 3. **Scope discovery**: Resolve the review target into a concrete file list:
    - `spec-folder`: Read spec.md, plan.md, implementation files listed in tasks.md
    - `skill`: Read SKILL.md, references/, assets/, scripts/, find agent definitions and command entry points
@@ -637,9 +637,9 @@ Set up all state files for a new review session. Discover the scope, order dimen
    - **Core**: `spec_code`, `checklist_evidence`
    - **Overlay**: `skill_agent`, `agent_cross_runtime`, `feature_catalog_code`, `playbook_capability`
    Only schedule overlay protocols that apply to the target type.
-6. **Write config**: `{spec_folder}/review/deep-research-config.json` with `mode: "review"` and review fields
+6. **Write config**: `{review_artifact_dir}/deep-review-config.json` with `mode: "review"` and review fields
 7. **Initialize state log**: First JSONL line with config record including `mode: "review"`
-8. **Initialize strategy**: `{spec_folder}/review/deep-review-strategy.md` from review template with:
+8. **Initialize strategy**: `{review_artifact_dir}/deep-review-strategy.md` from review template with:
    - Topic (review target description)
    - Review Dimensions checklist
    - Files Under Review table
@@ -652,9 +652,9 @@ Set up all state files for a new review session. Discover the scope, order dimen
    - In **auto mode**: accept automatically and continue
 
 #### Outputs
-- `{spec_folder}/review/deep-research-config.json` (with review fields)
-- `{spec_folder}/review/deep-research-state.jsonl` (1 line)
-- `{spec_folder}/review/deep-review-strategy.md`
+- `{review_artifact_dir}/deep-review-config.json` (with review fields)
+- `{review_artifact_dir}/deep-review-state.jsonl` (1 line)
+- `{review_artifact_dir}/deep-review-strategy.md`
 
 ### 6.2 Review Loop
 
@@ -662,7 +662,7 @@ The iteration loop follows the same Step 1-5 structure as research mode with the
 
 #### Step 1: Read State (adapted)
 - Read JSONL to count iterations and extract `newFindingsRatio`, `findingsSummary`, `findingsNew`, and `traceabilityChecks`
-- Read `{spec_folder}/review/deep-review-strategy.md` to get next focus dimension/files, remaining dimensions, and protocol gaps
+- Read `{review_artifact_dir}/deep-review-strategy.md` to get next focus dimension/files, remaining dimensions, and protocol gaps
 
 #### Step 2: Check Convergence (adapted)
 Run `shouldContinue_review()` (see convergence.md Section 10.3):
@@ -705,10 +705,10 @@ Traceability Protocols:
   - Overlay: {overlay_protocols}
 Active Findings: {findingsSummary}
 State Files:
-  - Config: {spec_folder}/review/deep-research-config.json
-  - State: {spec_folder}/review/deep-research-state.jsonl
-  - Strategy: {spec_folder}/review/deep-review-strategy.md
-Output: Write findings to {spec_folder}/review/iterations/iteration-{NNN}.md
+  - Config: {review_artifact_dir}/deep-review-config.json
+  - State: {review_artifact_dir}/deep-review-state.jsonl
+  - Strategy: {review_artifact_dir}/deep-review-strategy.md
+Output: Write findings to {review_artifact_dir}/iterations/iteration-{NNN}.md
 CONSTRAINT: LEAF agent -- do NOT dispatch sub-agents
 CONSTRAINT: Target files are READ-ONLY -- never modify code under review
 ```
@@ -730,7 +730,7 @@ Each protocol produces a structured result in `traceabilityChecks.results[]` wit
 
 #### Step 4: Evaluate Results (adapted)
 After agent completes:
-1. Verify `{spec_folder}/review/iterations/iteration-{NNN}.md` was created
+1. Verify `{review_artifact_dir}/iterations/iteration-{NNN}.md` was created
 2. Verify JSONL was appended with review iteration fields: `dimensions`, `filesReviewed`, `findingsSummary`, `findingsNew`, and `traceabilityChecks`
 3. Verify the reducer-owned review strategy surfaces were refreshed (dimension progress, findings count, protocol status)
 4. Extract `newFindingsRatio` from JSONL record
@@ -758,7 +758,7 @@ Protocol:
 This adjudication step happens after iteration evaluation and before the next convergence math run.
 
 #### Step 4b: Generate Dashboard (adapted)
-Generate `{spec_folder}/review/deep-review-dashboard.md` with review-specific sections:
+Generate `{review_artifact_dir}/deep-review-dashboard.md` with review-specific sections:
 - Status with provisional verdict and `hasAdvisories`
 - Findings summary (P0/P1/P2 counts with deltas)
 - Progress table with dimension column
@@ -768,11 +768,11 @@ Generate `{spec_folder}/review/deep-review-dashboard.md` with review-specific se
 ### 6.3 Review Synthesis
 
 #### Purpose
-Compile all iteration findings into the final `{spec_folder}/review/review-report.md`.
+Compile all iteration findings into the final `{review_artifact_dir}/review-report.md`.
 
 #### Steps
 
-1. **Read all iteration files**: `{spec_folder}/review/iterations/iteration-*.md`
+1. **Read all iteration files**: `{review_artifact_dir}/iterations/iteration-*.md`
 2. **Read strategy**: Final state of dimensions, findings, coverage, and protocol status
 3. **Finding registry dedup**: Consolidate findings across iterations:
    - Group findings by file + line range + root cause
@@ -780,7 +780,7 @@ Compile all iteration findings into the final `{spec_folder}/review/review-repor
    - Assign final findingIds (F001, F002, ...)
 4. **Severity reconciliation**: Use adjudicated `finalSeverity` for any P0/P1 that changed during review
 5. **Replay validation**: Recompute the convergence outcome from JSONL state before finalizing the report
-6. **Compile `{spec_folder}/review/review-report.md`**: Generate the 9-section contract (see state_format.md Section 8):
+6. **Compile `{review_artifact_dir}/review-report.md`**: Generate the 9-section contract (see state_format.md Section 8):
    - Executive Summary
    - Planning Trigger
    - Active Finding Registry

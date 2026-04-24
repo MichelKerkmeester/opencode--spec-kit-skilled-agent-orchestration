@@ -66,7 +66,7 @@ Set up all state files for a new review session. Discover the scope, order dimen
    - `completed-session`: consistent prior state with `config.status == "complete"`
    - `invalid-state`: partial or contradictory artifacts
 
-2. **Create spec folder** (if needed): `mkdir -p {spec_folder}/review/iterations`
+2. **Resolve local artifact owner**: `artifact_dir = resolveArtifactRoot(specFolder, 'review').artifactDir`, then `mkdir -p {artifact_dir}/iterations`
 
 3. **Scope discovery**: Resolve the review target into a concrete file list using one of 5 target types:
 
@@ -104,13 +104,13 @@ Set up all state files for a new review session. Discover the scope, order dimen
 
    Only schedule overlay protocols that apply to the resolved target type.
 
-6. **Write config**: `{spec_folder}/review/deep-review-config.json` with `mode: "review"`, lineage metadata (`sessionId`, `parentSessionId`, `lineageMode`, `generation`, `continuedFromRun`, `releaseReadinessState`), and review-specific fields including target, target type, dimensions, protocol plan, and release-readiness state.
+6. **Write config**: `{artifact_dir}/deep-review-config.json` with `mode: "review"`, lineage metadata (`sessionId`, `parentSessionId`, `lineageMode`, `generation`, `continuedFromRun`, `releaseReadinessState`), and review-specific fields including target, target type, dimensions, protocol plan, and release-readiness state.
 
-7. **Initialize state log**: First line of `{spec_folder}/review/deep-review-state.jsonl` with config record including `mode: "review"` and the lineage fields.
+7. **Initialize state log**: First line of `{artifact_dir}/deep-review-state.jsonl` with config record including `mode: "review"` and the lineage fields.
 
-8. **Initialize reducer state**: Create `{spec_folder}/review/deep-review-findings-registry.json` with empty `openFindings`, `resolvedFindings`, `repeatedFindings`, `dimensionCoverage`, `findingsBySeverity`, and `convergenceScore`.
+8. **Initialize reducer state**: Create `{artifact_dir}/deep-review-findings-registry.json` with empty `openFindings`, `resolvedFindings`, `repeatedFindings`, `dimensionCoverage`, `findingsBySeverity`, and `convergenceScore`.
 
-9. **Initialize strategy**: `{spec_folder}/review/deep-review-strategy.md` from review template with:
+9. **Initialize strategy**: `{artifact_dir}/deep-review-strategy.md` from review template with:
    - Topic (review target description)
    - Review Dimensions checklist
    - Files Under Review table
@@ -134,10 +134,10 @@ Set up all state files for a new review session. Discover the scope, order dimen
 
 | File | Location | Purpose |
 |------|----------|---------|
-| Config | `{spec_folder}/review/deep-review-config.json` | Review parameters (immutable after init) |
-| State | `{spec_folder}/review/deep-review-state.jsonl` | Iteration log (1 initial line) |
-| Registry | `{spec_folder}/review/deep-review-findings-registry.json` | Reducer-owned findings state |
-| Strategy | `{spec_folder}/review/deep-review-strategy.md` | Dimensions, findings, next focus |
+| Config | `{artifact_dir}/deep-review-config.json` | Review parameters (immutable after init) |
+| State | `{artifact_dir}/deep-review-state.jsonl` | Iteration log (1 initial line) |
+| Registry | `{artifact_dir}/deep-review-findings-registry.json` | Reducer-owned findings state |
+| Strategy | `{artifact_dir}/deep-review-strategy.md` | Dimensions, findings, next focus |
 
 ---
 
@@ -151,7 +151,7 @@ Set up all state files for a new review session. Discover the scope, order dimen
 
 - Read `deep-review-state.jsonl` -- count iterations, extract `newFindingsRatio`, `findingsSummary`, `findingsNew`, `traceabilityChecks`, and lineage data
 - Read `deep-review-findings-registry.json` -- extract `dimensionsCovered`, `findingsBySeverity`, `openFindings`, `resolvedFindings`, and `convergenceScore`
-- Read `{spec_folder}/review/deep-review-strategy.md` -- get next focus dimension/files, remaining dimensions, and protocol gaps
+- Read `{artifact_dir}/deep-review-strategy.md` -- get next focus dimension/files, remaining dimensions, and protocol gaps
 
 Reducer contract for every loop refresh:
 
@@ -250,11 +250,11 @@ Traceability Protocols:
   - Overlay: {overlay_protocols}
 Active Findings: {findingsSummary}
 State Files:
-  - Config: {spec_folder}/review/deep-review-config.json
-  - State: {spec_folder}/review/deep-review-state.jsonl
-  - Registry: {spec_folder}/review/deep-review-findings-registry.json
-  - Strategy: {spec_folder}/review/deep-review-strategy.md
-Output: Write findings to {spec_folder}/review/iterations/iteration-{NNN}.md
+  - Config: {artifact_dir}/deep-review-config.json
+  - State: {artifact_dir}/deep-review-state.jsonl
+  - Registry: {artifact_dir}/deep-review-findings-registry.json
+  - Strategy: {artifact_dir}/deep-review-strategy.md
+Output: Write findings to {artifact_dir}/iterations/iteration-{NNN}.md
 CONSTRAINT: LEAF agent -- do NOT dispatch sub-agents
 CONSTRAINT: Target files are READ-ONLY -- never modify code under review
 ```
@@ -270,7 +270,7 @@ Before dispatching, the YAML resolves the executor via `parseExecutorConfig` fro
 - `cli-claude-code` (spec 019): `claude -p "$(cat prompt)" --model X --permission-mode acceptEdits --output-format text` with optional `--effort Y`. Default permission-mode is `plan` (read-only); we override to `acceptEdits` so iteration writes succeed.
 
 All branches share:
-1. Pre-dispatch prompt rendering via `renderPromptPack` (writes to `{spec_folder}/review/prompts/iteration-{n}.md`).
+1. Pre-dispatch prompt rendering via `renderPromptPack` (writes to `{artifact_dir}/prompts/iteration-{n}.md`).
 2. Post-dispatch validation via `validateIterationOutputs` (asserts iteration file + JSONL delta + required fields).
 3. Executor audit append via `appendExecutorAuditToLastRecord` (skipped when kind=='native').
 
@@ -328,7 +328,7 @@ When `config.resource_map_present == false`, skip this audit and rely on the `Kn
 
 After agent completes:
 
-1. Verify `{spec_folder}/review/iterations/iteration-{NNN}.md` was created
+1. Verify `{artifact_dir}/iterations/iteration-{NNN}.md` was created
 2. Verify JSONL was appended with review iteration fields:
    - `dimensions` (array of dimensions covered)
    - `filesReviewed` (array of file paths)
@@ -373,7 +373,7 @@ Each new P0/P1 must carry a typed packet with the following required fields (see
 
 #### Step 4b: Generate Dashboard
 
-Generate `{spec_folder}/review/deep-review-dashboard.md` with review-specific sections:
+Generate `{artifact_dir}/deep-review-dashboard.md` with review-specific sections:
 
 | Section | Content |
 |---------|---------|
@@ -437,7 +437,7 @@ function selectReviewRecoveryStrategy(stuckIterations, state, config):
 
 ### Purpose
 
-Compile all iteration findings into the final `{spec_folder}/review/review-report.md`. The synthesis phase owns the canonical review report output.
+Compile all iteration findings into the final `{artifact_dir}/review-report.md`. The synthesis phase owns the canonical review report output.
 
 ### Steps
 
@@ -445,7 +445,7 @@ Compile all iteration findings into the final `{spec_folder}/review/review-repor
 
 Consolidate findings across all iterations:
 
-1. Read all iteration files: `{spec_folder}/review/iterations/iteration-*.md`
+1. Read all iteration files: `{artifact_dir}/iterations/iteration-*.md`
 2. Group findings by file + line range + root cause
 3. Merge duplicates, keeping the highest severity and all evidence
 4. Assign final finding IDs: `F001`, `F002`, ...
@@ -544,7 +544,7 @@ Preserve review context to the memory system for future session recovery and cro
 If memory save fails:
 - Preserve the current `review/` packet as backup (the disk state is the ground truth)
 - Log the error
-- The review results remain intact in `{spec_folder}/review/review-report.md` regardless of memory save status
+- The review results remain intact in `{artifact_dir}/review-report.md` regardless of memory save status
 
 ---
 
@@ -637,7 +637,7 @@ The pause sentinel provides graceful loop suspension in autonomous mode without 
 Create the sentinel file at any time:
 
 ```bash
-touch {spec_folder}/review/.deep-review-pause
+touch {artifact_dir}/.deep-review-pause
 ```
 
 The orchestrator checks for this file between iterations (Step 2a). When detected:
@@ -651,7 +651,7 @@ The orchestrator checks for this file between iterations (Step 2a). When detecte
 Delete the sentinel file and restart the workflow:
 
 ```bash
-rm {spec_folder}/review/.deep-review-pause
+rm {artifact_dir}/.deep-review-pause
 ```
 
 On the next invocation:

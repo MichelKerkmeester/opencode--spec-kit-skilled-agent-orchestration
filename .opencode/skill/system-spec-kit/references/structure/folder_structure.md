@@ -128,7 +128,7 @@ specs/NNN-name/
 **Optional:**
 - `scratch/`
 - `memory/`
-- `research/` packets — see §4 `research/` and `review/` (spec tree root). Deep-research and deep-review artifacts are NEVER placed inside a child phase folder.
+- `research/` / `review/` local-owner folders — see §4 `research/` and `review/` (local owner folders). Root specs keep them at the root packet; child phases and sub-phases keep them under the owning phase folder.
 
 ---
 
@@ -178,48 +178,50 @@ triggers:
 # Content here
 ```
 
-### research/ and review/ (spec tree root only)
+### research/ and review/ (local owner folders)
 
-Deep-research and deep-review artifacts (iterations, deltas, prompts, state logs, synthesis) live in a SINGLE `research/` or `review/` folder at the **spec tree root** — the top-level parent spec (the highest folder containing `spec.md`, stopping at the `specs/` boundary). They are NEVER placed inside a child phase folder.
+Deep-research and deep-review artifacts (iterations, deltas, prompts, state logs, synthesis) live under the **target spec folder's local** `research/` or `review/` folder. Root specs keep those artifacts directly at `{spec_folder}/research/` or `{spec_folder}/review/`. Child phases and sub-phases keep packet directories inside their own local owner folder.
 
-**Why:** one place holds every research and review packet for a whole coordination tree, so tooling, resumes, and reducers can find them without walking nested children.
+**Why:** the owning phase keeps its own deep-loop artifacts local, nested runs do not spill into ancestor roots, and resume/restart logic can stay bound to the exact target spec instead of re-resolving through a coordination parent.
 
-**Layout (spec tree root with child phases):**
+**Layout (root spec plus child phases):**
 
-```
-specs/system-spec-kit/026-graph-and-context-optimization/   <- spec tree root (has spec.md)
+```text
+specs/system-spec-kit/026-graph-and-context-optimization/
 ├── spec.md
-├── 019-system-hardening/                   <- child phase (NO research/ or review/ inside)
-├── 020-skill-advisor-hook-surface/         <- child phase (NO research/ or review/ inside)
-├── 027-skill-graph-daemon-.../             <- child phase (NO research/ or review/ inside)
-├── research/                               <- CANONICAL root-level research root
-│   ├── 019-system-hardening-pt-01/
-│   ├── 019-system-hardening-pt-02/
-│   ├── 020-skill-advisor-hook-surface-pt-01/
-│   └── 027-skill-graph-daemon-and-advisor-unification-pt-01/
-│       ├── deep-research-config.json
-│       ├── deep-research-state.jsonl
-│       ├── deep-research-strategy.md
-│       ├── deep-research-dashboard.md
-│       ├── findings-registry.json
-│       ├── research.md
-│       ├── iterations/iteration-NNN.md
-│       ├── deltas/iter-NNN.jsonl
-│       └── prompts/iteration-N.md
-├── research_archive/                       <- archived research packets mirror the same naming
-└── review/                                 <- same rules apply to deep-review
-    └── 019-system-hardening-pt-01/
+├── research/                               <- root-spec deep-research artifacts
+├── review/                                 <- root-spec deep-review artifacts
+├── 019-system-hardening/
+│   ├── spec.md
+│   ├── research/
+│   │   └── 019-system-hardening-pt-01/
+│   │       ├── deep-research-config.json
+│   │       ├── deep-research-state.jsonl
+│   │       ├── deep-research-strategy.md
+│   │       ├── deep-research-dashboard.md
+│   │       ├── findings-registry.json
+│   │       ├── research.md
+│   │       ├── iterations/iteration-NNN.md
+│   │       ├── deltas/iter-NNN.jsonl
+│   │       └── prompts/iteration-N.md
+│   └── review/
+│       └── 019-system-hardening-pt-01/
+└── 020-skill-advisor-hook-surface/
+    ├── spec.md
+    ├── research/
+    └── review/
 ```
 
-**Naming:** `{phaseSlug}-pt-{NN}/`
-- `phaseSlug` = full first path segment under the spec tree root (e.g. `019-system-hardening`, `027-skill-graph-daemon-and-advisor-unification`)
-- `NN` = two-digit zero-padded sequential counter per phase within the artifact root (`-pt-01`, `-pt-02`, ...)
+**Naming:** `{ownerSlug}-pt-{NN}/`
+- `ownerSlug` = the owning spec folder name by default (for example `019-system-hardening` or `003-gate-c-writer-ready`)
+- Existing packet directories are reused when the resolver finds one for the same target spec
+- `NN` = two-digit zero-padded sequential counter per owner folder when a new packet must be allocated
 
-**Flat spec (no child phases):** when the spec tree root is itself the target (no child phase folders), artifacts go directly under `{spec_folder}/research/` or `{spec_folder}/review/` with no `-pt-NN` subfolder.
+**Flat spec (no child phases):** artifacts go directly under `{spec_folder}/research/` or `{spec_folder}/review/` with no `-pt-NN` subfolder.
 
-**Required resolver:** always use `resolveArtifactRoot(specFolder, 'research' | 'review')` from [`.opencode/skill/system-spec-kit/shared/review-research-paths.cjs`](../../shared/review-research-paths.cjs). It walks up from the target spec folder, locates the spec tree root, and allocates the next `{phaseSlug}-pt-{NN}` subfolder. Never hand-pick the path.
+**Required resolver:** always use `resolveArtifactRoot(specFolder, 'research' | 'review')` from [`.opencode/skill/system-spec-kit/shared/review-research-paths.cjs`](../../shared/review-research-paths.cjs). It resolves the local owner folder, reuses an existing packet for the same target when present, and allocates a local packet directory only when needed. Never hand-pick the path.
 
-**Forbidden:** creating `research/` or `review/` inside a child phase folder (e.g. `026-.../027-skill-graph-.../research/`). The canonical location is always the spec tree root.
+**Forbidden:** creating or continuing child-phase research/review packets under an ancestor/root spec's `research/` or `review/` folder.
 
 **See also:** `sk-deep-research/references/loop_protocol.md`, `sk-deep-review/references/loop_protocol.md`, and the `step_resolve_artifact_root` block in `command/spec_kit/assets/spec_kit_deep-research_auto.yaml`.
 

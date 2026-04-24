@@ -45,14 +45,14 @@ _memory:
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 013 of 013 |
-| **Predecessor** | 012-resource-map-template |
+| **Predecessor** | 001-reverse-parent-research-review-folders |
 | **Successor** | None |
 | **Handoff Criteria** | Shared evidence extractor lands under `scripts/resource-map/`; both `sk-deep-review/scripts/reduce-state.cjs` and `sk-deep-research/scripts/reduce-state.cjs` invoke it at convergence; both YAML workflows (auto + confirm) include the emission step; both SKILL.md surfaces document the new output; both feature_catalog and manual_testing_playbook gain entries; typecheck clean; vitests pass; validate.sh --strict on this packet exits 0. |
 <!-- /ANCHOR:metadata -->
 
 ### Phase Context
 
-This is Phase 013 of the 026-graph-and-context-optimization specification. Phase 012 introduced `resource-map.md` as a cross-cutting template. This phase makes the two autonomous deep-loop skills (`sk-deep-research` and `sk-deep-review`) emit a filled `resource-map.md` at convergence, assembled from evidence already captured in per-iteration delta files. The aggregated map carries dimension-specific signals: review maps include P0/P1/P2 findings-per-file counts; research maps include citation counts per file. Both shapes share the same ten-category skeleton so reviewers can read them without learning two templates.
+This is the second child packet under `013-sk-deep-refinement`. Phase 001 restores the local-owner artifact contract for deep-research and deep-review packets. This phase builds on that restored contract by making the two autonomous deep-loop skills (`sk-deep-research` and `sk-deep-review`) emit a filled `resource-map.md` at convergence beside the actual resolved packet artifacts. The aggregated map carries dimension-specific signals: review maps include P0/P1/P2 findings-per-file counts; research maps include citation counts per file. Both shapes share the same ten-category skeleton so reviewers can read them without learning two templates.
 
 ---
 
@@ -78,8 +78,8 @@ Auto-emit a filled `resource-map.md` at convergence for every `/spec_kit:deep-re
 - New shared helper: `.opencode/skill/system-spec-kit/scripts/resource-map/extract-from-evidence.cjs` that ingests an array of per-iteration delta JSON objects and emits a filled `resource-map.md` string.
 - Helper supports two input shapes: `review` deltas (with `findings[]` carrying `{ severity, file, line }`) and `research` deltas (with `findings[]` carrying `{ source_paths[], citations[] }`).
 - Dimension-specific column additions on the review shape: extra `Findings (P0/P1/P2)` column. On the research shape: extra `Citations (N iterations)` column.
-- Integration call from `sk-deep-review/scripts/reduce-state.cjs` at convergence, writing to `{review_root}/resource-map.md`.
-- Integration call from `sk-deep-research/scripts/reduce-state.cjs` at convergence, writing to `{research_root}/resource-map.md`.
+- Integration call from `sk-deep-review/scripts/reduce-state.cjs` at convergence, writing to the resolved local-owner `{artifact_dir}/resource-map.md`.
+- Integration call from `sk-deep-research/scripts/reduce-state.cjs` at convergence, writing to the resolved local-owner `{artifact_dir}/resource-map.md`.
 - YAML workflow updates: `spec_kit_deep-research_auto.yaml`, `spec_kit_deep-research_confirm.yaml`, `spec_kit_deep-review_auto.yaml`, `spec_kit_deep-review_confirm.yaml` — all four gain a post-convergence step that triggers emission, guarded by `config.resource_map.emit: true` (default on).
 - SKILL.md updates for both skills documenting the new output surface.
 - `.opencode/command/spec_kit/deep-research.md` + `deep-review.md` — brief mentions of the convergence-time resource-map output.
@@ -103,8 +103,8 @@ Auto-emit a filled `resource-map.md` at convergence for every `/spec_kit:deep-re
 |-----------|-------------|-------------|
 | `.opencode/skill/system-spec-kit/scripts/resource-map/extract-from-evidence.cjs` | Create | Shared evidence extractor. Handles both review and research delta shapes. |
 | `.opencode/skill/system-spec-kit/scripts/resource-map/README.md` | Create | Short doc covering the extractor's input/output contract. |
-| `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs` | Modify | Call the extractor at convergence; write to `{review_root}/resource-map.md`. |
-| `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs` | Modify | Call the extractor at convergence; write to `{research_root}/resource-map.md`. |
+| `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs` | Modify | Call the extractor at convergence; write to the resolved local-owner `{artifact_dir}/resource-map.md`. |
+| `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs` | Modify | Call the extractor at convergence; write to the resolved local-owner `{artifact_dir}/resource-map.md`. |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` | Modify | Add convergence-emission step; add `resource_map.emit` config flag (default true). |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` | Modify | Same. |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Modify | Same. |
@@ -133,8 +133,8 @@ Auto-emit a filled `resource-map.md` at convergence for every `/spec_kit:deep-re
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Shared evidence extractor exists and handles both review and research delta shapes. | `extract-from-evidence.cjs` exports a function `emitResourceMap({ shape, deltas, packet, scope }) -> string`; vitest covers both shapes with snapshot assertions. |
-| REQ-002 | Convergence in `sk-deep-review` emits `resource-map.md` next to `review-report.md`. | After `/spec_kit:deep-review :auto` converges on a test packet, `{review_root}/resource-map.md` exists with at least one category populated and a `Findings (P0/P1/P2)` column. |
-| REQ-003 | Convergence in `sk-deep-research` emits `resource-map.md` next to `research.md`. | After `/spec_kit:deep-research :auto` converges on a test packet, `{research_root}/resource-map.md` exists with at least one category populated and a `Citations` column. |
+| REQ-002 | Convergence in `sk-deep-review` emits `resource-map.md` beside the actual review packet outputs. | After `/spec_kit:deep-review :auto` converges on a test packet, the resolved local-owner `{artifact_dir}/resource-map.md` exists beside `review-report.md` with at least one category populated and a `Findings (P0/P1/P2)` column. |
+| REQ-003 | Convergence in `sk-deep-research` emits `resource-map.md` beside the actual research packet outputs. | After `/spec_kit:deep-research :auto` converges on a test packet, the resolved local-owner `{artifact_dir}/resource-map.md` exists beside `research.md` with at least one category populated and a `Citations` column. |
 | REQ-004 | Opt-out works. | Setting `config.resource_map.emit: false` in the YAML config or passing `--no-resource-map` skips emission cleanly. |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -162,7 +162,7 @@ Auto-emit a filled `resource-map.md` at convergence for every `/spec_kit:deep-re
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Operators running `/spec_kit:deep-review :auto` or `/spec_kit:deep-research :auto` get a `resource-map.md` alongside the narrative output with zero additional configuration.
+- **SC-001**: Operators running `/spec_kit:deep-review :auto` or `/spec_kit:deep-research :auto` get a `resource-map.md` alongside the narrative output in the same resolved local-owner packet with zero additional configuration.
 - **SC-002**: The emitted map reuses evidence captured during the loop; no new scan cost is added and no external calls are triggered at convergence.
 - **SC-003**: The review and research map shapes share the ten-category skeleton but carry dimension-specific columns, so a reviewer can read both without relearning the format.
 - **SC-004**: Opt-out (`--no-resource-map` / `emit: false`) works cleanly with no partial writes.
@@ -179,8 +179,9 @@ Auto-emit a filled `resource-map.md` at convergence for every `/spec_kit:deep-re
 | Risk | Evidence extraction misclassifies paths because iteration delta shapes vary across executors (native vs cli-codex vs cli-copilot). | Medium | Define a single normalized evidence shape consumed by the extractor; adapters per executor inside `reduce-state.cjs` normalize before passing. |
 | Risk | Convergence-time emission races with other reduce-state.cjs writes (iteration JSONL, review-report.md). | Medium | Emit resource-map.md AFTER all other convergence writes finish, in a single final step; never inside the per-iteration reducer. |
 | Risk | Extractor produces a malformed `resource-map.md` if delta files are missing or truncated. | Medium | Defensive parsing with per-delta try/catch; skip bad deltas and record a `degraded: true` note in the emitted map's Summary block. |
+| Dependency | Phase 001 local-owner rollback | High | Phase 002 must emit beside the restored local-owner packet paths before runtime wiring can be trusted. |
 | Dependency | Phase 012 `resource-map.md` template shape is stable. | High | Phase 012 is locked; any future changes to the template must stay backward compatible with the extractor's output. |
-| Dependency | `resolveArtifactRoot(specFolder, 'research'|'review')` from shared/review-research-paths.cjs. | Low | Already stable; no changes required. |
+| Dependency | `resolveArtifactRoot(specFolder, 'research'|'review')` from shared/review-research-paths.cjs. | Low | Supplies the canonical local-owner convergence target. |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -213,7 +214,7 @@ Auto-emit a filled `resource-map.md` at convergence for every `/spec_kit:deep-re
 - Zero iterations (loop aborted before first iteration): emission is skipped and a note lands in logs.
 - Single-iteration loop: map is emitted with one row set; still valid.
 - Iteration with zero findings / zero citations: executor rows are still present but the Findings/Citations column shows `0`.
-- Phase-child loops (loop run under `{spec_tree_root}/review/{phaseSlug}-pt-{NN}/`): emission targets the child artifact root, not the parent.
+- Phase-child loops: emission targets the child phase or sub-phase's resolved local-owner `{artifact_dir}`, never a parent/root packet.
 
 ### Error Scenarios
 - Delta JSON missing required fields: skip the delta, log warning, mark map as `degraded: true`.

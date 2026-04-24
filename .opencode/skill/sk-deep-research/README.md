@@ -70,7 +70,7 @@ What the workflow creates under the resolved root-level research packet:
 - `iterations/iteration-NNN.md`
 - `research.md`
 
-The packet always lives in the spec tree root's `research/` folder. Root-spec targets use `{spec_folder}/research/`. Child-phase targets use `{spec_tree_root}/research/{phase-subfolder}/`, where `{phase-subfolder}` joins the child phase path with hyphens. Pause a running loop by creating `.deep-research-pause` inside that resolved packet, then delete it to let the workflow continue from the next lifecycle check.
+The packet always lives under the target spec's local `research/` folder. Root-spec targets use `{spec_folder}/research/` directly. Child-phase and sub-phase targets use `{spec_folder}/research/{packet}/`, where `{packet}` is the resolved local packet directory for that target. Pause a running loop by creating `.deep-research-pause` inside that resolved packet, then delete it to let the workflow continue from the next lifecycle check.
 <!-- /ANCHOR:quick-start -->
 
 ---
@@ -131,8 +131,8 @@ The packet always lives in the spec tree root's `research/` folder. Root-spec ta
 Runtime packet layout:
 
 ```text
-{spec_tree_root}/research/
-  [phase-subfolder/]                 # Present only for nested child-phase targets
+{spec_folder}/research/
+  [packet-dir/]                      # Present only for nested child-phase targets
     deep-research-config.json
     deep-research-state.jsonl
     deep-research-strategy.md
