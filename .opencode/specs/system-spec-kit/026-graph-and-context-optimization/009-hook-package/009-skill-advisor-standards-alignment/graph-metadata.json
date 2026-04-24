@@ -40,7 +40,7 @@
       "jsdoc",
       "box"
     ],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "complete",
     "key_files": [
       ".opencode/plugins/spec-kit-skill-advisor.js",

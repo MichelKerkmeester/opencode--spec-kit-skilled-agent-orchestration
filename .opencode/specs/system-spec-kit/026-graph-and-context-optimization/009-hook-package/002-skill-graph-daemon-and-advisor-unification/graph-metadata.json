@@ -42,7 +42,7 @@
       "four",
       "entangled"
     ],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
       "decision-record.md",

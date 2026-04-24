@@ -38,7 +38,7 @@
       "009",
       "004"
     ],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "complete",
     "key_files": [
       "hooks/copilot/custom-instructions.ts",

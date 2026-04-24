@@ -29,7 +29,7 @@
       "fixed",
       "schema"
     ],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "reverted-needs-reapply",
     "key_files": [
       ".github/hooks/superset-notify.json",

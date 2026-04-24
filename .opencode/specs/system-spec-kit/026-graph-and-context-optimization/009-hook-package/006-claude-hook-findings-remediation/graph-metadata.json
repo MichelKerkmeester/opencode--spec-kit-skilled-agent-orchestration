@@ -40,7 +40,7 @@
       "local",
       "json"
     ],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
       ".claude/settings.local.json",

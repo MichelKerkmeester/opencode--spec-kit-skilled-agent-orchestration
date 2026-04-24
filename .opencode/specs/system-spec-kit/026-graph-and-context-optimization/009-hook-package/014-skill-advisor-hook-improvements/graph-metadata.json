@@ -15,7 +15,7 @@
   "derived": {
     "trigger_phrases": ["skill-advisor-hook-improvements", "026/009/014", "research investigation"],
     "key_topics": ["research", "investigation", "hook", "improvement"],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "research-queued",
     "key_files": ["spec.md"],
     "entities": [{"name": "spec.md", "kind": "doc", "path": "spec.md", "source": "derived"}],

@@ -39,7 +39,7 @@
       "opencode",
       "plugin"
     ],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "planning",
     "key_files": [
       ".opencode/skill/system-spec-kit/references/config/hook_system.md",

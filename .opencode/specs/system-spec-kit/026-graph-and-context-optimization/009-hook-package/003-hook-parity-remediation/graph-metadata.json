@@ -70,7 +70,7 @@
       "copilot",
       "session-start"
     ],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "complete",
     "key_files": [
       "spec.md",
