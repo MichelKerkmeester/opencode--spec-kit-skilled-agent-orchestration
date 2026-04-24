@@ -279,12 +279,24 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
       expect(isMemoryFile('/p/.opencode/specs/003/100/z_archive/spec.md')).toBe(false);
     });
 
+    it('Rejects spec.md in /z_future/ directory', () => {
+      expect(isMemoryFile('/p/.opencode/specs/003/100/z_future/spec.md')).toBe(false);
+    });
+
+    it('Rejects spec.md in /external/ directory', () => {
+      expect(isMemoryFile('/p/.opencode/specs/003/100/external/spec.md')).toBe(false);
+    });
+
     it('Rejects non-.md files', () => {
       expect(isMemoryFile('/p/.opencode/specs/003/100/spec.txt')).toBe(false);
     });
 
     it('Accepts constitutional files', () => {
       expect(isMemoryFile('/p/.opencode/skill/kit/constitutional/rules.md')).toBe(true);
+    });
+
+    it('Accepts constitutional README.md files', () => {
+      expect(isMemoryFile('/p/.opencode/skill/kit/constitutional/README.md')).toBe(true);
     });
 
     it('Rejects README.txt files', () => {

@@ -451,13 +451,13 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
       expect(result.length).toBe(1);
     });
 
-    it('T520-8: constitutional README is skipped', () => {
+    it('T520-8: constitutional README is indexed', () => {
       const skillDir = path.join(tempDir!, '.opencode', 'skill', 'test-skill', 'constitutional');
       fs.writeFileSync(path.join(skillDir, 'README.md'), '# Readme');
 
       const result = handler.findConstitutionalFiles(tempDir!);
       const hasReadme = result.some((f) => f.includes('README.md'));
-      expect(hasReadme).toBe(false);
+      expect(hasReadme).toBe(true);
     });
 
     it('T520-9: hidden skill directories are skipped', () => {

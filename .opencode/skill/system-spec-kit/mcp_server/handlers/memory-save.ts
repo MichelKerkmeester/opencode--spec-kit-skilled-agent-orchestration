@@ -46,6 +46,7 @@ import {
 } from '../lib/search/search-flags.js';
 
 import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
+import { isConstitutionalPath, shouldIndexForMemory } from '../lib/utils/index-scope.js';
 import { findSimilarMemories } from './pe-gating.js';
 import { runPostMutationHooks } from './mutation-hooks.js';
 import { buildMutationHookFeedback } from '../hooks/mutation-feedback.js';
@@ -302,6 +303,17 @@ function prepareParsedMemoryForIndexing(
     qualityLoopMode?: 'advisory' | 'full-auto';
   } = {},
 ): PreparedParsedMemory {
+  const canonicalFilePath = path.resolve(parsed.filePath).replace(/\\/g, '/');
+  if (!shouldIndexForMemory(canonicalFilePath)) {
+    throw new Error(`Memory indexing excluded for path: ${parsed.filePath}`);
+  }
+  if (parsed.importanceTier === 'constitutional' && !isConstitutionalPath(canonicalFilePath)) {
+    console.warn('[memory-save] importance_tier=constitutional rejected for non-constitutional path; downgrading to important', {
+      file_path: parsed.filePath,
+    });
+    parsed.importanceTier = 'important';
+  }
+
   const validation = memoryParser.validateParsedMemory(parsed);
   if (validation.warnings && validation.warnings.length > 0) {
     console.warn(`[memory] Warning for ${path.basename(parsed.filePath)}:`);
@@ -2679,6 +2691,10 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
 
   const validatedPath: string = validateFilePathLocal(file_path);
   const database = requireDb();
+
+  if (!shouldIndexForMemory(validatedPath)) {
+    throw new Error(`Memory indexing excluded for path: ${validatedPath}`);
+  }
 
   if (!memoryParser.isMemoryFile(validatedPath)) {
     throw new Error('File must be a canonical spec document under specs/**/ (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, handover.md, research.md, description.json, graph-metadata.json) or a constitutional memory under .opencode/skill/*/constitutional/');

@@ -150,12 +150,13 @@ describe('structural-indexer tree-sitter readiness integration', () => {
 });
 
 describe('structural-indexer scan scope', () => {
-  it('skips default archive, future, and coco-index server excludes', async () => {
+  it('skips default archive, future, external, and coco-index server excludes', async () => {
     setupIndexerMocks();
     const tempRoot = createTempRoot();
     writeFixture(tempRoot, 'active/active.ts');
     writeFixture(tempRoot, 'z_future/future.ts');
     writeFixture(tempRoot, 'z_archive/archive.ts');
+    writeFixture(tempRoot, 'external/vendor.ts');
     writeFixture(tempRoot, 'mcp-coco-index/mcp_server/server.ts');
 
     const { getDefaultConfig } = await import('../code-graph/lib/indexer-types.js');
@@ -170,6 +171,7 @@ describe('structural-indexer scan scope', () => {
     expect(indexedPaths).toContain('active/active.ts');
     expect(indexedPaths.some(filePath => filePath.includes('z_future/'))).toBe(false);
     expect(indexedPaths.some(filePath => filePath.includes('z_archive/'))).toBe(false);
+    expect(indexedPaths.some(filePath => filePath.includes('external/'))).toBe(false);
     expect(indexedPaths.some(filePath => filePath.includes('mcp-coco-index/mcp_server/'))).toBe(false);
   });
 

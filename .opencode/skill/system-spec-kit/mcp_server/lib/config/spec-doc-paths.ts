@@ -2,6 +2,8 @@
 // MODULE: Spec Document Paths
 // ───────────────────────────────────────────────────────────────
 
+import { shouldIndexForMemory } from '../utils/index-scope.js';
+
 export const SPEC_DOCUMENT_FILENAMES = new Set([
   'spec.md',
   'plan.md',
@@ -10,6 +12,7 @@ export const SPEC_DOCUMENT_FILENAMES = new Set([
   'decision-record.md',
   'implementation-summary.md',
   'research.md',
+  'resource-map.md',
   'handover.md',
   'description.json',
 ]);
@@ -82,12 +85,15 @@ export function isLegacyOrCanonicalResearchDocumentPath(filePath: string | null 
 }
 
 export function canClassifyAsSpecDocument(filePath: string | null | undefined): boolean {
-  return isSpecsScopedPath(filePath) && !isSpecDocumentExcludedPath(filePath);
+  return isSpecsScopedPath(filePath)
+    && shouldIndexForMemory(normalizeSpecPath(filePath))
+    && !isSpecDocumentExcludedPath(filePath);
 }
 
 export function canClassifyAsGraphMetadataPath(filePath: string | null | undefined): boolean {
   const normalizedPath = normalizeSpecPath(filePath);
   return isSpecsScopedPath(filePath)
+    && shouldIndexForMemory(normalizedPath)
     && !GRAPH_METADATA_EXCLUDED_SEGMENTS.some((segment) => normalizedPath.includes(segment));
 }
 

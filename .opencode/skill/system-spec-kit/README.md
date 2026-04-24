@@ -508,6 +508,7 @@ After editing core or addendum templates, run `templates/compose.sh` to regenera
 | `research/research.md` (~20K) | Deep research template for autonomous investigation             |
 | `handover.md`                 | Session continuity template for handing off to the next AI      |
 | `debug-delegation.md`         | Debug delegation template for fresh-perspective troubleshooting |
+| `resource-map.md`             | Optional lean path catalog (any level)                          |
 
 #### Template Compliance
 

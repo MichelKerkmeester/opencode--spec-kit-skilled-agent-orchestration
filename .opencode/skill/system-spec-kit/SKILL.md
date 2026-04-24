@@ -60,10 +60,11 @@ Status: ✅ This requirement applies immediately once file edits are requested.
 
 ### Distributed Governance Rule
 
-Any agent writing authored spec folder docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`, `decision-record.md`, `handover.md`, `review-report.md`, `debug-delegation.md`) MUST use templates from .opencode/skill/system-spec-kit/templates/level_N/, run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [spec_folder] --strict` after each file write, and route continuity updates through /memory:save. Deep-research workflow-owned packet markdown (`research/iterations/*.md`, `research/deep-research-*.md`, and progressive `research/research.md` loop updates) is exempt from that generic per-write rule; `/spec_kit:deep-research` must instead run targeted strict validation after every `spec.md` mutation it performs. @deep-research retains exclusive write access for `research/research.md`; @debug retains exclusive write access for `debug-delegation.md`.
+Any agent writing authored spec folder docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`, `decision-record.md`, `handover.md`, `review-report.md`, `debug-delegation.md`, `resource-map.md` (optional)) MUST use templates from .opencode/skill/system-spec-kit/templates/level_N/ for level-owned docs and the root cross-cutting templates where applicable, run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [spec_folder] --strict` after each file write, and route continuity updates through /memory:save. Deep-research workflow-owned packet markdown (`research/iterations/*.md`, `research/deep-research-*.md`, and progressive `research/research.md` loop updates) is exempt from that generic per-write rule; `/spec_kit:deep-research` must instead run targeted strict validation after every `spec.md` mutation it performs. @deep-research retains exclusive write access for `research/research.md`; @debug retains exclusive write access for `debug-delegation.md`.
 
 - `handover.md` stays in the canonical recovery ladder and is maintained through `/memory:save` handover_state routing using `.opencode/skill/system-spec-kit/templates/handover.md` for initial creation.
 - `review-report.md` remains owned by `@deep-review` when deep review workflows synthesize findings.
+- `resource-map.md` is a peer cross-cutting template under `.opencode/skill/system-spec-kit/templates/`; it remains optional at any level and gives reviewers a lean file ledger alongside `implementation-summary.md`.
 
 ### Utility Template Triggers
 
@@ -396,6 +397,8 @@ Level 3+ (Extended):    +Approval workflow, compliance, stakeholders (~1075 LOC)
 | **2**  | 100-499      | Level 1 + checklist.md                                | Quality gates, verification, NFRs           |
 | **3**  | ≥500         | Level 2 + decision-record.md                          | Architecture decisions, ADRs                |
 | **3+** | Complex      | Level 3 + extended content                            | Approval workflow, compliance, stakeholder tracking |
+
+Optional cross-cutting: `resource-map.md` - lean path catalog (any level).
 
 **Level Selection Examples:**
 
@@ -836,7 +839,7 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 6. **Claim done without checklist verification** - Level 2+ requirement
 7. **Proceed without spec folder confirmation** - Wait for A/B/C/D/E
 8. **Skip validation before completion** - Completion Verification hard block
-9. **Add ToC sections to standard spec artifacts** - `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `handover.md`, and `debug-delegation.md` must not contain ToC headings
+9. **Add ToC sections to standard spec artifacts** - `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `handover.md`, `debug-delegation.md`, and `resource-map.md` must not contain ToC headings
 
 ### ⚠️ ESCALATE IF
 
@@ -866,7 +869,7 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 - [ ] All placeholders replaced with actual content
 - [ ] Sample content and instructional comments removed
 - [ ] Cross-references to sibling documents work (spec.md ↔ plan.md ↔ tasks.md)
-- [ ] No ToC heading in non-research spec artifacts (ToC allowed only in `research/research.md`)
+- [ ] No ToC heading in non-research spec artifacts (ToC allowed only in `research/research.md`, including `resource-map.md` when present)
 
 ### User Approval
 

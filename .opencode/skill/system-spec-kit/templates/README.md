@@ -50,6 +50,7 @@ Use level templates for real work. Do not copy from `core/` or `addendum/` direc
 | `research/research.md` | Research artifact template |
 | `handover.md` | Session handover template |
 | `debug-delegation.md` | Debug delegation template |
+| `resource-map.md` | Optional cross-cutting path catalog (any level) |
 | `examples/` | Filled references only |
 | `changelog/` | Packet-local nested changelog templates for root specs and phase children |
 | `scratch/` | Temporary workspace for non-committed artifacts |
@@ -83,6 +84,7 @@ LOC is guidance, not a hard limit. Risk and complexity can move work up a level.
 - Nested packet changelogs can be generated at completion time with `../scripts/dist/spec-folder/nested-changelog.js`.
 - Level 2+ completion uses checklist verification (P0, then P1, then P2).
 - Memory context is saved via `../scripts/dist/memory/generate-context.js`, never manual file creation.
+- `resource-map.md` is an optional, any-level lean path catalog - use it alongside `implementation-summary.md` when reviewers need a scannable file ledger.
 
 <!-- /ANCHOR:workflow-notes -->
 
@@ -109,6 +111,7 @@ Phase children follow the same level system (1-3+) as standalone specs.
 - `../references/templates/level_specifications.md`
 - `../references/templates/template_guide.md`
 - `../references/validation/validation_rules.md`
+- `./resource-map.md`
 - `./examples/README.md`
 
 <!-- /ANCHOR:related -->

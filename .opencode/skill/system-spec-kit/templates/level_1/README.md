@@ -33,9 +33,10 @@ Use for simple work where full verification/governance overhead is unnecessary.
 
 - [1. OVERVIEW](#1--overview)
 - [2. REQUIRED FILES](#2--required-files)
-- [3. QUICK START](#3--quick-start)
-- [4. PHASE DECOMPOSITION](#4--phase-decomposition)
-- [5. RELATED](#5--related)
+- [3. OPTIONAL FILES](#3--optional-files)
+- [4. QUICK START](#4--quick-start)
+- [5. PHASE DECOMPOSITION](#5--phase-decomposition)
+- [6. RELATED](#6--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -60,7 +61,14 @@ Move to Level 2 when verification checklist tracking is required.
 
 <!-- /ANCHOR:files -->
 
-## 3. QUICK START
+## 3. OPTIONAL FILES
+<!-- ANCHOR:optional-files -->
+
+- `resource-map.md` - lean, scannable catalog of every path analyzed, created, updated, or removed (copy from `../resource-map.md`).
+
+<!-- /ANCHOR:optional-files -->
+
+## 4. QUICK START
 <!-- ANCHOR:quick-start -->
 
 ```bash
@@ -80,7 +88,7 @@ Resume follow-up work through `/spec_kit:resume`, which rebuilds packet continui
 
 <!-- /ANCHOR:quick-start -->
 
-## 4. PHASE DECOMPOSITION
+## 5. PHASE DECOMPOSITION
 <!-- ANCHOR:phase -->
 
 Phase decomposition is typically not needed at Level 1. Most Level 1 tasks are small enough to complete in a single pass without phased ordering.
@@ -89,7 +97,7 @@ If a task unexpectedly grows beyond Level 1 scope, consider escalating to Level 
 
 <!-- /ANCHOR:phase -->
 
-## 5. RELATED
+## 6. RELATED
 <!-- ANCHOR:related -->
 
 - `../level_2/README.md`

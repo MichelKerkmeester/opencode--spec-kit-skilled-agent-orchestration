@@ -15,6 +15,7 @@ import type {
 } from './indexer-types.js';
 import { generateSymbolId, generateContentHash, detectLanguage } from './indexer-types.js';
 import { isFileStale } from './code-graph-db.js';
+import { shouldIndexForCodeGraph } from '../../lib/utils/index-scope.js';
 
 interface IgnoreInstance {
   add(patterns: string | string[]): IgnoreInstance;
@@ -1123,6 +1124,9 @@ function shouldExcludePath(
   excludePatterns: RegExp[],
   isDirectory: boolean,
 ): boolean {
+  if (!shouldIndexForCodeGraph(fullPath)) {
+    return true;
+  }
   const relativePath = normalizeGlobPath(relative(rootDir, fullPath));
   const candidatePath = isDirectory ? `${relativePath}/` : relativePath;
   return excludePatterns.some(pattern => pattern.test(candidatePath));
@@ -1245,6 +1249,9 @@ function collectSpecificFiles(rootDir: string, specificFiles: string[], maxSize:
 
     const relativePath = normalizeGlobPath(relative(rootDir, absolutePath));
     if (relativePath === '..' || relativePath.startsWith('../')) {
+      continue;
+    }
+    if (!shouldIndexForCodeGraph(absolutePath)) {
       continue;
     }
 

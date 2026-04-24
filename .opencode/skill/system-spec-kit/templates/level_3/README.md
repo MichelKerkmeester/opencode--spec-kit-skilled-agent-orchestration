@@ -33,11 +33,12 @@ Use when implementation needs explicit architecture and risk management.
 
 - [1. OVERVIEW](#1--overview)
 - [2. REQUIRED FILES](#2--required-files)
-- [3. LEVEL 3 ADDITIONS](#3--level-3-additions)
-- [4. QUICK START](#4--quick-start)
-- [5. WORKFLOW NOTES](#5--workflow-notes)
-- [6. PHASE DECOMPOSITION](#6--phase-decomposition)
-- [7. RELATED](#7--related)
+- [3. OPTIONAL FILES](#3--optional-files)
+- [4. LEVEL 3 ADDITIONS](#4--level-3-additions)
+- [5. QUICK START](#5--quick-start)
+- [6. WORKFLOW NOTES](#6--workflow-notes)
+- [7. PHASE DECOMPOSITION](#7--phase-decomposition)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -64,7 +65,14 @@ Use Level 3+ if governance and formal approvals are required.
 
 <!-- /ANCHOR:files -->
 
-## 3. LEVEL 3 ADDITIONS
+## 3. OPTIONAL FILES
+<!-- ANCHOR:optional-files -->
+
+- `resource-map.md` - lean, scannable catalog of every path analyzed, created, updated, or removed (copy from `../resource-map.md`).
+
+<!-- /ANCHOR:optional-files -->
+
+## 4. LEVEL 3 ADDITIONS
 <!-- ANCHOR:additions -->
 
 - Architecture-focused sections in spec and plan templates.
@@ -73,7 +81,7 @@ Use Level 3+ if governance and formal approvals are required.
 
 <!-- /ANCHOR:additions -->
 
-## 4. QUICK START
+## 5. QUICK START
 <!-- ANCHOR:quick-start -->
 
 ### Primary Path — Canonical Intake
@@ -103,7 +111,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/###-feature-
 
 <!-- /ANCHOR:quick-start -->
 
-## 5. WORKFLOW NOTES
+## 6. WORKFLOW NOTES
 <!-- ANCHOR:workflow-notes -->
 
 - Keep `decision-record.md` updated as decisions are made.
@@ -114,7 +122,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/###-feature-
 
 <!-- /ANCHOR:workflow-notes -->
 
-## 6. PHASE DECOMPOSITION
+## 7. PHASE DECOMPOSITION
 <!-- ANCHOR:phase -->
 
 Phase decomposition is recommended for Level 3 tasks exceeding 500 LOC across multiple subsystems. Breaking large architectural work into ordered phases improves delivery control and risk management. Use Gate 3 Option E to target a specific phase child and `/spec_kit:plan :with-phases` to create the phase structure. If that target phase packet is still `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`, `/spec_kit:plan` delegates to the shared intake contract in [`../../references/intake-contract.md`](../../references/intake-contract.md) before phase setup continues.
@@ -123,7 +131,7 @@ See the Phase System in the [main templates README](../README.md#phase-system) f
 
 <!-- /ANCHOR:phase -->
 
-## 7. RELATED
+## 8. RELATED
 <!-- ANCHOR:related -->
 
 - `../level_2/README.md`

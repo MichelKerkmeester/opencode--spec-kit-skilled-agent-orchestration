@@ -22,6 +22,7 @@ import {
   matchesSpecDocumentPath,
   SPEC_DOCUMENT_FILENAMES,
 } from '../config/spec-doc-paths.js';
+import { isConstitutionalPath, shouldIndexForMemory } from '../utils/index-scope.js';
 import {
   graphMetadataToIndexableText,
   packetReferencesToCausalLinks,
@@ -945,9 +946,6 @@ export function hasCausalLinks(causalLinks: CausalLinks | null | undefined): boo
 // 4. VALIDATION FUNCTIONS
 
 // ───────────────────────────────────────────────────────────────
-/** Constitutional markdown basenames intentionally excluded from indexing */
-const EXCLUDED_CONSTITUTIONAL_BASENAMES = new Set(['readme.md', 'readme.txt']);
-
 function isMarkdownOrTextFile(filePath: string): boolean {
   return /\.(md|txt)$/i.test(filePath);
 }
@@ -955,6 +953,9 @@ function isMarkdownOrTextFile(filePath: string): boolean {
 /** Check if a file path is indexable by the memory system (spec document or constitutional memory) */
 export function isMemoryFile(filePath: string): boolean {
   const normalizedPath = filePath.replace(/\\/g, '/');
+  if (!shouldIndexForMemory(normalizedPath)) {
+    return false;
+  }
 
   // Spec folder documents (spec.md, plan.md, tasks.md, etc.).
   const isSpecDocument = (
@@ -969,8 +970,7 @@ export function isMemoryFile(filePath: string): boolean {
   const isConstitutional = (
     normalizedPath.endsWith('.md') &&
     normalizedPath.includes('/.opencode/skill/') &&
-    normalizedPath.includes('/constitutional/') &&
-    !EXCLUDED_CONSTITUTIONAL_BASENAMES.has(path.basename(normalizedPath).toLowerCase())
+    isConstitutionalPath(normalizedPath)
   );
 
   return isSpecDocument || isConstitutional;

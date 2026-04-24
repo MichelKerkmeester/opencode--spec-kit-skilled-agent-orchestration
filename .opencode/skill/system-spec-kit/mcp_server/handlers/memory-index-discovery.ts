@@ -16,6 +16,7 @@ import {
   SPEC_DOCUMENT_FILENAMES,
 } from '../lib/config/spec-doc-paths.js';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
+import { shouldIndexForMemory } from '../lib/utils/index-scope.js';
 
 // Feature catalog: Workspace scanning and indexing (memory_index_scan)
 // Feature catalog: Spec folder description discovery
@@ -25,9 +26,6 @@ import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
 
 /** Directories to exclude from spec document discovery. */
 const SPEC_DOC_EXCLUDE_DIRS = new Set(['scratch', 'memory', 'node_modules', 'iterations', 'z_archive']);
-
-/** Constitutional markdown basenames intentionally excluded from indexing. */
-const EXCLUDED_CONSTITUTIONAL_BASENAMES = new Set(['readme.md', 'readme.txt']);
 
 /* ------- 3. DISCOVERY FUNCTIONS ------- */
 
@@ -69,14 +67,17 @@ export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryO
     try {
       const entries = fs.readdirSync(dir, { withFileTypes: true });
       for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
         if (entry.isDirectory()) {
           // Skip excluded and hidden directories during recursive discovery.
-          if (SPEC_DOC_EXCLUDE_DIRS.has(entry.name) || entry.name.startsWith('.')) {
+          if (entry.name.startsWith('.') || SPEC_DOC_EXCLUDE_DIRS.has(entry.name) || !shouldIndexForMemory(fullPath)) {
             continue;
           }
-          walkSpecsDir(specsRoot, path.join(dir, entry.name));
+          walkSpecsDir(specsRoot, fullPath);
         } else if (entry.isFile() && SPEC_DOCUMENT_FILENAMES.has(entry.name.toLowerCase())) {
-          const fullPath = path.join(dir, entry.name);
+          if (!shouldIndexForMemory(fullPath)) {
+            continue;
+          }
           if (!matchesSpecDocumentPath(fullPath, entry.name.toLowerCase())) {
             continue;
           }
@@ -186,8 +187,9 @@ export function findConstitutionalFiles(workspacePath: string): string[] {
         const files = fs.readdirSync(constitutionalDir, { withFileTypes: true });
         for (const file of files) {
           if (file.isFile() && file.name.endsWith('.md')) {
-            if (EXCLUDED_CONSTITUTIONAL_BASENAMES.has(file.name.toLowerCase())) continue;
-            results.push(path.join(constitutionalDir, file.name));
+            const fullPath = path.join(constitutionalDir, file.name);
+            if (!shouldIndexForMemory(fullPath)) continue;
+            results.push(fullPath);
           }
         }
       } catch (err: unknown) {
@@ -218,7 +220,7 @@ export function findGraphMetadataFiles(workspacePath: string, options: SpecDisco
       for (const entry of entries) {
         const fullPath = path.join(dir, entry.name);
         if (entry.isDirectory()) {
-          if (SPEC_DOC_EXCLUDE_DIRS.has(entry.name) || entry.name.startsWith('.')) {
+          if (entry.name.startsWith('.') || SPEC_DOC_EXCLUDE_DIRS.has(entry.name) || !shouldIndexForMemory(fullPath)) {
             continue;
           }
           walk(fullPath, specsRoot);
@@ -226,6 +228,9 @@ export function findGraphMetadataFiles(workspacePath: string, options: SpecDisco
         }
 
         if (!entry.isFile() || entry.name !== GRAPH_METADATA_FILENAME) {
+          continue;
+        }
+        if (!shouldIndexForMemory(fullPath)) {
           continue;
         }
         if (!isGraphMetadataPath(fullPath)) {

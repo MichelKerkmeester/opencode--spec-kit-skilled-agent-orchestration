@@ -97,7 +97,7 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 
 ### Optional Files
 
-- None (baseline is complete)
+- `resource-map.md` - lean path catalog (cross-cutting, see §9)
 
 ### Content Expectations
 
@@ -190,7 +190,7 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 
 ### Optional Files
 
-- None
+- `resource-map.md` - lean path catalog (cross-cutting, see §9)
 
 ### Content Expectations
 
@@ -308,6 +308,7 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 
 ### Optional Files
 
+- `resource-map.md` - lean path catalog (cross-cutting, see §9)
 - `research/research.md` - Comprehensive research documentation
 
 ### Content Expectations
@@ -390,6 +391,10 @@ Level 3+ is auto-detected via complexity scoring for highly complex tasks:
 - `checklist.md` (from Level 3) - Extended (100-150 items) with sign-off section
 - `decision-record.md` (from Level 3) - Architecture Decision Records
 - `implementation-summary.md` (from Level 3) - Required completion artifact for all levels
+
+### Optional Files
+
+- `resource-map.md` - lean path catalog (cross-cutting, see §9)
 
 ### Extended Features (Auto-Enabled)
 
@@ -744,12 +749,14 @@ Some templates are not level-specific but can be used at any documentation level
 | Template | Purpose | When to Use | Created By |
 |----------|---------|-------------|------------|
 | `implementation-summary.md` | Post-implementation documentation | End of implementation phase (REQUIRED all levels) | Manual or context save |
+| `resource-map.md` | Lean path catalog | Any level, when reviewers need a scannable file ledger | Manual (optional) |
 
 **Template Sources:**
 - Level 1: `.opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md`
 - Level 2: `.opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md`
 - Level 3: `.opencode/skill/system-spec-kit/templates/level_3/implementation-summary.md`
 - Level 3+: `.opencode/skill/system-spec-kit/templates/level_3+/implementation-summary.md`
+- `.opencode/skill/system-spec-kit/templates/resource-map.md`
 
 **Why Required for ALL Levels:**
 - `implementation-summary.md` documents outcomes, lessons learned, and deviations from plan
@@ -848,6 +855,7 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 **Session Management Templates (Any Level):**
 - [handover.md](../../templates/handover.md) - Session context transfer
 - [debug-delegation.md](../../templates/debug-delegation.md) - Debug task delegation
+- [resource-map.md](../../templates/resource-map.md) - Optional lean path catalog
 
 **Non-Template Helpers:**
 - canonical continuity inside packet docs, primarily `_memory.continuity` in `implementation-summary.md`
