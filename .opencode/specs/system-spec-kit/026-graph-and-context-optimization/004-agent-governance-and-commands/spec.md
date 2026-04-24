@@ -626,7 +626,7 @@ No blocking open questions remain. All architectural choices were resolved via A
 - **Shared Intake Contract**: `.opencode/skill/system-spec-kit/references/intake-contract.md`
 - **Deep-Research Spec-Check Protocol**: `.opencode/skill/sk-deep-research/references/spec_check_protocol.md`
 - **Changelog Release Note**: `.opencode/changelog/01--system-spec-kit/v3.4.0.0.md`
-- **Deep Review Report**: `review/004-agent-execution-guardrails-pt-01/` (Workstream A audit trail)
+- **Deep Review Report**: `review/review-report.md` (Workstream A audit trail, with iteration evidence under `review/iterations/`)
 
 ---
 

@@ -332,7 +332,7 @@ CHK IDs preserved verbatim: `CHK-001..CHK-098` are the intake/middleware items f
 - [x] CHK-095 [P0] P004-TRA-001 — deleted start command removed from forward-looking command indexes.
 - [x] CHK-096 [P0] P006-COR-001 — nonexistent agent paths removed from system-spec-kit graph-metadata.
 - [x] CHK-097 [P1] P001-COR-002, P002-IIN-001, P007-MAI-001, P009-SEC-001 — all P1 findings remediated.
-- [x] CHK-098 [P2] All 4 P2 findings remediated. Evidence: full list in `review/004-agent-execution-guardrails-pt-01/` artifacts.
+- [x] CHK-098 [P2] All 4 P2 findings remediated. Evidence: full list in `review/` artifacts (deep-review iteration outputs + `review-report.md`).
 <!-- /ANCHOR:deep-review -->
 
 ---

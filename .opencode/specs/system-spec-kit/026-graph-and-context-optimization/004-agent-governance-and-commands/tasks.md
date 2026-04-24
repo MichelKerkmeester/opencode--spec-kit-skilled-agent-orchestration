@@ -300,7 +300,7 @@ Task IDs are kept identical to the originating packets for audit traceability: `
 - **Implementation Summary**: See `implementation-summary.md`
 - **Shared Intake Contract**: `.opencode/skill/system-spec-kit/references/intake-contract.md`
 - **Deep-Research Spec-Check Protocol**: `.opencode/skill/sk-deep-research/references/spec_check_protocol.md`
-- **Deep Review Report**: `review/004-agent-execution-guardrails-pt-01/`
+- **Deep Review Report**: `review/review-report.md` (see also `review/iterations/`, `review/deep-review-*.{json,jsonl,md}`)
 <!-- /ANCHOR:cross-refs -->
 
 ---
