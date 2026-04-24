@@ -43,6 +43,7 @@ interface ApplySummary {
   rewrittenFeedbackRows: number;
   rewrittenLineageRows: number;
   rewrittenMutationLedgerRows: number;
+  ftsCleanupStrategy: 'memory_index_trigger';
 }
 
 interface CleanupPlan {
@@ -277,6 +278,7 @@ function applyCleanup(database: InstanceType<typeof Database>, plan: CleanupPlan
     rewrittenFeedbackRows: 0,
     rewrittenLineageRows: 0,
     rewrittenMutationLedgerRows: 0,
+    ftsCleanupStrategy: 'memory_index_trigger',
   };
 
   if (plan.duplicateSurvivorId !== null) {
@@ -314,7 +316,6 @@ function applyCleanup(database: InstanceType<typeof Database>, plan: CleanupPlan
   summary.deletedOtherReferenceRows += deleteRows(database, 'scoring_observations', ['memory_id'], idsToDelete);
   summary.deletedOtherReferenceRows += deleteRows(database, 'session_sent_memories', ['memory_id'], idsToDelete);
   summary.deletedOtherReferenceRows += deleteRows(database, 'working_memory', ['memory_id'], idsToDelete);
-  summary.deletedOtherReferenceRows += deleteRows(database, 'memory_fts', ['rowid'], idsToDelete);
 
   if (idsToDelete.length > 0) {
     summary.deletedMemoryRows += deleteRows(database, 'memory_index', ['id'], idsToDelete);
@@ -356,6 +357,7 @@ function printApplySummary(summary: ApplySummary): void {
   console.log(`  rewritten_feedback_rows=${summary.rewrittenFeedbackRows}`);
   console.log(`  rewritten_lineage_rows=${summary.rewrittenLineageRows}`);
   console.log(`  rewritten_mutation_ledger_rows=${summary.rewrittenMutationLedgerRows}`);
+  console.log(`  fts_cleanup_strategy=${summary.ftsCleanupStrategy}`);
 }
 
 async function main(): Promise<void> {

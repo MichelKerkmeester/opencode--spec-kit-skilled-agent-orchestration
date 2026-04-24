@@ -11,12 +11,12 @@ contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T00:00:00Z"
+    last_updated_at: "2026-04-24T06:50:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Task ledger drafted"
-    next_safe_action: "Complete Phase 1 and start helper wiring"
+    recent_action: "Implementation, cleanup, and verification completed"
+    next_safe_action: "User review and MCP restart before relying on the new dist output"
     blockers: []
-    completion_pct: 20
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -86,11 +86,11 @@ _memory:
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T004 Create shared index-scope helper for memory and code graph (`mcp_server/lib/utils/index-scope.ts`)
-- [ ] T005 Wire memory discovery and spec-doc classification to the shared helper (`mcp_server/handlers/memory-index-discovery.ts`, `mcp_server/lib/config/spec-doc-paths.ts`)
-- [ ] T006 Align `isMemoryFile()` and constitutional README handling with the new policy (`mcp_server/lib/parsing/memory-parser.ts`)
-- [ ] T007 Add save-time path rejection and constitutional tier downgrade (`mcp_server/handlers/memory-save.ts`)
-- [ ] T008 Wire code-graph recursive and specific-file scanning to the shared helper while preserving existing excludes (`mcp_server/code-graph/lib/structural-indexer.ts`, `mcp_server/code-graph/lib/indexer-types.ts`)
+- [x] T004 Create shared index-scope helper for memory and code graph (`mcp_server/lib/utils/index-scope.ts`)
+- [x] T005 Wire memory discovery and spec-doc classification to the shared helper (`mcp_server/handlers/memory-index-discovery.ts`, `mcp_server/lib/config/spec-doc-paths.ts`)
+- [x] T006 Align `isMemoryFile()` and constitutional README handling with the new policy (`mcp_server/lib/parsing/memory-parser.ts`)
+- [x] T007 Add save-time path rejection and constitutional tier downgrade (`mcp_server/handlers/memory-save.ts`)
+- [x] T008 Wire code-graph recursive and specific-file scanning to the shared helper while preserving existing excludes (`mcp_server/code-graph/lib/structural-indexer.ts`, `mcp_server/code-graph/lib/indexer-types.ts`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -98,12 +98,12 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T009 [P] Add focused exclusion and constitutional-tier Vitest coverage (`mcp_server/tests/`)
-- [ ] T010 [P] Add cleanup CLI with dry-run, apply, and verify modes (`scripts/memory/cleanup-index-scope-violations.ts`)
-- [ ] T011 Update canonical docs with the three invariants and helper reference (`.opencode/skill/system-spec-kit/mcp_server/README.md`)
-- [ ] T012 Run packet strict validation (`spec/validate.sh --strict --no-recursive`)
-- [ ] T013 Run `npm run typecheck`, `npm run build`, focused Vitest commands, and `npm run test:core`; record outcomes honestly (`implementation-summary.md`, `checklist.md`)
-- [ ] T014 Run cleanup dry-run, apply, and verify against the Voyage-4 DB; capture before/after counts (`implementation-summary.md`, `checklist.md`)
+- [x] T009 [P] Add focused exclusion and constitutional-tier Vitest coverage (`mcp_server/tests/`)
+- [x] T010 [P] Add cleanup CLI with dry-run, apply, and verify modes (`scripts/memory/cleanup-index-scope-violations.ts`)
+- [x] T011 Update canonical docs with the three invariants and helper reference (`.opencode/skill/system-spec-kit/mcp_server/README.md`)
+- [x] T012 Run packet strict validation (`spec/validate.sh --strict --no-recursive`)
+- [x] T013 Run `npm run typecheck`, `npm run build`, focused Vitest commands, and `npm run test:core`; record outcomes honestly (`implementation-summary.md`, `checklist.md`)
+- [x] T014 Run cleanup dry-run, apply, and verify against the Voyage-4 DB; capture before/after counts (`implementation-summary.md`, `checklist.md`)
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -111,9 +111,9 @@ _memory:
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Runtime invariants and cleanup verification both pass
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Runtime invariants and cleanup verification both pass
 <!-- /ANCHOR:completion -->
 
 ---

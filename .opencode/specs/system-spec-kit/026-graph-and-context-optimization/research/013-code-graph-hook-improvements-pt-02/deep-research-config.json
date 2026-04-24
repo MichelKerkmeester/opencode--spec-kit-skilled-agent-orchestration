@@ -1,0 +1,15 @@
+{
+  "research_topic": "Code-graph system and hooks improvement investigation, pt-02. Build on pt-01 (at .opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/028-code-graph-hook-improvements-pt-01/). Focus on net-new correctness, freshness, observability, ergonomic, and cross-runtime gaps beyond closed CF-002/CF-009/CF-010/CF-014. Zero-calls investigation is OUT OF SCOPE (handled separately in pt-03).",
+  "spec_folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements",
+  "max_iterations": 10,
+  "convergence_threshold": 0.05,
+  "stuck_threshold": 3,
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.4",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "timeoutSeconds": 900
+  },
+  "created_at": "2026-04-24T06:39:42Z"
+}

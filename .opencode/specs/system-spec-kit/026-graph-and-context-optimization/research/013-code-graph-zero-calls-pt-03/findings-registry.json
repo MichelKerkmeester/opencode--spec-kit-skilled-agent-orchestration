@@ -1,0 +1,97 @@
+{
+  "phase": "013-code-graph-zero-calls-pt-03",
+  "generated_at": "2026-04-24T06:47:12Z",
+  "iteration_count": 3,
+  "convergence_status": "max_iterations",
+  "findings": [
+    {
+      "id": "F-001",
+      "severity": "P0",
+      "category": "correctness",
+      "summary": "The zero-edge result came from querying the wrong node: the prior symbolId mapped to the lazy re-export in handlers/index.ts, while the real handleMemoryContext function in memory-context.ts currently has persisted CALLS edges.",
+      "evidence": [
+        "iterations/iteration-02.md#evidence",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/code-graph-zero-calls-investigation.md:11-21",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/index.ts:310-311",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1196-1205",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:115-126",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:165-190"
+      ],
+      "recommended_fix": "Make subject resolution operation-aware for calls_from/calls_to so callable implementation nodes outrank export/import/wrapper nodes.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts"
+      ],
+      "related_findings": [
+        "F-002",
+        "F-003",
+        "F-004"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-002",
+      "severity": "P1",
+      "category": "observability",
+      "summary": "Ambiguity warnings expose only generic messaging plus symbol IDs, so operators cannot tell that a CALLS query selected a wrapper/export node instead of the real function.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:144-161",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:165-190",
+        "iterations/iteration-03.md#findings"
+      ],
+      "recommended_fix": "Extend warning payloads and response metadata with candidate kind/file/line data plus the selected candidate.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts"
+      ],
+      "related_findings": [
+        "F-001",
+        "F-003"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-003",
+      "severity": "P1",
+      "category": "correctness",
+      "summary": "The existing ambiguity regression test codifies deterministic first-candidate selection for calls_from, so the current suite does not protect against wrapper-node shadowing for CALLS queries.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts:278-299",
+        "iterations/iteration-03.md#findings"
+      ],
+      "recommended_fix": "Add a handleMemoryContext-style ambiguity test that seeds export/variable/function candidates and asserts that calls_from and calls_to pick the function candidate.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts"
+      ],
+      "related_findings": [
+        "F-001",
+        "F-002"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-004",
+      "severity": "P2",
+      "category": "cross-runtime",
+      "summary": "The bad-subject pattern is broad across the MCP surface because handlers/index.ts and similar index files create duplicate handle* names that shadow real implementation functions.",
+      "evidence": [
+        "iterations/iteration-03.md#evidence",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/index.ts:212-320",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:612",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:540",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/index.ts:5",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:586"
+      ],
+      "recommended_fix": "Apply the operation-aware resolver to all CALLS-oriented graph queries and verify it against sibling handle* names, not only handleMemoryContext.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts"
+      ],
+      "related_findings": [
+        "F-001",
+        "F-003"
+      ],
+      "negative_if_ruled_out": null
+    }
+  ]
+}
