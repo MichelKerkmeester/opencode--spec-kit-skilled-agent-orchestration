@@ -1,7 +1,7 @@
 ---
 template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 title: "Implementation Summary: Index Scope and Constitutional Tier Invariants"
-description: "Working implementation summary for invariant enforcement, cleanup tooling, and verification. This file will be finalized after code, tests, and cleanup complete."
+description: "Final implementation summary for Wave-1 and Wave-2 remediation of packet 011, including cleanup auditing, SSOT unification, realpath hardening, walker caps, and verification outcomes."
 trigger_phrases:
   - "026/011 implementation summary"
   - "index scope implementation summary"
@@ -10,13 +10,13 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T09:31:49Z"
+    last_updated_at: "2026-04-24T14:10:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Wave-1 remediation landed; P0-001 and P0-002 patched at SQL layer, audit-trail gap closed"
-    next_safe_action: "Run 7-iteration deep review pass 2 to confirm P0s resolved"
-    status: "wave1-remediation-complete"
+    recent_action: "Wave-2 remediation complete"
+    next_safe_action: "Run pass-3 deep-review to confirm zero remaining P0/P1 scope debt, or close packet"
+    status: "wave-2-remediation-complete"
     blockers: []
-    completion_pct: 95
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -33,7 +33,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 011-index-scope-and-constitutional-tier-invariants |
-| **Completed** | Wave-1 Complete (re-review pending) |
+| **Completed** | Wave-2 Remediation Complete |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
@@ -42,7 +42,7 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This packet landed a shared index-scope policy module, wired it into memory discovery, parser classification, memory save, and code-graph scanning, and added a cleanup CLI that removed the existing `z_future` pollution from the live Voyage-4 DB. This correction pass removed the mistaken constitutional README admission and restored the final constitutional set to the two rule files only.
+Packet 011 is now closed through Wave-2. The final state keeps `index-scope.ts` as the invariant source of truth, enforces constitutional-tier normalization across save/update/post-insert/checkpoint paths, hardens symlink handling with realpaths, adds walker DoS caps, and makes cleanup normalization durably auditable instead of silently mutating or erasing evidence.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -50,11 +50,11 @@ This packet landed a shared index-scope policy module, wired it into memory disc
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The work stayed in three passes:
+The packet landed in three stages:
 
-1. Read-only investigation of scanner, save, parser, auto-surface, and cleanup surfaces with exact file:line references in [`research/research.md`](./research/research.md).
-2. Runtime wiring across the helper, save-time guard, code-graph exclusions, test coverage, and README documentation.
-3. Live database remediation via `cleanup-index-scope-violations.js`, followed by a targeted README-row reversal that removed the mistaken constitutional README entry and re-verified the final invariant counts.
+1. Baseline invariant wiring and live cleanup of the original `z_future` / constitutional pollution.
+2. Wave-1 remediation for the two release-blocking bypasses plus first-pass downgrade auditing.
+3. Wave-2 hardening for cleanup audit durability, exclusion SSOT unification, realpath enforcement, cleanup TOCTOU closure, walker caps, shared governance audit helpers, and operator/spec doc drift.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -68,27 +68,34 @@ The work stayed in three passes:
 | Downgrade invalid constitutional saves to `important` | It preserves the save while stopping polluted constitutional rows |
 | Exclude the constitutional README | It is a human-oriented overview doc, not a rule surface |
 | Let `memory_index` own FTS cleanup | Direct `memory_fts` deletes conflicted with the `memory_index` FTS delete trigger and caused malformed cleanup applies |
+| Keep cleanup audit rows as historical evidence | Forensics must outlive the deleted `memory_index` rows they describe |
+| Keep spec-doc exclusions additive around `shouldIndexForMemory()` | Packet-specific walker skips should not fork the invariant source of truth |
 <!-- /ANCHOR:decisions -->
 
 ---
 
-Wave-1 remediation closed the release-blocking constitutional-tier bypasses without widening into the deferred Wave-2 cleanup work. The remediation keeps the invariant at the storage layer, re-validates checkpoint replay before snapshot rows are applied, and adds durable downgrade auditing so operators can see when a non-constitutional path tried to claim constitutional priority.
+**Wave-2 Remediation**
 
-**Findings Addressed**
+Wave-2 closed the five deferred hardening items from pass-2 plus the related P2 doc drift. The runtime and script changes stayed surgical and preserved all Wave-1 guards.
 
 | Finding IDs | Patch Surface | Evidence |
 |-------------|---------------|----------|
-| `P0-001` | `mcp_server/lib/search/vector-index-mutations.ts:61-113,456-477` | `update_memory()` now downgrades non-constitutional `importance_tier='constitutional'` requests before the SQL update executes and records a best-effort governance audit row |
-| `P0-001`, `P1-018` | `mcp_server/lib/storage/post-insert-metadata.ts:82-154` | Post-insert metadata writes now apply the same constitutional-path guard inline before updating `importance_tier` |
-| `P0-002` | `mcp_server/lib/storage/checkpoints.ts:75-103,1291-1367,1545-1777` | `checkpoint_restore` validates replay rows inside the barrier-held transaction, rejects walker-excluded paths, downgrades invalid constitutional rows, and flushes governance audit entries after the restore attempt |
-| `P1-008` | `mcp_server/handlers/memory-save.ts:306-337` | Save-path constitutional downgrades now write `governance_audit.action='tier_downgrade_non_constitutional_path'` in addition to the warning |
-| `P1-016` | `mcp_server/handlers/memory-crud-update.ts:151-208` | Update-path downgrades of already-poisoned non-constitutional rows now emit the same governance audit action after the SQL-layer guard runs |
+| `P1-pass2-004`, `P2-pass2-006` | `scripts/memory/cleanup-index-scope-violations.ts:318-358,429-435` | Cleanup no longer deletes `governance_audit` rows for deleted memories, emits `tier_downgrade_non_constitutional_path_cleanup` per downgraded row, and rebuilds the apply plan inside the transaction snapshot |
+| `P1-013`, `P1-014` | `mcp_server/lib/config/spec-doc-paths.ts:29-80`; `mcp_server/handlers/memory-index-discovery.ts:28-49,89-130,243-285` | Spec-doc classification and discovery now call `shouldIndexForMemory()` as the SSOT, with only additive overlay exclusions for packet-specific walker behavior |
+| `P1-003`, `P1-017` | `mcp_server/lib/utils/canonical-path.ts:32-41`; `mcp_server/handlers/memory-save.ts:308-325,2714-2718`; `mcp_server/code-graph/lib/structural-indexer.ts:1273-1285` | Save-time invariant checks and code-graph `specificFiles` now evaluate `fs.realpathSync()` results instead of string-normalized paths |
+| `P1-001`, `P1-009` | `scripts/memory/cleanup-index-scope-violations.ts:429-435`; `mcp_server/handlers/memory-index-discovery.ts:28-49,91-110,253-273`; `mcp_server/code-graph/lib/structural-indexer.ts:1161-1240` | Cleanup apply builds from the transaction snapshot, `.gitignore` reads cap at 1MB, and recursive walkers stop at depth 20 or 50,000 nodes with warnings |
+| `P2-pass2-003`, `P2-pass2-004`, `P2-pass2-007`, `P1-015` | `mcp_server/lib/governance/scope-governance.ts:117-137,184-195,372-390`; `mcp_server/lib/search/vector-index-mutations.ts:64-100,450-472`; `mcp_server/handlers/memory-crud-update.ts:156-200`; `mcp_server/lib/storage/post-insert-metadata.ts:91-116`; `mcp_server/handlers/memory-save.ts:318-325`; `mcp_server/lib/storage/checkpoints.ts:92-100,1291-1368,1570-1572,1651,1858-1862`; `.opencode/skill/system-spec-kit/mcp_server/README.md:119-123` | Shared action strings and `recordTierDowngradeAudit()` now drive every tier-downgrade emitter, update-path `constitutional -> critical` transitions are audited, and the operator README documents the stable action strings |
 
 **Focused Test Coverage**
 
 - `mcp_server/tests/memory-save-index-scope.vitest.ts:340-399`
-- `mcp_server/tests/memory-crud-update-constitutional-guard.vitest.ts:1-194`
+- `mcp_server/tests/memory-crud-update-constitutional-guard.vitest.ts:1-221`
 - `mcp_server/tests/checkpoint-restore-invariant-enforcement.vitest.ts:1-245`
+- `mcp_server/tests/cleanup-script-audit-emission.vitest.ts:1-125`
+- `mcp_server/tests/exclusion-ssot-unification.vitest.ts:1-69`
+- `mcp_server/tests/symlink-realpath-hardening.vitest.ts:1-102`
+- `mcp_server/tests/walker-dos-caps.vitest.ts:1-84`
+- `mcp_server/tests/memory-governance.vitest.ts:1-279`
 
 **Live Verify Result**
 
@@ -111,15 +118,16 @@ Wave-1 remediation closed the release-blocking constitutional-tier bypasses with
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run build` | Exit `0` |
 | `cd .opencode/skill/system-spec-kit/scripts && npm run typecheck` | Exit `0` |
 | `cd .opencode/skill/system-spec-kit/scripts && npm run build` | Exit `0` |
-| Requested focused Vitest | Exit `0` (`8` tests passed across `tests/index-scope.vitest.ts` and `tests/memory-save-index-scope.vitest.ts`) |
-| Wave-1 focused Vitest | Exit `0` (`13` tests passed across `tests/index-scope.vitest.ts`, `tests/memory-save-index-scope.vitest.ts`, `tests/memory-crud-update-constitutional-guard.vitest.ts`, and `tests/checkpoint-restore-invariant-enforcement.vitest.ts`) |
+| Wave-2 focused Vitest | Exit `0` (`20` tests passed across `tests/index-scope.vitest.ts`, `tests/memory-save-index-scope.vitest.ts`, `tests/memory-crud-update-constitutional-guard.vitest.ts`, `tests/checkpoint-restore-invariant-enforcement.vitest.ts`, `tests/cleanup-script-audit-emission.vitest.ts`, `tests/exclusion-ssot-unification.vitest.ts`, `tests/symlink-realpath-hardening.vitest.ts`, and `tests/walker-dos-caps.vitest.ts`) |
 | README regression Vitest | Exit `0` (`218` tests passed across `tests/handler-memory-index.vitest.ts`, `tests/memory-parser-extended.vitest.ts`, `tests/full-spec-doc-indexing.vitest.ts`, and `tests/gate-d-regression-constitutional-memory.vitest.ts`) |
-| `timeout 300 npm run test:core` | Exit `124`; observed carryover failures in `tests/copilot-hook-wiring.vitest.ts` and `tests/stage3-rerank-regression.vitest.ts` before timeout |
+| `tests/memory-governance.vitest.ts` | Exit `0`; cleanup action-string coverage added for `tier_downgrade_non_constitutional_path_cleanup` |
+| `timeout 300 npm run test:core` | Exit `124`; the same carryover failures still surface in `tests/copilot-hook-wiring.vitest.ts` and `tests/stage3-rerank-regression.vitest.ts` before timeout |
 | Cleanup dry-run | Exit `0`; planned `0` deletions and `0` downgrades in the corrected final state |
 | Cleanup first apply | Exit `0`; post-apply counts `constitutional_total=2`, `constitutional_in_folder=2`, `z_future_rows=0`, `external_rows=0`, `invalid_constitutional_rows=0`, `gate_enforcement_rows=1` |
 | README reversal delete | Exit `0`; deleted memory `11672` plus `memory_history=1`, `memory_lineage=1`, `vec_memories=1`, and `active_memory_projection=1`, while `memory_index` handled FTS cleanup via trigger |
 | Cleanup verify after reversal | Exit `0` |
 | Wave-1 cleanup verify | Exit `0`; `constitutional_total=2`, `constitutional_in_folder=2`, `z_future_rows=0`, `external_rows=0`, `invalid_constitutional_rows=0`, `gate_enforcement_rows=1` |
+| Wave-2 cleanup verify | Exit `0`; planned `0` deletions, `0` duplicate deletes, and `0` downgrades in the final state |
 | Final SQL check | Exit `0`; `constitutional_total=2`, `constitutional_in_folder=2`, and the only remaining constitutional rows are the gate enforcement and gate tool routing rule files |
 | Strict packet validate | Exit `0` |
 
@@ -160,5 +168,5 @@ The `deleted_memory_rows` count reflects the top-level `memory_index` deletes re
 ## Known Limitations
 
 1. **`npm run test:core` remains a carryover.** The suite timed out after surfacing existing failures unrelated to this packet; no attempt was made to widen scope and fix them here.
-2. **MCP restart is required.** The code changes are built into `dist/`, but a running MCP client needs a restart before the new save/scan/code-graph guards are active.
+2. **MCP restart is required.** The runtime changes are built into `dist/`, but a running MCP client still needs a restart before the new save/scan/code-graph/cleanup helper behavior is active.
 <!-- /ANCHOR:limitations -->

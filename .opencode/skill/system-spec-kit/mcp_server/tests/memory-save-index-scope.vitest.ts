@@ -64,6 +64,22 @@ async function loadMemorySaveHarness(parsedMemory: ParsedMemoryFixture) {
     return parsed.importanceTier === 'constitutional' ? 8101 : 8102;
   });
   const recordGovernanceAuditMock = vi.fn();
+  const recordTierDowngradeAuditMock = vi.fn((db, params) => {
+    recordGovernanceAuditMock(db, {
+      action: 'tier_downgrade_non_constitutional_path',
+      decision: 'conflict',
+      logicalKey: params.logicalKey ?? null,
+      reason: params.reason ?? 'non_constitutional_path',
+      metadata: {
+        source: params.source,
+        requestedTier: params.requestedTier,
+        previousTier: params.previousTier,
+        appliedTier: params.nextTier,
+        filePath: params.filePath,
+        canonicalFilePath: params.canonicalFilePath,
+      },
+    });
+  });
 
   vi.resetModules();
   vi.doUnmock('../handlers/memory-save');
@@ -258,6 +274,8 @@ async function loadMemorySaveHarness(parsedMemory: ParsedMemoryFixture) {
       ensureGovernanceRuntime: vi.fn(),
       buildGovernancePostInsertFields: vi.fn(() => ({})),
       recordGovernanceAudit: recordGovernanceAuditMock,
+      buildGovernanceLogicalKey: vi.fn(actual.buildGovernanceLogicalKey),
+      recordTierDowngradeAudit: recordTierDowngradeAuditMock,
       validateGovernedIngest: vi.fn(() => ({
         allowed: true,
         issues: [],
@@ -315,7 +333,7 @@ async function loadMemorySaveHarness(parsedMemory: ParsedMemoryFixture) {
   });
 
   const module = await import('../handlers/memory-save');
-  return { module, createMemoryRecordMock, recordGovernanceAuditMock };
+  return { module, createMemoryRecordMock, recordGovernanceAuditMock, recordTierDowngradeAuditMock };
 }
 
 afterEach(() => {

@@ -191,4 +191,33 @@ describe('memory_update constitutional tier guard', () => {
     `).get() as { count: number };
     expect(auditCount.count).toBe(0);
   });
+
+  it('records governance_audit when a non-constitutional row moves from constitutional to critical', async () => {
+    const filePath = '/workspace/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/plan.md';
+    const memoryId = seedMemory(filePath);
+    database.prepare('UPDATE memory_index SET importance_tier = ? WHERE id = ?').run('constitutional', memoryId);
+    const { handleMemoryUpdate } = await loadHandler();
+
+    await handleMemoryUpdate({
+      id: memoryId,
+      importanceTier: 'critical',
+    });
+
+    const row = database.prepare(`
+      SELECT importance_tier
+      FROM memory_index
+      WHERE id = ?
+    `).get(memoryId) as { importance_tier: string };
+    expect(row.importance_tier).toBe('critical');
+
+    const audits = database.prepare(`
+      SELECT action
+      FROM governance_audit
+      ORDER BY id ASC
+    `).all() as Array<{ action: string }>;
+    expect(audits).toEqual([
+      { action: 'tier_downgrade_non_constitutional_path' },
+      { action: 'tier_downgrade_non_constitutional_path' },
+    ]);
+  });
 });

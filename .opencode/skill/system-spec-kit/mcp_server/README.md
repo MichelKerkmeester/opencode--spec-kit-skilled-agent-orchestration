@@ -116,6 +116,12 @@ The memory and code-graph scanners now share one path-policy source at `lib/util
 - Code-graph scanning must never admit any path with an `external/` segment, and it preserves the existing `.git/`, `node_modules/`, `dist/`, `vendor/`, `z_future/`, `z_archive/`, and `mcp-coco-index/mcp_server/` exclusions.
 - `importanceTier: constitutional` is only valid for files inside `/constitutional/`; non-constitutional saves are downgraded to `important` at save time instead of failing hard.
 
+### Governance Audit Action Strings
+
+- `tier_downgrade_non_constitutional_path`: a runtime save, update, checkpoint, or post-insert write tried to apply constitutional priority to a non-constitutional path and the tier was normalized away from `constitutional`.
+- `tier_downgrade_non_constitutional_path_cleanup`: the cleanup CLI bulk-normalized an already-persisted non-constitutional row from `constitutional` to `important`.
+- `checkpoint_restore_excluded_path_rejected`: checkpoint replay encountered a path that current index-scope rules would reject entirely, so the restore denied that row and aborted atomically.
+
 <!-- /ANCHOR:overview -->
 
 ---

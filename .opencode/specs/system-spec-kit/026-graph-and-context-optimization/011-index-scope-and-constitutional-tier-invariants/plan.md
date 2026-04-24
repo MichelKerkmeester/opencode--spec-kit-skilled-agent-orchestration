@@ -11,13 +11,13 @@ contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T09:31:49Z"
+    last_updated_at: "2026-04-24T14:10:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Wave-1 remediation landed; P0-001 and P0-002 patched at SQL layer, audit-trail gap closed"
-    next_safe_action: "Run 7-iteration deep review pass 2 to confirm P0s resolved"
-    status: "wave1-remediation-complete"
+    recent_action: "Wave-2 remediation complete"
+    next_safe_action: "Run pass-3 deep-review to confirm zero remaining P0/P1 scope debt, or close packet"
+    status: "wave-2-remediation-complete"
     blockers: []
-    completion_pct: 95
+    completion_pct: 100
     open_questions: []
     answered_questions:
       - "The memory invariant enforcement point will be shared helper plus save-time guard."
@@ -43,7 +43,7 @@ _memory:
 | **Testing** | Vitest |
 
 ### Overview
-This packet introduces one shared path-scope module and uses it as the lowest-risk source of truth for memory and code-graph exclusions. The same pass adds a save-time constitutional tier gate, focused regression coverage, and a transactional cleanup CLI that removes existing pollution and verifies the invariants afterwards.
+This packet introduced one shared path-scope module and used it as the lowest-risk source of truth for memory and code-graph exclusions. Wave-1 closed the release-blocking bypasses, and Wave-2 completed the deferred hardening: cleanup auditing, SSOT unification, realpath enforcement, walker caps, and the final operator/spec documentation refresh.
 <!-- /ANCHOR:summary -->
 
 ---

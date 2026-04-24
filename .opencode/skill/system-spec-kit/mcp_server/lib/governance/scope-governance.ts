@@ -114,6 +114,29 @@ export interface GovernanceAuditReviewResult {
   summary: GovernanceAuditReviewSummary;
 }
 
+export const GOVERNANCE_AUDIT_ACTIONS = {
+  TIER_DOWNGRADE_NON_CONSTITUTIONAL_PATH: 'tier_downgrade_non_constitutional_path',
+  TIER_DOWNGRADE_NON_CONSTITUTIONAL_PATH_CLEANUP: 'tier_downgrade_non_constitutional_path_cleanup',
+  CHECKPOINT_RESTORE_EXCLUDED_PATH_REJECTED: 'checkpoint_restore_excluded_path_rejected',
+} as const;
+
+export type GovernanceAuditAction =
+  typeof GOVERNANCE_AUDIT_ACTIONS[keyof typeof GOVERNANCE_AUDIT_ACTIONS];
+
+export interface TierDowngradeAuditParams extends ScopeContext {
+  action?: GovernanceAuditAction;
+  memoryId?: number | null;
+  logicalKey?: string | null;
+  requestedTier?: string | null;
+  previousTier?: string | null;
+  nextTier: string;
+  source: string;
+  reason?: string | null;
+  filePath?: string | null;
+  canonicalFilePath?: string | null;
+  metadata?: Record<string, unknown> | null;
+}
+
 /**
  * Options used when benchmarking scope-filter behavior.
  */
@@ -156,6 +179,19 @@ export function normalizeScopeValue(value: unknown): string | null {
   if (typeof value !== 'string') return null;
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : null;
+}
+
+export function buildGovernanceLogicalKey(
+  specFolder: string | null | undefined,
+  resolvedPath: string | null | undefined,
+  anchorId: string | null | undefined,
+): string | null {
+  if (!specFolder || !resolvedPath) {
+    return null;
+  }
+
+  const normalizedAnchor = anchorId && anchorId.trim().length > 0 ? anchorId : '_';
+  return `${specFolder}::${resolvedPath}::${normalizedAnchor}`;
 }
 
 function normalizeIsoTimestamp(value: unknown): string | undefined {
@@ -331,6 +367,46 @@ export function recordGovernanceAudit(database: Database.Database, entry: Govern
     entry.reason ?? null,
     entry.metadata ? JSON.stringify(entry.metadata) : null,
   );
+}
+
+// See ADR-012 in packet 026/011.
+export function recordTierDowngradeAudit(
+  database: Database.Database,
+  params: TierDowngradeAuditParams,
+): void {
+  const metadata: Record<string, unknown> = {
+    source: params.source,
+    appliedTier: params.nextTier,
+  };
+
+  if (params.requestedTier !== undefined) {
+    metadata.requestedTier = params.requestedTier;
+  }
+  if (params.previousTier !== undefined) {
+    metadata.previousTier = params.previousTier;
+  }
+  if (params.filePath !== undefined) {
+    metadata.filePath = params.filePath;
+  }
+  if (params.canonicalFilePath !== undefined) {
+    metadata.canonicalFilePath = params.canonicalFilePath;
+  }
+  if (params.metadata) {
+    Object.assign(metadata, params.metadata);
+  }
+
+  recordGovernanceAudit(database, {
+    action: params.action ?? GOVERNANCE_AUDIT_ACTIONS.TIER_DOWNGRADE_NON_CONSTITUTIONAL_PATH,
+    decision: 'conflict',
+    tenantId: params.tenantId,
+    userId: params.userId,
+    agentId: params.agentId,
+    sessionId: params.sessionId,
+    memoryId: params.memoryId ?? null,
+    logicalKey: params.logicalKey ?? null,
+    reason: params.reason ?? 'non_constitutional_path',
+    metadata,
+  });
 }
 
 function matchesExactScope(rowValue: unknown, requestedValue?: string): boolean {

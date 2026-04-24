@@ -17,7 +17,10 @@ import { MemoryError, ErrorCodes } from '../lib/errors.js';
 import * as mutationLedger from '../lib/storage/mutation-ledger.js';
 import { runInTransaction } from '../lib/storage/transaction-manager.js';
 import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope.js';
-import { recordGovernanceAudit } from '../lib/governance/scope-governance.js';
+import {
+  buildGovernanceLogicalKey,
+  recordTierDowngradeAudit,
+} from '../lib/governance/scope-governance.js';
 import { isConstitutionalPath } from '../lib/utils/index-scope.js';
 import { toErrorMessage } from '../utils/index.js';
 
@@ -152,10 +155,12 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
 
       if (importanceTier !== undefined) {
         const updated = vectorIndex.getMemory(id) as (Record<string, unknown> | null);
-        const previousTier = existing.importance_tier;
+        const previousTier = typeof existing.importance_tier === 'string'
+          ? existing.importance_tier
+          : undefined;
         const nextTier = typeof updated?.importance_tier === 'string'
           ? updated.importance_tier
-          : previousTier;
+          : (previousTier ?? importanceTier);
         const guardPathCandidate = [
           updated?.canonical_file_path,
           updated?.file_path,
@@ -168,37 +173,31 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
           guardPath
           && !isConstitutionalPath(guardPath)
           && previousTier === 'constitutional'
-          && nextTier === 'important'
+          && nextTier !== 'constitutional'
         ) {
           try {
             const specFolder = typeof updated?.spec_folder === 'string'
               ? updated.spec_folder
-              : existing.spec_folder;
+              : (typeof existing.spec_folder === 'string' ? existing.spec_folder : null);
             const anchorIdCandidate = typeof updated?.anchor_id === 'string'
               ? updated.anchor_id
-              : existing.anchor_id;
+              : (typeof existing.anchor_id === 'string' ? existing.anchor_id : null);
             const anchorId = typeof anchorIdCandidate === 'string' ? anchorIdCandidate : null;
-            const normalizedAnchor = anchorId && anchorId.trim().length > 0 ? anchorId : '_';
-            recordGovernanceAudit(database, {
-              action: 'tier_downgrade_non_constitutional_path',
-              decision: 'conflict',
+            const updatedFilePath = typeof updated?.file_path === 'string'
+              ? updated.file_path
+              : (typeof existing.file_path === 'string' ? existing.file_path : null);
+            const updatedCanonicalFilePath = typeof updated?.canonical_file_path === 'string'
+              ? updated.canonical_file_path
+              : (typeof existing.canonical_file_path === 'string' ? existing.canonical_file_path : null);
+            recordTierDowngradeAudit(database, {
               memoryId: id,
-              logicalKey: specFolder
-                ? `${specFolder}::${guardPath}::${normalizedAnchor}`
-                : null,
-              reason: 'non_constitutional_path',
-              metadata: {
-                source: 'memory_update',
-                requestedTier: importanceTier,
-                previousTier,
-                appliedTier: nextTier,
-                filePath: typeof updated?.file_path === 'string'
-                  ? updated.file_path
-                  : existing.file_path,
-                canonicalFilePath: typeof updated?.canonical_file_path === 'string'
-                  ? updated.canonical_file_path
-                  : existing.canonical_file_path,
-              },
+              logicalKey: buildGovernanceLogicalKey(specFolder, guardPath, anchorId),
+              requestedTier: importanceTier,
+              previousTier,
+              nextTier,
+              source: 'memory_update',
+              filePath: updatedFilePath,
+              canonicalFilePath: updatedCanonicalFilePath,
             });
           } catch (error: unknown) {
             console.warn(

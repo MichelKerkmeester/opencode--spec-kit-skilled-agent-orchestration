@@ -26,18 +26,17 @@ const WORKING_ARTIFACT_SEGMENTS = [
   '/review/iterations/',
 ] as const;
 
-const SPEC_DOCUMENT_EXCLUDED_SEGMENTS = [
+const SPEC_DOCUMENT_ONLY_EXCLUDED_SEGMENTS = [
   '/memory/',
   '/scratch/',
   '/temp/',
   '/review/',
-  '/z_archive/',
   '/research/iterations/',
   '/review/iterations/',
   '/node_modules/',
 ] as const;
 
-const GRAPH_METADATA_EXCLUDED_SEGMENTS = [
+const GRAPH_METADATA_ONLY_EXCLUDED_SEGMENTS = [
   '/memory/',
   '/scratch/',
   '/temp/',
@@ -45,6 +44,13 @@ const GRAPH_METADATA_EXCLUDED_SEGMENTS = [
   '/review/iterations/',
   '/node_modules/',
 ] as const;
+
+const SPEC_DISCOVERY_ONLY_EXCLUDE_DIRS = new Set([
+  'scratch',
+  'memory',
+  'node_modules',
+  'iterations',
+]);
 
 // Accept both canonical packet leaves like "010-feature" and numeric leaves like "010".
 const SPEC_LEAF_SEGMENT_PATTERN = /^\d{3}(?:[-_].+)?$/;
@@ -69,7 +75,8 @@ export function isWorkingArtifactPath(filePath: string | null | undefined): bool
 
 export function isSpecDocumentExcludedPath(filePath: string | null | undefined): boolean {
   const normalizedPath = normalizeSpecPath(filePath);
-  return SPEC_DOCUMENT_EXCLUDED_SEGMENTS.some((segment) => normalizedPath.includes(segment));
+  return !shouldIndexForMemory(normalizedPath)
+    || SPEC_DOCUMENT_ONLY_EXCLUDED_SEGMENTS.some((segment) => normalizedPath.includes(segment));
 }
 
 export function isCanonicalResearchDocumentPath(filePath: string | null | undefined): boolean {
@@ -94,7 +101,16 @@ export function canClassifyAsGraphMetadataPath(filePath: string | null | undefin
   const normalizedPath = normalizeSpecPath(filePath);
   return isSpecsScopedPath(filePath)
     && shouldIndexForMemory(normalizedPath)
-    && !GRAPH_METADATA_EXCLUDED_SEGMENTS.some((segment) => normalizedPath.includes(segment));
+    && !GRAPH_METADATA_ONLY_EXCLUDED_SEGMENTS.some((segment) => normalizedPath.includes(segment));
+}
+
+export function shouldDescendSpecDiscoveryDirectory(
+  fullPath: string,
+  entryName: string,
+): boolean {
+  return !entryName.startsWith('.')
+    && shouldIndexForMemory(fullPath)
+    && !SPEC_DISCOVERY_ONLY_EXCLUDE_DIRS.has(entryName.toLowerCase());
 }
 
 export function isSpecLeafSegment(segment: string | null | undefined): boolean {

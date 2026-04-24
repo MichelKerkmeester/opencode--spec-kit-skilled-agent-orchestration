@@ -30,6 +30,18 @@ export function getCanonicalPathKey(filePath: string): string {
 }
 
 /**
+ * Resolve an absolute path to its realpath when possible, but fail open to the
+ * caller-supplied absolute path when the target is missing or broken.
+ */
+export function resolveCanonicalPath(absPath: string): string {
+  try {
+    return fs.realpathSync(absPath).replace(/\\/g, '/');
+  } catch {
+    return absPath.replace(/\\/g, '/');
+  }
+}
+
+/**
  * Resolve symlinks before spec-folder extraction so that paths through
  * symlinked directories (e.g. `.claude/specs → ../.opencode/specs`)
  * produce the same spec_folder string as the real path.

@@ -16,6 +16,7 @@ import type {
 import { generateSymbolId, generateContentHash, detectLanguage } from './indexer-types.js';
 import { isFileStale } from './code-graph-db.js';
 import { shouldIndexForCodeGraph } from '../../lib/utils/index-scope.js';
+import { resolveCanonicalPath } from '../../lib/utils/canonical-path.js';
 
 interface IgnoreInstance {
   add(patterns: string | string[]): IgnoreInstance;
@@ -46,6 +47,9 @@ export interface IndexFilesResult extends Array<ParseResult> {
 
 const require = createRequire(import.meta.url);
 let ignoreFactory: IgnoreFactory | null = null;
+const MAX_GITIGNORE_BYTES = 1024 * 1024;
+const FIND_FILES_MAX_DEPTH = 20;
+const FIND_FILES_MAX_NODES = 50_000;
 
 function resolveIgnoreFactory(ignoreModule: unknown): IgnoreFactory | null {
   let candidate = ignoreModule;
@@ -1163,7 +1167,16 @@ function loadGitignore(
   }
 
   try {
-    const content = readFileSync(resolve(directoryPath, '.gitignore'), 'utf-8');
+    const gitignorePath = resolve(directoryPath, '.gitignore');
+    const stats = statSync(gitignorePath);
+    if (stats.size > MAX_GITIGNORE_BYTES) {
+      console.warn(
+        `[structural-indexer] Skipping oversized .gitignore (${stats.size} bytes > ${MAX_GITIGNORE_BYTES} bytes): ${gitignorePath}`,
+      );
+      gitignoreCache.set(directoryPath, null);
+      return null;
+    }
+    const content = readFileSync(gitignorePath, 'utf-8');
     const factory = loadIgnoreFactory();
     const matcher = factory();
     matcher.add(content.split(/\r?\n/));
@@ -1199,8 +1212,18 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
   const gitignoreCache = new Map<string, IgnoreInstance | null>();
   let excludedByDefault = 0;
   let excludedByGitignore = 0;
+  let visitedNodes = 0;
+  let abortedByNodeLimit = false;
 
-  function walk(currentDir: string, inheritedGitignores: GitignoreContext[]): void {
+  function walk(currentDir: string, inheritedGitignores: GitignoreContext[], depth: number): void {
+    if (abortedByNodeLimit) {
+      return;
+    }
+    if (depth >= FIND_FILES_MAX_DEPTH) {
+      console.warn(`[structural-indexer] Aborting descent at maxDepth=${FIND_FILES_MAX_DEPTH}: ${currentDir}`);
+      return;
+    }
+
     const localGitignore = loadGitignore(currentDir, gitignoreCache);
     const activeGitignores = localGitignore
       ? [...inheritedGitignores, { baseDir: currentDir, matcher: localGitignore }]
@@ -1211,6 +1234,12 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
     } catch { return; }
 
     for (const entry of entries) {
+      visitedNodes += 1;
+      if (visitedNodes > FIND_FILES_MAX_NODES) {
+        console.warn(`[structural-indexer] Aborting walk after ${FIND_FILES_MAX_NODES} filesystem nodes at ${currentDir}`);
+        abortedByNodeLimit = true;
+        return;
+      }
       const fullPath = resolve(currentDir, entry.name);
       if (shouldExcludePath(rootDir, fullPath, excludePatterns, entry.isDirectory())) {
         excludedByDefault++;
@@ -1222,7 +1251,7 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
       }
 
       if (entry.isDirectory()) {
-        walk(fullPath, activeGitignores);
+        walk(fullPath, activeGitignores, depth + 1);
       } else if (entry.isFile()) {
         if (targetExt && !entry.name.endsWith(targetExt)) continue;
         try {
@@ -1237,7 +1266,7 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
     }
   }
 
-  walk(rootDir, []);
+  walk(rootDir, [], 0);
   return { files: results, excludedByDefault, excludedByGitignore };
 }
 
@@ -1246,7 +1275,7 @@ function collectSpecificFiles(rootDir: string, specificFiles: string[], maxSize:
   const seenFiles = new Set<string>();
 
   for (const filePath of specificFiles) {
-    const absolutePath = resolve(filePath);
+    const absolutePath = resolveCanonicalPath(resolve(filePath));
     if (seenFiles.has(absolutePath)) {
       continue;
     }
@@ -1337,7 +1366,7 @@ export function finalizeIndexResults(results: ParseResult[]): ParseResult[] {
 
 /** Index all matching files in the workspace */
 export async function indexFiles(config: IndexerConfig, options: IndexFilesOptions = {}): Promise<IndexFilesResult> {
-  const results = [] as IndexFilesResult;
+  const results = [] as unknown as IndexFilesResult;
   results.preParseSkippedCount = 0;
   const skipFreshFiles = options.skipFreshFiles ?? true;
   let candidateFiles: string[];

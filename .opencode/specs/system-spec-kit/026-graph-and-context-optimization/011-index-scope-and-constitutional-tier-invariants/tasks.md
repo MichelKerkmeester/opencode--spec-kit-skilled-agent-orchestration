@@ -11,13 +11,13 @@ contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T09:31:49Z"
+    last_updated_at: "2026-04-24T14:10:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Wave-1 remediation landed; P0-001 and P0-002 patched at SQL layer, audit-trail gap closed"
-    next_safe_action: "Run 7-iteration deep review pass 2 to confirm P0s resolved"
-    status: "wave1-remediation-complete"
+    recent_action: "Wave-2 remediation complete"
+    next_safe_action: "Run pass-3 deep-review to confirm zero remaining P0/P1 scope debt, or close packet"
+    status: "wave-2-remediation-complete"
     blockers: []
-    completion_pct: 95
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -110,6 +110,11 @@ _memory:
 - [x] T-W1-03 Emit durable `governance_audit` rows for non-constitutional tier downgrade attempts without failing the write path (`mcp_server/handlers/memory-save.ts`, `mcp_server/lib/search/vector-index-mutations.ts`, `mcp_server/lib/storage/checkpoints.ts`)
 - [x] T-W1-04 Add focused Vitest coverage for `memory_update` and `checkpoint_restore` invariant enforcement (`mcp_server/tests/memory-crud-update-constitutional-guard.vitest.ts`, `mcp_server/tests/checkpoint-restore-invariant-enforcement.vitest.ts`)
 - [x] T-W1-05 Refresh packet continuity, append the remediation ADR, rerun strict validation, and capture the Wave-1 verification results (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`)
+- [x] T-W2-01 Close the cleanup-script audit gap by retaining historical `governance_audit` rows and emitting cleanup-specific downgrade audits (`scripts/memory/cleanup-index-scope-violations.ts`, `mcp_server/tests/cleanup-script-audit-emission.vitest.ts`)
+- [x] T-W2-02 Collapse spec-doc exclusion drift onto `index-scope.ts` and prove the helper drives classification plus discovery (`mcp_server/lib/config/spec-doc-paths.ts`, `mcp_server/handlers/memory-index-discovery.ts`, `mcp_server/tests/exclusion-ssot-unification.vitest.ts`)
+- [x] T-W2-03 Harden save-time and code-graph specific-file path checks with realpath canonicalization (`mcp_server/lib/utils/canonical-path.ts`, `mcp_server/handlers/memory-save.ts`, `mcp_server/code-graph/lib/structural-indexer.ts`, `mcp_server/tests/symlink-realpath-hardening.vitest.ts`)
+- [x] T-W2-04 Move cleanup apply planning onto the transaction snapshot and add walker DoS caps for `.gitignore` size, depth, and node count (`scripts/memory/cleanup-index-scope-violations.ts`, `mcp_server/handlers/memory-index-discovery.ts`, `mcp_server/code-graph/lib/structural-indexer.ts`, `mcp_server/tests/walker-dos-caps.vitest.ts`)
+- [x] T-W2-05 Extract shared governance audit action strings/helpers, extend constitutional-to-critical auditing, and refresh operator/spec docs (`mcp_server/lib/governance/scope-governance.ts`, `mcp_server/api/index.ts`, `mcp_server/tests/memory-governance.vitest.ts`, `.opencode/skill/system-spec-kit/mcp_server/README.md`, packet 011 docs)
 <!-- /ANCHOR:phase-3 -->
 
 ---

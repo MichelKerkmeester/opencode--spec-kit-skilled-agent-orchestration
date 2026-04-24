@@ -1,7 +1,7 @@
 ---
 template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 title: "Decision Record: Index Scope and Constitutional Tier Invariants"
-description: "Records the invariant enforcement point, delete-vs-downgrade cleanup strategy, constitutional save-time gate behavior, and the README exclusion correction."
+description: "Records the invariant enforcement point, cleanup strategy, Wave-1 bypass remediation, and Wave-2 hardening decisions for packet 011."
 trigger_phrases:
   - "026/011 decisions"
   - "index scope adr"
@@ -11,13 +11,13 @@ contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T09:31:49Z"
+    last_updated_at: "2026-04-24T14:10:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Wave-1 remediation landed; P0-001 and P0-002 patched at SQL layer, audit-trail gap closed"
-    next_safe_action: "Run 7-iteration deep review pass 2 to confirm P0s resolved"
-    status: "wave1-remediation-complete"
+    recent_action: "Wave-2 remediation complete"
+    next_safe_action: "Run pass-3 deep-review to confirm zero remaining P0/P1 scope debt, or close packet"
+    status: "wave-2-remediation-complete"
     blockers: []
-    completion_pct: 95
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -488,3 +488,138 @@ The deep-review packet for 011 found two release-blocking bypasses after the ori
 - Add focused Vitest coverage for `memory_update`, `checkpoint_restore`, and save-path downgrade auditing.
 
 **How to roll back**: revert the Wave-1 remediation patch set, rebuild `mcp_server`, and rerun the focused Vitest and cleanup `--verify` commands before restoring broader use.
+
+---
+
+### ADR-008: Cleanup Audits Are Durable Historical Evidence
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-24 |
+| **Deciders** | Codex + user request |
+
+### Context
+
+Pass-2 found that the cleanup CLI bulk-downgraded invalid constitutional rows without writing any `governance_audit` rows, and it also deleted historical `governance_audit` rows for memory ids that the cleanup removed. That made the cleanup path invisible to later forensic review.
+
+### Decision
+
+**We chose**: keep historical `governance_audit` rows even when the referenced `memory_index` row is deleted, and emit a cleanup-specific audit action for every cleanup downgrade.
+
+**How it works**: `cleanup-index-scope-violations.ts` now preserves existing audit rows, writes `action='tier_downgrade_non_constitutional_path_cleanup'`, and stamps the reason as `cleanup-script bulk normalization`.
+
+### Consequences
+
+- Cleanup remains repair-oriented, but it is now also auditable after the fact.
+- Operators can distinguish runtime guard downgrades from maintenance-time normalization.
+
+---
+
+### ADR-009: Spec-Doc Exclusions Stay Additive Around `index-scope.ts`
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-24 |
+| **Deciders** | Codex + user request |
+
+### Context
+
+Packet 011 already established `index-scope.ts` as the canonical memory/code-graph invariant source, but `spec-doc-paths.ts` and `memory-index-discovery.ts` still carried overlapping exclusion arrays. That duplication meant `z_archive` and future invariant changes could drift again.
+
+### Decision
+
+**We chose**: keep `shouldIndexForMemory()` as the single source of truth for invariant exclusions and limit spec-doc-specific filters to additive overlays only.
+
+**How it works**: the spec-doc helpers now call `shouldIndexForMemory()` first, while directory-specific exclusions such as `scratch/`, `memory/`, and `iterations/` remain separate additive overlays.
+
+### Consequences
+
+- Changing `EXCLUDED_FOR_MEMORY` now changes spec-doc classification and discovery automatically.
+- Packet-specific walker exclusions still exist, but only for behavior that is intentionally outside the core invariant set.
+
+---
+
+### ADR-010: Realpath Hardening Wins Over String-Normalized Paths
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-24 |
+| **Deciders** | Codex + user request |
+
+### Context
+
+Pass-1 flagged that `memory-save.ts` and `structural-indexer.ts` used `path.resolve()` only, which normalizes strings but does not follow symlinks. A safe-looking path could therefore point into `z_future/` or another excluded subtree.
+
+### Decision
+
+**We chose**: add one shared `resolveCanonicalPath()` helper that prefers `fs.realpathSync()` and falls back to the caller-supplied absolute path when the target is missing or broken.
+
+**How it works**: save-time exclusion checks and code-graph `specificFiles` checks now evaluate the realpath, not just the apparent path string.
+
+### Consequences
+
+- Symlinked files no longer bypass invariant enforcement on the save path or specific-file code-graph refreshes.
+- The helper stays fail-open for missing paths so atomic save flows still work for not-yet-created files.
+
+---
+
+### ADR-011: Cleanup Apply Builds Its Plan on the Transaction Snapshot
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-24 |
+| **Deciders** | Codex + user request |
+
+### Context
+
+`cleanup-index-scope-violations.ts` originally built its apply plan before opening the SQLite transaction. A concurrent write between plan generation and apply could therefore leave a violating row behind.
+
+### Decision
+
+**We chose**: rebuild the cleanup plan inside the apply transaction instead of trusting a pre-transaction snapshot.
+
+**How it works**: the CLI still prints a dry-run plan for operators, but the mutating `--apply` path computes its own fresh plan inside `database.transaction(...)` before any deletes or downgrades run.
+
+### Consequences
+
+- Cleanup apply decisions now match the same transactional snapshot as the writes they perform.
+- Dry-run output remains informative, but the authoritative plan for mutation lives inside the transaction.
+
+---
+
+### ADR-012: Governance Audit Actions and Tier-Downgrade Emission Are Shared Helpers
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-24 |
+| **Deciders** | Codex + user request |
+
+### Context
+
+Pass-2 found the same audit payload shape duplicated across save, update, checkpoint, post-insert, and cleanup code. Bare action-string literals were also spread across runtime code and tests.
+
+### Decision
+
+**We chose**: centralize the stable action strings in `GOVERNANCE_AUDIT_ACTIONS` and route downgrade writes through one `recordTierDowngradeAudit()` helper plus `buildGovernanceLogicalKey()`.
+
+**How it works**: all invariant-related downgrade emitters now share the same action enum, decision, logical-key format, and metadata scaffolding.
+
+### Consequences
+
+- Audit payload drift is reduced across runtime and maintenance surfaces.
+- Operators and tests can filter on a stable action-string set that is documented in the README.

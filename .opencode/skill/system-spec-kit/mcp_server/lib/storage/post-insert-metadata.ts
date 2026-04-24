@@ -5,7 +5,10 @@
 // so storage-layer writers do not depend on handler modules.
 
 import type Database from 'better-sqlite3';
-import { recordGovernanceAudit } from '../governance/scope-governance.js';
+import {
+  buildGovernanceLogicalKey,
+  recordTierDowngradeAudit,
+} from '../governance/scope-governance.js';
 import { isConstitutionalPath } from '../utils/index-scope.js';
 
 // ───────────────────────────────────────────────────────────────
@@ -99,24 +102,17 @@ export function applyPostInsertMetadata(
 
     const guardPath = row?.canonical_file_path || row?.file_path || null;
     if (guardPath && !isConstitutionalPath(guardPath)) {
+      // See ADR-006 in packet 026/011.
       normalizedFields.importance_tier = 'important';
       try {
-        const normalizedAnchor = row?.anchor_id && row.anchor_id.trim().length > 0 ? row.anchor_id : '_';
-        recordGovernanceAudit(db, {
-          action: 'tier_downgrade_non_constitutional_path',
-          decision: 'conflict',
+        recordTierDowngradeAudit(db, {
           memoryId,
-          logicalKey: row?.spec_folder && guardPath
-            ? `${row.spec_folder}::${guardPath}::${normalizedAnchor}`
-            : null,
-          reason: 'non_constitutional_path',
-          metadata: {
-            source: 'applyPostInsertMetadata',
-            requestedTier: 'constitutional',
-            appliedTier: 'important',
-            filePath: row?.file_path ?? null,
-            canonicalFilePath: row?.canonical_file_path ?? null,
-          },
+          logicalKey: buildGovernanceLogicalKey(row?.spec_folder, guardPath, row?.anchor_id),
+          requestedTier: 'constitutional',
+          nextTier: 'important',
+          source: 'applyPostInsertMetadata',
+          filePath: row?.file_path ?? null,
+          canonicalFilePath: row?.canonical_file_path ?? null,
         });
       } catch (error: unknown) {
         console.warn(

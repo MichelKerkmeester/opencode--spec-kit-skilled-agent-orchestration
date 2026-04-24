@@ -14,6 +14,7 @@ import {
   isGraphMetadataPath,
   matchesSpecDocumentPath,
   SPEC_DOCUMENT_FILENAMES,
+  shouldDescendSpecDiscoveryDirectory,
 } from '../lib/config/spec-doc-paths.js';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
 import { shouldIndexForMemory } from '../lib/utils/index-scope.js';
@@ -24,8 +25,28 @@ import { shouldIndexForMemory } from '../lib/utils/index-scope.js';
 
 /* ------- 2. CONSTANTS ------- */
 
-/** Directories to exclude from spec document discovery. */
-const SPEC_DOC_EXCLUDE_DIRS = new Set(['scratch', 'memory', 'node_modules', 'iterations', 'z_archive']);
+const SPEC_DISCOVERY_MAX_DEPTH = 20;
+const SPEC_DISCOVERY_MAX_NODES = 50_000;
+
+interface DiscoveryWalkState {
+  visitedNodes: number;
+  maxNodesExceeded: boolean;
+}
+
+function shouldAbortDiscoveryWalk(state: DiscoveryWalkState, label: string): boolean {
+  if (state.maxNodesExceeded) {
+    return true;
+  }
+
+  state.visitedNodes += 1;
+  if (state.visitedNodes > SPEC_DISCOVERY_MAX_NODES) {
+    console.warn(`[memory-index-discovery] ${label} aborted after ${SPEC_DISCOVERY_MAX_NODES} filesystem nodes`);
+    state.maxNodesExceeded = true;
+    return true;
+  }
+
+  return false;
+}
 
 /* ------- 3. DISCOVERY FUNCTIONS ------- */
 
@@ -65,17 +86,28 @@ export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryO
   const seenCanonicalRoots = new Set<string>();
   const seenCanonicalFiles = new Set<string>();
 
-  function walkSpecsDir(specsRoot: string, dir: string): void {
+  const state: DiscoveryWalkState = { visitedNodes: 0, maxNodesExceeded: false };
+
+  function walkSpecsDir(specsRoot: string, dir: string, depth = 0): void {
+    if (state.maxNodesExceeded) {
+      return;
+    }
     try {
       const entries = fs.readdirSync(dir, { withFileTypes: true });
       for (const entry of entries) {
+        if (shouldAbortDiscoveryWalk(state, 'spec document discovery')) {
+          return;
+        }
         const fullPath = path.join(dir, entry.name);
         if (entry.isDirectory()) {
-          // Skip excluded and hidden directories during recursive discovery.
-          if (entry.name.startsWith('.') || SPEC_DOC_EXCLUDE_DIRS.has(entry.name) || !shouldIndexForMemory(fullPath)) {
+          if (depth >= SPEC_DISCOVERY_MAX_DEPTH) {
+            console.warn(`[memory-index-discovery] spec document discovery skipped ${fullPath} after reaching maxDepth=${SPEC_DISCOVERY_MAX_DEPTH}`);
             continue;
           }
-          walkSpecsDir(specsRoot, fullPath);
+          if (!shouldDescendSpecDiscoveryDirectory(fullPath, entry.name)) {
+            continue;
+          }
+          walkSpecsDir(specsRoot, fullPath, depth + 1);
         } else if (entry.isFile() && SPEC_DOCUMENT_FILENAMES.has(entry.name.toLowerCase())) {
           if (!shouldIndexForMemory(fullPath)) {
             continue;
@@ -211,22 +243,33 @@ export function findConstitutionalFiles(workspacePath: string): string[] {
 export function findGraphMetadataFiles(workspacePath: string, options: SpecDiscoveryOptions = {}): string[] {
   const results: string[] = [];
   const seenCanonicalFiles = new Set<string>();
+  const state: DiscoveryWalkState = { visitedNodes: 0, maxNodesExceeded: false };
   const canonicalSpecsRoot = path.join(workspacePath, '.opencode', 'specs');
   const legacySpecsRoot = path.join(workspacePath, 'specs');
   const specsRoots = fs.existsSync(canonicalSpecsRoot)
     ? [canonicalSpecsRoot]
     : [legacySpecsRoot];
 
-  function walk(dir: string, specsRoot: string): void {
+  function walk(dir: string, specsRoot: string, depth = 0): void {
+    if (state.maxNodesExceeded) {
+      return;
+    }
     try {
       const entries = fs.readdirSync(dir, { withFileTypes: true });
       for (const entry of entries) {
+        if (shouldAbortDiscoveryWalk(state, 'graph metadata discovery')) {
+          return;
+        }
         const fullPath = path.join(dir, entry.name);
         if (entry.isDirectory()) {
-          if (entry.name.startsWith('.') || SPEC_DOC_EXCLUDE_DIRS.has(entry.name) || !shouldIndexForMemory(fullPath)) {
+          if (depth >= SPEC_DISCOVERY_MAX_DEPTH) {
+            console.warn(`[memory-index-discovery] graph metadata discovery skipped ${fullPath} after reaching maxDepth=${SPEC_DISCOVERY_MAX_DEPTH}`);
             continue;
           }
-          walk(fullPath, specsRoot);
+          if (!shouldDescendSpecDiscoveryDirectory(fullPath, entry.name)) {
+            continue;
+          }
+          walk(fullPath, specsRoot, depth + 1);
           continue;
         }
 

@@ -63,6 +63,19 @@ export {
   initAccessTracker,
 } from './storage.js';
 
+export {
+  GOVERNANCE_AUDIT_ACTIONS,
+  buildGovernanceLogicalKey,
+  ensureGovernanceRuntime,
+  recordGovernanceAudit,
+  recordTierDowngradeAudit,
+} from '../lib/governance/scope-governance.js';
+export type {
+  GovernanceAuditAction,
+  GovernanceAuditEntry,
+  TierDowngradeAuditParams,
+} from '../lib/governance/scope-governance.js';
+
 // --- Folder discovery (used by scripts/spec-folder, scripts/core) ---
 export {
   generatePerFolderDescription,

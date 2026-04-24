@@ -10,13 +10,13 @@ contextType: "research"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T09:31:49Z"
+    last_updated_at: "2026-04-24T14:10:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Wave-1 remediation landed; P0-001 and P0-002 patched at SQL layer, audit-trail gap closed"
-    next_safe_action: "Run 7-iteration deep review pass 2 to confirm P0s resolved"
-    status: "wave1-remediation-complete"
+    recent_action: "Wave-2 remediation complete"
+    next_safe_action: "Run pass-3 deep-review to confirm zero remaining P0/P1 scope debt, or close packet"
+    status: "wave-2-remediation-complete"
     blockers: []
-    completion_pct: 95
+    completion_pct: 100
     open_questions: []
     answered_questions:
       - "Memory discovery lacks permanent z_future and external exclusions."
@@ -26,6 +26,10 @@ _memory:
 # Research: Index Scope and Constitutional Tier Invariants
 
 Primary source files for this investigation were [memory-index.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts:160), [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2577), [structural-indexer.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts:1186), and [cleanup-orphaned-vectors.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/memory/cleanup-orphaned-vectors.ts:59). Live DB evidence came from direct inspection of `.opencode/skill/system-spec-kit/mcp_server/database/context-index__voyage__voyage-4__1024.sqlite`.
+
+## Status Note
+
+This body remains the original read-only baseline investigation that led into Wave-1 and Wave-2 remediation. The current packet state is no longer pending investigation: Wave-1 closed the release-blocking bypasses, Wave-2 closed the deferred P1 hardening and pass-2 doc drift, and the current closure record lives in the pass-1/pass-2 review reports plus `implementation-summary.md`.
 
 <!-- ANCHOR:research-memory-scan -->
 ## 1. Memory Scanner Entry and Walker

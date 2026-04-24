@@ -45,7 +45,7 @@ import {
   resolveSavePlannerMode,
 } from '../lib/search/search-flags.js';
 
-import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
+import { getCanonicalPathKey, resolveCanonicalPath } from '../lib/utils/canonical-path.js';
 import { isConstitutionalPath, shouldIndexForMemory } from '../lib/utils/index-scope.js';
 import { findSimilarMemories } from './pe-gating.js';
 import { runPostMutationHooks } from './mutation-hooks.js';
@@ -59,9 +59,11 @@ import {
   type MemoryScopeMatch,
 } from './save/create-record.js';
 import {
+  buildGovernanceLogicalKey,
   buildGovernancePostInsertFields,
   ensureGovernanceRuntime,
   recordGovernanceAudit,
+  recordTierDowngradeAudit,
   validateGovernedIngest,
 } from '../lib/governance/scope-governance.js';
 import { delete_memory_from_database } from '../lib/search/vector-index-mutations.js';
@@ -303,7 +305,8 @@ function prepareParsedMemoryForIndexing(
     qualityLoopMode?: 'advisory' | 'full-auto';
   } = {},
 ): PreparedParsedMemory {
-  const canonicalFilePath = path.resolve(parsed.filePath).replace(/\\/g, '/');
+  // See ADR-006 and ADR-010 in packet 026/011.
+  const canonicalFilePath = resolveCanonicalPath(path.resolve(parsed.filePath));
   if (!shouldIndexForMemory(canonicalFilePath)) {
     throw new Error(`Memory indexing excluded for path: ${parsed.filePath}`);
   }
@@ -312,20 +315,13 @@ function prepareParsedMemoryForIndexing(
       file_path: parsed.filePath,
     });
     try {
-      recordGovernanceAudit(database, {
-        action: 'tier_downgrade_non_constitutional_path',
-        decision: 'conflict',
-        logicalKey: parsed.specFolder
-          ? `${parsed.specFolder}::${canonicalFilePath}::_`
-          : null,
-        reason: 'non_constitutional_path',
-        metadata: {
-          source: 'memory_save',
-          requestedTier: 'constitutional',
-          appliedTier: 'important',
-          filePath: parsed.filePath,
-          canonicalFilePath,
-        },
+      recordTierDowngradeAudit(database, {
+        logicalKey: buildGovernanceLogicalKey(parsed.specFolder, canonicalFilePath, null),
+        requestedTier: 'constitutional',
+        nextTier: 'important',
+        source: 'memory_save',
+        filePath: parsed.filePath,
+        canonicalFilePath,
       });
     } catch (error: unknown) {
       console.warn(
@@ -2712,10 +2708,11 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   await checkDatabaseUpdated();
 
   const validatedPath: string = validateFilePathLocal(file_path);
+  const canonicalValidatedPath = resolveCanonicalPath(validatedPath);
   const database = requireDb();
 
-  if (!shouldIndexForMemory(validatedPath)) {
-    throw new Error(`Memory indexing excluded for path: ${validatedPath}`);
+  if (!shouldIndexForMemory(canonicalValidatedPath)) {
+    throw new Error(`Memory indexing excluded for path: ${canonicalValidatedPath}`);
   }
 
   if (!memoryParser.isMemoryFile(validatedPath)) {

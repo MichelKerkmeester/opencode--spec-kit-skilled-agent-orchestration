@@ -2,6 +2,7 @@ import Database from 'better-sqlite3';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import {
+  GOVERNANCE_AUDIT_ACTIONS,
   benchmarkScopeFilter,
   buildGovernancePostInsertFields,
   createScopeFilterPredicate,
@@ -182,6 +183,40 @@ describe('Phase 5 memory governance', () => {
       action: 'memory_save',
       decision: 'allow',
       metadata: { stage: 'pilot' },
+    });
+  });
+
+  it('tracks cleanup-specific governance audit action strings distinctly', () => {
+    const db = new Database(':memory:');
+    db.exec(`
+      CREATE TABLE memory_index (
+        id INTEGER PRIMARY KEY,
+        spec_folder TEXT,
+        file_path TEXT,
+        session_id TEXT
+      )
+    `);
+    ensureGovernanceRuntime(db);
+
+    recordGovernanceAudit(db, {
+      action: GOVERNANCE_AUDIT_ACTIONS.TIER_DOWNGRADE_NON_CONSTITUTIONAL_PATH_CLEANUP,
+      decision: 'conflict',
+      memoryId: 42,
+      reason: 'cleanup-script bulk normalization',
+    });
+
+    const review = reviewGovernanceAudit(db, {
+      action: GOVERNANCE_AUDIT_ACTIONS.TIER_DOWNGRADE_NON_CONSTITUTIONAL_PATH_CLEANUP,
+      allowUnscoped: true,
+    });
+
+    expect(review.summary.byAction).toEqual({
+      [GOVERNANCE_AUDIT_ACTIONS.TIER_DOWNGRADE_NON_CONSTITUTIONAL_PATH_CLEANUP]: 1,
+    });
+    expect(review.rows[0]).toMatchObject({
+      action: GOVERNANCE_AUDIT_ACTIONS.TIER_DOWNGRADE_NON_CONSTITUTIONAL_PATH_CLEANUP,
+      decision: 'conflict',
+      reason: 'cleanup-script bulk normalization',
     });
   });
 

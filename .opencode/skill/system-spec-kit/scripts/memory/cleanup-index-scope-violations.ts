@@ -6,6 +6,11 @@ import Database from 'better-sqlite3';
 import { load as loadSqliteVec } from 'sqlite-vec';
 import { fileURLToPath } from 'node:url';
 
+import {
+  GOVERNANCE_AUDIT_ACTIONS,
+  buildGovernanceLogicalKey,
+  recordTierDowngradeAudit,
+} from '@spec-kit/mcp-server/api';
 import { isMainModule } from '../lib/esm-entry.js';
 
 interface CountRow {
@@ -15,6 +20,15 @@ interface CountRow {
 interface MemoryIdRow {
   id: number;
   content_hash: string | null;
+}
+
+interface CleanupDowngradeRow {
+  id: number;
+  spec_folder: string | null;
+  file_path: string | null;
+  canonical_file_path: string | null;
+  anchor_id: string | null;
+  importance_tier: string | null;
 }
 
 interface DuplicateRow {
@@ -51,7 +65,7 @@ interface CleanupPlan {
   forbiddenContentHashes: string[];
   duplicateOldIds: number[];
   duplicateSurvivorId: number | null;
-  downgradeIds: number[];
+  downgradeRows: CleanupDowngradeRow[];
 }
 
 const DB_PATH = fileURLToPath(
@@ -138,12 +152,12 @@ function buildPlan(database: InstanceType<typeof Database>): CleanupPlan {
   ]);
 
   const downgradeRows = database.prepare(`
-    SELECT id
+    SELECT id, spec_folder, file_path, canonical_file_path, anchor_id, importance_tier
     FROM memory_index
     WHERE importance_tier = 'constitutional'
       AND file_path NOT LIKE '%/constitutional/%'
     ORDER BY id
-  `).all() as Array<{ id: number }>;
+  `).all() as CleanupDowngradeRow[];
 
   return {
     forbiddenIds: forbiddenRows.map(row => row.id),
@@ -152,9 +166,8 @@ function buildPlan(database: InstanceType<typeof Database>): CleanupPlan {
       .filter((value): value is string => typeof value === 'string' && value.length > 0),
     duplicateOldIds,
     duplicateSurvivorId,
-    downgradeIds: downgradeRows
-      .map(row => row.id)
-      .filter(id => !excludedDowngradeIds.has(id)),
+    downgradeRows: downgradeRows
+      .filter(row => !excludedDowngradeIds.has(row.id)),
   };
 }
 
@@ -306,7 +319,6 @@ function applyCleanup(database: InstanceType<typeof Database>, plan: CleanupPlan
   summary.deletedOtherReferenceRows += deleteRowsByTextMemoryId(database, 'batch_learning_log', 'memory_id', idsToDelete);
   summary.deletedOtherReferenceRows += deleteRows(database, 'community_assignments', ['memory_id'], idsToDelete);
   summary.deletedOtherReferenceRows += deleteRows(database, 'degree_snapshots', ['memory_id'], idsToDelete);
-  summary.deletedOtherReferenceRows += deleteRows(database, 'governance_audit', ['memory_id'], idsToDelete);
   summary.deletedOtherReferenceRows += deleteRows(database, 'learned_feedback_audit', ['memory_id'], idsToDelete);
   summary.deletedOtherReferenceRows += deleteRows(database, 'memory_conflicts', ['new_memory_id', 'existing_memory_id'], idsToDelete);
   summary.deletedOtherReferenceRows += deleteRows(database, 'memory_corrections', ['original_memory_id', 'correction_memory_id'], idsToDelete);
@@ -321,12 +333,30 @@ function applyCleanup(database: InstanceType<typeof Database>, plan: CleanupPlan
     summary.deletedMemoryRows += deleteRows(database, 'memory_index', ['id'], idsToDelete);
   }
 
-  if (plan.downgradeIds.length > 0) {
+  if (plan.downgradeRows.length > 0) {
     summary.downgradedRows += database.prepare(`
       UPDATE memory_index
       SET importance_tier = 'important'
-      WHERE id IN (${placeholders(plan.downgradeIds)})
-    `).run(...plan.downgradeIds).changes;
+      WHERE id IN (${placeholders(plan.downgradeRows.map((row) => row.id))})
+    `).run(...plan.downgradeRows.map((row) => row.id)).changes;
+
+    for (const row of plan.downgradeRows) {
+      recordTierDowngradeAudit(database, {
+        action: GOVERNANCE_AUDIT_ACTIONS.TIER_DOWNGRADE_NON_CONSTITUTIONAL_PATH_CLEANUP,
+        memoryId: row.id,
+        logicalKey: buildGovernanceLogicalKey(
+          row.spec_folder,
+          row.canonical_file_path || row.file_path,
+          row.anchor_id,
+        ),
+        previousTier: row.importance_tier,
+        nextTier: 'important',
+        source: 'cleanup_index_scope_violations',
+        reason: 'cleanup-script bulk normalization',
+        filePath: row.file_path,
+        canonicalFilePath: row.canonical_file_path,
+      });
+    }
   }
 
   summary.deletedEmbeddingCacheRows += cleanupEmbeddingCache(database, plan.forbiddenContentHashes);
@@ -376,12 +406,12 @@ async function main(): Promise<void> {
     const plan = buildPlan(database);
 
     printSummary('Before', before);
-    console.log('Planned actions:');
-    console.log(`  would_delete_memory_rows=${plan.forbiddenIds.length + plan.duplicateOldIds.length}`);
-    console.log(`  would_delete_z_future_or_external_rows=${plan.forbiddenIds.length}`);
-    console.log(`  would_delete_duplicate_gate_rows=${plan.duplicateOldIds.length}`);
-    console.log(`  would_downgrade_rows=${plan.downgradeIds.length}`);
-    console.log(`  duplicate_survivor_id=${plan.duplicateSurvivorId ?? 'none'}`);
+  console.log('Planned actions:');
+  console.log(`  would_delete_memory_rows=${plan.forbiddenIds.length + plan.duplicateOldIds.length}`);
+  console.log(`  would_delete_z_future_or_external_rows=${plan.forbiddenIds.length}`);
+  console.log(`  would_delete_duplicate_gate_rows=${plan.duplicateOldIds.length}`);
+  console.log(`  would_downgrade_rows=${plan.downgradeRows.length}`);
+  console.log(`  duplicate_survivor_id=${plan.duplicateSurvivorId ?? 'none'}`);
 
     if (verify) {
       const hasViolations = before.zFutureRows > 0
@@ -396,9 +426,13 @@ async function main(): Promise<void> {
       process.exit(0);
     }
 
-    const tx = database.transaction(() => applyCleanup(database, plan));
-    const applied = tx();
-    const after = collectSummary(database);
+    const tx = database.transaction(() => {
+      const transactionPlan = buildPlan(database);
+      const applied = applyCleanup(database, transactionPlan);
+      const after = collectSummary(database);
+      return { applied, after };
+    });
+    const { applied, after } = tx();
 
     printApplySummary(applied);
     printSummary('After', after);
@@ -415,4 +449,4 @@ if (isMainModule(import.meta.url)) {
   void main();
 }
 
-export { main };
+export { applyCleanup, buildPlan, collectSummary, main };

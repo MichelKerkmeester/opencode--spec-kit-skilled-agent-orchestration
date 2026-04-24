@@ -11,13 +11,13 @@ contextType: "general"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T09:31:49Z"
+    last_updated_at: "2026-04-24T14:10:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Wave-1 remediation landed; P0-001 and P0-002 patched at SQL layer, audit-trail gap closed"
-    next_safe_action: "Run 7-iteration deep review pass 2 to confirm P0s resolved"
-    status: "wave1-remediation-complete"
+    recent_action: "Wave-2 remediation complete"
+    next_safe_action: "Run pass-3 deep-review to confirm zero remaining P0/P1 scope debt, or close packet"
+    status: "wave-2-remediation-complete"
     blockers: []
-    completion_pct: 95
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -87,6 +87,11 @@ _memory:
 - [x] CHK-W1-002 [P0] `checkpoint_restore` re-validates index-scope and constitutional-tier invariants before replaying snapshot rows [EVIDENCE: `mcp_server/lib/storage/checkpoints.ts` validates inside the barrier-held restore transaction, and `tests/checkpoint-restore-invariant-enforcement.vitest.ts` passes]
 - [x] CHK-W1-003 [P0] Non-constitutional tier downgrade attempts write a durable `governance_audit` row without failing the mutation [EVIDENCE: `mcp_server/handlers/memory-save.ts`, `mcp_server/lib/search/vector-index-mutations.ts`, and `mcp_server/lib/storage/checkpoints.ts` now emit `action='tier_downgrade_non_constitutional_path'`; focused Vitest coverage passes]
 - [x] CHK-W1-005 [P1] Live cleanup verify still exits `0` after the Wave-1 runtime rebuild [EVIDENCE: `node scripts/dist/memory/cleanup-index-scope-violations.js --verify` exit `0` with the final constitutional and exclusion counts recorded in `implementation-summary.md`]
+- [x] CHK-W2-001 [P1] Cleanup retains historical `governance_audit` rows for deleted memories and emits `tier_downgrade_non_constitutional_path_cleanup` rows for every cleanup downgrade [EVIDENCE: `tests/cleanup-script-audit-emission.vitest.ts` passes]
+- [x] CHK-W2-002 [P1] Spec-doc classification and discovery inherit `EXCLUDED_FOR_MEMORY` through helper calls rather than duplicated exclusion arrays [EVIDENCE: `mcp_server/lib/config/spec-doc-paths.ts`, `mcp_server/handlers/memory-index-discovery.ts`, and `tests/exclusion-ssot-unification.vitest.ts`]
+- [x] CHK-W2-003 [P1] Memory-save and code-graph specific-file indexing resolve symlinks before invariant checks [EVIDENCE: `mcp_server/lib/utils/canonical-path.ts`, `mcp_server/handlers/memory-save.ts`, `mcp_server/code-graph/lib/structural-indexer.ts`, and `tests/symlink-realpath-hardening.vitest.ts`]
+- [x] CHK-W2-004 [P1] Recursive walkers cap `.gitignore` reads at 1MB, stop descending past depth 20, and abort past 50,000 nodes with warnings [EVIDENCE: `tests/walker-dos-caps.vitest.ts` passes]
+- [x] CHK-W2-005 [P2] Governance audit action strings are centralized and operator-documented [EVIDENCE: `mcp_server/lib/governance/scope-governance.ts`, `mcp_server/tests/memory-governance.vitest.ts`, and `.opencode/skill/system-spec-kit/mcp_server/README.md`]
 <!-- /ANCHOR:security -->
 
 ---
@@ -95,7 +100,7 @@ _memory:
 ## Documentation
 
 - [x] CHK-040 [P1] `research/research.md` contains exact file:line references for every investigated code point [EVIDENCE: `research/research.md` records scanner, tier, parser, auto-surface, and cleanup-tooling references]
-- [x] CHK-041 [P1] `decision-record.md` records delete-vs-downgrade and the reversed README decision [EVIDENCE: ADR-002, ADR-003, ADR-004 (superseded), and ADR-005]
+- [x] CHK-041 [P1] `decision-record.md` records the cleanup, SSOT, realpath, TOCTOU, and governance-audit decisions needed to preserve packet 011 invariants [EVIDENCE: ADR-002 through ADR-006 plus ADR-008 through ADR-012]
 - [x] CHK-042 [P1] `implementation-summary.md` includes before/after DB counts and command exit codes [EVIDENCE: finalized summary below]
 - [x] CHK-043 [P1] `.opencode/skill/system-spec-kit/mcp_server/README.md` documents the three invariants and helper location [EVIDENCE: new "Index Scope Invariants" section]
 <!-- /ANCHOR:docs -->
@@ -116,9 +121,9 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 17 | 17/17 |
-| P1 Items | 18 | 18/18 |
-| P2 Items | 0 | 0/0 |
+| P0 Items | Wave-1 + Wave-2 required checks | All verified |
+| P1 Items | Wave-1 + Wave-2 hardening checks | All verified |
+| P2 Items | Packet-local doc and audit observability checks | Verified or intentionally documented |
 
 **Verification Date**: 2026-04-24
 <!-- /ANCHOR:summary -->

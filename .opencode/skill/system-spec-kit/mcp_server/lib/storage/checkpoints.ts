@@ -14,12 +14,16 @@ import type Database from 'better-sqlite3';
 import { toErrorMessage } from '../../utils/db-helpers.js';
 import { rebuildAutoEntities } from '../extraction/entity-extractor.js';
 import {
+  buildGovernanceLogicalKey,
   createScopeFilterPredicate,
+  GOVERNANCE_AUDIT_ACTIONS,
   hasScopeConstraints,
   normalizeScopeContext,
   recordGovernanceAudit,
+  recordTierDowngradeAudit,
   type ScopeContext,
   type GovernanceAuditEntry,
+  type TierDowngradeAuditParams,
 } from '../governance/scope-governance.js';
 import { detectCommunities, storeCommunityAssignments } from '../graph/community-detection.js';
 import { generateCommunitySummaries } from '../graph/community-summaries.js';
@@ -72,23 +76,6 @@ function getSnapshotColumnsFromRows(rows: Array<Record<string, unknown>>): strin
   return Array.from(columns);
 }
 
-function buildCheckpointLogicalKey(
-  row: Record<string, unknown>,
-  resolvedPath: string,
-): string | null {
-  const specFolder = typeof row.spec_folder === 'string' && row.spec_folder.length > 0
-    ? row.spec_folder
-    : null;
-  if (!specFolder) {
-    return null;
-  }
-
-  const anchorId = typeof row.anchor_id === 'string' && row.anchor_id.trim().length > 0
-    ? row.anchor_id
-    : '_';
-  return `${specFolder}::${resolvedPath}::${anchorId}`;
-}
-
 function flushGovernanceAudits(
   database: Database.Database,
   entries: GovernanceAuditEntry[],
@@ -96,6 +83,19 @@ function flushGovernanceAudits(
   for (const entry of entries) {
     try {
       recordGovernanceAudit(database, entry);
+    } catch (error: unknown) {
+      console.warn(`[checkpoints] governance_audit insert failed: ${toErrorMessage(error)}`);
+    }
+  }
+}
+
+function flushTierDowngradeAudits(
+  database: Database.Database,
+  entries: TierDowngradeAuditParams[],
+): void {
+  for (const entry of entries) {
+    try {
+      recordTierDowngradeAudit(database, entry);
     } catch (error: unknown) {
       console.warn(`[checkpoints] governance_audit insert failed: ${toErrorMessage(error)}`);
     }
@@ -1292,6 +1292,7 @@ function validateMemoryRow(
   row: unknown,
   index: number,
   governanceAudits: GovernanceAuditEntry[] = [],
+  tierDowngradeAudits: TierDowngradeAuditParams[] = [],
 ): void {
   if (!row || typeof row !== 'object') {
     throw new Error(`Checkpoint row ${index}: not an object (got ${typeof row})`);
@@ -1321,12 +1322,17 @@ function validateMemoryRow(
     ? r.canonical_file_path
     : r.file_path;
 
+  // See ADR-006 in packet 026/011.
   if (!shouldIndexForMemory(resolvedPath as string)) {
     governanceAudits.push({
-      action: 'checkpoint_restore_excluded_path_rejected',
+      action: GOVERNANCE_AUDIT_ACTIONS.CHECKPOINT_RESTORE_EXCLUDED_PATH_REJECTED,
       decision: 'deny',
       memoryId: r.id as number,
-      logicalKey: buildCheckpointLogicalKey(r, resolvedPath as string),
+      logicalKey: buildGovernanceLogicalKey(
+        typeof r.spec_folder === 'string' ? r.spec_folder : null,
+        resolvedPath as string,
+        typeof r.anchor_id === 'string' ? r.anchor_id : null,
+      ),
       reason: 'checkpoint_restore_path_excluded',
       metadata: {
         source: 'checkpoint_restore',
@@ -1340,19 +1346,23 @@ function validateMemoryRow(
   }
 
   if (r.importance_tier === 'constitutional' && !isConstitutionalPath(resolvedPath as string)) {
-    governanceAudits.push({
-      action: 'tier_downgrade_non_constitutional_path',
-      decision: 'conflict',
+    tierDowngradeAudits.push({
       memoryId: r.id as number,
-      logicalKey: buildCheckpointLogicalKey(r, resolvedPath as string),
+      logicalKey: buildGovernanceLogicalKey(
+        typeof r.spec_folder === 'string' ? r.spec_folder : null,
+        resolvedPath as string,
+        typeof r.anchor_id === 'string' ? r.anchor_id : null,
+      ),
+      action: GOVERNANCE_AUDIT_ACTIONS.TIER_DOWNGRADE_NON_CONSTITUTIONAL_PATH,
       reason: 'non_constitutional_path',
+      requestedTier: 'constitutional',
+      nextTier: 'important',
+      source: 'checkpoint_restore',
+      filePath: typeof r.file_path === 'string' ? r.file_path : null,
+      canonicalFilePath: typeof r.canonical_file_path === 'string' ? r.canonical_file_path : null,
       metadata: {
-        source: 'checkpoint_restore',
         rowIndex: index,
-        requestedTier: 'constitutional',
-        appliedTier: 'important',
-        filePath: r.file_path,
-        canonicalFilePath: typeof r.canonical_file_path === 'string' ? r.canonical_file_path : null,
+        importanceTier: r.importance_tier ?? null,
       },
     });
     r.importance_tier = 'important';
@@ -1559,6 +1569,7 @@ function restoreCheckpoint(
 
   let restoreBarrierHeld = false;
   const governanceAudits: GovernanceAuditEntry[] = [];
+  const tierDowngradeAudits: TierDowngradeAuditParams[] = [];
 
   try {
     const checkpoint = getCheckpoint(nameOrId, scope);
@@ -1637,7 +1648,7 @@ function restoreCheckpoint(
       if (memoryRows.length > 0) {
         for (let i = 0; i < memoryRows.length; i++) {
           try {
-            validateMemoryRow(memoryRows[i], i, governanceAudits);
+            validateMemoryRow(memoryRows[i], i, governanceAudits, tierDowngradeAudits);
           } catch (validationError: unknown) {
             throw new Error(`Restore validation failed: ${toErrorMessage(validationError)}`);
           }
@@ -1844,6 +1855,9 @@ function restoreCheckpoint(
     result.errors.push(msg);
     console.warn(`[checkpoints] restoreCheckpoint error: ${msg}`);
   } finally {
+    if (tierDowngradeAudits.length > 0) {
+      flushTierDowngradeAudits(database, tierDowngradeAudits);
+    }
     if (governanceAudits.length > 0) {
       flushGovernanceAudits(database, governanceAudits);
     }

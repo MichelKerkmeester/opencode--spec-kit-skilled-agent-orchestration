@@ -6,7 +6,10 @@
 // Index, update, delete, and status/confidence updates.
 
 import * as embeddingsProvider from '../providers/embeddings.js';
-import { recordGovernanceAudit } from '../governance/scope-governance.js';
+import {
+  buildGovernanceLogicalKey,
+  recordTierDowngradeAudit,
+} from '../governance/scope-governance.js';
 import { clearGraphSignalsCache } from '../graph/graph-signals.js';
 import { recordHistory } from '../storage/history.js';
 import { getCanonicalPathKey } from '../utils/canonical-path.js';
@@ -58,21 +61,6 @@ function invalidateGraphCaches(database: Database.Database): void {
   }
 }
 
-function buildMemoryLogicalKey(
-  specFolder: string | null | undefined,
-  canonicalFilePath: string | null | undefined,
-  filePath: string | null | undefined,
-  anchorId: string | null | undefined,
-): string | null {
-  const resolvedPath = canonicalFilePath || filePath;
-  if (!specFolder || !resolvedPath) {
-    return null;
-  }
-
-  const normalizedAnchor = anchorId && anchorId.trim().length > 0 ? anchorId : '_';
-  return `${specFolder}::${resolvedPath}::${normalizedAnchor}`;
-}
-
 function tryRecordTierDowngradeAudit(
   database: Database.Database,
   params: {
@@ -81,28 +69,26 @@ function tryRecordTierDowngradeAudit(
     anchorId: string | null | undefined;
     filePath: string | null | undefined;
     canonicalFilePath: string | null | undefined;
+    requestedTier?: string | null | undefined;
+    previousTier?: string | null | undefined;
+    nextTier: string;
     source: string;
   },
 ): void {
   try {
-    recordGovernanceAudit(database, {
-      action: 'tier_downgrade_non_constitutional_path',
-      decision: 'conflict',
+    recordTierDowngradeAudit(database, {
       memoryId: params.memoryId,
-      logicalKey: buildMemoryLogicalKey(
+      logicalKey: buildGovernanceLogicalKey(
         params.specFolder,
-        params.canonicalFilePath,
-        params.filePath,
+        params.canonicalFilePath || params.filePath,
         params.anchorId,
       ),
-      reason: 'non_constitutional_path',
-      metadata: {
-        source: params.source,
-        requestedTier: 'constitutional',
-        appliedTier: 'important',
-        filePath: params.filePath ?? null,
-        canonicalFilePath: params.canonicalFilePath ?? null,
-      },
+      requestedTier: params.requestedTier ?? undefined,
+      previousTier: params.previousTier ?? undefined,
+      nextTier: params.nextTier,
+      source: params.source,
+      filePath: params.filePath ?? null,
+      canonicalFilePath: params.canonicalFilePath ?? null,
     });
   } catch (error: unknown) {
     logger.warn('Failed to record governance audit for tier downgrade', {
@@ -429,7 +415,7 @@ export function update_memory(
 
   const update_memory_tx = database.transaction(() => {
     const existingRow = database.prepare(`
-      SELECT spec_folder, anchor_id, canonical_file_path, file_path
+      SELECT spec_folder, anchor_id, canonical_file_path, file_path, importance_tier
       FROM memory_index
       WHERE id = ?
     `).get(id) as {
@@ -437,6 +423,7 @@ export function update_memory(
       anchor_id: string | null;
       canonical_file_path: string | null;
       file_path: string | null;
+      importance_tier: string | null;
     } | undefined;
     const updates = ['updated_at = ?'];
     const values: unknown[] = [now];
@@ -455,19 +442,32 @@ export function update_memory(
     }
     if (importanceTier !== undefined) {
       let nextImportanceTier = importanceTier;
+      const previousTier = existingRow?.importance_tier ?? null;
       if (
-        importanceTier === 'constitutional'
-        && existingRow
+        existingRow
       ) {
         const guardPath = existingRow.canonical_file_path || existingRow.file_path;
-        if (guardPath && !isConstitutionalPath(guardPath)) {
+        const hasNonConstitutionalPath = guardPath && !isConstitutionalPath(guardPath);
+        if (hasNonConstitutionalPath && importanceTier === 'constitutional') {
+          // See ADR-006 in packet 026/011.
           nextImportanceTier = 'important';
+        }
+        if (
+          hasNonConstitutionalPath
+          && (
+            importanceTier === 'constitutional'
+            || (previousTier === 'constitutional' && nextImportanceTier !== 'constitutional')
+          )
+        ) {
           tryRecordTierDowngradeAudit(database, {
             memoryId: id,
             specFolder: existingRow.spec_folder,
             anchorId: existingRow.anchor_id,
             filePath: existingRow.file_path,
             canonicalFilePath: existingRow.canonical_file_path,
+            requestedTier: importanceTier,
+            previousTier,
+            nextTier: nextImportanceTier,
             source: 'update_memory',
           });
         }
