@@ -67,8 +67,8 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ## Phase 2: Implementation
 
 - [x] T010 Move every old phase folder into its active wrapper direct-child path. [SOURCE: merged-phase-map.md]
-- [x] T011 Create active wrapper docs for phases `001` through `009`. [SOURCE: 001-research-and-baseline/spec.md; 009-hook-daemon-parity/spec.md]
-- [x] T012 Create per-wrapper context indexes bridge docs. [SOURCE: 001-research-and-baseline/context indexes; 009-hook-daemon-parity/context indexes]
+- [x] T011 Create active wrapper docs for phases `001` through `009`. [SOURCE: 001-research-and-baseline/spec.md; 009-hook-package/spec.md]
+- [x] T012 Create per-wrapper context indexes bridge docs. [SOURCE: 001-research-and-baseline/context indexes; 009-hook-package/context indexes]
 - [x] T013 Refresh moved `description.json` and `graph-metadata.json` files with new paths and migration aliases. [SOURCE: graph-metadata.json]
 - [x] T014 Update root docs to the nine-phase active map. [SOURCE: spec.md]
 <!-- /ANCHOR:phase-2 -->

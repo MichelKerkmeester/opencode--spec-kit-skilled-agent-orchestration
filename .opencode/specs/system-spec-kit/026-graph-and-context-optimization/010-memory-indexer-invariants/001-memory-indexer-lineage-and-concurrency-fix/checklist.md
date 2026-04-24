@@ -35,7 +35,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 - [x] **P0-04** `npm run typecheck` passed after the B2 patch. [EVIDENCE: exit 0 on 2026-04-23.]
 - [x] **P0-05** `npm run build` passed after the B2 patch. [EVIDENCE: exit 0 on 2026-04-23.]
 - [x] **P0-06** Strict packet validation passed after the B2 doc update. [EVIDENCE: `validate.sh --strict --no-recursive` exit 0.]
-- [ ] **P0-07** Live-capable packet acceptance was rerun and recorded before readiness was promoted. [BLOCKED: requires MCP restart plus a fresh `memory_index_scan` on `026/009-hook-daemon-parity` in an embedding-capable runtime.]
+- [ ] **P0-07** Live-capable packet acceptance was rerun and recorded before readiness was promoted. [BLOCKED: requires MCP restart plus a fresh `memory_index_scan` on `026/009-hook-package` in an embedding-capable runtime.]
 <!-- /ANCHOR:protocol -->
 
 ---
@@ -68,7 +68,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 
 - [x] **P0-T01** Focused regressions pass after the B2 patch. [EVIDENCE: `npx vitest run tests/pe-orchestration.vitest.ts tests/handler-memory-index.vitest.ts` returned `26 passed (26)`.]
 - [x] **P1-T02** `timeout 240 npm run test:core` was executed and the result recorded honestly after the B2 patch. [EVIDENCE: exit 124 after surfacing unrelated `tests/copilot-hook-wiring.vitest.ts`; isolated repro exits 1 with the same assertion.]
-- [ ] **P1-T03** Live acceptance scan on `026/009-hook-daemon-parity` completed end-to-end. [BLOCKED: requires user restart / live MCP runtime.]
+- [ ] **P1-T03** Live acceptance scan on `026/009-hook-package` completed end-to-end. [BLOCKED: requires user restart / live MCP runtime.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -117,5 +117,5 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 - 2026-04-23: `npm run build` exited 0.
 - 2026-04-23: `timeout 240 npm run test:core` exited 124 after surfacing an unrelated failure in `tests/copilot-hook-wiring.vitest.ts`.
 - 2026-04-23: `npx vitest run tests/copilot-hook-wiring.vitest.ts` reproduced the unrelated failure with exit 1.
-- 2026-04-23: live acceptance still requires user restart of MCP followed by `memory_index_scan` on `026/009-hook-daemon-parity`; until that rerun is recorded, readiness and scan/index counts remain non-authoritative.
+- 2026-04-23: live acceptance still requires user restart of MCP followed by `memory_index_scan` on `026/009-hook-package`; until that rerun is recorded, readiness and scan/index counts remain non-authoritative.
 <!-- /ANCHOR:summary -->

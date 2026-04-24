@@ -46,10 +46,10 @@
       "summary": "The old 007/001 status-cleanup backlog is partially stale against current 009 packet truth: 009/003 now looks complete, but 009/001 is still falsely reported complete while its checklist is entirely pending.",
       "evidence": [
         "iteration-07.md#Findings",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/spec.md:106",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/spec.md:108",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/checklist.md:36",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/graph-metadata.json:74"
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/spec.md:106",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/spec.md:108",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface/checklist.md:36",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/003-hook-parity-remediation/graph-metadata.json:74"
       ],
       "recommended_fix": "Retire superseded 009/003 cleanup tasks, keep the 009/001 mismatch as active work, and rebuild the status-cleanup ledger from current packet state."
     },
@@ -60,10 +60,10 @@
       "summary": "Current 009 hook/daemon parity drift has moved beyond what 007 tracks: 006 is still in progress and 010/011 were reverted and require reapply, but the old 007 backlog does not model those states.",
       "evidence": [
         "iteration-08.md#Findings",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/spec.md:111",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/spec.md:115",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/implementation-summary.md:78",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/implementation-summary.md:79"
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/spec.md:111",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/spec.md:115",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/implementation-summary.md:78",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/implementation-summary.md:79"
       ],
       "recommended_fix": "Explicitly import the live 009 phase-map risks into the next 007 remediation scope instead of continuing to rely on the frozen 001 backlog packet."
     },

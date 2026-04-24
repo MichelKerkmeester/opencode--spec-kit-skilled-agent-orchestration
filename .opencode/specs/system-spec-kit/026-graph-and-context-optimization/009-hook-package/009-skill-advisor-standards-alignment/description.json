@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/009-skill-advisor-standards-alignment",
+  "description": "Feature Specification: Skill-Advisor Standards Alignment",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill-advisor",
+    "standards",
+    "alignment"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.795Z",
+  "specId": "009",
+  "folderSlug": "skill-advisor-standards-alignment",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-package"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "23-04-26_09-51__added-10-opencode-plugin-exemption-tier-scoped-to.md",
+    "23-04-26_09-53__added-10-opencode-plugin-exemption-tier-scoped-to.md"
+  ]
+}

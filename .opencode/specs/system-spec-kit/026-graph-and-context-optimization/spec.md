@@ -116,7 +116,7 @@ Provide one canonical nine-phase active map while preserving every original pack
 | 006 | `006-search-routing-advisor/` | Search/routing tuning, skill advisor graph, phrase boosters, and smart-router work | `006-search-routing-advisor/001-search-and-routing-tuning/`, `006-search-routing-advisor/002-skill-advisor-graph/`, `006-search-routing-advisor/003-advisor-phrase-booster-tailoring/`, `006-search-routing-advisor/004-smart-router-context-efficacy/`, `006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment/`, `006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/`, `006-search-routing-advisor/007-deferred-remediation-and-telemetry-run/` | In Progress |
 | 007 | `007-deep-review-remediation/` | Deep review waves and post-review remediation | `007-deep-review-remediation/001-deep-review-and-remediation/`, `007-deep-review-remediation/002-cli-executor-remediation/`, `007-deep-review-remediation/003-deep-review-remediation/`, `007-deep-review-remediation/004-r03-post-remediation/` | In Progress |
 | 008 | `008-runtime-executor-hardening/` | Foundational runtime, CLI executor matrix, and system hardening | `008-runtime-executor-hardening/001-foundational-runtime/`, `008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/`, `008-runtime-executor-hardening/003-system-hardening/` | In Progress |
-| 009 | `009-hook-daemon-parity/` | Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation | `009-hook-daemon-parity/001-skill-advisor-hook-surface/`, `009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/`, `009-hook-daemon-parity/003-hook-parity-remediation/` | In Progress |
+| 009 | `009-hook-package/` | Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation | `009-hook-package/001-skill-advisor-hook-surface/`, `009-hook-package/002-skill-graph-daemon-and-advisor-unification/`, `009-hook-package/003-hook-parity-remediation/` | In Progress |
 
 ### Current State Model
 
@@ -147,7 +147,7 @@ Research convergence in the archived `001-research-and-baseline` corpus means sy
 | `005-release-cleanup-playbooks` | `006-search-routing-advisor` | Cleanup/playbook outcomes precede advisor and routing follow-ups. | Old phases `010`, `011`, `013`, and `021`-`024` are nested under phase 006. |
 | `006-search-routing-advisor` | `007-deep-review-remediation` | Search/advisor work is the main target surface for later review remediation. | Old phases `015`, `018`, `025`, and `026` are nested under phase 007. |
 | `007-deep-review-remediation` | `008-runtime-executor-hardening` | Remediation findings inform foundational runtime and executor hardening. | Old phases `016`, `017`, and `019` are nested under phase 008. |
-| `008-runtime-executor-hardening` | `009-hook-daemon-parity` | Runtime/executor hardening precedes hook, daemon, and parity remediation. | Old phases `020`, `027`, and `029` are nested under phase 009. |
+| `008-runtime-executor-hardening` | `009-hook-package` | Runtime/executor hardening precedes hook, daemon, and parity remediation. | Old phases `020`, `027`, and `029` are nested under phase 009. |
 <!-- /ANCHOR:phase-map -->
 
 ---

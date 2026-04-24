@@ -241,7 +241,7 @@ What we CANNOT close without live AI sessions: empirical proof that AIs skip SKI
 
 ### Related Documents
 
-- Predecessors: `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/` and `../006-smart-router-remediation-and-opencode-plugin/`
+- Predecessors: `../../009-hook-package/001-skill-advisor-hook-surface/` and `../006-smart-router-remediation-and-opencode-plugin/`
 - Research inputs:
   - `../004-smart-router-context-efficacy/001-initial-research/research/research.md` (V4/V7 open)
   - `../004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy/research/research.md` (V3/V4/V5/V9 open)

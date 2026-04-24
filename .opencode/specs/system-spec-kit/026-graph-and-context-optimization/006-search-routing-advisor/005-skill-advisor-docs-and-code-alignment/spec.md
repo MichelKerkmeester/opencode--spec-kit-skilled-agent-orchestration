@@ -180,7 +180,7 @@ No open questions remain for Phase 022 execution.
 
 ### Related Documents
 
-- Parent: `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/` (shipped)
+- Parent: `../../009-hook-package/001-skill-advisor-hook-surface/` (shipped)
 - Sibling: `../004-smart-router-context-efficacy/` (research in progress)
 - sk-code-opencode skill: `../../../../skill/sk-code-opencode/SKILL.md`
 - skill-advisor: `.opencode/skill/skill-advisor/`

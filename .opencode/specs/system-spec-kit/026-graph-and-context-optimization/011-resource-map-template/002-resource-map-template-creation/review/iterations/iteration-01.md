@@ -2,7 +2,7 @@
 
 ## Dimension & scope
 
-Deep-review of `.opencode/skill/system-spec-kit/templates/resource-map.md` as a reusable artifact. Compared against reference audit shape (`009-hook-daemon-parity/path-references-audit.md`), peer cross-cutting templates (`handover.md`, `research.md`, `debug-delegation.md`), and the filled example at packet 012. Executor: `cli-copilot gpt-5.4 high` (exit 0, no retries).
+Deep-review of `.opencode/skill/system-spec-kit/templates/resource-map.md` as a reusable artifact. Compared against reference audit shape (`009-hook-package/path-references-audit.md`), peer cross-cutting templates (`handover.md`, `research.md`, `debug-delegation.md`), and the filled example at packet 012. Executor: `cli-copilot gpt-5.4 high` (exit 0, no retries).
 
 ## Findings
 

@@ -15,7 +15,7 @@
 
 ## Highest-Signal Findings
 - `P1` `F-001`: `fromScan` is still a convention-based internal bypass on exported `indexMemoryFile()`, not a hardened scan-only contract.
-- `P1` `F-002`: the live `memory_index_scan` rerun on `026/009-hook-daemon-parity` remains unverified in an embedding-capable runtime.
+- `P1` `F-002`: the live `memory_index_scan` rerun on `026/009-hook-package` remains unverified in an embedding-capable runtime.
 - `P2` `F-003`: no direct PE regression covers null `canonical_file_path` fallback.
 - `P2` `F-004`: no packet-local scoped `fromScan` regression exists yet.
 

@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/012-docs-impact-remediation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/012-docs-impact-remediation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-package",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-package/002-skill-graph-daemon-and-advisor-unification",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-package/003-hook-parity-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-package/004-copilot-hook-parity-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-package/005-codex-hook-parity-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-package/006-claude-hook-findings-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-package/007-opencode-plugin-loader-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-package/008-skill-advisor-plugin-hardening",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-package/009-skill-advisor-standards-alignment",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-package/010-copilot-wrapper-schema-fix",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-package/011-copilot-writer-wiring"
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "docs impact remediation",
+      "hook daemon docs alignment",
+      "026/009/012"
+    ],
+    "key_topics": [
+      "documentation",
+      "impact",
+      "remediation",
+      "hook",
+      "advisor",
+      "copilot",
+      "codex",
+      "claude",
+      "opencode",
+      "plugin"
+    ],
+    "importance_tier": "high",
+    "status": "planning",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+      "AGENTS.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "hook_system.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "ARCHITECTURE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "merged-impact-report.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/impact-analysis/merged-impact-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Sub-packets 001-011 of 009-hook-package changed hook, advisor, plugin-loader, renderer, and Copilot wrapper contracts that 13 downstream documentation files describe incorrectly; merged impact analysis drives targeted updates.",
+    "created_at": "2026-04-23T19:40:00Z",
+    "last_save_at": "2026-04-23T19:40:00Z",
+    "save_lineage": "initial",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

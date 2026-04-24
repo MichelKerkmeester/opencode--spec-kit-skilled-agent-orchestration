@@ -135,7 +135,7 @@ Land the smallest safe patch that fixes both issues without broad refactors:
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-009 | Live packet acceptance rerun. | In an initialized MCP runtime with embedding access, `memory_index_scan` on `026/009-hook-daemon-parity` finishes with zero `E_LINEAGE` and zero `candidate_changed` failures. |
+| REQ-009 | Live packet acceptance rerun. | In an initialized MCP runtime with embedding access, `memory_index_scan` on `026/009-hook-package` finishes with zero `E_LINEAGE` and zero `candidate_changed` failures. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -179,5 +179,5 @@ Land the smallest safe patch that fixes both issues without broad refactors:
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- None for the code change itself. The only remaining follow-up is an environment-backed rerun of `memory_index_scan` on `026/009-hook-daemon-parity`.
+- None for the code change itself. The only remaining follow-up is an environment-backed rerun of `memory_index_scan` on `026/009-hook-package`.
 <!-- /ANCHOR:questions -->

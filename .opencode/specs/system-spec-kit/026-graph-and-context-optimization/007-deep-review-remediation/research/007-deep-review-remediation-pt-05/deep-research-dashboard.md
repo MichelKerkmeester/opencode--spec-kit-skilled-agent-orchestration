@@ -21,5 +21,5 @@ Create a narrow follow-up remediation pass that:
 
 1. fixes the live code/status bugs (`determineSessionStatus`, `/complete` debug dispatch),
 2. synchronizes stale packet surfaces for `002-cli-executor-remediation` and `004-r03-post-remediation`,
-3. re-baselines the old `001-deep-review-and-remediation` backlog against current `009-hook-daemon-parity` truth, and
+3. re-baselines the old `001-deep-review-and-remediation` backlog against current `009-hook-package` truth, and
 4. opens or authorizes the historical source-packet edits needed to clear the blocked `005-006` P0/P1 items.

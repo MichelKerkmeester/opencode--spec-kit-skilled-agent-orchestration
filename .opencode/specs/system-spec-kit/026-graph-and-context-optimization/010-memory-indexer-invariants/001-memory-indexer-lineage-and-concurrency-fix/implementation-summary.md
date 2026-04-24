@@ -102,7 +102,7 @@ Acceptance summary:
 | Build | `npm run build` | passed (exit 0) |
 | Full core suite | `timeout 240 npm run test:core` | timed out (exit 124) after surfacing unrelated `tests/copilot-hook-wiring.vitest.ts` failure |
 | Isolated unrelated failure | `npx vitest run tests/copilot-hook-wiring.vitest.ts` | failed (exit 1) in untouched code |
-| Operational packet scan | restart MCP in a live-capable runtime, then rerun `memory_index_scan` on `026/009-hook-daemon-parity` | blocked; until this rerun is recorded, packet readiness and scan counts are not authoritative |
+| Operational packet scan | restart MCP in a live-capable runtime, then rerun `memory_index_scan` on `026/009-hook-package` | blocked; until this rerun is recorded, packet readiness and scan counts are not authoritative |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -110,6 +110,6 @@ Acceptance summary:
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-- The user-requested live acceptance run against `026/009-hook-daemon-parity` still must be rerun after the MCP restart in a live-capable runtime; until that proof is recorded here, readiness and scan/index counts are not authoritative.
+- The user-requested live acceptance run against `026/009-hook-package` still must be rerun after the MCP restart in a live-capable runtime; until that proof is recorded here, readiness and scan/index counts are not authoritative.
 - `npm run test:core` still has an unrelated failure in `tests/copilot-hook-wiring.vitest.ts`, which asserts an unexpected hook path in untouched code.
 <!-- /ANCHOR:limitations -->

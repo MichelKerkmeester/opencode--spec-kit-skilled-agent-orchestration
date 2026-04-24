@@ -14,7 +14,7 @@
       "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor",
       "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation",
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-package",
       "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix"
     ],
     "supersedes": [],

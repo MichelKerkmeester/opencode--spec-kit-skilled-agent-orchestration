@@ -68,7 +68,7 @@ The 026 packet now has a small active surface again. Instead of scanning 29 top-
 - **`006-search-routing-advisor/`**: Search/routing tuning, skill advisor graph, phrase boosters, and smart-router work; original phases `010-search-and-routing-tuning/`, `011-skill-advisor-graph/`, `013-advisor-phrase-booster-tailoring/`, `021-smart-router-context-efficacy/`, `022-skill-advisor-docs-and-code-alignment/`, `023-smart-router-remediation-and-opencode-plugin/`, `024-deferred-remediation-and-telemetry-run/`.
 - **`007-deep-review-remediation/`**: Deep review waves and post-review remediation; original phases `015-deep-review-and-remediation/`, `018-cli-executor-remediation/`, `025-deep-review-remediation/`, `026-r03-post-remediation/`.
 - **`008-runtime-executor-hardening/`**: Foundational runtime, CLI executor matrix, and system hardening; original phases `016-foundational-runtime/`, `017-sk-deep-cli-runtime-execution/`, `019-system-hardening/`.
-- **`009-hook-daemon-parity/`**: Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation; original phases `020-skill-advisor-hook-surface/`, `027-skill-graph-daemon-and-advisor-unification/`, `029-hook-parity-remediation/`.
+- **`009-hook-package/`**: Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation; original phases `020-skill-advisor-hook-surface/`, `027-skill-graph-daemon-and-advisor-unification/`, `029-hook-parity-remediation/`.
 
 ### Child Phase Folders Preservation
 

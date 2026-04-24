@@ -44,7 +44,7 @@ _memory:
 Implemented. Phases A-H completed in one session. No commits were created per user constraint.
 
 ## Scope Reminder
-7 deduplicated findings from r02 deep-review of skill-advisor phase stack (020 + 021/001 + 021/002 + 022 + 023 + 024). All evidence anchored to specific file:line in `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review-archive-r02-codex-copilot/findings-registry.json`.
+7 deduplicated findings from r02 deep-review of skill-advisor phase stack (020 + 021/001 + 021/002 + 022 + 023 + 024). All evidence anchored to specific file:line in `../../009-hook-package/001-skill-advisor-hook-surface/review-archive-r02-codex-copilot/findings-registry.json`.
 
 ## Findings Closure Log
 

@@ -1,0 +1,27 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/005-codex-hook-parity-remediation",
+  "description": "Feature Specification: Codex CLI Hook Parity Remediation",
+  "keywords": [
+    "feature",
+    "specification",
+    "codex",
+    "cli",
+    "hook",
+    "parity",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.772Z",
+  "specId": "005",
+  "folderSlug": "codex-hook-parity-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-package"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "22-04-26_07-39__scaffolded-005-codex-hook-parity-remediation-as.md",
+    "22-04-26_09-29__phase-1-of-005-codex-hook-parity-remediation.md",
+    "22-04-26_12-20__completed-codex-cli-hook-parity-remediation.md"
+  ]
+}

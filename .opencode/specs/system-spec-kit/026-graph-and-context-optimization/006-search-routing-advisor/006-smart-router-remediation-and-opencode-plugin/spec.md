@@ -241,7 +241,7 @@ Ship all 6 recommendations + the OpenCode plugin in a single remediation packet.
 
 ### Related Documents
 
-- Parent: `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/` (shipped)
+- Parent: `../../009-hook-package/001-skill-advisor-hook-surface/` (shipped)
 - Research inputs:
   - `../004-smart-router-context-efficacy/001-initial-research/research/research.md` (V8+V9 plugin recommendations)
   - `../004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy/research/research.md` (6 smart-router recommendations)

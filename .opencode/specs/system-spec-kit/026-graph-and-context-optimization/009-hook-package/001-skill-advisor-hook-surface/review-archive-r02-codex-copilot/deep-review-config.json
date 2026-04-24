@@ -1,0 +1,43 @@
+{
+  "target": "skill-advisor-phase-stack (020 + 021/001 + 021/002 + 022 + 023 + 024)",
+  "review_target_type": "spec-folder",
+  "review_dimensions": [
+    "D1_security_privacy",
+    "D2_correctness",
+    "D3_performance_observability",
+    "D4_maintainability_sk_code_opencode",
+    "D5_integration_cross_runtime",
+    "D6_test_coverage_quality",
+    "D7_documentation_accuracy"
+  ],
+  "maxIterations": 40,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 600,
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface",
+  "createdAt": "2026-04-19T21:00:00Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-copilot",
+    "model": "gpt-5.4",
+    "reasoningEffort": "high",
+    "timeoutSeconds": 1800,
+    "maxConcurrent": 1
+  },
+  "lineage": {
+    "sessionId": "020-dr-r01",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "inScopePhases": [
+    "020-skill-advisor-hook-surface (parent + 8 children 002-009)",
+    "021-smart-router-context-efficacy/001-initial-research (advisor hook efficacy)",
+    "021-smart-router-context-efficacy/002-skill-md-intent-router-efficacy (SKILL.md smart-router)",
+    "022-skill-advisor-docs-and-code-alignment (docs + TS audit)",
+    "023-smart-router-remediation-and-opencode-plugin (6-area remediation + plugin)",
+    "024-deferred-remediation-and-telemetry-run (measurement + wrapper + analyzer)"
+  ]
+}

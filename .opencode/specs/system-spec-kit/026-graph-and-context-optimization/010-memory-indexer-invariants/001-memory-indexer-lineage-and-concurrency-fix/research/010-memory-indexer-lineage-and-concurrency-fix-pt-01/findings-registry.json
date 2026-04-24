@@ -18,14 +18,14 @@
       "id": "F-002",
       "severity": "P1",
       "category": "docs",
-      "summary": "The packet still lacks the live acceptance rerun against 026/009-hook-daemon-parity, so the expected zero candidate_changed outcome after B2 is not yet operationally verified.",
+      "summary": "The packet still lacks the live acceptance rerun against 026/009-hook-package, so the expected zero candidate_changed outcome after B2 is not yet operationally verified.",
       "evidence": [
         "iteration-01.md#Findings",
         "iteration-09.md#Findings",
         "implementation-summary.md §Verification",
         "checklist.md §Testing"
       ],
-      "recommended_fix": "Restart the MCP runtime in an embedding-enabled environment, rerun memory_index_scan on 026/009-hook-daemon-parity, and record exact outcomes in the packet docs."
+      "recommended_fix": "Restart the MCP runtime in an embedding-enabled environment, rerun memory_index_scan on 026/009-hook-package, and record exact outcomes in the packet docs."
     },
     {
       "id": "F-003",

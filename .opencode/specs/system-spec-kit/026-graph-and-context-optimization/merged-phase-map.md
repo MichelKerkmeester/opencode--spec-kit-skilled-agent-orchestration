@@ -64,9 +64,9 @@ This map is the canonical bridge from the former 29 top-level phase folders to t
 | `016-foundational-runtime/` | Feature Specification: Foundational Runtime (merged) | In Progress | `008-runtime-executor-hardening/` | `008-runtime-executor-hardening/001-foundational-runtime/` |
 | `017-sk-deep-cli-runtime-execution/` | Feature Specification: CLI Runtime Executors for Iterative Skills (merged) | Complete | `008-runtime-executor-hardening/` | `008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/` |
 | `019-system-hardening/` | Feature Specification: System Hardening (Post-Consolidation Research + Remediation Train) | In Progress | `008-runtime-executor-hardening/` | `008-runtime-executor-hardening/003-system-hardening/` |
-| `020-skill-advisor-hook-surface/` | Feature Specification: Skill-Advisor Hook Surface | In Progress | `009-hook-daemon-parity/` | `009-hook-daemon-parity/001-skill-advisor-hook-surface/` |
-| `027-skill-graph-daemon-and-advisor-unification/` | Feature Specification: Phase 027 — Skill-Graph Auto-Update Daemon + Advisor Unification | In Progress | `009-hook-daemon-parity/` | `009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/` |
-| `029-hook-parity-remediation/` | Feature Specification: 029 — Runtime Hook Parity Remediation | Scaffolded | `009-hook-daemon-parity/` | `009-hook-daemon-parity/003-hook-parity-remediation/` |
+| `020-skill-advisor-hook-surface/` | Feature Specification: Skill-Advisor Hook Surface | In Progress | `009-hook-package/` | `009-hook-package/001-skill-advisor-hook-surface/` |
+| `027-skill-graph-daemon-and-advisor-unification/` | Feature Specification: Phase 027 — Skill-Graph Auto-Update Daemon + Advisor Unification | In Progress | `009-hook-package/` | `009-hook-package/002-skill-graph-daemon-and-advisor-unification/` |
+| `029-hook-parity-remediation/` | Feature Specification: 029 — Runtime Hook Parity Remediation | Scaffolded | `009-hook-package/` | `009-hook-package/003-hook-parity-remediation/` |
 
 ## Active Phase Themes
 
@@ -80,7 +80,7 @@ This map is the canonical bridge from the former 29 top-level phase folders to t
 | `006-search-routing-advisor/` | Search/routing tuning, skill advisor graph, phrase boosters, and smart-router work | 7 |
 | `007-deep-review-remediation/` | Deep review waves and post-review remediation | 4 |
 | `008-runtime-executor-hardening/` | Foundational runtime, CLI executor matrix, and system hardening | 3 |
-| `009-hook-daemon-parity/` | Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation | 3 |
+| `009-hook-package/` | Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation | 3 |
 
 Full child context is listed in each active phase context index; phase 001 is merged into its root.
 

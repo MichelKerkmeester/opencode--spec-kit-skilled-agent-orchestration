@@ -101,7 +101,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ## Cross-References
 
 - Spec: `spec.md`
-- Parent: `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/implementation-summary.md`
+- Parent: `../../009-hook-package/001-skill-advisor-hook-surface/implementation-summary.md`
 - sk-code-opencode: `../../../../skill/sk-code-opencode/SKILL.md`
 - skill-advisor: `.opencode/skill/skill-advisor/`
 - Phase 020 reference doc: ../../../../skill/system-spec-kit/references/hooks/skill-advisor-hook.md

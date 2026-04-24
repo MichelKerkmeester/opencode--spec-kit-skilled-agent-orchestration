@@ -51,7 +51,7 @@ Code-graph scale investigation surfaced three concerns. This packet addresses al
 | **Parent** | `026-graph-and-context-optimization/003-code-graph-package/` |
 | **Parent Spec** | `../spec.md` |
 | **Predecessor** | `../002-code-graph-self-contained-package/spec.md` |
-| **Related** | `../../009-hook-daemon-parity/008-skill-advisor-plugin-hardening/`, `../../009-hook-daemon-parity/009-skill-advisor-standards-alignment/` |
+| **Related** | `../../009-hook-package/008-skill-advisor-plugin-hardening/`, `../../009-hook-package/009-skill-advisor-standards-alignment/` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -117,11 +117,16 @@ Three scoped fixes in one packet:
 |------|-------------|-------------|
 | `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts` | Modify | Allow highlights for stale graphs |
 | `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/indexer-types.ts` | Modify | Add 3 new default excludes |
-| `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts` | Modify | Honor `.gitignore` during scan walk |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts` | Modify | Honor `.gitignore` during scan walk; add `IndexFilesOptions` stale-gate conditioning; add cross-file `globalSeenIds` dedup sweep after TESTED_BY edge construction |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts` | Modify | Pass `{ skipFreshFiles: effectiveIncremental }` to `indexFiles()`; expose `fullScanRequested` and `effectiveIncremental` in response |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts` | Modify | Use `INSERT OR IGNORE INTO code_nodes` in `replaceNodes()` |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/session-snapshot.vitest.ts` | Modify | Add stale-highlights test |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/structural-indexer.vitest.ts` | Modify | Add gitignore + new-excludes tests |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/structural-contract.vitest.ts` | Modify | Add `indexFiles` option tests, scan handler integration tests, and cross-file dedup tests |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/tree-sitter-parser.vitest.ts` | Modify | Add `capturesToNodes()` dedupe regression tests; add gitignore + new-excludes tests |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-db.vitest.ts` | Create | Direct DB tests for `replaceNodes()` duplicate-symbol tolerance |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/README.md` | Modify | Document `IndexFilesOptions` and new scan response fields |
 | Code-graph surface doc (location TBD by Codex) | Create | Surface matrix |
-| Parent handover (sibling-level the parent handover (sibling-level)) | Modify | Record phase outcome |
+| Parent handover | Modify | Record phase outcome |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -153,6 +158,17 @@ Three scoped fixes in one packet:
 |----|-------------|---------------------|
 | REQ-009 | Indexer logs scan-scope summary | After scan, log a one-liner like `[indexer] scanned N files (excluded: gitignored=X, default=Y)` to help operators audit |
 | REQ-010 | Re-scan smoke documented | Document the command to re-scan and shrink an existing oversized graph |
+
+### Absorbed from sub-phases (P0)
+
+| ID | Requirement | Source | Acceptance Criteria |
+|----|-------------|--------|---------------------|
+| REQ-011 | Full scans parse all post-exclude candidates, not only stale files | 001-incremental-fullscan-recovery | `indexFiles(config, { skipFreshFiles: false })` returns fresh files; scan handler passes `effectiveIncremental` |
+| REQ-012 | Incremental default behavior remains stale-only | 001-incremental-fullscan-recovery | `indexFiles(config)` and `indexFiles(config, {})` skip DB-fresh files |
+| REQ-013 | Duplicate symbol IDs must not reach DB persistence | 001-incremental-fullscan-recovery | `capturesToNodes()` returns unique `symbolId` values, preserving the first duplicate |
+| REQ-014 | Scan response reveals caller intent and effective mode | 001-incremental-fullscan-recovery | Response includes `fullScanRequested` and `effectiveIncremental`; `fullReindexTriggered` unchanged |
+| REQ-015 | Cross-file duplicate `symbolId` nodes removed after TESTED_BY edge construction | 002-cross-file-dedup-defense | `globalSeenIds` sweep in `indexFiles()` drops later duplicates; drop count logged when nonzero |
+| REQ-016 | `replaceNodes()` tolerates residual DB-level duplicate `symbol_id` | 002-cross-file-dedup-defense | `INSERT OR IGNORE INTO code_nodes`; non-conflicting nodes in the same call still persist |
 <!-- /ANCHOR:requirements -->
 
 ---

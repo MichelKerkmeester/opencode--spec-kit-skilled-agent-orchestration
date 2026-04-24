@@ -144,7 +144,7 @@ Summary: 6 protocols executed, 5 pass, 3 partial (overlay scope gaps + DR 010 cr
 - Parent 026 `description.json` + `graph-metadata.json` include packet 011 as a child.
 - `mcp_server/README.md:111-116` documents the three invariants and the shared helper location as promised by CHK-043.
 - Checklist enumeration matches summary counts (P0=14, P1=16, P2=0).
-- The `009/012-docs-impact-remediation` reference in spec.md lines 92 and 265 is valid — that packet exists at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation/`.
+- The `009/012-docs-impact-remediation` reference in spec.md lines 92 and 265 is valid — that packet exists at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/012-docs-impact-remediation/`.
 
 ## Cross-Reference to Iter-1/Iter-2
 

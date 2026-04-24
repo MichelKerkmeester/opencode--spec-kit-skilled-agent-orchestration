@@ -18,7 +18,7 @@
     "006-search-routing-advisor",
     "007-deep-review-remediation",
     "008-runtime-executor-hardening",
-    "009-hook-daemon-parity",
+    "009-hook-package",
     "010-memory-indexer-lineage-and-concurrency-fix",
     "011-index-scope-and-constitutional-tier-invariants"
   ],

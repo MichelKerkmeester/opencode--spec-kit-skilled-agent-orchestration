@@ -63,7 +63,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 - [x] **T-11** Run `npm run build` after the B2 patch. [EVIDENCE: exit 0.]
 - [x] **T-12** Run `timeout 240 npm run test:core` and isolate any unrelated failures. [EVIDENCE: full run exited 124 after surfacing untouched `tests/copilot-hook-wiring.vitest.ts`; isolated repro exits 1 with the same assertion.]
 - [x] **T-13** Validate this packet with `validate.sh --strict --no-recursive` after the B2 doc update. [EVIDENCE: exit 0.]
-- [ ] **T-14** Restart MCP, rerun `memory_index_scan` on `026/009-hook-daemon-parity`, and confirm zero `E_LINEAGE` plus zero `candidate_changed`. [BLOCKED: requires user restart / live runtime acceptance.]
+- [ ] **T-14** Restart MCP, rerun `memory_index_scan` on `026/009-hook-package`, and confirm zero `E_LINEAGE` plus zero `candidate_changed`. [BLOCKED: requires user restart / live runtime acceptance.]
 <!-- /ANCHOR:phase-3 -->
 
 ---

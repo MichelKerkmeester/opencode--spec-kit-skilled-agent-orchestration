@@ -40,7 +40,7 @@ _memory:
 | **Parent Spec** | ../spec.md |
 | **Parent** | `../` (007-deep-review-remediation) |
 | **Predecessor** | ../003-deep-review-remediation/spec.md |
-| **Source** | R03 iteration files at `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-{007,013,014,017-021,028,029}.md` |
+| **Source** | R03 iteration files at `../../009-hook-package/001-skill-advisor-hook-surface/../../009-hook-package/001-skill-advisor-hook-surface/review/iterations/iteration-{007,013,014,017-021,028,029}.md` |
 | **Dispatch** | 12 sequential cli-copilot agents, 1 per finding |
 
 ## 2. PROBLEM & PURPOSE
@@ -57,23 +57,23 @@ Close all 12 findings mechanically. No new architecture. One fresh cli-copilot i
 
 | Task | Finding | Dim | Evidence | Fix |
 |---|---|---|---|---|
-| **T01** | P1-007-01 | D7 | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-007.md` | Update `../../../../../skill/system-spec-kit/references/hooks/skill-advisor-hook.md` Copilot + Codex snippets to match actual `.github/hooks/superset-notify.json` + `.codex/settings.json` + `.codex/policy.json` shapes, OR label them as illustrative examples with links to authoritative repo files |
-| **T02** | P1-014-01 | D7 | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-014.md` | Replace hardcoded inventory/health values in operator docs with live references OR clearly annotate them as snapshot values with the snapshot date |
-| **T03** | P1-017-01 | D3 | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-017.md` | Wire `finalizePrompt(promptId)` into the documented live-session wrapper workflow in `../../../../../skill/system-spec-kit/scripts/observability/LIVE_SESSION_WRAPPER_SETUP.md` so operators actually invoke it per prompt |
-| **T04** | P1-018-01 | D4 | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-018.md` | Replace bare `catch {}` handlers in advisor producer stack with typed error classification that preserves root-cause in diagnostics |
-| **T05** | P1-019-01 | D5 | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-019.md` | Add workspace root to OpenCode plugin host cache key to prevent cross-repository cache bleed |
-| **T06** | P1-020-01 | D6 | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-020.md` | Add regression test in `spec-kit-skill-advisor-plugin.vitest.ts` exercising plugin cross-workspace cache boundary (verifies T05 fix) |
-| **T07** | P1-021-01 | D7 | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-021.md` | Reconcile manual-testing-playbook: either create promised split-doc package files OR update playbook to honestly reflect current inline-root-table structure |
-| **T08** | P1-028-01 | D7 | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-028.md` | Replace bare-path commands in playbook measurement + analyzer scenarios with checkout-valid `npm --prefix` or explicit `cd` commands |
+| **T01** | P1-007-01 | D7 | `../../009-hook-package/001-skill-advisor-hook-surface/review/iterations/iteration-007.md` | Update `../../../../../skill/system-spec-kit/references/hooks/skill-advisor-hook.md` Copilot + Codex snippets to match actual `.github/hooks/superset-notify.json` + `.codex/settings.json` + `.codex/policy.json` shapes, OR label them as illustrative examples with links to authoritative repo files |
+| **T02** | P1-014-01 | D7 | `../../009-hook-package/001-skill-advisor-hook-surface/review/iterations/iteration-014.md` | Replace hardcoded inventory/health values in operator docs with live references OR clearly annotate them as snapshot values with the snapshot date |
+| **T03** | P1-017-01 | D3 | `../../009-hook-package/001-skill-advisor-hook-surface/review/iterations/iteration-017.md` | Wire `finalizePrompt(promptId)` into the documented live-session wrapper workflow in `../../../../../skill/system-spec-kit/scripts/observability/LIVE_SESSION_WRAPPER_SETUP.md` so operators actually invoke it per prompt |
+| **T04** | P1-018-01 | D4 | `../../009-hook-package/001-skill-advisor-hook-surface/review/iterations/iteration-018.md` | Replace bare `catch {}` handlers in advisor producer stack with typed error classification that preserves root-cause in diagnostics |
+| **T05** | P1-019-01 | D5 | `../../009-hook-package/001-skill-advisor-hook-surface/review/iterations/iteration-019.md` | Add workspace root to OpenCode plugin host cache key to prevent cross-repository cache bleed |
+| **T06** | P1-020-01 | D6 | `../../009-hook-package/001-skill-advisor-hook-surface/review/iterations/iteration-020.md` | Add regression test in `spec-kit-skill-advisor-plugin.vitest.ts` exercising plugin cross-workspace cache boundary (verifies T05 fix) |
+| **T07** | P1-021-01 | D7 | `../../009-hook-package/001-skill-advisor-hook-surface/review/iterations/iteration-021.md` | Reconcile manual-testing-playbook: either create promised split-doc package files OR update playbook to honestly reflect current inline-root-table structure |
+| **T08** | P1-028-01 | D7 | `../../009-hook-package/001-skill-advisor-hook-surface/review/iterations/iteration-028.md` | Replace bare-path commands in playbook measurement + analyzer scenarios with checkout-valid `npm --prefix` or explicit `cd` commands |
 
 ### P2 — Suggestion (4)
 
 | Task | Finding | Dim | Evidence | Fix |
 |---|---|---|---|---|
-| **T09** | P2-007-01 | D7 | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-007.md` | Replace bare filename reference to `../../../../../skill/system-spec-kit/scripts/observability/LIVE_SESSION_WRAPPER_SETUP.md` with repo-relative Markdown link in LT-001 scenario |
-| **T10** | P2-013-01 | D6 | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-013.md` | Add test covering default telemetry fallback path behavior |
-| **T11** | P2-013-02 | D6 | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-013.md` | Add test covering subprocess spawn-error classification branch |
-| **T12** | P2-029-01 | D1 | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review/iterations/iteration-029.md` | Apply single-line sanitizer to `provenance.sourceRefs` (same sanitizer used for `metadata.skillLabel`) |
+| **T09** | P2-007-01 | D7 | `../../009-hook-package/001-skill-advisor-hook-surface/review/iterations/iteration-007.md` | Replace bare filename reference to `../../../../../skill/system-spec-kit/scripts/observability/LIVE_SESSION_WRAPPER_SETUP.md` with repo-relative Markdown link in LT-001 scenario |
+| **T10** | P2-013-01 | D6 | `../../009-hook-package/001-skill-advisor-hook-surface/review/iterations/iteration-013.md` | Add test covering default telemetry fallback path behavior |
+| **T11** | P2-013-02 | D6 | `../../009-hook-package/001-skill-advisor-hook-surface/review/iterations/iteration-013.md` | Add test covering subprocess spawn-error classification branch |
+| **T12** | P2-029-01 | D1 | `../../009-hook-package/001-skill-advisor-hook-surface/review/iterations/iteration-029.md` | Apply single-line sanitizer to `provenance.sourceRefs` (same sanitizer used for `metadata.skillLabel`) |
 
 ## 4. REQUIREMENTS
 

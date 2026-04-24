@@ -5761,7 +5761,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package",
       "description": "Feature Specification: Hook Daemon Parity",
       "keywords": [
         "feature",
@@ -5773,7 +5773,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface",
       "description": "Feature Specification: Skill-Advisor Hook Surface",
       "keywords": [
         "feature",
@@ -5785,7 +5785,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface/001-initial-research",
       "description": "Feature Specification: 020 Initial Research Wave",
       "keywords": [
         "feature",
@@ -5798,7 +5798,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot",
       "description": "Feature Specification: 020 Extended Research (cli-copilot)",
       "keywords": [
         "feature",
@@ -5811,7 +5811,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot",
       "description": "Feature Specification: 020 Wave-3 Implementation Plan Validation (cli-copilot)",
       "keywords": [
         "feature",
@@ -5826,7 +5826,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract",
       "description": "Feature Specification: Shared-Payload Advisor Contract",
       "keywords": [
         "feature",
@@ -5838,7 +5838,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
       "description": "Feature Specification: Advisor Freshness + Source Cache",
       "keywords": [
         "feature",
@@ -5851,7 +5851,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
       "description": "Feature Specification: Advisor Brief Producer + Cache Policy",
       "keywords": [
         "feature",
@@ -5865,7 +5865,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness",
       "description": "Feature Specification: Advisor Renderer + 200-Prompt Regression Harness",
       "keywords": [
         "feature",
@@ -5879,7 +5879,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface/006-claude-hook-wiring",
       "description": "Feature Specification: Claude Hook Wiring (UserPromptSubmit)",
       "keywords": [
         "feature",
@@ -5892,7 +5892,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring",
       "description": "Feature Specification: Gemini + Copilot Hook Wiring",
       "keywords": [
         "feature",
@@ -5905,7 +5905,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy",
       "description": "Feature Specification: Codex Integration + Hook Policy",
       "keywords": [
         "feature",
@@ -5918,7 +5918,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/001-skill-advisor-hook-surface/009-documentation-and-release-contract",
       "description": "Feature Specification: Documentation + Release Contract",
       "keywords": [
         "feature",
@@ -5930,7 +5930,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/002-skill-graph-daemon-and-advisor-unification",
       "description": "Feature Specification: 027 - Skill Graph Daemon and Advisor Unification",
       "keywords": [
         "feature",
@@ -5945,7 +5945,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix",
       "description": "Feature Specification: 027/000 — Validator ESM Migration (Node 25 Compat)",
       "keywords": [
         "feature",
@@ -5961,7 +5961,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation",
       "description": "Feature Specification: 027/001 — Daemon + Freshness Foundation",
       "keywords": [
         "feature",
@@ -5975,7 +5975,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/003-lifecycle-and-derived-metadata",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/002-skill-graph-daemon-and-advisor-unification/003-lifecycle-and-derived-metadata",
       "description": "Feature Specification: 027/002 — Lifecycle + Derived Metadata",
       "keywords": [
         "feature",
@@ -5989,7 +5989,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
       "description": "Feature Specification: 027/003 — Native Advisor Core",
       "keywords": [
         "feature",
@@ -6003,7 +6003,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface",
       "description": "Feature Specification: 027/004 — MCP Advisor Surface",
       "keywords": [
         "feature",
@@ -6017,7 +6017,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap",
       "description": "Feature Specification: 027/005 — Compat Migration + Bootstrap",
       "keywords": [
         "feature",
@@ -6031,7 +6031,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/007-promotion-gates",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/002-skill-graph-daemon-and-advisor-unification/007-promotion-gates",
       "description": "Feature Specification: 027/006 — Promotion Gates",
       "keywords": [
         "feature",
@@ -6044,7 +6044,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/003-hook-parity-remediation",
       "description": "Feature Specification: 029 - Runtime Hook Parity Remediation",
       "keywords": [
         "feature",
@@ -6058,7 +6058,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/004-copilot-hook-parity-remediation",
       "description": "Feature Specification: Copilot CLI Hook Parity Remediation",
       "keywords": [
         "feature",
@@ -6072,7 +6072,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/005-codex-hook-parity-remediation",
       "description": "Feature Specification: Codex CLI Hook Parity Remediation",
       "keywords": [
         "feature",
@@ -6086,7 +6086,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/006-claude-hook-findings-remediation",
       "description": "Feature Specification: Claude Hook Findings Remediation",
       "keywords": [
         "feature",
@@ -6099,7 +6099,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/007-opencode-plugin-loader-remediation",
       "description": "Feature Specification: OpenCode Plugin Loader Remediation",
       "keywords": [
         "feature",
@@ -6112,7 +6112,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/008-skill-advisor-plugin-hardening",
       "description": "Feature Specification: Skill-Advisor Plugin Hardening",
       "keywords": [
         "feature",
@@ -6124,7 +6124,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/009-skill-advisor-standards-alignment",
       "description": "Feature Specification: Skill-Advisor Standards Alignment",
       "keywords": [
         "feature",
@@ -6136,7 +6136,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/010-copilot-wrapper-schema-fix",
       "description": "Feature Specification: Copilot Wrapper Schema Fix for .claude/settings.local.json",
       "keywords": [
         "feature",
@@ -6153,7 +6153,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/011-copilot-writer-wiring",
       "description": "Feature Specification: Copilot Writer Wiring via Claude Wrapper",
       "keywords": [
         "feature",
@@ -6168,7 +6168,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/012-docs-impact-remediation",
       "description": "Feature Specification: Documentation Impact Remediation for 009 Hook/Daemon Parity",
       "keywords": [
         "feature",
@@ -6184,7 +6184,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/013-code-graph-hook-improvements",
       "description": "Feature Specification: Code-Graph System + Hooks Improvement Investigation",
       "keywords": [
         "feature",
@@ -6198,7 +6198,7 @@
       "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/014-skill-advisor-hook-improvements",
       "description": "Feature Specification: Skill-Advisor Hook Improvements",
       "keywords": [
         "feature",

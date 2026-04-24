@@ -11,7 +11,7 @@ Determine whether `004-r03-post-remediation` is actually unfinished or primarily
 ### New Questions
 - Which Phase 026 integration checks were actually run but never copied back into the checklist?
 - Should Phase 026 now be the main packet for resynchronizing stale hook/parity docs?
-- Are any T01-T12 evidence paths themselves stale after later moves under `009-hook-daemon-parity/`?
+- Are any T01-T12 evidence paths themselves stale after later moves under `009-hook-package/`?
 - Does the parent phase map need to treat Phase 026 as "implemented, verification pending" instead of `Draft`?
 
 ### Status

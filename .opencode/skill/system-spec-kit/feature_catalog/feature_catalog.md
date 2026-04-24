@@ -134,7 +134,7 @@ Use this catalog as the canonical inventory for both current behavior and delive
 
 ### Packet 013 & 014 coverage map
 
-Packets 013 (code-graph hook improvements) and 014 (skill-advisor hook improvements) under `026/009-hook-daemon-parity/` ship contract-level changes surfaced in the following catalog entries and references:
+Packets 013 (code-graph hook improvements) and 014 (skill-advisor hook improvements) under `026/009-hook-package/` ship contract-level changes surfaced in the following catalog entries and references:
 
 | Packet | Shipped surface | Primary catalog / reference entry |
 |---|---|---|

@@ -100,7 +100,7 @@ Total scenario entries: `300`
 
 ### Packet 013 & 014 playbook coverage (not a separate audit phase)
 
-Packets 013 (code-graph hook improvements) and 014 (skill-advisor hook improvements) under `026/009-hook-daemon-parity/` extended the scenario coverage the Phase 017 summary above described. Additional shipped-surface scenarios:
+Packets 013 (code-graph hook improvements) and 014 (skill-advisor hook improvements) under `026/009-hook-package/` extended the scenario coverage the Phase 017 summary above described. Additional shipped-surface scenarios:
 
 - **Packet 013 — blocked/degraded `full_scan` contract** on both `code_graph_query` and `code_graph_context`: [`22--context-preservation-and-code-graph/260-code-graph-auto-trigger.md`](22--context-preservation-and-code-graph/260-code-graph-auto-trigger.md) covers the context side; the query side is verified through the tool-contract playbook in `22--context-preservation-and-code-graph/254-code-graph-scan-query.md` (CALLS ambiguity, `deadlineMs`, null-summary clearing) when that scenario is extended alongside remediation.
 - **Packet 013 — shared startup payload parity across Claude/Gemini/Copilot/Codex**: [`18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md`](18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md) covers Claude/Gemini/Copilot; the Codex slice of the 4-runtime parity is the remaining gap for that scenario.

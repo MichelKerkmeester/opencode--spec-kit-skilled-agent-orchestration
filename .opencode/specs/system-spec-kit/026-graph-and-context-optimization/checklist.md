@@ -65,7 +65,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 
 - [x] CHK-010 [P0] Active phase map lists nine thematic wrappers. [EVIDENCE: spec.md]
 - [x] CHK-011 [P0] Original phase packet folders are preserved as direct children under their active wrapper, with phase `001` merged into its phase root. [EVIDENCE: merged-phase-map.md]
-- [x] CHK-012 [P1] Wrapper docs stay navigation-only and do not rewrite child packet narratives. [EVIDENCE: 001-research-and-baseline/spec.md; 009-hook-daemon-parity/spec.md]
+- [x] CHK-012 [P1] Wrapper docs stay navigation-only and do not rewrite child packet narratives. [EVIDENCE: 001-research-and-baseline/spec.md; 009-hook-package/spec.md]
 - [x] CHK-013 [P1] Root support folders remain in place. [EVIDENCE: spec.md]
 <!-- /ANCHOR:code-quality -->
 

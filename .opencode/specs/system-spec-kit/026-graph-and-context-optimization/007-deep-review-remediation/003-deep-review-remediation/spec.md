@@ -59,8 +59,8 @@ _memory:
 | **Parent Plan** | ../plan.md |
 | **Predecessor** | ../002-cli-executor-remediation/spec.md |
 | **Successor** | ../004-r03-post-remediation/spec.md |
-| **Parent** | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/` |
-| **Source** | `../../009-hook-daemon-parity/001-skill-advisor-hook-surface/review-archive-r02-codex-copilot/findings-registry.json` |
+| **Parent** | `../../009-hook-package/001-skill-advisor-hook-surface/` |
+| **Source** | `../../009-hook-package/001-skill-advisor-hook-surface/review-archive-r02-codex-copilot/findings-registry.json` |
 
 ---
 

@@ -595,7 +595,7 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
           'specs',
           'system-spec-kit',
           '026-graph-and-context-optimization',
-          '009-hook-daemon-parity',
+          '009-hook-package',
         );
         fs.mkdirSync(specFolder, { recursive: true });
         for (const fileName of ['spec.md', 'plan.md', 'tasks.md', 'implementation-summary.md', 'checklist.md']) {
@@ -679,7 +679,7 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
 
         const isolatedHandler = await import('../handlers/memory-index');
         const response = await isolatedHandler.handleMemoryIndexScan({
-          specFolder: 'system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity',
+          specFolder: 'system-spec-kit/026-graph-and-context-optimization/009-hook-package',
           includeConstitutional: false,
           includeSpecDocs: true,
           incremental: false,
@@ -732,7 +732,7 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
       const isolatedHandler = await import('../handlers/memory-index');
 
       await expect(
-        isolatedHandler.indexSingleFile('/workspace/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/spec.md'),
+        isolatedHandler.indexSingleFile('/workspace/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/spec.md'),
       ).rejects.toThrow('candidate_changed');
 
       expect(transactionalRecheckCalls).toBe(1);

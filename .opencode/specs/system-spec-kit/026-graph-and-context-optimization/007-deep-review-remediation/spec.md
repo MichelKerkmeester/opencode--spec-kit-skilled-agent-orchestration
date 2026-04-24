@@ -61,10 +61,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The first consolidation preserved old packets behind an extra archive layer, which made the active phase surface harder to browse. The remaining remediation backlog also drifted behind the current `009-hook-daemon-parity` truth, so the active `007` packet no longer signposted which parity items were still live versus already closed or reapplied.
+The first consolidation preserved old packets behind an extra archive layer, which made the active phase surface harder to browse. The remaining remediation backlog also drifted behind the current `009-hook-package` truth, so the active `007` packet no longer signposted which parity items were still live versus already closed or reapplied.
 
 ### Purpose
-Keep this theme as an active parent while making each original phase packet a direct child folder under the phase root and keeping the remediation backlog aligned with the current `009-hook-daemon-parity` state map.
+Keep this theme as an active parent while making each original phase packet a direct child folder under the phase root and keeping the remediation backlog aligned with the current `009-hook-package` state map.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -76,7 +76,7 @@ Keep this theme as an active parent while making each original phase packet a di
 - Keep the active thematic parent at `007-deep-review-remediation/`.
 - Place old phase packets directly under this root.
 - Maintain `context-index.md` as the bridge from old phase identity to current child folder.
-- Track the active `009-hook-daemon-parity` parity map in this root so follow-on remediation reflects current packet truth.
+- Track the active `009-hook-package` parity map in this root so follow-on remediation reflects current packet truth.
 
 ### Out of Scope
 - Rewriting child-owned requirements or historical implementation narratives.
@@ -86,7 +86,7 @@ Keep this theme as an active parent while making each original phase packet a di
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `spec.md` | Modify | Refresh the active backlog language so it reflects the current `009-hook-daemon-parity` parity map. |
+| `spec.md` | Modify | Refresh the active backlog language so it reflects the current `009-hook-package` parity map. |
 | `context-index.md` | Modify | Bridge index for the direct child phases in this theme. |
 | `007-deep-review-remediation/00N-*/` | Move | Original phase packet roots now live directly under this parent. |
 <!-- /ANCHOR:scope -->
@@ -152,7 +152,7 @@ Keep this theme as an active parent while making each original phase packet a di
 |------|------|--------|------------|
 | Risk | Direct child folders may contain older validation debt | Medium | Validate the active parent separately and preserve child docs unchanged unless requested. |
 | Dependency | Root packet phase map | High | Root docs own the active nine-phase map. |
-| Dependency | `009-hook-daemon-parity` state map | High | Keep `007` backlog wording synchronized to the active `009` parent so parity cleanup follows current runtime truth instead of historical cleanup assumptions. |
+| Dependency | `009-hook-package` state map | High | Keep `007` backlog wording synchronized to the active `009` parent so parity cleanup follows current runtime truth instead of historical cleanup assumptions. |
 | Dependency | Historical source-packet write authority for CF-108 | High | Route the blocked `005-006` remediation through a write-authorized follow-up, or ADR-defer the blocker if those source packets are intentionally immutable. |
 <!-- /ANCHOR:risks -->
 
