@@ -44,7 +44,7 @@ _memory:
 
 - [x] T001 Confirm structural-bootstrap contract boundaries against `018`, `024`, and `026-session-start-injection-debug` (`spec.md`)
 - [x] T002 Define the shared structural-bootstrap contract fields, token budget, and degraded-state rules for non-hook surfaces (`spec.md`, `plan.md`)
-- [x] T003 [P] Document OpenCode-first wording requirements and shared recovery vocabulary, marking `context-server.ts` and runtime responses as the source of truth while `AGENTS.md` and `.opencode/agent/context-prime.md` mirror that contract (`AGENTS.md`, `.opencode/agent/context-prime.md`)
+- [x] T003 [P] Document OpenCode-first wording requirements and shared recovery vocabulary, marking `context-server.ts` and runtime responses as the source of truth while `AGENTS.md` and `.opencode/agent/context.md` mirror that contract (`AGENTS.md`, `.opencode/agent/context.md`)
 - [x] T004 Register `027-opencode-structural-priming` explicitly in the parent packet phase map (`../spec.md`)
 <!-- /ANCHOR:phase-1 -->
 
@@ -57,7 +57,7 @@ _memory:
 - [x] T006 Make `session_bootstrap` return the same structural contract by default (`mcp_server/handlers/session-bootstrap.ts`)
 - [x] T007 Add lightweight structural recovery guidance to `session_resume` using the same contract vocabulary (`mcp_server/handlers/session-resume.ts`)
 - [x] T008 Update `session_health` to recommend `session_bootstrap` when structural context is stale or missing (`mcp_server/handlers/session-health.ts`)
-- [x] T009 Update first-turn/server guidance so OpenCode knows when structural context is already injected and when to recover (`mcp_server/context-server.ts`, `AGENTS.md`, `.opencode/agent/context-prime.md`)
+- [x] T009 Update first-turn/server guidance so OpenCode knows when structural context is already injected and when to recover (`mcp_server/context-server.ts`, `AGENTS.md`, `.opencode/agent/context.md`)
 <!-- /ANCHOR:phase -->
 
 ---

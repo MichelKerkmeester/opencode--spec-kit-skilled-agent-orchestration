@@ -24,7 +24,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify 
 
 ---
 
-> **⚠️ SUPERSEDED BY PHASES 1-5:** This file is retained as the original pre-decomposition task list only. Use phase folders `001-foundation-templates-truncation/` through `005-operations-tail-prs/` as the authoritative execution record.
+> **⚠️ SUPERSEDED BY PHASES 1-10:** This file is retained as the original pre-decomposition task list only. Sub-phase folders have been merged into `implementation-summary.md § Sub-phase summaries` and deleted. Use `implementation-summary.md` as the consolidated execution record for all 10 phases.
 
 <!-- ANCHOR:notation -->
 ## Task Notation
@@ -79,47 +79,47 @@ These tasks are intentionally preserved as the original placeholder matrix, but 
 
 | ID | Task | Status |
 |----|------|--------|
-| T101 | D8 — Standardize anchor naming on `overview` in `templates/context_template.md:172-183` and `:330-352` | SUPERSEDED — See `001-foundation-templates-truncation/` |
-| T102 | D1 — Replace `substring(0, 500)` in `extractors/collect-session-data.ts:875-881` with shared boundary-aware helper | SUPERSEDED — See `001-foundation-templates-truncation/` |
-| T103 | Add helper-level fixture tests for D1 (450/520/900-char inputs) | SUPERSEDED — See `001-foundation-templates-truncation/` |
-| T104 | Add template anchor consistency assertion | SUPERSEDED — See `001-foundation-templates-truncation/` |
+| T101 | D8 — Standardize anchor naming on `overview` in `templates/context_template.md:172-183` and `:330-352` | SUPERSEDED — See implementation-summary.md §001-foundation-templates-truncation |
+| T102 | D1 — Replace `substring(0, 500)` in `extractors/collect-session-data.ts:875-881` with shared boundary-aware helper | SUPERSEDED — See implementation-summary.md §001-foundation-templates-truncation |
+| T103 | Add helper-level fixture tests for D1 (450/520/900-char inputs) | SUPERSEDED — See implementation-summary.md §001-foundation-templates-truncation |
+| T104 | Add template anchor consistency assertion | SUPERSEDED — See implementation-summary.md §001-foundation-templates-truncation |
 
 ### P1 (structural consistency + provenance)
 
 | ID | Task | Status |
 |----|------|--------|
-| T201 | D4 — Extend `lib/frontmatter-migration.ts:1112-1183` to also rewrite bottom YAML metadata block | SUPERSEDED — See `002-single-owner-metadata/` |
-| T202 | D4 — Add `core/post-save-review.ts:279-289` reviewer assertion for frontmatter↔metadata drift | SUPERSEDED — See `002-single-owner-metadata/` |
-| T203 | D7 — Split provenance injection from captured-session enrichment in `core/workflow.ts:453-560`, `:877-923` | SUPERSEDED — See `002-single-owner-metadata/` |
-| T204 | Add stubbed `extractGitContext()` workflow test for JSON-mode provenance | SUPERSEDED — See `002-single-owner-metadata/` |
+| T201 | D4 — Extend `lib/frontmatter-migration.ts:1112-1183` to also rewrite bottom YAML metadata block | SUPERSEDED — See implementation-summary.md §002-single-owner-metadata |
+| T202 | D4 — Add `core/post-save-review.ts:279-289` reviewer assertion for frontmatter↔metadata drift | SUPERSEDED — See implementation-summary.md §002-single-owner-metadata |
+| T203 | D7 — Split provenance injection from captured-session enrichment in `core/workflow.ts:453-560`, `:877-923` | SUPERSEDED — See implementation-summary.md §002-single-owner-metadata |
+| T204 | Add stubbed `extractGitContext()` workflow test for JSON-mode provenance | SUPERSEDED — See implementation-summary.md §002-single-owner-metadata |
 
 ### P2 (search-quality, behaviorally sensitive)
 
 | ID | Task | Status |
 |----|------|--------|
-| T301 | D3a — Remove unconditional folder-token append in `core/workflow.ts:1271-1295` (keep `ensureMinTriggerPhrases()` low-count fallback) | SUPERSEDED — See `003-sanitization-precedence/` |
-| T302 | D3b — Require source adjacency for topic bigrams in `lib/semantic-signal-extractor.ts:260-284` | SUPERSEDED — See `003-sanitization-precedence/` |
-| T303 | D2 — Add raw `keyDecisions` reader to `extractors/decision-extractor.ts:182-185` before lexical fallback | SUPERSEDED — See `003-sanitization-precedence/` |
-| T304 | D2 — Implement precedence hardening (do NOT blanket-disable lexical fallback) at `:367-388` | SUPERSEDED — See `003-sanitization-precedence/` |
-| T305 | F1/F6 replay fixtures asserting absent path-fragment trigger phrases | SUPERSEDED — See `003-sanitization-precedence/` |
-| T306 | Decision-extractor unit tests for raw / missing-normalized / decision-less JSON fixtures | SUPERSEDED — See `003-sanitization-precedence/` |
+| T301 | D3a — Remove unconditional folder-token append in `core/workflow.ts:1271-1295` (keep `ensureMinTriggerPhrases()` low-count fallback) | SUPERSEDED — See implementation-summary.md §003-sanitization-precedence |
+| T302 | D3b — Require source adjacency for topic bigrams in `lib/semantic-signal-extractor.ts:260-284` | SUPERSEDED — See implementation-summary.md §003-sanitization-precedence |
+| T303 | D2 — Add raw `keyDecisions` reader to `extractors/decision-extractor.ts:182-185` before lexical fallback | SUPERSEDED — See implementation-summary.md §003-sanitization-precedence |
+| T304 | D2 — Implement precedence hardening (do NOT blanket-disable lexical fallback) at `:367-388` | SUPERSEDED — See implementation-summary.md §003-sanitization-precedence |
+| T305 | F1/F6 replay fixtures asserting absent path-fragment trigger phrases | SUPERSEDED — See implementation-summary.md §003-sanitization-precedence |
+| T306 | Decision-extractor unit tests for raw / missing-normalized / decision-less JSON fixtures | SUPERSEDED — See implementation-summary.md §003-sanitization-precedence |
 
 ### P3 (investigation-first)
 
 | ID | Task | Status |
 |----|------|--------|
-| T401 | D5 — Add `discoverPredecessors()` helper to `core/workflow.ts:1305-1372` (immediate predecessor + continuation gating + ambiguity skip) | SUPERSEDED — See `004-heuristics-refactor-guardrails/` |
-| T402 | D5 — Wire helper into pre-render path before `buildCausalLinksContext()` in `core/memory-metadata.ts:227-236` | SUPERSEDED — See `004-heuristics-refactor-guardrails/` |
-| T403 | D5 — Add temp-folder lineage fixture (one valid predecessor + one unrelated sibling) | SUPERSEDED — See `004-heuristics-refactor-guardrails/` |
-| T404 | D6 — Add F1-based regression fixture for duplicate trigger phrases | SUPERSEDED — See `004-heuristics-refactor-guardrails/` |
-| T405 | D6 — Trace duplicate origin only AFTER fixture establishes failing reproducer | SUPERSEDED — See `004-heuristics-refactor-guardrails/` |
+| T401 | D5 — Add `discoverPredecessors()` helper to `core/workflow.ts:1305-1372` (immediate predecessor + continuation gating + ambiguity skip) | SUPERSEDED — See implementation-summary.md §004-heuristics-refactor-guardrails |
+| T402 | D5 — Wire helper into pre-render path before `buildCausalLinksContext()` in `core/memory-metadata.ts:227-236` | SUPERSEDED — See implementation-summary.md §004-heuristics-refactor-guardrails |
+| T403 | D5 — Add temp-folder lineage fixture (one valid predecessor + one unrelated sibling) | SUPERSEDED — See implementation-summary.md §004-heuristics-refactor-guardrails |
+| T404 | D6 — Add F1-based regression fixture for duplicate trigger phrases | SUPERSEDED — See implementation-summary.md §004-heuristics-refactor-guardrails |
+| T405 | D6 — Trace duplicate origin only AFTER fixture establishes failing reproducer | SUPERSEDED — See implementation-summary.md §004-heuristics-refactor-guardrails |
 
 ### Acceptance
 
 | ID | Task | Status |
 |----|------|--------|
-| T501 | Full pipeline replay with `/tmp/save-context-data.json` after all P0-P2 fixes; assert all 8 defect symptoms absent | SUPERSEDED — See `005-operations-tail-prs/` |
-| T502 | Capture before/after diff of 3 sample memory saves to confirm no regressions | SUPERSEDED — See `005-operations-tail-prs/` |
+| T501 | Full pipeline replay with `/tmp/save-context-data.json` after all P0-P2 fixes; assert all 8 defect symptoms absent | SUPERSEDED — See implementation-summary.md §005-operations-tail-prs |
+| T502 | Capture before/after diff of 3 sample memory saves to confirm no regressions | SUPERSEDED — See implementation-summary.md §005-operations-tail-prs |
 <!-- /ANCHOR:phase-2 -->
 
 ---

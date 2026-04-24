@@ -108,7 +108,7 @@ Make non-hook runtimes — with OpenCode as the primary example — receive a si
 | `mcp_server/handlers/session-bootstrap.ts` | Modify | Ensure the composite bootstrap response includes compact structural context by default |
 | `mcp_server/handlers/session-resume.ts` | Modify | Expose a lightweight structural recovery digest for resumed non-hook sessions |
 | `mcp_server/handlers/session-health.ts` | Modify | Emit clearer recovery guidance when structural context is stale or missing |
-| `.opencode/agent/context-prime.md` | Modify | Mirror the non-hook structural bootstrap contract for agent-facing first-turn guidance |
+| `.opencode/agent/context.md` | Modify | Mirror the non-hook structural bootstrap contract for agent-facing first-turn guidance |
 | `AGENTS.md` | Modify | Mirror non-hook runtime recovery expectations without becoming the source of truth |
 | `../spec.md` | Modify | Register `027-opencode-structural-priming` explicitly in the parent phase map |
 <!-- /ANCHOR:scope -->

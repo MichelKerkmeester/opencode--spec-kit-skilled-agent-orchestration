@@ -56,7 +56,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 
 **We chose**: structural research-first ordering.
 
-**How it works**: The umbrella packet defines exactly one child at scaffold time (`001-initial-research`). No `002+` sibling may be created until `001-initial-research/implementation-summary.md` converges with a findings registry. The charter records this as REQ-002 and reinforces it via AI execution rule `AI-SCOPE-002` in `plan.md`.
+**How it works**: The umbrella packet defines exactly one child at scaffold time (`001-initial-research`). No `002+` sibling may be created until `implementation-summary.md §Sub-phase summaries` converges with a findings registry. The charter records this as REQ-002 and reinforces it via AI execution rule `AI-SCOPE-002` in `plan.md`.
 <!-- /ANCHOR:adr-001-decision -->
 
 ---

@@ -1,1 +1,0 @@
-{"type":"delta","iteration":"010","dimension":"security","filesReviewed":[".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts"],"newFindings":[],"findingsSummary":{"P0":0,"P1":0,"P2":0},"newFindingsRatio":0,"churn":0,"verification":"PASS: content-router.vitest.ts 30/30"}

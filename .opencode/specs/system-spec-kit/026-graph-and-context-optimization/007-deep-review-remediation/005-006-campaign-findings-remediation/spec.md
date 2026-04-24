@@ -1,6 +1,6 @@
 ---
 title: "...m-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/spec]"
-description: "Parent packet that maps the 006 campaign consolidated review findings into 10 Level 3 remediation sub-phases."
+description: "Flattened packet owning all 274 006-campaign consolidated remediation findings across 10 themes."
 trigger_phrases:
   - "feature specification 005 006 campaign findings remediation"
 importance_tier: "important"
@@ -23,11 +23,11 @@ _memory:
 
 ## EXECUTIVE SUMMARY
 
-This packet organizes 274 consolidated 006 campaign findings for the Campaign Findings remediation theme. It is planning documentation only: remediation tasks are deliberately unchecked until implementation fixes and verification evidence are added.
+This packet owns all 274 consolidated 006-campaign findings across 10 remediation themes. The previous 3-level nesting (parent → 001–010 sub-phase folders) has been flattened to 2 levels: all per-theme scope, plan, task, and closeout evidence now lives in this packet's documents. Sub-phase summaries are preserved in `implementation-summary.md` under `## Sub-phase summaries`.
 
-**Key Decisions**: Preserve the consolidated theme boundary, keep per-finding tasks traceable to CF identifiers.
+**Key Decisions**: Themes 004, 006, 007, 008, 009, 010 are complete. Themes 001, 002 are blocked on historical source-packet write authority. Themes 003, 005 have not yet started implementation.
 
-**Critical Dependencies**: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md
+**Critical Dependencies**: The 006-campaign consolidated-findings report (original path no longer exists; findings are preserved in tasks.md and implementation-summary.md Sub-phase summaries).
 
 ---
 <!-- ANCHOR:metadata -->
@@ -51,7 +51,7 @@ This packet organizes 274 consolidated 006 campaign findings for the Campaign Fi
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The parent packet coordinates all 10 source themes from the consolidated review synthesis.
+274 findings from the 006-campaign consolidated review require durable remediation ownership. All 10 source themes are now owned by this single packet; per-theme task ledgers and closeout evidence are recorded here and in `implementation-summary.md`.
 
 ### Goals
 - Group every related consolidated finding under one durable remediation owner.
@@ -78,35 +78,23 @@ Success means future implementation can pick up this theme without re-reading th
 - Evidence-derived graph metadata for this theme.
 
 ### Out of Scope
-- Code fixes - handled by later remediation implementation tasks.
-- Git commits - orchestrator owns commits.
-- Reclassification of source findings - this packet preserves the consolidated grouping.
+- Reclassification of source findings — this packet preserves the consolidated grouping.
+- Git commits — orchestrator owns commits.
 
-### Files to Change
+### Theme Coverage
 
-| File Path | Change Type | Description |
-|-----------|-------------|-------------|
-| spec.md | Create | Theme scope and requirements |
-| plan.md | Create | Technical sequence and architecture notes |
-| tasks.md | Create | Per-finding remediation task ledger |
-| checklist.md | Create | Verification gates for remediation closeout |
-| decision-record.md | Create | ADR for theme-owned remediation |
-| graph-metadata.json | Create | Evidence-derived key file index |
-
-### PHASE DOCUMENTATION MAP
-
-| Sub-phase | Theme | Findings | Severity Mix |
-|-----------|-------|----------|--------------|
-| 001-graph-and-metadata-quality | Graph and Metadata Quality | 79 | P0=2, P1=42, P2=35 |
-| 002-spec-structure-and-validation | Spec Structure and Validation | 60 | P0=1, P1=36, P2=23 |
-| 003-evidence-references-and-replayability | Evidence, References, and Replayability | 46 | P0=1, P1=31, P2=14 |
-| 004-migration-lineage-and-identity-drift | Migration, Lineage, and Identity Drift | 42 | P0=0, P1=34, P2=8 |
-| 005-packet-state-continuity-and-closeout | Packet State, Continuity, and Closeout | 17 | P0=2, P1=7, P2=8 |
-| 006-routing-accuracy-and-classifier-behavior | Routing Accuracy and Classifier Behavior | 15 | P0=1, P1=6, P2=8 |
-| 007-skill-advisor-packaging-and-graph | Skill Advisor Packaging and Graph | 7 | P0=0, P1=3, P2=4 |
-| 008-search-fusion-and-reranker-tuning | Search Fusion and Reranker Tuning | 5 | P0=0, P1=4, P2=1 |
-| 009-security-and-guardrails | Security and Guardrails | 2 | P0=0, P1=2, P2=0 |
-| 010-telemetry-measurement-and-rollout-controls | Telemetry, Measurement, and Rollout Controls | 1 | P0=0, P1=0, P2=1 |
+| Theme | Findings | Severity Mix | Status |
+|-------|----------|--------------|--------|
+| 001-graph-and-metadata-quality | 79 | P0=2, P1=42, P2=35 | Blocked (18% — source-packet write authority needed) |
+| 002-spec-structure-and-validation | 60 | P0=1, P1=36, P2=23 | Blocked (20% — CF-207 source-packet doc errors) |
+| 003-evidence-references-and-replayability | 46 | P0=1, P1=31, P2=14 | Not started |
+| 004-migration-lineage-and-identity-drift | 42 | P0=0, P1=34, P2=8 | Complete |
+| 005-packet-state-continuity-and-closeout | 17 | P0=2, P1=7, P2=8 | Not started |
+| 006-routing-accuracy-and-classifier-behavior | 15 | P0=1, P1=6, P2=8 | Complete |
+| 007-skill-advisor-packaging-and-graph | 7 | P0=0, P1=3, P2=4 | Complete |
+| 008-search-fusion-and-reranker-tuning | 5 | P0=0, P1=4, P2=1 | Complete |
+| 009-security-and-guardrails | 2 | P0=0, P1=2, P2=0 | Complete |
+| 010-telemetry-measurement-and-rollout-controls | 1 | P0=0, P1=0, P2=1 | Complete |
 
 <!-- /ANCHOR:scope -->
 

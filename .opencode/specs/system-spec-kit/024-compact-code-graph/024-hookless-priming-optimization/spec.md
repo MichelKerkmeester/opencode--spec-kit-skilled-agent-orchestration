@@ -84,9 +84,9 @@ Optimize the two hookless context priming mechanisms so they work better togethe
 
 | # | Item | What | Files |
 |---|------|------|-------|
-| 1 | Reframe @context-prime as best-effort | Remove "mandatory" language from orchestrate.md; add "skip if urgent" logic | .opencode/agent/context-prime.md, orchestrate.md |
-| 2 | Slim agent to 2 calls | Change from 4 calls (memory_context + code_graph_status + ccc_status + session_health) to 2 (session_resume + session_health) | .opencode/agent/context-prime.md + all runtime copies |
-| 3 | Urgency-aware bootstrap | If first message looks urgent ("fix", "error", "bug"), skip blocking prime and let MCP auto-prime handle it | .opencode/agent/context-prime.md |
+| 1 | Reframe @context-prime as best-effort | Remove "mandatory" language from orchestrate.md; add "skip if urgent" logic | .opencode/agent/context.md, orchestrate.md |
+| 2 | Slim agent to 2 calls | Change from 4 calls (memory_context + code_graph_status + ccc_status + session_health) to 2 (session_resume + session_health) | .opencode/agent/context.md + all runtime copies |
+| 3 | Urgency-aware bootstrap | If first message looks urgent ("fix", "error", "bug"), skip blocking prime and let MCP auto-prime handle it | .opencode/agent/context.md |
 
 ### Near-Term — Items 4-6 (~200 LOC)
 

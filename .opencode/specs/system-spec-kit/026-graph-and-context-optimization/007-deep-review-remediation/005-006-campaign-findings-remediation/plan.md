@@ -34,12 +34,13 @@ _memory:
 | **Testing** | validate.sh --strict --no-recursive |
 
 ### Overview
-Coordinate all 10 child remediation packets and keep validation green for each packet before implementation handoff.
+Own all 274 006-campaign findings across 10 remediation themes in this single flat packet. Themes 004, 006–010 are complete. Themes 001 and 002 are blocked on historical source-packet write authority. Themes 003 and 005 have not yet started.
 
 ### Implementation Notes
-- Start with P0 findings, then P1, then P2.
-- Keep every code or doc change tied to one CF identifier.
-- Refresh description and graph metadata during closeout.
+- Work P0 findings first, then P1, then P2.
+- Each code or doc change must be tied to one CF identifier.
+- Refresh `graph-metadata.json` and `description.json` during closeout.
+- Per-theme summaries are in `implementation-summary.md` under `## Sub-phase summaries`.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -85,7 +86,7 @@ If a task is BLOCKED, leave it unchecked, document the blocker in checklist.md, 
 ## 3. ARCHITECTURE
 
 ### Pattern
-Theme-owned remediation packet with parent orchestration.
+Flat theme-owned remediation packet. All 10 theme scopes are consolidated here.
 
 ### Key Components
 - **Finding ledger**: tasks.md keeps one checkbox per CF finding.
@@ -107,19 +108,12 @@ Consolidated finding rows feed the task ledger, task closure feeds checklist evi
 - [ ] Identify source phase owners
 
 ### Phase 2: Core Implementation
-- [ ] Fix P0 findings: 7
-- [ ] Fix or defer P1 findings: 165
-- [ ] Triage P2 findings: 102
-- [ ] Validate 001-graph-and-metadata-quality before implementation handoff
-- [ ] Validate 002-spec-structure-and-validation before implementation handoff
-- [ ] Validate 003-evidence-references-and-replayability before implementation handoff
-- [ ] Validate 004-migration-lineage-and-identity-drift before implementation handoff
-- [ ] Validate 005-packet-state-continuity-and-closeout before implementation handoff
-- [ ] Validate 006-routing-accuracy-and-classifier-behavior before implementation handoff
-- [ ] Validate 007-skill-advisor-packaging-and-graph before implementation handoff
-- [ ] Validate 008-search-fusion-and-reranker-tuning before implementation handoff
-- [ ] Validate 009-security-and-guardrails before implementation handoff
-- [ ] Validate 010-telemetry-measurement-and-rollout-controls before implementation handoff
+
+Themes 004, 006, 007, 008, 009, 010 are complete. Themes 001, 002 are blocked. Themes 003, 005 are not yet started.
+
+- [x] Fix P0/P1 findings for themes 004, 006, 007, 008, 009, 010 — complete with vitest + validate.sh evidence (see implementation-summary.md)
+- [ ] Unblock themes 001, 002 — requires expanded source-packet write authority (CF-108, CF-207)
+- [ ] Implement themes 003 (46 findings) and 005 (17 findings) once write authority is granted
 
 ### Phase 3: Verification
 - [ ] Run targeted tests for changed code paths

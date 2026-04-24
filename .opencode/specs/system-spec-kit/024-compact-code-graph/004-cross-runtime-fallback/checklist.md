@@ -85,7 +85,7 @@ Template compliance shim anchor for summary.
 - [x] Runtime detection produces both `runtime` and `hookPolicy` [EVIDENCE: verified in implementation-summary.md]
 
 #### P1
-- [x] `.claude/CLAUDE.md` created with Claude-specific recovery (closes Gap B) [EVIDENCE: verified in implementation-summary.md]
+- [x] `CLAUDE.md` created with Claude-specific recovery (closes Gap B) [EVIDENCE: verified in implementation-summary.md]
 - [x] CODEX.md created with recovery instructions [EVIDENCE: verified in implementation-summary.md]
 - [x] Copilot runtime tested (tool fallback by policy) — verified via 7-scenario test matrix: detectRuntime() returns copilot-cli and getRecoveryApproach() returns tool_fallback [EVIDENCE: verified in implementation-summary.md]
 - [x] Gemini runtime tested (tool fallback by policy) — verified via 7-scenario test matrix: detectRuntime() returns gemini-cli/unavailable, getRecoveryApproach() returns tool_fallback [EVIDENCE: verified in implementation-summary.md]

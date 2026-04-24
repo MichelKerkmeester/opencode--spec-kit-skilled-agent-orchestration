@@ -100,7 +100,7 @@ This packet now documents the shipped hybrid context-preservation system: Claude
 Context compaction in long AI coding sessions caused loss of critical knowledge. Before the hook and bootstrap work landed, the system relied on AI-driven recovery (CLAUDE.md instructions telling the AI to call `memory_context({ mode: "resume" })`). Analysis (iteration 012) confirmed five gaps:
 
 1. **No provider lifecycle hook** — `autoSurfaceAtCompaction()` only runs when the AI actively calls `memory_context(mode: "resume")`, not at the moment compaction happens
-2. **No private Claude recovery layer** — `.claude/CLAUDE.md` doesn't exist; compaction rules are only in the shared root CLAUDE.md
+2. **No private Claude recovery layer** — `CLAUDE.md` doesn't exist; compaction rules are only in the shared root CLAUDE.md
 3. **Envelope metadata is weaker than prompt injection** — auto-surface adds `hints` and `meta.autoSurface`, not guaranteed prompt-state restoration
 4. **Session-start is generic, not recovery-aware** — startup instructions only announce memory stats, not last task or spec folder
 5. **Archived hook design never graduated** — a `pre_compact.py` design existed in `z_archive` but was never implemented

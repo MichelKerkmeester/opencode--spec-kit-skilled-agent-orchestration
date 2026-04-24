@@ -1,6 +1,6 @@
 ---
 title: "...em-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/plan]"
-description: "Top-level plan pointer for the merged CLI executor arc. Detail lives in 001-executor-feature/plan.md and 002-runtime-matrix/plan.md."
+description: "Top-level plan pointer for the merged CLI executor arc. Sub-phase detail merged into implementation-summary.md §Sub-phase summaries."
 trigger_phrases:
   - "cli runtime executors plan"
   - "cli executor plan"
@@ -21,9 +21,7 @@ _memory:
 
 # Implementation Plan: CLI Runtime Executors (merged)
 
-> Both child packets have already shipped to `main`. See:
-> - `001-executor-feature/plan.md` (ex-018 plan — 5 phases A-E)
-> - `002-runtime-matrix/plan.md` (ex-019 plan — 3 phases)
+> Both child packets have already shipped to `main`. Sub-phase detail merged into `implementation-summary.md §Sub-phase summaries`.
 
 ---
 
@@ -31,8 +29,8 @@ _memory:
 
 | Sequence | Child | Shipped | Key Artifacts |
 |----------|-------|---------|---------------|
-| 1 | `001-executor-feature/` | 2026-04-18 (commit `77f7bc5ab` area) | `executor-config.ts`, 4 YAMLs patched, prompt-pack templates, 62 new tests |
-| 2 | `002-runtime-matrix/` | 2026-04-18 (commit `77f7bc5ab` area) | `EXECUTOR_KIND_FLAG_SUPPORT`, 3 new executor kinds wired, per-kind validation |
+| 1 | `001-executor-feature` (merged) | 2026-04-18 | `executor-config.ts`, 4 YAMLs patched, prompt-pack templates, 62 new tests |
+| 2 | `002-runtime-matrix` (merged) | 2026-04-18 | `EXECUTOR_KIND_FLAG_SUPPORT`, 3 new executor kinds wired, per-kind validation |
 
 ---
 

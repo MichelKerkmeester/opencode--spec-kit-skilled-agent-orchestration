@@ -83,7 +83,7 @@ You now get the same routing logic through MCP server instructions, session prim
 
 ### Delivery State
 
-The implementation work covered T-001 through T-023 and T-025 through T-029. Two items remain intentionally open: T-024 stays deferred because `.gemini/agents/context-prime.md` does not exist, and T-030 is still waiting on a fresh-session manual check in Claude Code.
+The implementation work covered T-001 through T-023 and T-025 through T-029. Two items remain intentionally open: T-024 stays deferred because `.gemini/agents/context.md` does not exist, and T-030 is still waiting on a fresh-session manual check in Claude Code.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -132,7 +132,7 @@ The rollout followed the phase plan from core enforcement outward: server instru
      not "Some features may require configuration."
      Write "None identified." if nothing applies. -->
 
-1. **Missing Gemini agent file** `.gemini/agents/context-prime.md` does not exist in this workspace, so T-024 stays deferred.
+1. **Missing Gemini agent file** `.gemini/agents/context.md` does not exist in this workspace, so T-024 stays deferred.
 2. **Manual runtime confirmation still pending** The fresh Claude Code session check for CocoIndex-first routing is still open as T-030.
 <!-- /ANCHOR:limitations -->
 

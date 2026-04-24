@@ -1,1 +1,0 @@
-{"run":3,"dimension":"traceability","findingRefs":["F001","F002"],"new":{"P0":0,"P1":1,"P2":0},"refined":{"P0":0,"P1":0,"P2":0},"newFindingsRatio":1.0,"summary":"Discovered that description.json still records the pre-renumber parent slug while graph-metadata tracks the current lineage."}

@@ -114,11 +114,11 @@ Template compliance shim anchor for rollback.
 
 7. **Runtime instruction files** (4 files, ~20 LOC each)
    - `../../../../../CLAUDE.md`: Replace passive "MUST use" with active decision tree and keep Claude-aware routing guidance consolidated in the active workspace file
-   - `../../../../../CODEX.md`: Add explicit routing since no hooks are available
-   - `../../../../../GEMINI.md`: Add routing for the Gemini runtime
+   - `../../../../../AGENTS.md`: Add explicit routing since no hooks are available
+   - `../../../../../AGENTS.md`: Add routing for the Gemini runtime
 
 8. **Context-prime agent** (5 files, ~10 LOC each)
-   - All runtime copies of `.opencode/agent/context-prime.md`: add routing rules to output format
+   - All runtime copies of `.opencode/agent/context.md`: add routing rules to output format
    - Prime Package display includes routing decision tree
 
 ### Estimated Total: 250-350 LOC

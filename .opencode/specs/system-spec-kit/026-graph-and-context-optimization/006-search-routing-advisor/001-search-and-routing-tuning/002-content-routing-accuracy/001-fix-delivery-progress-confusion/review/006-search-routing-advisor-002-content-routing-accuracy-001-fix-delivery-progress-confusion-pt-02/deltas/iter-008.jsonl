@@ -1,1 +1,0 @@
-{"iteration":8,"dimension":"testing","newFindings":[],"refinedFindings":[],"ruledOut":["prototype rerun coverage exists but does not cover F-004 negative case"],"newFindingsRatio":0,"vitest":"PASS 30/30","gitLogChecked":true}

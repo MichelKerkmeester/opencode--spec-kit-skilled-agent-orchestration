@@ -1,6 +1,6 @@
 ---
 title: "...ystem-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/tasks]"
-description: "Tasks T-01..T-12 across stale highlights, scan excludes + gitignore, surface doc, and verification."
+description: "Tasks T-01..T-24 across stale highlights, scan excludes + gitignore, incremental full-scan recovery (IndexFilesOptions + seenSymbolIds), cross-file dedup defense (globalSeenIds + INSERT OR IGNORE), surface doc, and verification."
 trigger_phrases:
   - "026/003/003 tasks"
   - "code graph context tasks"
@@ -65,13 +65,41 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 
 ---
 
+<!-- ANCHOR:absorbed-001 -->
+#### Absorbed tasks: 001-incremental-fullscan-recovery
+
+- [x] **T-13** Add `IndexFilesOptions { skipFreshFiles?: boolean }` to `structural-indexer.ts`; condition `isFileStale()` on `skipFreshFiles` (default `true`). [EVIDENCE: `structural-indexer.ts` exports `IndexFilesOptions`; `if (skipFreshFiles && !isFileStale(file)) continue`.]
+- [x] **T-14** Pass `{ skipFreshFiles: effectiveIncremental }` from `scan.ts`; add `fullScanRequested` and `effectiveIncremental` to `ScanResult`. [EVIDENCE: `indexFiles(config, { skipFreshFiles: effectiveIncremental })`; `ScanResult` includes both fields.]
+- [x] **T-15** Add `seenSymbolIds` dedupe in `capturesToNodes()` via `flatMap()`. [EVIDENCE: `seenSymbolIds` guard in `capturesToNodes()`; duplicate `(filePath, fqName, kind)` captures dropped.]
+- [x] **T-16** Add 3 `indexFiles` option tests + 2 scan handler integration tests + 3 `capturesToNodes()` dedupe tests. [EVIDENCE: focused Vitest passed 30/30 across `structural-contract.vitest.ts` and `tree-sitter-parser.vitest.ts`.]
+- [x] **T-17** Build and inspect dist for `skipFreshFiles` and `fullScanRequested`. [EVIDENCE: `npm run build` exited 0; dist greps found both tokens.]
+- [x] **T-18** Update code graph `README.md` to document `IndexFilesOptions` and new scan response fields. [EVIDENCE: README documents response fields and `IndexFilesOptions`.]
+- [B] **T-19** Run `npx vitest run` full suite. [BLOCKED: full suite fails in out-of-scope `tests/copilot-hook-wiring.vitest.ts`; focused packet tests pass 30/30.]
+<!-- /ANCHOR:absorbed-001 -->
+
+---
+
+<!-- ANCHOR:absorbed-002 -->
+#### Absorbed tasks: 002-cross-file-dedup-defense
+
+- [x] **T-20** Add `globalSeenIds` sweep in `indexFiles()` after the TESTED_BY edge block; log dropped count when nonzero. [EVIDENCE: `structural-indexer.ts:1292` contains `globalSeenIds`; `console.info` count log in place.]
+- [x] **T-21** Change `replaceNodes()` insert to `INSERT OR IGNORE INTO code_nodes`. [EVIDENCE: `code-graph-db.ts:309` contains `INSERT OR IGNORE INTO code_nodes`.]
+- [x] **T-22** Add Layer 1 cross-file dedup tests in `structural-contract.vitest.ts`. [EVIDENCE: 3 cross-file dedup cases added.]
+- [x] **T-23** Create `tests/code-graph-db.vitest.ts` with Layer 2 DB duplicate-tolerance tests. [EVIDENCE: 2 direct DB `replaceNodes()` tests; focused suite passed 3 files / 33 tests.]
+- [x] **T-24** Build, focused Vitest, dist grep for `globalSeenIds` and `INSERT OR IGNORE`. [EVIDENCE: `npm run build` exited 0; `dist/code-graph/lib/structural-indexer.js` contains `globalSeenIds`; `dist/code-graph/lib/code-graph-db.js` contains `INSERT OR IGNORE`.]
+<!-- /ANCHOR:absorbed-002 -->
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - All P0 + P1 items in spec.md have evidence in implementation-summary.md.
-- Existing vitest tests pass; 3 new cases added.
+- Existing vitest tests pass; new cases added (20 from T-01 to T-12; 30 incremental-fullscan focused; 33 cross-file-dedup focused).
 - Strict validation 0/0; canonical save invoked.
 - New scan with default excludes produces a substantially smaller graph (verifiable post-merge by user re-scanning).
+- AC-1, AC-2, AC-4, AC-5 (live scan file counts) remain operator-owned pending MCP restart after build.
+- T-19 (full vitest suite) blocked by out-of-scope `copilot-hook-wiring.vitest.ts` failure.
 <!-- /ANCHOR:completion -->
 
 ---

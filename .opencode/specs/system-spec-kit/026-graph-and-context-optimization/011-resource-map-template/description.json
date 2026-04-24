@@ -1,0 +1,40 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template",
+  "description": "Introduce a reusable resource-map template, wire it into every level discovery surface, restore local-owner deep-loop artifact placement, and auto-emit filled resource maps at deep-loop convergence.",
+  "title": "Resource Map Template",
+  "type": "feature",
+  "keywords": [
+    "resource map",
+    "resource-map template",
+    "deep loop integration",
+    "local owner artifact placement",
+    "convergence emission",
+    "path ledger",
+    "extract-from-evidence",
+    "review-research-paths",
+    "spec doc paths",
+    "template wiring",
+    "deep review",
+    "deep research"
+  ],
+  "trigger_phrases": [
+    "011-resource-map-template",
+    "resource map template packet",
+    "resource map template and deep loop integration",
+    "reverse parent folders resource map",
+    "resource-map.md template",
+    "local owner deep loop artifact placement",
+    "convergence time resource map emission",
+    "extract from evidence extractor",
+    "review-research-paths rollback"
+  ],
+  "lastUpdated": "2026-04-24T00:00:00Z",
+  "specId": "011",
+  "folderSlug": "resource-map-template",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

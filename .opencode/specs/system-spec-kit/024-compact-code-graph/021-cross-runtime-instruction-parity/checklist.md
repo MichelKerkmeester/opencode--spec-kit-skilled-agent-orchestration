@@ -81,7 +81,7 @@ Template compliance shim anchor for summary.
 - [x] [P1] CODEX.md has No Hook Transport trigger table — fresh session, resume, compaction flows documented [EVIDENCE: verified in implementation-summary.md]
 - [x] [P1] AGENTS.md has No Hook Transport trigger table — code graph auto-trigger included [EVIDENCE: verified in implementation-summary.md]
 - [x] [P1] GEMINI.md has No Hook Transport trigger table — adapted for Gemini lifecycle [EVIDENCE: verified in implementation-summary.md]
-- [x] [P1] @context-prime agent created at .opencode/agent/context-prime.md — 227 lines, uses `session_resume()` plus optional `session_health()` [EVIDENCE: verified in implementation-summary.md]
+- [x] [P1] @context-prime agent created at .opencode/agent/context.md — 227 lines, uses `session_resume()` plus optional `session_health()` [EVIDENCE: verified in implementation-summary.md]
 
 ### P2 — Should Pass
 

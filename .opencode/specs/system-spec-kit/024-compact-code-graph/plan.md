@@ -78,7 +78,7 @@ This parent plan now serves as the historical implementation map for a shipped m
 
 1. **Immediate**: Fix `/spec_kit:resume` `profile: "resume"` (completed)
 2. **Phase 1+2**: Hook scripts (PreCompact + SessionStart) with hook-state bridge (1 week)
-3. **Phase 4**: `.claude/CLAUDE.md` + CLAUDE.md compaction section (2 days)
+3. **Phase 4**: `CLAUDE.md` + CLAUDE.md compaction section (2 days)
 4. **Phase 008**: structural indexer for JS/TS/Python/Shell (3-4 days)
 5. **Phase 009**: SQLite storage + code_graph_scan/query/status tools (2-3 days)
 6. **Phase 010**: code_graph_context + CocoIndex bridge (3-4 days)
@@ -165,7 +165,7 @@ CREATE TABLE session_token_snapshots (
 - CLAUDE.md: Enhance compaction recovery with explicit `memory_context({ mode: "resume", profile: "resume" })`
 - CODEX.md: Add equivalent recovery instructions
 - Gate 1: Ensure `memory_match_triggers()` fires post-compaction
-- Close Gap B (iteration 012): Create `.claude/CLAUDE.md` with Claude-specific recovery
+- Close Gap B (iteration 012): Create `CLAUDE.md` with Claude-specific recovery
 
 **Validation (iteration 015):** 7-scenario test matrix across 4 runtimes
 

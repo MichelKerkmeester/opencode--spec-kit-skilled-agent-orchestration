@@ -1,1 +1,0 @@
-{"type":"delta","mode":"review","iteration":8,"dimension":"maintainability","newFindings":[],"refinedFindings":["F007","F008"],"findingsSummary":{"P0":0,"P1":5,"P2":5},"newFindingsRatio":0.04,"churn":0.04,"filesReviewed":["spec.md","plan.md","tasks.md","checklist.md","implementation-summary.md","description.json","graph-metadata.json"],"timestamp":"2026-04-21T17:44:46Z"}

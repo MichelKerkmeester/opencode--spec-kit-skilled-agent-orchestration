@@ -74,7 +74,7 @@ Parent coordination packet over six child execution phases
 ### Key Components
 - **Executive design layer**: `implementation-design.md` captures the overall recommendation, components, migration strategy, and gate intent.
 - **Execution map layer**: `resource-map.md` and `scratch/resource-map/*` define the actual file surfaces, dependencies, and critical path.
-- **Gate execution layer**: `001-gate-a-prework/` through `006-gate-f-cleanup-verification/` hold the detailed specs, plans, tasks, and checklists for each gate.
+- **Gate execution layer**: All six gate sub-phases (001-gate-a-prework through 006-gate-f-cleanup-verification) have been merged into `implementation-summary.md § Sub-phase summaries` and their directories deleted.
 - **Verification layer**: `scratch/verify-phases-review.md` records plan-review findings, while each child phase owns gate-level verification and eventual completion evidence.
 
 ### Data Flow

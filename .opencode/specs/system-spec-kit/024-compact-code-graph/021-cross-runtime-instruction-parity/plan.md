@@ -88,7 +88,7 @@ Template compliance shim anchor for rollback.
    - Include fallback for non-hook Gemini usage
 
 4. **@context-prime agent for OpenCode** (60-80 LOC)
-    - Create `.opencode/agent/context-prime.md`
+    - Create `.opencode/agent/context.md`
    - Agent calls: `session_resume()` plus optional `session_health()`
    - Returns compact Prime Package: spec folder, task status, system health, and recommended next steps
     - Invoked on first turn or after /clear by orchestrator

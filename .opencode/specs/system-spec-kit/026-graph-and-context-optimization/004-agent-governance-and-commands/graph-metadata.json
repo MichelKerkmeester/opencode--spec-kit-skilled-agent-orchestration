@@ -3,36 +3,34 @@
   "packet_id": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands",
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
-  "children_ids": [
-    "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
-    "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
-  ],
+  "children_ids": [],
   "aliases": [
     "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
     "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
   ],
   "migration": {
-    "flattened_at": "2026-04-21T13:00:00Z",
+    "flattened_at": "2026-04-24T17:45:00Z",
     "active_phase": "004-agent-governance-and-commands",
-    "child_phase_folders": [
-      "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
-      "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
+    "prior_child_phase_folders": [
+      "001-agent-execution-guardrails",
+      "002-command-graph-consolidation"
     ],
-    "layout": "phase-root-children"
+    "layout": "flat-level3-root",
+    "notes": "Two phase packets merged into a single Level 3 root. Aliases preserve prior packet IDs for graph/memory traversal continuity."
   },
   "manual": {
     "depends_on": [],
     "supersedes": [
       {
         "packet_id": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
-        "reason": "supersedes relationship preserved during phase consolidation",
-        "source": "026-phase-consolidation",
+        "reason": "Workstream A (AGENTS execution guardrails) merged into unified root docs on 2026-04-24",
+        "source": "026-phase-flatten-merge",
         "spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails"
       },
       {
         "packet_id": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation",
-        "reason": "supersedes relationship preserved during phase consolidation",
-        "source": "026-phase-consolidation",
+        "reason": "Workstreams B + C (canonical intake + middleware cleanup) merged into unified root docs on 2026-04-24",
+        "source": "026-phase-flatten-merge",
         "spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
       }
     ],
@@ -41,59 +39,97 @@
   "derived": {
     "trigger_phrases": [
       "004-agent-governance-and-commands",
-      "agents guardrails, canonical intake, and command cleanup",
-      "001-agent-execution-guardrails",
-      "002-command-graph-consolidation"
+      "agent execution guardrails",
+      "agents critical rules request analysis",
+      "canonical intake",
+      "intake contract",
+      "spec_kit plan intake only",
+      "deep research spec anchoring",
+      "middleware cleanup",
+      "handover debug deprecation",
+      "distributed governance"
     ],
     "key_topics": [
-      "agents",
-      "guardrails",
-      "canonical",
-      "intake",
-      "and",
-      "command",
-      "cleanup",
-      "004",
       "agent",
       "governance",
-      "commands"
+      "commands",
+      "execution",
+      "guardrails",
+      "critical",
+      "rules",
+      "canonical",
+      "intake",
+      "middleware",
+      "cleanup",
+      "distributed",
+      "spec-kit"
     ],
     "importance_tier": "important",
-    "status": "in_progress",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "plan.md",
       "tasks.md",
+      "checklist.md",
+      "decision-record.md",
       "implementation-summary.md",
-      "context-index.md"
+      ".opencode/skill/system-spec-kit/references/intake-contract.md",
+      ".opencode/skill/sk-deep-research/references/spec_check_protocol.md",
+      ".opencode/command/spec_kit/plan.md",
+      ".opencode/command/spec_kit/complete.md",
+      ".opencode/command/spec_kit/resume.md",
+      ".opencode/command/spec_kit/deep-research.md",
+      ".opencode/command/memory/save.md",
+      "AGENTS.md",
+      "AGENTS_example_fs_enterprises.md",
+      "CLAUDE.md"
     ],
     "entities": [
       {
-        "name": "001-agent-execution-guardrails",
-        "kind": "spec_phase",
-        "path": "001-agent-execution-guardrails",
-        "source": "migration"
+        "name": "intake-contract.md",
+        "kind": "shared_reference_module",
+        "path": ".opencode/skill/system-spec-kit/references/intake-contract.md",
+        "source": "m10-m11"
       },
       {
-        "name": "002-command-graph-consolidation",
-        "kind": "spec_phase",
-        "path": "002-command-graph-consolidation",
-        "source": "migration"
+        "name": "spec_check_protocol.md",
+        "kind": "shared_reference_module",
+        "path": ".opencode/skill/sk-deep-research/references/spec_check_protocol.md",
+        "source": "m2"
+      },
+      {
+        "name": "/spec_kit:plan --intake-only",
+        "kind": "command_flag",
+        "path": ".opencode/command/spec_kit/plan.md",
+        "source": "m11"
+      },
+      {
+        "name": "distributed-governance rule",
+        "kind": "governance_contract",
+        "path": "CLAUDE.md + AGENTS.md + AGENTS_example_fs_enterprises.md + .opencode/skill/system-spec-kit/SKILL.md",
+        "source": "m9"
+      },
+      {
+        "name": "AGENTS Request Analysis & Execution block",
+        "kind": "instruction_block",
+        "path": "AGENTS.md + AGENTS_example_fs_enterprises.md + Barter/coder/AGENTS.md",
+        "source": "workstream-a"
       }
     ],
-    "causal_summary": "AGENTS guardrails, canonical intake, and command cleanup. Direct child parent for 001-agent-execution-guardrails, 002-command-graph-consolidation.",
-    "created_at": "2026-04-21T13:00:00Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
-    "save_lineage": "same_pass",
+    "causal_summary": "Agent governance and command-graph cleanup. Workstream A (REQ-401..REQ-414) moved the request-analysis framework under ## 1. CRITICAL RULES in three AGENTS files with the lean Flow + Execution Behavior block. Workstream B (REQ-001..REQ-010, REQ-018..REQ-021) consolidated canonical intake into a single shared module at .opencode/skill/system-spec-kit/references/intake-contract.md, added /spec_kit:plan --intake-only with explicit YAML gate, anchored /spec_kit:deep-research to real spec.md via spec_check_protocol.md. Workstream C (REQ-011..REQ-017, REQ-022..REQ-030) hard-deleted /spec_kit:handover, /spec_kit:debug, @handover, @speckit across 4 runtime mirrors each, replaced @speckit exclusivity with distributed-governance rule, repositioned /memory:save as canonical packet handover maintainer, removed :auto-debug flag from /spec_kit:complete. Deep review flagged 12 findings (4 P0 / 4 P1 / 4 P2); 5 parallel Opus agents resolved all 12. Flattened from two phase packets into one Level 3 root on 2026-04-24.",
+    "created_at": "2026-04-08T00:00:00Z",
+    "last_save_at": "2026-04-24T17:45:00Z",
+    "save_lineage": "phase_flatten_merge",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
-      "implementation-summary.md",
-      "context-index.md"
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
     ]
   },
   "migrated": true,
-  "migration_source": "legacy"
+  "migration_source": "phase-flatten-merge-2026-04-24"
 }

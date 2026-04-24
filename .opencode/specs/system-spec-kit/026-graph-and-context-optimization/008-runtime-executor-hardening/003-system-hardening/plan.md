@@ -58,7 +58,7 @@ The umbrella packet itself does not run iterations directly; it coordinates disp
 ### Definition of Done
 
 - [ ] `001-initial-research` converges across all six Tier 1 iterations.
-- [ ] Findings registry written to `001-initial-research/implementation-summary.md §Findings Registry`.
+- [ ] Findings registry written to `implementation-summary.md §Sub-phase summaries §Findings Registry`.
 - [ ] Implementation children (`019/002-*`, ...) created for every remediation cluster OR explicitly deferred with reason.
 - [ ] Umbrella packet `validate.sh --strict` passes.
 - [ ] 026 root docs updated to reflect 019 as a completed phase.
@@ -118,7 +118,7 @@ Coordination-only umbrella packet with a single research child and reserved impl
 1. Umbrella packet enumerates Tier 1 candidates (source: scratch doc).
 2. `001-initial-research` dispatches each candidate via canonical command.
 3. Iterations write to the `../research/019-system-hardening-001-initial-research/iterations/` directory (one iteration-NNN markdown file per round).
-4. Convergence produces the findings registry in `001-initial-research/implementation-summary.md`.
+4. Convergence produces the findings registry in `implementation-summary.md §Sub-phase summaries`.
 5. Umbrella packet creates implementation children per remediation cluster.
 6. Root 026 docs are updated to reflect 019's completion state.
 <!-- /ANCHOR:architecture -->
@@ -143,7 +143,7 @@ Coordination-only umbrella packet with a single research child and reserved impl
 - [ ] Dispatch SSK-RR-1 Gate 3 + skill-advisor routing accuracy research.
 - [ ] Dispatch SSK-DR-1 template v2.2 + validator joint audit.
 - [ ] Dispatch SSK-RR-2 canonical-save pipeline invariant research.
-- [ ] Consolidate findings into `001-initial-research/implementation-summary.md §Findings Registry`.
+- [ ] Consolidate findings into `implementation-summary.md §Sub-phase summaries §Findings Registry`.
 
 ### Phase 3: Verification + Follow-On Planning
 
@@ -162,7 +162,7 @@ Coordination-only umbrella packet with a single research child and reserved impl
 |-----------|-------|-------|
 | Structural validation | Umbrella + 001 child | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh 019-system-hardening --strict` |
 | Convergence check | Each Tier 1 iteration | Skill-owned YAML state machine (`deep-research-state.jsonl`, `deep-review-state.jsonl`) |
-| Findings registry audit | `001-initial-research/implementation-summary.md §Findings Registry` | Manual review + optional `findings-registry.json` schema check |
+| Findings registry audit | `implementation-summary.md §Sub-phase summaries §Findings Registry` | Manual review + optional `findings-registry.json` schema check |
 | Root-sync drift check | 026 root docs reference 019 correctly | `rg -n "019-system-hardening\|phase 19" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/{spec,plan,tasks,checklist,decision-record,implementation-summary}.md` |
 <!-- /ANCHOR:testing -->
 

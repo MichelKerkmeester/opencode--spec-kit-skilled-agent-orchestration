@@ -1,22 +1,20 @@
 {
-  "migration": {
-    "flattened_at": "2026-04-21T13:00:00Z",
-    "child_phase_folders": [
-      "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
-      "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
-    ],
-    "layout": "phase-root-children"
-  },
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands",
-  "description": "Feature Specification: Agent Governance And Commands",
+  "description": "Agent governance and command-graph cleanup: lean AGENTS execution-guardrail block under Critical Rules across three files, canonical intake consolidation via shared intake-contract.md + /spec_kit:plan --intake-only, and hard-delete of deprecated /spec_kit:handover + /spec_kit:debug + @handover + @speckit middleware with distributed-governance replacement.",
   "keywords": [
-    "feature",
-    "specification",
     "agent",
     "governance",
-    "commands"
+    "commands",
+    "execution",
+    "guardrails",
+    "canonical",
+    "intake",
+    "middleware",
+    "cleanup",
+    "distributed",
+    "governance"
   ],
-  "lastUpdated": "2026-04-24T15:56:56.168Z",
+  "lastUpdated": "2026-04-24T17:45:00Z",
   "specId": "004",
   "folderSlug": "agent-governance-and-commands",
   "parentChain": [
@@ -24,5 +22,14 @@
     "026-graph-and-context-optimization"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "migration": {
+    "flattened_at": "2026-04-24T17:45:00Z",
+    "prior_child_phase_folders": [
+      "001-agent-execution-guardrails",
+      "002-command-graph-consolidation"
+    ],
+    "layout": "flat-level3-root",
+    "notes": "Two phase packets merged into a single Level 3 root with no child phases; REQ/CHK/ADR identifiers preserved verbatim for audit continuity."
+  }
 }

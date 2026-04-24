@@ -1,1 +1,0 @@
-{"type":"iteration_delta","run":8,"dimension":"maintainability","findingRefs":[],"findingsNew":{"P0":0,"P1":0,"P2":0},"findingsSummary":{"P0":0,"P1":6,"P2":1},"newFindingsRatio":0.0,"status":"complete","notes":"Validator replay corroborated existing maintainability defects without adding a new one."}

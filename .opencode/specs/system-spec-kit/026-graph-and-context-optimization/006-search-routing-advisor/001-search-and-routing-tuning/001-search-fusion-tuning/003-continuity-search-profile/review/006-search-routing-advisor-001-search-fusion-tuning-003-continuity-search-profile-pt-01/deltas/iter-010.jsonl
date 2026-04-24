@@ -1,1 +1,0 @@
-{"type":"delta","iteration":10,"dimension":"security","newFindingRefs":[],"findingsNew":{"P0":0,"P1":0,"P2":0},"newFindingsRatio":0.03,"coverage":1.0,"notes":"Final adversarial pass found no release-blocking security issue; verdict remains packet-side CONDITIONAL because of five P1 traceability/maintainability findings."}

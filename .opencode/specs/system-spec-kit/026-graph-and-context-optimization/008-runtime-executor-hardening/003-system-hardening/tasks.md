@@ -62,7 +62,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 - [ ] T013 [P] Dispatch SSK-RR-1 Gate 3 + skill-advisor routing accuracy research. [SOURCE: ../scratch/deep-review-research-suggestions.md §6 Tier 1 SSK-RR-1 dispatch block]
 - [ ] T014 [P] Dispatch SSK-DR-1 template v2.2 + validator joint audit. [SOURCE: ../scratch/deep-review-research-suggestions.md §6 Tier 1 SSK-DR-1 dispatch block]
 - [ ] T015 [P] Dispatch SSK-RR-2 canonical-save pipeline invariant research. [SOURCE: ../scratch/deep-review-research-suggestions.md §6 Tier 1 SSK-RR-2 dispatch block]
-- [ ] T020 Consolidate findings from T010-T015 into `001-initial-research/implementation-summary.md §Findings Registry`.
+- [ ] T020 Consolidate findings from T010-T015 into `implementation-summary.md §Sub-phase summaries §Findings Registry`.
 - [ ] T021 Classify every finding with severity (P0/P1/P2), proposed remediation cluster, and defer reason if applicable.
 <!-- /ANCHOR:phase-2 -->
 
@@ -103,6 +103,6 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Record**: See `decision-record.md`
-- **Research Child**: See `001-initial-research/spec.md`
+- **Research Child**: See `spec.md (sub-phase 001-initial-research merged)`
 - **Source Document**: `../scratch/deep-review-research-suggestions.md`
 <!-- /ANCHOR:cross-refs -->

@@ -87,7 +87,7 @@ The instruction files that tell AI assistants how to use Spec Kit Memory are inc
 
 ### Part 1: Instruction File Updates (from research iter 100)
 
-Add a non-hook recovery section to `CODEX.md`, `AGENTS.md`, and `GEMINI.md` with a trigger table:
+Add a non-hook recovery section to `AGENTS.md`, `AGENTS.md`, and `AGENTS.md` with a trigger table:
 
 | When | What to Call |
 |------|-------------|
@@ -101,15 +101,15 @@ Add a non-hook recovery section to `CODEX.md`, `AGENTS.md`, and `GEMINI.md` with
 Also reduce Claude-hook-specific wording in non-Claude instruction files, but record the remaining references as a known residual gap until the follow-up cleanup lands.
 
 **Files to change:**
-- `CODEX.md` — add No Hook Transport section
+- `AGENTS.md` — add No Hook Transport section
 - `AGENTS.md` — define `@context-prime` and add No Hook Transport session lifecycle guidance
-- `GEMINI.md` — add No Hook Transport section
+- `AGENTS.md` — add No Hook Transport section
 - `.codex/agents/orchestrate.toml` — reduce Claude-hook references where possible
 - `.gemini/agents/orchestrate.md` — reduce Claude-hook references where possible
 
 ### Part 2: OpenCode @context-prime Agent (from research iter 104)
 
-Create a new lightweight agent at `.opencode/agent/context-prime.md` that:
+Create a new lightweight agent at `.opencode/agent/context.md` that:
 1. Calls `session_resume()` to recover prior session state plus graph/CocoIndex availability
 2. Optionally calls `session_health()` when session quality scoring is useful
 3. Returns a compact "Prime Package" with: spec folder, task status, system health, and recommended next steps
@@ -119,7 +119,7 @@ This agent is invoked on first turn or after `/clear` by the orchestrator.
 This remains an internal delegated workflow. It does not replace the public runtime guidance that tells hookless operators to call `session_bootstrap()` first on fresh starts and after `/clear`.
 
 **Files to change:**
-- New `.opencode/agent/context-prime.md`
+- New `.opencode/agent/context.md`
 - `.opencode/agent/orchestrate.md` — delegate to `@context-prime` on first turn or after `/clear`
 
 ### Cross-Runtime Impact
@@ -145,7 +145,7 @@ This remains an internal delegated workflow. It does not replace the public runt
 | Part 1: Bootstrap-first non-hook recovery table in CODEX.md | DONE | Fresh starts and `/clear` now point to `session_bootstrap()` first |
 | Part 1: Bootstrap-first non-hook recovery table in AGENTS.md | DONE | Runtime guidance mirrors the canonical bootstrap-first contract |
 | Part 1: Bootstrap-first non-hook recovery table in GEMINI.md | DONE | Non-hook runtime guidance mirrors AGENTS/CODEX wording |
-| Part 2: @context-prime agent | DONE | `.opencode/agent/context-prime.md` keeps the delegated `session_resume()` + optional `session_health()` flow |
+| Part 2: @context-prime agent | DONE | `.opencode/agent/context.md` keeps the delegated `session_resume()` + optional `session_health()` flow |
 | Orchestrator delegation to @context-prime | VERIFIED/DONE | F059 closed — `.opencode/agent/orchestrate.md` lines 18-21 delegate on first turn or after `/clear` |
 | Claude-hook wording removed from non-Claude agent files | KNOWN GAP | Residual wording still exists in `.codex/agents/*.toml` and `.gemini/agents/*.md`; follow-up cleanup remains |
 

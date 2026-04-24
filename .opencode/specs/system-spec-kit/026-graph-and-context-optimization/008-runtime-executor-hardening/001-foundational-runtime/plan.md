@@ -195,7 +195,7 @@ Blocks everything downstream. No parallelism within this wave (all tasks touch f
 
 ### 2.5 T-EVD-01-prep — Rewrap 016 checklist.md evidence markers (2h, S)
 
-**Files**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/checklist.md`
+**Files**: `(sub-phase 001-initial-research merged into parent — see implementation-summary.md §Sub-phase summaries)`
 
 **Changes**: Replace 170/179 `)` closers with `]` via automated find-replace. Verify with `grep -c '\[EVIDENCE:.*\]$'` matches `grep -c '\[EVIDENCE:.*\)$'` pre-change count.
 

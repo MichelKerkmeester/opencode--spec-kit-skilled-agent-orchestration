@@ -142,7 +142,7 @@ Based on analysis of **640 local transcript files** and **12,209 assistant lines
 - Existing Context Package branch is best insertion point for hook-awareness
 - `/spec_kit:resume` missing `profile: "resume"` in **all 4 YAML blocks**
 - `/memory:save` has **no Stop-hook dedup guard** — double-save risk
-- All 5 gaps from iteration 012 still open (`.claude/CLAUDE.md` absent, `CODEX.md` absent)
+- All 5 gaps from iteration 012 still open (`CLAUDE.md` absent, `AGENTS.md` absent)
 
 ### Implementation Readiness
 
@@ -417,7 +417,7 @@ session transcript + working-set tracker
 
 1. **Immediate**: Fix `/spec_kit:resume` `profile: "resume"` (1 hour)
 2. **Phase 1+2**: Hook scripts (PreCompact + SessionStart) with hook-state bridge (1 week)
-3. **Phase 4**: `.claude/CLAUDE.md` + CLAUDE.md compaction section (2 days)
+3. **Phase 4**: `CLAUDE.md` + CLAUDE.md compaction section (2 days)
 4. **Phase 008**: tree-sitter structural indexer for JS/TS/Python/Shell (3-4 days)
 5. **Phase 009**: SQLite storage + code_graph_scan/query/status tools (2-3 days)
 6. **Phase 010**: code_graph_context + CocoIndex bridge — seed normalization, reverse semantic augmentation (3-4 days)
@@ -799,7 +799,7 @@ Three sub-phases with internal dependency ordering (B1 before B2/B3):
 
 ### Phase D: Cross-Runtime UX (100-168 LOC, LOW risk)
 
-- **D1 Agent instructions** (50-70 LOC): Update 4 agent definition files (`.opencode/agent/context.md`, `.claude/agents/context.md`, `.codex/agents/context.toml`, `.agents/agents/context.md`) with Layer 1.5 code_graph_context.
+- **D1 Agent instructions** (50-70 LOC): Update 4 agent definition files (`.opencode/agent/context.md`, `.claude/agents/context.md`, `.codex/agents/context.toml`, `.opencode/agent/context.md`) with Layer 1.5 code_graph_context.
 - **D2 Resume command** (20-30 LOC): Add index freshness step to both `spec_kit_resume_auto.yaml` and `spec_kit_resume_confirm.yaml`.
 - **D3 Instruction files** (30-48 LOC): Update CLAUDE.md, CODEX.md, SKILL.md with code graph references.
 
@@ -1021,7 +1021,7 @@ Refuted items were smaller but important: the reviewed P1-3 stop-hook recursion 
 | **1** | Hook/cache correctness | Still release-blocking | Fix `pendingCompactPrime` lifecycle, save-failure signaling, stale `cachedAt` reuse, and stop-time surrogate auto-save |
 | **2** | Structural graph correctness | Still foundational | Land the `endLine` fix, preserve seed identity through the public handler, initialize DB safely on first scan, and keep JS/TS method coverage on the near path |
 | **3** | Budget integrity + stale-on-read | Promote ahead of feature growth | Remove allocator ceiling assumptions, suppress zero-budget sections, budget `sessionState`, then add stale-on-read once DB init is reliable |
-| **4** | Cross-runtime startup protocol | Still worth doing, but docs/workflows first | Standardize a runtime-neutral Session Start Protocol across `AGENTS.md`/`CLAUDE.md`, `CODEX.md`, `GEMINI.md`, OpenCode agents, and resume workflows |
+| **4** | Cross-runtime startup protocol | Still worth doing, but docs/workflows first | Standardize a runtime-neutral Session Start Protocol across `AGENTS.md`/`CLAUDE.md`, `AGENTS.md`, `AGENTS.md`, OpenCode agents, and resume workflows |
 | **5** | Auto-enrichment features | Keep as post-hardening work | First-call priming, `GRAPH_AWARE_TOOLS`, auto-reindex triggers, and hybrid query patterns remain design-only until the earlier correctness/security work lands |
 | **6** | Tree-sitter / richer edges | Still attractive, not first | Parser adapter, WASM migration, `DECORATES`/`OVERRIDES`/`TYPE_OF`, and regex retirement |
 
@@ -1033,9 +1033,9 @@ Refuted items were smaller but important: the reviewed P1-3 stop-hook recursion 
 |---|---|---|---|---|
 | **Claude Code** | `SessionStart` / `PreCompact` / `Stop` hooks | Full hook lifecycle | Keep hook-driven recovery, but harden stale-cache, provenance, and stop-save behavior | **100% ceiling / current leader** |
 | **OpenCode** | `AGENTS.md`, `.opencode/agent/*.md`, `spec_kit_resume_auto.yaml` | No native hooks | Add reusable Session Start Protocol + `code_graph_status()` in the earliest context-loading step; keep graph expansion query-driven | **~90%** |
-| **Codex CLI** | `CODEX.md`, `.codex/agents/context.toml` | No native hooks | Force first-turn `memory_context(...)` + `code_graph_status()` via instructions; do not rely on hook-style implicit warmup | **~85%** |
+| **Codex CLI** | `AGENTS.md`, `.codex/agents/context.toml` | No native hooks | Force first-turn `memory_context(...)` + `code_graph_status()` via instructions; do not rely on hook-style implicit warmup | **~85%** |
 | **Copilot CLI** | `AGENTS.md`, `.github/copilot-instructions.md`, `.github/instructions/**/*.instructions.md` | Instruction-first in this repo; optional agent profiles are not the startup contract | Put global startup priming in shared instruction files; gate graph work on structural intent and freshness, not every turn | **~80%** |
-| **Gemini CLI** | `GEMINI.md`, `.gemini/settings.json` | Upstream hooks exist, but repo parity is not wired today | Support instruction-first parity now; optionally add Gemini-native hooks later for near-Claude behavior | **~75% instruction-only / ~88% with hooks** |
+| **Gemini CLI** | `AGENTS.md`, `.gemini/settings.json` | Upstream hooks exist, but repo parity is not wired today | Support instruction-first parity now; optionally add Gemini-native hooks later for near-Claude behavior | **~75% instruction-only / ~88% with hooks** |
 
 ### Revised P1 Verification Status
 
@@ -1086,7 +1086,7 @@ Key finding: the existing MCP server already contains most of the primitives nee
 
 **Tier 1 -- Immediate (highest parity gain per LOC):**
 
-1. **Gate doc instruction parity** (Iter 100): Add explicit non-hook lifecycle sections to `CODEX.md`, `AGENTS.md`, `GEMINI.md`. Lowest LOC, highest immediate impact. Estimated parity gain: +25-30% for Codex/Copilot/Gemini.
+1. **Gate doc instruction parity** (Iter 100): Add explicit non-hook lifecycle sections to `AGENTS.md`, `AGENTS.md`, `AGENTS.md`. Lowest LOC, highest immediate impact. Estimated parity gain: +25-30% for Codex/Copilot/Gemini.
 
 2. **MCP first-call auto-prime injection** (Iter 096): Upgrade existing `primeSessionIfNeeded()` from metadata-only to actionable recovery payload. The seam already exists in `context-server.ts`. Files: `context-server.ts`, `memory-surface.ts`, `session-manager.ts`.
 

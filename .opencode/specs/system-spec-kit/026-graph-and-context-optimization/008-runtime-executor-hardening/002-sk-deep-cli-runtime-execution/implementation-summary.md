@@ -60,3 +60,27 @@ _memory:
 ## Consolidation Provenance
 
 This top-level packet is a post-ship consolidation of the ex-`017-sk-deep-cli-runtime-execution/001-executor-feature` and ex-`017-sk-deep-cli-runtime-execution/002-runtime-matrix` packets into a single thematic arc. No source code changed during consolidation. Only folder structure and cross-references were updated.
+
+---
+
+## Sub-phase summaries
+
+### 001-executor-feature
+
+**Status:** PASS — shipped 2026-04-18. Verdict: PASS. Effort: ~2h wall-clock via `cli-codex gpt-5.4 high fast` dogfooding (feature built itself with the executor it was shipping). Tests: 40/40 vitest. `tsc --noEmit` clean. 22 files touched.
+
+**What shipped:** Executor selection for `sk-deep-research` + `sk-deep-review` as a branch INSIDE the existing YAML `step_dispatch_iteration` (not a loop replacement). Preserves all skill-owned invariants (state ownership, reducer exclusivity, convergence detection, lifecycle events) while enabling `codex exec` dispatch with `gpt-5.4 + reasoning-effort=high + service-tier=fast`.
+
+Key artifacts: `executor-config.ts` (Zod schema + `parseExecutorConfig` + discriminated-union validation), 4 YAMLs patched with `branch_on: "config.executor.kind"` dispatch, prompt-pack templates for both iterative skills, setup flag parsing (`--executor`, `--model`, `--reasoning-effort`, `--service-tier`, `--executor-timeout`), JSONL audit field `executor: {kind, model, reasoningEffort, serviceTier}` per iteration, SKILL.md CONTRACT sections, 62 new tests.
+
+---
+
+### 002-runtime-matrix
+
+**Status:** PASS — shipped 2026-04-18 (2026-04-24 CF-026 remediation also shipped). Effort: ~1.5h wall-clock (same cli-codex dogfooding pattern). Tests: 54/54 vitest across 5 suites. `tsc --noEmit` clean.
+
+**What shipped:** Three additional executor kinds wired beyond Phase 018's `cli-codex`: `cli-copilot`, `cli-gemini`, `cli-claude-code`. Each CLI has different invocation surface — shared config schema gained per-kind flag-compatibility validation via `EXECUTOR_KIND_FLAG_SUPPORT`. Copilot 3-concurrent cap preserved. Per-kind YAML dispatch branches added to all 4 YAMLs.
+
+**CF-026 remediation (2026-04-24):** codex/gemini/claude permission controls made executable; subprocess smoke coverage added for Copilot wrapper; audited failure paths documented.
+
+**Known blocker:** cli-copilot still requires `--allow-all-tools`; no narrower CLI permission surface available.

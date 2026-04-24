@@ -126,9 +126,9 @@ Update all runtime instruction files to include identical first-turn guidance:
 
 > "On your first turn, call any Spec Kit Memory tool. The server will auto-prime your session with context. If you notice context drift, call `session_health` to check."
 
-**Files to change:** `CLAUDE.md`, `CODEX.md`, `AGENTS.md`, `GEMINI.md`
+**Files to change:** `CLAUDE.md`, `AGENTS.md`, `AGENTS.md`, `AGENTS.md`
 
-**Current-state note:** Runtime gate docs are only partially attributable to this phase. Non-hook guidance landed on the shared/runtime surfaces used here, while `CLAUDE.md` and `GEMINI.md` gate-doc parity was handled later as part of Phase 021.
+**Current-state note:** Runtime gate docs are only partially attributable to this phase. Non-hook guidance landed on the shared/runtime surfaces used here, while `CLAUDE.md` and `AGENTS.md` gate-doc parity was handled later as part of Phase 021.
 
 ### Cross-Runtime Impact
 
@@ -169,7 +169,7 @@ Update all runtime instruction files to include identical first-turn guidance:
 ### Known Limitations
 - `session_health` resets its own idle-gap timer because tool dispatch records a tool call before the handler computes `lastToolCallAgoMs`.
 - `spec_folder_change` events are tracked in `context-metrics.ts`, but `session_health` does not currently downgrade status or emit a warning from that signal.
-- Gate docs are only partial in this phase. `CLAUDE.md` and `GEMINI.md` gate-language parity is handled by Phase 021, so this phase should not claim full runtime-doc closure.
+- Gate docs are only partial in this phase. `CLAUDE.md` and `AGENTS.md` gate-language parity is handled by Phase 021, so this phase should not claim full runtime-doc closure.
 - `lastToolCallAt` still exists in both `memory-surface.ts` and `context-metrics.ts`. `session_health` prefers the metrics copy, but the duplicate state remains cleanup debt.
 
 ### Problem Statement

@@ -142,7 +142,7 @@ _memory:
 ### T-EVD-01-prep — [x] Rewrap 016 checklist.md evidence markers [EVIDENCE: 7d85861a0]
 
 **Severity**: P2 (data cleanup) | **Effort**: S (2h) | **Wave**: A (prerequisite for T-EVD-01 in Wave C)
-**Files**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/checklist.md`
+**Files**: `(sub-phase 001-initial-research merged into parent — see implementation-summary.md §Sub-phase summaries)`
 **Resolves**: R3-P2-002 (data side only)
 
 **Changes**: Find-replace 170 `)` closers with `]` closers in `[EVIDENCE: ...]` markers.
@@ -475,7 +475,7 @@ _memory:
 - **Review report**: `../review/016-foundational-runtime-pt-01/review-report.md`
 - **Segment-1 synthesis (50 iters)**: `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md`
 - **Segment-2 synthesis (7 iters)**: `../research/016-foundational-runtime-pt-01/segment-2-synthesis.md`
-- **Phase 017 implementation**: `../001-initial-research/implementation-summary.md`
+- **Phase 017 implementation**: see `implementation-summary.md §Sub-phase summaries` (sub-phase merged)
 
 ### Related operator feedback
 - `feedback_phase_018_autonomous` (user memory) — autonomous execution rules

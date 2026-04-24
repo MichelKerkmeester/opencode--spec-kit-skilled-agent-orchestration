@@ -1,1 +1,0 @@
-{"run":1,"dimension":"correctness","findingRefs":["F001"],"new":{"P0":0,"P1":1,"P2":0},"refined":{"P0":0,"P1":0,"P2":0},"newFindingsRatio":1.0,"summary":"Discovered that the handover-first benchmark is not replayable against the packet's current artifact set."}

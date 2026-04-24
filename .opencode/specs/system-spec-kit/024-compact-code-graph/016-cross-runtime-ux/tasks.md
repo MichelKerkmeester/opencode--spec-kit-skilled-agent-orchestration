@@ -79,7 +79,7 @@ Template compliance shim anchor for cross-refs.
 - [x] Item 42: OpenCode context.md updated with code graph integration — Evidence: `.opencode/agent/context.md` has tool reference table and graph health check
 - [x] Item 42: GEMINI.md updated with session start protocol — Evidence: shares AGENTS.md content via symlink
 - [x] Item 42: CLAUDE.md (root) updated with universal Code Search Protocol — Evidence: recovery instructions work across all runtimes
-- [x] Item 43: Recovery documentation consolidated — Evidence: universal recovery in root CLAUDE.md, Claude-specific hook behavior in `.claude/CLAUDE.md` only; no overlapping authority
+- [x] Item 43: Recovery documentation consolidated — Evidence: universal recovery in root CLAUDE.md, Claude-specific hook behavior in `CLAUDE.md` only; no overlapping authority
 - [x] Item 44: Seed-resolver DB failures now throw with logged context — Evidence: `throwResolutionError()` in seed-resolver.ts replaces silent placeholder anchor fallback [F014]
 - [x] Item 45: Spec/settings SessionStart scope aligned — Evidence: spec updated to reflect single unscoped entry + in-script branching as correct design [F030]
 - [x] Item 46: Truth-sync checklist annotations applied — Evidence: 5 PARTIAL annotations on v1 parent checklist for phases 005/006/008/011/012 per review iterations 14, 18, 29

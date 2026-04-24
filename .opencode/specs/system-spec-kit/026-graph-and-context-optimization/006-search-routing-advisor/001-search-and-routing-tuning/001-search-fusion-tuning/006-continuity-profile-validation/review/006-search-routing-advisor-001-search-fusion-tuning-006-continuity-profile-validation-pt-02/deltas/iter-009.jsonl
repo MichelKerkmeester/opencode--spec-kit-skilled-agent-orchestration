@@ -1,1 +1,0 @@
-{"iteration":9,"dimension":"correctness","type":"finding_delta","newFindings":[],"updatedFindings":[],"filesReviewed":[".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts"],"newFindingsRatio":0,"churn":0}

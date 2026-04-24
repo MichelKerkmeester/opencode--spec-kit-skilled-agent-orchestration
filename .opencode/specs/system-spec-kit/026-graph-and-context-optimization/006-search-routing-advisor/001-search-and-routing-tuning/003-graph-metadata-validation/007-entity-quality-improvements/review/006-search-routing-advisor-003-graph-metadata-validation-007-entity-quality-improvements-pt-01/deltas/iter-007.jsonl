@@ -1,1 +1,0 @@
-{"type":"delta","iteration":7,"dimension":"traceability","newFindings":[{"id":"DR-TRC-004","severity":"P2"},{"id":"DR-TRC-005","severity":"P2"}],"refinedFindings":["DR-TRC-002"],"resolvedFindings":[],"churn":0.11,"newFindingsRatio":0.11,"summary":"Found basename-only summary metadata and a description freshness timestamp predating renumbering."}

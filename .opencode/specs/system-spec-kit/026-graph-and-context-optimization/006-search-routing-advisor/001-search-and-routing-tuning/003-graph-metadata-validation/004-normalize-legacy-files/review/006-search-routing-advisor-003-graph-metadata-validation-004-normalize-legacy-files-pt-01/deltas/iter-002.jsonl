@@ -1,1 +1,0 @@
-{"type":"delta","mode":"review","iteration":2,"dimension":"security","newFindings":["F006"],"refinedFindings":[],"findingsSummary":{"P0":0,"P1":1,"P2":1},"newFindingsRatio":0.12,"churn":0.12,"filesReviewed":[".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts","plan.md"],"timestamp":"2026-04-21T17:44:46Z"}

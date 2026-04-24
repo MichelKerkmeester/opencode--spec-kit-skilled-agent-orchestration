@@ -120,7 +120,7 @@ Document the narrower runtime behavior accurately:
 | `handlers/code-graph/status.ts` | Report true freshness (empty/stale/fresh) |
 | `lib/code-graph/code-graph-db.ts` | Add per-file mtime tracking |
 | `handlers/code-graph/scan.ts` | Support selective reindex (changed files only) |
-| `AGENTS.md`, `CODEX.md`, `GEMINI.md` | Document auto-trigger behavior |
+| `AGENTS.md`, `AGENTS.md`, `AGENTS.md` | Document auto-trigger behavior |
 
 ### Cross-Runtime Impact
 

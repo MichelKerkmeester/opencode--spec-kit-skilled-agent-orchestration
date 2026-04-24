@@ -53,7 +53,7 @@ _memory:
 - [x] T008 [WS-3][P] Replace transcript-frequency autosave targeting with validated active-session packet selection (`.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`).
 - [x] T009 [WS-4] Truth-sync Phase 021 to the bootstrap-first recovery contract and mark superseded guidance explicitly if kept for history (`../021-cross-runtime-instruction-parity/spec.md`, `../021-cross-runtime-instruction-parity/implementation-summary.md`, `AGENTS.md`).
 - [x] T010 [WS-5] Implement or relax the Phase 027 hard structural budget claim so packet docs and runtime behavior agree (`../027-opencode-structural-priming/spec.md`, `../027-opencode-structural-priming/plan.md`, `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts`).
-- [x] T011 [WS-6] Align `context-prime` structural Prime Package wording across OpenCode, Claude, and the live Codex runtime surfaces if the advisory is accepted for this pass (`.opencode/agent/context-prime.md`, `.claude/agents/context-prime.md`, `.codex/agents/context-prime.toml`).
+- [x] T011 [WS-6] Align `context-prime` structural Prime Package wording across OpenCode, Claude, and the live Codex runtime surfaces if the advisory is accepted for this pass (`.opencode/agent/context.md`, `.claude/agents/context.md`, `.codex/agents/context-prime.toml`).
 <!-- /ANCHOR:phase -->
 
 <!-- ANCHOR:phase-3 -->

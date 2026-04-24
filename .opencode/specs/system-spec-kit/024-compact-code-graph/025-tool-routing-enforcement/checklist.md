@@ -106,16 +106,16 @@ Template compliance shim anchor for summary.
 - [x] T-016: Create constitutional memory `.opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md` with search decision tree (already existed with richer content) [EVIDENCE: verified in implementation-summary.md]
 - [x] T-017: Update root `CLAUDE.md` -- replace passive "MUST use" with active decision tree [EVIDENCE: verified in implementation-summary.md]
 - [x] T-018: Keep Claude-aware routing reinforcement consolidated in `../../../../../CLAUDE.md` [EVIDENCE: verified in implementation-summary.md]
-- [x] T-019: Update `../../../../../CODEX.md` with non-hook routing enforcement [EVIDENCE: verified in implementation-summary.md]
-- [x] T-020: Update `../../../../../GEMINI.md` with Gemini runtime routing enforcement [EVIDENCE: verified in implementation-summary.md]
+- [x] T-019: Update `../../../../../AGENTS.md` with non-hook routing enforcement [EVIDENCE: verified in implementation-summary.md]
+- [x] T-020: Update `../../../../../AGENTS.md` with Gemini runtime routing enforcement [EVIDENCE: verified in implementation-summary.md]
 
 ### Layer 5: Agent Updates
 
-- [x] T-021: Update `.opencode/agent/context-prime.md` with routing rules in output [EVIDENCE: verified in implementation-summary.md]
-- [x] T-022: Update `.claude/agents/context-prime.md` with routing rules [EVIDENCE: verified in implementation-summary.md]
+- [x] T-021: Update `.opencode/agent/context.md` with routing rules in output [EVIDENCE: verified in implementation-summary.md]
+- [x] T-022: Update `.claude/agents/context.md` with routing rules [EVIDENCE: verified in implementation-summary.md]
 - [x] T-023: Update `.codex/agents/context-prime.toml` with routing rules [EVIDENCE: verified in implementation-summary.md]
-- [x] T-024: Update `.gemini/agents/context-prime.md` with routing rules [EVIDENCE: verified in implementation-summary.md]
-- [x] T-025: Update `.agents/agents/context-prime.md` with routing rules [EVIDENCE: verified in implementation-summary.md]
+- [x] T-024: Update `.gemini/agents/context.md` with routing rules [EVIDENCE: verified in implementation-summary.md]
+- [x] T-025: Update `.opencode/agent/context.md` with routing rules [EVIDENCE: verified in implementation-summary.md]
 
 ### Validation
 

@@ -24,8 +24,7 @@ _memory:
       - "tasks.md"
       - "checklist.md"
       - "decision-record.md"
-      - "001-initial-research/spec.md"
-      - "001-initial-research/findings-registry.json"
+      - "implementation-summary.md (sub-phases merged here)"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: System Hardening (Post-Consolidation Research + Remediation Train)
@@ -103,7 +102,7 @@ Coordinate all six Tier 1 investigation items through one research wave (`001-in
 ### In Scope
 
 - Dispatch the six Tier 1 research/review iterations listed in `../scratch/deep-review-research-suggestions.md` §3 (DR-1, RR-1, RR-2) and §6 (SSK-RR-1, SSK-DR-1, SSK-RR-2) through the canonical `/spec_kit:deep-research :confirm` and `/spec_kit:deep-review :confirm` commands.
-- Consolidate findings into a single convergence report at `001-initial-research/implementation-summary.md` §Findings Registry.
+- Consolidate findings into a single convergence report at `implementation-summary.md §Sub-phase summaries` §Findings Registry.
 - Plan follow-on implementation children (`019/002-*`, `019/003-*`, ...) only after research converges. Each implementation child owns one remediation cluster.
 - Maintain packet-local strict validation across the umbrella packet and its children.
 
@@ -145,7 +144,7 @@ Coordinate all six Tier 1 investigation items through one research wave (`001-in
 ### Phase Transition Rules
 
 - `001-initial-research` MUST converge and pass `validate.sh --strict` before any `002+` sibling is created.
-- Each implementation child MUST cite its originating research finding(s) in `spec.md §2 Problem Statement` and link back to `001-initial-research/implementation-summary.md`.
+- Each implementation child MUST cite its originating research finding(s) in `spec.md §2 Problem Statement` and link back to `implementation-summary.md §Sub-phase summaries`.
 - The umbrella packet `implementation-summary.md` is filled only after all planned children complete or are explicitly deferred.
 
 ### Phase Handoff Criteria
@@ -154,7 +153,7 @@ Coordinate all six Tier 1 investigation items through one research wave (`001-in
 |------|----|----------|--------------|
 | `018-cli-executor-remediation` | `019-system-hardening` | 018 shipped R1-R11 (R12 deferred), Tier 1 candidates surfaced in scratch doc | `../scratch/deep-review-research-suggestions.md` exists; 018 `implementation-summary.md` verdict PASS |
 | `019-system-hardening` | `019-system-hardening/001-initial-research` | Charter approved, dispatch blocks copied from scratch doc | Child `spec.md` exists with 6 scoped iterations |
-| `001-initial-research` | `019/002-*` (first implementation child) | Research converges, findings registry written | `001-initial-research/implementation-summary.md` lists remediation clusters with proposed scope |
+| `001-initial-research` | `019/002-*` (first implementation child) | Research converges, findings registry written | `implementation-summary.md §Sub-phase summaries` lists remediation clusters with proposed scope |
 <!-- /ANCHOR:phase-map -->
 
 ---
@@ -167,18 +166,18 @@ Coordinate all six Tier 1 investigation items through one research wave (`001-in
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | The umbrella packet must list every Tier 1 candidate from the scratch doc as in-scope for the 001 research child. | `spec.md §3 In Scope` enumerates all six items (DR-1, RR-1, RR-2, SSK-RR-1, SSK-DR-1, SSK-RR-2). |
-| REQ-002 | The research-first ordering must be enforced structurally. | No `002+` sibling is created until `001-initial-research/implementation-summary.md` converges. |
+| REQ-002 | The research-first ordering must be enforced structurally. | No `002+` sibling is created until `implementation-summary.md §Sub-phase summaries` converges. |
 | REQ-003 | The 026 root docs must be updated to register 019 as a sibling phase. | `../spec.md` phase map includes row 19; `../implementation-summary.md` notes the addition. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Each Tier 1 iteration must use the canonical skill-owned command surface per Gate 4. | Dispatch blocks in `001-initial-research/plan.md` use `/spec_kit:deep-research :confirm` or `/spec_kit:deep-review :confirm`. No direct `@deep-research` or `@deep-review` agent invocation for iteration loops. |
+| REQ-004 | Each Tier 1 iteration must use the canonical skill-owned command surface per Gate 4. | Dispatch blocks in `plan.md §Sub-phases` use `/spec_kit:deep-research :confirm` or `/spec_kit:deep-review :confirm`. No direct `@deep-research` or `@deep-review` agent invocation for iteration loops. |
 | REQ-005 | Findings must be consolidated into a single registry for the umbrella packet to coordinate follow-on work. | `001-initial-research/implementation-summary.md §Findings Registry` lists all converged findings with severity, source iteration, and proposed remediation cluster. |
 | REQ-006 | Future implementation children must cite originating findings. | Each `019/00N-*/spec.md` includes a `| **Originating Research** | ../001-initial-research/implementation-summary.md#finding-<id> |` row. |
 | REQ-007 | The umbrella packet must remain coordination-only; implementation content belongs in child packets. | `spec.md §3 Out of Scope` explicitly excludes implementation work from the umbrella; `decision-record.md ADR-001` enforces this structurally. |
-| REQ-008 | Tier 2 and Tier 3 candidates from the scratch doc stay out of scope unless Tier 1 findings explicitly promote them. | If a Tier 1 iteration produces evidence promoting a Tier 2/3 item, the promotion is recorded in `001-initial-research/implementation-summary.md` before the item is added to the wave. |
+| REQ-008 | Tier 2 and Tier 3 candidates from the scratch doc stay out of scope unless Tier 1 findings explicitly promote them. | If a Tier 1 iteration produces evidence promoting a Tier 2/3 item, the promotion is recorded in `implementation-summary.md §Sub-phase summaries` before the item is added to the wave. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -187,13 +186,13 @@ Coordinate all six Tier 1 investigation items through one research wave (`001-in
 
 **Given** the umbrella packet is open, **when** a reviewer checks the child layout, **then** they see `001-initial-research/` is the only defined child and `002+` are reserved.
 
-**Given** research converges with N findings across M clusters, **when** the next implementation child is created, **then** its spec cites the originating research finding(s) and links back to `001-initial-research/implementation-summary.md`.
+**Given** research converges with N findings across M clusters, **when** the next implementation child is created, **then** its spec cites the originating research finding(s) and links back to `implementation-summary.md §Sub-phase summaries`.
 
 **Given** one research iteration finds zero issues, **when** the registry is written, **then** that item is recorded as `NO-ACTION-REQUIRED` with evidence rather than silently dropped.
 
 **Given** a user dispatches iteration work, **when** they check Gate 4 compliance, **then** every dispatch goes through `/spec_kit:deep-research :confirm` or `/spec_kit:deep-review :confirm` — never directly through the corresponding agent.
 
-**Given** a Tier 2 or Tier 3 candidate from the scratch doc becomes relevant mid-wave, **when** it is promoted into the research scope, **then** the promotion is recorded explicitly in `001-initial-research/implementation-summary.md` rather than silently adopted.
+**Given** a Tier 2 or Tier 3 candidate from the scratch doc becomes relevant mid-wave, **when** it is promoted into the research scope, **then** the promotion is recorded explicitly in `implementation-summary.md §Sub-phase summaries` rather than silently adopted.
 
 **Given** the umbrella packet is filled with research findings, **when** an implementation child `019/00N-*` is scaffolded, **then** its spec cites the originating finding ID(s) and links back to the umbrella-owned findings registry.
 
@@ -202,7 +201,7 @@ Coordinate all six Tier 1 investigation items through one research wave (`001-in
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All six Tier 1 iterations complete with convergence verdicts written to `001-initial-research/implementation-summary.md`.
+- **SC-001**: All six Tier 1 iterations complete with convergence verdicts written to `implementation-summary.md §Sub-phase summaries`.
 - **SC-002**: The findings registry is structured enough that each finding maps to exactly one proposed remediation cluster (or an explicit defer reason).
 - **SC-003**: The umbrella packet validates cleanly under `validate.sh --strict` after the 001 research wave converges.
 - **SC-004**: At least one implementation child is created for every remediation cluster the research proposes, unless the user explicitly defers it.
@@ -297,7 +296,7 @@ Coordinate all six Tier 1 investigation items through one research wave (`001-in
 **As an** implementer opening a remediation child, **I want** each child's scope cited against specific research findings, **so that** I can justify the work and verify completion evidence.
 
 **Acceptance Criteria**:
-1. Given a `019/00N-*/spec.md`, When I read §2 Problem Statement, Then I see the originating finding ID(s) and a link to `001-initial-research/implementation-summary.md`.
+1. Given a `019/00N-*/spec.md`, When I read §2 Problem Statement, Then I see the originating finding ID(s) and a link to `implementation-summary.md §Sub-phase summaries`.
 
 ---
 

@@ -73,7 +73,7 @@ Template compliance shim anchor for rollback.
    - Add explicit `memory_context({ mode: "resume", profile: "resume" })` call
    - Must be first action after compaction, before any other reasoning
    - Include `profile: "resume"` (fixes gap found in iter 012)
-2. **Create `.claude/CLAUDE.md`:**
+2. **Create `CLAUDE.md`:**
    - Claude-specific private compaction recovery instructions
    - Reference to hook-based injection when hooks are active
    - Closes Gap B from iteration 012

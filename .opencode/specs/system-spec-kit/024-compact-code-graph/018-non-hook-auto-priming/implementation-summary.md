@@ -130,7 +130,7 @@ This phase delivered the server-side pieces first: first-call auto-priming, the 
 ### Known Limitations
 1. **`session_health` resets its own idle timer.** Tool dispatch records a tool call before the handler computes inactivity, so the reported gap is shorter than intended on health-check calls.
 2. **Spec-folder-change warnings are not implemented.** `context-metrics.ts` tracks `spec_folder_change`, but `session_health` does not currently lower status or emit a warning from that signal.
-3. **Runtime gate docs are partial in this phase.** Shared/non-hook guidance landed here, but `CLAUDE.md` and `GEMINI.md` gate-doc parity is handled by Phase 021 and should not be claimed as Phase 018 completion.
+3. **Runtime gate docs are partial in this phase.** Shared/non-hook guidance landed here, but `CLAUDE.md` and `AGENTS.md` gate-doc parity is handled by Phase 021 and should not be claimed as Phase 018 completion.
 4. **Dual `lastToolCallAt` state remains.** `memory-surface.ts` and `context-metrics.ts` both retain timestamp state. The handler prefers the metrics copy, but cleanup is still pending.
 5. **Previously deferred F045/F046 are now closed.** `sessionPrimed` flips after successful priming, and CocoIndex availability now uses the shared helper instead of a `process.cwd()` lookup.
 <!-- /ANCHOR:limitations -->

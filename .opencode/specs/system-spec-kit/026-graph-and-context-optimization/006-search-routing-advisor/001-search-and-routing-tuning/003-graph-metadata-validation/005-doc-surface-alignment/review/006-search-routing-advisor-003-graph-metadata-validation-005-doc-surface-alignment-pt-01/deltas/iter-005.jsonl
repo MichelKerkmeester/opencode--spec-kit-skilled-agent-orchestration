@@ -1,1 +1,0 @@
-{"type":"iteration_delta","iteration":5,"dimension":"correctness","newFindings":["DR-P1-003"],"findingsNew":{"P0":0,"P1":1,"P2":0},"findingsSummary":{"P0":1,"P1":3,"P2":0},"newFindingsRatio":0.2,"churn":0.2,"filesReviewed":["checklist.md","implementation-summary.md","plan.md"],"decision":"continue","reason":"new stale verification evidence finding"}

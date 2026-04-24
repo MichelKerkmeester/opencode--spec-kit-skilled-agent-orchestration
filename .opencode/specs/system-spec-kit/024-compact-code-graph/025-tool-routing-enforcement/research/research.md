@@ -99,8 +99,8 @@ New `gate-tool-routing.md` constitutional memory:
 ### Layer 5: Runtime Instruction Updates
 
 Replace passive "MUST use" with active IF/THEN decision trees in:
-- `CLAUDE.md` (root), `.claude/CLAUDE.md`, `CODEX.md`, `GEMINI.md`
-- All 4 `context-prime.md` agent copies
+- `CLAUDE.md` (root), `CLAUDE.md`, `AGENTS.md`, `AGENTS.md`
+- All 4 `context.md` agent copies
 
 ---
 
@@ -130,10 +130,10 @@ The codebase already has a query-intent classifier at `lib/code-graph/query-inte
 | 4 | `mcp_server/tool-schemas.ts` | 18-30 | Routing guidance in code_graph_* descriptions |
 | 5 | `constitutional/gate-tool-routing.md` | 25-35 | New constitutional memory |
 | 6 | `CLAUDE.md` (root) | 10-16 | Active decision tree |
-| 7 | `.claude/CLAUDE.md` | 6-10 | Hook-aware routing reinforcement |
-| 8 | `CODEX.md` | 8-12 | Active decision tree |
-| 9 | `GEMINI.md` | 8-12 | Active decision tree |
-| 10-13 | `context-prime.md` (x4) | 8-12 each | Routing block in output format |
+| 7 | `CLAUDE.md` | 6-10 | Hook-aware routing reinforcement |
+| 8 | `AGENTS.md` | 8-12 | Active decision tree |
+| 9 | `AGENTS.md` | 8-12 | Active decision tree |
+| 10-13 | `context.md` (x4) | 8-12 each | Routing block in output format |
 | 14 | `tests/context-server.vitest.ts` | 30-45 | Server instructions + hint assertions |
 | 15 | `tests/memory-surface-routing.vitest.ts` (new) | 65-90 | PrimePackage + routing classifier tests |
 | **Total** | | **327-463** | |
@@ -159,7 +159,7 @@ The codebase already has a query-intent classifier at `lib/code-graph/query-inte
 ## 6. Key Corrections from Research
 
 1. **`cocoIndexAvailable` already exists** in both `SessionSnapshot` and `PrimePackage` — only `routingRecommendation` and `routingRules` need adding
-2. **Spec file paths partially wrong**: real files are `CODEX.md` and `GEMINI.md` at repo root, not `.codex/CODEX.md` and `.gemini/GEMINI.md`
+2. **Spec file paths partially wrong**: real files are `AGENTS.md` and `AGENTS.md` at repo root, not `.codex/CODEX.md` and `.gemini/GEMINI.md`
 3. **4 context-prime copies** (not 5): `.opencode/agent/`, `.claude/agents/`, `.codex/agents/`, `.agents/agents/` — no `.gemini/agents/` exists
 4. **Reactive hints should use existing `envelope.hints` pipeline**, not a new response wrapper
 

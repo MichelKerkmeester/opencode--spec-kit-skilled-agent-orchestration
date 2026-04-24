@@ -58,7 +58,7 @@ Phase 027 now delivers a shared structural bootstrap contract for non-hook runti
 | File | Change |
 |------|--------|
 | `AGENTS.md` | Updated startup/recovery contract wording for hookless OpenCode flow |
-| `.opencode/agent/context-prime.md` | Added structural-context section in prime package format |
+| `.opencode/agent/context.md` | Added structural-context section in prime package format |
 | `../spec.md` | Phase map includes explicit `027-opencode-structural-priming` registration |
 | `spec.md`, `plan.md`, `tasks.md`, `checklist.md` | Marked complete and synchronized with shipped behavior |
 <!-- /ANCHOR:what-built -->

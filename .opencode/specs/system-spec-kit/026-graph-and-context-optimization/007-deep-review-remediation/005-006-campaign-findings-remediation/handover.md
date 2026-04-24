@@ -66,7 +66,7 @@ Operational translation:
 - `12f2ad74d` First-pass consolidated-findings.md (274 findings, 10 themes)
 
 ### First-pass synthesis (already done)
-Location: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md`
+Source report: the 006-campaign consolidated-findings (original file was at `006-search-routing-advisor/review/consolidated-findings` — deleted, no longer present; findings preserved in tasks.md).
 Totals: 274 deduped findings (7 P0, 165 P1, 102 P2) across 39 phases.
 Biased toward doc drift (~80% spec/metadata, ~20% real code).
 
@@ -113,7 +113,7 @@ Dispatch codex with prompt in §DISPATCH RECIPES → `synthesize-impl-into-conso
 
 Target: merge impl findings into the **existing** consolidated-findings.md (append a "Part 2: Implementation Review" section, keep Part 1 intact).
 
-Output location: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md` (overwrite in-place, preserving Part 1).
+Output location: `006-search-routing-advisor/review/consolidated-findings (archived — findings now in 007/005 tasks.md)` (overwrite in-place, preserving Part 1).
 
 ### Step 5 — Scaffold sub-phases inside 007/005
 
@@ -173,7 +173,7 @@ EOF
 cat > /tmp/codex-synthesize-impl.txt <<'EOF'
 Merge findings from all 39 review-impl-report.md files INTO the existing
 consolidated-findings.md at:
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md
+006-search-routing-advisor/review/consolidated-findings (archived — findings now in 007/005 tasks.md)
 
 DO NOT overwrite Part 1 (original 274 doc-drift findings).
 APPEND a new "## Part 2: Implementation-Focused Review (Second Pass)" section containing:
@@ -196,7 +196,7 @@ EOF
 ```bash
 cat > /tmp/codex-scaffold-005.txt <<'EOF'
 Read the merged consolidated-findings.md at:
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md
+006-search-routing-advisor/review/consolidated-findings (archived — findings now in 007/005 tasks.md)
 
 Group findings by theme (use Part 1's existing themes as base, add new themes from Part 2 if needed). Typical expected: 5-10 themes.
 
@@ -301,7 +301,7 @@ All of these must hold:
 | Impl driver | `/tmp/006-impl-driver.sh` |
 | Impl progress log | `/tmp/006-impl-campaign-progress.log` |
 | Impl per-phase logs | `/tmp/006-impl-campaign-logs/` |
-| First-pass synthesis | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/review/consolidated-findings.md |
+| First-pass synthesis | 006-search-routing-advisor/review/consolidated-findings (archived — findings now in 007/005 tasks.md) |
 | Prompt templates | `/tmp/006-impl-review-prompt-template.txt` (first impl template) |
 | Phase queue (same 39) | `/tmp/006-phase-queue.txt` |
 | 006 parent | `.../006-search-routing-advisor/` |

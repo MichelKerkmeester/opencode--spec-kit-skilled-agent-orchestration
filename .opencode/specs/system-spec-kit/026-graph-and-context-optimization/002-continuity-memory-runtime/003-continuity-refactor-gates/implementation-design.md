@@ -105,9 +105,9 @@ Phase 018 implementation should:
 1. Run the companion 5-iteration impact analysis research (`prompts/research-prompt-impact.md`) to get file-level change matrix
 2. Start with Gate A pre-work
 3. Use findings files under `findings/` for specific design decisions:
-   - `003-gate-c-writer-ready/spec.md` — writer routing and merge contract
-   - `research/research.md` — feature-preservation and migration synthesis
-   - `004-gate-d-reader-ready/spec.md` — reader-ready resume journey
+   - Gate C writer routing and merge contract — see `implementation-summary.md §003-gate-c-writer-ready`
+   - Feature-preservation and migration synthesis — see `implementation-summary.md §Sub-phase summaries`
+   - Gate D reader-ready resume journey — see `implementation-summary.md §004-gate-d-reader-ready`
    - `plan.md` — parent six-gate rollout plan
 4. Cite this document as the executive summary for sprint planning
 

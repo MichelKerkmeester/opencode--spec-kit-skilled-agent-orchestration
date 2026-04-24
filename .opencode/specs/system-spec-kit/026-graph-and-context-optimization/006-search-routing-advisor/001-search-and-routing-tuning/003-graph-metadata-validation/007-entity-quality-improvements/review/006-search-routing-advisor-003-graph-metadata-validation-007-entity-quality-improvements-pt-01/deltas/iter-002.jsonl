@@ -1,1 +1,0 @@
-{"type":"delta","iteration":2,"dimension":"security","newFindings":[],"refinedFindings":[],"resolvedFindings":[],"churn":0,"newFindingsRatio":0,"summary":"No direct security findings; scope filtering narrows rather than expands metadata exposure."}

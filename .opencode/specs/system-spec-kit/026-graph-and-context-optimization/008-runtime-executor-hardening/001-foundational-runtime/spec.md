@@ -1,6 +1,6 @@
 ---
 title: "Featur [system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/spec]"
-description: "Merged packet covering the foundational runtime arc: 50-iter research charter (ex-016) plus 27 remediation tasks across 4 Phase-017 sub-phases. Five sub-phases preserve history: 001-initial-research, 002-infrastructure-primitives, 003-cluster-consumers, 004-rollout-sweeps, 005-p2-maintainability."
+description: "Merged packet covering the foundational runtime arc: 50-iter research charter (ex-016) plus 27 remediation tasks across 4 Phase-017 sub-phases. Five sub-phases merged into implementation-summary.md §Sub-phase summaries."
 trigger_phrases:
   - "foundational runtime remediation"
   - "phase 017 remediation"
@@ -26,7 +26,7 @@ _memory:
 
 # Feature Specification: Foundational Runtime (merged)
 
-> **Consolidation note (2026-04-18).** This packet merges the former Phase 016 research charter (50-iter) with the former Phase 017 remediation work into one foundational-runtime arc. The 50-iter research charter now lives in `001-initial-research/`. The four Phase 017 remediation child phases are preserved as `002-infrastructure-primitives/`, `003-cluster-consumers/`, `004-rollout-sweeps/`, `005-p2-maintainability/`. Top-level narrative below describes the shipped remediation surface.
+> **Consolidation note (2026-04-18).** This packet merges the former Phase 016 research charter (50-iter) with the former Phase 017 remediation work into one foundational-runtime arc. Five sub-phases (001-initial-research, 002-infrastructure-primitives, 003-cluster-consumers, 004-rollout-sweeps, 005-p2-maintainability) have been merged into `implementation-summary.md §Sub-phase summaries`. Top-level narrative below describes the shipped remediation surface.
 
 ---
 
@@ -388,6 +388,6 @@ Each child folder is self-contained. Run `/spec_kit:implement` targeting a speci
 - Segment-1 synthesis: `../research/016-foundational-runtime-pt-01/FINAL-synthesis-and-review.md`
 - Segment-2 synthesis: `../research/016-foundational-runtime-pt-01/segment-2-synthesis.md`
 - Segment-2 iterations: `../research/016-foundational-runtime-pt-01/iterations/iteration-{051..057}.md`
-- Phase 016 implementation summary: `../001-initial-research/implementation-summary.md`
+- Phase 016 implementation summary: see `implementation-summary.md §Sub-phase summaries` (sub-phase merged into parent)
 - Operator feedback: `feedback_copilot_concurrency_override` (user memory), `feedback_phase_018_autonomous` (user memory), `feedback_stop_over_confirming` (user memory)
 <!-- /ANCHOR:references -->

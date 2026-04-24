@@ -67,7 +67,7 @@ Template compliance shim anchor for cross-refs.
 ### Completed
 
 - [x] Update CLAUDE.md compaction recovery — Added explicit `memory_context({ mode: "resume", profile: "resume" })` as first action after compaction, with `profile: "resume"` fix from iter 012
-- [x] Create `.claude/CLAUDE.md` — Claude-specific private recovery instructions referencing hook-based injection when hooks are active; closes Gap B from iteration 012
+- [x] Create `CLAUDE.md` — Claude-specific private recovery instructions referencing hook-based injection when hooks are active; closes Gap B from iteration 012
 - [x] Create CODEX.md with recovery instructions — Same two primitives: `memory_match_triggers` + `memory_context(resume)` for tool-based compaction recovery
 - [x] Implement `runtime-detection.ts` — `detectRuntime()` returns `RuntimeInfo` with both `runtime` (RuntimeId) and `hookPolicy` (HookPolicy); env-based detection for claude-code, codex-cli, copilot-cli, gemini-cli
 - [x] Gemini hook policy detection — `detectGeminiHookPolicy()` checks `.gemini/settings.json` for `hooks`/`hooksConfig` blocks to determine if hooks are configured

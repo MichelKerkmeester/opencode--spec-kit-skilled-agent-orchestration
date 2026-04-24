@@ -72,7 +72,7 @@ Keep `006-continuity-refactor-gates/` as the authoritative Gates A-F coordinatio
 - Define packet-wide sequencing, handoff, and completion rules so the six child phases can be executed as one coordinated program.
 
 ### Out of Scope
-- Rewriting the six child phase specs, plans, tasks, or checklists. Those folders remain the execution surfaces for detailed gate work.
+- Accessing child phase folders — all six gate sub-phases have been merged into `implementation-summary.md § Sub-phase summaries` and their directories deleted.
 - Implementing runtime code, template changes, schema migrations, or rollout changes. This parent packet only coordinates that work.
 - Normalizing every existing root research note or review artifact in this same change. This packet establishes the coordination layer first.
 
@@ -92,14 +92,14 @@ Keep `006-continuity-refactor-gates/` as the authoritative Gates A-F coordinatio
 <!-- ANCHOR:phase-map -->
 ## Phase Documentation Map
 
-| Phase | Folder | Status | Description |
-|-------|--------|--------|-------------|
-| A | `001-gate-a-prework/` | complete | Remove template and packet-prep blockers before any schema or runtime work starts. |
-| B | `002-gate-b-foundation/` | complete | Rehearse the migration, add anchor-aware causal-edge fields, archive legacy rows, and expose archived-hit observability. |
-| C | `003-gate-c-writer-ready/` | complete | Build the validator and writer-side substrate for canonical spec-doc continuity. |
-| D | `004-gate-d-reader-ready/` | complete | Retarget search, context, and resume onto handover plus canonical continuity. |
-| E | `005-gate-e-runtime-migration/` | complete | Promote the rollout state machine to canonical and align all command, agent, skill, and doc surfaces. |
-| F | `006-gate-f-cleanup-verification/` | complete | Verify cleanup completeness after the runtime migration and confirm the renamed Gate F scope. |
+| Phase | Location | Status | Description |
+|-------|----------|--------|-------------|
+| A | merged → `implementation-summary.md §001-gate-a-prework` | complete | Remove template and packet-prep blockers before any schema or runtime work starts. |
+| B | merged → `implementation-summary.md §002-gate-b-foundation` | complete | Rehearse the migration, add anchor-aware causal-edge fields, archive legacy rows, and expose archived-hit observability. |
+| C | merged → `implementation-summary.md §003-gate-c-writer-ready` | complete | Build the validator and writer-side substrate for canonical spec-doc continuity. |
+| D | merged → `implementation-summary.md §004-gate-d-reader-ready` | complete | Retarget search, context, and resume onto handover plus canonical continuity. |
+| E | merged → `implementation-summary.md §005-gate-e-runtime-migration` | complete | Promote the rollout state machine to canonical and align all command, agent, skill, and doc surfaces. |
+| F | merged → `implementation-summary.md §006-gate-f-cleanup-verification` | complete | Verify cleanup completeness after the runtime migration and confirm the renamed Gate F scope. |
 <!-- /ANCHOR:phase-map -->
 
 ---

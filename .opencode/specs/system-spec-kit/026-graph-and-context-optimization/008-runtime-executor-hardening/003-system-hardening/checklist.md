@@ -62,7 +62,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 
 - [ ] CHK-020 [P0] Strict validation passes on the umbrella packet. [EVIDENCE: TBD — run validate.sh after charter approval]
 - [ ] CHK-021 [P0] Strict validation passes on `001-initial-research/`. [EVIDENCE: TBD]
-- [ ] CHK-022 [P1] Findings registry in `001-initial-research/implementation-summary.md` cites every Tier 1 iteration. [EVIDENCE: TBD]
+- [ ] CHK-022 [P1] Findings registry in `implementation-summary.md §Sub-phase summaries` cites every Tier 1 iteration. [EVIDENCE: TBD]
 - [ ] CHK-023 [P1] Each implementation child cites originating research finding(s). [EVIDENCE: TBD — after children created]
 <!-- /ANCHOR:testing -->
 

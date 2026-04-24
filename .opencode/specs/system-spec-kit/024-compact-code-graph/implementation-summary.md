@@ -80,7 +80,7 @@ Three hook scripts handle the full Claude Code lifecycle. `compact-inject.ts` (P
 
 ### Layer 2: Cross-Runtime Fallback (Phases 004-007)
 
-All runtimes that read CLAUDE.md/CODEX.md/GEMINI.md get context injection via the existing Gate 1 system. `memory_match_triggers()` fires on each user message. Hookless runtimes use `session_bootstrap()` as the canonical first recovery call and `session_resume()` when the detailed merged payload is needed; direct `memory_context` recovery paths use `profile: "resume"`. `.claude/CLAUDE.md` was created with Claude-specific recovery instructions. Runtime detection outputs both `runtime` and `hookPolicy` fields.
+All runtimes that read CLAUDE.md/CODEX.md/GEMINI.md get context injection via the existing Gate 1 system. `memory_match_triggers()` fires on each user message. Hookless runtimes use `session_bootstrap()` as the canonical first recovery call and `session_resume()` when the detailed merged payload is needed; direct `memory_context` recovery paths use `profile: "resume"`. `CLAUDE.md` was created with Claude-specific recovery instructions. Runtime detection outputs both `runtime` and `hookPolicy` fields.
 
 ### Layer 3: Structural Code Graph (Phases 008-011)
 

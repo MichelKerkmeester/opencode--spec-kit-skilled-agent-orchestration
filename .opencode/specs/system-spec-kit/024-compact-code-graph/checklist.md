@@ -96,7 +96,7 @@ Template compliance shim anchor for summary.
 - [x] Stop hook (async) saves session context automatically [EVIDENCE: `mcp_server/hooks/claude/session-stop.ts` runs transcript parsing + autosave flow; verified against shipped code via `implementation-summary.md` §What Was Built]
 - [x] Token usage parsed from transcript and stored in hook state metrics [EVIDENCE: verified in implementation-summary.md]
 - [x] CLAUDE.md compaction recovery section enhanced with explicit `memory_context({ mode: "resume", profile: "resume" })` call [EVIDENCE: verified in implementation-summary.md]
-- [x] `.claude/CLAUDE.md` created with Claude-specific recovery (closes Gap B) [EVIDENCE: verified in implementation-summary.md]
+- [x] `CLAUDE.md` created with Claude-specific recovery (closes Gap B) [EVIDENCE: verified in implementation-summary.md]
 - [x] Session priming detects source (startup/resume/clear/compact) and routes appropriately [EVIDENCE: verified in implementation-summary.md]
 - [x] Constitutional memories surface on both hook and tool paths [EVIDENCE: verified in implementation-summary.md]
 - [x] Hook-state bridges Claude `session_id` → Spec Kit `effectiveSessionId` [EVIDENCE: verified in implementation-summary.md]

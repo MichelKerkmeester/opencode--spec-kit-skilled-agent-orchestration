@@ -70,7 +70,7 @@ The runtime guidance now points non-hook CLIs at the current bootstrap-first rec
 
 ### No Hook Transport Tables
 
-Added standardized trigger tables to `CODEX.md`, `AGENTS.md`, and `GEMINI.md` with consistent guidance:
+Added standardized trigger tables to `AGENTS.md`, `AGENTS.md`, and `AGENTS.md` with consistent guidance:
 
 | When | What to Call |
 |------|-------------|
@@ -84,7 +84,7 @@ AGENTS.md advertises `@context-prime` and the session lifecycle guidance, while 
 
 ### @context-prime Agent
 
-A new agent at `.opencode/agent/context-prime.md` (227 lines) that:
+A new agent at `.opencode/agent/context.md` (227 lines) that:
 1. Calls `session_resume()` to recover prior session state plus graph and CocoIndex availability
 2. Optionally calls `session_health()` when a quality score is useful
 3. Returns a compact Prime Package with spec folder, task status, system health, and recommended next steps
@@ -97,11 +97,11 @@ F059 is now verified done because `.opencode/agent/orchestrate.md` lines 18-21 e
 
 | File | Change Type | Description |
 |------|------------|-------------|
-| `.opencode/agent/context-prime.md` | New | @context-prime agent for session priming (227 lines) |
+| `.opencode/agent/context.md` | New | @context-prime agent for session priming (227 lines) |
 | `.opencode/agent/orchestrate.md` | Modified | Session Bootstrap delegation reference |
-| `CODEX.md` | Modified | No Hook Transport trigger table |
+| `AGENTS.md` | Modified | No Hook Transport trigger table |
 | `AGENTS.md` | Modified | No Hook Transport trigger table, @context-prime reference |
-| `GEMINI.md` | Modified | No Hook Transport trigger table |
+| `AGENTS.md` | Modified | No Hook Transport trigger table |
 | `CLAUDE.md` | Modified | @context-prime added to Agent Definitions |
 ---
 
@@ -125,7 +125,7 @@ This phase landed as a documentation and agent-instruction alignment pass. The f
 - TypeScript: N/A (documentation and config changes only)
 - Tests: N/A
 - Review: Opus CONDITIONAL PASS 78/100, GPT-5.4 CONDITIONAL 82%
-- Evidence: `.opencode/agent/context-prime.md` lines 34-38, 61-65, 74-87, 229-230; `AGENTS.md` lines 294-299 and 386-399; `.opencode/agent/orchestrate.md` lines 18-21
+- Evidence: `.opencode/agent/context.md` lines 34-38, 61-65, 74-87, 229-230; `AGENTS.md` lines 294-299 and 386-399; `.opencode/agent/orchestrate.md` lines 18-21
 <!-- /ANCHOR:verification -->
 
 ---

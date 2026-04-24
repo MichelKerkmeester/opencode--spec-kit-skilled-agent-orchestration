@@ -84,7 +84,7 @@ Five gaps identified in current compaction handling:
 | Gap | Description | Fix |
 |-----|-------------|-----|
 | A. No provider lifecycle hook | `autoSurfaceAtCompaction()` only runs when AI calls `memory_context(resume)` | Phases 1-2 fix for Claude; this phase fixes for others |
-| B. No private Claude recovery layer | `.claude/CLAUDE.md` doesn't exist | Create it with Claude-specific recovery |
+| B. No private Claude recovery layer | `CLAUDE.md` doesn't exist | Create it with Claude-specific recovery |
 | C. Envelope metadata < prompt injection | Auto-surface adds hints, not prompt-state restoration | Use `profile: "resume"` for brief format |
 | D. Session-start is generic | Startup instructions only announce stats | Phase 2 adds context priming |
 | E. Archived hook design never graduated | `pre_compact.py` in `z_archive` only | Phases 1-3 implement the real version |
@@ -150,7 +150,7 @@ After any context compaction event:
 
 **NOTE (iter 012):** Must pass `profile: "resume"` — without it, you get search results instead of a compact brief.
 
-### 2. Create `.claude/CLAUDE.md` (Gap B fix)
+### 2. Create `CLAUDE.md` (Gap B fix)
 
 Claude-specific private instructions with:
 - Explicit compaction recovery steps
@@ -160,7 +160,7 @@ Claude-specific private instructions with:
 ### 3. Runtime-Specific Instruction Files
 
 Update instruction files for each runtime:
-- `CODEX.md` — Add compaction recovery (explicit `memory_context(resume)` call)
+- `AGENTS.md` — Add compaction recovery (explicit `memory_context(resume)` call)
 - Runtime docs should reference the same two primitives: `memory_match_triggers` + `memory_context(resume)`
 
 ### 4. MCP-Level Compaction Detection (Optional)
@@ -187,7 +187,7 @@ Add time-gap based compaction detection inside the MCP server:
 
 ### Acceptance Criteria
 - [ ] CLAUDE.md compaction section updated with explicit `memory_context({ mode: "resume", profile: "resume" })` call
-- [ ] `.claude/CLAUDE.md` created with Claude-specific recovery instructions
+- [ ] `CLAUDE.md` created with Claude-specific recovery instructions
 - [ ] CODEX.md updated with recovery instructions
 - [ ] Runtime detection produces both `runtime` and `hookPolicy`
 - [ ] Codex CLI sessions recover context via tool calls (tested)
@@ -196,8 +196,8 @@ Add time-gap based compaction detection inside the MCP server:
 
 ### Files Modified
 - EDIT: `CLAUDE.md` (compaction recovery section)
-- NEW: `.claude/CLAUDE.md` (Claude-specific recovery)
-- EDIT: `CODEX.md` or equivalent runtime instruction files
+- NEW: `CLAUDE.md` (Claude-specific recovery)
+- EDIT: `AGENTS.md` or equivalent runtime instruction files
 - OPTIONAL: MCP server compaction detection logic
 
 ### LOC Estimate

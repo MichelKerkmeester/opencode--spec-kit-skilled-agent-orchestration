@@ -1,1 +1,0 @@
-{"type":"delta","iteration":2,"dimension":"security","newFindingRefs":[],"findingsNew":{"P0":0,"P1":0,"P2":0},"newFindingsRatio":0.06,"coverage":0.5,"notes":"Confirmed continuity remains an internal profile and does not widen the public intent surface."}

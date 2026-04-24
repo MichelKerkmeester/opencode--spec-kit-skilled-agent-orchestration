@@ -1,1 +1,0 @@
-{"type":"delta","iteration":1,"dimension":"correctness","newFindings":["DR-COR-001"],"changedFindings":[],"closedFindings":[],"newFindingsRatio":0.45,"churn":0.45,"severityWeighted":{"P0":0,"P1":0,"P2":1}}

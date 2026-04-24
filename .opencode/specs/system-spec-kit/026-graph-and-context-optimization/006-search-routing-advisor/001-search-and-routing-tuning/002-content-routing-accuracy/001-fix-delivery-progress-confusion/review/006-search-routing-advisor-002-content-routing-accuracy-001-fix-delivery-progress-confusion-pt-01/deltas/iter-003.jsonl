@@ -1,1 +1,0 @@
-{"type":"iteration_delta","run":3,"dimension":"traceability","findingRefs":["F001","F002","F003"],"findingsNew":{"P0":0,"P1":3,"P2":0},"findingsSummary":{"P0":0,"P1":3,"P2":0},"newFindingsRatio":0.68,"status":"complete","notes":"Found missing research reference, stale router loci, and stale parentChain metadata."}

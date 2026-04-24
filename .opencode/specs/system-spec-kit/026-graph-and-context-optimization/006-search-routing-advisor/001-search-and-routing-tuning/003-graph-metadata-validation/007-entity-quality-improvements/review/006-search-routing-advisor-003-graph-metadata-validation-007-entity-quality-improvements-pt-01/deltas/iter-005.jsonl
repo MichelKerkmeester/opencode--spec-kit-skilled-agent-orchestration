@@ -1,1 +1,0 @@
-{"type":"delta","iteration":5,"dimension":"correctness","newFindings":[],"refinedFindings":["DR-COR-001","DR-COR-002"],"resolvedFindings":[],"churn":0.03,"newFindingsRatio":0.03,"summary":"Replayed correctness findings; no new defects found."}

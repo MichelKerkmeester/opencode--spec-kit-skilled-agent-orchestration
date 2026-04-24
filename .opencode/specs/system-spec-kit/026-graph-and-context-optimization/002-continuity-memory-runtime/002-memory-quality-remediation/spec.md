@@ -35,7 +35,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify |
 | **Status** | Complete |
 | **Created** | 2026-04-06 |
 | **Branch** | `system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation` |
-| **Packet Shape** | Parent packet with 10 child phases |
+| **Packet Shape** | Consolidated packet; 10 sub-phases merged into implementation-summary.md |
 | **Research State** | Complete |
 | **Implementation State** | Mixed across child phases; see phase map for current truth |
 | **Operational Tail State** | Complete with PR-10 dry-run and PR-11 deferred-with-rationale |
@@ -90,20 +90,20 @@ Capture the final parent contract for the shipped remediation train: Phases 1-5 
 <!-- ANCHOR:phase-map -->
 ### Phase Documentation Map
 
-Phases 1-5 remain the shipped remediation train, but only Phase 1 is fully parent-closed in this packet snapshot. Phases 6-10 are approved follow-on packets that extend this parent tracking map without changing the historical closeout record for the first five phases. The later children split into three lanes: `008-input-normalizer-fastpath-fix` closes the Phase 6 runtime hole, `009-post-save-render-fixes` repairs the live render-layer defects surfaced by the 2026-04-09 packet-014 audit, and `010-memory-save-heuristic-calibration` closes the remaining schema, validator, and D5 heuristic gaps identified by the same-day RCA and skipped-recommendation audits.
+All 10 sub-phases (001–010) have been merged into `implementation-summary.md § Sub-phase summaries`. Sub-phase folders no longer exist in this packet. Phases 1-5 are the shipped remediation train; Phases 6-10 are approved follow-on work that extended the train. Full narratives, verification evidence, and decisions for each phase live in `implementation-summary.md`.
 
 | Phase | Priority | Folder | Focus | PRs / Defects | Depends On | Status |
 |-------|----------|--------|-------|---------------|------------|--------|
-| 1 | P0 | `001-foundation-templates-truncation/` | Anchor-template fix, shared truncation helper, OVERVIEW preservation | PR-1 (D8), PR-2 (D1) | — | Complete |
-| 2 | P1 | `002-single-owner-metadata/` | Importance-tier single-owner contract and provenance-only JSON enrichment | PR-3 (D4), PR-4 (D7) | Phase 1 | Complete |
-| 3 | P2 | `003-sanitization-precedence/` | Trigger-phrase sanitization and authored-decision precedence | PR-5 (D3), PR-6 (D2) | Phase 2 | Complete |
-| 4 | P3 | `004-heuristics-refactor-guardrails/` | Conservative predecessor discovery, SaveMode refactor, reviewer guardrails | PR-7 (D5), PR-8 (SaveMode), PR-9 (reviewer) | Phases 1-3 | Complete |
-| 5 | P4 | `005-operations-tail-prs/` | Telemetry artifacts, PR-10 dry-run, PR-11 defer/ship decision, parent closeout | PR-10 (migration dry-run), PR-11 (deferred), PR-9 telemetry fold-in | Phase 4 | Phase-local complete, parent gates pending |
-| 6 | P5 | `006-memory-duplication-reduction/` | Narrow the future implementation home to the compact-wrapper and canonical-doc-ownership contract identified by the sibling `001/.../006-research-memory-redundancy` packet. Focus future runtime work on collector, workflow, template-contract, and template-body surfaces plus bounded verification rather than a broad residual-dedup rewrite. | Implementation re-scope + bounded follow-on PRs (P12-P13) | Phases 1-5 stable and sibling redundancy synthesis complete | Complete |
-| 7 | P6 | `007-skill-catalog-sync/` | Audit downstream docs, templates, commands, MCP surfaces, and agents only after the narrower Phase 6 compact-wrapper contract lands, so parity review targets the final wrapper behavior instead of a broader dedupe program. | Review + update PRs (P14-P15) | Phase 6 (final compact-wrapper contract required before auditing downstream artifacts) | Complete |
-| 8 | P7 | `008-input-normalizer-fastpath-fix/` | Repair the input-normalizer fast path so packet-local save generation preserves normalized trigger shaping and compact-wrapper structure instead of bypassing the hardened path. | Fast-path normalization fix | Phase 6 contract stable and runtime save path isolated | Complete |
-| 9 | P8 | `009-post-save-render-fixes/` | Repair the nine render-layer defects still visible in live compact-wrapper saves after Phase 6 shipped: title suffix garbage, empty canonical sources, zeroed file counts, trigger noise, duplicated evidence, stale phase or status, missing lineage, self-referential parent spec, and ambiguous quality-score names. | Render-layer follow-on fixes (A-I) | Phase 6 runtime stable and the 014 memory audit complete | Implemented |
-| 10 | P9 | `010-memory-save-heuristic-calibration/` | Close the remaining memory-save schema, sanitizer, validator, and continuation-linker gaps still exposed by the 2026-04-09 RCA and skipped-recommendation audits: explicit title/description/causal-links payload fields, manual DR trigger preservation, V8/V12 calibration, D5 linker-reviewer alignment, and REC-003 helper cleanup. | RCA Issues 1-5 + REC-003/006/008/018 | Phase 9 render fixes shipped and the RCA/skipped-recommendation audits complete | Implemented |
+| 1 | P0 | merged → `implementation-summary.md` | Anchor-template fix, shared truncation helper, OVERVIEW preservation | PR-1 (D8), PR-2 (D1) | — | Complete |
+| 2 | P1 | merged → `implementation-summary.md` | Importance-tier single-owner contract and provenance-only JSON enrichment | PR-3 (D4), PR-4 (D7) | Phase 1 | Complete |
+| 3 | P2 | merged → `implementation-summary.md` | Trigger-phrase sanitization and authored-decision precedence | PR-5 (D3), PR-6 (D2) | Phase 2 | Complete |
+| 4 | P3 | merged → `implementation-summary.md` | Conservative predecessor discovery, SaveMode refactor, reviewer guardrails | PR-7 (D5), PR-8 (SaveMode), PR-9 (reviewer) | Phases 1-3 | Complete |
+| 5 | P4 | merged → `implementation-summary.md` | Telemetry artifacts, PR-10 dry-run, PR-11 defer/ship decision, parent closeout | PR-10 (migration dry-run), PR-11 (deferred), PR-9 telemetry fold-in | Phase 4 | Phase-local complete, parent gates pending |
+| 6 | P5 | merged → `implementation-summary.md` | Compact-wrapper runtime, duplication-reduction guardrails, PR-13 migration CLI | Implementation re-scope + bounded follow-on PRs (P12-P13) | Phases 1-5 stable and sibling redundancy synthesis complete | Complete |
+| 7 | P6 | merged → `implementation-summary.md` | Downstream parity audit and sync across 10 surfaces; Sub-PR-14/PR-15 applied | Review + update PRs (P14-P15) | Phase 6 compact-wrapper contract required | Complete |
+| 8 | P7 | merged → `implementation-summary.md` | Fast-path string coercion and slow-path enrichment merge in `input-normalizer.ts` | Fast-path normalization fix | Phase 6 contract stable | Complete |
+| 9 | P8 | merged → `implementation-summary.md` | Nine render-layer defect fixes (title, canonical sources, file counts, triggers, dedup, lineage, parent_spec, scores) | Render-layer follow-on fixes (A-I) | Phase 6 runtime stable | Implemented |
+| 10 | P9 | merged → `implementation-summary.md` | Schema, sanitizer, validator, and D5 continuation-linker gaps; 7-lane calibration | RCA Issues 1-5 + REC-003/006/008/018 | Phase 9 render fixes shipped | Implemented |
 
 *Parent note: Child phases may be phase-local complete while parent strict-validation blockers in `plan.md` and `tasks.md` remain out of scope for those folders; this remediation workstream is tracked in `implementation-summary.md`.*
 

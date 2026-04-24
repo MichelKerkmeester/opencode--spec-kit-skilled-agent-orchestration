@@ -1,1 +1,0 @@
-{"type":"delta","mode":"review","run":10,"dimension":"security","findingRefs":["F002"],"findingsNew":{"P0":0,"P1":0,"P2":0},"newFindingsRatio":0.08,"summary":"Final security verification closed without any P0 escalation and handed off to synthesis.","timestamp":"2026-04-21T20:17:03+02:00"}

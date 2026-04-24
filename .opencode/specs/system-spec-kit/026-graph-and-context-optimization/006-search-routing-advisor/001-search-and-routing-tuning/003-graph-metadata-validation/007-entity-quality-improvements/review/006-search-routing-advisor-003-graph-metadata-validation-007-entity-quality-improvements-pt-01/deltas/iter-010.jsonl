@@ -1,1 +1,0 @@
-{"type":"delta","iteration":10,"dimension":"security","newFindings":[],"refinedFindings":[],"resolvedFindings":[],"churn":0,"newFindingsRatio":0,"summary":"Final security replay found no new issues; stop by maxIterationsReached."}

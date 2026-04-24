@@ -27,7 +27,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify |
 
 ---
 
-> **⚠️ SUPERSEDED BY PHASES 1-5:** This file is retained as the original pre-decomposition plan only. Use `001-foundation-templates-truncation/` through `005-operations-tail-prs/` as the authoritative execution record for this packet.
+> **⚠️ SUPERSEDED BY PHASES 1-10:** This file is retained as the original pre-decomposition plan only. Sub-phase folders have been merged into `implementation-summary.md § Sub-phase summaries` and deleted. Use `implementation-summary.md` as the consolidated execution record for all 10 phases.
 
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
@@ -194,5 +194,5 @@ These were identified as `Refactor Opportunities` in `research.md §13` and are 
 
 ### Next Step
 
-This historical plan is superseded. For the real execution record, use phase folders `001-foundation-templates-truncation/` through `005-operations-tail-prs`, which replaced the fresh-plan workflow described here.
+This historical plan is superseded. For the consolidated execution record, use `implementation-summary.md § Sub-phase summaries` which contains condensed narratives for all 10 phases. Sub-phase folders have been deleted.
 <!-- /ANCHOR:rollback -->

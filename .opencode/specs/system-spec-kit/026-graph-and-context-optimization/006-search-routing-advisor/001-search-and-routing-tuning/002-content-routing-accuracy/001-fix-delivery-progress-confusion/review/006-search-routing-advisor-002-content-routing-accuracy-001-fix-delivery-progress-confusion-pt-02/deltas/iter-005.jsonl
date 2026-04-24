@@ -1,1 +1,0 @@
-{"iteration":5,"dimension":"correctness","newFindings":[{"id":"F-005","severity":"P2","evidence":[".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1338",".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1339"]}],"refinedFindings":[],"ruledOut":[],"newFindingsRatio":0.08,"vitest":"PASS 30/30","gitLogChecked":true}

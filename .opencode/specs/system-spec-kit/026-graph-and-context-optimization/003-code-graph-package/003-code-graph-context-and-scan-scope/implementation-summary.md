@@ -117,3 +117,53 @@ The implementation stayed inside the approved source/test/doc scope. I read the 
 - The local sandbox could not complete a registry-backed `npm install`; package metadata is updated, and a normal dependency refresh should install `ignore` directly.
 - `.gitignore` matching is additive with default excludes. Explicit custom `excludeGlobs` remain the caller override surface for scan policy.
 <!-- /ANCHOR:limitations -->
+
+---
+
+<!-- ANCHOR:sub-phase-summaries -->
+## Absorbed Sub-phase Record
+
+### 001-incremental-fullscan-recovery
+
+**Status**: Implementation complete (86%); live scan acceptance deferred to operator post-restart.
+**Priority**: P0 — Level 3 packet.
+
+**Problem**: `indexFiles()` unconditionally applied `isFileStale()` even when `incremental:false` was requested, so full scans parsed only stale files and pruned the DB to 33 files. Separately, `capturesToNodes()` emitted duplicate `symbolId` values for captures sharing the same `(filePath, fqName, kind)`, causing `code_nodes.symbol_id` UNIQUE constraint failures.
+
+**What was built**:
+- `structural-indexer.ts` exports `IndexFilesOptions { skipFreshFiles?: boolean }` (default `true`). The stale-gate (`isFileStale()`) is now conditioned on `skipFreshFiles`, so `indexFiles(config, { skipFreshFiles: false })` parses all post-exclude candidates.
+- `scan.ts` passes `{ skipFreshFiles: effectiveIncremental }` to `indexFiles()` and exposes additive response fields `fullScanRequested` and `effectiveIncremental` while keeping `fullReindexTriggered` unchanged.
+- `capturesToNodes()` tracks `seenSymbolIds` via `flatMap()`; the first-seen node for any `(filePath, fqName, kind)` identity wins and duplicates are dropped before DB insertion.
+- 30 new vitest tests across `structural-contract.vitest.ts` (3 option + 2 integration) and `tree-sitter-parser.vitest.ts` (3 dedupe); focused suite passed 30/30.
+- `dist/code-graph/lib/structural-indexer.js` and `dist/code-graph/handlers/scan.js` confirmed to contain new symbols.
+- Code graph `README.md` updated to document `IndexFilesOptions` and the new response fields.
+
+**Key decisions**:
+- ADR-001: Option A dedupe — minimal patch preserving stable IDs; parser-layer identity redesign deferred.
+- ADR-002: Supplement `fullScanRequested` + `effectiveIncremental`; do not rename `fullReindexTriggered`.
+
+**Known blocker**: Full `npx vitest run` suite fails in out-of-scope `tests/copilot-hook-wiring.vitest.ts` (hook-path assertion mismatch); this is not a regression from this packet. AC-1, AC-4, AC-5 (live scan file counts after MCP restart) remain operator-owned.
+
+---
+
+### 002-cross-file-dedup-defense
+
+**Status**: Implementation complete (92%); live scan acceptance deferred to operator post-restart.
+**Priority**: P0 — Level 2 packet.
+
+**Problem**: Even after 001-incremental-fullscan-recovery, live full scans still reported `UNIQUE constraint failed: code_nodes.symbol_id` for hundreds of files. Standalone parsing did not reproduce cross-file collisions, so the live-only discrepancy was undiagnosed. The packet applied defense-in-depth rather than blocking on further root-cause investigation.
+
+**What was built**:
+- **Layer 1 (scan-batch dedup)**: `structural-indexer.ts` `indexFiles()` now sweeps all `ParseResult.nodes` after the TESTED_BY cross-file edge construction block. The first file to own a `symbolId` in the current scan batch keeps it; later duplicate nodes are dropped and a `console.info` message reports the count when nonzero.
+- **Layer 2 (DB insert tolerance)**: `code-graph-db.ts` `replaceNodes()` changed from `INSERT INTO code_nodes` to `INSERT OR IGNORE INTO code_nodes`. A residual DB-level duplicate `symbol_id` no longer aborts the file transaction; non-conflicting nodes in the same call still persist.
+- 3 cross-file dedup tests added to `structural-contract.vitest.ts`; `tests/code-graph-db.vitest.ts` created with 2 direct DB duplicate-tolerance tests. Focused suite (`structural-contract.vitest.ts`, `tree-sitter-parser.vitest.ts`, `code-graph-db.vitest.ts`) passed 3 files / 33 tests.
+- Build exited 0; `dist/code-graph/lib/structural-indexer.js` contains `globalSeenIds`; `dist/code-graph/lib/code-graph-db.js` contains `INSERT OR IGNORE`.
+
+**Key decisions**:
+- ADR-001: Defense in depth now over further root-cause investigation — live failure is high-impact, guards are narrow and reversible.
+- ADR-002: `INSERT OR IGNORE` over `INSERT OR REPLACE` — first-owner-wins semantics; existing DB rows are never overwritten by a duplicate.
+
+**Soft consistency tradeoff**: TESTED_BY edges are constructed before the Layer 1 sweep, so a TESTED_BY edge may reference a node that Layer 1 subsequently drops. This is accepted as preferable to a hard persistence crash.
+
+**Known limitation**: AC-1 (zero `UNIQUE constraint failed` in `errors[]`) and AC-2 (`filesIndexed >= 1300`) remain operator-owned pending MCP restart.
+<!-- /ANCHOR:sub-phase-summaries -->

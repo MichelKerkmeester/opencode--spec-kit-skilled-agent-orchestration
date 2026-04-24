@@ -1,1 +1,0 @@
-{"iteration":"009","dimension":"correctness","type":"no-new-finding","summary":"Final correctness pass over target selection and fallback routing found no new issues.","evidence":[".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:712",".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1053"],"newFindingsRatio":0,"churn":0}

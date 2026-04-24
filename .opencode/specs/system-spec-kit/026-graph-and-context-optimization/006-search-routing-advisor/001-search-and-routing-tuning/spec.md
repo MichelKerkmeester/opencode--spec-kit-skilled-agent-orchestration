@@ -14,7 +14,7 @@ _memory:
     last_updated_at: "2026-04-18T22:00:00Z"
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Restored coordination-parent root spec for canonical save invariants"
-    next_safe_action: "Use child packet docs for search fusion, routing, and graph-validation details"
+    next_safe_action: "No action needed — sub-phases merged into implementation-summary.md"
     blockers: []
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
@@ -130,6 +130,4 @@ Restore the canonical root spec for `010-search-and-routing-tuning` so packet-le
 
 ## Source Child Packets
 
-- `001-search-fusion-tuning/spec.md`
-- `002-content-routing-accuracy/spec.md`
-- `003-graph-metadata-validation/spec.md`
+Sub-phase folders (`001-search-fusion-tuning/`, `002-content-routing-accuracy/`, `003-graph-metadata-validation/`) have been merged into the parent. Full per-sub-phase narratives, key decisions, and verification evidence are in `implementation-summary.md` under `## Sub-phase summaries → ### 001-search-fusion-tuning`, `### 002-content-routing-accuracy`, and `### 003-graph-metadata-validation`.

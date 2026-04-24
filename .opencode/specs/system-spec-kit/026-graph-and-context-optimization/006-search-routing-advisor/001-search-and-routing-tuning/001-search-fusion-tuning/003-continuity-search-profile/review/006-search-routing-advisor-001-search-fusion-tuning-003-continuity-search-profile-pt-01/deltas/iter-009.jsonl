@@ -1,1 +1,0 @@
-{"type":"delta","iteration":9,"dimension":"correctness","newFindingRefs":[],"findingsNew":{"P0":0,"P1":0,"P2":0},"newFindingsRatio":0.04,"coverage":1.0,"notes":"Stabilization pass kept the shipped continuity code and tests clear of runtime defects."}

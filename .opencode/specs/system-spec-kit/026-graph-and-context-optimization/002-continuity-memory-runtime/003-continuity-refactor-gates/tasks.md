@@ -57,12 +57,12 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T010 Complete Gate A pre-work and mark its child packet complete (`001-gate-a-prework/`)
-- [x] T011 Complete Gate B foundation work and mark its child packet complete (`002-gate-b-foundation/`)
-- [x] T012 Complete Gate C writer-ready work and mark its child packet complete (`003-gate-c-writer-ready/`)
-- [x] T013 Complete Gate D reader-ready work and mark its child packet complete (`004-gate-d-reader-ready/`)
-- [x] T014 Complete Gate E runtime migration work and mark its child packet complete (`005-gate-e-runtime-migration/`)
-- [x] T015 Complete Gate F cleanup-verification work and mark its child packet complete (`006-gate-f-cleanup-verification/`)
+- [x] T010 Complete Gate A pre-work — merged into `implementation-summary.md §001-gate-a-prework`
+- [x] T011 Complete Gate B foundation work — merged into `implementation-summary.md §002-gate-b-foundation`
+- [x] T012 Complete Gate C writer-ready work — merged into `implementation-summary.md §003-gate-c-writer-ready`
+- [x] T013 Complete Gate D reader-ready work — merged into `implementation-summary.md §004-gate-d-reader-ready`
+- [x] T014 Complete Gate E runtime migration work — merged into `implementation-summary.md §005-gate-e-runtime-migration`
+- [x] T015 Complete Gate F cleanup-verification work — merged into `implementation-summary.md §006-gate-f-cleanup-verification`
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -70,7 +70,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T020 Keep the parent phase map and packet status synchronized with the six child folders (`spec.md`, `plan.md`, `tasks.md`)
+- [x] T020 Keep the parent phase map and packet status synchronized — sub-phase folders merged into `implementation-summary.md` (`spec.md`, `plan.md`, `tasks.md`)
 - [x] T021 Run recursive strict validation as the packet progresses and resolve packet-level coordination drift before closure (`./.opencode/skill/system-spec-kit/scripts/spec/validate.sh`)
 - [x] T022 Refresh the parent `implementation-summary.md` with the actual delivered outcome, verification evidence, and cleanup-verification result once all six gates close (`implementation-summary.md`)
 <!-- /ANCHOR:phase-3 -->

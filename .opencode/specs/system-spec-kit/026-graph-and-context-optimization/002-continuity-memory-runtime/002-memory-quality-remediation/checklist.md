@@ -53,7 +53,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 
 - [x] CHK-010 [P0] The parent packet no longer describes implementation as deferred. [EVIDENCE: parent-level assertion — no single child CHK owns the parent packet status wording; `spec.md` metadata, scope, and success criteria now record the packet as complete.]
 - [x] CHK-011 [P1] Parent packet claims now point back to child evidence instead of duplicating unsupported code-level detail. [EVIDENCE: Section B items below cite phase-local CHK IDs for each remediation slice.]
-- [x] CHK-012 [P1] Parent closeout preserves optional-tail truth for PR-10 and PR-11. [EVIDENCE: `005-operations-tail-prs/checklist.md` CHK-520 through CHK-526 and CHK-530 through CHK-543.]
+- [x] CHK-012 [P1] Parent closeout preserves optional-tail truth for PR-10 and PR-11. [EVIDENCE: `implementation-summary.md §005-operations-tail-prs` — PR-10 dry-run only; PR-11 deferred with rationale.]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -63,17 +63,17 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 
 ### Section B — Code Remediation
 
-- [x] CHK-020 [P0] D1 fix landed with helper-level fixture tests passing. [EVIDENCE: `001-foundation-templates-truncation/checklist.md` CHK-020, CHK-P0-01, CHK-P0-03.]
-- [x] CHK-021 [P0] D8 fix landed with template anchor consistency assertion passing. [EVIDENCE: `001-foundation-templates-truncation/checklist.md` CHK-020, CHK-P0-02, CHK-P0-03.]
-- [x] CHK-022 [P1] D4 fix landed with reviewer drift assertion live. [EVIDENCE: `002-single-owner-metadata/checklist.md` CHK-210, CHK-220, CHK-222.]
-- [x] CHK-023 [P1] D7 fix landed and populates JSON-mode provenance without summary contamination. [EVIDENCE: `002-single-owner-metadata/checklist.md` CHK-211, CHK-221, CHK-222.]
-- [x] CHK-024 [P1] D3 trigger sanitization landed and removed the researched junk classes from saved output. [EVIDENCE: `003-sanitization-precedence/checklist.md` CHK-001, CHK-002, CHK-005.]
-- [x] CHK-025 [P1] D3 topic-bigram adjacency landed without widening into blanket suppression. [EVIDENCE: `003-sanitization-precedence/checklist.md` CHK-001, CHK-014, CHK-005.]
-- [x] CHK-026 [P1] D2 decision precedence landed and preserves the degraded-payload fallback contract. [EVIDENCE: `003-sanitization-precedence/checklist.md` CHK-003, CHK-004, CHK-005.]
-- [x] CHK-027 [P1] D5 lineage discovery landed with conservative continuation gating. [EVIDENCE: `004-heuristics-refactor-guardrails/checklist.md` CHK-020, CHK-021, CHK-030.]
-- [x] CHK-028 [P1] D6 remained investigation-first and stayed inside the safe historical-rewrite set rather than receiving a speculative production patch. [EVIDENCE: historical classification — see `research/iterations/iteration-025.md` D6 status (`HISTORICAL / UNKNOWN`) and `005-operations-tail-prs/checklist.md` CHK-523 for the safe-subset-only PR-10 classification.]
-- [x] CHK-029 [P0] Full packet replay and reviewer guardrails confirm the repaired defect set stays clean on the validated baseline. [EVIDENCE: `004-heuristics-refactor-guardrails/checklist.md` CHK-022 through CHK-030.]
-- [x] CHK-030 [P2] Before/after diff captured for 3 sample memory saves. [DEFERRED: Explicit deferral - this P2 evidence artifact was intentionally not produced in this packet. The Phase 5 operational tail stopped at dry-run classification (see `005-operations-tail-prs/checklist.md` CHK-520 through CHK-524); producing before/after diffs would require running PR-10 `--apply` against real historical memories, which is explicitly deferred with rationale. Rationale: this P2 diff artifact is a documentation-quality enhancement, not a shipping blocker, and its content would duplicate the PR-10 dry-run report. Reopen if PR-10 apply ships.]
+- [x] CHK-020 [P0] D1 fix landed with helper-level fixture tests passing. [EVIDENCE: `implementation-summary.md §001-foundation-templates-truncation` — `truncateOnWordBoundary` helper, 7/7 unit tests, 2/2 Phase 1 fixture suite PASS.]
+- [x] CHK-021 [P0] D8 fix landed with template anchor consistency assertion passing. [EVIDENCE: `implementation-summary.md §001-foundation-templates-truncation` — OVERVIEW anchor renamed to `overview`; template, validator, and parser aligned; replay PASS.]
+- [x] CHK-022 [P1] D4 fix landed with reviewer drift assertion live. [EVIDENCE: `implementation-summary.md §002-single-owner-metadata` — single-owner tier resolver, PR-3 vitest PASS.]
+- [x] CHK-023 [P1] D7 fix landed and populates JSON-mode provenance without summary contamination. [EVIDENCE: `implementation-summary.md §002-single-owner-metadata` — provenance-only JSON enrichment, PR-4 vitest PASS.]
+- [x] CHK-024 [P1] D3 trigger sanitization landed and removed the researched junk classes from saved output. [EVIDENCE: `implementation-summary.md §003-sanitization-precedence` — `trigger-phrase-sanitizer.ts`, sanitizer vitest PASS.]
+- [x] CHK-025 [P1] D3 topic-bigram adjacency landed without widening into blanket suppression. [EVIDENCE: `implementation-summary.md §003-sanitization-precedence` — adjacency guard in `semantic-signal-extractor.ts`, PR-5 vitest PASS.]
+- [x] CHK-026 [P1] D2 decision precedence landed and preserves the degraded-payload fallback contract. [EVIDENCE: `implementation-summary.md §003-sanitization-precedence` — authored-array precedence gate, degraded-payload regression fixture PASS.]
+- [x] CHK-027 [P1] D5 lineage discovery landed with conservative continuation gating. [EVIDENCE: `implementation-summary.md §004-heuristics-refactor-guardrails` — `find-predecessor-memory.ts`, PR-7 vitest PASS.]
+- [x] CHK-028 [P1] D6 remained investigation-first and stayed inside the safe historical-rewrite set. [EVIDENCE: historical classification — D6 status `HISTORICAL / UNKNOWN`; PR-10 dry-run-only; see `implementation-summary.md §005-operations-tail-prs`.]
+- [x] CHK-029 [P0] Full packet replay and reviewer guardrails confirm the repaired defect set stays clean on the validated baseline. [EVIDENCE: `implementation-summary.md §004-heuristics-refactor-guardrails` — F-AC8 clean reviewer fixture, PR-9 vitest 18/18 PASS.]
+- [x] CHK-030 [P2] Before/after diff captured for 3 sample memory saves. [DEFERRED: Explicit deferral - this P2 evidence artifact was intentionally not produced in this packet. The Phase 5 operational tail stopped at dry-run classification; producing before/after diffs would require running PR-10 `--apply` against real historical memories, which is explicitly deferred with rationale. Reopen if PR-10 apply ships.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -81,8 +81,8 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-040 [P1] The packet does not claim historical auto-healing for unrecoverable defects. [EVIDENCE: `005-operations-tail-prs/checklist.md` CHK-523, CHK-524, CHK-531.]
-- [x] CHK-041 [P1] Optional concurrency hardening remains explicit rather than implied. [EVIDENCE: `005-operations-tail-prs/checklist.md` CHK-530 and the recorded PR-11 defer rationale.]
+- [x] CHK-040 [P1] The packet does not claim historical auto-healing for unrecoverable defects. [EVIDENCE: `implementation-summary.md §005-operations-tail-prs` — PR-10 dry-run-only evidence preserved; unrecoverable class deferred.]
+- [x] CHK-041 [P1] Optional concurrency hardening remains explicit rather than implied. [EVIDENCE: `implementation-summary.md §005-operations-tail-prs` — PR-11 deferred with rationale: no concurrency-pressure justification.]
 <!-- /ANCHOR:security -->
 
 ---
@@ -90,7 +90,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-050 [P1] Parent phase map now reflects all five child phases as complete. [EVIDENCE: parent-level roll-up assertion — no single child CHK owns the aggregate phase map; see parent `spec.md` Phase Documentation Map plus child checklists `001-` through `005-`.]
+- [x] CHK-050 [P1] Parent phase map now reflects all ten phases as complete. [EVIDENCE: parent-level roll-up assertion — see parent `spec.md` Phase Documentation Map (all 10 phases merged → `implementation-summary.md`).]
 - [x] CHK-051 [P1] Parent implementation summary describes the packet as a completed train, not a future plan. [EVIDENCE: parent-level roll-up assertion — no single child CHK owns the aggregate packet narrative; see `implementation-summary.md` What Was Built and Verification sections.]
 - [x] CHK-052 [P1] Parent checklist Section B evidence points to phase-local CHK IDs instead of generic folder references. [EVIDENCE: this checklist CHK-020 through CHK-029.]
 <!-- /ANCHOR:docs -->
@@ -100,7 +100,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-060 [P1] Child-phase validation evidence remains packet-local in the owning phase folders. [EVIDENCE: `001-` through `005-` phase checklists and implementation summaries.]
+- [x] CHK-060 [P1] Sub-phase execution evidence is consolidated in the parent implementation-summary. [EVIDENCE: `implementation-summary.md §Sub-phase summaries` — all 10 phases with verification evidence, decisions, and outcomes.]
 - [x] CHK-061 [P1] Parent closeout docs are limited to the scoped packet-root files. [EVIDENCE: parent updates are confined to `spec.md`, `checklist.md`, and `implementation-summary.md` in this pass.]
 - [x] CHK-062 [P1] The final verification report can distinguish child-phase passes from parent out-of-scope blockers. [EVIDENCE: parent spec open questions plus this checklist's pending CHK-030 note.]
 <!-- /ANCHOR:file-org -->

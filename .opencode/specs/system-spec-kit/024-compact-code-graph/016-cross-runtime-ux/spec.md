@@ -117,21 +117,21 @@ Improve CocoIndex integration (seed resolution, query-intent metadata, auto-rein
 ### P3
 
 **Item 25: Cross-runtime instruction updates**
-- **CODEX.md**: Add Session Start Protocol section — force `memory_context()` + `code_graph_status()` on first turn
+- **AGENTS.md**: Add Session Start Protocol section — force `memory_context()` + `code_graph_status()` on first turn
 - **AGENTS.md**: Add code graph auto-trigger for Copilot CLI agents
 - **OpenCode agents**: Update `.opencode/agent/context.md` with code graph integration
-- **Gemini**: Update `GEMINI.md` with equivalent session start protocol
+- **Gemini**: Update `AGENTS.md` with equivalent session start protocol
 - **CLAUDE.md** (root): Add universal Code Search Protocol referencing code graph tools
-- Files: `CODEX.md`, `AGENTS.md`, `.opencode/agent/context.md`, `GEMINI.md`, `CLAUDE.md`
+- Files: `AGENTS.md`, `AGENTS.md`, `.opencode/agent/context.md`, `AGENTS.md`, `CLAUDE.md`
 - LOC: 100-168
 - Evidence: research iter-065 (OpenCode), iter-074 (Codex/Copilot), iter-084-087 (per-runtime deep dives)
 
 **Item 26: Recovery documentation consolidation**
-- Current: recovery instructions split across `.claude/CLAUDE.md` and root `CLAUDE.md`
+- Current: recovery instructions split across `CLAUDE.md` and root `CLAUDE.md`
 - Fix: single source of truth for recovery workflow
 - Root CLAUDE.md: universal recovery (works on all runtimes)
-- `.claude/CLAUDE.md`: Claude-specific hook-aware additions only
-- Files: `.claude/CLAUDE.md`, root `CLAUDE.md`
+- `CLAUDE.md`: Claude-specific hook-aware additions only
+- Files: `CLAUDE.md`, root `CLAUDE.md`
 - LOC: 20-30
 
 ### P2 — Improvements (new from 30-iteration review)

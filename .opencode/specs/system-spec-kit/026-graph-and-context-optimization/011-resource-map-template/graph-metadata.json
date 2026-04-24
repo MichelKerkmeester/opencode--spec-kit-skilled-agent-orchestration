@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/001-reverse-parent-research-review-folders",
+    "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/002-resource-map-template-creation",
+    "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/003-resource-map-deep-loop-integration"
+  ],
+  "aliases": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/004-cross-runtime-fallback",
+        "reason": "sibling packet in 026 track"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks",
+        "reason": "sibling packet in 026 track"
+      }
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "011-resource-map-template",
+      "resource map template packet",
+      "resource map template and deep loop integration",
+      "reverse parent folders resource map",
+      "resource-map.md template",
+      "local owner deep loop artifact placement",
+      "convergence time resource map emission",
+      "extract from evidence extractor",
+      "review-research-paths rollback"
+    ],
+    "key_topics": [
+      "resource map",
+      "template",
+      "deep loop",
+      "local owner",
+      "convergence emission",
+      "path ledger",
+      "artifact placement",
+      "extract-from-evidence",
+      "review-research-paths"
+    ],
+    "importance_tier": "important",
+    "status": "in-progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "decision-record.md"
+    ],
+    "entities": [],
+    "causal_summary": "Three-sub-phase packet: Phase 001 (complete) restored local-owner deep-loop artifact placement by rolling back review-research-paths.cjs and running repo-wide migration. Phase 002 (in-progress, 85%) created the resource-map.md template and wired it into all discovery surfaces. Phase 003 (complete) built the shared extract-from-evidence.cjs extractor and integrated convergence-time emission into both sk-deep-review and sk-deep-research. F001-F004 findings from 7-iteration deep-review closed.",
+    "created_at": "2026-04-24T00:00:00Z",
+    "last_save_at": "2026-04-24T00:00:00Z",
+    "save_lineage": "root-docs-scaffold",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "decision-record.md"
+    ]
+  }
+}

@@ -1,1 +1,0 @@
-{"type":"delta","mode":"review","run":4,"dimension":"maintainability","findingRefs":["F003","F004"],"findingsNew":{"P0":0,"P1":0,"P2":2},"newFindingsRatio":0.25,"summary":"Found mixed-format key_file duplication and stop-word entity slots in generated metadata."}

@@ -89,14 +89,14 @@ DB query failures in the seed resolver previously degraded silently to file-leve
 ### Cross-Runtime Session Start Protocol (Item 42)
 
 All instruction files now include a Session Start Protocol section:
-- **CODEX.md**: Calls `memory_context()` with resume profile + `code_graph_status()` on first turn
+- **AGENTS.md**: Calls `memory_context()` with resume profile + `code_graph_status()` on first turn
 - **AGENTS.md**: Code graph auto-trigger for Copilot CLI and Gemini CLI agents
 - **OpenCode context.md**: Graph health check integrated into the exploration workflow with tool reference table
-- **GEMINI.md**: Shares AGENTS.md content via symlink
+- **AGENTS.md**: Shares AGENTS.md content via symlink
 
 ### Recovery Documentation Consolidation (Item 43)
 
-Universal recovery instructions moved to root CLAUDE.md (works on all runtimes). `.claude/CLAUDE.md` trimmed to Claude-specific hook-aware behavior only. No more overlapping authority between the two files.
+Universal recovery instructions moved to root CLAUDE.md (works on all runtimes). `CLAUDE.md` trimmed to Claude-specific hook-aware behavior only. No more overlapping authority between the two files.
 
 ### Truth-Sync Checklist Annotations (Item 46)
 
@@ -110,11 +110,11 @@ Five v1 checklist items that overstated shipped behavior now carry PARTIAL annot
 | `lib/code-graph/code-graph-db.ts` | Modified | idx_file_line index, code_graph_metadata table |
 | `lib/code-graph/query-intent-classifier.ts` | Modified | Query intent classification for metadata annotation |
 | `handlers/code-graph/scan.ts` | Modified | Git HEAD detection, auto-reindex |
-| `CODEX.md` | Modified | Session Start Protocol |
+| `AGENTS.md` | Modified | Session Start Protocol |
 | `AGENTS.md` | Modified | Code graph auto-trigger |
 | `.opencode/agent/context.md` | Modified | Code graph integration |
 | `CLAUDE.md` | Modified | Universal recovery |
-| `.claude/CLAUDE.md` | Modified | Claude-specific only |
+| `CLAUDE.md` | Modified | Claude-specific only |
 | Root `checklist.md` | Modified | PARTIAL annotations |
 <!-- /ANCHOR:what-built -->
 

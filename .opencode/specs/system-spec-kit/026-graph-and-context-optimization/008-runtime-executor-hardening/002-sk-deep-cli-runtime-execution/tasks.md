@@ -1,6 +1,6 @@
 ---
 title: "...m-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/tasks]"
-description: "Top-level task pointer. All work shipped. Detail in 001-executor-feature/tasks.md and 002-runtime-matrix/tasks.md."
+description: "Top-level task pointer. All work shipped. Sub-phase detail merged into implementation-summary.md §Sub-phase summaries."
 trigger_phrases:
   - "cli runtime executors tasks"
 importance_tier: "normal"
@@ -24,10 +24,8 @@ All tasks shipped. This top-level is a pointer; child packets hold the task ledg
 
 ## Child Task Ledgers
 
-- **001-executor-feature** (ex-018) → `001-executor-feature/tasks.md`
-  - 14 tasks across Phase A-E (schema, prompt-pack, YAML branch, review mirror, docs + tests)
-- **002-runtime-matrix** (ex-019) → `002-runtime-matrix/tasks.md`
-  - ~9 tasks across Phase A-C (per-kind validation, YAML branches for 3 new kinds, docs)
+- **001-executor-feature** (ex-018, merged) — 14 tasks across Phase A-E (schema, prompt-pack, YAML branch, review mirror, docs + tests). See `implementation-summary.md §Sub-phase summaries ###001-executor-feature`.
+- **002-runtime-matrix** (ex-019, merged) — ~9 tasks across Phase A-C (per-kind validation, YAML branches for 3 new kinds, docs). See `implementation-summary.md §Sub-phase summaries ###002-runtime-matrix`.
 
 ## Downstream
 

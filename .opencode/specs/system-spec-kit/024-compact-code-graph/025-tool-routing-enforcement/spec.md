@@ -167,8 +167,8 @@ Eliminate AI tool misjudgment by adding active enforcement at three MCP enforcem
 | `mcp_server/tool-schemas.ts` | Modify | Add routing guidance to search-adjacent tool descriptions |
 | `mcp_server/lib/session/session-snapshot.ts` | Modify | Add `cocoIndexAvailable` and routing rules to snapshot |
 | `../../../../../CLAUDE.md` | Modify | Strengthen CocoIndex/Code Graph enforcement language and keep Claude-aware routing guidance consolidated in the active workspace file |
-| `../../../../../CODEX.md` | Modify | Add non-hook routing enforcement |
-| `../../../../../GEMINI.md` | Modify | Add Gemini runtime routing enforcement |
+| `../../../../../AGENTS.md` | Modify | Add non-hook routing enforcement |
+| `../../../../../AGENTS.md` | Modify | Add Gemini runtime routing enforcement |
 | Runtime agent files (context-prime.md x5) | Modify | Add routing directives to prime output |
 
 ---
