@@ -23,7 +23,7 @@
       "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
       "lines": [46, 281],
       "iterationFirstSeen": 1,
-      "evidence": "ftsCleanupStrategy: 'memory_index_trigger' — never asserted",
+      "evidence": "ftsCleanupStrategy: 'memory_index_trigger' - never asserted",
       "status": "open",
       "crossReferencedIterations": [2]
     },
@@ -51,7 +51,7 @@
       "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
       "lines": [99, 103, 107, 117],
       "iterationFirstSeen": 1,
-      "evidence": "file_path LIKE '%/z_future/%' — diverges from (^|/)z_future(/|$) regex semantics",
+      "evidence": "file_path LIKE '%/z_future/%' - diverges from (^|/)z_future(/|$) regex semantics",
       "status": "open",
       "crossReferencedIterations": [2],
       "securityFraming": "cleanup-evasion: attacker storing relative z_future/ path bypasses cleanup while matching runtime regex"
@@ -86,7 +86,7 @@
       "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
       "lines": [311, 319],
       "iterationFirstSeen": 2,
-      "evidence": "console.warn('[memory-save] ...', { file_path: parsed.filePath }) — no newline/control-char strip; parsed.filePath originates from frontmatter/caller input",
+      "evidence": "console.warn('[memory-save] ...', { file_path: parsed.filePath }) - no newline/control-char strip; parsed.filePath originates from frontmatter/caller input",
       "status": "open"
     },
     {
@@ -112,6 +112,48 @@
       ],
       "iterationFirstSeen": 2,
       "evidence": "loadGitignore uses readFileSync with no size cap; findFiles.walk has no depth / node-count bound. Attacker controlling files in scanned dir can exhaust memory or block event loop.",
+      "status": "open"
+    },
+    {
+      "id": "P1-010",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "spec.md Status=In Progress contradicts verified delivered state",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/spec.md",
+      "lines": [56],
+      "relatedFiles": [
+        { "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/implementation-summary.md", "lines": [35] },
+        { "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/checklist.md", "lines": [117] },
+        { "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/tasks.md", "lines": [16] }
+      ],
+      "iterationFirstSeen": 3,
+      "evidence": "spec.md Metadata row says 'In Progress' while impl-summary says 'Completed: Yes', checklist records Verification Date=2026-04-24, tasks.md completion_pct=100",
+      "status": "open"
+    },
+    {
+      "id": "P1-011",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Stale _memory.continuity frontmatter in plan.md, decision-record.md, spec.md (completion_pct=20)",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/plan.md",
+      "lines": [11, 23],
+      "relatedFiles": [
+        { "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/decision-record.md", "lines": [11, 21] },
+        { "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/spec.md", "lines": [13, 27] }
+      ],
+      "iterationFirstSeen": 3,
+      "evidence": "All three files carry completion_pct=20 and scaffolding-era recent_action strings; tasks.md/checklist.md/impl-summary.md were updated to completion_pct=100. Resume ladder reads these blocks verbatim.",
+      "status": "open"
+    },
+    {
+      "id": "P1-012",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "plan.md Implementation Phases + DoD checkboxes remain unchecked after completion",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/plan.md",
+      "lines": [59, 62, 87, 100],
+      "iterationFirstSeen": 3,
+      "evidence": "Definition of Done has three [ ] items; Phases 1-3 all [ ] unchecked; tasks.md T001-T014 all [x]; checklist.md CHK-001..CHK-122 all [x]",
       "status": "open"
     },
     {
@@ -174,7 +216,7 @@
       "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
       "lines": [407],
       "iterationFirstSeen": 2,
-      "evidence": "console.error('[cleanup-index-scope-violations] Error:', error.message) — better-sqlite3 embeds absolute DB path in error messages",
+      "evidence": "console.error('[cleanup-index-scope-violations] Error:', error.message) - better-sqlite3 embeds absolute DB path in error messages",
       "status": "open"
     },
     {
@@ -198,6 +240,53 @@
       "iterationFirstSeen": 2,
       "evidence": "loadSqliteVec(database) loads native extension with no integrity check; compromised npm package executes attacker native code against live DB.",
       "status": "open"
+    },
+    {
+      "id": "P2-009",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "spec.md Section 13 open-question about README count (2 vs 3) is stale after ADR-005",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/spec.md",
+      "lines": [291, 294],
+      "iterationFirstSeen": 3,
+      "evidence": "Open question text still lists 2-or-3 ambiguity; ADR-005 resolves this to 2 unambiguously (README excluded). Should be removed or annotated RESOLVED.",
+      "status": "open"
+    },
+    {
+      "id": "P2-010",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "feature_catalog and manual_testing_playbook carry no entry for the three invariants or index-scope helper",
+      "file": ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
+      "lines": [],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md", "lines": [] }
+      ],
+      "iterationFirstSeen": 3,
+      "evidence": "grep for z_future/external/constitutional-tier/index-scope returns only unrelated hits. Not in declared spec.md Files-to-Change scope, but compounds with packet age.",
+      "status": "open"
+    },
+    {
+      "id": "P2-011",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "Decision-record does not document packet 010/011 composition for save-path defense-in-depth",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/decision-record.md",
+      "lines": [51],
+      "iterationFirstSeen": 3,
+      "evidence": "ADR-001 Constraints mentions scope-lock against packet 010 fromScan work but no ADR explains how 011's save-time guard layers with 010's canonical-path post-filter (Fix A) + fromScan transactional recheck (Fix B2). Reviewers cannot reconstruct layering from either packet alone.",
+      "status": "open"
+    },
+    {
+      "id": "P2-012",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "Parent 026 graph-metadata.json child reference contains double-slash drift",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/graph-metadata.json",
+      "lines": [17],
+      "iterationFirstSeen": 3,
+      "evidence": "Path 'system-spec-kit/026-graph-and-context-optimization//011-index-scope-and-constitutional-tier-invariants' has '//' between parent and child slug; adjacent description.json:41 uses single-slash convention.",
+      "status": "open"
     }
   ],
   "resolvedFindings": [],
@@ -205,15 +294,15 @@
   "dimensionCoverage": {
     "correctness": true,
     "security": true,
-    "traceability": false,
+    "traceability": true,
     "maintainability": false
   },
   "findingsBySeverity": {
     "P0": 0,
-    "P1": 9,
-    "P2": 8
+    "P1": 12,
+    "P2": 12
   },
-  "openFindingsCount": 17,
+  "openFindingsCount": 24,
   "resolvedFindingsCount": 0,
   "convergenceScore": 0.0
 }

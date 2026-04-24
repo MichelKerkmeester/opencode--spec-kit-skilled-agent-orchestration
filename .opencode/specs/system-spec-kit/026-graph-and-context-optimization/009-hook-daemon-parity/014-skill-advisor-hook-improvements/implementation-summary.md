@@ -12,8 +12,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements"
     last_updated_at: "2026-04-24T08:13:17Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Implemented tasks T-001 through T-015, verified focused tests, and wrote per-task applied reports"
-    next_safe_action: "If global package build parity is needed, resolve the unrelated packet-external TypeScript errors blocking full `tsc --build`"
+    recent_action: "packet-014-implemented"
+    next_safe_action: "track-external-build-blockers"
     blockers:
       - "Global package build still fails in unrelated files outside this packet scope"
     completion_pct: 100
@@ -26,6 +26,7 @@ _memory:
 ---
 
 ## Metadata
+<!-- ANCHOR:metadata -->
 
 | Field | Value |
 | --- | --- |
@@ -33,8 +34,10 @@ _memory:
 | **Status** | Complete |
 | **Completed** | 2026-04-24T08:13:17Z |
 | **Source** | `plan.md` + `../../research/014-skill-advisor-hook-improvements-pt-02/research.md` |
+<!-- /ANCHOR:metadata -->
 
 ## What Was Built
+<!-- ANCHOR:what-built -->
 
 - OpenCode now uses one explicit threshold contract across plugin defaults, native bridge routing, fallback routing, and operator-facing bridge metadata.
 - OpenCode native bridge rendering now flows through the shared `renderAdvisorBrief(...)` invariants instead of a bespoke formatter.
@@ -42,8 +45,7 @@ _memory:
 - `advisor_recommend` and `advisor_validate` now accept explicit `workspaceRoot`, and both public outputs expose the effective state they used.
 - `advisor_validate` now publishes aggregate-vs-runtime threshold semantics and a prompt-safe telemetry block, including accepted/corrected/ignored outcome totals.
 - Hook diagnostics now persist to bounded JSONL sinks under the temp metrics root, and validator analysis can read those sinks back across processes.
-
-## Files Changed
+### Files Changed
 
 | Path | Scope |
 | --- | --- |
@@ -63,20 +65,26 @@ _memory:
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/user-prompt-submit.ts` | Durable diagnostics sink wiring |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts` | Durable diagnostics sink wiring |
 | `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md` | Hook/operator contract docs |
+<!-- /ANCHOR:what-built -->
 
 ## How It Was Delivered
+<!-- ANCHOR:how-delivered -->
 
 The packet was executed in task order: first by reading the packet docs and research inputs, then by landing the shared threshold/result primitives that the runtime adapters depend on, then by wiring OpenCode, Codex, the public MCP handlers, and the telemetry surfaces onto that shared contract. Once the code paths were aligned, focused Vitest suites, direct hook/bridge smokes, validator/output smokes, and cross-consistency greps were run and captured into per-task applied reports.
+<!-- /ANCHOR:how-delivered -->
 
 ## Key Decisions
+<!-- ANCHOR:decisions -->
 
 - Kept OpenCode’s native bridge route, but forced it through the same threshold object and shared renderer as the fallback path instead of preserving a custom formatter.
 - Removed Codex’s bespoke prompt-time fast path rather than partially copying shared invariants into a second scorer branch.
 - Preserved backward compatibility on public tool inputs by making `workspaceRoot` optional on input while making it explicit on output.
 - Published aggregate validation thresholds separately from runtime routing thresholds so operator tooling can distinguish release gates from prompt-time routing behavior.
 - Used prompt-safe bounded JSONL sinks in the temp directory for durable diagnostics and outcome totals so hook state survives process boundaries without persisting raw prompt text.
+<!-- /ANCHOR:decisions -->
 
 ## Verification
+<!-- ANCHOR:verification -->
 
 | Check | Result | Notes |
 | --- | --- | --- |
@@ -87,8 +95,11 @@ The packet was executed in task order: first by reading the packet docs and rese
 | Direct handler smokes | Pass | `advisor_recommend` and `advisor_validate` returned the new public fields and telemetry totals |
 | Cross-consistency grep | Pass | README, hook reference, and schema now agree on `workspaceRoot`, `effectiveThresholds`, and `thresholdSemantics` |
 | Full package build | Fail | Blocked by unrelated pre-existing TypeScript errors in `hooks/claude/hook-state.ts`, `lib/context/shared-payload.ts`, and `code-graph/lib/code-graph-context.ts` outside this packet scope |
+<!-- /ANCHOR:verification -->
 
 ## Known Limitations
+<!-- ANCHOR:limitations -->
 
 - The repository-wide `npm --prefix .opencode/skill/system-spec-kit/mcp_server run build` remains blocked by unrelated packet-external TypeScript errors, so full-package build parity could not be re-established inside this scope lock.
 - The current workspace reports stale advisor freshness during direct hook/bridge smokes, so the verification evidence exercised prompt-safe stale/fallback behavior rather than a live daemon path.
+<!-- /ANCHOR:limitations -->
