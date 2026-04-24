@@ -68,6 +68,28 @@
       "bypassFindings": 0
     },
     {
+      "id": "P0-002",
+      "severity": "P0",
+      "resolvedInPass": 2,
+      "resolvedInIteration": 2,
+      "resolution": "closed",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:1291-1360 (validateMemoryRow extended with shouldIndexForMemory + isConstitutionalPath)",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:1324 (shouldIndexForMemory call; rejects z_future/external/z_archive with deny audit + throw)",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:1342-1359 (isConstitutionalPath check; downgrades constitutional on non-/constitutional/ path with conflict audit)",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:1637-1645 (pre-flight validation sweep INSIDE transaction, BEFORE any INSERT)",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:1606-1611 (INSERT OR REPLACE/IGNORE INTO memory_index; executed only after validation passes)",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:1614-1619 (UPDATE memory_index SET; same gating)",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:1636-1838 (database.transaction wrapping; atomic rollback on any throw)",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:1847-1849 (governance_audit flush in outer finally — survives rollback)",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/checkpoint-restore-invariant-enforcement.vitest.ts (3 scenarios: clean preservation, poisoned downgrade, walker-excluded atomic abort + rollback)",
+        "grep confirms zero INSERT OR REPLACE/IGNORE INTO memory_index sites outside checkpoints.ts:1606-1611"
+      ],
+      "bypassProbes": 7,
+      "bypassFindings": 0,
+      "chainIntegrity": "compound-P0-001+P0-002-attack-chain-severed-at-step-4"
+    },
+    {
       "id": "P1-018",
       "severity": "P1",
       "resolvedInPass": 2,
@@ -92,12 +114,12 @@
     "P2": 3
   },
   "openFindingsCount": 3,
-  "resolvedFindingsCount": 2,
+  "resolvedFindingsCount": 3,
   "convergenceScore": 0.0,
   "pass": 2,
   "waveOneVerification": {
     "P0-001": "CLOSED",
-    "P0-002": "PENDING-iter-2",
+    "P0-002": "CLOSED",
     "P1-008": "PENDING-iter-3",
     "P1-016": "PENDING-iter-3",
     "P1-018": "RESOLVED-IN-SPIRIT"

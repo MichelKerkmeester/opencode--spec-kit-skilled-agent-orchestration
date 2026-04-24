@@ -1,0 +1,20 @@
+# Research Synthesis
+
+## Topic
+Automatic convergence-time `resource-map.md` emission for `sk-deep-review` and `sk-deep-research`, grounded in live deep-loop evidence shapes and reducer boundaries.
+
+## Established So Far
+- The prompt-pack JSON append schema is only the minimum dispatch contract; the live reducers and review-mode contracts still rely on richer `run`-based state and lineage metadata. [SOURCE: .opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl:40] [SOURCE: .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml:308] [SOURCE: .opencode/skill/sk-deep-research/scripts/reduce-state.cjs:699]
+- The lowest-coupling emission seam appears to be convergence-aware finalization adjacent to reducer execution, because the workflow already validates iteration outputs before invoking the reducer and the reducer already owns registry/strategy/dashboard synchronization. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:724] [SOURCE: .opencode/skill/sk-deep-review/scripts/reduce-state.cjs:1136]
+- The live delta format is an event-stream JSONL file, not the nested per-iteration arrays assumed in the phase-013 spec, so a normalization adapter is required before any shared extractor can consume review and research evidence uniformly. [SOURCE: .opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl:50] [SOURCE: .opencode/skill/sk-deep-review/assets/prompt_pack_iteration.md.tmpl:75] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78]
+- The emitted file must remain template-faithful to phase 012: ten-category skeleton, repo-root-relative paths, empty-category deletion without renumbering, and category precedence rules. [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:21] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:171]
+- The live workflows now point to an exact ownership decision: keep reducers responsible for registry/strategy/dashboard synchronization, keep synthesis/report steps responsible for narrative assembly, and add `resource-map.md` emission as a workflow-owned convergence step between those two phases. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:748] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:827] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:760] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:873]
+- The surrounding contract is broader than reducer code: research `state_format.md`, review `loop_protocol.md`, and research manual test `DR-033` already describe reducer-owned outputs, workflow phase order, and reducer-before-YAML verification order, so phase 013 needs coordinated YAML/doc/playbook/test updates rather than a reducer-only patch. [SOURCE: .opencode/skill/sk-deep-research/references/state_format.md:15] [SOURCE: .opencode/skill/sk-deep-review/references/loop_protocol.md:150] [SOURCE: .opencode/skill/sk-deep-research/manual_testing_playbook/04--convergence-and-recovery/033-graph-aware-stop-gate.md:32] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:50]
+
+## Current Open Questions
+- How should the review and research maps extend the phase-012 template without creating format drift or brittle template coupling?
+- Which exact auto + confirm workflow, command, catalog, playbook, and test surfaces need edits now that the ownership point is narrowed to a workflow-owned convergence step?
+- Which failure modes need explicit handling so the emitter stays idempotent, child-phase-safe, and resilient to malformed or partial evidence?
+
+## Latest Recommended Next Focus
+Pin the exact implementation contract for the new workflow-owned emitter step: canonical artifact-root pathing, auto/confirm wiring, doc/test surface list, and the idempotency/child-phase edge cases that fall out of that ownership choice.
