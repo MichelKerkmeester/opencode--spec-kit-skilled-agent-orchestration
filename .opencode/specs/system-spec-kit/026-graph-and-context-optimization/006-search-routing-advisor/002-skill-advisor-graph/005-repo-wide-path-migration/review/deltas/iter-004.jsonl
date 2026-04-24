@@ -1,1 +1,0 @@
-{"type":"iteration","iteration":4,"dimensions":["maintainability"],"filesReviewed":["spec.md","plan.md","tasks.md","checklist.md","implementation-summary.md","description.json","graph-metadata.json"],"findingsSummary":{"P0":1,"P1":3,"P2":2},"findingsNew":{"P0":0,"P1":0,"P2":1},"newFindingsRatio":0.08,"findingRefs":["F006"],"timestamp":"2026-04-21T14:16:00Z"}

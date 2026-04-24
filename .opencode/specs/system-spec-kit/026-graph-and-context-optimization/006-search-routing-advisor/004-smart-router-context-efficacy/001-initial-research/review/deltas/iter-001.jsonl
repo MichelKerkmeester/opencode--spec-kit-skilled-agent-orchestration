@@ -1,1 +1,0 @@
-{"type":"delta","mode":"review","iteration":1,"dimensions":["correctness"],"filesReviewed":["spec.md","../spec.md","research/research.md","research/research-validation.md","research/iterations/iteration-020.md"],"findingsNew":{"P0":0,"P1":1,"P2":1},"findingRefs":["DR-P1-001","DR-P2-003"],"newFindingsRatio":0.46,"churn":0.46}

@@ -1,1 +1,0 @@
-{"type":"delta","iteration":8,"dimension":"maintainability","filesReviewed":["spec.md","plan.md","tasks.md","checklist.md","implementation-summary.md"],"newFindings":[],"refinedFindings":["F008","F009"],"findingsSummary":{"P0":0,"P1":6,"P2":3},"newFindingsRatio":0.04,"churn":0.04}

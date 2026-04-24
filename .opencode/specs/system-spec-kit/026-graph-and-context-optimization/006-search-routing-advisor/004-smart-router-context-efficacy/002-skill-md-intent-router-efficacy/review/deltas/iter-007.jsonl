@@ -1,1 +1,0 @@
-{"type":"delta","iteration":7,"dimension":"traceability","newFindings":[],"refinedFindings":["F002","F003","F005"],"newFindingsRatio":0.1,"churn":0.1,"summary":"Cross-doc traceability issues remain bounded to migration metadata and decision-record clarity."}

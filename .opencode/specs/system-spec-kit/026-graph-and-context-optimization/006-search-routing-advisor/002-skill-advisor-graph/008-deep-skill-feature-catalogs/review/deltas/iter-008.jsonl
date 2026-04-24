@@ -1,1 +1,0 @@
-{"type":"delta","mode":"review","iteration":8,"dimension":"maintainability","findingsAdded":[],"findingsRefined":["DRFC-P2-006","DRFC-P2-007"],"findingsSummary":{"P0":0,"P1":4,"P2":3},"newFindingsRatio":0.03,"churn":0.06,"notes":"Maintainability replay confirmed naming and continuity issues."}

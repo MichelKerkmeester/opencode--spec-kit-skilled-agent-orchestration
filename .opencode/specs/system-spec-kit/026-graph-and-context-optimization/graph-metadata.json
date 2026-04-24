@@ -13,7 +13,8 @@
     "system-spec-kit/026-graph-and-context-optimization//007-deep-review-remediation",
     "system-spec-kit/026-graph-and-context-optimization//008-runtime-executor-hardening",
     "system-spec-kit/026-graph-and-context-optimization//009-hook-daemon-parity",
-    "system-spec-kit/026-graph-and-context-optimization//010-memory-indexer-lineage-and-concurrency-fix"
+    "system-spec-kit/026-graph-and-context-optimization//010-memory-indexer-lineage-and-concurrency-fix",
+    "system-spec-kit/026-graph-and-context-optimization//011-index-scope-and-constitutional-tier-invariants"
   ],
   "manual": {
     "depends_on": [],

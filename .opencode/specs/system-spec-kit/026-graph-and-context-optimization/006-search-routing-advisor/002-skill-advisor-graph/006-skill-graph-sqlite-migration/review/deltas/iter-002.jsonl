@@ -1,1 +1,0 @@
-{"type":"delta","iteration":2,"dimension":"security","newFindings":["F-003"],"severityCounts":{"P0":1,"P1":1,"P2":0},"newFindingsRatio":0.62,"churn":0.62,"coverage":["correctness","security"],"stopDecision":"continue","notes":"Public query serialization leaves internal path/hash fields in nested nodes."}

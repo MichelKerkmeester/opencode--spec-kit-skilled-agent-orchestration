@@ -1,1 +1,0 @@
-{"type":"iteration","iteration":10,"dimensions":["security"],"filesReviewed":["spec.md","plan.md","tasks.md","checklist.md","implementation-summary.md","description.json","graph-metadata.json"],"findingsSummary":{"P0":1,"P1":4,"P2":2},"findingsNew":{"P0":0,"P1":0,"P2":0},"newFindingsRatio":0.0,"findingRefs":[],"timestamp":"2026-04-21T14:40:00Z"}

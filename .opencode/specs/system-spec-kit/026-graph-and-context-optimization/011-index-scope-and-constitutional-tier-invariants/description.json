@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants",
+  "description": "Feature Specification: Index Scope and Constitutional Tier Invariants",
+  "keywords": [
+    "feature",
+    "specification",
+    "index-scope",
+    "constitutional-tier",
+    "z_future",
+    "external",
+    "cleanup-cli",
+    "memory-index-scan",
+    "code-graph"
+  ],
+  "summary": "Enforce permanent path exclusions for z_future and external content, restrict constitutional tier to constitutional folders, and clean the polluted Voyage-4 memory database in one transactional maintenance pass.",
+  "lastUpdated": "2026-04-24T00:00:00.000Z",
+  "specId": "011",
+  "folderSlug": "index-scope-and-constitutional-tier-invariants",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

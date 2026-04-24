@@ -125,3 +125,5 @@ Produce a `research/research.md` that answers, with evidence drawn directly from
 ## 6. EXECUTION NOTE
 
 Dispatched via the same direct `codex exec` pattern documented in `../006-integrity-parity-closure/decision-record.md#adr-001` — the canonical `claude -p "/spec_kit:deep-research :auto"` invocation hangs on this system. Output file layout matches sk-deep-research conventions.
+
+**Research output location (canonical):** `../../research/028-code-graph-hook-improvements-pt-01/` at the 026 coordination-root (following the `{phase-slug}-pt-NN` nested-packet convention used by sk-deep-research). Contains: `research.md` (synthesis), `iterations/iteration-01..10.md`, `findings-registry.json`, `deep-research-state.jsonl`, `deep-research-dashboard.md`.

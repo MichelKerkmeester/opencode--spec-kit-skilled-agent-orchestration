@@ -1,1 +1,0 @@
-{"type":"iteration_delta","mode":"review","iteration":2,"dimension":"security","newFindings":["F006"],"refinedFindings":[],"counts":{"P0":0,"P1":3,"P2":1},"newFindingsRatio":0.08,"churn":0.08,"summary":"No code security issue; added one P2 operational rollback safety finding."}

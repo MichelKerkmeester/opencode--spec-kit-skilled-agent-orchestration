@@ -1,1 +1,0 @@
-{"type":"delta","iteration":6,"dimension":"security","findingRefs":[],"findingsNew":{"P0":0,"P1":0,"P2":0},"findingsSummary":{"P0":0,"P1":4,"P2":2},"newFindingsRatio":0.04,"status":"complete","note":"Security stabilization pass; no new findings."}

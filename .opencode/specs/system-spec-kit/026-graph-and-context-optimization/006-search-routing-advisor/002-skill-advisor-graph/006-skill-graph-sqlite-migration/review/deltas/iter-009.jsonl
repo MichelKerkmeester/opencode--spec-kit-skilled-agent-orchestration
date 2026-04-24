@@ -1,1 +1,0 @@
-{"type":"delta","iteration":9,"dimension":"correctness","newFindings":[],"severityCounts":{"P0":1,"P1":5,"P2":2},"newFindingsRatio":0.04,"churn":0.04,"coverage":["correctness","security","traceability","maintainability"],"stopDecision":"continue","notes":"No new issue; test review confirms F-001 lacks a real-root regression test."}

@@ -1,1 +1,0 @@
-{"type":"iteration_delta","iteration":10,"dimension":"security","newFindings":[],"refinedFindings":[],"findingsSummary":{"P0":0,"P1":5,"P2":4},"newFindingsRatio":0.0,"churn":0.0,"convergence":{"coveredDimensions":["correctness","security","traceability","maintainability"],"p0Blocks":false,"continue":false,"stopReason":"maxIterationsReached"}}

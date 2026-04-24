@@ -1,1 +1,0 @@
-{"type":"delta","mode":"review","iteration":3,"dimensions":["traceability"],"filesReviewed":["spec.md","description.json","graph-metadata.json","research/deep-research-config.json","research/deep-research-state.jsonl","research/findings-registry.json"],"findingsNew":{"P0":0,"P1":2,"P2":1},"findingRefs":["DR-P1-002","DR-P1-003","DR-P2-004"],"newFindingsRatio":0.50,"churn":0.50}

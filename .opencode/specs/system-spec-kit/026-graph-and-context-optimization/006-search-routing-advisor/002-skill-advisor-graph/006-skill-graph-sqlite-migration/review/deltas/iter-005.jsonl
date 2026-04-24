@@ -1,1 +1,0 @@
-{"type":"delta","iteration":5,"dimension":"correctness","newFindings":["F-005"],"severityCounts":{"P0":1,"P1":3,"P2":1},"newFindingsRatio":0.34,"churn":0.34,"coverage":["correctness","security","traceability","maintainability"],"stopDecision":"continue","notes":"SQLite migration can be masked by JSON fallback in advisor runtime."}

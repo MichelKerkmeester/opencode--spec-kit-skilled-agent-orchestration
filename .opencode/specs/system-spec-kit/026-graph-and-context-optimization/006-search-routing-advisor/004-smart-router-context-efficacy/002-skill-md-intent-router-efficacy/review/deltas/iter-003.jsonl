@@ -1,1 +1,0 @@
-{"type":"delta","iteration":3,"dimension":"traceability","newFindings":["F003","F005"],"refinedFindings":["F002"],"newFindingsRatio":0.24,"churn":0.24,"summary":"Found stale description parentChain and absent decision-record non-applicability note."}

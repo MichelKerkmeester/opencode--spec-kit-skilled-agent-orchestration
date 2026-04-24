@@ -37,7 +37,8 @@
     "007-deep-review-remediation",
     "008-runtime-executor-hardening",
     "009-hook-daemon-parity",
-    "010-memory-indexer-lineage-and-concurrency-fix"
+    "010-memory-indexer-lineage-and-concurrency-fix",
+    "011-index-scope-and-constitutional-tier-invariants"
   ],
   "memorySequence": 5,
   "memoryNameHistory": [

@@ -1,1 +1,0 @@
-{"type":"delta","iteration":4,"dimension":"maintainability","newFindings":["F-006"],"severityCounts":{"P0":1,"P1":2,"P2":1},"newFindingsRatio":0.18,"churn":0.18,"coverage":["correctness","security","traceability","maintainability"],"stopDecision":"continue","notes":"All dimensions covered, but open P0 blocks legal convergence."}

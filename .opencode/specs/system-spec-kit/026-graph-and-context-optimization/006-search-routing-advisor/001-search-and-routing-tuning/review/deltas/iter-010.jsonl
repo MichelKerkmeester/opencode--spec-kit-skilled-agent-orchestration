@@ -1,1 +1,0 @@
-{"type":"delta","iteration":10,"dimension":"security","findingRefs":[],"findingsNew":{"P0":0,"P1":0,"P2":0},"findingsSummary":{"P0":0,"P1":5,"P2":2},"newFindingsRatio":0.04,"status":"complete","note":"Final security pass completed before synthesis."}

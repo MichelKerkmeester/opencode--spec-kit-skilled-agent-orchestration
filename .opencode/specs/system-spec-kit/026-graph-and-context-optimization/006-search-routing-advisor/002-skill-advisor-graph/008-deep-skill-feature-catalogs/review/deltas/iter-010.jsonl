@@ -1,1 +1,0 @@
-{"type":"delta","mode":"review","iteration":10,"dimension":"security+maintainability","findingsAdded":["DRFC-P1-008"],"findingsRefined":["DRFC-P2-005"],"findingsSummary":{"P0":0,"P1":5,"P2":3},"newFindingsRatio":0.12,"churn":0.12,"notes":"Final security stabilization found no security blocker; post-loop strict validation added one maintainability P1."}

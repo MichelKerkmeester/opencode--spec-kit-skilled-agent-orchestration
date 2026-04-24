@@ -1,1 +1,0 @@
-{"type":"delta","iteration":7,"dimension":"traceability","filesReviewed":["spec.md","plan.md","tasks.md","checklist.md","decision-record.md","implementation-summary.md"],"newFindings":[{"id":"P2-002","severity":"P2","title":"ADR-002 preserves the pre-Phase-027 catalog model"}],"newFindingsRatio":0.11,"churn":0.11,"timestamp":"2026-04-21T17:45:10Z"}

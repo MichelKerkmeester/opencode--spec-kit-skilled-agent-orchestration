@@ -1,1 +1,0 @@
-{"type":"delta","mode":"review","iteration":4,"dimensions":["maintainability"],"filesReviewed":["research/deep-research-config.json","research/deep-research-state.jsonl","research/research.md","research/research-validation.md","description.json","graph-metadata.json"],"findingsNew":{"P0":0,"P1":0,"P2":0},"findingRefs":[],"newFindingsRatio":0.03,"churn":0.03}

@@ -1,1 +1,0 @@
-{"type":"iteration","iteration":1,"dimension":"correctness","filesReviewed":[".opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts",".opencode/skill/system-spec-kit/mcp_server/tests/smart-router-measurement.vitest.ts"],"findingsSummary":{"new":["F-001"],"P0":0,"P1":1,"P2":0},"newFindingsRatio":0.2,"churn":0.2,"vitest":"pass"}

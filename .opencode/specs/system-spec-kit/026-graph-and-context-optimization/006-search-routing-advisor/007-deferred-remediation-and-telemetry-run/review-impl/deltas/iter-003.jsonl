@@ -1,1 +1,0 @@
-{"type":"iteration","iteration":3,"dimension":"robustness","filesReviewed":[".opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts"],"findingsSummary":{"new":["F-003"],"P0":0,"P1":1,"P2":0},"newFindingsRatio":0.2,"churn":0.2,"vitest":"pass"}

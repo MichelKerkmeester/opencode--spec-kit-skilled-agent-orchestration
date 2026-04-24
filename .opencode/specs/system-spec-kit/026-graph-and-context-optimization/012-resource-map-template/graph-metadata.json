@@ -1,0 +1,44 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/012-resource-map-template",
+  "title": "Resource Map Template",
+  "level": 2,
+  "status": "in-progress",
+  "phase": {
+    "number": "012",
+    "parent": "system-spec-kit/026-graph-and-context-optimization",
+    "predecessor": "011-index-scope-and-constitutional-tier-invariants",
+    "successor": null
+  },
+  "tags": [
+    "templates",
+    "documentation",
+    "path-catalog",
+    "discovery",
+    "context-preservation"
+  ],
+  "edges": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks"
+    ],
+    "touches": [
+      ".opencode/skill/system-spec-kit/templates/",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/skill/system-spec-kit/references/templates/",
+      ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
+      "CLAUDE.md"
+    ]
+  },
+  "canonical_docs": [
+    "spec.md",
+    "plan.md",
+    "tasks.md",
+    "checklist.md",
+    "description.json",
+    "graph-metadata.json"
+  ],
+  "created": "2026-04-24",
+  "updated": "2026-04-24"
+}

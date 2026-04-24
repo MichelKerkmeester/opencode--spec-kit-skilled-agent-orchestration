@@ -1,1 +1,0 @@
-{"type":"delta","iteration":1,"dimension":"correctness","filesReviewed":["spec.md","plan.md","tasks.md","checklist.md","implementation-summary.md","description.json","graph-metadata.json"],"newFindings":[{"id":"F001","severity":"P1"},{"id":"F002","severity":"P1"},{"id":"F003","severity":"P1"}],"findingsSummary":{"P0":0,"P1":3,"P2":0},"newFindingsRatio":0.75,"churn":0.75}

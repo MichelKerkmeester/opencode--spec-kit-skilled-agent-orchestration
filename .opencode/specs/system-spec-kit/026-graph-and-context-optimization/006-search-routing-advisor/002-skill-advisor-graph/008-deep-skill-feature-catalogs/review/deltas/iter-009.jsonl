@@ -1,1 +1,0 @@
-{"type":"delta","mode":"review","iteration":9,"dimension":"correctness","findingsAdded":[],"findingsRefined":["DRFC-P1-001","DRFC-P1-002"],"findingsSummary":{"P0":0,"P1":4,"P2":3},"newFindingsRatio":0.03,"churn":0.06,"notes":"Correctness finding set stabilized with no new issues."}

@@ -1,1 +1,0 @@
-{"type":"iteration_delta","mode":"review","iteration":7,"dimension":"traceability","newFindings":[],"refinedFindings":["F005"],"counts":{"P0":0,"P1":5,"P2":5},"newFindingsRatio":0.11,"churn":0.11,"summary":"Refined graph/status drift impact; no new separate finding retained."}

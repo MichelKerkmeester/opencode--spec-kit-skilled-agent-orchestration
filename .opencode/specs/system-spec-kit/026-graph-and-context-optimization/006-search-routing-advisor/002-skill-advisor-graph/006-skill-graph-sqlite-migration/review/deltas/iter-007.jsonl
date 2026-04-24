@@ -1,1 +1,0 @@
-{"type":"delta","iteration":7,"dimension":"traceability","newFindings":["F-004"],"severityCounts":{"P0":1,"P1":5,"P2":1},"newFindingsRatio":0.24,"churn":0.24,"coverage":["correctness","security","traceability","maintainability"],"stopDecision":"continue","notes":"Packet docs and metadata cannot support a completion claim."}

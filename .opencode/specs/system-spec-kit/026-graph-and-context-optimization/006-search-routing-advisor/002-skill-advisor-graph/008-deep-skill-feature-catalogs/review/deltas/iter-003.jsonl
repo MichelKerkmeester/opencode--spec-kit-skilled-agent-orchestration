@@ -1,1 +1,0 @@
-{"type":"delta","mode":"review","iteration":3,"dimension":"traceability","findingsAdded":["DRFC-P1-003","DRFC-P1-004"],"findingsRefined":[],"findingsSummary":{"P0":0,"P1":4,"P2":1},"newFindingsRatio":0.31,"churn":0.31,"notes":"Traceability pass found stale pattern-source paths and missing Level 3 completion artifacts."}

@@ -1,1 +1,0 @@
-{"type":"delta","iteration":5,"dimension":"correctness","filesReviewed":["description.json","graph-metadata.json","spec.md","implementation-summary.md"],"newFindings":[],"newFindingsRatio":0.05,"churn":0.05,"timestamp":"2026-04-21T17:45:10Z"}

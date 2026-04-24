@@ -1,1 +1,0 @@
-{"type":"delta","mode":"implementation-audit","iteration":1,"dimensions":["correctness"],"status":"no-implementation","auditedCodeFiles":[],"scopedTestFiles":[],"findingsNew":{"P0":0,"P1":0,"P2":0},"findingRefs":[],"newFindingsRatio":0,"churn":0,"stopReason":"noImplementation","timestamp":"2026-04-21T20:47:23Z"}

@@ -1,1 +1,0 @@
-{"type":"delta","iteration":10,"dimension":"security","newFindings":[],"refinedFindings":["F007"],"newFindingsRatio":0.04,"churn":0.04,"summary":"Final security pass found no secrets or exploitable code path in the research packet; advisory evidence gap remains."}

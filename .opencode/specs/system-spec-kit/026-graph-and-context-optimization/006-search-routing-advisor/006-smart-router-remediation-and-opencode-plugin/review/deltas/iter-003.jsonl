@@ -1,1 +1,0 @@
-{"type":"iteration","mode":"review","iteration":3,"run":3,"dimension":"traceability","dimensions":["traceability"],"filesReviewed":["spec.md","plan.md","tasks.md","checklist.md","implementation-summary.md","decision-record.md"],"findingsNew":{"P0":0,"P1":2,"P2":1},"findingRefs":["F005","F006","F008"],"newFindingsRatio":0.43,"churn":0.43,"timestamp":"2026-04-21T17:47:55.424Z"}

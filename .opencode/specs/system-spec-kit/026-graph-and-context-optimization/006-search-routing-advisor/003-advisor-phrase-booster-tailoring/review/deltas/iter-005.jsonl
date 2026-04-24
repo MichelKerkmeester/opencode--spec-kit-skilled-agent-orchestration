@@ -1,1 +1,0 @@
-{"type":"iteration_delta","mode":"review","iteration":5,"dimension":"correctness","newFindings":["F010"],"refinedFindings":["F003"],"counts":{"P0":0,"P1":5,"P2":5},"newFindingsRatio":0.14,"churn":0.14,"summary":"Added one P2 completion-state mismatch in tasks.md."}
