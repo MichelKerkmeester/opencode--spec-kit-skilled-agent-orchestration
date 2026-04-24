@@ -1,29 +1,54 @@
 {
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks",
+  "description": "Feature Specification: Release Cleanup Playbooks (consolidated, root-only)",
+  "title": "Release Cleanup Playbooks",
+  "type": "release-lane-closeout",
+  "keywords": [
+    "release",
+    "cleanup",
+    "playbooks",
+    "documentation parity",
+    "phase 018 continuity",
+    "shared memory removal",
+    "graph-metadata rollout",
+    "mcp config alignment",
+    "dead code audit",
+    "manual testing playbook",
+    "deep review remediation"
+  ],
+  "trigger_phrases": [
+    "005-release-cleanup-playbooks",
+    "release cleanup playbooks",
+    "phase 5 026 closeout",
+    "release alignment revisits",
+    "cleanup and audit",
+    "playbook and remediation",
+    "phase 018 continuity contract",
+    "shared memory removal",
+    "graph-metadata rollout",
+    "mcp config cleanup",
+    "dead code audit",
+    "deep review remediation",
+    "manual testing playbook rewrite"
+  ],
   "migration": {
-    "flattened_at": "2026-04-21T13:00:00Z",
-    "child_phase_folders": [
+    "consolidated_at": "2026-04-24T00:00:00Z",
+    "consolidation": "phase-folders-merged-into-root-only-docs",
+    "merged_phase_folders": [
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits",
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation"
     ],
-    "layout": "phase-root-children"
+    "preserved_review_archive": "review/008-cleanup-and-audit-pt-01",
+    "layout": "root-only"
   },
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks",
-  "description": "Feature Specification: Release Cleanup Playbooks",
-  "keywords": [
-    "feature",
-    "specification",
-    "release",
-    "cleanup",
-    "playbooks"
-  ],
-  "lastUpdated": "2026-04-24T15:56:56.181Z",
+  "lastUpdated": "2026-04-24T00:00:00Z",
   "specId": "005",
   "folderSlug": "release-cleanup-playbooks",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"
   ],
-  "memorySequence": 0,
+  "memorySequence": 1,
   "memoryNameHistory": []
 }

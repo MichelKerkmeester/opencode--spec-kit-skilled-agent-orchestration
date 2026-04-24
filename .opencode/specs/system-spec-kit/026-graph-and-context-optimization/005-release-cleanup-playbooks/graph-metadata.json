@@ -3,45 +3,37 @@
   "packet_id": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks",
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
-  "children_ids": [
-    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits",
-    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
-    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation"
-  ],
-  "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits",
-    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
-    "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation"
-  ],
+  "children_ids": [],
+  "aliases": [],
   "migration": {
-    "flattened_at": "2026-04-21T13:00:00Z",
+    "consolidated_at": "2026-04-24T00:00:00Z",
     "active_phase": "005-release-cleanup-playbooks",
-    "child_phase_folders": [
+    "merged_phase_folders": [
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits",
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation"
     ],
-    "layout": "phase-root-children"
+    "layout": "root-only"
   },
   "manual": {
     "depends_on": [],
     "supersedes": [
       {
         "packet_id": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits",
-        "reason": "supersedes relationship preserved during phase consolidation",
-        "source": "026-phase-consolidation",
+        "reason": "merged into root-only docs during phase-folder consolidation",
+        "source": "026-phase-005-merge-root-only-2026-04-24",
         "spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits"
       },
       {
         "packet_id": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
-        "reason": "supersedes relationship preserved during phase consolidation",
-        "source": "026-phase-consolidation",
+        "reason": "merged into root-only docs during phase-folder consolidation",
+        "source": "026-phase-005-merge-root-only-2026-04-24",
         "spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit"
       },
       {
         "packet_id": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation",
-        "reason": "supersedes relationship preserved during phase consolidation",
-        "source": "026-phase-consolidation",
+        "reason": "merged into root-only docs during phase-folder consolidation",
+        "source": "026-phase-005-merge-root-only-2026-04-24",
         "spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation"
       }
     ],
@@ -50,65 +42,54 @@
   "derived": {
     "trigger_phrases": [
       "005-release-cleanup-playbooks",
-      "release alignment, cleanup/audit, and playbook repair/remediation",
-      "001-release-alignment-revisits",
-      "002-cleanup-and-audit",
-      "003-playbook-and-remediation"
+      "release cleanup playbooks",
+      "phase 5 026 closeout",
+      "release alignment revisits",
+      "cleanup and audit",
+      "playbook and remediation",
+      "phase 018 continuity contract",
+      "shared memory removal",
+      "graph-metadata rollout",
+      "mcp config cleanup",
+      "dead code audit",
+      "deep review remediation",
+      "manual testing playbook rewrite"
     ],
     "key_topics": [
       "release",
-      "alignment",
       "cleanup",
-      "audit",
-      "and",
-      "playbook",
-      "repair",
-      "remediation",
-      "005",
-      "playbooks"
+      "playbooks",
+      "phase 018 continuity",
+      "shared memory",
+      "graph-metadata",
+      "mcp config",
+      "dead code",
+      "deep review",
+      "playbook"
     ],
     "importance_tier": "important",
-    "status": "in_progress",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "plan.md",
       "tasks.md",
-      "implementation-summary.md",
-      "context-index.md"
+      "checklist.md",
+      "implementation-summary.md"
     ],
-    "entities": [
-      {
-        "name": "001-release-alignment-revisits",
-        "kind": "spec_phase",
-        "path": "001-release-alignment-revisits",
-        "source": "migration"
-      },
-      {
-        "name": "002-cleanup-and-audit",
-        "kind": "spec_phase",
-        "path": "002-cleanup-and-audit",
-        "source": "migration"
-      },
-      {
-        "name": "003-playbook-and-remediation",
-        "kind": "spec_phase",
-        "path": "003-playbook-and-remediation",
-        "source": "migration"
-      }
-    ],
-    "causal_summary": "Release alignment, cleanup/audit, and playbook repair/remediation. Direct child parent for 001-release-alignment-revisits, 002-cleanup-and-audit, 003-playbook-and-remediation.",
+    "entities": [],
+    "causal_summary": "Phase 5 of 026 closed: documentation parity revisits (141 reviewed / 71 updated), runtime cleanup and audit (shared-memory deleted, graph-metadata.json shipped tree-wide with 515-root backfill, five Public MCP configs aligned, dead code removed), and playbook plus 22-finding deep-review remediation. Now consolidated into root-only docs.",
     "created_at": "2026-04-21T13:00:00Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
-    "save_lineage": "same_pass",
+    "last_save_at": "2026-04-24T00:00:00Z",
+    "save_lineage": "phase-folder-consolidation",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
-      "implementation-summary.md",
-      "context-index.md"
+      "checklist.md",
+      "implementation-summary.md"
     ]
   },
   "migrated": true,
-  "migration_source": "legacy"
+  "migration_source": "phase-folder-consolidation"
 }
