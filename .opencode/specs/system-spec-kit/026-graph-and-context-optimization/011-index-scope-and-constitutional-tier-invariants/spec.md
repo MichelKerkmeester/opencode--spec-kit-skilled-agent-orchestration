@@ -23,7 +23,7 @@ _memory:
     answered_questions:
       - "z_future rows will be deleted instead of downgraded because the invariant says they must never be indexed."
       - "constitutional tier saves outside /constitutional/ will be downgraded to important instead of rejected."
-      - ".opencode/skill/system-spec-kit/constitutional/README.md will become indexable without broadening README indexing elsewhere."
+      - ".opencode/skill/system-spec-kit/constitutional/README.md must remain out of the index because it is an overview doc, not a rule surface."
 ---
 # Feature Specification: Index Scope and Constitutional Tier Invariants
 
@@ -40,7 +40,7 @@ The memory system currently violates three invariants that should be permanent. 
 
 This packet adds one shared source of truth for index-scope rules, wires it into memory discovery, memory save, and code-graph scanning, and cleans the polluted database state in one transactional maintenance pass. The result is that `z_future` and `external` paths stop entering the index, constitutional tier stops leaking onto ordinary docs, and constitutional auto-surface logic returns the real rule files again.
 
-**Key Decisions**: delete `z_future` pollution instead of downgrading it, downgrade invalid constitutional saves to `important`, and allow `.opencode/skill/system-spec-kit/constitutional/README.md` to be indexed.
+**Key Decisions**: delete `z_future` pollution instead of downgrading it, downgrade invalid constitutional saves to `important`, and keep `.opencode/skill/system-spec-kit/constitutional/README.md` out of the index.
 
 **Critical Dependencies**: `mcp_server` typecheck/build, focused Vitest coverage, and a transaction-safe cleanup CLI against the Voyage-4 SQLite database.
 
@@ -65,7 +65,7 @@ This packet adds one shared source of truth for index-scope rules, wires it into
 
 ### Problem Statement
 
-The memory indexer currently admits files that should never enter long-lived retrieval surfaces. Live database evidence shows `5700` constitutional-tier rows, but only `2` valid constitutional files under `/constitutional/`, while the other `5698` constitutional rows come from `system-spec-kit/z_future/hybrid-rag-fusion-upgrade/*`. The same code paths do not permanently exclude `/external/`, and `.opencode/skill/system-spec-kit/constitutional/README.md` is skipped even though it belongs to the constitutional set.
+The memory indexer currently admits files that should never enter long-lived retrieval surfaces. Live database evidence shows `5700` constitutional-tier rows, but only `2` valid constitutional files under `/constitutional/`, while the other `5698` constitutional rows come from `system-spec-kit/z_future/hybrid-rag-fusion-upgrade/*`. The same code paths do not permanently exclude `/external/`, and packet 011's first pass incorrectly admitted `.opencode/skill/system-spec-kit/constitutional/README.md` even though it is a human-oriented overview document rather than a constitutional rule.
 
 ### Purpose
 
@@ -97,13 +97,13 @@ Enforce three permanent invariants in code and clean existing violations so futu
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `.opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts` | Create | Shared source of truth for memory and code-graph path exclusions |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts` | Modify | Apply shared exclusion helper and include constitutional README |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts` | Modify | Apply shared exclusion helper while keeping constitutional README excluded |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts` | Modify | Make spec-doc and graph-metadata classification respect shared memory scope rules |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts` | Modify | Keep `isMemoryFile()` aligned with the new path invariants and constitutional README rule |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts` | Modify | Keep `isMemoryFile()` aligned with the new path invariants and constitutional rule-file-only behavior |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts` | Modify | Add save-time scope guard and constitutional tier downgrade |
 | `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/indexer-types.ts` | Modify | Preserve and extend default scanner exclusions with `/external/` |
 | `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts` | Modify | Apply shared code-graph scope helper in recursive and specific-file scanning |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/*.vitest.ts` | Modify/Create | Cover path exclusions, constitutional README discovery, and tier downgrade behavior |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/*.vitest.ts` | Modify/Create | Cover path exclusions, constitutional README exclusion, and tier downgrade behavior |
 | `.opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts` | Create | Dry-run/apply/verify cleanup CLI |
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | Modify | Document the three invariants and helper location |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/*` | Modify/Create | New 011 packet plus parent metadata topology updates |
@@ -128,7 +128,7 @@ Enforce three permanent invariants in code and clean existing violations so futu
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-006 | `.opencode/skill/system-spec-kit/constitutional/README.md` becomes indexable without broadening README indexing elsewhere. | Constitutional discovery includes `README.md` only inside `/constitutional/`, while general README files remain out of scope. |
+| REQ-006 | `.opencode/skill/system-spec-kit/constitutional/README.md` must remain non-indexable while constitutional rule files stay indexable. | Constitutional discovery and parser admissibility both skip the README inside `constitutional/`, while the dedicated constitutional rule files remain indexed. |
 | REQ-007 | Focused tests prove the new guards. | Unit and integration tests cover `z_future`, `external`, `z_archive`, `.git`, `node_modules`, invalid constitutional saves, and valid constitutional saves. |
 | REQ-008 | Canonical docs and metadata explain the design choices. | `plan.md`, `decision-record.md`, `research/research.md`, and metadata files all reflect the invariant design and cleanup rationale. |
 | REQ-009 | Required build checks run and are recorded honestly. | `npm run typecheck`, `npm run build`, focused Vitest commands, and `npm run test:core` outcomes are captured in `implementation-summary.md`. |
@@ -143,6 +143,7 @@ Enforce three permanent invariants in code and clean existing violations so futu
 - **Given** any file lives under an `external/` segment, **when** memory discovery or code-graph scanning runs, **then** the file is skipped in both recursive and specific-file paths.
 - **Given** a non-constitutional spec doc declares `importanceTier: constitutional`, **when** `memory_save` or scan-originated indexing persists it, **then** the stored tier becomes `important` and a warning is emitted.
 - **Given** a real constitutional file under `.opencode/skill/system-spec-kit/constitutional/`, **when** it is saved with `importanceTier: constitutional`, **then** the stored tier remains `constitutional`.
+- **Given** the README inside `.opencode/skill/system-spec-kit/constitutional/`, **when** discovery or parser admissibility checks run, **then** the file is skipped and no memory row is created.
 - **Given** the cleanup CLI runs in dry-run mode, **when** the live Voyage-4 DB contains `z_future` pollution or invalid constitutional rows, **then** the command reports the exact delete and downgrade candidates without mutating the DB.
 - **Given** the cleanup CLI runs with `--apply` followed by `--verify`, **when** the transaction completes successfully, **then** the DB reports zero `z_future` rows, zero `external` rows, and only legitimate constitutional-tier rows.
 
@@ -167,7 +168,7 @@ Enforce three permanent invariants in code and clean existing violations so futu
 |------|------|--------|------------|
 | Risk | Path exclusion logic drifts across scanners and save paths | High | Put the rule in one shared helper and use it in every walker plus save-time enforcement |
 | Risk | Cleanup misses ancillary tables or leaves references pointing at deleted rows | High | Inspect live schema, delete or rewrite references inside one transaction, and add `--verify` for idempotent follow-up checks |
-| Risk | Constitutional README inclusion broadens into repo-wide README indexing | Medium | Only change constitutional discovery and constitutional path acceptance, not generic markdown discovery |
+| Risk | Constitutional README gets reintroduced and pollutes the rule-only constitutional set | Medium | Keep README exclusion explicit in discovery/parser tests and verify the final DB count stays at `2` |
 | Dependency | `better-sqlite3` plus `sqlite-vec` must load against the active Voyage-4 DB | Medium | Reuse existing cleanup script patterns and keep a dry-run default |
 | Dependency | Broader `npm run test:core` may contain unrelated failures | Medium | Record carryover failures separately from focused invariant coverage |
 <!-- /ANCHOR:risks -->
@@ -192,7 +193,7 @@ Enforce three permanent invariants in code and clean existing violations so futu
 ### Data Boundaries
 - Windows-style paths with backslashes still match segment exclusions after normalization.
 - `specificFiles` code-graph refreshes cannot bypass the new `/external/` exclusion.
-- Constitutional README inclusion applies only to Markdown files inside a `/constitutional/` segment.
+- Constitutional README files stay excluded even inside `/constitutional/`, while other constitutional Markdown rule files remain indexable.
 
 ### Error Scenarios
 - If cleanup cannot determine the duplicate survivor or rewrite references safely, the transaction aborts and the DB remains unchanged.
@@ -219,7 +220,7 @@ Enforce three permanent invariants in code and clean existing violations so futu
 |---------|-------------|--------|------------|------------|
 | R-001 | Cleanup deletes the wrong constitutional row | H | L | Resolve duplicates by path and timestamp inside a transaction, then verify counts before commit |
 | R-002 | A bypass path reintroduces excluded files | H | M | Add walker exclusions and save-time guards backed by shared helpers and tests |
-| R-003 | README inclusion accidentally expands to other folders | M | L | Limit the change to `/constitutional/` handling only |
+| R-003 | README overview docs get mistaken for rule files again | M | L | Keep `README.md` excluded in discovery/parser checks and verify final constitutional counts |
 
 ---
 

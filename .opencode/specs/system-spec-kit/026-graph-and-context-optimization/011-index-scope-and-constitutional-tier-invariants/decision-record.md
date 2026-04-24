@@ -1,7 +1,7 @@
 ---
 template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 title: "Decision Record: Index Scope and Constitutional Tier Invariants"
-description: "Records the invariant enforcement point, delete-vs-downgrade cleanup strategy, constitutional save-time gate behavior, and constitutional README indexing choice."
+description: "Records the invariant enforcement point, delete-vs-downgrade cleanup strategy, constitutional save-time gate behavior, and the README exclusion correction."
 trigger_phrases:
   - "026/011 decisions"
   - "index scope adr"
@@ -272,9 +272,11 @@ The parser accepts `importanceTier: constitutional` from frontmatter anywhere, a
 
 | Field | Value |
 |-------|-------|
-| **Status** | Accepted |
+| **Status** | Superseded |
 | **Date** | 2026-04-24 |
 | **Deciders** | Codex + user request |
+
+**Superseded note**: Reversed later the same day by ADR-005 after the user clarified that the README inside the `constitutional/` folder is a human-oriented overview document and must not be indexed.
 
 ### Context
 
@@ -335,3 +337,74 @@ The parser accepts `importanceTier: constitutional` from frontmatter anywhere, a
 - Update tests to assert scoped inclusion for constitutional README files only.
 
 **How to roll back**: Reintroduce the README exclusion in the constitutional discovery and parser checks, then rerun the constitutional discovery tests.
+---
+
+### ADR-005: Do Not Index `.opencode/skill/system-spec-kit/constitutional/README.md`
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-24 |
+| **Deciders** | Codex + user request |
+
+### Context
+
+The first implementation pass for packet 011 backfilled `.opencode/skill/system-spec-kit/constitutional/README.md` into the live DB and adjusted runtime discovery/parser behavior to admit it. The user clarified that this README is a human-facing overview, not a constitutional rule surface, so it must stay out of the memory index even though other rule files in `/constitutional/` remain indexable.
+
+### Constraints
+
+- The correction must not widen scanner logic or change the shared index-scope helper.
+- The canonical constitutional rule files must remain indexed.
+
+### Decision
+
+**We chose**: keep the constitutional README overview file out of the memory index and remove the row that was backfilled into the live DB.
+
+**How it works**: Constitutional discovery and parser admissibility both restore the README exclusion, while the live DB cleanup removes the existing README row and leaves FTS cleanup to the `memory_index` trigger chain.
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Keep README excluded** | Matches the user-directed invariant and preserves rule-only constitutional surfaces | Removes one searchable overview doc | 10/10 |
+| Keep the README indexed | No reversal work | Violates the corrected invariant and pollutes constitutional counts | 1/10 |
+| Index README but downgrade its tier | Keeps the overview searchable | Still violates the "must not be indexed" rule | 2/10 |
+
+**Why this one**: The rule is about index membership, not ranking. The README is documentation for humans, not a runtime constitutional rule surface.
+
+### Consequences
+
+**What improves**:
+- `constitutional_total` returns to the intended value of `2`.
+- Constitutional retrieval stays anchored to actual rule files rather than overview prose.
+
+**What it costs**:
+- The overview README is no longer searchable through memory indexing. Mitigation: keep it available as normal repository documentation.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Future work accidentally reintroduces README indexing | M | Keep discovery/parser tests explicit about rejecting `README.md` under `/constitutional/` |
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | The user explicitly corrected the invariant to exclude the README |
+| 2 | **Beyond Local Maxima?** | PASS | Compared exclusion with both indexing and downgrade variants |
+| 3 | **Sufficient?** | PASS | Runtime exclusion plus DB row deletion restores the final invariant |
+| 4 | **Fits Goal?** | PASS | Keeps constitutional rows limited to actual rule files |
+| 5 | **Open Horizons?** | PASS | Tests and verify counts make regressions obvious |
+
+**Checks Summary**: 5/5 PASS
+
+### Implementation
+
+**What changes**:
+- Restore the README exclusion in constitutional discovery and parser admissibility.
+- Delete live README rows from `memory_index` and companion tables without touching `memory_fts` directly.
+
+**How to roll back**: Re-allow constitutional README discovery/parser admission and re-index the README intentionally.

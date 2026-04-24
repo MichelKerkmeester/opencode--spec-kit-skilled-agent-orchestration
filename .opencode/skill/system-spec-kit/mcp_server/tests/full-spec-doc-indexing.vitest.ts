@@ -295,8 +295,8 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
       expect(isMemoryFile('/p/.opencode/skill/kit/constitutional/rules.md')).toBe(true);
     });
 
-    it('Accepts constitutional README.md files', () => {
-      expect(isMemoryFile('/p/.opencode/skill/kit/constitutional/README.md')).toBe(true);
+    it('Rejects constitutional README.md files', () => {
+      expect(isMemoryFile('/p/.opencode/skill/kit/constitutional/README.md')).toBe(false);
     });
 
     it('Rejects README.txt files', () => {

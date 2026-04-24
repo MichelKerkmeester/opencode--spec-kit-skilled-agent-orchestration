@@ -333,8 +333,8 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
       expect(mod.isMemoryFile('/project/specs/003-auth/scratch/notes.md')).toBe(false);
     });
 
-    it('T21: accepts README.md in constitutional dir', () => {
-      expect(mod.isMemoryFile('/project/.opencode/skill/my-skill/constitutional/README.md')).toBe(true);
+    it('T21: rejects README.md in constitutional dir', () => {
+      expect(mod.isMemoryFile('/project/.opencode/skill/my-skill/constitutional/README.md')).toBe(false);
     });
 
     it('T21b: rejects z_future spec docs', () => {

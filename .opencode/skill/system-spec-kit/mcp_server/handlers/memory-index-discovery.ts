@@ -186,7 +186,8 @@ export function findConstitutionalFiles(workspacePath: string): string[] {
       try {
         const files = fs.readdirSync(constitutionalDir, { withFileTypes: true });
         for (const file of files) {
-          if (file.isFile() && file.name.endsWith('.md')) {
+          const normalizedName = file.name.toLowerCase();
+          if (file.isFile() && normalizedName.endsWith('.md') && normalizedName !== 'readme.md') {
             const fullPath = path.join(constitutionalDir, file.name);
             if (!shouldIndexForMemory(fullPath)) continue;
             results.push(fullPath);

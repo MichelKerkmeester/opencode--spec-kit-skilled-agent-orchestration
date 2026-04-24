@@ -107,7 +107,7 @@ Path candidates are normalized once and checked against shared segment rules bef
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | `shouldIndexForMemory`, `shouldIndexForCodeGraph`, `isMemoryFile()` constitutional README behavior | Vitest |
+| Unit | `shouldIndexForMemory`, `shouldIndexForCodeGraph`, `isMemoryFile()` constitutional README exclusion behavior | Vitest |
 | Integration | Memory scan discovery skips `z_future`; save path downgrades invalid constitutional tiers and preserves valid ones | Vitest with temp fixtures/mocks |
 | Manual | Cleanup dry-run, apply, verify against the live Voyage-4 DB | Node CLI + SQLite-backed inspection |
 <!-- /ANCHOR:testing -->

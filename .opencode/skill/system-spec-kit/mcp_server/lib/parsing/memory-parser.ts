@@ -953,6 +953,7 @@ function isMarkdownOrTextFile(filePath: string): boolean {
 /** Check if a file path is indexable by the memory system (spec document or constitutional memory) */
 export function isMemoryFile(filePath: string): boolean {
   const normalizedPath = filePath.replace(/\\/g, '/');
+  const basename = path.basename(normalizedPath).toLowerCase();
   if (!shouldIndexForMemory(normalizedPath)) {
     return false;
   }
@@ -962,13 +963,14 @@ export function isMemoryFile(filePath: string): boolean {
     (normalizedPath.endsWith('.md') || normalizedPath.endsWith('.json')) &&
     canClassifyAsSpecDocument(normalizedPath) &&
     !isWorkingArtifactPath(normalizedPath) &&
-    SPEC_DOCUMENT_FILENAMES_SET.has(path.basename(normalizedPath).toLowerCase()) &&
-    matchesSpecDocumentPath(normalizedPath, path.basename(normalizedPath).toLowerCase())
+    SPEC_DOCUMENT_FILENAMES_SET.has(basename) &&
+    matchesSpecDocumentPath(normalizedPath, basename)
   );
 
   // Constitutional memories in skill folder
   const isConstitutional = (
     normalizedPath.endsWith('.md') &&
+    basename !== 'readme.md' &&
     normalizedPath.includes('/.opencode/skill/') &&
     isConstitutionalPath(normalizedPath)
   );

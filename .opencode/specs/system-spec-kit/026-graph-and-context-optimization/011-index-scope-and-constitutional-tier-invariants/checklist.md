@@ -13,7 +13,7 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
     last_updated_at: "2026-04-24T06:50:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Verification evidence finalized"
+    recent_action: "README reversal verification finalized"
     next_safe_action: "User review and MCP restart"
     blockers: []
     completion_pct: 100
@@ -55,7 +55,7 @@ _memory:
 - [x] CHK-010 [P0] Shared helper enforces memory exclusions for `z_future`, `external`, and `z_archive` [EVIDENCE: `mcp_server/lib/utils/index-scope.ts` plus discovery/parser wiring in `memory-index-discovery.ts`, `spec-doc-paths.ts`, and `memory-parser.ts`]
 - [x] CHK-011 [P0] Shared helper enforces code-graph exclusions for `external` plus existing default excludes [EVIDENCE: `mcp_server/code-graph/lib/indexer-types.ts` preserves legacy excludes and `structural-indexer.ts` now also consults `shouldIndexForCodeGraph()`]
 - [x] CHK-012 [P0] Save-time guard rejects excluded paths and downgrades invalid constitutional tiers [EVIDENCE: `mcp_server/handlers/memory-save.ts` rejects helper-excluded paths and downgrades non-constitutional `constitutional` saves to `important` before DB writes]
-- [x] CHK-013 [P1] Constitutional README discovery is limited to `.opencode/skill/system-spec-kit/constitutional/README.md` [EVIDENCE: constitutional discovery now allows README in the constitutional folder only; `memory-parser-extended.vitest.ts` covers the acceptance path]
+- [x] CHK-013 [P1] Constitutional README stays excluded while constitutional rule files remain indexable [EVIDENCE: `memory-index-discovery.ts` and `memory-parser.ts` both reject `README.md` under `/constitutional/`; `handler-memory-index.vitest.ts`, `memory-parser-extended.vitest.ts`, `full-spec-doc-indexing.vitest.ts`, and `gate-d-regression-constitutional-memory.vitest.ts` all pass]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -69,7 +69,7 @@ _memory:
 - [x] CHK-023 [P0] Integration test proves `/constitutional/` saves preserve the constitutional tier [EVIDENCE: `tests/memory-save-index-scope.vitest.ts` passes]
 - [x] CHK-024 [P1] `npm run typecheck` exits `0` [EVIDENCE: `mcp_server` and `scripts` typecheck commands both exit `0`]
 - [x] CHK-025 [P1] `npm run build` exits `0` [EVIDENCE: `mcp_server` and `scripts` build commands both exit `0`]
-- [x] CHK-026 [P1] Focused Vitest command exits `0` [EVIDENCE: focused run across `tests/index-scope.vitest.ts`, `tests/memory-save-index-scope.vitest.ts`, `tests/handler-memory-index.vitest.ts`, `tests/full-spec-doc-indexing.vitest.ts`, `tests/memory-parser-extended.vitest.ts`, and `tests/tree-sitter-parser.vitest.ts` passed with `241` tests]
+- [x] CHK-026 [P1] Focused Vitest command exits `0` [EVIDENCE: requested run across `tests/index-scope.vitest.ts` and `tests/memory-save-index-scope.vitest.ts` passed with `8` tests; the four README-regression files also passed with `218` tests]
 - [x] CHK-027 [P1] `npm run test:core` outcome recorded honestly, including carryover failures if any [EVIDENCE: `timeout 300 npm run test:core` exited `124`; observed existing failures included `tests/copilot-hook-wiring.vitest.ts` and `tests/stage3-rerank-regression.vitest.ts` before timeout]
 <!-- /ANCHOR:testing -->
 
@@ -89,7 +89,7 @@ _memory:
 ## Documentation
 
 - [x] CHK-040 [P1] `research/research.md` contains exact file:line references for every investigated code point [EVIDENCE: `research/research.md` records scanner, tier, parser, auto-surface, and cleanup-tooling references]
-- [x] CHK-041 [P1] `decision-record.md` records delete-vs-downgrade and README decisions [EVIDENCE: ADR-002, ADR-003, and ADR-004]
+- [x] CHK-041 [P1] `decision-record.md` records delete-vs-downgrade and the reversed README decision [EVIDENCE: ADR-002, ADR-003, ADR-004 (superseded), and ADR-005]
 - [x] CHK-042 [P1] `implementation-summary.md` includes before/after DB counts and command exit codes [EVIDENCE: finalized summary below]
 - [x] CHK-043 [P1] `.opencode/skill/system-spec-kit/mcp_server/README.md` documents the three invariants and helper location [EVIDENCE: new "Index Scope Invariants" section]
 <!-- /ANCHOR:docs -->
@@ -133,6 +133,6 @@ _memory:
 ## L3+: DEPLOYMENT READINESS
 
 - [x] CHK-120 [P0] Activation note records whether MCP restart is required [EVIDENCE: `implementation-summary.md` notes restart required so the new dist save/scan guards are active in MCP clients]
-- [x] CHK-121 [P0] Cleanup `--verify` exits `0` after apply [EVIDENCE: post-apply `--verify` exited `0` with zero violations]
-- [x] CHK-122 [P1] Post-apply constitutional-tier count is recorded [EVIDENCE: post-backfill constitutional total is `3`]
+- [x] CHK-121 [P0] Cleanup `--verify` exits `0` after apply [EVIDENCE: post-correction `--verify` exited `0` with `constitutional_total=2`, `constitutional_in_folder=2`, `z_future_rows=0`, `external_rows=0`, and `invalid_constitutional_rows=0`]
+- [x] CHK-122 [P1] Final constitutional-tier count is recorded [EVIDENCE: final constitutional total is `2` and matches the two rule files only]
 <!-- /ANCHOR:deploy-ready -->

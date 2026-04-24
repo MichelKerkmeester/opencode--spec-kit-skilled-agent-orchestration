@@ -13,8 +13,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
     last_updated_at: "2026-04-24T06:50:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Implementation, cleanup, and verification completed"
-    next_safe_action: "User review and MCP restart before relying on the new dist output"
+    recent_action: "Implementation, README reversal, and verification completed"
+    next_safe_action: "User review and MCP restart before relying on the rebuilt dist output"
     blockers: []
     completion_pct: 100
     open_questions: []
@@ -88,7 +88,7 @@ _memory:
 
 - [x] T004 Create shared index-scope helper for memory and code graph (`mcp_server/lib/utils/index-scope.ts`)
 - [x] T005 Wire memory discovery and spec-doc classification to the shared helper (`mcp_server/handlers/memory-index-discovery.ts`, `mcp_server/lib/config/spec-doc-paths.ts`)
-- [x] T006 Align `isMemoryFile()` and constitutional README handling with the new policy (`mcp_server/lib/parsing/memory-parser.ts`)
+- [x] T006 Align `isMemoryFile()` with the final rule-file-only constitutional policy (`mcp_server/lib/parsing/memory-parser.ts`)
 - [x] T007 Add save-time path rejection and constitutional tier downgrade (`mcp_server/handlers/memory-save.ts`)
 - [x] T008 Wire code-graph recursive and specific-file scanning to the shared helper while preserving existing excludes (`mcp_server/code-graph/lib/structural-indexer.ts`, `mcp_server/code-graph/lib/indexer-types.ts`)
 <!-- /ANCHOR:phase-2 -->
