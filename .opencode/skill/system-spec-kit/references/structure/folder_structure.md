@@ -34,7 +34,7 @@ templates/
 ├── level_3/                 # Pre-composed Level 3
 ├── level_3+/                # Pre-composed Level 3+
 │
-└── [cross-level templates]  # handover.md, debug-delegation.md, research/research.md
+└── [cross-level templates]  # handover.md, debug-delegation.md, research/research.md, resource-map.md
 ```
 
 > **IMPORTANT:** Always copy templates from `level_N/` folders for new specs. The `core/` and `addendum/` folders are source components.

@@ -86,7 +86,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 6. Check canonical recovery sources:
    - `handover.md`
    - `implementation-summary.md` with `_memory.continuity`
-   - Supporting spec docs: `tasks.md`, `checklist.md`, `plan.md`, `decision-record.md`
+   - Supporting spec docs: `tasks.md`, `checklist.md`, `plan.md`, `decision-record.md`, `resource-map.md`
    - `graph-metadata.json` for packet dependencies, related packets, and derived key files after the canonical docs are checked
    - Store: continuity_sources_available = [yes/partial/no]
 

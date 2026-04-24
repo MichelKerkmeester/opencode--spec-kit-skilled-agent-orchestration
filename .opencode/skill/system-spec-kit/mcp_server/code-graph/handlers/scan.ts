@@ -239,6 +239,8 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
   graphDb.setLastDetectorProvenanceSummary(detectorProvenanceSummary);
   if (graphEdgeEnrichmentSummary) {
     graphDb.setLastGraphEdgeEnrichmentSummary(graphEdgeEnrichmentSummary);
+  } else {
+    graphDb.clearLastGraphEdgeEnrichmentSummary();
   }
 
   const scanResult: ScanResult = {

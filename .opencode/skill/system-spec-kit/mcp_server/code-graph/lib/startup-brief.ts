@@ -23,15 +23,28 @@ export interface StartupGraphSummary {
   lastScan: string | null;
 }
 
+export interface StartupGraphQualitySummary {
+  detectorProvenanceSummary: {
+    dominant: string;
+    counts: Record<string, number>;
+  } | null;
+  graphEdgeEnrichmentSummary: {
+    edgeEvidenceClass: string;
+    numericConfidence: number;
+  } | null;
+}
+
 /** Startup brief payload returned to hook-capable runtimes at session start. */
 export interface StartupBriefResult {
   graphOutline: string | null;
   sessionContinuity: string | null;
   graphSummary: StartupGraphSummary | null;
+  graphQualitySummary: StartupGraphQualitySummary | null;
   graphState: 'ready' | 'stale' | 'empty' | 'missing';
   cocoIndexAvailable: boolean;
   startupSurface: string;
   sharedPayload: SharedPayloadEnvelope | null;
+  sharedPayloadTransport: string | null;
 }
 
 const SUMMARY_MAX_CHARS = 240;
@@ -128,7 +141,46 @@ function buildStartupSurface(args: {
   ].join('\n');
 }
 
-function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult, 'graphOutline' | 'graphSummary' | 'graphState'> {
+function formatGraphQualitySummary(graphQualitySummary: StartupGraphQualitySummary | null): string | null {
+  if (!graphQualitySummary) {
+    return null;
+  }
+
+  const parts: string[] = [];
+  const detector = graphQualitySummary.detectorProvenanceSummary;
+  if (detector?.dominant) {
+    const detectorCounts = Object.entries(detector.counts ?? {})
+      .map(([key, value]) => `${key}:${value}`)
+      .join(', ');
+    parts.push(`detector=${detector.dominant}${detectorCounts ? ` (${detectorCounts})` : ''}`);
+  }
+
+  const enrichment = graphQualitySummary.graphEdgeEnrichmentSummary;
+  if (enrichment) {
+    parts.push(
+      `edge-enrichment=${enrichment.edgeEvidenceClass} (${enrichment.numericConfidence.toFixed(2)})`,
+    );
+  }
+
+  return parts.length > 0 ? parts.join('; ') : null;
+}
+
+export function buildStartupSharedPayloadTransport(
+  sharedPayload: SharedPayloadEnvelope | null,
+): string | null {
+  if (!sharedPayload) {
+    return null;
+  }
+
+  return JSON.stringify({
+    kind: sharedPayload.kind,
+    summary: sharedPayload.summary,
+    provenance: sharedPayload.provenance,
+    sectionKeys: sharedPayload.sections.map((section) => section.key),
+  }, null, 2);
+}
+
+function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult, 'graphOutline' | 'graphSummary' | 'graphQualitySummary' | 'graphState'> {
   try {
     const stats = getStats();
     const freshness = getGraphFreshness(process.cwd());
@@ -138,11 +190,26 @@ function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult,
       edges: stats.totalEdges,
       lastScan: stats.lastScanTimestamp,
     };
+    const graphQualitySummary: StartupGraphQualitySummary = {
+      detectorProvenanceSummary: stats.graphQualitySummary?.detectorProvenanceSummary
+        ? {
+          dominant: stats.graphQualitySummary.detectorProvenanceSummary.dominant,
+          counts: stats.graphQualitySummary.detectorProvenanceSummary.counts as Record<string, number>,
+        }
+        : null,
+      graphEdgeEnrichmentSummary: stats.graphQualitySummary?.graphEdgeEnrichmentSummary
+        ? {
+          edgeEvidenceClass: stats.graphQualitySummary.graphEdgeEnrichmentSummary.edgeEvidenceClass,
+          numericConfidence: stats.graphQualitySummary.graphEdgeEnrichmentSummary.numericConfidence,
+        }
+        : null,
+    };
 
     if (stats.totalFiles <= 0 || stats.totalNodes <= 0) {
       return {
         graphOutline: null,
         graphSummary,
+        graphQualitySummary,
         graphState: 'empty',
       };
     }
@@ -156,6 +223,10 @@ function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult,
     if (freshness === 'stale') {
       lines.push('Freshness: stale — first structural read may trigger bounded inline refresh or recommend code_graph_scan.');
     }
+    const qualityLine = formatGraphQualitySummary(graphQualitySummary);
+    if (qualityLine) {
+      lines.push(`Graph quality: ${qualityLine}`);
+    }
     if (highlights.length > 0) {
       lines.push('Orientation: use code graph highlights for structural entry points and call paths; use CocoIndex for semantic discovery when the symbol or file is still unknown.');
       lines.push('Highlights:');
@@ -165,12 +236,14 @@ function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult,
     return {
       graphOutline: lines.join('\n'),
       graphSummary,
+      graphQualitySummary,
       graphState: freshness === 'stale' ? 'stale' : 'ready',
     };
   } catch {
     return {
       graphOutline: null,
       graphSummary: null,
+      graphQualitySummary: null,
       graphState: 'missing',
     };
   }
@@ -244,14 +317,17 @@ export function buildStartupBrief(highlightCount?: number, stateScope?: HookStat
       },
     })
     : null;
+  const sharedPayloadTransport = buildStartupSharedPayloadTransport(sharedPayload);
 
   return {
     graphOutline: graph.graphOutline,
     sessionContinuity,
     graphSummary: graph.graphSummary,
+    graphQualitySummary: graph.graphQualitySummary,
     graphState: graph.graphState,
     cocoIndexAvailable,
     startupSurface,
     sharedPayload,
+    sharedPayloadTransport,
   };
 }

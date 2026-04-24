@@ -200,6 +200,8 @@ Packet `009-auditable-savings-publication-contract` adds a row-eligibility gate 
 | `SPECKIT_RESULT_PROVENANCE` | `true` | boolean | Include graph evidence metadata (edges, communities, boost factors) in search results (Phase C T027). Graduated ON. | `lib/search/search-flags.ts` |
 <!-- /ANCHOR:graph -->
 
+`code_graph_status` and the startup brief now surface a packet-independent `graphQualitySummary` derived from persisted detector provenance plus the latest edge-enrichment summary. Operators can use that reader to confirm whether the current graph was built with `structured`/`regex` provenance and whether the latest edge-quality signal is coming from `direct_call`, `import`, `type_reference`, `test_coverage`, or `inferred_heuristic` evidence.
+
 ---
 
 <!-- ANCHOR:graph-calibration -->

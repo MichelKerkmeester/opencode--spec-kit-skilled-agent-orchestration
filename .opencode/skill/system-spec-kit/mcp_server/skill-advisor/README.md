@@ -66,15 +66,15 @@ Call the native advisor tools from the active MCP client:
 
 ```text
 advisor_status({"workspaceRoot":"/absolute/path/to/repo"})
-advisor_recommend({"prompt":"save this conversation context to memory","options":{"topK":1,"includeAttribution":true}})
-advisor_validate({"skillSlug":null})
+advisor_recommend({"workspaceRoot":"/absolute/path/to/repo","prompt":"save this conversation context to memory","options":{"topK":1,"includeAttribution":true}})
+advisor_validate({"confirmHeavyRun":true,"workspaceRoot":"/absolute/path/to/repo","skillSlug":null})
 ```
 
 Expected shape:
 
 - `advisor_status` returns `freshness`, `generation`, `trustState`, `lastScanAt`, `skillCount`, and `laneWeights`.
-- `advisor_recommend` returns prompt-safe `recommendations[]`, cache state, lifecycle redirect metadata, and freshness trust.
-- `advisor_validate` returns real corpus, holdout, parity, safety, and latency slices.
+- `advisor_recommend` returns `workspaceRoot`, prompt-safe `recommendations[]`, `effectiveThresholds`, cache state, lifecycle redirect metadata, and freshness trust.
+- `advisor_validate` returns `workspaceRoot`, `thresholdSemantics`, telemetry rollups, and real corpus, holdout, parity, safety, and latency slices.
 
 ### Python Compatibility Fallback
 
@@ -171,7 +171,7 @@ The Phase 028 code graph lives in its own package at `.opencode/skill/system-spe
 | Copilot CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts` |
 | Gemini CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/user-prompt-submit.ts` |
 | Codex CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts`, `hooks/codex/user-prompt-submit.ts`, and `hooks/codex/prompt-wrapper.ts` fallback |
-| OpenCode | `.opencode/plugins/spec-kit-skill-advisor.js` and `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs` |
+| OpenCode | `.opencode/plugins/spec-kit-skill-advisor.js` and `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs` |
 
 All hook paths fail open. When `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` is set, the adapters skip advisor work and return no context or a prompt-safe disabled status.
 
@@ -207,7 +207,7 @@ The [feature catalog](./feature_catalog/feature_catalog.md) lists 42 features ac
 Use the native validation tool for release checks:
 
 ```text
-advisor_validate({"skillSlug":null})
+advisor_validate({"confirmHeavyRun":true,"workspaceRoot":"/absolute/path/to/repo","skillSlug":null})
 ```
 
 The current Phase 027 baseline:
@@ -218,6 +218,12 @@ The current Phase 027 baseline:
 - Python-correct parity regressions: 0.
 - Safety slices include adversarial stuffing.
 - Latency slices include cache-hit and uncached p95 measurements (~6.99 ms / ~11.45 ms).
+
+Aggregate validation thresholds are intentionally different from prompt-time routing thresholds:
+
+- Prompt-time routing defaults: confidence `0.8`, uncertainty `0.35`.
+- Aggregate validation gates: full corpus `0.75`, holdout `0.725`, per-skill `0.7`, UNKNOWN `<= 10`.
+- `advisor_validate` now publishes both sets under `thresholdSemantics` so runtime routing and release-gate scoring stay explicit.
 
 Python compatibility regression:
 

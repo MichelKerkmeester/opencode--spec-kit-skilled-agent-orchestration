@@ -134,7 +134,7 @@ function createSpecFolder(options: GraphMetadataFixtureOptions = {}): string {
     } else if (normalized === 'spec.md' || normalized === 'plan.md' || normalized === 'tasks.md'
       || normalized === 'checklist.md' || normalized === 'decision-record.md'
       || normalized === 'implementation-summary.md' || normalized === 'research.md'
-      || normalized === 'handover.md' || normalized.startsWith('research/')) {
+      || normalized === 'handover.md' || normalized === 'resource-map.md' || normalized.startsWith('research/')) {
       absolutePath = path.join(specFolder, normalized);
     } else {
       absolutePath = path.join(root, '.opencode', 'skill', 'system-spec-kit', normalized);

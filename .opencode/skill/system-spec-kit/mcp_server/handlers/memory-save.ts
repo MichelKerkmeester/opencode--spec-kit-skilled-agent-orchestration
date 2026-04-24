@@ -2697,7 +2697,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   }
 
   if (!memoryParser.isMemoryFile(validatedPath)) {
-    throw new Error('File must be a canonical spec document under specs/**/ (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, handover.md, research.md, description.json, graph-metadata.json) or a constitutional memory under .opencode/skill/*/constitutional/');
+    throw new Error('File must be a canonical spec document under specs/**/ (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, handover.md, research.md, resource-map.md, description.json, graph-metadata.json) or a constitutional memory under .opencode/skill/*/constitutional/');
   }
 
   if (typeof database.exec === 'function') {

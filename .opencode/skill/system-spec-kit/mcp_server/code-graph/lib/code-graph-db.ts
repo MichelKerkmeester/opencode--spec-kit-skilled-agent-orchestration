@@ -203,6 +203,11 @@ function setMetadata(key: string, value: string): void {
   `).run(key, value, now);
 }
 
+function clearMetadata(key: string): void {
+  const d = getDb();
+  d.prepare('DELETE FROM code_graph_metadata WHERE key = ?').run(key);
+}
+
 export function getLastGitHead(): string | null {
   return getMetadata('last_git_head');
 }
@@ -257,6 +262,20 @@ export function setLastGraphEdgeEnrichmentSummary(
   summary: GraphEdgeEnrichmentSummary,
 ): void {
   setMetadata('last_graph_edge_enrichment_summary', JSON.stringify(summary));
+}
+
+export function clearLastGraphEdgeEnrichmentSummary(): void {
+  clearMetadata('last_graph_edge_enrichment_summary');
+}
+
+export function getGraphQualitySummary(): {
+  detectorProvenanceSummary: DetectorProvenanceSummary | null;
+  graphEdgeEnrichmentSummary: GraphEdgeEnrichmentSummary | null;
+} {
+  return {
+    detectorProvenanceSummary: getLastDetectorProvenanceSummary(),
+    graphEdgeEnrichmentSummary: getLastGraphEdgeEnrichmentSummary(),
+  };
 }
 
 /**
@@ -657,6 +676,10 @@ export function getStats(): {
   lastGitHead: string | null;
   dbFileSize: number | null;
   schemaVersion: number;
+  graphQualitySummary: {
+    detectorProvenanceSummary: DetectorProvenanceSummary | null;
+    graphEdgeEnrichmentSummary: GraphEdgeEnrichmentSummary | null;
+  };
 } {
   const d = getDb();
   const totalFiles = (d.prepare('SELECT COUNT(*) as c FROM code_files').get() as { c: number }).c;
@@ -679,6 +702,7 @@ export function getStats(): {
   const lastScan = d.prepare('SELECT MAX(indexed_at) as last FROM code_files').get() as { last: string | null } | undefined;
   const lastScanTimestamp = lastScan?.last ?? null;
   const lastGitHead = getLastGitHead();
+  const graphQualitySummary = getGraphQualitySummary();
 
   // DB file size
   let dbFileSize: number | null = null;
@@ -688,7 +712,7 @@ export function getStats(): {
 
   return {
     totalFiles, totalNodes, totalEdges, nodesByKind, edgesByType, parseHealthSummary,
-    lastScanTimestamp, lastGitHead, dbFileSize, schemaVersion: SCHEMA_VERSION,
+    lastScanTimestamp, lastGitHead, dbFileSize, schemaVersion: SCHEMA_VERSION, graphQualitySummary,
   };
 }
 

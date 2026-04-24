@@ -9,18 +9,19 @@ import { performance } from 'node:perf_hooks';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
+  DEFAULT_ADVISOR_CONFIDENCE_THRESHOLD,
+  DEFAULT_ADVISOR_UNCERTAINTY_THRESHOLD,
   buildSkillAdvisorBrief,
   type AdvisorHookFreshness,
   type AdvisorHookResult,
   type AdvisorHookStatus,
 } from '../../skill-advisor/lib/skill-advisor-brief.js';
-import { getAdvisorFreshness } from '../../skill-advisor/lib/freshness.js';
 import { renderAdvisorBrief } from '../../skill-advisor/lib/render.js';
 import {
   createAdvisorHookDiagnosticRecord,
+  persistAdvisorHookDiagnosticRecord,
   serializeAdvisorHookDiagnosticRecord,
 } from '../../skill-advisor/lib/metrics.js';
-import { scoreAdvisorPrompt } from '../../skill-advisor/lib/scorer/fusion.js';
 
 const IS_CLI_ENTRY = process.argv[1]
   ? resolve(process.argv[1]) === fileURLToPath(import.meta.url)
@@ -73,6 +74,7 @@ export interface CodexInputParseResult {
 }
 
 interface HookDiagnosticInput {
+  readonly workspaceRoot: string;
   readonly status: AdvisorHookStatus;
   readonly freshness: AdvisorHookFreshness;
   readonly durationMs: number;
@@ -83,7 +85,7 @@ interface HookDiagnosticInput {
   readonly generation?: number;
 }
 
-const DEFAULT_CODEX_HOOK_TIMEOUT_MS = 3000;
+export const DEFAULT_CODEX_HOOK_TIMEOUT_MS = 3000;
 const DEFAULT_TOKEN_CAP = 80;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -141,7 +143,7 @@ function positiveIntFromEnv(value: string | undefined, fallback: number): number
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
-function codexHookTimeoutMs(): number {
+export function codexHookTimeoutMs(): number {
   return positiveIntFromEnv(process.env.SPECKIT_CODEX_HOOK_TIMEOUT_MS, DEFAULT_CODEX_HOOK_TIMEOUT_MS);
 }
 
@@ -158,11 +160,13 @@ function emitDiagnostic(
   writeDiagnostic: (line: string) => void = (line) => process.stderr.write(`${line}\n`),
 ): void {
   try {
-    const line = serializeAdvisorHookDiagnosticRecord(createAdvisorHookDiagnosticRecord({
+    const diagnosticRecord = createAdvisorHookDiagnosticRecord({
       runtime: 'codex',
       ...record,
-    }));
+    });
+    const line = serializeAdvisorHookDiagnosticRecord(diagnosticRecord);
     writeDiagnostic(line);
+    persistAdvisorHookDiagnosticRecord(record.workspaceRoot, diagnosticRecord);
   } catch {
     // Diagnostics must never affect hook behavior.
   }
@@ -177,62 +181,10 @@ function timeoutFallbackOutput(): CodexHookSpecificOutput {
   };
 }
 
-async function buildNativeCodexAdvisorBrief(
-  prompt: string,
-  options: { workspaceRoot: string },
-): Promise<AdvisorHookResult | null> {
-  const startedAt = performance.now();
-  try {
-    const freshness = getAdvisorFreshness(options.workspaceRoot);
-    if (freshness.state !== 'live' && freshness.state !== 'stale') {
-      return null;
-    }
-
-    const scored = scoreAdvisorPrompt(prompt, {
-      workspaceRoot: options.workspaceRoot,
-    });
-    const recommendations = scored.recommendations.map((recommendation) => ({
-      skill: recommendation.skill,
-      kind: recommendation.kind,
-      confidence: recommendation.confidence,
-      uncertainty: recommendation.uncertainty,
-      passes_threshold: recommendation.passes_threshold,
-      reason: recommendation.reason,
-    }));
-    const generatedAt = new Date().toISOString();
-    return {
-      status: recommendations.length > 0 ? 'ok' : 'skipped',
-      freshness: freshness.state,
-      brief: null,
-      recommendations,
-      diagnostics: freshness.state === 'stale'
-        ? { staleReason: freshness.diagnostics?.reason ?? 'STALE_ADVISOR_FRESHNESS' }
-        : null,
-      metrics: {
-        durationMs: Number((performance.now() - startedAt).toFixed(3)),
-        cacheHit: false,
-        subprocessInvoked: false,
-        retriesAttempted: 0,
-        recommendationCount: recommendations.length,
-        tokenCap: DEFAULT_TOKEN_CAP,
-      },
-      generatedAt,
-      sharedPayload: null,
-    };
-  } catch {
-    return null;
-  }
-}
-
 async function buildCodexAdvisorBrief(
   prompt: string,
   options: { workspaceRoot: string },
 ): Promise<AdvisorHookResult> {
-  const nativeResult = await buildNativeCodexAdvisorBrief(prompt, options);
-  if (nativeResult) {
-    return nativeResult;
-  }
-
   return buildSkillAdvisorBrief(prompt, {
     runtime: 'codex',
     workspaceRoot: options.workspaceRoot,
@@ -306,6 +258,7 @@ export async function handleCodexUserPromptSubmit(
   try {
     if (process.env.SPECKIT_SKILL_ADVISOR_HOOK_DISABLED === '1') {
       emitDiagnostic({
+        workspaceRoot: process.cwd(),
         status: 'skipped',
         freshness: 'unavailable',
         durationMs: elapsed(),
@@ -316,6 +269,7 @@ export async function handleCodexUserPromptSubmit(
 
     if (!input) {
       emitDiagnostic({
+        workspaceRoot: process.cwd(),
         status: 'fail_open',
         freshness: 'unavailable',
         durationMs: elapsed(),
@@ -327,8 +281,10 @@ export async function handleCodexUserPromptSubmit(
     }
 
     const prompt = promptFor(input);
+    const workspaceRoot = workspaceRootFor(input);
     if (prompt === null) {
       emitDiagnostic({
+        workspaceRoot,
         status: 'fail_open',
         freshness: 'unavailable',
         durationMs: elapsed(),
@@ -343,12 +299,18 @@ export async function handleCodexUserPromptSubmit(
     const renderBrief = dependencies.renderBrief ?? renderAdvisorBrief;
     const result = await buildBrief(prompt, {
       runtime: 'codex',
-      workspaceRoot: workspaceRootFor(input),
+      workspaceRoot,
       subprocessTimeoutMs: codexHookTimeoutMs(),
     });
-    const brief = renderBrief(result);
+    const brief = renderBrief(result, {
+      thresholdConfig: {
+        confidenceThreshold: DEFAULT_ADVISOR_CONFIDENCE_THRESHOLD,
+        uncertaintyThreshold: DEFAULT_ADVISOR_UNCERTAINTY_THRESHOLD,
+      },
+    });
     if (result.status === 'fail_open' && result.diagnostics?.errorCode === 'TIMEOUT') {
       emitDiagnostic({
+        workspaceRoot,
         status: 'stale',
         freshness: 'stale',
         durationMs: result.metrics.durationMs,
@@ -361,6 +323,7 @@ export async function handleCodexUserPromptSubmit(
     }
 
     emitDiagnostic({
+      workspaceRoot,
       status: result.status,
       freshness: result.freshness,
       durationMs: result.metrics.durationMs,
@@ -382,6 +345,7 @@ export async function handleCodexUserPromptSubmit(
     };
   } catch {
     emitDiagnostic({
+      workspaceRoot: input ? workspaceRootFor(input) : process.cwd(),
       status: 'fail_open',
       freshness: 'unavailable',
       durationMs: elapsed(),
@@ -421,6 +385,7 @@ async function main(): Promise<void> {
 if (IS_CLI_ENTRY) {
   main().catch(() => {
     emitDiagnostic({
+      workspaceRoot: process.cwd(),
       status: 'fail_open',
       freshness: 'unavailable',
       durationMs: 0,

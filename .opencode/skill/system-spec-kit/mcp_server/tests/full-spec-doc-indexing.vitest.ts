@@ -83,6 +83,7 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
       { path: '/project/.opencode/specs/003/100-feature/research/research.md', expected: 'research', label: 'research/research.md in specs/' },
       { path: '/project/.opencode/specs/003/100-feature/research.md', expected: 'research', label: 'legacy research.md in specs/' },
       { path: '/project/.opencode/specs/003/100-feature/handover.md', expected: 'handover', label: 'handover.md in specs/' },
+      { path: '/project/.opencode/specs/003/100-feature/resource-map.md', expected: 'resource_map', label: 'resource-map.md in specs/' },
       { path: '/project/.opencode/specs/003/100-feature/description.json', expected: 'description_metadata', label: 'description.json in specs/' },
     ];
 
@@ -104,8 +105,8 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
   });
 
   describe('T063: SPEC_DOCUMENT_CONFIGS completeness', () => {
-    it('Has exactly 10 entries', () => {
-      expect(SPEC_DOCUMENT_CONFIGS.length).toBe(10);
+    it('Has exactly 11 entries', () => {
+      expect(SPEC_DOCUMENT_CONFIGS.length).toBe(11);
     });
 
     it('Each config has required fields', () => {
@@ -128,6 +129,7 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
       expect(types).toContain('implementation_summary');
       expect(types).toContain('research');
       expect(types).toContain('handover');
+      expect(types).toContain('resource_map');
       expect(types).toContain('description_metadata');
       expect(types).toContain('graph_metadata');
     });
@@ -188,7 +190,7 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
 
     const expectedFilenames = [
       'spec.md', 'plan.md', 'tasks.md', 'checklist.md',
-      'decision-record.md', 'implementation-summary.md', 'research.md', 'handover.md', 'description.json',
+      'decision-record.md', 'implementation-summary.md', 'research.md', 'handover.md', 'resource-map.md', 'description.json',
     ];
 
     for (const fn of expectedFilenames) {
@@ -216,6 +218,7 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
       { path: '/p/.opencode/specs/003/100/research/research.md', expected: 'research', label: 'research/research.md' },
       { path: '/p/.opencode/specs/003/100/research.md', expected: 'research', label: 'legacy research.md' },
       { path: '/p/.opencode/specs/003/100/handover.md', expected: 'handover', label: 'handover.md' },
+      { path: '/p/.opencode/specs/003/100/resource-map.md', expected: 'resource_map', label: 'resource-map.md' },
       { path: '/p/.opencode/specs/003/100/description.json', expected: 'description_metadata', label: 'description.json' },
     ];
 

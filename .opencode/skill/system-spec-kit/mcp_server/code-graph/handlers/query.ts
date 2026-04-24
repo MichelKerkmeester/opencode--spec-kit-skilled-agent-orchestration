@@ -96,19 +96,33 @@ function resolveRequestedEdgeType(args: QueryArgs): { edgeType?: EdgeType; error
 interface AmbiguousSubjectWarning {
   code: 'ambiguous_subject';
   subject: string;
-  matchField: 'fq_name' | 'name';
+  matchField: 'fq_name' | 'name' | 'symbol_id';
   count: number;
-  candidates: string[];
+  candidates: SubjectCandidateMetadata[];
+  selectedCandidate: SubjectCandidateMetadata;
+  selectionReason: string;
   message: string;
 }
 
 interface ResolvedSubject {
   symbolId: string | null;
+  selectedCandidate?: SubjectCandidateMetadata;
   warnings?: AmbiguousSubjectWarning[];
 }
 
+interface SubjectCandidateMetadata {
+  symbolId: string;
+  fqName: string | null;
+  name: string | null;
+  kind: string | null;
+  filePath: string | null;
+  startLine: number | null;
+  operationEdgeCount?: number;
+  selectedForOperation?: QueryArgs['operation'];
+}
+
 interface SubjectMatchResult {
-  candidates: string[];
+  candidates: SubjectCandidateMetadata[];
   count: number;
 }
 
@@ -118,12 +132,19 @@ function querySubjectMatches(
 ): SubjectMatchResult {
   const d = graphDb.getDb();
   const candidates = d.prepare(`
-    SELECT symbol_id
+    SELECT symbol_id, fq_name, name, kind, file_path, start_line
     FROM code_nodes
     WHERE ${field} = ?
     ORDER BY file_path, start_line, symbol_id
     LIMIT ?
-  `).all(subject, RESOLVE_SUBJECT_CANDIDATE_LIMIT) as Array<{ symbol_id: string }>;
+  `).all(subject, RESOLVE_SUBJECT_CANDIDATE_LIMIT) as Array<{
+    symbol_id: string;
+    fq_name: string | null;
+    name: string | null;
+    kind: string | null;
+    file_path: string | null;
+    start_line: number | null;
+  }>;
 
   if (candidates.length === 0) {
     return { candidates: [], count: 0 };
@@ -136,15 +157,109 @@ function querySubjectMatches(
   `).get(subject) as { count: number }).count;
 
   return {
-    candidates: candidates.map((candidate) => candidate.symbol_id),
+    candidates: candidates.map((candidate) => ({
+      symbolId: candidate.symbol_id,
+      fqName: candidate.fq_name,
+      name: candidate.name,
+      kind: candidate.kind,
+      filePath: candidate.file_path,
+      startLine: candidate.start_line,
+    })),
     count,
+  };
+}
+
+function relationshipEdgeCount(
+  candidate: SubjectCandidateMetadata,
+  operation: QueryArgs['operation'],
+  edgeType: EdgeType | undefined,
+): number {
+  if (!candidate.symbolId) {
+    return 0;
+  }
+
+  const resolvedEdgeType = edgeType ?? (
+    operation.startsWith('calls')
+      ? 'CALLS'
+      : operation.startsWith('imports')
+        ? 'IMPORTS'
+        : undefined
+  );
+
+  if (!resolvedEdgeType) {
+    return 0;
+  }
+
+  if (operation === 'calls_from' || operation === 'imports_from') {
+    return graphDb.queryEdgesFrom(candidate.symbolId, resolvedEdgeType).length;
+  }
+
+  if (operation === 'calls_to' || operation === 'imports_to') {
+    return graphDb.queryEdgesTo(candidate.symbolId, resolvedEdgeType).length;
+  }
+
+  return 0;
+}
+
+function callableKindRank(kind: string | null): number {
+  switch (kind) {
+    case 'function':
+    case 'method':
+      return 0;
+    case 'class':
+      return 1;
+    case 'variable':
+      return 2;
+    default:
+      return 3;
+  }
+}
+
+function pickOperationAwareCandidate(
+  candidates: SubjectCandidateMetadata[],
+  operation: QueryArgs['operation'],
+  edgeType: EdgeType | undefined,
+): {
+  selectedCandidate: SubjectCandidateMetadata;
+  candidates: SubjectCandidateMetadata[];
+  selectionReason: string;
+} {
+  const rankedCandidates = candidates
+    .map((candidate) => ({
+      ...candidate,
+      operationEdgeCount: relationshipEdgeCount(candidate, operation, edgeType),
+      selectedForOperation: operation,
+    }))
+    .sort((left, right) => (
+      (right.operationEdgeCount ?? 0) - (left.operationEdgeCount ?? 0)
+      || callableKindRank(left.kind) - callableKindRank(right.kind)
+      || (left.filePath ?? '').localeCompare(right.filePath ?? '')
+      || (left.startLine ?? Number.MAX_SAFE_INTEGER) - (right.startLine ?? Number.MAX_SAFE_INTEGER)
+      || left.symbolId.localeCompare(right.symbolId)
+    ));
+
+  const selectedCandidate = rankedCandidates[0] ?? candidates[0];
+  const highestEdgeCount = selectedCandidate?.operationEdgeCount ?? 0;
+  const hasEdgeSignal = highestEdgeCount > 0;
+  const selectionReason = hasEdgeSignal
+    ? `${operation} edge count`
+    : callableKindRank(selectedCandidate?.kind ?? null) === 0
+      ? 'callable kind preference'
+      : 'deterministic file ordering';
+
+  return {
+    selectedCandidate,
+    candidates: rankedCandidates,
+    selectionReason,
   };
 }
 
 function buildAmbiguousSubjectWarning(
   subject: string,
-  matchField: 'fq_name' | 'name',
+  matchField: 'fq_name' | 'name' | 'symbol_id',
   matchResult: SubjectMatchResult,
+  selectedCandidate: SubjectCandidateMetadata,
+  selectionReason: string,
 ): AmbiguousSubjectWarning {
   const truncated = matchResult.count > matchResult.candidates.length;
   const shownCount = matchResult.candidates.length;
@@ -158,25 +273,60 @@ function buildAmbiguousSubjectWarning(
     matchField,
     count: matchResult.count,
     candidates: matchResult.candidates,
-    message: `Multiple code graph nodes matched subject "${subject}" by ${matchField} (${countLabel}). Use a symbolId to disambiguate the query.`,
+    selectedCandidate,
+    selectionReason,
+    message: `Multiple code graph nodes matched subject "${subject}" by ${matchField} (${countLabel}). Selected ${selectedCandidate.symbolId} for ${selectedCandidate.selectedForOperation ?? 'query'} using ${selectionReason}. Use a symbolId to disambiguate the query.`,
   };
 }
 
 /** Resolve a subject string to a symbolId */
-function resolveSubject(subject: string): ResolvedSubject {
+function resolveSubject(
+  subject: string,
+  operation: QueryArgs['operation'],
+  edgeType: EdgeType | undefined,
+): ResolvedSubject {
   const d = graphDb.getDb();
 
   // Try as symbolId first
-  const byId = d.prepare('SELECT symbol_id FROM code_nodes WHERE symbol_id = ?').get(subject) as { symbol_id: string } | undefined;
-  if (byId) return { symbolId: byId.symbol_id };
+  const byId = d.prepare(`
+    SELECT symbol_id, fq_name, name, kind, file_path, start_line
+    FROM code_nodes
+    WHERE symbol_id = ?
+  `).get(subject) as {
+    symbol_id: string;
+    fq_name: string | null;
+    name: string | null;
+    kind: string | null;
+    file_path: string | null;
+    start_line: number | null;
+  } | undefined;
+  if (byId) {
+    return {
+      symbolId: byId.symbol_id,
+      selectedCandidate: {
+        symbolId: byId.symbol_id,
+        fqName: byId.fq_name,
+        name: byId.name,
+        kind: byId.kind,
+        filePath: byId.file_path,
+        startLine: byId.start_line,
+        selectedForOperation: operation,
+      },
+    };
+  }
 
   // Try as fqName
   const byFq = querySubjectMatches('fq_name', subject);
   if (byFq.count > 0) {
+    const selection = pickOperationAwareCandidate(byFq.candidates, operation, edgeType);
     return {
-      symbolId: byFq.candidates[0] ?? null,
+      symbolId: selection.selectedCandidate.symbolId,
+      selectedCandidate: selection.selectedCandidate,
       ...(byFq.count > 1
-        ? { warnings: [buildAmbiguousSubjectWarning(subject, 'fq_name', byFq)] }
+        ? { warnings: [buildAmbiguousSubjectWarning(subject, 'fq_name', {
+          ...byFq,
+          candidates: selection.candidates,
+        }, selection.selectedCandidate, selection.selectionReason)] }
         : {}),
     };
   }
@@ -184,10 +334,15 @@ function resolveSubject(subject: string): ResolvedSubject {
   // Try as name
   const byName = querySubjectMatches('name', subject);
   if (byName.count > 0) {
+    const selection = pickOperationAwareCandidate(byName.candidates, operation, edgeType);
     return {
-      symbolId: byName.candidates[0] ?? null,
+      symbolId: selection.selectedCandidate.symbolId,
+      selectedCandidate: selection.selectedCandidate,
       ...(byName.count > 1
-        ? { warnings: [buildAmbiguousSubjectWarning(subject, 'name', byName)] }
+        ? { warnings: [buildAmbiguousSubjectWarning(subject, 'name', {
+          ...byName,
+          candidates: selection.candidates,
+        }, selection.selectedCandidate, selection.selectionReason)] }
         : {}),
     };
   }
@@ -472,6 +627,30 @@ function summarizeWeakestGraphEdgeEnrichment(
   return weakest;
 }
 
+function shouldBlockReadPath(readiness: ReadyResult): boolean {
+  return readiness.action === 'full_scan' && readiness.inlineIndexPerformed !== true;
+}
+
+function buildBlockedReadPayload(
+  readiness: ReadyResult,
+  operation: QueryArgs['operation'],
+  subject: string,
+) {
+  return {
+    status: 'blocked',
+    message: `code_graph_full_scan_required: ${readiness.reason}`,
+    data: buildGraphQueryPayload({
+      operation,
+      subject,
+      blocked: true,
+      degraded: true,
+      graphAnswersOmitted: true,
+      requiredAction: 'code_graph_scan',
+      blockReason: 'full_scan_required',
+    }, readiness, `code_graph_query ${operation} blocked payload`),
+  };
+}
+
 function buildHotFileBreadcrumbs(filePaths: string[]): Array<{
   filePath: string;
   hotFileBreadcrumb: HotFileBreadcrumb;
@@ -623,6 +802,15 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
     };
   }
 
+  if (shouldBlockReadPath(readiness)) {
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify(buildBlockedReadPayload(readiness, operation, subject), null, 2),
+      }],
+    };
+  }
+
   if (operation === 'outline') {
     const resolvedSubject = graphDb.resolveSubjectFilePath(subject);
     if (typeof resolvedSubject !== 'string' || resolvedSubject.length === 0) {
@@ -715,7 +903,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
     return buildUnknownOperationResponse(operation);
   }
 
-  const resolvedSubject = resolveSubject(subject);
+  const resolvedSubject = resolveSubject(subject, operation, requestedEdgeType);
   const symbolId = resolvedSubject.symbolId;
   if (!symbolId) {
     return {
@@ -746,6 +934,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
           data: buildGraphQueryPayload({
             operation,
             symbolId,
+            ...(resolvedSubject.selectedCandidate ? { selectedCandidate: resolvedSubject.selectedCandidate } : {}),
             edgeType: requestedEdgeType,
             transitive: true,
             maxDepth,
@@ -771,6 +960,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       result = {
         operation,
         symbolId,
+        ...(resolvedSubject.selectedCandidate ? { selectedCandidate: resolvedSubject.selectedCandidate } : {}),
         edgeType: requestedEdgeType,
         edges: resolvedEntries.map((entry) => ({
           target: entry.targetNode?.fqName ?? entry.edge.targetId,
@@ -806,6 +996,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       result = {
         operation,
         symbolId,
+        ...(resolvedSubject.selectedCandidate ? { selectedCandidate: resolvedSubject.selectedCandidate } : {}),
         edgeType: requestedEdgeType,
         edges: resolvedEntries.map((entry) => ({
           source: entry.sourceNode?.fqName ?? entry.edge.sourceId,
@@ -841,6 +1032,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       result = {
         operation,
         symbolId,
+        ...(resolvedSubject.selectedCandidate ? { selectedCandidate: resolvedSubject.selectedCandidate } : {}),
         edgeType: requestedEdgeType,
         edges: resolvedEntries.map((entry) => ({
           target: entry.targetNode?.fqName ?? entry.edge.targetId,
@@ -875,6 +1067,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       result = {
         operation,
         symbolId,
+        ...(resolvedSubject.selectedCandidate ? { selectedCandidate: resolvedSubject.selectedCandidate } : {}),
         edgeType: requestedEdgeType,
         edges: resolvedEntries.map((entry) => ({
           source: entry.sourceNode?.fqName ?? entry.edge.sourceId,

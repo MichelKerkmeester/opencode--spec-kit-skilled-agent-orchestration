@@ -268,6 +268,7 @@ specs/<###-feature-name>/
 ├── decision-record.md           # Architecture decisions (Level 3+)
 ├── implementation-summary.md    # Post-implementation summary (all levels)
 ├── handover.md                  # Operator-facing session handoff for /spec_kit:resume
+├── resource-map.md              # Optional lean path catalog (any level)
 ├── changelog/                   # Packet-local changelog history for packet roots / phase parents
 └── scratch/                     # Temporary workspace files (gitignored)
 ```
@@ -589,9 +590,10 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 │   ├── core/                   # Foundation templates (spec, plan, tasks, impl-summary)
 │   ├── addendum/               # Level-specific additions (level2, level3, level3plus, phase)
 │   ├── level_1/ - level_3+/    # Pre-merged composed templates by level
-│   ├── research/research.md             # Deep research template (~20K)
+│   ├── research/research.md    # Deep research template (~20K)
 │   ├── handover.md             # Session continuity template
-│   └── debug-delegation.md     # Debug delegation template
+│   ├── debug-delegation.md     # Debug delegation template
+│   └── resource-map.md         # Optional lean path catalog (any level)
 ├── scripts/                    # CLI tools (TypeScript source + Bash)
 │   ├── spec/                   # Spec folder management (12 scripts)
 │   ├── memory/                 # Memory system scripts (10 scripts)

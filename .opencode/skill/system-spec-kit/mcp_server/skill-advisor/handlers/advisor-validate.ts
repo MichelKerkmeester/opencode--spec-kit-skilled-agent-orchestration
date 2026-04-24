@@ -12,6 +12,18 @@ import { runPromotionLatencyBench } from '../bench/latency-bench.js';
 import { createFixtureProjection } from '../lib/scorer/projection.js';
 import type { SkillProjection } from '../lib/scorer/types.js';
 import {
+  DEFAULT_ADVISOR_CONFIDENCE_THRESHOLD,
+  DEFAULT_ADVISOR_UNCERTAINTY_THRESHOLD,
+} from '../lib/skill-advisor-brief.js';
+import {
+  advisorHookDiagnosticsPath,
+  advisorHookOutcomesPath,
+  createAdvisorHookOutcomeRecord,
+  persistAdvisorHookOutcomeRecord,
+  readAdvisorHookHealthSection,
+  summarizeAdvisorHookOutcomeRecords,
+} from '../lib/metrics.js';
+import {
   AdvisorValidateInputSchema,
   AdvisorValidateOutputSchema,
   type AdvisorValidateInput,
@@ -41,8 +53,13 @@ interface SkillAggregate {
   matched: number;
 }
 
-function findWorkspaceRoot(): string {
-  let current = dirname(fileURLToPath(import.meta.url));
+const FULL_CORPUS_THRESHOLD = 0.75;
+const HOLDOUT_THRESHOLD = 0.725;
+const PER_SKILL_THRESHOLD = 0.7;
+const UNKNOWN_TARGET_MAX = 10;
+
+function findWorkspaceRoot(start = dirname(fileURLToPath(import.meta.url))): string {
+  let current = start;
   for (let index = 0; index < 14; index += 1) {
     if (existsSync(resolve(current, '.opencode', 'skill', 'system-spec-kit', 'SKILL.md'))) return current;
     current = resolve(current, '..');
@@ -228,7 +245,7 @@ function evaluateRegressionCases(cases: readonly RegressionCase[], workspaceRoot
   };
 }
 
-function countSlice(correct: number, total: number, threshold = 0.7): {
+function countSlice(correct: number, total: number, threshold: number): {
   percentage: number;
   passed: boolean;
   threshold: number;
@@ -281,14 +298,23 @@ function adversarialStuffingBlocked(workspaceRoot: string): boolean {
 
 export function validateAdvisor(input: AdvisorValidateInput = { confirmHeavyRun: true }): AdvisorValidateOutput {
   const args = AdvisorValidateInputSchema.parse(input);
-  const workspaceRoot = findWorkspaceRoot();
+  const workspaceRoot = args.workspaceRoot ? resolve(args.workspaceRoot) : findWorkspaceRoot();
+  for (const outcomeEvent of args.outcomeEvents ?? []) {
+    persistAdvisorHookOutcomeRecord(workspaceRoot, createAdvisorHookOutcomeRecord({
+      runtime: outcomeEvent.runtime,
+      outcome: outcomeEvent.outcome,
+      skillLabel: outcomeEvent.skillId,
+      correctedSkillLabel: outcomeEvent.correctedSkillId,
+      timestamp: outcomeEvent.timestamp,
+    }));
+  }
   const corpus = loadCorpus(workspaceRoot)
     .filter((row) => args.skillSlug ? row.skill_top_1 === args.skillSlug : true);
   const full = evaluateRows(corpus, workspaceRoot);
   const holdout = stratifiedHoldout(corpus);
   const holdoutResult = evaluateRows(holdout, workspaceRoot);
-  const fullSlice = countSlice(full.correct, corpus.length);
-  const holdoutSlice = countSlice(holdoutResult.correct, holdout.length);
+  const fullSlice = countSlice(full.correct, corpus.length, FULL_CORPUS_THRESHOLD);
+  const holdoutSlice = countSlice(holdoutResult.correct, holdout.length, HOLDOUT_THRESHOLD);
   const explicitRegressions = parityRegressions(corpus, workspaceRoot);
   const baselineGoldNoneFalseFire = pythonGoldNoneFalseFire(corpus, workspaceRoot);
   const derivedComplete = derivedAttributionComplete(workspaceRoot);
@@ -296,10 +322,12 @@ export function validateAdvisor(input: AdvisorValidateInput = { confirmHeavyRun:
   const safety = adversarialStuffingBlocked(workspaceRoot);
   const latency = runPromotionLatencyBench(workspaceRoot);
   const regressionSuite = evaluateRegressionCases(loadRegressionCases(workspaceRoot), workspaceRoot);
+  const telemetryHealth = readAdvisorHookHealthSection(workspaceRoot);
+  const outcomeSummary = summarizeAdvisorHookOutcomeRecords(workspaceRoot);
   const p0Checks = [
     fullSlice.passed,
     holdoutSlice.passed,
-    full.unknown <= 10,
+    full.unknown <= UNKNOWN_TARGET_MAX,
     explicitRegressions.length === 0,
     ambiguity,
     derivedComplete,
@@ -314,12 +342,28 @@ export function validateAdvisor(input: AdvisorValidateInput = { confirmHeavyRun:
     .sort(([left], [right]) => left.localeCompare(right))
     .map(([skillId, aggregate]) => ({
       skillId,
-      status: aggregate.total === 0 ? 'skipped' as const : aggregate.matched / aggregate.total >= 0.7 ? 'pass' as const : 'fail' as const,
+      status: aggregate.total === 0
+        ? 'skipped' as const
+        : aggregate.matched / aggregate.total >= PER_SKILL_THRESHOLD ? 'pass' as const : 'fail' as const,
       matched: aggregate.matched,
       total: aggregate.total,
     }));
   const output: AdvisorValidateOutput = {
+    workspaceRoot,
     skillSlug: args.skillSlug ?? null,
+    thresholdSemantics: {
+      aggregateValidation: {
+        fullCorpusTop1: FULL_CORPUS_THRESHOLD,
+        holdoutTop1: HOLDOUT_THRESHOLD,
+        perSkillTop1: PER_SKILL_THRESHOLD,
+        unknownCountTargetMax: UNKNOWN_TARGET_MAX,
+      },
+      runtimeRouting: {
+        confidenceThreshold: DEFAULT_ADVISOR_CONFIDENCE_THRESHOLD,
+        uncertaintyThreshold: DEFAULT_ADVISOR_UNCERTAINTY_THRESHOLD,
+        confidenceOnly: false,
+      },
+    },
     overallAccuracy: fullSlice.percentage,
     perSkill,
     slices: {
@@ -327,8 +371,8 @@ export function validateAdvisor(input: AdvisorValidateInput = { confirmHeavyRun:
         full_corpus_top1: fullSlice,
         unknown_count: {
           value: full.unknown,
-          targetMax: 10,
-          passed: full.unknown <= 10,
+          targetMax: UNKNOWN_TARGET_MAX,
+          passed: full.unknown <= UNKNOWN_TARGET_MAX,
         },
         gold_none_false_fire_count: {
           value: full.falseFire,
@@ -363,6 +407,20 @@ export function validateAdvisor(input: AdvisorValidateInput = { confirmHeavyRun:
           cacheHitP95Ms: latency.cacheHitP95Ms,
           uncachedP95Ms: latency.uncachedP95Ms,
         },
+      },
+    },
+    telemetry: {
+      diagnostics: {
+        recordsPath: advisorHookDiagnosticsPath(workspaceRoot),
+        recordsRetained: telemetryHealth.lastInvocations.length,
+        rollingCacheHitRate: telemetryHealth.rollingCacheHitRate,
+        rollingP95Ms: telemetryHealth.rollingP95Ms,
+        rollingFailOpenRate: telemetryHealth.rollingFailOpenRate,
+      },
+      outcomes: {
+        recordsPath: advisorHookOutcomesPath(workspaceRoot),
+        recordedThisRun: args.outcomeEvents?.length ?? 0,
+        totals: outcomeSummary.totals,
       },
     },
     generatedAt: new Date().toISOString(),

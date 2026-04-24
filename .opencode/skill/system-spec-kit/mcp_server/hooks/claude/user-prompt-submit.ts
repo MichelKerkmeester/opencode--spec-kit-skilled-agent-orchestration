@@ -17,6 +17,7 @@ import {
 import { renderAdvisorBrief } from '../../skill-advisor/lib/render.js';
 import {
   createAdvisorHookDiagnosticRecord,
+  persistAdvisorHookDiagnosticRecord,
   serializeAdvisorHookDiagnosticRecord,
 } from '../../skill-advisor/lib/metrics.js';
 
@@ -50,6 +51,7 @@ export interface UserPromptSubmitDependencies {
 }
 
 interface HookDiagnosticInput {
+  readonly workspaceRoot: string;
   readonly status: AdvisorHookStatus;
   readonly freshness: AdvisorHookFreshness;
   readonly durationMs: number;
@@ -90,11 +92,13 @@ function emitDiagnostic(
   writeDiagnostic: (line: string) => void = (line) => process.stderr.write(`${line}\n`),
 ): void {
   try {
-    const line = serializeAdvisorHookDiagnosticRecord(createAdvisorHookDiagnosticRecord({
+    const diagnosticRecord = createAdvisorHookDiagnosticRecord({
       runtime: 'claude',
       ...record,
-    }));
+    });
+    const line = serializeAdvisorHookDiagnosticRecord(diagnosticRecord);
     writeDiagnostic(line);
+    persistAdvisorHookDiagnosticRecord(record.workspaceRoot, diagnosticRecord);
   } catch {
     // Diagnostics must never affect hook behavior.
   }
@@ -120,6 +124,7 @@ export async function handleClaudeUserPromptSubmit(
   try {
     if (process.env.SPECKIT_SKILL_ADVISOR_HOOK_DISABLED === '1') {
       emitDiagnostic({
+        workspaceRoot: process.cwd(),
         status: 'skipped',
         freshness: 'unavailable',
         durationMs: elapsed(),
@@ -130,6 +135,7 @@ export async function handleClaudeUserPromptSubmit(
 
     if (!input) {
       emitDiagnostic({
+        workspaceRoot: process.cwd(),
         status: 'fail_open',
         freshness: 'unavailable',
         durationMs: elapsed(),
@@ -141,8 +147,10 @@ export async function handleClaudeUserPromptSubmit(
     }
 
     const prompt = normalizePrompt(input.prompt);
+    const workspaceRoot = workspaceRootFor(input);
     if (prompt === null) {
       emitDiagnostic({
+        workspaceRoot,
         status: 'fail_open',
         freshness: 'unavailable',
         durationMs: elapsed(),
@@ -157,10 +165,11 @@ export async function handleClaudeUserPromptSubmit(
     const renderBrief = dependencies.renderBrief ?? renderAdvisorBrief;
     const result = await buildBrief(prompt, {
       runtime: 'claude',
-      workspaceRoot: workspaceRootFor(input),
+      workspaceRoot,
     });
     const brief = renderBrief(result);
     emitDiagnostic({
+      workspaceRoot,
       status: result.status,
       freshness: result.freshness,
       durationMs: result.metrics.durationMs,
@@ -182,6 +191,7 @@ export async function handleClaudeUserPromptSubmit(
     };
   } catch {
     emitDiagnostic({
+      workspaceRoot: input ? workspaceRootFor(input) : process.cwd(),
       status: 'fail_open',
       freshness: 'unavailable',
       durationMs: elapsed(),
@@ -221,6 +231,7 @@ async function main(): Promise<void> {
 if (IS_CLI_ENTRY) {
   main().catch(() => {
     emitDiagnostic({
+      workspaceRoot: process.cwd(),
       status: 'fail_open',
       freshness: 'unavailable',
       durationMs: 0,

@@ -12,6 +12,11 @@ import type { AdvisorRecommendation } from './subprocess.js';
 
 export interface AdvisorBriefRenderOptions {
   readonly tokenCap?: number;
+  readonly thresholdConfig?: {
+    readonly confidenceThreshold?: number;
+    readonly uncertaintyThreshold?: number;
+    readonly confidenceOnly?: boolean;
+  };
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -69,13 +74,6 @@ function formatScore(value: number): string {
   return Number.isFinite(value) ? value.toFixed(2) : '0.00';
 }
 
-function passingRecommendations(result: AdvisorHookResult): readonly AdvisorRecommendation[] {
-  return result.recommendations.filter((recommendation) => (
-    recommendation.passes_threshold === true
-    || (recommendation.confidence >= 0.8 && recommendation.uncertainty <= 0.35)
-  ));
-}
-
 function isAmbiguous(recommendations: readonly AdvisorRecommendation[]): boolean {
   const [first, second] = recommendations;
   return !!first && !!second && Math.abs(first.confidence - second.confidence) <= 0.05 + AMBIGUITY_EPSILON;
@@ -109,7 +107,17 @@ export function renderAdvisorBrief(
   }
 
   const tokenCap = clampTokenCap(result.metrics?.tokenCap ?? options.tokenCap);
-  const recommendations = passingRecommendations(result);
+  const thresholdConfig = options.thresholdConfig;
+  const recommendations = result.recommendations.filter((recommendation) => (
+    recommendation.passes_threshold === true
+    || (
+      recommendation.confidence >= (thresholdConfig?.confidenceThreshold ?? 0.8)
+      && (
+        thresholdConfig?.confidenceOnly === true
+        || recommendation.uncertainty <= (thresholdConfig?.uncertaintyThreshold ?? 0.35)
+      )
+    )
+  ));
   const [top, second] = recommendations;
   if (!top) {
     return null;

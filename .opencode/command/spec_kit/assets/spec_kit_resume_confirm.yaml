@@ -69,7 +69,7 @@ session_detection:
 context_loading_priority:
   # 026: session_bootstrap() is preferred over plain memory_context() for interrupted-session recovery
   # It provides graph-aware context injection and keeps recovery on the canonical resume/bootstrap ladder
-  order: ["Primary: handover.md (<24h old)", "Primary: _memory.continuity in implementation-summary.md", "Primary: supporting spec docs (tasks/checklist/plan/decision-record)", "Secondary: graph-metadata.json packet hints", "Secondary: session_bootstrap() or memory_context(mode: resume, profile: resume)", "Secondary: memory_search() with resume anchors"]
+  order: ["Primary: handover.md (<24h old)", "Primary: _memory.continuity in implementation-summary.md", "Primary: supporting spec docs (tasks/checklist/plan/decision-record/resource-map)", "Secondary: graph-metadata.json packet hints", "Secondary: session_bootstrap() or memory_context(mode: resume, profile: resume)", "Secondary: memory_search() with resume anchors"]
   note: "Recover from the canonical packet first, then let the user choose whether MCP enrichment is needed"
 
 packet_graph_metadata:

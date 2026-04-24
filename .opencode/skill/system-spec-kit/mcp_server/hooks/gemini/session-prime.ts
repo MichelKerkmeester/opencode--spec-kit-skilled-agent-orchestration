@@ -39,9 +39,11 @@ type StartupBrief = {
   graphOutline: string | null;
   sessionContinuity: string | null;
   graphSummary: { files: number; nodes: number; edges: number; lastScan: string | null } | null;
+  graphQualitySummary?: unknown;
   graphState: 'ready' | 'stale' | 'empty' | 'missing';
   cocoIndexAvailable: boolean;
   startupSurface: string;
+  sharedPayloadTransport?: string | null;
 };
 
 let buildStartupBrief: ((highlightCount?: number, stateScope?: { specFolder?: string; claudeSessionId?: string }) => StartupBrief) | null = null;
@@ -199,6 +201,13 @@ function handleStartup(input: { sessionId?: string; cwd?: unknown; specFolder?: 
     sections.push({
       title: 'Structural Context',
       content: 'Code graph index is empty. Run `code_graph_scan` to build structural context.',
+    });
+  }
+
+  if (startupBrief?.sharedPayloadTransport) {
+    sections.push({
+      title: 'Startup Payload Contract',
+      content: startupBrief.sharedPayloadTransport,
     });
   }
 

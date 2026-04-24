@@ -242,6 +242,10 @@ describe('session-prime hook', () => {
           graphOutline: '- handlers/session-bootstrap.ts',
           sessionContinuity: null,
           graphSummary: { files: 1, nodes: 2, edges: 3, lastScan: '2026-04-09T10:00:00.000Z' },
+          graphQualitySummary: {
+            detectorProvenanceSummary: { dominant: 'structured', counts: { structured: 1 } },
+            graphEdgeEnrichmentSummary: { edgeEvidenceClass: 'direct_call', numericConfidence: 0.92 },
+          },
           graphState: 'ready',
           cocoIndexAvailable: true,
           startupSurface: [
@@ -251,6 +255,11 @@ describe('session-prime hook', () => {
             '- Code Graph: ready',
             '- CocoIndex: available',
           ].join('\n'),
+          sharedPayloadTransport: JSON.stringify({
+            kind: 'startup',
+            provenance: { producer: 'startup_brief', trustState: 'live' },
+            sectionKeys: ['structural-context'],
+          }, null, 2),
         })),
       }));
 
@@ -262,9 +271,13 @@ describe('session-prime hook', () => {
       expect(sections[0]?.content).toContain('- Code Graph: ready');
       expect(sections.map((section) => section.title)).toContain('Recovery Tools');
       expect(sections.map((section) => section.title)).toContain('Structural Context');
+      expect(sections.map((section) => section.title)).toContain('Startup Payload Contract');
       expect(sections.map((section) => section.title)).toContain('Session Continuity');
       expect(sections.find((section) => section.title === 'Session Continuity')?.content).toContain(
         'Resume the active packet before running deeper graph scans.',
+      );
+      expect(sections.find((section) => section.title === 'Startup Payload Contract')?.content).toContain(
+        '"producer": "startup_brief"',
       );
     });
 

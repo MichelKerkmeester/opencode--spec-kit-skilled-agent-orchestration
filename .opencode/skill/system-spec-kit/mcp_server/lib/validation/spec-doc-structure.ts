@@ -186,6 +186,7 @@ function collectDocuments(folder: string): DocumentRecord[] {
     { basename: 'handover.md', path: path.join(folder, 'handover.md') },
     { basename: 'research.md', path: path.join(folder, 'research.md') },
     { basename: 'research/research.md', path: path.join(folder, 'research', 'research.md') },
+    { basename: 'resource-map.md', path: path.join(folder, 'resource-map.md') },
   ];
 
   for (const candidate of optionalDocs) {

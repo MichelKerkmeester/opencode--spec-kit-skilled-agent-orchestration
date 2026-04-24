@@ -27,6 +27,7 @@ const IS_CLI_ENTRY = process.argv[1]
 
 type StartupBrief = {
   startupSurface: string;
+  sharedPayloadTransport?: string | null;
 };
 
 export interface CopilotHookInput {
@@ -189,7 +190,20 @@ function buildStartupBanner(input: CopilotHookInput | null): string {
   } else if (!startupBrief?.startupSurface) {
     process.stderr.write('[copilot:session-prime] WARNING: startupBrief missing or empty — possible startup-brief regression\n');
   }
-  return startupBrief?.startupSurface ?? fallbackBanner();
+  if (!startupBrief?.startupSurface) {
+    return fallbackBanner();
+  }
+
+  if (!startupBrief.sharedPayloadTransport) {
+    return startupBrief.startupSurface;
+  }
+
+  return [
+    startupBrief.startupSurface,
+    '',
+    'Startup Payload Contract',
+    startupBrief.sharedPayloadTransport,
+  ].join('\n');
 }
 
 async function refreshStartupInstructions(startupSurface: string): Promise<void> {

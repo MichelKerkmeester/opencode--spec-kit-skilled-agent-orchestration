@@ -1,0 +1,142 @@
+{
+  "sessionId": "2026-04-24T08:04:38.636Z",
+  "generation": 1,
+  "lineageMode": "new",
+  "openFindings": [
+    {
+      "id": "P1-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Cleanup script builds plan outside transaction (TOCTOU)",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [376, 399],
+      "iterationFirstSeen": 1,
+      "evidence": "const plan = buildPlan(database); const tx = database.transaction(() => applyCleanup(database, plan));",
+      "status": "open"
+    },
+    {
+      "id": "P1-002",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "FTS cleanup relies on assumed trigger with no runtime verification",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [46, 281],
+      "iterationFirstSeen": 1,
+      "evidence": "ftsCleanupStrategy: 'memory_index_trigger' — never asserted",
+      "status": "open"
+    },
+    {
+      "id": "P1-003",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Symlink bypass: path.resolve does not follow symlinks",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      "lines": [306],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts", "lines": [1254] }
+      ],
+      "iterationFirstSeen": 1,
+      "evidence": "canonicalFilePath = path.resolve(parsed.filePath).replace(/\\\\/g, '/')",
+      "status": "open"
+    },
+    {
+      "id": "P1-004",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Cleanup LIKE patterns miss rows with no leading slash",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [99, 103, 107, 117],
+      "iterationFirstSeen": 1,
+      "evidence": "file_path LIKE '%/z_future/%' — diverges from (^|/)z_future(/|$) regex semantics",
+      "status": "open"
+    },
+    {
+      "id": "P1-005",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Cleanup --apply has no idempotence short-circuit",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [394, 399],
+      "iterationFirstSeen": 1,
+      "evidence": "no early-exit branch when before summary shows zero violations",
+      "status": "open"
+    },
+    {
+      "id": "P1-006",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "stripDeletedIdsFromMutationLedger is a silent no-op stub",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [232, 293],
+      "iterationFirstSeen": 1,
+      "evidence": "function stripDeletedIdsFromMutationLedger(...): number { return 0; }",
+      "status": "open"
+    },
+    {
+      "id": "P2-001",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "isConstitutionalPath recompiles regex per call",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts",
+      "lines": [50, 52],
+      "iterationFirstSeen": 1,
+      "status": "open"
+    },
+    {
+      "id": "P2-002",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "README.md rejection is defense-in-depth by coincidence",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts",
+      "lines": [955, 979],
+      "iterationFirstSeen": 1,
+      "status": "open"
+    },
+    {
+      "id": "P2-003",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "Two guard invocations with different input normalization",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      "lines": [2695, 306],
+      "iterationFirstSeen": 1,
+      "status": "open"
+    },
+    {
+      "id": "P2-004",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "EXCLUDED_FOR_CODE_GRAPH blanket-excludes any 'dist' segment",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts",
+      "lines": [36],
+      "iterationFirstSeen": 1,
+      "status": "open"
+    },
+    {
+      "id": "P2-005",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "Cleanup collectSummary.zFutureRows mixes OR conditions that delete cannot match",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [99, 118],
+      "iterationFirstSeen": 1,
+      "status": "open"
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": false,
+    "traceability": false,
+    "maintainability": false
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 6,
+    "P2": 5
+  },
+  "openFindingsCount": 11,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 0.0
+}

@@ -83,6 +83,8 @@ interface CachedAdvisorHookResult extends AdvisorHookResult {
 
 const DEFAULT_TOKEN_CAP = 80;
 const HARD_TOKEN_CAP = 120;
+export const DEFAULT_ADVISOR_CONFIDENCE_THRESHOLD = 0.8;
+export const DEFAULT_ADVISOR_UNCERTAINTY_THRESHOLD = 0.35;
 const DEFAULT_METRICS: AdvisorHookMetrics = {
   durationMs: 0,
   cacheHit: false,
@@ -91,6 +93,15 @@ const DEFAULT_METRICS: AdvisorHookMetrics = {
   recommendationCount: 0,
   tokenCap: DEFAULT_TOKEN_CAP,
 };
+
+export interface ResolvedAdvisorThresholdConfig {
+  readonly confidenceThreshold: number;
+  readonly uncertaintyThreshold: number;
+  readonly confidenceOnly: boolean;
+  readonly showRejections: boolean;
+  readonly includeAttribution: boolean;
+  readonly includeAbstainReasons: boolean;
+}
 
 function clampTokenCap(maxTokens: number | undefined, ambiguous: boolean): number {
   const requested = maxTokens ?? (ambiguous ? HARD_TOKEN_CAP : DEFAULT_TOKEN_CAP);
@@ -117,21 +128,33 @@ function capTextByTokenEstimate(text: string, tokenCap: number): string {
   return kept.length > 0 ? `${kept.join(' ')}...` : text.slice(0, Math.max(1, tokenCap * 4 - 3)).trimEnd() + '...';
 }
 
-function passingRecommendations(
+export function resolveAdvisorThresholdConfig(
+  thresholdConfig: AdvisorThresholds | undefined,
+): ResolvedAdvisorThresholdConfig {
+  return {
+    confidenceThreshold: thresholdConfig?.confidenceThreshold ?? DEFAULT_ADVISOR_CONFIDENCE_THRESHOLD,
+    uncertaintyThreshold: thresholdConfig?.uncertaintyThreshold ?? DEFAULT_ADVISOR_UNCERTAINTY_THRESHOLD,
+    confidenceOnly: thresholdConfig?.confidenceOnly ?? false,
+    showRejections: thresholdConfig?.showRejections ?? false,
+    includeAttribution: thresholdConfig?.includeAttribution ?? false,
+    includeAbstainReasons: thresholdConfig?.includeAbstainReasons ?? false,
+  };
+}
+
+export function passingRecommendations(
   recommendations: readonly AdvisorRecommendation[],
   thresholdConfig: AdvisorThresholds | undefined,
 ): AdvisorRecommendation[] {
-  const confidenceThreshold = thresholdConfig?.confidenceThreshold ?? 0.8;
-  const uncertaintyThreshold = thresholdConfig?.uncertaintyThreshold ?? 0.35;
+  const resolvedThresholds = resolveAdvisorThresholdConfig(thresholdConfig);
   return recommendations.filter((recommendation) => {
     if (recommendation.passes_threshold === true) {
       return true;
     }
-    if (thresholdConfig?.confidenceOnly) {
-      return recommendation.confidence >= confidenceThreshold;
+    if (resolvedThresholds.confidenceOnly) {
+      return recommendation.confidence >= resolvedThresholds.confidenceThreshold;
     }
-    return recommendation.confidence >= confidenceThreshold
-      && recommendation.uncertainty <= uncertaintyThreshold;
+    return recommendation.confidence >= resolvedThresholds.confidenceThreshold
+      && recommendation.uncertainty <= resolvedThresholds.uncertaintyThreshold;
   });
 }
 
@@ -158,6 +181,46 @@ function renderBrief(
   const prefix = freshness === 'stale' ? 'Advisor: stale - ' : 'Advisor: ';
   const brief = `${prefix}use ${top.skill} (confidence ${top.confidence.toFixed(2)}, uncertainty ${top.uncertainty.toFixed(2)}).`;
   return capTextByTokenEstimate(brief, tokenCap);
+}
+
+export function buildAdvisorHookResultFromRecommendations(args: {
+  readonly startedAt?: number;
+  readonly freshnessResult: AdvisorFreshnessResult;
+  readonly recommendations: readonly AdvisorRecommendation[];
+  readonly thresholdConfig?: AdvisorThresholds;
+  readonly maxTokens?: number;
+  readonly diagnostics?: AdvisorHookDiagnostics | null;
+  readonly metrics?: Partial<AdvisorHookMetrics>;
+}): AdvisorHookResult {
+  const freshness = args.freshnessResult.state;
+  if (freshness !== 'live' && freshness !== 'stale') {
+    return result({
+      startedAt: args.startedAt ?? performance.now(),
+      status: freshness === 'absent' ? 'skipped' : 'degraded',
+      freshness,
+      brief: null,
+      diagnostics: args.diagnostics ?? null,
+      metrics: args.metrics,
+      freshnessResult: args.freshnessResult,
+    });
+  }
+
+  const filteredRecommendations = passingRecommendations(args.recommendations, args.thresholdConfig);
+  const tokenCap = clampTokenCap(args.maxTokens, hasAmbiguitySignal(filteredRecommendations));
+  const brief = renderBrief(filteredRecommendations, freshness, tokenCap);
+  return result({
+    startedAt: args.startedAt ?? performance.now(),
+    status: brief ? 'ok' : 'skipped',
+    freshness,
+    brief,
+    recommendations: filteredRecommendations,
+    diagnostics: args.diagnostics ?? null,
+    metrics: {
+      ...args.metrics,
+      tokenCap,
+    },
+    freshnessResult: args.freshnessResult,
+  });
 }
 
 function freshnessTrustState(freshness: AdvisorHookFreshness): SharedPayloadTrustState {

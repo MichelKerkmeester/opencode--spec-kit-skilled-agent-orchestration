@@ -13,6 +13,7 @@ export interface CodeGraphSeed {
   startLine?: number;
   endLine?: number;
   query?: string;
+  source?: string;
 }
 
 /** Native CocoIndex search result as a seed */
@@ -22,6 +23,7 @@ export interface CocoIndexSeed {
   range: { start: number; end: number };
   score: number;
   snippet?: string;
+  source?: string;
 }
 
 /** Manual seed with symbol name (no file path required) */
@@ -30,6 +32,7 @@ export interface ManualSeed {
   symbolName: string;
   filePath?: string;
   kind?: SymbolKind;
+  source?: string;
 }
 
 /** Pre-resolved graph node seed */
@@ -37,6 +40,7 @@ export interface GraphSeed {
   provider: 'graph';
   nodeId: string;
   symbolId: string;
+  source?: string;
 }
 
 /** Union type for all seed kinds */
@@ -52,6 +56,11 @@ export interface ArtifactRef {
   kind: string | null;
   confidence: number; // 0.0 - 1.0
   resolution: 'exact' | 'near_exact' | 'enclosing' | 'file_anchor';
+  score: number | null;
+  snippet: string | null;
+  range: { start: number; end: number } | null;
+  provider: 'graph' | 'manual' | 'cocoindex' | 'code_graph';
+  source?: string;
 }
 
 // ── Type guards ──────────────────────────────────────────────
@@ -85,11 +94,20 @@ function throwResolutionError(operation: string, seed: unknown, err: unknown): n
 
 /** Resolve a CocoIndex seed by converting to CodeGraphSeed and delegating */
 export function resolveCocoIndexSeed(seed: CocoIndexSeed): ArtifactRef {
-  return resolveSeed({
+  const resolved = resolveSeed({
     filePath: seed.file,
     startLine: seed.range.start,
     endLine: seed.range.end,
+    source: seed.source,
   });
+  return {
+    ...resolved,
+    score: seed.score,
+    snippet: seed.snippet ?? null,
+    range: seed.range,
+    provider: 'cocoindex',
+    source: seed.source,
+  };
 }
 
 /** Resolve a ManualSeed by looking up the symbol name in the DB */
@@ -122,6 +140,11 @@ export function resolveManualSeed(seed: ManualSeed): ArtifactRef {
         kind: row.kind as string,
         confidence: 0.9,
         resolution: 'exact',
+        score: null,
+        snippet: null,
+        range: null,
+        provider: 'manual',
+        source: seed.source,
       };
     }
   } catch (err: unknown) {
@@ -137,6 +160,11 @@ export function resolveManualSeed(seed: ManualSeed): ArtifactRef {
     kind: seed.kind ?? null,
     confidence: 0.1,
     resolution: 'file_anchor',
+    score: null,
+    snippet: null,
+    range: null,
+    provider: 'manual',
+    source: seed.source,
   };
 }
 
@@ -159,6 +187,11 @@ export function resolveGraphSeed(seed: GraphSeed): ArtifactRef {
         kind: row.kind as string,
         confidence: 1.0,
         resolution: 'exact',
+        score: null,
+        snippet: null,
+        range: null,
+        provider: 'graph',
+        source: seed.source,
       };
     }
   } catch (err: unknown) {
@@ -174,6 +207,11 @@ export function resolveGraphSeed(seed: GraphSeed): ArtifactRef {
     kind: null,
     confidence: 0.1,
     resolution: 'file_anchor',
+    score: null,
+    snippet: null,
+    range: null,
+    provider: 'graph',
+    source: seed.source,
   };
 }
 
@@ -201,6 +239,13 @@ export function resolveSeed(seed: CodeGraphSeed): ArtifactRef {
           kind: exact.kind as string,
           confidence: 1.0,
           resolution: 'exact',
+          score: null,
+          snippet: null,
+          range: seed.startLine
+            ? { start: seed.startLine, end: seed.endLine ?? seed.startLine }
+            : null,
+          provider: 'code_graph',
+          source: seed.source,
         };
       }
 
@@ -222,6 +267,13 @@ export function resolveSeed(seed: CodeGraphSeed): ArtifactRef {
           kind: nearExact.kind as string,
           confidence: Math.max(0, 0.95 - (distance * 0.02)),
           resolution: 'near_exact',
+          score: null,
+          snippet: null,
+          range: seed.startLine
+            ? { start: seed.startLine, end: seed.endLine ?? seed.startLine }
+            : null,
+          provider: 'code_graph',
+          source: seed.source,
         };
       }
 
@@ -243,6 +295,13 @@ export function resolveSeed(seed: CodeGraphSeed): ArtifactRef {
           kind: enclosing.kind as string,
           confidence: 0.7,
           resolution: 'enclosing',
+          score: null,
+          snippet: null,
+          range: seed.startLine
+            ? { start: seed.startLine, end: seed.endLine ?? seed.startLine }
+            : null,
+          provider: 'code_graph',
+          source: seed.source,
         };
       }
     }
@@ -257,6 +316,13 @@ export function resolveSeed(seed: CodeGraphSeed): ArtifactRef {
       kind: null,
       confidence: 0.3,
       resolution: 'file_anchor',
+      score: null,
+      snippet: null,
+      range: seed.startLine
+        ? { start: seed.startLine, end: seed.endLine ?? seed.startLine }
+        : null,
+      provider: 'code_graph',
+      source: seed.source,
     };
   } catch (err: unknown) {
     throwResolutionError('resolveSeed', seed, err);
@@ -273,19 +339,23 @@ function resolveAnySeed(seed: AnySeed): ArtifactRef {
 
 /** Resolve multiple seeds, deduplicate overlapping refs */
 export function resolveSeeds(seeds: AnySeed[]): ArtifactRef[] {
-  const refs: ArtifactRef[] = [];
-  const seen = new Set<string>();
+  const refsByKey = new Map<string, ArtifactRef>();
+
+  const compareRefs = (left: ArtifactRef, right: ArtifactRef): number => (
+    (right.score ?? Number.NEGATIVE_INFINITY) - (left.score ?? Number.NEGATIVE_INFINITY)
+    || right.confidence - left.confidence
+    || left.filePath.localeCompare(right.filePath)
+    || left.startLine - right.startLine
+  );
 
   for (const seed of seeds) {
     const ref = resolveAnySeed(seed);
     const key = ref.symbolId ?? `${ref.filePath}:${ref.startLine}`;
-    if (!seen.has(key)) {
-      seen.add(key);
-      refs.push(ref);
+    const previous = refsByKey.get(key);
+    if (!previous || compareRefs(previous, ref) > 0) {
+      refsByKey.set(key, ref);
     }
   }
 
-  // Sort by confidence descending
-  refs.sort((a, b) => b.confidence - a.confidence);
-  return refs;
+  return [...refsByKey.values()].sort(compareRefs);
 }

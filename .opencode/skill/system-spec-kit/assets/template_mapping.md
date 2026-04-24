@@ -148,18 +148,20 @@ mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates
 
 <!-- /ANCHOR:required-templates-by-level-progressive-enhancement -->
 <!-- ANCHOR:optional-templates-level-3-only -->
-## 4. OPTIONAL TEMPLATES (Level 3 Only)
+## 4. OPTIONAL TEMPLATES (Any Level)
 
-These templates are OPTIONAL and only apply to Level 3 documentation:
+These templates are OPTIONAL and can be added at any documentation level:
 
 | Template File | Copy As       | When to Use                          | Copy Command                                                                          |
 | ------------- | ------------- | ------------------------------------ | ------------------------------------------------------------------------------------- |
-| `research/research.md` | `research/research.md` | Comprehensive research documentation | `mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research/research.md` |
+| `research/research.md` | `research/research.md` | Comprehensive research documentation (Level 3+ typical) | `mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research/research.md` |
+| `resource-map.md` | `resource-map.md` | Lean path catalog of every file analyzed/created/updated/removed (any level) | `cp .opencode/skill/system-spec-kit/templates/resource-map.md specs/###-name/resource-map.md` |
 
 **Notes:**
-- These are OPTIONAL - only copy when research is needed
+- These are OPTIONAL - only copy when the packet benefits from them
 - `decision-record.md` is REQUIRED at Level 3, not optional
 - Topic-specific ADR files can be added as supplemental artifacts, but the required canonical file is always `decision-record.md`
+- `resource-map.md` is level-agnostic and pairs well with `implementation-summary.md` when reviewers need a scannable blast-radius view
 
 ---
 
@@ -214,7 +216,8 @@ specs/045-user-dashboard/
 ├── implementation-summary.md    (REQUIRED - from Level 2)
 ├── checklist.md                 (REQUIRED - from Level 2)
 ├── decision-record.md           (REQUIRED - architecture decisions)
-└── research/research.md         (OPTIONAL - comprehensive research)
+├── research/research.md         (OPTIONAL - comprehensive research)
+└── resource-map.md              (OPTIONAL - lean path catalog)
 ```
 
 **Additional expectations:**

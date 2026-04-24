@@ -373,6 +373,7 @@ export type DocumentType =
   | 'implementation_summary'
   | 'research'
   | 'handover'
+  | 'resource_map'
   | 'description_metadata'
   | 'graph_metadata'
   | 'memory'
@@ -399,6 +400,7 @@ export const SPEC_DOCUMENT_CONFIGS: readonly SpecDocumentConfig[] = [
   { filePattern: /(?:^|\/)implementation-summary\.md$/i,  documentType: 'implementation_summary',  memoryType: 'semantic',    defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.6 },
   { filePattern: /(?:^|\/)(?:research\/research\.md|research\.md)$/i, documentType: 'research', memoryType: 'semantic', defaultImportanceTier: 'normal', defaultImportanceWeight: 0.6 },
   { filePattern: /(?:^|\/)handover\.md$/i,                documentType: 'handover',                memoryType: 'episodic',    defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.5 },
+  { filePattern: /(?:^|\/)resource-map\.md$/i,            documentType: 'resource_map',            memoryType: 'semantic',    defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.5 },
   { filePattern: /(?:^|\/)description\.json$/i,           documentType: 'description_metadata',    memoryType: 'semantic',    defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.55 },
   { filePattern: /(?:^|\/)graph-metadata\.json$/i,        documentType: 'graph_metadata',          memoryType: 'semantic',    defaultImportanceTier: 'important', defaultImportanceWeight: 0.75 },
 ] as const;
@@ -419,6 +421,7 @@ export function inferDocumentTypeFromPath(filePath: string): DocumentType {
     implementation_summary: 'implementation-summary.md',
     research: 'research.md',
     handover: 'handover.md',
+    resource_map: 'resource-map.md',
     description_metadata: 'description.json',
     graph_metadata: 'graph-metadata.json',
   };

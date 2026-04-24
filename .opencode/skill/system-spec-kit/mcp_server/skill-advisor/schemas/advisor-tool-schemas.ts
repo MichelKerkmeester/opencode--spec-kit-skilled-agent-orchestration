@@ -22,6 +22,7 @@ const laneBreakdownSchema = z.object({
 }).strict();
 
 export const AdvisorRecommendInputSchema = z.object({
+  workspaceRoot: z.string().min(1).optional(),
   prompt: z.string().min(1).max(10_000),
   options: z.object({
     topK: z.number().int().min(1).max(10).optional(),
@@ -36,6 +37,7 @@ export const AdvisorRecommendationSchema = z.object({
   skillId: z.string().min(1),
   score: z.number().min(0),
   confidence: z.number().min(0).max(1),
+  uncertainty: z.number().min(0).max(1),
   dominantLane: AdvisorLaneSchema.nullable(),
   laneBreakdown: z.array(laneBreakdownSchema).optional(),
   redirectFrom: z.array(z.string().min(1)).optional(),
@@ -44,6 +46,12 @@ export const AdvisorRecommendationSchema = z.object({
 }).strict();
 
 export const AdvisorRecommendOutputSchema = z.object({
+  workspaceRoot: z.string().min(1),
+  effectiveThresholds: z.object({
+    confidenceThreshold: z.number().min(0).max(1),
+    uncertaintyThreshold: z.number().min(0).max(1),
+    confidenceOnly: z.boolean(),
+  }).strict(),
   recommendations: z.array(AdvisorRecommendationSchema),
   ambiguous: z.boolean().optional(),
   freshness: AdvisorFreshnessSchema,
@@ -88,7 +96,15 @@ export const AdvisorStatusOutputSchema = z.object({
 
 export const AdvisorValidateInputSchema = z.object({
   confirmHeavyRun: z.literal(true),
+  workspaceRoot: z.string().min(1).optional(),
   skillSlug: z.string().min(1).nullable().optional(),
+  outcomeEvents: z.array(z.object({
+    runtime: z.enum(['claude', 'gemini', 'copilot', 'codex']),
+    outcome: z.enum(['accepted', 'corrected', 'ignored']),
+    skillId: z.string().min(1),
+    correctedSkillId: z.string().min(1).optional(),
+    timestamp: z.string().datetime().optional(),
+  }).strict()).optional(),
 }).strict();
 
 const validationSliceSchema = z.object({
@@ -102,7 +118,21 @@ const validationSliceSchema = z.object({
 }).strict();
 
 export const AdvisorValidateOutputSchema = z.object({
+  workspaceRoot: z.string().min(1),
   skillSlug: z.string().nullable(),
+  thresholdSemantics: z.object({
+    aggregateValidation: z.object({
+      fullCorpusTop1: z.number().min(0).max(1),
+      holdoutTop1: z.number().min(0).max(1),
+      perSkillTop1: z.number().min(0).max(1),
+      unknownCountTargetMax: z.number().int().nonnegative(),
+    }).strict(),
+    runtimeRouting: z.object({
+      confidenceThreshold: z.number().min(0).max(1),
+      uncertaintyThreshold: z.number().min(0).max(1),
+      confidenceOnly: z.boolean(),
+    }).strict(),
+  }).strict(),
   overallAccuracy: z.number().min(0).max(1),
   perSkill: z.array(z.object({
     skillId: z.string().min(1),
@@ -150,6 +180,24 @@ export const AdvisorValidateOutputSchema = z.object({
         commandBridgeFalsePositiveRate: z.number().min(0).max(1),
         cacheHitP95Ms: z.number().min(0),
         uncachedP95Ms: z.number().min(0),
+      }).strict(),
+    }).strict(),
+  }).strict(),
+  telemetry: z.object({
+    diagnostics: z.object({
+      recordsPath: z.string().min(1),
+      recordsRetained: z.number().int().nonnegative(),
+      rollingCacheHitRate: z.number().min(0).max(1),
+      rollingP95Ms: z.number().min(0),
+      rollingFailOpenRate: z.number().min(0).max(1),
+    }).strict(),
+    outcomes: z.object({
+      recordsPath: z.string().min(1),
+      recordedThisRun: z.number().int().nonnegative(),
+      totals: z.object({
+        accepted: z.number().int().nonnegative(),
+        corrected: z.number().int().nonnegative(),
+        ignored: z.number().int().nonnegative(),
       }).strict(),
     }).strict(),
   }).strict(),

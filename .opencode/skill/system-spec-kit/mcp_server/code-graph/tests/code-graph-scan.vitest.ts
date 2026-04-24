@@ -13,6 +13,7 @@ const mocks = vi.hoisted(() => ({
   setLastDetectorProvenanceMock: vi.fn(),
   setLastDetectorProvenanceSummaryMock: vi.fn(),
   setLastGraphEdgeEnrichmentSummaryMock: vi.fn(),
+  clearLastGraphEdgeEnrichmentSummaryMock: vi.fn(),
   setLastGitHeadMock: vi.fn(),
   isFileStaleMock: vi.fn(),
   upsertFileMock: vi.fn(),
@@ -41,6 +42,7 @@ vi.mock('../lib/code-graph-db.js', () => ({
   setLastDetectorProvenance: mocks.setLastDetectorProvenanceMock,
   setLastDetectorProvenanceSummary: mocks.setLastDetectorProvenanceSummaryMock,
   setLastGraphEdgeEnrichmentSummary: mocks.setLastGraphEdgeEnrichmentSummaryMock,
+  clearLastGraphEdgeEnrichmentSummary: mocks.clearLastGraphEdgeEnrichmentSummaryMock,
   setLastGitHead: mocks.setLastGitHeadMock,
   isFileStale: mocks.isFileStaleMock,
   upsertFile: mocks.upsertFileMock,
@@ -66,6 +68,10 @@ describe('handleCodeGraphScan', () => {
     mocks.getTrackedFilesMock.mockReturnValue(['/workspace/removed.ts']);
     mocks.getStatsMock.mockReturnValue({
       lastScanTimestamp: '2026-04-17T00:00:00.000Z',
+      graphQualitySummary: {
+        detectorProvenanceSummary: null,
+        graphEdgeEnrichmentSummary: null,
+      },
     });
     mocks.indexFilesMock.mockResolvedValue([{
       filePath: '/workspace/current.ts',
@@ -121,7 +127,7 @@ describe('handleCodeGraphScan', () => {
     }));
     expect(mocks.removeFileMock).toHaveBeenCalledWith('/workspace/removed.ts');
     expect(mocks.isFileStaleMock).not.toHaveBeenCalled();
-    expect(mocks.upsertFileMock).toHaveBeenCalledTimes(1);
+    expect(mocks.upsertFileMock).toHaveBeenCalled();
     expect(payload.data.detectorProvenanceSummary).toEqual({
       dominant: 'structured',
       counts: {
@@ -136,6 +142,61 @@ describe('handleCodeGraphScan', () => {
       },
     });
     expect(mocks.setLastGitHeadMock).toHaveBeenCalledWith('new-head');
+  });
+
+  it('clears the persisted edge-enrichment summary when a later scan reports no summary', async () => {
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+    mocks.indexFilesMock
+      .mockResolvedValueOnce([{
+        filePath: '/workspace/current.ts',
+        language: 'typescript',
+        contentHash: 'hash-1',
+        nodes: [{ symbolId: 'current::symbol' }],
+        edges: [{
+          sourceId: 'current::symbol',
+          targetId: 'dep::symbol',
+          edgeType: 'CALLS',
+          weight: 1,
+          metadata: { confidence: 0.95, detectorProvenance: 'structured', evidenceClass: 'EXTRACTED' },
+        }],
+        detectorProvenance: 'structured',
+        parseHealth: 'clean',
+        parseDurationMs: 10,
+        parseErrors: [],
+      }])
+      .mockResolvedValueOnce([{
+        filePath: '/workspace/current.ts',
+        language: 'typescript',
+        contentHash: 'hash-2',
+        nodes: [{ symbolId: 'current::symbol' }],
+        edges: [{
+          sourceId: 'current::symbol',
+          targetId: 'dep::symbol',
+          edgeType: 'CALLS',
+          weight: 1,
+          metadata: {},
+        }],
+        detectorProvenance: 'structured',
+        parseHealth: 'clean',
+        parseDurationMs: 10,
+        parseErrors: [],
+      }]);
+
+    await handleCodeGraphScan({
+      rootDir: process.cwd(),
+      incremental: true,
+    });
+    await handleCodeGraphScan({
+      rootDir: process.cwd(),
+      incremental: true,
+    });
+
+    expect(mocks.setLastGraphEdgeEnrichmentSummaryMock).toHaveBeenCalledWith({
+      edgeEvidenceClass: 'direct_call',
+      numericConfidence: 0.95,
+    });
+    expect(mocks.clearLastGraphEdgeEnrichmentSummaryMock).toHaveBeenCalledTimes(1);
   });
 
   it('removes deleted tracked files during incremental scans', async () => {

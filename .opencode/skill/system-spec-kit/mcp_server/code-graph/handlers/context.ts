@@ -45,6 +45,23 @@ interface NormalizedSeedSource {
 
 type ContextReadiness = ReadyResult & { error?: string };
 
+function shouldBlockReadPath(readiness: ReadyResult): boolean {
+  return readiness.action === 'full_scan' && readiness.inlineIndexPerformed !== true;
+}
+
+function resolveDeadlineMs(profile: ContextArgs['profile']): number {
+  switch (profile) {
+    case 'quick':
+      return 250;
+    case 'debug':
+      return 700;
+    case 'research':
+      return 900;
+    default:
+      return 400;
+  }
+}
+
 function resolveSeedSource(args: ContextHandlerArgs, anchor: {
   filePath: string;
   startLine: number;
@@ -115,6 +132,31 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
       };
     }
 
+    if (shouldBlockReadPath(readiness)) {
+      const readinessBlock = buildReadinessBlock(readiness);
+      return {
+        content: [{
+          type: 'text',
+          text: JSON.stringify({
+            status: 'blocked',
+            message: `code_graph_full_scan_required: ${readiness.reason}`,
+            data: {
+              queryMode: args.queryMode ?? 'neighborhood',
+              blocked: true,
+              degraded: true,
+              graphAnswersOmitted: true,
+              requiredAction: 'code_graph_scan',
+              blockReason: 'full_scan_required',
+              readiness: readinessBlock,
+              canonicalReadiness: readinessBlock.canonicalReadiness,
+              trustState: readinessBlock.trustState,
+              lastPersistedAt: graphDb.getStats().lastScanTimestamp,
+            },
+          }, null, 2),
+        }],
+      };
+    }
+
     const queryMode = (['neighborhood', 'outline', 'impact'].includes(args.queryMode ?? '')
       ? args.queryMode as QueryMode
       : 'neighborhood');
@@ -164,6 +206,7 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
     }) as unknown as CodeGraphSeed[];
 
     const profile = (['quick', 'research', 'debug'].includes(args.profile ?? '') ? args.profile : undefined) as ContextArgs['profile'];
+    const deadlineMs = resolveDeadlineMs(profile);
 
     const contextArgs: ContextArgs = {
       input: args.input,
@@ -171,6 +214,7 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
       subject: args.subject,
       seeds,
       budgetTokens: args.budgetTokens ?? 1200,
+      deadlineMs,
       profile,
       includeTrace: args.includeTrace,
     };
@@ -204,7 +248,11 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
               symbol: a.fqName,
               resolution: a.resolution,
               confidence: a.confidence,
-              source: resolveSeedSource(args, a),
+              source: resolveSeedSource(args, a) ?? a.source,
+              provider: a.provider,
+              score: a.score,
+              snippet: a.snippet,
+              range: a.range,
             })),
             graphContext: result.graphContext,
             textBrief: result.textBrief,

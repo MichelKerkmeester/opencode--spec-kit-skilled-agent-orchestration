@@ -25,7 +25,7 @@ import { tool } from '@opencode-ai/plugin';
 
 const PLUGIN_ID = 'spec-kit-skill-advisor';
 const DEFAULT_CACHE_TTL_MS = 5 * 60 * 1000;
-const DEFAULT_THRESHOLD_CONFIDENCE = 0.7;
+const DEFAULT_THRESHOLD_CONFIDENCE = 0.8;
 const DEFAULT_MAX_TOKENS = 80;
 const DEFAULT_BRIDGE_TIMEOUT_MS = 1000;
 const DEFAULT_NODE_BINARY = 'node';

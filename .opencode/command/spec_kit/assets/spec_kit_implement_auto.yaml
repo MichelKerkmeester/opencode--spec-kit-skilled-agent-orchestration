@@ -125,6 +125,7 @@ available_templates:
   shared:
     handover: .opencode/skill/system-spec-kit/templates/handover.md
     debug_delegation: .opencode/skill/system-spec-kit/templates/debug-delegation.md
+    resource_map: .opencode/skill/system-spec-kit/templates/resource-map.md
 
 template_compliance:
   strict_validation_command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"

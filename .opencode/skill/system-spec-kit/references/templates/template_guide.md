@@ -180,6 +180,8 @@ cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/##
 **Optional Templates:**
 ```bash
 mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research/research.md
+# Optional at any level — lean path catalog:
+cp .opencode/skill/system-spec-kit/templates/resource-map.md specs/###-name/resource-map.md
 ```
 
 **When to use:**
@@ -740,7 +742,7 @@ Before presenting documentation to user, verify:
 - [ ] Numbering and emojis preserved
 - [ ] Structure matches template
 - [ ] Descriptive filenames used (for decision records)
-- [ ] No ToC heading in non-research spec artifacts (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `handover.md`, `debug-delegation.md`)
+- [ ] No ToC heading in non-research spec artifacts (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `handover.md`, `debug-delegation.md`, `resource-map.md`)
 
 **If ANY unchecked → Fix before presenting to user**
 
@@ -1161,7 +1163,7 @@ Templates are organized in level folders for pre-expanded, level-appropriate con
 | Level 2 | `templates/level_2/` | Level 1 + checklist.md |
 | Level 3 | `templates/level_3/` | Level 2 + decision-record.md (research/research.md at root) |
 | Level 3+ | `templates/level_3+/` | Level 3 + AI protocol, extended checklist |
-| Root | `templates/` (root) | handover.md, debug-delegation.md (cross-level) |
+| Root | `templates/` (root) | handover.md, debug-delegation.md, resource-map.md (cross-level) |
 
 **Level 1 Templates:**
 - [spec.md](../../templates/level_1/spec.md) - Requirements and user stories template

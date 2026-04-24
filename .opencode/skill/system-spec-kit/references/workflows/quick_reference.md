@@ -38,10 +38,10 @@ Level 3+ (Extended):    Level 3 + governance/AI execution content
 
 | Situation | Level | Required Templates | Optional Templates |
 |-----------|-------|-------------------|-------------------|
-| Any task (baseline) | 1 | spec.md + plan.md + tasks.md + implementation-summary.md | None |
-| Needs QA validation | 2 | L1 + checklist.md | None |
-| Complex/architectural | 3 | L2 + decision-record.md | research/research.md |
-| Enterprise/governance heavy | 3+ | L3 file set from `templates/level_3+/` | research/research.md |
+| Any task (baseline) | 1 | spec.md + plan.md + tasks.md + implementation-summary.md | resource-map.md (any level) |
+| Needs QA validation | 2 | L1 + checklist.md | resource-map.md (any level) |
+| Complex/architectural | 3 | L2 + decision-record.md | research/research.md, resource-map.md |
+| Enterprise/governance heavy | 3+ | L3 file set from `templates/level_3+/` | research/research.md, resource-map.md |
 
 **LOC as soft guidance:**
 - <100 LOC suggests Level 1
@@ -746,6 +746,7 @@ When in doubt:
 **Session Management Templates:**
 - [handover.md](../../templates/handover.md) - Full session handover document
 - [debug-delegation.md](../../templates/debug-delegation.md) - Debug task delegation template
+- [resource-map.md](../../templates/resource-map.md) - Optional lean path catalog (any level)
 
 **Summary Templates:**
 - [implementation-summary.md](../../templates/level_1/implementation-summary.md) - Required completion summary (Level 1 baseline)

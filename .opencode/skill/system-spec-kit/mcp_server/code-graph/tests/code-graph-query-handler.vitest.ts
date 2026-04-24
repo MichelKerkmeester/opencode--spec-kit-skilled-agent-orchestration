@@ -38,29 +38,56 @@ vi.mock('../lib/ensure-ready.js', () => ({
 
 import { handleCodeGraphQuery } from '../handlers/query.js';
 
+interface CandidateRow {
+  symbolId: string;
+  fqName?: string | null;
+  name?: string | null;
+  kind?: string | null;
+  filePath?: string | null;
+  startLine?: number | null;
+}
+
+function candidateRow(candidate: CandidateRow): {
+  symbol_id: string;
+  fq_name: string | null;
+  name: string | null;
+  kind: string | null;
+  file_path: string | null;
+  start_line: number | null;
+} {
+  return {
+    symbol_id: candidate.symbolId,
+    fq_name: candidate.fqName ?? candidate.name ?? candidate.symbolId,
+    name: candidate.name ?? candidate.fqName?.split('.').pop() ?? candidate.symbolId,
+    kind: candidate.kind ?? 'function',
+    file_path: candidate.filePath ?? `src/${candidate.symbolId}.ts`,
+    start_line: candidate.startLine ?? 1,
+  };
+}
+
 function createDb({
   byId,
-  byFq = ['symbol-1'],
-  byName = ['symbol-1'],
+  byFq = [{ symbolId: 'symbol-1' }],
+  byName = [{ symbolId: 'symbol-1' }],
 }: {
-  byId?: string;
-  byFq?: string[];
-  byName?: string[];
+  byId?: CandidateRow;
+  byFq?: CandidateRow[];
+  byName?: CandidateRow[];
 } = {}) {
   return {
     prepare: vi.fn((sql: string) => ({
       all: vi.fn(() => {
         if (sql.includes('fq_name = ?')) {
-          return byFq.map((symbolId) => ({ symbol_id: symbolId }));
+          return byFq.map(candidateRow);
         }
         if (sql.includes('name = ?')) {
-          return byName.map((symbolId) => ({ symbol_id: symbolId }));
+          return byName.map(candidateRow);
         }
         return [];
       }),
       get: vi.fn(() => {
         if (sql.includes('symbol_id = ?') && !sql.includes('COUNT(*)')) {
-          return byId ? { symbol_id: byId } : undefined;
+          return byId ? candidateRow(byId) : undefined;
         }
         if (sql.includes('COUNT(*) as count') && sql.includes('fq_name = ?')) {
           return { count: byFq.length };
@@ -132,6 +159,34 @@ describe('code-graph-query handler', () => {
     expect(mocks.queryEdgesTo).not.toHaveBeenCalled();
   });
 
+  it('returns an explicit blocked contract when readiness requires a full scan', async () => {
+    mocks.ensureCodeGraphReady.mockResolvedValueOnce({
+      freshness: 'empty',
+      action: 'full_scan',
+      inlineIndexPerformed: false,
+      reason: 'graph is empty (0 nodes)',
+    });
+
+    const result = await handleCodeGraphQuery({
+      operation: 'calls_from',
+      subject: 'SomeSymbol',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.status).toBe('blocked');
+    expect(parsed.message).toContain('code_graph_full_scan_required');
+    expect(parsed.data).toMatchObject({
+      operation: 'calls_from',
+      subject: 'SomeSymbol',
+      blocked: true,
+      degraded: true,
+      graphAnswersOmitted: true,
+      requiredAction: 'code_graph_scan',
+    });
+    expect(mocks.queryEdgesFrom).not.toHaveBeenCalled();
+    expect(mocks.queryEdgesTo).not.toHaveBeenCalled();
+  });
+
   it('rejects outline subjects that are not tracked in the graph', async () => {
     mocks.resolveSubjectFilePath.mockReturnValueOnce(null);
 
@@ -190,17 +245,21 @@ describe('code-graph-query handler', () => {
   // endpoints as corruption warnings instead of silently returning nodes
   // with null fqName/filePath metadata.
   it('flags dangling transitive endpoints as corruption warnings instead of null-metadata nodes', async () => {
-    mocks.queryEdgesFrom.mockReturnValueOnce([
-      {
-        edge: { targetId: 'dangling-target' },
-        targetNode: null,
-      },
-      {
-        edge: { targetId: 'symbol-2' },
-        targetNode: { fqName: 'ResolvedTarget', filePath: 'src/target.ts', startLine: 42 },
-      },
-    ]);
-    mocks.queryEdgesFrom.mockReturnValue([]);
+    mocks.queryEdgesFrom.mockImplementation((symbolId: string) => {
+      if (symbolId === 'symbol-1') {
+        return [
+          {
+            edge: { targetId: 'dangling-target' },
+            targetNode: null,
+          },
+          {
+            edge: { targetId: 'symbol-2' },
+            targetNode: { fqName: 'ResolvedTarget', filePath: 'src/target.ts', startLine: 42 },
+          },
+        ];
+      }
+      return [];
+    });
 
     const result = await handleCodeGraphQuery({
       operation: 'calls_from',
@@ -275,48 +334,120 @@ describe('code-graph-query handler', () => {
     expect(mocks.queryEdgesTo).not.toHaveBeenCalled();
   });
 
-  it('warns when fq_name resolution is ambiguous and queries the first candidate deterministically', async () => {
-    mocks.getDb.mockReturnValue(createDb({ byFq: ['symbol-1', 'symbol-2'] }));
+  it('warns when fq_name resolution is ambiguous and prefers callable implementation nodes for calls_from', async () => {
+    mocks.getDb.mockReturnValue(createDb({
+      byFq: [
+        {
+          symbolId: 'wrapper-symbol',
+          fqName: 'handlers.index.handleMemoryContext',
+          name: 'handleMemoryContext',
+          kind: 'variable',
+          filePath: 'handlers/index.ts',
+          startLine: 12,
+        },
+        {
+          symbolId: 'implementation-symbol',
+          fqName: 'handlers.memory-context.handleMemoryContext',
+          name: 'handleMemoryContext',
+          kind: 'function',
+          filePath: 'handlers/memory-context.ts',
+          startLine: 1196,
+        },
+      ],
+    }));
+    mocks.queryEdgesFrom.mockImplementation((symbolId: string) => (
+      symbolId === 'implementation-symbol'
+        ? [{
+          edge: { targetId: 'symbol-2', edgeType: 'CALLS', metadata: { confidence: 0.9 } },
+          targetNode: { fqName: 'TargetSymbol', filePath: 'src/target.ts', startLine: 12 },
+        }]
+        : []
+    ));
 
     const result = await handleCodeGraphQuery({
       operation: 'calls_from',
-      subject: 'SomeSymbol',
+      subject: 'handleMemoryContext',
     });
     const parsed = JSON.parse(result.content[0].text);
 
-    expect(mocks.queryEdgesFrom).toHaveBeenCalledWith('symbol-1', 'CALLS');
+    expect(mocks.queryEdgesFrom).toHaveBeenCalledWith('implementation-symbol', 'CALLS');
     expect(parsed.status).toBe('ok');
+    expect(parsed.data.selectedCandidate).toMatchObject({
+      symbolId: 'implementation-symbol',
+      kind: 'function',
+      operationEdgeCount: 1,
+      selectedForOperation: 'calls_from',
+    });
     expect(parsed.data.warnings).toEqual([
       expect.objectContaining({
         code: 'ambiguous_subject',
-        subject: 'SomeSymbol',
+        subject: 'handleMemoryContext',
         matchField: 'fq_name',
         count: 2,
-        candidates: ['symbol-1', 'symbol-2'],
+        selectionReason: 'calls_from edge count',
+        selectedCandidate: expect.objectContaining({
+          symbolId: 'implementation-symbol',
+        }),
       }),
     ]);
     expect(parsed.data.warnings[0].message).toContain('Use a symbolId to disambiguate the query.');
   });
 
-  it('warns when name resolution is ambiguous after fq_name misses', async () => {
-    mocks.getDb.mockReturnValue(createDb({ byFq: [], byName: ['symbol-3', 'symbol-4'] }));
+  it('warns when name resolution is ambiguous after fq_name misses and prefers inbound-call candidates for calls_to', async () => {
+    mocks.getDb.mockReturnValue(createDb({
+      byFq: [],
+      byName: [
+        {
+          symbolId: 'shadow-wrapper',
+          fqName: 'handlers.index.handleSessionStart',
+          name: 'handleSessionStart',
+          kind: 'variable',
+          filePath: 'handlers/index.ts',
+          startLine: 20,
+        },
+        {
+          symbolId: 'shadow-implementation',
+          fqName: 'hooks.codex.handleSessionStart',
+          name: 'handleSessionStart',
+          kind: 'function',
+          filePath: 'hooks/codex/session-start.ts',
+          startLine: 80,
+        },
+      ],
+    }));
+    mocks.queryEdgesTo.mockImplementation((symbolId: string) => (
+      symbolId === 'shadow-implementation'
+        ? [{
+          edge: { sourceId: 'caller-1', edgeType: 'CALLS', metadata: { confidence: 0.8 } },
+          sourceNode: { fqName: 'Caller', filePath: 'src/caller.ts', startLine: 5 },
+        }]
+        : []
+    ));
 
     const result = await handleCodeGraphQuery({
       operation: 'calls_to',
-      subject: 'CommonName',
+      subject: 'handleSessionStart',
     });
     const parsed = JSON.parse(result.content[0].text);
 
-    expect(mocks.queryEdgesTo).toHaveBeenCalledWith('symbol-3', 'CALLS');
+    expect(mocks.queryEdgesTo).toHaveBeenCalledWith('shadow-implementation', 'CALLS');
     expect(parsed.data.warnings).toEqual([
       expect.objectContaining({
         code: 'ambiguous_subject',
-        subject: 'CommonName',
+        subject: 'handleSessionStart',
         matchField: 'name',
         count: 2,
-        candidates: ['symbol-3', 'symbol-4'],
+        selectionReason: 'calls_to edge count',
+        selectedCandidate: expect.objectContaining({
+          symbolId: 'shadow-implementation',
+          kind: 'function',
+        }),
       }),
     ]);
+    expect(parsed.data.selectedCandidate).toMatchObject({
+      symbolId: 'shadow-implementation',
+      selectedForOperation: 'calls_to',
+    });
   });
 
   it('adds nested edge evidence metadata without collapsing trust axes', async () => {

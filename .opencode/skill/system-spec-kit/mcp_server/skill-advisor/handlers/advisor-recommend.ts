@@ -6,6 +6,9 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { advisorPromptCache } from '../lib/prompt-cache.js';
+import {
+  resolveAdvisorThresholdConfig,
+} from '../lib/skill-advisor-brief.js';
 import { scoreAdvisorPrompt } from '../lib/scorer/fusion.js';
 import { sanitizeSkillLabel } from '../lib/render.js';
 import {
@@ -20,6 +23,7 @@ type HandlerResponse = { content: Array<{ type: string; text: string }> };
 type AdvisorStatus = ReturnType<typeof readAdvisorStatus>;
 type ScoredRecommendation = ReturnType<typeof scoreAdvisorPrompt>['recommendations'][number];
 type PublicRecommendationStatus = NonNullable<AdvisorRecommendOutput['recommendations'][number]['status']>;
+type PublicThresholds = AdvisorRecommendOutput['effectiveThresholds'];
 
 function findWorkspaceRoot(start = process.cwd()): string {
   let current = resolve(start);
@@ -50,13 +54,29 @@ function unavailableTrustState(reason: string): AdvisorRecommendOutput['trustSta
   };
 }
 
+function publicThresholds(args: {
+  confidenceThreshold?: number;
+  uncertaintyThreshold?: number;
+}): PublicThresholds {
+  const resolved = resolveAdvisorThresholdConfig(args);
+  return {
+    confidenceThreshold: resolved.confidenceThreshold,
+    uncertaintyThreshold: resolved.uncertaintyThreshold,
+    confidenceOnly: resolved.confidenceOnly,
+  };
+}
+
 function emptyOutput(args: {
+  workspaceRoot: string;
+  effectiveThresholds: AdvisorRecommendOutput['effectiveThresholds'];
   freshness: AdvisorRecommendOutput['freshness'];
   trustState: AdvisorRecommendOutput['trustState'];
   warnings?: readonly string[];
   abstainReasons?: readonly string[];
 }): AdvisorRecommendOutput {
   return AdvisorRecommendOutputSchema.parse({
+    workspaceRoot: args.workspaceRoot,
+    effectiveThresholds: args.effectiveThresholds,
     recommendations: [],
     ambiguous: false,
     freshness: args.freshness,
@@ -71,8 +91,13 @@ function emptyOutput(args: {
   });
 }
 
-function disabledOutput(): AdvisorRecommendOutput {
+function disabledOutput(
+  workspaceRoot: string,
+  effectiveThresholds: PublicThresholds,
+): AdvisorRecommendOutput {
   return emptyOutput({
+    workspaceRoot,
+    effectiveThresholds,
     freshness: 'unavailable',
     trustState: unavailableTrustState('ADVISOR_DISABLED'),
     warnings: ['ADVISOR_DISABLED'],
@@ -80,8 +105,14 @@ function disabledOutput(): AdvisorRecommendOutput {
   });
 }
 
-function absentOutput(status: AdvisorStatus): AdvisorRecommendOutput {
+function absentOutput(
+  status: AdvisorStatus,
+  workspaceRoot: string,
+  effectiveThresholds: AdvisorRecommendOutput['effectiveThresholds'],
+): AdvisorRecommendOutput {
   return emptyOutput({
+    workspaceRoot,
+    effectiveThresholds,
     freshness: 'absent',
     trustState: status.trustState,
     warnings: [status.trustState.reason ?? 'ADVISOR_FRESHNESS_ABSENT'],
@@ -111,6 +142,7 @@ function publicRecommendation(recommendation: ScoredRecommendation, includeAttri
     skillId,
     score: recommendation.score,
     confidence: recommendation.confidence,
+    uncertainty: recommendation.uncertainty,
     dominantLane: recommendation.dominantLane,
     ...(includeAttribution ? {
       laneBreakdown: recommendation.laneContributions.map((lane) => ({
@@ -128,10 +160,14 @@ function publicRecommendation(recommendation: ScoredRecommendation, includeAttri
 }
 
 function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecommendOutput {
-  const workspaceRoot = findWorkspaceRoot();
+  const workspaceRoot = input.workspaceRoot ? resolve(input.workspaceRoot) : findWorkspaceRoot();
+  const effectiveThresholds = publicThresholds({
+    confidenceThreshold: input.options?.confidenceThreshold,
+    uncertaintyThreshold: input.options?.uncertaintyThreshold,
+  });
   const status = readAdvisorStatus({ workspaceRoot });
   if (status.freshness === 'absent') {
-    return absentOutput(status);
+    return absentOutput(status, workspaceRoot, effectiveThresholds);
   }
   const sourceSignature = cacheSourceSignature(status);
   advisorPromptCache.invalidateSourceSignatureChange(sourceSignature);
@@ -152,6 +188,8 @@ function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecom
     const cachedOutput = cached.value as AdvisorRecommendOutput;
     return AdvisorRecommendOutputSchema.parse({
       ...cachedOutput,
+      workspaceRoot,
+      effectiveThresholds,
       cache: {
         ...cachedOutput.cache,
         hit: true,
@@ -170,6 +208,8 @@ function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecom
     .filter((recommendation): recommendation is NonNullable<typeof recommendation> => Boolean(recommendation))
     .slice(0, topK);
   const output: AdvisorRecommendOutput = {
+    workspaceRoot,
+    effectiveThresholds,
     recommendations,
     ambiguous: result.ambiguous,
     freshness: status.freshness,
@@ -196,8 +236,13 @@ function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecom
 
 export async function handleAdvisorRecommend(args: unknown): Promise<HandlerResponse> {
   const input = AdvisorRecommendInputSchema.parse(args);
+  const workspaceRoot = input.workspaceRoot ? resolve(input.workspaceRoot) : findWorkspaceRoot();
+  const effectiveThresholds = publicThresholds({
+    confidenceThreshold: input.options?.confidenceThreshold,
+    uncertaintyThreshold: input.options?.uncertaintyThreshold,
+  });
   const data = process.env.SPECKIT_SKILL_ADVISOR_HOOK_DISABLED === '1'
-    ? disabledOutput()
+    ? disabledOutput(workspaceRoot, effectiveThresholds)
     : computeRecommendationOutput(input);
   return {
     content: [{

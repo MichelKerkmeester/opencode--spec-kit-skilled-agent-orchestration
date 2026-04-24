@@ -13,6 +13,8 @@ import {
   type CodexHookPolicy,
 } from '../../lib/codex-hook-policy.js';
 import {
+  DEFAULT_ADVISOR_CONFIDENCE_THRESHOLD,
+  DEFAULT_ADVISOR_UNCERTAINTY_THRESHOLD,
   buildSkillAdvisorBrief,
   type AdvisorHookFreshness,
   type AdvisorHookResult,
@@ -21,9 +23,11 @@ import {
 import { renderAdvisorBrief } from '../../skill-advisor/lib/render.js';
 import {
   createAdvisorHookDiagnosticRecord,
+  persistAdvisorHookDiagnosticRecord,
   serializeAdvisorHookDiagnosticRecord,
 } from '../../skill-advisor/lib/metrics.js';
 import {
+  codexHookTimeoutMs,
   parseCodexUserPromptSubmitInputSources,
   type CodexUserPromptSubmitInput,
 } from './user-prompt-submit.js';
@@ -48,6 +52,7 @@ export interface CodexPromptWrapperDependencies {
 }
 
 interface HookDiagnosticInput {
+  readonly workspaceRoot: string;
   readonly status: AdvisorHookStatus;
   readonly freshness: AdvisorHookFreshness;
   readonly durationMs: number;
@@ -91,11 +96,13 @@ function emitDiagnostic(
   writeDiagnostic: (line: string) => void = (line) => process.stderr.write(`${line}\n`),
 ): void {
   try {
-    const line = serializeAdvisorHookDiagnosticRecord(createAdvisorHookDiagnosticRecord({
+    const diagnosticRecord = createAdvisorHookDiagnosticRecord({
       runtime: 'codex',
       ...record,
-    }));
+    });
+    const line = serializeAdvisorHookDiagnosticRecord(diagnosticRecord);
     writeDiagnostic(line);
+    persistAdvisorHookDiagnosticRecord(record.workspaceRoot, diagnosticRecord);
   } catch {
     // Diagnostics must never affect hook behavior.
   }
@@ -121,6 +128,7 @@ export async function handleCodexPromptWrapper(
 
     if (process.env.SPECKIT_SKILL_ADVISOR_HOOK_DISABLED === '1') {
       emitDiagnostic({
+        workspaceRoot: process.cwd(),
         status: 'skipped',
         freshness: 'unavailable',
         durationMs: elapsed(),
@@ -131,6 +139,7 @@ export async function handleCodexPromptWrapper(
 
     if (!input) {
       emitDiagnostic({
+        workspaceRoot: process.cwd(),
         status: 'fail_open',
         freshness: 'unavailable',
         durationMs: elapsed(),
@@ -142,8 +151,10 @@ export async function handleCodexPromptWrapper(
     }
 
     const prompt = promptFor(input);
+    const workspaceRoot = workspaceRootFor(input);
     if (prompt === null) {
       emitDiagnostic({
+        workspaceRoot,
         status: 'fail_open',
         freshness: 'unavailable',
         durationMs: elapsed(),
@@ -158,10 +169,17 @@ export async function handleCodexPromptWrapper(
     const renderBrief = dependencies.renderBrief ?? renderAdvisorBrief;
     const result = await buildBrief(prompt, {
       runtime: 'codex',
-      workspaceRoot: workspaceRootFor(input),
+      workspaceRoot,
+      subprocessTimeoutMs: codexHookTimeoutMs(),
     });
-    const brief = renderBrief(result);
+    const brief = renderBrief(result, {
+      thresholdConfig: {
+        confidenceThreshold: DEFAULT_ADVISOR_CONFIDENCE_THRESHOLD,
+        uncertaintyThreshold: DEFAULT_ADVISOR_UNCERTAINTY_THRESHOLD,
+      },
+    });
     emitDiagnostic({
+      workspaceRoot,
       status: result.status,
       freshness: result.freshness,
       durationMs: result.metrics.durationMs,
@@ -181,6 +199,7 @@ export async function handleCodexPromptWrapper(
     };
   } catch {
     emitDiagnostic({
+      workspaceRoot: input ? workspaceRootFor(input) : process.cwd(),
       status: 'fail_open',
       freshness: 'unavailable',
       durationMs: elapsed(),
@@ -220,6 +239,7 @@ async function main(): Promise<void> {
 if (IS_CLI_ENTRY) {
   main().catch(() => {
     emitDiagnostic({
+      workspaceRoot: process.cwd(),
       status: 'fail_open',
       freshness: 'unavailable',
       durationMs: 0,

@@ -6,7 +6,7 @@
 
 import { performance } from 'node:perf_hooks';
 import * as graphDb from './code-graph-db.js';
-import { resolveSeeds, type CodeGraphSeed, type ArtifactRef } from './seed-resolver.js';
+import { resolveSeeds, type AnySeed, type ArtifactRef } from './seed-resolver.js';
 
 export type QueryMode = 'neighborhood' | 'outline' | 'impact';
 
@@ -14,7 +14,7 @@ export interface ContextArgs {
   input?: string;
   queryMode?: QueryMode;
   subject?: string;
-  seeds?: CodeGraphSeed[];
+  seeds?: AnySeed[];
   budgetTokens?: number;
   deadlineMs?: number;
   profile?: 'quick' | 'research' | 'debug';
@@ -33,6 +33,14 @@ export interface ContextResult {
     totalEdges: number;
     budgetUsed: number;
     budgetLimit: number;
+    deadlineMs: number | null;
+    partialOutput: {
+      isPartial: boolean;
+      reasons: Array<'deadline' | 'budget'>;
+      omittedSections: number;
+      omittedAnchors: number;
+      truncatedText: boolean;
+    };
     freshness: { lastScanAt: string | null; staleness: 'fresh' | 'recent' | 'stale' | 'unknown' };
   };
 }
@@ -41,6 +49,37 @@ interface GraphContextSection {
   anchor: string;
   nodes: { name: string; kind: string; file: string; line: number }[];
   edges: { from: string; to: string; type: string }[];
+  partial?: {
+    reason: 'deadline';
+    omittedNodes: number;
+    omittedEdges: number;
+  };
+}
+
+interface ExpansionResult {
+  section: GraphContextSection;
+  deadlineExceeded: boolean;
+  omittedNodes: number;
+  omittedEdges: number;
+}
+
+interface FormattedTextBrief {
+  text: string;
+  omittedSections: number;
+  truncated: boolean;
+}
+
+function defaultDeadlineMsForProfile(profile: ContextArgs['profile']): number {
+  switch (profile) {
+    case 'quick':
+      return 250;
+    case 'debug':
+      return 700;
+    case 'research':
+      return 900;
+    default:
+      return 400;
+  }
 }
 
 /** Build context from resolved anchors using specified query mode */
@@ -48,6 +87,7 @@ export function buildContext(args: ContextArgs): ContextResult {
   const queryMode = args.queryMode ?? 'neighborhood';
   const budgetTokens = args.budgetTokens ?? 1200;
   const seeds = args.seeds ?? [];
+  const deadlineMs = args.deadlineMs ?? defaultDeadlineMsForProfile(args.profile);
   const resolvedAnchors = resolveSeeds(seeds);
 
   // If no seeds but subject given, create seed from subject
@@ -64,6 +104,9 @@ export function buildContext(args: ContextArgs): ContextResult {
   const sections: GraphContextSection[] = [];
   let totalNodes = 0;
   let totalEdges = 0;
+  let omittedAnchors = 0;
+  let omittedSections = 0;
+  const partialReasons = new Set<'deadline' | 'budget'>();
 
   // Profile-based limits
   const nodeLimit = args.profile === 'quick' ? 10 : args.profile === 'debug' ? 30 : 20;
@@ -72,7 +115,9 @@ export function buildContext(args: ContextArgs): ContextResult {
 
   for (const anchor of resolvedAnchors) {
     // Deadline check: stop processing further anchors if over budget
-    if (args.deadlineMs && performance.now() - contextStart > args.deadlineMs) {
+    if (performance.now() - contextStart > deadlineMs) {
+      partialReasons.add('deadline');
+      omittedAnchors += 1;
       break;
     }
 
@@ -88,13 +133,24 @@ export function buildContext(args: ContextArgs): ContextResult {
       continue;
     }
 
-    const section = expandAnchor(anchor, queryMode, args.deadlineMs ? args.deadlineMs - (performance.now() - contextStart) : undefined);
-    sections.push(section);
-    totalNodes += section.nodes.length;
-    totalEdges += section.edges.length;
+    const expansion = expandAnchor(
+      anchor,
+      queryMode,
+      Math.max(0, deadlineMs - (performance.now() - contextStart)),
+    );
+    sections.push(expansion.section);
+    totalNodes += expansion.section.nodes.length;
+    totalEdges += expansion.section.edges.length;
+    omittedSections += expansion.section.partial ? 1 : 0;
+    if (expansion.deadlineExceeded) {
+      partialReasons.add('deadline');
+    }
   }
 
-  const textBrief = formatTextBrief(sections, budgetTokens, resolvedAnchors);
+  const formattedTextBrief = formatTextBrief(sections, budgetTokens, resolvedAnchors);
+  if (formattedTextBrief.omittedSections > 0 || formattedTextBrief.truncated) {
+    partialReasons.add('budget');
+  }
   const combinedSummary = buildCombinedSummary(resolvedAnchors, sections);
   const nextActions = suggestNextActions(resolvedAnchors, sections, queryMode);
   const freshness = computeFreshness();
@@ -103,14 +159,22 @@ export function buildContext(args: ContextArgs): ContextResult {
     queryMode,
     resolvedAnchors,
     graphContext: sections,
-    textBrief,
+    textBrief: formattedTextBrief.text,
     combinedSummary,
     nextActions,
     metadata: {
       totalNodes,
       totalEdges,
-      budgetUsed: Math.ceil(textBrief.length / 4),
+      budgetUsed: Math.ceil(formattedTextBrief.text.length / 4),
       budgetLimit: budgetTokens,
+      deadlineMs,
+      partialOutput: {
+        isPartial: partialReasons.size > 0,
+        reasons: [...partialReasons],
+        omittedSections: omittedSections + formattedTextBrief.omittedSections,
+        omittedAnchors,
+        truncatedText: formattedTextBrief.truncated,
+      },
       freshness,
     },
   };
@@ -125,7 +189,21 @@ function buildEmptyFallback(queryMode: QueryMode, budgetTokens: number): Context
     textBrief: 'No anchors resolved. Try `code_graph_scan` first, or provide a `subject` or `seeds[]`.',
     combinedSummary: 'Empty context — no seeds or subject resolved to graph nodes.',
     nextActions: ['Run `code_graph_scan` to index the workspace', 'Provide `subject` parameter with a symbol name'],
-    metadata: { totalNodes: 0, totalEdges: 0, budgetUsed: 0, budgetLimit: budgetTokens, freshness: computeFreshness() },
+    metadata: {
+      totalNodes: 0,
+      totalEdges: 0,
+      budgetUsed: 0,
+      budgetLimit: budgetTokens,
+      deadlineMs: null,
+      partialOutput: {
+        isPartial: false,
+        reasons: [],
+        omittedSections: 0,
+        omittedAnchors: 0,
+        truncatedText: false,
+      },
+      freshness: computeFreshness(),
+    },
   };
 }
 
@@ -176,33 +254,88 @@ function computeFreshness(): { lastScanAt: string | null; staleness: 'fresh' | '
 }
 
 /** Expand a single anchor into a context section */
-function expandAnchor(anchor: ArtifactRef, mode: QueryMode, remainingMs?: number): GraphContextSection {
+function expandAnchor(anchor: ArtifactRef, mode: QueryMode, remainingMs?: number): ExpansionResult {
   const startTime = performance.now();
   const budgetMs = remainingMs ?? 400; // 400ms default latency budget
   const nodes: { name: string; kind: string; file: string; line: number }[] = [];
   const edges: { from: string; to: string; type: string }[] = [];
+  let deadlineExceeded = false;
+  let omittedNodes = 0;
+  let omittedEdges = 0;
+
+  const budgetExpired = (): boolean => performance.now() - startTime > budgetMs;
+
+  const finalize = (): ExpansionResult => ({
+    section: {
+      anchor: `${anchor.filePath}:${anchor.startLine} (${anchor.fqName ?? 'unknown'})`,
+      nodes,
+      edges,
+      ...(deadlineExceeded
+        ? {
+          partial: {
+            reason: 'deadline',
+            omittedNodes,
+            omittedEdges,
+          },
+        }
+        : {}),
+    },
+    deadlineExceeded,
+    omittedNodes,
+    omittedEdges,
+  });
 
   if (!anchor.symbolId) {
-    return { anchor: anchor.filePath, nodes, edges };
+    return {
+      section: { anchor: anchor.filePath, nodes, edges },
+      deadlineExceeded: false,
+      omittedNodes: 0,
+      omittedEdges: 0,
+    };
   }
 
   switch (mode) {
     case 'neighborhood': {
       // 1-hop: CALLS + IMPORTS + CONTAINS from anchor
       for (const edgeType of ['CALLS', 'IMPORTS', 'CONTAINS'] as const) {
+        if (budgetExpired()) {
+          deadlineExceeded = true;
+          omittedEdges += 1;
+          break;
+        }
         const outgoing = graphDb.queryEdgesFrom(anchor.symbolId, edgeType);
+        let processedOutgoing = 0;
         for (const { edge, targetNode } of outgoing) {
+          if (budgetExpired()) {
+            deadlineExceeded = true;
+            omittedEdges += outgoing.length - processedOutgoing;
+            break;
+          }
           edges.push({ from: anchor.fqName ?? anchor.symbolId, to: targetNode?.fqName ?? edge.targetId, type: edge.edgeType });
           if (targetNode) {
             nodes.push({ name: targetNode.fqName, kind: targetNode.kind, file: targetNode.filePath, line: targetNode.startLine });
           }
+          processedOutgoing += 1;
+        }
+        if (deadlineExceeded) {
+          break;
         }
         const incoming = graphDb.queryEdgesTo(anchor.symbolId, edgeType);
+        let processedIncoming = 0;
         for (const { edge, sourceNode } of incoming) {
+          if (budgetExpired()) {
+            deadlineExceeded = true;
+            omittedEdges += incoming.length - processedIncoming;
+            break;
+          }
           edges.push({ from: sourceNode?.fqName ?? edge.sourceId, to: anchor.fqName ?? anchor.symbolId, type: edge.edgeType });
           if (sourceNode) {
             nodes.push({ name: sourceNode.fqName, kind: sourceNode.kind, file: sourceNode.filePath, line: sourceNode.startLine });
           }
+          processedIncoming += 1;
+        }
+        if (deadlineExceeded) {
+          break;
         }
       }
       break;
@@ -210,12 +343,26 @@ function expandAnchor(anchor: ArtifactRef, mode: QueryMode, remainingMs?: number
     case 'outline': {
       const outlineNodes = graphDb.queryOutline(anchor.filePath);
       for (const n of outlineNodes) {
+        if (budgetExpired()) {
+          deadlineExceeded = true;
+          omittedNodes += outlineNodes.length - nodes.length;
+          break;
+        }
         nodes.push({ name: n.fqName, kind: n.kind, file: n.filePath, line: n.startLine });
       }
       // CONTAINS + EXPORTS from file symbols
-      const fileExports = graphDb.queryEdgesFrom(anchor.symbolId, 'EXPORTS');
-      for (const { edge, targetNode } of fileExports) {
-        edges.push({ from: anchor.fqName ?? anchor.symbolId, to: targetNode?.fqName ?? edge.targetId, type: 'EXPORTS' });
+      if (!deadlineExceeded) {
+        const fileExports = graphDb.queryEdgesFrom(anchor.symbolId, 'EXPORTS');
+        let processedExports = 0;
+        for (const { edge, targetNode } of fileExports) {
+          if (budgetExpired()) {
+            deadlineExceeded = true;
+            omittedEdges += fileExports.length - processedExports;
+            break;
+          }
+          edges.push({ from: anchor.fqName ?? anchor.symbolId, to: targetNode?.fqName ?? edge.targetId, type: 'EXPORTS' });
+          processedExports += 1;
+        }
       }
       break;
     }
@@ -226,25 +373,33 @@ function expandAnchor(anchor: ArtifactRef, mode: QueryMode, remainingMs?: number
         const elapsed = performance.now() - startTime;
         if (elapsed > budgetMs) {
           console.warn(`[code-graph-context] impact query exceeded ${budgetMs}ms budget (${Math.round(elapsed)}ms elapsed), breaking early`);
+          deadlineExceeded = true;
+          omittedEdges += 1;
           break;
         }
         const incoming = graphDb.queryEdgesTo(anchor.symbolId, edgeType);
+        let processedIncoming = 0;
         for (const { edge, sourceNode } of incoming) {
+          if (budgetExpired()) {
+            deadlineExceeded = true;
+            omittedEdges += incoming.length - processedIncoming;
+            break;
+          }
           edges.push({ from: sourceNode?.fqName ?? edge.sourceId, to: anchor.fqName ?? anchor.symbolId, type: edge.edgeType });
           if (sourceNode) {
             nodes.push({ name: sourceNode.fqName, kind: sourceNode.kind, file: sourceNode.filePath, line: sourceNode.startLine });
           }
+          processedIncoming += 1;
+        }
+        if (deadlineExceeded) {
+          break;
         }
       }
       break;
     }
   }
 
-  return {
-    anchor: `${anchor.filePath}:${anchor.startLine} (${anchor.fqName ?? 'unknown'})`,
-    nodes,
-    edges,
-  };
+  return finalize();
 }
 
 /** Resolve a subject string to an ArtifactRef */
@@ -268,6 +423,10 @@ function resolveSubjectToRef(subject: string): ArtifactRef | null {
         kind: row.kind as string,
         confidence: 0.9,
         resolution: 'exact',
+        score: null,
+        snippet: null,
+        range: null,
+        provider: 'code_graph',
       };
     }
   } catch { /* DB not available */ }
@@ -278,9 +437,10 @@ function resolveSubjectToRef(subject: string): ArtifactRef | null {
  * Format sections into compact text brief within token budget.
  * Never-drops guarantee: always includes top seed, root anchor, one boundary edge, one next action.
  */
-function formatTextBrief(sections: GraphContextSection[], budgetTokens: number, _anchors?: ArtifactRef[]): string {
+function formatTextBrief(sections: GraphContextSection[], budgetTokens: number, _anchors?: ArtifactRef[]): FormattedTextBrief {
   const maxChars = budgetTokens * 4;
   const lines: string[] = [];
+  let omittedSections = 0;
 
   // Priority rendering: first section is always fully rendered (never dropped)
   for (let i = 0; i < sections.length; i++) {
@@ -315,14 +475,21 @@ function formatTextBrief(sections: GraphContextSection[], budgetTokens: number, 
 
     // Budget check: stop adding sections if we're over budget (but first section always included)
     if (!isFirst && lines.join('\n').length > maxChars * 0.9) {
-      lines.push(`[${sections.length - i - 1} more sections omitted — budget limit]`);
+      omittedSections = sections.length - i - 1;
+      lines.push(`[${omittedSections} more sections omitted — budget limit]`);
       break;
     }
   }
 
   let result = lines.join('\n');
+  let truncated = false;
   if (result.length > maxChars) {
+    truncated = true;
     result = result.slice(0, maxChars) + '\n[...truncated]';
   }
-  return result;
+  return {
+    text: result,
+    omittedSections,
+    truncated,
+  };
 }

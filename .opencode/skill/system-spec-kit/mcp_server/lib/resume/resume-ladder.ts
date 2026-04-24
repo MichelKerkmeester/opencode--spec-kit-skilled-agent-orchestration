@@ -82,6 +82,7 @@ const SPEC_DOC_PRIORITY = [
   'decision-record.md',
   'research.md',
   'handover.md',
+  'resource-map.md',
 ] as const;
 
 function normalizeSpecFolder(specFolder: string | null | undefined): string | null {

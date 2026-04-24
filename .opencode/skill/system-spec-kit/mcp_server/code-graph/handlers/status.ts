@@ -44,6 +44,7 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
             nodesByKind: stats.nodesByKind,
             edgesByType: stats.edgesByType,
             parseHealth: stats.parseHealthSummary,
+            graphQualitySummary: stats.graphQualitySummary,
           },
         }, null, 2),
       }],

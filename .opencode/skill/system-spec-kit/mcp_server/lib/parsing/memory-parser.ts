@@ -400,6 +400,7 @@ export function extractDocumentType(filePath: string): string {
     'implementation-summary.md': 'implementation_summary',
     'research.md': 'research',
     'handover.md': 'handover',
+    'resource-map.md': 'resource_map',
     'description.json': 'description_metadata',
   };
 

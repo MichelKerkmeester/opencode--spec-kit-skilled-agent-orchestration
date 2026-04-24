@@ -5,6 +5,8 @@
 const STATUS_VALUES = new Set(['ok', 'skipped', 'degraded', 'fail_open']);
 const DISABLED_ENV = 'SPECKIT_SKILL_ADVISOR_HOOK_DISABLED';
 const FORCE_LOCAL_ENV = 'SPECKIT_SKILL_ADVISOR_FORCE_LOCAL';
+const DEFAULT_CONFIDENCE_THRESHOLD = 0.8;
+const DEFAULT_UNCERTAINTY_THRESHOLD = 0.35;
 
 function response(args) {
   return {
@@ -89,7 +91,7 @@ function positiveInt(value, fallback) {
 
 function threshold(value) {
   if (!Number.isFinite(value)) {
-    return 0.7;
+    return DEFAULT_CONFIDENCE_THRESHOLD;
   }
   return Math.min(1, Math.max(0, Number(value)));
 }
@@ -188,16 +190,24 @@ async function probeNativeAdvisor(input) {
 
 async function buildNativeBrief(input) {
   const modules = await loadNativeAdvisorModules();
+  const effectiveThresholds = {
+    confidenceThreshold: threshold(input.thresholdConfidence),
+    uncertaintyThreshold: DEFAULT_UNCERTAINTY_THRESHOLD,
+    confidenceOnly: false,
+  };
   const handlerResponse = await modules.handleAdvisorRecommend({
+    workspaceRoot: input.workspaceRoot,
     prompt: input.prompt,
     options: {
       topK: 3,
       includeAbstainReasons: true,
+      confidenceThreshold: effectiveThresholds.confidenceThreshold,
+      uncertaintyThreshold: effectiveThresholds.uncertaintyThreshold,
     },
   });
   const parsed = JSON.parse(handlerResponse.content[0].text);
   const data = parsed.data;
-  const brief = renderNativeBrief(data, input.maxTokens);
+  const maxTokens = positiveInt(input.maxTokens, 80);
   const top = Array.isArray(data?.recommendations) ? data.recommendations[0] : null;
   const skillLabel = sanitizeLabel(top?.skillId);
   const safeStatus = sanitizeLabel(top?.status);
@@ -205,17 +215,54 @@ async function buildNativeBrief(input) {
   const redirectFrom = Array.isArray(top?.redirectFrom)
     ? top.redirectFrom.map(sanitizeLabel).filter(Boolean)
     : [];
+  const recommendations = Array.isArray(data?.recommendations)
+    ? data.recommendations.map((recommendation) => ({
+      skill: recommendation.skillId,
+      kind: 'skill',
+      confidence: recommendation.confidence,
+      uncertainty: recommendation.uncertainty,
+      passes_threshold: recommendation.confidence >= effectiveThresholds.confidenceThreshold
+        && recommendation.uncertainty <= effectiveThresholds.uncertaintyThreshold,
+      reason: null,
+    }))
+    : [];
+  const rendered = modules.renderAdvisorBrief({
+    status: recommendations.length > 0 ? 'ok' : 'skipped',
+    freshness: data?.freshness ?? 'unavailable',
+    brief: null,
+    recommendations,
+    diagnostics: null,
+    metrics: {
+      durationMs: 0,
+      cacheHit: Boolean(data?.cache?.hit),
+      subprocessInvoked: false,
+      retriesAttempted: 0,
+      recommendationCount: recommendations.length,
+      tokenCap: maxTokens,
+    },
+    generatedAt: new Date().toISOString(),
+    sharedPayload: {
+      metadata: {
+        skillLabel,
+      },
+    },
+  }, {
+    tokenCap: maxTokens,
+    thresholdConfig: effectiveThresholds,
+  });
 
   return response({
-    brief,
-    status: brief ? 'ok' : 'skipped',
+    brief: rendered,
+    status: rendered ? 'ok' : 'skipped',
     metadata: {
       route: 'native',
+      workspaceRoot: input.workspaceRoot,
+      effectiveThresholds,
       freshness: data?.freshness ?? 'unavailable',
       generation: input.probe?.generation ?? 0,
       cacheHit: Boolean(data?.cache?.hit),
       recommendationCount: Array.isArray(data?.recommendations) ? data.recommendations.length : 0,
-      tokenCap: positiveInt(input.maxTokens, 80),
+      tokenCap: maxTokens,
       skillLabel,
       status: safeStatus,
       redirectTo,
@@ -228,17 +275,21 @@ async function buildLegacyBrief(input) {
   const { buildSkillAdvisorBrief, renderAdvisorBrief } = await loadNativeAdvisorModules();
 
   const maxTokens = positiveInt(input.maxTokens, 80);
+  const effectiveThresholds = {
+    confidenceThreshold: threshold(input.thresholdConfidence),
+    uncertaintyThreshold: DEFAULT_UNCERTAINTY_THRESHOLD,
+    confidenceOnly: false,
+  };
   const result = await buildSkillAdvisorBrief(input.prompt, {
     workspaceRoot: input.workspaceRoot,
     runtime: 'codex',
     maxTokens,
-    thresholdConfig: {
-      confidenceThreshold: threshold(input.thresholdConfidence),
-      uncertaintyThreshold: 0.35,
-      confidenceOnly: false,
-    },
+    thresholdConfig: effectiveThresholds,
   });
-  const brief = renderAdvisorBrief(result, { tokenCap: maxTokens });
+  const brief = renderAdvisorBrief(result, {
+    tokenCap: maxTokens,
+    thresholdConfig: effectiveThresholds,
+  });
   const top = result.recommendations?.[0] ?? null;
 
   return response({
@@ -246,6 +297,8 @@ async function buildLegacyBrief(input) {
     status: result.status,
     metadata: {
       route: 'python',
+      workspaceRoot: input.workspaceRoot,
+      effectiveThresholds,
       freshness: result.freshness,
       durationMs: result.metrics.durationMs,
       cacheHit: result.metrics.cacheHit,

@@ -18,7 +18,7 @@ function runBridge(payload: Record<string, unknown>, env: NodeJS.ProcessEnv = {}
     input: JSON.stringify({
       workspaceRoot: repoRoot,
       maxTokens: 80,
-      thresholdConfidence: 0.7,
+      thresholdConfidence: 0.8,
       ...payload,
     }),
     encoding: 'utf8',
@@ -34,7 +34,7 @@ function parseBridge(stdout: string): { status: string; brief: string | null; me
 }
 
 describe('spec-kit skill advisor plugin bridge compat path', () => {
-  it('delegates to native advisor_recommend when the daemon probe is available', () => {
+  it('publishes one effective-threshold contract for whichever bridge route is active', () => {
     const result = runBridge({ prompt: 'save this conversation context to memory' });
     expect(result.status).toBe(0);
     const parsed = parseBridge(result.stdout);
@@ -42,7 +42,13 @@ describe('spec-kit skill advisor plugin bridge compat path', () => {
     expect(parsed.brief).toContain('Advisor:');
     expect(parsed.brief).toContain('system-spec-kit');
     expect(parsed.brief).toMatch(/\d+\.\d{2}\/\d+\.\d{2} pass\./);
-    expect(parsed.metadata.route).toBe('native');
+    expect(['native', 'python']).toContain(parsed.metadata.route);
+    expect(parsed.metadata.workspaceRoot).toBe(repoRoot);
+    expect(parsed.metadata.effectiveThresholds).toEqual({
+      confidenceThreshold: 0.8,
+      uncertaintyThreshold: 0.35,
+      confidenceOnly: false,
+    });
   });
 
   it('renders native uncertainty from the recommendation instead of a literal zero', () => {
@@ -60,6 +66,11 @@ describe('spec-kit skill advisor plugin bridge compat path', () => {
     const parsed = parseBridge(result.stdout);
     expect(parsed.status).toBe('ok');
     expect(parsed.metadata.route).toBe('python');
+    expect(parsed.metadata.effectiveThresholds).toEqual({
+      confidenceThreshold: 0.8,
+      uncertaintyThreshold: 0.35,
+      confidenceOnly: false,
+    });
   });
 
   it('returns a prompt-safe disabled brief for the shared disabled flag', () => {

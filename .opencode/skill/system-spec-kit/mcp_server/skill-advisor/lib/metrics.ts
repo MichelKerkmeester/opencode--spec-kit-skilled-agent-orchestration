@@ -2,6 +2,11 @@
 // MODULE: Advisor Hook Metrics Contract
 // ───────────────────────────────────────────────────────────────
 
+import { createHash } from 'node:crypto';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
+
 import type {
   AdvisorHookFreshness,
   AdvisorHookStatus,
@@ -31,6 +36,7 @@ export const ADVISOR_ERROR_CODE_VALUES = [
 
 export type AdvisorErrorCode = (typeof ADVISOR_ERROR_CODE_VALUES)[number];
 export type AdvisorMetricType = 'counter' | 'histogram' | 'gauge';
+export type AdvisorOutcome = 'accepted' | 'corrected' | 'ignored';
 
 export interface AdvisorMetricDefinition {
   readonly name: string;
@@ -69,6 +75,23 @@ export interface AdvisorHookAlertThresholds {
 export interface AdvisorHookMetricSnapshot {
   readonly definitions: readonly AdvisorMetricDefinition[];
   readonly records: readonly AdvisorHookDiagnosticRecord[];
+}
+
+export interface AdvisorHookOutcomeRecord {
+  readonly timestamp: string;
+  readonly runtime: AdvisorRuntime;
+  readonly outcome: AdvisorOutcome;
+  readonly skillLabel: string;
+  readonly correctedSkillLabel?: string;
+}
+
+export interface AdvisorHookOutcomeSummary {
+  readonly records: readonly AdvisorHookOutcomeRecord[];
+  readonly totals: {
+    readonly accepted: number;
+    readonly corrected: number;
+    readonly ignored: number;
+  };
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -124,6 +147,9 @@ const DEFAULT_ALERT_THRESHOLDS: AdvisorHookAlertThresholds = {
 };
 
 const MAX_HEALTH_RECORDS = 30;
+const MAX_DURABLE_DIAGNOSTIC_RECORDS = 200;
+const MAX_DURABLE_OUTCOME_RECORDS = 200;
+const DURABLE_METRICS_ROOT = join(tmpdir(), 'speckit-skill-advisor-metrics');
 
 // ───────────────────────────────────────────────────────────────
 // 3. HELPERS
@@ -160,6 +186,14 @@ function sanitizeDiagnosticText(value: unknown): string | undefined {
   return compact ? compact.slice(0, 240) : undefined;
 }
 
+function sanitizeSkillLabel(value: unknown): string | undefined {
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+  const compact = value.replace(/[\n\r]/g, ' ').replace(/\s+/g, ' ').trim();
+  return compact ? compact.slice(0, 160) : undefined;
+}
+
 function percentile(values: readonly number[], percentileValue: number): number {
   if (values.length === 0) {
     return 0;
@@ -179,6 +213,38 @@ function envNumber(name: string, fallback: number): number {
   }
   const parsed = Number(raw);
   return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function ensureParentDir(path: string): void {
+  mkdirSync(dirname(path), { recursive: true });
+}
+
+function workspaceHash(workspaceRoot: string): string {
+  return createHash('sha256')
+    .update(resolve(workspaceRoot))
+    .digest('hex')
+    .slice(0, 16);
+}
+
+function durableMetricsPath(workspaceRoot: string, kind: 'diagnostics' | 'outcomes'): string {
+  return join(DURABLE_METRICS_ROOT, `${workspaceHash(workspaceRoot)}-${kind}.jsonl`);
+}
+
+function readJsonlLines(path: string): string[] {
+  if (!existsSync(path)) {
+    return [];
+  }
+  return readFileSync(path, 'utf8')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+}
+
+function writeBoundedJsonl(path: string, line: string, maxRecords: number): void {
+  ensureParentDir(path);
+  const lines = readJsonlLines(path);
+  lines.push(line);
+  writeFileSync(path, `${lines.slice(-maxRecords).join('\n')}\n`, 'utf8');
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -260,6 +326,25 @@ export function serializeAdvisorHookDiagnosticRecord(record: AdvisorHookDiagnost
   return JSON.stringify(record);
 }
 
+export function persistAdvisorHookDiagnosticRecord(
+  workspaceRoot: string,
+  record: AdvisorHookDiagnosticRecord,
+): string {
+  const path = durableMetricsPath(workspaceRoot, 'diagnostics');
+  writeBoundedJsonl(path, serializeAdvisorHookDiagnosticRecord(record), MAX_DURABLE_DIAGNOSTIC_RECORDS);
+  return path;
+}
+
+export function readAdvisorHookDiagnosticRecords(
+  workspaceRoot: string,
+  limit = MAX_DURABLE_DIAGNOSTIC_RECORDS,
+): AdvisorHookDiagnosticRecord[] {
+  return readJsonlLines(durableMetricsPath(workspaceRoot, 'diagnostics'))
+    .slice(-limit)
+    .map((line) => JSON.parse(line) as unknown)
+    .filter(validateAdvisorHookDiagnosticRecord);
+}
+
 /** Build the rolling health section shown in advisor observability output. */
 export function buildAdvisorHookHealthSection(
   records: readonly AdvisorHookDiagnosticRecord[],
@@ -277,6 +362,64 @@ export function buildAdvisorHookHealthSection(
     ),
     rollingFailOpenRate: lastInvocations.length > 0 ? failOpen / lastInvocations.length : 0,
   };
+}
+
+export function readAdvisorHookHealthSection(workspaceRoot: string): AdvisorHookHealthSection {
+  return buildAdvisorHookHealthSection(readAdvisorHookDiagnosticRecords(workspaceRoot));
+}
+
+export function advisorHookDiagnosticsPath(workspaceRoot: string): string {
+  return durableMetricsPath(workspaceRoot, 'diagnostics');
+}
+
+export function createAdvisorHookOutcomeRecord(input: {
+  readonly runtime: AdvisorRuntime;
+  readonly outcome: AdvisorOutcome;
+  readonly skillLabel: string;
+  readonly correctedSkillLabel?: string | null;
+  readonly timestamp?: string;
+}): AdvisorHookOutcomeRecord {
+  return {
+    timestamp: input.timestamp ?? new Date().toISOString(),
+    runtime: input.runtime,
+    outcome: input.outcome,
+    skillLabel: sanitizeSkillLabel(input.skillLabel) ?? 'unknown-skill',
+    ...(sanitizeSkillLabel(input.correctedSkillLabel) ? { correctedSkillLabel: sanitizeSkillLabel(input.correctedSkillLabel) } : {}),
+  };
+}
+
+export function persistAdvisorHookOutcomeRecord(
+  workspaceRoot: string,
+  record: AdvisorHookOutcomeRecord,
+): string {
+  const path = durableMetricsPath(workspaceRoot, 'outcomes');
+  writeBoundedJsonl(path, JSON.stringify(record), MAX_DURABLE_OUTCOME_RECORDS);
+  return path;
+}
+
+export function readAdvisorHookOutcomeRecords(
+  workspaceRoot: string,
+  limit = MAX_DURABLE_OUTCOME_RECORDS,
+): AdvisorHookOutcomeRecord[] {
+  return readJsonlLines(durableMetricsPath(workspaceRoot, 'outcomes'))
+    .slice(-limit)
+    .map((line) => JSON.parse(line) as AdvisorHookOutcomeRecord);
+}
+
+export function summarizeAdvisorHookOutcomeRecords(
+  workspaceRoot: string,
+): AdvisorHookOutcomeSummary {
+  const records = readAdvisorHookOutcomeRecords(workspaceRoot);
+  const totals = {
+    accepted: records.filter((record) => record.outcome === 'accepted').length,
+    corrected: records.filter((record) => record.outcome === 'corrected').length,
+    ignored: records.filter((record) => record.outcome === 'ignored').length,
+  };
+  return { records, totals };
+}
+
+export function advisorHookOutcomesPath(workspaceRoot: string): string {
+  return durableMetricsPath(workspaceRoot, 'outcomes');
 }
 
 /** Small in-memory collector for advisor hook metrics and health snapshots. */

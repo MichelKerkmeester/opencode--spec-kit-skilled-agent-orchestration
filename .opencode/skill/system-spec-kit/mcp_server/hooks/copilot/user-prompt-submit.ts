@@ -19,6 +19,7 @@ import {
 import { renderAdvisorBrief } from '../../skill-advisor/lib/render.js';
 import {
   createAdvisorHookDiagnosticRecord,
+  persistAdvisorHookDiagnosticRecord,
   serializeAdvisorHookDiagnosticRecord,
 } from '../../skill-advisor/lib/metrics.js';
 import {
@@ -53,6 +54,7 @@ export interface CopilotUserPromptSubmitDependencies {
 }
 
 interface HookDiagnosticInput {
+  readonly workspaceRoot: string;
   readonly status: AdvisorHookStatus;
   readonly freshness: AdvisorHookFreshness;
   readonly durationMs: number;
@@ -99,11 +101,13 @@ function emitDiagnostic(
   writeDiagnostic: (line: string) => void = (line) => process.stderr.write(`${line}\n`),
 ): void {
   try {
-    const line = serializeAdvisorHookDiagnosticRecord(createAdvisorHookDiagnosticRecord({
+    const diagnosticRecord = createAdvisorHookDiagnosticRecord({
       runtime: 'copilot',
       ...record,
-    }));
+    });
+    const line = serializeAdvisorHookDiagnosticRecord(diagnosticRecord);
     writeDiagnostic(line);
+    persistAdvisorHookDiagnosticRecord(record.workspaceRoot, diagnosticRecord);
   } catch {
     // Diagnostics must never affect hook behavior.
   }
@@ -150,6 +154,7 @@ export async function refreshCopilotAdvisorInstructions(
 
   if (process.env.SPECKIT_SKILL_ADVISOR_HOOK_DISABLED === '1') {
     emitDiagnostic({
+      workspaceRoot: process.cwd(),
       status: 'skipped',
       freshness: 'unavailable',
       durationMs: elapsed(),
@@ -160,6 +165,7 @@ export async function refreshCopilotAdvisorInstructions(
 
   if (!input) {
     emitDiagnostic({
+      workspaceRoot: process.cwd(),
       status: 'fail_open',
       freshness: 'unavailable',
       durationMs: elapsed(),
@@ -171,8 +177,10 @@ export async function refreshCopilotAdvisorInstructions(
   }
 
   const prompt = promptFor(input);
+  const workspaceRoot = workspaceRootFor(input);
   if (prompt === null) {
     emitDiagnostic({
+      workspaceRoot,
       status: 'fail_open',
       freshness: 'unavailable',
       durationMs: elapsed(),
@@ -188,10 +196,11 @@ export async function refreshCopilotAdvisorInstructions(
     const renderBrief = dependencies.renderBrief ?? renderAdvisorBrief;
     const result = await buildBrief(prompt, {
       runtime: 'copilot',
-      workspaceRoot: workspaceRootFor(input),
+      workspaceRoot,
     });
     const brief = renderBrief(result);
     emitDiagnostic({
+      workspaceRoot,
       status: result.status,
       freshness: result.freshness,
       durationMs: result.metrics.durationMs,
@@ -207,6 +216,7 @@ export async function refreshCopilotAdvisorInstructions(
     };
   } catch {
     emitDiagnostic({
+      workspaceRoot,
       status: 'fail_open',
       freshness: 'unavailable',
       durationMs: elapsed(),
@@ -256,6 +266,7 @@ async function main(): Promise<void> {
 if (IS_CLI_ENTRY) {
   main().catch(() => {
     emitDiagnostic({
+      workspaceRoot: process.cwd(),
       status: 'fail_open',
       freshness: 'unavailable',
       durationMs: 0,

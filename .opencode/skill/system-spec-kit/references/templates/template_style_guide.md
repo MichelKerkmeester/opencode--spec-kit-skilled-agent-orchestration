@@ -33,7 +33,7 @@ Current templates (user-facing only):
 | **Level 1** | spec.md, plan.md, tasks.md, implementation-summary.md |
 | **Level 2** | + checklist.md |
 | **Level 3** | + decision-record.md, research/research.md |
-| **Utility** | handover.md, debug-delegation.md |
+| **Utility** | handover.md, debug-delegation.md, resource-map.md |
 
 ---
 

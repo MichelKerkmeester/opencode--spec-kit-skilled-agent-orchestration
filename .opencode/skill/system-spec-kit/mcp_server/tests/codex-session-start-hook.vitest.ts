@@ -17,16 +17,26 @@ function diagnosticsSink(): { records: string[]; writeDiagnostic: (line: string)
 
 async function runHook(input: CodexSessionStartInput) {
   const diagnostics = diagnosticsSink();
-  const startupSections = vi.fn(() => [{
-    title: 'Session Context',
-    content: [
-      'Session context received. Current state:',
-      '',
-      '- Memory: startup summary only (resume on demand)',
-      '- Code Graph: files=12 nodes=34 edges=56 freshness=live',
-      '- CocoIndex: available',
-    ].join('\n'),
-  }]);
+  const startupSections = vi.fn(() => [
+    {
+      title: 'Session Context',
+      content: [
+        'Session context received. Current state:',
+        '',
+        '- Memory: startup summary only (resume on demand)',
+        '- Code Graph: files=12 nodes=34 edges=56 freshness=live',
+        '- CocoIndex: available',
+      ].join('\n'),
+    },
+    {
+      title: 'Startup Payload Contract',
+      content: JSON.stringify({
+        kind: 'startup',
+        provenance: { producer: 'startup_brief', trustState: 'live' },
+        sectionKeys: ['structural-context'],
+      }, null, 2),
+    },
+  ]);
   const output = await handleCodexSessionStart(input, {
     startupSections,
     writeDiagnostic: diagnostics.writeDiagnostic,
@@ -53,6 +63,18 @@ describe('Codex SessionStart startup-context hook', () => {
           '- Memory: startup summary only (resume on demand)',
           '- Code Graph: files=12 nodes=34 edges=56 freshness=live',
           '- CocoIndex: available',
+          '',
+          '## Startup Payload Contract',
+          '{',
+          '  "kind": "startup",',
+          '  "provenance": {',
+          '    "producer": "startup_brief",',
+          '    "trustState": "live"',
+          '  },',
+          '  "sectionKeys": [',
+          '    "structural-context"',
+          '  ]',
+          '}',
         ].join('\n'),
       },
     });

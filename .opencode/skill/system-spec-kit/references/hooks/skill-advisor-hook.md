@@ -44,9 +44,9 @@ Native tool baseline:
 
 | Tool | Purpose |
 | --- | --- |
-| `advisor_recommend` | Prompt-safe skill recommendations with lane attribution and lifecycle metadata. |
+| `advisor_recommend` | Prompt-safe skill recommendations with explicit `workspaceRoot`, lane attribution, lifecycle metadata, and effective thresholds. |
 | `advisor_status` | Freshness, generation, trust state, `skillCount`, `lastScanAt`, and lane weights. |
-| `advisor_validate` | Corpus, holdout, parity, safety, and latency measurements. |
+| `advisor_validate` | Corpus, holdout, parity, safety, latency, threshold semantics, and prompt-safe telemetry rollups. |
 
 ---
 
@@ -59,7 +59,7 @@ Native tool baseline:
 | Gemini CLI | `mcp_server/hooks/gemini/user-prompt-submit.ts` | `hookSpecificOutput.additionalContext` | Reads `prompt`, `userPrompt`, or `request.prompt`. |
 | Codex CLI | `mcp_server/hooks/codex/user-prompt-submit.ts` | `hookSpecificOutput.additionalContext` | Stdin JSON is canonical and wins over argv JSON. |
 | Codex fallback | `mcp_server/hooks/codex/prompt-wrapper.ts` | `promptWrapper` and `wrappedPrompt` | Runs only when Codex hook policy reports hooks unavailable. |
-| OpenCode | `.opencode/plugins/spec-kit-skill-advisor.js` + bridge | plugin `additionalContext` | Bridge imports native `compat/index.js`, then falls back to Python brief path. |
+| OpenCode | `.opencode/plugins/spec-kit-skill-advisor.js` + `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs` | plugin `additionalContext` | Bridge imports native `compat/index.js`, applies the same effective threshold on native and fallback paths, then falls back to the Python-backed brief path only when native is unavailable. |
 
 Build all runtime adapters:
 
@@ -79,6 +79,8 @@ All hook adapters:
 - use the same freshness vocabulary: `live`, `stale`, `absent`, `unavailable`
 - use the same status vocabulary: `ok`, `skipped`, `degraded`, `fail_open`
 - render a compact `Advisor: ...` brief only when a route passes threshold
+- use `0.8 / 0.35` as the default prompt-time confidence/uncertainty routing thresholds unless a caller explicitly overrides the confidence threshold
+- persist prompt-safe hook diagnostics across hook processes and exclude raw prompt text from the durable sink
 
 Native `advisor_recommend` returns prompt-safe lane contribution metadata when `includeAttribution` is true. It does not return prompt-derived evidence snippets.
 
@@ -133,11 +135,11 @@ printf '%s' '{"prompt":"update documentation with DQI checks","cwd":"'"$PWD"'"}'
 ### OpenCode Plugin Bridge
 
 ```bash
-printf '%s' '{"prompt":"save this conversation context to memory","workspaceRoot":"'"$PWD"'","runtime":"opencode","maxTokens":80,"thresholdConfidence":0.7}' | \
-  node .opencode/plugins/spec-kit-skill-advisor-bridge.mjs
+printf '%s' '{"prompt":"save this conversation context to memory","workspaceRoot":"'"$PWD"'","runtime":"opencode","maxTokens":80,"thresholdConfidence":0.8}' | \
+  node .opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs
 ```
 
-Expected: `status: "ok"` with `metadata.route: "native"` when native is available, or prompt-safe fallback status.
+Expected: `status: "ok"` with `metadata.route: "native"` when native is available, `metadata.workspaceRoot` matching the supplied repo root, and `metadata.effectiveThresholds` showing the active confidence/uncertainty pair.
 
 ---
 
@@ -217,7 +219,7 @@ Diagnostic status values:
 Native validation:
 
 ```text
-advisor_validate({"skillSlug":null})
+advisor_validate({"confirmHeavyRun":true,"workspaceRoot":"/absolute/path/to/repo","skillSlug":null})
 ```
 
 Package checks:

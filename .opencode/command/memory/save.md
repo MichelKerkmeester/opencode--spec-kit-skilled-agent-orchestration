@@ -154,7 +154,7 @@ Execute BEFORE folder validation to prevent data quality issues. All checks must
 #### Check 1: Anchor Format Validation
 
 - Scan conversation for existing canonical spec-doc references
-- If any canonical spec documents (`decision-record.md`, `implementation-summary.md`, `handover.md`) were read during the session, verify they contain BOTH opening AND closing ANCHOR tags
+- If any canonical spec documents (`decision-record.md`, `implementation-summary.md`, `handover.md`, `resource-map.md`) were read during the session, verify they contain BOTH opening AND closing ANCHOR tags
 - Pattern: `<!-- ANCHOR:id --> ... <!-- /ANCHOR:id -->`
 - If missing closing tags → WARN user before proceeding
 - Why: Broken anchors break section-specific retrieval (93% token waste)
@@ -350,7 +350,7 @@ Content...
 
 > **Graph metadata refresh:** The same save pass refreshes `graph-metadata.json` with checklist-aware status fallback (`implementation-summary.md` presence + checklist completion), lowercase status normalization, sanitized `key_files`, deduplicated entities, and a 12-item cap on derived trigger phrases.
 
-> **Auto-index of touched files (Step 11.5):** After the canonical save updates packet docs and `graph-metadata.json`, the workflow runs an incremental `memory_index_scan` scoped to the target spec folder. This re-indexes any canonical spec docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `handover.md`, `research/research.md`) and `graph-metadata.json` that were modified earlier in the session. Incremental mode skips unchanged files cheaply via mtime + content-hash checks.
+> **Auto-index of touched files (Step 11.5):** After the canonical save updates packet docs and `graph-metadata.json`, the workflow runs an incremental `memory_index_scan` scoped to the target spec folder. This re-indexes any canonical spec docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `handover.md`, `research/research.md`, `resource-map.md`) and `graph-metadata.json` that were modified earlier in the session. Incremental mode skips unchanged files cheaply via mtime + content-hash checks.
 >
 > Kill switches: `SPECKIT_AUTO_INDEX_TOUCHED=false` (targeted opt-out) or `SPECKIT_INDEX_SPEC_DOCS=false` (existing global opt-out) disables Step 11.5. The backend has a 51s cooldown between scans; when a save fires during cooldown, Step 11.5 logs `skipped (scan cooldown active; retry on next save)` and continues — the index catches up on the next save.
 
