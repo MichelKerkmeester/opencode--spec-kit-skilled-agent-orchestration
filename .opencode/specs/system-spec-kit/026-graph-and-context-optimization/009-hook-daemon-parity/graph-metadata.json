@@ -17,7 +17,8 @@
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements",
-    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements"
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/015-review-gap-remediation"
   ],
   "migrated": true,
   "migration_source": "legacy",
