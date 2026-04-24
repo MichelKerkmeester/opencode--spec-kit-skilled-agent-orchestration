@@ -7,6 +7,17 @@ trigger_phrases:
   - "files touched 012"
 importance_tier: "normal"
 contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/012-resource-map-template"
+    last_updated_at: "2026-04-24T00:00:00Z"
+    last_updated_by: "claude-opus-4-7"
+    recent_action: "Authored phase resource map"
+    next_safe_action: "Finalize packet"
+    blockers: []
+    completion_pct: 95
+    open_questions: []
+    answered_questions: []
 ---
 # Resource Map
 
@@ -45,7 +56,7 @@ contextType: "general"
 | Path | Action | Status | Note |
 |------|--------|--------|------|
 | `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` | Updated | OK | Cross-cutting row + per-level Optional Files mentions. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/path-references-audit.md` | Analyzed | OK | Reference shape (categories + table columns) inspiration. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/path-references-audit` (md) | Analyzed | OK | Reference shape (categories + table columns) inspiration. |
 | `.opencode/skill/system-spec-kit/templates/addendum/phase/phase-child-header.md` | Analyzed | OK | Consulted for the phase-child metadata rows. |
 
 ---
@@ -56,8 +67,8 @@ contextType: "general"
 |------|--------|--------|------|
 | `.opencode/skill/system-spec-kit/templates/resource-map.md` | Created | OK | The new template itself (~130 lines, 10 categories, author instructions). |
 | `.opencode/skill/system-spec-kit/SKILL.md` | Updated | OK | Distributed-governance block + cross-cutting mention in §3/§9 + Rule 9 list. |
-| `.opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/25-resource-map-template.md` | Created | OK | New feature catalog entry (neighbor of `23-tool-routing-enforcement.md`). |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/270-resource-map-template.md` | Created | OK | New playbook scenario (neighbor of `267-tool-routing-enforcement.md`). |
+| `.opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/25-resource-map-template.md` | Created | OK | New feature catalog entry (neighbor of `.opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/23-tool-routing-enforcement.md`). |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/270-resource-map-template.md` | Created | OK | New playbook scenario (neighbor of `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/267-tool-routing-enforcement.md`). |
 | `.opencode/skill/system-spec-kit/templates/core/` | Analyzed | OK | Template architecture source-of-truth for CORE/ADDENDUM composition. |
 | `.opencode/skill/system-spec-kit/templates/addendum/` | Analyzed | OK | Confirmed L2/L3/L3+ addendum structure before writing level READMEs. |
 | `.opencode/skill/system-spec-kit/templates/handover.md` | Analyzed | OK | File-location precedent (cross-cutting peer at templates root). |
@@ -88,7 +99,7 @@ contextType: "general"
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/spec.md` | Analyzed | OK | Prior-phase format reference (Level 3 packet). |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/graph-metadata.json` | Analyzed | OK | Schema template for graph-metadata shape. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/plan.md` | Analyzed | OK | `_memory` frontmatter pattern. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/` | Analyzed | OK | Source of `path-references-audit.md` reference shape. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/` | Analyzed | OK | Source of the path-references-audit artifact used as reference shape. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/` (parent spec folder) | Analyzed | OK | Confirmed existing phase inventory (001–011) and claimed number 012. |
 
 ---

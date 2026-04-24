@@ -36,18 +36,23 @@ correctness → security → traceability → maintainability → correctness (d
 
 ## Iteration Log
 - **iter-001 (correctness) — complete**: 11 findings (P0: 0, P1: 6, P2: 5). Regex boundary semantics verified clean; save-time guard covers both direct + scan-originated saves; code-graph walker + specificFiles both gated. Main open risks: cleanup-script TOCTOU (plan outside transaction), FTS cleanup trigger unverified, symlink bypass on `path.resolve`, LIKE patterns diverge from regex semantics, no idempotence short-circuit, mutation-ledger stub no-op.
+- **iter-002 (security) — complete**: 6 new findings (P0: 0, P1: 3, P2: 3). No exploitable RCE/SQLi. New P1s: log-injection in save-time downgrade WARN (parser-controlled file_path), silent tier downgrade with no governance audit row, walker DoS via unbounded readdirSync + whole-file .gitignore reads. New P2s: DB path disclosure on sqlite error, no machine-readable cleanup report, sqlite-vec supply-chain trust. Cross-referenced iter-1 findings with stronger security framing: P1-003 (privilege-escalation), P1-004 (cleanup-evasion), P2-002 (future PR risk). Ruled out: SQL injection, DB_PATH tampering, README case/directory attacks, ReDoS, excluded-path parse traces.
 
 ## Running Findings
-- Total open: 11 (P0: 0, P1: 6, P2: 5)
-- Next dimension: security
+- Total open: 17 (P0: 0, P1: 9, P2: 8)
+- Next dimension: traceability
 
-## What Worked (iter-001)
-- Direct regex mental-execution with node confirmed boundary behavior on 15+ edge-case paths
-- Reading both helpers and consumers confirmed no-gap coverage at indexing entrypoints
-- Test files (`index-scope.vitest.ts`, `memory-save-index-scope.vitest.ts`) confirm the positive paths empirically
+## What Worked (iter-001, iter-002)
+- Direct regex mental-execution with node confirmed boundary behavior on 15+ edge-case paths (iter-1)
+- Reading both helpers and consumers confirmed no-gap coverage at indexing entrypoints (iter-1)
+- Test files (`index-scope.vitest.ts`, `memory-save-index-scope.vitest.ts`) confirm the positive paths empirically (iter-1)
+- Threat-model question lists (SQLi, traversal, DoS, privilege, log-injection, supply-chain) produced actionable P1s that correctness pass missed (iter-2)
+- Cross-referencing iter-1 correctness findings from a security angle surfaced escalation paths (symlink = privesc; LIKE divergence = cleanup-evasion) without re-reporting (iter-2)
 
 ## Exhausted Approaches (do not retry)
 - Single-dimension regex enumeration for invariants 1-3: fully covered in iter-001. Future iterations should focus on cross-cutting concerns (security, traceability, maintainability).
+- SQL injection enumeration on cleanup script: verified parameterized end-to-end (iter-2). Do not re-check.
+- DB_PATH tampering via CLI/env: `import.meta.url` resolution is not attacker-controllable (iter-2). Do not re-check.
 
 ## Review Instructions for Iteration Agent
 - READ-ONLY on all scope files. Do NOT modify code or spec docs.

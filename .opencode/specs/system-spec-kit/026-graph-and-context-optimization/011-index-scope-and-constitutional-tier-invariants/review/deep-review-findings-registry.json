@@ -12,7 +12,8 @@
       "lines": [376, 399],
       "iterationFirstSeen": 1,
       "evidence": "const plan = buildPlan(database); const tx = database.transaction(() => applyCleanup(database, plan));",
-      "status": "open"
+      "status": "open",
+      "crossReferencedIterations": [2]
     },
     {
       "id": "P1-002",
@@ -23,7 +24,8 @@
       "lines": [46, 281],
       "iterationFirstSeen": 1,
       "evidence": "ftsCleanupStrategy: 'memory_index_trigger' — never asserted",
-      "status": "open"
+      "status": "open",
+      "crossReferencedIterations": [2]
     },
     {
       "id": "P1-003",
@@ -37,7 +39,9 @@
       ],
       "iterationFirstSeen": 1,
       "evidence": "canonicalFilePath = path.resolve(parsed.filePath).replace(/\\\\/g, '/')",
-      "status": "open"
+      "status": "open",
+      "crossReferencedIterations": [2],
+      "securityFraming": "privilege-escalation: symlink in specs/ pointing to /external/ or /z_future/ bypasses invariant"
     },
     {
       "id": "P1-004",
@@ -48,7 +52,9 @@
       "lines": [99, 103, 107, 117],
       "iterationFirstSeen": 1,
       "evidence": "file_path LIKE '%/z_future/%' — diverges from (^|/)z_future(/|$) regex semantics",
-      "status": "open"
+      "status": "open",
+      "crossReferencedIterations": [2],
+      "securityFraming": "cleanup-evasion: attacker storing relative z_future/ path bypasses cleanup while matching runtime regex"
     },
     {
       "id": "P1-005",
@@ -73,6 +79,42 @@
       "status": "open"
     },
     {
+      "id": "P1-007",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Log-injection in save-time downgrade WARN (parser-controlled file_path logged verbatim)",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      "lines": [311, 319],
+      "iterationFirstSeen": 2,
+      "evidence": "console.warn('[memory-save] ...', { file_path: parsed.filePath }) — no newline/control-char strip; parsed.filePath originates from frontmatter/caller input",
+      "status": "open"
+    },
+    {
+      "id": "P1-008",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Silent tier downgrade still indexes attacker-declared-constitutional content; no governance audit row",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      "lines": [310, 314],
+      "iterationFirstSeen": 2,
+      "evidence": "parsed.importanceTier = 'important'; save continues. No governance_audit insert on this branch. Silent downgrade conflicts with user-directed policy-grade invariant.",
+      "status": "open"
+    },
+    {
+      "id": "P1-009",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Walker DoS: unbounded readdirSync + per-directory whole .gitignore read",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts",
+      "lines": [1162, 1206],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts", "lines": [68, 218] }
+      ],
+      "iterationFirstSeen": 2,
+      "evidence": "loadGitignore uses readFileSync with no size cap; findFiles.walk has no depth / node-count bound. Attacker controlling files in scanned dir can exhaust memory or block event loop.",
+      "status": "open"
+    },
+    {
       "id": "P2-001",
       "severity": "P2",
       "dimension": "correctness",
@@ -90,7 +132,9 @@
       "file": ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts",
       "lines": [955, 979],
       "iterationFirstSeen": 1,
-      "status": "open"
+      "status": "open",
+      "crossReferencedIterations": [2],
+      "securityFraming": "future PR adding readme.md to SPEC_DOCUMENT_FILENAMES_SET silently opens constitutional ingestion path"
     },
     {
       "id": "P2-003",
@@ -121,22 +165,55 @@
       "lines": [99, 118],
       "iterationFirstSeen": 1,
       "status": "open"
+    },
+    {
+      "id": "P2-006",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Cleanup console.error leaks absolute DB path on better-sqlite3 I/O failure",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [407],
+      "iterationFirstSeen": 2,
+      "evidence": "console.error('[cleanup-index-scope-violations] Error:', error.message) — better-sqlite3 embeds absolute DB path in error messages",
+      "status": "open"
+    },
+    {
+      "id": "P2-007",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Cleanup produces no machine-readable report",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [337, 361, 378, 405],
+      "iterationFirstSeen": 2,
+      "evidence": "printSummary/printApplySummary emit key=value lines, no JSON option. Downstream compliance-audit pipelines cannot parse reliably.",
+      "status": "open"
+    },
+    {
+      "id": "P2-008",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Supply-chain: sqlite-vec native extension loaded unconditionally in cleanup",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [6, 374],
+      "iterationFirstSeen": 2,
+      "evidence": "loadSqliteVec(database) loads native extension with no integrity check; compromised npm package executes attacker native code against live DB.",
+      "status": "open"
     }
   ],
   "resolvedFindings": [],
   "repeatedFindings": [],
   "dimensionCoverage": {
     "correctness": true,
-    "security": false,
+    "security": true,
     "traceability": false,
     "maintainability": false
   },
   "findingsBySeverity": {
     "P0": 0,
-    "P1": 6,
-    "P2": 5
+    "P1": 9,
+    "P2": 8
   },
-  "openFindingsCount": 11,
+  "openFindingsCount": 17,
   "resolvedFindingsCount": 0,
   "convergenceScore": 0.0
 }
