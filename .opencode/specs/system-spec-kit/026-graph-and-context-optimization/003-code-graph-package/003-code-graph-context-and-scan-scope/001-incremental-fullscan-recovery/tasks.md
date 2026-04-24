@@ -130,7 +130,7 @@ _memory:
 - **Checklist**: See `checklist.md`
 - **Decision Record**: See `decision-record.md`
 - **Implementation Summary**: See `implementation-summary.md`
-- **Research**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-04/research.md`
+- **Research**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/research/007-deep-review-remediation-pt-04/research.md`
 
 ### AI Execution Protocol
 

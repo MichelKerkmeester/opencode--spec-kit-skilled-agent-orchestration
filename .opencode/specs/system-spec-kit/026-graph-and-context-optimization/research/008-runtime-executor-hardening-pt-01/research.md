@@ -65,7 +65,7 @@ The investigation did not early-stop; it completed all 10 iterations. Convergenc
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix/decision-record.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix/implementation-summary.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/017-sk-deep-cli-runtime-execution-pt-01/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/001-executor-feature/research/017-sk-deep-cli-runtime-execution-pt-01/research.md`
 - `.opencode/skill/sk-deep-research/SKILL.md`
 - `.opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl`
 - `.opencode/skill/sk-deep-research/references/loop_protocol.md`

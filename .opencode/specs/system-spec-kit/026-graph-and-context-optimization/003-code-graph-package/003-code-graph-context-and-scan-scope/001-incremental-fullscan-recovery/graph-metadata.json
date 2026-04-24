@@ -86,7 +86,7 @@
       "decision-record.md"
     ],
     "evidence_refs": [
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-04/research.md"
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/research/007-deep-review-remediation-pt-04/research.md"
     ]
   }
 }

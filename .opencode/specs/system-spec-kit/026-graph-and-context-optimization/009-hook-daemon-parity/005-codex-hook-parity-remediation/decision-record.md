@@ -60,7 +60,7 @@ _memory:
 
 ### ADR-003: Hook contract + implementation path - outcome A (full parity)
 
-**Status**: Accepted (2026-04-22) — classified from 10-iteration deep-research synthesis in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-02/research.md`.
+**Status**: Accepted (2026-04-22) — classified from 10-iteration deep-research synthesis in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation/research/007-deep-review-remediation-pt-02/research.md`.
 
 **Context**: 10 deep-research iterations via cli-codex (with workspace-write sandbox enabling empirical probes) fully mapped the Codex CLI 0.122.0 hook contract. The research confirmed — via official docs, generated JSON schemas, upstream Rust source, AND an isolated `CODEX_HOME` probe on 0.122.0 — that **Codex hooks DO inject stdout into the model context as `role: "developer"` messages**. This is the exact capability Claude's hooks provide and Copilot's hooks lack (see sibling phase 004).
 
@@ -105,7 +105,7 @@ The only operational constraint: hooks require `[features] codex_hooks = true` i
 - **Negative**: Hooks run concurrently with notify.sh per the `join_all` dispatcher. The Spec Kit hook must be idempotent and must not race on shared resources. Design directive: stdout-only, no disk writes.
 
 **References**:
-- Full synthesis: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-02/research.md` — §5 decision matrix, §6 recommended plan, §7 implementation considerations.
+- Full synthesis: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation/research/007-deep-review-remediation-pt-02/research.md` — §5 decision matrix, §6 recommended plan, §7 implementation considerations.
 - Primary-source URLs: 40+ in the parent research synthesis across developers.openai.com/codex, openai/codex repo source files, generated schemas, Rust stdlib docs.
 - Reference implementation (Claude-side): `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts`.
 

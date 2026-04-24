@@ -26,7 +26,7 @@ _memory:
 
 ## P0 — Blockers
 
-- [x] **P0-01** — `research.md` exists in this folder with >=3 primary-source citations (REQ-001). *Evidence*: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-01/research.md` has 30+ primary-source URLs across GitHub docs, GitHub issues, and GitHub changelog sources. Rechecked 2026-04-22 against GitHub docs for hook output and custom instructions.
+- [x] **P0-01** — `research.md` exists in this folder with >=3 primary-source citations (REQ-001). *Evidence*: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation/research/007-deep-review-remediation-pt-01/research.md` has 30+ primary-source URLs across GitHub docs, GitHub issues, and GitHub changelog sources. Rechecked 2026-04-22 against GitHub docs for hook output and custom instructions.
 - [x] **P0-02** — Phase 1 outcome is classified as A, B, or C with rationale (REQ-003). *Evidence*: `decision-record.md` ADR-003 Status=Accepted, outcome **B (file-based workaround)**.
 - [x] **P0-03** — `decision-record.md` contains a decision matrix with columns: mechanism, feasibility, cost, risk, recommended (REQ-002). *Evidence*: ADR-003 7-row matrix.
 - [x] **P0-04** — Claude hook regression test passes (REQ-004). *Evidence*: `npx vitest run ... tests/claude-user-prompt-submit-hook.vitest.ts` passed in the 4-file focused run, 28 tests total.

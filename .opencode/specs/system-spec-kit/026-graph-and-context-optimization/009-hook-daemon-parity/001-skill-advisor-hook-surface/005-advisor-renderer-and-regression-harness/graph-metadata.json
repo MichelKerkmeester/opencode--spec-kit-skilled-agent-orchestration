@@ -40,7 +40,7 @@
     "importance_tier": "critical",
     "status": "in_progress",
     "key_files": [
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl",
       "shared/unicode-normalization.ts",
       "spec.md",
       "plan.md",
@@ -52,7 +52,7 @@
       {
         "name": "labeled-prompts.jsonl",
         "kind": "file",
-        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl",
         "source": "derived"
       },
       {

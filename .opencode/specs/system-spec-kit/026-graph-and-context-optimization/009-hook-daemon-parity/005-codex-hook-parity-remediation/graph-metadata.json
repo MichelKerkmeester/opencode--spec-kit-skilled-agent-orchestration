@@ -55,7 +55,7 @@
       "hooks/codex/session-start.ts",
       "tests/codex-user-prompt-submit-hook.vitest.ts",
       ".opencode/skill/cli-codex/references/hook_contract.md",
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-02/research.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation/research/007-deep-review-remediation-pt-02/research.md",
       "spec.md",
       "plan.md",
       "tasks.md",

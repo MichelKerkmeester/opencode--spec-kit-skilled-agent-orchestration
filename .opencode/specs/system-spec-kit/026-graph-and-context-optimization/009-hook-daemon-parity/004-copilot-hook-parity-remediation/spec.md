@@ -18,7 +18,7 @@ _memory:
     next_safe_action: "Monitor Copilot ACP"
     blockers: []
     key_files:
-      - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-01/research.md"
+      - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation/research/007-deep-review-remediation-pt-01/research.md"
       - ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/tests/claude-user-prompt-submit-hook.vitest.ts"
     session_dedup:

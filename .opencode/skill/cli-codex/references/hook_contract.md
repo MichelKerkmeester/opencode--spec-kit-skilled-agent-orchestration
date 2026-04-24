@@ -169,4 +169,4 @@ non-empty and start with `Advisor:` on the prompt hook.
   model-visible developer context:
   `https://github.com/openai/codex/issues/16933`
 - Packet-local synthesis:
-  `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-02/research.md`
+  `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation/research/007-deep-review-remediation-pt-02/research.md`

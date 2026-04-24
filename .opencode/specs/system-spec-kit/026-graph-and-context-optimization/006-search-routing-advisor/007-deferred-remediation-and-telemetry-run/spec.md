@@ -248,4 +248,4 @@ What we CANNOT close without live AI sessions: empirical proof that AIs skip SKI
   - `../004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy/research/research.md` (V3/V4/V5/V9 open)
 - Reference doc: `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md`
 - Telemetry primitive: `.opencode/skill/system-spec-kit/scripts/observability/smart-router-telemetry.ts` (023 Area E)
-- Corpus: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl`
+- Corpus: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl`

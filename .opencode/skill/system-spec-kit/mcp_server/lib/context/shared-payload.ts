@@ -206,7 +206,7 @@ export type AdvisorEnvelopeStatus = (typeof ADVISOR_ENVELOPE_STATUS_VALUES)[numb
  * sanitized, single-line skill label so prompt text and free-form reasons
  * cannot cross the shared transport boundary.
  *
- * @see .opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-skill-advisor-hook-surface-pt-01/research.md
+ * @see .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/research/020-skill-advisor-hook-surface-pt-01/research.md
  */
 export interface AdvisorEnvelopeMetadata {
   freshness: AdvisorEnvelopeFreshness;

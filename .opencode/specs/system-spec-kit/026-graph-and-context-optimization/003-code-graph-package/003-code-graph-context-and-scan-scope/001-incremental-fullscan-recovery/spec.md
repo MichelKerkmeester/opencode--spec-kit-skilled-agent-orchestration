@@ -61,7 +61,7 @@ Packet 012 tightened code graph scan scope, but a pre-existing stale-gate contra
 | **Created** | 2026-04-23 |
 | **Branch** | `UNKNOWN` |
 | **Parent Packet** | `003-code-graph-context-and-scan-scope` |
-| **Research Source** | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-04/research.md` |
+| **Research Source** | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/research/007-deep-review-remediation-pt-04/research.md` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -259,4 +259,4 @@ Restore full-scan correctness and persistence reliability while preserving exist
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-- **Research Source**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-04/research.md`
+- **Research Source**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/research/007-deep-review-remediation-pt-04/research.md`

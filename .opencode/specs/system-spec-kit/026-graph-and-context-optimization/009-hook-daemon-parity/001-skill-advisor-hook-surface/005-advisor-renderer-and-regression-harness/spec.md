@@ -134,7 +134,7 @@ Ship the single trust-boundary renderer + a full regression harness that gates r
 #### 3.4 200-prompt parity harness
 
 - New `mcp_server/tests/advisor-corpus-parity.vitest.ts`:
-  - Reads `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl`
+  - Reads `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl`
   - For each of 200 prompts:
     - Invoke direct CLI `python3 skill_advisor.py --format json "<prompt>"` (baseline)
     - Invoke `buildSkillAdvisorBrief(prompt, opts)` (hook path)

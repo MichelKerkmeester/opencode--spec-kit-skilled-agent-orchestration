@@ -8,7 +8,7 @@ The phase contract requires exact Python↔TypeScript parity on the 200-prompt c
 
 Measured current Python scorer baseline on the frozen 200-prompt corpus:
 
-- Corpus path found in this checkout: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl`
+- Corpus path found in this checkout: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl`
 - User-requested path `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-001-initial-research-005-routing-accuracy/corpus/labeled-prompts.jsonl` does not exist in this checkout.
 - Python source of truth: `.opencode/skill/skill-advisor/scripts/skill_advisor.py` with `SKILL_ADVISOR_DISABLE_BUILTIN_SEMANTIC=1`
 - Result: `112/200` exact gold top-1 (`56.00%`)

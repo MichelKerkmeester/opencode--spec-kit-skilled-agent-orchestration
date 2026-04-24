@@ -29,7 +29,7 @@ export function findWorkspaceRoot(): string {
 export function promotionCorpusPath(workspaceRoot = findWorkspaceRoot()): string {
   return resolve(
     workspaceRoot,
-    '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl',
+    '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl',
   );
 }
 

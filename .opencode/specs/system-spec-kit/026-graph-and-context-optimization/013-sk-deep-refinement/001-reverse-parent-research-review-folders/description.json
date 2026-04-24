@@ -1,0 +1,26 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/013-sk-deep-refinement/001-reverse-parent-research-review-folders",
+  "description": "Feature Specification: Reverse Parent Research/Review Folder Placement",
+  "keywords": [
+    "feature",
+    "specification",
+    "reverse",
+    "parent",
+    "research",
+    "review",
+    "folder",
+    "placement"
+  ],
+  "lastUpdated": "2026-04-24T12:32:52.475Z",
+  "specId": "001",
+  "folderSlug": "reverse-parent-research-review-folders",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "013-sk-deep-refinement"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "24-04-26_13-32__the-reverse-parent-level-research-review-folder.md"
+  ]
+}

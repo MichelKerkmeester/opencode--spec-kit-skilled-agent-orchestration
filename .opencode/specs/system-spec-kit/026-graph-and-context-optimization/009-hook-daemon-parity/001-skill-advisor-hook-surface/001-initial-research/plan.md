@@ -72,7 +72,7 @@ Canonical sk-deep-research loop with per-iteration delta files.
 ### 4.1 Dispatch Command
 
 ```
-codex exec --model gpt-5.4 -c model_reasoning_effort="high" -c service_tier="fast" -c approval_policy=never --sandbox workspace-write - < .opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/020-skill-advisor-hook-surface-pt-01/prompts/iteration-N.md
+codex exec --model gpt-5.4 -c model_reasoning_effort="high" -c service_tier="fast" -c approval_policy=never --sandbox workspace-write - < .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/research/020-skill-advisor-hook-surface-pt-01/prompts/iteration-N.md
 ```
 
 <!-- ANCHOR:testing -->
