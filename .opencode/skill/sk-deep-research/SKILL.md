@@ -226,6 +226,26 @@ Detect the current research phase from dispatch context to load appropriate reso
 <!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
+### Resource Map Integration
+
+When `{spec_folder}/resource-map.md` exists at init, deep research promotes it from ad hoc context to canonical packet state.
+
+- Persist `resource_map_present: true` in `deep-research-config.json`.
+- Read the map once during init and summarize it into `deep-research-strategy.md` `Known Context`.
+- The snapshot MUST include per-section entry counts across `READMEs`, `Documents`, `Commands`, `Agents`, `Skills`, `Specs`, `Scripts`, `Tests`, `Config`, and `Meta`.
+- The snapshot MUST also include a one-line theme summary for each resource-map section so later iterations inherit the map's structure without rereading the entire file.
+- Per-iteration prompts surface `resource-map.md` as the exclusion set for previously inventoried files.
+- Treat files already listed on the map as known inventory, not as net-new discoveries.
+- Only flag files as gaps when they look relevant to the active investigation and are missing from the map.
+- Final synthesis cites `{spec_folder}/resource-map.md` in `research.md` References when the map was present at init.
+
+When `{spec_folder}/resource-map.md` is absent at init:
+
+- Persist `resource_map_present: false`.
+- Write `resource-map.md not present; skipping coverage gate` into `Known Context`.
+- Omit the exclusion-set hint from iteration guidance.
+- Continue the loop normally; absence is informational, not a failure.
+
 ### Architecture: 3-Layer Integration
 
 ```

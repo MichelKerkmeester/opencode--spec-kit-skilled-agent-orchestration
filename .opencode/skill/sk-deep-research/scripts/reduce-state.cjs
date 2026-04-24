@@ -820,8 +820,7 @@ function reduceResearchState(specFolder, options = {}) {
   const write = options.write !== false;
   const lenient = Boolean(options.lenient);
   const resolvedSpecFolder = path.resolve(specFolder);
-  const { rootDir: researchRootDir, subfolder: researchSubfolder } = resolveArtifactRoot(resolvedSpecFolder, 'research');
-  const researchDir = researchSubfolder ? path.join(researchRootDir, researchSubfolder) : researchRootDir;
+  const { artifactDir: researchDir } = resolveArtifactRoot(resolvedSpecFolder, 'research');
   const configPath = path.join(researchDir, 'deep-research-config.json');
   const stateLogPath = path.join(researchDir, 'deep-research-state.jsonl');
   const strategyPath = path.join(researchDir, 'deep-research-strategy.md');

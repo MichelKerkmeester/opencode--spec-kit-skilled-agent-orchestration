@@ -60,6 +60,13 @@ Set up all state files for a new research session.
    - Initial key questions (3-5, from topic analysis)
    - Known context from `memory_context()` results (if any), injected only after the strategy file exists
    - Research boundaries from config
+6a. **Detect resource-map integration state**:
+   - Check `{spec_folder}/resource-map.md` once during init
+   - If present: set `resource_map_present = true` in `deep-research-config.json`
+   - Summarize the map into `deep-research-strategy.md` `Known Context`
+   - The summary MUST include per-section entry counts for `READMEs`, `Documents`, `Commands`, `Agents`, `Skills`, `Specs`, `Scripts`, `Tests`, `Config`, and `Meta`
+   - The summary MUST also include a one-line theme summary for each resource-map section
+   - If absent: set `resource_map_present = false` and append `resource-map.md not present; skipping coverage gate` to `Known Context`
 7. **Initialize findings registry**: `research/findings-registry.json` with empty `openQuestions`, `resolvedQuestions`, `keyFindings`, and `ruledOutDirections`
 7a. **Validate Research Charter**:
    - Verify strategy.md contains a "Non-Goals" section (may be empty but must exist)
@@ -198,6 +205,7 @@ Iteration: {N} of {maxIterations}
 Focus Area: {strategy.nextFocus}
 Remaining Questions: {strategy.remainingQuestions}
 Last 3 Iterations Summary: {brief summaries}
+Resource Map: if `config.resource_map_present == true`, prior-inventoried files are listed in `{spec_folder}/resource-map.md`; treat them as the exclusion set when hunting for net-new files; flag only missed-from-map candidates as gaps.
 State Files:
   - Config: {spec_folder}/research/deep-research-config.json
   - State: {spec_folder}/research/deep-research-state.jsonl
@@ -488,6 +496,8 @@ Compile all iteration findings into final research/research.md. The synthesis wo
    - Deduplicate overlapping findings
    - Organize by section topic
    - Add citations from iteration files
+   - Cite `{spec_folder}/resource-map.md` in the References section when `config.resource_map_present == true`
+   - Do not synthesize a placeholder reference when `resource-map.md` was absent at init
    - Note unanswered questions in Section 12 (Open Questions)
    - **Include a mandatory "## Eliminated Alternatives" section** as primary research output:
      - Consolidate all `ruledOut` entries from iteration JSONL records

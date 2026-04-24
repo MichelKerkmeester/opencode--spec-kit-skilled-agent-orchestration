@@ -56,6 +56,7 @@ Created during initialization. Not modified after creation.
   "reviewTarget": "specs/030-sk-deep-review-review-mode",
   "reviewTargetType": "spec-folder",
   "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
+  "resource_map_present": false,
   "sessionId": "rvw-2026-04-03T12-00-00Z",
   "parentSessionId": null,
   "lineageMode": "new",
@@ -109,6 +110,7 @@ Created during initialization. Not modified after creation.
 | reviewTarget | string | -- | Path or identifier of the review target |
 | reviewTargetType | string | `"spec-folder"` | `spec-folder`, `skill`, `agent`, `track`, `files` |
 | reviewDimensions | string[] | all 4 | Dimensions to evaluate |
+| resource_map_present | boolean | false | True only when `{specFolder}/resource-map.md` existed during init; enables the Resource Map Coverage audit pass and conditional report section |
 | sessionId | string | -- | Stable identifier for the current review lineage |
 | parentSessionId | string \| null | `null` | Parent lineage reference for restart flows |
 | lineageMode | string | `"new"` | `new`, `resume`, `restart`. `fork` and `completed-continue` are deferred and not emitted by the current runtime |
@@ -611,7 +613,7 @@ Every finding must include: unique ID (`F001`...), severity (`P0`/`P1`/`P2`), co
 <!-- ANCHOR:review-report -->
 ## 7. REVIEW REPORT (review/review-report.md)
 
-The review synthesis output contains 9 sections:
+The review synthesis output contains 9 core sections plus a conditional `## Resource Map Coverage Gate` section when `resource_map_present` is true:
 
 | # | Section | Description |
 |---|---------|-------------|
@@ -622,8 +624,9 @@ The review synthesis output contains 9 sections:
 | 5 | Spec Seed | Minimal spec updates implied by findings |
 | 6 | Plan Seed | Initial remediation tasks from findings |
 | 7 | Traceability Status | Core vs overlay protocol outcomes and gaps |
-| 8 | Deferred Items | Advisory findings, blocked items, follow-up checks |
-| 9 | Audit Appendix | Coverage, convergence replay, audit detail |
+| 8 | Resource Map Coverage Gate | Present only when `{spec_folder}/resource-map.md` existed at init; contains touched entries, untouched entries (`expected-by-scope` vs `gap`), and implementation paths absent from the map |
+| 9 | Deferred Items | Advisory findings, blocked items, follow-up checks |
+| 10 | Audit Appendix | Coverage, convergence replay, audit detail |
 
 **Executive Summary** includes verdict (`PASS`/`CONDITIONAL`/`FAIL`), active finding counts, `hasAdvisories` boolean (PASS + P2 > 0), scope description, and convergence reason.
 
@@ -636,6 +639,8 @@ The review synthesis output contains 9 sections:
 **Spec Seed / Plan Seed** provide minimal spec updates and initial remediation tasks referencing finding IDs and target files.
 
 **Traceability Status** reports per-protocol pass/partial/fail with gating class and evidence.
+
+**Resource Map Coverage Gate** is emitted only when `resource_map_present` is true and MUST contain exactly three bullets: touched entries, untouched entries (`expected-by-scope` vs `gap`), and implementation paths absent from the map.
 
 **Deferred Items** captures advisory findings, blocked protocols, and future follow-up checks.
 
@@ -739,16 +744,17 @@ Each finding is tracked with a unique identifier enabling deduplication, severit
 {
   "findingId": "F003",
   "severity": "P1",
+  "category": "resource-map-coverage",
   "status": "active",
-  "dimension": "security",
-  "title": "Missing input validation on user endpoint",
-  "file": "src/api/users.ts",
-  "line": 42,
+  "dimension": "traceability",
+  "title": "Applied target file missing from resource-map inventory",
+  "file": ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+  "line": 955,
   "firstSeen": 2,
   "lastSeen": 4,
   "transitions": [
     { "iteration": 2, "from": null, "to": "P2", "reason": "Initial discovery" },
-    { "iteration": 4, "from": "P2", "to": "P1", "reason": "Confirmed exploitable" }
+    { "iteration": 4, "from": "P2", "to": "P1", "reason": "Confirmed real coverage gap against applied target inventory" }
   ]
 }
 ```
@@ -757,6 +763,7 @@ Each finding is tracked with a unique identifier enabling deduplication, severit
 |-------|------|-------------|
 | findingId | string | Sequential unique ID: `F001`, `F002`, ... |
 | severity | `"P0"` / `"P1"` / `"P2"` | Current severity |
+| category | `"correctness"` / `"security"` / `"traceability"` / `"maintainability"` / `"resource-map-coverage"` | Primary audit category for the finding; `resource-map-coverage` is reserved for implementation-vs-map coverage gaps |
 | status | `"active"` / `"resolved"` / `"deferred"` / `"disproved"` | Current status |
 | dimension | string | Primary dimension: correctness, security, traceability, maintainability |
 | title | string | Short description |
@@ -796,6 +803,11 @@ Same file + line range + root cause as an existing finding = **refinement**, not
 | agent_cross_runtime | overlay | agent | advisory |
 | feature_catalog_code | overlay | skill, spec-folder, track, files | advisory |
 | playbook_capability | overlay | skill, agent, spec-folder | advisory |
+
+Severity for `resource-map-coverage` findings is calibrated to the coverage-gate outcome:
+- `P2` when an untouched map entry is explicitly `expected-by-scope`
+- `P1` when an untouched or absent path represents a real coverage gap
+- `P0` only when the missing coverage masks a release-blocking correctness or security risk
 
 ### Quality Gates
 

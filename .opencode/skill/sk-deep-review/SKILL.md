@@ -235,6 +235,25 @@ Detect the current review phase from dispatch context to load appropriate resour
 <!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
+### Resource Map Coverage Gate
+
+When `{spec_folder}/resource-map.md` exists at init, deep review treats it as a first-class audit input instead of optional prompt wiring.
+
+- Persist `resource_map_present: true` in `deep-review-config.json`.
+- Add a resource-map snapshot to `Known Context` so later iterations inherit the packet inventory baseline.
+- Promote `Resource Map Coverage` to a first-class audit angle alongside correctness, regression risk, test coverage, cross-runtime parity, observability, and docs-vs-code drift.
+- Reserve at least one loop iteration to cross-check `target_files` from `{spec_folder}/applied/T-*.md` against `resource-map.md`.
+- Treat that pass as mandatory coverage work, not an optional traceability extra.
+- Classify results into three buckets: entries touched, entries not touched (`expected-by-scope` vs `gap`), and implementation paths absent from the map.
+- Findings emitted from that audit use the `resource-map-coverage` category.
+- Synthesis inserts `## Resource Map Coverage Gate` into `review-report.md` when the map was present at init.
+
+When `{spec_folder}/resource-map.md` is absent at init:
+
+- Persist `resource_map_present: false`.
+- Log `resource-map.md not present; skipping coverage gate` in `Known Context`.
+- Skip the coverage-gate pass and omit the report section without failing the loop.
+
 ### Architecture: 3-Layer Integration
 
 ```
@@ -322,7 +341,7 @@ Loop --> Read state --> Check convergence --> Dispatch @deep-review
   +--- Continue? --> Yes: next iteration
   |                  No: exit loop
   v
-Synthesize --> Compile review/review-report.md (9 sections, verdict)
+Synthesize --> Compile review/review-report.md (9 core sections + conditional Resource Map Coverage Gate, verdict)
   |
 Save --> generate-context.js --> verify memory artifact
 ```
@@ -486,7 +505,7 @@ Local review-specific protocol documents:
 - Review loop ran to convergence or max iterations
 - All configured review dimensions have at least one iteration of coverage
 - All state files present and consistent (`config.json`, `state.jsonl`, `strategy.md`)
-- `review/review-report.md` produced with all 9 sections
+- `review/review-report.md` produced with all 9 core sections, plus `## Resource Map Coverage Gate` when `resource_map_present == true`
 - Canonical continuity surfaces updated via `generate-context.js`
 
 ### Quality Gates
@@ -506,7 +525,7 @@ Local review-specific protocol documents:
 |----------|-------------|
 | Dimension coverage | All configured review dimensions reviewed with file-cited evidence |
 | Finding citations | All P0/P1 findings include `[SOURCE: file:line]` citations |
-| Report completeness | `{spec_folder}/review/review-report.md` has all 9 sections |
+| Report completeness | `{spec_folder}/review/review-report.md` has all 9 core sections, plus `## Resource Map Coverage Gate` when `resource_map_present == true` |
 | Verdict justification | PASS/CONDITIONAL/FAIL verdict justified with specific findings; PASS includes `hasAdvisories: true` metadata when P2 findings exist |
 | Adversarial recheck | Every P0 finding confirmed via adversarial self-check before final report |
 

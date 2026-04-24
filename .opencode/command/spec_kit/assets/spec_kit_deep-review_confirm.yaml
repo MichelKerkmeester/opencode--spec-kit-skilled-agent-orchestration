@@ -82,8 +82,8 @@ agent_config:
 # ─────────────────────────────────────────────────────────────────
 state_paths:
   # Template paths document the canonical packet layout. Runtime resolution happens via
-  # step_resolve_artifact_root plus the shared resolver, so child phases write into the
-  # spec tree root's review/ folder with a phase-path subfolder when needed.
+  # step_resolve_artifact_root plus the shared resolver, so root specs keep
+  # root-local review/ and child phases keep local review/ packet dirs.
   # Canonical root-spec write targets remain review/deep-review-config.json,
   # review/deep-review-state.jsonl, and review/deep-review-findings-registry.json.
   packet_dir: "{artifact_dir}"
@@ -95,6 +95,7 @@ state_paths:
   strategy: "{artifact_dir}/deep-review-strategy.md"
   dashboard: "{artifact_dir}/deep-review-dashboard.md"
   pause_sentinel: "{artifact_dir}/.deep-review-pause"
+  prompt_dir: "{artifact_dir}/prompts"
   iteration_dir: "{artifact_dir}/iterations"
   iteration_pattern: "{artifact_dir}/iterations/iteration-{NNN}.md"
   # Per-iteration structured delta stream — complement to the canonical state_log
@@ -111,16 +112,14 @@ state_paths:
 workflow:
 
   step_resolve_artifact_root:
-    description: "Resolve the root-level artifact directory for this spec tree"
-    note: "review/ folders are always resolved at the spec tree root, not inside nested child phases. If the target spec is a child phase, artifacts go to {root}/review/{phase-subfolder}/ and archives go to {root}/review_archive/{phase-subfolder}/. Runtime also exposes the legacy child-local review paths for migration only."
-    command: "node -e \"const path = require('node:path'); const { resolveArtifactRoot } = require('.opencode/skill/system-spec-kit/shared/review-research-paths.cjs'); const resolved = resolveArtifactRoot('{spec_folder}', 'review'); const artifactDir = resolved.subfolder ? path.join(resolved.rootDir, resolved.subfolder) : resolved.rootDir; const artifactArchiveRoot = resolved.subfolder ? path.join(path.dirname(resolved.rootDir), path.basename(resolved.rootDir) + '_archive', resolved.subfolder) : path.join(path.dirname(resolved.rootDir), path.basename(resolved.rootDir) + '_archive'); console.log(JSON.stringify({ ...resolved, artifactDir, artifactArchiveRoot, legacyLocalArtifactDir: '{spec_folder}/review', legacyRootReport: '{spec_folder}/review-report.md' }));\""
+    description: "Resolve the local artifact directory for this spec or phase"
+    note: "Root specs keep review artifacts directly in {spec_folder}/review/. Child phases and sub-phases keep local packet directories in {spec_folder}/review/{packet}/, and archives stay local at {spec_folder}/review_archive/{packet}/."
+    command: "node -e \"const { resolveArtifactRoot } = require('.opencode/skill/system-spec-kit/shared/review-research-paths.cjs'); console.log(JSON.stringify(resolveArtifactRoot('{spec_folder}', 'review')));\""
     outputs:
-      - artifact_root_dir: "Resolved spec-tree root review directory"
-      - artifact_subfolder: "Child phase subfolder ({phaseSlug}-pt-{NN}), else null"
+      - artifact_root_dir: "Resolved local review owner directory"
+      - artifact_subfolder: "Local packet subfolder ({ownerSlug}-pt-{NN}), else null"
       - artifact_dir: "Resolved review packet directory for this target"
-      - artifact_archive_root: "Resolved root-level review archive directory for this target"
-      - legacy_local_artifact_dir: "Legacy child-local review directory under {spec_folder}"
-      - legacy_root_report: "Legacy child-local review report path under {spec_folder}"
+      - artifact_archive_root: "Resolved local review archive directory for this target"
 
   # ═══════════════════════════════════════════════════════════════
   # PHASE 1: INITIALIZATION
@@ -140,7 +139,7 @@ workflow:
 
       step_create_directories:
         action: "Create spec folder and canonical review packet directories if they don't exist"
-        command: "mkdir -p {state_paths.iteration_dir} {state_paths.delta_dir}"
+        command: "mkdir -p {state_paths.prompt_dir} {state_paths.iteration_dir} {state_paths.delta_dir}"
 
       step_migrate_legacy_review_state:
         action: "Rehome legacy review artifacts into review/iterations before session classification"
@@ -641,7 +640,7 @@ workflow:
           render_prompt_pack:
             template_path: ".opencode/skill/sk-deep-review/assets/prompt_pack_iteration.md.tmpl"
             renderer: ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/prompt-pack.ts#renderPromptPack"
-            output_path: "{spec_folder}/review/prompts/iteration-{current_iteration}.md"
+            output_path: "{state_paths.prompt_dir}/iteration-{current_iteration}.md"
             variables:
               state_summary: "{state_summary}"
               current_iteration: "{current_iteration}"
@@ -680,13 +679,13 @@ workflow:
               -c service_tier="{config.executor.serviceTier}" \
               -c approval_policy=never \
               --sandbox workspace-write \
-              - < "{spec_folder}/review/prompts/iteration-{current_iteration}.md"
+              - < "{state_paths.prompt_dir}/iteration-{current_iteration}.md"
           working_directory: "{repo_root}"
           timeout_seconds: "{config.executor.timeoutSeconds}"
           wait_for_completion: true
         if_cli_copilot:
           command: |
-            PROMPT_PATH='{spec_folder}/review/prompts/iteration-{current_iteration}.md'
+            PROMPT_PATH='{state_paths.prompt_dir}/iteration-{current_iteration}.md'
             PROMPT_SIZE=$(wc -c < "$PROMPT_PATH" | tr -d ' ')
             if [ "$PROMPT_SIZE" -le 16384 ]; then
               copilot \
@@ -711,7 +710,7 @@ workflow:
         if_cli_gemini:
           command: |
             gemini \
-              "$(cat '{spec_folder}/review/prompts/iteration-{current_iteration}.md')" \
+              "$(cat '{state_paths.prompt_dir}/iteration-{current_iteration}.md')" \
               -m "{config.executor.model}" \
               -s none \
               -y \
@@ -726,7 +725,7 @@ workflow:
         if_cli_claude_code:
           command: |
             claude \
-              -p "$(cat '{spec_folder}/review/prompts/iteration-{current_iteration}.md')" \
+              -p "$(cat '{state_paths.prompt_dir}/iteration-{current_iteration}.md')" \
               --model "{config.executor.model}" \
               --permission-mode acceptEdits \
               --output-format text \

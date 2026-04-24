@@ -93,8 +93,8 @@ agent_config:
 # ─────────────────────────────────────────────────────────────────
 state_paths:
   # Template paths document the canonical packet layout. Runtime resolution happens via
-  # step_resolve_artifact_root plus the shared resolver, so child phases write every
-  # workflow-owned artifact into one root-level packet directory when needed.
+  # step_resolve_artifact_root plus the shared resolver, so root specs keep root-local
+  # research/ and child phases keep local research/ packet directories.
   packet_dir: "{artifact_dir}"
   config: "{artifact_dir}/deep-research-config.json"
   state_log: "{artifact_dir}/deep-research-state.jsonl"
@@ -123,15 +123,14 @@ state_paths:
 workflow:
 
   step_resolve_artifact_root:
-    description: "Resolve the root-level artifact directory for this spec tree"
-    note: "research/ folders are always resolved at the spec tree root, not inside nested child phases. If the target spec is a child phase, prompts, state, deltas, and synthesis all go to the same canonical packet at {root}/research/{phaseSlug}-pt-{NN}/ (phaseSlug = full child-phase segment, e.g. 019-system-hardening; NN = sequential zero-padded counter) and archives go to {root}/research_archive/{phaseSlug}-pt-{NN}/. Runtime also exposes the legacy child-local research directory for migration-only reads."
-    command: "node -e \"const { resolveArtifactRoot } = require('.opencode/skill/system-spec-kit/shared/review-research-paths.cjs'); const resolved = resolveArtifactRoot('{spec_folder}', 'research'); console.log(JSON.stringify({ ...resolved, legacyLocalArtifactDir: '{spec_folder}/research' }));\""
+    description: "Resolve the local artifact directory for this spec or phase"
+    note: "Root specs keep research artifacts directly in {spec_folder}/research/. Child phases and sub-phases keep local packet directories in {spec_folder}/research/{packet}/, and archives stay local at {spec_folder}/research_archive/{packet}/."
+    command: "node -e \"const { resolveArtifactRoot } = require('.opencode/skill/system-spec-kit/shared/review-research-paths.cjs'); console.log(JSON.stringify(resolveArtifactRoot('{spec_folder}', 'research')));\""
     outputs:
-      - artifact_root_dir: "Resolved spec-tree root research directory"
-      - artifact_subfolder: "Child phase subfolder ({phaseSlug}-pt-{NN}), else null"
+      - artifact_root_dir: "Resolved local research owner directory"
+      - artifact_subfolder: "Local packet subfolder ({ownerSlug}-pt-{NN}), else null"
       - artifact_dir: "Resolved research packet directory for this target"
-      - artifact_archive_root: "Resolved root-level research archive directory for this target"
-      - legacy_local_artifact_dir: "Legacy child-local research directory under {spec_folder}"
+      - artifact_archive_root: "Resolved local research archive directory for this target"
 
   # ═══════════════════════════════════════════════════════════════
   # PHASE 1: INITIALIZATION
@@ -152,6 +151,17 @@ workflow:
       step_create_directories:
         action: "Create spec folder and research packet directories if they don't exist"
         command: "mkdir -p {state_paths.prompt_dir} {state_paths.iteration_dir} {state_paths.delta_dir} {state_paths.archive_root}"
+
+      step_detect_resource_map:
+        action: "Detect resource-map.md before config creation so init can persist the flag and seed Known Context"
+        inspect:
+          - "{spec_folder}/resource-map.md"
+        classify:
+          present: "resource-map.md exists at init"
+          absent: "resource-map.md does not exist at init"
+        outputs:
+          - resource_map_present: "Boolean true when {spec_folder}/resource-map.md exists, else false"
+          - resource_map_known_context: "When present: summarize the map by section with entry counts across READMEs, Documents, Commands, Agents, Skills, Specs, Scripts, Tests, Config, and Meta, plus a one-line theme summary for each section. When absent: 'resource-map.md not present; skipping coverage gate'."
 
       step_resolve_canonical_names:
         action: "Resolve canonical research packet artifact names before classification"
@@ -221,6 +231,7 @@ workflow:
           stuckThreshold: 3
           maxDurationMinutes: 120
           specFolder: "{spec_folder}"
+          resource_map_present: "{resource_map_present}"
           createdAt: "{ISO_8601_NOW}"
           status: "initialized"
           executionMode: "auto"
@@ -233,7 +244,7 @@ workflow:
 
       step_create_state_log:
         action: "Initialize JSONL state log with config record"
-        content: '{"type":"config","topic":"{research_topic}","maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
+        content: '{"type":"config","topic":"{research_topic}","maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"resource_map_present":{resource_map_present},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
         output: "{state_paths.state_log}"
 
       step_create_strategy:
@@ -258,6 +269,11 @@ workflow:
         condition: "prior_context_found"
         edit: "{state_paths.strategy}"
         note: "Append or replace the Known Context section with prior_context_summary and retained detail from prior_context"
+
+      step_enrich_strategy_resource_map:
+        action: "Inject resource-map status into Known Context after strategy.md exists"
+        edit: "{state_paths.strategy}"
+        note: "When resource_map_present is true, append the resource_map_known_context snapshot. When false, append 'resource-map.md not present; skipping coverage gate'."
 
       step_detect_spec_present:
         action: "Classify late-INIT spec.md state after the durable research packet exists"
@@ -341,6 +357,7 @@ workflow:
         read:
           - "{state_paths.state_log}"
           - "{state_paths.strategy}"
+          - "{state_paths.config}"
         extract:
           - iteration_count: "Count lines where type === 'iteration'"
           - current_iteration: "iteration_count + 1"
@@ -354,6 +371,8 @@ workflow:
           - remaining_questions_list: "List unchecked key questions from strategy.md"
           - answered_count: "Count answered questions from strategy.md"
           - total_questions: "Count total questions tracked in strategy.md"
+          - resource_map_present: "Extract boolean from deep-research-config.json, default false"
+          - resource_map_prompt_line: "If resource_map_present is true, return 'Resource map: prior-inventoried files are listed in {spec_folder}/resource-map.md; treat them as the exclusion set when hunting for net-new files; flag only missed-from-map candidates as gaps.' Else return 'Resource map: resource-map.md not present; skipping coverage gate.'"
           - least_explored: "First unanswered question not covered by the most recent iteration focus, else first unanswered question"
           - last_3_summaries: "Summarize the latest 3 iteration records as 'run N: focus (ratio)'"
           - latest_status: "Extract status from latest iteration record, else 'none yet'"
@@ -492,6 +511,7 @@ workflow:
             Segment: {current_segment} | Iteration: {current_iteration} of {max_iterations}
             Questions: {answered_count}/{total_questions} answered | Last focus: {last_focus}
             Last 2 ratios: {ratio_prev} -> {ratio_latest} | Stuck count: {stuck_count}
+            {resource_map_prompt_line}
             Next focus: {next_focus}
           render_prompt_pack:
             template_path: ".opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl"
@@ -863,12 +883,14 @@ workflow:
             3. Fill any empty sections with findings from iteration files
             4. Remove redundancy while preserving all unique findings
             5. Add convergence report as appendix
+            6. If `resource_map_present` is true, cite `{spec_folder}/resource-map.md` in References; otherwise omit any placeholder map citation
 
           If research/research.md does not exist:
             1. Create research/research.md following 17-section template
             2. Populate sections from iteration files
             3. Add citations from original sources
             4. Note unanswered questions in Open Questions section
+            5. If `resource_map_present` is true, cite `{spec_folder}/resource-map.md` in References; otherwise omit any placeholder map citation
           Preserve machine-owned markers so the reducer-owned registry, dashboard, and strategy anchors can be refreshed on re-run without mutating prior synthesis. (Note: `completed-continue` lineage branch is deferred — see `sk-deep-research/references/loop_protocol.md §Lifecycle Branch Contract`.)
         output: "{state_paths.research_output}"
 

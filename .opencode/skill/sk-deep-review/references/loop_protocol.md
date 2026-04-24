@@ -29,7 +29,8 @@ The deep review loop has 4 phases: initialization, iteration (repeated), synthes
 │              │     │  │ Loop Decision           │  │     │ Validation    │     │          │
 │              │     │  └────────┬────────────────┘  │     │               │     │          │
 │              │     │           │ repeat            │     │ review-report │     │          │
-│              │     │           │                   │     │ (9 sections)  │     │          │
+│              │     │           │                   │     │ (9 core +     │     │          │
+│              │     │           │                   │     │  resource-map)│     │          │
 └──────────────┘     └───────────────────────────────┘     └───────────────┘     └──────────┘
 ```
 
@@ -115,7 +116,12 @@ Set up all state files for a new review session. Discover the scope, order dimen
    - Files Under Review table
    - Cross-Reference Status table grouped by core vs overlay
    - Known Context from `memory_context()` results (if any)
+   - Resource-map snapshot when `{spec_folder}/resource-map.md` exists at init
+   - `resource-map.md not present; skipping coverage gate` when it does not
    - Review Boundaries from config
+9a. **Initialize resource-map coverage state**:
+   - If `{spec_folder}/resource-map.md` exists at init: set `resource_map_present = true`, add `Resource Map Coverage` to the Review Charter, and persist a concise map summary in `Known Context`
+   - If absent: set `resource_map_present = false`, record the skip note in `Known Context`, and continue without failing
 
 10. **Validate review charter**:
    - Verify strategy.md contains Non-Goals and Stop Conditions sections (may be empty but must exist)
@@ -303,6 +309,21 @@ Each protocol result includes:
 - `findingRefs`: Array of finding IDs generated from this protocol
 - `summary`: Human-readable summary text
 
+#### Step 3b: Resource Map Coverage Audit
+
+When `config.resource_map_present == true`, at least one loop iteration MUST audit implementation-vs-resource-map coverage:
+
+1. Read `{spec_folder}/resource-map.md`
+2. Read applied reports under `{spec_folder}/applied/T-*.md`
+3. Cross-check `target_files` from the applied reports against resource-map entries
+4. Classify outcomes into:
+   - entries touched
+   - entries not touched (`expected-by-scope` vs `gap`)
+   - implementation paths absent from the map
+5. Emit any resulting findings with category `resource-map-coverage`
+
+When `config.resource_map_present == false`, skip this audit and rely on the `Known Context` note: `resource-map.md not present; skipping coverage gate`.
+
 #### Step 4: Evaluate Results
 
 After agent completes:
@@ -450,7 +471,7 @@ Replay passes only when the recomputed decision, thresholds, and gate outcomes a
 
 #### Step 4: Compile review-report.md
 
-Generate the 9-section review report (defined in `review_mode_contract.yaml` under `outputs.reviewReport`):
+Generate the 9 core review-report sections (defined in `review_mode_contract.yaml` under `outputs.reviewReport`) and insert `## Resource Map Coverage Gate` between `Traceability Status` and `Deferred Items` when `config.resource_map_present == true`:
 
 | # | Section | Purpose |
 |---|---------|---------|
@@ -461,8 +482,9 @@ Generate the 9-section review report (defined in `review_mode_contract.yaml` und
 | 5 | Spec Seed | Minimal spec delta derived from review results |
 | 6 | Plan Seed | Action-ready plan starter for remediation |
 | 7 | Traceability Status | Core vs overlay protocol status and unresolved gaps |
-| 8 | Deferred Items | P2 advisories, blocked checks, and follow-up items |
-| 9 | Audit Appendix | Coverage, replay validation, convergence evidence |
+| 8 | Resource Map Coverage Gate | Present only when `config.resource_map_present == true`; reports touched entries, untouched entries (`expected-by-scope` vs `gap`), and implementation paths absent from the map |
+| 9 | Deferred Items | P2 advisories, blocked checks, and follow-up items |
+| 10 | Audit Appendix | Coverage, replay validation, convergence evidence |
 
 #### Step 5: Verdict Determination
 

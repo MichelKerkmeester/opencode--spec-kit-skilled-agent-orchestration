@@ -48,6 +48,7 @@ Created during initialization. Not modified after creation.
   "stuckThreshold": 3,
   "maxDurationMinutes": 120,
   "progressiveSynthesis": true,
+  "resource_map_present": false,
   "specFolder": "04--agent-orchestration/028-auto-deep-research",
   "createdAt": "2026-03-18T10:00:00Z",
   "status": "initialized",
@@ -70,6 +71,7 @@ Created during initialization. Not modified after creation.
 | stuckThreshold | number | No | 3 | Consecutive no-progress iterations before recovery |
 | maxDurationMinutes | number | No | 120 | Hard timeout for entire loop |
 | progressiveSynthesis | boolean | No | true | Update research/research.md after each iteration; synthesis still performs a cleanup pass |
+| resource_map_present | boolean | No | false | True only when `{specFolder}/resource-map.md` existed during init; drives Known Context injection, exclusion-set prompt guidance, and final References citation |
 | specFolder | string | Yes | -- | Spec folder path (relative to specs/) |
 | createdAt | ISO 8601 | Yes | -- | Session start timestamp |
 | status | string | Yes | "initialized" | initialized, running, converged, stuck, complete, error |
@@ -656,6 +658,8 @@ Progressive synthesis updated after each iteration when `progressiveSynthesis` i
 - After convergence: Final synthesis pass to consolidate and remove redundancy
 - Never overwrite prior findings; add to them
 - Mark machine-owned sections explicitly so `completed-continue` can snapshot prior synthesis before reopening
+- When `resource_map_present` is true: cite `{spec_folder}/resource-map.md` in the final References section and preserve the init-time snapshot in `Known Context`
+- When `resource_map_present` is false: omit the reference and retain the `resource-map.md not present; skipping coverage gate` note in `Known Context`
 
 ---
 
@@ -935,7 +939,7 @@ Sections carried forward unchanged: Topic, Non-Goals, Stop Conditions, What Work
 
 ### review-report.md Section List
 
-The review synthesis output (`{spec_folder}/review/review-report.md`) contains 9 sections:
+The review synthesis output (`{spec_folder}/review/review-report.md`) contains 9 core sections plus a conditional `## Resource Map Coverage Gate` section when `resource_map_present` is true:
 
 | # | Section | Description |
 |---|---------|-------------|
@@ -946,8 +950,9 @@ The review synthesis output (`{spec_folder}/review/review-report.md`) contains 9
 | 5 | Spec Seed | Minimal spec updates implied by the findings |
 | 6 | Plan Seed | Initial remediation tasks derived from the findings |
 | 7 | Traceability Status | Core vs overlay protocol outcomes and unresolved gaps |
-| 8 | Deferred Items | Advisory findings, blocked items, and follow-up checks |
-| 9 | Audit Appendix | Coverage, convergence replay, and supporting audit detail |
+| 8 | Resource Map Coverage Gate | Present only when `{spec_folder}/resource-map.md` existed at init; reports touched entries, untouched entries (`expected-by-scope` vs `gap`), and implementation paths absent from the map |
+| 9 | Deferred Items | Advisory findings, blocked items, and follow-up checks |
+| 10 | Audit Appendix | Coverage, convergence replay, and supporting audit detail |
 
 ### Finding Registry
 
