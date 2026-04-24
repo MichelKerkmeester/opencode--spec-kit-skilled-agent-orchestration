@@ -1,0 +1,30 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/001-research-graph-context-systems-pt-07/iterations",
+  "description": "Research iteration artifacts for 001-research-graph-context-systems-006-research-memory-redundancy.",
+  "keywords": [
+    "research",
+    "iteration",
+    "artifacts",
+    "001-research-graph-context-systems-006-research-memory-redundancy",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "iterations"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "001",
+  "folderSlug": "research-graph-context-systems-006-research-memory-redundancy-iterations",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "research",
+    "001-research-graph-context-systems-pt-07"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/001-research-graph-context-systems-006-research-memory-redundancy/iterations",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/001-research-graph-context-systems-pt-07/iterations",
+    "layout": "phase-root-children"
+  }
+}

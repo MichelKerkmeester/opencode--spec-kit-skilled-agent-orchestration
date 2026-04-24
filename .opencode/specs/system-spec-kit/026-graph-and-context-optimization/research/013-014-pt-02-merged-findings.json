@@ -1,0 +1,509 @@
+{
+  "generated_at": "2026-04-24T06:59:18Z",
+  "source_packets": [
+    "013-code-graph-hook-improvements-pt-02",
+    "014-skill-advisor-hook-improvements-pt-02",
+    "013-code-graph-zero-calls-pt-03"
+  ],
+  "total_unique_findings": 20,
+  "by_severity": {
+    "P0": 1,
+    "P1": 12,
+    "P2": 7
+  },
+  "cross_cutting_themes": [
+    {
+      "id": "T-001",
+      "title": "Shared contract leakage",
+      "severity": "P1",
+      "underlying_issue": "Both subsystems build richer internal contracts than they actually transport at runtime, leaving builder-layer/shared logic to diverge from adapter/native branches.",
+      "architectural_fix": "Centralize shared builder/render/transport behavior behind one adapter contract per subsystem and make parity tests assert the structured contract rather than text-only or branch-local behavior.",
+      "finding_ids": [
+        "013-F-005",
+        "014-F-001",
+        "014-F-002",
+        "014-F-003"
+      ]
+    },
+    {
+      "id": "T-002",
+      "title": "Operator surfaces under-specify effective state",
+      "severity": "P1",
+      "underlying_issue": "Operator-facing tools and warnings omit the effective state they are acting on, including selected graph candidates, effective thresholds, workspace selection, and live-versus-default status.",
+      "architectural_fix": "Promote effective state into first-class public schemas and status surfaces so operators can see selected candidates, effective thresholds, explicit workspace inputs, and live-vs-default markers.",
+      "finding_ids": [
+        "013-F-004",
+        "013-ZC-F-002",
+        "014-F-004",
+        "014-F-005",
+        "014-F-008"
+      ]
+    },
+    {
+      "id": "T-003",
+      "title": "Telemetry and feedback are not durable enough",
+      "severity": "P1",
+      "underlying_issue": "Useful internal signals exist, but they are not persisted and surfaced in ways that support durable health monitoring or learning from live behavior.",
+      "architectural_fix": "Add durable, prompt-safe diagnostic sinks plus operator-facing health summaries, and make persisted signal lifecycle rules explicit so stale state can be cleared safely.",
+      "finding_ids": [
+        "013-F-003",
+        "013-F-004",
+        "014-F-006",
+        "014-F-007"
+      ]
+    },
+    {
+      "id": "T-004",
+      "title": "Tests still protect incidental behavior",
+      "severity": "P1",
+      "underlying_issue": "Several current tests encode accidental branch-local behavior or fail to assert the intended contract, allowing regressions to persist unnoticed.",
+      "architectural_fix": "Rebuild regression coverage around desired contract outcomes and align docs/tests so transport, bridge-path, and ambiguity behavior all derive from the same source-of-truth.",
+      "finding_ids": [
+        "013-F-001",
+        "013-F-005",
+        "013-ZC-F-003",
+        "014-F-002",
+        "014-F-003",
+        "014-F-010"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "merged_id": "013-F-001",
+      "packet": "013-code-graph-hook-improvements-pt-02",
+      "section": "013 Code-Graph Findings / pt-02 general improvements",
+      "source_id": "F-001",
+      "severity": "P1",
+      "category": "correctness",
+      "summary": "Read-path handlers continue executing when ensure-ready requires a full scan but inline full scans are disabled, so callers can receive misleading empty or unresolved graph results.",
+      "evidence": [
+        "iteration-02.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:595",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:613",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts:103",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts:168",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts:98",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts:56"
+      ],
+      "recommended_fix": "Introduce an explicit blocked-full-scan contract in query/context handlers and add tests for empty/full-scan-needed read paths.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts"
+      ]
+    },
+    {
+      "merged_id": "013-F-002",
+      "packet": "013-code-graph-hook-improvements-pt-02",
+      "section": "013 Code-Graph Findings / pt-02 general improvements",
+      "source_id": "F-002",
+      "severity": "P1",
+      "category": "correctness",
+      "summary": "The CocoIndex seed bridge throws away semantic score, snippet, and most range semantics before graph resolution, then reorders by local graph confidence.",
+      "evidence": [
+        "iteration-03.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/seed-resolver.ts:19",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/seed-resolver.ts:86",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/seed-resolver.ts:185",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/seed-resolver.ts:275"
+      ],
+      "recommended_fix": "Preserve CocoIndex score/snippet/range fidelity through seed resolution and blend semantic score with graph confidence when ordering resolved anchors.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/seed-resolver.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts"
+      ]
+    },
+    {
+      "merged_id": "013-F-003",
+      "packet": "013-code-graph-hook-improvements-pt-02",
+      "section": "013 Code-Graph Findings / pt-02 general improvements",
+      "source_id": "F-003",
+      "severity": "P1",
+      "category": "freshness",
+      "summary": "Scan-time edge-enrichment metadata can remain stale because the scan handler does not clear the persisted summary when a later scan finds no enrichment evidence.",
+      "evidence": [
+        "iteration-04.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts:187",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts:239",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts:243",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-scan.vitest.ts:91"
+      ],
+      "recommended_fix": "Allow null-summary scans to clear the stored enrichment summary and add regression coverage for overwrite-then-clear behavior.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-scan.vitest.ts"
+      ]
+    },
+    {
+      "merged_id": "013-F-004",
+      "packet": "013-code-graph-hook-improvements-pt-02",
+      "section": "013 Code-Graph Findings / pt-02 general improvements",
+      "source_id": "F-004",
+      "severity": "P2",
+      "category": "observability",
+      "summary": "Persisted detector-provenance and edge-enrichment summaries are still effectively write-only because status and startup readers do not consume them.",
+      "evidence": [
+        "iteration-05.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts:226",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts:652",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/status.ts:13",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts:131"
+      ],
+      "recommended_fix": "Add a graph-quality summary reader and surface it in code_graph_status and startup priming.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/status.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md"
+      ]
+    },
+    {
+      "merged_id": "013-F-005",
+      "packet": "013-code-graph-hook-improvements-pt-02",
+      "section": "013 Code-Graph Findings / pt-02 general improvements",
+      "source_id": "F-005",
+      "severity": "P2",
+      "category": "cross-runtime",
+      "summary": "Startup structured graph payloads exist at the builder layer but are down-converted to text in runtime adapters, and adapter tests only guard text transport.",
+      "evidence": [
+        "iteration-06.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts:230",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:235",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:170",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:171",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:155",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/startup-brief.vitest.ts:79",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/codex-session-start-hook.vitest.ts:46"
+      ],
+      "recommended_fix": "Either propagate a structured startup payload through every runtime adapter or remove the unused builder-level startup payload contract.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/hook-session-start.vitest.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/codex-session-start-hook.vitest.ts"
+      ]
+    },
+    {
+      "merged_id": "013-F-006",
+      "packet": "013-code-graph-hook-improvements-pt-02",
+      "section": "013 Code-Graph Findings / pt-02 general improvements",
+      "source_id": "F-006",
+      "severity": "P2",
+      "category": "ergonomics",
+      "summary": "The code_graph_context bounded-work contract is only partial because the handler never sets deadlineMs, only impact mode enforces elapsed-time limits, and truncation is unlabeled in the response.",
+      "evidence": [
+        "iteration-07.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts:13",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts:73",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts:281",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts:168"
+      ],
+      "recommended_fix": "Set a real default deadline, enforce it across all modes, and add explicit partial-output metadata to context responses.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts"
+      ]
+    },
+    {
+      "merged_id": "013-ZC-F-001",
+      "packet": "013-code-graph-zero-calls-pt-03",
+      "section": "013 Code-Graph Findings / pt-03 zero-calls regression",
+      "source_id": "F-001",
+      "severity": "P0",
+      "category": "correctness",
+      "summary": "The zero-edge result came from querying the wrong node: the prior symbolId mapped to the lazy re-export in handlers/index.ts, while the real handleMemoryContext function in memory-context.ts currently has persisted CALLS edges.",
+      "evidence": [
+        "iterations/iteration-02.md#evidence",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/code-graph-zero-calls-investigation.md:11-21",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/index.ts:310-311",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1196-1205",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:115-126",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:165-190"
+      ],
+      "recommended_fix": "Make subject resolution operation-aware for calls_from/calls_to so callable implementation nodes outrank export/import/wrapper nodes.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts"
+      ]
+    },
+    {
+      "merged_id": "013-ZC-F-002",
+      "packet": "013-code-graph-zero-calls-pt-03",
+      "section": "013 Code-Graph Findings / pt-03 zero-calls regression",
+      "source_id": "F-002",
+      "severity": "P1",
+      "category": "observability",
+      "summary": "Ambiguity warnings expose only generic messaging plus symbol IDs, so operators cannot tell that a CALLS query selected a wrapper/export node instead of the real function.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:144-161",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:165-190",
+        "iterations/iteration-03.md#findings"
+      ],
+      "recommended_fix": "Extend warning payloads and response metadata with candidate kind/file/line data plus the selected candidate.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts"
+      ]
+    },
+    {
+      "merged_id": "013-ZC-F-003",
+      "packet": "013-code-graph-zero-calls-pt-03",
+      "section": "013 Code-Graph Findings / pt-03 zero-calls regression",
+      "source_id": "F-003",
+      "severity": "P1",
+      "category": "correctness",
+      "summary": "The existing ambiguity regression test codifies deterministic first-candidate selection for calls_from, so the current suite does not protect against wrapper-node shadowing for CALLS queries.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts:278-299",
+        "iterations/iteration-03.md#findings"
+      ],
+      "recommended_fix": "Add a handleMemoryContext-style ambiguity test that seeds export/variable/function candidates and asserts that calls_from and calls_to pick the function candidate.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts"
+      ]
+    },
+    {
+      "merged_id": "013-ZC-F-004",
+      "packet": "013-code-graph-zero-calls-pt-03",
+      "section": "013 Code-Graph Findings / pt-03 zero-calls regression",
+      "source_id": "F-004",
+      "severity": "P2",
+      "category": "cross-runtime",
+      "summary": "The bad-subject pattern is broad across the MCP surface because handlers/index.ts and similar index files create duplicate handle* names that shadow real implementation functions.",
+      "evidence": [
+        "iterations/iteration-03.md#evidence",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/index.ts:212-320",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:612",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:540",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/index.ts:5",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:586"
+      ],
+      "recommended_fix": "Apply the operation-aware resolver to all CALLS-oriented graph queries and verify it against sibling handle* names, not only handleMemoryContext.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts"
+      ]
+    },
+    {
+      "merged_id": "014-F-001",
+      "packet": "014-skill-advisor-hook-improvements-pt-02",
+      "section": "014 Skill-Advisor Findings",
+      "source_id": "F-001",
+      "severity": "P1",
+      "category": "cross-runtime",
+      "summary": "OpenCode still has route-specific threshold drift because the native bridge path ignores configured thresholdConfidence while the fallback/shared path applies it.",
+      "evidence": [
+        "iterations/iteration-02.md#findings",
+        ".opencode/plugins/spec-kit-skill-advisor.js:27",
+        ".opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs:191",
+        ".opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs:231"
+      ],
+      "recommended_fix": "Unify OpenCode threshold handling so both native and fallback bridge paths consume the same explicit threshold config and expose the effective threshold in operator-visible metadata.",
+      "target_files": [
+        ".opencode/plugins/spec-kit-skill-advisor.js",
+        ".opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/skill-advisor-brief.ts",
+        ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md"
+      ]
+    },
+    {
+      "merged_id": "014-F-002",
+      "packet": "014-skill-advisor-hook-improvements-pt-02",
+      "section": "014 Skill-Advisor Findings",
+      "source_id": "F-002",
+      "severity": "P1",
+      "category": "cross-runtime",
+      "summary": "OpenCode native mode bypasses the shared renderer, so ambiguity and prompt-boundary brief behavior can diverge from the shared hook contract.",
+      "evidence": [
+        "iterations/iteration-03.md#findings",
+        ".opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs:112",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/render.ts:123"
+      ],
+      "recommended_fix": "Route OpenCode native mode through the shared render contract or explicitly port ambiguity and prompt-boundary invariants into the bridge helper.",
+      "target_files": [
+        ".opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/render.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/plugin-bridge.vitest.ts"
+      ]
+    },
+    {
+      "merged_id": "014-F-003",
+      "packet": "014-skill-advisor-hook-improvements-pt-02",
+      "section": "014 Skill-Advisor Findings",
+      "source_id": "F-003",
+      "severity": "P1",
+      "category": "cross-runtime",
+      "summary": "Codex still uses a bespoke native fast path before the shared builder, so prompt policy, cache behavior, and shared payload semantics depend on transport/runtime branch.",
+      "evidence": [
+        "iterations/iteration-03.md#findings",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts:180",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/skill-advisor-brief.ts:339"
+      ],
+      "recommended_fix": "Collapse Codex prompt-time routing onto buildSkillAdvisorBrief plus renderAdvisorBrief, or explicitly port prompt-policy, cache, deleted-skill, and shared-payload invariants into the fast path.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/skill-advisor-brief.ts"
+      ]
+    },
+    {
+      "merged_id": "014-F-004",
+      "packet": "014-skill-advisor-hook-improvements-pt-02",
+      "section": "014 Skill-Advisor Findings",
+      "source_id": "F-004",
+      "severity": "P1",
+      "category": "ergonomics",
+      "summary": "The MCP surface is asymmetric because advisor_status requires workspaceRoot while advisor_recommend and advisor_validate infer workspace implicitly from process state.",
+      "evidence": [
+        "iterations/iteration-05.md#findings",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/schemas/advisor-tool-schemas.ts:66",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-recommend.ts:24",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-validate.ts:44"
+      ],
+      "recommended_fix": "Normalize workspace selection across all public advisor tools by accepting explicit workspaceRoot everywhere and deprecating hidden cwd-only inference.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/schemas/advisor-tool-schemas.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-recommend.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-validate.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/README.md"
+      ]
+    },
+    {
+      "merged_id": "014-F-005",
+      "packet": "014-skill-advisor-hook-improvements-pt-02",
+      "section": "014 Skill-Advisor Findings",
+      "source_id": "F-005",
+      "severity": "P1",
+      "category": "correctness",
+      "summary": "advisor_validate uses a 0.7 aggregate threshold for both corpus and holdout slices, while package docs describe stricter promotion gates and hook-time routing uses 0.8/0.35 prompt thresholds.",
+      "evidence": [
+        "iterations/iteration-06.md#findings",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-validate.ts:231",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-validate.ts:287",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/README.md:150",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/skill-advisor-brief.ts:124"
+      ],
+      "recommended_fix": "Publish explicit aggregate-vs-runtime threshold semantics, align validator thresholds with the documented promotion gate bundle where intended, and expose effective prompt-time thresholds in public outputs.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-validate.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/schemas/advisor-tool-schemas.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/README.md"
+      ]
+    },
+    {
+      "merged_id": "014-F-006",
+      "packet": "014-skill-advisor-hook-improvements-pt-02",
+      "section": "014 Skill-Advisor Findings",
+      "source_id": "F-006",
+      "severity": "P1",
+      "category": "observability",
+      "summary": "Hook telemetry is currently shaped as stderr emission plus an in-memory collector, so the shipped recommendation-health surface is ephemeral rather than durable.",
+      "evidence": [
+        "iterations/iteration-07.md#findings",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts:263",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts:88",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts:156"
+      ],
+      "recommended_fix": "Add a durable prompt-safe diagnostics sink and wire hook health summaries to a real operator-facing status surface instead of leaving them in-memory or stderr-only.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/user-prompt-submit.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts"
+      ]
+    },
+    {
+      "merged_id": "014-F-007",
+      "packet": "014-skill-advisor-hook-improvements-pt-02",
+      "section": "014 Skill-Advisor Findings",
+      "source_id": "F-007",
+      "severity": "P1",
+      "category": "observability",
+      "summary": "The public telemetry and validation surfaces have no accepted/corrected/ignored outcome signal, so recommendation quality still cannot be tuned from live routing behavior.",
+      "evidence": [
+        "iterations/iteration-07.md#findings",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts:41",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-validate.ts:321"
+      ],
+      "recommended_fix": "Define a minimal prompt-safe outcome event schema and connect it to advisor validation or a dedicated outcome-analysis surface.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-validate.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/schemas/advisor-tool-schemas.ts"
+      ]
+    },
+    {
+      "merged_id": "014-F-008",
+      "packet": "014-skill-advisor-hook-improvements-pt-02",
+      "section": "014 Skill-Advisor Findings",
+      "source_id": "F-008",
+      "severity": "P2",
+      "category": "observability",
+      "summary": "advisor_status reports default laneWeights and the weights schema is literal-locked, so the public tool surface cannot represent live or candidate weight drift today.",
+      "evidence": [
+        "iterations/iteration-08.md#findings",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-status.ts:127",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/weights-config.ts:30"
+      ],
+      "recommended_fix": "Either report effective live/candidate weights through advisor_status and relax the literal-only schema, or narrow docs so laneWeights are clearly documented as static defaults.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-status.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/weights-config.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/schemas/advisor-tool-schemas.ts"
+      ]
+    },
+    {
+      "merged_id": "014-F-009",
+      "packet": "014-skill-advisor-hook-improvements-pt-02",
+      "section": "014 Skill-Advisor Findings",
+      "source_id": "F-009",
+      "severity": "P2",
+      "category": "docs",
+      "summary": "Two-cycle promotion docs promise restart-persistent state through telemetry, but the implementation is still helper-plus-callback logic with no built-in durable store.",
+      "evidence": [
+        "iterations/iteration-08.md#findings",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/feature_catalog/05--promotion-gates/04-two-cycle.md:31",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/promotion/two-cycle-requirement.ts:30",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/promotion/rollback.ts:31"
+      ],
+      "recommended_fix": "Either add an explicit durable persistence layer for promotion-cycle state or narrow the docs until restart durability is actually shipped.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/feature_catalog/05--promotion-gates/04-two-cycle.md",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/promotion/two-cycle-requirement.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/promotion/rollback.ts"
+      ]
+    },
+    {
+      "merged_id": "014-F-010",
+      "packet": "014-skill-advisor-hook-improvements-pt-02",
+      "section": "014 Skill-Advisor Findings",
+      "source_id": "F-010",
+      "severity": "P2",
+      "category": "docs",
+      "summary": "Operator docs and playbooks still point to the old .opencode/plugins bridge path even though the live compat tests use .opencode/plugin-helpers.",
+      "evidence": [
+        "iterations/iteration-09.md#findings",
+        ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md:133",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/feature_catalog/07--hooks-and-plugin/05-opencode-plugin-bridge.md:29",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/02--cli-hooks-and-plugin/005-opencode-plugin-bridge.md:30",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/plugin-bridge.vitest.ts:12"
+      ],
+      "recommended_fix": "Update the hook reference, feature catalog, and manual playbook to the plugin-helper bridge path and add a regression check that locks the documented bridge location.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/feature_catalog/07--hooks-and-plugin/05-opencode-plugin-bridge.md",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/02--cli-hooks-and-plugin/005-opencode-plugin-bridge.md",
+        ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/plugin-bridge.vitest.ts"
+      ]
+    }
+  ]
+}

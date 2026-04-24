@@ -1,0 +1,30 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/017-sk-deep-cli-runtime-execution-pt-01/iterations",
+  "description": "Research iteration artifacts for 017-sk-deep-cli-runtime-execution-001-executor-feature.",
+  "keywords": [
+    "research",
+    "iteration",
+    "artifacts",
+    "017-sk-deep-cli-runtime-execution-001-executor-feature",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "iterations"
+  ],
+  "lastUpdated": "2026-04-21T13:00:00Z",
+  "specId": "017",
+  "folderSlug": "sk-deep-cli-runtime-execution-001-executor-feature-iterations",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "research",
+    "017-sk-deep-cli-runtime-execution-pt-01"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "migration": {
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/017-sk-deep-cli-runtime-execution-001-executor-feature/iterations",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/research/017-sk-deep-cli-runtime-execution-pt-01/iterations",
+    "layout": "phase-root-children"
+  }
+}

@@ -1,0 +1,280 @@
+{
+  "schemaVersion": "1.0",
+  "topic": "Packet 015 save-flow planner-first trim + cross-packet residual sweep",
+  "lastUpdatedAt": "2026-04-15T09:53:00Z",
+  "openQuestions": [
+    
+  ],
+  "answeredQuestions": [
+    {
+      "id": "Q1",
+      "text": "Load-bearing preservation bit-level diff",
+      "verdict": "atomic-index-memory.ts, create-record.ts, and thin-continuity-record.ts are unchanged, but content-router.ts gained new Tier 3 gating and manual-review control flow, so the load-bearing set is not bit-level clean."
+    },
+    {
+      "id": "Q2",
+      "text": "Fallback equivalence (plannerMode: full-auto)",
+      "verdict": "Full-auto still reaches the atomic writer, Tier 3 routing, quality-loop auto-fix, reconsolidation, enrichment, chunking, graph refresh, and reindex, but it no longer enforces POST_SAVE_FINGERPRINT inside the canonical validation path."
+    },
+    {
+      "id": "Q3",
+      "text": "Flag wire completeness (4 new env flags)",
+      "verdict": "All four new save-path flags are live: each one is read and drives a real branch in routing, quality-loop, reconsolidation, or post-insert enrichment."
+    },
+    {
+      "id": "Q4",
+      "text": "Follow-up API integrity (refreshGraphMetadata / reindexSpecDocs / runEnrichmentBackfill)",
+      "verdict": "All three follow-up APIs are implemented, route into real runtime logic, and are re-exported from api/index.ts."
+    },
+    {
+      "id": "Q5",
+      "text": "Planner response blocker/advisory classification",
+      "verdict": "Spec-doc legality checks still block and score-heavy checks remain advisories, but template-contract violations are misclassified as planner advisories instead of blockers."
+    },
+    {
+      "id": "Q6",
+      "text": "Eight-category routing preservation",
+      "verdict": "All eight route categories and Tier 1/Tier 2 router logic stayed intact; only the default Tier 3 invocation path changed."
+    },
+    {
+      "id": "Q7",
+      "text": "Dead-branch audit (F026-style patterns)",
+      "verdict": "The refactor leaves one real success-shaped no-op in post-insert enrichment status reporting and one documented future stub for `hybrid` planner mode, but reconsolidation and quality-loop gating are still live."
+    },
+    {
+      "id": "Q8",
+      "text": "Test coverage gap sweep",
+      "verdict": "The required focused suites all pass and core planner/full-auto branches are covered, but deferred follow-up execution for enrichment backfill and reindex remains largely shape-tested instead of runtime-tested."
+    },
+    {
+      "id": "Q9",
+      "text": "Docs vs runtime drift",
+      "verdict": "Command docs match runtime, but packet 015 spec/plan still cite old follow-up tool names and ENV_REFERENCE overstates `hybrid` as a real planner mode."
+    },
+    {
+      "id": "Q10",
+      "text": "Cross-packet residual sweep + convergence synthesis",
+      "verdict": "Residual deprecated-surface checks, lockfile verification, required builds, and the standing regression script all pass; the remaining cross-packet issue is changelog honesty around `hybrid` support and load-bearing router preservation."
+    }
+  ],
+  "findings": [
+    {
+      "id": "F001",
+      "status": "resolved",
+      "run": 1,
+      "severity": "P0",
+      "dimension": "Load-bearing preservation",
+      "title": "Load-bearing router file carries new control-flow, not just trim plumbing",
+      "summary": "Packet 015 introduces env-driven Tier 3 gating and new manual-review control flow inside content-router.ts while the other three load-bearing files stayed unchanged.",
+      "evidence": [
+        "[EVIDENCE: git diff f3dc18993~1..HEAD -- .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:248-255]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:467-505]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:536-634]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1366-1368]"
+      ],
+      "remediation": "Document content-router.ts as an explicit preservation exception or move the Tier 3 default-disable behavior outside the load-bearing preservation set.",
+      "resolutionEvidence": "decision-record.md ADR-006 plus packet spec/plan and v3.4.1.0 changelog now describe content-router.ts as a scoped preservation exception rather than bit-for-bit preserved."
+    },
+    {
+      "id": "F002",
+      "status": "resolved",
+      "run": 2,
+      "severity": "P0",
+      "dimension": "Fallback equivalence",
+      "title": "Full-auto fallback drops the pre-015 POST_SAVE_FINGERPRINT safety rule",
+      "summary": "The canonical full-auto path still builds a postSavePlan, but its validator call no longer includes the POST_SAVE_FINGERPRINT rule that pre-015 enforced by default.",
+      "evidence": [
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1534-1541]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1547-1569]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2991-3004]",
+        "[EVIDENCE: git diff f3dc18993~1..HEAD -- .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts]"
+      ],
+      "remediation": "Restore the full-auto validator call so POST_SAVE_FINGERPRINT remains active on canonical fallback writes.",
+      "resolutionEvidence": "mcp_server/handlers/memory-save.ts now re-adds POST_SAVE_FINGERPRINT whenever postSavePlan exists, and tests/memory-save-fallback-fingerprint.vitest.ts proves full-auto canonical fallback rejects and rolls back a tampered promoted file."
+    },
+    {
+      "id": "F003",
+      "status": "resolved",
+      "run": 5,
+      "severity": "P0",
+      "dimension": "Planner response classification",
+      "title": "Planner-ready responses downgrade template-contract failures into advisories",
+      "summary": "The planner response path emits template-contract violations as advisories even though the save pipeline still rejects those violations outside warn-only mode.",
+      "evidence": [
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1735-1744]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1770-1789]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1952-1970]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/validation-responses.ts:61-80]"
+      ],
+      "remediation": "Promote invalid template-contract results to planner blockers, except where the existing templateContractBypassed exception explicitly applies.",
+      "resolutionEvidence": "mcp_server/handlers/memory-save.ts now routes non-bypassed template-contract violations into TEMPLATE_CONTRACT_BLOCKER, and handler-memory-save.vitest.ts verifies planner-mode canonical saves block instead of emitting only advisories."
+    },
+    {
+      "id": "F004",
+      "status": "resolved",
+      "run": 7,
+      "severity": "P1",
+      "dimension": "Dead-branch audit",
+      "title": "Planner-default enrichment skip returns success-shaped status",
+      "summary": "When save-time enrichment is deferred in planner-default mode, the wrapper returns all-true enrichment flags so the response surface cannot tell that enrichment never ran.",
+      "evidence": [
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts:206-225]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2341-2363]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/response-builder.ts:309-316]"
+      ],
+      "remediation": "Return an explicit deferred/skipped enrichment status or warning when planner-default mode bypasses the enrichment pipeline.",
+      "resolutionEvidence": "handlers/save/post-insert.ts now returns executionStatus { status: \"deferred\", reason: \"planner-first-mode\", followUpAction: \"runEnrichmentBackfill\" }, and tests/post-insert-deferred.vitest.ts verifies both the helper shape and surfaced save response payload."
+    },
+    {
+      "id": "F005",
+      "status": "resolved",
+      "run": 7,
+      "severity": "P2",
+      "dimension": "Dead-branch audit",
+      "title": "`hybrid` planner mode is exposed but currently behaves exactly like `plan-only`",
+      "summary": "The runtime accepts `hybrid` as a planner mode, but the active branches only distinguish `full-auto` from every other value, so `hybrid` is a documented future stub rather than a real mode.",
+      "evidence": [
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:123-135]",
+        "[SOURCE: .opencode/skill/system-spec-kit/scripts/core/workflow.ts:288-291]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2469-2470]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2917-2919]"
+      ],
+      "remediation": "Remove `hybrid` from the active contract until implemented, or add a dedicated mixed-flow branch so the mode is behaviorally distinct.",
+      "resolutionEvidence": "lib/search/search-flags.ts now marks `hybrid` as reserved and explicitly notes it currently behaves the same as `plan-only`; docs and changelog were aligned to the same reserved-mode contract."
+    },
+    {
+      "id": "F006",
+      "status": "resolved",
+      "run": 8,
+      "severity": "P1",
+      "dimension": "Test coverage gap sweep",
+      "title": "Deferred follow-up helpers lack execution-level coverage",
+      "summary": "Planner tests assert `reindex` and `enrich` follow-up actions are advertised, but the underlying `reindexSpecDocs()`, `runEnrichmentBackfill()`, and planner-gated enrichment helper are not exercised end to end across planner/apply mode boundaries.",
+      "evidence": [
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/api/indexing.ts:100-128]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts:206-225]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/memory-save-planner-first.vitest.ts:60-86]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1206-1226]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-integration.vitest.ts:107-113]"
+      ],
+      "remediation": "Add runtime tests that execute deferred reindex/enrichment follow-ups and assert the planner-default skipped branch differs from explicit full-auto execution.",
+      "resolutionEvidence": "tests/follow-up-api.vitest.ts now executes refreshGraphMetadata, reindexSpecDocs, and runEnrichmentBackfill with argument/env assertions, while tests/post-insert-deferred.vitest.ts verifies the planner-default deferred branch is distinct from executed enrichment."
+    },
+    {
+      "id": "F007",
+      "status": "resolved",
+      "run": 9,
+      "severity": "P1",
+      "dimension": "Docs vs runtime drift",
+      "title": "Packet docs still reference pre-015 follow-up tool names",
+      "summary": "The packet spec and plan still say planner responses surface `memory_index_scan` and `refreshGraphMetadataForSpecFolder`, but runtime now emits `reindexSpecDocs` and `refreshGraphMetadata`.",
+      "evidence": [
+        "[SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-save-flow-planner-first-trim/spec.md:155]",
+        "[SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-save-flow-planner-first-trim/plan.md:128]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1637-1653]"
+      ],
+      "remediation": "Update packet 015 docs to use the shipped follow-up API names: refreshGraphMetadata, reindexSpecDocs, and runEnrichmentBackfill.",
+      "resolutionEvidence": "packet 015 spec.md and plan.md now reference refreshGraphMetadata, reindexSpecDocs, and runEnrichmentBackfill instead of the pre-015 names."
+    },
+    {
+      "id": "F008",
+      "status": "resolved",
+      "run": 9,
+      "severity": "P1",
+      "dimension": "Docs vs runtime drift",
+      "title": "ENV reference presents `hybrid` as a supported planner mode even though it is still a future stub",
+      "summary": "The env table lists `hybrid` alongside `plan-only` and `full-auto`, but runtime only distinguishes `full-auto` from non-`full-auto` and the source comment explicitly labels hybrid as future mixed flows.",
+      "evidence": [
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md:98]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:123-135]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2469-2470]"
+      ],
+      "remediation": "Mark hybrid as reserved/future in ENV_REFERENCE.md or remove it from the documented public mode set until implemented.",
+      "resolutionEvidence": "mcp_server/ENV_REFERENCE.md now marks `hybrid` as reserved and behaviourally identical to `plan-only` until mixed-flow semantics are implemented."
+    },
+    {
+      "id": "F009",
+      "status": "resolved",
+      "run": 10,
+      "severity": "P1",
+      "dimension": "Cross-packet residual sweep",
+      "title": "Phase 015 release notes overstate hybrid support and unchanged load-bearing preservation",
+      "summary": "The v3.4.1.0 changelog describes `hybrid` as a real planner mode and marks the router/load-bearing verification as unchanged, but runtime still treats hybrid as a future stub and the router diff is behavioral.",
+      "evidence": [
+        "[SOURCE: .opencode/changelog/01--system-spec-kit/v3.4.1.0.md:145]",
+        "[SOURCE: .opencode/changelog/01--system-spec-kit/v3.4.1.0.md:272-273]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:123-135]",
+        "[SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2469-2470]",
+        "[EVIDENCE: git diff f3dc18993~1..HEAD -- .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts]"
+      ],
+      "remediation": "Amend the changelog to describe hybrid as reserved/future and to state that router contract parity held while default Tier 3/manual-review control flow changed.",
+      "resolutionEvidence": "v3.4.1.0.md now marks `hybrid` as reserved, updates backward-compatibility and known-limitations text, and records the content-router scoped preservation exception per ADR-006."
+    }
+  ],
+  "findingsByP0": [
+    "F001",
+    "F002",
+    "F003"
+  ],
+  "findingsByP1": [
+    "F004",
+    "F006",
+    "F007",
+    "F008",
+    "F009"
+  ],
+  "findingsByP2": [
+    "F005"
+  ],
+  "resolvedFindings": [
+    "F001",
+    "F002",
+    "F003",
+    "F004",
+    "F005",
+    "F006",
+    "F007",
+    "F008",
+    "F009"
+  ],
+  "subsystemVerdicts": {
+    "atomic-index-memory.ts": "clean",
+    "create-record.ts": "clean",
+    "thin-continuity-record.ts": "clean",
+    "content-router.ts": "documented-exception",
+    "full-auto-atomic-writer": "equivalent",
+    "full-auto-tier3-routing": "equivalent",
+    "full-auto-quality-loop": "equivalent",
+    "full-auto-reconsolidation": "equivalent",
+    "full-auto-post-insert-enrichment": "equivalent",
+    "full-auto-chunking": "equivalent",
+    "full-auto-workflow-followups": "equivalent",
+    "full-auto-post-save-fingerprint": "fixed",
+    "flag-router-tier3": "wired",
+    "flag-quality-auto-fix": "wired",
+    "flag-save-reconsolidation": "wired",
+    "flag-post-insert-enrichment": "wired",
+    "api-refresh-graph-metadata": "implemented",
+    "api-reindex-spec-docs": "implemented",
+    "api-run-enrichment-backfill": "implemented",
+    "planner-spec-doc-legality": "blocking",
+    "planner-quality-loop": "advisory",
+    "planner-sufficiency": "advisory",
+    "planner-template-contract": "blocking",
+    "routing-categories": "preserved",
+    "routing-tier1": "preserved",
+    "routing-tier2": "preserved",
+    "routing-tier3-default": "changed",
+    "post-insert-enrichment-status": "explicit-deferred",
+    "planner-mode-hybrid": "reserved",
+    "save-reconsolidation-bridge": "live",
+    "quality-loop-mode-switch": "live",
+    "targeted-phase015-suites": "passing",
+    "follow-up-execution-coverage": "covered",
+    "packet-doc-follow-up-names": "aligned",
+    "env-reference-hybrid": "reserved",
+    "deprecated-surface-sweep": "clean",
+    "phase015-changelog": "aligned"
+  }
+}

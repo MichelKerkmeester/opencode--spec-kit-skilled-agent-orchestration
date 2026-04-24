@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "openQuestions": [],
+  "resolvedQuestions": [
+    {
+      "id": "Q1",
+      "iteration": 3,
+      "summary": "The chartered family has three live duplication samples and a larger empty-memory remainder: overlap is high in 002 and 003/001, medium in the 003 root, and zero in folders that still only have memory/.gitkeep."
+    },
+    {
+      "id": "Q2",
+      "iteration": 4,
+      "summary": "The smallest safe memory is a compact retrieval wrapper with title, trigger phrases, anchor-rich semantic evidence, continuation state, and memory metadata rather than a repeated packet narrative."
+    },
+    {
+      "id": "Q3",
+      "iteration": 2,
+      "summary": "Redundancy comes mainly from collect-session-data plus workflow template binding plus the packet-shaped template contract, not from the CLI wrapper alone."
+    },
+    {
+      "id": "Q4",
+      "iteration": 2,
+      "summary": "Recall-safe minimum is a specific title, meaningful trigger phrases, semantic evidence, and anchors / metadata rather than full repeated ADR or implementation-summary prose."
+    },
+    {
+      "id": "Q5",
+      "iteration": 4,
+      "summary": "The fix is to shrink memory saves into canonical-doc pointers plus compact evidence and metadata, with collector/workflow/template changes and no required static-template expansion."
+    }
+  ],
+  "keyFindings": [
+    {
+      "id": "F-MR-008",
+      "question": "Q1",
+      "summary": "Iteration 1 closed Q1 too early because it sampled the wrong subtree."
+    },
+    {
+      "id": "F-MR-009",
+      "question": "Q1",
+      "summary": "The chartered packet family has only a few actual memory-file samples; many target directories are empty-memory cases."
+    },
+    {
+      "id": "F-MR-010",
+      "question": "Q3",
+      "summary": "The earlier 018 fix phase explicitly excluded template and MCP-server changes, leaving the current redundancy layer unresolved."
+    },
+    {
+      "id": "F-MR-011",
+      "question": "Q3",
+      "summary": "collect-session-data synthesizes packet-summary material before render."
+    },
+    {
+      "id": "F-MR-013",
+      "question": "Q3",
+      "summary": "workflow.ts binds implementation-summary arrays, decisions, and recovery metadata into one rendered memory."
+    },
+    {
+      "id": "F-MR-015",
+      "question": "Q4",
+      "summary": "Trigger matching and hybrid search do not require full repeated packet prose."
+    },
+    {
+      "id": "F-MR-016",
+      "question": "Q2",
+      "summary": "Unique memory value lives in decay, dedup, provenance, tool-call, exchange, and learning-delta metadata."
+    },
+    {
+      "id": "F-MR-017",
+      "question": "Q1",
+      "summary": "Packet 002 duplicates overview, decisions, and file inventory across both static docs."
+    },
+    {
+      "id": "F-MR-018",
+      "question": "Q1",
+      "summary": "The 003 root memory is a medium-overlap review-status replay against implementation-summary.md."
+    },
+    {
+      "id": "F-MR-019",
+      "question": "Q1",
+      "summary": "Packet 003/001 duplicates implementation guide, overview, follow-up, and decisions mainly against implementation-summary.md."
+    },
+    {
+      "id": "F-MR-020",
+      "question": "Q1",
+      "summary": "003/002-007 and 005-013 currently have no generated memory .md, so present overlap there is zero."
+    },
+    {
+      "id": "F-MR-021",
+      "question": "Q5",
+      "summary": "Level 3 decision-record and implementation-summary templates already cover the duplicated sections, so the fix belongs in the memory generator/template contract."
+    },
+    {
+      "id": "F-MR-022",
+      "question": "Q2",
+      "summary": "Save-time sufficiency needs specific title, evidence counts, semantic substance, anchors, and meaningful triggers, not full repeated prose."
+    },
+    {
+      "id": "F-MR-023",
+      "question": "Q2",
+      "summary": "Trigger matching is driven mainly by trigger phrases and tiered content, so long body sections have low auto-surface value."
+    },
+    {
+      "id": "F-MR-024",
+      "question": "Q2",
+      "summary": "Search and parsing still want compact semantic body text, but not a second packet narrative."
+    },
+    {
+      "id": "F-MR-025",
+      "question": "Q2",
+      "summary": "Continuation state, decay/dedup/causal metadata, tool-call summaries, exchanges, and postflight are the true memory-only payload."
+    },
+    {
+      "id": "F-MR-026",
+      "question": "Q5",
+      "summary": "collect-session-data and buildImplementationGuideData currently assemble the redundant packet-summary material that should stop rendering by default."
+    },
+    {
+      "id": "F-MR-027",
+      "question": "Q5",
+      "summary": "workflow.ts plus the template contract should switch the default memory shape from packet narrative to canonical-doc pointers plus compact evidence."
+    },
+    {
+      "id": "F-MR-028",
+      "question": "Q5",
+      "summary": "decision-record.md should stay canonical for ADR prose, implementation-summary.md for build story and verification, and research/review docs can be optional third pointers."
+    }
+  ],
+  "ruledOutDirections": [
+    {
+      "idea": "Blame generate-context.ts alone",
+      "reason": "The wrapper is thin; duplication is injected deeper in collection, workflow binding, and the template contract."
+    },
+    {
+      "idea": "Broaden static spec-doc templates to absorb missing memory content",
+      "reason": "The Level 3 static templates already own context, decisions, implementation story, verification, and limitations."
+    },
+    {
+      "idea": "Preserve full packet-shaped DECISIONS and CONVERSATION blocks in every default memory save",
+      "reason": "Trigger matching, sufficiency, and hybrid search do not require those long-form sections for baseline recall."
+    }
+  ],
+  "metrics": {
+    "iterationsCompleted": 4,
+    "openQuestions": 0,
+    "resolvedQuestions": 5,
+    "keyFindings": 19,
+    "convergenceScore": 0.85,
+    "coverageBySources": {
+      "018-memory-save-quality-fixes": 2,
+      "collect-session-data.ts": 2,
+      "workflow.ts": 1,
+      "memory-template-contract.ts": 1,
+      "context_template.md": 1,
+      "memory-parser.ts": 3,
+      "memory-triggers.ts": 3,
+      "memory-search.ts": 2,
+      "memory-sufficiency.ts": 2,
+      "memory-metadata.ts": 1,
+      "002-memory-save": 3,
+      "002-decision-record": 1,
+      "002-implementation-summary": 1,
+      "003-root-memory": 3,
+      "003-root-implementation-summary": 1,
+      "003-001-memory": 4,
+      "003-001-implementation-summary": 1,
+      "level_3 decision-record template": 1,
+      "level_3 implementation-summary template": 1,
+      "memory-save.ts": 1,
+      "implementation-guide-extractor.ts": 2
+    }
+  }
+}
