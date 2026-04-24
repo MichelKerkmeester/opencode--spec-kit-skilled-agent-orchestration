@@ -2,6 +2,7 @@
 title: "Feature Specification: /memory:save Planner-First Default"
 description: "Make /memory:save planner-first (non-mutating) by default while preserving full-auto as an explicit fallback, retire the legacy [spec]/memory/*.md write path, and decouple freshness (graph-metadata refresh, spec-doc reindex, enrichment) from the hot save path via explicit follow-up APIs."
 trigger_phrases:
+  - "004-memory-save-rewrite"
   - "014-memory-save-rewrite"
   - "memory save planner first"
   - "planner-first memory save"
@@ -71,6 +72,7 @@ This packet delivers the end state implied by that analysis. `/memory:save` is p
 | **Created** | 2026-04-14 |
 | **Completed** | 2026-04-15 |
 | **Branch** | `026-014-memory-save-rewrite` |
+| **Phase Folder** | `004-memory-save-rewrite` (historical alias: `014-memory-save-rewrite`) |
 | **Parent Packet** | `026-graph-and-context-optimization` |
 | **Release Context** | `v3.4.1.0` |
 
@@ -144,7 +146,7 @@ Ship a `/memory:save` contract that matches the evidence: planner-first by defau
 
 ### Research and Review Evidence
 
-The packet carries packet-local snapshots of the audit report, research synthesis, deep-review report, and planner-first transcript prototypes so a reader can inspect the most important artifacts without leaving the folder. Those snapshots live under `research/013-audit-snapshot/`, `research/014-research-snapshot/`, `review/015-deep-review-snapshot/`, and `scratch/transcripts-snapshot/` respectively.
+The packet carries packet-local snapshots of the audit report, research synthesis, deep-review report, and planner-first transcript prototypes so a reader can inspect the most important artifacts without leaving the folder. Those snapshots live under `research/013-audit-snapshot/`, `research/014-research-snapshot/`, `review/015-deep-review-snapshot/`, and `scratch/transcripts-snapshot/` inside this flattened `004-memory-save-rewrite` packet.
 
 ---
 

@@ -810,6 +810,23 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
         });
 
         expect(harness.runReconsolidationIfEnabledMock).toHaveBeenCalledTimes(1);
+        expect(harness.runReconsolidationIfEnabledMock).toHaveBeenCalledWith(
+          expect.any(Object),
+          expect.objectContaining({
+            filePath,
+            specFolder: 'system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix',
+          }),
+          filePath,
+          true,
+          expect.any(Float32Array),
+          {
+            tenantId: 'tenant-scan',
+            userId: 'user-scan',
+            agentId: 'agent-scan',
+            sessionId: 'session-scan',
+          },
+          expect.any(Object),
+        );
         expect(harness.findScopeFilteredCandidatesMock).not.toHaveBeenCalled();
         expect(harness.createMemoryRecordMock).toHaveBeenCalledTimes(1);
         expect(result.status).toBe('indexed');
@@ -894,6 +911,23 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
         });
 
         expect(harness.runReconsolidationIfEnabledMock).toHaveBeenCalledTimes(1);
+        expect(harness.runReconsolidationIfEnabledMock).toHaveBeenCalledWith(
+          expect.any(Object),
+          expect.objectContaining({
+            filePath,
+            specFolder: 'system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix',
+          }),
+          filePath,
+          true,
+          expect.any(Float32Array),
+          {
+            tenantId: 'tenant-direct',
+            userId: 'user-direct',
+            agentId: 'agent-direct',
+            sessionId: 'session-direct',
+          },
+          expect.any(Object),
+        );
         expect(harness.findScopeFilteredCandidatesMock).toHaveBeenCalledTimes(1);
         expect(harness.createMemoryRecordMock).not.toHaveBeenCalled();
         expect(result.status).toBe('error');

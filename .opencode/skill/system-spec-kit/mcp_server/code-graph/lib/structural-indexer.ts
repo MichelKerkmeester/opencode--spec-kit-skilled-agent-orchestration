@@ -1268,7 +1268,35 @@ function collectSpecificFiles(rootDir: string, specificFiles: string[], maxSize:
   return dedupedFiles;
 }
 
-function finalizeIndexResults(results: ParseResult[]): ParseResult[] {
+export function finalizeIndexResults(results: ParseResult[]): ParseResult[] {
+  const globalSeenIds = new Set<string>();
+  let droppedDuplicateNodes = 0;
+  let droppedReconciledEdges = 0;
+  for (const result of results) {
+    const dedupedNodes: CodeNode[] = [];
+    for (const node of result.nodes) {
+      if (globalSeenIds.has(node.symbolId)) {
+        droppedDuplicateNodes++;
+        continue;
+      }
+      globalSeenIds.add(node.symbolId);
+      dedupedNodes.push(node);
+    }
+    result.nodes = dedupedNodes;
+
+    const retainedSourceIds = new Set(dedupedNodes.map((node) => node.symbolId));
+    const reconciledEdges = result.edges.filter((edge) => retainedSourceIds.has(edge.sourceId));
+    droppedReconciledEdges += result.edges.length - reconciledEdges.length;
+    result.edges = reconciledEdges;
+  }
+
+  if (droppedDuplicateNodes > 0) {
+    console.info(`[structural-indexer] dropped ${droppedDuplicateNodes} cross-file duplicate symbol nodes`);
+  }
+  if (droppedReconciledEdges > 0) {
+    console.info(`[structural-indexer] dropped ${droppedReconciledEdges} edge(s) whose source nodes were removed by dedup`);
+  }
+
   // Cross-file TESTED_BY edges (heuristic, confidence 0.6)
   const testPattern = /[./](?:test|spec|vitest)\./;
   const nodesByFile = new Map<string, CodeNode[]>();
@@ -1291,25 +1319,6 @@ function finalizeIndexResults(results: ParseResult[]): ParseResult[] {
         });
       }
     }
-  }
-
-  const globalSeenIds = new Set<string>();
-  let droppedDuplicateNodes = 0;
-  for (const result of results) {
-    const dedupedNodes: CodeNode[] = [];
-    for (const node of result.nodes) {
-      if (globalSeenIds.has(node.symbolId)) {
-        droppedDuplicateNodes++;
-        continue;
-      }
-      globalSeenIds.add(node.symbolId);
-      dedupedNodes.push(node);
-    }
-    result.nodes = dedupedNodes;
-  }
-
-  if (droppedDuplicateNodes > 0) {
-    console.info(`[structural-indexer] dropped ${droppedDuplicateNodes} cross-file duplicate symbol nodes`);
   }
 
   return results;

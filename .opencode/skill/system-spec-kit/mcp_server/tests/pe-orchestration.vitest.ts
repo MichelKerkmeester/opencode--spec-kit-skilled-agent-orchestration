@@ -157,4 +157,88 @@ describe('PE orchestration lineage guard', () => {
       database.close();
     }
   });
+
+  it('falls back to file_path when canonical_file_path is null and preserves scoped same-file updates', () => {
+    const database = new Database(':memory:');
+    const tasksPath = '/workspace/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix/tasks.md';
+
+    mocks.findSimilarMemoriesMock.mockReturnValue([
+      {
+        id: 123,
+        similarity: 0.95,
+        content: 'same-file content without canonical path metadata',
+        stability: 1,
+        difficulty: 1,
+        file_path: tasksPath,
+        canonical_file_path: null,
+      },
+    ]);
+    mocks.evaluateMemoryMock.mockReturnValue({
+      action: 'UPDATE',
+      similarity: 0.95,
+      existingMemoryId: 123,
+      reason: 'High match, updating existing',
+    });
+    mocks.updateExistingMemoryMock.mockReturnValue({
+      status: 'updated',
+      id: 123,
+      title: 'Memory Indexer Lineage Fix Tasks',
+    });
+
+    try {
+      const result = evaluateAndApplyPeDecision(
+        database,
+        {
+          specFolder: 'system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix',
+          filePath: tasksPath,
+          title: 'Memory Indexer Lineage Fix Tasks',
+          triggerPhrases: ['candidate_changed fix'],
+          content: 'Implement the tasks doc update',
+          contentHash: 'tasks-hash-3',
+          contextType: 'tasks',
+          importanceTier: 'important',
+          documentType: 'tasks',
+        } as any,
+        new Float32Array([0.1, 0.2, 0.3]),
+        false,
+        [],
+        'success',
+        tasksPath,
+        {
+          tenantId: 'tenant-scan',
+          userId: 'user-scan',
+          agentId: 'agent-scan',
+          sessionId: 'session-scan',
+        },
+      );
+
+      expect(result.decision.action).toBe('UPDATE');
+      expect(mocks.updateExistingMemoryMock).toHaveBeenCalledWith(
+        123,
+        expect.objectContaining({
+          filePath: tasksPath,
+          specFolder: 'system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix',
+        }),
+        expect.any(Float32Array),
+      );
+      expect(mocks.findSimilarMemoriesMock).toHaveBeenCalledWith(
+        expect.any(Float32Array),
+        expect.objectContaining({
+          tenantId: 'tenant-scan',
+          userId: 'user-scan',
+          agentId: 'agent-scan',
+          sessionId: 'session-scan',
+          excludeFilePath: tasksPath,
+          excludeCanonicalFilePath: tasksPath,
+        }),
+      );
+      expect(result.earlyReturn).toMatchObject({
+        status: 'updated',
+        id: 123,
+        pe_action: 'UPDATE',
+      });
+    } finally {
+      database.close();
+    }
+  });
 });

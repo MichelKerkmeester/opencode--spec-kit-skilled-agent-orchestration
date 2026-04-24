@@ -3,6 +3,7 @@ title: "Implementation Summary"
 description: "Packet closeout for the /memory:save planner-first default: audit + retirement, relevance research, planner + trim implementation, transcript-grounded verification, and deep-review remediation all documented in one surface."
 trigger_phrases:
   - "implementation summary"
+  - "004-memory-save-rewrite"
   - "memory save planner first closeout"
   - "planner-first save closeout"
   - "save flow planner first delivery"
@@ -43,7 +44,7 @@ _memory:
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 014-memory-save-rewrite |
+| **Spec Folder** | `004-memory-save-rewrite` (historical alias: `014-memory-save-rewrite`) |
 | **Status** | Complete |
 | **Completed** | 2026-04-15 |
 | **Level** | 3+ |
@@ -90,6 +91,7 @@ All 9 findings closed before closeout.
 
 The packet carries the key source artifacts so a reader can inspect them without leaving the folder:
 
+- all snapshot directories below are packet-local to `004-memory-save-rewrite`; `013`, `014`, and `015` are historical snapshot sequence labels, not active packet ids
 - audit artifacts under `research/013-audit-snapshot/`
 - research artifacts under `research/014-research-snapshot/`
 - deep-review artifacts under `review/015-deep-review-snapshot/`

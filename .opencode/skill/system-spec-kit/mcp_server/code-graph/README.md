@@ -32,7 +32,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This folder contains the structural code graph subsystem. It walks a workspace, parses source files via tree-sitter, and persists nodes (functions, classes, modules) and edges (calls, imports, contains, type_of) into a SQLite database. The graph backs the `code_graph_scan`, `code_graph_query`, `code_graph_status`, and `code_graph_context` MCP tools, and feeds the structural-context payload consumed by both MCP `session_bootstrap` and the OpenCode `compact-code-graph` plugin.
+This folder contains the structural code graph subsystem. It walks a workspace, parses source files via tree-sitter or the shipped regex fallback, and persists nodes (functions, classes, modules) and edges (calls, imports, contains, type_of) into a SQLite database. The graph backs the `code_graph_scan`, `code_graph_query`, `code_graph_status`, and `code_graph_context` MCP tools, and feeds the structural-context payload consumed by both MCP `session_bootstrap` and the OpenCode `compact-code-graph` plugin.
 
 ### Subsystem Statistics (current schema)
 
@@ -49,13 +49,14 @@ This folder contains the structural code graph subsystem. It walks a workspace, 
 
 | Capability | Description |
 |---|---|
-| **Tree-sitter parsing** | Multi-language structural parsing via `lib/tree-sitter-parser.ts` |
+| **Dual parser backends** | Tree-sitter by default plus `SPECKIT_PARSER=regex` fallback via `lib/tree-sitter-parser.ts` and `lib/structural-indexer.ts` |
 | **Incremental scan** | Skip unchanged files via mtime + content-hash check (`lib/structural-indexer.ts`); explicit full scans pass `IndexFilesOptions { skipFreshFiles: false }` |
 | **`.gitignore` awareness** | Walks honor `.gitignore` patterns via the `ignore` package, with per-directory caching (packet 012) |
 | **Stale-graph highlights** | Structural snapshots compute top-called function highlights even when graph status is `stale` (packet 012) |
 | **Working set tracking** | Recently-touched file tracking for fresh-context retrieval (`lib/working-set-tracker.ts`) |
 | **Budget allocation** | Token budget enforcement on context payloads (`lib/budget-allocator.ts`) |
 | **Readiness contract** | Trust state probing (`live` / `stale` / `missing`) via `lib/readiness-contract.ts` |
+| **Staged persistence** | Shared `persistIndexedFileResult()` keeps files stale until nodes and edges land (`lib/ensure-ready.ts`) |
 
 <!-- /ANCHOR:overview -->
 
@@ -121,6 +122,8 @@ code-graph/
 | `handlers/context.ts` | `code_graph_context` MCP handler — context-window-bounded retrieval |
 | `handlers/query.ts` | `code_graph_query` MCP handler — graph traversal queries |
 
+Shared regression coverage for the migrated runtime also lives in the parent `mcp_server/tests/` suite. Current examples include `tests/tree-sitter-parser.vitest.ts`, `tests/structural-contract.vitest.ts`, and `tests/ensure-ready.vitest.ts`.
+
 <!-- /ANCHOR:structure -->
 
 ---
@@ -181,7 +184,7 @@ User overrides via `excludeGlobs` and `includeGlobs` are additive on top of the 
 
 ### Indexer Options
 
-`indexFiles(config, options?)` accepts `IndexFilesOptions { skipFreshFiles?: boolean }`. The default is `true` to preserve stale-only incremental behavior for existing callers. Pass `skipFreshFiles:false` only when the caller intentionally wants every post-exclude candidate parsed.
+`indexFiles(config, options?)` accepts `IndexFilesOptions { skipFreshFiles?: boolean }`. The default is `true` to preserve stale-only incremental behavior for existing callers. Pass `skipFreshFiles:false` only when the caller intentionally wants every post-exclude candidate parsed. Before returning, the indexer deduplicates retained node IDs across the current batch, drops edges whose source nodes were removed by that dedup sweep, and then adds cross-file `TESTED_BY` edges from the retained test nodes.
 
 ### Pruning the Existing Graph
 

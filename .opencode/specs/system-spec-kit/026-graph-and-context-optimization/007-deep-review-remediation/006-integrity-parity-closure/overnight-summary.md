@@ -24,7 +24,7 @@ Single autonomous run requested by user going to sleep at ~22:55 CEST 2026-04-23
 | 22:58 | 10 parallel cli-codex research dispatchers launched | `5469f0718` |
 | 23:16 | All 10 phases converged (100 iterations, 10 research.md syntheses) | `ad4c9a41b` |
 | 23:33 | Cross-phase synthesizer re-dispatched (first try hit Gate 3 hang) | `cf1495fff` |
-| 23:50 | `cross-phase-synthesis.md` + `cross-phase-findings.json` written (28 findings: 9 P0, 16 P1, 3 P2; 5 cross-cutting themes) | `f5a027cb6` |
+| 23:50 | `../../research/cross-phase-synthesis.md` + `cross-phase-findings.json` written (28 findings: 9 P0, 16 P1, 3 P2; 5 cross-cutting themes) | `f5a027cb6` |
 | 00:08 | Sub-phase `007/006-integrity-parity-closure` scaffolded + 9/9 P0 fixes applied | `2ed9cf9df` |
 | 00:25 | 15/16 P1 fixes applied; CF-016 hit Gate 3 hang, re-dispatched | `cd766a05f` |
 | 00:42 | CF-016 retry succeeded → all 25/25 fixes applied; final wrap-up | (this commit) |
@@ -40,7 +40,7 @@ Single autonomous run requested by user going to sleep at ~22:55 CEST 2026-04-23
 
 **Phase 2 — Cross-Phase Synthesis** (1 cli-codex process)
 - Dedupe + severity rollup across 10 phase research outputs
-- Output: `cross-phase-synthesis.md` (18 KB) + `cross-phase-findings.json` (45 KB)
+- Output: `../../research/cross-phase-synthesis.md` (18 KB) + `cross-phase-findings.json` (45 KB)
 - 28 unique findings after dedup
 - 5 cross-cutting themes identified (e.g. "Operational proof trails implementation", "Concurrency and freshness guards rely on partial contracts")
 - Recommended sub-phase name: `integrity-parity-closure`, Level 3
@@ -71,10 +71,10 @@ Single autonomous run requested by user going to sleep at ~22:55 CEST 2026-04-23
 | Findings registries | 10 | `026/NNN-*/research/findings-registry.json` |
 | Phase dashboards | 10 | `026/NNN-*/research/deep-research-dashboard.md` |
 | Phase state logs | 10 | `026/NNN-*/research/deep-research-state.jsonl` |
-| Cross-phase synthesis | 1 | `026/research/cross-phase-synthesis.md` |
+| Cross-phase synthesis | 1 | `../../research/cross-phase-synthesis.md` |
 | Cross-phase findings JSON | 1 | `026/research/cross-phase-findings.json` |
 | Sub-phase spec docs | 7 | `026/007-deep-review-remediation/006-integrity-parity-closure/{spec,plan,tasks,checklist,implementation-summary}.md` + `description.json` + `graph-metadata.json` |
-| Applied fix reports | 25 | `026/007/006-integrity-parity-closure/applied/CF-NNN.md` |
+| Applied fix reports | 25 | `./applied/` directory (25 CF-NNN markdown files) |
 | Overnight summary | 1 | this file |
 
 **Target files modified by fix agents:** dozens across `.opencode/` (code + docs), spanning mcp_server handlers, code-graph lib, hook wiring, validation scripts, runtime configs, skill-advisor logic, AGENTS.md, SKILL.md, manual testing playbook, feature catalog, install guides, and others — see per-CF applied reports for exact paths + diffs.
@@ -94,7 +94,7 @@ Canonical `/spec_kit:deep-research :auto` invocation via `claude -p` hangs on th
 
 - Strict template-schema validation on `007/006-integrity-parity-closure/` still reports 2 errors (same pattern as sibling 009 packets). Not blocking per convention.
 - The 3 P2 findings (lowest severity) were NOT implemented this session — they are catalogued in `cross-phase-findings.json` for future work.
-- The user-tuned `ENV_REFERENCE.md` manual edit noted during the run was preserved (not reverted); fix agents correctly layered their changes on top of it.
+- The user-tuned `../../../../../skill/system-spec-kit/mcp_server/ENV_REFERENCE.md` manual edit noted during the run was preserved (not reverted); fix agents correctly layered their changes on top of it.
 - CF-016 required a retry because the first agent hit Gate 3 despite the template including pre-approval prose. Stronger Gate 3 prefix was used for the retry and succeeded. Worth considering for future dispatchers: always prefix prompts with a hard `GATE 3 PRE-APPROVED` header rather than embedding mid-prompt.
 - 28 findings after dedup suggests roughly 1.8 findings per research phase on average — some phases (e.g. 001 with 19 prior iterations) contributed few net-new findings; others (runtime/executor/concurrency-heavy phases) dominated.
 
