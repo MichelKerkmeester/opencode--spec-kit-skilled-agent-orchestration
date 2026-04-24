@@ -15,7 +15,9 @@
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring",
-    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation"
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements"
   ],
   "migrated": true,
   "migration_source": "legacy",
@@ -216,7 +218,7 @@
     ],
     "causal_summary": "Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation. Direct child parent for 001-skill-advisor-hook-surface through 011-copilot-writer-wiring.",
     "created_at": "2026-04-21T13:00:00Z",
-    "last_save_at": "2026-04-23T18:59:32Z",
+    "last_save_at": "2026-04-24T06:06:39Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -239,7 +241,9 @@
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring",
-    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation"
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements",
+    "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements"
   ],
   "migration": {
     "active_phase": "009-hook-daemon-parity",
@@ -255,7 +259,9 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation"
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements"
     ],
     "layout": "phase-root-children"
   }
