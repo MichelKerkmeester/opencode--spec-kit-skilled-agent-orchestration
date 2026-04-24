@@ -147,7 +147,7 @@ mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates
 ---
 
 <!-- /ANCHOR:required-templates-by-level-progressive-enhancement -->
-<!-- ANCHOR:optional-templates-level-3-only -->
+<!-- ANCHOR:optional-templates-any-level -->
 ## 4. OPTIONAL TEMPLATES (Any Level)
 
 These templates are OPTIONAL and can be added at any documentation level:
@@ -165,7 +165,7 @@ These templates are OPTIONAL and can be added at any documentation level:
 
 ---
 
-<!-- /ANCHOR:optional-templates-level-3-only -->
+<!-- /ANCHOR:optional-templates-any-level -->
 <!-- ANCHOR:folder-structure-by-level-progressive-enhancement -->
 ## 5. FOLDER STRUCTURE BY LEVEL (Progressive Enhancement)
 

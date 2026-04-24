@@ -1,0 +1,105 @@
+{
+  "sessionId": "2026-04-24T09:48:20.783Z",
+  "generation": 2,
+  "lineageMode": "restart",
+  "parentSessionId": "2026-04-24T08:04:38.636Z",
+  "pass": 2,
+  "openFindings": [
+    {
+      "id": "P2-pass2-001",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Redundant tier-downgrade governance_audit emitters across 3 code sites",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts",
+      "lines": [182, 202],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-mutations.ts", "lines": [88, 114] },
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/lib/storage/post-insert-metadata.ts", "lines": [105, 120] }
+      ],
+      "iterationFirstSeen": 1,
+      "pass": 2,
+      "evidence": "Three code sites emit action='tier_downgrade_non_constitutional_path'. Handler condition (previousTier==='constitutional' && nextTier==='important') can overlap with SQL-layer unconditional emit when a previously-constitutional row's path is non-constitutional AND request is constitutional — produces duplicate audits.",
+      "status": "open"
+    },
+    {
+      "id": "P2-pass2-002",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "Wave-1 strategy description drift: importance_tier still in ALLOWED_POST_INSERT_COLUMNS",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants/review-pass-02/deep-review-strategy.md",
+      "lines": [15],
+      "iterationFirstSeen": 1,
+      "pass": 2,
+      "evidence": "strategy.md claims the allowlist removal as Wave-1 P1-018 fix; in practice the allowlist still contains 'importance_tier' (post-insert-metadata.ts:56) but the guard was hoisted above the SET builder. Functional equivalence holds; documentation drift only.",
+      "status": "open"
+    },
+    {
+      "id": "P2-pass2-003",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Constitutional→critical downgrade emits no governance_audit",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-mutations.ts",
+      "lines": [456, 478],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts", "lines": [167, 172] }
+      ],
+      "iterationFirstSeen": 1,
+      "pass": 2,
+      "evidence": "Guard only triggers for importanceTier==='constitutional' requests. A request importanceTier='critical' against a currently-constitutional row on a non-constitutional path downgrades to 'critical' without any typed governance_audit. Handler audit condition nextTier==='important' also fails. Observability gap, not Invariant-3 violation.",
+      "status": "open",
+      "relatedFindings": ["P1-008", "P1-016"]
+    }
+  ],
+  "resolvedFindings": [
+    {
+      "id": "P0-001",
+      "severity": "P0",
+      "resolvedInPass": 2,
+      "resolvedInIteration": 1,
+      "resolution": "closed",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-mutations.ts:456-478 (SQL-layer guard + audit)",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/storage/post-insert-metadata.ts:88-128 (metadata-layer guard + audit)",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts:167-208 (handler-layer re-verification audit)",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-update-constitutional-guard.vitest.ts (both downgrade and preservation branches exercised)",
+        "12-site SQL-write census confirms no bypass candidate"
+      ],
+      "bypassProbes": 8,
+      "bypassFindings": 0
+    },
+    {
+      "id": "P1-018",
+      "severity": "P1",
+      "resolvedInPass": 2,
+      "resolvedInIteration": 1,
+      "resolution": "resolved-in-spirit",
+      "evidence": [
+        "post-insert-metadata.ts:56 — importance_tier STILL in ALLOWED_POST_INSERT_COLUMNS",
+        "post-insert-metadata.ts:88-128 — guard hoisted inside applyPostInsertMetadata prior to SET builder; functionally equivalent to allowlist removal"
+      ]
+    }
+  ],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": false,
+    "traceability": false,
+    "maintainability": false
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 3
+  },
+  "openFindingsCount": 3,
+  "resolvedFindingsCount": 2,
+  "convergenceScore": 0.0,
+  "pass": 2,
+  "waveOneVerification": {
+    "P0-001": "CLOSED",
+    "P0-002": "PENDING-iter-2",
+    "P1-008": "PENDING-iter-3",
+    "P1-016": "PENDING-iter-3",
+    "P1-018": "RESOLVED-IN-SPIRIT"
+  }
+}

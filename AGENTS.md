@@ -262,7 +262,7 @@ Every conversation that modifies files MUST have a spec folder. **Full details:*
 | ------ | -------------- | ----------------------------------------------------- | ---------------------------------- |
 | **1**  | <100           | spec.md, plan.md, tasks.md, implementation-summary.md | All features (minimum)             |
 | **2**  | 100-499        | Level 1 + checklist.md                                | QA validation needed               |
-| **3**  | ≥500           | Level 2 + decision-record.md (+ optional research.md) | Complex/architecture changes       |
+| **3**  | ≥500           | Level 2 + decision-record.md (+ optional research.md, resource-map.md) | Complex/architecture changes       |
 | **3+** | Complexity 80+ | Level 3 + AI protocols, extended checklist, sign-offs | Multi-agent, enterprise governance |
 
 **Optional cross-cutting docs (any level)**: `handover.md`, `debug-delegation.md`, `research.md`, and `resource-map.md` - copy from `.opencode/skill/system-spec-kit/templates/` as needed.
