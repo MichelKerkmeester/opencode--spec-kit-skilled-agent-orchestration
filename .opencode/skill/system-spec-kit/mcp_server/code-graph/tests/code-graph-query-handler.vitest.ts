@@ -450,6 +450,69 @@ describe('code-graph-query handler', () => {
     });
   });
 
+  it('re-ranks more than 10 ambiguous name matches after fq_name misses before selecting a calls_to candidate', async () => {
+    const leadingCandidates = Array.from({ length: 11 }, (_, index) => ({
+      symbolId: `shadow-wrapper-${index + 1}`,
+      fqName: `handlers.shadow.handleSessionStart${index + 1}`,
+      name: 'handleSessionStart',
+      kind: index % 2 === 0 ? 'variable' : 'function',
+      filePath: `handlers/shadow-wrapper-${String(index + 1).padStart(2, '0')}.ts`,
+      startLine: index + 1,
+    }));
+    const implementationCandidate = {
+      symbolId: 'shadow-implementation-after-cap',
+      fqName: 'hooks.codex.handleSessionStart',
+      name: 'handleSessionStart',
+      kind: 'function',
+      filePath: 'hooks/codex/session-start.ts',
+      startLine: 80,
+    };
+
+    mocks.getDb.mockReturnValue(createDb({
+      byFq: [],
+      byName: [...leadingCandidates, implementationCandidate],
+    }));
+    mocks.queryEdgesTo.mockImplementation((symbolId: string) => (
+      symbolId === 'shadow-implementation-after-cap'
+        ? [{
+          edge: { sourceId: 'caller-1', edgeType: 'CALLS', metadata: { confidence: 0.8 } },
+          sourceNode: { fqName: 'Caller', filePath: 'src/caller.ts', startLine: 5 },
+        }]
+        : []
+    ));
+
+    const result = await handleCodeGraphQuery({
+      operation: 'calls_to',
+      subject: 'handleSessionStart',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.status).toBe('ok');
+    expect(parsed.data.selectedCandidate).toMatchObject({
+      symbolId: 'shadow-implementation-after-cap',
+      kind: 'function',
+      operationEdgeCount: 1,
+      selectedForOperation: 'calls_to',
+    });
+    expect(parsed.data.warnings).toEqual([
+      expect.objectContaining({
+        code: 'ambiguous_subject',
+        subject: 'handleSessionStart',
+        matchField: 'name',
+        count: 12,
+        selectionReason: 'calls_to edge count',
+        candidates: expect.arrayContaining([
+          expect.objectContaining({ symbolId: 'shadow-implementation-after-cap' }),
+        ]),
+        selectedCandidate: expect.objectContaining({
+          symbolId: 'shadow-implementation-after-cap',
+        }),
+      }),
+    ]);
+    expect(parsed.data.warnings[0].candidates).toHaveLength(10);
+    expect(parsed.data.warnings[0].message).toContain('12 total; showing first 10');
+  });
+
   it('re-ranks more than 10 ambiguous fq_name matches before selecting a calls_from candidate', async () => {
     const leadingCandidates = Array.from({ length: 11 }, (_, index) => ({
       symbolId: `wrapper-${index + 1}`,

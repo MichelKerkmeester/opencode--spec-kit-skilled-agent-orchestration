@@ -18,7 +18,7 @@ Reducer-generated observability surface for the active research packet.
 - Topic: Deeply investigate what needs to be implemented for packet 026/013 to integrate automatic convergence-time resource-map.md emission into sk-deep-review and sk-deep-research in a smart, low-coupling way. Determine the live delta/state schemas, safest integration points, template-fit constraints, workflow/docs/test changes, and the edge-case handling needed for a production-quality implementation.
 - Started: 2026-04-24T10:30:43.408Z
 - Status: INITIALIZED
-- Iteration: 5 of 7
+- Iteration: 7 of 7
 - Session ID: dr-2026-04-24T10-30-43-408Z
 - Parent Session: none
 - Lifecycle Mode: new
@@ -36,9 +36,11 @@ Reducer-generated observability surface for the active research packet.
 | 3 | Pin the exact implementation contract for a workflow-owned emitter step at `{artifact_dir}/resource-map.md`, then map the required auto/confirm YAML, command/docs, playbook/catalog, and edge-case updates. | implementation-contract | 0.90 | 5 | complete |
 | 4 | Turn this contract into an implementation-ready delta list: pin the exact config/CLI plumbing for the opt-out flag, define the extractor input/output API around event-stream delta files plus template-faithful Note-column counts, and revise the phase-013 packet acceptance criteria/tasks so they point at the workflow-owned synthesis step and the existing synthesis docs/playbooks instead of reducer-local hooks and custom output columns. | implementation-delta | 0.88 | 4 | complete |
 | 5 | Audit the current phase-013 packet docs against the live contract and produce an explicit rewrite list with file/requirement/task drift called out precisely. | packet-rewrite-audit | 0.85 | 4 | insight |
+| undefined | Produce the implementation sequencing plan for the corrected contract: safest patch order, coupled slices, verification gates, and wrong-sequence breakage risks. | - | 0.85 | 0 | complete |
+| 7 | Final guardrail sweep. Look for hidden blockers, contradictions, or rollout traps that could still surprise implementation after the contract and sequencing are understood. | guardrail-sweep | 0.85 | 4 | complete |
 
-- iterationsCompleted: 5
-- keyFindings: 21
+- iterationsCompleted: 7
+- keyFindings: 29
 - openQuestions: 0
 - resolvedQuestions: 5
 
@@ -55,11 +57,11 @@ Reducer-generated observability surface for the active research packet.
 <!-- /ANCHOR:questions -->
 <!-- ANCHOR:trend -->
 ## 5. TREND
-- Last 3 ratios: 0.90 -> 0.88 -> 0.85
+- Last 3 ratios: 0.85 -> 0.85 -> 0.85
 - Stuck count: 0
 - Guard violations: none recorded by the reducer pass
 - convergenceScore: 0.85
-- coverageBySources: {"code":78}
+- coverageBySources: {"code":92}
 
 <!-- /ANCHOR:trend -->
 <!-- ANCHOR:dead-ends -->
@@ -79,11 +81,20 @@ Reducer-generated observability surface for the active research packet.
 - No new dead ends beyond the previously blocked directions. This iteration reaffirmed that reducer-local emission, nested `findings[]` extractor inputs, and custom `Findings` / `Citations` columns must stay out of the implementation packet. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:136] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:181] (iteration 5)
 - Preserving the packet's wildcard “create new feature/playbook entry” approach as the primary docs plan. The live operator-facing synthesis contract already lives in the existing synthesis pages and finalization scenarios, so leaving those unchanged would keep the canonical docs stale. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/tasks.md:73] [SOURCE: .opencode/skill/sk-deep-research/feature_catalog/01--loop-lifecycle/04-synthesis.md:18] [SOURCE: .opencode/skill/sk-deep-review/manual_testing_playbook/06--synthesis-save-and-guardrails/027-final-synthesis-memory-save-and-guardrail-behavior.md:66] (iteration 5)
 - Treating the current phase-013 packet as implementation-ready without first rewriting `spec.md`, `tasks.md`, and `checklist.md`. The current packet would route work back into reducers and custom table columns that the live workflow/template contract does not support. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:55] (iteration 5)
+- Landing runtime changes before rewriting phase-013 packet docs. This would preserve the wrong acceptance criteria and create avoidable review churn because the packet still points work into reducers, custom columns, and new standalone docs. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:50] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/checklist.md:55] (iteration 6)
+- Re-resolving artifact roots inside the emitter or extractor after workflow setup. Child-phase packet allocation is sequential and late resolution can move writes into a sibling `-pt-NN` directory. [SOURCE: .opencode/skill/system-spec-kit/shared/review-research-paths.cjs:31] [SOURCE: .opencode/skill/system-spec-kit/shared/review-research-paths.cjs:117] (iteration 6)
+- Shipping only one mode (`:auto` or `:confirm`) first. Both modes already resolve packet state from the same `{artifact_dir}` contract, so mode-skew would make the user-facing contract inconsistent and is not a safe intermediate state. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:98] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:84] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:89] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:89] (iteration 6)
+- Using the packet's current reducer-local wording as the rollout plan is now a dead end. The live synthesis boundary and the phase-012 template make that plan structurally incompatible with the shipped contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:81] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:857] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:45] (iteration 6)
+- Accepting `{spec_folder}/review/` as the only documented output location for child-phase runs is no longer viable; the live workflow resolves root-level packet directories and phase-013 must not reinforce the older child-local wording. [SOURCE: .opencode/command/spec_kit/deep-review.md:194] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:113] (iteration 7)
+- Designing one extractor API around the packet's nested `findings[]` prose shape. The live template and workflow stages still demand normalized, loop-specific inputs first. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:55] (iteration 7)
+- Emitting the deep-review map at the first generic synthesis boundary before `step_build_finding_registry` and `step_adversarial_selfcheck`. That would create map/report disagreement on active severities. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:915] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:928] (iteration 7)
+- Treating missing canonical iteration/delta artifacts as degradable warnings is structurally incompatible with the workflow's post-dispatch validation contract. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:109] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:799] (iteration 7)
+- Treating phase-013 as "add a resource-map mention and move on." The command/output/completion surfaces around deep review still carry child-local artifact wording that has to be corrected together. [SOURCE: .opencode/command/spec_kit/deep-review.md:193] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:1014] (iteration 7)
 
 <!-- /ANCHOR:dead-ends -->
 <!-- ANCHOR:next-focus -->
 ## 7. NEXT FOCUS
-Rewrite phase-013 `spec.md`, `tasks.md`, and `checklist.md` to match the live contract, then implement the shared delta-file extractor, `resourceMap.emit` / `--no-resource-map` plumbing, and the workflow-owned `step_emit_resource_map` in both deep-loop synthesis flows.
+Start implementation, but keep four guardrails explicit in the patch plan: rewrite the packet docs first, keep the renderer/template shared but normalize inputs per loop, place the deep-review emitter after registry + self-check, and update the command/completion/output surfaces that still point operators at the wrong artifact location for child-phase runs.
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:active-risks -->

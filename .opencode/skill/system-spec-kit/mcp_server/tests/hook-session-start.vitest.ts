@@ -1,8 +1,11 @@
 // ───────────────────────────────────────────────────────────────
 // TEST: SessionStart Hook
 // ───────────────────────────────────────────────────────────────
+import { spawnSync } from 'node:child_process';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { rmSync } from 'node:fs';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
 import { ensureStateDir, saveState, getStatePath, type HookState } from '../hooks/claude/hook-state.js';
 import { createSharedPayloadEnvelope } from '../lib/context/shared-payload.js';
 import {
@@ -302,6 +305,63 @@ describe('session-prime hook', () => {
         'Startup brief module unavailable',
       );
       expect(sections.map((section) => section.title)).not.toContain('Session Continuity');
+    });
+
+    it('gemini startup emits startup payload contract through additionalContext', () => {
+      const workspaceRoot = resolve(import.meta.dirname, '../../../../..');
+      const hookPath = join(workspaceRoot, '.opencode/skill/system-spec-kit/mcp_server/dist/hooks/gemini/session-prime.js');
+      const result = spawnSync(process.execPath, [hookPath], {
+        cwd: workspaceRoot,
+        input: JSON.stringify({
+          session_id: testSessionId,
+          hook_event_name: 'SessionStart',
+          source: 'startup',
+          cwd: workspaceRoot,
+          specFolder: 'specs/015-demo',
+        }),
+        encoding: 'utf8',
+        timeout: 10000,
+        maxBuffer: 1024 * 1024,
+      });
+
+      expect(result.status).toBe(0);
+      const parsed = JSON.parse(result.stdout) as {
+        hookSpecificOutput?: {
+          additionalContext?: string;
+        };
+      };
+      expect(parsed.hookSpecificOutput?.additionalContext).toContain('## Session Context');
+      expect(parsed.hookSpecificOutput?.additionalContext).toContain('## Startup Payload Contract');
+      expect(parsed.hookSpecificOutput?.additionalContext).toContain('"producer": "startup_brief"');
+    });
+
+    it('copilot startup banner includes the startup payload contract', () => {
+      const workspaceRoot = resolve(import.meta.dirname, '../../../../..');
+      const hookPath = join(workspaceRoot, '.opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/session-prime.js');
+      const tempDir = mkdtempSync(join(tmpdir(), 'speckit-copilot-startup-'));
+      const instructionsPath = join(tempDir, 'copilot-instructions.md');
+      const result = spawnSync(process.execPath, [hookPath], {
+        cwd: workspaceRoot,
+        input: JSON.stringify({
+          session_id: testSessionId,
+          source: 'startup',
+          cwd: workspaceRoot,
+          specFolder: 'specs/015-demo',
+        }),
+        env: {
+          ...process.env,
+          SPECKIT_COPILOT_INSTRUCTIONS_PATH: instructionsPath,
+        },
+        encoding: 'utf8',
+        timeout: 10000,
+        maxBuffer: 1024 * 1024,
+      });
+
+      expect(result.status).toBe(0);
+      expect(result.stdout).toContain('Session context received. Current state:');
+      expect(result.stdout).toContain('Startup Payload Contract');
+      expect(result.stdout).toContain('"producer": "startup_brief"');
+      rmSync(tempDir, { recursive: true, force: true });
     });
   });
 });

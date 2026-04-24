@@ -568,6 +568,210 @@
         ".opencode/skill/sk-deep-research/manual_testing_playbook/06--synthesis-save-and-guardrails/019-final-synthesis-memory-save-and-guardrail-behavior.md:26",
         ".opencode/skill/sk-deep-review/manual_testing_playbook/06--synthesis-save-and-guardrails/027-final-synthesis-memory-save-and-guardrail-behavior.md:26"
       ]
+    },
+    {
+      "id": "finding-6-3-config-cli-plumbing-and-workflow-invocation-have-to-land-together-after-the-extr",
+      "text": "Config/CLI plumbing and workflow invocation have to land together after the extractor exists. The command surfaces currently parse only executor-related flags into `config.executor.*`, and none of the four workflow YAMLs expose a `resourceMap.emit` setting or `resource-map.md` output today. If `step_emit_resource_map` lands before `resourceMap.emit`, `--no-resource-map`, and the new `state_paths.resource_map_output` contract are added consistently to both auto and confirm flows, the runtime will either lack the opt-out path or diverge by mode. [SOURCE: .opencode/command/spec_kit/deep-research.md:64] [SOURCE: .opencode/command/spec_kit/deep-research.md:79] [SOURCE: .opencode/command/spec_kit/deep-review.md:62] [SOURCE: .opencode/command/spec_kit/deep-review.md:77] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:98] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:89] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:84] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:89]",
+      "addedAtIteration": 6,
+      "sources": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:50",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/tasks.md:58",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/checklist.md:55",
+        ".opencode/command/spec_kit/deep-research.md:64",
+        ".opencode/command/spec_kit/deep-review.md:62",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:98",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:724",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:827",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:89",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:760",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:873",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:84",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:89",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:37",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:181",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:65",
+        ".opencode/skill/sk-deep-research/manual_testing_playbook/06--synthesis-save-and-guardrails/019-final-synthesis-memory-save-and-guardrail-behavior.md:71",
+        ".opencode/skill/sk-deep-review/manual_testing_playbook/06--synthesis-save-and-guardrails/027-final-synthesis-memory-save-and-guardrail-behavior.md:73"
+      ]
+    },
+    {
+      "id": "finding-6-4-the-final-wiring-slice-should-be-a-workflow-owned-synthesis-emitter-that-reuses-",
+      "text": "The final wiring slice should be a workflow-owned synthesis emitter that reuses the already-resolved `{artifact_dir}` and only then extend the existing synthesis docs/playbooks plus run manual loop verification. Re-resolving artifact roots inside the emitter is unsafe for child-phase packets because `resolveArtifactRoot()` allocates `{phaseSlug}-pt-{NN}` by counting existing siblings at call time; a late re-resolve can therefore drift into a new sibling packet. The manual testing surfaces already anchor final-synthesis behavior to the existing command/YAML contracts, so the docs and full integration runs belong after the runtime seam is real. [SOURCE: .opencode/skill/system-spec-kit/shared/review-research-paths.cjs:19] [SOURCE: .opencode/skill/system-spec-kit/shared/review-research-paths.cjs:65] [SOURCE: .opencode/skill/system-spec-kit/shared/review-research-paths.cjs:114] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:827] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:873] [SOURCE: .opencode/skill/sk-deep-research/manual_testing_playbook/06--synthesis-save-and-guardrails/019-final-synthesis-memory-save-and-guardrail-behavior.md:71] [SOURCE: .opencode/skill/sk-deep-review/manual_testing_playbook/06--synthesis-save-and-guardrails/027-final-synthesis-memory-save-and-guardrail-behavior.md:73]",
+      "addedAtIteration": 6,
+      "sources": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:50",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/tasks.md:58",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/checklist.md:55",
+        ".opencode/command/spec_kit/deep-research.md:64",
+        ".opencode/command/spec_kit/deep-review.md:62",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:98",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:724",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:827",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:89",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:760",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:873",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:84",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:89",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:37",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:181",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:65",
+        ".opencode/skill/sk-deep-research/manual_testing_playbook/06--synthesis-save-and-guardrails/019-final-synthesis-memory-save-and-guardrail-behavior.md:71",
+        ".opencode/skill/sk-deep-review/manual_testing_playbook/06--synthesis-save-and-guardrails/027-final-synthesis-memory-save-and-guardrail-behavior.md:73"
+      ]
+    },
+    {
+      "id": "finding-6-1-the-packet-doc-rewrite-is-a-hard-dependency-not-optional-prep-work-the-current-p",
+      "text": "The packet-doc rewrite is a hard dependency, not optional prep work. The current packet still promises reducer-local emission, nested `findings[]` extractor inputs, custom `Findings` / `Citations` columns, and new standalone doc/playbook files, while the live workflow/template contract points to workflow-owned synthesis emission, JSONL delta normalization, Note/Summary-only counts, and edits to existing synthesis surfaces. If runtime code lands before the packet rewrite, the implementation will be judged against the wrong contract and the task list will steer changes into the wrong files. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:50] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/tasks.md:58] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/checklist.md:55] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:827] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:37]",
+      "addedAtIteration": 6,
+      "sources": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:50",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/tasks.md:58",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/checklist.md:55",
+        ".opencode/command/spec_kit/deep-research.md:64",
+        ".opencode/command/spec_kit/deep-review.md:62",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:98",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:724",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:827",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:89",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:760",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:873",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:84",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:89",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:37",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:181",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:65",
+        ".opencode/skill/sk-deep-research/manual_testing_playbook/06--synthesis-save-and-guardrails/019-final-synthesis-memory-save-and-guardrail-behavior.md:71",
+        ".opencode/skill/sk-deep-review/manual_testing_playbook/06--synthesis-save-and-guardrails/027-final-synthesis-memory-save-and-guardrail-behavior.md:73"
+      ]
+    },
+    {
+      "id": "finding-6-2-the-smallest-safe-first-runtime-slice-after-the-packet-rewrite-is-a-pure-shared-",
+      "text": "The smallest safe first runtime slice after the packet rewrite is a pure shared extractor/renderer plus unit fixtures, with no workflow wiring yet. The live workflows already pin `packet_dir`, `delta_dir`, and narrative outputs under the resolved `{artifact_dir}`, and post-dispatch validation already guarantees canonical iteration records plus a delta file before reduction. That means the extractor can be built and tested against real delta-file inputs and the locked template shape without risking an intermediate runtime failure. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:98] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:114] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:724] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:89] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:103] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:39] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:181]",
+      "addedAtIteration": 6,
+      "sources": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:50",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/tasks.md:58",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/checklist.md:55",
+        ".opencode/command/spec_kit/deep-research.md:64",
+        ".opencode/command/spec_kit/deep-review.md:62",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:98",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:724",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:827",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:89",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:760",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:873",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:84",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:89",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:37",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:181",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:65",
+        ".opencode/skill/sk-deep-research/manual_testing_playbook/06--synthesis-save-and-guardrails/019-final-synthesis-memory-save-and-guardrail-behavior.md:71",
+        ".opencode/skill/sk-deep-review/manual_testing_playbook/06--synthesis-save-and-guardrails/027-final-synthesis-memory-save-and-guardrail-behavior.md:73"
+      ]
+    },
+    {
+      "id": "finding-7-1-in-deep-review-step-emit-resource-map-cannot-be-inserted-at-the-generic-before-r",
+      "text": "In deep review, `step_emit_resource_map` cannot be inserted at the generic \"before report compile\" boundary. It has to run after `step_build_finding_registry` and `step_adversarial_selfcheck`, because those steps settle the active P0/P1/P2 registry that the final report uses. Emitting earlier would let `resource-map.md` preserve pre-adjudication counts while `review-report.md` shows post-adjudication counts. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:915] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:919] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:928] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:1004] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:1024] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:1033]",
+      "addedAtIteration": 7,
+      "sources": [
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:18",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:77",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:117",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:823",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:1141",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:21",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:55",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:67",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:94",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:787",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:83",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:915",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:1014",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:975",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:1004",
+        ".opencode/command/spec_kit/deep-review.md:187",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:219"
+      ]
+    },
+    {
+      "id": "finding-7-3-the-packet-still-encodes-the-wrong-failure-boundary-in-a-way-that-could-leak-int",
+      "text": "The packet still encodes the wrong failure boundary in a way that could leak into implementation tests. `spec.md` treats malformed or missing delta conditions as degradable map-generation cases, but the live workflow already treats missing canonical iteration/delta outputs as post-dispatch hard failures before reduction. The \"degraded but continue\" behavior should stay limited to malformed non-canonical evidence rows that a renderer chooses to skip after the workflow contract has already been satisfied. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:219] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:225] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:109] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:787] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:799]",
+      "addedAtIteration": 7,
+      "sources": [
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:18",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:77",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:117",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:823",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:1141",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:21",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:55",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:67",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:94",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:787",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:83",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:915",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:1014",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:975",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:1004",
+        ".opencode/command/spec_kit/deep-review.md:187",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:219"
+      ]
+    },
+    {
+      "id": "finding-7-2-the-rollout-still-has-an-operator-facing-path-contract-trap-on-the-deep-review-s",
+      "text": "The rollout still has an operator-facing path-contract trap on the deep-review side. The command overview says the review packet lives under `{spec_folder}/review/` and outputs `{spec_folder}/review/review-report.md`, while the live YAML resolves a root-level `{artifact_dir}` packet for child phases and the completion message still summarizes artifacts as `review/review-report.md` plus `review/` state files. If phase 013 only adds a `resource-map.md` mention without fixing those surrounding output descriptions, users and manual tests will keep checking the wrong location for child-phase runs. [SOURCE: .opencode/command/spec_kit/deep-review.md:187] [SOURCE: .opencode/command/spec_kit/deep-review.md:202] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:83] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:113] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:1014]",
+      "addedAtIteration": 7,
+      "sources": [
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:18",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:77",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:117",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:823",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:1141",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:21",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:55",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:67",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:94",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:787",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:83",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:915",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:1014",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:975",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:1004",
+        ".opencode/command/spec_kit/deep-review.md:187",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:219"
+      ]
+    },
+    {
+      "id": "finding-7-4-the-safest-shared-implementation-seam-is-not-one-raw-input-extractor-for-both-lo",
+      "text": "The safest shared implementation seam is not \"one raw-input extractor for both loops\"; it is \"shared path classifier/renderer plus loop-specific normalizers.\" The template only permits the generic `Path | Action | Status | Note` shape, but deep review's final trustworthy counts emerge after registry/self-check adjudication while deep research synthesis consumes iteration artifacts and strategy data directly. A single raw payload contract would either duplicate review adjudication logic or lose fidelity. [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:55] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:67] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:919] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:831] [INFERENCE: based on the differing synthesis inputs in the review and research workflows]",
+      "addedAtIteration": 7,
+      "sources": [
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:18",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:77",
+        ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs:117",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:823",
+        ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs:1141",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:21",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:55",
+        ".opencode/skill/system-spec-kit/templates/resource-map.md:67",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:94",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:787",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:83",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:915",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:1014",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:975",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:1004",
+        ".opencode/command/spec_kit/deep-review.md:187",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:219"
+      ]
     }
   ],
   "ruledOutDirections": [
@@ -645,6 +849,51 @@
       "id": "ruled-out-5-2-treating-the-current-phase-013-packet-as-implementation-ready-without-first-rewr",
       "text": "Treating the current phase-013 packet as implementation-ready without first rewriting `spec.md`, `tasks.md`, and `checklist.md`. The current packet would route work back into reducers and custom table columns that the live workflow/template contract does not support. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:55]",
       "addedAtIteration": 5
+    },
+    {
+      "id": "ruled-out-6-2-landing-runtime-changes-before-rewriting-phase-013-packet-docs-this-would-preser",
+      "text": "Landing runtime changes before rewriting phase-013 packet docs. This would preserve the wrong acceptance criteria and create avoidable review churn because the packet still points work into reducers, custom columns, and new standalone docs. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:50] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/checklist.md:55]",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-6-4-re-resolving-artifact-roots-inside-the-emitter-or-extractor-after-workflow-setup",
+      "text": "Re-resolving artifact roots inside the emitter or extractor after workflow setup. Child-phase packet allocation is sequential and late resolution can move writes into a sibling `-pt-NN` directory. [SOURCE: .opencode/skill/system-spec-kit/shared/review-research-paths.cjs:31] [SOURCE: .opencode/skill/system-spec-kit/shared/review-research-paths.cjs:117]",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-6-3-shipping-only-one-mode-auto-or-confirm-first-both-modes-already-resolve-packet-s",
+      "text": "Shipping only one mode (`:auto` or `:confirm`) first. Both modes already resolve packet state from the same `{artifact_dir}` contract, so mode-skew would make the user-facing contract inconsistent and is not a safe intermediate state. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:98] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:84] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:89] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml:89]",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-6-1-using-the-packet-s-current-reducer-local-wording-as-the-rollout-plan-is-now-a-de",
+      "text": "Using the packet's current reducer-local wording as the rollout plan is now a dead end. The live synthesis boundary and the phase-012 template make that plan structurally incompatible with the shipped contract. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:81] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:857] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:45]",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-7-1-accepting-spec-folder-review-as-the-only-documented-output-location-for-child-ph",
+      "text": "Accepting `{spec_folder}/review/` as the only documented output location for child-phase runs is no longer viable; the live workflow resolves root-level packet directories and phase-013 must not reinforce the older child-local wording. [SOURCE: .opencode/command/spec_kit/deep-review.md:194] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:113]",
+      "addedAtIteration": 7
+    },
+    {
+      "id": "ruled-out-7-5-designing-one-extractor-api-around-the-packet-s-nested-findings-prose-shape-the-",
+      "text": "Designing one extractor API around the packet's nested `findings[]` prose shape. The live template and workflow stages still demand normalized, loop-specific inputs first. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:55]",
+      "addedAtIteration": 7
+    },
+    {
+      "id": "ruled-out-7-3-emitting-the-deep-review-map-at-the-first-generic-synthesis-boundary-before-step",
+      "text": "Emitting the deep-review map at the first generic synthesis boundary before `step_build_finding_registry` and `step_adversarial_selfcheck`. That would create map/report disagreement on active severities. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:915] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:928]",
+      "addedAtIteration": 7
+    },
+    {
+      "id": "ruled-out-7-2-treating-missing-canonical-iteration-delta-artifacts-as-degradable-warnings-is-s",
+      "text": "Treating missing canonical iteration/delta artifacts as degradable warnings is structurally incompatible with the workflow's post-dispatch validation contract. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:109] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:799]",
+      "addedAtIteration": 7
+    },
+    {
+      "id": "ruled-out-7-4-treating-phase-013-as-add-a-resource-map-mention-and-move-on-the-command-output-",
+      "text": "Treating phase-013 as \"add a resource-map mention and move on.\" The command/output/completion surfaces around deep review still carry child-local artifact wording that has to be corrected together. [SOURCE: .opencode/command/spec_kit/deep-review.md:193] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:1014]",
+      "addedAtIteration": 7
     }
   ],
   "blockedStopHistory": [],
@@ -652,13 +901,13 @@
   "graphDecision": null,
   "graphBlockers": [],
   "metrics": {
-    "iterationsCompleted": 5,
+    "iterationsCompleted": 7,
     "openQuestions": 0,
     "resolvedQuestions": 5,
-    "keyFindings": 21,
+    "keyFindings": 29,
     "convergenceScore": 0.85,
     "coverageBySources": {
-      "code": 78
+      "code": 92
     }
   },
   "corruptionWarnings": [],

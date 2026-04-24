@@ -411,4 +411,94 @@ describe('code-graph-context handler', () => {
       nowSpy.mockRestore();
     }
   });
+
+  it('surfaces omittedAnchors for multi-anchor deadline timeouts through the handler payload', async () => {
+    const { buildContext: actualBuildContext } = await vi.importActual<typeof import('../lib/code-graph-context.js')>(
+      '../lib/code-graph-context.js',
+    );
+
+    mocks.buildContext.mockImplementation((args) => actualBuildContext(args));
+    mocks.resolveSeeds.mockReturnValue([
+      {
+        filePath: 'src/alpha.ts',
+        startLine: 10,
+        endLine: 20,
+        symbolId: 'symbol-alpha',
+        fqName: 'Alpha.run',
+        kind: 'function',
+        confidence: 0.95,
+        resolution: 'exact',
+      },
+      {
+        filePath: 'src/beta.ts',
+        startLine: 30,
+        endLine: 40,
+        symbolId: 'symbol-beta',
+        fqName: 'Beta.run',
+        kind: 'function',
+        confidence: 0.94,
+        resolution: 'exact',
+      },
+      {
+        filePath: 'src/gamma.ts',
+        startLine: 50,
+        endLine: 60,
+        symbolId: 'symbol-gamma',
+        fqName: 'Gamma.run',
+        kind: 'function',
+        confidence: 0.93,
+        resolution: 'exact',
+      },
+    ]);
+    mocks.queryEdgesFrom.mockImplementation((symbolId, ..._rest: unknown[]) => (
+      symbolId === 'symbol-alpha'
+        ? [
+          {
+            edge: { sourceId: symbolId, targetId: 'callee-1', edgeType: 'CALLS' },
+            targetNode: { fqName: 'callee.one', kind: 'function', filePath: 'src/dependency.ts', startLine: 5 },
+          },
+          {
+            edge: { sourceId: symbolId, targetId: 'callee-2', edgeType: 'CALLS' },
+            targetNode: { fqName: 'callee.two', kind: 'function', filePath: 'src/dependency.ts', startLine: 15 },
+          },
+        ]
+        : []
+    ));
+
+    const nowSpy = vi.spyOn(performance, 'now');
+    nowSpy
+      .mockReturnValueOnce(0)
+      .mockReturnValueOnce(0)
+      .mockReturnValueOnce(0)
+      .mockReturnValueOnce(0)
+      .mockReturnValueOnce(399)
+      .mockReturnValueOnce(401)
+      .mockReturnValue(401);
+
+    try {
+      const result = await handleCodeGraphContext({
+        queryMode: 'neighborhood',
+        seeds: [{ filePath: 'src/placeholder.ts', startLine: 1, endLine: 1 }],
+      });
+      const parsed = JSON.parse(result.content[0].text);
+
+      expect(parsed.data.anchors).toHaveLength(3);
+      expect(parsed.data.graphContext).toHaveLength(1);
+      expect(parsed.data.graphContext[0].partial).toMatchObject({
+        reason: 'deadline',
+      });
+      expect(parsed.data.metadata.partialOutput).toEqual({
+        isPartial: true,
+        reasons: ['deadline'],
+        omittedSections: 1,
+        omittedAnchors: 2,
+        truncatedText: false,
+      });
+      expect(parsed.data.metadata.partialOutput.omittedAnchors).toBe(
+        parsed.data.anchors.length - parsed.data.graphContext.length,
+      );
+    } finally {
+      nowSpy.mockRestore();
+    }
+  });
 });

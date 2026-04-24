@@ -1,15 +1,17 @@
 ---
 title: "Code-graph readiness contract"
-description: "Phase 017 extracted a shared readiness contract so code-graph handlers emit the same canonicalReadiness, trustState, and lastPersistedAt fields through one module."
+description: "Phase 017 extracted a shared readiness contract so code-graph handlers emit the same canonicalReadiness and trustState fields through one module, while downstream handlers layer richer blocked-read payloads on top of it."
 ---
 
 # Code-graph readiness contract
 
 ## 1. OVERVIEW
 
-Phase 017 extracted a shared readiness contract so code-graph handlers emit the same `canonicalReadiness`, `trustState`, and `lastPersistedAt` fields through one module.
+Phase 017 extracted a shared readiness contract so code-graph handlers emit the same `canonicalReadiness` and `trustState` fields through one module.
 
 This is the shared structural context contract for the code-graph family. It replaced inline readiness helpers in `query.ts` and propagated the same vocabulary to the other read and maintenance handlers that previously exposed inconsistent or missing readiness blocks.
+
+That shared block now sits underneath richer operator-facing payloads. In particular, `code_graph_context` uses the same readiness contract on both success and blocked full-scan responses, then layers blocked-read fields such as `blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, `blockReason`, and `lastPersistedAt` on top so callers can tell both why graph answers were withheld and what to do next.
 
 ---
 
@@ -26,7 +28,7 @@ Commit `f253194bf` then propagated that contract to the six sibling handlers: `q
 
 The contract projects freshness-aware code-graph state onto the canonical `SharedPayloadTrustState` vocabulary from `lib/context/shared-payload.ts` instead of inventing a new local enum. Handlers that operate on adjacent infrastructure rather than direct structural readiness, such as the CCC trio, now still emit the same public fields but use `trustState: 'unavailable'` with `reason: 'readiness_not_applicable'` where a full readiness semantic does not fit.
 
-The result is a single readiness surface across the code-graph family: callers can rely on `canonicalReadiness`, `trustState`, and `lastPersistedAt` being shaped by the same helper module instead of reconstructing per-handler differences.
+The result is a single readiness surface across the code-graph family: callers can rely on `canonicalReadiness` and `trustState` being shaped by the same helper module instead of reconstructing per-handler differences. Downstream handlers can then add surface-specific metadata without changing that shared readiness vocabulary. The current example is `code_graph_context`, whose blocked path returns `status: "blocked"` plus `queryMode`, `blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, `blockReason`, and `lastPersistedAt` while still embedding the shared readiness block under `data.readiness` and echoing `canonicalReadiness` and `trustState` at the top level.
 
 ---
 
@@ -40,7 +42,7 @@ The result is a single readiness surface across the code-graph family: callers c
 | `mcp_server/code-graph/handlers/query.ts` | Handler | Query-time readiness projection and graph metadata envelope |
 | `mcp_server/code-graph/handlers/scan.ts` | Handler | Scan result readiness block |
 | `mcp_server/code-graph/handlers/status.ts` | Handler | Status result readiness block |
-| `mcp_server/code-graph/handlers/context.ts` | Handler | Context result readiness block |
+| `mcp_server/code-graph/handlers/context.ts` | Handler | Context success and blocked-read payloads built on top of the shared readiness block |
 | `mcp_server/code-graph/handlers/ccc-status.ts` | Handler | CCC status stub readiness block |
 | `mcp_server/code-graph/handlers/ccc-reindex.ts` | Handler | CCC reindex stub readiness block |
 | `mcp_server/code-graph/handlers/ccc-feedback.ts` | Handler | CCC feedback stub readiness block |
@@ -50,7 +52,8 @@ The result is a single readiness surface across the code-graph family: callers c
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/readiness-contract.vitest.ts` | Shared readiness helper behavior and trust-state projection |
-| `mcp_server/tests/code-graph-siblings-readiness.vitest.ts` | Sibling-handler readiness propagation |
+| `mcp_server/code-graph/tests/code-graph-siblings-readiness.vitest.ts` | Sibling-handler readiness propagation and top-level readiness field parity |
+| `mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts` | Blocked full-scan payload fields, readiness crash fallback, and structured context metadata |
 | `mcp_server/tests/m8-trust-state-vocabulary.vitest.ts` | Shared payload trust-state vocabulary alignment |
 
 ---

@@ -2,6 +2,8 @@
 // MODULE: Advisor Recommend Tests
 // ───────────────────────────────────────────────────────────────
 
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 const { mockScoreAdvisorPrompt, mockReadAdvisorStatus } = vi.hoisted(() => ({
@@ -87,6 +89,17 @@ function parseResponse(response: Awaited<ReturnType<typeof handleAdvisorRecommen
   return JSON.parse(response.content[0].text) as { status: string; data: Record<string, unknown> };
 }
 
+function expectedWorkspaceRoot(start = process.cwd()): string {
+  let current = resolve(start);
+  for (let index = 0; index < 12; index += 1) {
+    if (existsSync(`${current}/.opencode/skill`)) return current;
+    const parent = resolve(current, '..');
+    if (parent === current) break;
+    current = parent;
+  }
+  return resolve(start);
+}
+
 afterEach(() => {
   advisorPromptCache.clear();
   vi.restoreAllMocks();
@@ -108,6 +121,12 @@ describe('advisor_recommend handler', () => {
     expect(response.status).toBe('ok');
     expect(response.data.freshness).toBe('live');
     expect(response.data.trustState).toEqual(expect.objectContaining({ state: 'live' }));
+    expect(response.data.workspaceRoot).toBe(expectedWorkspaceRoot());
+    expect(response.data.effectiveThresholds).toEqual({
+      confidenceThreshold: 0.8,
+      uncertaintyThreshold: 0.35,
+      confidenceOnly: false,
+    });
     expect(response.data.recommendations).toEqual([
       expect.objectContaining({
         skillId: 'system-spec-kit',

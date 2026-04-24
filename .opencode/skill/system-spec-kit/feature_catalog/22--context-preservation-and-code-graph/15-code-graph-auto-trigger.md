@@ -10,7 +10,16 @@ audited_post_018: true
 
 ensureCodeGraphReady() provides lazy indexing that automatically detects graph freshness and triggers full scans or selective reindexing before queries.
 
-The ensure-ready module checks graph state (fresh/stale/empty) by comparing the current git HEAD against the last indexed HEAD and scanning for stale files. When the graph is empty, a full scan is triggered. When files are stale but below the selective reindex threshold (50 files), only changed files are reindexed. Above the threshold, a full rescan is performed. A 10-second timeout prevents blocking on large codebases. Shared by code_graph_context, code_graph_query, and code_graph_status handlers.
+The ensure-ready module checks graph state (fresh/stale/empty) by comparing the current git HEAD against the last indexed HEAD and scanning for stale files. When the graph is empty, a full scan is required. When files are stale but below the selective reindex threshold (50 files), only changed files are reindexed inline. Above the threshold, a full rescan is required. A 10-second timeout prevents unbounded inline work.
+
+Packet 013 made this visible to callers instead of leaving it as an internal helper concern. When `code_graph_query` or `code_graph_context` hits a `full_scan` readiness result and inline indexing does not complete, the handlers return an explicit blocked payload with:
+
+- `status: "blocked"` and a `code_graph_full_scan_required: ...` message
+- `blocked: true`, `degraded: true`, and `graphAnswersOmitted: true`
+- `requiredAction: "code_graph_scan"` and `blockReason: "full_scan_required"`
+- readiness metadata (`readiness`, `canonicalReadiness`, `trustState`, `lastPersistedAt`) so operators can see whether the graph is stale or empty and act on the correct follow-up
+
+`code_graph_query` also preserves the original `operation` and `subject`, while `code_graph_context` preserves the requested `queryMode`. This page therefore describes both the helper's auto-trigger behavior and the caller-visible blocked contract layered on top of it.
 
 ---
 
@@ -28,7 +37,11 @@ mcp_server/code-graph/lib/ensure-ready.ts
 |------|-------|------|
 | `mcp_server/code-graph/lib/ensure-ready.ts` | Lib | Auto-trigger with git HEAD comparison and staleness detection |
 | `mcp_server/code-graph/lib/code-graph-db.ts` | Lib | DB helpers: getLastGitHead, setLastGitHead, ensureFreshFiles, isFileStale |
-| `mcp_server/code-graph/handlers/` | Handler | Consumers: context, query, status handlers call ensureCodeGraphReady() |
+| `mcp_server/code-graph/handlers/query.ts` | Handler | Returns the caller-visible blocked `code_graph_query` payload when readiness requires a full scan |
+| `mcp_server/code-graph/handlers/context.ts` | Handler | Returns the caller-visible blocked `code_graph_context` payload when readiness requires a full scan |
+| `mcp_server/code-graph/handlers/status.ts` | Handler | Reports freshness plus `graphQualitySummary` without using the blocked read contract |
+| `mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts` | Test | Verifies the explicit blocked query payload for `full_scan` readiness |
+| `mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts` | Test | Verifies the explicit blocked context payload for `full_scan` readiness |
 
 ---
 

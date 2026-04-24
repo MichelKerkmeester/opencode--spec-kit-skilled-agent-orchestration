@@ -39,3 +39,24 @@ Wave-1 remediation patches that landed after pass-1 verdict FAIL.
 
 ## Scope Files (SAME as pass 1, plus new test files)
 See deep-review-config.json reviewScopeFiles — inherit from pass 1.
+
+## Pass-2 Iteration Progress
+
+| # | Dimension | Status | New findings (P0/P1/P2) | Key result |
+|---|---|---|---|---|
+| 1 | correctness (P0-001) | complete | 0 / 0 / 3 | P0-001 CLOSED; P2-pass2-001..003 logged |
+| 2 | correctness (P0-002) | complete | 0 / 0 / 0 | P0-002 CLOSED; chain severed at checkpoint layer |
+| 3 | audit-trail (P1-008 + P1-016) | complete | 0 / 1 / 0 | P1-008/016 CLOSED; P1-pass2-004 NEW (cleanup-script gap) |
+| 4 | maintainability | complete | 0 / 0 / 1 | P2-pass2-004 NEW (dup audit emission); pass-1 P1 spot-check no regression |
+| 5 | traceability | complete | 0 / 0 / 3 | P1-010/011/012 CLOSED; P2-pass2-005/006/007 NEW (doc drift) |
+| 6 | regression-exploit-chain | complete | 0 / 0 / 0 | Full 5-step chain re-walked; all steps blocked at named guards; no Wave-1 regression |
+| 7 | synthesis | pending | — | Final review-report-pass-02.md |
+
+## Running Findings Tally (after iter-6)
+- 0 active P0
+- 1 active P1 (P1-pass2-004 — cleanup-script audit gap)
+- 7 active P2 (pass2-001..007)
+- 8 pass-1 findings CLOSED by Wave-1 (P0-001, P0-002, P1-008, P1-010, P1-011, P1-012, P1-016, P1-018)
+
+## Next Focus
+Pass 2 Iter 7 — final synthesis + `review-report-pass-02.md` with verdict (CONDITIONAL expected: no P0, 1 P1 remaining).

@@ -207,10 +207,13 @@ describe('handleCodeGraphScan', () => {
     expect(mocks.clearLastGraphEdgeEnrichmentSummaryMock).toHaveBeenCalledTimes(1);
   });
 
-  it('counts pre-parse incremental skips without clearing persisted enrichment summaries', async () => {
+  it('preserves persisted summaries for no-op incremental scans that skip fresh files before parse', async () => {
     mocks.execSyncMock.mockReturnValue('same-head\n');
     mocks.getLastGitHeadMock.mockReturnValue('same-head');
-    mocks.indexFilesMock.mockResolvedValueOnce(withPreParseSkippedCount([], 3));
+    mocks.indexFilesMock.mockImplementationOnce(async (_config, options) => {
+      expect(options).toEqual({ skipFreshFiles: true });
+      return withPreParseSkippedCount([], 3);
+    });
 
     const response = await handleCodeGraphScan({
       rootDir: process.cwd(),
@@ -220,6 +223,7 @@ describe('handleCodeGraphScan', () => {
     const payload = JSON.parse(response.content[0].text) as {
       status: string;
       data: {
+        filesScanned: number;
         filesIndexed: number;
         filesSkipped: number;
         graphEdgeEnrichmentSummary: null;
@@ -227,9 +231,12 @@ describe('handleCodeGraphScan', () => {
     };
 
     expect(payload.status).toBe('ok');
+    expect(payload.data.filesScanned).toBe(0);
     expect(payload.data.filesIndexed).toBe(0);
     expect(payload.data.filesSkipped).toBe(3);
     expect(payload.data.graphEdgeEnrichmentSummary).toBeNull();
+    expect(mocks.indexFilesMock).toHaveBeenCalledWith(expect.any(Object), { skipFreshFiles: true });
+    expect(mocks.isFileStaleMock).not.toHaveBeenCalled();
     expect(mocks.setLastGraphEdgeEnrichmentSummaryMock).not.toHaveBeenCalled();
     expect(mocks.clearLastGraphEdgeEnrichmentSummaryMock).not.toHaveBeenCalled();
   });

@@ -150,7 +150,7 @@ No standalone skill-package docs outside the implementation/test/doc surfaces al
 | `.opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts` | Updated | OK | Added CALLS ambiguity and blocked-read regressions. |
 | `.opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts` | Updated | OK | Added blocked-read, seed-fidelity, and partial-output regressions. |
 | `.opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-scan.vitest.ts` | Updated | OK | Added overwrite-then-clear scan summary regression. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/hook-session-start.vitest.ts` | Updated | OK | Added Claude startup payload contract assertions. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/hook-session-start.vitest.ts` | Updated | OK | Added Claude, Gemini, and Copilot startup payload contract assertions. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/codex-session-start-hook.vitest.ts` | Updated | OK | Added Codex startup payload contract assertions. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/startup-brief.vitest.ts` | Cited | OK | Builder-level startup payload evidence cited by pt-02 research. |
 

@@ -30,7 +30,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions:
-      - "The startup parity fix kept the builder shared payload and transported a compact serialized derivative through runtime hooks."
+      - "The startup parity fix kept the builder shared payload and transported a compact serialized derivative through Claude, Gemini, Copilot, and Codex runtime hooks, with direct startup regressions covering all four."
 ---
 # Implementation Summary: Code-Graph Hook Improvements
 
@@ -51,7 +51,7 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The packet hardened code-graph CALLS resolution so ambiguous `handle*` subjects now select callable implementation nodes instead of wrapper shadows, and it made query/context reads fail explicitly when readiness requires a suppressed full scan. It also preserved CocoIndex ranking fidelity through seed resolution, cleared stale edge-enrichment summaries on null-summary scans, surfaced `graphQualitySummary` through status/startup readers, transported a compact startup shared-payload contract through runtime hooks, and turned `deadlineMs` plus `partialOutput` into real context response metadata.
+The packet hardened code-graph CALLS resolution so ambiguous `handle*` subjects now select callable implementation nodes instead of wrapper shadows, and it made query/context reads fail explicitly when readiness requires a suppressed full scan. It also preserved CocoIndex ranking fidelity through seed resolution, cleared stale edge-enrichment summaries on null-summary scans, surfaced `graphQualitySummary` through status/startup readers, transported a compact startup shared-payload contract through Claude, Gemini, Copilot, and Codex runtime hooks, and turned `deadlineMs` plus `partialOutput` into real context response metadata.
 
 ### Files Changed
 
@@ -68,10 +68,11 @@ The packet hardened code-graph CALLS resolution so ambiguous `handle*` subjects 
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts` | Startup payload contract section |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts` | Startup payload contract section |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts` | Startup payload contract banner transport |
+| `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts` | Startup payload contract transport for Codex |
 | `.opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts` | Resolver ambiguity and blocked-read regressions |
 | `.opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts` | Blocked-read, seed-fidelity, and partial-output regressions |
 | `.opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-scan.vitest.ts` | Overwrite-then-clear enrichment summary regression |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/hook-session-start.vitest.ts` | Claude startup payload contract regression |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/hook-session-start.vitest.ts` | Claude, Gemini, and Copilot startup payload contract regressions |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/codex-session-start-hook.vitest.ts` | Codex startup payload contract regression |
 | `.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md` | Operator note for `graphQualitySummary` |
 <!-- /ANCHOR:what-built -->
