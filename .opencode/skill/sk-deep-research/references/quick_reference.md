@@ -5,6 +5,8 @@ description: One-page cheat sheet for the autonomous deep research loop.
 
 # Deep Research Quick Reference
 
+One-page operator cheat sheet covering the autonomous deep research loop: when to invoke it, what each phase produces, how convergence is computed, and where live state lives on disk. Use it as a lookup surface during runs; defer to the full protocol and convergence references for deep reasoning.
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
@@ -54,7 +56,7 @@ Operator contract source of truth for this page:
 <!-- ANCHOR:architecture -->
 ## 4. ARCHITECTURE
 
-```
+```text
 /spec_kit:deep-research  -->  YAML workflow  -->  @deep-research agent (LEAF)
     |                    |                      |
     |                    |                      +-- Read state
@@ -113,7 +115,7 @@ Operator contract source of truth for this page:
 <!-- ANCHOR:convergence-decision-tree -->
 ## 7. CONVERGENCE DECISION TREE
 
-```
+```text
 Max iterations reached?
   Yes --> STOP
 
@@ -204,7 +206,7 @@ After each iteration, the orchestrator can display a text-based convergence summ
 
 ### Example Output
 
-```
+```text
 ITERATION 5 PROGRESS
 ─────────────────────
 newInfoRatio: 0.9 → 0.7 → 0.5 → 0.3 → 0.1  ↓ trending down

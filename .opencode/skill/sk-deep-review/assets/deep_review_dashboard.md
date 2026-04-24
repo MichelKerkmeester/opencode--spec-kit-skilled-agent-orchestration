@@ -118,3 +118,41 @@ Provides a compact, human-readable summary of the current review session. Serves
 - [blockers, missing coverage, unresolved contradictions, gate violations, high stuck count, declining trend, etc.]
 <!-- MACHINE-OWNED: END -->
 <!-- /ANCHOR:active-risks -->
+
+---
+
+<!-- ANCHOR:example-populated -->
+## 10. EXAMPLE (POPULATED)
+
+Reference snippet showing what a rendered review dashboard looks like after iteration 4 of a 7-iteration run. Use this as a visual anchor when inspecting a live dashboard.
+
+```markdown
+# Deep Review Dashboard - Session Overview
+
+## 2. STATUS
+- Target: .opencode/skill/sk-deep-research (skill)
+- Started: 2026-04-21T10:02:11+02:00
+- Status: ITERATING
+- Iteration: 4 of 7
+- Verdict: PENDING
+- Coverage: core=pass, overlay=partial
+
+## 3. PROGRESS
+
+| # | Dimension            | Files touched | P0 | P1 | P2 | Ratio | Status     |
+|---|----------------------|---------------|----|----|----|-------|------------|
+| 1 | correctness          | 8             | 0  | 3  | 4  | 0.78  | converged  |
+| 2 | test-coverage        | 6             | 1  | 2  | 1  | 0.52  | converging |
+| 3 | cross-runtime-parity | 5             | 0  | 2  | 0  | 0.41  | converging |
+| 4 | observability        | 4             | 0  | 1  | 2  | 0.29  | converging |
+
+## 6. TRACEABILITY TREND
+- Core protocols: spec_code=pass, checklist_evidence=pass
+- Overlay protocols: skill_agent=pass, agent_cross_runtime=partial
+- Traceability trend (last 3): 3/0/1 -> 4/0/0 -> 4/1/0
+
+## 9. ACTIVE RISKS
+- 1 P0 in test-coverage dimension -- review cannot terminate PASS until resolved
+- agent_cross_runtime protocol partial: Gemini runtime path still unverified
+```
+<!-- /ANCHOR:example-populated -->

@@ -95,3 +95,42 @@ Provides a compact, human-readable summary of the current research session. Serv
 - [guard violations, high stuck count, declining trend, etc.]
 - [migration events, reducer warnings, lifecycle conflicts]
 <!-- /ANCHOR:active-risks -->
+
+---
+
+<!-- ANCHOR:example-populated -->
+## 9. EXAMPLE (POPULATED)
+
+Reference snippet showing what a rendered dashboard looks like after iteration 5 of a 10-iteration run. Use this as a visual anchor when inspecting a live dashboard.
+
+```markdown
+# Deep Research Dashboard - Session Overview
+
+## 2. STATUS
+- Topic: OpenCode plugin loader resilience
+- Started: 2026-04-20T09:14:22+02:00
+- Status: ITERATING
+- Iteration: 5 of 10
+- Session ID: dr-20260420-091422
+- Parent Session: none
+- Lifecycle Mode: new
+- Generation: 1
+
+## 3. PROGRESS
+
+| # | Focus                       | Track        | Ratio | Findings | Status     |
+|---|-----------------------------|--------------|-------|----------|------------|
+| 1 | Entry-point discovery rules | architecture | 0.82  | 4        | converging |
+| 2 | ESM vs CommonJS interop     | runtime      | 0.64  | 3        | converging |
+| 3 | Plugin-load error surfaces  | observability| 0.47  | 2        | converging |
+| 4 | Host/plugin version gating  | lifecycle    | 0.35  | 2        | converging |
+| 5 | Cross-runtime parity        | portability  | 0.28  | 1        | converging |
+
+## 5. CONVERGENCE TREND
+- Last 3 ratios: 0.47 -> 0.35 -> 0.28 (declining)
+- Stuck count: 0
+- Guard violations: none
+- convergenceScore: 0.71
+- coverageBySources: 0.83
+```
+<!-- /ANCHOR:example-populated -->

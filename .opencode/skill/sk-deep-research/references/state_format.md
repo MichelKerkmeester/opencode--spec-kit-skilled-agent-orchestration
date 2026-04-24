@@ -608,7 +608,7 @@ Review mode writes the equivalent files to its own resolved review `{artifact_di
 
 ### Naming Convention
 
-```
+```text
 research/iterations/iteration-001.md
 research/iterations/iteration-002.md
 research/iterations/iteration-003.md
@@ -725,7 +725,7 @@ The `auto-generated` protection level means the file is system-managed and overw
 <!-- ANCHOR:file-location-summary -->
 ## 8. FILE LOCATION SUMMARY
 
-```
+```text
 {artifact_dir}/
   research.md                        # Workflow-owned progressive synthesis
   deep-research-config.json          # Loop configuration

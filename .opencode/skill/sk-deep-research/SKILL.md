@@ -248,7 +248,7 @@ When `{spec_folder}/resource-map.md` is absent at init:
 
 ### Architecture: 3-Layer Integration
 
-```
+```text
 User invokes: /spec_kit:deep-research "topic"
                     |
                     v
@@ -317,7 +317,7 @@ Adapted from: karpathy/autoresearch (loop concept), AGR (fresh context "Ralph Lo
 
 ### Data Flow
 
-```
+```text
 Init --> Create config.json, strategy.md, state.jsonl
   |
 Loop --> Read state --> Check convergence --> Dispatch @deep-research
@@ -489,7 +489,7 @@ Key integrations:
 
 ### Continuity Integration
 
-```
+```text
 Before research:
   /spec_kit:resume
   --> Recover packet context in this order:

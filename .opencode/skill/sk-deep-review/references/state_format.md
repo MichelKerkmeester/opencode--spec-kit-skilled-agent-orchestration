@@ -25,7 +25,7 @@ The deep review loop uses 8 state files under the resolved `{artifact_dir}/` own
 | `review-report.md` | Markdown | Updated at synthesis |
 | `iterations/iteration-NNN.md` | Markdown | Write-once |
 
-```
+```text
 {artifact_dir}/
   deep-review-config.json
   deep-review-state.jsonl
@@ -775,7 +775,7 @@ Each finding is tracked with a unique identifier enabling deduplication, severit
 
 ### Status Lifecycle
 
-```
+```text
 [discovered] --> active --> resolved    (fixed or confirmed non-issue)
                   |
                   +--> deferred    (advisory, below threshold)

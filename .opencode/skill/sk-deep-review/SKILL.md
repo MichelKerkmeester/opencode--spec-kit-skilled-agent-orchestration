@@ -256,7 +256,7 @@ When `{spec_folder}/resource-map.md` is absent at init:
 
 ### Architecture: 3-Layer Integration
 
-```
+```text
 User invokes: /spec_kit:deep-review "target"
                     |
                     v
@@ -322,7 +322,7 @@ Each agent dispatch gets a fresh context window. State continuity comes from fil
 
 ### Data Flow
 
-```
+```text
 Init --> Create config.json, strategy.md, state.jsonl
   |
 Loop --> Read state --> Check convergence --> Dispatch @deep-review
@@ -556,7 +556,7 @@ Key integrations:
 
 ### Continuity Integration
 
-```
+```text
 Before review:
   /spec_kit:resume
   --> Recover packet context in this order:

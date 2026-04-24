@@ -18,7 +18,7 @@ Runtime capability matrix references for parity-sensitive loop behavior:
 - Human-readable matrix: `.opencode/skill/sk-deep-research/references/capability_matrix.md`
 - Machine-readable matrix: `.opencode/skill/sk-deep-research/assets/runtime_capabilities.json`
 
-```
+```text
 ┌──────────┐     ┌──────────────────────────┐     ┌───────────────────────┐     ┌──────────┐
 │  INIT    │────>│  LOOP                    │────>│  SYNTHESIS            │────>│  SAVE    │
 │          │     │  ┌────────────────────┐  │     │                       │     │          │
@@ -167,7 +167,7 @@ Before dispatching, check for a pause sentinel file:
 2. If present:
    - Log event to JSONL: `{"type":"event","event":"userPaused","mode":"research","run":N,"stopReason":"userPaused","sentinelPath":"{artifact_dir}/.deep-research-pause","timestamp":"<ISO8601>","sessionId":"<sid>","generation":G}`
    - Halt the loop with message:
-     ```
+     ```text
      Research paused. Delete research/.deep-research-pause to resume.
      Current state: Iteration {N}, {remaining} questions remaining.
      ```
@@ -184,7 +184,7 @@ Pause and recovery events use the frozen stop-reason enum on the live path. Raw 
 
 Generate a compact state summary (~200 tokens) for injection into the dispatch prompt:
 
-```
+```text
 STATE SUMMARY (auto-generated):
 Segment: {current_segment} | Iteration: {N} of {max}
 Questions: {answered}/{total} answered | Last focus: {last_focus}
@@ -197,7 +197,7 @@ This summary is prepended to the dispatch context (Step 3) to ensure the agent h
 
 #### Step 3: Dispatch Agent
 Dispatch `@deep-research` with explicit context:
-```
+```text
 {state_summary}  // Auto-generated (Step 2b)
 
 Research Topic: {config.topic}
@@ -322,11 +322,11 @@ The orchestrator checks the ideas backlog at three points:
 ```markdown
 # Research Ideas
 
-## Deferred (not yet explored)
+### Deferred (not yet explored)
 - [Idea description] (noted iteration N: [why deferred])
 - [Idea description] (noted iteration N: [why deferred])
 
-## Promoted (moved to Key Questions)
+### Promoted (moved to Key Questions)
 - [Idea] -> promoted to Key Question in iteration N
 ```
 
@@ -376,7 +376,7 @@ When agent dispatch fails after the earlier recovery tiers are exhausted:
 
 <!-- /ANCHOR:phase-iteration-loop -->
 <!-- ANCHOR:wave-orchestration-protocol -->
-## 3a. WAVE ORCHESTRATION PROTOCOL (REFERENCE-ONLY)
+## 3.1. WAVE ORCHESTRATION PROTOCOL (REFERENCE-ONLY)
 
 An optional parallel execution concept for research topics with multiple independent questions. Treat this as reference guidance only; the live workflow remains sequential and does **not** emit wave-specific JSONL events or routing today.
 
@@ -388,7 +388,7 @@ An optional parallel execution concept for research topics with multiple indepen
 
 ### Wave Execution Model (conceptual only)
 
-```
+```text
 Wave 1: Dispatch N agents on independent questions
   |
   +-- Agent A: Question 1 --> iteration-001.md (newInfoRatio: 0.8)
@@ -437,7 +437,7 @@ Wave-specific fields and events are **not part of the current persisted contract
 
 <!-- /ANCHOR:wave-orchestration-protocol -->
 <!-- ANCHOR:context-isolation-dispatch -->
-## 3b. CONTEXT ISOLATION DISPATCH (EXPERIMENTAL, REFERENCE-ONLY)
+## 3.2. CONTEXT ISOLATION DISPATCH (EXPERIMENTAL, REFERENCE-ONLY)
 
 An alternative dispatch mechanism that guarantees fresh context per iteration by launching a new OS process. Treat this as reference-only unless the runtime explicitly implements alternate CLI dispatch.
 
@@ -535,7 +535,7 @@ Preserve research context to memory system.
 <!-- ANCHOR:state-transitions -->
 ## 6. STATE TRANSITIONS
 
-```
+```text
 [INITIALIZED] --> config + strategy + state created
     |
 [ITERATING] --> agent dispatched, executing research
@@ -677,7 +677,7 @@ Run `shouldContinue_review()` (see convergence.md Section 10.3):
 - Otherwise: `CONTINUE`
 
 #### Step 2b: Generate State Summary (adapted)
-```
+```text
 STATE SUMMARY (auto-generated, review mode):
 Iteration: {N} of {max} | Mode: review
 Target: {config.reviewTarget} ({config.reviewTargetType})
@@ -691,7 +691,7 @@ Next focus: {strategy.nextFocus}
 
 #### Step 3: Dispatch Agent (adapted)
 Dispatch `@deep-review` with review-specific context:
-```
+```text
 {state_summary}  // Auto-generated (Step 2b)
 
 Review Target: {config.reviewTarget}
