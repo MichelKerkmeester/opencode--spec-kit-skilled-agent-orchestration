@@ -1,11 +1,21 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements",
-  "description": "Research investigation into improvements for skill-advisor-hook-improvements",
-  "keywords": ["research", "investigation", "014", "hook", "improvement"],
-  "lastUpdated": "2026-04-24T01:10:00Z",
+  "description": "Feature Specification: Skill-Advisor Hook Improvements",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill-advisor",
+    "hook",
+    "improvements"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.820Z",
   "specId": "014",
   "folderSlug": "skill-advisor-hook-improvements",
-  "parentChain": ["system-spec-kit", "026-graph-and-context-optimization", "009-hook-daemon-parity"],
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity"
+  ],
   "memorySequence": 0,
   "memoryNameHistory": []
 }

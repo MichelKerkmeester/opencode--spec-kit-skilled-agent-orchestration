@@ -30,9 +30,9 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 
 | Flag                           | Purpose                                                                             |
 | ------------------------------ | ----------------------------------------------------------------------------------- |
-| `--model gpt-5.4`              | GPT-5.4: frontier reasoning, complex analysis, architecture, security              |
-| `--model gpt-5.3-codex`        | GPT-5.3-Codex: code generation, standard review, implementation, docs              |
-| `-c model_reasoning_effort="<level>"` | Reasoning effort: `none`, `minimal`, `low`, `medium`, `high`, `xhigh` (GPT-5.4 only; prefer `high` over `xhigh`) |
+| `--model gpt-5.5`              | Skill model — used for every delegation (code generation, review, architecture, research) |
+| `-c model_reasoning_effort="<level>"` | Reasoning effort: `none`, `minimal`, `low`, `medium` (default), `high`, `xhigh` |
+| `-c service_tier="fast"`        | Fast service tier — always pass explicitly for reproducible delegation              |
 | `--sandbox read-only`          | Safe mode: read files, no writes or shell commands                                  |
 | `--sandbox workspace-write`    | Allow file writes and build commands within workspace                               |
 | `--sandbox danger-full-access` | Full shell access — **requires explicit user approval**                             |
@@ -56,14 +56,14 @@ Generate a complete single-file application from a description.
 
 ```bash
 codex exec "Create a [description] application in [language]. Requirements: [requirements]. Output a single complete file with all imports, error handling, and comments. Start immediately." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 **Example:**
 
 ```bash
 codex exec "Create a REST API server application in TypeScript. Requirements: Express framework, CRUD endpoints for a 'tasks' resource, input validation with Zod, error middleware, health check endpoint. Output a single complete file with all imports, error handling, and comments. Start immediately." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ### Multi-File Project
@@ -74,14 +74,14 @@ Generate a multi-file project structure with coordinated files.
 
 ```bash
 codex exec "Create a [description] project in [language] with the following structure: [features]. Generate all files including entry point, modules, configuration, and package manifest. Write files to [directory]. Start immediately." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 **Example:**
 
 ```bash
 codex exec "Create a CLI tool project in TypeScript with the following structure: command parser with yargs, config loader from YAML, logger module with levels, and main entry point. Generate all files including entry point, modules, configuration, and package manifest. Write files to ./src/cli-tool/. Start immediately." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ### Component / Module
@@ -92,14 +92,14 @@ Generate a single component or module that fits into an existing codebase.
 
 ```bash
 codex exec "Create a [language] [format] for [description]. Follow the patterns used in @./[file]. Include types, exports, error handling, and JSDoc comments. Output only the code." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 **Example:**
 
 ```bash
 codex exec "Create a TypeScript module for rate-limiting middleware with sliding window algorithm. Follow the patterns used in @./src/middleware/auth.ts. Include types, exports, error handling, and JSDoc comments. Output only the code." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ### Design-to-Code (with Image)
@@ -110,14 +110,14 @@ Implement a UI component from a design mockup or screenshot.
 
 ```bash
 codex exec "Implement a [language] [framework] component to match the attached design. Follow the patterns in @./[file]. Include all props, state management, and styling." \
-  --model gpt-5.3-codex -i [design-file] --sandbox workspace-write
+  --model gpt-5.5 -i [design-file] --sandbox workspace-write
 ```
 
 **Example:**
 
 ```bash
 codex exec "Implement a React TypeScript component to match the attached design. Follow the patterns in @./src/components/Button.tsx. Include all props, state management, and CSS module styling." \
-  --model gpt-5.3-codex -i ./designs/login-form.png --sandbox workspace-write
+  --model gpt-5.5 -i ./designs/login-form.png --sandbox workspace-write
 ```
 
 ---
@@ -135,7 +135,7 @@ Full code review covering correctness, style, maintainability, and performance.
 
 ```bash
 codex exec "Review @./[file] thoroughly. Check for: 1) Logic errors and edge cases, 2) Code style and naming consistency, 3) Error handling completeness, 4) Performance issues, 5) Maintainability concerns. For each issue found, provide the line reference, severity (critical/warning/info), and a suggested fix." \
-  --model gpt-5.3-codex --sandbox read-only
+  --model gpt-5.5 --sandbox read-only
 ```
 
 ### Security-Focused Review
@@ -146,7 +146,7 @@ Review focused on security vulnerabilities and attack surfaces.
 
 ```bash
 codex exec "Perform a security audit of @./[file]. Check for: 1) Injection vulnerabilities (SQL, XSS, command injection), 2) Authentication and authorization flaws, 3) Sensitive data exposure (hardcoded secrets, logging PII), 4) Input validation gaps, 5) Insecure dependencies or patterns, 6) eval() or dynamic code execution. Rate each finding as critical/high/medium/low severity." \
-  --model gpt-5.3-codex --sandbox read-only
+  --model gpt-5.5 --sandbox read-only
 ```
 
 ### Performance Review
@@ -157,7 +157,7 @@ Review focused on performance bottlenecks and optimization opportunities.
 
 ```bash
 codex exec "Analyze @./[file] for performance issues. Check for: 1) Unnecessary re-renders or recomputations, 2) Memory leaks (unclosed handles, growing collections), 3) N+1 query patterns, 4) Missing caching opportunities, 5) Blocking operations in async contexts, 6) Algorithmic complexity concerns. Suggest concrete optimizations with expected impact." \
-  --model gpt-5.3-codex --sandbox read-only
+  --model gpt-5.5 --sandbox read-only
 ```
 
 ### Staged Changes Review (Interactive /review)
@@ -202,7 +202,7 @@ Fix a known bug with description and reproduction context.
 
 ```bash
 codex exec "Fix this bug in @./[file]: [description]. The expected behavior is [requirements]. The actual behavior is [description]. Apply the minimal fix without refactoring unrelated code. Explain the root cause and the fix. Start immediately." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ### Auto-Detect and Fix
@@ -213,7 +213,7 @@ Let Codex scan a file for potential bugs and apply fixes.
 
 ```bash
 codex exec "Scan @./[file] for bugs. Look for: null/undefined access, off-by-one errors, race conditions, unhandled promise rejections, incorrect type coercions, resource leaks, and logic errors. For each bug found: describe the issue, show the fix, and explain why it is a bug. Apply all fixes. Start immediately." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ### Fix from Screenshot
@@ -224,7 +224,7 @@ Diagnose and fix a bug shown in a screenshot.
 
 ```bash
 codex exec "This screenshot shows a bug in the application. Analyze @./[file] and identify the root cause. Apply the minimal fix. Explain what was wrong." \
-  --model gpt-5.3-codex -i [screenshot] --sandbox workspace-write
+  --model gpt-5.5 -i [screenshot] --sandbox workspace-write
 ```
 
 ---
@@ -242,14 +242,14 @@ Generate unit tests for a specific file or module.
 
 ```bash
 codex exec "Generate comprehensive [framework] unit tests for @./[file]. Cover: 1) Happy path for each exported function, 2) Edge cases (empty input, null, boundary values), 3) Error conditions and thrown exceptions, 4) Mock external dependencies. Use describe/it blocks with descriptive names. Output a complete test file." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 **Example (Jest):**
 
 ```bash
 codex exec "Generate comprehensive Jest unit tests for @./src/utils/validator.ts. Cover: 1) Happy path for each exported function, 2) Edge cases (empty input, null, boundary values), 3) Error conditions and thrown exceptions, 4) Mock external dependencies. Use describe/it blocks with descriptive names. Output a complete test file." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ### Integration Tests
@@ -260,7 +260,7 @@ Generate integration tests that test multiple components working together.
 
 ```bash
 codex exec "Generate [framework] integration tests for the [description] workflow. Test files involved: @./[file]. Cover: 1) End-to-end happy path, 2) Error propagation across layers, 3) Database/API interaction patterns, 4) Setup and teardown for test isolation. Write the complete test file." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ### Test Coverage Analysis
@@ -271,7 +271,7 @@ Identify missing test coverage in an existing test suite.
 
 ```bash
 codex exec "Analyze @./[test-file] against the implementation in @./[source-file]. Identify: 1) Functions with no test coverage, 2) Edge cases not covered by existing tests, 3) Error paths not exercised. List gaps by priority (critical/high/medium) and suggest specific test cases to add." \
-  --model gpt-5.3-codex --sandbox read-only
+  --model gpt-5.5 --sandbox read-only
 ```
 
 ---
@@ -289,7 +289,7 @@ Add inline documentation to source code.
 
 ```bash
 codex exec "Add complete JSDoc documentation to @./[file]. For every exported function, class, method, and type: add description, @param with types and descriptions, @returns, @throws, and @example where useful. Preserve all existing code unchanged. Apply changes to the file. Start immediately." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ### README Generation
@@ -300,7 +300,7 @@ Generate a project or module README from source code.
 
 ```bash
 codex exec "Generate a comprehensive README.md for the project in [directory]. Analyze the source code and include: 1) Project title and description, 2) Installation instructions, 3) Usage examples with code snippets, 4) API reference for public interfaces, 5) Configuration options, 6) Contributing guidelines placeholder. Output as markdown." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ### API Documentation
@@ -311,7 +311,7 @@ Generate API documentation from route definitions or endpoint handlers.
 
 ```bash
 codex exec "Generate API documentation for @./[file]. For each endpoint: document the HTTP method, path, request parameters, request body schema, response schema with status codes, authentication requirements, and provide a curl example. Output as markdown." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ---
@@ -329,7 +329,7 @@ Refactor code for improved structure without changing behavior.
 
 ```bash
 codex exec "Refactor @./[file] to [description]. Requirements: 1) Preserve all existing behavior exactly, 2) Improve [requirements], 3) Add no new dependencies. Show the complete refactored file. Apply changes. Start immediately." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ### Language Translation
@@ -340,7 +340,7 @@ Translate code from one language to another.
 
 ```bash
 codex exec "Translate @./[file] from [language] to [language]. Requirements: 1) Preserve all logic and behavior, 2) Use idiomatic [language] patterns, 3) Translate types and error handling to [language] equivalents, 4) Include equivalent imports/dependencies. Output the complete translated file." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ### Framework Migration
@@ -351,7 +351,7 @@ Migrate code from one framework to another.
 
 ```bash
 codex exec "Migrate @./[file] from [framework] to [framework]. Requirements: 1) Preserve all functionality, 2) Use idiomatic [framework] patterns, 3) Update lifecycle methods and hooks, 4) Translate state management approach, 5) List any new dependencies needed. Output the complete migrated file." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ---
@@ -369,7 +369,7 @@ Fetch up-to-date information using web search.
 
 ```bash
 codex exec "Search the web for current information about [topic] as of [date]. Provide: 1) Latest version or status, 2) Recent changes or announcements, 3) Links to official sources. Cite your sources." \
-  --model gpt-5.3-codex --search --sandbox read-only
+  --model gpt-5.5 --search --sandbox read-only
 ```
 
 ### Library / API Research
@@ -380,7 +380,7 @@ Research a specific library, API, or technology.
 
 ```bash
 codex exec "Search the web to research [topic]. Find: 1) Current stable version and release date, 2) Installation instructions, 3) Key API changes in recent versions, 4) Known issues or deprecations, 5) Community adoption and alternatives. Cite official documentation." \
-  --model gpt-5.3-codex --search --sandbox read-only
+  --model gpt-5.5 --search --sandbox read-only
 ```
 
 ### Comparison Research
@@ -391,7 +391,7 @@ Compare technologies, libraries, or approaches with current data.
 
 ```bash
 codex exec "Search the web to compare [topic] vs [topic] as of [date]. Compare on: 1) Performance benchmarks, 2) Bundle size and dependencies, 3) Community support and maintenance activity, 4) Feature set differences, 5) Migration effort from one to the other. Cite sources for all claims." \
-  --model gpt-5.3-codex --search --sandbox read-only
+  --model gpt-5.5 --search --sandbox read-only
 ```
 
 ### Security Advisory Research
@@ -402,7 +402,7 @@ Research security vulnerabilities for a specific package or technology.
 
 ```bash
 codex exec "Search the web for security advisories and CVEs for [package]@[version] as of [date]. Provide: 1) Known CVE IDs and severity ratings, 2) Affected versions, 3) Patched versions, 4) Recommended mitigation steps. Cross-reference with NVD, GitHub Security Advisories, and official package changelogs." \
-  --model gpt-5.3-codex --search --sandbox read-only
+  --model gpt-5.5 --search --sandbox read-only
 ```
 
 ---
@@ -420,7 +420,7 @@ Analyze overall project architecture and structure.
 
 ```bash
 codex exec "Analyze the project structure in [directory]. Provide: 1) High-level architecture overview, 2) Key modules and their responsibilities, 3) Dependency relationships between major components, 4) Entry points and data flow, 5) Technology stack summary. Output as structured markdown." \
-  --model gpt-5.3-codex --sandbox read-only
+  --model gpt-5.5 --sandbox read-only
 ```
 
 ### Dependency Analysis
@@ -431,7 +431,7 @@ Map dependencies and identify coupling issues.
 
 ```bash
 codex exec "Analyze dependencies in [directory]. Identify: 1) Direct and transitive dependency chains, 2) Circular dependencies, 3) Tightly coupled modules, 4) Unused imports or dead code paths, 5) Dependency inversion violations. Suggest concrete decoupling strategies." \
-  --model gpt-5.3-codex --sandbox read-only
+  --model gpt-5.5 --sandbox read-only
 ```
 
 ### Impact Analysis
@@ -442,7 +442,7 @@ Assess the impact of a planned change before implementing it.
 
 ```bash
 codex exec "Analyze the impact of [description of planned change] on @./[file]. Identify: 1) All files that import or depend on the affected code, 2) Functions or modules that would break, 3) Tests that would need updating, 4) Migration steps required. Rate the risk as low/medium/high." \
-  --model gpt-5.3-codex --sandbox read-only
+  --model gpt-5.5 --sandbox read-only
 ```
 
 ---
@@ -460,7 +460,7 @@ Generate a commit message from staged changes.
 
 ```bash
 codex exec "Based on the following git diff, write a commit message following Conventional Commits format (type(scope): description). Include a body explaining why the change was made. Diff: $(git diff --cached)" \
-  --model gpt-5.3-codex --sandbox read-only
+  --model gpt-5.5 --sandbox read-only
 ```
 
 ### Code Explanation
@@ -471,7 +471,7 @@ Get a detailed explanation of unfamiliar code.
 
 ```bash
 codex exec "Explain @./[file] in detail. Cover: 1) What the code does at a high level, 2) Key algorithms or patterns used, 3) How data flows through the functions, 4) Why certain design decisions were likely made, 5) Any non-obvious behavior or gotchas. Write for a developer unfamiliar with this codebase." \
-  --model gpt-5.3-codex --sandbox read-only
+  --model gpt-5.5 --sandbox read-only
 ```
 
 ### Error Diagnosis
@@ -482,7 +482,7 @@ Diagnose an error message with full context.
 
 ```bash
 codex exec "Diagnose this error: [error message]. It occurs when running [description] in @./[file]. Stack trace: [stack trace]. Provide: 1) Root cause analysis, 2) Step-by-step fix, 3) How to prevent this error in the future." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ### Session-Based Multi-Step Task
@@ -494,7 +494,7 @@ Orchestrate a complex multi-step task across sessions.
 ```bash
 # Step 1: Begin task, note session ID from output
 codex exec "Begin implementing [feature]. Start with the interface design and data model. Stop before writing implementation. Describe the planned approach." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 
 # Step 2: Resume and continue
 codex resume [session-id]
@@ -513,11 +513,11 @@ Research best practices, then apply them to the codebase.
 ```bash
 # Phase 1: Research
 codex exec "Search the web for current best practices for [topic] in [language/framework] as of [date]. Summarize the top 3 recommended approaches with pros and cons." \
-  --model gpt-5.3-codex --search --sandbox read-only
+  --model gpt-5.5 --search --sandbox read-only
 
 # Phase 2: Implement (use session resume or new exec with research context)
 codex exec "Based on best practices for [topic], implement [description] in @./[file]. Use the [approach] pattern. Preserve all existing behavior." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 ```
 
 ### Agent-Delegated Ultra-Think
@@ -528,7 +528,7 @@ Use the ultra-think agent for multi-strategy planning.
 
 ```bash
 codex exec -p ultra-think "Plan the implementation of [feature]. Generate and evaluate at least 3 different approaches. Score each on: correctness, maintainability, performance, and implementation effort. Recommend the best approach with detailed rationale." \
-  --model gpt-5.3-codex -s read-only
+  --model gpt-5.5 -s read-only
 ```
 
 ---
@@ -713,56 +713,58 @@ Minimum viable payload: include a specific `sessionSummary`, at least one meanin
 
 <!-- ANCHOR:model_selection -->
 
-## 14. MODEL SELECTION
+## 14. REASONING EFFORT SELECTION
 
-### When to Use GPT-5.4
+All templates dispatch `--model gpt-5.5`. Tune `model_reasoning_effort` to the task.
 
-Use `--model gpt-5.4` for reasoning-heavy tasks that benefit from deeper analysis:
+### High Reasoning (architecture, security, planning)
+
+Raise effort to `high` or `xhigh` for tasks that benefit from deeper analysis:
 
 ```bash
 # Architecture analysis
 codex exec "Analyze the architecture of this project. Identify coupling issues, circular dependencies, and scalability concerns." \
-  --model gpt-5.4 --sandbox read-only
+  --model gpt-5.5 -c model_reasoning_effort="high" --sandbox read-only
 
 # Security audit
 codex exec "Perform a thorough security audit of @./[file]. Check OWASP Top 10, auth bypasses, injection vectors, and cryptographic weaknesses." \
-  --model gpt-5.4 --sandbox read-only
+  --model gpt-5.5 -c model_reasoning_effort="high" --sandbox read-only
 
 # Complex planning
 codex exec -p ultra-think "Design 3 alternative caching strategies for this API. Score each on correctness, maintainability, and performance." \
-  --model gpt-5.4 -s read-only
+  --model gpt-5.5 -c model_reasoning_effort="xhigh" -s read-only
 ```
 
-### When to Use GPT-5.3-Codex
+### Medium Reasoning (default — code, review, docs)
 
-Use `--model gpt-5.3-codex` for code-focused tasks optimized for generation:
+`medium` is the skill default. Works for code generation, standard review, implementation, and documentation:
 
 ```bash
 # Code generation
 codex exec "Create a [description] in [language]. Requirements: [requirements]. Output complete file." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 -c model_reasoning_effort="medium" --sandbox workspace-write
 
 # Standard code review
 codex exec "Review @./[file] for bugs, style issues, and edge cases." \
-  --model gpt-5.3-codex --sandbox read-only
+  --model gpt-5.5 -c model_reasoning_effort="medium" --sandbox read-only
 
 # Test generation
 codex exec "Generate comprehensive unit tests for @./[file]." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 -c model_reasoning_effort="medium" --sandbox workspace-write
 ```
 
-### Mixed Model Workflow
+### Mixed Effort Workflow
 
-Use GPT-5.4 for analysis, then GPT-5.3-Codex for implementation:
+Use `high` for analysis, then `medium` for implementation — same model, different depth:
 
 ```bash
-# Step 1: Deep analysis with GPT-5.4
+# Step 1: Deep analysis at high reasoning
 codex exec "Identify all security vulnerabilities in @./src/auth/" \
-  --model gpt-5.4 --sandbox read-only > /tmp/security-findings.txt
+  --model gpt-5.5 -c model_reasoning_effort="high" --sandbox read-only > /tmp/security-findings.txt
 
-# Step 2: Fix with GPT-5.3-Codex
+# Step 2: Fix at medium reasoning
 codex exec "Fix these security issues: $(cat /tmp/security-findings.txt)" \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 -c model_reasoning_effort="medium" --sandbox workspace-write
 ```
 
 <!-- /ANCHOR:model_selection -->

@@ -1,24 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation",
-  "description": "Feature Specification: Phase 020 Research-Findings Remediation",
-  "keywords": [
-    "feature",
-    "specification",
-    "phase",
-    "020",
-    "research-findings",
-    "remediation"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "018",
-  "folderSlug": "cli-executor-remediation",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "007-deep-review-remediation"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/018-cli-executor-remediation",
@@ -35,5 +15,25 @@
       "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/018-cli-executor-remediation",
       "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation",
+  "description": "Feature Specification: Phase 020 Research-Findings Remediation",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "020",
+    "research-findings",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.463Z",
+  "specId": "002",
+  "folderSlug": "cli-executor-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-deep-review-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

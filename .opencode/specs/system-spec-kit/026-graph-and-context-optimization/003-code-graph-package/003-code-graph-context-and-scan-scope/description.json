@@ -4,15 +4,14 @@
   "keywords": [
     "feature",
     "specification",
-    "code-graph",
-    "session-snapshot",
-    "stale-highlights",
-    "scan-scope",
-    "gitignore",
-    "indexer-excludes",
-    "surface-matrix"
+    "code",
+    "graph",
+    "context",
+    "scan",
+    "scope",
+    "remediation"
   ],
-  "lastUpdated": "2026-04-23T14:47:43.368Z",
+  "lastUpdated": "2026-04-24T15:56:56.153Z",
   "specId": "003",
   "folderSlug": "code-graph-context-and-scan-scope",
   "parentChain": [

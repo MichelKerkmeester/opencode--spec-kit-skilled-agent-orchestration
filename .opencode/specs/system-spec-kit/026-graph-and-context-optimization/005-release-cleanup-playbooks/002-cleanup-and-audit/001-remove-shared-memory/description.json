@@ -1,27 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory",
-  "description": "Feature Specification: 018 / 010 — Remove shared memory feature surface",
-  "keywords": [
-    "feature",
-    "specification",
-    "018",
-    "010",
-    "remove",
-    "shared",
-    "memory",
-    "surface"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "001",
-  "folderSlug": "remove-shared-memory",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "005-release-cleanup-playbooks",
-    "008-cleanup-and-audit"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory",
@@ -38,5 +15,28 @@
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/008-cleanup-and-audit/001-remove-shared-memory",
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory",
+  "description": "Feature Specification: 018 / 010 — Remove shared memory feature surface",
+  "keywords": [
+    "feature",
+    "specification",
+    "018",
+    "010",
+    "remove",
+    "shared",
+    "memory",
+    "surface"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.214Z",
+  "specId": "001",
+  "folderSlug": "remove-shared-memory",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "005-release-cleanup-playbooks",
+    "002-cleanup-and-audit"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

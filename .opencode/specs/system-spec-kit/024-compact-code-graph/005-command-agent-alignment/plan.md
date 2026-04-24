@@ -62,9 +62,6 @@ Template compliance shim anchor for phases.
 <!-- ANCHOR:testing -->
 Template compliance shim anchor for testing.
 <!-- /ANCHOR:testing -->
-<!-- ANCHOR:dependencies -->
-Template compliance shim anchor for dependencies.
-<!-- /ANCHOR:dependencies -->
 <!-- ANCHOR:rollback -->
 Template compliance shim anchor for rollback.
 <!-- /ANCHOR:rollback -->
@@ -97,12 +94,12 @@ Template compliance shim anchor for rollback.
    - Codex CLI (no hooks): verify resume still works via tool fallback
    - Verify no regression in any command's core behavior
 
-<!-- ANCHOR:dependencies-2 -->
+<!-- ANCHOR:dependencies -->
 ### Dependencies
 - Phase 1 (hook scripts must exist to test hook awareness)
 - Phase 3 (Stop hook must exist for `/memory:save` double-save detection)
 - Phase 4 (runtime detection needed for conditional behavior)
-<!-- /ANCHOR:dependencies-2 -->
+<!-- /ANCHOR:dependencies -->
 
 ### Technical Context
 - Runtime surface: system-spec-kit MCP server + hook adapters.

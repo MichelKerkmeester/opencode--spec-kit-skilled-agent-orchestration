@@ -78,7 +78,7 @@ field names and reject unknown properties.
   "transcript_path": null,
   "cwd": "/workspace",
   "hook_event_name": "SessionStart",
-  "model": "gpt-5.4",
+  "model": "gpt-5.5",
   "permission_mode": "default",
   "source": "startup"
 }
@@ -95,7 +95,7 @@ field names and reject unknown properties.
   "transcript_path": null,
   "cwd": "/workspace",
   "hook_event_name": "UserPromptSubmit",
-  "model": "gpt-5.4",
+  "model": "gpt-5.5",
   "permission_mode": "default",
   "prompt": "user prompt"
 }
@@ -146,7 +146,7 @@ Installed paths:
 Manual smoke checks:
 
 ```bash
-printf '%s\n' '{"session_id":"s1","hook_event_name":"SessionStart","source":"startup","cwd":"'"$PWD"'","model":"gpt-5.4","permission_mode":"default"}' \
+printf '%s\n' '{"session_id":"s1","hook_event_name":"SessionStart","source":"startup","cwd":"'"$PWD"'","model":"gpt-5.5","permission_mode":"default"}' \
   | node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/codex/session-start.js
 ```
 

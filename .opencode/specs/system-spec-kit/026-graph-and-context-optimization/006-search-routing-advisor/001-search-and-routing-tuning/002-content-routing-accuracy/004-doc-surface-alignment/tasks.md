@@ -1,3 +1,24 @@
+---
+title: "Tasks: Doc Surface Alignment for Research Content Routing Accuracy"
+description: "Task Format: T### P? Description (file path)."
+trigger_phrases:
+  - "doc surface alignment"
+  - "content routing accuracy"
+  - "doc surface alignment for research content"
+  - "doc surface alignment tasks"
+  - "system spec kit"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 ---
 title: "...06-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment/tasks]"

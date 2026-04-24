@@ -1,3 +1,24 @@
+---
+title: "Implementation Summary: Fix Handover vs Drop Routing Confusion"
+description: "This phase split hard drop detection from soft operational command language so genuine handover notes no longer get refused just because they mention git diff, list memories, or force re-index."
+trigger_phrases:
+  - "fix handover drop confusion"
+  - "content routing accuracy"
+  - "fix handover vs drop routing confusion"
+  - "fix handover drop confusion implementation summary"
+  - "system spec kit"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
 title: "...or/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/implementation-summary]"

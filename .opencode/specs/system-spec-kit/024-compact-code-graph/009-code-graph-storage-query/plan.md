@@ -61,9 +61,6 @@ Template compliance shim anchor for phases.
 <!-- ANCHOR:testing -->
 Template compliance shim anchor for testing.
 <!-- /ANCHOR:testing -->
-<!-- ANCHOR:dependencies -->
-Template compliance shim anchor for dependencies.
-<!-- /ANCHOR:dependencies -->
 <!-- ANCHOR:rollback -->
 Template compliance shim anchor for rollback.
 <!-- /ANCHOR:rollback -->
@@ -105,13 +102,13 @@ Template compliance shim anchor for rollback.
    - Check status output for accuracy
    - Verify incremental scan skips unchanged files
 
-<!-- ANCHOR:dependencies-2 -->
+<!-- ANCHOR:dependencies -->
 ### Dependencies
 
 - Phase 008 indexer must produce `CodeNode[]` and `CodeEdge[]`
 - Existing `better-sqlite3` dependency (already used for memory DB)
 - `context-server.ts` must accept new tool registrations
-<!-- /ANCHOR:dependencies-2 -->
+<!-- /ANCHOR:dependencies -->
 
 ### Risk Mitigation
 

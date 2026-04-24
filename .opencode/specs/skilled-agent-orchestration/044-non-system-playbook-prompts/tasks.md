@@ -1,3 +1,23 @@
+---
+title: "Tasks: Non-System Playbook Prompt Modernization"
+description: "Task Format: T### P? Description (file path)."
+trigger_phrases:
+  - "non system playbook prompts"
+  - "skilled agent orchestration"
+  - "non system playbook prompt modernization"
+  - "non system playbook prompts tasks"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/044-non-system-playbook-prompts"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 ---
 title: "Tasks: Non-System Playbook Prompt Modernization [skilled-agent-orchestration/044-non-system-playbook-prompts/tasks]"

@@ -1,3 +1,22 @@
+---
+title: "Implementation Summary"
+description: "The canonical changelog and release-notes template now sits next to every other documentation template inside sk-doc."
+trigger_phrases:
+  - "sk doc changelog template"
+  - "skilled agent orchestration"
+  - "sk doc changelog template implementation summary"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/045-sk-doc-changelog-template"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
 title: "Implementation Summary: Move [skilled-agent-orchestration/045-sk-doc-changelog-template/implementation-summary]"

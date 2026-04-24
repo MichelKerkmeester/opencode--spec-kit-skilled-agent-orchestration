@@ -13,36 +13,6 @@
     "search pipeline threshold tuning",
     "continuity retrieval optimization"
   ],
-  "memorySequence": 1,
-  "memoryNameHistory": [
-    "18-04-26_22-57__wave-b-restored-root-spec-for-coordination-parent.md"
-  ],
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning",
-  "description": "Coordination parent for continuity research packets focused on search-pipeline empirical tuning and reranking optimization. The root research packet investigates hardcoded thresholds, weighted fusion, FSRS decay constants, reranker-provider trade-offs, cross-encoder length-penalty behavior, and cache-TTL throughput impact across the vector, BM25, FTS5, and reranking stages, with the intent of producing implementation-ready parameter recommendations rather than speculative theory.",
-  "keywords": [
-    "search research",
-    "pipeline optimization",
-    "cross-encoder",
-    "reranking",
-    "fusion algorithm",
-    "vector search",
-    "bm25",
-    "fts5",
-    "empirical tuning",
-    "configuration constants",
-    "threshold optimization",
-    "provider comparison",
-    "latency profiling",
-    "retrieval tuning"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "010",
-  "folderSlug": "search-and-routing-tuning",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "006-search-routing-advisor"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning",
@@ -59,5 +29,28 @@
       "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/010-search-and-routing-tuning",
       "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning",
+  "description": "Feature Specification: Search and Routing Tuning Coordination Parent",
+  "keywords": [
+    "feature",
+    "specification",
+    "search",
+    "routing",
+    "tuning",
+    "coordination",
+    "parent"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.258Z",
+  "specId": "001",
+  "folderSlug": "search-and-routing-tuning",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "006-search-routing-advisor"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-04-26_22-57__wave-b-restored-root-spec-for-coordination-parent.md"
+  ]
 }

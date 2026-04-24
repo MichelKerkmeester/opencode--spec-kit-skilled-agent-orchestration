@@ -49,27 +49,6 @@ Template compliance shim section. Legacy phase content continues below.
 ## 10. OPEN QUESTIONS
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:problem -->
-Template compliance shim anchor for problem.
-<!-- /ANCHOR:problem -->
-<!-- ANCHOR:scope -->
-Template compliance shim anchor for scope.
-<!-- /ANCHOR:scope -->
-<!-- ANCHOR:requirements -->
-Template compliance shim anchor for requirements.
-<!-- /ANCHOR:requirements -->
-<!-- ANCHOR:success-criteria -->
-Template compliance shim anchor for success-criteria.
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:risks -->
-Template compliance shim anchor for risks.
-<!-- /ANCHOR:risks -->
-<!-- ANCHOR:questions -->
-Template compliance shim anchor for questions.
-<!-- /ANCHOR:questions -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -77,7 +56,7 @@ Template compliance shim anchor for questions.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### 1. METADATA
 | Field | Value |
 |-------|-------|
@@ -86,22 +65,22 @@ Template compliance shim anchor for questions.
 | **Status** | Complete with deferred items |
 | **Created** | 2026-03-31 |
 | **Branch** | `024-compact-code-graph` |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:problem-2 -->
+<!-- ANCHOR:problem -->
 ### 2. PROBLEM & PURPOSE
 ### Problem Statement
 We needed a way to measure how well session context survives across runtimes instead of relying on parity claims and anecdotal failures. The phase shipped metrics collection and quality scoring, but the current phase record overstated what was delivered and no longer reflects the known gaps in status derivation, graph freshness thresholds, persistence, and reporting.
 
 ### Purpose
 Document the implemented metrics baseline accurately so future phases build on the real system state instead of the intended design.
-<!-- /ANCHOR:problem-2 -->
+<!-- /ANCHOR:problem -->
 
 ---
 
-<!-- ANCHOR:scope-2 -->
+<!-- ANCHOR:scope -->
 ### 3. SCOPE
 ### In Scope
 - In-memory metrics collection for session lifecycle, recovery, graph freshness, and spec transitions
@@ -122,11 +101,11 @@ Document the implemented metrics baseline accurately so future phases build on t
 | `context-server.ts` | Modify | Record lifecycle metric events |
 | `lib/response/envelope.ts` | Planned only | No implementation landed in this phase |
 | `handlers/eval-reporting.ts` | Planned only | Dashboard integration deferred |
-<!-- /ANCHOR:scope-2 -->
+<!-- /ANCHOR:scope -->
 
 ---
 
-<!-- ANCHOR:requirements-2 -->
+<!-- ANCHOR:requirements -->
 ### 4. REQUIREMENTS
 ### P0 - Blockers (MUST complete)
 
@@ -149,20 +128,20 @@ Document the implemented metrics baseline accurately so future phases build on t
 - **Given** a health check runs, **when** quality scoring executes, **then** factor-level quality data is computed for the active session.
 - **Given** the code graph age exceeds the stricter scorer threshold, **when** docs describe graph freshness, **then** they must note the current 1-hour vs 24-hour mismatch.
 - **Given** a reader reviews this phase after completion, **when** they compare phase docs, **then** they see the same deferred dashboard, envelope, and persistence limitations everywhere.
-<!-- /ANCHOR:requirements-2 -->
+<!-- /ANCHOR:requirements -->
 
 ---
 
-<!-- ANCHOR:success-criteria-2 -->
+<!-- ANCHOR:success-criteria -->
 ### 5. SUCCESS CRITERIA
 - **SC-001**: The phase record no longer claims dashboard, SQLite persistence, or response envelope integration as implemented.
 - **SC-002**: The documentation clearly states that `session_health` still uses legacy heuristics for final status despite computed quality scoring.
 - **SC-003**: The documentation captures the graph freshness threshold mismatch and aggregate-only in-memory metrics design.
-<!-- /ANCHOR:success-criteria-2 -->
+<!-- /ANCHOR:success-criteria -->
 
 ---
 
-<!-- ANCHOR:risks-2 -->
+<!-- ANCHOR:risks -->
 ### 6. RISKS & DEPENDENCIES
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
@@ -177,7 +156,7 @@ Document the implemented metrics baseline accurately so future phases build on t
 3. Metrics are aggregate counters only. `toolName` was dropped and SQLite persistence was not implemented.
 4. `lib/response/envelope.ts` was planned but not implemented.
 5. Phase C dashboard integration remains deferred.
-<!-- /ANCHOR:risks-2 -->
+<!-- /ANCHOR:risks -->
 
 ---
 
@@ -232,10 +211,10 @@ Document the implemented metrics baseline accurately so future phases build on t
 
 ---
 
-<!-- ANCHOR:questions-2 -->
+<!-- ANCHOR:questions -->
 ### 10. OPEN QUESTIONS
 - When should `session_health` switch from legacy heuristics to the computed quality score as its canonical status?
 - Should graph freshness thresholds be unified at 1 hour, 24 hours, or made configurable per runtime?
-<!-- /ANCHOR:questions-2 -->
+<!-- /ANCHOR:questions -->
 
 ---

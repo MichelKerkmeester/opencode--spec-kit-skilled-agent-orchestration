@@ -1,3 +1,23 @@
+---
+title: "Feature Specification: Move changelogtemplate.md into sk-doc"
+description: "None."
+trigger_phrases:
+  - "sk doc changelog template"
+  - "skilled agent orchestration"
+  - "move changelogtemplate md into sk doc"
+  - "sk doc changelog template spec"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/045-sk-doc-changelog-template"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 ---
 title: "Feature Specification: Move changelog_template.md [skilled-agent-orchestration/045-sk-doc-changelog-template/spec]"

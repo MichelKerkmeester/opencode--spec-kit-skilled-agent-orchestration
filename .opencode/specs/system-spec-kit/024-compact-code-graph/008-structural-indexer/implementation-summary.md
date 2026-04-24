@@ -43,26 +43,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -70,18 +54,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 008-structural-indexer |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 A structural indexer now extracts symbols (functions, classes, methods, modules) and their relationships (CONTAINS, CALLS, IMPORTS, EXPORTS, EXTENDS, IMPLEMENTS, TESTED_BY) from JS/TS/Python/Shell source files using tree-sitter WASM by default, with regex fallback when needed. It produces a normalized node/edge vocabulary feeding Phase 009 storage and Phase 010 context bridge.
 
@@ -113,14 +97,14 @@ Content hashes are generated during parsing, and the indexing logic now lives in
 | `mcp_server/lib/code-graph/tree-sitter-parser.ts` | New | Tree-sitter WASM backend with programmatic AST traversal |
 | `mcp_server/lib/code-graph/indexer-types.ts` | New | CodeNode, CodeEdge, ParseResult interfaces |
 | `mcp_server/package.json` | Modified | Adds `web-tree-sitter` and `tree-sitter-wasms` dependencies for the default backend |
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 The indexer was implemented incrementally: shared types first, then the parser abstraction, then tree-sitter runtime integration, then fallback-safe extraction and cross-language edge handling. Each language backend was validated against actual repo files before proceeding. Performance was benchmarked on the full repository to confirm the structural pass stays well within the phase targets.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -134,7 +118,7 @@ The indexer was implemented incrementally: shared types first, then the parser a
 | Programmatic AST traversal instead of `.scm` queries | Keeping extraction logic in TypeScript avoids a parallel query-file maintenance surface and keeps captures aligned with the shared normalization pipeline. |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -146,14 +130,14 @@ The indexer was implemented incrementally: shared types first, then the parser a
 | Full repo index | PASS — 835 files in 416ms (<30s target) |
 | Incremental re-index (10 files) | PASS — 6ms (<5s target) |
 | Phase 008 checklist | All P0/P1/P2 items verified |
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. **Regex fallback is less precise than tree-sitter.** If the indexer falls back to regex, edge cases in string literals, comments, and complex nesting can still produce false captures.
 2. **CALLS edge detection** still relies on structural heuristics after parsing, which may miss dynamically constructed calls or produce false positives on identically named functions across modules.
 3. **CONFIGURES edge type** remains deferred to v2 due to low confidence in automated detection.
 4. **`.scm` query files are intentionally absent.** The tree-sitter backend uses programmatic AST traversal, so there is no separate query-file layer to customize in this phase.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->

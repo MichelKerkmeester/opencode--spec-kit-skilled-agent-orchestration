@@ -1,32 +1,5 @@
 {
   "title": "Feature Specification: Phase 1: Foundation (Templates & Truncation)",
-  "description": "Phase 1 defines the P0 foundation slice for memory-quality remediation: fix the OVERVIEW anchor mismatch, introduce the shared truncation helper, and preserve OVERVIEW text on word boundaries before later metadata and heuristic phases build on it.",
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/001-foundation-templates-truncation",
-  "keywords": [
-    "feature",
-    "specification",
-    "phase",
-    "foundation",
-    "templates",
-    "truncation"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "001",
-  "folderSlug": "foundation-templates-truncation",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "002-continuity-memory-runtime",
-    "003-memory-quality-remediation"
-  ],
-  "memorySequence": 5,
-  "memoryNameHistory": [
-    "07-04-26_18-30__phase-1-foundation-work-focused-on-two-narrow.md",
-    "07-04-26_18-30__phase-1-foundation-work-aligned-the-overview.md",
-    "07-04-26_18-58__phase-1-foundation-work-focused-on-two-narrow.md",
-    "07-04-26_18-58__phase-1-foundation-work-aligned-the-overview.md",
-    "07-04-26_20-24__closed-out-phase-1-of-the-memory-quality.md"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/001-foundation-templates-truncation",
@@ -43,5 +16,32 @@
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/001-foundation-templates-truncation",
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/001-foundation-templates-truncation"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/001-foundation-templates-truncation",
+  "description": "Feature Specification: Phase 1: Foundation (Templates & Truncation)",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "foundation",
+    "templates",
+    "truncation"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.037Z",
+  "specId": "001",
+  "folderSlug": "foundation-templates-truncation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "002-continuity-memory-runtime",
+    "002-memory-quality-remediation"
+  ],
+  "memorySequence": 5,
+  "memoryNameHistory": [
+    "07-04-26_18-30__phase-1-foundation-work-focused-on-two-narrow.md",
+    "07-04-26_18-30__phase-1-foundation-work-aligned-the-overview.md",
+    "07-04-26_18-58__phase-1-foundation-work-focused-on-two-narrow.md",
+    "07-04-26_18-58__phase-1-foundation-work-aligned-the-overview.md",
+    "07-04-26_20-24__closed-out-phase-1-of-the-memory-quality.md"
+  ]
 }

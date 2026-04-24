@@ -76,14 +76,14 @@ _memory:
 
 ---
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 ## Phase 2: Implementation
 
 - [x] T004 Define the common startup sections and recovery cues that all targeted runtimes should surface
 - [x] T005 Map and apply the runtime/config changes needed for Claude, Gemini, Codex, and Copilot
 - [x] T006 Separate hook-capable and hookless runtime behavior without reopening phases 001-003
 - [x] T007 Update the packet-local verification plan and evidence targets
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 
 ---
 

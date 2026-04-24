@@ -1,3 +1,24 @@
+---
+title: "Implementation Plan: Doc Surface Alignment: Search Fusion Changes"
+description: "The workflow starts from the packet spec, moves through a read-only verification pass on the implementation, applies surgical patches only where doc drift exists, then runs packet-local verification and strict validation before the packet is marked complete."
+trigger_phrases:
+  - "doc surface alignment"
+  - "search fusion tuning"
+  - "doc surface alignment search fusion changes"
+  - "doc surface alignment plan"
+  - "system spec kit"
+importance_tier: "normal"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 ---
 title: "...ion/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment/plan]"

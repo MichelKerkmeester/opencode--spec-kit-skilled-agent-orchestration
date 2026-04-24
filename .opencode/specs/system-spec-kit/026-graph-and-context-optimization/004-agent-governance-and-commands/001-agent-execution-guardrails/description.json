@@ -2,26 +2,6 @@
   "title": "Feature Specification: Phase 4 — Agent Execution Guardrails",
   "type": "phase-packet",
   "path": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
-  "description": "Phase 4 defines the execution-guardrail update for three AGENTS files so the moved request-analysis block under Critical Rules is leaner, later sections remain renumbered cleanly, and agents keep the same operational execution behavior without duplicate scaffolding.",
-  "keywords": [
-    "feature",
-    "specification",
-    "phase",
-    "agent",
-    "execution",
-    "guardrails"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "004",
-  "folderSlug": "agent-execution-guardrails",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "004-agent-governance-and-commands"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails",
@@ -38,5 +18,25 @@
       "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/004-agent-execution-guardrails",
       "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
+  "description": "Feature Specification: Phase 4 — Agent Execution Guardrails",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "agent",
+    "execution",
+    "guardrails"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.172Z",
+  "specId": "001",
+  "folderSlug": "agent-execution-guardrails",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "004-agent-governance-and-commands"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

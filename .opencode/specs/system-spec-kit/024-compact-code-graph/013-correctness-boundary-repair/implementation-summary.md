@@ -42,26 +42,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -69,18 +53,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 013-correctness-boundary-repair |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 The code graph and compaction pipeline now produce correct results for multi-line functions, enforce DB integrity under failure, respect caller-provided budgets, and tighten boundary validation where implemented. One planned guard remains open: `ccc_feedback` still lacks full length-bound enforcement for `comment` and `resultFile`.
 
@@ -119,14 +103,14 @@ Code-graph dispatch validation uses local `getMissingRequiredStringArgs()` check
 | `handlers/memory-context.ts` | Modified | Exception sanitization |
 | `tools/code-graph-tools.ts` | Modified | Local required-string checks before dispatch |
 | `tool-schemas.ts` | Modified | `code_graph_context` omits `includeTrace`; memory schemas still retain it |
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 Five parallel Codex CLI agents (GPT-5.4, reasoning effort: high) implemented all items simultaneously. Each agent owned a non-overlapping file set. After all agents completed, focused vitest suites verified correctness: 69/69 tests across code-graph-indexer, crash-recovery, budget-allocator, and compact-merger suites. ESLint passed on all 11 modified TypeScript files with zero errors.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -138,7 +122,7 @@ Five parallel Codex CLI agents (GPT-5.4, reasoning effort: high) implemented all
 | Strict `>=` for maxDepth check | The previous `>` allowed depth=maxDepth nodes to expand their edges, leaking depth+1 nodes into results. |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -148,13 +132,13 @@ Five parallel Codex CLI agents (GPT-5.4, reasoning effort: high) implemented all
 | `tests/compact-merger.vitest.ts` | PASS (15/15 including 3 new tests) |
 | ESLint on 11 modified files | PASS (0 errors) |
 | Phase 013 checklist | 25 items reviewed; 24 implemented, 1 NOT IMPLEMENTED (`ccc_feedback` length validation) |
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. **Brace-counting is approximate.** String literals containing `{` or `}` can shift the count. Tree-sitter (Phase 015) will provide exact AST-based ranges.
 2. **ccc_feedback length validation is NOT IMPLEMENTED.** The dispatch layer only checks required `query`/`rating`, and `tool-schemas.ts` defines `comment`/`resultFile` without minLength/maxLength constraints.
 3. **Pre-existing TypeScript errors** in `memory-search.ts` and `shadow-evaluation-runtime.ts` prevent `npm run build` from passing. These are unrelated to Phase 013.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->

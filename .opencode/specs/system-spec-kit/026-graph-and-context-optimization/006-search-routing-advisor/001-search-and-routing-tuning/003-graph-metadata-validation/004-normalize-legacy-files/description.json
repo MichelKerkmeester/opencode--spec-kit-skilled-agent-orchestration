@@ -1,25 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files",
-  "description": "Normalize Legacy Graph Metadata Files",
-  "keywords": [
-    "normalize",
-    "legacy",
-    "graph",
-    "metadata",
-    "files"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "004",
-  "folderSlug": "normalize-legacy-files",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "006-search-routing-advisor",
-    "001-search-and-routing-tuning",
-    "003-graph-metadata-validation"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files",
@@ -35,5 +14,26 @@
       "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files",
       "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files",
+  "description": "Normalize Legacy Graph Metadata Files",
+  "keywords": [
+    "normalize",
+    "legacy",
+    "graph",
+    "metadata",
+    "files"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.351Z",
+  "specId": "004",
+  "folderSlug": "normalize-legacy-files",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "006-search-routing-advisor",
+    "001-search-and-routing-tuning",
+    "003-graph-metadata-validation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

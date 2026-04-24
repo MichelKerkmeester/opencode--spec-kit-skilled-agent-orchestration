@@ -61,9 +61,6 @@ Template compliance shim anchor for phases.
 <!-- ANCHOR:testing -->
 Template compliance shim anchor for testing.
 <!-- /ANCHOR:testing -->
-<!-- ANCHOR:dependencies -->
-Template compliance shim anchor for dependencies.
-<!-- /ANCHOR:dependencies -->
 <!-- ANCHOR:rollback -->
 Template compliance shim anchor for rollback.
 <!-- /ANCHOR:rollback -->
@@ -104,13 +101,13 @@ Template compliance shim anchor for rollback.
    - Verify IMPORTS edges match actual import statements
    - Check CONTAINS relationships for nested symbols
 
-<!-- ANCHOR:dependencies-2 -->
+<!-- ANCHOR:dependencies -->
 ### Dependencies
 
 - No runtime dependencies on Phases 001-007
 - Phase 009 must exist for persistent storage (can test with in-memory arrays)
 - tree-sitter WASM grammars must be available at runtime
-<!-- /ANCHOR:dependencies-2 -->
+<!-- /ANCHOR:dependencies -->
 
 ### Risk Mitigation
 

@@ -6,9 +6,12 @@
     "specification",
     "copilot",
     "writer",
-    "wiring"
+    "wiring",
+    "via",
+    "claude",
+    "wrapper"
   ],
-  "lastUpdated": "2026-04-23T14:47:43.368Z",
+  "lastUpdated": "2026-04-24T15:56:56.805Z",
   "specId": "011",
   "folderSlug": "copilot-writer-wiring",
   "parentChain": [

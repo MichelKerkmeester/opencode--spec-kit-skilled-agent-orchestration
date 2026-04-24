@@ -1,9 +1,5 @@
 {
   "title": "Memory Indexer Invariants",
-  "summary": "Umbrella phase coordinating the two memory-indexer invariant fixes: child 001 hardens lineage and concurrency behavior (E_LINEAGE and candidate_changed fixes via fromScan recheck bypass); child 002 enforces index-scope exclusions (z_future, external paths) and stops constitutional-tier pollution by restricting constitutional rows to dedicated folders. Both children shipped.",
-  "level": "coordination-root",
-  "status": "complete",
-  "importance_tier": "high",
   "trigger_phrases": [
     "026/010 memory indexer invariants",
     "memory indexer lineage fix",
@@ -11,6 +7,10 @@
     "index scope invariants",
     "indexer correctness"
   ],
+  "summary": "Umbrella phase coordinating the two memory-indexer invariant fixes: child 001 hardens lineage and concurrency behavior (E_LINEAGE and candidate_changed fixes via fromScan recheck bypass); child 002 enforces index-scope exclusions (z_future, external paths) and stops constitutional-tier pollution by restricting constitutional rows to dedicated folders. Both children shipped.",
+  "level": "coordination-root",
+  "status": "complete",
+  "importance_tier": "high",
   "children": [
     {
       "slug": "001-memory-indexer-lineage-and-concurrency-fix",
@@ -22,5 +22,23 @@
       "title": "Index Scope and Constitutional Tier Invariants",
       "status": "complete"
     }
-  ]
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants",
+  "description": "Coordination Root: Memory Indexer Invariants",
+  "keywords": [
+    "coordination",
+    "root",
+    "memory",
+    "indexer",
+    "invariants"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.825Z",
+  "specId": "010",
+  "folderSlug": "memory-indexer-invariants",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

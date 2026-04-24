@@ -9,12 +9,12 @@
     "labels",
     "evaluation"
   ],
-  "lastUpdated": "2026-04-02T17:21:39.800Z",
+  "lastUpdated": "2026-04-24T15:56:55.737Z",
   "specId": "003",
   "folderSlug": "real-feedback-labels",
   "parentChain": [
     "system-spec-kit",
-"023-hybrid-rag-fusion-refinement",
+    "023-hybrid-rag-fusion-refinement",
     "011-indexing-and-adaptive-fusion"
   ],
   "memorySequence": 0,

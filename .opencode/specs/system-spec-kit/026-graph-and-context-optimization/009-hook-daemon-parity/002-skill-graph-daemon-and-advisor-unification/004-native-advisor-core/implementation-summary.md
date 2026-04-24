@@ -1,3 +1,24 @@
+---
+title: "Implementation Summary — 027/003"
+description: "Projection reads skillnodes and skilledges from the SQLite skill graph when available, falls back to graph-metadata.json, adds command bridge projections, and keeps memory lifecycle fields out of scorer input."
+trigger_phrases:
+  - "native advisor core"
+  - "skill graph daemon and advisor unification"
+  - "implementation summary 027/003"
+  - "native advisor core implementation summary"
+  - "system spec kit"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
 title: "...009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core/implementation-summary]"

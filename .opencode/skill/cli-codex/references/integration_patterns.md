@@ -48,7 +48,7 @@ Calling AI (plan) --> Codex CLI (generate) --> Calling AI (review) --> Codex CLI
 # Step 1: Codex generates the code
 codex exec \
   "Create a rate limiter middleware for Express with sliding window algorithm. Output only the code, no explanation." \
-  --sandbox workspace-write --model gpt-5.3-codex > /tmp/rate-limiter.ts
+  --sandbox workspace-write --model gpt-5.5 > /tmp/rate-limiter.ts
 
 # Step 2: Calling AI reviews (done within the calling AI session)
 # Read /tmp/rate-limiter.ts, identify issues, write review to /tmp/review.md
@@ -56,7 +56,7 @@ codex exec \
 # Step 3: Codex fixes based on review
 codex exec \
   "@/tmp/rate-limiter.ts Fix these issues: $(cat /tmp/review.md)" \
-  --sandbox workspace-write --model gpt-5.3-codex > /tmp/rate-limiter-v2.ts
+  --sandbox workspace-write --model gpt-5.5 > /tmp/rate-limiter-v2.ts
 ```
 
 ### When to Use
@@ -85,7 +85,7 @@ codex exec \
 # Request JSON explicitly in the prompt (Codex has no --output json flag)
 codex exec \
   "Analyze src/auth.ts and return JSON with: {functions: [{name, params, returnType, complexity}], issues: [{line, severity, description}]}" \
-  --sandbox read-only --model gpt-5.3-codex > /tmp/analysis.json
+  --sandbox read-only --model gpt-5.5 > /tmp/analysis.json
 
 # Parse with jq
 jq '.issues[] | select(.severity == "high")' /tmp/analysis.json
@@ -117,7 +117,7 @@ Unlike Gemini CLI (which has a native `--output json` wrapper), Codex outputs pl
 # Prompt that avoids code fences
 codex exec \
   "Analyze src/auth.ts. Return ONLY raw JSON (no markdown, no explanation): {issues: [{line, severity, description}]}" \
-  --sandbox read-only --model gpt-5.3-codex > /tmp/analysis.json
+  --sandbox read-only --model gpt-5.5 > /tmp/analysis.json
 
 jq '.issues' /tmp/analysis.json
 ```
@@ -141,11 +141,11 @@ jq '.issues' /tmp/analysis.json
 ```bash
 # Launch multiple Codex tasks in background
 codex exec "Review src/api/ for security vulnerabilities. Return JSON." \
-  --sandbox read-only --model gpt-5.3-codex > /tmp/security-review.txt 2>&1 &
+  --sandbox read-only --model gpt-5.5 > /tmp/security-review.txt 2>&1 &
 PID1=$!
 
 codex exec "Generate unit tests for src/utils.ts" \
-  --sandbox workspace-write --model gpt-5.3-codex > /tmp/generated-tests.ts 2>&1 &
+  --sandbox workspace-write --model gpt-5.5 > /tmp/generated-tests.ts 2>&1 &
 PID2=$!
 
 # Calling AI continues other work...
@@ -252,52 +252,44 @@ done < input.jsonl
 
 ### Decision Matrix
 
-| Task Type | Recommended Model | Flag | Rationale |
-|-----------|-------------------|------|-----------|
-| Architecture analysis | `gpt-5.4` | `--model gpt-5.4` | Frontier reasoning for complex analysis |
-| Security audit | `gpt-5.4` | `--model gpt-5.4` | Deep reasoning catches subtle patterns |
-| Complex planning | `gpt-5.4` | `--model gpt-5.4` | Multi-strategy evaluation |
-| Research synthesis | `gpt-5.4` | `--model gpt-5.4` | Better synthesis of findings |
-| Code generation | `gpt-5.3-codex` | `--model gpt-5.3-codex` | Optimized for code output |
-| Standard review | `gpt-5.3-codex` | `--model gpt-5.3-codex` | Efficient pattern-based review |
-| Implementation | `gpt-5.3-codex` | `--model gpt-5.3-codex` | Code-focused with xhigh reasoning |
-| Test generation | `gpt-5.3-codex` | `--model gpt-5.3-codex` | Better test structure output |
-| Documentation | `gpt-5.3-codex` | `--model gpt-5.3-codex` | Efficient structured generation |
+All tasks dispatch `--model gpt-5.5`. Tune reasoning effort per task type:
 
-### Strength Comparison
-
-| Dimension | GPT-5.4 | GPT-5.3-Codex |
-|-----------|---------|---------------|
-| Reasoning depth | Frontier (configurable via `-c model_reasoning_effort`) | High (xhigh fixed) |
-| Code generation | Strong | Optimized |
-| Architecture analysis | Best choice | Good |
-| Security reasoning | Best choice | Good |
-| Speed | Slower (deeper reasoning) | Faster |
-| Cost | Higher | Lower |
+| Task Type | Reasoning Effort | Flag | Rationale |
+|-----------|-----------------|------|-----------|
+| Architecture analysis | `high` / `xhigh` | `-c model_reasoning_effort="high"` | Complex analysis benefits from depth |
+| Security audit | `high` / `xhigh` | `-c model_reasoning_effort="high"` | Catches subtle vulnerability patterns |
+| Complex planning | `high` / `xhigh` | `-c model_reasoning_effort="high"` | Multi-strategy evaluation |
+| Research synthesis | `high` | `-c model_reasoning_effort="high"` | Better synthesis of findings |
+| Code generation | `medium` (default) | `-c model_reasoning_effort="medium"` | Balanced for code output |
+| Standard review | `medium` (default) | `-c model_reasoning_effort="medium"` | Efficient pattern-based review |
+| Implementation | `medium` (default) | `-c model_reasoning_effort="medium"` | Balanced for spec-to-code |
+| Test generation | `medium` (default) | `-c model_reasoning_effort="medium"` | Solid test structure |
+| Documentation | `medium` (default) | `-c model_reasoning_effort="medium"` | Efficient structured generation |
+| Trivial lookups | `low` / `minimal` | `-c model_reasoning_effort="low"` | Minimize latency and cost |
 
 ### Implementation
 
 ```bash
-# GPT-5.4 for reasoning-heavy tasks
+# Reasoning-heavy tasks — raise reasoning_effort to high
 codex exec "Review the authentication architecture for security gaps" \
-  --sandbox read-only --model gpt-5.4
+  --sandbox read-only --model gpt-5.5 -c model_reasoning_effort="high"
 
 codex exec "Plan the migration from REST to GraphQL" \
-  --sandbox read-only --model gpt-5.4
+  --sandbox read-only --model gpt-5.5 -c model_reasoning_effort="high"
 
-# GPT-5.3-Codex for code-focused tasks
+# Code-focused tasks — medium is fine
 codex exec "Write tests for utils.ts" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5 -c model_reasoning_effort="medium"
 
 codex exec "Generate a rate limiter middleware" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5 -c model_reasoning_effort="medium"
 
-# Mixed workflow: analyze with 5.4, implement with 5.3-Codex
+# Mixed workflow: analyze at high, implement at medium
 codex exec "Analyze src/ for N+1 query patterns" \
-  --sandbox read-only --model gpt-5.4 > /tmp/analysis.txt
+  --sandbox read-only --model gpt-5.5 -c model_reasoning_effort="high" > /tmp/analysis.txt
 
 codex exec "Fix the N+1 patterns identified: $(cat /tmp/analysis.txt)" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5 -c model_reasoning_effort="medium"
 ```
 
 ### Why Explicit Model Specification Matters
@@ -308,7 +300,7 @@ codex exec "Fix the N+1 patterns identified: $(cat /tmp/analysis.txt)" \
 
 ```toml
 # .codex/config.toml - sets default for all invocations
-model = "gpt-5.3-codex"
+model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 ```
 
@@ -338,24 +330,24 @@ Task type?
 ```bash
 # Analysis: read-only
 codex exec "Identify all N+1 query patterns in src/" \
-  --sandbox read-only --model gpt-5.3-codex
+  --sandbox read-only --model gpt-5.5
 
 # Code generation: workspace-write
 codex exec "Add retry logic to all API calls in src/api/" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5
 
 # System migration: danger-full-access with explicit approval
 codex exec "Migrate the database schema from v1 to v2" \
   --sandbox danger-full-access \
   --ask-for-approval untrusted \
-  --model gpt-5.3-codex
+  --model gpt-5.5
 
 # Preview before committing: read-only first, workspace-write after review
 codex exec "List all files that would be changed by the auth refactor" \
-  --sandbox read-only --model gpt-5.3-codex > /tmp/files-to-change.txt
+  --sandbox read-only --model gpt-5.5 > /tmp/files-to-change.txt
 # Review /tmp/files-to-change.txt, then proceed:
 codex exec "@/tmp/files-to-change.txt Apply the auth refactor to these files" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5
 ```
 
 ### Sandbox Combinations to Avoid
@@ -379,11 +371,11 @@ codex exec "@/tmp/files-to-change.txt Apply the auth refactor to these files" \
 ```bash
 # Single file context
 codex exec "@src/database.ts Refactor to use the repository pattern" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5
 
 # Multiple files for cross-file understanding
 codex exec "@src/auth.ts @src/user.ts @src/session.ts These files have a circular dependency. Fix it." \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5
 ```
 
 ### Project Context via instructions.md
@@ -416,7 +408,7 @@ is not being rotated on use, allowing token replay attacks."
 
 codex exec \
   "@src/auth/tokens.ts Fix this security issue. Context from prior analysis: $CLAUDE_ANALYSIS" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5
 ```
 
 ### Web Search for Current Information
@@ -425,7 +417,7 @@ codex exec \
 # Enable live web browsing with --search
 codex exec --search \
   "Research the current best practices for refresh token rotation in Express.js. Implement the recommended pattern in src/auth/tokens.ts" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5
 ```
 
 <!-- /ANCHOR:context-enrichment -->
@@ -441,21 +433,21 @@ codex exec --search \
 ```bash
 # Stage 1: Generate
 codex exec "Create a webhook handler for Stripe events" \
-  --sandbox workspace-write --model gpt-5.3-codex > /tmp/webhook.ts
+  --sandbox workspace-write --model gpt-5.5 > /tmp/webhook.ts
 
 # Stage 2: Syntax check
 npx tsc --noEmit /tmp/webhook.ts 2>/tmp/syntax-errors.txt
 if [ $? -ne 0 ]; then
   codex exec \
     "@/tmp/webhook.ts Fix these TypeScript errors: $(cat /tmp/syntax-errors.txt)" \
-    --sandbox workspace-write --model gpt-5.3-codex > /tmp/webhook-fixed.ts
+    --sandbox workspace-write --model gpt-5.5 > /tmp/webhook-fixed.ts
   cp /tmp/webhook-fixed.ts /tmp/webhook.ts
 fi
 
 # Stage 3: Security scan
 codex exec \
   "@/tmp/webhook.ts Audit this code for security issues. Focus on: input validation, injection attacks, authentication bypasses. Return JSON: {issues: [{severity, line, description, fix}]}" \
-  --sandbox read-only --model gpt-5.3-codex > /tmp/security-scan.txt
+  --sandbox read-only --model gpt-5.5 > /tmp/security-scan.txt
 
 # Stage 4: Functional check (calling AI reviews the result)
 # Read /tmp/webhook.ts and /tmp/security-scan.txt within the calling AI
@@ -463,18 +455,18 @@ codex exec \
 # Stage 5: Style alignment
 codex exec \
   "@/tmp/webhook.ts Reformat to match project conventions. Functional style, Result<T,E> error handling, JSDoc on exports." \
-  --sandbox workspace-write --model gpt-5.3-codex > /tmp/webhook-final.ts
+  --sandbox workspace-write --model gpt-5.5 > /tmp/webhook-final.ts
 ```
 
 ### Pipeline Stages (Recommended Order)
 
 | Stage | Purpose | Tool |
 |-------|---------|------|
-| 1. Generate | Create initial artifact | Codex (`gpt-5.3-codex`, `workspace-write`) |
+| 1. Generate | Create initial artifact | Codex (`gpt-5.5` @ `medium`, `workspace-write`) |
 | 2. Syntax | Verify it compiles/parses | Language toolchain (tsc, eslint, etc.) |
-| 3. Security | Check for vulnerabilities | Codex (`gpt-5.3-codex`, `read-only`) |
+| 3. Security | Check for vulnerabilities | Codex (`gpt-5.5` @ `high`, `read-only`) |
 | 4. Functional | Verify correctness | Calling AI review or tests |
-| 5. Style | Match project conventions | Codex (`gpt-5.3-codex`, `workspace-write`) |
+| 5. Style | Match project conventions | Codex (`gpt-5.5` @ `medium`, `workspace-write`) |
 
 ### When to Use
 
@@ -496,7 +488,7 @@ codex exec \
 # Stage 1: Type definitions (read-only analysis + workspace-write output)
 codex exec \
   "Create the type definitions and function signatures for a task queue system. Types only, no implementation. Export all types." \
-  --sandbox workspace-write --model gpt-5.3-codex > src/task-queue/types.ts
+  --sandbox workspace-write --model gpt-5.5 > src/task-queue/types.ts
 
 # Verify stage 1
 npx tsc --noEmit src/task-queue/types.ts
@@ -504,7 +496,7 @@ npx tsc --noEmit src/task-queue/types.ts
 # Stage 2: Core implementation
 codex exec \
   "@src/task-queue/types.ts Implement the core TaskQueue class using these types. Handle enqueue, dequeue, retry with exponential backoff." \
-  --sandbox workspace-write --model gpt-5.3-codex > src/task-queue/queue.ts
+  --sandbox workspace-write --model gpt-5.5 > src/task-queue/queue.ts
 
 # Verify stage 2
 npx tsc --noEmit src/task-queue/queue.ts
@@ -512,7 +504,7 @@ npx tsc --noEmit src/task-queue/queue.ts
 # Stage 3: Tests
 codex exec \
   "@src/task-queue/types.ts @src/task-queue/queue.ts Write comprehensive tests for the TaskQueue. Cover: enqueue, dequeue, retry logic, concurrency limits, error handling." \
-  --sandbox workspace-write --model gpt-5.3-codex > src/task-queue/__tests__/queue.test.ts
+  --sandbox workspace-write --model gpt-5.5 > src/task-queue/__tests__/queue.test.ts
 
 # Verify stage 3
 npx jest src/task-queue/__tests__/queue.test.ts
@@ -523,7 +515,7 @@ npx jest src/task-queue/__tests__/queue.test.ts
 1. Never proceed to the next stage if the current stage has errors.
 2. Each stage gets the output of all previous stages as `@file` context.
 3. Keep stages small enough that they can be fully reviewed.
-4. Use `gpt-5.3-codex` for all stages.
+4. Use `gpt-5.5` for all stages; tune reasoning effort per stage (e.g., `high` for design, `medium` for implementation).
 
 ### When to Use
 
@@ -546,7 +538,7 @@ npx jest src/task-queue/__tests__/queue.test.ts
 # Then Codex reviews it:
 codex exec \
   "@src/newly-generated-module.ts Review this code for: correctness, edge cases, performance issues, and adherence to SOLID principles. Be critical. Return findings as JSON." \
-  --sandbox read-only --model gpt-5.3-codex > /tmp/codex-review.txt
+  --sandbox read-only --model gpt-5.5 > /tmp/codex-review.txt
 ```
 
 ### Codex Generates, Claude Reviews
@@ -554,7 +546,7 @@ codex exec \
 ```bash
 # Codex generates
 codex exec "Create a caching layer with TTL support and LRU eviction" \
-  --sandbox workspace-write --model gpt-5.3-codex > /tmp/cache.ts
+  --sandbox workspace-write --model gpt-5.5 > /tmp/cache.ts
 
 # Calling AI reviews within the session (read /tmp/cache.ts and analyze)
 ```
@@ -605,7 +597,7 @@ codex fork <session-id>
 # Non-interactive resume and continue
 codex exec --session-id <id> \
   "Continue implementing the rate limiter from where we left off" \
-  --model gpt-5.3-codex
+  --model gpt-5.5
 ```
 
 ### Multi-Turn Scripted Workflow
@@ -613,21 +605,21 @@ codex exec --session-id <id> \
 ```bash
 # Turn 1: Analysis - capture session ID from output if available
 codex exec "Analyze src/auth/ architecture. List 5 improvements." \
-  --sandbox read-only --model gpt-5.3-codex > /tmp/analysis.txt
+  --sandbox read-only --model gpt-5.5 > /tmp/analysis.txt
 # Note the session ID displayed in TUI or output
 
 # Turn 2: Implement first improvement (in same session)
 SESSION_ID="<id-from-turn-1>"
 codex exec --session-id "$SESSION_ID" \
   "Implement improvement #1 from your analysis" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5
 
 # Fork before trying a risky approach
 codex fork "$SESSION_ID"
 FORK_ID="<fork-id>"
 codex exec --session-id "$FORK_ID" \
   "Attempt the aggressive refactor approach" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5
 ```
 
 ### When to Use Each Operation
@@ -661,7 +653,7 @@ codex exec "Clean up the codebase" --full-auto  # May delete or alter files unex
 
 # GOOD: Review plan first, then execute specific steps
 codex exec "List files that could be cleaned up. Do not delete anything." \
-  --sandbox read-only --model gpt-5.3-codex
+  --sandbox read-only --model gpt-5.5
 # Review the list, then selectively execute
 ```
 
@@ -670,22 +662,22 @@ codex exec "List files that could be cleaned up. Do not delete anything." \
 ```bash
 # BAD: Unrestricted access with no human checkpoint
 codex exec "Migrate the database" \
-  --sandbox danger-full-access --ask-for-approval never --model gpt-5.3-codex
+  --sandbox danger-full-access --ask-for-approval never --model gpt-5.5
 
 # GOOD: Full access with explicit approval required
 codex exec "Migrate the database" \
-  --sandbox danger-full-access --ask-for-approval untrusted --model gpt-5.3-codex
+  --sandbox danger-full-access --ask-for-approval untrusted --model gpt-5.5
 ```
 
 ### 3. Trusting Output Blindly
 
 ```bash
 # BAD: Direct pipe to production
-codex exec "Generate migration SQL" --sandbox read-only --model gpt-5.3-codex \
+codex exec "Generate migration SQL" --sandbox read-only --model gpt-5.5 \
   | psql production_db
 
 # GOOD: Generate, review, test, then apply
-codex exec "Generate migration SQL" --sandbox read-only --model gpt-5.3-codex \
+codex exec "Generate migration SQL" --sandbox read-only --model gpt-5.5 \
   > /tmp/migration.sql
 # Review /tmp/migration.sql
 # Test on staging: psql staging_db -f /tmp/migration.sql
@@ -698,11 +690,11 @@ codex exec "Generate migration SQL" --sandbox read-only --model gpt-5.3-codex \
 # BAD: Everything at once
 codex exec "Create a complete REST API with auth, CRUD for users/posts/comments, \
   rate limiting, caching, logging, monitoring, tests, and deployment config" \
-  --model gpt-5.3-codex
+  --model gpt-5.5
 
 # GOOD: Incremental (Pattern 9)
 codex exec "Create type definitions for a blog API: User, Post, Comment" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5
 # Then build on top incrementally
 ```
 
@@ -710,14 +702,14 @@ codex exec "Create type definitions for a blog API: User, Post, Comment" \
 
 ```bash
 # BAD: Parallel writes to overlapping files
-codex exec "Fix auth" --sandbox workspace-write --model gpt-5.3-codex &
-codex exec "Fix auth tests" --sandbox workspace-write --model gpt-5.3-codex &
+codex exec "Fix auth" --sandbox workspace-write --model gpt-5.5 &
+codex exec "Fix auth tests" --sandbox workspace-write --model gpt-5.5 &
 # Race condition: both modify src/auth/ simultaneously
 
 # GOOD: Background only for independent, read-only analysis
-codex exec "Review src/auth/" --sandbox read-only --model gpt-5.3-codex \
+codex exec "Review src/auth/" --sandbox read-only --model gpt-5.5 \
   > /tmp/auth-review.txt &
-codex exec "Review src/payments/" --sandbox read-only --model gpt-5.3-codex \
+codex exec "Review src/payments/" --sandbox read-only --model gpt-5.5 \
   > /tmp/pay-review.txt &
 wait
 ```
@@ -726,11 +718,11 @@ wait
 
 ```bash
 # BAD: OSS models in automated pipelines (unpredictable quality)
-codex exec "Fix the authentication bug" --oss --model gpt-5.3-codex
+codex exec "Fix the authentication bug" --oss --model gpt-5.5
 
 # GOOD: Use --oss only for local experimentation
-# For production workflows, always use gpt-5.3-codex with API key or OAuth
-codex exec "Fix the authentication bug" --model gpt-5.3-codex
+# For production workflows, always use gpt-5.5 with API key or OAuth
+codex exec "Fix the authentication bug" --model gpt-5.5
 ```
 
 ### 7. Backgrounding codex exec Inside Shell Scripts Called by Another AI
@@ -754,13 +746,13 @@ This is the most common false-completion trap in cross-AI orchestration. The orc
 
 ```bash
 # BAD: Follow-up without re-providing context
-codex exec "Analyze src/auth.ts" --model gpt-5.3-codex  # Turn 1
-codex exec "Now fix the issue you found" --model gpt-5.3-codex  # Turn 2: Codex has no memory of Turn 1
+codex exec "Analyze src/auth.ts" --model gpt-5.5  # Turn 1
+codex exec "Now fix the issue you found" --model gpt-5.5  # Turn 2: Codex has no memory of Turn 1
 
 # GOOD: Re-provide context or use session resume
-codex exec "Analyze src/auth.ts" --model gpt-5.3-codex > /tmp/analysis.txt
+codex exec "Analyze src/auth.ts" --model gpt-5.5 > /tmp/analysis.txt
 codex exec "@src/auth.ts Fix the issues identified: $(cat /tmp/analysis.txt)" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5
 ```
 
 <!-- /ANCHOR:anti-patterns -->

@@ -1,26 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening",
-  "description": "Feature Specification: NFKC Unification Hardening",
-  "keywords": [
-    "feature",
-    "specification",
-    "nfkc",
-    "unification",
-    "hardening"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "003",
-  "folderSlug": "nfkc-unification-hardening",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "008-runtime-executor-hardening",
-    "019-system-hardening"
-  ],
-  "memorySequence": 1,
-  "memoryNameHistory": [
-    "18-04-26_22-45__scaffolded-remediation-child-003-nfkc-unification.md"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/003-nfkc-unification-hardening",
@@ -37,5 +15,27 @@
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/019-system-hardening/003-nfkc-unification-hardening",
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening",
+  "description": "Feature Specification: NFKC Unification Hardening",
+  "keywords": [
+    "feature",
+    "specification",
+    "nfkc",
+    "unification",
+    "hardening"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.628Z",
+  "specId": "003",
+  "folderSlug": "nfkc-unification-hardening",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening",
+    "003-system-hardening"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-04-26_22-45__scaffolded-remediation-child-003-nfkc-unification.md"
+  ]
 }

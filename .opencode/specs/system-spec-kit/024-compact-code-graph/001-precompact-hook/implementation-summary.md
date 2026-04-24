@@ -43,23 +43,13 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
 <!-- ANCHOR:how-delivered -->
 Template compliance shim anchor for how-delivered.
 <!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
 <!-- ANCHOR:limitations -->
 Template compliance shim anchor for limitations.
 <!-- /ANCHOR:limitations -->
@@ -70,18 +60,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 001-precompact-hook |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 Implemented a two-step compaction context injection system for Claude Code. When auto-compact triggers, the PreCompact hook precomputes critical context (constitutional memories, triggered memories, working memory attention signals) and caches it. Immediately after, SessionStart(source=compact) reads the cache and injects the context into the new compacted conversation via stdout, staying within a 4000-token budget and 2-second latency cap.
 
@@ -111,11 +101,11 @@ Floors + overflow pool model across 4 sources within the 4000-token compaction b
 | `mcp_server/hooks/claude/shared.ts` | New | Common hook utilities, token budgets, formatting |
 | `mcp_server/hooks/claude/hook-state.ts` | New | Cache state management for inter-hook communication |
 | `.claude/settings.local.json` | Modified | PreCompact + SessionStart(compact) hook registration |
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 - [x] PreCompact event triggers hook script and precomputes context to cache
 - [x] SessionStart(source=compact) reads cache and injects context via stdout
@@ -127,4 +117,4 @@ Floors + overflow pool model across 4 sources within the 4000-token compaction b
 - [x] Existing settings.local.json hooks preserved (merge-safe)
 - [x] Working memory attention signals included in context extraction
 - [x] Hook output format matches CLAUDE.md compaction recovery expectations
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->

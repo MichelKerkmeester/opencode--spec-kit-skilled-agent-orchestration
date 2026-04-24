@@ -50,7 +50,7 @@ _memory:
 
 ---
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 ## Phase 2: Implementation
 
 ### Phase A: Deterministic Replay Parsing
@@ -68,7 +68,7 @@ _memory:
 - [x] T011 [P0] Add first-ingest schema and replay verification (`tests/session-analytics-db.vitest.ts`) [EVIDENCE: the test suite asserts schema creation, seed rows, and the first replay result.]
 - [x] T012 [P0] Add unchanged-transcript idempotency verification (same file) [EVIDENCE: the second replay inserts `0` turns and preserves stable session totals.]
 - [x] T013 [P0] Add growing-transcript replay verification (same file) [EVIDENCE: appending one transcript line inserts exactly one new turn and advances the replay offset.]
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 
 ---
 

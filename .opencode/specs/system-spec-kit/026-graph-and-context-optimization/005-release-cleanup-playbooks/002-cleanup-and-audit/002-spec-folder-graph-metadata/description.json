@@ -1,27 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata",
-  "description": "Feature Specification: 018 / 011 — graph-metadata.json packet contract",
-  "keywords": [
-    "feature",
-    "specification",
-    "018",
-    "011",
-    "graph-metadata",
-    "json",
-    "packet",
-    "contract"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "002",
-  "folderSlug": "spec-folder-graph-metadata",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "005-release-cleanup-playbooks",
-    "008-cleanup-and-audit"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/002-spec-folder-graph-metadata",
@@ -38,5 +15,28 @@
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/008-cleanup-and-audit/002-spec-folder-graph-metadata",
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata",
+  "description": "Feature Specification: 018 / 011 — graph-metadata.json packet contract",
+  "keywords": [
+    "feature",
+    "specification",
+    "018",
+    "011",
+    "graph-metadata",
+    "json",
+    "packet",
+    "contract"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.219Z",
+  "specId": "002",
+  "folderSlug": "spec-folder-graph-metadata",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "005-release-cleanup-playbooks",
+    "002-cleanup-and-audit"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

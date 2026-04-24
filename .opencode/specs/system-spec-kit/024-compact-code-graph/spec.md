@@ -77,9 +77,6 @@ Template compliance shim section. Legacy phase content continues below.
 <!-- ANCHOR:problem -->
 Template compliance shim anchor for problem.
 <!-- /ANCHOR:problem -->
-<!-- ANCHOR:scope -->
-Template compliance shim anchor for scope.
-<!-- /ANCHOR:scope -->
 <!-- ANCHOR:requirements -->
 Template compliance shim anchor for requirements.
 <!-- /ANCHOR:requirements -->
@@ -320,13 +317,13 @@ Deep research (95 iterations, segments 1-7) and deep review (30 iterations acros
 
 **Evidence base:** Research iterations 056-095, review iterations 001-030. Cross-validated by 3 AI systems (Claude Opus, GPT-5.4 via Codex CLI, GPT-5.4 via Copilot CLI). Review verdict during remediation intake was CONDITIONAL (0 P0, 16 P1, 16 P2 active findings), and later closure phases 029-030 resolved the active packet-level review drift.
 
-<!-- ANCHOR:scope-2 -->
+<!-- ANCHOR:scope -->
 ### Out of Scope
 
 - Dual-Graph installation or graperoot integration — rejected per research (DR-001)
 - Token tracking dashboard UI — future work
 - Additional runtime-specific adapter expansion beyond delivered Gemini work and later Copilot startup/runtime parity follow-through
-<!-- /ANCHOR:scope-2 -->
+<!-- /ANCHOR:scope -->
 
 ---
 <!-- ANCHOR:phase-map -->

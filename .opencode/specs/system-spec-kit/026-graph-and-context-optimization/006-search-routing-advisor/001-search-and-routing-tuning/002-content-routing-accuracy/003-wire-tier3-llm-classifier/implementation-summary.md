@@ -1,3 +1,24 @@
+---
+title: "Implementation Summary: Wire Tier3 LLM Classifier into Save Handler"
+description: "This phase turned the Tier 3 contract from a dormant interface into a real save-path dependency."
+trigger_phrases:
+  - "wire tier3 llm classifier"
+  - "content routing accuracy"
+  - "wire tier3 llm classifier into save"
+  - "wire tier3 llm classifier implementation summary"
+  - "system spec kit"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
 title: "...isor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier/implementation-summary]"

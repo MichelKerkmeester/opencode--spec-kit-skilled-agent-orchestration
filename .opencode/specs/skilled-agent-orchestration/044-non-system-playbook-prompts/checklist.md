@@ -1,3 +1,23 @@
+---
+title: "Verification Checklist: Non-System Playbook Prompt Modernization"
+description: "This verification checklist captures Non-System Playbook Prompt Modernization for non system playbook prompts."
+trigger_phrases:
+  - "non system playbook prompts"
+  - "skilled agent orchestration"
+  - "non system playbook prompt modernization"
+  - "non system playbook prompts checklist"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/044-non-system-playbook-prompts"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 ---
 title: "Verification Checklist: Non-System Playbook [skilled-agent-orchestration/044-non-system-playbook-prompts/checklist]"

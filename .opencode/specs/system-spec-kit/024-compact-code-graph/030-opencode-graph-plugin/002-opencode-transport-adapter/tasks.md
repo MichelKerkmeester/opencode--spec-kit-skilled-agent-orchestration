@@ -75,7 +75,7 @@ _memory:
 
 ---
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 ## Phase 2: Implementation
 
 - [x] T004 Define adapter interface
@@ -83,7 +83,7 @@ _memory:
 - [x] T006 Define messages-transform context injection behavior
 - [x] T007 Define compaction-note injection behavior
 - [x] T007a Register the live OpenCode plugin and diagnostic tool
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 
 ---
 

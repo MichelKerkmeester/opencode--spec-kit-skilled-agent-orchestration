@@ -69,6 +69,7 @@ utils/
 | `format-helpers.ts` | Human-readable date formatting (`formatAgeString`) |
 | `logger.ts` | Structured logging utilities for MCP server operations |
 | `path-security.ts` | Re-exports path validation and regex escaping from `@spec-kit/shared/utils/path-security` |
+| `index-scope.ts` | Shared path-policy module (Packet 026/010/002). Exports `shouldIndexForMemory`, `shouldIndexForCodeGraph`, `resolveCanonicalPath`, `GOVERNANCE_AUDIT_ACTIONS`, `recordTierDowngradeAudit`, `buildGovernanceLogicalKey`. Single source of truth for `z_future/` + `/external/` exclusions and constitutional-tier normalization |
 
 <!-- /ANCHOR:structure -->
 
@@ -86,6 +87,23 @@ utils/
 | Function | Purpose |
 |----------|---------|
 | `getCanonicalPathKey` | Resolve a file path to its canonical identity (via `realpathSync`), collapsing symlink aliases for deduplication |
+
+### Index Scope (`index-scope.ts`)
+
+Shared path-policy module (Packet 026/010/002) used as the single source of truth for memory indexing and code-graph scanning exclusions. Enforces permanent exclusion of `z_future/` and `/external/` subtrees across memory discovery, spec-doc classification, parser admissibility, and code-graph recursive scans. Exported helpers are consumed by `memory-index-discovery.ts`, `spec-doc-paths.ts`, `memory-parser.ts`, `memory-save.ts`, `vector-index-mutations.ts`, `post-insert-metadata.ts`, `checkpoints.ts`, `code-graph/lib/indexer-types.ts`, and `code-graph/lib/structural-indexer.ts`.
+
+| Function | Purpose |
+|----------|---------|
+| `shouldIndexForMemory` | Predicate: is a given path admissible for the memory index under current policy? Rejects `z_future/` and `/external/` paths; callers use this at both discovery and save time for defense-in-depth |
+| `shouldIndexForCodeGraph` | Predicate: is a given path admissible for code-graph scanning? Shares exclusion rules with `shouldIndexForMemory` but may accept packet-specific overlays where additive |
+| `resolveCanonicalPath` | Resolve a path via `realpathSync` before policy evaluation so symlinked / aliased escape attempts cannot bypass exclusion checks |
+| `GOVERNANCE_AUDIT_ACTIONS` | Stable string constants for governance-audit `action` values: `tier_downgrade_non_constitutional_path` (save-time normalization) and `tier_downgrade_non_constitutional_path_cleanup` (CLI cleanup). Part of the operator-facing contract — do not rename |
+| `recordTierDowngradeAudit` | Shared helper that emits a durable `governance_audit` row when a non-constitutional-path memory is normalized away from `constitutional`; used by save / update / post-insert / checkpoint-restore paths and by the cleanup CLI |
+| `buildGovernanceLogicalKey` | Build the stable logical key used to correlate governance-audit rows across processes |
+
+Excluded-from-index rule: the constitutional `README.md` at `.opencode/skill/system-spec-kit/constitutional/README.md` is intentionally **not** indexed — it is an overview doc, not a rule surface (ADR-005 superseded ADR-004). Only real constitutional rule files in that directory carry the `constitutional` tier.
+
+Operator maintenance CLI for pre-existing pollution: `scripts/dist/memory/cleanup-index-scope-violations.js` with `--apply` / `--verify`. Target verify counts: `constitutional_total=2`, `z_future_rows=0`, `external_rows=0`, `invalid_constitutional_rows=0`.
 
 ### Path Security (`path-security.ts`)
 

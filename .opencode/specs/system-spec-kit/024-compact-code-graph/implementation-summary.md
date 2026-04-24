@@ -45,26 +45,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 3 -->
@@ -72,7 +56,7 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
@@ -82,11 +66,11 @@ Template compliance shim anchor for limitations.
 | **Level** | 3 |
 | **Phases** | 31 shipped + 3 draft follow-ons (001-034) |
 | **Total LOC** | ~3,500+ across all phases |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 Context compaction in long AI coding sessions no longer causes silent knowledge loss. The system now preserves and restores critical context at lifecycle boundaries -- compaction, session start, resume, and stop -- across Claude Code (via hooks) and hookless runtimes (via MCP-level priming). A structural code graph provides "what connects to what" alongside CocoIndex's "what resembles what", and the compaction path uses a bounded allocator plus follow-up guidance without overstating the shipped runtime as a fully retrieved 3-source merge.
 
@@ -137,14 +121,14 @@ A 95-iteration deep research and 30-iteration deep review (Codex CLI + Copilot C
 - **Phase 030**: Startup-surface, transport, and code-graph parity follow-on packet, including OpenCode transport surfacing and later runtime parity work.
 - **Phase 031**: Normalized analytics reader, which turned the Stop-hook producer seam into a reader-owned replay model for cross-session token analytics.
 - **Draft follow-ons 032-034**: Cached-summary fidelity gates, optional FTS forced-degrade hardening, and the optional workflow-split/token-insight tail packet were opened as scoped child packets without claiming runtime delivery yet.
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 Implementation proceeded in six waves. v1 phases (001-012) were built sequentially over the initial design period, with each phase tested independently before proceeding. v2 remediation (013-016) was executed by 16 parallel Codex CLI agents (GPT-5.4, high reasoning effort) in 5 simultaneous waves. v3 phases (017-025) addressed parser hardening, hookless priming, routing, observability, and tool-routing enforcement/documentation parity. v4 phases (026-029) covered SessionStart debugging, hookless structural priming, startup-highlight remediation, and review-remediation truth-sync. v5 phase 030 split the startup-surface and code-graph parity follow-on into a dedicated child packet with its own internal phases. v6 phase 031 added the reader-owned normalized analytics seam, and the next continuity packets 032-034 were opened as draft follow-ons so the train stays explicit without overstating shipped runtime scope. Each shipped phase has its own child spec folder with spec.md, plan.md, checklist.md, and implementation-summary.md.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -166,7 +150,7 @@ Implementation proceeded in six waves. v1 phases (001-012) were built sequential
 Full decision record: see `decision-record.md` (17 decisions, DR-001 through DR-017).
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -183,11 +167,11 @@ Full decision record: see `decision-record.md` (17 decisions, DR-001 through DR-
 | Root checklist (v1 + v2) | All P0 items PASS, all P1 items PASS, and P2 items PASS with later-phase follow-through recorded explicitly |
 | draft follow-ons 032-034 | PASS for packet-planning scope — child packet docs created to hold the next train without claiming implementation |
 | Deep review verdict at rerun time | CONDITIONAL (0 P0, 16 P1 addressed, 16 P2 addressed); follow-up root/runtime truth-sync landed afterward |
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. **Documented parser follow-on remains non-blocking.** Additional SymbolKinds extraction beyond the current tree-sitter set is still recorded in the packet, but it no longer blocks packet task/checklist completion.
 2. **Regex parser is still available.** Tree-sitter is the default parser, but the regex fallback remains via `SPECKIT_PARSER=regex` env var. Brace-counting for endLine is approximate -- string literals with `{`/`}` can shift the count.
@@ -196,4 +180,4 @@ Full decision record: see `decision-record.md` (17 decisions, DR-001 through DR-
 5. **Working-set integration is partial.** Tracker structures exist, but compaction still relies primarily on transcript heuristics instead of fully working-set-driven retrieval.
 6. **MCP-level compaction detection is not implementable** without runtime SDK changes. Deferred indefinitely.
 7. **Pre-existing TypeScript errors** in `memory-search.ts` and `shadow-evaluation-runtime.ts` prevent `npm run build` from passing clean. Unrelated to spec 024.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->

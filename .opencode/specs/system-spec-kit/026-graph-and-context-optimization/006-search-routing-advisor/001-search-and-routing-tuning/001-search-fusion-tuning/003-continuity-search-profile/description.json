@@ -1,25 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile",
-  "description": "Add Continuity Search Intent Profile",
-  "keywords": [
-    "add",
-    "continuity",
-    "search",
-    "intent",
-    "profile"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "003",
-  "folderSlug": "continuity-search-profile",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "006-search-routing-advisor",
-    "001-search-and-routing-tuning",
-    "001-search-fusion-tuning"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile",
@@ -35,5 +14,26 @@
       "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile",
       "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile",
+  "description": "Add Continuity Search Intent Profile",
+  "keywords": [
+    "add",
+    "continuity",
+    "search",
+    "intent",
+    "profile"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.279Z",
+  "specId": "003",
+  "folderSlug": "continuity-search-profile",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "006-search-routing-advisor",
+    "001-search-and-routing-tuning",
+    "001-search-fusion-tuning"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

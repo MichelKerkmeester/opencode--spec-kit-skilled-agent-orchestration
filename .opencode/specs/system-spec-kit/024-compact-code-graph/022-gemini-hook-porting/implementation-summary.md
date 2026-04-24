@@ -43,26 +43,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -70,18 +54,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 022-gemini-hook-porting |
 | **Completed** | 2026-03-31 (1 item deferred) |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 Gemini CLI now has full hook support matching Claude Code's capabilities, raising its context parity from 50% to 85%. Five hook scripts cover all four Gemini lifecycle events, with shared utilities to prevent Claude/Gemini drift.
 
@@ -108,7 +92,7 @@ Maps to Gemini's single `SessionEnd` event. It saves session state and can extra
 ### Settings Registration (.gemini/settings.json)
 
 `.gemini/settings.json` is the expected user config target, not a checked-in repository file. Registration guidance exists, but the local workspace path must be verified before this can be treated as complete.
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 ### Files Changed
@@ -123,10 +107,10 @@ Maps to Gemini's single `SessionEnd` event. It saves session state and can extra
 | `.gemini/settings.json` | Expected user-local config | Hook registration target only; no checked-in repo file |
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 The Gemini hook port shipped as runtime-specific hook scripts plus shared parsing helpers. Review confirmed the lifecycle mapping needed correction: Gemini uses one `SessionEnd` hook for stop handling, not `AfterAgent` plus `AfterModel`, so the documentation now reflects the actual event model and the remaining partial-token-tracking gap.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -137,19 +121,19 @@ The Gemini hook port shipped as runtime-specific hook scripts plus shared parsin
 | Call out shallow spec detection | The current regex only captures `.opencode/specs/<segment>/<segment>/`, which can truncate deeper nested phase paths and affect saved context accuracy. |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 - TypeScript: 0 errors
 - Tests: 327 passed, 23 failed (pre-existing, unrelated)
 - Review: Opus CONDITIONAL PASS 78/100, GPT-5.4 CONDITIONAL 82%
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. **User-local settings only** `.gemini/settings.json` is not checked into the repo. The workspace path may be stale and must be verified locally.
 2. **Partial token tracking** `session-stop.ts` does not parse Gemini transcript token usage.
 3. **Shallow nested spec detection** The Gemini stop flow uses regex-based shallow detection and can truncate deeper nested phase paths.
 4. **Incomplete transcript hardening** `compact-cache.ts` still uses unbounded `readFileSync(filePath, 'utf-8')`, so F056 remains open.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->

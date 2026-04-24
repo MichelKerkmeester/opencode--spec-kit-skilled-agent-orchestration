@@ -43,26 +43,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -70,7 +54,7 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
@@ -78,11 +62,11 @@ Template compliance shim anchor for limitations.
 | **Status** | Partial (11/14 items complete; 3 deferred) |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 Seed resolution is now more precise with a near-exact tier, query intent is annotated for observability, the index auto-refreshes on branch switches, and all 5 runtimes have session start instructions that auto-trigger code graph and memory context loading.
 
@@ -132,14 +116,14 @@ Five v1 checklist items that overstated shipped behavior now carry PARTIAL annot
 | `CLAUDE.md` | Modified | Universal recovery |
 | `.claude/CLAUDE.md` | Modified | Claude-specific only |
 | Root `checklist.md` | Modified | PARTIAL annotations |
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 Two Codex CLI agents (GPT-5.4, high reasoning). Agent 016-A handled seed resolution, auto-reindex, and DB changes. Agent 016-B handled all documentation updates and truth-sync annotations. New test coverage added for seed resolver (near-exact tier) and scan (git HEAD tracking). Verified with focused test suites and git diff checks on documentation files.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -151,7 +135,7 @@ Two Codex CLI agents (GPT-5.4, high reasoning). Agent 016-A handled seed resolut
 | Shared Session Start Protocol across runtimes | One pattern for all runtimes means consistent documentation and testing. Runtime-specific hooks add reliability but the baseline works everywhere. |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -160,13 +144,13 @@ Two Codex CLI agents (GPT-5.4, high reasoning). Agent 016-A handled seed resolut
 | `tests/crash-recovery.vitest.ts` | PASS (metadata table, index verification) |
 | `git diff --check` on doc files | PASS |
 | Phase 016 checklist | Partial (11/14 items complete; 3 deferred) |
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. **Intent metadata does not yet drive backend routing (Item 40 deferred portion).** `classifyQueryIntent()` annotates `queryIntentMetadata` / `queryIntentRouting`, but this phase does not claim end-to-end routing to different retrieval backends from that metadata.
 2. **CocoIndex score propagation not implemented.** Near-exact confidence is based on line distance only. Blending with CocoIndex relevance scores requires API work.
 3. **Runtime verification is manual.** Each instruction file needs testing on its target runtime to confirm it loads correctly. Automated verification would require CI integration with all 5 CLIs.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->

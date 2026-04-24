@@ -9,24 +9,6 @@
     "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/",
     "layout": "phase-root-children"
   },
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization",
-  "description": "Feature Specification: Graph and Context Optimization",
-  "keywords": [
-    "feature",
-    "specification",
-    "graph",
-    "context",
-    "optimization",
-    "memory-indexer",
-    "lineage",
-    "candidate_changed"
-  ],
-  "lastUpdated": "2026-04-23T17:48:00.000Z",
-  "specId": "026",
-  "folderSlug": "graph-and-context-optimization",
-  "parentChain": [
-    "system-spec-kit"
-  ],
   "childTopology": [
     "001-research-and-baseline",
     "002-continuity-memory-runtime",
@@ -39,6 +21,21 @@
     "009-hook-daemon-parity",
     "010-memory-indexer-lineage-and-concurrency-fix",
     "011-index-scope-and-constitutional-tier-invariants"
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization",
+  "description": "Feature Specification: Graph and Context Optimization",
+  "keywords": [
+    "feature",
+    "specification",
+    "graph",
+    "context",
+    "optimization"
+  ],
+  "lastUpdated": "2026-04-24T15:56:55.983Z",
+  "specId": "026",
+  "folderSlug": "graph-and-context-optimization",
+  "parentChain": [
+    "system-spec-kit"
   ],
   "memorySequence": 5,
   "memoryNameHistory": [

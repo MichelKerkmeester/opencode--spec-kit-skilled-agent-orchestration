@@ -42,26 +42,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 3 -->
@@ -70,18 +54,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 025-tool-routing-enforcement |
 | **Completed** | 2026-04-01 |
 | **Level** | 3 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 <!-- Voice guide:
      Open with a hook: what changed and why it matters. One paragraph, impact first.
@@ -100,11 +84,11 @@ You now get the same routing logic through MCP server instructions, session prim
 ### Delivery State
 
 The implementation work covered T-001 through T-023 and T-025 through T-029. Two items remain intentionally open: T-024 stays deferred because `.gemini/agents/context-prime.md` does not exist, and T-030 is still waiting on a fresh-session manual check in Claude Code.
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 <!-- Voice guide:
      Tell the delivery story. What gave you confidence this works?
@@ -113,7 +97,7 @@ The implementation work covered T-001 through T-023 and T-025 through T-029. Two
      For Level 3+: describe stages (testing, rollout, verification). -->
 
 The rollout followed the phase plan from core enforcement outward: server instructions and tool descriptions first, then PrimePackage and session snapshot updates, then reactive hints, then runtime docs and agent outputs. Verification is grounded in the current ledger: unit coverage for `buildServerInstructions()` and the `routingRules` object, code verification for hint firing, and grep verification across runtime instruction files. No manual fresh-session pass is claimed yet because T-030 remains open.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -127,7 +111,7 @@ The rollout followed the phase plan from core enforcement outward: server instru
 | Leave open work visible in the summary | The task ledger still has a real deferral and a real manual check outstanding, so the summary should match that state exactly. |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 <!-- Voice guide: Be honest. Show failures alongside passes.
      "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
@@ -137,11 +121,11 @@ The rollout followed the phase plan from core enforcement outward: server instru
 | Task ledger state | PASS: T-001 through T-023 and T-025 through T-029 are complete; T-024 and T-030 remain open. |
 | Phase verification evidence | PASS: T-026 and T-027 unit checks, T-028 integration verification, T-029 runtime-doc grep verification. |
 | Fresh-session manual proof | OPEN: T-030 is not complete yet. |
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 <!-- Voice guide: Number them. Be specific and actionable.
      "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
@@ -150,7 +134,7 @@ The rollout followed the phase plan from core enforcement outward: server instru
 
 1. **Missing Gemini agent file** `.gemini/agents/context-prime.md` does not exist in this workspace, so T-024 stays deferred.
 2. **Manual runtime confirmation still pending** The fresh Claude Code session check for CocoIndex-first routing is still open as T-030.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->
 
 ---
 

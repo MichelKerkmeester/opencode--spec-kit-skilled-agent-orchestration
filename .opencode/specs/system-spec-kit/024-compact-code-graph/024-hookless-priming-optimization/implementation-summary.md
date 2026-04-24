@@ -51,7 +51,6 @@ Template compliance shim anchor for what-built.
 <!-- ANCHOR:how-delivered -->
 Template compliance shim anchor for how-delivered.
 <!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->

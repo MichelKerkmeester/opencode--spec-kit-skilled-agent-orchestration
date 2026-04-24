@@ -43,23 +43,13 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
 <!-- ANCHOR:how-delivered -->
 Template compliance shim anchor for how-delivered.
 <!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
 <!-- ANCHOR:limitations -->
 Template compliance shim anchor for limitations.
 <!-- /ANCHOR:limitations -->
@@ -70,18 +60,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 002-session-start-hook |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 Implemented a unified SessionStart hook that auto-primes every Claude Code session with relevant prior context. The `session-prime.ts` script handles all four SessionStart sources (startup, resume, clear, compact) with source-aware routing, each producing appropriately scoped context. Shared with Phase 1's compact injection path to eliminate code duplication.
 
@@ -106,11 +96,11 @@ Implemented a unified SessionStart hook that auto-primes every Claude Code sessi
 | `mcp_server/hooks/claude/shared.ts` | Modified | Added session budget profiles (startup/resume/clear) |
 | `mcp_server/hooks/claude/hook-state.ts` | Modified | Added lastSpecFolder, workingSet state persistence |
 | `.claude/settings.local.json` | Modified | SessionStart hook registration (no matcher, all sources) |
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 - [x] SessionStart hook registered and fires on all 4 sources (startup, resume, clear, compact)
 - [x] Source routing produces appropriate context for each source type
@@ -123,4 +113,4 @@ Implemented a unified SessionStart hook that auto-primes every Claude Code sessi
 - [x] No code duplication with Phase 1 compact path (shared session-prime.ts)
 - [x] Token pressure awareness scales budget at >70%/>90% context window usage
 - [x] Spec folder auto-detected from project context
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->

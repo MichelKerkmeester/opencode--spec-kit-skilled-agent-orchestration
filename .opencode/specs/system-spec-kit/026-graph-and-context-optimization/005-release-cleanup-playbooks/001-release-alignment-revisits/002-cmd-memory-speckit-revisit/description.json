@@ -1,26 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit",
-  "description": "Feature Specification: 018 / 008 — command release-alignment revisit",
-  "keywords": [
-    "feature",
-    "specification",
-    "018",
-    "008",
-    "command",
-    "release-alignment",
-    "revisit"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "002",
-  "folderSlug": "cmd-memory-speckit-revisit",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "005-release-cleanup-playbooks",
-    "007-release-alignment-revisits"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits/002-cmd-memory-speckit-revisit",
@@ -37,5 +15,27 @@
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/007-release-alignment-revisits/002-cmd-memory-speckit-revisit",
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit",
+  "description": "Feature Specification: 018 / 008 — command release-alignment revisit",
+  "keywords": [
+    "feature",
+    "specification",
+    "018",
+    "008",
+    "command",
+    "release-alignment",
+    "revisit"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.198Z",
+  "specId": "002",
+  "folderSlug": "cmd-memory-speckit-revisit",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "005-release-cleanup-playbooks",
+    "001-release-alignment-revisits"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

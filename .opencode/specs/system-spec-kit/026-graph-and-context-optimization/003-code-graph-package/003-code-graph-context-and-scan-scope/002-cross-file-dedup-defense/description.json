@@ -1,18 +1,16 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/003-cross-file-dedup-defense",
-  "description": "Cross-File Symbol Dedup Defense",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-cross-file-dedup-defense",
+  "description": "Feature Specification: Cross-File Symbol Dedup Defense",
   "keywords": [
-    "code-graph",
-    "cross-file-dedup",
-    "symbol-id",
-    "globalSeenIds",
-    "INSERT OR IGNORE",
-    "code_nodes",
-    "UNIQUE constraint",
-    "filesIndexed"
+    "feature",
+    "specification",
+    "cross-file",
+    "symbol",
+    "dedup",
+    "defense"
   ],
-  "lastUpdated": "2026-04-23T14:47:43.368Z",
-  "specId": "003",
+  "lastUpdated": "2026-04-24T15:56:56.163Z",
+  "specId": "002",
   "folderSlug": "cross-file-dedup-defense",
   "parentChain": [
     "system-spec-kit",

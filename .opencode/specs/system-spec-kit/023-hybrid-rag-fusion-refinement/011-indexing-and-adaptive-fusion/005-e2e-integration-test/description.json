@@ -9,12 +9,12 @@
     "integration",
     "test"
   ],
-  "lastUpdated": "2026-04-02T17:21:39.809Z",
+  "lastUpdated": "2026-04-24T15:56:55.747Z",
   "specId": "005",
   "folderSlug": "e2e-integration-test",
   "parentChain": [
     "system-spec-kit",
-"023-hybrid-rag-fusion-refinement",
+    "023-hybrid-rag-fusion-refinement",
     "011-indexing-and-adaptive-fusion"
   ],
   "memorySequence": 0,

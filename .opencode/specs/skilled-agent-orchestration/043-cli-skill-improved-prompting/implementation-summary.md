@@ -1,3 +1,23 @@
+---
+title: "Implementation Summary: CLI Skill Prompt-Quality Integration via Mirror Cards"
+description: "The feature landed as the two-tier prompt-quality architecture planned in this packet."
+trigger_phrases:
+  - "cli skill improved prompting"
+  - "skilled agent orchestration"
+  - "cli skill prompt quality integration via"
+  - "cli skill improved prompting implementation summary"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/043-cli-skill-improved-prompting"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
 title: "Implementation Summary: CLI [skilled-agent-orchestration/043-cli-skill-improved-prompting/implementation-summary]"

@@ -62,9 +62,6 @@ Template compliance shim anchor for phases.
 <!-- ANCHOR:testing -->
 Template compliance shim anchor for testing.
 <!-- /ANCHOR:testing -->
-<!-- ANCHOR:dependencies -->
-Template compliance shim anchor for dependencies.
-<!-- /ANCHOR:dependencies -->
 <!-- ANCHOR:rollback -->
 Template compliance shim anchor for rollback.
 <!-- /ANCHOR:rollback -->
@@ -93,10 +90,10 @@ Template compliance shim anchor for rollback.
    - `compact` → verify cache read + injection
    - `clear` → verify minimal output
 
-<!-- ANCHOR:dependencies-2 -->
+<!-- ANCHOR:dependencies -->
 ### Dependencies
 - Phase 1 (shared `session-prime.ts`, `hook-state.ts`, `shared.ts`)
-<!-- /ANCHOR:dependencies-2 -->
+<!-- /ANCHOR:dependencies -->
 
 ### Technical Context
 - Runtime surface: system-spec-kit MCP server + hook adapters.

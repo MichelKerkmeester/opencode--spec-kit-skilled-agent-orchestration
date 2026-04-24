@@ -1,25 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/008-input-normalizer-fastpath-fix",
-  "description": "Feature Specification: Input Normalizer Fast-Path Fix",
-  "keywords": [
-    "feature",
-    "specification",
-    "input",
-    "normalizer",
-    "fast-path",
-    "fix"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "008",
-  "folderSlug": "input-normalizer-fastpath-fix",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "002-continuity-memory-runtime",
-    "003-memory-quality-remediation"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/008-input-normalizer-fastpath-fix",
@@ -36,5 +15,26 @@
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/008-input-normalizer-fastpath-fix",
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/008-input-normalizer-fastpath-fix"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/008-input-normalizer-fastpath-fix",
+  "description": "Feature Specification: Input Normalizer Fast-Path Fix",
+  "keywords": [
+    "feature",
+    "specification",
+    "input",
+    "normalizer",
+    "fast-path",
+    "fix"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.071Z",
+  "specId": "008",
+  "folderSlug": "input-normalizer-fastpath-fix",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "002-continuity-memory-runtime",
+    "002-memory-quality-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

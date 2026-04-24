@@ -48,13 +48,13 @@ _memory:
 
 ---
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 ## Phase 2: Implementation
 
 - [ ] T011 Implement the bounded change described in `spec.md`.
 - [ ] T012 Keep changes inside the named owner surfaces.
 - [ ] T013 Update packet-local docs with any implementation truth learned along the way.
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 
 ---
 

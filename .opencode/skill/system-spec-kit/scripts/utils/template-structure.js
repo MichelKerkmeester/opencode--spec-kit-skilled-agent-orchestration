@@ -16,6 +16,33 @@ const H2_RE = /^##\s+(.+)$/gm;
 const ANCHOR_OPEN_RE = /<!--\s*ANCHOR:([A-Za-z0-9][A-Za-z0-9_-]*)\s*-->/g;
 const ANCHOR_CLOSE_LINE_RE = /<!--\s*\/ANCHOR:([A-Za-z0-9][A-Za-z0-9_-]*)\s*-->/;
 const DYNAMIC_DECISION_RECORD_RE = /^(?:ADR|DR)-\d+\s*:/i;
+const CUSTOM_ALLOWED_ANCHORS = {
+  '3+': {
+    'spec.md': [
+      'executive-summary',
+      'nfr',
+      'edge-cases',
+      'complexity',
+      'risk-matrix',
+      'user-stories',
+      'compliance',
+      'stakeholders',
+      'changelog',
+    ],
+  },
+  '*': {
+    'decision-record.md': ['decision'],
+  },
+};
+const CUSTOM_ALLOWED_ANCHOR_PATTERNS = {
+  '*': {
+    'tasks.md': [/^phase-\d+$/],
+    'decision-record.md': [
+      /^adr-\d+$/,
+      /^adr-\d+-(?:context|decision|alternatives|consequences|five-checks|impl)$/,
+    ],
+  },
+};
 
 const TEMPLATE_PATHS = {
   '1': {
@@ -57,6 +84,22 @@ function normalizeLevel(level) {
   if (Number.isNaN(numeric) || numeric <= 1) return '1';
   if (numeric === 2) return '2';
   return '3';
+}
+
+function getCustomAllowedAnchors(level, basename) {
+  const normalizedLevel = normalizeLevel(level);
+  return [
+    ...(CUSTOM_ALLOWED_ANCHORS['*']?.[basename] || []),
+    ...(CUSTOM_ALLOWED_ANCHORS[normalizedLevel]?.[basename] || []),
+  ];
+}
+
+function getCustomAllowedAnchorPatterns(level, basename) {
+  const normalizedLevel = normalizeLevel(level);
+  return [
+    ...(CUSTOM_ALLOWED_ANCHOR_PATTERNS['*']?.[basename] || []),
+    ...(CUSTOM_ALLOWED_ANCHOR_PATTERNS[normalizedLevel]?.[basename] || []),
+  ];
 }
 
 function normalizeHeaderText(header) {
@@ -275,6 +318,13 @@ function loadTemplateContract(level, basename, templatesRoot = getTemplatesRoot(
       requiredAnchors.push(section.id);
     } else {
       optionalAnchors.push(section.id);
+    }
+  }
+
+  for (const anchorId of getCustomAllowedAnchors(level, basename)) {
+    if (!seenAllowedAnchors.has(anchorId)) {
+      seenAllowedAnchors.add(anchorId);
+      allowedAnchors.push(anchorId);
     }
   }
 
@@ -599,6 +649,16 @@ function compareDocumentToTemplate(level, basename, documentPath, templatesRoot 
   if ((contract.allowedAnchors || []).length > 0) {
     const allowedAnchors = new Set(contract.allowedAnchors);
     anchors.extras = anchors.extras.filter((anchorId) => !allowedAnchors.has(anchorId));
+  }
+  const customAllowedAnchors = new Set(getCustomAllowedAnchors(level, basename));
+  if (customAllowedAnchors.size > 0) {
+    anchors.extras = anchors.extras.filter((anchorId) => !customAllowedAnchors.has(anchorId));
+  }
+  const allowedAnchorPatterns = getCustomAllowedAnchorPatterns(level, basename);
+  if (allowedAnchorPatterns.length > 0) {
+    anchors.extras = anchors.extras.filter(
+      (anchorId) => !allowedAnchorPatterns.some((pattern) => pattern.test(anchorId))
+    );
   }
 
   return {

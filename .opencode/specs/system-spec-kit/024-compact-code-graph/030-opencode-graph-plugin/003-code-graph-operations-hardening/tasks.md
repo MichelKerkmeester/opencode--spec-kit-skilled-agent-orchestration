@@ -75,14 +75,14 @@ _memory:
 
 ---
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 ## Phase 2: Implementation
 
 - [x] T004 Define doctor/repair scope
 - [x] T005 Define export/import design boundaries
 - [x] T006 Define portable identity and collision expectations
 - [x] T007 Define metadata-only preview rules
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 
 ---
 

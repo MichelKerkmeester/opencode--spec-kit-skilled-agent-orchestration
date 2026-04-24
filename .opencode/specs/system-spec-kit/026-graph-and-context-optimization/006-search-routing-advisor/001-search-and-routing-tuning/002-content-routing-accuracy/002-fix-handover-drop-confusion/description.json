@@ -1,25 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion",
-  "description": "Fix Handover vs Drop Routing Confusion",
-  "keywords": [
-    "fix",
-    "handover",
-    "drop",
-    "routing",
-    "confusion"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "002",
-  "folderSlug": "fix-handover-drop-confusion",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "006-search-routing-advisor",
-    "001-search-and-routing-tuning",
-    "002-content-routing-accuracy"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion",
@@ -35,5 +14,26 @@
       "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion",
       "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion",
+  "description": "Fix Handover vs Drop Routing Confusion",
+  "keywords": [
+    "fix",
+    "handover",
+    "drop",
+    "routing",
+    "confusion"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.309Z",
+  "specId": "002",
+  "folderSlug": "fix-handover-drop-confusion",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "006-search-routing-advisor",
+    "001-search-and-routing-tuning",
+    "002-content-routing-accuracy"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

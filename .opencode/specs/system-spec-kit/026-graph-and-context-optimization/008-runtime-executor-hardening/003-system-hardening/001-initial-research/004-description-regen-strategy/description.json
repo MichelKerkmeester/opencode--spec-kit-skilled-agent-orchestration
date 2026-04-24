@@ -1,29 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/004-description-regen-strategy",
-  "description": "Feature Specification: description.json Rich-Content Regen Strategy",
-  "keywords": [
-    "feature",
-    "specification",
-    "description",
-    "json",
-    "rich-content",
-    "regen",
-    "strategy"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "004",
-  "folderSlug": "description-regen-strategy",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "008-runtime-executor-hardening",
-    "019-system-hardening",
-    "001-initial-research"
-  ],
-  "memorySequence": 1,
-  "memoryNameHistory": [
-    "18-04-26_18-54__rr-2-research-packet-scaffolded-wave-2-dispatch.md"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/001-initial-research/004-description-regen-strategy",
@@ -40,5 +15,30 @@
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/019-system-hardening/001-initial-research/004-description-regen-strategy",
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/004-description-regen-strategy"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/004-description-regen-strategy",
+  "description": "Feature Specification: description.json Rich-Content Regen Strategy",
+  "keywords": [
+    "feature",
+    "specification",
+    "description",
+    "json",
+    "rich-content",
+    "regen",
+    "strategy"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.607Z",
+  "specId": "004",
+  "folderSlug": "description-regen-strategy",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening",
+    "003-system-hardening",
+    "001-initial-research"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-04-26_18-54__rr-2-research-packet-scaffolded-wave-2-dispatch.md"
+  ]
 }

@@ -1,32 +1,5 @@
 {
   "title": "Spec: Phase 001 - Claude Optimization Settings (Reddit field-report audit)",
-  "description": "Deliver an evidence-anchored recommendation set for reducing Claude Code token spend in Code_Environment/Public, derived from auditing a primary-source Reddit field report covering 858-926 sessions.",
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings",
-  "keywords": [
-    "spec",
-    "phase",
-    "001",
-    "claude",
-    "optimization",
-    "settings",
-    "reddit",
-    "field-report",
-    "audit"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "001",
-  "folderSlug": "claude-optimization-settings",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "001-research-and-baseline"
-  ],
-  "memorySequence": 3,
-  "memoryNameHistory": [
-    "06-04-26_12-05__deep-research-run-8-iterations-via-cli-copilot.md",
-    "06-04-26_13-47__extended-deep-research-run-13-iterations-total-8.md",
-    "07-04-26_16-18__this-session-closed-out-the-research-only-level-3.md"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings",
@@ -40,5 +13,32 @@
       "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings",
       "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings",
+  "description": "Spec: Phase 001 - Claude Optimization Settings (Reddit field-report audit)",
+  "keywords": [
+    "spec",
+    "phase",
+    "001",
+    "claude",
+    "optimization",
+    "settings",
+    "reddit",
+    "field-report",
+    "audit"
+  ],
+  "lastUpdated": "2026-04-24T15:56:55.993Z",
+  "specId": "001",
+  "folderSlug": "claude-optimization-settings",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "001-research-and-baseline"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "06-04-26_12-05__deep-research-run-8-iterations-via-cli-copilot.md",
+    "06-04-26_13-47__extended-deep-research-run-13-iterations-total-8.md",
+    "07-04-26_16-18__this-session-closed-out-the-research-only-level-3.md"
+  ]
 }

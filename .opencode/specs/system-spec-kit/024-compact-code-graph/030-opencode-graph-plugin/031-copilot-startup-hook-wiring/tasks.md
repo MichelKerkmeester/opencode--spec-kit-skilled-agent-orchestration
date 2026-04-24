@@ -74,13 +74,13 @@ _memory:
 
 ---
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 ## Phase 2: Implementation
 
 - [x] T004 Make Copilot runtime detection depend on actual repo hook wiring
 - [x] T005 Update runtime-detection and cross-runtime fallback tests for the new Copilot behavior
 - [x] T006 Add a dedicated Copilot hook wiring test covering JSON config plus wrapper output
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 
 ---
 

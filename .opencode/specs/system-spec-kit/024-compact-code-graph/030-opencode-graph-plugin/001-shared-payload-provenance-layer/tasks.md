@@ -75,14 +75,14 @@ _memory:
 
 ---
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 ## Phase 2: Implementation
 
 - [x] T004 Define trust-state semantics
 - [x] T005 Define pre-merge selection rules
 - [x] T006 Define anti-feedback compaction rules
 - [x] T007 Write the Phase 2 handoff contract
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 
 ---
 

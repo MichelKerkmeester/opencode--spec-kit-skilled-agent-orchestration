@@ -43,26 +43,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 3 -->
@@ -70,18 +54,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 009-code-graph-storage-query |
 | **Completed** | 2026-03-31 |
 | **Level** | 3 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 Phase 009 delivers the persistent storage layer and deterministic query interface for the structural code graph. A separate `code-graph.sqlite` database stores files, nodes, and edges produced by the Phase 008 indexer, and three MCP tools expose scan, query, and status operations to all downstream consumers.
 
@@ -116,14 +100,14 @@ All three tool schemas were added to `tool-schemas.ts` with strict JSON schema v
 | `handlers/code-graph/index.ts` | New | Handler barrel export |
 | `tool-schemas.ts` | Modified | Added 3 tool schemas (code_graph_scan, code_graph_query, code_graph_status) |
 | `context-server.ts` | Modified | Registered tool handlers, initialized code-graph DB on startup |
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 Implemented as a single-pass phase following the plan sequence: storage layer first, then scan, query, and status handlers, and finally server integration. Each tool was tested end-to-end against real repository files after registration.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -137,7 +121,7 @@ Implemented as a single-pass phase following the plan sequence: storage layer fi
 | SCHEMA_VERSION=3 metadata and version tables | Future migrations need a reliable version check and durable graph metadata. The version and metadata tables make that explicit. |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -149,13 +133,13 @@ Implemented as a single-pass phase following the plan sequence: storage layer fi
 | code_graph_query all 5 operations return correct results | Verified |
 | code_graph_status reports accurate metrics | Verified |
 | All tools registered and callable via MCP | Verified |
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. **Single-writer model.** Concurrent scans are not supported; scan operations are sequential. Concurrent reads are safe via WAL mode.
 2. **No partial symbol diffing.** When a file changes, all its nodes and edges are replaced atomically. Incremental freshness is file-level via mtimes, not symbol-level patching.
 3. **Schema version is v1.** Migration infrastructure exists but has not been exercised with an actual version upgrade.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->

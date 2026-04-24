@@ -1,25 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs",
-  "description": "Feature Specification: Phase 5 — Operations & Tail PRs",
-  "keywords": [
-    "feature",
-    "specification",
-    "phase",
-    "operations",
-    "tail",
-    "prs"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "005",
-  "folderSlug": "operations-tail-prs",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "002-continuity-memory-runtime",
-    "003-memory-quality-remediation"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/005-operations-tail-prs",
@@ -36,5 +15,26 @@
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/005-operations-tail-prs",
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs",
+  "description": "Feature Specification: Phase 5 — Operations & Tail PRs",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "operations",
+    "tail",
+    "prs"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.056Z",
+  "specId": "005",
+  "folderSlug": "operations-tail-prs",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "002-continuity-memory-runtime",
+    "002-memory-quality-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

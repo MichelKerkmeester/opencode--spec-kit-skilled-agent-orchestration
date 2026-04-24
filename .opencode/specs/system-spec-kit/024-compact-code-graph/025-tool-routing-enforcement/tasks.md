@@ -46,9 +46,9 @@ Template compliance shim anchor for notation.
 <!-- ANCHOR:phase-1 -->
 Template compliance shim anchor for phase-1.
 <!-- /ANCHOR:phase-1 -->
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 Template compliance shim anchor for phase-2.
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 <!-- ANCHOR:phase-3 -->
 Template compliance shim anchor for phase-3.
 <!-- /ANCHOR:phase-3 -->

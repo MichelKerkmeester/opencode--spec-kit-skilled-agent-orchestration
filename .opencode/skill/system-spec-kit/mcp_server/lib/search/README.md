@@ -726,6 +726,16 @@ Watcher- and ingest-triggered reindex paths now use the normal synchronous embed
 **Scan Invalidation Hooks** (`handlers/memory-index.ts` / `handlers/mutation-hooks.ts`):
 `memory_index_scan` now runs the broader post-mutation invalidation hook behavior whenever a scan indexes, updates, or stale-deletes rows.
 
+**Scan-Originated Save Contract — `fromScan`** (`handlers/memory-index.ts` → `handlers/memory-save.ts`; Packet 026/010/001):
+Scan-driven saves are tagged with `fromScan: true`. `memory-save.ts` uses this flag to skip **only** the transactional complement-recheck path that previously emitted `candidate_changed` false-positives on scan-triggered reindexing; interactive (non-scan) saves retain the full recheck. In parallel, the PE orchestration path consults `SimilarMemory.canonical_file_path` and downgrades cross-file `UPDATE` / `REINFORCE` candidates to `CREATE`, which removes the `E_LINEAGE` false-positive class where sibling packet docs drove lineage-bearing updates across files. The prior forced `scanBatchSize = 1` serialization was rolled back in favor of this bypass, so the default `BATCH_SIZE` applies again.
+
+**Index-Scope + Constitutional-Tier Guards** (`handlers/memory-save.ts` + shared `lib/utils/index-scope.ts`; Packet 026/010/002):
+Before persistence, the save path runs two defense-in-depth guards against pre-existing policy violations in caller payloads:
+1. **Excluded-path rejection** — paths under `z_future/` or `/external/` are rejected outright (`shouldIndexForMemory()` returns false). `resolveCanonicalPath()` canonicalizes the path first so symlink escapes cannot bypass the check.
+2. **Constitutional-tier normalization** — non-constitutional paths attempting `importanceTier: "constitutional"` are normalized to `important` and a `tier_downgrade_non_constitutional_path` governance-audit row is written via `recordTierDowngradeAudit()`. Only real constitutional rule files under `.opencode/skill/system-spec-kit/constitutional/` (excluding its `README.md` per ADR-005) may persist the `constitutional` tier.
+
+The same invariants are enforced at `memory_update`, post-insert metadata application, and checkpoint-restore revalidation. Stable governance-audit action strings (`tier_downgrade_non_constitutional_path`, `tier_downgrade_non_constitutional_path_cleanup`) are part of the operator-facing contract.
+
 <a id="scoring-enhancements"></a>
 ### Scoring Enhancements
 

@@ -61,9 +61,6 @@ Template compliance shim anchor for phases.
 <!-- ANCHOR:testing -->
 Template compliance shim anchor for testing.
 <!-- /ANCHOR:testing -->
-<!-- ANCHOR:dependencies -->
-Template compliance shim anchor for dependencies.
-<!-- /ANCHOR:dependencies -->
 <!-- ANCHOR:rollback -->
 Template compliance shim anchor for rollback.
 <!-- /ANCHOR:rollback -->
@@ -103,14 +100,14 @@ Template compliance shim anchor for rollback.
     - Budget of 0 → minimal response (root + one edge)
     - Multiple seeds resolving to same node → deduplicated
 
-<!-- ANCHOR:dependencies-2 -->
+<!-- ANCHOR:dependencies -->
 ### Dependencies
 
 - Phase 008 indexer (for node data in graph)
 - Phase 009 storage + query tools (for graph queries)
 - CocoIndex Code MCP (for semantic seeds — already deployed)
 - Existing profile-formatters.ts patterns (for output style)
-<!-- /ANCHOR:dependencies-2 -->
+<!-- /ANCHOR:dependencies -->
 
 ### Risk Mitigation
 

@@ -43,26 +43,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -70,18 +54,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 004-cross-runtime-fallback |
 | **Completed** | 2026-03-28 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 A capability-based runtime detection system and cross-runtime compaction recovery strategy that ensures all AI runtimes (Claude Code, Codex CLI, Copilot CLI, Gemini CLI) can recover context after compaction events, using hooks where available and tool-based fallback elsewhere.
 
@@ -111,14 +95,14 @@ The `getRecoveryApproach()` function maps `hookPolicy` to either `hooks` (for Cl
 | `tests/runtime-routing.vitest.ts` | New | Runtime routing and detection tests |
 | `tests/runtime-detection.vitest.ts` | New | Unit tests for `detectRuntime()` and policy resolution |
 | `startup-checks.ts` | Modified | Added supporting startup checks; runtime detection is not currently wired into production startup |
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 Implemented as part of the 024-compact-code-graph phases 1-4 pipeline. Runtime detection was built as a standalone module and validated through the test suite, but it is not currently wired into the MCP production startup flow. Instruction file updates were applied after verifying the exact `memory_context` parameter requirements (the `profile: "resume"` requirement was validated through iteration 012 testing). The 7-scenario test matrix was implemented per the iteration 015 specification.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -131,7 +115,7 @@ Implemented as part of the 024-compact-code-graph phases 1-4 pipeline. Runtime d
 | Deferred MCP-level compaction detection | Time-gap analysis requires runtime SDK changes to track inter-call timing. Not implementable in v1 without invasive changes. |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -143,13 +127,13 @@ Implemented as part of the 024-compact-code-graph phases 1-4 pipeline. Runtime d
 | CODEX.md recovery instructions | Verified — tool-based fallback with same primitives |
 | Gate system regression | None — Gate 1/2/3 behavior unchanged |
 | Phase 004 checklist | 15/15 items verified (P0: 5, P1: 6, P2: 4 including 3 deferred to v2) |
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. **MCP-level compaction detection deferred.** Time-gap analysis (`SPECKIT_AUTO_COMPACT_DETECT`) requires runtime SDK changes not available in v1. Recovery relies on instruction-file directives.
 2. **Copilot/Gemini hook adapters deferred.** Copilot remains `disabled_by_scope` in v1. Gemini reports `unavailable` when no `.gemini/settings.json` exists and `disabled_by_scope` only when settings exist without hook configuration. Hook adapters can be added later by updating the runtime detection fixture.
 3. **Env-based detection is heuristic.** Unknown runtimes or custom setups may return `runtime: 'unknown', hookPolicy: 'unknown'` — these fall back to tool-based recovery, which is the safe default.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->

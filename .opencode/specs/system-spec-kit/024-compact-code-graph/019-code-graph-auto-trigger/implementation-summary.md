@@ -43,26 +43,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -70,18 +54,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 019-code-graph-auto-trigger |
 | **Completed** | 2026-03-31 (2 items deferred) |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 The code graph now performs a best-effort readiness check before `code_graph_context` and `code_graph_query`, reducing but not eliminating the need for manual `code_graph_scan`. This phase shipped most of the intended server-side auto-trigger flow, but it still has documented gaps and two deferred follow-ups.
 
@@ -104,7 +88,7 @@ A 10-second timeout (`AUTO_INDEX_TIMEOUT_MS`) prevents long blocking at the call
 ### Transparent Integration
 
 Both `handlers/code-graph/context.ts` and `handlers/code-graph/query.ts` call `ensureCodeGraphReady(process.cwd())` before their main logic. This is a best-effort auto-index attempt, not a guarantee. Failures are logged and the handlers continue, so callers can still receive stale or empty results.
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 ### Files Changed
@@ -118,19 +102,19 @@ Both `handlers/code-graph/context.ts` and `handlers/code-graph/query.ts` call `e
 | `lib/code-graph/code-graph-db.ts` | Modified | ensureFreshFiles() for per-file mtime tracking |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 - TypeScript: 0 errors
 - Tests: 327 passed, 23 failed (pre-existing, unrelated)
 - Review: Opus CONDITIONAL PASS 78/100, GPT-5.4 CONDITIONAL 82%
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 This phase shipped by adding the readiness check in front of query and context flows, then wiring status to the same freshness detector. Review follow-up kept two lower-priority findings deferred instead of blocking the phase, because the best-effort path still improves usability across runtimes.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -141,7 +125,7 @@ This phase shipped by adding the readiness check in front of query and context f
 | Leave F048 and F049 deferred | They are real gaps, but they are P2 follow-ups rather than release blockers for this phase. |
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. Freshness ignores a 5-minute age window. It only checks empty graph state, git HEAD drift, and tracked file mtimes.
 2. Debounce is global, not keyed by `rootDir`, because the debounce state lives in module-level globals.
@@ -151,4 +135,4 @@ This phase shipped by adding the readiness check in front of query and context f
 6. Auto-index errors are swallowed from the caller perspective. They are logged, but query/context continue without throwing.
 7. Runtime documentation should describe best-effort auto-index on query/context only. `code_graph_status` does not auto-reindex.
 8. Phase status is mostly shipped, not fully complete. F048 and F049 remain deferred follow-ups.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->

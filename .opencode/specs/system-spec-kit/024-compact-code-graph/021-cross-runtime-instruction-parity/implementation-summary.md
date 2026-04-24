@@ -42,26 +42,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -69,18 +53,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 021-cross-runtime-instruction-parity |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 The runtime guidance now points non-hook CLIs at the current bootstrap-first recovery contract, and OpenCode now has a verified `@context-prime` entry point. This summary also keeps the remaining parity gap visible instead of overstating completion.
 
@@ -106,7 +90,7 @@ A new agent at `.opencode/agent/context-prime.md` (227 lines) that:
 3. Returns a compact Prime Package with spec folder, task status, system health, and recommended next steps
 
 F059 is now verified done because `.opencode/agent/orchestrate.md` lines 18-21 explicitly delegate to `@context-prime` on the first user turn or after `/clear`. AGENTS.md remains the advertising and guidance surface, not the delegation executor. The public first-turn contract is still `session_bootstrap()`; `@context-prime` is the delegated lower-level resume surface used by orchestrators.
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 ### Files Changed
@@ -121,10 +105,10 @@ F059 is now verified done because `.opencode/agent/orchestrate.md` lines 18-21 e
 | `CLAUDE.md` | Modified | @context-prime added to Agent Definitions |
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 This phase landed as a documentation and agent-instruction alignment pass. The final verification step confirmed that AGENTS.md defines and advertises `@context-prime`, while `.opencode/agent/orchestrate.md` is the runtime file that actually delegates to it on the first turn or after `/clear`.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -136,17 +120,17 @@ This phase landed as a documentation and agent-instruction alignment pass. The f
 | Mark F059 verified done | `.opencode/agent/orchestrate.md` already contains the required first-turn and post-`/clear` delegation wiring. |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 - TypeScript: N/A (documentation and config changes only)
 - Tests: N/A
 - Review: Opus CONDITIONAL PASS 78/100, GPT-5.4 CONDITIONAL 82%
 - Evidence: `.opencode/agent/context-prime.md` lines 34-38, 61-65, 74-87, 229-230; `AGENTS.md` lines 294-299 and 386-399; `.opencode/agent/orchestrate.md` lines 18-21
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. **Residual Claude-hook wording remains in non-Claude agent files.** Evidence still exists in `.codex/agents/orchestrate.toml` lines 827-835, `.codex/agents/deep-research.toml` lines 425-429, `.codex/agents/speckit.toml` lines 557-561, and several `.gemini/agents/*.md` files. This phase should treat that cleanup as incomplete follow-up work.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->

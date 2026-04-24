@@ -1,26 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps",
-  "description": "Feature Specification: Phase 017 Wave C — Rollout + Sweeps",
-  "keywords": [
-    "feature",
-    "specification",
-    "phase",
-    "017",
-    "wave",
-    "rollout",
-    "sweeps"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "004",
-  "folderSlug": "rollout-sweeps",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "008-runtime-executor-hardening",
-    "016-foundational-runtime"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/004-rollout-sweeps",
@@ -37,5 +15,27 @@
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime/004-rollout-sweeps",
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps",
+  "description": "Feature Specification: Phase 017 Wave C — Rollout + Sweeps",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "017",
+    "wave",
+    "rollout",
+    "sweeps"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.559Z",
+  "specId": "004",
+  "folderSlug": "rollout-sweeps",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening",
+    "001-foundational-runtime"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

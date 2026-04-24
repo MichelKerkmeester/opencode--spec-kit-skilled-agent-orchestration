@@ -44,27 +44,6 @@ Template compliance shim section. Legacy phase content continues below.
 ## 7. ROLLBACK PLAN
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:summary -->
-Template compliance shim anchor for summary.
-<!-- /ANCHOR:summary -->
-<!-- ANCHOR:quality-gates -->
-Template compliance shim anchor for quality-gates.
-<!-- /ANCHOR:quality-gates -->
-<!-- ANCHOR:architecture -->
-Template compliance shim anchor for architecture.
-<!-- /ANCHOR:architecture -->
-<!-- ANCHOR:phases -->
-Template compliance shim anchor for phases.
-<!-- /ANCHOR:phases -->
-<!-- ANCHOR:testing -->
-Template compliance shim anchor for testing.
-<!-- /ANCHOR:testing -->
-<!-- ANCHOR:dependencies -->
-Template compliance shim anchor for dependencies.
-<!-- /ANCHOR:dependencies -->
-<!-- ANCHOR:rollback -->
-Template compliance shim anchor for rollback.
-<!-- /ANCHOR:rollback -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -72,7 +51,7 @@ Template compliance shim anchor for rollback.
 
 ---
 
-<!-- ANCHOR:summary-2 -->
+<!-- ANCHOR:summary -->
 ### 1. SUMMARY
 #### Technical Context
 
@@ -85,11 +64,11 @@ Template compliance shim anchor for rollback.
 
 ### Overview
 This plan documents what Phase 012 actually delivered and how to verify it honestly. The emphasis is on status-only SessionStart reporting, hint-only PreCompact guidance, lightweight helper-tool behavior, and explicit tracking of the work that remains undone.
-<!-- /ANCHOR:summary-2 -->
+<!-- /ANCHOR:summary -->
 
 ---
 
-<!-- ANCHOR:quality-gates-2 -->
+<!-- ANCHOR:quality-gates -->
 ### 2. QUALITY GATES
 ### Definition of Ready
 - [x] The packet scope is limited to Phase 012 documentation inside this folder
@@ -100,11 +79,11 @@ This plan documents what Phase 012 actually delivered and how to verify it hones
 - [x] All packet docs use the Level 2 scaffold
 - [x] Current-reality corrections are consistent across docs
 - [x] Verification references manual build checks and hook smoke tests instead of a nonexistent script
-<!-- /ANCHOR:quality-gates-2 -->
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
-<!-- ANCHOR:architecture-2 -->
+<!-- ANCHOR:architecture -->
 ### 3. ARCHITECTURE
 ### Pattern
 Documentation alignment for a partially delivered implementation
@@ -117,11 +96,11 @@ Documentation alignment for a partially delivered implementation
 
 ### Data Flow
 Implementation facts flow from shipped hooks and helper tools into the packet. The packet then drives review and validation by describing what exists, how it was verified, and what still requires a future phase.
-<!-- /ANCHOR:architecture-2 -->
+<!-- /ANCHOR:architecture -->
 
 ---
 
-<!-- ANCHOR:phases-2 -->
+<!-- ANCHOR:phases -->
 ### 4. IMPLEMENTATION PHASES
 ### Phase 1: Setup
 - [x] Rebuild the packet around the Level 2 template contract
@@ -137,37 +116,37 @@ Implementation facts flow from shipped hooks and helper tools into the packet. T
 - [x] Align checklist evidence with manual build output verification and hook smoke tests
 - [x] Validate the packet after edits
 - [ ] Implement broader CocoIndex readiness automation or background re-indexing
-<!-- /ANCHOR:phases-2 -->
+<!-- /ANCHOR:phases -->
 
 ---
 
-<!-- ANCHOR:testing-2 -->
+<!-- ANCHOR:testing -->
 ### 5. TESTING STRATEGY
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Manual | `npm run build` output review for `dist/hooks/claude/*.js` | Bash |
 | Manual | Hook smoke tests for `session-prime.js`, `compact-inject.js`, `session-stop.js` | Node |
 | Integration | Routing behavior already exercised by runtime-routing coverage | Vitest |
-<!-- /ANCHOR:testing-2 -->
+<!-- /ANCHOR:testing -->
 
 ---
 
-<!-- ANCHOR:dependencies-2 -->
+<!-- ANCHOR:dependencies -->
 ### 6. DEPENDENCIES
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Existing Phase 012 code changes | Internal | Green | Packet cannot stay accurate if implementation facts are wrong |
 | Validator contract in `.opencode/skill/system-spec-kit/templates/level_2/` | Internal | Green | Packet structure drifts and validation fails |
 | Manual build and hook smoke evidence | Internal | Yellow | Verification claims weaken if evidence is not retained |
-<!-- /ANCHOR:dependencies-2 -->
+<!-- /ANCHOR:dependencies -->
 
 ---
 
-<!-- ANCHOR:rollback-2 -->
+<!-- ANCHOR:rollback -->
 ### 7. ROLLBACK PLAN
 - **Trigger**: Packet validation regresses or packet claims no longer match shipped behavior.
 - **Procedure**: Revert the packet docs to the last accurate revision, re-read current implementation facts, and re-run validation.
-<!-- /ANCHOR:rollback-2 -->
+<!-- /ANCHOR:rollback -->
 
 ---
 

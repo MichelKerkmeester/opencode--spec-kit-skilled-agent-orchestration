@@ -1,26 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier",
-  "description": "Wire Tier3 LLM Classifier into Save Handler",
-  "keywords": [
-    "wire",
-    "tier3",
-    "llm",
-    "classifier",
-    "save",
-    "handler"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "003",
-  "folderSlug": "wire-tier3-llm-classifier",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "006-search-routing-advisor",
-    "001-search-and-routing-tuning",
-    "002-content-routing-accuracy"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier",
@@ -36,5 +14,27 @@
       "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier",
       "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier",
+  "description": "Wire Tier3 LLM Classifier into Save Handler",
+  "keywords": [
+    "wire",
+    "tier3",
+    "llm",
+    "classifier",
+    "save",
+    "handler"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.314Z",
+  "specId": "003",
+  "folderSlug": "wire-tier3-llm-classifier",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "006-search-routing-advisor",
+    "001-search-and-routing-tuning",
+    "002-content-routing-accuracy"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

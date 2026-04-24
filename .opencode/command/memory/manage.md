@@ -365,6 +365,34 @@ MEMORY:CLEANUP
 STATUS=OK REMOVED=<N> KEPT=<N> CHECKPOINT=<name>
 ```
 
+### Index-Scope Violations Cleanup (Packet 026/010/002)
+
+Operator CLI for purging rows that violate the permanent index-scope invariants (`z_future/`, `/external/`) and for normalizing stray `constitutional` tier rows on non-constitutional paths. Shared scope rules live in `mcp_server/lib/utils/index-scope.ts` (`shouldIndexForMemory()`, `shouldIndexForCodeGraph()`) and are enforced defensively at save time, so this CLI exists to repair pre-existing pollution only.
+
+Script path: `.opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts`
+Built dist: `scripts/dist/memory/cleanup-index-scope-violations.js`
+
+Modes:
+
+| Flag | Behavior |
+|------|----------|
+| _(no flag)_ | Dry-run — reports planned changes without writing |
+| `--apply` | Applies the cleanup transactionally: deletes rows on excluded paths and downgrades non-constitutional `constitutional` rows to `important`. Each change writes a durable `governance_audit` row (`tier_downgrade_non_constitutional_path_cleanup` action). FTS cleanup is delegated to the `memory_index` trigger; the CLI does not touch `memory_fts` directly. The authoritative plan is rebuilt inside `database.transaction(...)` — pre-transaction plans are not trusted. |
+| `--verify` | Emits the final invariant counts to confirm the DB is clean |
+
+**Expected `--verify` counts after a successful cleanup:**
+
+```text
+constitutional_total=2
+z_future_rows=0
+external_rows=0
+invalid_constitutional_rows=0
+```
+
+The two remaining constitutional rows are the real constitutional rule files under `.opencode/skill/system-spec-kit/constitutional/` (the `README.md` is intentionally excluded per ADR-005). Any deviation from these counts means either the invariants regressed at save time or the cleanup did not complete — investigate before shipping a new build.
+
+**Operator note:** after rolling out a new dist that changes `index-scope.ts` behavior, MCP clients must be restarted so the shared scope rules reload. Run `--verify` after restart to confirm the final counts.
+
 ---
 
 ## 8. BULK DELETE MODE
@@ -444,14 +472,19 @@ STATUS=OK REMOVED=<N> TIER=<tier>
 
 Tier resolution for indexed content is deterministic:
 - Precedence: **metadata tier → inline marker tier → default tier**
-- Manual tier updates via this command override stored tier values for the target memory ID.
+- Manual tier updates via this command update the stored tier for the target memory ID **subject to invariant guards**.
+
+**Constitutional tier invariant (Packet 026/010/002):** promoting a non-constitutional memory to `importanceTier: constitutional` is **not allowed**. The save / update / post-insert / checkpoint-restore paths all enforce this: any non-constitutional-path memory attempting `constitutional` is normalized down to `important` before persistence, and the action is recorded in the governance audit log as `tier_downgrade_non_constitutional_path`. The `memory_update` call returns success with the normalized tier rather than rejecting the request. Only real constitutional rule files under `.opencode/skill/system-spec-kit/constitutional/` (excluding its `README.md`) may carry the `constitutional` tier.
+
+Excluded paths (`z_future/`, `/external/`) are rejected outright at save time and cannot be tier-promoted through this command.
 
 ### Workflow
 
 1. **Validate:** tier must be one of: constitutional, critical, important, normal, temporary, deprecated
 2. **Validate:** id must exist in memory database
 3. **Execute:** `spec_kit_memory_memory_update({ id: <id>, importanceTier: "<tier>" })`
-4. **Confirm:**
+4. **Inspect:** if the returned tier differs from the requested tier, the invariant guard fired — check the `governance_audit` log for a `tier_downgrade_non_constitutional_path` row tied to this memory id
+5. **Confirm:**
 
 ```text
 MEMORY:TIER

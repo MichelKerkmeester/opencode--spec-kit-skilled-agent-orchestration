@@ -1,3 +1,24 @@
+---
+title: "027/002 Tasks"
+description: "This task list captures 027/002 Tasks for lifecycle and derived metadata."
+trigger_phrases:
+  - "lifecycle and derived metadata"
+  - "skill graph daemon and advisor unification"
+  - "027/002 tasks"
+  - "lifecycle and derived metadata tasks"
+  - "system spec kit"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/003-lifecycle-and-derived-metadata"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 ---
 title: "...ation/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/003-lifecycle-and-derived-metadata/tasks]"

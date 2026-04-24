@@ -1,23 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime",
-  "description": "Feature Specification: Foundational Runtime (merged)",
-  "keywords": [
-    "feature",
-    "specification",
-    "foundational",
-    "runtime",
-    "merged"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "016",
-  "folderSlug": "foundational-runtime",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "008-runtime-executor-hardening"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
@@ -34,5 +15,24 @@
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime",
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime",
+  "description": "Feature Specification: Foundational Runtime (merged)",
+  "keywords": [
+    "feature",
+    "specification",
+    "foundational",
+    "runtime",
+    "merged"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.540Z",
+  "specId": "001",
+  "folderSlug": "foundational-runtime",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

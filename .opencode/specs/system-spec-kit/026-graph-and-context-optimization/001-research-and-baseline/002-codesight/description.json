@@ -1,28 +1,5 @@
 {
   "title": "Feature Specification: 002-codesight Research Phase",
-  "description": "Read-only 20-iteration research investigation of the codesight external Node.js/TypeScript skill covering detector discipline, MCP/cache semantics, profile generation safety, scanner heuristics, and adoption patterns Public should adopt, adapt, or reject.",
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight",
-  "keywords": [
-    "feature",
-    "specification",
-    "002-codesight",
-    "research",
-    "phase"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "002",
-  "folderSlug": "codesight",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "001-research-and-baseline"
-  ],
-  "memorySequence": 3,
-  "memoryNameHistory": [
-    "06-04-26_16-34__5-iteration-deep-research-session-investigating.md",
-    "06-04-26_17-58__continuation-deep-research-run-for-002-codesight.md",
-    "08-04-26_08-10__extended-the-002-codesight-deep-research-packet.md"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight",
@@ -36,5 +13,28 @@
       "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight",
       "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight",
+  "description": "Feature Specification: 002-codesight Research Phase",
+  "keywords": [
+    "feature",
+    "specification",
+    "002-codesight",
+    "research",
+    "phase"
+  ],
+  "lastUpdated": "2026-04-24T15:56:55.998Z",
+  "specId": "002",
+  "folderSlug": "codesight",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "001-research-and-baseline"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "06-04-26_16-34__5-iteration-deep-research-session-investigating.md",
+    "06-04-26_17-58__continuation-deep-research-run-for-002-codesight.md",
+    "08-04-26_08-10__extended-the-002-codesight-deep-research-packet.md"
+  ]
 }

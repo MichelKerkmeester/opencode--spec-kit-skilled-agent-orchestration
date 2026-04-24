@@ -61,9 +61,6 @@ Template compliance shim anchor for phases.
 <!-- ANCHOR:testing -->
 Template compliance shim anchor for testing.
 <!-- /ANCHOR:testing -->
-<!-- ANCHOR:dependencies -->
-Template compliance shim anchor for dependencies.
-<!-- /ANCHOR:dependencies -->
 <!-- ANCHOR:rollback -->
 Template compliance shim anchor for rollback.
 <!-- /ANCHOR:rollback -->
@@ -99,12 +96,12 @@ Template compliance shim anchor for rollback.
    - Document manual test results in scratch/ or research/
    - Verify all 7 scenarios from test matrix are covered
 
-<!-- ANCHOR:dependencies-2 -->
+<!-- ANCHOR:dependencies -->
 ### Dependencies
 - Phase 1-4 (all hook implementations must exist to test)
 - Phase 5 (command/agent updates affect integration test expectations)
 - Phase 6 (manual testing playbook must exist before manual execution)
-<!-- /ANCHOR:dependencies-2 -->
+<!-- /ANCHOR:dependencies -->
 
 ### Test Execution Order
 1. Unit tests first (no external dependencies)

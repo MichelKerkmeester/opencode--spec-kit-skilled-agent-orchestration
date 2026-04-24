@@ -50,7 +50,7 @@ _memory:
 
 ---
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 ## Phase 2: Implementation
 
 - [x] T005 Enrich auto-prime payloads with the shared structural contract and next-step hints for non-hook runtimes (`mcp_server/hooks/memory-surface.ts`)
@@ -58,7 +58,7 @@ _memory:
 - [x] T007 Add lightweight structural recovery guidance to `session_resume` using the same contract vocabulary (`mcp_server/handlers/session-resume.ts`)
 - [x] T008 Update `session_health` to recommend `session_bootstrap` when structural context is stale or missing (`mcp_server/handlers/session-health.ts`)
 - [x] T009 Update first-turn/server guidance so OpenCode knows when structural context is already injected and when to recover (`mcp_server/context-server.ts`, `AGENTS.md`, `.opencode/agent/context-prime.md`)
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 
 ---
 

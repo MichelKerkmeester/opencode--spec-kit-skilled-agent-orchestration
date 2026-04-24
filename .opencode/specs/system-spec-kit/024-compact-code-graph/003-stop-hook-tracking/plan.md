@@ -62,9 +62,6 @@ Template compliance shim anchor for phases.
 <!-- ANCHOR:testing -->
 Template compliance shim anchor for testing.
 <!-- /ANCHOR:testing -->
-<!-- ANCHOR:dependencies -->
-Template compliance shim anchor for dependencies.
-<!-- /ANCHOR:dependencies -->
 <!-- ANCHOR:rollback -->
 Template compliance shim anchor for rollback.
 <!-- /ANCHOR:rollback -->
@@ -95,11 +92,11 @@ Template compliance shim anchor for rollback.
    - Large transcript (>10MB) → verify no OOM
    - Cost calculation accuracy per model
 
-<!-- ANCHOR:dependencies-2 -->
+<!-- ANCHOR:dependencies -->
 ### Dependencies
 - Phases 1-2 (shared utilities: `shared.ts`, `hook-state.ts`)
 - SQLite database access from hook script (direct import)
-<!-- /ANCHOR:dependencies-2 -->
+<!-- /ANCHOR:dependencies -->
 
 ### Technical Context
 - Runtime surface: system-spec-kit MCP server + hook adapters.

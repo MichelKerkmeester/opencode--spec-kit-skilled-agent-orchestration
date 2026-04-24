@@ -9,12 +9,12 @@
     "signal",
     "path"
   ],
-  "lastUpdated": "2026-04-02T17:21:39.804Z",
+  "lastUpdated": "2026-04-24T15:56:55.742Z",
   "specId": "004",
   "folderSlug": "fix-access-signal-path",
   "parentChain": [
     "system-spec-kit",
-"023-hybrid-rag-fusion-refinement",
+    "023-hybrid-rag-fusion-refinement",
     "011-indexing-and-adaptive-fusion"
   ],
   "memorySequence": 0,

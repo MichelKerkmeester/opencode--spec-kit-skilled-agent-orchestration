@@ -2,17 +2,14 @@
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation",
   "description": "Feature Specification: Claude Hook Findings Remediation",
   "keywords": [
-    "claude-hook",
-    "skill-advisor",
-    "freshness",
-    "sourceSignature",
-    "settings.local.json",
-    "schema-normalization",
-    "multi-turn-harness",
-    "stream-json",
-    "hook-parity"
+    "feature",
+    "specification",
+    "claude",
+    "hook",
+    "findings",
+    "remediation"
   ],
-  "lastUpdated": "2026-04-23T10:15:00.000Z",
+  "lastUpdated": "2026-04-24T15:56:56.776Z",
   "specId": "006",
   "folderSlug": "claude-hook-findings-remediation",
   "parentChain": [

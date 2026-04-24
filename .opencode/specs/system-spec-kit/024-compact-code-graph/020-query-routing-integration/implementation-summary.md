@@ -43,26 +43,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -70,18 +54,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 020-query-routing-integration |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 You can ask code questions through `memory_context` without switching tools yourself, but the implementation does not hand the request off to a different primary backend. The handler now classifies query intent, keeps its normal semantic execution path, and appends graph-aware context when the query looks structural or hybrid and graph context can be built. The same phase also added a slim `session_resume` tool and wired passive enrichment into the response path.
 
@@ -116,16 +100,16 @@ Part 3 shipped. `context-server.ts` dynamically imports `./lib/enrichment/passiv
 | `schemas/tool-input-schemas.ts` | Modified | Restricts `session_resume` inputs to `specFolder?` and `minimal?`. |
 | `tools/lifecycle-tools.ts` | Modified | Wires `session_resume` into dispatch. |
 | `tools/types.ts` | Modified | Adds `session_resume` type definitions. |
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 The delivery happened in three layers. First, `memory_context` gained query-intent classification plus optional graph-context enrichment. Next, `session_resume` was added as a composite resume helper with a deliberately narrow schema and payload. Finally, passive enrichment was wired into `context-server.ts`, with the code graph symbol logic consolidated into `lib/enrichment/passive-enrichment.ts` instead of a separate helper file.
 
 This documentation refresh was then aligned against the verified handlers so the packet matches the shipped behavior rather than the earlier design intent.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -137,7 +121,7 @@ This documentation refresh was then aligned against the verified handlers so the
 | Inline code graph symbol enrichment inside `passive-enrichment.ts` | The implementation already consolidated that logic there, so the packet should reference the real file layout. |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -145,15 +129,15 @@ This documentation refresh was then aligned against the verified handlers so the
 | Resume contract audit | PASS, matched `handlers/session-resume.ts`, `tool-schemas.ts`, and `schemas/tool-input-schemas.ts` to the slim `session_resume` schema and payload |
 | Passive enrichment audit | PASS, matched `context-server.ts` import/invocation and `lib/enrichment/passive-enrichment.ts` inline enrichment logic |
 | Packet consistency review | PASS, stale claims about selective routing, `fallbackApplied`, `ccc_status()`, deferred Part 3 work, and `code-graph-enricher.ts` were removed |
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. **`matchedKeywords` is optional.** Some responses will include `confidence` without any `matchedKeywords`, so callers should not treat the field as required.
 2. **Graph enrichment is conditional.** Structural or hybrid intent can append `graphContext`, but `memory_context` still succeeds without it.
 3. **`session_resume` is intentionally narrow.** It exposes lightweight graph and CocoIndex summaries only; consumers that need deeper diagnostics still need dedicated status tools.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->
 
 ---

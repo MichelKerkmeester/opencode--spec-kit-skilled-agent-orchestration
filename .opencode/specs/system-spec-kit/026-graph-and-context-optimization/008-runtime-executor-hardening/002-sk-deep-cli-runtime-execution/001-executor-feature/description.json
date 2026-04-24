@@ -1,27 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature",
-  "description": "Feature Specification: Deep-Loop CLI Executor Selection for Iterative Skills",
-  "keywords": [
-    "feature",
-    "specification",
-    "deep-loop",
-    "cli",
-    "executor",
-    "selection",
-    "iterative",
-    "skills"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "001",
-  "folderSlug": "executor-feature",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "008-runtime-executor-hardening",
-    "017-sk-deep-cli-runtime-execution"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/001-executor-feature",
@@ -38,5 +15,28 @@
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/017-sk-deep-cli-runtime-execution/001-executor-feature",
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature",
+  "description": "Feature Specification: Deep-Loop CLI Executor Selection for Iterative Skills",
+  "keywords": [
+    "feature",
+    "specification",
+    "deep-loop",
+    "cli",
+    "executor",
+    "selection",
+    "iterative",
+    "skills"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.574Z",
+  "specId": "001",
+  "folderSlug": "executor-feature",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening",
+    "002-sk-deep-cli-runtime-execution"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

@@ -42,23 +42,13 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
 <!-- ANCHOR:how-delivered -->
 Template compliance shim anchor for how-delivered.
 <!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
 <!-- ANCHOR:limitations -->
 Template compliance shim anchor for limitations.
 <!-- /ANCHOR:limitations -->
@@ -69,18 +59,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 017-tree-sitter-classifier-fixes |
 | **Completed** | 2026-03-31 (3 items deferred) |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 Fixed 12 of 15 bugs found by a 10-iteration GPT-5.4 review of the tree-sitter WASM parser and query-intent classifier. The parser now handles abstract methods, class expressions, multi-import/export, decorated definitions, init poisoning recovery, and nested class qualified names. The classifier has improved pattern narrowing, word boundary matching, evidence-based confidence scaling, and expanded keyword coverage.
 
@@ -103,7 +93,7 @@ Fixed 12 of 15 bugs found by a 10-iteration GPT-5.4 review of the tree-sitter WA
 ### Shared Contract Unification (F043)
 
 - `RawCapture` and `ParserAdapter` contracts moved to a single source of truth in `structural-indexer.ts`, imported by `tree-sitter-parser.ts`.
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 ### Files Changed
@@ -116,9 +106,9 @@ Fixed 12 of 15 bugs found by a 10-iteration GPT-5.4 review of the tree-sitter WA
 | `lib/config/capability-flags.ts` | Modified | SPECKIT_PARSER env var reference (internal) |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 - TypeScript: 0 errors
 - Tests: 327 passed, 23 failed (pre-existing, unrelated)
 - Review: Opus CONDITIONAL PASS 78/100, GPT-5.4 CONDITIONAL 82%
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->

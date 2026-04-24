@@ -74,14 +74,14 @@ _memory:
 
 ---
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 ## Phase 2: Implementation
 
 - [x] T004 Update `ensure-ready.ts` to expose the bounded inline refresh path cleanly for structural reads
 - [x] T005 Update `code_graph_context` to allow safe inline refresh for small stale sets
 - [x] T006 Update `code_graph_query` to allow safe inline refresh for small stale sets
 - [x] T007 Preserve stale-report-only behavior for empty, broad branch-switch, and expensive full-rescan cases while allowing small post-commit drift to self-heal inline
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 
 ---
 

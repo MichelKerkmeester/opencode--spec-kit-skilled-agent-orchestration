@@ -1,29 +1,5 @@
 {
   "title": "Feature Specification: Phase 2 — Single-Owner Metadata Fixes",
-  "description": "Phase 2 specifies the P1 metadata fixes for D4 importance-tier drift and D7 empty git provenance, using the parent research packet as the sole planning authority.",
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata",
-  "keywords": [
-    "feature",
-    "specification",
-    "phase",
-    "single-owner",
-    "metadata",
-    "fixes"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "002",
-  "folderSlug": "single-owner-metadata",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "002-continuity-memory-runtime",
-    "003-memory-quality-remediation"
-  ],
-  "memorySequence": 2,
-  "memoryNameHistory": [
-    "08-04-26_08-06__phase-2-pr-3-validation-keeps-the-importance-tier.md",
-    "08-04-26_08-06__phase-2-pr-3-validation-keeps-the-importance-tier-1.md"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/002-single-owner-metadata",
@@ -40,5 +16,29 @@
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/002-single-owner-metadata",
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata",
+  "description": "Feature Specification: Phase 2 — Single-Owner Metadata Fixes",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "single-owner",
+    "metadata",
+    "fixes"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.042Z",
+  "specId": "002",
+  "folderSlug": "single-owner-metadata",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "002-continuity-memory-runtime",
+    "002-memory-quality-remediation"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "08-04-26_08-06__phase-2-pr-3-validation-keeps-the-importance-tier.md",
+    "08-04-26_08-06__phase-2-pr-3-validation-keeps-the-importance-tier-1.md"
+  ]
 }

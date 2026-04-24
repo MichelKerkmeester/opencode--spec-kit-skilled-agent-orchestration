@@ -89,15 +89,15 @@ codex
 ```bash
 # Research current library security advisories
 codex exec "What are the latest security advisories for Express.js? Search the web." \
-  --model gpt-5.3-codex --search --sandbox read-only
+  --model gpt-5.5 --search --sandbox read-only
 
 # Find migration guide
 codex exec "Find the official Prisma 5 to 6 migration guide and summarize the breaking changes." \
-  --model gpt-5.3-codex --search --sandbox read-only
+  --model gpt-5.5 --search --sandbox read-only
 
 # Compare packages with current data
 codex exec "Compare zod vs yup for TypeScript validation as of 2026. Search for benchmarks." \
-  --model gpt-5.3-codex --search --sandbox read-only
+  --model gpt-5.5 --search --sandbox read-only
 ```
 
 **Output Format:**
@@ -151,7 +151,7 @@ codex mcp
 
 # Use MCP tools in exec
 codex exec "Use the database MCP tool to query user records" \
-  --model gpt-5.3-codex --sandbox read-only
+  --model gpt-5.5 --sandbox read-only
 ```
 
 **Best For:**
@@ -190,7 +190,7 @@ codex fork abc123
 
 # Start exec and save session for later continuation
 codex exec "Begin implementing the auth module. Stop after designing the interface." \
-  --model gpt-5.3-codex --sandbox workspace-write
+  --model gpt-5.5 --sandbox workspace-write
 # Note the session ID from output, then later:
 codex resume [session-id]
 ```
@@ -221,15 +221,15 @@ codex resume [session-id]
 ```bash
 # Implement a UI component from a design mockup
 codex exec "Implement this React component to match the design." \
-  --model gpt-5.3-codex -i ./designs/login-form.png --sandbox workspace-write
+  --model gpt-5.5 -i ./designs/login-form.png --sandbox workspace-write
 
 # Debug a visual error from a screenshot
 codex exec "This screenshot shows a layout bug. Diagnose and fix @./src/components/Layout.tsx." \
-  --model gpt-5.3-codex -i ./screenshots/layout-bug.png --sandbox workspace-write
+  --model gpt-5.5 -i ./screenshots/layout-bug.png --sandbox workspace-write
 
 # Multiple images
 codex exec "Compare these two design versions and implement the better one." \
-  --model gpt-5.3-codex -i design-v1.png -i design-v2.png --sandbox workspace-write
+  --model gpt-5.5 -i design-v1.png -i design-v2.png --sandbox workspace-write
 ```
 
 **Best For:**
@@ -256,7 +256,7 @@ codex exec "Compare these two design versions and implement the better one." \
 ```bash
 # Run a task in the cloud
 codex cloud "Generate comprehensive unit tests for this project" \
-  --model gpt-5.3-codex
+  --model gpt-5.5
 ```
 
 **Best For:**
@@ -326,7 +326,7 @@ These capabilities provide functionality comparable to Claude Code's built-in to
 | **Multi-file read** | Multiple `Read` calls | `@glob` pattern | Codex batches natively |
 | **Image analysis** | `Read` (multimodal) | `--image` / `-i` flag | Both support image input |
 | **Code review (diff)** | Manual diff + Read | `/review` command | Codex `/review` is diff-aware |
-| **Models** | 3 (Anthropic) | 2 (OpenAI: GPT-5.4 + GPT-5.3-Codex) | Codex offers reasoning + code-focused models |
+| **Models** | 3 (Anthropic) | 1 (OpenAI: GPT-5.5) | Codex skill uses GPT-5.5 at configurable reasoning effort |
 | **Session continuity** | Spec Kit Memory MCP | `resume`, `fork` | Codex preserves tool-call history |
 | **Cloud execution** | Not built-in | `codex cloud` | Codex-exclusive |
 | **Agent system** | `.claude/agents/` | `.codex/agents/*.toml` | Both support specialized agents |
@@ -399,14 +399,14 @@ You can explicitly request specific Codex capabilities:
 ```bash
 # Request web search explicitly
 codex exec "Use web search to find the latest CVEs for lodash" \
-  --model gpt-5.3-codex --search --sandbox read-only
+  --model gpt-5.5 --search --sandbox read-only
 
 # Request diff-aware review (interactive)
 codex  # then type: /review
 
 # Request image-based implementation
 codex exec "Implement this component based on the design" \
-  --model gpt-5.3-codex -i mockup.png --sandbox workspace-write
+  --model gpt-5.5 -i mockup.png --sandbox workspace-write
 
 # Resume a specific session
 codex resume abc123
@@ -487,15 +487,15 @@ When calling Codex CLI from any AI assistant, choose capabilities strategically:
 ```bash
 # Use --search for current information
 codex exec "Find the latest Prisma migration guide" \
-  --model gpt-5.3-codex --search --sandbox read-only 2>&1
+  --model gpt-5.5 --search --sandbox read-only 2>&1
 
 # Use read-only for safe analysis
 codex exec "Review src/auth/ for security issues" \
-  --model gpt-5.3-codex --sandbox read-only 2>&1
+  --model gpt-5.5 --sandbox read-only 2>&1
 
 # Use workspace-write for generation
 codex exec "Generate comprehensive tests for @./src/utils/" \
-  --model gpt-5.3-codex --sandbox workspace-write 2>&1
+  --model gpt-5.5 --sandbox workspace-write 2>&1
 ```
 
 <!-- /ANCHOR:best-practices -->

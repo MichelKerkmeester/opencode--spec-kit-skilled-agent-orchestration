@@ -1,3 +1,23 @@
+---
+title: "Decision Record: CLI Skill Prompt-Quality Integration via Mirror Cards"
+description: "We need better prompt quality in the four CLI orchestration skills without loading the full prompt-engineering skill on every dispatch."
+trigger_phrases:
+  - "cli skill improved prompting"
+  - "skilled agent orchestration"
+  - "cli skill prompt quality integration via"
+  - "cli skill improved prompting decision record"
+importance_tier: "normal"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/043-cli-skill-improved-prompting"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["decision-record.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 ---
 title: "Decision Record: CLI Skill [skilled-agent-orchestration/043-cli-skill-improved-prompting/decision-record]"

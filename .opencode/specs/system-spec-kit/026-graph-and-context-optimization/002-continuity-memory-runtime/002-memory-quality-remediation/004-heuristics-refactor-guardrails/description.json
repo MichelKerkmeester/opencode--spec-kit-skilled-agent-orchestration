@@ -1,26 +1,5 @@
 {
   "title": "Feature Specification: Phase 4 — Heuristics, Refactor & Guardrails",
-  "description": "Phase 4 of the memory quality remediation train: D5 auto-supersedes with continuation gating, SaveMode enum refactor, and post-save reviewer CHECK-D1..D8 coverage.",
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails",
-  "keywords": [
-    "feature",
-    "specification",
-    "phase",
-    "heuristics",
-    "refactor",
-    "guardrails"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "004",
-  "folderSlug": "heuristics-refactor-guardrails",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "002-continuity-memory-runtime",
-    "003-memory-quality-remediation"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/004-heuristics-refactor-guardrails",
@@ -37,5 +16,26 @@
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/004-heuristics-refactor-guardrails",
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails",
+  "description": "Feature Specification: Phase 4 — Heuristics, Refactor & Guardrails",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "heuristics",
+    "refactor",
+    "guardrails"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.051Z",
+  "specId": "004",
+  "folderSlug": "heuristics-refactor-guardrails",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "002-continuity-memory-runtime",
+    "002-memory-quality-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

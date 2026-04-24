@@ -61,9 +61,6 @@ Template compliance shim anchor for phases.
 <!-- ANCHOR:testing -->
 Template compliance shim anchor for testing.
 <!-- /ANCHOR:testing -->
-<!-- ANCHOR:dependencies -->
-Template compliance shim anchor for dependencies.
-<!-- /ANCHOR:dependencies -->
 <!-- ANCHOR:rollback -->
 Template compliance shim anchor for rollback.
 <!-- /ANCHOR:rollback -->
@@ -93,11 +90,11 @@ Template compliance shim anchor for rollback.
    - Empty transcript → minimal output
    - Large transcript → stays within 2s timeout
 
-<!-- ANCHOR:dependencies-2 -->
+<!-- ANCHOR:dependencies -->
 ### Dependencies
 - Compiled dist of memory-surface.ts must be up to date
 - `.claude/settings.local.json` must be writable
-<!-- /ANCHOR:dependencies-2 -->
+<!-- /ANCHOR:dependencies -->
 
 ### Budget Allocation (from iteration 049)
 - Implement floors + overflow pool allocator

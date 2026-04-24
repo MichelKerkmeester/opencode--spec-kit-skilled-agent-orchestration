@@ -1,28 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
-  "description": "Feature Specification: Advisor Brief Producer + Cache Policy",
-  "keywords": [
-    "feature",
-    "specification",
-    "advisor",
-    "brief",
-    "producer",
-    "cache",
-    "policy"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "004",
-  "folderSlug": "advisor-brief-producer-cache-policy",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "009-hook-daemon-parity",
-    "001-skill-advisor-hook-surface"
-  ],
-  "memorySequence": 1,
-  "memoryNameHistory": [
-    "19-04-26_09-47__scaffold-004-advisor-brief-producer-cache-policy.md"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
@@ -39,5 +15,29 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
+  "description": "Feature Specification: Advisor Brief Producer + Cache Policy",
+  "keywords": [
+    "feature",
+    "specification",
+    "advisor",
+    "brief",
+    "producer",
+    "cache",
+    "policy"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.694Z",
+  "specId": "004",
+  "folderSlug": "advisor-brief-producer-cache-policy",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity",
+    "001-skill-advisor-hook-surface"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-04-26_09-47__scaffold-004-advisor-brief-producer-cache-policy.md"
+  ]
 }

@@ -1,25 +1,5 @@
 {
   "title": "Feature Specification: Post-Save Render Fixes",
-  "description": "Level 3 sub-phase for nine render-layer fixes in the memory-save pipeline so compact-wrapper saves match the 006 wrapper contract.",
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes",
-  "keywords": [
-    "feature",
-    "specification",
-    "post-save",
-    "render",
-    "fixes"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "009",
-  "folderSlug": "post-save-render-fixes",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "002-continuity-memory-runtime",
-    "003-memory-quality-remediation"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/009-post-save-render-fixes",
@@ -36,5 +16,25 @@
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/009-post-save-render-fixes",
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes",
+  "description": "Feature Specification: Post-Save Render Fixes",
+  "keywords": [
+    "feature",
+    "specification",
+    "post-save",
+    "render",
+    "fixes"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.076Z",
+  "specId": "009",
+  "folderSlug": "post-save-render-fixes",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "002-continuity-memory-runtime",
+    "002-memory-quality-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

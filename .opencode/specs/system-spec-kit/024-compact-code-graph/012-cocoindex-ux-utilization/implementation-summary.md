@@ -41,26 +41,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -68,18 +52,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 012-cocoindex-ux-utilization |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 Phase 012 made CocoIndex easier to notice and easier to route to, but it did not deliver full readiness automation. This packet now reflects that narrower reality: hooks build and smoke-test cleanly, SessionStart reports binary availability, helper tools expose a small operational surface, and several intended follow-ups remain open.
 
@@ -118,14 +102,14 @@ This phase updated packet content and some CocoIndex guidance, but the broader R
 | `tasks.md` | Modified | Separated completed work from explicit not-implemented items |
 | `checklist.md` | Modified | Added required verification anchors, evidence, and deferrals |
 | `implementation-summary.md` | Modified | Corrected metadata and summarized delivered scope and limitations |
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 The packet was rewritten from the Level 2 templates and then aligned to the delivered implementation state. Verification remains manual where the phase itself stayed manual: build output inspection, hook smoke tests, and packet validation together provide the evidence base for this summary.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -138,7 +122,7 @@ The packet was rewritten from the Level 2 templates and then aligned to the deli
 | Leave README and tool-reference updates open | Those docs were not completed in this phase and should remain visible as follow-up work |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -148,11 +132,11 @@ The packet was rewritten from the Level 2 templates and then aligned to the deli
 | SessionStart readiness bootstrap documented honestly | PASS, packet states it is not implemented |
 | Background CocoIndex re-index from SessionStart | FAIL, not implemented and tracked as an open gap |
 | Broader README and tool reference updates | FAIL, not completed in this phase |
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. **SessionStart is status-only.** It reports CocoIndex binary availability but does not call `ensure_ready.sh` and does not ensure readiness.
 2. **PreCompact semantic integration is hint-only.** It does not execute or cache real CocoIndex semantic-neighbor queries.
@@ -160,4 +144,4 @@ The packet was rewritten from the Level 2 templates and then aligned to the deli
 4. **`ccc_feedback` is local only.** It appends JSONL under `.opencode/skill/mcp-coco-index/feedback/search-feedback.jsonl`, does not write to the CocoIndex database, and does not mirror `memory_validate` parameters.
 5. **Broader docs remain incomplete.** The system-spec-kit README and tool reference were not updated in this phase.
 6. **Background CocoIndex re-index from SessionStart is not implemented.** Any re-index must be triggered separately.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->

@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/024-sk-deep-research-refinement",
+  "specFolder": "skilled-agent-orchestration/024-sk-deep-research-refinement",
   "description": "Feature Specification: sk-deep-research Refinement via Self-Research",
   "keywords": [
     "feature",
@@ -9,11 +9,11 @@
     "via",
     "self-research"
   ],
-  "lastUpdated": "2026-03-30T11:56:27.087Z",
+  "lastUpdated": "2026-04-24T15:56:54.864Z",
   "specId": "024",
   "folderSlug": "sk-deep-research-refinement",
   "parentChain": [
-    "03--commands-and-skills"
+    "skilled-agent-orchestration"
   ],
   "memorySequence": 2,
   "memoryNameHistory": [

@@ -1,14 +1,15 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation",
-  "description": "006 campaign findings remediation parent packet",
+  "description": "Feature Specification: 005-006 Campaign Findings Remediation",
   "keywords": [
-    "006",
+    "feature",
+    "specification",
+    "005-006",
     "campaign",
     "findings",
-    "remediation",
-    "deep-review"
+    "remediation"
   ],
-  "lastUpdated": "2026-04-21T00:00:00Z",
+  "lastUpdated": "2026-04-24T15:56:56.477Z",
   "specId": "005",
   "folderSlug": "006-campaign-findings-remediation",
   "parentChain": [

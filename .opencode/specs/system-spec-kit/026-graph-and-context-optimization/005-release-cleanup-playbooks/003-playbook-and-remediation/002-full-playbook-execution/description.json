@@ -1,28 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution",
-  "description": "Feature Specification: Phase 015 Playbook Coverage Accounting and Partial Execution",
-  "keywords": [
-    "feature",
-    "specification",
-    "phase",
-    "015",
-    "playbook",
-    "coverage",
-    "accounting",
-    "partial",
-    "execution"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "002",
-  "folderSlug": "full-playbook-execution",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "005-release-cleanup-playbooks",
-    "009-playbook-and-remediation"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution",
@@ -39,5 +15,29 @@
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/009-playbook-and-remediation/002-full-playbook-execution",
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution",
+  "description": "Feature Specification: Phase 015 Playbook Coverage Accounting and Partial Execution",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "015",
+    "playbook",
+    "coverage",
+    "accounting",
+    "partial",
+    "execution"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.244Z",
+  "specId": "002",
+  "folderSlug": "full-playbook-execution",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "005-release-cleanup-playbooks",
+    "003-playbook-and-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

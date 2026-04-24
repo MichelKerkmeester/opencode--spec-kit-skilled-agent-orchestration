@@ -63,9 +63,6 @@ Template compliance shim anchor for phases.
 <!-- ANCHOR:testing -->
 Template compliance shim anchor for testing.
 <!-- /ANCHOR:testing -->
-<!-- ANCHOR:dependencies -->
-Template compliance shim anchor for dependencies.
-<!-- /ANCHOR:dependencies -->
 <!-- ANCHOR:rollback -->
 Template compliance shim anchor for rollback.
 <!-- /ANCHOR:rollback -->
@@ -342,7 +339,7 @@ Phase 013 (P0/P1 fixes, no deps)
 |------|-------|------------|---------------|
 | 45: SessionStart scope | 016 | settings.local.json schema investigation | 5-20 |
 
-<!-- ANCHOR:dependencies-2 -->
+<!-- ANCHOR:dependencies -->
 ### Dependencies
 
 ### v1 Phases (001-012) — Complete
@@ -358,7 +355,7 @@ Phase 013 (P0/P1 fixes, no deps)
 - Phase 014 depends on Phase 013 (correctness fixes first)
 - Phase 015 depends on Phase 013 (endLine fix enables tree-sitter comparison testing)
 - Phase 016 depends on Phase 014 (MCP first-call priming enables cross-runtime UX)
-<!-- /ANCHOR:dependencies-2 -->
+<!-- /ANCHOR:dependencies -->
 
 ### Risk Mitigation
 

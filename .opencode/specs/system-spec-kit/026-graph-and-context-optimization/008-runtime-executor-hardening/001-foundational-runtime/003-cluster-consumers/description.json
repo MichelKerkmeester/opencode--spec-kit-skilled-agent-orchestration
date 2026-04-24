@@ -1,26 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers",
-  "description": "Feature Specification: Phase 017 Wave B — Cluster Consumers",
-  "keywords": [
-    "feature",
-    "specification",
-    "phase",
-    "017",
-    "wave",
-    "cluster",
-    "consumers"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "003",
-  "folderSlug": "cluster-consumers",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "008-runtime-executor-hardening",
-    "016-foundational-runtime"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime/003-cluster-consumers",
@@ -37,5 +15,27 @@
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/016-foundational-runtime/003-cluster-consumers",
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers",
+  "description": "Feature Specification: Phase 017 Wave B — Cluster Consumers",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "017",
+    "wave",
+    "cluster",
+    "consumers"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.555Z",
+  "specId": "003",
+  "folderSlug": "cluster-consumers",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening",
+    "001-foundational-runtime"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

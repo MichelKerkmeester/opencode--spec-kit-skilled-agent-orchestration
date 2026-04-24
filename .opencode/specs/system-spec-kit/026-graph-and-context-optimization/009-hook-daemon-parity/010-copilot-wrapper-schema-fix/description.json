@@ -7,9 +7,13 @@
     "copilot",
     "wrapper",
     "schema",
-    "fix"
+    "fix",
+    "claude",
+    "settings",
+    "local",
+    "json"
   ],
-  "lastUpdated": "2026-04-23T14:47:43.368Z",
+  "lastUpdated": "2026-04-24T15:56:56.800Z",
   "specId": "010",
   "folderSlug": "copilot-wrapper-schema-fix",
   "parentChain": [

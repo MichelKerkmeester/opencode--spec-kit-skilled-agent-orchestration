@@ -2,7 +2,7 @@
 name: cli-codex
 description: "Codex CLI orchestrator enabling any AI assistant to invoke OpenAI's Codex CLI for supplementary AI tasks including code generation, code review, web research, codebase analysis, cross-AI validation, and parallel task processing."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.3.3
+version: 1.4.0.0
 ---
 
 <!-- Keywords: codex, codex-cli, openai, cross-ai, web-search, code-generation, code-review, second-opinion, agent-delegation, gpt-5, session-management -->
@@ -262,19 +262,46 @@ codex login
 
 **Authentication options**: `OPENAI_API_KEY` environment variable (direct API access), or ChatGPT OAuth via `codex login` (uses ChatGPT account credentials).
 
+### Default Invocation (Skill Default)
+
+**Default model + effort + tier**: `gpt-5.5` · `medium` reasoning · `fast` service tier.
+
+When the caller does not specify a model or reasoning effort, dispatch with these defaults. They balance speed, cost, and quality for the typical delegation (code generation, standard review, implementation, documentation). Canonical default command:
+
+```bash
+codex exec \
+  --model gpt-5.5 \
+  -c model_reasoning_effort="medium" \
+  -c service_tier="fast" \
+  -c approval_policy=never \
+  --sandbox workspace-write \
+  "<prompt>"
+```
+
+**User override**: The caller MAY override the default by stating the model, reasoning effort, or both. Honor explicit user phrasing verbatim.
+
+| User says | Resolve to |
+|-----------|------------|
+| (nothing specified) | `--model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast"` |
+| "Use gpt 5.5 high fast" | `--model gpt-5.5 -c model_reasoning_effort="high" -c service_tier="fast"` |
+| "Use gpt 5.5 low" | `--model gpt-5.5 -c model_reasoning_effort="low" -c service_tier="fast"` (fast stays unless user drops it) |
+| "Use gpt 5.5 xhigh" | `--model gpt-5.5 -c model_reasoning_effort="xhigh" -c service_tier="fast"` |
+
+Only the reasoning-effort dimension changes via override; model stays on `gpt-5.5` and service tier stays on `fast` unless the user explicitly says otherwise.
+
 ### Core Invocation Pattern
 
 All non-interactive Codex CLI calls use the `exec` subcommand:
 
 ```bash
-codex exec "prompt" --model gpt-5.3-codex 2>&1
+codex exec "prompt" --model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast" 2>&1
 ```
 
 > **Common flag mistakes:** `--reasoning`, `--reasoning-effort` and `--quiet` do NOT exist. Use `-c model_reasoning_effort="high"` for reasoning effort (or set it in `config.toml`). There is no quiet flag. Use `-o file.txt` to capture the last message to a file.
 
 | Flag / Option | Purpose |
 |---------------|---------|
-| `--model <id>` | Model selection — `gpt-5.4` or `gpt-5.3-codex` |
+| `--model <id>` | Model selection — `gpt-5.5` (always; skill default) |
 | `-c model_reasoning_effort="<level>"` | Reasoning effort override — `none`, `minimal`, `low`, `medium`, `high`, `xhigh` |
 | `-c service_tier="fast"` | **Fast mode** — routes the request through the fast tier. **Always pass this explicitly** when delegating from another AI so the call is self-documenting and never silently falls back to a slower tier. |
 | `--sandbox read-only` | Safe mode: read files, no writes or shell commands |
@@ -288,11 +315,11 @@ codex exec "prompt" --model gpt-5.3-codex 2>&1
 
 > **Default sandbox behavior**: `codex exec` without an explicit `--sandbox` flag defaults to `read-only` with `approval: never`. This means **file modification tasks will silently fail** — the agent reads the code and plans the changes but cannot write them. Always pass `--sandbox workspace-write` (or `--full-auto`) when the task requires file edits.
 
-> **Fast mode (REQUIRED for cross-AI delegation)**: Always pass `-c service_tier="fast"` explicitly. This routes the call through the fast tier instead of relying on whatever the user's `~/.codex/config.toml` has set as the default. Making it explicit means the invocation is reproducible regardless of who runs it. Canonical orchestration command:
+> **Fast mode (REQUIRED for cross-AI delegation)**: Always pass `-c service_tier="fast"` explicitly. This routes the call through the fast tier instead of relying on whatever the user's `~/.codex/config.toml` has set as the default. Making it explicit means the invocation is reproducible regardless of who runs it. See "Default Invocation" above for the zero-input default (`gpt-5.5` · `medium` · `fast`). Frontier-reasoning override example:
 >
 > ```bash
 > codex exec \
->   --model gpt-5.4 \
+>   --model gpt-5.5 \
 >   -c model_reasoning_effort="high" \
 >   -c service_tier="fast" \
 >   -c approval_policy=never \
@@ -303,12 +330,11 @@ codex exec "prompt" --model gpt-5.3-codex 2>&1
 
 ### Model Selection
 
-Codex CLI supports 2 models with distinct strengths:
+The skill dispatches `gpt-5.5` for every task. Only the reasoning-effort dimension varies.
 
 | Model | ID | Use Case | Reasoning Effort |
 |-------|----|----------|-----------------|
-| **GPT-5.4** | `gpt-5.4` | Frontier reasoning, complex analysis, architecture, deep review, security audit | configurable via `-c model_reasoning_effort` |
-| **GPT-5.3-Codex** | `gpt-5.3-codex` | Code generation, standard review, implementation, documentation, tests | `xhigh` (fixed) |
+| **GPT-5.5** ★ default | `gpt-5.5` | All delegations — code generation, review, implementation, documentation, architecture, research | configurable via `-c model_reasoning_effort` (default `medium`; raise to `high` / `xhigh` for hard problems, lower to `low` / `minimal` for trivial lookups) |
 
 **Reasoning Effort Levels** (valid values for `-c model_reasoning_effort="<level>"`):
 
@@ -317,15 +343,13 @@ Codex CLI supports 2 models with distinct strengths:
 | `none` | No reasoning — fastest, cheapest |
 | `minimal` | Trivial tasks |
 | `low` | Simple lookups, formatting |
-| `medium` | Standard tasks, Plan mode default |
-| `high` | Complex analysis (global default in `~/.codex/config.toml`) |
+| `medium` | Standard tasks, **skill default** |
+| `high` | Complex analysis (user-override tier: "Use gpt 5.5 high fast") |
 | `xhigh` | Maximum reasoning depth (profile default for all agents) |
 
-> **Note:** There is no `--reasoning-effort` CLI flag. Set reasoning effort via `-c model_reasoning_effort="high"` on the command line, or `model_reasoning_effort` in `config.toml` / profile sections. GPT-5.3-Codex uses `xhigh` reasoning regardless of the configured value.
+> **Note:** There is no `--reasoning-effort` CLI flag. Set reasoning effort via `-c model_reasoning_effort="medium"` on the command line, or `model_reasoning_effort` in `config.toml` / profile sections.
 
-**Selection Strategy:**
-- **GPT-5.4** — Choose for reasoning-heavy tasks: architecture decisions, security audits, complex planning, multi-strategy analysis, deep code review
-- **GPT-5.3-Codex** — Choose for code-focused tasks: generation, standard review, implementation, refactoring, documentation, test generation
+**Selection Strategy:** `gpt-5.5` is always the model. Tune only reasoning effort to fit the task: `medium` for most delegations (default), `high` / `xhigh` for architecture, security audits, and complex planning, `low` / `minimal` for trivial lookups and formatting.
 
 ### Codex Agent Delegation
 
@@ -335,13 +359,13 @@ The calling AI acts as the **conductor** that delegates tasks to Codex CLI. Code
 
 | Task Type | Profile | Invocation Pattern |
 |-----------|---------|-------------------|
-| Code review / security audit | review | `codex exec -p review "Review @./src/auth.ts for security issues" -m gpt-5.4` |
+| Code review / security audit | review | `codex exec -p review "Review @./src/auth.ts for security issues" -m gpt-5.5` |
 | Git diff review | (built-in) | `codex exec review "Focus on security" --commit HEAD` |
-| Architecture exploration | context | `codex exec -p context "Analyze the architecture of this project" -m gpt-5.4` |
-| Technical research | research | `codex exec -p research "Research latest Express.js security advisories" -m gpt-5.4 --search` |
-| Documentation generation | write | `codex exec -p write "Generate README for this project" -m gpt-5.3-codex` |
-| Fresh-perspective debugging | debug | `codex exec -p debug "Debug this error: [error]" -m gpt-5.3-codex` |
-| Multi-strategy planning | ultra-think | `codex exec -p ultra-think "Plan the authentication redesign" -m gpt-5.4` |
+| Architecture exploration | context | `codex exec -p context "Analyze the architecture of this project" -m gpt-5.5` |
+| Technical research | research | `codex exec -p research "Research latest Express.js security advisories" -m gpt-5.5 --search` |
+| Documentation generation | write | `codex exec -p write "Generate README for this project" -m gpt-5.5` |
+| Fresh-perspective debugging | debug | `codex exec -p debug "Debug this error: [error]" -m gpt-5.5` |
+| Multi-strategy planning | ultra-think | `codex exec -p ultra-think "Plan the authentication redesign" -m gpt-5.5` |
 
 **Profile setup**: Profiles are defined in `.codex/config.toml` under `[profiles.<name>]` sections. Each profile can override `model`, `model_reasoning_effort`, `sandbox_mode`, and `approval_policy`. The `.codex/agents/*.toml` files provide agent definitions for the interactive multi-agent TUI feature.
 
@@ -368,28 +392,28 @@ These capabilities are available only through Codex CLI or provide a meaningfull
 
 ```bash
 # Code generation (workspace writes allowed)
-codex exec "Create [description] with [features]. Output complete file." --model gpt-5.3-codex --sandbox workspace-write
+codex exec "Create [description] with [features]. Output complete file." --model gpt-5.5 --sandbox workspace-write
 
 # Code review (read-only — no file modifications)
-codex exec "Review @./src/auth.ts for security vulnerabilities" --model gpt-5.3-codex --sandbox read-only
+codex exec "Review @./src/auth.ts for security vulnerabilities" --model gpt-5.5 --sandbox read-only
 
 # Git diff review (built-in review subcommand)
-codex exec review "Focus on security vulnerabilities" --commit HEAD --model gpt-5.3-codex
+codex exec review "Focus on security vulnerabilities" --commit HEAD --model gpt-5.5
 
 # Web research (live web browsing enabled)
-codex exec "What's new in [topic]? Search the web for current information." --model gpt-5.3-codex --search --sandbox read-only
+codex exec "What's new in [topic]? Search the web for current information." --model gpt-5.5 --search --sandbox read-only
 
 # Architecture analysis
-codex exec "Analyze the architecture of this project. Map key modules and dependencies." --model gpt-5.3-codex --sandbox read-only
+codex exec "Analyze the architecture of this project. Map key modules and dependencies." --model gpt-5.5 --sandbox read-only
 
 # Background execution
-codex exec "[long task]" --model gpt-5.3-codex --sandbox workspace-write 2>&1 &
+codex exec "[long task]" --model gpt-5.5 --sandbox workspace-write 2>&1 &
 
 # With image input
-codex exec "Implement this UI component based on the attached design" --model gpt-5.3-codex -i design.png --sandbox workspace-write
+codex exec "Implement this UI component based on the attached design" --model gpt-5.5 -i design.png --sandbox workspace-write
 
 # Profile-based task delegation
-codex exec -p research "Research latest security advisories for Express.js" --model gpt-5.3-codex --search
+codex exec -p research "Research latest security advisories for Express.js" --model gpt-5.5 --search
 ```
 
 ### Error Handling
@@ -439,9 +463,11 @@ codex exec -p research "Research latest security advisories for Express.js" --mo
    - This is silent failure: `.pid` file count falls short of expected and there is no error message
    - See `references/integration_patterns.md#background-execution` → "Silent Stdin Consumption" for full details
 
-7. **ALWAYS specify the model explicitly** — choose based on task type
-   - Use `--model gpt-5.4` for reasoning-heavy tasks (architecture, security, planning)
-   - Use `--model gpt-5.3-codex` for code-focused tasks (generation, review, implementation)
+7. **ALWAYS specify the model + effort + service tier explicitly** — never rely on caller environment
+   - **Default (zero input from user)**: `--model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast"`
+   - **Honor explicit user overrides verbatim**: e.g. "Use gpt 5.5 high fast" → `--model gpt-5.5 -c model_reasoning_effort="high" -c service_tier="fast"`
+   - **Informed task-type overrides**: `--model gpt-5.5` with `high` for reasoning-heavy tasks (architecture, security, deep planning); `--model gpt-5.5` for code-focused tasks that benefit from fixed `xhigh` reasoning
+   - See "Default Invocation" block in §3 for the full resolution table
 
 8. **ALWAYS route to the appropriate Codex profile** when the task matches a profile specialization
    - Use `-p <profile>` flag; see profile routing table in Section 3

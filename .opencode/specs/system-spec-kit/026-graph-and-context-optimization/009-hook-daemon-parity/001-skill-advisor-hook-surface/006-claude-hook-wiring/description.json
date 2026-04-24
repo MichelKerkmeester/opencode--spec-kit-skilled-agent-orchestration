@@ -1,27 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring",
-  "description": "Feature Specification: Claude Hook Wiring (UserPromptSubmit)",
-  "keywords": [
-    "feature",
-    "specification",
-    "claude",
-    "hook",
-    "wiring",
-    "userpromptsubmit"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "006",
-  "folderSlug": "claude-hook-wiring",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "009-hook-daemon-parity",
-    "001-skill-advisor-hook-surface"
-  ],
-  "memorySequence": 1,
-  "memoryNameHistory": [
-    "19-04-26_09-47__scaffold-006-claude-hook-wiring-for-phase-020.md"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring",
@@ -38,5 +15,28 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring",
+  "description": "Feature Specification: Claude Hook Wiring (UserPromptSubmit)",
+  "keywords": [
+    "feature",
+    "specification",
+    "claude",
+    "hook",
+    "wiring",
+    "userpromptsubmit"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.703Z",
+  "specId": "006",
+  "folderSlug": "claude-hook-wiring",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity",
+    "001-skill-advisor-hook-surface"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-04-26_09-47__scaffold-006-claude-hook-wiring-for-phase-020.md"
+  ]
 }

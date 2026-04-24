@@ -1,28 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment",
-  "description": "Feature Specification: Doc Surface Alignment: Search Fusion Changes",
-  "keywords": [
-    "feature",
-    "specification",
-    "doc",
-    "surface",
-    "alignment",
-    "search",
-    "fusion",
-    "changes"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "005",
-  "folderSlug": "doc-surface-alignment",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "006-search-routing-advisor",
-    "001-search-and-routing-tuning",
-    "001-search-fusion-tuning"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment",
@@ -38,5 +14,29 @@
       "system-spec-kit/026-graph-and-context-optimization/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment",
       "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment",
+  "description": "Feature Specification: Doc Surface Alignment: Search Fusion Changes",
+  "keywords": [
+    "feature",
+    "specification",
+    "doc",
+    "surface",
+    "alignment",
+    "search",
+    "fusion",
+    "changes"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.290Z",
+  "specId": "005",
+  "folderSlug": "doc-surface-alignment",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "006-search-routing-advisor",
+    "001-search-and-routing-tuning",
+    "001-search-fusion-tuning"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

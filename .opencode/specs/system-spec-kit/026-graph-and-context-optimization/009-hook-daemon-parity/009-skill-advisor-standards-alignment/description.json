@@ -6,13 +6,9 @@
     "specification",
     "skill-advisor",
     "standards",
-    "alignment",
-    "esm-exemption",
-    "jsdoc",
-    "section-dividers",
-    "sk-code-opencode"
+    "alignment"
   ],
-  "lastUpdated": "2026-04-23T08:53:10.924Z",
+  "lastUpdated": "2026-04-24T15:56:56.795Z",
   "specId": "009",
   "folderSlug": "skill-advisor-standards-alignment",
   "parentChain": [

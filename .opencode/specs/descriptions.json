@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-04-22T11:00:04.491Z",
+  "generated": "2026-04-24T15:56:54.574Z",
   "folders": [
     {
       "specFolder": "00--ai-systems/001-global-shared",
@@ -12,7 +12,7 @@
         "shared",
         "parent"
       ],
-      "lastUpdated": "2026-04-13T04:56:38.996Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -24,7 +24,7 @@
         "refinement",
         "implementation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.258Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/001-global-shared/002-brand-knowledge",
@@ -36,7 +36,7 @@
         "knowledge",
         "phase"
       ],
-      "lastUpdated": "2026-04-13T04:56:39.099Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/001-global-shared/003-hvr-refinement-repo-analysis",
@@ -50,7 +50,7 @@
         "analysis",
         "003"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.268Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/001-global-shared/004-hvr-multi-lingual",
@@ -63,7 +63,7 @@
         "dutch",
         "004"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.272Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/001-global-shared/005-routing-review",
@@ -74,7 +74,7 @@
         "routing",
         "review"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.278Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/002-sales-communication-flows",
@@ -87,7 +87,7 @@
         "flows",
         "parent"
       ],
-      "lastUpdated": "2026-04-13T04:56:39.299Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/002-sales-communication-flows/001-initial-creation",
@@ -100,7 +100,7 @@
         "initial",
         "creation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.283Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/003-sales-process-automation",
@@ -113,7 +113,7 @@
         "automation",
         "parent"
       ],
-      "lastUpdated": "2026-04-13T04:56:39.588Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/003-sales-process-automation/001-initial-creation",
@@ -127,7 +127,7 @@
         "initial",
         "creation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.287Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/004-prompt-improver",
@@ -139,7 +139,7 @@
         "improver",
         "parent"
       ],
-      "lastUpdated": "2026-04-13T04:56:39.681Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/004-prompt-improver/001-content-submission",
@@ -155,7 +155,7 @@
         "select",
         "flow"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.291Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/005-sales-direct-communication",
@@ -168,7 +168,7 @@
         "communication",
         "parent"
       ],
-      "lastUpdated": "2026-04-13T04:56:39.204Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/005-sales-direct-communication/001-speed-of-execution",
@@ -180,7 +180,7 @@
         "execution",
         "optimization"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.296Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/006-product-owner",
@@ -193,7 +193,7 @@
         "phase",
         "wrapper"
       ],
-      "lastUpdated": "2026-04-13T04:56:39.494Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--ai-systems/006-product-owner/001-variables-cg-p-2",
@@ -206,7 +206,7 @@
         "canonical",
         "diff"
       ],
-      "lastUpdated": "2026-04-13T04:56:39.400Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/012-notification-time-scheduling",
@@ -218,7 +218,7 @@
         "time-based",
         "scheduling"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.302Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/014-notification-hero-spacing",
@@ -230,7 +230,7 @@
         "hero",
         "spacing"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.306Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/029-anobel-performance-analysis",
@@ -244,7 +244,7 @@
         "anobel",
         "com"
       ],
-      "lastUpdated": "2026-04-13T04:56:39.781Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/030-label-product-content-attr",
@@ -257,7 +257,7 @@
         "content",
         "attribute"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.310Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/031-fix-download-btn-transition-glitch",
@@ -271,7 +271,7 @@
         "transition",
         "glitch"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.314Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/032-cloudflare-r2-migration",
@@ -283,7 +283,7 @@
         "worker",
         "migration"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.318Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/033-form-upload-issues",
@@ -298,7 +298,7 @@
         "validation",
         "fix"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.323Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/034-form-bot-problem",
@@ -312,7 +312,7 @@
         "submission",
         "investigation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.327Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/035-hero-contact-success",
@@ -325,25 +325,20 @@
         "selector",
         "scoping"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.332Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/036-notification-toast-button",
-      "description": "notification-toast-button --path /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/00--anobel.com",
+      "description": "Feature Specification: CMS-Driven Button in Notification Toast",
       "keywords": [
-        "notification-toast-button",
-        "path",
-        "users",
-        "michelkerkmeester",
-        "mega",
-        "development",
-        "public",
-        "opencode",
-        "specs",
-        "01-anobel",
-        "com"
+        "feature",
+        "specification",
+        "cms-driven",
+        "button",
+        "notification",
+        "toast"
       ],
-      "lastUpdated": "2026-04-04T14:02:00.557Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/037-testimonial-slider",
@@ -357,7 +352,7 @@
         "draggable",
         "rebuild"
       ],
-      "lastUpdated": "2026-04-19T07:17:54.186Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/038-hero-video-scroll",
@@ -369,7 +364,7 @@
         "scroll-to-fullscreen",
         "animation"
       ],
-      "lastUpdated": "2026-04-18T10:17:57.326Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/z_archive/001-finsweet-performance",
@@ -420,7 +415,7 @@
         "table",
         "content"
       ],
-      "lastUpdated": "2026-04-22T11:00:04.491Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy",
@@ -621,7 +616,7 @@
         "dropdown",
         "fix"
       ],
-      "lastUpdated": "2026-04-22T11:00:04.491Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/z_archive/019-form-attribute-audit",
@@ -671,7 +666,7 @@
         "anobel",
         "com"
       ],
-      "lastUpdated": "2026-04-22T11:00:04.491Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "00--anobel.com/z_archive/023-performance-review",
@@ -770,7 +765,7 @@
         "sk-bartender-endpoint-interpreter",
         "sk-bo-notifications-templates"
       ],
-      "lastUpdated": "2026-04-15T08:25:59.228Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/022-mcp-coco-integration",
@@ -783,7 +778,7 @@
         "mcp",
         "integration"
       ],
-      "lastUpdated": "2026-04-14T08:02:29.157Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/023-sk-deep-research-creation",
@@ -796,7 +791,7 @@
         "research",
         "loop"
       ],
-      "lastUpdated": "2026-04-14T08:02:29.165Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/024-sk-deep-research-refinement",
@@ -809,7 +804,7 @@
         "via",
         "self-research"
       ],
-      "lastUpdated": "2026-03-30T11:56:27.087Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/025-cmd-create-feature-catalog",
@@ -821,7 +816,7 @@
         "feature-catalog",
         "command"
       ],
-      "lastUpdated": "2026-03-30T11:56:27.090Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/026-cmd-create-manual-testing-playbook",
@@ -833,7 +828,7 @@
         "testing-playbook",
         "command"
       ],
-      "lastUpdated": "2026-03-30T11:56:27.095Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/027-cmd-create-yaml-refinement",
@@ -846,7 +841,7 @@
         "yaml",
         "refinement"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.468Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/028-sk-deep-research-testing-playbook",
@@ -859,7 +854,7 @@
         "testing",
         "playbook"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.474Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/029-sk-deep-research-first-upgrade",
@@ -871,7 +866,7 @@
         "first",
         "upgrade"
       ],
-      "lastUpdated": "2026-04-13T04:56:42.002Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/030-sk-deep-research-review-mode",
@@ -883,7 +878,7 @@
         "review",
         "mode"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.479Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/031-sk-coco-index-cmd-integration",
@@ -895,7 +890,7 @@
         "command",
         "integration"
       ],
-      "lastUpdated": "2026-04-13T04:56:41.337Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/032-sk-doc-readme-hvr-improvements",
@@ -908,7 +903,7 @@
         "hvr",
         "improvements"
       ],
-      "lastUpdated": "2026-03-30T11:56:27.103Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/033-skill-command-readme-rewrite",
@@ -921,7 +916,7 @@
         "readme",
         "rewrite"
       ],
-      "lastUpdated": "2026-04-14T08:02:29.173Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/034-sk-deep-research-review-folders",
@@ -934,7 +929,7 @@
         "folder",
         "contract"
       ],
-      "lastUpdated": "2026-03-30T11:56:27.111Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/035-sk-deep-research-path-migration",
@@ -946,7 +941,7 @@
         "path",
         "migration"
       ],
-      "lastUpdated": "2026-04-13T04:56:41.433Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/036-sk-deep-research-review-split",
@@ -960,7 +955,7 @@
         "mode",
         "sk-deep-review"
       ],
-      "lastUpdated": "2026-04-14T08:02:29.179Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/037-cmd-merge-spec-kit-phase",
@@ -973,7 +968,7 @@
         "plan",
         "complete"
       ],
-      "lastUpdated": "2026-03-30T11:56:27.115Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/038-cmd-create-changelog-and-releases",
@@ -988,7 +983,7 @@
         "release",
         "creation"
       ],
-      "lastUpdated": "2026-04-13T04:56:41.226Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/039-cmd-spec-kit-codex-skill-routing",
@@ -1002,7 +997,7 @@
         "routing",
         "update"
       ],
-      "lastUpdated": "2026-04-03T10:51:48.382Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1",
@@ -1017,7 +1012,7 @@
         "review",
         "improvement"
       ],
-      "lastUpdated": "2026-04-13T04:56:41.712Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/001-sk-deep-research-improvements",
@@ -1029,7 +1024,7 @@
         "sk-deep-research",
         "improvements"
       ],
-      "lastUpdated": "2026-04-13T04:56:41.525Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/002-sk-deep-review-improvements",
@@ -1041,7 +1036,7 @@
         "sk-deep-review",
         "improvements"
       ],
-      "lastUpdated": "2026-04-13T04:56:41.618Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop",
@@ -1054,7 +1049,7 @@
         "agent",
         "loop"
       ],
-      "lastUpdated": "2026-04-13T04:56:40.645Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/001-sk-recursive-agent-mvp",
@@ -1066,7 +1061,7 @@
         "improvement",
         "loop"
       ],
-      "lastUpdated": "2026-04-14T08:02:29.185Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill",
@@ -1079,7 +1074,7 @@
         "full",
         "skill"
       ],
-      "lastUpdated": "2026-04-13T04:56:40.268Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/003-sk-recursive-agent-doc-alignment",
@@ -1092,7 +1087,7 @@
         "sk-doc",
         "alignment"
       ],
-      "lastUpdated": "2026-04-13T04:56:40.364Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/004-sk-recursive-agent-promotion-verification",
@@ -1105,7 +1100,7 @@
         "promotion",
         "verification"
       ],
-      "lastUpdated": "2026-04-13T04:56:40.931Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/005-sk-recursive-agent-package-runtime-alignment",
@@ -1119,7 +1114,7 @@
         "runtime",
         "alignment"
       ],
-      "lastUpdated": "2026-04-13T04:56:39.887Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/006-sk-recursive-agent-command-rename",
@@ -1132,7 +1127,7 @@
         "command",
         "rename"
       ],
-      "lastUpdated": "2026-04-13T04:56:40.834Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/007-sk-recursive-agent-wording-alignment",
@@ -1145,7 +1140,7 @@
         "wording",
         "alignment"
       ],
-      "lastUpdated": "2026-04-13T04:56:40.740Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/008-sk-recursive-agent-holistic-evaluation",
@@ -1158,7 +1153,7 @@
         "integration-aware",
         "improvement"
       ],
-      "lastUpdated": "2026-04-13T04:56:40.458Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test",
@@ -1168,7 +1163,7 @@
         "agent-improver",
         "self-test"
       ],
-      "lastUpdated": "2026-04-13T04:56:40.550Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-agent-improver-self-test-fixes",
@@ -1180,7 +1175,7 @@
         "reducer",
         "improvements"
       ],
-      "lastUpdated": "2026-04-13T04:56:39.982Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync",
@@ -1193,7 +1188,7 @@
         "readme",
         "sync"
       ],
-      "lastUpdated": "2026-04-14T08:02:29.191Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2",
@@ -1208,7 +1203,7 @@
         "improvement",
         "bundle"
       ],
-      "lastUpdated": "2026-04-17T14:42:34.047Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtime-truth-foundation",
@@ -1223,7 +1218,7 @@
         "improvement",
         "bundle"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.430Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph",
@@ -1235,7 +1230,7 @@
         "coverage",
         "graph"
       ],
-      "lastUpdated": "2026-04-13T10:39:18.628Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor",
@@ -1246,7 +1241,7 @@
         "wave",
         "executor"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.442Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer",
@@ -1258,7 +1253,7 @@
         "loop",
         "optimizer"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.445Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment",
@@ -1270,7 +1265,7 @@
         "deep-loop",
         "alignment"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.449Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment",
@@ -1283,7 +1278,7 @@
         "playbook",
         "alignment"
       ],
-      "lastUpdated": "2026-04-13T04:56:41.120Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/007-skill-rename-improve-agent-prompt",
@@ -1296,7 +1291,7 @@
         "sk-improve-agent",
         "sk-improve-prompt"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.453Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements",
@@ -1307,7 +1302,7 @@
         "deep-loop",
         "improvements"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.457Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/009-round3-review-remediation",
@@ -1319,7 +1314,7 @@
         "review",
         "remediation"
       ],
-      "lastUpdated": "2026-04-13T04:56:41.028Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/010-root-level-review-research-convention",
@@ -1333,7 +1328,7 @@
         "folder",
         "convention"
       ],
-      "lastUpdated": "2026-04-22T11:00:04.491Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/043-cli-skill-improved-prompting",
@@ -1349,7 +1344,7 @@
         "mirror",
         "cards"
       ],
-      "lastUpdated": "2026-04-14T08:02:29.198Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/044-non-system-playbook-prompts",
@@ -1362,7 +1357,7 @@
         "prompt",
         "modernization"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.462Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/045-sk-doc-changelog-template",
@@ -1373,7 +1368,7 @@
         "move",
         "sk-doc"
       ],
-      "lastUpdated": "2026-04-18T09:32:27.239Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/046-cli-codex-tone-of-voice",
@@ -1385,7 +1380,7 @@
         "tone-of-voice",
         "personalization"
       ],
-      "lastUpdated": "2026-04-19T13:30:40.388Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/z_archive/001-cli-gemini-creation",
@@ -1660,7 +1655,7 @@
         "phase",
         "system"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.578Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion",
@@ -1672,7 +1667,7 @@
         "rag",
         "fusion"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.583Z"
+      "lastUpdated": "2026-04-24T15:43:16.931Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
@@ -1682,7 +1677,7 @@
         "specification",
         "001-hybrid-rag-fusion-epic"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.587Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation",
@@ -1694,7 +1689,7 @@
         "measurement",
         "foundation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.593Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation",
@@ -1707,7 +1702,7 @@
         "signal",
         "activation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.597Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration",
@@ -1719,7 +1714,7 @@
         "scoring",
         "calibration"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.601Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence",
@@ -1731,7 +1726,7 @@
         "query",
         "intelligence"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.605Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality",
@@ -1743,7 +1738,7 @@
         "feedback",
         "quality"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.609Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/006-sprint-5-pipeline-refactor",
@@ -1755,7 +1750,7 @@
         "pipeline",
         "refactor"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.613Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/007-sprint-6-indexing-and-graph",
@@ -1767,7 +1762,7 @@
         "indexing",
         "graph"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.618Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon",
@@ -1779,7 +1774,7 @@
         "long",
         "horizon"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.622Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features",
@@ -1791,7 +1786,7 @@
         "deferred",
         "features"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.630Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features",
@@ -1806,7 +1801,7 @@
         "operational",
         "tooling"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.634Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement",
@@ -1817,7 +1812,7 @@
         "research-based",
         "refinement"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.638Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/001-fusion-scoring-intelligence",
@@ -1829,7 +1824,7 @@
         "scoring",
         "intelligence"
       ],
-      "lastUpdated": "2026-04-13T04:56:35.505Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation",
@@ -1841,7 +1836,7 @@
         "intelligence",
         "reformulation"
       ],
-      "lastUpdated": "2026-04-13T04:56:35.407Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/003-graph-augmented-retrieval",
@@ -1852,7 +1847,7 @@
         "graph-augmented",
         "retrieval"
       ],
-      "lastUpdated": "2026-04-13T04:56:35.696Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/004-feedback-quality-learning",
@@ -1864,7 +1859,7 @@
         "quality",
         "learning"
       ],
-      "lastUpdated": "2026-04-13T04:56:35.602Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/005-retrieval-ux-presentation",
@@ -1876,7 +1871,7 @@
         "result",
         "presentation"
       ],
-      "lastUpdated": "2026-04-13T04:56:35.792Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
@@ -1887,7 +1882,7 @@
         "indexing",
         "normalization"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.643Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/003-constitutional-learn-refactor",
@@ -1901,7 +1896,7 @@
         "constitutional",
         "manager"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.647Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation",
@@ -1912,7 +1907,7 @@
         "hooks",
         "automation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.651Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit",
@@ -1923,7 +1918,7 @@
         "architecture",
         "audit"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.655Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog",
@@ -1935,7 +1930,7 @@
         "audit",
         "remediation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.660Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
@@ -1948,7 +1943,7 @@
         "per",
         "catalog"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.665Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/001-retrieval",
@@ -1960,7 +1955,7 @@
         "audit",
         "retrieval"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.670Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/002-mutation",
@@ -1972,7 +1967,7 @@
         "audit",
         "mutation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.674Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/003-discovery",
@@ -1984,7 +1979,7 @@
         "audit",
         "discovery"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.679Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/004-maintenance",
@@ -1996,7 +1991,7 @@
         "audit",
         "maintenance"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.684Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle",
@@ -2008,7 +2003,7 @@
         "audit",
         "lifecycle"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.688Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/006-analysis",
@@ -2020,7 +2015,7 @@
         "audit",
         "analysis"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.692Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/007-evaluation",
@@ -2032,7 +2027,7 @@
         "audit",
         "evaluation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.697Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity",
@@ -2047,7 +2042,7 @@
         "data",
         "integrity"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.701Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/009-evaluation-and-measurement",
@@ -2060,7 +2055,7 @@
         "evaluation",
         "measurement"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.705Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation",
@@ -2074,7 +2069,7 @@
         "signal",
         "activation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.710Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration",
@@ -2087,7 +2082,7 @@
         "scoring",
         "calibration"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.715Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/012-query-intelligence",
@@ -2100,7 +2095,7 @@
         "query",
         "intelligence"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.720Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing",
@@ -2114,7 +2109,7 @@
         "quality",
         "indexing"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.724Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture",
@@ -2127,7 +2122,7 @@
         "pipeline",
         "architecture"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.728Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements",
@@ -2140,7 +2135,7 @@
         "retrieval",
         "enhancements"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.734Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts",
@@ -2153,7 +2148,7 @@
         "tooling",
         "scripts"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.738Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/017-governance",
@@ -2165,7 +2160,7 @@
         "audit",
         "governance"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.743Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/018-ux-hooks",
@@ -2177,7 +2172,7 @@
         "audit",
         "hooks"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.747Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals",
@@ -2190,7 +2185,7 @@
         "decisions",
         "deferrals"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.752Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference",
@@ -2203,7 +2198,7 @@
         "flag",
         "reference"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.756Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation",
@@ -2216,7 +2211,7 @@
         "remediation",
         "revalidation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.760Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features",
@@ -2229,7 +2224,7 @@
         "deprecated",
         "features"
       ],
-      "lastUpdated": "2026-04-13T04:56:36.206Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
@@ -2239,7 +2234,7 @@
         "specification",
         "008-hydra-db-based-features"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.765Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails",
@@ -2249,7 +2244,7 @@
         "specification",
         "001-baseline-and-safety-rails"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.770Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state",
@@ -2259,7 +2254,7 @@
         "specification",
         "002-versioned-memory-state"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.774Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/003-unified-graph-retrieval",
@@ -2269,7 +2264,7 @@
         "specification",
         "003-unified-graph-retrieval"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.778Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops",
@@ -2279,7 +2274,7 @@
         "specification",
         "004-adaptive-retrieval-loops"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.782Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance",
@@ -2289,7 +2284,7 @@
         "specification",
         "005-hierarchical-scope-governance"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.786Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout",
@@ -2299,7 +2294,7 @@
         "specification",
         "006-shared-memory-rollout"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.790Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
@@ -2311,7 +2306,7 @@
         "session",
         "capturing"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.795Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation",
@@ -2324,7 +2319,7 @@
         "deprecation",
         "branch"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.799Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/001-session-source-validation",
@@ -2336,7 +2331,7 @@
         "source",
         "validation"
       ],
-      "lastUpdated": "2026-03-30T11:56:26.685Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback",
@@ -2349,7 +2344,7 @@
         "handback",
         "protocol"
       ],
-      "lastUpdated": "2026-03-30T11:56:26.689Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/003-multi-cli-parity",
@@ -2361,7 +2356,7 @@
         "parity",
         "hardening"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.805Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/004-source-capabilities-and-structured-preference",
@@ -2374,7 +2369,7 @@
         "structured",
         "preference"
       ],
-      "lastUpdated": "2026-03-30T11:56:26.697Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/005-live-proof-and-parity-hardening",
@@ -2387,7 +2382,7 @@
         "parity",
         "hardening"
       ],
-      "lastUpdated": "2026-03-30T11:56:26.701Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/001-quality-scorer-unification",
@@ -2399,7 +2394,7 @@
         "scorer",
         "unification"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.810Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection",
@@ -2410,7 +2405,7 @@
         "contamination",
         "detection"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.815Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/003-data-fidelity",
@@ -2421,7 +2416,7 @@
         "data",
         "fidelity"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.819Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation",
@@ -2432,7 +2427,7 @@
         "type",
         "consolidation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.823Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration",
@@ -2443,7 +2438,7 @@
         "confidence",
         "calibration"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.827Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/006-description-enrichment",
@@ -2454,7 +2449,7 @@
         "description",
         "enrichment"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.831Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification",
@@ -2465,7 +2460,7 @@
         "phase",
         "classification"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.836Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction",
@@ -2476,7 +2471,7 @@
         "signal",
         "extraction"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.840Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization",
@@ -2487,7 +2482,7 @@
         "embedding",
         "optimization"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.844Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing",
@@ -2498,7 +2493,7 @@
         "integration",
         "testing"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.848Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance",
@@ -2509,7 +2504,7 @@
         "template",
         "compliance"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.853Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/012-auto-detection-fixes",
@@ -2520,7 +2515,7 @@
         "auto-detection",
         "fixes"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.857Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/013-spec-descriptions",
@@ -2532,7 +2527,7 @@
         "description",
         "infrastructure"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.861Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates",
@@ -2545,7 +2540,7 @@
         "gate",
         "fixes"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.865Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/015-runtime-contract-and-indexability",
@@ -2557,7 +2552,7 @@
         "contract",
         "indexability"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.869Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
@@ -2567,7 +2562,7 @@
         "specification",
         "016-json-mode-hybrid-enrichment"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.873Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment",
@@ -2581,7 +2576,7 @@
         "enrichment",
         "phase"
       ],
-      "lastUpdated": "2026-03-30T11:56:26.774Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter",
@@ -2597,7 +2592,7 @@
         "contamination",
         "expansion"
       ],
-      "lastUpdated": "2026-03-30T11:56:26.780Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema",
@@ -2610,7 +2605,7 @@
         "schema",
         "validation"
       ],
-      "lastUpdated": "2026-03-30T11:56:26.785Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/004-indexing-and-coherence",
@@ -2621,7 +2616,7 @@
         "indexing",
         "coherence"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.878Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation",
@@ -2632,7 +2627,7 @@
         "json-primary",
         "deprecation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.883Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/018-memory-save-quality-fixes",
@@ -2647,7 +2642,7 @@
         "cause",
         "fixes"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.887Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation",
@@ -2660,7 +2655,7 @@
         "deep",
         "dive"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.891Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement",
@@ -2672,7 +2667,7 @@
         "compliance",
         "enforcement"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.895Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment",
@@ -2684,7 +2679,7 @@
         "alignment",
         "system-spec-kit"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.899Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment",
@@ -2694,7 +2689,7 @@
         "specification",
         "001-post-session-capturing-alignment"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.903Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022",
@@ -2707,7 +2702,7 @@
         "review",
         "remediation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.907Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/012-command-alignment",
@@ -2716,7 +2711,7 @@
         "specification",
         "012-command-alignment"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.911Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment",
@@ -2730,7 +2725,7 @@
         "truth",
         "reconciliation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.915Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment",
@@ -2739,7 +2734,7 @@
         "specification",
         "014-agents-md-alignment"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.920Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
@@ -2749,7 +2744,7 @@
         "specification",
         "manual-testing-per-playbook"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.924Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/001-retrieval",
@@ -2761,7 +2756,7 @@
         "retrieval",
         "phase"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.929Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/002-mutation",
@@ -2773,7 +2768,7 @@
         "mutation",
         "phase"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.934Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/003-discovery",
@@ -2785,7 +2780,7 @@
         "discovery",
         "phase"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.938Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance",
@@ -2797,7 +2792,7 @@
         "maintenance",
         "phase"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.944Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/005-lifecycle",
@@ -2809,7 +2804,7 @@
         "lifecycle",
         "phase"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.948Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis",
@@ -2821,7 +2816,7 @@
         "analysis",
         "phase"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.953Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/007-evaluation",
@@ -2833,7 +2828,7 @@
         "evaluation",
         "phase"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.958Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/008-bug-fixes-and-data-integrity",
@@ -2848,7 +2843,7 @@
         "data",
         "integrity"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.962Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/009-evaluation-and-measurement",
@@ -2861,7 +2856,7 @@
         "evaluation",
         "measurement"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.966Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/010-graph-signal-activation",
@@ -2871,7 +2866,7 @@
         "specification",
         "graph-signal-activation"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.970Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/011-scoring-and-calibration",
@@ -2883,7 +2878,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.976Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/012-query-intelligence",
@@ -2895,7 +2890,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.980Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/013-memory-quality-and-indexing",
@@ -2909,7 +2904,7 @@
         "indexing",
         "phase"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.986Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/014-pipeline-architecture",
@@ -2924,7 +2919,7 @@
         "phase",
         "014"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.990Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/015-retrieval-enhancements",
@@ -2939,7 +2934,7 @@
         "phase",
         "015"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.994Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/016-tooling-and-scripts",
@@ -2951,7 +2946,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-04-06T09:57:54.998Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/017-governance",
@@ -2963,7 +2958,7 @@
         "governance",
         "phase"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.003Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/018-ux-hooks",
@@ -2975,7 +2970,7 @@
         "ux-hooks",
         "phase"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.007Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/019-feature-flag-reference",
@@ -2987,10 +2982,10 @@
         "feature-flag-reference",
         "phase"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.011Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference",
+      "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference-audit",
       "description": "Feature Specification: manual-testing-per-playbook feature-flag-reference audit phase",
       "keywords": [
         "feature",
@@ -3000,7 +2995,7 @@
         "audit",
         "phase"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.016Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/021-remediation-revalidation",
@@ -3012,7 +3007,7 @@
         "remediation-revalidation",
         "phase"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.021Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features",
@@ -3024,7 +3019,7 @@
         "implement-and-remove-deprecated-features",
         "phase"
       ],
-      "lastUpdated": "2026-03-30T11:56:26.923Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme",
@@ -3033,7 +3028,7 @@
         "specification",
         "016-rewrite-memory-mcp-readme"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.025Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/017-update-install-guide",
@@ -3042,7 +3037,7 @@
         "specification",
         "017-update-install-guide"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.030Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/018-rewrite-system-speckit-readme",
@@ -3051,7 +3046,7 @@
         "specification",
         "018-rewrite-system-speckit-readme"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.034Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme",
@@ -3060,7 +3055,7 @@
         "specification",
         "019-rewrite-repo-readme"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.038Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes",
@@ -3072,7 +3067,7 @@
         "pre-release",
         "remediation"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.042Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping",
@@ -3084,7 +3079,7 @@
         "truth",
         "remapping"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.047Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass",
@@ -3097,7 +3092,7 @@
         "indexing",
         "bypass"
       ],
-      "lastUpdated": "2026-04-13T04:56:36.079Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/023-ablation-benchmark-integrity",
@@ -3109,7 +3104,7 @@
         "benchmark",
         "integrity"
       ],
-      "lastUpdated": "2026-04-13T04:56:35.898Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix",
@@ -3122,7 +3117,7 @@
         "mcp",
         "fix"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.052Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/025-mcp-runtime-hardening",
@@ -3134,7 +3129,7 @@
         "runtime",
         "hardening"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.056Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement",
@@ -3146,7 +3141,7 @@
         "database",
         "refinement"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.060Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement",
@@ -3158,7 +3153,7 @@
         "module",
         "compliance"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.065Z"
+      "lastUpdated": "2026-04-24T15:33:59.422Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/001-shared-esm-migration",
@@ -3170,7 +3165,7 @@
         "esm",
         "migration"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.069Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/002-mcp-server-esm-migration",
@@ -3183,7 +3178,7 @@
         "esm",
         "migration"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.073Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/003-scripts-interop-refactor",
@@ -3195,7 +3190,7 @@
         "interop",
         "refactor"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.077Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/004-verification-and-standards",
@@ -3207,7 +3202,7 @@
         "standards",
         "sync"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.081Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/005-test-and-scenario-remediation",
@@ -3219,7 +3214,7 @@
         "scenario",
         "remediation"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.085Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/006-review-remediation",
@@ -3231,7 +3226,7 @@
         "review",
         "remediation"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.089Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix",
@@ -3245,7 +3240,7 @@
         "null",
         "fix"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.093Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit",
@@ -3258,7 +3253,7 @@
         "compliance",
         "audit"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.097Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives",
@@ -3271,7 +3266,7 @@
         "false",
         "positives"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.101Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes",
@@ -3284,7 +3279,7 @@
         "quality",
         "fixes"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.105Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
@@ -3297,7 +3292,7 @@
         "fusion",
         "enablement"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.110Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate",
@@ -3309,7 +3304,7 @@
         "promotiongate",
         "action"
       ],
-      "lastUpdated": "2026-04-02T17:21:39.790Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/002-persist-tuned-thresholds",
@@ -3322,7 +3317,7 @@
         "tuned",
         "thresholds"
       ],
-      "lastUpdated": "2026-04-02T17:21:39.795Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels",
@@ -3335,7 +3330,7 @@
         "labels",
         "evaluation"
       ],
-      "lastUpdated": "2026-04-02T17:21:39.800Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path",
@@ -3348,7 +3343,7 @@
         "signal",
         "path"
       ],
-      "lastUpdated": "2026-04-02T17:21:39.804Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test",
@@ -3361,7 +3356,7 @@
         "integration",
         "test"
       ],
-      "lastUpdated": "2026-04-02T17:21:39.809Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout",
@@ -3377,7 +3372,7 @@
         "deep",
         "expansion"
       ],
-      "lastUpdated": "2026-04-02T17:21:39.815Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research",
@@ -3390,7 +3385,7 @@
         "memory",
         "research"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.115Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent",
@@ -3404,7 +3399,7 @@
         "phases",
         "create"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.120Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements",
@@ -3416,7 +3411,7 @@
         "retrieval",
         "improvements"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.125Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline",
@@ -3429,7 +3424,7 @@
         "quality",
         "pipeline"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.130Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard",
@@ -3444,7 +3439,7 @@
         "path",
         "drift"
       ],
-      "lastUpdated": "2026-04-02T17:21:39.843Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/014-feedback-signal-pipeline",
@@ -3456,7 +3451,7 @@
         "signal",
         "pipeline"
       ],
-      "lastUpdated": "2026-04-13T04:56:29.249Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph",
@@ -3470,7 +3465,7 @@
         "tool",
         "architecture"
       ],
-      "lastUpdated": "2026-04-14T08:02:29.226Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/001-precompact-hook",
@@ -3483,7 +3478,7 @@
         "precompact",
         "sessionstart"
       ],
-      "lastUpdated": "2026-04-13T04:56:37.460Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/002-session-start-hook",
@@ -3495,7 +3490,7 @@
         "session",
         "priming"
       ],
-      "lastUpdated": "2026-04-13T04:56:37.744Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/003-stop-hook-tracking",
@@ -3507,7 +3502,7 @@
         "token",
         "tracking"
       ],
-      "lastUpdated": "2026-04-13T04:56:37.068Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/004-cross-runtime-fallback",
@@ -3517,7 +3512,7 @@
         "cross-runtime",
         "fallback"
       ],
-      "lastUpdated": "2026-04-13T04:56:38.600Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/005-command-agent-alignment",
@@ -3528,7 +3523,7 @@
         "agent",
         "alignment"
       ],
-      "lastUpdated": "2026-04-13T04:56:36.692Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/006-documentation-alignment",
@@ -3538,7 +3533,7 @@
         "documentation",
         "alignment"
       ],
-      "lastUpdated": "2026-04-13T04:56:38.219Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/007-testing-validation",
@@ -3548,7 +3543,7 @@
         "testing",
         "validation"
       ],
-      "lastUpdated": "2026-04-13T04:56:36.788Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/008-structural-indexer",
@@ -3560,7 +3555,7 @@
         "indexer",
         "tree-sitter"
       ],
-      "lastUpdated": "2026-04-13T04:56:37.366Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/009-code-graph-storage-query",
@@ -3573,7 +3568,7 @@
         "storage",
         "query"
       ],
-      "lastUpdated": "2026-04-13T04:56:37.842Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context",
@@ -3584,7 +3579,7 @@
         "cocoindex",
         "bridge"
       ],
-      "lastUpdated": "2026-04-13T04:56:38.124Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/011-compaction-working-set",
@@ -3596,7 +3591,7 @@
         "working-set",
         "integration"
       ],
-      "lastUpdated": "2026-04-13T04:56:37.936Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/012-cocoindex-ux-utilization",
@@ -3610,7 +3605,7 @@
         "utilization",
         "usefulness"
       ],
-      "lastUpdated": "2026-04-13T04:56:38.506Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/013-correctness-boundary-repair",
@@ -3623,7 +3618,7 @@
         "boundary",
         "repair"
       ],
-      "lastUpdated": "2026-04-13T04:56:38.795Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/014-hook-durability-auto-enrichment",
@@ -3636,7 +3631,7 @@
         "durability",
         "auto-enrichment"
       ],
-      "lastUpdated": "2026-04-13T04:56:36.881Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/015-tree-sitter-migration",
@@ -3649,7 +3644,7 @@
         "wasm",
         "migration"
       ],
-      "lastUpdated": "2026-04-13T04:56:38.694Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/016-cross-runtime-ux",
@@ -3661,7 +3656,7 @@
         "cross-runtime",
         "documentation"
       ],
-      "lastUpdated": "2026-04-13T04:56:36.312Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/017-tree-sitter-classifier-fixes",
@@ -3674,7 +3669,7 @@
         "classifier",
         "fixes"
       ],
-      "lastUpdated": "2026-04-13T04:56:36.594Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming",
@@ -3688,7 +3683,7 @@
         "session",
         "health"
       ],
-      "lastUpdated": "2026-04-13T04:56:36.974Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/019-code-graph-auto-trigger",
@@ -3700,7 +3695,7 @@
         "graph",
         "auto-trigger"
       ],
-      "lastUpdated": "2026-04-13T04:56:36.500Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/020-query-routing-integration",
@@ -3713,7 +3708,7 @@
         "024",
         "020"
       ],
-      "lastUpdated": "2026-04-13T04:56:37.555Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity",
@@ -3725,7 +3720,7 @@
         "instruction",
         "parity"
       ],
-      "lastUpdated": "2026-04-13T04:56:37.166Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/022-gemini-hook-porting",
@@ -3738,7 +3733,7 @@
         "hook",
         "porting"
       ],
-      "lastUpdated": "2026-04-13T04:56:37.262Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/023-context-preservation-metrics",
@@ -3752,7 +3747,7 @@
         "preservation",
         "metrics"
       ],
-      "lastUpdated": "2026-04-13T04:56:38.412Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/024-hookless-priming-optimization",
@@ -3764,7 +3759,7 @@
         "priming",
         "optimization"
       ],
-      "lastUpdated": "2026-04-13T04:56:38.313Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/025-tool-routing-enforcement",
@@ -3776,7 +3771,7 @@
         "routing",
         "enforcement"
       ],
-      "lastUpdated": "2026-04-02T17:21:39.863Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/026-session-start-injection-debug",
@@ -3793,7 +3788,7 @@
         "sibling",
         "handoff"
       ],
-      "lastUpdated": "2026-04-02T17:21:39.869Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/027-opencode-structural-priming",
@@ -3805,7 +3800,7 @@
         "structural",
         "priming"
       ],
-      "lastUpdated": "2026-04-13T04:56:37.649Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/028-startup-highlights-remediation",
@@ -3816,7 +3811,7 @@
         "highlights",
         "remediation"
       ],
-      "lastUpdated": "2026-04-13T04:56:38.031Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/029-review-remediation",
@@ -3826,7 +3821,7 @@
         "review",
         "remediation"
       ],
-      "lastUpdated": "2026-04-13T04:56:36.405Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin",
@@ -3840,7 +3835,7 @@
         "phased",
         "execution"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.500Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/001-shared-payload-provenance-layer",
@@ -3853,7 +3848,7 @@
         "provenance",
         "layer"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.149Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/002-opencode-transport-adapter",
@@ -3865,7 +3860,7 @@
         "transport",
         "adapter"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.154Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/003-code-graph-operations-hardening",
@@ -3878,7 +3873,7 @@
         "operations",
         "hardening"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.158Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/004-cross-runtime-startup-surfacing-parity",
@@ -3891,7 +3886,7 @@
         "surfacing",
         "parity"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.162Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/005-code-graph-auto-reindex-parity",
@@ -3904,7 +3899,7 @@
         "auto-reindex",
         "parity"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.166Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring",
@@ -3917,7 +3912,7 @@
         "hook",
         "wiring"
       ],
-      "lastUpdated": "2026-04-06T09:57:55.170Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader",
@@ -3929,7 +3924,7 @@
         "analytics",
         "reader"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.506Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/032-cached-summary-fidelity-gates",
@@ -3942,7 +3937,7 @@
         "fidelity",
         "gates"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.510Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/033-fts-forced-degrade-hardening",
@@ -3954,7 +3949,7 @@
         "forced-degrade",
         "hardening"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.514Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/024-compact-code-graph/034-workflow-split-and-token-insight-contracts",
@@ -3968,7 +3963,7 @@
         "insight",
         "contracts"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.518Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/025-nested-changelog-per-spec",
@@ -3981,7 +3976,7 @@
         "per",
         "spec"
       ],
-      "lastUpdated": "2026-04-13T04:56:38.898Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization",
@@ -3993,7 +3988,7 @@
         "context",
         "optimization"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.895Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
@@ -4008,11 +4003,11 @@
         "research",
         "packet"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.903Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings",
-      "description": "Deliver an evidence-anchored recommendation set for reducing Claude Code token spend in Code_Environment/Public, derived from auditing a primary-source Reddit field report covering 858-926 sessions.",
+      "description": "Spec: Phase 001 - Claude Optimization Settings (Reddit field-report audit)",
       "keywords": [
         "spec",
         "phase",
@@ -4024,11 +4019,11 @@
         "field-report",
         "audit"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight",
-      "description": "Read-only 20-iteration research investigation of the codesight external Node.js/TypeScript skill covering detector discipline, MCP/cache semantics, profile generation safety, scanner heuristics, and adoption patterns Public should adopt, adapt, or reject.",
+      "description": "Feature Specification: 002-codesight Research Phase",
       "keywords": [
         "feature",
         "specification",
@@ -4036,11 +4031,11 @@
         "research",
         "phase"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/003-contextador",
-      "description": "Research Contextador's MCP query architecture, self-healing feedback loop, and Mainframe shared cache to identify concrete, evidence-backed improvements for Code_Environment/Public's retrieval surfaces.",
+      "description": "Feature Specification: Contextador Research Phase",
       "keywords": [
         "feature",
         "specification",
@@ -4048,11 +4043,11 @@
         "research",
         "phase"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify",
-      "description": "Read-only research investigation of the graphify external Python skill to identify two-pass AST+LLM extraction, Leiden clustering, evidence-tagging, multimodal, and PreToolUse hook patterns Public should adopt, adapt, or reject.",
+      "description": "Feature Specification: 004-graphify Research Phase",
       "keywords": [
         "feature",
         "specification",
@@ -4060,11 +4055,11 @@
         "research",
         "phase"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest",
-      "description": "Read-only 20-iteration research investigation of the Claudest external Claude Code plugin marketplace and the claude-memory plugin (FTS5/BM25 conversation recall, SessionStart context injection, extract-learnings consolidation, get-token-insights observability) to identify adopt/prototype/reject patterns and execution-ready follow-on packet contracts for Code_Environment/Public's Spec Kit Memory and Code Graph stack.",
+      "description": "Feature Specification: 005-claudest Research Phase",
       "keywords": [
         "feature",
         "specification",
@@ -4072,7 +4067,7 @@
         "research",
         "phase"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy",
@@ -4085,7 +4080,7 @@
         "redundancy",
         "follow-on"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime",
@@ -4097,11 +4092,11 @@
         "memory",
         "runtime"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.908Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks",
-      "description": "Research-aligned rescope of packet 002 from a six-phase warning prototype to a bounded producer-side continuity prerequisite packet.",
+      "description": "Feature Specification: Cache-Warning Hook System",
       "keywords": [
         "feature",
         "specification",
@@ -4109,11 +4104,11 @@
         "hook",
         "system"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation",
-      "description": "Parent packet spec for the shipped remediation train plus the scoped Phase 8 and Phase 9 follow-ons triggered by later packet audits.",
+      "description": "Feature Specification: Memory Quality Backend Improvements",
       "keywords": [
         "feature",
         "specification",
@@ -4122,11 +4117,11 @@
         "backend",
         "improvements"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/001-foundation-templates-truncation",
-      "description": "Phase 1 defines the P0 foundation slice for memory-quality remediation: fix the OVERVIEW anchor mismatch, introduce the shared truncation helper, and preserve OVERVIEW text on word boundaries before later metadata and heuristic phases build on it.",
+      "description": "Feature Specification: Phase 1: Foundation (Templates & Truncation)",
       "keywords": [
         "feature",
         "specification",
@@ -4135,11 +4130,11 @@
         "templates",
         "truncation"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata",
-      "description": "Phase 2 specifies the P1 metadata fixes for D4 importance-tier drift and D7 empty git provenance, using the parent research packet as the sole planning authority.",
+      "description": "Feature Specification: Phase 2 — Single-Owner Metadata Fixes",
       "keywords": [
         "feature",
         "specification",
@@ -4148,11 +4143,11 @@
         "metadata",
         "fixes"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/003-sanitization-precedence",
-      "description": "Phase 3 of the memory-quality remediation train scopes PR-5 and PR-6 only: trigger-phrase sanitization plus a precedence-only gate for decision extraction.",
+      "description": "Feature Specification: Phase 3 — Sanitization & Decision Precedence",
       "keywords": [
         "feature",
         "specification",
@@ -4161,11 +4156,11 @@
         "decision",
         "precedence"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails",
-      "description": "Phase 4 of the memory quality remediation train: D5 auto-supersedes with continuation gating, SaveMode enum refactor, and post-save reviewer CHECK-D1..D8 coverage.",
+      "description": "Feature Specification: Phase 4 — Heuristics, Refactor & Guardrails",
       "keywords": [
         "feature",
         "specification",
@@ -4174,7 +4169,7 @@
         "refactor",
         "guardrails"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs",
@@ -4187,11 +4182,11 @@
         "tail",
         "prs"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/006-memory-duplication-reduction",
-      "description": "Phase 6 defines the narrowed implementation-owner follow-on that turns generated memory saves into compact retrieval wrappers while restoring canonical ownership to packet docs.",
+      "description": "Feature Specification: Phase 6 — Memory Duplication Reduction",
       "keywords": [
         "feature",
         "specification",
@@ -4200,11 +4195,11 @@
         "duplication",
         "reduction"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/007-skill-catalog-sync",
-      "description": "Phase 7 defines the downstream audit and update pass that checks whether Phase 1-6 changes require parity updates across docs, commands, templates, MCP surfaces, and agent definitions.",
+      "description": "Feature Specification: Phase 7 — Skill Catalog Sync",
       "keywords": [
         "feature",
         "specification",
@@ -4213,7 +4208,7 @@
         "catalog",
         "sync"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/008-input-normalizer-fastpath-fix",
@@ -4226,11 +4221,11 @@
         "fast-path",
         "fix"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes",
-      "description": "Level 3 sub-phase for nine render-layer fixes in the memory-save pipeline so compact-wrapper saves match the 006 wrapper contract.",
+      "description": "Feature Specification: Post-Save Render Fixes",
       "keywords": [
         "feature",
         "specification",
@@ -4238,11 +4233,11 @@
         "render",
         "fixes"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration",
-      "description": "Level 3 packet for closing the remaining memory-save schema, sanitizer, validator, and D5 continuation defects identified by the 2026-04-09 RCA and skipped-recommendation audits.",
+      "description": "Feature Specification: Memory Save Heuristic Calibration",
       "keywords": [
         "feature",
         "specification",
@@ -4251,7 +4246,7 @@
         "heuristic",
         "calibration"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates",
@@ -4264,33 +4259,33 @@
         "refactor",
         "gates"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/001-gate-a-prework",
-      "description": "Remove known template and packet-prep blockers before Gate B schema and runtime work begins.",
+      "description": "Feature Specification: Gate A — Pre-work",
       "keywords": [
         "feature",
         "specification",
         "gate",
         "pre-work"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/002-gate-b-foundation",
-      "description": "Establish the irreversible foundation for phase 018 by rehearsing the migration on a copy, adding the approved causal-edge anchor fields, executing the rebaselined archive flip, and preserving the post-cleanup compatibility contract before writer and reader retargeting begins.",
+      "description": "Feature Specification: Gate B — Foundation",
       "keywords": [
         "feature",
         "specification",
         "gate",
         "foundation"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/003-gate-c-writer-ready",
-      "description": "Gate C defines the writer-critical path for phase 018: validator, routed save path, merge engine, template continuity rollout, and parity-plus-rollback proof readiness.",
+      "description": "Feature Specification: Gate C — Writer Ready",
       "keywords": [
         "feature",
         "specification",
@@ -4298,11 +4293,11 @@
         "writer",
         "ready"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/004-gate-d-reader-ready",
-      "description": "Retarget the phase 018 reader surfaces onto canonical spec docs and thin continuity records, then prove the new resume ladder with regression and latency gates.",
+      "description": "Feature Specification: Gate D — Reader Ready",
       "keywords": [
         "feature",
         "specification",
@@ -4310,7 +4305,7 @@
         "reader",
         "ready"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration",
@@ -4322,11 +4317,11 @@
         "runtime",
         "migration"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/006-gate-f-cleanup-verification",
-      "description": "Verify Gate B cleanup completeness, confirm no orphan references remain, and record whether archived-tier runtime cleanup is already complete or still needs follow-up.",
+      "description": "Feature Specification: Gate F — Cleanup Verification",
       "keywords": [
         "feature",
         "specification",
@@ -4334,28 +4329,49 @@
         "cleanup",
         "verification"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite",
-      "description": "Feature specification for the `/memory:save` planner-first default contract. This packet rewrites the save path so plan-only becomes the honest default, legacy `[spec]/memory/*.md` behavior is retired end-to-end, full-auto mutation is preserved only as an explicit fallback, and metadata freshness, enrichment, and indexing work move behind callable follow-up APIs rather than riding the default save path by accident.",
+      "description": "Feature Specification: /memory:save Planner-First Default",
       "keywords": [
-        "memory save system",
-        "planner-first architecture",
-        "full-auto fallback",
-        "save workflow",
-        "continuity validation",
-        "atomic writer",
-        "content routing",
-        "legacy path retirement",
-        "metadata refresh",
-        "follow-up APIs",
-        "env configuration",
-        "save quality gate",
-        "freshness services",
-        "save rewrite"
+        "feature",
+        "specification",
+        "memory",
+        "save",
+        "planner-first",
+        "default"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/research/014-memory-save-rewrite-pt-01/013-audit-snapshot/primary-docs",
+      "description": "Feature Specification: [spec]/memory/ Folder Deprecation Audit",
+      "keywords": [
+        "feature",
+        "specification",
+        "spec",
+        "memory",
+        "folder",
+        "deprecation",
+        "audit"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/research/014-memory-save-rewrite-pt-01/014-research-snapshot/primary-docs",
+      "description": "Research Seed: Save-Flow Backend Relevance Review Post-Memory-Folder Retirement",
+      "keywords": [
+        "research",
+        "seed",
+        "save-flow",
+        "backend",
+        "relevance",
+        "review",
+        "post-memory-folder",
+        "retirement"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package",
@@ -4367,7 +4383,7 @@
         "graph",
         "package"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.916Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades",
@@ -4379,7 +4395,7 @@
         "graph",
         "upgrades"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package",
@@ -4393,7 +4409,49 @@
         "package",
         "migration"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.921Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope",
+      "description": "Feature Specification: Code Graph Context + Scan Scope Remediation",
+      "keywords": [
+        "feature",
+        "specification",
+        "code",
+        "graph",
+        "context",
+        "scan",
+        "scope",
+        "remediation"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/001-incremental-fullscan-recovery",
+      "description": "Feature Specification: Code Graph Incremental Fullscan Recovery",
+      "keywords": [
+        "feature",
+        "specification",
+        "code",
+        "graph",
+        "incremental",
+        "fullscan",
+        "recovery"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-cross-file-dedup-defense",
+      "description": "Feature Specification: Cross-File Symbol Dedup Defense",
+      "keywords": [
+        "feature",
+        "specification",
+        "cross-file",
+        "symbol",
+        "dedup",
+        "defense"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands",
@@ -4405,11 +4463,11 @@
         "governance",
         "commands"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.926Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails",
-      "description": "Phase 4 defines the execution-guardrail update for three AGENTS files so the moved request-analysis block under Critical Rules is leaner, later sections remain renumbered cleanly, and agents keep the same operational execution behavior without duplicate scaffolding.",
+      "description": "Feature Specification: Phase 4 — Agent Execution Guardrails",
       "keywords": [
         "feature",
         "specification",
@@ -4418,7 +4476,7 @@
         "execution",
         "guardrails"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation",
@@ -4431,7 +4489,7 @@
         "middleware",
         "cleanup"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks",
@@ -4443,28 +4501,21 @@
         "cleanup",
         "playbooks"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.931Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits",
-      "description": "Coordination parent for the three release-alignment revisit packets promoted from the legacy continuity refactor lane. This packet re-anchors 63 existing SKILL guide, reference, template, and MCP documentation files to the Phase 018 continuity contract, retiring pre-018 save and recovery language while preserving legitimate archive-status guidance, packet lifecycle language, and generated-artifact references as supporting outputs instead of primary context surfaces.",
+      "description": "Feature Specification: Release Alignment Revisits Coordination Parent",
       "keywords": [
-        "continuity-contract verification",
-        "phase-018 alignment",
-        "skill documentation",
-        "reference surfaces",
-        "template modernization",
-        "active continuity states",
-        "generated artifacts",
-        "save recovery language",
-        "manual session continuity",
-        "packet lifecycle documentation",
-        "drift detection",
-        "doc validation",
-        "archive guidance",
-        "resume workflow"
+        "feature",
+        "specification",
+        "release",
+        "alignment",
+        "revisits",
+        "coordination",
+        "parent"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/001-sk-system-speckit-revisit",
@@ -4478,7 +4529,7 @@
         "release-alignment",
         "revisit"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit",
@@ -4492,7 +4543,7 @@
         "release-alignment",
         "revisit"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/003-readme-alignment-revisit",
@@ -4506,28 +4557,20 @@
         "release-alignment",
         "revisit"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
-      "description": "Coordination parent for cleanup and audit work promoted from the old continuity refactor lane. The primary packet in this tree executes deletion-first shared-memory removal across lifecycle tools, runtime handlers, routing and governance branches, documentation catalog entries, playbook scenarios, and tests, while preserving only the unavoidable schema-column compatibility shim needed for older SQLite variants that cannot drop columns in place.",
+      "description": "Feature Specification: Cleanup and Audit Coordination Parent",
       "keywords": [
-        "feature removal",
-        "hard delete",
-        "shared memory",
-        "shared spaces",
-        "lifecycle tools",
-        "mcp server",
-        "governance scope",
-        "runtime cleanup",
-        "documentation cleanup",
-        "schema migration",
-        "backward compatibility",
-        "sqlite support",
-        "dropped column fallback",
-        "cleanup audit"
+        "feature",
+        "specification",
+        "cleanup",
+        "audit",
+        "coordination",
+        "parent"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory",
@@ -4542,7 +4585,7 @@
         "memory",
         "surface"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata",
@@ -4557,7 +4600,7 @@
         "packet",
         "contract"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup",
@@ -4572,7 +4615,7 @@
         "feature-flag",
         "cleanup"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit",
@@ -4587,27 +4630,20 @@
         "architecture",
         "audit"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation",
-      "description": "Coordination parent for playbook follow-on work and remediation phases. The primary child packet repairs the Phase 014 documentation scaffold after prompt-field rewrite work already landed in the manual testing playbook corpus, restoring the required Level 2 anchors, missing task and checklist files, and the real playbook index references while keeping the work scoped to packet documentation rather than the playbook content itself.",
+      "description": "Feature Specification: Playbook and Remediation Coordination Parent",
       "keywords": [
-        "playbook documentation",
-        "prompt fields",
-        "manual testing scenarios",
-        "level 2 structure",
-        "packet repair",
-        "template compliance",
-        "validator integration",
-        "documentation audit",
-        "playbook corpus",
-        "scenario documentation",
-        "spec folder repair",
-        "reference integrity",
-        "checklist restoration"
+        "feature",
+        "specification",
+        "playbook",
+        "remediation",
+        "coordination",
+        "parent"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite",
@@ -4619,7 +4655,7 @@
         "prompt",
         "rewrite"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution",
@@ -4635,7 +4671,7 @@
         "partial",
         "execution"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-remediation",
@@ -4645,7 +4681,7 @@
         "review",
         "remediation"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor",
@@ -4657,28 +4693,21 @@
         "routing",
         "advisor"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.936Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning",
-      "description": "Coordination parent for continuity research packets focused on search-pipeline empirical tuning and reranking optimization. The root research packet investigates hardcoded thresholds, weighted fusion, FSRS decay constants, reranker-provider trade-offs, cross-encoder length-penalty behavior, and cache-TTL throughput impact across the vector, BM25, FTS5, and reranking stages, with the intent of producing implementation-ready parameter recommendations rather than speculative theory.",
+      "description": "Feature Specification: Search and Routing Tuning Coordination Parent",
       "keywords": [
-        "search research",
-        "pipeline optimization",
-        "cross-encoder",
-        "reranking",
-        "fusion algorithm",
-        "vector search",
-        "bm25",
-        "fts5",
-        "empirical tuning",
-        "configuration constants",
-        "threshold optimization",
-        "provider comparison",
-        "latency profiling",
-        "retrieval tuning"
+        "feature",
+        "specification",
+        "search",
+        "routing",
+        "tuning",
+        "coordination",
+        "parent"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning",
@@ -4691,7 +4720,7 @@
         "configuration",
         "tuning"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty",
@@ -4702,7 +4731,7 @@
         "length",
         "penalty"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry",
@@ -4713,7 +4742,7 @@
         "cache",
         "telemetry"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile",
@@ -4725,7 +4754,7 @@
         "intent",
         "profile"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum",
@@ -4737,7 +4766,7 @@
         "candidate",
         "threshold"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment",
@@ -4752,7 +4781,7 @@
         "fusion",
         "changes"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation",
@@ -4765,7 +4794,7 @@
         "profile",
         "weights"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy",
@@ -4777,19 +4806,21 @@
         "classification",
         "accuracy"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion",
-      "description": "Fix Delivery vs Progress Routing Confusion",
+      "description": "Feature Specification: Fix Delivery vs Progress Routing Confusion",
       "keywords": [
+        "feature",
+        "specification",
         "fix",
         "delivery",
         "progress",
         "routing",
         "confusion"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion",
@@ -4801,7 +4832,7 @@
         "routing",
         "confusion"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier",
@@ -4814,7 +4845,7 @@
         "save",
         "handler"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
@@ -4830,7 +4861,7 @@
         "routing",
         "accuracy"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.941Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety",
@@ -4843,7 +4874,7 @@
         "safety",
         "guard"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment",
@@ -4856,7 +4887,7 @@
         "model",
         "context"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation",
@@ -4869,7 +4900,7 @@
         "relationship",
         "validation"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.945Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/001-fix-status-derivation",
@@ -4881,7 +4912,7 @@
         "status",
         "derivation"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/002-sanitize-key-files",
@@ -4893,7 +4924,7 @@
         "graph",
         "metadata"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/003-deduplicate-entities",
@@ -4904,7 +4935,7 @@
         "metadata",
         "entities"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files",
@@ -4916,7 +4947,7 @@
         "metadata",
         "files"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment",
@@ -4931,7 +4962,7 @@
         "metadata",
         "changes"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution",
@@ -4944,7 +4975,7 @@
         "file",
         "resolution"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements",
@@ -4956,7 +4987,7 @@
         "entity",
         "quality"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph",
@@ -4968,7 +4999,7 @@
         "advisor",
         "graph"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes",
@@ -4982,7 +5013,7 @@
         "findings",
         "fixes"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook",
@@ -4994,7 +5025,7 @@
         "template",
         "alignment"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging",
@@ -5006,7 +5037,7 @@
         "advisor",
         "packaging"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment",
@@ -5018,7 +5049,7 @@
         "metadata",
         "enrichment"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration",
@@ -5030,7 +5061,7 @@
         "path",
         "migration"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/006-skill-graph-sqlite-migration",
@@ -5043,7 +5074,7 @@
         "sqlite",
         "migration"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup",
@@ -5055,7 +5086,7 @@
         "graph",
         "auto-setup"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs",
@@ -5067,7 +5098,7 @@
         "skill",
         "catalogs"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.956Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/003-advisor-phrase-booster-tailoring",
@@ -5079,27 +5110,32 @@
         "phrase-booster",
         "tailoring"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.962Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy",
-      "description": "Investigation + measurement phase. Does the Phase 020 advisor hook actually reduce AI-assistant context load? Secondary: design OpenCode plugin packaging for the advisor hook using code-graph plugin as reference.",
+      "description": "Feature Specification: Smart-Router Context-Load Efficacy Investigation",
       "keywords": [
-        "smart-router-context-efficacy",
-        "004 smart router efficacy",
-        "advisor context load measurement",
-        "opencode plugin advisor hook"
+        "feature",
+        "specification",
+        "smart-router",
+        "context-load",
+        "efficacy",
+        "investigation"
       ],
-      "lastUpdated": "2026-04-21T14:30:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research",
-      "description": "Research charter for 021/001 — 20-iteration deep-research on V1-V10 questions covering context-load measurement + OpenCode plugin design.",
+      "description": "Research Charter: Smart-Router Context-Load Efficacy",
       "keywords": [
-        "initial-research",
-        "004 001 research charter"
+        "research",
+        "charter",
+        "smart-router",
+        "context-load",
+        "efficacy"
       ],
-      "lastUpdated": "2026-04-21T14:30:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy",
@@ -5112,7 +5148,7 @@
         "section",
         "efficacy"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment",
@@ -5127,7 +5163,7 @@
         "code",
         "alignment"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.966Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin",
@@ -5140,7 +5176,7 @@
         "opencode",
         "plugin"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.971Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run",
@@ -5154,7 +5190,7 @@
         "measurement",
         "run"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.975Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation",
@@ -5166,7 +5202,7 @@
         "review",
         "remediation"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.979Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation",
@@ -5179,7 +5215,23 @@
         "review",
         "findings"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation/review/015-deep-review-and-remediation-pt-01/merged-015-archive",
+      "description": "Feature Specification: Combined Deep Review — 009 + 010 + 012 + 014",
+      "keywords": [
+        "feature",
+        "specification",
+        "combined",
+        "deep",
+        "review",
+        "009",
+        "010",
+        "012",
+        "014"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation",
@@ -5192,7 +5244,7 @@
         "research-findings",
         "remediation"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation",
@@ -5205,7 +5257,7 @@
         "deep-review",
         "remediation"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.984Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation",
@@ -5219,182 +5271,177 @@
         "post-remediation",
         "remediation"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.989Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation",
-      "description": "006 campaign findings remediation parent packet",
+      "description": "Feature Specification: 005-006 Campaign Findings Remediation",
       "keywords": [
-        "006",
+        "feature",
+        "specification",
+        "005-006",
         "campaign",
         "findings",
-        "remediation",
-        "deep-review"
+        "remediation"
       ],
-      "lastUpdated": "2026-04-21T00:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality",
-      "description": "Graph and Metadata Quality remediation packet",
+      "description": "Feature Specification: 001-graph-and-metadata-quality Graph and Metadata Quality Remediation",
       "keywords": [
+        "feature",
+        "specification",
+        "001-graph-and-metadata-quality",
         "graph",
-        "and",
         "metadata",
         "quality",
-        "remediation",
-        "findings"
+        "remediation"
       ],
-      "lastUpdated": "2026-04-21T00:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation",
-      "description": "Spec Structure and Validation remediation packet",
+      "description": "Feature Specification: 002-spec-structure-and-validation Spec Structure and Validation Remediation",
       "keywords": [
+        "feature",
+        "specification",
+        "002-spec-structure-and-validation",
         "spec",
         "structure",
-        "and",
         "validation",
-        "remediation",
-        "findings"
+        "remediation"
       ],
-      "lastUpdated": "2026-04-21T00:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/003-evidence-references-and-replayability",
-      "description": "Evidence, References, and Replayability remediation packet",
+      "description": "Feature Specification: 003-evidence-references-and-replayability Evidence, References, and Replayability Remediation",
       "keywords": [
+        "feature",
+        "specification",
+        "003-evidence-references-and-replayability",
         "evidence",
         "references",
-        "and",
         "replayability",
-        "remediation",
-        "findings"
+        "remediation"
       ],
-      "lastUpdated": "2026-04-21T00:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/004-migration-lineage-and-identity-drift",
-      "description": "Migration, Lineage, and Identity Drift remediation packet",
+      "description": "Feature Specification: 004-migration-lineage-and-identity-drift Migration, Lineage, and Identity Drift Remediation",
       "keywords": [
+        "feature",
+        "specification",
+        "004-migration-lineage-and-identity-drift",
         "migration",
         "lineage",
-        "and",
         "identity",
         "drift",
-        "remediation",
-        "findings"
+        "remediation"
       ],
-      "lastUpdated": "2026-04-21T00:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/005-packet-state-continuity-and-closeout",
-      "description": "Packet State, Continuity, and Closeout remediation packet",
+      "description": "Feature Specification: 005-packet-state-continuity-and-closeout Packet State, Continuity, and Closeout Remediation",
       "keywords": [
+        "feature",
+        "specification",
+        "005-packet-state-continuity-and-closeout",
         "packet",
         "state",
         "continuity",
-        "and",
         "closeout",
-        "remediation",
-        "findings"
+        "remediation"
       ],
-      "lastUpdated": "2026-04-21T00:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/006-routing-accuracy-and-classifier-behavior",
-      "description": "Routing Accuracy and Classifier Behavior remediation packet",
+      "description": "Feature Specification: 006-routing-accuracy-and-classifier-behavior Routing Accuracy and Classifier Behavior Remediation",
       "keywords": [
+        "feature",
+        "specification",
+        "006-routing-accuracy-and-classifier-behavior",
         "routing",
         "accuracy",
-        "and",
         "classifier",
         "behavior",
-        "remediation",
-        "findings"
+        "remediation"
       ],
-      "lastUpdated": "2026-04-21T00:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/007-skill-advisor-packaging-and-graph",
-      "description": "Skill Advisor Packaging and Graph remediation packet",
+      "description": "Feature Specification: 007-skill-advisor-packaging-and-graph Skill Advisor Packaging and Graph Remediation",
       "keywords": [
+        "feature",
+        "specification",
+        "007-skill-advisor-packaging-and-graph",
         "skill",
         "advisor",
         "packaging",
-        "and",
         "graph",
-        "remediation",
-        "findings"
+        "remediation"
       ],
-      "lastUpdated": "2026-04-21T00:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/008-search-fusion-and-reranker-tuning",
-      "description": "Search Fusion and Reranker Tuning remediation packet",
+      "description": "Feature Specification: 008-search-fusion-and-reranker-tuning Search Fusion and Reranker Tuning Remediation",
       "keywords": [
+        "feature",
+        "specification",
+        "008-search-fusion-and-reranker-tuning",
         "search",
         "fusion",
-        "and",
         "reranker",
         "tuning",
-        "remediation",
-        "findings"
+        "remediation"
       ],
-      "lastUpdated": "2026-04-21T21:43:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/009-security-and-guardrails",
-      "description": "Security and Guardrails remediation packet",
+      "description": "Feature Specification: 009-security-and-guardrails Security and Guardrails Remediation",
       "keywords": [
+        "feature",
+        "specification",
+        "009-security-and-guardrails",
         "security",
-        "and",
         "guardrails",
-        "remediation",
-        "findings"
+        "remediation"
       ],
-      "lastUpdated": "2026-04-21T00:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/010-telemetry-measurement-and-rollout-controls",
-      "description": "Telemetry, Measurement, and Rollout Controls remediation packet complete",
+      "description": "Feature Specification: 010-telemetry-measurement-and-rollout-controls Telemetry, Measurement, and Rollout Controls Remediation",
       "keywords": [
+        "feature",
+        "specification",
+        "010-telemetry-measurement-and-rollout-controls",
         "telemetry",
         "measurement",
-        "and",
         "rollout",
         "controls",
-        "remediation",
-        "findings"
+        "remediation"
       ],
-      "lastUpdated": "2026-04-21T21:50:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/007-copilot-hook-parity-remediation",
-      "description": "Feature Specification: Copilot CLI Hook Parity Remediation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure",
+      "description": "Feature Specification: Integrity Parity Closure",
       "keywords": [
         "feature",
         "specification",
-        "copilot",
-        "cli",
-        "hook",
+        "integrity",
         "parity",
-        "remediation"
+        "closure"
       ],
-      "lastUpdated": "2026-04-22T08:29:52.150Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/008-codex-hook-parity-remediation",
-      "description": "Feature Specification: Codex CLI Hook Parity Remediation",
-      "keywords": [
-        "feature",
-        "specification",
-        "codex",
-        "cli",
-        "hook",
-        "parity",
-        "remediation"
-      ],
-      "lastUpdated": "2026-04-22T11:00:04.491Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening",
@@ -5406,7 +5453,7 @@
         "executor",
         "hardening"
       ],
-      "lastUpdated": "2026-04-22T06:06:02.994Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime",
@@ -5418,7 +5465,7 @@
         "runtime",
         "merged"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research",
@@ -5433,7 +5480,7 @@
         "016",
         "charter"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives",
@@ -5446,7 +5493,7 @@
         "infrastructure",
         "primitives"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers",
@@ -5460,7 +5507,7 @@
         "cluster",
         "consumers"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps",
@@ -5474,7 +5521,7 @@
         "rollout",
         "sweeps"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability",
@@ -5487,7 +5534,7 @@
         "maintainability",
         "deferrable"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution",
@@ -5502,7 +5549,7 @@
         "skills",
         "merged"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature",
@@ -5517,7 +5564,7 @@
         "iterative",
         "skills"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix",
@@ -5531,7 +5578,7 @@
         "iterative",
         "skills"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening",
@@ -5546,7 +5593,7 @@
         "remediation",
         "train"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research",
@@ -5559,7 +5606,7 @@
         "research",
         "wave"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants",
@@ -5572,7 +5619,7 @@
         "invariant",
         "research"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015",
@@ -5585,7 +5632,7 @@
         "243",
         "findings"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/003-q4-nfkc-robustness",
@@ -5597,7 +5644,7 @@
         "robustness",
         "research"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/004-description-regen-strategy",
@@ -5611,7 +5658,7 @@
         "regen",
         "strategy"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy",
@@ -5625,7 +5672,7 @@
         "accuracy",
         "research"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit",
@@ -5639,7 +5686,7 @@
         "joint",
         "audit"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening",
@@ -5650,7 +5697,7 @@
         "canonical-save",
         "hardening"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening",
@@ -5662,7 +5709,7 @@
         "unification",
         "hardening"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/004-routing-accuracy-hardening",
@@ -5674,7 +5721,7 @@
         "accuracy",
         "hardening"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/005-description-regen-contract",
@@ -5686,7 +5733,7 @@
         "regen",
         "contract"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/006-residual-015-backlog",
@@ -5698,7 +5745,7 @@
         "residuals",
         "restart"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment",
@@ -5711,7 +5758,7 @@
         "contract",
         "alignment"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity",
@@ -5723,7 +5770,7 @@
         "daemon",
         "parity"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.000Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface",
@@ -5735,7 +5782,7 @@
         "hook",
         "surface"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.005Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research",
@@ -5748,17 +5795,20 @@
         "research",
         "wave"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.010Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot",
-      "description": "Second 10-iteration research wave dispatched via cli-copilot gpt-5.4 high. Deep-dives on wave-1 remaining open questions + new architectural angles (adversarial advisor, observability, migration, concurrent sessions, NFKC interaction).",
+      "description": "Feature Specification: 020 Extended Research (cli-copilot)",
       "keywords": [
-        "extended-wave-copilot",
-        "020 extended research",
-        "skill advisor copilot wave"
+        "feature",
+        "specification",
+        "020",
+        "extended",
+        "research",
+        "cli-copilot"
       ],
-      "lastUpdated": "2026-04-21T14:30:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot",
@@ -5773,7 +5823,7 @@
         "validation",
         "cli-copilot"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.015Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract",
@@ -5785,7 +5835,7 @@
         "advisor",
         "contract"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache",
@@ -5798,7 +5848,7 @@
         "source",
         "cache"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy",
@@ -5812,7 +5862,7 @@
         "cache",
         "policy"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness",
@@ -5826,7 +5876,7 @@
         "regression",
         "harness"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring",
@@ -5839,7 +5889,7 @@
         "wiring",
         "userpromptsubmit"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring",
@@ -5852,7 +5902,7 @@
         "hook",
         "wiring"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy",
@@ -5865,7 +5915,7 @@
         "hook",
         "policy"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.020Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract",
@@ -5877,7 +5927,7 @@
         "release",
         "contract"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.025Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification",
@@ -5892,7 +5942,7 @@
         "advisor",
         "unification"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.030Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix",
@@ -5908,7 +5958,7 @@
         "node",
         "compat"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.035Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation",
@@ -5922,7 +5972,7 @@
         "freshness",
         "foundation"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.040Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/003-lifecycle-and-derived-metadata",
@@ -5936,7 +5986,7 @@
         "derived",
         "metadata"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.045Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core",
@@ -5950,7 +6000,7 @@
         "advisor",
         "core"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.050Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface",
@@ -5964,7 +6014,7 @@
         "advisor",
         "surface"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.055Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap",
@@ -5978,7 +6028,7 @@
         "migration",
         "bootstrap"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.060Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/007-promotion-gates",
@@ -5991,7 +6041,7 @@
         "promotion",
         "gates"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.065Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation",
@@ -6005,63 +6055,240 @@
         "parity",
         "remediation"
       ],
-      "lastUpdated": "2026-04-22T06:06:03.070Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/013-audit-snapshot/primary-docs",
-      "description": "Feature Specification: [spec]/memory/ Folder Deprecation Audit",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation",
+      "description": "Feature Specification: Copilot CLI Hook Parity Remediation",
       "keywords": [
         "feature",
         "specification",
-        "spec",
-        "memory",
-        "folder",
-        "deprecation",
-        "audit"
+        "copilot",
+        "cli",
+        "hook",
+        "parity",
+        "remediation"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/research/014-memory-save-rewrite-pt-01/014-research-snapshot/primary-docs",
-      "description": "Investigate whether generate-context.js and its save-flow backend remain proportionate to the remaining value after [spec]/memory/*.md retirement (v3.4.1.0 + 013 r2), or whether a simpler operator-visible command could do the work with less machinery.",
-      "keywords": [
-        "primary-docs",
-        "save flow relevance",
-        "generate-context relevance",
-        "backend proportionality",
-        "save path audit",
-        "memory save simplification"
-      ],
-      "lastUpdated": "2026-04-21T14:30:00Z"
-    },
-    {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/review/014-memory-save-rewrite-pt-01/primary-docs",
-      "description": "Feature Specification: Save Flow Planner-First Trim",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation",
+      "description": "Feature Specification: Codex CLI Hook Parity Remediation",
       "keywords": [
         "feature",
         "specification",
-        "save",
-        "flow",
-        "planner-first",
-        "trim"
+        "codex",
+        "cli",
+        "hook",
+        "parity",
+        "remediation"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/review/015-deep-review-and-remediation-pt-01/merged-015-archive",
-      "description": "Feature Specification: Combined Deep Review — 009 + 010 + 012 + 014",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation",
+      "description": "Feature Specification: Claude Hook Findings Remediation",
       "keywords": [
         "feature",
         "specification",
-        "combined",
-        "deep",
-        "review",
+        "claude",
+        "hook",
+        "findings",
+        "remediation"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation",
+      "description": "Feature Specification: OpenCode Plugin Loader Remediation",
+      "keywords": [
+        "feature",
+        "specification",
+        "opencode",
+        "plugin",
+        "loader",
+        "remediation"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening",
+      "description": "Feature Specification: Skill-Advisor Plugin Hardening",
+      "keywords": [
+        "feature",
+        "specification",
+        "skill-advisor",
+        "plugin",
+        "hardening"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment",
+      "description": "Feature Specification: Skill-Advisor Standards Alignment",
+      "keywords": [
+        "feature",
+        "specification",
+        "skill-advisor",
+        "standards",
+        "alignment"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix",
+      "description": "Feature Specification: Copilot Wrapper Schema Fix for .claude/settings.local.json",
+      "keywords": [
+        "feature",
+        "specification",
+        "copilot",
+        "wrapper",
+        "schema",
+        "fix",
+        "claude",
+        "settings",
+        "local",
+        "json"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring",
+      "description": "Feature Specification: Copilot Writer Wiring via Claude Wrapper",
+      "keywords": [
+        "feature",
+        "specification",
+        "copilot",
+        "writer",
+        "wiring",
+        "via",
+        "claude",
+        "wrapper"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation",
+      "description": "Feature Specification: Documentation Impact Remediation for 009 Hook/Daemon Parity",
+      "keywords": [
+        "feature",
+        "specification",
+        "documentation",
+        "impact",
+        "remediation",
         "009",
-        "010",
-        "012",
-        "014"
+        "hook",
+        "daemon",
+        "parity"
       ],
-      "lastUpdated": "2026-04-21T13:00:00Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements",
+      "description": "Feature Specification: Code-Graph System + Hooks Improvement Investigation",
+      "keywords": [
+        "feature",
+        "specification",
+        "code-graph",
+        "system",
+        "hooks",
+        "improvement",
+        "investigation"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements",
+      "description": "Feature Specification: Skill-Advisor Hook Improvements",
+      "keywords": [
+        "feature",
+        "specification",
+        "skill-advisor",
+        "hook",
+        "improvements"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants",
+      "description": "Coordination Root: Memory Indexer Invariants",
+      "keywords": [
+        "coordination",
+        "root",
+        "memory",
+        "indexer",
+        "invariants"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix",
+      "description": "Feature Specification: Memory Indexer Lineage and Concurrency Fix",
+      "keywords": [
+        "feature",
+        "specification",
+        "memory",
+        "indexer",
+        "lineage",
+        "concurrency",
+        "fix"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants",
+      "description": "Feature Specification: Index Scope and Constitutional Tier Invariants",
+      "keywords": [
+        "feature",
+        "specification",
+        "index",
+        "scope",
+        "constitutional",
+        "tier",
+        "invariants"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/001-reverse-parent-research-review-folders",
+      "description": "Feature Specification: Reverse Parent Research/Review Folder Placement",
+      "keywords": [
+        "feature",
+        "specification",
+        "reverse",
+        "parent",
+        "research",
+        "review",
+        "folder",
+        "placement"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/002-resource-map-template-creation",
+      "description": "Feature Specification: Resource Map Template",
+      "keywords": [
+        "feature",
+        "specification",
+        "resource",
+        "map",
+        "template"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/003-resource-map-deep-loop-integration",
+      "description": "Feature Specification: Resource Map Integration for sk-deep-review and sk-deep-research",
+      "keywords": [
+        "feature",
+        "specification",
+        "resource",
+        "map",
+        "integration",
+        "sk-deep-review",
+        "sk-deep-research"
+      ],
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_archive/001-fix-command-dispatch",
@@ -7611,7 +7838,7 @@
         "research",
         "phase"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.643Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main",
@@ -7623,7 +7850,7 @@
         "research",
         "phase"
       ],
-      "lastUpdated": "2026-04-13T04:56:33.285Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/005-intellegix-code-agent-toolkit-master",
@@ -7635,7 +7862,7 @@
         "research",
         "phase"
       ],
-      "lastUpdated": "2026-04-13T04:56:33.388Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/006-ralph-main",
@@ -7648,7 +7875,7 @@
         "phase",
         "closeout"
       ],
-      "lastUpdated": "2026-04-13T04:56:33.582Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/007-relay-main",
@@ -7660,7 +7887,7 @@
         "research",
         "phase"
       ],
-      "lastUpdated": "2026-04-13T04:56:33.484Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development",
@@ -7676,7 +7903,7 @@
         "autonomous",
         "development"
       ],
-      "lastUpdated": "2026-04-13T04:56:33.192Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/009-xethryon",
@@ -7688,7 +7915,7 @@
         "research",
         "phase"
       ],
-      "lastUpdated": "2026-04-13T04:56:33.099Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption",
@@ -7700,7 +7927,7 @@
         "agentic",
         "adoption"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.649Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/001-architecture-boundary-freeze",
@@ -7713,7 +7940,7 @@
         "boundary",
         "freeze"
       ],
-      "lastUpdated": "2026-04-13T04:56:34.336Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/002-retry-feedback-bridge",
@@ -7726,7 +7953,7 @@
         "feedback",
         "bridge"
       ],
-      "lastUpdated": "2026-04-13T04:56:35.277Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/003-loop-observability",
@@ -7738,7 +7965,7 @@
         "loop",
         "observability"
       ],
-      "lastUpdated": "2026-04-13T04:56:34.431Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/004-fresh-context-validation-first",
@@ -7752,7 +7979,7 @@
         "validation",
         "first"
       ],
-      "lastUpdated": "2026-04-13T04:56:34.995Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/005-budget-stagnation-enforcement",
@@ -7765,7 +7992,7 @@
         "stagnation",
         "enforcement"
       ],
-      "lastUpdated": "2026-04-13T04:56:35.089Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/006-agent-role-consolidation",
@@ -7778,7 +8005,7 @@
         "role",
         "consolidation"
       ],
-      "lastUpdated": "2026-04-13T04:56:33.775Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/007-lifecycle-entrypoint-simplification",
@@ -7791,7 +8018,7 @@
         "entrypoint",
         "simplification"
       ],
-      "lastUpdated": "2026-04-13T04:56:34.147Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/008-continuity-and-memory-ux-integration",
@@ -7804,7 +8031,7 @@
         "memory",
         "integration"
       ],
-      "lastUpdated": "2026-04-13T04:56:33.962Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/009-quality-gate-pipeline",
@@ -7817,7 +8044,7 @@
         "gate",
         "pipeline"
       ],
-      "lastUpdated": "2026-04-13T04:56:34.240Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/010-tracer-seam-prototype",
@@ -7830,7 +8057,7 @@
         "seam",
         "prototype"
       ],
-      "lastUpdated": "2026-04-13T04:56:34.525Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/011-event-journal-and-replay-study",
@@ -7844,7 +8071,7 @@
         "replay",
         "study"
       ],
-      "lastUpdated": "2026-04-13T04:56:34.055Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/012-runtime-manifest-and-hook-extensibility",
@@ -7858,7 +8085,7 @@
         "hook",
         "extensibility"
       ],
-      "lastUpdated": "2026-04-13T04:56:34.617Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/013-channel-routing-and-delegation-study",
@@ -7872,7 +8099,7 @@
         "delegation",
         "study"
       ],
-      "lastUpdated": "2026-04-13T04:56:34.712Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/014-multi-model-council-evaluation",
@@ -7885,7 +8112,7 @@
         "council",
         "evaluation"
       ],
-      "lastUpdated": "2026-04-13T04:56:35.182Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/015-worktree-and-pipeline-evaluation",
@@ -7898,7 +8125,7 @@
         "pipeline",
         "evaluation"
       ],
-      "lastUpdated": "2026-04-13T04:56:33.680Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/016-self-reflection-and-reconsolidation-study",
@@ -7912,7 +8139,7 @@
         "reconsolidation",
         "study"
       ],
-      "lastUpdated": "2026-04-13T04:56:34.808Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/017-swarm-mailbox-artifacts-study",
@@ -7926,7 +8153,7 @@
         "artifacts",
         "study"
       ],
-      "lastUpdated": "2026-04-13T04:56:33.868Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/018-git-context-and-run-state-evaluation",
@@ -7941,7 +8168,7 @@
         "state",
         "evaluation"
       ],
-      "lastUpdated": "2026-04-13T04:56:34.902Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
@@ -7952,7 +8179,7 @@
         "rag",
         "adoption"
       ],
-      "lastUpdated": "2026-04-12T15:47:03.656Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/001-architecture-boundary-freeze",
@@ -7963,7 +8190,7 @@
         "authority",
         "boundaries"
       ],
-      "lastUpdated": "2026-04-13T04:56:32.422Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/002-memory-review-tool",
@@ -7975,7 +8202,7 @@
         "review",
         "first"
       ],
-      "lastUpdated": "2026-04-13T04:56:32.516Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/003-save-ergonomics",
@@ -7987,7 +8214,7 @@
         "save",
         "authority"
       ],
-      "lastUpdated": "2026-04-13T04:56:31.857Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/004-compaction-checkpointing",
@@ -7998,7 +8225,7 @@
         "context",
         "compaction"
       ],
-      "lastUpdated": "2026-04-13T04:56:32.042Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/005-bootstrap-guidance",
@@ -8010,7 +8237,7 @@
         "bootstrap",
         "surfaces"
       ],
-      "lastUpdated": "2026-04-13T04:56:32.609Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/006-doctor-debug-overlay",
@@ -8021,7 +8248,7 @@
         "compact",
         "diagnostics"
       ],
-      "lastUpdated": "2026-04-13T04:56:32.236Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/007-workflow-guidance-map",
@@ -8032,7 +8259,7 @@
         "task-to-tool",
         "routing"
       ],
-      "lastUpdated": "2026-04-13T04:56:31.485Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/008-rollout-evidence-gates",
@@ -8044,7 +8271,7 @@
         "adoption",
         "gates"
       ],
-      "lastUpdated": "2026-04-13T04:56:31.578Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/009-prototype-backlog",
@@ -8056,7 +8283,7 @@
         "prototype",
         "candidates"
       ],
-      "lastUpdated": "2026-04-13T04:56:32.814Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/010-passive-capture-investigation",
@@ -8067,7 +8294,7 @@
         "passive",
         "capture"
       ],
-      "lastUpdated": "2026-04-13T04:56:31.763Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation",
@@ -8079,7 +8306,7 @@
         "profile",
         "splits"
       ],
-      "lastUpdated": "2026-04-13T04:56:32.328Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/012-drift-detection-evaluation",
@@ -8090,7 +8317,7 @@
         "drift",
         "detection"
       ],
-      "lastUpdated": "2026-04-13T04:56:33.004Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/013-fsrs-memory-decay-study",
@@ -8102,7 +8329,7 @@
         "decay",
         "defaults"
       ],
-      "lastUpdated": "2026-04-13T04:56:32.711Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/014-bm25-field-weight-evaluation",
@@ -8114,7 +8341,7 @@
         "field",
         "weights"
       ],
-      "lastUpdated": "2026-04-13T04:56:32.137Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/015-rrf-hybrid-retrieval-evaluation",
@@ -8126,7 +8353,7 @@
         "hybrid",
         "retrieval"
       ],
-      "lastUpdated": "2026-04-13T04:56:31.392Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/016-connected-doc-hints-investigation",
@@ -8137,7 +8364,7 @@
         "connected-doc",
         "hints"
       ],
-      "lastUpdated": "2026-04-13T04:56:32.907Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/017-temporal-knowledge-graph-investigation",
@@ -8149,7 +8376,7 @@
         "knowledge",
         "graphs"
       ],
-      "lastUpdated": "2026-04-13T04:56:31.949Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     },
     {
       "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/018-wake-up-context-layering-study",
@@ -8161,7 +8388,7 @@
         "context",
         "layering"
       ],
-      "lastUpdated": "2026-04-13T04:56:31.670Z"
+      "lastUpdated": "2026-04-24T15:56:54.574Z"
     }
   ]
 }

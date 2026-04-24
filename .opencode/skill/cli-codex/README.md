@@ -41,7 +41,7 @@ trigger_phrases:
 
 This skill lets any AI assistant invoke OpenAI's Codex CLI for tasks that benefit from a second perspective, real-time web information, or parallel code generation. The calling AI stays the conductor, delegating specific jobs to Codex and integrating the results.
 
-Codex CLI runs two models. GPT-5.4 handles frontier reasoning tasks: architecture analysis, security audits, and complex planning. GPT-5.3-Codex focuses on code: generation, refactoring, documentation, and test suites. The split means you can route each task to the model built for it rather than using one model for everything.
+Codex CLI runs on **GPT-5.5** at `medium` reasoning on the `fast` service tier — a balanced pick for code generation, standard review, implementation, documentation, architecture, and research. Callers can tune reasoning effort with explicit phrasing like "Use gpt 5.5 high fast" (deeper analysis) or "Use gpt 5.5 low" (lighter lookups). Only the reasoning-effort dimension varies; the model stays on `gpt-5.5` and the service tier stays on `fast`.
 
 Three capabilities set Codex apart from other CLIs. The `--search` flag gives the agent live web browsing during execution, useful for checking library versions or finding community solutions. The built-in `/review` command runs diff-aware code review directly in the TUI. And configurable sandbox modes (read-only, workspace-write, full-access) let you match permissions to task risk.
 
@@ -51,12 +51,13 @@ The skill includes a self-invocation guard: if you are already running inside Co
 
 | Category | Value | Details |
 |----------|-------|---------|
-| **Models** | 2 | GPT-5.4 (reasoning), GPT-5.3-Codex (code generation) |
+| **Model** | 1 | GPT-5.5 (balanced, used for every delegation) |
+| **Default Dispatch** | `gpt-5.5` · `medium` · `fast` | Zero-input default; user can override explicitly ("Use gpt 5.5 high fast") |
 | **Sandbox Modes** | 3 | read-only, workspace-write, danger-full-access |
 | **Reasoning Levels** | 6 | none, minimal, low, medium, high, xhigh |
 | **Agent Profiles** | 7 | review, context, research, write, debug, ultra-think, speckit |
 | **References** | 4 | cli_reference, codex_tools, agent_delegation, integration_patterns |
-| **Version** | 1.3.1 | |
+| **Version** | 1.4.0.0 | |
 
 ### How This Compares
 
@@ -114,16 +115,43 @@ export OPENAI_API_KEY=your-key-here
 codex login
 ```
 
-### 3. Run a Simple Task
+### 3. Run a Simple Task (Skill Default)
 
 ```bash
-codex exec "Explain the architecture of this project" -m gpt-5.4 2>&1
+# Zero-input default: gpt-5.5 · medium · fast
+codex exec \
+  --model gpt-5.5 \
+  -c model_reasoning_effort="medium" \
+  -c service_tier="fast" \
+  "Explain the architecture of this project" 2>&1
 ```
 
-### 4. Generate Code with Auto-Approval
+### 4. Generate Code with Auto-Approval (Default Model)
 
 ```bash
-codex exec "Add error handling to src/api.ts" --model gpt-5.3-codex --full-auto 2>&1
+codex exec "Add error handling to src/api.ts" \
+  --model gpt-5.5 \
+  -c model_reasoning_effort="medium" \
+  -c service_tier="fast" \
+  --full-auto 2>&1
+```
+
+### 5. User-Override Examples
+
+```bash
+# "Use gpt 5.5 high fast" — deeper reasoning for architecture/security
+codex exec "Review src/auth.ts for edge cases" \
+  --model gpt-5.5 \
+  -c model_reasoning_effort="high" \
+  -c service_tier="fast" \
+  --sandbox read-only 2>&1
+
+# "Use gpt 5.5 low" — trivial lookups or formatting
+codex exec "List all exported functions in src/" \
+  --model gpt-5.5 \
+  -c model_reasoning_effort="low" \
+  -c service_tier="fast" \
+  --sandbox read-only 2>&1
 ```
 
 <!-- /ANCHOR:quick-start -->
@@ -145,7 +173,7 @@ Session management rounds out the picture. Codex tracks conversation history and
 
 When Codex work feeds back into a Spec Kit packet, `/spec_kit:resume` is still the canonical recovery surface. Packet continuity rebuilds from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts remain support only.
 
-The reasoning effort system adds another dimension. GPT-5.4 supports six effort levels from `none` (fastest, cheapest) through `xhigh` (maximum depth). This means you can run quick formatting tasks at `low` effort and deep architecture reviews at `high` effort, paying only for the reasoning depth each task actually needs.
+The reasoning effort system adds another dimension. GPT-5.5 supports six effort levels from `none` (fastest, cheapest) through `xhigh` (maximum depth). This means you can run quick formatting tasks at `low` effort and deep architecture reviews at `high` effort, paying only for the reasoning depth each task actually needs. The skill dispatches `medium` by default and honors explicit user phrasing like "Use gpt 5.5 high fast" as an override.
 
 ### 3.2 FEATURE REFERENCE
 
@@ -153,15 +181,16 @@ The reasoning effort system adds another dimension. GPT-5.4 supports six effort 
 
 | Model | ID | Best For | Default Effort |
 |-------|----|----------|---------------|
-| **GPT-5.4** | `gpt-5.4` | Reasoning, architecture, security audits, deep review | high (configurable) |
-| **GPT-5.3-Codex** | `gpt-5.3-codex` | Code generation, implementation, documentation, tests | xhigh (fixed) |
+| **GPT-5.5** ★ skill default | `gpt-5.5` | Balanced default for code generation, standard review, implementation, docs, most delegations | **medium** (configurable; `fast` service tier) |
+
+> **Default dispatch**: `codex exec --model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast"`. Caller may override reasoning effort — e.g. "Use gpt 5.5 high fast" → `-c model_reasoning_effort="high"`. Model and service tier stay fixed.
 
 #### Core Flags
 
 | Flag | Short | Purpose | Example |
 |------|-------|---------|---------|
 | `exec` | | Non-interactive execution | `codex exec "prompt"` |
-| `--model` | `-m` | Model selection | `-m gpt-5.4` |
+| `--model` | `-m` | Model selection | `-m gpt-5.5` |
 | `-c` | | Config override | `-c model_reasoning_effort="high"` |
 | `--sandbox` | | Filesystem access level | `--sandbox read-only` |
 | `--full-auto` | | Auto-approve all operations | `--full-auto` |
@@ -183,13 +212,13 @@ The reasoning effort system adds another dimension. GPT-5.4 supports six effort 
 
 | Profile | Purpose | Invocation |
 |---------|---------|------------|
-| `review` | Code review, security audit | `codex exec -p review "Review @./src" -m gpt-5.4` |
-| `context` | Architecture exploration | `codex exec -p context "Analyze architecture" -m gpt-5.4` |
-| `research` | Technical research with web | `codex exec -p research "Research X" -m gpt-5.4 --search` |
-| `write` | Documentation generation | `codex exec -p write "Generate README" -m gpt-5.3-codex` |
-| `debug` | Fresh-perspective debugging | `codex exec -p debug "Debug error: X" -m gpt-5.3-codex` |
-| `ultra-think` | Multi-strategy planning | `codex exec -p ultra-think "Plan redesign" -m gpt-5.4` |
-| `speckit` | Spec documentation | `codex exec -p speckit "Create spec folder" -m gpt-5.3-codex` |
+| `review` | Code review, security audit | `codex exec -p review "Review @./src" -m gpt-5.5` |
+| `context` | Architecture exploration | `codex exec -p context "Analyze architecture" -m gpt-5.5` |
+| `research` | Technical research with web | `codex exec -p research "Research X" -m gpt-5.5 --search` |
+| `write` | Documentation generation | `codex exec -p write "Generate README" -m gpt-5.5` |
+| `debug` | Fresh-perspective debugging | `codex exec -p debug "Debug error: X" -m gpt-5.5` |
+| `ultra-think` | Multi-strategy planning | `codex exec -p ultra-think "Plan redesign" -m gpt-5.5` |
+| `speckit` | Spec documentation | `codex exec -p speckit "Create spec folder" -m gpt-5.5` |
 
 <!-- /ANCHOR:features -->
 
@@ -231,14 +260,17 @@ cli-codex/
 
 ### Config File
 
-Codex reads settings from `~/.codex/config.toml`. Key settings:
+Codex reads settings from `~/.codex/config.toml`. Key settings (matching the skill's default dispatch):
 
 ```toml
-model = "gpt-5.4"
-model_reasoning_effort = "high"
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
+service_tier = "fast"
 sandbox_mode = "workspace-write"
 approval_policy = "on-request"
 ```
+
+> **Note**: The skill passes `--model`, `-c model_reasoning_effort`, and `-c service_tier` explicitly on every dispatch so the invocation is self-documenting. The `config.toml` above is what the user's own interactive Codex sessions will use when they don't override, and keeps per-run behavior aligned with skill dispatches.
 
 ### Agent Profiles
 
@@ -246,7 +278,7 @@ Profiles override global settings per task type. Defined in `config.toml` under 
 
 ```toml
 [profiles.review]
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 ```
@@ -278,29 +310,29 @@ stdin/stdout schema, exit semantics, and smoke checks.
 
 ```bash
 codex exec "Refactor utils.ts to use async/await" \
-  --model gpt-5.3-codex --sandbox workspace-write 2>&1
+  --model gpt-5.5 --sandbox workspace-write 2>&1
 ```
 
 ### Web Research During Task
 
 ```bash
 codex exec "Research and implement OAuth2 PKCE flow based on current best practices" \
-  --model gpt-5.4 --search --full-auto 2>&1
+  --model gpt-5.5 --search --full-auto 2>&1
 ```
 
 ### Image-Based Implementation
 
 ```bash
 codex exec "Implement this UI component matching the wireframe" \
-  --image wireframe.png --model gpt-5.3-codex --full-auto 2>&1
+  --image wireframe.png --model gpt-5.5 --full-auto 2>&1
 ```
 
 ### Parallel Background Tasks
 
 ```bash
 # Run multiple tasks simultaneously
-codex exec "Generate tests for src/auth/" -m gpt-5.3-codex --full-auto 2>&1 &
-codex exec "Generate tests for src/api/" -m gpt-5.3-codex --full-auto 2>&1 &
+codex exec "Generate tests for src/auth/" -m gpt-5.5 --full-auto 2>&1 &
+codex exec "Generate tests for src/api/" -m gpt-5.5 --full-auto 2>&1 &
 wait
 ```
 
@@ -347,8 +379,8 @@ wait
 **Q: When should I use Codex instead of other CLIs?**
 A: Use Codex for tasks requiring live web search (`--search`), diff-aware code review (`/review`), image input, or when you need graduated sandbox control. For deep extended thinking, use Claude Code instead.
 
-**Q: What is the difference between GPT-5.4 and GPT-5.3-Codex?**
-A: GPT-5.4 is the frontier reasoning model for analysis, planning, and review. GPT-5.3-Codex is optimized for code generation, refactoring, and implementation. Route accordingly.
+**Q: Which model does the skill use, and can I choose a different one?**
+A: Every delegation runs on `gpt-5.5`. The only tunable dimension is reasoning effort — `medium` by default, or explicitly override with phrasing like "Use gpt 5.5 high fast" (for deeper analysis) or "Use gpt 5.5 low" (for lighter lookups). The service tier stays on `fast`.
 
 ### Configuration
 

@@ -184,6 +184,42 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 - **SC-004**: Command phase-path resolution - all 4 modified commands resolve sub-folder paths; target 0 path resolution errors
 - **SC-005**: AI auto-suggestion rate - AI proactively suggests phasing for qualifying tasks; triggers on tasks matching 136/138 scope profile
 - **SC-006**: Template linkage integrity - parent-child back-references resolve correctly across parent and child docs
+
+### Scenario 1: High-complexity scoring recommends phases
+
+- **Given** a task scores at Level 3+ with architectural scope, more than 15 files, and more than 800 LOC
+- **When** `recommend-level.sh --recommend-phases --json` evaluates the request
+- **Then** the output includes `recommended_phases: true`, a concrete `phase_reason`, and a non-zero `suggested_phase_count`
+
+### Scenario 2: Phase creation scaffolds parent and child folders
+
+- **Given** a developer runs `create.sh "Large Feature" --phase --level 3+ --phases 3`
+- **When** the phase creation workflow completes
+- **Then** it creates a parent spec folder with a Phase Documentation Map and a `001-*` child phase folder with parent back-references and handoff metadata
+
+### Scenario 3: Recursive validation aggregates parent and child results
+
+- **Given** a parent spec contains numbered child phase folders with their own canonical docs
+- **When** `validate.sh --recursive` runs on the parent spec folder
+- **Then** it validates the parent and each child, reports per-phase results, and exits with the worst child status
+
+### Scenario 4: Phase command routes work through the phase lifecycle
+
+- **Given** a task qualifies for phased execution and the user chooses the phase workflow
+- **When** `/spec_kit:phase` runs in auto or confirm mode
+- **Then** it follows the command workflow pattern, creates or selects the phase folder structure, and routes the work into the correct phase lifecycle path
+
+### Scenario 5: Gate 3 surfaces Option E only when phases are relevant
+
+- **Given** an existing spec is complex or the task description contains phase-related signals
+- **When** Gate 3 is rendered for a file-modification request
+- **Then** the prompt includes Option E for phase-folder work instead of limiting the user to the standard four-option flow
+
+### Scenario 6: CLAUDE.md stays aligned with phase-aware guidance
+
+- **Given** CLAUDE.md includes Gate 3 Option E and phase-aware routing guidance
+- **When** an agent evaluates planning, resume, or completion work for a complex existing spec
+- **Then** the agent can offer phase-folder handling and matching command guidance without conflicting instructions across the documented workflow
 <!-- /ANCHOR:success-criteria -->
 
 ---

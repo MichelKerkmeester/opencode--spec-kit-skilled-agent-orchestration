@@ -1,22 +1,5 @@
 {
   "title": "Feature Specification: 020 Extended Research Wave (cli-copilot)",
-  "description": "Second 10-iteration research wave dispatched via cli-copilot gpt-5.4 high. Deep-dives on wave-1 remaining open questions + new architectural angles (adversarial advisor, observability, migration, concurrent sessions, NFKC interaction).",
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot",
-  "keywords": [
-    "extended-wave-copilot",
-    "020 extended research",
-    "skill advisor copilot wave"
-  ],
-  "lastUpdated": "2026-04-21T14:30:00Z",
-  "specId": "001",
-  "folderSlug": "extended-wave-copilot",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "009-hook-daemon-parity",
-    "001-skill-advisor-hook-surface",
-    "001-initial-research"
-  ],
   "migration": {
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-extended-wave-copilot",
     "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot",
@@ -26,5 +9,27 @@
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-extended-wave-copilot",
       "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot",
+  "description": "Feature Specification: 020 Extended Research (cli-copilot)",
+  "keywords": [
+    "feature",
+    "specification",
+    "020",
+    "extended",
+    "research",
+    "cli-copilot"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.674Z",
+  "specId": "001",
+  "folderSlug": "extended-wave-copilot",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity",
+    "001-skill-advisor-hook-surface",
+    "001-initial-research"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

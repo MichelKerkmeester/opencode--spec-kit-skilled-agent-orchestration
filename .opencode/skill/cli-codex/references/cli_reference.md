@@ -14,7 +14,7 @@ Comprehensive reference for all Codex CLI commands, flags, models, configuration
 
 ### Core Principle
 
-Codex CLI is OpenAI's terminal-based AI coding agent powered by two models — `gpt-5.4` (frontier reasoning) and `gpt-5.3-codex` (code generation). It provides direct access to OpenAI's capabilities from the command line, including code generation, file manipulation, shell execution, web browsing, and multi-turn sessions — all governed by configurable sandbox modes.
+Codex CLI is OpenAI's terminal-based AI coding agent powered by `gpt-5.5` — a balanced model used across code generation, review, architecture analysis, and research. The skill dispatches `gpt-5.5` at `medium` reasoning on the `fast` service tier by default; users can override reasoning effort (e.g. "Use gpt 5.5 high fast"). It provides direct access to OpenAI's capabilities from the command line, including code generation, file manipulation, shell execution, web browsing, and multi-turn sessions — all governed by configurable sandbox modes.
 
 ### Purpose
 
@@ -57,7 +57,7 @@ Provide a comprehensive, single-source reference for all Codex CLI commands, fla
 | Linux | Full support |
 | Windows (WSL) | Experimental — use WSL 2 for best results |
 
-After installation, run `codex` for the full-screen TUI or `codex exec "prompt" --model gpt-5.3-codex` for non-interactive use.
+After installation, run `codex` for the full-screen TUI or `codex exec "prompt" --model gpt-5.5` for non-interactive use.
 
 <!-- /ANCHOR:installation -->
 
@@ -105,7 +105,7 @@ codex logout
 
 | Flag | Short | Values | Description |
 |------|-------|--------|-------------|
-| `--model` | `-m` | `gpt-5.4`, `gpt-5.3-codex` | Model to use (2 supported models) |
+| `--model` | `-m` | `gpt-5.5` | Model to use (skill dispatches `gpt-5.5` for every task) |
 | `--config` | `-c` | `key=value` | Override a config.toml value (e.g., `-c model_reasoning_effort="high"`) |
 | `--sandbox` | `-s` | `read-only`, `workspace-write`, `danger-full-access` | Sandbox mode controlling file/shell access |
 | `--ask-for-approval` | `-a` | `untrusted`, `on-request`, `never` | When to prompt for approval before executing actions |
@@ -144,10 +144,10 @@ The `-c` / `--config` flag overrides any `config.toml` value at runtime. Uses do
 
 ```bash
 # Override reasoning effort
-codex exec "Analyze this architecture" -m gpt-5.4 -c model_reasoning_effort="high"
+codex exec "Analyze this architecture" -m gpt-5.5 -c model_reasoning_effort="high"
 
 # Override model via -c
-codex exec "Review code" -c model="gpt-5.4"
+codex exec "Review code" -c model="gpt-5.5"
 
 # Multiple overrides
 codex exec "Task" -c model_reasoning_effort="xhigh" -c sandbox_mode="read-only"
@@ -160,25 +160,25 @@ codex exec "Task" -c model_reasoning_effort="xhigh" -c sandbox_mode="read-only"
 codex
 
 # Non-interactive: exec subcommand
-codex exec "Refactor utils.ts to use async/await" --model gpt-5.3-codex
+codex exec "Refactor utils.ts to use async/await" --model gpt-5.5
 
 # With sandbox mode
-codex exec "Add error handling to auth.ts" --sandbox workspace-write --model gpt-5.3-codex
+codex exec "Add error handling to auth.ts" --sandbox workspace-write --model gpt-5.5
 
 # With approval control
-codex exec "Clean up deprecated files" --ask-for-approval untrusted --model gpt-5.3-codex
+codex exec "Clean up deprecated files" --ask-for-approval untrusted --model gpt-5.5
 
 # Full-auto mode (relaxed approvals)
-codex exec "Run the test suite and fix failures" --full-auto --model gpt-5.3-codex
+codex exec "Run the test suite and fix failures" --full-auto --model gpt-5.5
 
 # Attach an image
-codex exec "Implement this UI component" --image wireframe.png --model gpt-5.3-codex
+codex exec "Implement this UI component" --image wireframe.png --model gpt-5.5
 
 # Enable web search
-codex exec "Research and implement OAuth2 PKCE flow" --search --model gpt-5.3-codex
+codex exec "Research and implement OAuth2 PKCE flow" --search --model gpt-5.5
 
 # Load a named profile
-codex exec "Review this PR" --profile review --model gpt-5.3-codex
+codex exec "Review this PR" --profile review --model gpt-5.5
 
 # Use local OSS model via Ollama
 codex exec "Refactor this function" --oss
@@ -190,19 +190,18 @@ codex exec "Refactor this function" --oss
 
 ## 5. MODEL SELECTION
 
-### Supported Models
+### Supported Model
 
 | Model | ID | Reasoning Effort | Best For |
 |-------|----|-----------------|----------|
-| **GPT-5.4** | `gpt-5.4` | configurable via `-c model_reasoning_effort` | Frontier reasoning, complex analysis, architecture, security audit, deep review |
-| **GPT-5.3-Codex** | `gpt-5.3-codex` | `xhigh` (fixed, ignores configured value) | Code generation, standard review, implementation, refactoring, documentation |
+| **GPT-5.5** | `gpt-5.5` | configurable via `-c model_reasoning_effort` (skill default: `medium`) | All delegations — code generation, review, implementation, documentation, architecture, research, security audit |
 
 ### Reasoning Effort Configuration
 
 Reasoning effort controls how much "thinking" the model does. There is **no `--reasoning-effort` CLI flag**. Set it via:
 
 1. **CLI override:** `-c model_reasoning_effort="high"`
-2. **config.toml:** `model_reasoning_effort = "high"` (global default)
+2. **config.toml:** `model_reasoning_effort = "medium"` (global default matching the skill)
 3. **Profile:** `[profiles.review]` → `model_reasoning_effort = "xhigh"`
 4. **Plan mode:** `plan_mode_reasoning_effort = "medium"` (Plan-mode-specific override)
 
@@ -213,47 +212,46 @@ Reasoning effort controls how much "thinking" the model does. There is **no `--r
 | `none` | No reasoning — fastest, lowest cost |
 | `minimal` | Minimal reasoning |
 | `low` | Low reasoning effort |
-| `medium` | Standard reasoning (Plan mode default when unset) |
+| `medium` | Standard reasoning (skill default) |
 | `high` | High reasoning effort |
 | `xhigh` | Maximum reasoning depth |
 
-> GPT-5.3-Codex always uses `xhigh` reasoning regardless of the configured value. Only GPT-5.4 respects this setting.
-
 ### Selection Strategy
 
-| Task Type | Recommended Model | Rationale |
-|-----------|-------------------|-----------|
-| Architecture decisions | `gpt-5.4` | Frontier reasoning excels at multi-faceted analysis |
-| Security audits | `gpt-5.4` | Deep reasoning catches subtle vulnerability patterns |
-| Complex planning | `gpt-5.4` | Multi-strategy evaluation benefits from higher reasoning |
-| Code generation | `gpt-5.3-codex` | Code-focused model optimized for generation tasks |
-| Standard code review | `gpt-5.3-codex` | Efficient for pattern-based review |
-| Implementation | `gpt-5.3-codex` | Optimized for translating specs to code |
-| Test generation | `gpt-5.3-codex` | Code-focused model produces better test structures |
-| Documentation | `gpt-5.3-codex` | Efficient for structured doc generation |
+| Task Type | Reasoning Effort | Rationale |
+|-----------|-----------------|-----------|
+| Architecture decisions | `high` / `xhigh` | Multi-faceted analysis benefits from deeper thinking |
+| Security audits | `high` / `xhigh` | Catches subtle vulnerability patterns |
+| Complex planning | `high` / `xhigh` | Multi-strategy evaluation benefits from depth |
+| Code generation | `medium` (default) | Balanced for most generation tasks |
+| Standard code review | `medium` (default) | Efficient for pattern-based review |
+| Implementation | `medium` (default) | Balanced for translating specs to code |
+| Test generation | `medium` (default) | Solid for test structure output |
+| Documentation | `medium` (default) | Efficient for structured doc generation |
+| Trivial lookups / formatting | `low` / `minimal` | Minimize cost and latency |
 
-Always specify `--model` explicitly in scripts for predictability; omitting it relies on the CLI default, which may change across versions.
+Always specify `--model gpt-5.5` explicitly in scripts for predictability; omitting it relies on the CLI default, which may change across versions.
 
 ### Command-Line Specification
 
 ```bash
-# GPT-5.4 for reasoning-heavy tasks
-codex exec "Analyze this architecture and identify coupling issues" --model gpt-5.4
-codex exec "Security audit of @./src/auth.ts" --model gpt-5.4
+# Reasoning-heavy tasks — raise reasoning_effort
+codex exec "Analyze this architecture and identify coupling issues" --model gpt-5.5 -c model_reasoning_effort="high"
+codex exec "Security audit of @./src/auth.ts" --model gpt-5.5 -c model_reasoning_effort="high"
 
-# GPT-5.3-Codex for code-focused tasks
-codex exec "Write unit tests for user.ts" --model gpt-5.3-codex
-codex exec "Generate a rate limiter middleware" --model gpt-5.3-codex
+# Code-focused tasks — medium is fine
+codex exec "Write unit tests for user.ts" --model gpt-5.5 -c model_reasoning_effort="medium"
+codex exec "Generate a rate limiter middleware" --model gpt-5.5 -c model_reasoning_effort="medium"
 ```
 
 ### Agent TOML Configuration
 
 ```toml
 # .codex/agents/my-agent.toml — reasoning-heavy agent
-model = "gpt-5.4"
+model = "gpt-5.5"
 
 # .codex/agents/my-codegen-agent.toml — code-focused agent
-model = "gpt-5.3-codex"
+model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 ```
 
@@ -270,17 +268,17 @@ model_reasoning_effort = "xhigh"
 ```bash
 # Capture to file
 codex exec "Generate a TypeScript interface for the User model" \
-  --model gpt-5.3-codex > /tmp/user-interface.ts
+  --model gpt-5.5 > /tmp/user-interface.ts
 
 # Capture to variable
-RESULT=$(codex exec "List all exported functions in src/" --model gpt-5.3-codex)
+RESULT=$(codex exec "List all exported functions in src/" --model gpt-5.5)
 echo "$RESULT"
 
 # Pipe to another command
-codex exec "Generate SQL schema for users table" --model gpt-5.3-codex | psql -d mydb -f -
+codex exec "Generate SQL schema for users table" --model gpt-5.5 | psql -d mydb -f -
 
 # Redirect stderr separately
-codex exec "Analyze auth flow" --model gpt-5.3-codex > /tmp/analysis.txt 2>/tmp/errors.txt
+codex exec "Analyze auth flow" --model gpt-5.5 > /tmp/analysis.txt 2>/tmp/errors.txt
 ```
 
 ### Requesting JSON Output
@@ -290,7 +288,7 @@ Codex does not have a native `--output json` flag. Instead, instruct the model t
 ```bash
 # Request JSON explicitly in the prompt
 codex exec "Analyze src/auth.ts. Return JSON: {functions: [{name, lines, complexity}], issues: [{line, severity, description}]}" \
-  --model gpt-5.3-codex > /tmp/analysis.json
+  --model gpt-5.5 > /tmp/analysis.json
 
 # Parse with jq
 jq '.issues[] | select(.severity == "high")' /tmp/analysis.json
@@ -341,11 +339,11 @@ Codex supports `@file` references to include file contents in the prompt context
 
 ```bash
 # Single file
-codex exec "@src/utils.ts Explain this file" --model gpt-5.3-codex
+codex exec "@src/utils.ts Explain this file" --model gpt-5.5
 
 # Multiple files
 codex exec "@src/auth.ts @src/session.ts Find the circular dependency" \
-  --model gpt-5.3-codex
+  --model gpt-5.5
 
 # In the TUI
 # Type: @src/utils.ts refactor this to use the repository pattern
@@ -357,15 +355,15 @@ Use standard shell mechanisms to combine Codex with other tools:
 
 ```bash
 # Pass git diff as context
-git diff HEAD~1 | codex exec "Summarize these changes" --model gpt-5.3-codex
+git diff HEAD~1 | codex exec "Summarize these changes" --model gpt-5.5
 
 # Combine file content with prompt
 cat src/auth.ts | codex exec "Add input validation to all functions" \
-  --model gpt-5.3-codex
+  --model gpt-5.5
 
 # Pass error output for debugging
 npm test 2>&1 | codex exec "Fix these failing tests" --sandbox workspace-write \
-  --model gpt-5.3-codex
+  --model gpt-5.5
 ```
 
 ### instructions.md Context File
@@ -418,7 +416,7 @@ Place an `instructions.md` in `.codex/` to inject persistent project context int
 
 ```toml
 # .codex/config.toml
-model = "gpt-5.3-codex"
+model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 sandbox_mode = "workspace-write"
 ask_for_approval = "on-request"
@@ -432,7 +430,7 @@ Each agent is a `.toml` file in `.codex/agents/`. Fields:
 # .codex/agents/example.toml
 
 # Model configuration
-model = "gpt-5.3-codex"
+model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 
 # Sandbox mode for this agent
@@ -449,14 +447,14 @@ You are a specialized agent for [purpose].
 
 ```bash
 # Named profile via -p / --profile flag
-codex exec -p review "Review src/auth.ts for security issues" --model gpt-5.3-codex
+codex exec -p review "Review src/auth.ts for security issues" --model gpt-5.5
 
 # Git diff review via built-in subcommand
-codex exec review "Focus on security issues" --commit HEAD --model gpt-5.3-codex
+codex exec review "Focus on security issues" --commit HEAD --model gpt-5.5
 codex review --uncommitted  # top-level shorthand
 
 # Profile with sandbox override
-codex exec -p debug "Fix the auth bug" -s workspace-write --model gpt-5.3-codex
+codex exec -p debug "Fix the auth bug" -s workspace-write --model gpt-5.5
 ```
 
 ### Profile Configuration
@@ -476,7 +474,7 @@ model_reasoning_effort = "xhigh"
 
 ```bash
 # Use a named profile
-codex exec -p review "Audit this codebase" --model gpt-5.3-codex
+codex exec -p review "Audit this codebase" --model gpt-5.5
 ```
 
 **Note:** The `.codex/agents/*.toml` files define agent personas for the interactive multi-agent TUI feature (requires `multi_agent` feature flag). They are NOT loaded by the `-p` profile flag. To use agent-specific settings in `codex exec`, define corresponding `[profiles.<name>]` sections in config.toml.
@@ -502,15 +500,15 @@ Sandbox modes control what Codex is permitted to do during execution. Always cho
 ```bash
 # SAFE: Read-only for analysis
 codex exec "Map the authentication flow" \
-  --sandbox read-only --model gpt-5.3-codex
+  --sandbox read-only --model gpt-5.5
 
 # STANDARD: Workspace-write for code changes
 codex exec "Add error handling to all API routes" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5
 
 # ELEVATED RISK: Full access — use only when necessary and review all changes
 codex exec "Migrate database schema and update all dependent files" \
-  --sandbox danger-full-access --ask-for-approval untrusted --model gpt-5.3-codex
+  --sandbox danger-full-access --ask-for-approval untrusted --model gpt-5.5
 ```
 
 ### Mode Selection Heuristic
@@ -544,12 +542,12 @@ Running `codex` without arguments opens the full-screen TUI with a session picke
 ```bash
 # Resume a known session ID non-interactively
 codex exec --session-id abc123 "Continue implementing the rate limiter" \
-  --model gpt-5.3-codex
+  --model gpt-5.5
 
 # Fork a session before a risky operation
 FORK_ID=$(codex fork abc123)
 codex exec --session-id "$FORK_ID" "Attempt the migration" \
-  --sandbox workspace-write --model gpt-5.3-codex
+  --sandbox workspace-write --model gpt-5.5
 ```
 
 ### When to Use Each Operation
@@ -608,7 +606,7 @@ codex exec --session-id "$FORK_ID" "Attempt the migration" \
 | Variable | Purpose | Example |
 |----------|---------|---------|
 | `OPENAI_API_KEY` | API key authentication (highest priority) | `sk-...` |
-| `CODEX_MODEL` | Default model override | `gpt-5.3-codex` |
+| `CODEX_MODEL` | Default model override | `gpt-5.5` |
 | `CODEX_SANDBOX` | Default sandbox mode | `read-only`, `workspace-write`, `danger-full-access` |
 | `CODEX_APPROVAL` | Default approval mode | `untrusted`, `on-request`, `never` |
 | `NO_COLOR` | Disable colored output | `1` |

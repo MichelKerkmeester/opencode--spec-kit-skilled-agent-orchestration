@@ -49,30 +49,6 @@ Template compliance shim section. Legacy phase content continues below.
 ## Verification Summary
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:protocol -->
-Template compliance shim anchor for protocol.
-<!-- /ANCHOR:protocol -->
-<!-- ANCHOR:pre-impl -->
-Template compliance shim anchor for pre-impl.
-<!-- /ANCHOR:pre-impl -->
-<!-- ANCHOR:code-quality -->
-Template compliance shim anchor for code-quality.
-<!-- /ANCHOR:code-quality -->
-<!-- ANCHOR:testing -->
-Template compliance shim anchor for testing.
-<!-- /ANCHOR:testing -->
-<!-- ANCHOR:security -->
-Template compliance shim anchor for security.
-<!-- /ANCHOR:security -->
-<!-- ANCHOR:docs -->
-Template compliance shim anchor for docs.
-<!-- /ANCHOR:docs -->
-<!-- ANCHOR:file-org -->
-Template compliance shim anchor for file-org.
-<!-- /ANCHOR:file-org -->
-<!-- ANCHOR:summary -->
-Template compliance shim anchor for summary.
-<!-- /ANCHOR:summary -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -80,76 +56,76 @@ Template compliance shim anchor for summary.
 
 ---
 
-<!-- ANCHOR:protocol-2 -->
+<!-- ANCHOR:protocol -->
 ### Verification Protocol
 | Priority | Handling | Completion Impact |
 |----------|----------|-------------------|
 | **[P0]** | HARD BLOCKER | Cannot claim done until complete |
 | **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
-<!-- /ANCHOR:protocol-2 -->
+<!-- /ANCHOR:protocol -->
 
 ---
 
-<!-- ANCHOR:pre-impl-2 -->
+<!-- ANCHOR:pre-impl -->
 ### Pre-Implementation
 ### P1
 
 - [x] CHK-001 [P0] Requirements documented in `spec.md` [Evidence: `spec.md` §4 REQ-001 through REQ-006]
 - [x] CHK-002 [P0] Technical approach defined in `plan.md` [Evidence: `plan.md` §3 Architecture and §4 Implementation Phases]
 - [x] CHK-003 [P1] Dependencies identified and available [Evidence: `plan.md` §6 Dependencies]
-<!-- /ANCHOR:pre-impl-2 -->
+<!-- /ANCHOR:pre-impl -->
 
 ---
 
-<!-- ANCHOR:code-quality-2 -->
+<!-- ANCHOR:code-quality -->
 ### Code Quality
 - [x] CHK-010 [P0] Packet no longer claims selective backend routing out of `memory_context` [Evidence: `spec.md` REQ-001; `implementation-summary.md` query-intent section]
 - [x] CHK-011 [P0] Metadata contract matches `queryIntentRouting` with the real fields only [Evidence: `spec.md` REQ-002; `implementation-summary.md` query-intent section]
 - [x] CHK-012 [P1] `session_resume` docs match the slim schema and payload [Evidence: `spec.md` REQ-003; `tasks.md` T006]
 - [x] CHK-013 [P1] File inventory excludes `code-graph-enricher.ts` [Evidence: `spec.md` §3 Files to Change; `implementation-summary.md` passive enrichment section]
-<!-- /ANCHOR:code-quality-2 -->
+<!-- /ANCHOR:code-quality -->
 
 ---
 
-<!-- ANCHOR:testing-2 -->
+<!-- ANCHOR:testing -->
 ### Testing
 - [x] CHK-020 [P0] All corrected drift items have acceptance coverage [Evidence: `spec.md` acceptance criteria under REQ-001 through REQ-006]
 - [x] CHK-021 [P0] Packet is internally consistent across all five documents [Evidence: `tasks.md` T008-T010 and aligned wording across packet]
 - [x] CHK-022 [P1] Passive enrichment is marked implemented, not deferred [Evidence: `spec.md` REQ-004; `plan.md` Phase 3; `implementation-summary.md` passive enrichment section]
 - [x] CHK-023 [P1] `session_resume` no longer claims `ccc_status()` or full status payloads [Evidence: `spec.md` REQ-003; `implementation-summary.md` session_resume section]
-<!-- /ANCHOR:testing-2 -->
+<!-- /ANCHOR:testing -->
 
 ---
 
-<!-- ANCHOR:security-2 -->
+<!-- ANCHOR:security -->
 ### Security
 - [x] CHK-030 [P0] No hardcoded secrets or external data were introduced [Evidence: documentation-only edits in this packet]
 - [x] CHK-031 [P0] Tool input and output contracts are documented precisely [Evidence: `spec.md` REQ-002 and REQ-003]
 - [x] CHK-032 [P1] No unsupported capability claims remain [Evidence: stale claims about `fallbackApplied`, `ccc_status()`, and deferred Part 3 removed from packet]
-<!-- /ANCHOR:security-2 -->
+<!-- /ANCHOR:security -->
 
 ---
 
-<!-- ANCHOR:docs-2 -->
+<!-- ANCHOR:docs -->
 ### Documentation
 - [x] CHK-040 [P1] Spec, plan, tasks, checklist, and implementation summary are synchronized [Evidence: packet updated with the same routing, resume, and enrichment terminology]
 - [x] CHK-041 [P1] Implementation summary reflects the shipped implementation rather than the stale packet [Evidence: `implementation-summary.md` updated narrative and limitations]
 - [x] CHK-042 [P2] README applicability documented accurately [EVIDENCE: this bounded phase intentionally stayed inside packet docs, so no README delta was in scope]
-<!-- /ANCHOR:docs-2 -->
+<!-- /ANCHOR:docs -->
 
 ---
 
-<!-- ANCHOR:file-org-2 -->
+<!-- ANCHOR:file-org -->
 ### File Organization
 - [x] CHK-050 [P1] Only files in this spec folder were edited [Evidence: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`]
 - [x] CHK-051 [P1] No scratch or temp artifacts were created [Evidence: no new files outside the packet]
 - [x] CHK-052 [P2] Memory-save omission documented accurately [EVIDENCE: this documentation refresh did not request `memory/` artifacts and the packet now states that boundary explicitly]
-<!-- /ANCHOR:file-org-2 -->
+<!-- /ANCHOR:file-org -->
 
 ---
 
-<!-- ANCHOR:summary-2 -->
+<!-- ANCHOR:summary -->
 ### Verification Summary
 | Category | Total | Verified |
 |----------|-------|----------|
@@ -158,6 +134,6 @@ Template compliance shim anchor for summary.
 | P2 Items | 2 | 0/2 |
 
 **Verification Date**: 2026-04-01
-<!-- /ANCHOR:summary-2 -->
+<!-- /ANCHOR:summary -->
 
 ---

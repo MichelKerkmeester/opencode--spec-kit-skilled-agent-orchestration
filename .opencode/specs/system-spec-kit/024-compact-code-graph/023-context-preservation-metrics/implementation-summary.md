@@ -42,26 +42,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -70,18 +54,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 023-context-preservation-metrics |
 | **Completed** | 2026-03-31 (Phases C+D deferred, SQLite persistence deferred) |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 You can now collect lightweight session-context metrics and compute a 4-factor quality score during a live process. This phase delivered the baseline collector and scorer, but it did not finish the reporting and status-unification work that the original phase description anticipated.
 
@@ -100,14 +84,14 @@ You can now collect lightweight session-context metrics and compute a 4-factor q
 | `lib/session/context-metrics.ts` | Created/Modified | Added aggregate metrics collection and quality scoring |
 | `handlers/session-health.ts` | Modified | Exposes computed quality details while legacy status remains in place |
 | `context-server.ts` | Modified | Emits lifecycle metric events used by the scorer |
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 The phase shipped in two slices. First, instrumentation and in-memory counters were added so the server could observe session behavior. Second, quality scoring was layered on top and wired into `session_health` as supporting detail. A follow-up documentation repair then corrected the phase record so it matches the verified implementation boundary.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -119,7 +103,7 @@ The phase shipped in two slices. First, instrumentation and in-memory counters w
 | Defer dashboard and response envelope integration | Neither `eval_reporting_dashboard` nor `lib/response/envelope.ts` landed, so they remain follow-up work |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -127,17 +111,17 @@ The phase shipped in two slices. First, instrumentation and in-memory counters w
 | Tests | MIXED, 327 passed and 23 failed with failures noted as pre-existing and unrelated |
 | Review | CONDITIONAL PASS, Opus 78/100 and GPT-5.4 82% |
 | Documentation repair | PASS, metadata and limitation statements updated across the phase docs |
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. **Legacy status still wins.** `computeQualityScore()` runs, but `session_health` still sets its final traffic-light status from legacy heuristics.
 2. **Graph freshness thresholds disagree.** The scorer uses a 1-hour expectation while `session-snapshot` still uses 24 hours.
 3. **Metrics are coarse and ephemeral.** Counters are aggregate only, `toolName` is not retained, and storage is in-memory only.
 4. **No shared response envelope shipped.** `lib/response/envelope.ts` was planned but not implemented.
 5. **Dashboard integration is deferred.** Phase C did not land, so `eval_reporting_dashboard` does not expose these metrics yet.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->
 
 ---

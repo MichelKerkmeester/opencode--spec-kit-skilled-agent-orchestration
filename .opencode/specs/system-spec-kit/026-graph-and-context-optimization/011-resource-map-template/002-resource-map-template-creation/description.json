@@ -36,12 +36,13 @@
     "map",
     "template"
   ],
-  "lastUpdated": "2026-04-24T08:34:44.959Z",
-  "specId": "012",
-  "folderSlug": "resource-map-template",
+  "lastUpdated": "2026-04-24T15:56:56.845Z",
+  "specId": "002",
+  "folderSlug": "resource-map-template-creation",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "011-resource-map-template"
   ],
   "memorySequence": 1,
   "memoryNameHistory": [

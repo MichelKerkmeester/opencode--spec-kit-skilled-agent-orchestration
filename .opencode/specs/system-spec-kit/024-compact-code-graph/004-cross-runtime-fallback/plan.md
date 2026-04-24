@@ -62,9 +62,6 @@ Template compliance shim anchor for phases.
 <!-- ANCHOR:testing -->
 Template compliance shim anchor for testing.
 <!-- /ANCHOR:testing -->
-<!-- ANCHOR:dependencies -->
-Template compliance shim anchor for dependencies.
-<!-- /ANCHOR:dependencies -->
 <!-- ANCHOR:rollback -->
 Template compliance shim anchor for rollback.
 <!-- /ANCHOR:rollback -->
@@ -95,11 +92,11 @@ Template compliance shim anchor for rollback.
    - If gap > threshold → auto-inject compaction context
    - Feature flag `SPECKIT_AUTO_COMPACT_DETECT` (default off for v1)
 
-<!-- ANCHOR:dependencies-2 -->
+<!-- ANCHOR:dependencies -->
 ### Dependencies
 - Phase 1 (validates hook pattern works, informs CLAUDE.md wording)
 - Can run in parallel with Phases 2-3
-<!-- /ANCHOR:dependencies-2 -->
+<!-- /ANCHOR:dependencies -->
 
 ### Test Files (iteration 015)
 - `tests/runtime-routing.vitest.ts`

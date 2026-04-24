@@ -1,26 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution",
-  "description": "Feature Specification: CLI Runtime Executors for Iterative Skills (merged)",
-  "keywords": [
-    "feature",
-    "specification",
-    "cli",
-    "runtime",
-    "executors",
-    "iterative",
-    "skills",
-    "merged"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "017",
-  "folderSlug": "sk-deep-cli-runtime-execution",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "008-runtime-executor-hardening"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution",
@@ -37,5 +15,27 @@
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/017-sk-deep-cli-runtime-execution",
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution",
+  "description": "Feature Specification: CLI Runtime Executors for Iterative Skills (merged)",
+  "keywords": [
+    "feature",
+    "specification",
+    "cli",
+    "runtime",
+    "executors",
+    "iterative",
+    "skills",
+    "merged"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.569Z",
+  "specId": "002",
+  "folderSlug": "sk-deep-cli-runtime-execution",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

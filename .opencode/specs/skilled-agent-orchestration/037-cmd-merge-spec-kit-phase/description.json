@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/037-cmd-merge-spec-kit-phase",
+  "specFolder": "skilled-agent-orchestration/037-cmd-merge-spec-kit-phase",
   "description": "Feature Specification: Merge spec_kit:phase into plan and complete",
   "keywords": [
     "feature",
@@ -9,11 +9,11 @@
     "plan",
     "complete"
   ],
-  "lastUpdated": "2026-03-30T11:56:27.115Z",
+  "lastUpdated": "2026-04-24T15:56:54.936Z",
   "specId": "037",
   "folderSlug": "cmd-merge-spec-kit-phase",
   "parentChain": [
-    "03--commands-and-skills"
+    "skilled-agent-orchestration"
   ],
   "memorySequence": 1,
   "memoryNameHistory": [

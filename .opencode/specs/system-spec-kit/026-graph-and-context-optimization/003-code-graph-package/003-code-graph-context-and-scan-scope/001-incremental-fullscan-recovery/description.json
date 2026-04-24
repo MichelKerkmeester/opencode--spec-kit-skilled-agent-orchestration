@@ -1,19 +1,17 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery",
-  "description": "Code Graph Incremental Fullscan Recovery",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/001-incremental-fullscan-recovery",
+  "description": "Feature Specification: Code Graph Incremental Fullscan Recovery",
   "keywords": [
-    "code-graph",
-    "incremental-false",
-    "full-scan",
-    "skipFreshFiles",
-    "IndexFilesOptions",
-    "duplicate-symbol-id",
-    "seenSymbolIds",
-    "fullScanRequested",
-    "effectiveIncremental"
+    "feature",
+    "specification",
+    "code",
+    "graph",
+    "incremental",
+    "fullscan",
+    "recovery"
   ],
-  "lastUpdated": "2026-04-23T14:47:43.368Z",
-  "specId": "002",
+  "lastUpdated": "2026-04-24T15:56:56.158Z",
+  "specId": "001",
   "folderSlug": "incremental-fullscan-recovery",
   "parentChain": [
     "system-spec-kit",

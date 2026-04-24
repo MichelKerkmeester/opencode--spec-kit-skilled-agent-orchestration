@@ -1,26 +1,5 @@
 {
   "title": "Feature Specification: Memory Save Heuristic Calibration",
-  "description": "Level 3 packet for closing the remaining memory-save schema, sanitizer, validator, and D5 continuation defects identified by the 2026-04-09 RCA and skipped-recommendation audits.",
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration",
-  "keywords": [
-    "feature",
-    "specification",
-    "memory",
-    "save",
-    "heuristic",
-    "calibration"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "010",
-  "folderSlug": "memory-save-heuristic-calibration",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "002-continuity-memory-runtime",
-    "003-memory-quality-remediation"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/010-memory-save-heuristic-calibration",
@@ -37,5 +16,26 @@
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-memory-quality-remediation/010-memory-save-heuristic-calibration",
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration",
+  "description": "Feature Specification: Memory Save Heuristic Calibration",
+  "keywords": [
+    "feature",
+    "specification",
+    "memory",
+    "save",
+    "heuristic",
+    "calibration"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.081Z",
+  "specId": "010",
+  "folderSlug": "memory-save-heuristic-calibration",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "002-continuity-memory-runtime",
+    "002-memory-quality-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

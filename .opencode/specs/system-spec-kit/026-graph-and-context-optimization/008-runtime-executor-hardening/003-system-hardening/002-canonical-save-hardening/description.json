@@ -1,25 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening",
-  "description": "Feature Specification: Canonical-Save Hardening",
-  "keywords": [
-    "feature",
-    "specification",
-    "canonical-save",
-    "hardening"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "002",
-  "folderSlug": "canonical-save-hardening",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "008-runtime-executor-hardening",
-    "019-system-hardening"
-  ],
-  "memorySequence": 1,
-  "memoryNameHistory": [
-    "18-04-26_22-45__scaffolded-remediation-child-002-canonical-save.md"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/019-system-hardening/002-canonical-save-hardening",
@@ -36,5 +15,26 @@
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/019-system-hardening/002-canonical-save-hardening",
       "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening",
+  "description": "Feature Specification: Canonical-Save Hardening",
+  "keywords": [
+    "feature",
+    "specification",
+    "canonical-save",
+    "hardening"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.621Z",
+  "specId": "002",
+  "folderSlug": "canonical-save-hardening",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening",
+    "003-system-hardening"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-04-26_22-45__scaffolded-remediation-child-002-canonical-save.md"
+  ]
 }

@@ -1,3 +1,24 @@
+---
+title: "Save-Flow Backend Relevance Review"
+description: "The post-v3.4.1.0 save path is no longer dominated by the retired spec/memory/.md artifact flow; workflow.ts now skips legacy writes and legacy indexing, while the real durable mutation happens in the canonical save handler path."
+trigger_phrases:
+  - "research snapshot"
+  - "memory save rewrite pt 01"
+  - "save flow backend relevance review"
+  - "research snapshot research"
+  - "system spec kit"
+importance_tier: "normal"
+contextType: "research"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: research-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/research/014-memory-save-rewrite-pt-01/014-research-snapshot"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
+---
 <!-- SNAPSHOT: copied from 014-save-flow-backend-relevance-review/research/research.md on 2026-04-15. Authoritative source at original packet. -->
 
 ---

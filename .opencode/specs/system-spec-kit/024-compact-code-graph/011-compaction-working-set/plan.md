@@ -61,9 +61,6 @@ Template compliance shim anchor for phases.
 <!-- ANCHOR:testing -->
 Template compliance shim anchor for testing.
 <!-- /ANCHOR:testing -->
-<!-- ANCHOR:dependencies -->
-Template compliance shim anchor for dependencies.
-<!-- /ANCHOR:dependencies -->
 <!-- ANCHOR:rollback -->
 Template compliance shim anchor for rollback.
 <!-- /ANCHOR:rollback -->
@@ -110,14 +107,14 @@ Template compliance shim anchor for rollback.
    - Verify cached compact brief has all sections
    - Verify total token count ≤ 4000
 
-<!-- ANCHOR:dependencies-2 -->
+<!-- ANCHOR:dependencies -->
 ### Dependencies
 
 - Phase 001 hook-state for session state storage
 - Phase 008-010 for code graph structural context
 - CocoIndex Code MCP for semantic search
 - Existing `autoSurfaceAtCompaction` in memory-surface.ts
-<!-- /ANCHOR:dependencies-2 -->
+<!-- /ANCHOR:dependencies -->
 
 ### Risk Mitigation
 

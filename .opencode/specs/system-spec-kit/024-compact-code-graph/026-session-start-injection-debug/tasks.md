@@ -48,7 +48,7 @@ _memory:
 
 ---
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 ## Phase 2: Implementation
 
 - [x] T003 Create `lib/code-graph/startup-brief.ts` with `buildStartupBrief()` — reads graph DB + hook state, returns structured brief
@@ -57,7 +57,7 @@ _memory:
 - [x] T006 Wire `buildStartupBrief()` into Gemini `gemini/session-prime.ts:handleStartup()`
 - [x] T007 Remove `026` ownership claims over `PrimePackage` / `session_bootstrap` payload changes and point those to `027-opencode-structural-priming`
 - [x] T008 Update packet references so `026-session-start-injection-debug` and `027-opencode-structural-priming` are clearly distinguished
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 
 ---
 

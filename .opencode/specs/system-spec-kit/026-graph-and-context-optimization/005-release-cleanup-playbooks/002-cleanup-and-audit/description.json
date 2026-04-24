@@ -13,36 +13,6 @@
     "schema column preservation",
     "idempotent data migration"
   ],
-  "memorySequence": 1,
-  "memoryNameHistory": [
-    "18-04-26_22-57__wave-b-restored-root-spec-for-coordination-parent.md"
-  ],
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
-  "description": "Coordination parent for cleanup and audit work promoted from the old continuity refactor lane. The primary packet in this tree executes deletion-first shared-memory removal across lifecycle tools, runtime handlers, routing and governance branches, documentation catalog entries, playbook scenarios, and tests, while preserving only the unavoidable schema-column compatibility shim needed for older SQLite variants that cannot drop columns in place.",
-  "keywords": [
-    "feature removal",
-    "hard delete",
-    "shared memory",
-    "shared spaces",
-    "lifecycle tools",
-    "mcp server",
-    "governance scope",
-    "runtime cleanup",
-    "documentation cleanup",
-    "schema migration",
-    "backward compatibility",
-    "sqlite support",
-    "dropped column fallback",
-    "cleanup audit"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "008",
-  "folderSlug": "cleanup-and-audit",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "005-release-cleanup-playbooks"
-  ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit",
@@ -59,5 +29,27 @@
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/008-cleanup-and-audit",
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit",
+  "description": "Feature Specification: Cleanup and Audit Coordination Parent",
+  "keywords": [
+    "feature",
+    "specification",
+    "cleanup",
+    "audit",
+    "coordination",
+    "parent"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.209Z",
+  "specId": "002",
+  "folderSlug": "cleanup-and-audit",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "005-release-cleanup-playbooks"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-04-26_22-57__wave-b-restored-root-spec-for-coordination-parent.md"
+  ]
 }

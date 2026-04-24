@@ -43,26 +43,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -70,18 +54,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 006-documentation-alignment |
 | **Completed** | 2026-04-02 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 This summary preserves both the original Phase 006 hook-documentation record and the narrower 2026-04-02 follow-up alignment diff. The historical sections below explain what the packet originally captured; the later parity section describes the current follow-up edits that are actually present in the worktree today.
 
@@ -149,14 +133,14 @@ This follow-up pass corrected those summary layers and a small set of recovery/m
 | `AGENTS.md` / `AGENTS_example_fs_enterprises.md` | Historical packet record | Mentioned in the original packet history; not part of the current follow-up diff unless separately verified |
 | Reference freshness documentation | Not created in this phase | Keep as future follow-up if a dedicated freshness-strategy doc is still needed |
 | Hook-aware prompt asset documentation | Not created in this phase | Keep as future follow-up if dedicated prompt assets are still needed |
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 Documentation was updated in dependency order: feature catalog entries first (providing canonical descriptions), then testing playbook scenarios (referencing catalog entries), then `.opencode/skill/system-spec-kit/SKILL.md` and `.opencode/skill/system-spec-kit/ARCHITECTURE.md` (referencing both), and finally READMEs and cross-references (referencing all preceding docs). This spec-folder correction pass focused on synchronizing the written record with actual delivered artifacts so future readers can see which items shipped and which remain follow-up gaps.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -168,7 +152,7 @@ Documentation was updated in dependency order: feature catalog entries first (pr
 | Prefer explicit gaps over optimistic claims | This spec folder now marks root README context preservation coverage, dedicated cross-runtime consistency playbook work, and dedicated runtime adapter docs as future follow-ups instead of treating them as already shipped. |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -181,14 +165,14 @@ Documentation was updated in dependency order: feature catalog entries first (pr
 | Cross-references consistent | PASS — spec-folder references now avoid treating absent follow-up docs as delivered artifacts |
 | sk-doc DQI quality standards | PASS — proper frontmatter, anchors, and section structure throughout |
 | Phase 006 checklist | PASS — original hook/code-graph items remain complete, and summary-surface follow-through items are now documented explicitly |
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. **Mermaid diagrams require viewer support.** Terminals and plain-text editors will show raw Mermaid syntax. ASCII fallback is not provided.
 2. **Playbook scenarios are manual.** No automated test harness validates the documented scenarios; they depend on manual execution by the tester.
 3. **Cross-reference integrity is not enforced automatically.** Future documentation changes could introduce stale links between feature catalog, playbook, `.opencode/skill/system-spec-kit/SKILL.md`, and `.opencode/skill/system-spec-kit/ARCHITECTURE.md` without detection.
 4. **Three documentation items remain open.** The root README context preservation mention, dedicated cross-runtime consistency playbook coverage, and dedicated runtime adapter docs in ARCHITECTURE.md are follow-up gaps rather than delivered Phase 006 artifacts.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->

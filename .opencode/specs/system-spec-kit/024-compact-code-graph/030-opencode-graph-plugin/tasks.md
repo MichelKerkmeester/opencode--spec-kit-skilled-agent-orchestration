@@ -75,14 +75,14 @@ _memory:
 
 ---
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 ## Phase 2: Implementation
 
 - [x] T004 Implement and wire the live OpenCode plugin transport layer into session resume/bootstrap outputs and `opencode.json`
 - [x] T005 Implement and wire the graph operations hardening helper into session health/resume/bootstrap outputs
 - [x] T006 Synchronize parent and child packet docs with the delivered runtime files
 - [x] T007 Create implementation summaries for the parent packet and all three child phases
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 
 ---
 

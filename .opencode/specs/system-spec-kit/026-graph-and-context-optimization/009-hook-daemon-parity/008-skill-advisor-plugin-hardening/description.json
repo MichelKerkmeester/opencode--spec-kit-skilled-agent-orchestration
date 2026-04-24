@@ -6,13 +6,9 @@
     "specification",
     "skill-advisor",
     "plugin",
-    "hardening",
-    "state-isolation",
-    "dedup",
-    "lru",
-    "size-caps"
+    "hardening"
   ],
-  "lastUpdated": "2026-04-23T08:15:26.567Z",
+  "lastUpdated": "2026-04-24T15:56:56.786Z",
   "specId": "008",
   "folderSlug": "skill-advisor-plugin-hardening",
   "parentChain": [

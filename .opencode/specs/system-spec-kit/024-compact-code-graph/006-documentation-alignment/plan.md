@@ -61,9 +61,6 @@ Template compliance shim anchor for phases.
 <!-- ANCHOR:testing -->
 Template compliance shim anchor for testing.
 <!-- /ANCHOR:testing -->
-<!-- ANCHOR:dependencies -->
-Template compliance shim anchor for dependencies.
-<!-- /ANCHOR:dependencies -->
 <!-- ANCHOR:rollback -->
 Template compliance shim anchor for rollback.
 <!-- /ANCHOR:rollback -->
@@ -104,12 +101,12 @@ Template compliance shim anchor for rollback.
     - Remove or clearly mark any absent follow-up reference or prompt-template documents as not created when they are missing
     - Record undelivered items as future gaps: dedicated cross-runtime consistency playbook, ARCHITECTURE.md runtime adapter docs, root README context preservation mention
 
-<!-- ANCHOR:dependencies-2 -->
+<!-- ANCHOR:dependencies -->
 ### Dependencies
 - Phase 1-4 (all hook implementations must be designed for accurate documentation)
 - Phase 5 (agent definition changes affect AGENTS.md)
 - Can begin drafts in parallel with Phases 1-5, finalize after implementation
-<!-- /ANCHOR:dependencies-2 -->
+<!-- /ANCHOR:dependencies -->
 
 ### Technical Context
 - Runtime surface: system-spec-kit MCP server + hook adapters.

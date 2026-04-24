@@ -65,26 +65,26 @@ Codex CLI tasks are routed using the `-p` / `--profile` flag with a profile name
 ```bash
 # Profile-based delegation via exec (non-interactive)
 codex exec -p review "Review src/auth.ts for security issues" \
-  --model gpt-5.3-codex
+  --model gpt-5.5
 
 # Git diff review via built-in subcommand
-codex exec review "Focus on security" --commit HEAD --model gpt-5.3-codex
+codex exec review "Focus on security" --commit HEAD --model gpt-5.5
 
 # With sandbox override
 codex exec -p debug -s workspace-write \
-  "Fix the authentication bug in src/auth/handler.ts" --model gpt-5.3-codex
+  "Fix the authentication bug in src/auth/handler.ts" --model gpt-5.5
 
 # With file context
 codex exec -p review "@src/utils.ts @src/auth.ts Review these files for bugs" \
-  --model gpt-5.3-codex
+  --model gpt-5.5
 
 # With web search enabled
 codex exec -p research --search \
-  "Research and document the best OAuth2 PKCE patterns" --model gpt-5.3-codex
+  "Research and document the best OAuth2 PKCE patterns" --model gpt-5.5
 
 # Capture output to file
 codex exec -p context "Map the dependency graph for src/" \
-  --model gpt-5.3-codex > /tmp/context-map.txt
+  --model gpt-5.5 > /tmp/context-map.txt
 ```
 
 ### Profile Setup
@@ -137,16 +137,18 @@ model_reasoning_effort = "xhigh"
 
 ## 3. AGENT CATALOG
 
-### Model Selection for Agents
+### Reasoning Effort Selection for Agents
 
-| Agent Type | Recommended Model | Rationale |
+All agents dispatch `gpt-5.5`. Tune only reasoning effort per agent type:
+
+| Agent Type | Recommended Effort | Rationale |
 |-----------|-------------------|-----------|
-| Analysis / exploration | `gpt-5.4` | Frontier reasoning for architectural understanding |
-| Code review / security | `gpt-5.4` | Deep reasoning catches subtle issues |
-| Planning / strategy | `gpt-5.4` | Multi-faceted analysis benefits from higher reasoning |
-| Implementation / fixes | `gpt-5.3-codex` | Code-focused model for generation tasks |
-| Documentation / specs | `gpt-5.3-codex` | Efficient for structured content |
-| Research (with web) | `gpt-5.4` | Better synthesis of web findings |
+| Analysis / exploration | `high` | Architectural understanding benefits from deeper thinking |
+| Code review / security | `high` / `xhigh` | Catches subtle issues under rigorous review |
+| Planning / strategy | `high` / `xhigh` | Multi-faceted analysis benefits from depth |
+| Implementation / fixes | `medium` (default) | Balanced for typical generation tasks |
+| Documentation / specs | `medium` (default) | Efficient for structured content |
+| Research (with web) | `high` | Better synthesis of web findings |
 
 ---
 
@@ -155,7 +157,7 @@ model_reasoning_effort = "xhigh"
 | Property           | Value                          |
 | ------------------ | ------------------------------ |
 | **Role**           | Read-only codebase exploration |
-| **Model**          | gpt-5.4 (recommended) or gpt-5.3-codex |
+| **Model**          | gpt-5.5 (reasoning effort: `high` recommended) |
 | **Sandbox Mode**   | read-only                      |
 | **Modifies Files** | Never                          |
 
@@ -166,7 +168,7 @@ model_reasoning_effort = "xhigh"
 ```bash
 codex exec -p context \
   "Map all authentication-related files and their dependencies" \
-  -s read-only --model gpt-5.3-codex > /tmp/context-map.txt
+  -s read-only --model gpt-5.5 > /tmp/context-map.txt
 ```
 
 ---
@@ -176,7 +178,7 @@ codex exec -p context \
 | Property           | Value                                       |
 | ------------------ | ------------------------------------------- |
 | **Role**           | Systematic debugging with fresh perspective |
-| **Model**          | gpt-5.3-codex (fixes) or gpt-5.4 (analysis) |
+| **Model**          | gpt-5.5 (reasoning effort: `medium` for fixes, `high` for analysis) |
 | **Sandbox Mode**   | workspace-write                             |
 | **Modifies Files** | Yes (bug fixes)                             |
 
@@ -189,7 +191,7 @@ codex exec -p context \
 ```bash
 codex exec -p debug -s workspace-write \
   "Login returns 401 despite valid credentials. Error at src/auth/handler.ts:45. Prior attempts: verified token expiry, checked DB connection, confirmed env vars." \
-  --model gpt-5.3-codex
+  --model gpt-5.5
 ```
 
 ---
@@ -199,7 +201,7 @@ codex exec -p debug -s workspace-write \
 | Property           | Value                                           |
 | ------------------ | ----------------------------------------------- |
 | **Role**           | Multi-agent coordination and task decomposition |
-| **Model**          | gpt-5.3-codex                                   |
+| **Model**          | gpt-5.5 (reasoning effort: `medium`)             |
 | **Sandbox Mode**   | read-only                                       |
 | **Modifies Files** | Never (delegates to sub-agents)                 |
 
@@ -212,7 +214,7 @@ codex exec -p debug -s workspace-write \
 ```bash
 codex exec -p orchestrate \
   "Analyze this codebase: explore structure, review code quality, and produce a research document" \
-  -s read-only --model gpt-5.3-codex
+  -s read-only --model gpt-5.5
 ```
 
 ---
@@ -222,7 +224,7 @@ codex exec -p orchestrate \
 | Property           | Value                                                           |
 | ------------------ | --------------------------------------------------------------- |
 | **Role**           | Iterative evidence gathering, feasibility analysis, technology comparison |
-| **Model**          | gpt-5.4 (recommended for synthesis) or gpt-5.3-codex           |
+| **Model**          | gpt-5.5 (reasoning effort: `high` recommended for synthesis)    |
 | **Sandbox Mode**   | workspace-write                                                 |
 | **Modifies Files** | Yes (research.md)                                               |
 
@@ -235,7 +237,7 @@ codex exec -p orchestrate \
 ```bash
 codex exec -p research --search -s workspace-write \
   "Research the latest Next.js 15 App Router migration patterns. Compare with current Remix approach in this codebase." \
-  --model gpt-5.3-codex
+  --model gpt-5.5
 ```
 
 ---
@@ -245,7 +247,7 @@ codex exec -p research --search -s workspace-write \
 | Property           | Value                                                 |
 | ------------------ | ----------------------------------------------------- |
 | **Role**           | Code review, quality scoring (0-100), security audits |
-| **Model**          | gpt-5.4 (deep review, security) or gpt-5.3-codex (standard review) |
+| **Model**          | gpt-5.5 (reasoning effort: `high` for deep review/security, `medium` for standard review) |
 | **Sandbox Mode**   | read-only                                             |
 | **Modifies Files** | Never                                                 |
 
@@ -256,7 +258,7 @@ codex exec -p research --search -s workspace-write \
 ```bash
 codex exec -p review \
   "@src/auth/handler.ts @src/auth/middleware.ts Review these files for security vulnerabilities and code quality" \
-  -s read-only --model gpt-5.3-codex > /tmp/review-output.txt
+  -s read-only --model gpt-5.5 > /tmp/review-output.txt
 ```
 
 ---
@@ -266,7 +268,7 @@ codex exec -p review \
 | Property           | Value                                                |
 | ------------------ | ---------------------------------------------------- |
 | **Role**           | Multi-strategy planning with diverse thinking lenses |
-| **Model**          | gpt-5.4 (recommended for complex planning)          |
+| **Model**          | gpt-5.5 (reasoning effort: `high` / `xhigh` for complex planning) |
 | **Sandbox Mode**   | read-only                                            |
 | **Modifies Files** | Never                                                |
 
@@ -277,7 +279,7 @@ codex exec -p review \
 ```bash
 codex exec -p ultra-think -s read-only \
   "Design the caching strategy for this API. Consider Redis, in-memory, and CDN approaches." \
-  --model gpt-5.3-codex > /tmp/ultra-think-output.txt
+  --model gpt-5.5 > /tmp/ultra-think-output.txt
 ```
 
 ---
@@ -287,7 +289,7 @@ codex exec -p ultra-think -s read-only \
 | Property           | Value                                                  |
 | ------------------ | ------------------------------------------------------ |
 | **Role**           | Non-spec documentation (READMEs, guides, install docs) |
-| **Model**          | gpt-5.3-codex                                          |
+| **Model**          | gpt-5.5 (reasoning effort: `medium`)                    |
 | **Sandbox Mode**   | workspace-write                                        |
 | **Modifies Files** | Yes (non-spec docs)                                    |
 
@@ -298,7 +300,7 @@ codex exec -p ultra-think -s read-only \
 ```bash
 codex exec -p write -s workspace-write \
   "Generate a comprehensive README.md for this project based on the codebase structure" \
-  --model gpt-5.3-codex
+  --model gpt-5.5
 ```
 
 <!-- /ANCHOR:agent-catalog -->
@@ -353,11 +355,11 @@ codex exec -p write -s workspace-write \
 ```bash
 # Capture to file
 codex exec -p review "@src/auth.ts Review for issues" \
-  --model gpt-5.3-codex > /tmp/review.txt
+  --model gpt-5.5 > /tmp/review.txt
 
 # Capture to variable
 RESULT=$(codex exec -p context "List all exported functions" \
-  --model gpt-5.3-codex)
+  --model gpt-5.5)
 
 # Check result
 if [ $? -eq 0 ]; then
@@ -373,7 +375,7 @@ fi
 # Ask for JSON in the prompt (no native --output flag)
 codex exec -p review \
   "@src/auth.ts Review and return JSON: {score: number, issues: [{line, severity, description}]}" \
-  --model gpt-5.3-codex > /tmp/review.json
+  --model gpt-5.5 > /tmp/review.json
 
 # Parse with jq
 jq '.issues[] | select(.severity == "critical")' /tmp/review.json

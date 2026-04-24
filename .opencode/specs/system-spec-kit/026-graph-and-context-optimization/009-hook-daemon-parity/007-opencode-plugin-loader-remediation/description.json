@@ -7,12 +7,9 @@
     "opencode",
     "plugin",
     "loader",
-    "remediation",
-    "tui",
-    "crash",
-    "isolation"
+    "remediation"
   ],
-  "lastUpdated": "2026-04-23T07:50:30.843Z",
+  "lastUpdated": "2026-04-24T15:56:56.781Z",
   "specId": "007",
   "folderSlug": "opencode-plugin-loader-remediation",
   "parentChain": [

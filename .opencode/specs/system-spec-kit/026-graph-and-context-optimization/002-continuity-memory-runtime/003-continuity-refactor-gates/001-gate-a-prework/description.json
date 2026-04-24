@@ -2,25 +2,6 @@
   "title": "Gate A — Pre-work",
   "type": "gate-packet",
   "path": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/001-gate-a-prework",
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/001-gate-a-prework",
-  "description": "Remove known template and packet-prep blockers before Gate B schema and runtime work begins.",
-  "keywords": [
-    "feature",
-    "specification",
-    "gate",
-    "pre-work"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "001",
-  "folderSlug": "gate-a-prework",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "002-continuity-memory-runtime",
-    "006-continuity-refactor-gates"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/001-gate-a-prework",
@@ -37,5 +18,24 @@
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/006-continuity-refactor-gates/001-gate-a-prework",
       "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/001-gate-a-prework"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/001-gate-a-prework",
+  "description": "Feature Specification: Gate A — Pre-work",
+  "keywords": [
+    "feature",
+    "specification",
+    "gate",
+    "pre-work"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.092Z",
+  "specId": "001",
+  "folderSlug": "gate-a-prework",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "002-continuity-memory-runtime",
+    "003-continuity-refactor-gates"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

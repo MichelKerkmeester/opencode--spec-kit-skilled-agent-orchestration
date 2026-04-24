@@ -1,3 +1,23 @@
+---
+title: "Feature Specification: Non-System Playbook Prompt Modernization"
+description: "The repository now contains several non-system-spec-kit manual testing playbook packages that were authored at different maturity levels."
+trigger_phrases:
+  - "non system playbook prompts"
+  - "skilled agent orchestration"
+  - "non system playbook prompt modernization"
+  - "non system playbook prompts spec"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/044-non-system-playbook-prompts"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled frontmatter (repo-wide gap fill)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 ---
 title: "Feature Specification: Non-System Playbook Prompt [skilled-agent-orchestration/044-non-system-playbook-prompts/spec]"

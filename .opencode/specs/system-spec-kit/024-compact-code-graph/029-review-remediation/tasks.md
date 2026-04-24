@@ -44,7 +44,7 @@ _memory:
 - [x] T004 [WS-2] Decide the root evidence ownership model for shipped Phase 015/016 status before implementation begins (root summary refresh vs checklist repointing vs both).
 <!-- /ANCHOR:phase-1 -->
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 ## Phase 2: Implementation
 
 - [x] T005 [WS-1] Align `session_bootstrap` handler output with every documented public contract surface (`.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts`, `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`, `.opencode/skill/system-spec-kit/mcp_server/README.md`).
@@ -54,7 +54,7 @@ _memory:
 - [x] T009 [WS-4] Truth-sync Phase 021 to the bootstrap-first recovery contract and mark superseded guidance explicitly if kept for history (`../021-cross-runtime-instruction-parity/spec.md`, `../021-cross-runtime-instruction-parity/implementation-summary.md`, `AGENTS.md`).
 - [x] T010 [WS-5] Implement or relax the Phase 027 hard structural budget claim so packet docs and runtime behavior agree (`../027-opencode-structural-priming/spec.md`, `../027-opencode-structural-priming/plan.md`, `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts`).
 - [x] T011 [WS-6] Align `context-prime` structural Prime Package wording across OpenCode, Claude, and the live Codex runtime surfaces if the advisory is accepted for this pass (`.opencode/agent/context-prime.md`, `.claude/agents/context-prime.md`, `.codex/agents/context-prime.toml`).
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification

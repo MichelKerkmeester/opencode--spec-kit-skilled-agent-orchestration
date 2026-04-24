@@ -44,24 +44,15 @@ Template compliance shim section. Legacy phase content continues below.
 ## Cross-References
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:notation -->
-Template compliance shim anchor for notation.
-<!-- /ANCHOR:notation -->
 <!-- ANCHOR:phase-1 -->
 Template compliance shim anchor for phase-1.
 <!-- /ANCHOR:phase-1 -->
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 Template compliance shim anchor for phase-2.
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 <!-- ANCHOR:phase-3 -->
 Template compliance shim anchor for phase-3.
 <!-- /ANCHOR:phase-3 -->
-<!-- ANCHOR:completion -->
-Template compliance shim anchor for completion.
-<!-- /ANCHOR:completion -->
-<!-- ANCHOR:cross-refs -->
-Template compliance shim anchor for cross-refs.
-<!-- /ANCHOR:cross-refs -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 3 -->
@@ -69,7 +60,7 @@ Template compliance shim anchor for cross-refs.
 
 ---
 
-<!-- ANCHOR:notation-2 -->
+<!-- ANCHOR:notation -->
 ### Task Notation
 | Prefix | Meaning |
 |--------|---------|
@@ -80,7 +71,7 @@ Template compliance shim anchor for cross-refs.
 | `[B]` | Blocked |
 
 **Task Format**: `Phase ### — Name (status)`
-<!-- /ANCHOR:notation-2 -->
+<!-- /ANCHOR:notation -->
 
 ---
 ### v1 Phases (001-012) — Hook + Code Graph Foundation
@@ -141,7 +132,7 @@ Evidence base: 95 research iterations + 30 review iterations (Codex CLI + Copilo
 - [~] Phase 034: Workflow Split and Token Insight Contracts — optional tail packet opened for later orchestration and insight contracts
 ---
 
-<!-- ANCHOR:completion-2 -->
+<!-- ANCHOR:completion -->
 ### Completion Criteria
 - [x] All 31 shipped direct phases have child spec folders with spec.md + plan.md + checklist.md
 - [x] Draft follow-on phases 032-034 are explicitly opened as child packets and do not silently disappear from the train
@@ -151,14 +142,14 @@ Evidence base: 95 research iterations + 30 review iterations (Codex CLI + Copilo
 - [x] Hook scripts registered in .claude/settings.local.json
 - [x] Cross-runtime fallback verified (Codex CLI tested)
 - [x] Remaining deferred SymbolKinds follow-on is explicitly tracked outside packet completion and no longer blocks packet closeout
-<!-- /ANCHOR:completion-2 -->
+<!-- /ANCHOR:completion -->
 
 ---
 
-<!-- ANCHOR:cross-refs-2 -->
+<!-- ANCHOR:cross-refs -->
 ### Cross-References
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
 - **Decision Record**: See `decision-record.md` (17 decisions: DR-001 through DR-017)
-<!-- /ANCHOR:cross-refs-2 -->
+<!-- /ANCHOR:cross-refs -->

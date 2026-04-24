@@ -1,24 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite",
-  "description": "Feature Specification: Playbook Prompt Rewrite",
-  "keywords": [
-    "feature",
-    "specification",
-    "playbook",
-    "prompt",
-    "rewrite"
-  ],
-  "lastUpdated": "2026-04-21T13:00:00Z",
-  "specId": "001",
-  "folderSlug": "playbook-prompt-rewrite",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "005-release-cleanup-playbooks",
-    "009-playbook-and-remediation"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite",
@@ -35,5 +15,25 @@
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/009-playbook-and-remediation/001-playbook-prompt-rewrite",
       "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite",
+  "description": "Feature Specification: Playbook Prompt Rewrite",
+  "keywords": [
+    "feature",
+    "specification",
+    "playbook",
+    "prompt",
+    "rewrite"
+  ],
+  "lastUpdated": "2026-04-24T15:56:56.239Z",
+  "specId": "001",
+  "folderSlug": "playbook-prompt-rewrite",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "005-release-cleanup-playbooks",
+    "003-playbook-and-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

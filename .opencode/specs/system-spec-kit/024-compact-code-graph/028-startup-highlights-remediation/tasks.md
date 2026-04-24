@@ -35,7 +35,7 @@ _memory:
 - [x] Confirm the remediation remains scoped to startup-highlight output and does not reopen sibling startup-brief contract work.
 <!-- /ANCHOR:phase-1 -->
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase -->
 ## Phase 2: Implementation
 
 - [x] **Task 2** Rewrite `queryStartupHighlights()` with the `filtered_nodes -> aggregated -> ranked` CTE chain.
@@ -43,7 +43,7 @@ _memory:
 - [x] Group by display fields instead of raw symbol IDs so duplicate visible rows collapse correctly.
 - [x] Switch call ranking from outgoing-call volume to incoming-call importance.
 - [x] Preserve the existing max-two-results-per-file diversity behavior.
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase -->
 
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification

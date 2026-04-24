@@ -7,16 +7,12 @@
     "documentation",
     "impact",
     "remediation",
+    "009",
     "hook",
     "daemon",
-    "parity",
-    "advisor",
-    "copilot",
-    "codex",
-    "claude",
-    "opencode"
+    "parity"
   ],
-  "lastUpdated": "2026-04-23T19:40:00Z",
+  "lastUpdated": "2026-04-24T15:56:56.810Z",
   "specId": "012",
   "folderSlug": "docs-impact-remediation",
   "parentChain": [

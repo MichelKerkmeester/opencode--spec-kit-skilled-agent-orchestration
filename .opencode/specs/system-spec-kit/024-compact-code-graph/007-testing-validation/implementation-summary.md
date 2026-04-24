@@ -43,26 +43,10 @@ Template compliance shim section. Legacy phase content continues below.
 ## Known Limitations
 Template compliance shim section. Legacy phase content continues below.
 
-<!-- ANCHOR:metadata -->
-Template compliance shim anchor for metadata.
-<!-- /ANCHOR:metadata -->
-<!-- ANCHOR:what-built -->
-Template compliance shim anchor for what-built.
-<!-- /ANCHOR:what-built -->
-<!-- ANCHOR:how-delivered -->
-Template compliance shim anchor for how-delivered.
-<!-- /ANCHOR:how-delivered -->
-Template compliance shim anchor for decisions.
 <!-- ANCHOR:decisions -->
 Decision details are documented in the Key Decisions section above.
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:verification -->
-Template compliance shim anchor for verification.
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:limitations -->
-Template compliance shim anchor for limitations.
-<!-- /ANCHOR:limitations -->
 <!-- SPECKIT_TEMPLATE_SHIM_END -->
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -70,18 +54,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata-2 -->
+<!-- ANCHOR:metadata -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 007-testing-validation |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata-2 -->
+<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built-2 -->
+<!-- ANCHOR:what-built -->
 ### What Was Built
 A comprehensive automated test suite validating the entire hook system, runtime detection, cross-runtime fallback, and session continuity. 242 tests across 16 files provide coverage for both hook-active (Claude Code) and hook-absent (Codex/Copilot/Gemini) execution paths.
 
@@ -128,14 +112,14 @@ Manual testing playbook scenarios from Phase 006 were not executed as an interac
 | `tests/edge-cases.vitest.ts` | New | Edge case coverage (13 tests) |
 | `tests/dual-scope-hooks.vitest.ts` | Modified | Added compaction fixtures (3 tests) |
 | `tests/crash-recovery.vitest.ts` | Modified | Added SQLite fixtures (4 tests) |
-<!-- /ANCHOR:what-built-2 -->
+<!-- /ANCHOR:what-built -->
 
 ---
 
-<!-- ANCHOR:how-delivered-2 -->
+<!-- ANCHOR:how-delivered -->
 ### How It Was Delivered
 Test files were implemented in dependency order: shared fixtures first, then unit tests, then integration tests. Each test file uses the RuntimeFixture factory for consistent environment setup. In-memory SQLite was used for all database integration tests to avoid filesystem side effects.
-<!-- /ANCHOR:how-delivered-2 -->
+<!-- /ANCHOR:how-delivered -->
 
 ---
 ### Key Decisions
@@ -147,7 +131,7 @@ Test files were implemented in dependency order: shared fixtures first, then uni
 | HOOK_TIMEOUT_MS=1800 for performance assertions | Provides margin under the 2s hard cap while catching regressions |
 ---
 
-<!-- ANCHOR:verification-2 -->
+<!-- ANCHOR:verification -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -155,13 +139,13 @@ Test files were implemented in dependency order: shared fixtures first, then uni
 | Full codebase test suite | 9089/9147 passed (51 pre-existing failures in unrelated tests) |
 | `npx vitest run --coverage` | Coverage report generated |
 | Phase 007 checklist | All P0/P1/P2 items verified |
-<!-- /ANCHOR:verification-2 -->
+<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:limitations-2 -->
+<!-- ANCHOR:limitations -->
 ### Known Limitations
 1. **Copilot/Gemini hook adapter fixtures** deferred to v2 pending runtime SDK changes. Tool-based fallback tests provide interim coverage.
 2. **51 pre-existing test failures** in unrelated test files are not addressed by this phase.
 3. **Manual testing playbook** was replaced by programmatic verification rather than interactive manual execution.
-<!-- /ANCHOR:limitations-2 -->
+<!-- /ANCHOR:limitations -->
