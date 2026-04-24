@@ -1,0 +1,52 @@
+{
+  "title": "Resource Map Deep-Loop Integration",
+  "summary": "Teach sk-deep-review and sk-deep-research to emit a filled resource-map.md at convergence, aggregated from per-iteration evidence deltas. Review maps carry P0/P1/P2 findings-per-file counts; research maps carry per-iteration citation counts. Shared extractor, no new scan cost, opt-out available.",
+  "level": 2,
+  "status": "draft",
+  "priority": "P1",
+  "phase": {
+    "number": "013",
+    "of": "013",
+    "parent": "system-spec-kit/026-graph-and-context-optimization",
+    "predecessor": "002-resource-map-template-creation",
+    "successor": null
+  },
+  "triggers": [
+    "026/013 resource map deep loop",
+    "resource map deep-review integration",
+    "resource map deep-research integration",
+    "convergence-time resource map",
+    "iteration evidence aggregation"
+  ],
+  "created": "2026-04-24",
+  "updated": "2026-04-24",
+  "ownership": {
+    "author": "claude-opus-4-7",
+    "executors": [
+      "TBD"
+    ]
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/003-resource-map-deep-loop-integration",
+  "description": "Feature Specification: Resource Map Integration for sk-deep-review and sk-deep-research",
+  "keywords": [
+    "feature",
+    "specification",
+    "resource",
+    "map",
+    "integration",
+    "sk-deep-review",
+    "sk-deep-research"
+  ],
+  "lastUpdated": "2026-04-24T13:05:38.081Z",
+  "specId": "002",
+  "folderSlug": "resource-map-deep-loop-integration",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "011-resource-map-template"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "24-04-26_14-05__landed-canonical-resource-map-integration-for-sk.md"
+  ]
+}

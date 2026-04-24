@@ -1,0 +1,26 @@
+{
+  "title": "Memory Indexer Invariants",
+  "summary": "Umbrella phase coordinating the two memory-indexer invariant fixes: child 001 hardens lineage and concurrency behavior (E_LINEAGE and candidate_changed fixes via fromScan recheck bypass); child 002 enforces index-scope exclusions (z_future, external paths) and stops constitutional-tier pollution by restricting constitutional rows to dedicated folders. Both children shipped.",
+  "level": "coordination-root",
+  "status": "complete",
+  "importance_tier": "high",
+  "trigger_phrases": [
+    "026/010 memory indexer invariants",
+    "memory indexer lineage fix",
+    "constitutional tier pollution fix",
+    "index scope invariants",
+    "indexer correctness"
+  ],
+  "children": [
+    {
+      "slug": "001-memory-indexer-lineage-and-concurrency-fix",
+      "title": "Memory Indexer Lineage and Concurrency Fix",
+      "status": "complete"
+    },
+    {
+      "slug": "002-index-scope-and-constitutional-tier-invariants",
+      "title": "Index Scope and Constitutional Tier Invariants",
+      "status": "complete"
+    }
+  ]
+}

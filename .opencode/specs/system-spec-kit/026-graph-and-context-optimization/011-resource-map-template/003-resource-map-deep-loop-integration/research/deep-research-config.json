@@ -1,0 +1,77 @@
+{
+  "topic": "Deeply investigate what needs to be implemented for packet 026/013 to integrate automatic convergence-time resource-map.md emission into sk-deep-review and sk-deep-research in a smart, low-coupling way. Determine the live delta/state schemas, safest integration points, template-fit constraints, workflow/docs/test changes, and the edge-case handling needed for a production-quality implementation.",
+  "maxIterations": 7,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "progressiveSynthesis": true,
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/003-resource-map-deep-loop-integration",
+  "createdAt": "2026-04-24T10:30:43.408Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "native",
+    "model": null,
+    "reasoningEffort": null,
+    "serviceTier": null,
+    "sandboxMode": null,
+    "timeoutSeconds": 900
+  },
+  "lineage": {
+    "sessionId": "dr-2026-04-24T10-30-43-408Z",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": [
+      "new",
+      "resume",
+      "restart"
+    ],
+    "deferredModes": [
+      "fork",
+      "completed-continue"
+    ],
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "research/findings-registry.json",
+    "dashboardFile": "research/deep-research-dashboard.md",
+    "strategyFile": "research/deep-research-strategy.md",
+    "machineOwnedSections": [
+      "key-questions",
+      "answered-questions",
+      "what-worked",
+      "what-failed",
+      "exhausted-approaches",
+      "ruled-out-directions",
+      "next-focus"
+    ]
+  },
+  "capabilityMatrixPath": ".opencode/skill/sk-deep-research/assets/runtime_capabilities.json",
+  "capabilityMatrixDocPath": ".opencode/skill/sk-deep-research/references/capability_matrix.md",
+  "runtimeCapabilityResolver": ".opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs",
+  "reducerScriptPath": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+  "pauseSentinelPath": "research/.deep-research-pause",
+  "archiveRoot": "research/archive",
+  "migrationWindowDays": 28,
+  "originalKeyQuestions": [
+    "What are the real reducer inputs and per-iteration evidence shapes in sk-deep-review and sk-deep-research today, and what normalization is actually required?",
+    "What is the smartest minimal-coupling integration point for resource-map emission: inside the reducers, as a post-reducer workflow step, or during synthesis?",
+    "How should the emitted review and research maps extend the phase-012 resource-map template without creating format drift or brittle template coupling?",
+    "Which command, YAML, docs, catalog, playbook, and test surfaces must change to satisfy the phase-013 acceptance criteria end-to-end?",
+    "Which failure modes and edge cases need explicit handling so the feature is idempotent, child-phase-safe, and resilient to malformed or partial evidence?"
+  ],
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "findings-registry.json": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research/research.md": "mutable"
+  }
+}

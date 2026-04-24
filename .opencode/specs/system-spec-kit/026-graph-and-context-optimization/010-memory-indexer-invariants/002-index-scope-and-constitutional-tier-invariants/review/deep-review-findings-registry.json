@@ -1,0 +1,542 @@
+{
+  "sessionId": "2026-04-24T08:04:38.636Z",
+  "generation": 1,
+  "lineageMode": "new",
+  "openFindings": [
+    {
+      "id": "P0-001",
+      "severity": "P0",
+      "dimension": "correctness",
+      "title": "memory_update MCP tool bypasses Invariant 3: arbitrary tier promotion on any existing row",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts",
+      "lines": [67, 87, 149],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-mutations.ts", "lines": [399, 402] },
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts", "lines": [295] },
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts", "lines": [104] }
+      ],
+      "iterationFirstSeen": 5,
+      "evidence": "handleMemoryUpdate validates importanceTier only against VALID_TIERS (line 67), passes through updateParams.importanceTier (line 87), calls vectorIndex.updateMemory which writes importance_tier = ? with no path check (vector-index-mutations.ts:399-403). MCP tool exposed via tool-schemas.ts:295. Defeats user-directed Invariant 3.",
+      "status": "open",
+      "crossReferencedIterations": [],
+      "convergenceVeto": true,
+      "securityFraming": "attacker-controlled-content-injection: promoting a non-constitutional memory to tier=constitutional causes the auto-surface hook (hooks/memory-surface.ts:187) to return it in every search session's context prelude"
+    },
+    {
+      "id": "P1-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Cleanup script builds plan outside transaction (TOCTOU)",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [376, 399],
+      "iterationFirstSeen": 1,
+      "evidence": "const plan = buildPlan(database); const tx = database.transaction(() => applyCleanup(database, plan));",
+      "status": "open",
+      "crossReferencedIterations": [2, 5],
+      "iter5Verification": "Confirmed real — cleanup opens its own SQLite connection (line 57); MCP server uses in-process withSpecFolderLock only; no cross-process coordination."
+    },
+    {
+      "id": "P1-002",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "FTS cleanup relies on assumed trigger with no runtime verification",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [46, 281],
+      "iterationFirstSeen": 1,
+      "evidence": "ftsCleanupStrategy: 'memory_index_trigger' - never asserted",
+      "status": "open",
+      "crossReferencedIterations": [2]
+    },
+    {
+      "id": "P1-003",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Symlink bypass: path.resolve does not follow symlinks",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      "lines": [306],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts", "lines": [1254] },
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts", "lines": [135, 141, 142] },
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/canonical-path.ts", "lines": [26, 42] }
+      ],
+      "iterationFirstSeen": 1,
+      "evidence": "canonicalFilePath = path.resolve(parsed.filePath).replace(/\\\\/g, '/'); adjacent code-graph scan uses realpathSync explicitly with SECURITY comment. Design inconsistency within same codebase.",
+      "status": "open",
+      "crossReferencedIterations": [2, 5],
+      "securityFraming": "privilege-escalation: symlink in specs/ pointing to /external/ or /z_future/ bypasses invariant",
+      "iter5Verification": "Confirmed — code-graph scan.ts:135 uses realpathSync with explicit SECURITY comment; memory-save + walker paths do not follow the same doctrine. Design-level inconsistency."
+    },
+    {
+      "id": "P1-004",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Cleanup LIKE patterns miss rows with no leading slash",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [99, 103, 107, 117],
+      "iterationFirstSeen": 1,
+      "evidence": "file_path LIKE '%/z_future/%' - diverges from (^|/)z_future(/|$) regex semantics",
+      "status": "open",
+      "crossReferencedIterations": [2],
+      "securityFraming": "cleanup-evasion: attacker storing relative z_future/ path bypasses cleanup while matching runtime regex"
+    },
+    {
+      "id": "P1-005",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Cleanup --apply has no idempotence short-circuit",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [394, 399],
+      "iterationFirstSeen": 1,
+      "evidence": "no early-exit branch when before summary shows zero violations",
+      "status": "open"
+    },
+    {
+      "id": "P1-006",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "stripDeletedIdsFromMutationLedger is a silent no-op stub",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [232, 293],
+      "iterationFirstSeen": 1,
+      "evidence": "function stripDeletedIdsFromMutationLedger(...): number { return 0; }",
+      "status": "open"
+    },
+    {
+      "id": "P1-007",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Log-injection in save-time downgrade WARN (parser-controlled file_path logged verbatim)",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      "lines": [311, 319],
+      "iterationFirstSeen": 2,
+      "evidence": "console.warn('[memory-save] ...', { file_path: parsed.filePath }) - no newline/control-char strip",
+      "status": "open"
+    },
+    {
+      "id": "P1-008",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Silent tier downgrade still indexes attacker-declared-constitutional content; no governance audit row",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      "lines": [310, 314],
+      "iterationFirstSeen": 2,
+      "evidence": "parsed.importanceTier = 'important'; save continues. No governance_audit insert on this branch.",
+      "status": "open"
+    },
+    {
+      "id": "P1-009",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Walker DoS: unbounded readdirSync + per-directory whole .gitignore read",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/structural-indexer.ts",
+      "lines": [1162, 1206],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts", "lines": [68, 218] }
+      ],
+      "iterationFirstSeen": 2,
+      "evidence": "loadGitignore uses readFileSync with no size cap; findFiles.walk has no depth / node-count bound.",
+      "status": "open"
+    },
+    {
+      "id": "P1-010",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "spec.md Status=In Progress contradicts verified delivered state",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants/spec.md",
+      "lines": [56],
+      "iterationFirstSeen": 3,
+      "status": "open"
+    },
+    {
+      "id": "P1-011",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Stale _memory.continuity frontmatter in plan.md, decision-record.md, spec.md (completion_pct=20)",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants/plan.md",
+      "lines": [11, 23],
+      "iterationFirstSeen": 3,
+      "status": "open"
+    },
+    {
+      "id": "P1-012",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "plan.md Implementation Phases + DoD checkboxes remain unchecked after completion",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants/plan.md",
+      "lines": [59, 62, 87, 100],
+      "iterationFirstSeen": 3,
+      "status": "open"
+    },
+    {
+      "id": "P1-013",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "Parallel exclusion lists in spec-doc-paths.ts duplicate index-scope.ts invariants",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
+      "lines": [29, 34, 40],
+      "iterationFirstSeen": 4,
+      "status": "open"
+    },
+    {
+      "id": "P1-014",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "SPEC_DOC_EXCLUDE_DIRS in memory-index-discovery.ts is a third exclusion source with partial overlap and 'iterations' granularity drift",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts",
+      "lines": [28, 73, 224],
+      "iterationFirstSeen": 4,
+      "status": "open"
+    },
+    {
+      "id": "P1-015",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "No code back-references to packet 011, ADR-004, or ADR-005 anywhere in shipped implementation",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      "lines": [306, 310, 314],
+      "iterationFirstSeen": 4,
+      "status": "open",
+      "iter5Strengthening": "Reinforced — memory-crud-update.ts is exactly the kind of file a maintainer working on packet 011 would not read because nothing signals that memory_update enforces (or is supposed to enforce) the same invariant."
+    },
+    {
+      "id": "P1-016",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "memory_update missing governance_audit record for tier changes",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts",
+      "lines": [201, 220],
+      "iterationFirstSeen": 5,
+      "evidence": "memory_update writes mutation_ledger with generic reason 'memory_update: metadata update' but no governance_audit row for tier transitions to/from constitutional. Combined with P0-001, a successful attack leaves no typed audit signal.",
+      "status": "open",
+      "relatedFindings": ["P0-001", "P1-008"]
+    },
+    {
+      "id": "P1-017",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Symlink bypass escalation: design-level inconsistency within same codebase (code-graph uses realpathSync, memory-save does not)",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      "lines": [306],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts", "lines": [135, 141] },
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/canonical-path.ts", "lines": [26, 42] }
+      ],
+      "iterationFirstSeen": 5,
+      "evidence": "code-graph/handlers/scan.ts:135 explicit comment 'SECURITY: Canonicalize paths via realpathSync() to prevent symlink bypass'; memory-save.ts:306 uses path.resolve only. Design doctrine inconsistency.",
+      "status": "open",
+      "relatedFindings": ["P1-003"]
+    },
+    {
+      "id": "P2-001",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "isConstitutionalPath recompiles regex per call",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts",
+      "lines": [50, 52],
+      "iterationFirstSeen": 1,
+      "status": "open"
+    },
+    {
+      "id": "P2-002",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "README.md rejection is defense-in-depth by coincidence",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts",
+      "lines": [955, 979],
+      "iterationFirstSeen": 1,
+      "status": "open"
+    },
+    {
+      "id": "P2-003",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "Two guard invocations with different input normalization",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      "lines": [2695, 306],
+      "iterationFirstSeen": 1,
+      "status": "open"
+    },
+    {
+      "id": "P2-004",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "EXCLUDED_FOR_CODE_GRAPH blanket-excludes any 'dist' segment",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts",
+      "lines": [36],
+      "iterationFirstSeen": 1,
+      "status": "open"
+    },
+    {
+      "id": "P2-005",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "Cleanup collectSummary.zFutureRows mixes OR conditions that delete cannot match",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [99, 118],
+      "iterationFirstSeen": 1,
+      "status": "open"
+    },
+    {
+      "id": "P2-006",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Cleanup console.error leaks absolute DB path on better-sqlite3 I/O failure",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [407],
+      "iterationFirstSeen": 2,
+      "status": "open"
+    },
+    {
+      "id": "P2-007",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Cleanup produces no machine-readable report",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [337, 361, 378, 405],
+      "iterationFirstSeen": 2,
+      "status": "open"
+    },
+    {
+      "id": "P2-008",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "Supply-chain: sqlite-vec native extension loaded unconditionally in cleanup",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [6, 374],
+      "iterationFirstSeen": 2,
+      "status": "open"
+    },
+    {
+      "id": "P2-009",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "spec.md Section 13 open-question about README count (2 vs 3) is stale after ADR-005",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants/spec.md",
+      "lines": [291, 294],
+      "iterationFirstSeen": 3,
+      "status": "open"
+    },
+    {
+      "id": "P2-010",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "feature_catalog and manual_testing_playbook carry no entry for the three invariants or index-scope helper",
+      "file": ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
+      "lines": [],
+      "iterationFirstSeen": 3,
+      "status": "open"
+    },
+    {
+      "id": "P2-011",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "Decision-record does not document packet 010/011 composition for save-path defense-in-depth",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants/decision-record.md",
+      "lines": [51],
+      "iterationFirstSeen": 3,
+      "status": "open"
+    },
+    {
+      "id": "P2-012",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "Parent 026 graph-metadata.json child reference contains double-slash drift",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/graph-metadata.json",
+      "lines": [17],
+      "iterationFirstSeen": 3,
+      "status": "open"
+    },
+    {
+      "id": "P2-013",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Cleanup script diverges from sibling-script conventions (DB_PATH source, banners)",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [1, 57],
+      "iterationFirstSeen": 4,
+      "status": "open"
+    },
+    {
+      "id": "P2-014",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "No test-visible access to compileSegmentPattern / normalizeIndexScopePath / isConstitutionalPath",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/tests/index-scope.vitest.ts",
+      "lines": [7, 11, 49],
+      "iterationFirstSeen": 4,
+      "status": "open"
+    },
+    {
+      "id": "P2-015",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "index-scope.ts has no JSDoc on any exported function",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts",
+      "lines": [42, 46, 50],
+      "iterationFirstSeen": 4,
+      "status": "open"
+    },
+    {
+      "id": "P2-016",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Tests do not lock in that readme.md is excluded under /constitutional/",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/tests/index-scope.vitest.ts",
+      "lines": [49, 114],
+      "iterationFirstSeen": 4,
+      "status": "open"
+    },
+    {
+      "id": "P2-017",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Operator-facing --verify has no CI hook documented",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [386, 392],
+      "iterationFirstSeen": 4,
+      "status": "open"
+    },
+    {
+      "id": "P2-018",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Function naming: shouldIndexForMemory ambiguous with RAM vs memory-system-index",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts",
+      "lines": [42, 46],
+      "iterationFirstSeen": 4,
+      "status": "open"
+    },
+    {
+      "id": "P2-019",
+      "severity": "P2",
+      "dimension": "correctness",
+      "title": "update_memory silently invalidates constitutional cache on every tier change (no durable signal)",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-mutations.ts",
+      "lines": [402],
+      "iterationFirstSeen": 5,
+      "evidence": "clear_constitutional_cache() fires whenever importanceTier !== undefined; no durable record distinguishes legitimate tier changes from attempted promotions.",
+      "status": "open",
+      "relatedFindings": ["P0-001", "P1-016"]
+    },
+    {
+      "id": "P2-020",
+      "severity": "P2",
+      "dimension": "traceability",
+      "title": "mcp_server/README.md Invariants section omits memory_update UPDATE path",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      "lines": [111, 116],
+      "iterationFirstSeen": 5,
+      "evidence": "README documents save-time guard and walker exclusions but does not enumerate every tier-write site; reader seeking 'all enforcement sites' would miss memory_update.",
+      "status": "open"
+    },
+    {
+      "id": "P2-021",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "No regression test for memory_update tier-promotion scenarios",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/tests/memory-save-index-scope.vitest.ts",
+      "lines": [326, 379],
+      "iterationFirstSeen": 5,
+      "evidence": "Existing suite covers only handleMemorySave + indexMemoryFileFromScan; no test asserts handleMemoryUpdate behavior when importanceTier='constitutional' is applied to a non-constitutional-path row. Compound with P0-001.",
+      "status": "open",
+      "relatedFindings": ["P0-001", "P2-014", "P2-016"]
+    },
+    {
+      "id": "P0-002",
+      "severity": "P0",
+      "dimension": "correctness",
+      "title": "checkpoint_restore revives arbitrary (file_path, importance_tier) pairs from snapshot with no invariant re-assertion",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts",
+      "lines": [1467, 1492, 1544, 1552, 1258, 1276],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts", "lines": [363] }
+      ],
+      "iterationFirstSeen": 6,
+      "evidence": "restoreCheckpoint decompresses memory_snapshot blob (line 1492), parses JSON (line 1493), and writes rows via INSERT OR REPLACE (line 1544) or dynamic UPDATE (line 1552) using columns directly from snapshot including importance_tier and file_path. validateMemoryRow at line 1258 checks TYPES only (id is number, file_path is non-empty string, required fields present); does NOT re-assert isConstitutionalPath or shouldIndexForMemory. Attacker with tampered checkpoint (or prior P0-001-poisoned DB captured as snapshot) can re-hydrate arbitrary constitutional rows.",
+      "status": "open",
+      "convergenceVeto": true,
+      "securityFraming": "attacker-controlled-content-injection via tampered-checkpoint restore; compound exploit chain with P0-001 (poison → checkpoint → bulk_delete audit → restore after retention sweep)",
+      "crossReferencedIterations": []
+    },
+    {
+      "id": "P1-018",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "applyPostInsertMetadata ALLOWED_POST_INSERT_COLUMNS allowlist includes importance_tier with no path check; every caller is structurally dependent on upstream guard",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/storage/post-insert-metadata.ts",
+      "lines": [54, 80, 104],
+      "iterationFirstSeen": 6,
+      "evidence": "ALLOWED_POST_INSERT_COLUMNS at line 53-62 includes 'importance_tier'. The dynamic SET builder at line 80-109 issues UPDATE memory_index SET importance_tier = ? with no inspection of the value against companion file_path. All current callers (create-record, lineage-state, reconsolidation, chunking-orchestrator, pe-gating, memory-save.ts:3050 governance, memory-save.ts:3235) pass parsed.importanceTier which has been downgraded by the save guard — but this is STRUCTURAL fragility. Any future caller bypasses Invariant 3 silently. Compound with P0-001, P0-002.",
+      "status": "open",
+      "relatedFindings": ["P0-001", "P0-002", "P1-015"]
+    },
+    {
+      "id": "P1-019",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "memory_save direct-call bypasses walker's z_future/external exclusion (Invariant 1/2 enforced only on walker path)",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      "lines": [298, 310],
+      "iterationFirstSeen": 6,
+      "evidence": "prepareParsedMemoryForIndexing at line 298 only runs the constitutional guard (line 310: if parsed.importanceTier === 'constitutional' && !isConstitutionalPath(canonicalFilePath) then downgrade). It does NOT call shouldIndexForMemory. A direct MCP call handleMemorySave({ filePath: '/abs/.opencode/specs/foo/z_future/bar.md' }) with any non-constitutional tier is not blocked. Walker exclusion only fires during memory_index_scan; direct saves bypass the walker. Invariant 1 (z_future NEVER indexed) and Invariant 2 (external NEVER indexed) hold for the walker but fail for direct-save path.",
+      "status": "refuted",
+      "securityFraming": "Invariant-1/2 bypass via direct MCP call path",
+      "refutedInIteration": 7,
+      "refutationEvidence": "Re-read of memory-save.ts:298-320 shows line 307 unconditionally calls shouldIndexForMemory(canonicalFilePath) and throws for z_future/external/z_archive paths BEFORE the constitutional tier check at line 310. Iter-6 reasoning misread line 307 as tier-gated; it is a standalone guard. Direct memory_save DOES enforce Invariants 1 and 2."
+    },
+    {
+      "id": "P2-022",
+      "severity": "P2",
+      "dimension": "security",
+      "title": "P0-001 reachability re-check — confirmed exposed on public MCP surface with no admin/provenance gate",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts",
+      "lines": [70, 104],
+      "iterationFirstSeen": 6,
+      "evidence": "memory_update is listed alongside memory_delete/memory_validate/memory_bulk_delete in L4:Mutation. Dispatch at memory-tools.ts:104 calls handleMemoryUpdate with no authz gate, admin-role check, or provenance requirement (unlike memory_save at tool-schemas.ts:223 which has provenanceSource/provenanceActor governance parameters). Any MCP client that can call memory_search can call memory_update with equivalent capability. P0-001 downgrade-trigger NOT met; severity stays P0.",
+      "status": "open",
+      "relatedFindings": ["P0-001"]
+    }
+  ],
+  "resolvedFindings": [
+    {
+      "id": "P1-019",
+      "resolvedInIteration": 7,
+      "resolution": "refuted",
+      "reason": "Re-read of memory-save.ts:307 shows shouldIndexForMemory is called unconditionally before the tier check at line 310; Invariants 1 and 2 ARE enforced on the direct-save path, not only on the walker path. Iter-6 evidence misread the guard scope."
+    }
+  ],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true,
+    "correctness-deep": true,
+    "security-extended": true,
+    "synthesis": true
+  },
+  "findingsBySeverity": {
+    "P0": 2,
+    "P1": 18,
+    "P2": 22
+  },
+  "openFindingsCount": 42,
+  "resolvedFindingsCount": 1,
+  "convergenceScore": 0.0,
+  "convergenceVeto": true,
+  "convergenceVetoReason": "Two P0s open (iter-5 P0-001 memory_update bypass + iter-6 P0-002 checkpoint_restore bypass); strategy P0 override rule blocks convergence regardless of iter-7 newFindingsRatio = 0.0",
+  "status": "complete",
+  "verdict": "FAIL",
+  "completedAt": "2026-04-24T14:00:00Z",
+  "iterationsExecuted": 7,
+  "maxIterations": 7,
+  "stopReason": "maxIterationsReached",
+  "reportPath": "review/review-report.md",
+  "reinforcedFindings": [
+    {
+      "id": "P1-003",
+      "reinforcedInIteration": 7,
+      "note": "Symlink-INTO-constitutional-pointing-OUT variant added: a symlink under /constitutional/ pointing at /z_future/ or /external/ causes a DOUBLE invariant violation (1 + 3) because memory-save.ts:306 uses path.resolve (no symlink follow) while canonical_file_path DB column is computed via getCanonicalPathKey (realpathSync). Result: file_path=symlink passes guard, canonical_file_path=real path violates Invariants. Wave 2 fix MUST use getCanonicalPathKey as guard input."
+    }
+  ]
+}

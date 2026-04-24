@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": "local",
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "026/010 memory indexer lineage fix",
+      "e_lineage fix",
+      "candidate_changed fix",
+      "spec-kit-memory fromScan recheck bypass",
+      "026/010 plan",
+      "memory indexer lineage concurrency plan",
+      "026/010 tasks",
+      "memory indexer lineage concurrency tasks",
+      "026/010 checklist",
+      "memory indexer lineage concurrency checklist"
+    ],
+    "key_topics": [
+      "memory-indexer",
+      "lineage",
+      "concurrency",
+      "e_lineage",
+      "candidate_changed",
+      "pe-gating",
+      "scan",
+      "fromscan",
+      "transactional-recheck",
+      "026"
+    ],
+    "importance_tier": "high",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/save/pe-orchestration.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/pe-orchestration.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-index.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "pe-orchestration.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/save/pe-orchestration.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-index.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "pe-orchestration.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/pe-orchestration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "handler-memory-index.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-index.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet fixes cross-file PE lineage reuse and scan-triggered candidate_changed failures in the spec-kit-memory indexer by downgrading unsafe PE decisions to CREATE and threading fromScan into memory_save so scan-originated saves bypass the transactional complement recheck.",
+    "created_at": "2026-04-23T17:48:00.000Z",
+    "last_save_at": "2026-04-23T18:07:07.000Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix",
+    "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants"
+  ],
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix",
+    "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
+  ],
+  "migration": {
+    "flattened_at": "2026-04-24T15:50:00Z",
+    "active_phase": "010-memory-indexer-invariants",
+    "child_phase_folders": [
+      "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix",
+      "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants"
+    ],
+    "layout": "phase-root-children",
+    "reason": "Grouped sibling 010 (lineage/concurrency fix) and 011 (scope/tier invariants) under a shared coordination root — both modify the memory-indexer runtime along adjacent invariant surfaces",
+    "source_paths": [
+      "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix",
+      "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
+    ]
+  },
+  "manual": {
+    "depends_on": [],
+    "supersedes": []
+  },
+  "derived": {
+    "status": "complete",
+    "importance_tier": "high",
+    "trigger_phrases": [
+      "026/010 memory indexer invariants",
+      "memory indexer lineage fix",
+      "constitutional tier pollution fix",
+      "index scope invariants",
+      "indexer correctness"
+    ],
+    "title": "Memory Indexer Invariants"
+  }
+}
