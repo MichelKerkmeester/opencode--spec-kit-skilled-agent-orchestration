@@ -109,8 +109,9 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 
 ### Session Start & Recovery
 
-**Hook-capable runtimes** (Claude Code, Codex CLI, Copilot CLI, Gemini CLI, OpenCode via the skill-advisor plugin bridge) auto-inject startup context — no manual action needed. Codex CLI requires `[features].codex_hooks = true` in `~/.codex/config.toml` plus `~/.codex/hooks.json` wired to the compiled Spec Kit hooks; OpenCode relies on the skill-advisor plugin's `experimental.chat.system.transform` transport.
-**Fallback** — when lifecycle hooks fail or are unavailable in any runtime:
+**Hook-capable runtimes** (Claude, Codex, Copilot, Gemini, OpenCode plugin bridge) may auto-inject startup context when wired. Per-runtime details live in `.opencode/skill/system-spec-kit/references/config/hook_system.md`.
+
+**Fallback** — when hooks are unavailable or fail in any runtime:
 
 1. Call `session_bootstrap()` — one composite call that runs `session_resume` + `session_health` and returns structural context
 2. If structural context shows `stale` or `missing`, run `code_graph_scan` to rebuild

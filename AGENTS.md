@@ -89,8 +89,9 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 
 ### Session Start & Recovery
 
-Runtime startup behavior depends on the runtime hook matrix in `.opencode/skill/system-spec-kit/references/config/hook_system.md`; prompt hooks and lifecycle/startup hooks are separate capabilities. Codex supports native `SessionStart` and `UserPromptSubmit` hooks when `[features].codex_hooks = true` in `~/.codex/config.toml` and `~/.codex/hooks.json` is wired; `/spec_kit:resume` remains the fallback when those hooks fail or are unavailable.
-**Fallback** - when lifecycle hooks fail or are unavailable in any runtime:
+Hook-capable runtimes (Claude, Codex, Copilot, Gemini, OpenCode plugin bridge) may auto-inject startup context when wired. Per-runtime details live in `.opencode/skill/system-spec-kit/references/config/hook_system.md`.
+
+**Fallback** — when hooks are unavailable or fail in any runtime:
 
 1. Use `/spec_kit:resume` as the canonical recovery surface
 2. Rebuild prior work in this order: `handover.md` → `_memory.continuity` → canonical spec docs (`implementation-summary.md`, `tasks.md`, `plan.md`, `spec.md`)
