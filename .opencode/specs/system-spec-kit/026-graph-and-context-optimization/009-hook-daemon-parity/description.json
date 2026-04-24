@@ -25,13 +25,15 @@
     "daemon",
     "parity"
   ],
-  "lastUpdated": "2026-04-23T14:47:43.368Z",
+  "lastUpdated": "2026-04-24T08:35:24.918Z",
   "specId": "009",
   "folderSlug": "hook-daemon-parity",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "24-04-26_09-35__new-phase-in-hook-phase-to-investigate-code-graph.md"
+  ]
 }

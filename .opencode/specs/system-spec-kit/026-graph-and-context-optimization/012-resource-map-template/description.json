@@ -1,5 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/012-resource-map-template",
   "title": "Resource Map Template",
   "summary": "Introduce templates/resource-map.md as an optional, level-agnostic path-catalog template and wire it into every discovery surface (level READMEs, SKILL.md, references, feature_catalog, manual_testing_playbook, spec-doc-paths.ts, CLAUDE.md).",
   "level": 2,
@@ -23,6 +22,29 @@
   "updated": "2026-04-24",
   "ownership": {
     "author": "claude-opus-4-7",
-    "executors": ["cli-codex gpt-5.4 high fast", "cli-copilot (fallback)"]
-  }
+    "executors": [
+      "cli-codex gpt-5.4 high fast",
+      "cli-copilot (fallback)"
+    ]
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/012-resource-map-template",
+  "description": "Feature Specification: Resource Map Template",
+  "keywords": [
+    "feature",
+    "specification",
+    "resource",
+    "map",
+    "template"
+  ],
+  "lastUpdated": "2026-04-24T08:34:44.959Z",
+  "specId": "012",
+  "folderSlug": "resource-map-template",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "24-04-26_09-34__create-new-phase-inside-026-graph-and-context.md"
+  ]
 }

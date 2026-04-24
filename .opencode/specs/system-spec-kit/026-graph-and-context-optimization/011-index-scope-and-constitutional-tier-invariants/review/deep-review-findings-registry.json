@@ -287,6 +287,124 @@
       "iterationFirstSeen": 3,
       "evidence": "Path 'system-spec-kit/026-graph-and-context-optimization//011-index-scope-and-constitutional-tier-invariants' has '//' between parent and child slug; adjacent description.json:41 uses single-slash convention.",
       "status": "open"
+    },
+    {
+      "id": "P1-013",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "Parallel exclusion lists in spec-doc-paths.ts duplicate index-scope.ts invariants",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
+      "lines": [29, 34, 40],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts", "lines": [25, 28] }
+      ],
+      "iterationFirstSeen": 4,
+      "evidence": "SPEC_DOCUMENT_EXCLUDED_SEGMENTS carries /z_archive/ while EXCLUDED_FOR_MEMORY also carries z_archive. Two sources of truth for the same invariant, no documentation of the layering contract.",
+      "status": "open"
+    },
+    {
+      "id": "P1-014",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "SPEC_DOC_EXCLUDE_DIRS in memory-index-discovery.ts is a third exclusion source with partial overlap and 'iterations' granularity drift",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts",
+      "lines": [28, 73, 224],
+      "iterationFirstSeen": 4,
+      "evidence": "new Set(['scratch', 'memory', 'node_modules', 'iterations', 'z_archive']) overlaps both EXCLUDED_FOR_MEMORY and SPEC_DOCUMENT_EXCLUDED_SEGMENTS; bare 'iterations' diverges from '/research/iterations/' + '/review/iterations/' granularity in spec-doc-paths.ts.",
+      "status": "open"
+    },
+    {
+      "id": "P1-015",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "No code back-references to packet 011, ADR-004, or ADR-005 anywhere in shipped implementation",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      "lines": [306, 310, 314],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts", "lines": [973] },
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts", "lines": [1, 42, 46, 50] }
+      ],
+      "iterationFirstSeen": 4,
+      "evidence": "Grep for 'packet 011', '011-index-scope', 'ADR-004', 'ADR-005' across all four touched files returns zero hits. A future maintainer refactoring the soft-downgrade branch has no local signal that it enforces a user-directed invariant.",
+      "status": "open"
+    },
+    {
+      "id": "P2-013",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Cleanup script diverges from sibling-script conventions (DB_PATH source, banners)",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [1, 57],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-orphaned-vectors.ts", "lines": [15, 30] }
+      ],
+      "iterationFirstSeen": 4,
+      "evidence": "Sibling uses import { DB_PATH } from '@spec-kit/shared/paths'; new script uses inline fileURLToPath(new URL('../../../mcp_server/database/context-index__voyage__voyage-4__1024.sqlite', import.meta.url)). If embedding model rotates, sibling follows automatically; new script silently opens non-existent path.",
+      "status": "open"
+    },
+    {
+      "id": "P2-014",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "No test-visible access to compileSegmentPattern / normalizeIndexScopePath / isConstitutionalPath",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/tests/index-scope.vitest.ts",
+      "lines": [7, 11, 49],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts", "lines": [8, 12, 50] }
+      ],
+      "iterationFirstSeen": 4,
+      "evidence": "Tests import only the top-level shouldIndex* functions + EXCLUDED_* arrays; isConstitutionalPath has zero direct unit tests; substring boundary tests (constitutional-reference, not_constitutional) absent.",
+      "status": "open"
+    },
+    {
+      "id": "P2-015",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "index-scope.ts has no JSDoc on any exported function",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts",
+      "lines": [42, 46, 50],
+      "iterationFirstSeen": 4,
+      "evidence": "Three exported functions (shouldIndexForMemory, shouldIndexForCodeGraph, isConstitutionalPath) have zero JSDoc. Consumers must read the regex arrays to understand the promise.",
+      "status": "open"
+    },
+    {
+      "id": "P2-016",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Tests do not lock in that readme.md is excluded under /constitutional/",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/tests/index-scope.vitest.ts",
+      "lines": [49, 114],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts", "lines": [973] }
+      ],
+      "iterationFirstSeen": 4,
+      "evidence": "No test asserts isMemoryFile('/workspace/.opencode/skill/foo/constitutional/readme.md') === false. ADR-005 is user-directed but unguarded by a regression test.",
+      "status": "open"
+    },
+    {
+      "id": "P2-017",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Operator-facing --verify has no CI hook documented",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [386, 392],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/README.md", "lines": [111, 116] }
+      ],
+      "iterationFirstSeen": 4,
+      "evidence": "--verify exit-code contract (0 clean, 1 violations) is documented in help text but no CI config, package.json script, or README line references it. DB drift goes undetected between releases.",
+      "status": "open"
+    },
+    {
+      "id": "P2-018",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Function naming: shouldIndexForMemory ambiguous with RAM vs memory-system-index",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts",
+      "lines": [42, 46],
+      "iterationFirstSeen": 4,
+      "evidence": "'Memory' in this codebase can mean (a) canonical memory-system index or (b) in-process RAM. Symmetric pair works only if reader knows shorthand; shouldIndexForMemorySystem / shouldIndexForCodeGraphSystem would remove ambiguity.",
+      "status": "open"
     }
   ],
   "resolvedFindings": [],
@@ -295,14 +413,14 @@
     "correctness": true,
     "security": true,
     "traceability": true,
-    "maintainability": false
+    "maintainability": true
   },
   "findingsBySeverity": {
     "P0": 0,
-    "P1": 12,
-    "P2": 12
+    "P1": 15,
+    "P2": 18
   },
-  "openFindingsCount": 24,
+  "openFindingsCount": 33,
   "resolvedFindingsCount": 0,
   "convergenceScore": 0.0
 }

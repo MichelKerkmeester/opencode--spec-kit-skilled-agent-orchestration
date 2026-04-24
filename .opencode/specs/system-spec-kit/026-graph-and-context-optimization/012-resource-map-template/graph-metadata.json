@@ -4,16 +4,12 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/012-resource-map-template",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
   "children_ids": [],
-  "migrated": false,
-  "migration_source": "local",
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks"
-    ],
+    "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
@@ -21,66 +17,200 @@
       "resource map template",
       "path catalog template",
       "files touched summary",
-      "lean path ledger"
+      "lean path ledger",
+      "026/012 resource map plan",
+      "resource map plan",
+      "template wiring plan",
+      "026/012 tasks",
+      "resource map tasks",
+      "026/012 checklist",
+      "resource map checklist"
     ],
     "key_topics": [
-      "templates",
-      "path-catalog",
-      "documentation",
-      "discovery",
-      "context-preservation",
-      "spec-doc-paths",
-      "feature-catalog",
-      "manual-testing-playbook",
-      "cross-cutting-template",
-      "026"
+      "026",
+      "012",
+      "resource",
+      "map",
+      "template",
+      "path",
+      "catalog",
+      "files",
+      "touched",
+      "summary",
+      "lean",
+      "ledger"
     ],
-    "importance_tier": "important",
+    "importance_tier": "normal",
     "status": "in_progress",
     "key_files": [
-      "spec.md",
-      "plan.md",
-      "tasks.md",
-      "checklist.md",
-      "implementation-summary.md",
+      "mcp_server/lib/config/spec-doc-paths.ts",
       ".opencode/skill/system-spec-kit/templates/resource-map.md",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
-      ".opencode/skill/system-spec-kit/SKILL.md",
       ".opencode/skill/system-spec-kit/templates/README.md",
+      ".opencode/skill/system-spec-kit/templates/level_1/README.md",
+      ".opencode/skill/system-spec-kit/templates/level_2/README.md",
+      ".opencode/skill/system-spec-kit/templates/level_3/README.md",
+      ".opencode/skill/system-spec-kit/templates/level_3+/README.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/README.md",
       ".opencode/skill/system-spec-kit/references/templates/level_specifications.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
       ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/25-resource-map-template.md",
       ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/270-resource-map-template.md",
-      "CLAUDE.md"
+      "spec.md",
+      "plan.md",
+      "checklist.md",
+      "tasks.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
+        "name": "spec-doc-paths.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/config/spec-doc-paths.ts",
+        "source": "derived"
+      },
+      {
         "name": "resource-map.md",
-        "kind": "template",
+        "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/templates/resource-map.md",
         "source": "derived"
       },
       {
-        "name": "spec-doc-paths.ts",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "level_specifications.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/templates/level_specifications.md",
         "source": "derived"
       },
       {
         "name": "25-resource-map-template.md",
-        "kind": "feature-catalog",
+        "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/25-resource-map-template.md",
         "source": "derived"
       },
       {
         "name": "270-resource-map-template.md",
-        "kind": "manual-testing-playbook",
+        "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/270-resource-map-template.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Resource Map Template",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Authored Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Author",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Cross",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
         "source": "derived"
       }
     ],
-    "causal_summary": "This phase promotes the 005/path-references-audit shape into a reusable cross-cutting template, wires it into every discovery surface (level READMEs, SKILL.md, references, feature catalog, manual testing playbook, CLAUDE.md), and teaches the MCP spec-doc classifier to recognize the new filename.",
+    "causal_summary": "This is Phase 012 of the 026-graph-and-context-optimization specification. It introduces a reusable, level-agnostic template that catalogs every file path a packet touched, grouped by resource category, and wires it into the discovery surfaces so operators find it next to the other cross-cutting templates.",
     "created_at": "2026-04-24T00:00:00.000Z",
-    "last_save_at": "2026-04-24T00:00:00.000Z",
+    "last_save_at": "2026-04-24T08:34:44.959Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
