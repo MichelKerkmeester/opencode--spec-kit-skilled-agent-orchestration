@@ -174,14 +174,14 @@ operating_mode:
 
 ## 1. PURPOSE
 
-Run an iterative loop for deep research: Initialize state, dispatch `@deep-research` agent per iteration, evaluate convergence, synthesize findings into `research/research.md`, and emit `research/resource-map.md` at convergence unless `--no-resource-map` disables it. Use when deep investigation requiring multiple rounds of discovery.
+Run an iterative loop for deep research: Initialize state under `{artifact_dir}` (resolved via `resolveArtifactRoot()` — root specs use `{spec_folder}/research/`; child phases and sub-phases use `{spec_folder}/research/{packet}-pt-{NN}/`), dispatch `@deep-research` agent per iteration, evaluate convergence, synthesize findings into `{artifact_dir}/research.md`, and emit `{artifact_dir}/resource-map.md` at convergence unless `--no-resource-map` disables it. Use when deep investigation requiring multiple rounds of discovery.
 
 ---
 
 ## 2. CONTRACT
 
 **Inputs:** `$ARGUMENTS` -- Research topic with optional flags and mode suffix
-**Outputs:** Spec folder with `research/research.md`, optional `research/resource-map.md`, state files, and `STATUS=<OK|FAIL|CANCELLED>`
+**Outputs:** Spec folder with `{artifact_dir}/` packet (`{spec_folder}/research/` for root specs or `{spec_folder}/research/{packet}-pt-{NN}/` for nested phases), `research.md`, optional `resource-map.md`, state files, and `STATUS=<OK|FAIL|CANCELLED>`
 
 ---
 

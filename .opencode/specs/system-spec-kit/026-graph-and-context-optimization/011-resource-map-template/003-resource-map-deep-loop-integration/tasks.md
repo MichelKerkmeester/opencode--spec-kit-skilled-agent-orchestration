@@ -87,7 +87,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 - [x] T032 Manual dispatch `/spec_kit:deep-review :auto` on a small fixture packet; confirm map output.
 - [x] T033 Manual dispatch `/spec_kit:deep-research :auto` on a small fixture packet; confirm map output.
 - [x] T034 Test opt-out: `--no-resource-map` skips emission cleanly.
-- [x] T035 Run `validate.sh --strict` on this packet — exit 0.
+- [ ] T035 Run `validate.sh --strict` on this packet — exit 0. DEFERRED: blocked by pre-existing packet-doc integrity drift in spec.md/plan.md + missing citation in research/research.md, unrelated to this packet's implementation scope. See implementation-summary.md Verification row for details.
 - [x] T036 `grep -rn "resource-map"` across updated surfaces — coverage check.
 - [x] T037 Finalize `implementation-summary.md` with Files Changed + Verification.
 <!-- /ANCHOR:phase-3 -->

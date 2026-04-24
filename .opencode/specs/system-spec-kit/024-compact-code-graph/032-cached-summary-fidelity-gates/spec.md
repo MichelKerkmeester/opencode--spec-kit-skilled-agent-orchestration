@@ -41,6 +41,7 @@ Route the next continuity packet into the existing 024 train by turning cached s
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -53,6 +54,8 @@ Route the next continuity packet into the existing 024 train by turning cached s
 | **Parent Packet** | `024-compact-code-graph` |
 
 ---
+
+<!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

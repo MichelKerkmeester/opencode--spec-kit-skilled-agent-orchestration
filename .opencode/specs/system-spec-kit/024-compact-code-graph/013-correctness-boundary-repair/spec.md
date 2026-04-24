@@ -32,6 +32,7 @@ _memory:
 ## EXECUTIVE SUMMARY
 Template compliance shim section. Legacy phase content continues below.
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 Template compliance shim section. Legacy phase content continues below.
 
@@ -70,6 +71,8 @@ Template compliance shim section. Legacy phase content continues below.
 
 ## RELATED DOCUMENTS
 Template compliance shim section. Legacy phase content continues below.
+
+<!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->
 Template compliance shim anchor for problem.

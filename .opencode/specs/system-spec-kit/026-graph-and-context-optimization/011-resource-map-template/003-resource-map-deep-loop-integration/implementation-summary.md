@@ -12,11 +12,11 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/003-resource-map-deep-loop-integration"
     last_updated_at: "2026-04-24T17:00:00+02:00"
     last_updated_by: "codex"
-    recent_action: "Completed T001-T037 resource-map deep-loop implementation"
-    next_safe_action: "Run /spec_kit:deep-review:auto for audit"
+    recent_action: "Closed F001/F002/F003/F004 from 7-iter deep-review; F001 file:line normalization in extract-from-evidence.cjs + F003 regression vitest + F004 {artifact_dir} doc alignment in deep-review.md/deep-research.md + F002 T035 deferred with reconciled status across tasks.md/checklist.md/implementation-summary.md"
+    next_safe_action: "T035 validator still deferred on pre-existing out-of-scope packet-doc drift; optional follow-up: packet-doc integrity cleanup pass"
     blockers: []
     completion_pct: 100
-    status: "complete"
+    status: "conditional"
     open_questions: []
     answered_questions:
       - "The shared extractor lives under .opencode/skill/system-spec-kit/scripts/resource-map/ and supports both review and research evidence shapes."

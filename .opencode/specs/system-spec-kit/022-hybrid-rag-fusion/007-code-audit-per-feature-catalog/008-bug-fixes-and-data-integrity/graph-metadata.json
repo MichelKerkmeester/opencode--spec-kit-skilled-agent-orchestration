@@ -185,7 +185,8 @@
     ],
     "causal_summary": "Systematic code audit of 11 Bug Fixes and Data Integrity features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/08--bug-fixes-and-data-integrity/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.",
     "created_at": "2026-04-12T09:02:50.249Z",
-    "last_save_at": "2026-04-18T14:39:00.471Z",
+    "last_save_at": "2026-04-24T15:43:18.577Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

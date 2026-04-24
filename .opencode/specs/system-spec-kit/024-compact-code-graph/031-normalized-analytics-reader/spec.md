@@ -43,6 +43,7 @@ Packet `024/003` proved the Stop hook can persist useful session-end facts, but 
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -54,6 +55,8 @@ Packet `024/003` proved the Stop hook can persist useful session-end facts, but 
 | **Branch** | `024-compact-code-graph/031-normalized-analytics-reader` |
 
 ---
+
+<!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

@@ -191,7 +191,8 @@
     ],
     "causal_summary": "Systematic code audit of 22 live Scoring and Calibration features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/11--scoring-and-calibration/` category is verified against source code to confirm accuracy, completeness, and catalog alignment.",
     "created_at": "2026-04-12T09:02:50.250Z",
-    "last_save_at": "2026-04-18T14:39:00.477Z",
+    "last_save_at": "2026-04-24T15:43:18.583Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

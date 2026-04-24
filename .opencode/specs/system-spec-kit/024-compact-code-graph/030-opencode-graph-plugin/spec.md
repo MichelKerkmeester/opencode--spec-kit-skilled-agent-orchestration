@@ -43,6 +43,7 @@ Packet `030-opencode-graph-plugin` is no longer just a research packet. It now r
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -68,6 +69,8 @@ Packet `030-opencode-graph-plugin` is no longer just a research packet. It now r
 | Phase 6 | `031-copilot-startup-hook-wiring` | Repo-local Copilot sessionStart wiring and runtime-detection truth-sync | Complete |
 
 ---
+
+<!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

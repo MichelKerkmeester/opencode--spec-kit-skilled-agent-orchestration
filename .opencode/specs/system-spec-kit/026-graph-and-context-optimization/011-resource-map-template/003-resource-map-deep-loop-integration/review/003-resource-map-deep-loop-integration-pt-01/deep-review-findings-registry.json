@@ -7,91 +7,16 @@
   "terminalStop": {
     "stopReason": "maxIterationsReached",
     "totalIterations": 7,
-    "timestamp": "2026-04-24T16:05:00Z"
-  },
-  "status": "COMPLETE",
-  "openFindings": [
-    {
-      "findingId": "F001",
-      "severity": "P1",
-      "title": "Review extractor does not normalize canonical `file:line` evidence before classification and status checks",
-      "file": ".opencode/skill/system-spec-kit/scripts/resource-map/extract-from-evidence.cjs",
-      "line": 397,
-      "description": "`normalizePathCandidate()` preserves a trailing `:line`, so `determineStatus()` checks a nonexistent path and the emitted review map can mark a real file as missing when fed the documented review delta shape.",
-      "dimension": "correctness",
-      "firstSeen": 1,
-      "lastSeen": 1,
-      "status": "active",
-      "transitions": [
-        {
-          "iteration": 1,
-          "from": null,
-          "to": "P1",
-          "reason": "Initial discovery"
-        }
-      ]
-    },
-    {
-      "findingId": "F002",
-      "severity": "P1",
-      "title": "Packet closure artifacts overstate strict-validation completion despite recorded failure",
-      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/003-resource-map-deep-loop-integration/tasks.md",
-      "line": 89,
-      "description": "the task list marks `T035` complete, while the implementation summary records `T035` as `FAIL (exit 2)` and the spec still treats `validate.sh --strict` exit 0 as a handoff/success criterion.",
-      "dimension": "traceability",
-      "firstSeen": 3,
-      "lastSeen": 3,
-      "status": "active",
-      "transitions": [
-        {
-          "iteration": 3,
-          "from": null,
-          "to": "P1",
-          "reason": "Initial discovery"
-        }
-      ]
-    },
-    {
-      "findingId": "F003",
-      "severity": "P2",
-      "title": "Focused Vitest coverage never exercises the canonical review `file:line` finding shape",
-      "file": ".opencode/skill/system-spec-kit/mcp_server/scripts/tests/resource-map-extractor.vitest.ts",
-      "line": 44,
-      "description": "the review-shape fixture only uses path-only `file` values, so the documented prompt-pack example that writes `file\":\"path:line\"` can regress without the extractor test suite noticing.",
-      "dimension": "maintainability",
-      "firstSeen": 4,
-      "lastSeen": 4,
-      "status": "active",
-      "transitions": [
-        {
-          "iteration": 4,
-          "from": null,
-          "to": "P2",
-          "reason": "Initial discovery"
-        }
-      ]
-    },
-    {
-      "findingId": "F004",
-      "severity": "P2",
-      "title": "Command docs still describe root-level `review/` and `research/` outputs instead of the resolved `{artifact_dir}` packet path for nested specs",
-      "file": ".opencode/command/spec_kit/deep-review.md",
-      "line": 188,
-      "description": "child-phase packets emit `resource-map.md` and `review-report.md` under `review/{packet}/`, but the command docs still promise root-level locations that only hold for root specs.",
-      "dimension": "traceability",
-      "firstSeen": 5,
-      "lastSeen": 5,
-      "status": "active",
-      "transitions": [
-        {
-          "iteration": 5,
-          "from": null,
-          "to": "P2",
-          "reason": "Initial discovery"
-        }
-      ]
+    "timestamp": "2026-04-24T16:05:00Z",
+    "lastUpdated": "2026-04-24T15:44:20Z",
+    "postReviewRemediation": {
+      "closed": 4,
+      "remainingOpen": 0,
+      "verdictShift": "CONDITIONAL \u2192 PASS (pending T035 deferral acknowledgement)"
     }
-  ],
+  },
+  "status": "RESOLVED",
+  "openFindings": [],
   "resolvedFindings": [],
   "blockedStopHistory": [],
   "persistentSameSeverity": [],
@@ -114,5 +39,123 @@
   "graphConvergenceScore": 0,
   "graphDecision": null,
   "graphBlockers": [],
-  "corruptionWarnings": []
+  "corruptionWarnings": [],
+  "closedFindings": [
+    {
+      "findingId": "F001",
+      "severity": "P1",
+      "title": "Review extractor does not normalize canonical `file:line` evidence before classification and status checks",
+      "file": ".opencode/skill/system-spec-kit/scripts/resource-map/extract-from-evidence.cjs",
+      "line": 397,
+      "description": "`normalizePathCandidate()` preserves a trailing `:line`, so `determineStatus()` checks a nonexistent path and the emitted review map can mark a real file as missing when fed the documented review delta shape.",
+      "dimension": "correctness",
+      "firstSeen": 1,
+      "lastSeen": 1,
+      "status": "resolved",
+      "transitions": [
+        {
+          "iteration": 1,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        },
+        {
+          "iteration": "post-review",
+          "from": "P1",
+          "to": "resolved",
+          "reason": "Stripped trailing `:NNN`/`:NNN-NNN` line-anchor suffix in normalizePathCandidate() (extract-from-evidence.cjs:418-421) before classification/status checks."
+        }
+      ],
+      "resolvedAt": "2026-04-24T15:44:20Z",
+      "resolvedBy": "claude-opus-4-7 (in-session)",
+      "resolution": "Stripped trailing `:NNN`/`:NNN-NNN` line-anchor suffix in normalizePathCandidate() (extract-from-evidence.cjs:418-421) before classification/status checks."
+    },
+    {
+      "findingId": "F002",
+      "severity": "P1",
+      "title": "Packet closure artifacts overstate strict-validation completion despite recorded failure",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/003-resource-map-deep-loop-integration/tasks.md",
+      "line": 89,
+      "description": "the task list marks `T035` complete, while the implementation summary records `T035` as `FAIL (exit 2)` and the spec still treats `validate.sh --strict` exit 0 as a handoff/success criterion.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 3,
+      "status": "resolved",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        },
+        {
+          "iteration": "post-review",
+          "from": "P1",
+          "to": "resolved",
+          "reason": "Reconciled T035 status \u2014 downmarked tasks.md:90 to [ ] with DEFERRED note citing pre-existing out-of-scope drift; implementation-summary.md _memory.continuity.status \u2192 \"conditional\"."
+        }
+      ],
+      "resolvedAt": "2026-04-24T15:44:20Z",
+      "resolvedBy": "claude-opus-4-7 (in-session)",
+      "resolution": "Reconciled T035 status \u2014 downmarked tasks.md:90 to [ ] with DEFERRED note citing pre-existing out-of-scope drift; implementation-summary.md _memory.continuity.status \u2192 \"conditional\"."
+    },
+    {
+      "findingId": "F003",
+      "severity": "P2",
+      "title": "Focused Vitest coverage never exercises the canonical review `file:line` finding shape",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/scripts/tests/resource-map-extractor.vitest.ts",
+      "line": 44,
+      "description": "the review-shape fixture only uses path-only `file` values, so the documented prompt-pack example that writes `file\":\"path:line\"` can regress without the extractor test suite noticing.",
+      "dimension": "maintainability",
+      "firstSeen": 4,
+      "lastSeen": 4,
+      "status": "resolved",
+      "transitions": [
+        {
+          "iteration": 4,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        },
+        {
+          "iteration": "post-review",
+          "from": "P2",
+          "to": "resolved",
+          "reason": "Added new vitest case `it(\"strips :line and :line-range suffixes ...\")` in resource-map-extractor.vitest.ts asserting MISSING\u2192OK after normalization; 3/3 tests pass."
+        }
+      ],
+      "resolvedAt": "2026-04-24T15:44:20Z",
+      "resolvedBy": "claude-opus-4-7 (in-session)",
+      "resolution": "Added new vitest case `it(\"strips :line and :line-range suffixes ...\")` in resource-map-extractor.vitest.ts asserting MISSING\u2192OK after normalization; 3/3 tests pass."
+    },
+    {
+      "findingId": "F004",
+      "severity": "P2",
+      "title": "Command docs still describe root-level `review/` and `research/` outputs instead of the resolved `{artifact_dir}` packet path for nested specs",
+      "file": ".opencode/command/spec_kit/deep-review.md",
+      "line": 188,
+      "description": "child-phase packets emit `resource-map.md` and `review-report.md` under `review/{packet}/`, but the command docs still promise root-level locations that only hold for root specs.",
+      "dimension": "traceability",
+      "firstSeen": 5,
+      "lastSeen": 5,
+      "status": "resolved",
+      "transitions": [
+        {
+          "iteration": 5,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        },
+        {
+          "iteration": "post-review",
+          "from": "P2",
+          "to": "resolved",
+          "reason": "Updated deep-review.md and deep-research.md \u00a71 PURPOSE + \u00a72 CONTRACT to describe {artifact_dir} resolution (root vs nested child-phase) via resolveArtifactRoot()."
+        }
+      ],
+      "resolvedAt": "2026-04-24T15:44:20Z",
+      "resolvedBy": "claude-opus-4-7 (in-session)",
+      "resolution": "Updated deep-review.md and deep-research.md \u00a71 PURPOSE + \u00a72 CONTRACT to describe {artifact_dir} resolution (root vs nested child-phase) via resolveArtifactRoot()."
+    }
+  ]
 }

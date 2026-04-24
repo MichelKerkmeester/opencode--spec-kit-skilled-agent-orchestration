@@ -222,7 +222,8 @@
     ],
     "causal_summary": "This parent packet is the entry point for the Hybrid RAG Fusion epic. It replaces the previous consolidation-heavy parent docs with a current-state coordination packet that points at the live 12 direct children, records their current statuses, and keeps remaining sprint-family drift explicit.",
     "created_at": "2026-04-12T09:02:50.224Z",
-    "last_save_at": "2026-04-18T14:39:00.420Z",
+    "last_save_at": "2026-04-24T15:43:18.496Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

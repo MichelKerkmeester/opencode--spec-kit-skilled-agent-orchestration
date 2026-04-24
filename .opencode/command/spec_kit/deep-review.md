@@ -185,14 +185,14 @@ operating_mode:
 
 ## 1. PURPOSE
 
-Run an iterative loop for code review: Initialize the review packet under `{spec_folder}/review/`, dispatch `@deep-review` agent per iteration, evaluate convergence across review dimensions, synthesize findings into `{spec_folder}/review/review-report.md`, and emit `{spec_folder}/review/resource-map.md` at convergence unless `--no-resource-map` disables it. Use when auditing code, specs, skills, agents, or tracks for quality and release readiness.
+Run an iterative loop for code review: Initialize the review packet under `{artifact_dir}` (resolved via `resolveArtifactRoot()` — root specs use `{spec_folder}/review/`; child phases and sub-phases use `{spec_folder}/review/{packet}-pt-{NN}/`), dispatch `@deep-review` agent per iteration, evaluate convergence across review dimensions, synthesize findings into `{artifact_dir}/review-report.md`, and emit `{artifact_dir}/resource-map.md` at convergence unless `--no-resource-map` disables it. Use when auditing code, specs, skills, agents, or tracks for quality and release readiness.
 
 ---
 
 ## 2. CONTRACT
 
 **Inputs:** `$ARGUMENTS` -- Review target with optional flags and mode suffix
-**Outputs:** Spec folder with `{spec_folder}/review/` packet, `review-report.md`, optional `resource-map.md`, state files, and `STATUS=<OK|FAIL|CANCELLED>`
+**Outputs:** Spec folder with `{artifact_dir}/` packet (`{spec_folder}/review/` for root specs or `{spec_folder}/review/{packet}-pt-{NN}/` for nested phases), `review-report.md`, optional `resource-map.md`, state files, and `STATUS=<OK|FAIL|CANCELLED>`
 
 ---
 

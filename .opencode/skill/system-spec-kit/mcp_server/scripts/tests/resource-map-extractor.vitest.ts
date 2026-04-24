@@ -152,4 +152,44 @@ describe('resource-map extractor', () => {
       '| .opencode/specs/system-spec-kit/demo/research.md | Cited | MISSING | Citations=1; Iterations=1 |',
     );
   });
+
+  it('strips `:line` and `:line-range` suffixes from review evidence before classification and status checks', () => {
+    const markdown = emitResourceMap({
+      shape: 'review',
+      createdAt: '2026-04-24T13:00:00.000Z',
+      scope: 'F001 regression — canonical file:line shape per prompt-pack contract',
+      packet: {
+        title: 'Line-anchor normalization regression',
+      },
+      deltas: [
+        [
+          {
+            iteration: 1,
+            event: 'new_finding',
+            finding_id: 'F-LINE',
+            severity: 'P1',
+            file: '.opencode/skill/sk-deep-review/SKILL.md:250',
+          },
+          {
+            iteration: 1,
+            event: 'new_finding',
+            finding_id: 'F-RANGE',
+            severity: 'P2',
+            file: '.opencode/command/spec_kit/deep-review.md:10-20',
+          },
+        ],
+      ],
+    });
+
+    // Paths with :line suffixes resolve to real files on disk → status OK, not MISSING.
+    expect(markdown).toContain('| .opencode/skill/sk-deep-review/SKILL.md | Analyzed | OK |');
+    expect(markdown).toContain('| .opencode/command/spec_kit/deep-review.md | Analyzed | OK |');
+    // The suffix must be stripped — no leaked `:250` or `:10-20` anywhere.
+    expect(markdown).not.toContain(':250');
+    expect(markdown).not.toContain(':10-20');
+    // Categorization still works (SKILL.md → Skills, deep-review.md → Commands).
+    expect(findLine(markdown, '- **By category**:')).toContain('Commands=1');
+    expect(findLine(markdown, '- **By category**:')).toContain('Skills=1');
+    expect(findLine(markdown, '- **Missing on disk**:')).toBe('- **Missing on disk**: 0');
+  });
 });

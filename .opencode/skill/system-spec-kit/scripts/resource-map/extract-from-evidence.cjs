@@ -415,7 +415,10 @@ function normalizePathCandidate(value) {
   if (normalizedPath === '..' || normalizedPath.startsWith('../')) {
     return null;
   }
-  return normalizedPath.replace(/^\.\/+/, '');
+  // Strip trailing `:NNN` or `:NNN-NNN` line anchor — review deltas carry
+  // `file: "path:line"` per the prompt-pack contract, and the suffix would
+  // otherwise make the existence check chase a nonexistent path.
+  return normalizedPath.replace(/^\.\/+/, '').replace(/:\d+(?:-\d+)?$/, '');
 }
 
 function ensureFileEntry(map, filePath) {

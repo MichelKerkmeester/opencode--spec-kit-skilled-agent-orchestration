@@ -200,7 +200,8 @@
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.273Z",
-    "last_save_at": "2026-04-18T14:39:00.540Z",
+    "last_save_at": "2026-04-24T15:43:18.677Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
