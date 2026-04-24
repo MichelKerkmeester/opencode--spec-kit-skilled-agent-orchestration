@@ -344,7 +344,7 @@ Enforce four permanent invariants in code, clean the existing pollution transact
 
 ---
 
-## 12. AI EXECUTION PROTOCOL
+## AI Execution Protocol
 
 ### Pre-Task Checklist
 
