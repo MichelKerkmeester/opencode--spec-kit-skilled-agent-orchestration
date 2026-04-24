@@ -1,0 +1,224 @@
+CLEAN | 00--ai-systems/001-global-shared/004-hvr-multi-lingual
+ERR=1 WARN=0 | 00--ai-systems/001-global-shared/005-routing-review | rules=SPEC_DOC_INTEGRITY
+ERR=2 WARN=0 | 00--ai-systems/001-global-shared/003-hvr-refinement-repo-analysis | rules=ANCHORS_VALID,SPEC_DOC_SUFFICIENCY
+ERR=1 WARN=0 | 00--ai-systems/001-global-shared/002-brand-knowledge | rules=SPEC_DOC_INTEGRITY
+ERR=4 WARN=1 | 00--ai-systems/002-sales-communication-flows | rules=ANCHORS_VALID,EVIDENCE_MARKER_LINT,SPEC_DOC_INTEGRITY
+ERR=2 WARN=0 | 00--ai-systems/001-global-shared/001-hvr-refinement-repo-analysis | rules=ANCHORS_VALID,SPEC_DOC_SUFFICIENCY
+ERR=2 WARN=1 | 00--ai-systems/002-sales-communication-flows/001-initial-creation | rules=ANCHORS_VALID,SPEC_DOC_INTEGRITY
+TIMEOUT_OR_FAIL | 00--ai-systems/001-global-shared
+ERR=3 WARN=0 | 00--ai-systems/003-sales-process-automation | rules=EVIDENCE_MARKER_LINT,SPEC_DOC_INTEGRITY
+ERR=3 WARN=1 | 00--ai-systems/006-product-owner | rules=ANCHORS_VALID,EVIDENCE_MARKER_LINT,SPEC_DOC_SUFFICIENCY
+ERR=1 WARN=0 | 00--ai-systems/003-sales-process-automation/001-initial-creation | rules=SPEC_DOC_INTEGRITY
+ERR=5 WARN=0 | 00--ai-systems/004-prompt-improver | rules=ANCHORS_VALID,EVIDENCE_MARKER_LINT,SPEC_DOC_INTEGRITY,SPEC_DOC_SUFFICIENCY
+ERR=4 WARN=0 | 00--ai-systems/005-sales-direct-communication | rules=ANCHORS_VALID,EVIDENCE_MARKER_LINT,SPEC_DOC_INTEGRITY,SPEC_DOC_SUFFICIENCY
+ERR=2 WARN=0 | 00--ai-systems/005-sales-direct-communication/001-speed-of-execution | rules=ANCHORS_VALID,SPEC_DOC_SUFFICIENCY
+ERR=3 WARN=0 | 00--ai-systems/004-prompt-improver/001-content-submission | rules=ANCHORS_VALID,SPEC_DOC_INTEGRITY,SPEC_DOC_SUFFICIENCY
+ERR=2 WARN=0 | 00--ai-systems/006-product-owner/001-variables-cg-p-2 | rules=ANCHORS_VALID,SPEC_DOC_SUFFICIENCY
+ERR=1 WARN=4 | 00--anobel.com/012-notification-time-scheduling | rules=ANCHORS_VALID
+CLEAN | 00--anobel.com/031-fix-download-btn-transition-glitch
+ERR=0 WARN=2 | 00--anobel.com/014-notification-hero-spacing | rules=SECTION_COUNTS,SPEC_DOC_SUFFICIENCY
+CLEAN | 00--anobel.com/032-cloudflare-r2-migration
+ERR=2 WARN=5 | 00--anobel.com/012-notification-time-scheduling/scratch/legacy | rules=FOLDER_NAMING,TEMPLATE_HEADERS
+ERR=0 WARN=1 | 00--anobel.com/030-label-product-content-attr | rules=SECTION_COUNTS
+ERR=2 WARN=3 | 00--anobel.com/014-notification-hero-spacing/scratch/legacy | rules=FOLDER_NAMING,TEMPLATE_HEADERS
+ERR=2 WARN=3 | 00--anobel.com/029-anobel-performance-analysis | rules=ANCHORS_VALID,SPEC_DOC_SUFFICIENCY
+ERR=2 WARN=3 | 00--anobel.com/033-form-upload-issues | rules=ANCHORS_VALID,SPEC_DOC_SUFFICIENCY
+CLEAN | 00--anobel.com/035-hero-contact-success
+ERR=4 WARN=4 | 00--barter/002-skill-doc-template-alignment | rules=ANCHORS_VALID,SPEC_DOC_INTEGRITY,SPEC_DOC_SUFFICIENCY,TEMPLATE_HEADERS
+ERR=3 WARN=0 | 00--anobel.com/034-form-bot-problem | rules=ANCHORS_VALID,SPEC_DOC_INTEGRITY,SPEC_DOC_SUFFICIENCY
+ERR=7 WARN=3 | 00--anobel.com/038-hero-video-scroll | rules=ANCHORS_VALID,FILE_EXISTS,FRONTMATTER_MEMORY_BLOCK,FRONTMATTER_VALID,SPEC_DOC_INTEGRITY,TEMPLATE_HEADERS,TEMPLATE_SOURCE
+ERR=1 WARN=1 | 00--anobel.com/037-testimonial-slider | rules=TEMPLATE_SOURCE
+ERR=1 WARN=3 | 00--anobel.com/036-notification-toast-button | rules=SPEC_DOC_INTEGRITY
+ERR=3 WARN=2 | skilled-agent-orchestration/022-mcp-coco-integration | rules=ANCHORS_VALID,SPEC_DOC_INTEGRITY,SPEC_DOC_SUFFICIENCY
+ERR=3 WARN=0 | skilled-agent-orchestration/026-cmd-create-manual-testing-playbook | rules=ANCHORS_VALID,SPEC_DOC_INTEGRITY,SPEC_DOC_SUFFICIENCY
+ERR=3 WARN=0 | skilled-agent-orchestration/025-cmd-create-feature-catalog | rules=ANCHORS_VALID,SPEC_DOC_INTEGRITY,SPEC_DOC_SUFFICIENCY
+ERR=0 WARN=2 | skilled-agent-orchestration/024-sk-deep-research-refinement | rules=EVIDENCE_CITED,SPEC_DOC_SUFFICIENCY
+ERR=1 WARN=4 | skilled-agent-orchestration/023-sk-deep-research-creation | rules=SPEC_DOC_SUFFICIENCY
+ERR=1 WARN=2 | skilled-agent-orchestration/029-sk-deep-research-first-upgrade | rules=SPEC_DOC_INTEGRITY
+ERR=2 WARN=0 | skilled-agent-orchestration/028-sk-deep-research-testing-playbook | rules=ANCHORS_VALID,SPEC_DOC_SUFFICIENCY
+ERR=2 WARN=0 | skilled-agent-orchestration/027-cmd-create-yaml-refinement | rules=ANCHORS_VALID,SPEC_DOC_SUFFICIENCY
+ERR=1 WARN=2 | skilled-agent-orchestration/030-sk-deep-research-review-mode | rules=SPEC_DOC_INTEGRITY
+ERR=1 WARN=1 | skilled-agent-orchestration/033-skill-command-readme-rewrite | rules=SPEC_DOC_INTEGRITY
+ERR=1 WARN=1 | skilled-agent-orchestration/032-sk-doc-readme-hvr-improvements | rules=SPEC_DOC_INTEGRITY
+ERR=2 WARN=0 | skilled-agent-orchestration/034-sk-deep-research-review-folders | rules=ANCHORS_VALID,SPEC_DOC_SUFFICIENCY
+ERR=1 WARN=0 | skilled-agent-orchestration/038-cmd-create-changelog-and-releases | rules=ANCHORS_VALID
+ERR=1 WARN=1 | skilled-agent-orchestration/031-sk-coco-index-cmd-integration | rules=SPEC_DOC_INTEGRITY
+ERR=2 WARN=1 | skilled-agent-orchestration/037-cmd-merge-spec-kit-phase | rules=ANCHORS_VALID,SPEC_DOC_SUFFICIENCY
+ERR=1 WARN=1 | skilled-agent-orchestration/036-sk-deep-research-review-split | rules=TEMPLATE_SOURCE
+ERR=3 WARN=0 | skilled-agent-orchestration/035-sk-deep-research-path-migration | rules=ANCHORS_VALID,SPEC_DOC_INTEGRITY,SPEC_DOC_SUFFICIENCY
+CLEAN | skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/002-sk-deep-review-improvements
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/040-sk-deep-research-review-improvement-1
+ERR=1 WARN=1 | skilled-agent-orchestration/039-cmd-spec-kit-codex-skill-routing | rules=SPEC_DOC_INTEGRITY
+ERR=1 WARN=0 | skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/001-sk-deep-research-improvements | rules=SPEC_DOC_INTEGRITY
+ERR=2 WARN=0 | skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill | rules=ANCHORS_VALID,SPEC_DOC_INTEGRITY
+ERR=1 WARN=0 | skilled-agent-orchestration/041-sk-recursive-agent-loop/003-sk-recursive-agent-doc-alignment | rules=SPEC_DOC_INTEGRITY
+ERR=2 WARN=0 | skilled-agent-orchestration/041-sk-recursive-agent-loop/001-sk-recursive-agent-mvp | rules=ANCHORS_VALID,SPEC_DOC_INTEGRITY
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/041-sk-recursive-agent-loop
+ERR=1 WARN=0 | skilled-agent-orchestration/041-sk-recursive-agent-loop/005-sk-recursive-agent-package-runtime-alignment | rules=SPEC_DOC_INTEGRITY
+ERR=1 WARN=0 | skilled-agent-orchestration/041-sk-recursive-agent-loop/004-sk-recursive-agent-promotion-verification | rules=SPEC_DOC_INTEGRITY
+ERR=5 WARN=5 | skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test | rules=ANCHORS_VALID,FRONTMATTER_VALID,SPEC_DOC_INTEGRITY,TEMPLATE_HEADERS,TEMPLATE_SOURCE
+ERR=6 WARN=5 | skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-agent-improver-self-test-fixes | rules=ANCHORS_VALID,FILE_EXISTS,FRONTMATTER_VALID,SPEC_DOC_INTEGRITY,TEMPLATE_HEADERS,TEMPLATE_SOURCE
+ERR=1 WARN=0 | skilled-agent-orchestration/041-sk-recursive-agent-loop/007-sk-recursive-agent-wording-alignment | rules=SPEC_DOC_INTEGRITY
+ERR=7 WARN=5 | skilled-agent-orchestration/041-sk-recursive-agent-loop/008-sk-recursive-agent-holistic-evaluation | rules=ANCHORS_VALID,FILE_EXISTS,FRONTMATTER_VALID,LEVEL_MATCH,SPEC_DOC_INTEGRITY,TEMPLATE_HEADERS,TEMPLATE_SOURCE
+ERR=1 WARN=0 | skilled-agent-orchestration/041-sk-recursive-agent-loop/006-sk-recursive-agent-command-rename | rules=SPEC_DOC_INTEGRITY
+ERR=6 WARN=5 | skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync | rules=ANCHORS_VALID,FILE_EXISTS,FRONTMATTER_VALID,SPEC_DOC_INTEGRITY,TEMPLATE_HEADERS,TEMPLATE_SOURCE
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/042-sk-deep-research-review-improvement-2
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/046-cli-codex-tone-of-voice
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/007-skill-rename-improve-agent-prompt
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/043-cli-skill-improved-prompting
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/044-non-system-playbook-prompts
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/009-round3-review-remediation
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/045-sk-doc-changelog-template
+TIMEOUT_OR_FAIL | system-spec-kit/021-spec-kit-phase-system
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/010-root-level-review-research-convention
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtime-truth-foundation
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment
+TIMEOUT_OR_FAIL | skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/001-fusion-scoring-intelligence
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/007-sprint-6-indexing-and-graph
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/003-graph-augmented-retrieval
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/006-sprint-5-pipeline-refactor
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/004-feedback-quality-learning
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/005-retrieval-ux-presentation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/003-constitutional-learn-refactor
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/007-evaluation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/003-discovery
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/scratch/z-archive-prior-audit/merged-030-architecture-boundary-remediation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/006-analysis
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/002-mutation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/001-retrieval
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/004-maintenance
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/012-query-intelligence
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/009-evaluation-and-measurement
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/017-governance
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/018-ux-hooks
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/003-unified-graph-retrieval
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/001-session-source-validation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/003-multi-cli-parity
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/005-live-proof-and-parity-hardening
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/001-quality-scorer-unification
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/004-source-capabilities-and-structured-preference
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/003-data-fidelity
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/006-description-enrichment
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/012-auto-detection-fixes
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/013-spec-descriptions
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/015-runtime-contract-and-indexability
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/phase-quarantine/024-runtime-contract-and-indexability
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/004-indexing-and-coherence
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/phase-quarantine/022-source-capabilities-and-structured-preference
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/phase-quarantine/025-source-capabilities-and-structured-preference
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/018-memory-save-quality-fixes
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/phase-quarantine/021-runtime-contract-and-indexability
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/phase-quarantine/026-live-proof-and-parity-hardening
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/phase-quarantine/023-live-proof-and-parity-hardening
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/012-command-alignment
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/002-mutation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/005-lifecycle
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/001-retrieval
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/003-discovery
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/007-evaluation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/009-evaluation-and-measurement
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/011-scoring-and-calibration
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/010-graph-signal-activation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/013-memory-quality-and-indexing
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/008-bug-fixes-and-data-integrity
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/012-query-intelligence
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/014-pipeline-architecture
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/016-tooling-and-scripts
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/015-retrieval-enhancements
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/019-feature-flag-reference
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/017-governance
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference-audit
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/018-ux-hooks
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/020-post-release-fixes
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/018-rewrite-system-speckit-readme
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/021-remediation-revalidation
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/021-ground-truth-id-remapping
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/023-ablation-benchmark-integrity
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/017-update-install-guide
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/025-mcp-runtime-hardening
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/024-codex-memory-mcp-fix
+TIMEOUT_OR_FAIL | system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement
+TIMEOUT_OR_FAIL | system-spec-kit/023-hybrid-rag-fusion-refinement
+TIMEOUT_OR_FAIL | system-spec-kit/023-hybrid-rag-fusion-refinement/002-mcp-server-esm-migration
+TIMEOUT_OR_FAIL | system-spec-kit/023-hybrid-rag-fusion-refinement/004-verification-and-standards
+TIMEOUT_OR_FAIL | system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion
+TIMEOUT_OR_FAIL | system-spec-kit/023-hybrid-rag-fusion-refinement/003-scripts-interop-refactor
+TIMEOUT_OR_FAIL | system-spec-kit/023-hybrid-rag-fusion-refinement/005-test-and-scenario-remediation
+TIMEOUT_OR_FAIL | system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix
+TIMEOUT_OR_FAIL | system-spec-kit/023-hybrid-rag-fusion-refinement/001-shared-esm-migration
+TIMEOUT_OR_FAIL | system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit
+TIMEOUT_OR_FAIL | system-spec-kit/023-hybrid-rag-fusion-refinement/006-review-remediation
+TIMEOUT_OR_FAIL | system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes
+TIMEOUT_OR_FAIL | system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives
+TIMEOUT_OR_FAIL | system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate

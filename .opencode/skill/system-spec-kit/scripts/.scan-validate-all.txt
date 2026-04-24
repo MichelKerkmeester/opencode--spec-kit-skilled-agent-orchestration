@@ -1,0 +1,3 @@
+/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/.scan-validate-all.sh: line 9: mapfile: command not found
+/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/.scan-validate-all.sh: line 18: FOLDERS: unbound variable
+/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/scripts/.scan-validate-all.sh: line 44: FOLDERS[@]: unbound variable
