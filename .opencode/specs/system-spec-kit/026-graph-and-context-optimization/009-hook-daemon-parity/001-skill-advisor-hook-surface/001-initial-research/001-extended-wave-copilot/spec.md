@@ -1,12 +1,11 @@
 ---
-title: "Feature Specification: 020 Extended Research Wave (cli-copilot)"
+title: "...timization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot/spec]"
 description: "Second 10-iteration research wave dispatched via cli-copilot gpt-5.4 high. Deep-dives on wave-1 remaining open questions + new architectural angles (adversarial advisor, observability, migration, concurrent sessions, NFKC interaction)."
 trigger_phrases:
   - "020 extended research"
   - "skill advisor copilot wave"
 importance_tier: "critical"
 contextType: "research"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Extended wave scaffolded post-wave-1 convergence"
     next_safe_action: "Dispatch iteration 1 via copilot --model gpt-5.4"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: 020 Extended Research (cli-copilot)
 

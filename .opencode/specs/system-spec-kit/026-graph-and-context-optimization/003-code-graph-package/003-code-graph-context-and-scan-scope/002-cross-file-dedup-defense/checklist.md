@@ -1,14 +1,14 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
-title: "Verification Checklist: Cross-File Symbol Dedup Defense"
+title: "...ext-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-cross-file-dedup-defense/checklist]"
 description: "Verification checklist for packet 012/003, including source grep checks, focused Vitest, build, dist inspection, strict spec validation, and operator live-scan acceptance."
 trigger_phrases:
   - "cross-file symbol dedup checklist"
   - "012/003 verification checklist"
-  - "UNIQUE constraint failed acceptance"
-  - "filesIndexed 1300 acceptance"
+  - "unique constraint failed acceptance"
+  - "filesindexed 1300 acceptance"
 importance_tier: "critical"
-contextType: "spec"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/003-cross-file-dedup-defense"
@@ -29,6 +29,7 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Cross-File Symbol Dedup Defense
 

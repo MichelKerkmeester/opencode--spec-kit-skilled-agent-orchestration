@@ -1,12 +1,11 @@
 ---
-title: "Tasks: Skill Graph Research Findings Fixes [template:level_2/tasks.md]"
+title: "...-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes/tasks]"
 description: "Task breakdown for 001-research-findings-fixes."
 trigger_phrases:
   - "001-research-findings-fixes"
   - "tasks"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Created tasks"
     next_safe_action: "Implement fixes"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Skill Graph Research Findings Fixes
 

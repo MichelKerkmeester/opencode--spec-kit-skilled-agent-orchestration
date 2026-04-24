@@ -1,11 +1,17 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | level2-verify | compact -->
 ---
-title: "Validate Continuity Profile Weights"
-status: completed
-level: 2
-type: implementation
-parent: 001-search-fusion-tuning
-created: 2026-04-13
+title: "...search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation/spec]"
+description: 'title: "Validate Continuity Profile Weights"'
+trigger_phrases:
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "spec"
+  - "006"
+  - "continuity"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation"
@@ -13,6 +19,11 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Closed the continuity prompt and judged fixture validation work"
     next_safe_action: "Resume from implementation-summary.md if follow-on continuity tuning is needed"
+created: 2026-04-13
+level: 2
+parent: 001-search-fusion-tuning
+status: completed
+type: implementation
 ---
 # Feature Specification: Validate Continuity Profile Weights
 

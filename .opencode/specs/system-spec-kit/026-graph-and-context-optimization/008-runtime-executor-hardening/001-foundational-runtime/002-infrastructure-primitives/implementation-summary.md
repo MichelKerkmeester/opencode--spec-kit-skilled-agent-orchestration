@@ -1,9 +1,14 @@
 ---
-title: "Implementation Summary: Wave A — Infrastructure Primitives"
+title: "...ization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives/implementation-summary]"
 description: "Phase 017 Wave A complete: 5 commits on main landing H-56-1 canonical save fix, readiness-contract extract, shared-provenance extract, normalizer collapse, and EVIDENCE audit parser. Critical-path infrastructure that unblocked Waves B/C/D."
-trigger_phrases: ["017 wave a summary", "wave a implementation", "infrastructure primitives summary", "h-56-1 fix summary"]
+trigger_phrases:
+  - "017 wave a summary"
+  - "wave a implementation"
+  - "infrastructure primitives summary"
+  - "h-56-1 fix summary"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives"

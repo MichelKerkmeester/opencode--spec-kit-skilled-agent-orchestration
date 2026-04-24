@@ -1,3 +1,18 @@
+---
+title: "...spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/017-temporal-knowledge-graph-investigation/tasks]"
+description: "1. Document current memory, save, and governance boundaries using .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts, .opencode/skill/system-spec-kit/mcp_serve..."
+trigger_phrases:
+  - "spec"
+  - "kit"
+  - "future"
+  - "hybrid"
+  - "rag"
+  - "tasks"
+  - "017"
+  - "temporal"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 017-temporal-knowledge-graph-investigation
 
 1. Document current memory, save, and governance boundaries using `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`, `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts`, `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts`, and `.opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts`.

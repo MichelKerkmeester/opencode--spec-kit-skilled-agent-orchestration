@@ -1,10 +1,11 @@
 ---
-title: "Implementation Summary: 015 Residual Backlog"
+title: "...ext-optimization/008-runtime-executor-hardening/003-system-hardening/006-residual-015-backlog/implementation-summary]"
 description: "Closure summary for 19 residual findings across DB boundaries, resume minimal payloads, review graph semantics, advisor health, docs, and hygiene."
-trigger_phrases: ["015 residual backlog summary", "residual 015 implementation summary"]
+trigger_phrases:
+  - "015 residual backlog summary"
+  - "residual 015 implementation summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/006-residual-015-backlog"
@@ -12,6 +13,7 @@ _memory:
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Implemented all residual 015 backlog fixes and wave regressions"
     next_safe_action: "Run final build, strict packet validation, then orchestrator-owned commit"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: 015 Residual Backlog
 

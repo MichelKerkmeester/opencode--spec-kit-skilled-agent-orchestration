@@ -1,12 +1,11 @@
 ---
-title: "Implementation Summary: Skill-Advisor Hook Surface"
+title: "...-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/implementation-summary]"
 description: "Phase 020 complete: cross-runtime advisor hook surface shipped across Claude/Gemini/Copilot/Codex with 4-runtime parity, 200/200 corpus parity, cache-hit p95 0.016ms, hit rate 66.7%, DQI 97 reference doc."
 trigger_phrases:
   - "026/009/001 implementation summary"
   - "skill advisor hook summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface"
@@ -16,7 +15,7 @@ _memory:
     next_safe_action: "Keep validation green"
     completion_pct: 100
     dispatch_policy: "cli-codex gpt-5.4 high fast primary; cli-copilot gpt-5.4 high fallback"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Skill-Advisor Hook Surface
 

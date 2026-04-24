@@ -1,14 +1,15 @@
 ---
-title: "Implementation Plan: Skill-Advisor Hook Improvements"
+title: "Imp [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/plan]"
 description: "Translate packet-02 skill-advisor research into a Level-2 implementation sequence focused on threshold parity, shared brief rendering, MCP surface normalization, and durable prompt-safe telemetry. The plan stays inside the skill-advisor and hook surfaces named by the 014 findings and defers optional P2 cleanup work to downstream follow-up."
 trigger_phrases:
   - "skill-advisor hook improvements"
   - "014 skill-advisor"
-  - "014-F-001"
-  - "014-F-007"
-  - "SA-T1"
-importance_tier: "high"
-contextType: "plan"
+  - "014-f-001"
+  - "014-f-007"
+  - "sa-t1"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements"

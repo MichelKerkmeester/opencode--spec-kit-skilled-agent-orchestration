@@ -1,8 +1,13 @@
 ---
-title: "018-wake-up-context-layering-study: Study Wake-Up Context Layering"
+title: "018 [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/018-wake-up-context-layering-study/spec]"
 description: "Evaluates whether a bounded wake-up formatter on top of session_bootstrap improves recovery without creating a second bootstrap authority."
+trigger_phrases:
+  - "018"
+  - "spec"
+  - "wake"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 018-wake-up-context-layering-study: Study Wake-Up Context Layering
 
 ## 1. Scope

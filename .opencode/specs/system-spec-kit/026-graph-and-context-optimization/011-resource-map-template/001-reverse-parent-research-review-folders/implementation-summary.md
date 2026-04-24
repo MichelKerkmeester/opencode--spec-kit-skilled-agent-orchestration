@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
-title: "Implementation Summary: Reverse Parent Research/Review Folder Placement"
+title: "...and-context-optimization/011-resource-map-template/001-reverse-parent-research-review-folders/implementation-summary]"
 description: "The deep-loop artifact contract is back to local ownership: root specs stay root-local, child phases own their own packet folders again, and the repo's misplaced child packets have been migrated home."
 trigger_phrases:
   - "013/001 implementation summary"
   - "reverse parent folders implementation"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/001-reverse-parent-research-review-folders"
@@ -30,6 +30,7 @@ _memory:
       - "Root specs keep root-local research/ and review/ folders."
       - "Child phases and sub-phases keep local-owner research/ and review/ packet folders."
       - "Phase 002 now depends on this rollback before resuming resource-map emission work."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

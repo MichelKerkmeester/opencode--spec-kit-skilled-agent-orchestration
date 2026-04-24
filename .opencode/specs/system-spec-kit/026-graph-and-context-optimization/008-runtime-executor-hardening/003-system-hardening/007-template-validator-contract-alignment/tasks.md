@@ -1,10 +1,10 @@
 ---
-title: "Tasks: Template/Validator Contract Alignment"
+title: "...ext-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment/tasks]"
 description: "Task list for 5 ranked proposals."
-trigger_phrases: ["validator alignment tasks"]
+trigger_phrases:
+  - "validator alignment tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Completed validator regression; full mcp_server suite blocked"
     next_safe_action: "Resolve broad mcp_server suite failures outside validator scope"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Template/Validator Contract Alignment
 

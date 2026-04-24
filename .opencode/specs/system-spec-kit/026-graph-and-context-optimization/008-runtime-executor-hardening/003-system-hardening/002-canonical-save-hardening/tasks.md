@@ -1,11 +1,10 @@
 ---
-title: "Tasks: Canonical-Save Hardening"
+title: "...raph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening/tasks]"
 description: "Task list for 3-wave canonical-save hardening child."
 trigger_phrases:
   - "canonical save hardening tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Implemented Waves A-C and updated verification evidence"
     next_safe_action: "Orchestrator review and commit"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Canonical-Save Hardening
 

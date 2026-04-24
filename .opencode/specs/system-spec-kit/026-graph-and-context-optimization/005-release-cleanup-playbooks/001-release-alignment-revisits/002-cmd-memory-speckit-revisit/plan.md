@@ -1,12 +1,12 @@
 ---
-title: "018 / 008 — command revisit plan"
+title: "...ontext-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit/plan]"
 description: "Evidence-first plan for rechecking the 016 command targets against the Phase 018 continuity model."
-trigger_phrases: ["008 revisit plan", "command revisit plan", "phase 018 command parity"]
+trigger_phrases:
+  - "008 revisit plan"
+  - "command revisit plan"
+  - "phase 018 command parity"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit"
@@ -15,6 +15,9 @@ _memory:
     recent_action: "Completed the command-surface revisit plan for the 016 release-alignment targets"
     next_safe_action: "Reuse the blocked-wrapper list if mirror parity is retried in a different runtime"
     key_files: ["plan.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: 018 / 008 — command revisit
 <!-- SPECKIT_LEVEL: 2 -->

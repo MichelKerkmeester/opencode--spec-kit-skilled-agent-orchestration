@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 005 Budget and Stagnation Enforcement [template:level_2/checklist.md]"
+title: "Verif [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/005-budget-stagnation-enforcement/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

@@ -1,12 +1,11 @@
 ---
-title: "Implementation Summary: Migration, Lineage, and Identity Drift Remediation"
+title: "...ew-remediation/005-006-campaign-findings-remediation/004-migration-lineage-and-identity-drift/implementation-summary]"
 description: "Closed the P1 migration-lineage drift findings by aligning current packet identity surfaces, repairing research references, and preventing silent legacy skill-graph fallback."
 trigger_phrases:
   - "migration lineage identity remediation complete"
   - "004 migration lineage closeout"
-importance_tier: "high"
-contextType: "verification"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/004-migration-lineage-and-identity-drift"
@@ -20,6 +19,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/mcp_server/tests/migration-lineage-identity.vitest.ts"
       - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor"
     completion_pct: 100
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Migration, Lineage, and Identity Drift Remediation
 

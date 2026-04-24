@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 015 Residuals Restart"
+title: "...026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/006-residual-015-backlog/spec]"
 description: "Restart 015 Workstream 0+ scoped to the narrowed 19-finding residual backlog from 019/001/002 delta review. Six clusters: DB path boundary, advisor degraded-state, resume minimal-mode, review-graph correctness, doc/reference parity, save/startup hygiene. Sequenced W0+A through W0+D."
 trigger_phrases:
   - "015 residuals restart"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "resume minimal contract"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/006-residual-015-backlog"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Residual 015 implementation completed with wave regression evidence"
     next_safe_action: "Run orchestrator-owned commit handoff"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: 015 Residuals Restart
 

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Codex Tone-of-Voice Personalization"
+title: "Decision Record: Codex Tone-of-Voice [skilled-agent-orchestration/046-cli-codex-tone-of-voice/decision-record]"
 description: "Five ADRs covering artifact split rationale, voice framing, tier design, packaging location, and the deliberate separation from AGENTS.md."
 trigger_phrases:
   - "046 adr"
@@ -7,6 +7,7 @@ trigger_phrases:
   - "codex personalization rationale"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/046-cli-codex-tone-of-voice"

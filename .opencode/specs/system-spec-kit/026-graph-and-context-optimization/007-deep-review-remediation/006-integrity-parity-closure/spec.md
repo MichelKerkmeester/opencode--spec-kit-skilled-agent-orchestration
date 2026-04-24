@@ -1,12 +1,13 @@
 ---
-title: "Feature Specification: Integrity Parity Closure"
+title: "Featu [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/spec]"
 description: "Level 3 remediation sub-phase for closing cross-packet integrity defects, parity drift, and governance gaps surfaced by the 026 cross-phase synthesis."
 trigger_phrases:
   - "integrity parity closure"
   - "026 007 006"
   - "cross-phase remediation"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure"

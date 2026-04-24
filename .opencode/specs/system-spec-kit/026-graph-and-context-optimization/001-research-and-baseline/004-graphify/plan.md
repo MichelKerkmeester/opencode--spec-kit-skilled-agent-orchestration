@@ -1,13 +1,12 @@
 ---
-title: "Implementation Plan: 004-graphify Research Phase"
+title: "Implementation Plan [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify/plan]"
 description: "20-iteration two-wave deep-research loop covering graphify plus Public rollout translation, with externalized JSONL state, reducer-managed registry, and post-synthesis memory save."
 trigger_phrases:
   - "graphify research plan"
   - "004-graphify execution plan"
   - "deep-research loop graphify"
-importance_tier: critical
-contextType: plan
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+importance_tier: "critical"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: 004-graphify Research Phase
 

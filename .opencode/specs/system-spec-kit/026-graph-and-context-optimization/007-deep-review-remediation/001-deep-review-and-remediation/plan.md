@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 015 Deep Review Remediation — 11 Workstreams"
+title: "Im [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation/plan]"
 description: "Phased remediation plan for 243 findings across 11 workstreams, starting with the P0 reconsolidation blocker and progressing through path hardening, contract verification, status cleanup, and test quality."
 trigger_phrases:
   - "remediation plan"
@@ -9,6 +9,7 @@ trigger_phrases:
   - "deep review fix plan"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation"

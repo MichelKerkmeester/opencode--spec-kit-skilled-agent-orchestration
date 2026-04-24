@@ -1,11 +1,10 @@
 ---
-title: "Tasks: Skill-Advisor Docs + Phase 020 Code Alignment"
+title: "...ec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment/tasks]"
 description: "Task list for 022 — 3 doc updates + sk-code-opencode audit + remediations."
 trigger_phrases:
   - "022 tasks"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Tasks scaffolded"
     next_safe_action: "Begin T001"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Skill-Advisor Docs + Phase 020 Code Alignment
 

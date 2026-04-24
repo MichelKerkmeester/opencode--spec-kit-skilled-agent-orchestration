@@ -1,20 +1,23 @@
 ---
-title: "Implementation Plan: FTS5 Fix, Search Dashboard, and DB Path Drift Fix"
+title: "Implementation Plan: FTS5 [system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/plan]"
 description: "Three-item implementation covering a completed FTS5 double-quoting fix, a completed search dashboard redesign, and a new P0 database path drift fix that prevents vector search from silently resolving to an empty provider-specific SQLite DB."
-trigger_phrases:
-  - "db path drift fix plan"
-  - "vector-index-store resolve_database_path fix"
-  - "reinitializeDatabase wrong db fix"
-  - "hybrid search assertInitialized"
-  - "fts5 fix plan"
-  - "search dashboard plan"
+trigger_phrases: ["db path drift fix plan", "vector-index-store resolve_database_path fix", "reinitializedatabase wrong db fix", "hybrid search assertinitialized", "fts5 fix plan", "search dashboard plan"]
 importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["plan.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
-# Implementation Plan: FTS5 Fix, Search Dashboard, and DB Path Drift Fix
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+# Implementation Plan: FTS5 Fix, Search Dashboard, and DB Path Drift Fix
 
 ---
 

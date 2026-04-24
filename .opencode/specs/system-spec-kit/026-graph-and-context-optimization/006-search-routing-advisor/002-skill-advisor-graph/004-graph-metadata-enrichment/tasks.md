@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Graph Metadata Enrichment"
+title: "...raph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment/tasks]"
 description: "Completed task ledger for the shipped schema v2 enrichment across all 21 per-skill graph-metadata.json files."
 trigger_phrases:
   - "004-graph-metadata-enrichment"
@@ -7,8 +7,6 @@ trigger_phrases:
   - "schema v2 task ledger"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment"
@@ -17,6 +15,8 @@ _memory:
     recent_action: "Rebuilt the task ledger around the completed 21-file enrichment"
     next_safe_action: "Attach final validator and compiler outputs to the verification tasks"
     key_files: ["tasks.md", "checklist.md", "review/deep-review-findings.md"]
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Graph Metadata Enrichment
 

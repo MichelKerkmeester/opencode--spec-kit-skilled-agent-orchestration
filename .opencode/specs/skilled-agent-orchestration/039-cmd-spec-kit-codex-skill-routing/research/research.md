@@ -1,5 +1,5 @@
 ---
-title: "Research: Codex Command Discoverability via system-spec-kit [03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing/research]"
+title: "Research: Codex Command Discoverability [skilled-agent-orchestration/039-cmd-spec-kit-codex-skill-routing/research]"
 description: "Research into the smallest, highest-signal way to help Codex discover spec_kit and memory commands when system-spec-kit is selected by skill advisor."
 trigger_phrases:
   - "codex"
@@ -10,6 +10,14 @@ trigger_phrases:
   - "memory commands"
 importance_tier: "normal"
 contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/039-cmd-spec-kit-codex-skill-routing/research"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
 ---
 # Research: Codex Command Discoverability via system-spec-kit
 

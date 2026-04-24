@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Merge spec_kit:phase into plan and [03--commands-and-skills/037-cmd-merge-spec-kit-phase/plan]"
+title: "Implementation Plan: Merge spec_kit:phase into plan [skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/plan]"
 description: "Absorb the standalone /spec_kit:phase command into the plan and complete commands by adding a :with-phases optional workflow flag. This follows the identical pattern used by :wi..."
 trigger_phrases:
   - "implementation"
@@ -11,6 +11,15 @@ trigger_phrases:
   - "cmd"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/037-cmd-merge-spec-kit-phase"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Merge spec_kit:phase into plan and complete
 

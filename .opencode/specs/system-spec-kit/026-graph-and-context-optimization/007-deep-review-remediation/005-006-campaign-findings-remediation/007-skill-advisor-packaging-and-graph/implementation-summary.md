@@ -1,11 +1,12 @@
 ---
-title: "Implementation Summary: 007-skill-advisor-packaging-and-graph"
+title: "...eview-remediation/005-006-campaign-findings-remediation/007-skill-advisor-packaging-and-graph/implementation-summary]"
 description: "Closeout evidence for Skill Advisor Packaging and Graph P1 remediation."
 trigger_phrases:
   - "implementation summary 007 skill advisor packaging and graph"
   - "skill advisor packaging remediation complete"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/007-skill-advisor-packaging-and-graph"

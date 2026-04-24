@@ -1,11 +1,12 @@
 ---
-title: "Implementation Summary: Integrity Parity Closure"
+title: "...t/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/implementation-summary]"
 description: "Planning stub for the Integrity Parity Closure remediation packet."
 trigger_phrases:
   - "implementation summary integrity parity closure"
   - "026 007 006 implementation summary"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure"

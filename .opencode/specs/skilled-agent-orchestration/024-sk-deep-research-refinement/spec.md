@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: sk-deep-research Refinement via [03--commands-and-skills/024-sk-deep-research-refinement/spec]"
+title: "Feature Specification: sk-deep-research Refinement [skilled-agent-orchestration/024-sk-deep-research-refinement/spec]"
 description: "The sk-deep-research system (v1) is functional but has 18 documented improvement proposals (from spec 023) that need rigorous validation, prioritization refinement, and implemen..."
 trigger_phrases:
   - "feature"
@@ -11,6 +11,15 @@ trigger_phrases:
   - "024"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/024-sk-deep-research-refinement"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: sk-deep-research Refinement via Self-Research
 

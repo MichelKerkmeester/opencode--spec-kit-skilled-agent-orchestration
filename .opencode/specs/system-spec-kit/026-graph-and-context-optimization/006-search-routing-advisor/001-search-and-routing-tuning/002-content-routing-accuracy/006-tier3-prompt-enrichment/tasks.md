@@ -1,7 +1,17 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | compact -->
 ---
-title: "Enrich Tier3 Prompt with Continuity Model Context - Tasks"
-status: completed
+title: "...-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/tasks]"
+description: 'title: "Enrich Tier3 Prompt with Continuity Model Context - Tasks"'
+trigger_phrases:
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "tasks"
+  - "006"
+  - "tier3"
+importance_tier: "normal"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment"
@@ -9,6 +19,7 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Added the continuity context paragraph and locked it with prompt-shape assertions"
     next_safe_action: "No further phase-local work required beyond packet-level follow-through"
+status: completed
 ---
 # Tasks
 ## Notation <!-- ANCHOR:notation -->`[ ]` pending, `[x]` complete, `T-V*` verification-only.<!-- /ANCHOR:notation -->

@@ -1,19 +1,28 @@
 ---
-title: "Feature Specification: FTS5 Fix, Search Dashboard, and DB Path Drift Fix"
+title: "Feature Specification: FTS5 [system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/spec]"
 description: "FTS5 double-quoting bug silently drops results, search dashboard has poor readability, and DB path drift causes vector search to resolve the wrong SQLite DB after lazy Voyage-4 provider init."
 trigger_phrases:
   - "fts5 double quoting bug"
   - "database path drift"
   - "resolve_database_path bug"
   - "vector index empty results"
-  - "reinitializeDatabase wrong db"
+  - "reinitializedatabase wrong db"
 importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["spec.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_2/spec.md | v2.2 -->"
 ---
-# Feature Specification: FTS5 Fix, Search Dashboard, and DB Path Drift Fix
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: level_2/spec.md | v2.2 -->
+
+# Feature Specification: FTS5 Fix, Search Dashboard, and DB Path Drift Fix
 
 ---
 
@@ -24,7 +33,7 @@ contextType: "implementation"
 | **Parent Plan** | ../plan.md |
 | **Phase** | 13 of 13 |
 | **Predecessor** | 012-memory-save-quality-pipeline |
-| **Successor** | None |
+| **Successor** | 014-feedback-signal-pipeline |
 | **Handoff Criteria** | P0 fixes complete with reproducible verification and report/dashboard parity |
 
 This is **Phase 13** of the ESM Module Compliance specification and captures the FTS5/search dashboard closure workstream.

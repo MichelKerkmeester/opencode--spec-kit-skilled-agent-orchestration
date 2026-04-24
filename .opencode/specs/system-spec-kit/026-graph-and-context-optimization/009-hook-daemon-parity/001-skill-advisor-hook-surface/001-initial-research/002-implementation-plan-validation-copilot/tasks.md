@@ -1,11 +1,10 @@
 ---
-title: "Tasks: 020 Wave-3 Validation Research"
+title: "...k-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot/tasks]"
 description: "Task list for 020 wave-3 — 20-iteration cli-copilot validation dispatch."
 trigger_phrases:
   - "020 wave 3 tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot"
@@ -14,7 +13,7 @@ _memory:
     recent_action: "Tasks scaffolded"
     next_safe_action: "Begin T001 dispatch"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: 020 Wave-3 Validation Research
 

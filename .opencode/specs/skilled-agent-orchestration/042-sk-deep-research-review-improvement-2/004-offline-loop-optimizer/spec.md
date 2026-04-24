@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Offline Loop Optimizer [042.004]"
+title: "Feature Specific [skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer/spec]"
 description: "Define an offline replay optimizer that tunes deterministic deep-loop configs against real packet traces now, while deferring prompt and meta-optimization until replay fixtures, behavioral suites, and broader corpus coverage exist."
 trigger_phrases:
   - "042.004"
@@ -9,6 +9,15 @@ trigger_phrases:
   - "advisory promotion gate"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Offline Loop Optimizer
 

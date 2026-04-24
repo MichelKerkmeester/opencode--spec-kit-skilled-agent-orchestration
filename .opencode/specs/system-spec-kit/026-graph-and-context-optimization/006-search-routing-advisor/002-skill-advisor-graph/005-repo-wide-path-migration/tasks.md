@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Repo-Wide Path Migration"
+title: "...graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration/tasks]"
 description: "Phase 005 closeout tasks for packet repair, evidence sync, metadata normalization, and 007-root grep cleanup."
 trigger_phrases:
   - "005-repo-wide-path-migration"
@@ -7,8 +7,6 @@ trigger_phrases:
   - "packet closeout tasks"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration"
@@ -17,6 +15,8 @@ _memory:
     recent_action: "Rebuilt the Phase 005 task ledger on the required scaffold"
     next_safe_action: "Attach final validator and grep outputs"
     key_files: ["tasks.md", "checklist.md", "implementation-summary.md"]
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Repo-Wide Path Migration
 

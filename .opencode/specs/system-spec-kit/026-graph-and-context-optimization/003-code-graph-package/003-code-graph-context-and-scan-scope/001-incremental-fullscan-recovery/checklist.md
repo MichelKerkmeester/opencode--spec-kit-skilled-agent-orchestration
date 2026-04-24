@@ -1,14 +1,14 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
-title: "Verification Checklist: Code Graph Incremental Fullscan Recovery"
+title: "...ptimization/003-code-graph-package/003-code-graph-context-and-scan-scope/001-incremental-fullscan-recovery/checklist]"
 description: "P0/P1/P2 verification checklist for code graph stale-gate recovery, duplicate-symbol dedupe, scan response metadata, tests, build, and post-restart operator checks."
 trigger_phrases:
   - "incremental fullscan checklist"
-  - "AC-1 filesScanned >= 1000"
-  - "AC-8 code graph response shapes"
+  - "ac-1 filesscanned >= 1000"
+  - "ac-8 code graph response shapes"
   - "012/002 checklist"
 importance_tier: "critical"
-contextType: "spec"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery"
@@ -29,6 +29,7 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Code Graph Incremental Fullscan Recovery
 

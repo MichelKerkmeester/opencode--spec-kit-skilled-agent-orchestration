@@ -1,13 +1,12 @@
 ---
-title: "Verification Checklist: Memory Quality Backend Improvements"
+title: "...m-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/checklist]"
 description: "Packet-level verification checklist for the completed five-phase memory-quality remediation train."
 trigger_phrases:
   - "memory quality parent checklist"
   - "packet closeout checklist"
   - "phase rollup evidence"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Memory Quality Backend Improvements
 

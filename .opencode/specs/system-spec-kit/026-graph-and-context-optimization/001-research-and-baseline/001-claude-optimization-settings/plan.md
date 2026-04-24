@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Phase 001 - Claude Optimization Settings (Reddit field-report audit)"
+title: "Imp [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings/plan]"
 description: "Research methodology for a 13-iteration deep-research loop auditing a Reddit field report against Code_Environment/Public's Claude configuration, producing 24 findings across 4 prioritization tiers."
 trigger_phrases:
   - "claude optimization research methodology"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "reddit audit plan"
 importance_tier: "important"
 contextType: "research"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Phase 001 - Claude Optimization Settings (Reddit field-report audit)
 

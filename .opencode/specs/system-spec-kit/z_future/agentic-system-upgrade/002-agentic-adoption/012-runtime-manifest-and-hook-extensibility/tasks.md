@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 012 Runtime Manifest and Hook Extensibility [template:level_2/tasks.md]"
+title: "...stem-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/012-runtime-manifest-and-hook-extensibility/tasks]"
 description: "Task Format: T### [P?] Description (012-runtime-manifest-and-hook-extensibility)"
 trigger_phrases:
   - "tasks"

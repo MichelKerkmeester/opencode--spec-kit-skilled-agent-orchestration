@@ -1,12 +1,11 @@
 ---
-title: "Implementation Summary: Phase 6 — Memory Duplication Reduction"
+title: "...002-continuity-memory-runtime/002-memory-quality-remediation/006-memory-duplication-reduction/implementation-summary]"
 description: "Post-implementation summary for the shipped Phase 6 compact-wrapper runtime, duplication-reduction guardrails, and 2026-04-08 re-validation evidence."
 trigger_phrases:
   - "phase 6 implementation summary"
   - "memory duplication summary"
-importance_tier: important
+importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/006-memory-duplication-reduction"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Phase 6 — Memory Duplication Reduction
 

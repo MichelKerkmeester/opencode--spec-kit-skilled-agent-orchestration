@@ -1,10 +1,11 @@
 ---
-title: "Verification Checklist: 002-spec-structure-and-validation Spec Structure and Validation Remediation"
+title: "...zation/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation/checklist]"
 description: "Verification gates for 002-spec-structure-and-validation Spec Structure and Validation Remediation."
 trigger_phrases:
-  - "verification checklist 002 spec structure and validation spec structure "
-importance_tier: "high"
-contextType: "spec"
+  - "verification checklist 002 spec structure and validation spec structure"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation"

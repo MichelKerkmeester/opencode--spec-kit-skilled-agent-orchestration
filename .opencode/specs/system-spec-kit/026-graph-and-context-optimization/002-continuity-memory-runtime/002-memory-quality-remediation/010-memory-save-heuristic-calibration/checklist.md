@@ -1,12 +1,11 @@
 ---
-title: "Verification Checklist: Memory Save Heuristic Calibration"
+title: "...ization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration/checklist]"
 description: "Verification checklist for packet 010 covering schema, sanitizer, validator, D5, dist rebuild, full tests, strict validation, and the real save."
 trigger_phrases:
   - "010 heuristic calibration checklist"
   - "memory save calibration verification"
 importance_tier: "important"
-contextType: "verification"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Memory Save Heuristic Calibration
 

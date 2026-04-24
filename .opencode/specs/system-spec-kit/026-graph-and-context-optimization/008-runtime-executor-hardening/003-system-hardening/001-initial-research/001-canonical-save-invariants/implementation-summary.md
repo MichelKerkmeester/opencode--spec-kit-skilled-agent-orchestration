@@ -1,11 +1,10 @@
 ---
-title: "Implementation Summary: Canonical-Save Pipeline Invariant Research"
+title: "...me-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants/implementation-summary]"
 description: "Placeholder implementation summary for SSK-RR-2 research packet. Filled post-convergence."
 trigger_phrases:
   - "ssk-rr-2 summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants"
@@ -17,7 +16,7 @@ _memory:
       - "P0-iter3-001 (expanded iter 4): FOUR packets missing spec.md at 026 root — 007, 008, 009, 010 — all carry description.json + graph-metadata.json + empty source_docs. Full 96-packet tree scan confirms only these four are structurally broken. Real state divergence."
       - "P0-iter4-002 (upgraded from iter 3): save_lineage=null is a CONFIRMED WRITEBACK BUG — workflow.ts passes saveLineage:'same_pass' but the built/runtime module at graph-metadata writeback drops it before persist. Affects every active packet including freshest. P0 severity."
       - "FIVE validator assertions drafted in iter 4 with trigger+severity+migration path (Q5 output seed)"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Canonical-Save Pipeline Invariant Research
 

@@ -1,11 +1,20 @@
 ---
-title: "Implementation Plan: Copilot Startup Hook Wiring [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring]"
+title: "Implementation [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring/plan]"
 description: "Implements the bounded Phase 031 runtime/config follow-on that makes live Copilot sessionStart surface the shared startup banner and aligns runtime detection with the repo hook config."
 trigger_phrases:
   - "phase 031 plan"
   - "copilot startup hook wiring plan"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Copilot Startup Hook Wiring
 

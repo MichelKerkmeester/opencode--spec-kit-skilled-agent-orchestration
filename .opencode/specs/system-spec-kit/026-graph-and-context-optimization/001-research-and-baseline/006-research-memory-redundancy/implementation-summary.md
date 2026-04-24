@@ -1,12 +1,11 @@
 ---
-title: "Implementation Summary"
+title: "...t/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy/implementation-summary]"
 description: "The 006 follow-on packet now validates as a complete Level 3 coordination packet and clearly hands runtime ownership back to packet 003."
 trigger_phrases:
   - "006 redundancy implementation summary"
   - "memory redundancy follow on summary"
 importance_tier: "important"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

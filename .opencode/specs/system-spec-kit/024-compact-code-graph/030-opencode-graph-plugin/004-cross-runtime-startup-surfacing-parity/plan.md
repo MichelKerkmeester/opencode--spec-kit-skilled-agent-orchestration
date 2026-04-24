@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Cross-Runtime Startup Surfacing Parity [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/004-cross-runtime-startup-surfacing-parity]"
+title: "Imple [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/004-cross-runtime-startup-surfacing-parity/plan]"
 description: "This phase delivered the runtime/config changes that make startup/session-context surfacing feel consistent across the repo-managed CLI runtimes. The Level 3 plan records that work while preserving the important differences between hook-capable and hookless runtimes."
 trigger_phrases:
   - "cross-runtime startup surfacing parity plan"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "level 3"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/004-cross-runtime-startup-surfacing-parity"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Cross-Runtime Startup Surfacing Parity
 

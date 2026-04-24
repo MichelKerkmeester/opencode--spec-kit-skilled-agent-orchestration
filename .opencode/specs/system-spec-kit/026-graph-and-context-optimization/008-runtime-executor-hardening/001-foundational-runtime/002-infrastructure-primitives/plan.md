@@ -1,9 +1,17 @@
 ---
-title: "Implementation Plan: Phase 017 Wave A — Infrastructure Primitives"
+title: "...-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives/plan]"
 description: "Wave A plan: 5 tasks / ~20h / CRITICAL PATH. T-CNS-01 + T-W1-CNS-04 merged PR (canonical save metadata writer), T-CGC-01 readiness contract, T-W1-HOK-02 shared provenance, T-SCP-01 normalizer collapse, T-EVD-01-prep 016 checklist rewrap. Quality gate: /spec_kit:deep-review :auto ×7."
-trigger_phrases: ["017 wave a plan", "phase 017 wave a implementation plan", "t-cns-01 implementation plan", "readiness-contract extraction plan", "shared-provenance extraction plan", "normalizer collapse plan wave a", "016 checklist evidence rewrap plan"]
+trigger_phrases:
+  - "017 wave a plan"
+  - "phase 017 wave a implementation plan"
+  - "t-cns-01 implementation plan"
+  - "readiness-contract extraction plan"
+  - "shared-provenance extraction plan"
+  - "normalizer collapse plan wave a"
+  - "016 checklist evidence rewrap plan"
 importance_tier: "critical"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives"

@@ -1,10 +1,11 @@
 ---
-title: "Implementation Plan: 006-routing-accuracy-and-classifier-behavior Routing Accuracy and Classifier Behavior Remediation"
+title: ".../007-deep-review-remediation/005-006-campaign-findings-remediation/006-routing-accuracy-and-classifier-behavior/plan]"
 description: "Technical plan for 006-routing-accuracy-and-classifier-behavior Routing Accuracy and Classifier Behavior Remediation."
 trigger_phrases:
   - "implementation plan 006 routing accuracy and classifier behavior routing"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/006-routing-accuracy-and-classifier-behavior"

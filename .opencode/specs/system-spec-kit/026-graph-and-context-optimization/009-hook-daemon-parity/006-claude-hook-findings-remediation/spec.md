@@ -1,18 +1,18 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
-title: "Feature Specification: Claude Hook Findings Remediation"
+title: "Fe [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation/spec]"
 description: "Three findings from end-to-end Claude Code hook testing (SessionStart + UserPromptSubmit): (A) advisor freshness stuck in stale-loop because sourceSignature is null so the source/graph comparison never reconciles; (B) .claude/settings.local.json mixes Copilot-schema fields (bash, timeoutSec) with Claude-schema fields inside nested hook blocks, producing surplus hook invocations; (C) no documented multi-turn regression harness for hook testing, causing fresh-session cache-creation tax (~41K tokens = ~$0.17/run) when operators run the playbook."
 trigger_phrases:
   - "claude hook findings"
   - "advisor freshness stuck stale"
-  - "sourceSignature null"
+  - "sourcesignature null"
   - "settings.local.json schema mismatch"
   - "copilot bash field in claude hooks"
   - "hook regression harness"
   - "multi-turn stream-json testing"
   - "026/009/006"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation"
@@ -35,6 +35,7 @@ _memory:
       - "Disable flag works end-to-end: SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1 returned {} and model replied 'NO ADVISOR BRIEF' in session 17e651f5"
       - "SessionStart brief and UserPromptSubmit advisor additionalContext both reach the model: session b06fd791 quoted both back verbatim"
       - "Fresh claude -p sessions cost ~$0.165 each due to 41313 tokens of cache-creation; continuation sessions cost ~$0.02"
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Claude Hook Findings Remediation
 

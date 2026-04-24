@@ -1,13 +1,13 @@
 ---
-title: "Implementation Summary: 027/000 — Validator ESM Migration"
-template_source: "SPECKIT_TEMPLATE_SOURCE: level2-implementation-summary | v2.2"
+title: "...n/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix/implementation-summary]"
 description: "Completed implementation summary for the scripts/ ESM migration required by Phase 027/000."
 trigger_phrases:
   - "027/000 implementation summary"
   - "validator esm migration complete"
   - "node 25 validation summary"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level2-implementation-summary | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix"
@@ -23,8 +23,8 @@ _memory:
         answer: "Yes. Node 25 now reaches ordinary spec validation failures only; no SyntaxError/ReferenceError appears in /tmp/027-000-validate-node25.log."
       - question: "Can validate.sh run under Node 20.19.5 without CJS/ESM SyntaxError?"
         answer: "Yes. Node 20.19.5 uses the tsx loader fallback for TypeScript bridge rules and now reaches ordinary spec validation failures only."
+template_source: "SPECKIT_TEMPLATE_SOURCE: level2-implementation-summary | v2.2"
 ---
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: level2-implementation-summary | v2.2 -->
 

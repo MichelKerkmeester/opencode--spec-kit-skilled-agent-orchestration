@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 ---
-title: "Implementation Plan: Doc Surface Alignment: Graph Metadata Changes"
+title: "...06-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment/plan]"
 description: "This plan applies a targeted doc-only sweep across the requested surfaces, then closes the packet with Level 2 execution docs and strict validation."
 trigger_phrases:
   - "graph metadata plan"
@@ -10,7 +10,6 @@ trigger_phrases:
   - "level 2 plan"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment"
@@ -31,6 +30,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "How to validate packet-level compliance after the doc sweep"
+status: complete
 ---
 # Implementation Plan: Doc Surface Alignment: Graph Metadata Changes
 

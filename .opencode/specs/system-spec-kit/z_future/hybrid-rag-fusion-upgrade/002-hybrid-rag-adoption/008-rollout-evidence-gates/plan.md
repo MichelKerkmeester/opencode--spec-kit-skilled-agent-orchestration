@@ -1,3 +1,13 @@
+---
+title: "Plan: 008-r [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/008-rollout-evidence-gates/plan]"
+description: "1. Define gate categories and the surfaces they apply to."
+trigger_phrases:
+  - "plan"
+  - "008"
+  - "rollout"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 008-rollout-evidence-gates
 
 ## Affected Files

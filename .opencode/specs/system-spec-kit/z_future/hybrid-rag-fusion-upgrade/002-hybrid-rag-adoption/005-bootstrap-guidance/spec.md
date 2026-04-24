@@ -1,8 +1,13 @@
 ---
-title: "005-bootstrap-guidance: Teach At Existing Bootstrap Surfaces"
+title: "005-bootstrap-g [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/005-bootstrap-guidance/spec]"
 description: "Improves startup and resume guidance by extending current bootstrap and startup hints rather than adding a new wake-up authority."
+trigger_phrases:
+  - "005"
+  - "bootstrap"
+  - "spec"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 005-bootstrap-guidance: Teach At Existing Bootstrap Surfaces
 
 ## 1. Scope

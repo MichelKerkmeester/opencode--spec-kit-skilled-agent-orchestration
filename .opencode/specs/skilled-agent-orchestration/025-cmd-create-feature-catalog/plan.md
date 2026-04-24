@@ -1,11 +1,20 @@
 ---
-title: "Implementation Plan: /create:feature-catalog Command [03--commands-and-skills/025-cmd-create-feature-catalog/plan]"
+title: "Implementation Plan: /create:feature-catalog Command [skilled-agent-orchestration/025-cmd-create-feature-catalog/plan]"
 description: "Plan the new create command, its YAML pair, runtime mirror, and discovery-doc updates using the shipped sk-doc feature-catalog references and templates."
 trigger_phrases:
   - "feature catalog command plan"
   - "/create:feature-catalog plan"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/025-cmd-create-feature-catalog"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: /create:feature-catalog Command
 

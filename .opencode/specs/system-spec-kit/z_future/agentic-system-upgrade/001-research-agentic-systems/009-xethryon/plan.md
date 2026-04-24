@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: 009-xethryon Research Phase"
+title: "Implementation Plan [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/009-xethryon/plan]"
 description: "Phase 2 continues the existing Xethryon research packet by reading Phase 1 artifacts, gathering deeper subsystem evidence, writing iterations 011-020, and then refreshing the merged synthesis outputs."
 trigger_phrases:
   - "009-xethryon plan"
   - "xethryon research plan"
 importance_tier: "important"
-contextType: "plan"
+contextType: "planning"
 ---
 # Implementation Plan: 009-xethryon Research Phase
 

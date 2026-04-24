@@ -1,11 +1,10 @@
 ---
-title: "Implementation Summary: Template + Validator Joint Audit"
+title: "...ime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit/implementation-summary]"
 description: "Placeholder summary for SSK-DR-1."
 trigger_phrases:
   - "ssk-dr-1 summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Packet scaffolded"
     next_safe_action: "Wave 2 convergence"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Template + Validator Joint Audit
 

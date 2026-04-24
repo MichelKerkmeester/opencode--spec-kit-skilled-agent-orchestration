@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Cleanup and Audit Coordination Parent"
+title: "Feature [system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/spec]"
 description: "Coordination parent for cleanup and audit work promoted from the continuity-refactor lane. This root spec restores the canonical packet identity while preserving the child packets as the owners of deletion, config-alignment, graph-metadata cleanup, and dead-code audit work."
 trigger_phrases:
   - "008 cleanup and audit"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "dead code audit"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit"
@@ -17,6 +16,7 @@ _memory:
     recent_action: "Restored coordination-parent root spec for canonical save invariants"
     next_safe_action: "Use the child packet docs for cleanup execution details and validation evidence"
     blockers: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Cleanup and Audit Coordination Parent
 

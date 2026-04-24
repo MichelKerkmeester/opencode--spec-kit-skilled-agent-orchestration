@@ -1,9 +1,18 @@
 ---
-title: "Tasks: Phase 017 Wave D — P2 Maintainability"
+title: "...-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability/tasks]"
 description: "6 P2 maintainability tasks (~40h total, DEFERRABLE) with full acceptance criteria and finding crosswalk. Parking-lot P2s (R55-P2-002/003/004) cited for Phase 018+ scheduling. No intra-Wave-D ordering dependencies — tasks are independently schedulable."
-trigger_phrases: ["017 wave d tasks", "004 p2 maintainability tasks", "t-exh-01", "t-pin-god-01", "t-w1-pin-02", "t-rcb-dup-01", "t-yml-cp4-01", "t-w1-hst-02"]
-importance_tier: "standard"
-contextType: "tasks"
+trigger_phrases:
+  - "017 wave d tasks"
+  - "004 p2 maintainability tasks"
+  - "t-exh-01"
+  - "t-pin-god-01"
+  - "t-w1-pin-02"
+  - "t-rcb-dup-01"
+  - "t-yml-cp4-01"
+  - "t-w1-hst-02"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability"

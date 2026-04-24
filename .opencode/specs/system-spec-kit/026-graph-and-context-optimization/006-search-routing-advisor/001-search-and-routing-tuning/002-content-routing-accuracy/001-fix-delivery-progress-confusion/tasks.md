@@ -1,12 +1,11 @@
 ---
-title: "Tasks: Fix Delivery vs Progress Routing Confusion"
+title: "...routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/tasks]"
 description: "Task ledger for delivery/progress routing remediation."
 trigger_phrases:
   - "delivery progress tasks"
   - "content router delivery tasks"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion"
@@ -15,6 +14,7 @@ _memory:
     recent_action: "Normalized task IDs and evidence anchors"
     next_safe_action: "No further phase-local work required"
     completion_pct: 100
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Fix Delivery vs Progress Routing Confusion
 

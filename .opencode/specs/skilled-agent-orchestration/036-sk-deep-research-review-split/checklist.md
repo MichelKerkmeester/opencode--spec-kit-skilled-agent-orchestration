@@ -1,7 +1,6 @@
 ---
-title: "Verification Checklist: Split sk-deep-research [03--commands-and-skills/036-sk-deep-research-review-split/checklist]"
+title: "Verification Checklist: Split [skilled-agent-orchestration/036-sk-deep-research-review-split/checklist]"
 description: "Verification checklist for the deep-research/deep-review split."
-template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 trigger_phrases:
   - "036 checklist"
   - "deep-review split verification"
@@ -28,6 +27,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Advisor evidence calibration now separates graph-heavy matches and deep sibling edges were removed."
+template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Split sk-deep-research Review Mode into sk-deep-review
 

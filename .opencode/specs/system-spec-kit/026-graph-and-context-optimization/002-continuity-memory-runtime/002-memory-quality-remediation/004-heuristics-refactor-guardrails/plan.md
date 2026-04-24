@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Phase 4 — Heuristics, Refactor & Guardrails"
+title: "...xt-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails/plan]"
 description: "Execution plan for PR-7, PR-8, and PR-9 across the memory save pipeline, covering D5 lineage heuristics, SaveMode refactor, and post-save reviewer guardrails."
 trigger_phrases:
   - "phase 4 plan"
@@ -7,9 +7,8 @@ trigger_phrases:
   - "savemode migration"
   - "find predecessor memory"
   - "check d1 d8 reviewer"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails"
@@ -18,9 +17,8 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 ---
-
 # Implementation Plan: Phase 4 — Heuristics, Refactor & Guardrails
 
 <!-- SPECKIT_LEVEL: 2 -->

@@ -1,14 +1,13 @@
 ---
-title: "Decision Record: 004-graphify Research Phase"
+title: "Decision [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify/decision-record]"
 description: "Architecture Decision Records covering engine selection, mid-loop engine switch, iter 7 stop override, and section 13.A append strategy for the graphify deep-research audit."
 trigger_phrases:
   - "graphify decision record"
-  - "graphify ADR"
+  - "graphify adr"
   - "graphify engine switch"
   - "graphify iter 7 override"
-importance_tier: critical
-contextType: decision-record
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+importance_tier: "critical"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["decision-record.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: 004-graphify Research Phase
 

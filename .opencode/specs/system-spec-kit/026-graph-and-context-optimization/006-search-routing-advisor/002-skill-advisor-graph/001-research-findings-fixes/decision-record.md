@@ -1,13 +1,12 @@
 ---
-title: "Decision Record: Research Findings Fixes"
+title: "...-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes/decision-record]"
 description: "Architectural decisions for fixing P0/P1 issues from the 10-iteration deep research audit of the skill graph system."
 trigger_phrases:
   - "001-research-findings-fixes"
   - "decision"
   - "graph fixes decisions"
 importance_tier: "important"
-contextType: "decisions"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes"
@@ -16,6 +15,7 @@ _memory:
     recent_action: "Created decision record"
     next_safe_action: "Review decisions"
     key_files: ["decision-record.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Research Findings Fixes
 

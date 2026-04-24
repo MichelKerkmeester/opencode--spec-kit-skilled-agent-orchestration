@@ -1,5 +1,5 @@
 ---
-title: "Handover: 020 Skill-Advisor Hook Surface (post-patch, implementation-ready)"
+title: "Hand [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/handover]"
 description: "Post-patch handover. Wave-3 P0 (005 impossible cache-hit gate) + all 9 P1 patches applied across 003/004/005/007/008/009. All 6 children pass validate.sh strict. Ready for /spec_kit:implement :auto 020/002 dispatch."
 trigger_phrases:
   - "020 handover"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "020 post compact"
   - "020 implementation ready"
 importance_tier: "critical"
-contextType: "handover"
+contextType: "general"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface"
@@ -17,7 +17,6 @@ _memory:
     next_safe_action: "Execute T1 per battle-plan"
     blockers: []
     dispatch_policy: "cli-codex gpt-5.4 high fast primary; cli-copilot fallback"
-
 ---
 # Handover: Phase 020 Skill-Advisor Hook Surface
 

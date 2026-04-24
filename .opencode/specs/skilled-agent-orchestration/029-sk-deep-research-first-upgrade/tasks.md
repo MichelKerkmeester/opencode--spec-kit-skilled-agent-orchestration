@@ -1,5 +1,5 @@
 ---
-title: "Tasks: sk-deep-research First Upgrade [03--commands-and-skills/029-sk-deep-research-first-upgrade/tasks]"
+title: "Tasks: sk-deep-research First Upgrade [skilled-agent-orchestration/029-sk-deep-research-first-upgrade/tasks]"
 description: "Task ledger for the comparative research packet and its documentation repair."
 trigger_phrases:
   - "029"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "first upgrade tasks"
 importance_tier: "normal"
 contextType: "research"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/029-sk-deep-research-first-upgrade"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: sk-deep-research First Upgrade
 

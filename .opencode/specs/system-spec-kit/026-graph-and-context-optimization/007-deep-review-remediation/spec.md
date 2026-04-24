@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Deep Review Remediation"
+title: "Feature Specification: Deep [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/spec]"
 description: "Deep review waves and post-review remediation. Consolidated active parent for 5 direct child phase packet(s)."
 trigger_phrases:
   - "007-deep-review-remediation"
@@ -11,7 +11,6 @@ trigger_phrases:
   - "005-006-campaign-findings-remediation"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation"
@@ -32,6 +31,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Deep Review Remediation
 

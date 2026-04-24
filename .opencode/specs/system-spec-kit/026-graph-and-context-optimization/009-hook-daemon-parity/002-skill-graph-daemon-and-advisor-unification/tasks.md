@@ -1,11 +1,12 @@
 ---
-title: "027 - Skill Graph Daemon and Advisor Unification Tasks"
+title: "...c-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/tasks]"
 description: "Parent-level task tracker for the completed Phase 027 skill-graph daemon and advisor unification work."
 trigger_phrases:
   - "026/009/002 tasks"
   - "advisor daemon tasks"
-importance_tier: "high"
-contextType: "task-list"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification"

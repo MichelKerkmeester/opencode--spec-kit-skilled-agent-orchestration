@@ -1,9 +1,12 @@
 ---
-title: "Feature Specification: Foundational Runtime Remediation"
+title: "...026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/spec]"
 description: "Charter for 63 distinct findings from 50-iter Phase 016 deep-research: 4 P0 composites, 7 structural refactors, 13 medium, 29 quick wins, 7 test migrations."
-trigger_phrases: ["foundational runtime remediation", "016 remediation charter"]
+trigger_phrases:
+  - "foundational runtime remediation"
+  - "016 remediation charter"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research"

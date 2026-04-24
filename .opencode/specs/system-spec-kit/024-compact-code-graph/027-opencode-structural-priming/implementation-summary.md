@@ -1,15 +1,24 @@
 ---
-title: "Implementation Summary: OpenCode Structural Priming"
+title: "Implementation [system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/implementation-summary]"
 description: "Delivered non-hook structural bootstrap contract across startup and recovery surfaces."
 trigger_phrases:
   - "027 implementation summary"
   - "opencode structural priming summary"
 importance_tier: "important"
-contextType: "summary"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/027-opencode-structural-priming"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/global/hvr_rules.md -->
 
 # Implementation Summary
 

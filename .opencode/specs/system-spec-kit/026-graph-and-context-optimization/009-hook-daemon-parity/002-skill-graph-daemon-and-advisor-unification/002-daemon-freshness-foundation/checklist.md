@@ -1,7 +1,15 @@
 ---
-title: "027/001 — Checklist"
+title: "...tion/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation/checklist]"
 description: "Acceptance verification for daemon + freshness foundation."
-importance_tier: "high"
+trigger_phrases:
+  - "tion"
+  - "009"
+  - "hook"
+  - "daemon"
+  - "parity"
+  - "checklist"
+  - "002"
+importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:

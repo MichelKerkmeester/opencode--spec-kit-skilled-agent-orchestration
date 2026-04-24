@@ -1,11 +1,20 @@
 ---
-title: "Tasks: Cached Summary Fidelity Gates [template:level_3/tasks.md]"
+title: "Tasks: Cached Summary Fidelity Gates [system-spec-kit/024-compact-code-graph/032-cached-summary-fidelity-gates/tasks]"
 description: "Task breakdown for 032-cached-summary-fidelity-gates."
 trigger_phrases:
   - "032-cached-summary-fidelity-gates"
   - "tasks"
 importance_tier: "important"
-contextType: "tasks"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/032-cached-summary-fidelity-gates"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: Cached Summary Fidelity Gates
 

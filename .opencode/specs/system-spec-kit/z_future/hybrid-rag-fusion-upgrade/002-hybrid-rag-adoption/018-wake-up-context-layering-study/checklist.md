@@ -1,3 +1,18 @@
+---
+title: "...tem-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/018-wake-up-context-layering-study/checklist]"
+description: "checklist document for 018-wake-up-context-layering-study."
+trigger_phrases:
+  - "tem"
+  - "spec"
+  - "kit"
+  - "future"
+  - "hybrid"
+  - "checklist"
+  - "018"
+  - "wake"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Checklist: 018-wake-up-context-layering-study
 
 ## P0

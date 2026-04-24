@@ -1,11 +1,10 @@
 ---
-title: "Implementation Plan: Routing Accuracy Research (SSK-RR-1)"
+title: "...text-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy/plan]"
 description: "Dispatch plan for SSK-RR-1 deep-research."
 trigger_phrases:
   - "ssk-rr-1 dispatch plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Plan scaffolded"
     next_safe_action: "Wave 2 convergence then dispatch"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Routing Accuracy Research
 

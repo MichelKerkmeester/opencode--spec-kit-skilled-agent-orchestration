@@ -1,12 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 ---
-title: "Verification Checklist: Phase 015 Full Playbook Execution"
+title: "...ontext-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/checklist]"
 description: "Verification record for the Phase 015 playbook execution packet."
 trigger_phrases:
   - "phase 015 checklist"
   - "full playbook execution checklist"
 importance_tier: "important"
-contextType: "verification"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution"

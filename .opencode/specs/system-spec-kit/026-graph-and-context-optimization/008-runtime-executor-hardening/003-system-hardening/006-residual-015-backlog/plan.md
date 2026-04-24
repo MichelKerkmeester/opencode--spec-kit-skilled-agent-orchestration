@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: 015 Residuals Restart"
+title: "...026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/006-residual-015-backlog/plan]"
 description: "4-wave plan for 19 residuals across 6 clusters."
-trigger_phrases: ["015 residuals plan"]
+trigger_phrases:
+  - "015 residuals plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/006-residual-015-backlog"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Residual implementation and strict validation completed"
     next_safe_action: "Run orchestrator-owned commit handoff"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: 015 Residuals Restart
 

@@ -1,8 +1,13 @@
 ---
-title: "008-rollout-evidence-gates: Define Measurable Adoption Gates"
+title: "008-rollout [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/008-rollout-evidence-gates/spec]"
 description: "Turns the research portfolio into measurable thresholds, verification ownership, and release gates before public-surface changes ship."
+trigger_phrases:
+  - "008"
+  - "rollout"
+  - "spec"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 008-rollout-evidence-gates: Define Measurable Adoption Gates
 
 ## 1. Scope

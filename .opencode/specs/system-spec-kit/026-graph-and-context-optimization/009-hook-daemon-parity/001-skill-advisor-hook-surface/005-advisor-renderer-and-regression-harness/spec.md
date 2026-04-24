@@ -1,16 +1,15 @@
 ---
-title: "Feature Specification: Advisor Renderer + 200-Prompt Regression Harness (HARD GATE)"
+title: "...-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness/spec]"
 description: "Pure renderAdvisorBrief() + normalized comparator + 019/004 200-prompt parity harness + 4 timing lanes + Unicode-label sanitization + observability/privacy tests. No runtime adapter (006/007/008) may ship before this converges."
 trigger_phrases:
   - "020 advisor renderer"
-  - "renderAdvisorBrief"
+  - "renderadvisorbrief"
   - "200 prompt parity harness"
   - "advisor hard gate"
   - "unicode skill label sanitization"
   - "advisor observability contract"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness"
@@ -25,7 +24,7 @@ _memory:
       - "tasks.md"
       - "checklist.md"
       - "implementation-summary.md"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Advisor Renderer + 200-Prompt Regression Harness
 

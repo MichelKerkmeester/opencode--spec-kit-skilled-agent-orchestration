@@ -1,11 +1,10 @@
 ---
-title: "Verification Checklist: Q4 NFKC Robustness Research"
+title: "...timization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/003-q4-nfkc-robustness/checklist]"
 description: "Verification checklist for RR-1 research packet."
 trigger_phrases:
   - "rr-1 checklist"
 importance_tier: "critical"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/003-q4-nfkc-robustness"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Checklist scaffolded"
     next_safe_action: "Wave 1 convergence then dispatch"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Q4 NFKC Robustness Research
 

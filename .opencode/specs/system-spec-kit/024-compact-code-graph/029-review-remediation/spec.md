@@ -1,14 +1,23 @@
 ---
-title: "Spec: Review Remediation [024/029]"
+title: "Spec: Review Remediation [024/029] [system-spec-kit/024-compact-code-graph/029-review-remediation/spec]"
 description: "Plan the Level 2 remediation packet for the seven active deep-review findings that remain after the compact code graph review converged."
 trigger_phrases:
   - "029"
   - "review remediation"
   - "deep review findings"
   - "compact code graph remediation"
-  - "active P1 findings"
+  - "active p1 findings"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/029-review-remediation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 2 -->
@@ -59,7 +68,7 @@ Define and execute one focused remediation packet that closes the active review 
 - Verify the repaired contracts, evidence owners, and runtime guidance before closing this packet
 
 ### Out of Scope
-- Reopening `030-opencode-plugin/` or any other sibling packet outside this phase
+- Reopening `030-opencode-graph-plugin/` or any other sibling packet outside this phase
 - Introducing new review findings beyond the active registry captured in the parent deep review report
 
 ### Workstreams and Likely Files to Change

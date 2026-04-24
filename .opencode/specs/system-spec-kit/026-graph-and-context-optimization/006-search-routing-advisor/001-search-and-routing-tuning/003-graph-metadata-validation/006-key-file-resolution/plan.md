@@ -1,8 +1,17 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | level2-verify | compact -->
 ---
-title: "Improve Graph Metadata Key File Resolution - Execution Plan"
-status: complete
-parent_spec: 006-key-file-resolution/spec.md
+title: ".../006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/plan]"
+description: 'title: "Improve Graph Metadata Key File Resolution - Execution Plan"'
+trigger_phrases:
+  - "006"
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "plan"
+  - "key"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution"
@@ -10,6 +19,8 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Closed the key-file resolution phase"
     next_safe_action: "Reuse this phase if key-file hit-rate or stale-path drift returns"
+parent_spec: 006-key-file-resolution/spec.md
+status: complete
 ---
 # Execution Plan
 ## Summary <!-- ANCHOR:summary -->Improve `deriveKeyFiles()` without changing its external 20-slot contract.<!-- /ANCHOR:summary -->

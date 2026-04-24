@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Codex Tone-of-Voice Personalization"
+title: "Implementation Plan: Codex Tone-of-Voice Personalization [skilled-agent-orchestration/046-cli-codex-tone-of-voice/plan]"
 description: "Three-phase plan to deliver Codex APP personalization asset, CLI voice module, and surgical SKILL.md integration — with each phase validated independently before proceeding."
 trigger_phrases:
   - "codex tone plan"
@@ -7,6 +7,7 @@ trigger_phrases:
   - "046 plan"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/046-cli-codex-tone-of-voice"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Search and Routing Tuning Coordination Parent"
+title: "Featu [system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/spec]"
 description: "Coordination parent for continuity research packets focused on search-pipeline tuning, routing accuracy, and graph-metadata validation. This root spec restores the canonical packet identity while leaving the detailed research and implementation surfaces in the existing child packets."
 trigger_phrases:
   - "010 search and routing tuning"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "graph metadata validation"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning"
@@ -17,6 +16,7 @@ _memory:
     recent_action: "Restored coordination-parent root spec for canonical save invariants"
     next_safe_action: "Use child packet docs for search fusion, routing, and graph-validation details"
     blockers: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Search and Routing Tuning Coordination Parent
 

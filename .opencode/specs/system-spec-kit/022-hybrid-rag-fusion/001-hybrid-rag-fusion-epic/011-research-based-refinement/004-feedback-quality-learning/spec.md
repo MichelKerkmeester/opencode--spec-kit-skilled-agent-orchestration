@@ -1,12 +1,25 @@
 ---
-title: "Feature Specification: Feedback & Quality Learning"
+title: "...it/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/004-feedback-quality-learning/spec]"
 description: "Add implicit feedback event ledger, FSRS hybrid decay policy, quality gate exceptions, weekly batch learning, assistive reconsolidation, and shadow scoring with holdout evaluation."
-# SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2
-trigger_phrases: ["feedback ledger", "FSRS hybrid", "quality gate exception", "batch learning", "reconsolidation", "shadow scoring"]
+trigger_phrases:
+  - "feedback ledger"
+  - "fsrs hybrid"
+  - "quality gate exception"
+  - "batch learning"
+  - "reconsolidation"
+  - "shadow scoring"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/004-feedback-quality-learning"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
-
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2 -->
 # Feature Specification: Feedback & Quality Learning
 

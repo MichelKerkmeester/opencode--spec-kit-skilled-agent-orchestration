@@ -1,11 +1,20 @@
 ---
-title: "Decision Record: Agent Improvement Full Skill [skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/decision-record]"
+title: "Decision [skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/decision-record]"
 description: "Architecture decisions for phase 002 of the full-skill expansion after the phase 001 MVP."
 trigger_phrases:
   - "agent improvement full skill decisions"
-  - "benchmark harness ADR"
+  - "benchmark harness adr"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["decision-record.md"]
 ---
 # Decision Record
 

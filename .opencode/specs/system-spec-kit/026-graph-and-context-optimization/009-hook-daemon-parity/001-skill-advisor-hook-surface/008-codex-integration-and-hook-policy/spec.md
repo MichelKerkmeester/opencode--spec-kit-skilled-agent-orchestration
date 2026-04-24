@@ -1,14 +1,13 @@
 ---
-title: "Feature Specification: Codex Integration + Hook Policy"
+title: "...ontext-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy/spec]"
 description: "New hooks/codex/ adapter directory, dynamic hook-policy detection (replace hardcoded 'unavailable'), UserPromptSubmit for prompt-time advice, PreToolUse deny for Bash-only gates, prompt-wrapper fallback for older Codex or restricted configs."
 trigger_phrases:
   - "020 codex integration"
-  - "codex UserPromptSubmit advisor"
+  - "codex userpromptsubmit advisor"
   - "dynamic hook policy detection"
   - "codex bash pretooluse advisor"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy"
@@ -23,7 +22,7 @@ _memory:
       - "tasks.md"
       - "checklist.md"
       - "implementation-summary.md"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Codex Integration + Hook Policy
 

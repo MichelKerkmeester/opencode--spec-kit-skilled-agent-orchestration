@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Runtime Executor Hardening"
+title: "Implementation Plan: Runtime [system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/plan]"
 description: "Plan for keeping foundational runtime, cli executor matrix, and system hardening as a parent with direct child phase packets."
 trigger_phrases:
   - "008-runtime-executor-hardening"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "002-sk-deep-cli-runtime-execution"
   - "003-system-hardening"
 importance_tier: "important"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Runtime Executor Hardening
 

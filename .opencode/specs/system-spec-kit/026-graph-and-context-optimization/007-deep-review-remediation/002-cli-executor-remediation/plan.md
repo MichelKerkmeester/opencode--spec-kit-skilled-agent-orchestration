@@ -1,9 +1,12 @@
 ---
-title: "Implementation Plan: Phase 020 Research-Findings Remediation"
+title: "Imple [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation/plan]"
 description: "7-wave plan implementing R1-R12 from research.md §10. Atomic-ship groups honored. cli-codex dogfooding pattern per wave."
-trigger_phrases: ["020 plan", "phase 020 remediation plan"]
-importance_tier: "high"
+trigger_phrases:
+  - "020 plan"
+  - "phase 020 remediation plan"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation"

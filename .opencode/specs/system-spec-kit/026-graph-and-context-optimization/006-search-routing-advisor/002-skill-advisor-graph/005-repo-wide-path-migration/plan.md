@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Repo-Wide Path Migration"
+title: "...-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration/plan]"
 description: "Packet-closeout plan for restoring Level 3 structure, attaching current repo evidence, and finishing the Phase 005 documentation surface without touching non-spec files."
 trigger_phrases:
   - "005-repo-wide-path-migration"
@@ -7,8 +7,6 @@ trigger_phrases:
   - "packet closeout plan"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration"
@@ -17,6 +15,8 @@ _memory:
     recent_action: "Replaced the packet plan with the active Level 3 structure"
     next_safe_action: "Sync tasks, checklist, and closeout evidence to this plan"
     key_files: ["plan.md", "tasks.md", "checklist.md"]
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Repo-Wide Path Migration
 

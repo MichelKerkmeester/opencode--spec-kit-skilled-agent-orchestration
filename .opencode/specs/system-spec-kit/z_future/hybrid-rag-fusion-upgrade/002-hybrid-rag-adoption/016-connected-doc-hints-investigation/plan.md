@@ -1,3 +1,18 @@
+---
+title: "...ystem-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/016-connected-doc-hints-investigation/plan]"
+description: "1. Baseline current result presentation, graph neighbors, and causal context."
+trigger_phrases:
+  - "ystem"
+  - "spec"
+  - "kit"
+  - "future"
+  - "hybrid"
+  - "plan"
+  - "016"
+  - "connected"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 016-connected-doc-hints-investigation
 
 ## Affected Files

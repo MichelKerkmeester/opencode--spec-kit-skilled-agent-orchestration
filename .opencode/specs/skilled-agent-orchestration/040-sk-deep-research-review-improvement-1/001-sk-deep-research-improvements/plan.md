@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Phase 1 -- sk-deep-research Improvements [template:level_1/plan.md]"
+title: "Implement [skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/001-sk-deep-research-improvements/plan]"
 description: "Implement and verify the complete Phase 1 lineage, reducer, and runtime-parity contract across deep-research docs, helpers, mirrors, and packet surfaces."
 trigger_phrases:
   - "deep research plan"
@@ -7,8 +7,17 @@ trigger_phrases:
   - "runtime parity plan"
   - "phase 1 plan"
   - "reducer plan"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/001-sk-deep-research-improvements"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Phase 1 -- sk-deep-research Improvements
 

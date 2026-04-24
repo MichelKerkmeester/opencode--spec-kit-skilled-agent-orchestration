@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 ---
-title: "Verification Checklist: Non-System Playbook Prompt Modernization [skilled-agent-orchestration/044-non-system-playbook-prompts/checklist]"
+title: "Verification Checklist: Non-System Playbook [skilled-agent-orchestration/044-non-system-playbook-prompts/checklist]"
 description: "Verification closeout for the completed 126-file non-system manual testing playbook prompt rewrite."
 trigger_phrases:
   - "playbook prompt modernization checklist"

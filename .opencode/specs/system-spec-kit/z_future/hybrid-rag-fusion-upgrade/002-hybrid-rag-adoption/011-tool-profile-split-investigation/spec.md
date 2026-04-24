@@ -1,8 +1,13 @@
 ---
-title: "011-tool-profile-split-investigation: Investigate Tool Profile Splits"
+title: "0 [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation/spec]"
 description: "Evaluates whether Engram-style agent/admin tool bundles belong in Public only as a delivery-layer experiment."
+trigger_phrases:
+  - "spec"
+  - "011"
+  - "tool"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 011-tool-profile-split-investigation: Investigate Tool Profile Splits
 
 ## 1. Scope

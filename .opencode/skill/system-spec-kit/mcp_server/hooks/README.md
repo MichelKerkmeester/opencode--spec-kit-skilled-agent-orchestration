@@ -1,10 +1,12 @@
 ---
 title: "Hooks"
-description: "Hook helper modules for memory surfacing, mutation UX feedback, and response hint injection."
+description: "Runtime startup hooks, prompt-time skill-advisor hooks, and in-process helper modules for memory surfacing and UX feedback."
 trigger_phrases:
   - "hooks"
   - "memory surfacing"
   - "context injection"
+  - "startup hook"
+  - "skill advisor hook"
 ---
 
 
@@ -22,40 +24,57 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This section provides an overview of the Hooks directory.
+`hooks/` covers three distinct concerns that share a directory but serve different lifecycles:
 
-`hooks/` provides helper modules exported via `index.ts`.
+1. **Runtime startup hooks** — external hook scripts registered with each runtime (Claude, Gemini, Copilot, Codex) that run at session start and transport the compact startup shared-payload (`graphQualitySummary`, `sharedPayloadTransport`, etc.) produced by the MCP server.
+2. **Prompt-time skill-advisor hooks** — external hook scripts that fire on each user prompt, call the native advisor, and deliver the advisor brief through the runtime's `additionalContext` or managed-instructions surface.
+3. **In-process helper modules** — helpers exported via `index.ts` for memory surfacing, mutation UX feedback, and response-hint injection.
 
-- `memory-surface.ts`: context extraction, constitutional/triggered memory surfacing, lifecycle hook helpers, and constitutional cache management.
-- `mutation-feedback.ts`: post-mutation feedback payloads and hint strings for cache clear results and tool cache invalidation.
-- `response-hints.ts`: auto-surface hint injection plus MCP JSON envelope metadata and token-count synchronization.
-- It is a utility layer for memory-aware context surfacing and UX feedback metadata.
-- It is not a standalone MCP hook registration system.
-- For packet work, hook output should align with `/spec_kit:resume` and the canonical continuity chain `handover.md -> _memory.continuity -> spec docs`, with generated memory artifacts treated as supporting context only.
+Each concern has its own subsection below. The helper modules are a utility layer; the runtime startup and prompt-time hooks are standalone external processes registered with the host runtime.
 
-### Claude Code Lifecycle Hooks (`claude/`)
+For packet work, hook output should align with `/spec_kit:resume` and the canonical continuity chain `handover.md -> _memory.continuity -> spec docs`, with generated memory artifacts treated as supporting context only.
 
-The `claude/` subdirectory contains hook scripts for Claude Code lifecycle events (PreCompact, SessionStart, Stop). These run as external processes triggered by Claude Code, not as MCP server modules:
-- `compact-inject.ts` — PreCompact: precomputes context, caches to temp state
-- `session-prime.ts` — SessionStart: injects context via stdout (routes by source)
-- `user-prompt-submit.ts` — UserPromptSubmit: injects the compact skill-advisor brief via `hookSpecificOutput.additionalContext`
-- `session-stop.ts` — Stop (async): parses transcript, stores token snapshots
-- `claude-transcript.ts`, `shared.ts`, `hook-state.ts` — shared libraries
+### 1.1 Runtime Startup Hooks
 
-See `claude/README.md` for details and `references/config/hook_system.md` for registration.
+All four supported runtimes now transport the same compact startup shared-payload through their runtime-specific startup hooks. Each hook reads the structural snapshot produced by `buildStartupBrief()` (including `graphQualitySummary`, `sharedPayload`, and `sharedPayloadTransport`) and injects it through the runtime's native transport:
 
-### Skill-Advisor Runtime Hooks
+| Runtime | Entrypoint | Registration Surface | Transport |
+|---------|------------|----------------------|-----------|
+| Claude | `claude/session-prime.ts` | `.claude/settings.local.json` `SessionStart` | stdout context injection (routes by source: compact/startup/resume/clear) |
+| Gemini | `gemini/session-prime.ts` | `.gemini/settings.json` `SessionStart` (or equivalent) | startup brief injection at session priming |
+| Copilot | `copilot/session-prime.ts` | wrapper/hook config + managed custom-instructions refresh | writes the compact shared-payload envelope into the managed block in `$HOME/.copilot/copilot-instructions.md` |
+| Codex | `codex/session-start.ts` | `~/.codex/hooks.json` with `[features].codex_hooks = true` in `~/.codex/config.toml` | native `SessionStart` hook injection |
 
-Phase 020 adds prompt-time advisor hooks for all runtime surfaces:
+`session_bootstrap()` remains available as a manual fallback when native startup hooks are disabled or unwired; it is no longer a Codex-only substitute. Copilot no longer has "varies by environment" behavior — the managed custom-instructions refresh is the defined startup transport.
+
+### 1.2 Prompt-Time Skill-Advisor Hooks
+
+Prompt-time advisor hooks fire on each user prompt, call the native advisor, and deliver the brief:
 
 | Runtime | Entrypoint | Registration Surface |
 |---------|------------|----------------------|
 | Claude | `claude/user-prompt-submit.ts` | `.claude/settings.local.json` |
 | Gemini | `gemini/user-prompt-submit.ts` | `.gemini/settings.json` `BeforeAgent` |
 | Copilot | `copilot/user-prompt-submit.ts` | SDK `onUserPromptSubmitted` or wrapper hook config |
-| Codex | `codex/user-prompt-submit.ts` | deferred `.codex/settings.json` snippet |
+| Codex | `codex/user-prompt-submit.ts` | `~/.codex/hooks.json` (`UserPromptSubmit`) with `[features].codex_hooks = true`; prompt-wrapper fallback available |
+
+OpenCode delivers the advisor via `.opencode/plugins/spec-kit-skill-advisor.js` + `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs`, which imports the stable native compat entrypoint. The default prompt-time threshold contract is `0.8` (confidence) / `0.35` (uncertainty).
+
+Packet 014 unified the threshold/render contract across OpenCode and Codex: both now use the shared `renderAdvisorBrief(...)` path and the shared builder/timeout/threshold contract. Diagnostics for all runtime hook surfaces persist to bounded JSONL sinks under the temp metrics root so `advisor_validate` analysis can read them back across processes.
 
 Operator contract: `../../references/hooks/skill-advisor-hook.md`.
+
+### 1.3 In-Process Helper Modules
+
+Helper modules exported via `index.ts`:
+
+- `memory-surface.ts`: context extraction, constitutional/triggered memory surfacing, lifecycle hook helpers, and constitutional cache management.
+- `mutation-feedback.ts`: post-mutation feedback payloads and hint strings for cache clear results and tool cache invalidation.
+- `response-hints.ts`: auto-surface hint injection plus MCP JSON envelope metadata and token-count synchronization.
+
+This in-process layer is a utility surface for memory-aware context surfacing and UX feedback metadata — distinct from the runtime hook scripts above, which run as external processes triggered by the host runtime. Subsection 1.1 (startup) and 1.2 (prompt-time) are the operator-facing hook registration surfaces.
+
+See `claude/README.md` for details on the Claude-side wiring and `references/config/hook_system.md` for the canonical cross-runtime registration matrix.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:implemented-state -->

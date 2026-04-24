@@ -1,13 +1,12 @@
 ---
-title: "Verification Checklist: Skill-Advisor Docs + Phase 020 Code Alignment"
+title: "...it/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment/checklist]"
 description: "Verification checklist for Phase 022 docs updates, TS audit remediation, and Phase 020 regression preservation."
 trigger_phrases:
   - "022 verification checklist"
   - "skill-advisor docs checklist"
   - "phase 020 audit checklist"
 importance_tier: "important"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment"
@@ -17,6 +16,7 @@ _memory:
     next_safe_action: "Await handback"
     blockers: []
     completion_pct: 100
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Skill-Advisor Docs + Phase 020 Code Alignment
 

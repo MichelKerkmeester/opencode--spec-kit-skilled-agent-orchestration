@@ -1,3 +1,14 @@
+---
+title: "Tasks: 009-prot [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/009-prototype-backlog/tasks]"
+description: "1. Record prototype-only candidates and guardrails in spec.md."
+trigger_phrases:
+  - "tasks"
+  - "009"
+  - "prot"
+  - "prototype"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 009-prototype-backlog
 
 1. Record prototype-only candidates and guardrails in `spec.md`.

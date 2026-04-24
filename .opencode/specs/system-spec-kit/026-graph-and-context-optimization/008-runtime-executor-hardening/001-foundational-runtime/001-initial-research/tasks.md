@@ -1,9 +1,12 @@
 ---
-title: "Tasks: Foundational Runtime Remediation"
+title: "...26-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/tasks]"
 description: "One task per distinct finding (63 canonical tasks) grouped by source file with dependency markers. Cites finding IDs (R??-???) for traceability."
-trigger_phrases: ["016 remediation tasks", "phase 016 remediation tasks"]
+trigger_phrases:
+  - "016 remediation tasks"
+  - "phase 016 remediation tasks"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research"

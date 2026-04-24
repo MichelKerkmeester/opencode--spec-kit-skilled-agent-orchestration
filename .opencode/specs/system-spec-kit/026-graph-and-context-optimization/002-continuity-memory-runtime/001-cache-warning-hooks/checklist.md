@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Cache-Warning Hook System [template:level_3/checklist.md]"
+title: "Ver [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks/checklist]"
 description: "Verification Date: [YYYY-MM-DD]"
 trigger_phrases:
   - "verification"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "replay isolation"
 importance_tier: "normal"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Cache-Warning Hook System
 

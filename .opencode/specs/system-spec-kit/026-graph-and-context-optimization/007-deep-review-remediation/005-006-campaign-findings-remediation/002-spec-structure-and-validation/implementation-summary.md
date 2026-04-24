@@ -1,10 +1,11 @@
 ---
-title: "Implementation Summary: 002-spec-structure-and-validation Runtime Graph Remediation"
+title: "...ep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation/implementation-summary]"
 description: "Runtime graph health remediation for CF-176, with recursive packet validation blocker recorded for CF-207."
 trigger_phrases:
   - "implementation summary 002 spec structure validation runtime graph"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation"

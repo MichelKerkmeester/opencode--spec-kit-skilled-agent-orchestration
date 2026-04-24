@@ -1,5 +1,5 @@
 ---
-title: "Deep Research: sk-deep-research Refinement (v3 [03--commands-and-skills/024-sk-deep-research-refinement/research]"
+title: "Deep Research: sk-deep-research Refinement (v3 [skilled-agent-orchestration/024-sk-deep-research-refinement/research]"
 description: "The sk-deep-research system is 72% implemented by specification coverage but only 44% by runtime behavior. The dominant weakness is NOT missing algorithms -- it is the gap betwe..."
 trigger_phrases:
   - "deep"
@@ -8,6 +8,14 @@ trigger_phrases:
   - "024"
 importance_tier: "normal"
 contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/024-sk-deep-research-refinement/research"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
 ---
 # Deep Research: sk-deep-research Refinement (v3 Proposals)
 

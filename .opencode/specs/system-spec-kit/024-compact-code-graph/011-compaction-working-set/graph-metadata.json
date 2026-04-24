@@ -18,7 +18,11 @@
       "set",
       "spec",
       "plan",
-      "checklist"
+      "tasks",
+      "024",
+      "checklist",
+      "implementation",
+      "summary"
     ],
     "key_topics": [
       "phase",
@@ -28,28 +32,21 @@
       "set",
       "spec",
       "plan",
+      "tasks",
+      "024",
       "checklist",
-      "template",
-      "compliance",
-      "shim",
-      "section"
+      "implementation",
+      "summary"
     ],
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "lib/code-graph/working-set-tracker.ts",
-      "lib/code-graph/budget-allocator.ts",
-      "lib/code-graph/compact-merger.ts",
-      "lib/code-graph/index.ts",
       "hooks/claude/compact-inject.ts",
       "hooks/claude/session-prime.ts",
       "tests/budget-allocator.vitest.ts",
       "tests/compact-merger.vitest.ts",
       "tests/dual-scope-hooks.vitest.ts",
       "hooks/memory-surface.ts",
-      "mcp_server/lib/code-graph/working-set-tracker.ts",
-      "mcp_server/lib/code-graph/budget-allocator.ts",
-      "mcp_server/lib/code-graph/compact-merger.ts",
       "mcp_server/hooks/memory-surface.ts",
       "spec.md",
       "plan.md",
@@ -58,30 +55,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "working-set-tracker.ts",
-        "kind": "code",
-        "path": "lib/code-graph/working-set-tracker.ts",
-        "source": "derived"
-      },
-      {
-        "name": "budget-allocator.ts",
-        "kind": "code",
-        "path": "lib/code-graph/budget-allocator.ts",
-        "source": "derived"
-      },
-      {
-        "name": "compact-merger.ts",
-        "kind": "code",
-        "path": "lib/code-graph/compact-merger.ts",
-        "source": "derived"
-      },
-      {
-        "name": "index.ts",
-        "kind": "code",
-        "path": "lib/code-graph/index.ts",
-        "source": "derived"
-      },
       {
         "name": "compact-inject.ts",
         "kind": "code",
@@ -201,11 +174,36 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Structural Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation Template",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Setup Template",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Template",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
     "created_at": "2026-04-12T09:02:50.350Z",
-    "last_save_at": "2026-04-18T14:39:00.678Z",
+    "last_save_at": "2026-04-24T15:34:55.411Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

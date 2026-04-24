@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: 005-intellegix-code-agent-toolkit-master Research Phase"
+title: "...-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/005-intellegix-code-agent-toolkit-master/spec]"
 description: "Research packet for a 30-iteration study of the bundled Intellegix Code Agent Toolkit repository, focused on adoption guidance, refactor decisions, and Phase 3 UX, agent-system, command, and skill analysis for system-spec-kit."
 trigger_phrases:
   - "005 intellegix research spec"
   - "intellegix code agent toolkit phase spec"
   - "agentic systems phase 005 spec"
 importance_tier: "important"
-contextType: "spec"
+contextType: "implementation"
 ---
 # Feature Specification: 005-intellegix-code-agent-toolkit-master Research Phase
 

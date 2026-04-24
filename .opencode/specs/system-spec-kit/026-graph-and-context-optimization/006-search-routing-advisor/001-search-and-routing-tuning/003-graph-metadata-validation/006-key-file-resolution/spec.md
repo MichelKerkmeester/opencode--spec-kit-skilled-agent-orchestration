@@ -1,11 +1,17 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | level2-verify | compact -->
 ---
-title: "Improve Graph Metadata Key File Resolution"
-status: complete
-level: 2
-type: implementation
-parent: 003-graph-metadata-validation
-created: 2026-04-13
+title: ".../006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/spec]"
+description: 'title: "Improve Graph Metadata Key File Resolution"'
+trigger_phrases:
+  - "006"
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "spec"
+  - "key"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution"
@@ -13,6 +19,11 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Closed the phase after key-file resolution fixes and verification landed"
     next_safe_action: "Reuse this phase if cross-track key-file resolution drifts again"
+created: 2026-04-13
+level: 2
+parent: 003-graph-metadata-validation
+status: complete
+type: implementation
 ---
 # Improve Graph Metadata Key File Resolution
 ## Metadata <!-- ANCHOR:metadata -->Parent `003-graph-metadata-validation`; Level 2; status complete; created 2026-04-13.<!-- /ANCHOR:metadata -->

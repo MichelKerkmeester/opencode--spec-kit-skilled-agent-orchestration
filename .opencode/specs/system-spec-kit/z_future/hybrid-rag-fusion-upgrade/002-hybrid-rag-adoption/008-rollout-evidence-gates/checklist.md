@@ -1,3 +1,14 @@
+---
+title: "Checkl [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/008-rollout-evidence-gates/checklist]"
+description: "checklist document for 008-rollout-evidence-gates."
+trigger_phrases:
+  - "checkl"
+  - "checklist"
+  - "008"
+  - "rollout"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Checklist: 008-rollout-evidence-gates
 
 ## P0

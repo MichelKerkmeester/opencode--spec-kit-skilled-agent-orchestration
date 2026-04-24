@@ -1,8 +1,17 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | level2-verify | compact -->
 ---
-title: "Enrich Tier3 Prompt with Continuity Model Context - Execution Plan"
-status: complete
-parent_spec: 006-tier3-prompt-enrichment/spec.md
+title: "...6-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/plan]"
+description: 'title: "Enrich Tier3 Prompt with Continuity Model Context - Execution Plan"'
+trigger_phrases:
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "plan"
+  - "006"
+  - "tier3"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment"
@@ -10,6 +19,8 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Closed the Tier 3 continuity prompt-enrichment phase"
     next_safe_action: "Reuse this phase if continuity-model prompt wording drifts again"
+parent_spec: 006-tier3-prompt-enrichment/spec.md
+status: complete
 ---
 # Execution Plan
 ## Summary <!-- ANCHOR:summary -->Enrich `buildTier3Prompt()` with a short continuity-model paragraph and verify the prompt shape directly.<!-- /ANCHOR:summary -->

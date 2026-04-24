@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 006 Agent Role Consolidation [template:level_2/plan.md]"
+title: "Implementation [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/006-agent-role-consolidation/plan]"
 description: "Reduce operator-visible agent sprawl by consolidating related roles into capability bundles while keeping exclusive authorities where file ownership or review safety requires them."
 trigger_phrases:
   - "implementation"

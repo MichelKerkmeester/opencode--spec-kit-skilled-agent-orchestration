@@ -1,11 +1,12 @@
 ---
-title: "018 / 010 — Shared memory removal tasks"
+title: "...26-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/tasks]"
 description: "Task ledger for the hard-delete shared-memory implementation pass."
-trigger_phrases: ["018 010 tasks", "shared memory removal tasks", "hard delete shared memory tasks"]
+trigger_phrases:
+  - "018 010 tasks"
+  - "shared memory removal tasks"
+  - "hard delete shared memory tasks"
 importance_tier: "critical"
 contextType: "implementation"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory"
@@ -14,6 +15,8 @@ _memory:
     recent_action: "Completed the shared-memory hard-delete task list"
     next_safe_action: "Review implementation-summary.md"
     key_files: ["tasks.md", "implementation-summary.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: 018 / 010 — Remove shared memory
 

@@ -42,12 +42,10 @@
     "status": "complete",
     "key_files": [
       "mcp_server/lib/context/shared-payload.ts",
-      "mcp_server/lib/code-graph/startup-brief.ts",
       "mcp_server/lib/session/session-snapshot.ts",
       "mcp_server/handlers/session-resume.ts",
       "mcp_server/handlers/session-health.ts",
       "mcp_server/handlers/session-bootstrap.ts",
-      "mcp_server/lib/code-graph/compact-merger.ts",
       "mcp_server/hooks/claude/compact-inject.ts",
       "mcp_server/hooks/gemini/compact-cache.ts",
       "mcp_server/hooks/claude/hook-state.ts",
@@ -65,12 +63,6 @@
         "name": "shared-payload.ts",
         "kind": "code",
         "path": "mcp_server/lib/context/shared-payload.ts",
-        "source": "derived"
-      },
-      {
-        "name": "startup-brief.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/code-graph/startup-brief.ts",
         "source": "derived"
       },
       {
@@ -95,12 +87,6 @@
         "name": "session-bootstrap.ts",
         "kind": "code",
         "path": "mcp_server/handlers/session-bootstrap.ts",
-        "source": "derived"
-      },
-      {
-        "name": "compact-merger.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/code-graph/compact-merger.ts",
         "source": "derived"
       },
       {
@@ -204,11 +190,24 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 1 turned a research recommendation into runtime code by introducing one shared payload/provenance contract across startup, recovery, and compaction. The Level 3 repair keeps that same shipped scope intact and adds the architecture context needed for future recovery and review.",
     "created_at": "2026-04-12T09:02:53.436Z",
-    "last_save_at": "2026-04-18T14:39:04.176Z",
+    "last_save_at": "2026-04-24T15:34:55.444Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

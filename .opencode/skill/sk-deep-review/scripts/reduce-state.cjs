@@ -10,6 +10,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const { emitResourceMap } = require('../../system-spec-kit/scripts/resource-map/extract-from-evidence.cjs');
 const { resolveArtifactRoot } = require('../../system-spec-kit/shared/review-research-paths.cjs');
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -36,6 +37,16 @@ function writeUtf8(filePath, content) {
 
 function readJson(filePath) {
   return JSON.parse(readUtf8(filePath));
+}
+
+function getResourceMapEmitSetting(config) {
+  const nested = config && typeof config === 'object'
+    ? (config.resource_map || config.resourceMap || null)
+    : null;
+  if (nested && typeof nested === 'object' && typeof nested.emit === 'boolean') {
+    return nested.emit;
+  }
+  return true;
 }
 
 function slugify(value) {
@@ -137,6 +148,26 @@ function parseJsonlDetailed(jsonlContent) {
   }
 
   return { records, corruptionWarnings };
+}
+
+function loadDeltaPayloads(deltaDir) {
+  if (!fs.existsSync(deltaDir)) {
+    return [];
+  }
+
+  return fs.readdirSync(deltaDir)
+    .filter((fileName) => /^iter-\d+\.jsonl$/.test(fileName))
+    .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }))
+    .map((fileName) => {
+      const { records, corruptionWarnings } = parseJsonlDetailed(readUtf8(path.join(deltaDir, fileName)));
+      if (!corruptionWarnings.length) {
+        return records;
+      }
+      console.warn(
+        `[sk-deep-review] resource-map extractor skipped ${corruptionWarnings.length} malformed delta row(s) from ${fileName}`,
+      );
+      return records.concat(new Array(corruptionWarnings.length).fill(null));
+    });
 }
 
 function extractSection(markdown, heading) {
@@ -1137,6 +1168,7 @@ function reduceReviewState(specFolder, options = {}) {
   const write = options.write !== false;
   const lenient = Boolean(options.lenient);
   const createMissingAnchors = Boolean(options.createMissingAnchors);
+  const emitResourceMapOutput = Boolean(options.emitResourceMap);
   const resolvedSpecFolder = path.resolve(specFolder);
   const { artifactDir: reviewDir } = resolveArtifactRoot(resolvedSpecFolder, 'review');
   const configPath = path.join(reviewDir, 'deep-review-config.json');
@@ -1144,7 +1176,9 @@ function reduceReviewState(specFolder, options = {}) {
   const strategyPath = path.join(reviewDir, 'deep-review-strategy.md');
   const registryPath = path.join(reviewDir, 'deep-review-findings-registry.json');
   const dashboardPath = path.join(reviewDir, 'deep-review-dashboard.md');
+  const resourceMapPath = path.join(reviewDir, 'resource-map.md');
   const iterationDir = path.join(reviewDir, 'iterations');
+  const deltaDir = path.join(reviewDir, 'deltas');
 
   const config = readJson(configPath);
   const { records, corruptionWarnings } = parseJsonlDetailed(readUtf8(stateLogPath));
@@ -1170,9 +1204,35 @@ function reduceReviewState(specFolder, options = {}) {
   const registry = buildRegistry(strategyDimensions, iterationFiles, records, config, corruptionWarnings);
   const strategy = updateStrategyContent(strategyContent, registry, iterationFiles, { createMissingAnchors }, records);
   const dashboard = renderDashboard(config, registry, records, iterationFiles);
+  let resourceMap = null;
+  let resourceMapSkipped = true;
+  let resourceMapSkipReason = null;
 
   if (corruptionWarnings.length > 0 && !lenient) {
     throw createCorruptionError(stateLogPath, corruptionWarnings);
+  }
+
+  if (emitResourceMapOutput) {
+    if (getResourceMapEmitSetting(config) === false) {
+      resourceMapSkipReason = 'config.resource_map.emit=false';
+    } else {
+      const deltaPayloads = loadDeltaPayloads(deltaDir);
+      if (!deltaPayloads.length) {
+        resourceMapSkipReason = 'no delta files found';
+      } else {
+        resourceMap = emitResourceMap({
+          shape: 'review',
+          deltas: deltaPayloads,
+          packet: {
+            title: config.reviewTarget || path.basename(resolvedSpecFolder),
+            specFolder: resolvedSpecFolder,
+          },
+          scope: `review convergence output for ${path.basename(resolvedSpecFolder)}`,
+          createdAt: new Date().toISOString(),
+        });
+        resourceMapSkipped = false;
+      }
+    }
   }
 
   if (write) {
@@ -1181,6 +1241,9 @@ function reduceReviewState(specFolder, options = {}) {
       writeUtf8(strategyPath, strategy.endsWith('\n') ? strategy : `${strategy}\n`);
     }
     writeUtf8(dashboardPath, dashboard);
+    if (emitResourceMapOutput && resourceMap) {
+      writeUtf8(resourceMapPath, resourceMap);
+    }
   }
 
   return {
@@ -1189,9 +1252,13 @@ function reduceReviewState(specFolder, options = {}) {
     strategyPath,
     registryPath,
     dashboardPath,
+    resourceMapPath,
     registry,
     strategy,
     dashboard,
+    resourceMap,
+    resourceMapSkipped,
+    resourceMapSkipReason,
     corruptionWarnings,
     hasCorruption: corruptionWarnings.length > 0,
   };
@@ -1205,18 +1272,24 @@ if (require.main === module) {
   const args = process.argv.slice(2);
   const lenient = args.includes('--lenient');
   const createMissingAnchors = args.includes('--create-missing-anchors');
+  const emitResourceMapOutput = args.includes('--emit-resource-map');
   const positional = args.filter((arg) => !arg.startsWith('--'));
   const specFolder = positional[0];
 
   if (!specFolder) {
     process.stderr.write(
-      'Usage: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs <spec-folder> [--lenient] [--create-missing-anchors]\n',
+      'Usage: node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs <spec-folder> [--lenient] [--create-missing-anchors] [--emit-resource-map]\n',
     );
     process.exit(1);
   }
 
   try {
-    const result = reduceReviewState(specFolder, { write: true, lenient, createMissingAnchors });
+    const result = reduceReviewState(specFolder, {
+      write: true,
+      lenient,
+      createMissingAnchors,
+      emitResourceMap: emitResourceMapOutput,
+    });
     process.stdout.write(
       `${JSON.stringify(
         {
@@ -1228,6 +1301,9 @@ if (require.main === module) {
           convergenceScore: result.registry.convergenceScore,
           graphConvergenceScore: result.registry.graphConvergenceScore,
           corruptionCount: result.corruptionWarnings.length,
+          resourceMapPath: emitResourceMapOutput ? result.resourceMapPath : null,
+          resourceMapSkipped: emitResourceMapOutput ? result.resourceMapSkipped : null,
+          resourceMapSkipReason: emitResourceMapOutput ? result.resourceMapSkipReason : null,
         },
         null,
         2,

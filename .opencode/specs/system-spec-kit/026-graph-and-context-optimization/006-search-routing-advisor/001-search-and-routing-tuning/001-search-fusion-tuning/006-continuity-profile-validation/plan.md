@@ -1,8 +1,17 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | level2-verify | compact -->
 ---
-title: "Validate Continuity Profile Weights - Execution Plan"
-status: completed
-parent_spec: 006-continuity-profile-validation/spec.md
+title: "...search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation/plan]"
+description: 'title: "Validate Continuity Profile Weights - Execution Plan"'
+trigger_phrases:
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "plan"
+  - "006"
+  - "continuity"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation"
@@ -10,6 +19,8 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Completed the judged continuity sweep and prompt enrichment work"
     next_safe_action: "Resume from implementation-summary.md if follow-on tuning work opens"
+parent_spec: 006-continuity-profile-validation/spec.md
+status: completed
 ---
 # Implementation Plan: Validate Continuity Profile Weights
 

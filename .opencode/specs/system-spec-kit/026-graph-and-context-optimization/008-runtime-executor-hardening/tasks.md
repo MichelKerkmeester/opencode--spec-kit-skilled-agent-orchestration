@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Runtime Executor Hardening"
+title: "Tasks: Runtime Executor [system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/tasks]"
 description: "Task record for the 008-runtime-executor-hardening flattened parent layout."
 trigger_phrases:
   - "008-runtime-executor-hardening"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "002-sk-deep-cli-runtime-execution"
   - "003-system-hardening"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Runtime Executor Hardening
 

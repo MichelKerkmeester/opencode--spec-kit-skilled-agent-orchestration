@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: /memory:save Planner-First Default"
+title: "Implemen [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/plan]"
 description: "Milestoned delivery (M1-M10) for the planner-first /memory:save contract: audit + retirement of the legacy [spec]/memory/*.md write path, 20-iteration relevance research, planner contract + fallback implementation, routing/quality/reconsolidation/enrichment trim, follow-up API extraction, verification, release alignment, and deep-review remediation."
 trigger_phrases:
   - "implementation plan"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "save flow trim plan"
   - "retirement audit to planner-first"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite"
@@ -34,6 +33,7 @@ _memory:
     answered_questions:
       - "The planner-first default + explicit fallback architecture preserves the canonical writer while eliminating the default-path overreach."
       - "Delivery spanned M1-M10 across audit, research, implementation, verification, release alignment, and deep-review remediation."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: /memory:save Planner-First Default
 

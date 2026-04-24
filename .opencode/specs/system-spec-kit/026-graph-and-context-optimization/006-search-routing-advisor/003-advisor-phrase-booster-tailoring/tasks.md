@@ -1,11 +1,12 @@
 ---
-title: "Tasks: Advisor Phrase-Booster Tailoring"
+title: "...em-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/003-advisor-phrase-booster-tailoring/tasks]"
 description: "3-phase serial task list: baseline + audit, migrate + add, regress + deliver"
 trigger_phrases:
   - "advisor phrase booster tasks"
   - "phrase booster migration tasks"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/003-advisor-phrase-booster-tailoring"

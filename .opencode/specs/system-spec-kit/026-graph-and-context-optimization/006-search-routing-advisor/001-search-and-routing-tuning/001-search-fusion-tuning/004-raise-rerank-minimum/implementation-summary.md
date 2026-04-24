@@ -1,15 +1,12 @@
 ---
-title: "Implementation Summary: Raise Minimum Rerank Candidate Threshold"
+title: "...uting-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum/implementation-summary]"
 description: "Raises the Stage 3 rerank gate from 2 results to 4 results and updates the threshold-sensitive regression coverage."
 trigger_phrases:
   - "raise rerank minimum"
-  - "MIN_RESULTS_FOR_RERANK"
+  - "min_results_for_rerank"
   - "stage3 rerank threshold"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-closed_by_commit: 2958485d9f
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum"
@@ -20,6 +17,9 @@ _memory:
     key_files:
       - "implementation-summary.md"
       - ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts"
+closed_by_commit: 2958485d9f
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Raise Minimum Rerank Candidate Threshold
 

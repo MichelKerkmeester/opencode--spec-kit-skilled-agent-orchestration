@@ -1,10 +1,14 @@
 ---
-title: "Deep Research Report — 006-ralph-main"
+title: "Deep Research [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/006-ralph-main/research]"
 description: "30-iteration research of Ralph for system-spec-kit improvement across architecture, UX, agentic orchestration, commands, and skills. 25 actionable findings, 5 rejected."
+trigger_phrases:
+  - "deep"
+  - "research"
+  - "006"
+  - "ralph"
 importance_tier: "important"
 contextType: "research"
 ---
-
 # Deep Research Report — 006-ralph-main
 
 ## 1. Executive Summary

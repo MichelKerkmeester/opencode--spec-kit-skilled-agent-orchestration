@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Skill Graph Auto-Setup"
+title: "...26-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup/plan]"
 description: "Level 2 repair plan for aligning the Phase 007 packet to the completed skill-graph auto-setup implementation."
 trigger_phrases:
   - "phase 007 plan"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "startup logging plan"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup"
@@ -31,6 +30,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Packet repair remains documentation-only."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Skill Graph Auto-Setup
 

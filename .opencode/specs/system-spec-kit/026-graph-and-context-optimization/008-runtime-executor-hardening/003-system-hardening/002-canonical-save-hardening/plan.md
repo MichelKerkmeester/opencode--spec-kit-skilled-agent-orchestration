@@ -1,11 +1,10 @@
 ---
-title: "Implementation Plan: Canonical-Save Hardening"
+title: "...graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening/plan]"
 description: "3-wave plan: Wave A lineage runtime parity, Wave B packet-root repair for 007/008/009/010, Wave C new validator assertions."
 trigger_phrases:
   - "canonical save hardening plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Plan scaffolded"
     next_safe_action: "Dispatch implementation"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Canonical-Save Hardening
 

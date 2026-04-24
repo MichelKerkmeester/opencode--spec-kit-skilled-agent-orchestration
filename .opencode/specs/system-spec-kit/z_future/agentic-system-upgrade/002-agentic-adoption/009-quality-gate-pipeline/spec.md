@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 009 Quality Gate Pipeline [template:level_2/spec.md]"
+title: "Feature Specificat [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/009-quality-gate-pipeline/spec]"
 description: "Create a clearer staged quality-gate pipeline that separates implementation, verification, review, and completion evidence while keeping current validators and packet contracts authoritative."
 trigger_phrases:
   - "feature"

@@ -1,11 +1,10 @@
 ---
-title: "Tasks: Codex Integration + Hook Policy"
+title: "...ntext-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy/tasks]"
 description: "Task list for 020/008 — Codex adapter + dynamic policy + Bash deny + fallback + parity."
 trigger_phrases:
   - "020 008 tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy"
@@ -15,7 +14,7 @@ _memory:
     next_safe_action: "Begin T001 after 005 converges"
     blockers: ["005-advisor-renderer-and-regression-harness"]
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Codex Integration + Hook Policy
 

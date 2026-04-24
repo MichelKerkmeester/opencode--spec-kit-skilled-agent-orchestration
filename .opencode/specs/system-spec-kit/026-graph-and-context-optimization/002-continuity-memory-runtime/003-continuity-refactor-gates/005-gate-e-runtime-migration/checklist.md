@@ -1,12 +1,11 @@
 ---
-title: "Gate E — Runtime Migration Checklist"
+title: "...text-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration/checklist]"
 description: "Closeout checklist."
-trigger_phrases: ["gate e", "checklist"]
+trigger_phrases:
+  - "gate e"
+  - "checklist"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration"
@@ -15,6 +14,9 @@ _memory:
     recent_action: "Validated Gate E checklist counts"
     next_safe_action: "Add evidence footnotes if packet is reopened"
     key_files: ["checklist.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->

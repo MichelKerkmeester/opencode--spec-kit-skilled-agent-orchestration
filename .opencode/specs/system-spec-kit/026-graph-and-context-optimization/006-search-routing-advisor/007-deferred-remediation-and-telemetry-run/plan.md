@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Deferred Remediation + Telemetry Measurement Run"
+title: "...ec-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run/plan]"
 description: "Delivery plan for Phase 024: Codex registration, static predicted-route measurement, live-session wrapper and analyzer."
 trigger_phrases:
   - "024 plan"
   - "telemetry measurement plan"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run"
@@ -20,6 +19,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts"
       - ".opencode/skill/system-spec-kit/scripts/observability/smart-router-analyze.ts"
     completion_pct: 85
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Deferred Remediation + Telemetry Measurement Run
 

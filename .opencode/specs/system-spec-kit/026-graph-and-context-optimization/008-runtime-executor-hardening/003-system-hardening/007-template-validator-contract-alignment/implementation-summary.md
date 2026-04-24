@@ -1,10 +1,10 @@
 ---
-title: "Implementation Summary: Template/Validator Contract Alignment"
+title: "...008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment/implementation-summary]"
 description: "Validator registry, semantic frontmatter validation, anchor parity, reporting split, and decision-record template fix."
-trigger_phrases: ["validator alignment summary"]
+trigger_phrases:
+  - "validator alignment summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Completed validator regression; full mcp_server suite blocked"
     next_safe_action: "Resolve broad mcp_server suite failures outside validator scope"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Template/Validator Contract Alignment
 

@@ -1,6 +1,15 @@
 ---
-title: "Phase 025 — Implementation Summary"
+title: "...it/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation/implementation-summary]"
 description: "Post-impl summary of deep-review remediation; populated after cli-codex run completes."
+trigger_phrases:
+  - "026"
+  - "graph"
+  - "and"
+  - "context"
+  - "optimization"
+  - "implementation summary"
+  - "003"
+  - "deep"
 importance_tier: "normal"
 contextType: "implementation"
 _memory:
@@ -29,7 +38,6 @@ _memory:
       - "All five P1 findings closed with focused regression coverage."
       - "Both P2 findings closed with cache hygiene, JSDoc, and added negative-path tests."
 ---
-
 # Implementation Summary — Phase 025
 
 ## Status

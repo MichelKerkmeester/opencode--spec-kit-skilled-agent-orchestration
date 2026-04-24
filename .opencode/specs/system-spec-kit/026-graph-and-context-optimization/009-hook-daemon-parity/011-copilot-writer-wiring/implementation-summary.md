@@ -1,8 +1,17 @@
 ---
-title: "Implementation Summary: Copilot Writer Wiring"
+title: "...-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring/implementation-summary]"
 description: "The Copilot writer-wiring commands are restored in .claude/settings.local.json, so the top-level wrappers again point at the packet 011 writers for UserPromptSubmit and SessionStart."
-importance_tier: "high"
-contextType: "spec"
+trigger_phrases:
+  - "spec"
+  - "kit"
+  - "026"
+  - "graph"
+  - "and"
+  - "implementation summary"
+  - "011"
+  - "copilot"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring"

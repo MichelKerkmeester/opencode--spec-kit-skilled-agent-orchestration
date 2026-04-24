@@ -1,11 +1,12 @@
 ---
-title: "018 / 012 — MCP config and feature-flag cleanup plan"
+title: "...ontext-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup/plan]"
 description: "Execution plan for the five-config cleanup, runtime default verification, and packet repair."
-trigger_phrases: ["018 012 plan", "mcp config cleanup plan", "feature flag cleanup plan"]
+trigger_phrases:
+  - "018 012 plan"
+  - "mcp config cleanup plan"
+  - "feature flag cleanup plan"
 importance_tier: "important"
 contextType: "implementation"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup"
@@ -14,6 +15,8 @@ _memory:
     recent_action: "Documented the cleanup plan and verification path"
     next_safe_action: "Review tasks and checklist"
     key_files: ["plan.md", "tasks.md", "checklist.md", "implementation-summary.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: 018 / 012 — MCP config and feature-flag cleanup
 

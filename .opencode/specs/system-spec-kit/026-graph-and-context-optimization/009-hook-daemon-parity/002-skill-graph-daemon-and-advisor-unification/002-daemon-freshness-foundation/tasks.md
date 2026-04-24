@@ -1,8 +1,24 @@
 ---
-title: "027/001 — Tasks"
+title: "...mization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation/tasks]"
 description: "Task breakdown for daemon + freshness foundation."
-importance_tier: "high"
+trigger_phrases:
+  - "mization"
+  - "009"
+  - "hook"
+  - "daemon"
+  - "parity"
+  - "tasks"
+  - "002"
+importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # 027/001 Tasks
 

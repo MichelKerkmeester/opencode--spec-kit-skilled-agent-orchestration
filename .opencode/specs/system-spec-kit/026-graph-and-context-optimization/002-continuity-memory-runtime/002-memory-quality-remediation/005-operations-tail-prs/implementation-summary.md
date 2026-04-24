@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary: Phase 5 — Operations & Tail PRs"
+title: "...mization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs/implementation-summary]"
 description: "Phase 5 finished phase-local operational closeout with telemetry docs, a dry-run-only migration CLI, defer rationale, and qualified parent-status updates while parent closeout remains blocked outside this child scope."
 trigger_phrases:
   - "phase 5 implementation summary"
   - "operations tail summary"
   - "pr10 dry run summary"
-importance_tier: important
+importance_tier: "important"
 contextType: "general"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Phase 5 — Operations & Tail PRs
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Default-ON Boost Rollout — Session, Causal & Deep Expansion"
+title: "Im [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout/plan]"
 description: "Changes call-site semantics for SPECKIT_SESSION_BOOST and SPECKIT_CAUSAL_BOOST from opt-in to default-ON kill-switches, and broadens the deep expansion activation condition in stage1-candidate-gen so that deep mode reliably fires multi-query expansion."
 trigger_phrases:
   - "boost rollout plan"
@@ -9,11 +9,20 @@ trigger_phrases:
   - "stage1-candidate-gen expansion"
 importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["plan.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
-# Implementation Plan: Default-ON Boost Rollout — Session, Causal & Deep Expansion
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+# Implementation Plan: Default-ON Boost Rollout — Session, Causal & Deep Expansion
 
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: FTS5 Fix, Search Dashboard, and DB Path Drift Fix"
+title: "Tasks: FTS5 Fix, Search [system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "fts5 fix tasks"
@@ -9,11 +9,20 @@ trigger_phrases:
   - "search dashboard tasks"
 importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["tasks.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_2/tasks.md | v2.2 -->"
 ---
-# Tasks: FTS5 Fix, Search Dashboard, and DB Path Drift Fix
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: level_2/tasks.md | v2.2 -->
+
+# Tasks: FTS5 Fix, Search Dashboard, and DB Path Drift Fix
 
 ---
 

@@ -1,3 +1,24 @@
+---
+title: "Phase 021: Cross-Runtime [system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec]"
+description: "Template compliance shim section. Legacy phase content continues below."
+trigger_phrases:
+  - "phase"
+  - "021"
+  - "cross"
+  - "runtime"
+  - "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Phase 021: Cross-Runtime Instruction Parity
 

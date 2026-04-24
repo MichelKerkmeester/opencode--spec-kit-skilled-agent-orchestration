@@ -1,3 +1,13 @@
+---
+title: "Ch [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/012-drift-detection-evaluation/checklist]"
+description: "checklist document for 012-drift-detection-evaluation."
+trigger_phrases:
+  - "checklist"
+  - "012"
+  - "drift"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Checklist: 012-drift-detection-evaluation
 
 ## P0

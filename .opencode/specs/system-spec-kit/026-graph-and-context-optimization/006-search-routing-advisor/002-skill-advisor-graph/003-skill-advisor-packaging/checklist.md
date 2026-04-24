@@ -1,13 +1,12 @@
 ---
-title: "Verification Checklist: Skill Advisor Packaging"
+title: "...ph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging/checklist]"
 description: "Checklist for packet remediation, layout accuracy, and strict-validation recovery."
 trigger_phrases:
   - "003-skill-advisor-packaging"
   - "packaging checklist"
   - "packet remediation checklist"
 importance_tier: "important"
-contextType: "verification"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging"
@@ -16,6 +15,7 @@ _memory:
     recent_action: "Checklist normalized"
     next_safe_action: "Attach validator result"
     key_files: ["checklist.md", "decision-record.md", "graph-metadata.json"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Skill Advisor Packaging
 

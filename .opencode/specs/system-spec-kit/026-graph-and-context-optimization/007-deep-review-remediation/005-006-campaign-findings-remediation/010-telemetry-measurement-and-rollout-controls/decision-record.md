@@ -1,10 +1,11 @@
 ---
-title: "Decision Record: 010-telemetry-measurement-and-rollout-controls Telemetry, Measurement, and Rollout Controls Remediation"
+title: "...iew-remediation/005-006-campaign-findings-remediation/010-telemetry-measurement-and-rollout-controls/decision-record]"
 description: "ADR for 010-telemetry-measurement-and-rollout-controls Telemetry, Measurement, and Rollout Controls Remediation."
 trigger_phrases:
   - "decision record 010 telemetry measurement and rollout controls telemetry"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/010-telemetry-measurement-and-rollout-controls"

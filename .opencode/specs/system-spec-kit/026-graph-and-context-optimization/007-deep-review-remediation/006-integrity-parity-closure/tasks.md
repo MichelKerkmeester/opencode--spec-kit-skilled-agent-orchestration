@@ -1,11 +1,12 @@
 ---
-title: "Task Ledger: Integrity Parity Closure"
+title: "Task [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/tasks]"
 description: "CF-mapped remediation tasks for the Integrity Parity Closure packet."
 trigger_phrases:
   - "tasks integrity parity closure"
   - "026 007 006 tasks"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure"

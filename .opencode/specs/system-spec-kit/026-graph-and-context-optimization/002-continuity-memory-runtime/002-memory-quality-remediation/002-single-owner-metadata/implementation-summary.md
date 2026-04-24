@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary: Phase 2 — Single-Owner Metadata Fixes"
+title: "...zation/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata/implementation-summary]"
 description: "Phase 2 closed the metadata drift slice by making importance tier single-owner and by adding provenance-only JSON-mode enrichment without summary contamination."
 trigger_phrases:
   - "phase 2 implementation summary"
   - "single owner metadata summary"
   - "d4 d7 closeout"
-importance_tier: important
+importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Phase 2 — Single-Owner Metadata Fixes
 

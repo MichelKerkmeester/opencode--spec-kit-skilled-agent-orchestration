@@ -1,16 +1,25 @@
 ---
-title: "Spec: Startup Context Injection Debug — Hook Runtime Brief + Sibling Handoff"
+title: "Spec: Startup Context Injection Debug [system-spec-kit/024-compact-code-graph/026-session-start-injection-debug/spec]"
 description: "Isolate the startup injection gap for hook-capable runtimes, define a reusable startup brief helper, and hand off hookless structural bootstrap ownership to Phase 027."
 trigger_phrases:
   - "startup injection"
   - "session start context"
-  - "handleStartup"
+  - "handlestartup"
   - "compact code graph injection"
   - "graph freshness empty"
   - "startup auto priming"
   - "026"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/026-session-start-injection-debug"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 

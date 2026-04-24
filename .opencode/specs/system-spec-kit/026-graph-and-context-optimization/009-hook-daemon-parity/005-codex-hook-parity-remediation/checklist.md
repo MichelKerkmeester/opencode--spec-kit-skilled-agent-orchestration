@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify + level3-arch | v2.2 -->"
-title: "Verification Checklist: Codex CLI Hook Parity Remediation"
+title: "...ystem-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation/checklist]"
 description: "Evidence-backed verification checklist for Codex native hook parity."
 trigger_phrases:
   - "026/009/005 checklist"
   - "codex hook parity checklist"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Independent review and live re-verification — all claims hold"
     next_safe_action: "Validate and save"
     completion_pct: 100
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Verification Checklist: Codex CLI Hook Parity Remediation
 

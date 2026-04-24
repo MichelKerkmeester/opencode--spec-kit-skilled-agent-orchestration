@@ -1,11 +1,12 @@
 ---
-title: "Verification Checklist: Codex Tone-of-Voice Personalization"
+title: "Verification Checklist: Codex Tone-of-Voice [skilled-agent-orchestration/046-cli-codex-tone-of-voice/checklist]"
 description: "P0/P1/P2 verification items for the Codex personalization assets and SKILL.md integration. Each item maps back to a spec REQ and carries evidence after implementation."
 trigger_phrases:
   - "046 checklist"
   - "codex tone checklist"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/046-cli-codex-tone-of-voice"

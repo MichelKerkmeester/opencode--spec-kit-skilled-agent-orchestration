@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 ---
-title: "Tasks: Move changelog_template.md into sk-doc [045]"
+title: "Tasks: Move changelog_template.md into sk-doc [045] [skilled-agent-orchestration/045-sk-doc-changelog-template/tasks]"
 description: "Task tracker for the changelog template relocation packet."
 trigger_phrases:
   - "045 tasks"

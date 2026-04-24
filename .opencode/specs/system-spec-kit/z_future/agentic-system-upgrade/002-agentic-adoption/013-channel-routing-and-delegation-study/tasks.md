@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 013 Channel Routing and Delegation Study [template:level_2/tasks.md]"
+title: "Ta [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/013-channel-routing-and-delegation-study/tasks]"
 description: "Task Format: T### [P?] Description (013-channel-routing-and-delegation-study)"
 trigger_phrases:
   - "tasks"

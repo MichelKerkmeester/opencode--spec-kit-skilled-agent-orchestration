@@ -1,7 +1,25 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Tasks: Query-Routing Integration [024/020]"
+title: "Tasks: Query-Routing Integration [024/020] [system-spec-kit/024-compact-code-graph/020-query-routing-integration/tasks]"
 description: "Task tracking for query-intent enrichment, session_resume, and passive enrichment."
+trigger_phrases:
+  - "tasks"
+  - "query"
+  - "routing"
+  - "integration"
+  - "024"
+  - "020"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/020-query-routing-integration"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Tasks: Query-Routing Integration [024/020]
 
@@ -51,7 +69,7 @@ Template compliance shim anchor for cross-refs.
 
 ---
 
-<!-- ANCHOR:notation -->
+<!-- ANCHOR:notation-2 -->
 ### Task Notation
 | Prefix | Meaning |
 |--------|---------|
@@ -61,53 +79,53 @@ Template compliance shim anchor for cross-refs.
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
-<!-- /ANCHOR:notation -->
+<!-- /ANCHOR:notation-2 -->
 
 ---
 
-<!-- ANCHOR:phase-1 -->
+<!-- ANCHOR:phase-1-2 -->
 ### Phase 1: Setup
 - [x] T001 Audit `memory_context` implementation facts (`handlers/memory-context.ts`)
 - [x] T002 Audit `session_resume` schema and output contract (`handlers/session-resume.ts`, `tool-schemas.ts`, `schemas/tool-input-schemas.ts`)
 - [x] T003 [P] Audit passive enrichment wiring and current file inventory (`context-server.ts`, `lib/enrichment/passive-enrichment.ts`)
-<!-- /ANCHOR:phase-1 -->
+<!-- /ANCHOR:phase-1-2 -->
 
 ---
 
-<!-- ANCHOR:phase-2 -->
+<!-- ANCHOR:phase-2-2 -->
 ### Phase 2: Implementation
 - [x] T004 Update the packet to describe additive query-intent enrichment rather than selective backend routing (`spec.md`, `plan.md`, `implementation-summary.md`)
 - [x] T005 Replace stale metadata wording with `queryIntentRouting { queryIntent, routedBackend, confidence, matchedKeywords? }` (`spec.md`, `plan.md`, `checklist.md`, `implementation-summary.md`)
 - [x] T006 Correct `session_resume` documentation to the shipped slim schema and payload (`spec.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`)
 - [x] T007 Mark passive enrichment as implemented and remove `code-graph-enricher.ts` references (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`)
-<!-- /ANCHOR:phase-2 -->
+<!-- /ANCHOR:phase-2-2 -->
 
 ---
 
-<!-- ANCHOR:phase-3 -->
+<!-- ANCHOR:phase-3-2 -->
 ### Phase 3: Verification
 - [x] T008 Remove stale claims about dual-backend hybrid merging, `fallbackApplied`, `ccc_status()`, and deferred Part 3 work (entire packet)
 - [x] T009 Confirm every file uses the same `session_resume` summary contract and input schema (entire packet)
 - [x] T010 Update template markers and anchors, then run strict packet validation (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`)
-<!-- /ANCHOR:phase-3 -->
+<!-- /ANCHOR:phase-3-2 -->
 
 ---
 
-<!-- ANCHOR:completion -->
+<!-- ANCHOR:completion-2 -->
 ### Completion Criteria
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
 - [x] Manual verification passed
-<!-- /ANCHOR:completion -->
+<!-- /ANCHOR:completion-2 -->
 
 ---
 
-<!-- ANCHOR:cross-refs -->
+<!-- ANCHOR:cross-refs-2 -->
 ### Cross-References
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
 - **Implementation Summary**: See `implementation-summary.md`
-<!-- /ANCHOR:cross-refs -->
+<!-- /ANCHOR:cross-refs-2 -->
 
 ---

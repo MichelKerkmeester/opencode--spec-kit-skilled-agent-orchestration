@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Advisor Freshness + Source Cache"
+title: "...ntext-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache/plan]"
 description: "Three new lib files under mcp_server/lib/skill-advisor/: freshness.ts, source-cache.ts, generation.ts. Mirrors lib/code-graph/freshness.ts shape; extends with per-skill fingerprints and generation tagging."
 trigger_phrases:
   - "020 003 plan"
   - "advisor freshness plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache"
@@ -16,7 +15,7 @@ _memory:
     next_safe_action: "Dispatch /spec_kit:implement :auto after 002 converges"
     blockers: []
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Advisor Freshness + Source Cache
 

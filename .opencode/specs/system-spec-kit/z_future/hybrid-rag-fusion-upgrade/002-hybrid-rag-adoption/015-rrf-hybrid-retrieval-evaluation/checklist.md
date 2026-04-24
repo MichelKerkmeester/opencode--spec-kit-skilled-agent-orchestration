@@ -1,3 +1,18 @@
+---
+title: "...em-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/015-rrf-hybrid-retrieval-evaluation/checklist]"
+description: "checklist document for 015-rrf-hybrid-retrieval-evaluation."
+trigger_phrases:
+  - "spec"
+  - "kit"
+  - "future"
+  - "hybrid"
+  - "rag"
+  - "checklist"
+  - "015"
+  - "rrf"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Checklist: 015-rrf-hybrid-retrieval-evaluation
 
 ## P0

@@ -1,14 +1,14 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
-title: "Tasks: Code Graph Incremental Fullscan Recovery"
+title: "...xt-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/001-incremental-fullscan-recovery/tasks]"
 description: "Ordered task list T-001 through T-011 for restoring full-scan behavior, deduping symbol IDs, testing, building, and documenting the code graph remediation."
 trigger_phrases:
   - "incremental fullscan tasks"
-  - "T-001 skipFreshFiles"
-  - "T-004 seenSymbolIds"
+  - "t-001 skipfreshfiles"
+  - "t-004 seensymbolids"
   - "012/002 tasks"
 importance_tier: "critical"
-contextType: "spec"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery"
@@ -30,6 +30,7 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Code Graph Incremental Fullscan Recovery
 

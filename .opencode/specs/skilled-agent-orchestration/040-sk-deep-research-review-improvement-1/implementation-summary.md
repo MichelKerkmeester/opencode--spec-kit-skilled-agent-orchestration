@@ -1,12 +1,21 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: "Implementation Summary [skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/implementation-summary]"
 description: "Both deep-research and deep-review now share a canonical packet contract with lineage, lifecycle, reducer, and runtime parity — all backed by executable Vitest guards."
 trigger_phrases:
   - "implementation summary"
   - "040 summary"
   - "deep research review summary"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 # Implementation Summary
 

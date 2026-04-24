@@ -1,7 +1,23 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Implementation Summary: Hook Durability & Auto-Enrichment [024/014]"
+title: "Implementation [system-spec-kit/024-compact-code-graph/014-hook-durability-auto-enrichment/implementation-summary]"
 description: "Fixed 6 P1 hook reliability/security bugs and implemented 8 P2 auto-enrichment features. MCP first-call priming, injection fencing, SHA-256 session hashing, tool auto-enrichment."
+trigger_phrases:
+  - "implementation"
+  - "implementation summary"
+  - "014"
+  - "hook"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/014-hook-durability-auto-enrichment"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Summary
 
@@ -53,18 +69,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 014-hook-durability-auto-enrichment |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:what-built -->
+<!-- ANCHOR:what-built-2 -->
 ### What Was Built
 Hook scripts now handle failures gracefully, fence recovered content against injection, use collision-resistant session hashing, and enforce file permissions. On the enrichment side, every MCP tool call now auto-primes the session on first use and can inject structural graph context alongside results.
 
@@ -110,14 +126,14 @@ Dead `workingSet` branch removed from session-prime.ts. Duplicated `syncEnvelope
 | `lib/response/envelope.ts` | Modified | Exported syncEnvelopeTokenCount, serializeEnvelopeWithTokenCount |
 | `lib/code-graph/code-graph-db.ts` | Modified | file_mtime_ms column, schema v2 migration, stale-on-read |
 | `context-server.ts` | Modified | First-call priming, graph auto-enrichment, 250ms timeout |
-<!-- /ANCHOR:what-built -->
+<!-- /ANCHOR:what-built-2 -->
 
 ---
 
-<!-- ANCHOR:how-delivered -->
+<!-- ANCHOR:how-delivered-2 -->
 ### How It Was Delivered
 Seven Codex CLI agents (GPT-5.4, high reasoning) across two waves. Wave 2 (4 agents) covered reliability, security, hook path, and dead code, and verified 142/142 tests across 6 hook suites. Wave 3 (3 agents) covered MCP priming, auto-enrichment, and stale-on-read, expanding verification to 213/213. Final full-suite verification finished at 226/226. ESLint stayed clean on all modified files.
-<!-- /ANCHOR:how-delivered -->
+<!-- /ANCHOR:how-delivered-2 -->
 
 ---
 ### Key Decisions
@@ -130,7 +146,7 @@ Seven Codex CLI agents (GPT-5.4, high reasoning) across two waves. Wave 2 (4 age
 | Import canonical envelope helpers | Two files had convergence loops with different iteration counts (3 vs 5). Single source of truth with the 5-iteration safety bound. |
 ---
 
-<!-- ANCHOR:verification -->
+<!-- ANCHOR:verification-2 -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -144,11 +160,11 @@ Seven Codex CLI agents (GPT-5.4, high reasoning) across two waves. Wave 2 (4 age
 | `tests/crash-recovery.vitest.ts` | PASS (stale-on-read tests) |
 | ESLint on all modified files | PASS (0 errors) |
 | Phase 014 checklist | 17/17 items verified |
-<!-- /ANCHOR:verification -->
+<!-- /ANCHOR:verification-2 -->
 
 ---
 
-<!-- ANCHOR:limitations -->
+<!-- ANCHOR:limitations-2 -->
 ### Known Limitations
 1. **First-call priming is process-global, not session-scoped.** The module-level `sessionPrimed` flag is shared across the MCP server process. If multiple sessions share one server process, only the first session is primed until the flag is reset or the server restarts.
 2. **Compact recovery is only partially hardened.** `readAndClearCompactPrime()` now reads before clearing, but it still clears the cached payload before the caller's stdout write is confirmed. If stdout fails after clear, the payload can still be lost.
@@ -156,4 +172,4 @@ Seven Codex CLI agents (GPT-5.4, high reasoning) across two waves. Wave 2 (4 age
 4. **The planned `pendingStopSave` field was not implemented.** `HookState` has no dedicated `pendingStopSave` field, so the stop-hook redesign described in the spec did not land in the implementation.
 5. **Stale-on-read deviates from the spec.** The implementation uses flat fresh/stale mtime classification instead of the spec's 3-tier threshold model.
 6. **Graph enrichment returns nothing when DB is uninitialized.** The 250ms timeout handles this gracefully, but the first tool call in a fresh workspace gets no graph context.
-<!-- /ANCHOR:limitations -->
+<!-- /ANCHOR:limitations-2 -->

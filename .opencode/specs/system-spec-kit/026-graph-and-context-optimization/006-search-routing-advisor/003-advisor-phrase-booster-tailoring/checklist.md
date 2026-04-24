@@ -1,10 +1,11 @@
 ---
-title: "Verification Checklist: Advisor Phrase-Booster Tailoring"
+title: "...pec-kit/026-graph-and-context-optimization/006-search-routing-advisor/003-advisor-phrase-booster-tailoring/checklist]"
 description: "Regression harness is the P0 gate. Top-1 accuracy ≥0.92, zero P0 fixture regressions."
 trigger_phrases:
   - "advisor phrase booster checklist"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/003-advisor-phrase-booster-tailoring"

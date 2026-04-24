@@ -1,13 +1,12 @@
 ---
-title: "Tasks: 002-codesight Research Phase"
+title: "Tasks: 002-codesight [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight/tasks]"
 description: "Task tracking for the 20-iteration deep-research packet on the codesight external Node.js/TypeScript skill, including completed-continue closeout, memory audit, and phase-doc reconciliation."
 trigger_phrases:
   - "002-codesight research tasks"
   - "002-codesight task list"
   - "codesight deep-research tasks"
-importance_tier: critical
-contextType: tasks
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+importance_tier: "critical"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: 002-codesight Research Phase
 

@@ -1,3 +1,13 @@
+---
+title: "Plan: 013 [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/013-fsrs-memory-decay-study/plan]"
+description: "1. Baseline current scheduler constants, multiplier tables, and search-time decay behavior."
+trigger_phrases:
+  - "plan"
+  - "013"
+  - "fsrs"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 013-fsrs-memory-decay-study
 
 ## Affected Files

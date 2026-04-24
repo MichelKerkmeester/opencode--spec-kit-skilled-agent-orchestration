@@ -1,9 +1,17 @@
 ---
-title: "Tasks: Phase 017 Wave C — Rollout + Sweeps"
-description: "5 Wave C tasks with acceptance criteria and finding crosswalk: T-EVD-01, T-CNS-03, T-CPN-01, T-W1-MCX-01, T-SRS-BND-01. Canonical `]` closers per T-EVD-01 contract."
-trigger_phrases: ["phase 017 wave c tasks", "017 rollout tasks", "t-evd-01", "t-cns-03", "t-cpn-01", "t-w1-mcx-01", "t-srs-bnd-01"]
+title: ".../026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps/tasks]"
+description: "5 Wave C tasks with acceptance criteria and finding crosswalk: T-EVD-01, T-CNS-03, T-CPN-01, T-W1-MCX-01, T-SRS-BND-01. Canonical ] closers per T-EVD-01 contract."
+trigger_phrases:
+  - "phase 017 wave c tasks"
+  - "017 rollout tasks"
+  - "t-evd-01"
+  - "t-cns-03"
+  - "t-cpn-01"
+  - "t-w1-mcx-01"
+  - "t-srs-bnd-01"
 importance_tier: "critical"
-contextType: "tasks"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps"

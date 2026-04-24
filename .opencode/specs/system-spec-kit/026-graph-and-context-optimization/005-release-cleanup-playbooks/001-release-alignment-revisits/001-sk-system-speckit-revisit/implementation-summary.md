@@ -1,12 +1,12 @@
 ---
-title: "018 / 007 — system-spec-kit revisit summary"
+title: "...on/005-release-cleanup-playbooks/001-release-alignment-revisits/001-sk-system-speckit-revisit/implementation-summary]"
 description: "Evidence ledger for the 016 SKILL/internal-doc revisit under the Phase 018 continuity model."
-trigger_phrases: ["007 implementation summary", "system-spec-kit revisit summary", "phase 018 evidence"]
+trigger_phrases:
+  - "007 implementation summary"
+  - "system-spec-kit revisit summary"
+  - "phase 018 evidence"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/001-sk-system-speckit-revisit"
@@ -15,6 +15,9 @@ _memory:
     recent_action: "Recorded the 007 revisit evidence"
     next_safe_action: "Reference"
     key_files: ["implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: 018 / 007 — system-spec-kit revisit
 <!-- SPECKIT_LEVEL: 2 -->

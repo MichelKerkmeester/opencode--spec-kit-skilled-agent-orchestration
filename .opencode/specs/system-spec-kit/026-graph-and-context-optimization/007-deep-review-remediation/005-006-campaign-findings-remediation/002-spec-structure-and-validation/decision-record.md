@@ -1,10 +1,11 @@
 ---
-title: "Decision Record: 002-spec-structure-and-validation Spec Structure and Validation Remediation"
+title: ".../007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation/decision-record]"
 description: "ADR for 002-spec-structure-and-validation Spec Structure and Validation Remediation."
 trigger_phrases:
   - "decision record 002 spec structure and validation spec structure and val"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation"

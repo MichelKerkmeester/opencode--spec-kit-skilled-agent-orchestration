@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
-title: "Implementation Summary: Code Graph Context + Scan Scope Remediation"
+title: "...6-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/implementation-summary]"
 description: "Stale code-graph snapshots now include highlights, default scan scope excludes archived/future/coco-index server paths, scans honor .gitignore, and the two context surfaces are documented."
 trigger_phrases:
   - "code graph context complete"
   - "026/003/003 implementation"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
@@ -33,6 +33,7 @@ _memory:
       research_md: "research/007-deep-review-remediation-pt-04/research.md"
       executor: "cli-codex / gpt-5.4 / reasoning=high / service_tier=fast"
       tokens_used: "~500K"
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Code Graph Context + Scan Scope Remediation
 

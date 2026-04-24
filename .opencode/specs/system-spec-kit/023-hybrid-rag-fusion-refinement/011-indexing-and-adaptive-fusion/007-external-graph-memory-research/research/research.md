@@ -1,12 +1,21 @@
 ---
-title: 'Research: External Graph Memory Systems Survey'
-description: 'Comparative analysis of 7 external graph memory systems with ranked improvement backlog for Spec Kit Memory'
+title: "...ec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/research]"
+description: "Comparative analysis of 7 external graph memory systems with ranked improvement backlog for Spec Kit Memory"
 trigger_phrases:
-  - 'external graph memory research'
-  - 'graph memory survey results'
-  - 'graph improvement backlog'
-importance_tier: 'critical'
-contextType: 'research'
+  - "external graph memory research"
+  - "graph memory survey results"
+  - "graph improvement backlog"
+importance_tier: "critical"
+contextType: "research"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/research"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["research/research.md"]
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->

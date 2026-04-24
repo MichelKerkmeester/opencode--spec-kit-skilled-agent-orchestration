@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 007-relay-main Research Phase"
+title: "Feature Specification [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/007-relay-main/spec]"
 description: "Completed read-only research phase on the bundled Agent Relay repository. The phase now includes both transport adoption findings and Phase 2 architecture, simplification, and UX judgments for system-spec-kit."
 trigger_phrases:
   - "007-relay-main research spec"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "agent relay transport research"
   - "system spec kit relay study"
 importance_tier: "important"
-contextType: "spec"
+contextType: "implementation"
 ---
 # Feature Specification: 007-relay-main Research Phase
 

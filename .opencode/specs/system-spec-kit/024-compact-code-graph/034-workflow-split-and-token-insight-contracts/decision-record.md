@@ -1,18 +1,27 @@
 ---
-title: "Decision Record: Workflow Split and Token Insight Contracts [template:level_3/decision-record.md]"
+title: "Decision Record [system-spec-kit/024-compact-code-graph/034-workflow-split-and-token-insight-contracts/decision-record]"
 description: "Decision record for 034-workflow-split-and-token-insight-contracts."
 trigger_phrases:
   - "034-workflow-split-and-token-insight-contracts"
   - "decision"
   - "record"
 importance_tier: "important"
-contextType: "decision-record"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/034-workflow-split-and-token-insight-contracts"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["decision-record.md"]
 ---
 # Decision Record: Workflow Split and Token Insight Contracts
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/global/hvr_rules.md -->
 
 ---
 

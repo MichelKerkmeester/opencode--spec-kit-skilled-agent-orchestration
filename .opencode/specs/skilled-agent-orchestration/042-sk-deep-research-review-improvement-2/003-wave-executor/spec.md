@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Wave Executor [042.003]"
+title: "Feature Specification [skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor/spec]"
 description: "Define orchestrator-managed parallel wave execution for deep research and deep review so large targets can be segmented, converged, and merged without turning LEAF agents into sub-agent managers."
 trigger_phrases:
   - "042.003"
@@ -9,6 +9,15 @@ trigger_phrases:
   - "parallel deep loop"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Wave Executor
 

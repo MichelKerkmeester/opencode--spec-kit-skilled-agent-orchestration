@@ -1,10 +1,18 @@
 ---
-title: "Deep Research Report - 003-claude-code-mastery-project-starter-kit-main"
+title: "...future/agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main/research]"
 description: "30-iteration research of the Claude Code Mastery Project Starter Kit for system-spec-kit improvement opportunities. 25 actionable findings, 5 rejected."
+trigger_phrases:
+  - "future"
+  - "agentic"
+  - "system"
+  - "upgrade"
+  - "001"
+  - "research"
+  - "003"
+  - "claude"
 importance_tier: "important"
 contextType: "research"
 ---
-
 # Deep Research Report - 003-claude-code-mastery-project-starter-kit-main
 
 ## 1. Executive Summary

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Graph and Context Optimization"
+title: "Tasks: Graph and Context Optimization [system-spec-kit/026-graph-and-context-optimization/tasks]"
 description: "Task record for the 026 phase consolidation from 29 active folders to 9 thematic wrappers."
 trigger_phrases:
   - "026 graph and context optimization"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "merged phase map"
   - "graph context optimization root packet"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Graph and Context Optimization
 

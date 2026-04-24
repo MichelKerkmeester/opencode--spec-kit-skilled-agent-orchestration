@@ -1,11 +1,12 @@
 ---
-title: "029 - Hook Parity Remediation Plan"
+title: "029 - Hook [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/plan]"
 description: "Implementation plan for hook parity remediation across OpenCode, Codex, Copilot, and packet-local validation evidence."
 trigger_phrases:
   - "026/009/003 plan"
   - "hook parity plan"
-importance_tier: "high"
-contextType: "implementation-plan"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"

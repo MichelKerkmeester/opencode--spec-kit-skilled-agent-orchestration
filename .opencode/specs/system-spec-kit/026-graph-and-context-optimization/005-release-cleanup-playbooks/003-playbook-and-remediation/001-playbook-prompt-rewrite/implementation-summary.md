@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "...zation/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/implementation-summary]"
 description: "Summarize the completed Phase 014 prompt rewrite and this packet repair without overstating verification."
-trigger_phrases: ["implementation", "summary", "phase 014"]
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "phase 014"
 importance_tier: "important"
 contextType: "implementation"
-level: 2
-status: "in_progress"
-parent: "009-playbook-and-remediation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite"
@@ -15,6 +14,10 @@ _memory:
     last_updated_by: "speckit"
     recent_action: "Reopened packet closeout after the required manual prompt spot-check stayed deferred"
     next_safe_action: "Complete or explicitly re-scope CHK-023 before closing the packet"
+level: 2
+parent: "009-playbook-and-remediation"
+status: "in_progress"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

@@ -1,3 +1,22 @@
+---
+title: "Checklist: Phase [skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/checklist]"
+description: "checklist document for 009-sk-agent-improver-self-test."
+trigger_phrases:
+  - "checklist"
+  - "phase"
+  - "009"
+  - "agent"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
+---
 # Checklist: Phase 009 — Agent-Improver Self-Test
 
 ## P0 — Hard Blockers

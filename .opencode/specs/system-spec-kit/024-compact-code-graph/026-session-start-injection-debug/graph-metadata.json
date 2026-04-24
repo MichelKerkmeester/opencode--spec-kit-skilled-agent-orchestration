@@ -13,13 +13,13 @@
     "trigger_phrases": [
       "startup injection",
       "session start context",
-      "handleStartup",
+      "handlestartup",
       "compact code graph injection",
       "graph freshness empty",
       "startup auto priming",
       "026",
       "startup injection plan",
-      "handleStartup fix",
+      "handlestartup fix",
       "026 plan",
       "cross-runtime priming",
       "026 tasks"
@@ -42,8 +42,6 @@
     "status": "complete",
     "key_files": [
       "mcp_server/hooks/claude/hook-state.ts",
-      "mcp_server/lib/code-graph/code-graph-db.ts",
-      "mcp_server/lib/code-graph/startup-brief.ts",
       "mcp_server/hooks/claude/session-prime.ts",
       "mcp_server/hooks/gemini/session-prime.ts",
       "spec.md",
@@ -51,7 +49,6 @@
       "tasks.md",
       "checklist.md",
       "hooks/claude/hook-state.ts",
-      "lib/code-graph/startup-brief.ts",
       "implementation-summary.md"
     ],
     "entities": [
@@ -59,18 +56,6 @@
         "name": "hook-state.ts",
         "kind": "code",
         "path": "mcp_server/hooks/claude/hook-state.ts",
-        "source": "derived"
-      },
-      {
-        "name": "code-graph-db.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/code-graph/code-graph-db.ts",
-        "source": "derived"
-      },
-      {
-        "name": "startup-brief.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/code-graph/startup-brief.ts",
         "source": "derived"
       },
       {
@@ -116,18 +101,6 @@
         "source": "derived"
       },
       {
-        "name": "Hook Runtime Brief",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Sibling Handoff",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
         "name": "Child Header",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -143,6 +116,30 @@
         "name": "Parent Plan",
         "kind": "proper_noun",
         "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Context This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Hook Runtime Brief",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Sibling Handoff",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       },
       {
@@ -164,6 +161,12 @@
         "source": "derived"
       },
       {
+        "name": "Startup Context Injection",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
         "name": "Task Notation",
         "kind": "proper_noun",
         "path": "tasks.md",
@@ -171,12 +174,6 @@
       },
       {
         "name": "Task Format",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Completion Criteria",
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
@@ -202,7 +199,8 @@
     ],
     "causal_summary": "This is **Phase 26** of the Compact Code Graph specification.",
     "created_at": "2026-04-12T09:02:53.432Z",
-    "last_save_at": "2026-04-18T14:39:04.166Z",
+    "last_save_at": "2026-04-24T15:34:55.435Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

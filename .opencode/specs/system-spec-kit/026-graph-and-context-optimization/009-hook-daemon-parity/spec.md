@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Hook Daemon Parity"
+title: "Feature Specification: Hook Daemon [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/spec]"
 description: "Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation. Consolidated active parent for 11 direct child phase packet(s)."
 trigger_phrases:
   - "009-hook-daemon-parity"
@@ -17,7 +17,6 @@ trigger_phrases:
   - "011-copilot-writer-wiring"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity"
@@ -38,6 +37,7 @@ _memory:
     completion_pct: 85
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Hook Daemon Parity
 

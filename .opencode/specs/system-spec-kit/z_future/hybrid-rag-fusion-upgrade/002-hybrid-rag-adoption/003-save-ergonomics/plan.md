@@ -1,3 +1,14 @@
+---
+title: "Plan: 003-save-erg [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/003-save-ergonomics/plan]"
+description: "1. Freeze the wrapper contract around --json, --stdin, or a JSON temp file."
+trigger_phrases:
+  - "plan"
+  - "003"
+  - "save"
+  - "erg"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 003-save-ergonomics
 
 ## Affected Files

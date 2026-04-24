@@ -1,9 +1,12 @@
 ---
-title: "Verification Checklist: Deep-Loop CLI Executor Selection"
+title: "...context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature/checklist]"
 description: "P0/P1/P2 verification gate for Phase 018. Native-path bit-identical required; cli-codex smoke end-to-end; sk-deep-research + sk-deep-review symmetry verified. Follows Phase 017 EVIDENCE-closer convention."
-trigger_phrases: ["018 checklist", "deep-loop executor verification"]
-importance_tier: "high"
+trigger_phrases:
+  - "018 checklist"
+  - "deep-loop executor verification"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature"

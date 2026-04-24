@@ -10,6 +10,15 @@ trigger_phrases:
   - "spec"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/021-spec-kit-phase-system"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Tasks: SpecKit Phase System
@@ -77,10 +86,10 @@ contextType: "implementation"
 
 ### Detection & Scoring
 
-- [x] T001 [P0] Add `determine_phasing()` function to `recommend-level.sh` with 5 phase signal scoring dimensions (`scripts/spec/recommend-level.sh`)
-- [x] T002 [P0] Add `--recommend-phases` CLI flag to include phase scoring in output [B: T001] (`scripts/spec/recommend-level.sh`)
-- [x] T003 [P1] Add `--phase-threshold <N>` CLI flag for threshold override (default 25) [B: T001] (`scripts/spec/recommend-level.sh`)
-- [x] T004 [P0] Extend JSON output with `recommended_phases`, `phase_score`, `phase_reason`, `suggested_phase_count` [B: T001, T002] (`scripts/spec/recommend-level.sh`)
+- [x] T001 [P0] Add `determine_phasing()` function to `recommend-level.sh` with 5 phase signal scoring dimensions (`.opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh`)
+- [x] T002 [P0] Add `--recommend-phases` CLI flag to include phase scoring in output [B: T001] (`.opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh`)
+- [x] T003 [P1] Add `--phase-threshold <N>` CLI flag for threshold override (default 25) [B: T001] (`.opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh`)
+- [x] T004 [P0] Extend JSON output with `recommended_phases`, `phase_score`, `phase_reason`, `suggested_phase_count` [B: T001, T002] (`.opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh`)
 - [ ] T005 [P1] Create 5 test fixtures: below threshold, at boundary, above threshold, extreme scale, no risk factors [B: T001-T004]
 <!-- /ANCHOR:phase-1 -->
 
@@ -91,13 +100,13 @@ contextType: "implementation"
 
 ### Templates & Creation
 
-- [x] T006 [P0] [P] Create `../../../skill/system-spec-kit/templates/addendum/phase/phase-parent-section.md` (Phase Documentation Map template) (`scripts/templates/compose.sh`)
-- [x] T007 [P0] [P] Create `../../../skill/system-spec-kit/templates/addendum/phase/phase-child-header.md` (parent back-reference metadata block) (`scripts/templates/compose.sh`)
-- [x] T008 [P0] Add `--phase` flag to `create.sh` (mutually exclusive with `--subfolder`) [B: T006, T007] (`scripts/spec/create.sh`)
-- [x] T009 [P1] Add `--phases <N>` flag for multi-child creation with auto-numbering [B: T008] (`scripts/spec/create.sh`)
-- [x] T010 [P1] Add `--phase-names <list>` flag for descriptive child folder naming [B: T008] (`scripts/spec/create.sh`)
-- [x] T011 [P0] Implement Phase Documentation Map injection into parent spec.md [B: T006, T008] (`scripts/spec/create.sh`)
-- [x] T012 [P0] Implement parent back-reference injection into child spec.md [B: T007, T008] (`scripts/spec/create.sh`)
+- [x] T006 [P0] [P] Create `../../../skill/system-spec-kit/templates/addendum/phase/phase-parent-section.md` (Phase Documentation Map template) (`.opencode/skill/system-spec-kit/scripts/templates/compose.sh`)
+- [x] T007 [P0] [P] Create `../../../skill/system-spec-kit/templates/addendum/phase/phase-child-header.md` (parent back-reference metadata block) (`.opencode/skill/system-spec-kit/scripts/templates/compose.sh`)
+- [x] T008 [P0] Add `--phase` flag to `create.sh` (mutually exclusive with `--subfolder`) [B: T006, T007] (`.opencode/skill/system-spec-kit/scripts/spec/create.sh`)
+- [x] T009 [P1] Add `--phases <N>` flag for multi-child creation with auto-numbering [B: T008] (`.opencode/skill/system-spec-kit/scripts/spec/create.sh`)
+- [x] T010 [P1] Add `--phase-names <list>` flag for descriptive child folder naming [B: T008] (`.opencode/skill/system-spec-kit/scripts/spec/create.sh`)
+- [x] T011 [P0] Implement Phase Documentation Map injection into parent spec.md [B: T006, T008] (`.opencode/skill/system-spec-kit/scripts/spec/create.sh`)
+- [x] T012 [P0] Implement parent back-reference injection into child spec.md [B: T007, T008] (`.opencode/skill/system-spec-kit/scripts/spec/create.sh`)
 - [ ] T033 [P1] Create 4 test fixtures for Phase 2: single phase, multi-phase, with names, error cases [B: T008-T012] (`tests/fixtures/phase-2/`)
 <!-- /ANCHOR:phase-2 -->
 
@@ -112,9 +121,9 @@ contextType: "implementation"
 - [x] T014 [P0] Add PHASE → `../../../skill/system-spec-kit/references/structure/phase_definitions.md` to the resource map [B: T013] (`../../../skill/system-spec-kit/SKILL.md`)
 - [x] T015 [P0] Add `/spec_kit:phase` → PHASE to command boosts [B: T013] (`../../../skill/system-spec-kit/SKILL.md`)
 - [x] T016 [P1] Remove `"phase"` from IMPLEMENT keywords [B: T013] (`../../../skill/system-spec-kit/SKILL.md`)
-- [x] T017 [P0] [P] Create the `/spec_kit:phase` command entry point
-- [x] T018 [P0] Create `assets/spec_kit_phase_auto.yaml` (7-step autonomous workflow) [B: T017] (`assets/spec_kit_phase_auto.yaml`)
-- [x] T019 [P1] Create `assets/spec_kit_phase_confirm.yaml` (7-step interactive workflow) [B: T017] (`assets/spec_kit_phase_confirm.yaml`)
+- [ ] T017 [P0] [P] Create the `/spec_kit:phase` command entry point [OPEN: dedicated command file under the `spec_kit` command directory is not present; superseded by the `:with-phases` suffix and `--phase-folder` argument on existing commands]
+- [ ] T018 [P0] Create `assets/spec_kit_phase_auto.yaml` (7-step autonomous workflow) [B: T017] [OPEN: asset not present]
+- [ ] T019 [P1] Create `assets/spec_kit_phase_confirm.yaml` (7-step interactive workflow) [B: T017] [OPEN: asset not present]
 - [x] T020 [P1] Update `/spec_kit:plan` with Gate 3 Option E and `--phase-folder` argument [B: Phase 2] (`../../../command/spec_kit/plan.md`)
 - [x] T021 [P1] Update `/spec_kit:implement` for nested phase path resolution [B: Phase 2] (`../../../command/spec_kit/implement.md`)
 - [x] T022 [P1] Update `/spec_kit:complete` with phase lifecycle validation step [B: Phase 2] (`../../../command/spec_kit/complete.md`)
@@ -126,10 +135,10 @@ contextType: "implementation"
 <!-- ANCHOR:phase-4 -->
 ### Validation, Docs & Nodes
 
-- [x] T024 [P0] [P] Add `--recursive` flag to `validate.sh` with child folder discovery (`scripts/spec/validate.sh`)
-- [x] T025 [P0] Implement per-phase validation aggregation and combined exit codes [B: T024] (`scripts/spec/validate.sh`)
-- [x] T026 [P1] Extend JSON output with `"phases": [...]` array [B: T024] (`scripts/spec/validate.sh`)
-- [x] T027 [P1] Create `check-phase-links.sh` validation rule script [B: T024] (`scripts/rules/check-phase-links.sh`)
+- [x] T024 [P0] [P] Add `--recursive` flag to `validate.sh` with child folder discovery (`.opencode/skill/system-spec-kit/scripts/spec/validate.sh`)
+- [x] T025 [P0] Implement per-phase validation aggregation and combined exit codes [B: T024] (`.opencode/skill/system-spec-kit/scripts/spec/validate.sh`)
+- [x] T026 [P1] Extend JSON output with `"phases": [...]` array [B: T024] (`.opencode/skill/system-spec-kit/scripts/spec/validate.sh`)
+- [x] T027 [P1] Create `check-phase-links.sh` validation rule script [B: T024] (`.opencode/skill/system-spec-kit/scripts/rules/check-phase-links.sh`)
 - [ ] T028 [P1] Create 6 test fixtures: flat, 1-phase, 3-phase, mixed levels, empty child, broken links [B: T024-T027]
 - [x] T029 [P1] [P] Create `../../../skill/system-spec-kit/references/structure/phase_definitions.md` (`../../../skill/system-spec-kit/references/structure/phase_definitions.md`)
 - [x] T030 [P1] Update `../../../skill/system-spec-kit/references/structure/sub_folder_versioning.md`, `../../../skill/system-spec-kit/references/templates/level_specifications.md`, `../../../skill/system-spec-kit/references/templates/template_guide.md`, `../../../skill/system-spec-kit/references/workflows/quick_reference.md`, and `../../../skill/system-spec-kit/references/validation/validation_rules.md` [B: T029]

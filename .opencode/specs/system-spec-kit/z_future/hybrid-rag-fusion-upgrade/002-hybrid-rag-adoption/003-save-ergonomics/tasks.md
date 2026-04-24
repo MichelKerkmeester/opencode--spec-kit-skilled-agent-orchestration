@@ -1,3 +1,13 @@
+---
+title: "Tasks: 003-save-e [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/003-save-ergonomics/tasks]"
+description: "1. Capture the JSON-primary rule and explicit-target precedence in spec.md."
+trigger_phrases:
+  - "tasks"
+  - "003"
+  - "save"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 003-save-ergonomics
 
 1. Capture the JSON-primary rule and explicit-target precedence in `spec.md`.

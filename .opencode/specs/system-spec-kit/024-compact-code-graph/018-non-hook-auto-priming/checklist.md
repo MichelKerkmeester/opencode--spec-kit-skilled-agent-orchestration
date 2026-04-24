@@ -1,6 +1,24 @@
 ---
-title: "Checklist: Non-Hook Auto-Priming & Session Health [024/018]"
+title: "Checklist: Non-Hook Auto-Priming & [system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming/checklist]"
 description: "12 items across P1/P2 for phase 018, including remaining follow-ups."
+trigger_phrases:
+  - "checklist"
+  - "non"
+  - "hook"
+  - "auto"
+  - "priming"
+  - "018"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->
 # Verification Checklist: Phase 018 — Non-Hook Auto-Priming & Session Health

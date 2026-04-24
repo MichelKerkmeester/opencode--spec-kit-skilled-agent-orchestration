@@ -1,12 +1,11 @@
 ---
-title: "Tasks: Code Graph Upgrades"
+title: "Tasks: Code [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/tasks]"
 description: "Task breakdown for 005-code-graph-upgrades."
 trigger_phrases:
   - "005-code-graph-upgrades"
   - "tasks"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Code Graph Upgrades
 

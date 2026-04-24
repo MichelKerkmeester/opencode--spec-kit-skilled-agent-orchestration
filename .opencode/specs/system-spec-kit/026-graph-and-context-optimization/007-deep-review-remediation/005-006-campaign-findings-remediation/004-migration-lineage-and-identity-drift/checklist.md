@@ -1,10 +1,11 @@
 ---
-title: "Verification Checklist: 004-migration-lineage-and-identity-drift Migration, Lineage, and Identity Drift Remediation"
+title: "...007-deep-review-remediation/005-006-campaign-findings-remediation/004-migration-lineage-and-identity-drift/checklist]"
 description: "Verification gates for 004-migration-lineage-and-identity-drift Migration, Lineage, and Identity Drift Remediation."
 trigger_phrases:
   - "verification checklist 004 migration lineage and identity drift migratio"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/004-migration-lineage-and-identity-drift"

@@ -1,10 +1,18 @@
 ---
-title: "Deep Research Report — 005-intellegix-code-agent-toolkit-master"
+title: "...c-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/005-intellegix-code-agent-toolkit-master/research]"
 description: "30-iteration research of Intellegix Code Agent Toolkit patterns for system-spec-kit improvement. Includes Phase 1 adoption findings, Phase 2 refactor/pivot analysis, and Phase 3 UX, agent-system, command, and skill recommendations. 24 actionable findings and 6 rejected recommendations."
+trigger_phrases:
+  - "kit"
+  - "future"
+  - "agentic"
+  - "system"
+  - "upgrade"
+  - "research"
+  - "005"
+  - "intellegix"
 importance_tier: "important"
 contextType: "research"
 ---
-
 # Deep Research Report — 005-intellegix-code-agent-toolkit-master
 
 ## 1. Executive Summary

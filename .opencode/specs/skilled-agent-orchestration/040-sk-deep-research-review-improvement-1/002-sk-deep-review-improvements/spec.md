@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Phase 2 -- sk-deep-review Improvements [template:level_1/spec.md]"
+title: "Feature [skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/002-sk-deep-review-improvements/spec]"
 description: "Bring sk-deep-review to the same lineage-aware, reducer-driven contract as Phase 1 by removing review-mode naming drift, aligning lifecycle semantics across workflows and runtime mirrors, and closing the packet with strict Spec Kit validation."
 trigger_phrases:
   - "deep review"
@@ -7,8 +7,17 @@ trigger_phrases:
   - "review lineage"
   - "review reducer"
   - "runtime parity"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/002-sk-deep-review-improvements"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Phase 2 -- sk-deep-review Improvements
 

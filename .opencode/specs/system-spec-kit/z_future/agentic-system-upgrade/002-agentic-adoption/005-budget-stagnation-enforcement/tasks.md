@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 005 Budget and Stagnation Enforcement [template:level_2/tasks.md]"
+title: "Tasks [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/005-budget-stagnation-enforcement/tasks]"
 description: "Task Format: T### [P?] Description (005-budget-stagnation-enforcement)"
 trigger_phrases:
   - "tasks"

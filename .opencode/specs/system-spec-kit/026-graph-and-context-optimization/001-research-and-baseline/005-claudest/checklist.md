@@ -1,13 +1,12 @@
 ---
-title: "Verification Checklist: 005-claudest Research Phase"
+title: "Verification [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest/checklist]"
 description: "Verification checklist for the 20-iteration deep-research audit of the Claudest external Claude Code plugin checkout, including continuation lineage, generated-state sync, validation, and packet-readiness evidence."
 trigger_phrases:
   - "005-claudest checklist"
   - "005-claudest verification"
   - "claudest verification"
-importance_tier: critical
-contextType: checklist
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+importance_tier: "critical"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: 005-claudest Research Phase
 

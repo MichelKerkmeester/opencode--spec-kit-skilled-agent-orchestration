@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Phase 6 — Continuity Refactor Gates"
+title: "Fe [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/spec]"
 description: "Coordinate Gates A-F only for the continuity-refactor lane after the reorganization promoted former follow-on work into sibling top-level phases 007-010."
 trigger_phrases:
   - "phase 6 continuity refactor gates"
@@ -9,11 +9,6 @@ trigger_phrases:
   - "six gates"
 importance_tier: "critical"
 contextType: "planning"
-feature: "phase-006-continuity-refactor-gates"
-level: 2
-status: complete
-parent: "026-graph-and-context-optimization"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates"
@@ -22,7 +17,11 @@ _memory:
     recent_action: "Repaired the root packet to the gates-only A-F scope after the phase reorganization"
     next_safe_action: "Run strict validation to confirm the repaired packet stays aligned"
     key_files: ["spec.md"]
-
+feature: "phase-006-continuity-refactor-gates"
+level: 2
+parent: "026-graph-and-context-optimization"
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Phase 6 — Continuity Refactor Gates
 

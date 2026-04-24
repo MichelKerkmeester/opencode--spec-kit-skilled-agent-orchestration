@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Playbook Template Alignment"
+title: "...6-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook/plan]"
 description: "Plan for reconciling the full playbook package with live runtime paths and the correct root-versus-snippet contract."
 trigger_phrases:
   - "002-manual-testing-playbook"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "playbook plan"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook"
@@ -16,6 +15,7 @@ _memory:
     recent_action: "Created plan"
     next_safe_action: "Implement playbook rewrites"
     key_files: ["plan.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Playbook Template Alignment
 

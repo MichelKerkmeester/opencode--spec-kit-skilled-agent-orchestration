@@ -1,13 +1,12 @@
 ---
-title: "Feature Specification: Smart-Router Context-Load Efficacy Investigation"
+title: "F [system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/spec]"
 description: "Investigation + measurement phase. Does the Phase 020 advisor hook actually reduce AI-assistant context load? Secondary: design OpenCode plugin packaging for the advisor hook using code-graph plugin as reference."
 trigger_phrases:
   - "004 smart router efficacy"
   - "advisor context load measurement"
   - "opencode plugin advisor hook"
 importance_tier: "important"
-contextType: "investigation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level3-full | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Phase 004 scaffolded as T11 follow-up to 020"
     next_safe_action: "Dispatch 001-initial-research deep-research loop"
     dispatch_policy: "cli-codex gpt-5.4 high fast primary; cli-copilot gpt-5.4 high fallback"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level3-full | v2.2 -->"
 ---
 # Feature Specification: Smart-Router Context-Load Efficacy Investigation
 

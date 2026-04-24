@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: sk-coco-index Command Integration [03--commands-and-skills/031-sk-coco-index-cmd-integration/plan]"
+title: "Implementation Plan: sk-coco-index Command [skilled-agent-orchestration/031-sk-coco-index-cmd-integration/plan]"
 description: "Draft plan for discovering and implementing the sk-coco-index command integration scope."
 trigger_phrases:
   - "031"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "command integration plan"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/031-sk-coco-index-cmd-integration"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: sk-coco-index Command Integration
 

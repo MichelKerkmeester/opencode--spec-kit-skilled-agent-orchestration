@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
-title: "Implementation Plan: Skill-Advisor Standards Alignment"
+title: "I [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment/plan]"
 description: "Single focused pass: append exemption tier to standards docs, then add header fields/JSDoc/section dividers to plugin file. No behavior change. Vitest 30/30 is the regression guard."
 trigger_phrases:
   - "026/009/009 plan"
   - "skill advisor standards alignment plan"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Completed documentation/cosmetic standards alignment"
     next_safe_action: "Dispatch codex"
     completion_pct: 100
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Skill-Advisor Standards Alignment
 

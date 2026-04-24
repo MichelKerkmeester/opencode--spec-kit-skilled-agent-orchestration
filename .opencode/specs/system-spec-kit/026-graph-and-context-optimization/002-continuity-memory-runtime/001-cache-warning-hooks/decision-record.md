@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Cache-Warning Hook System [template:level_3/decision-record.md]"
+title: "...em-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks/decision-record]"
 description: "Research-aligned packet decision for the rescope of packet 002."
 trigger_phrases:
   - "decision"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "packet rescope"
 importance_tier: "normal"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["decision-record.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Cache-Warning Hook System
 

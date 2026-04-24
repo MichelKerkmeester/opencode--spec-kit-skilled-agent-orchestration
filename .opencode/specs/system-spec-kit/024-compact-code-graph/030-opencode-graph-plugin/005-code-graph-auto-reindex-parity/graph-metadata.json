@@ -41,41 +41,36 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "lib/code-graph/ensure-ready.ts",
-      "handlers/code-graph/query.ts",
-      "handlers/code-graph/context.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ensure-ready.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ensure-ready.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/ensure-ready.vitest.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-query-handler.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "decision-record.md",
       "implementation-summary.md",
       "tests/ensure-ready.vitest.ts",
-      "spec.md",
-      "tests/code-graph-query-handler.vitest.ts",
-      "tests/code-graph-context-handler.vitest.ts"
+      "spec.md"
     ],
     "entities": [
       {
         "name": "ensure-ready.ts",
         "kind": "code",
-        "path": "lib/code-graph/ensure-ready.ts",
-        "source": "derived"
-      },
-      {
-        "name": "query.ts",
-        "kind": "code",
-        "path": "handlers/code-graph/query.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ensure-ready.ts",
         "source": "derived"
       },
       {
         "name": "context.ts",
         "kind": "code",
-        "path": "handlers/code-graph/context.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "query.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts",
         "source": "derived"
       },
       {
@@ -87,7 +82,7 @@
       {
         "name": "code-graph-query-handler.vitest.ts",
         "kind": "test",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-query-handler.vitest.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts",
         "source": "derived"
       },
       {
@@ -124,12 +119,6 @@
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "code-graph-context-handler.vitest.ts",
-        "kind": "test",
-        "path": "tests/code-graph-context-handler.vitest.ts",
         "source": "derived"
       },
       {
@@ -203,11 +192,18 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "Execution Protocol",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 5 is the bounded follow-on under packet `030-opencode-graph-plugin` that is now implemented. Its goal was to make structural graph freshness behave more like CocoIndex: detect staleness on use, perform bounded inline refresh when safe, including small post-commit drift, and fall back to explicit stale reporting when refresh would be too expensive or risky.",
     "created_at": "2026-04-12T09:02:53.438Z",
-    "last_save_at": "2026-04-18T14:39:04.186Z",
+    "last_save_at": "2026-04-24T15:34:55.451Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

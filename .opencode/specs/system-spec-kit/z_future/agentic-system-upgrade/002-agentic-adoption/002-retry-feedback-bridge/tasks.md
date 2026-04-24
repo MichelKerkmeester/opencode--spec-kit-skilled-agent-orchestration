@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 002 Retry Feedback Bridge [template:level_2/tasks.md]"
+title: "Tasks: 002 [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/002-retry-feedback-bridge/tasks]"
 description: "Task Format: T### [P?] Description (002-retry-feedback-bridge)"
 trigger_phrases:
   - "tasks"

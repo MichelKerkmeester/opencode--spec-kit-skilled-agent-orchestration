@@ -1,3 +1,18 @@
+---
+title: "...-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/017-temporal-knowledge-graph-investigation/plan]"
+description: "1. Define the minimal temporal-fact use cases that Public actually lacks today."
+trigger_phrases:
+  - "spec"
+  - "kit"
+  - "future"
+  - "hybrid"
+  - "rag"
+  - "plan"
+  - "017"
+  - "temporal"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 017-temporal-knowledge-graph-investigation
 
 ## Affected Files

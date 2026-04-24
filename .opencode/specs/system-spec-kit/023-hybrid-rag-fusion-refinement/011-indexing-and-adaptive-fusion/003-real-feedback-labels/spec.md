@@ -1,15 +1,23 @@
 ---
-title: "Feature Specification: Real Feedback Labels for Evaluation"
+title: "Featur [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels/spec]"
 description: "Align shadow replay with real query-scoped validation feedback so holdout evaluation uses stored outcome and correction signals instead of self-referential labels."
 trigger_phrases:
   - "real feedback labels"
-  - "buildReplayRanks"
+  - "buildreplayranks"
   - "query-scoped feedback"
   - "feedback-informed evaluation"
 importance_tier: "normal"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["spec.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
@@ -37,7 +45,6 @@ This is **Phase 3** of the adaptive-ranking packet.
 - Query-scoped replay feedback lookup
 - Centered normalization for outcome and correction totals
 - `queryText` persistence in validation feedback metadata
-
 # Feature Specification: Real Feedback Labels for Evaluation
 
 <!-- SPECKIT_LEVEL: 2 -->

@@ -1,10 +1,10 @@
 ---
-title: "Implementation Summary: Description Regen Contract"
+title: "...timization/008-runtime-executor-hardening/003-system-hardening/005-description-regen-contract/implementation-summary]"
 description: "Placeholder. Filled post-implementation."
-trigger_phrases: ["description regen summary"]
+trigger_phrases:
+  - "description regen summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/005-description-regen-contract"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Implementation updated"
     next_safe_action: "Resolve unrelated broader-suite failures if packet closure must require T015"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Description Regen Contract
 

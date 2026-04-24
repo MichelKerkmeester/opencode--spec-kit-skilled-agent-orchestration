@@ -1,5 +1,25 @@
 ---
-title: "Sanitize Key Files in Graph Metadata - Tasks"
+title: ".../006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/002-sanitize-key-files/tasks]"
+description: 'title: "Sanitize Key Files in Graph Metadata - Tasks"'
+trigger_phrases:
+  - "006"
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "tasks"
+  - "002"
+  - "sanitize"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/002-sanitize-key-files"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 status: complete
 ---
 # Tasks

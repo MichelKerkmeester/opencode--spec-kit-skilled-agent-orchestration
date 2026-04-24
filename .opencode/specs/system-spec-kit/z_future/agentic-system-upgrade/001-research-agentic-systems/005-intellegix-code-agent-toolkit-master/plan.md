@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: 005-intellegix-code-agent-toolkit-master Research Phase"
+title: "...-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/005-intellegix-code-agent-toolkit-master/plan]"
 description: "Execution plan for finishing the Intellegix Code Agent Toolkit research packet, including Phase 3 UX/system iterations, merged synthesis refresh, dashboard refresh, and strict packet validation."
 trigger_phrases:
   - "005 intellegix research plan"
   - "intellegix code agent toolkit execution plan"
 importance_tier: "important"
-contextType: "plan"
+contextType: "planning"
 ---
 # Implementation Plan: 005-intellegix-code-agent-toolkit-master Research Phase
 

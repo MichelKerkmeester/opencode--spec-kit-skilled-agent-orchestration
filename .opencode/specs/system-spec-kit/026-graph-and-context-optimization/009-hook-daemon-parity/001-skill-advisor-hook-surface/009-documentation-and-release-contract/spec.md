@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Documentation + Release Contract"
+title: "...ntext-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract/spec]"
 description: "New hook-surface reference doc under .opencode/skill/system-spec-kit/references/hooks/ + setup / disable flags / privacy / failure modes / observability / migration / concurrency / runtime capability matrix. Update CLAUDE.md Gate 2 discussion + cross-runtime READMEs."
 trigger_phrases:
   - "020 documentation"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "skill advisor hook playbook"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract"
@@ -23,7 +22,7 @@ _memory:
       - "tasks.md"
       - "checklist.md"
       - "implementation-summary.md"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Documentation + Release Contract
 

@@ -1,16 +1,16 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
-title: "Feature Specification: Skill-Advisor Plugin Hardening"
-description: "Address the three P2 follow-ups deferred from packet 007 Phase 5: refactor module-global plugin state to per-instance, add in-flight bridge subprocess dedup, and add prompt/brief size caps + cache LRU eviction. Single-file edit in `.opencode/plugins/spec-kit-skill-advisor.js` plus focused vitest coverage."
+title: "Feat [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening/spec]"
+description: "Address the three P2 follow-ups deferred from packet 007 Phase 5: refactor module-global plugin state to per-instance, add in-flight bridge subprocess dedup, and add prompt/brief size caps + cache LRU eviction. Single-file edit in .opencode/plugins/spec-kit-skill-advisor.js plus focused vitest coverage."
 trigger_phrases:
   - "skill advisor plugin hardening"
   - "skill advisor per-instance state"
   - "skill advisor in-flight dedup"
   - "skill advisor size caps"
-  - "skill advisor LRU"
+  - "skill advisor lru"
   - "026/009/008"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening"
@@ -25,6 +25,7 @@ _memory:
       - "Module-global state in spec-kit-skill-advisor.js:28-36 must move to per-instance closure or WeakMap"
       - "In-flight Map needed in getAdvisorContext to dedup concurrent identical bridge calls"
       - "Caps: MAX_PROMPT_BYTES=64KB, MAX_BRIEF_CHARS=2KB, MAX_CACHE_ENTRIES=1000 with LRU eviction"
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Skill-Advisor Plugin Hardening
 

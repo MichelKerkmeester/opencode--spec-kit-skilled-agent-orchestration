@@ -1,7 +1,24 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Implementation Summary: PreCompact Hook [024/001]"
+title: "Implementation Summary: PreCompact [system-spec-kit/024-compact-code-graph/001-precompact-hook/implementation-summary]"
 description: "Two-step compaction context injection: PreCompact precomputes critical context, SessionStart(compact) injects cached context into the new conversation."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "precompact"
+  - "implementation summary"
+  - "001"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/001-precompact-hook"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Summary
 
@@ -53,18 +70,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 001-precompact-hook |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:what-built -->
+<!-- ANCHOR:what-built-2 -->
 ### What Was Built
 Implemented a two-step compaction context injection system for Claude Code. When auto-compact triggers, the PreCompact hook precomputes critical context (constitutional memories, triggered memories, working memory attention signals) and caches it. Immediately after, SessionStart(source=compact) reads the cache and injects the context into the new compacted conversation via stdout, staying within a 4000-token budget and 2-second latency cap.
 
@@ -94,11 +111,11 @@ Floors + overflow pool model across 4 sources within the 4000-token compaction b
 | `mcp_server/hooks/claude/shared.ts` | New | Common hook utilities, token budgets, formatting |
 | `mcp_server/hooks/claude/hook-state.ts` | New | Cache state management for inter-hook communication |
 | `.claude/settings.local.json` | Modified | PreCompact + SessionStart(compact) hook registration |
-<!-- /ANCHOR:what-built -->
+<!-- /ANCHOR:what-built-2 -->
 
 ---
 
-<!-- ANCHOR:verification -->
+<!-- ANCHOR:verification-2 -->
 ### Verification
 - [x] PreCompact event triggers hook script and precomputes context to cache
 - [x] SessionStart(source=compact) reads cache and injects context via stdout
@@ -110,4 +127,4 @@ Floors + overflow pool model across 4 sources within the 4000-token compaction b
 - [x] Existing settings.local.json hooks preserved (merge-safe)
 - [x] Working memory attention signals included in context extraction
 - [x] Hook output format matches CLAUDE.md compaction recovery expectations
-<!-- /ANCHOR:verification -->
+<!-- /ANCHOR:verification-2 -->

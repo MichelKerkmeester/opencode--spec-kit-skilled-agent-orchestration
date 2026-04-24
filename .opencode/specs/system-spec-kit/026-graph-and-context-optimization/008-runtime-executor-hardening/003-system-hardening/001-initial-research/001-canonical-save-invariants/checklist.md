@@ -1,11 +1,10 @@
 ---
-title: "Verification Checklist: Canonical-Save Pipeline Invariant Research"
+title: "...ion/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants/checklist]"
 description: "Verification checklist for SSK-RR-2 research packet."
 trigger_phrases:
   - "ssk-rr-2 checklist"
 importance_tier: "critical"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Checklist scaffolded"
     next_safe_action: "Dispatch and converge"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Canonical-Save Pipeline Invariant Research
 

@@ -1,8 +1,14 @@
 ---
-title: "012-drift-detection-evaluation: Evaluate Drift Detection"
+title: "012-dri [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/012-drift-detection-evaluation/spec]"
 description: "Determines which Mex checker families belong on Public spec and memory surfaces after the adopt-now advisory trio."
+trigger_phrases:
+  - "012"
+  - "dri"
+  - "spec"
+  - "drift"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 012-drift-detection-evaluation: Evaluate Drift Detection
 
 ## 1. Scope

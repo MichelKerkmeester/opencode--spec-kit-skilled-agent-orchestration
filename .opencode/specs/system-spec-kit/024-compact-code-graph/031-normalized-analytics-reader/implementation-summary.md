@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Normalized Analytics Reader [024/031]"
+title: "Implementation [system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader/implementation-summary]"
 description: "Reader-owned replay model for normalized session analytics, built on top of the completed Stop-hook producer metadata seam."
 trigger_phrases:
   - "analytics reader implementation summary"
@@ -7,12 +7,21 @@ trigger_phrases:
   - "session analytics replay summary"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/global/hvr_rules.md -->
 
 ---
 

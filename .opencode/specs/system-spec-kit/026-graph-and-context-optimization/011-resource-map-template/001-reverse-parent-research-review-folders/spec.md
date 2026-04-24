@@ -1,6 +1,5 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
-title: "Feature Specification: Reverse Parent Research/Review Folder Placement"
+title: "...pec-kit/026-graph-and-context-optimization/011-resource-map-template/001-reverse-parent-research-review-folders/spec]"
 description: "Roll back the parent-root deep-loop placement policy so child phases and sub-phases keep their own local research/ and review/ folders again. This packet also owns the repo-wide migration of already-misplaced child packets and the evidence trail for the rollback."
 trigger_phrases:
   - "reverse parent research review folders"
@@ -8,7 +7,8 @@ trigger_phrases:
   - "local owner artifact rollback"
   - "013/001 reverse parent folders"
 importance_tier: "important"
-contextType: "spec"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/001-reverse-parent-research-review-folders"
@@ -31,6 +31,7 @@ _memory:
       - "Phase 001 is the foundational rollback packet for 011-resource-map-template."
       - "Root specs keep root-local research/ and review/ folders."
       - "Child phases and sub-phases keep local-owner research/ and review/ packet folders."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Reverse Parent Research/Review Folder Placement
 

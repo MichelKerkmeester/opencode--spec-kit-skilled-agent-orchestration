@@ -1,12 +1,14 @@
 ---
-title: "Gate B — Foundation"
-feature: phase-018-gate-b-foundation
-level: 3
-status: complete
-closed_by_commit: TBD
-parent: 006-continuity-refactor-gates
-gate: B
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+title: "...ptimization/002-continuity-memory-runtime/003-continuity-refactor-gates/002-gate-b-foundation/implementation-summary]"
+description: "Gate B closed against the rebaselined live DB state, then the cleanup pass removed archived-tier ranking and metric behavior while preserving the v26 anchor-aware schema and archive compatibility contract."
+trigger_phrases:
+  - "gate b implementation summary"
+  - "foundation closeout"
+  - "canonical continuity"
+  - "phase 018"
+  - "archive flip"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/002-gate-b-foundation"
@@ -15,10 +17,13 @@ _memory:
     recent_action: "Recorded Gate B archived-tier cleanup follow-through"
     next_safe_action: "Have orchestrator commit the validated Gate B cleanup"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/002-gate-b-foundation/implementation-summary.md"]
-description: "Gate B closed against the rebaselined live DB state, then the cleanup pass removed archived-tier ranking and metric behavior while preserving the v26 anchor-aware schema and archive compatibility contract."
-trigger_phrases: ["gate b implementation summary", "foundation closeout", "canonical continuity", "phase 018", "archive flip"]
-importance_tier: "important"
-contextType: "documentation"
+closed_by_commit: TBD
+feature: phase-018-gate-b-foundation
+gate: B
+level: 3
+parent: 006-continuity-refactor-gates
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

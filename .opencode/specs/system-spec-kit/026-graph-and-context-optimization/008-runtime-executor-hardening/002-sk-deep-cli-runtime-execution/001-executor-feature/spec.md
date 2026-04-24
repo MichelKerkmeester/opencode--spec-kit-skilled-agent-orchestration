@@ -1,9 +1,16 @@
 ---
-title: "Feature Specification: Deep-Loop CLI Executor Selection for Iterative Skills"
+title: "...-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature/spec]"
 description: "Executor-selection for sk-deep-research + sk-deep-review honoring YAML-owned dispatch. Adds native (default) and cli-codex (gpt-5.4 + reasoning-effort + service-tier). Preserves state, convergence, dispatch invariants. Symmetric across both iterative skills."
-trigger_phrases: ["cli executor selection", "deep-loop cli executor", "sk-deep-research executor", "sk-deep-review executor", "cli-codex deep research", "executor kind config"]
-importance_tier: "high"
+trigger_phrases:
+  - "cli executor selection"
+  - "deep-loop cli executor"
+  - "sk-deep-research executor"
+  - "sk-deep-review executor"
+  - "cli-codex deep research"
+  - "executor kind config"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature"

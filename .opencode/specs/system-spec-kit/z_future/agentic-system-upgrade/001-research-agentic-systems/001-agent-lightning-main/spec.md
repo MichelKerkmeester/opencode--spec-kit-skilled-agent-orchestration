@@ -1,13 +1,13 @@
 ---
-title: "Feature Specification: 001-agent-lightning-main Research Phase"
+title: "Feature [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/001-agent-lightning-main/spec]"
 description: "Read-only three-wave, 30-iteration deep research on the bundled Agent Lightning repository to extract RL-specific tracing, UX, command, agent, skill, and workflow patterns that could improve system-spec-kit without duplicating its core governance or memory capabilities."
 trigger_phrases:
   - "001-agent-lightning-main research spec"
   - "agent lightning phase spec"
-  - "agentic systems RL tracing research"
+  - "agentic systems rl tracing research"
   - "system-spec-kit agent lightning study"
 importance_tier: "important"
-contextType: "spec"
+contextType: "implementation"
 ---
 # Feature Specification: 001-agent-lightning-main Research Phase
 

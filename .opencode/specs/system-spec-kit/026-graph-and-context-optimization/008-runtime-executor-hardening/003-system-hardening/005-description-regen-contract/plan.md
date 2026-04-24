@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: Description Regen Contract"
+title: "...aph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/005-description-regen-contract/plan]"
 description: "Formalize field-level merge policy with shared schema."
-trigger_phrases: ["description regen plan"]
+trigger_phrases:
+  - "description regen plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/005-description-regen-contract"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Plan scaffolded"
     next_safe_action: "Dispatch implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Description Regen Contract
 

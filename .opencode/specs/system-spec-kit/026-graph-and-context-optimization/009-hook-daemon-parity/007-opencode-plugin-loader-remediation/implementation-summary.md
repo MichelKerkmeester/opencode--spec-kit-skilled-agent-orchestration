@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
-title: "Implementation Summary: OpenCode Plugin Loader + Skill-Advisor Hook Remediation"
+title: "...-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation/implementation-summary]"
 description: "Outcome A shipped for the loader crash; Phase 4 remapped the skill-advisor plugin to OpenCode hooks; Phase 5 corrected status readiness, cache accounting evidence, defensive output guards, and sessionID normalization with focused vitest and direct smokes."
 trigger_phrases:
   - "opencode plugin loader complete"
   - "026/009/007 implementation"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation"
@@ -22,6 +22,7 @@ _memory:
     answered_questions:
       - "Outcome A is feasible because OpenCode 1.3.17 uses a flat `{plugin,plugins}/*.{ts,js}` local plugin glob."
       - "The observed null-hook source includes the compact plugin's named parser export under the legacy loader path, so the parser now fails open with `{}` for non-string inputs."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: OpenCode Plugin Loader Remediation
 

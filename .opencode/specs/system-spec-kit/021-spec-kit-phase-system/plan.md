@@ -11,6 +11,15 @@ trigger_phrases:
   - "spec"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + level3-arch + level3plus-govern | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/021-spec-kit-phase-system"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: SpecKit Phase System
 
@@ -39,9 +48,9 @@ The system-spec-kit skill manages spec folder lifecycle through 6 interconnected
 
 1. **Smart Router** (SKILL.md §2): Data-driven intent detection with 7 signals (PLAN, RESEARCH, IMPLEMENT, DEBUG, COMPLETE, MEMORY, HANDOVER), command boosts (+6), and 3-tier resource loading (ALWAYS/CONDITIONAL/ON_DEMAND). All dicts — adding a new intent requires only dict entries.
 
-2. **Script System** (scripts/spec/): 9 lifecycle scripts. `create.sh` has `--subfolder` mode that auto-increments `[0-9][0-9][0-9]-*/` numbering, copies level templates, creates `memory/` + `scratch/`. No git branch for sub-folders. `recommend-level.sh` scores on 4 dimensions (LOC 35%, files 20%, risk 25%, complexity 20%) with thresholds 0-24=skip, 25-44=L1, 45-69=L2, 70+=L3. No phase scoring exists.
+2. **Script System** (`.opencode/skill/system-spec-kit/scripts/spec/`): 9 lifecycle scripts. `create.sh` has `--subfolder` mode that auto-increments `[0-9][0-9][0-9]-*/` numbering, copies level templates, creates `scratch/`. No git branch for sub-folders. `recommend-level.sh` scores on 4 dimensions (LOC 35%, files 20%, risk 25%, complexity 20%) with thresholds 0-24=skip, 25-44=L1, 45-69=L2, 70+=L3. No phase scoring exists.
 
-3. **Validation Pipeline** (scripts/spec/validate.sh + scripts/rules/): Pure orchestrator sourcing 14 `check-*.sh` plugins. **No sub-folder handling** — validates single folder path only. No recursion into phase children.
+3. **Validation Pipeline** (`.opencode/skill/system-spec-kit/scripts/spec/validate.sh` + `.opencode/skill/system-spec-kit/scripts/rules/`): Pure orchestrator sourcing 14 `check-*.sh` plugins. **No sub-folder handling** — validates single folder path only. No recursion into phase children.
 
 4. **Command System** (.opencode/command/spec_kit/): 7 commands (plan, implement, research, complete, resume, debug, handover) each following `md + 2 YAML assets` pattern. Path resolution assumes flat `specs/NNN-name/` structure.
 
@@ -60,7 +69,7 @@ The system-spec-kit skill manages spec folder lifecycle through 6 interconnected
 - Root holds canonical master spec, plan, tasks, checklist, decision-record
 - Root spec.md contains Phase Documentation Map (136 §3.6) linking requirements to phases
 - Each child has `Parent Spec: ../spec.md` and `Parent Plan: ../plan.md` back-references
-- Children are independently executable with own memory/, scratch/, full doc set
+- Children are independently executable with own scratch/ and full doc set (continuity is tracked in each child's `implementation-summary.md` frontmatter; legacy packet-local `memory/` storage has been retired)
 - Phase numbering encodes dependency order (138's 003 depends on 001+002)
 <!-- /ANCHOR:summary -->
 
@@ -140,12 +149,12 @@ User Request → Gate 3 (enhanced with Option E)
                               ┌─ Parent folder (L3/L3+)
                               │    ├── spec.md (with Phase Documentation Map)
                               │    ├── plan.md, tasks.md, checklist.md, decision-record.md
-                              │    └── memory/, scratch/
+                              │    └── scratch/ (continuity in implementation-summary.md)
                               │
                               └─ Child folders (001-*, 002-*, ...)
                                    ├── spec.md (with Parent back-references)
                                    ├── plan.md, tasks.md [+ level-appropriate extras]
-                                   └── memory/, scratch/
+                                   └── scratch/ (continuity in implementation-summary.md)
                                        ↓
                               validate.sh --recursive
                                        ↓
@@ -214,7 +223,7 @@ create.sh "Feature Name" --phase --level 3+ --phases 3 --phase-names "foundation
 2. Copy level_3+ templates to parent
 3. Inject Phase Documentation Map section into parent spec.md
 4. For each child (001, 002, 003):
-   a. Create NNN-{name}/ with memory/ + scratch/
+   a. Create NNN-{name}/ with scratch/ (continuity lives in implementation-summary.md)
    b. Copy level_1 templates (default) or --child-level N
    c. Inject parent back-reference fields into child spec.md
    d. Inject phase metadata (phase number, predecessor, successor)
@@ -339,7 +348,7 @@ New node: `../../../skill/system-spec-kit/nodes/phase-system.md`
 - Links to the Gate 3 integration, progressive enhancement, and validation workflow nodes in graph mode
 - Position: the system-spec-kit index Workflow & Routing section, between gate-3-integration and progressive-enhancement
 
-Update: the system-spec-kit index — add `[[nodes/phase-system|Phase System]]` to Workflow & Routing section.
+Update: the system-spec-kit index — add a reference to `../../../skill/system-spec-kit/nodes/phase-system.md` (Phase System) in the Workflow & Routing section.
 
 **CLAUDE.md Updates:**
 - Gate 3: Add Option E "Add phase to existing spec" with contextual display rules
@@ -410,7 +419,6 @@ Run ALL existing 51 test fixtures with `--recursive` flag to verify no regressio
 ---
 
 <!-- ANCHOR:phase-deps -->
-<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -436,7 +444,6 @@ Phases 1 and 2 can be partially parallelized (scoring is independent of template
 ---
 
 <!-- ANCHOR:effort -->
-<!-- /ANCHOR:dependencies -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -542,7 +549,6 @@ Phases 1 and 2 can be partially parallelized (scoring is independent of template
 
 ---
 
-<!-- ANCHOR:architecture -->
 ## L3: ARCHITECTURE DECISION RECORD
 
 > **Note:** This section summarizes key architectural decisions. The authoritative source is [decision-record.md](./decision-record.md) which contains full ADR detail including context, constraints, alternatives analysis, consequences, and Five Checks evaluations. See ADR-001 and ADR-002 in that document for complete records.
@@ -550,7 +556,6 @@ Phases 1 and 2 can be partially parallelized (scoring is independent of template
 ---
 
 <!-- ANCHOR:ai-execution -->
-<!-- /ANCHOR:architecture -->
 ## L3+: AI EXECUTION FRAMEWORK
 
 ### Tier 1: Sequential Foundation (Phase 1)
@@ -562,14 +567,14 @@ Phases 1 and 2 can be partially parallelized (scoring is independent of template
 
 | Agent | Focus | Files |
 |-------|-------|-------|
-| @speckit | Template addendum creation (phase-parent-section.md, phase-child-header.md) | templates/addendum/phase/ |
-| @general | create.sh --phase flag implementation | scripts/spec/create.sh |
+| @write | Template addendum creation (phase-parent-section.md, phase-child-header.md) | templates/addendum/phase/ |
+| @general | create.sh --phase flag implementation | .opencode/skill/system-spec-kit/scripts/spec/create.sh |
 | @general | SKILL.md PHASE intent addition | SKILL.md |
 
-**Duration**: ~6-10 hours (parallel between @speckit and @general)
+**Duration**: ~6-10 hours (parallel between @write and @general)
 
 ### Tier 3: Integration (Phase 3 + Phase 4)
-**Agent**: @general (Sonnet) for commands/validation; @speckit (Opus) for reference docs and node
+**Agent**: @general (Sonnet) for commands/validation; @write (Opus) for reference docs and node
 **Task**: Wire phase command system, implement validate.sh --recursive, update all reference docs
 **Duration**: ~10-17 hours
 
@@ -578,9 +583,9 @@ Phases 1 and 2 can be partially parallelized (scoring is independent of template
 | Phase | Recommended Agent | Model | Rationale |
 |-------|-------------------|-------|-----------|
 | Phase 1 | @general | Sonnet | Script modification, direct scoring logic |
-| Phase 2 | @speckit + @general | Opus (spec) + Sonnet (script) | Template creation needs @speckit exclusivity; create.sh needs @general |
+| Phase 2 | @write + @general | Opus (spec) + Sonnet (script) | Template creation needs @write exclusivity; create.sh needs @general |
 | Phase 3 | @general | Sonnet | Command system modifications, well-defined patterns |
-| Phase 4 | @speckit + @general | Opus (docs) + Sonnet (validation) | Reference docs need @speckit; validate.sh needs @general |
+| Phase 4 | @write + @general | Opus (docs) + Sonnet (validation) | Reference docs need @write; validate.sh needs @general |
 
 ### Context Protection
 
@@ -622,24 +627,24 @@ Phases 1 and 2 can be partially parallelized (scoring is independent of template
 
 | ID | Name | Owner | Files | Status |
 |----|------|-------|-------|--------|
-| W-A | Detection & Scoring | @general | scripts/spec/recommend-level.sh, test fixtures (5) | Pending |
-| W-B | Templates & Creation | @speckit + @general | scripts/spec/create.sh, templates/addendum/phase/* | Pending (after W-A) |
-| W-C | Commands & Router | @general | `/spec_kit:phase` command definition, assets/spec_kit_phase_*.yaml, SKILL.md, plan.md, implement.md, complete.md, resume.md | Pending (after W-A, W-B) |
-| W-D | Validation, Docs & Nodes | @speckit + @general | scripts/spec/validate.sh, scripts/rules/check-phase-links.sh, 6 reference docs, nodes/phase-system.md, index.md, CLAUDE.md | Pending (after W-A, W-B, W-C) |
+| W-A | Detection & Scoring | @general | .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh, test fixtures (5) | Mostly Complete (T005 fixture pending) |
+| W-B | Templates & Creation | @write + @general | .opencode/skill/system-spec-kit/scripts/spec/create.sh, templates/addendum/phase/* | Mostly Complete (T033 fixture pending) |
+| W-C | Commands & Router | @general | `/spec_kit:phase` command definition, assets/spec_kit_phase_*.yaml, SKILL.md, plan.md, implement.md, complete.md, resume.md | In Progress (T013-T016, T020-T023 complete; T017-T019 open — dedicated command superseded by `:with-phases` + `--phase-folder` on existing commands) |
+| W-D | Validation, Docs & Nodes | @write + @general | .opencode/skill/system-spec-kit/scripts/spec/validate.sh, .opencode/skill/system-spec-kit/scripts/rules/check-phase-links.sh, 6 reference docs, nodes/phase-system.md, index.md, CLAUDE.md | Mostly Complete (T028 fixture pending) |
 
 ### Sync Points
 
 | Sync ID | Trigger | Participants | Output |
 |---------|---------|--------------|--------|
 | SYNC-001 | W-A complete (Phase 1 done) | @general | Phase scoring JSON schema locked; W-B and W-C can begin |
-| SYNC-002 | W-B complete (Phase 2 done) | @speckit + @general | Template addendum format locked; W-C and W-D can proceed |
+| SYNC-002 | W-B complete (Phase 2 done) | @write + @general | Template addendum format locked; W-C and W-D can proceed |
 | SYNC-003 | W-C complete (Phase 3 done) | @general | All command path patterns documented; W-D docs can reference them |
 | SYNC-004 | W-D complete (Phase 4 done) | All agents | Full test suite run; 51 regression fixtures verified; M4 milestone |
 
 ### File Ownership Rules
 - Each file owned by ONE workstream
 - Cross-workstream changes require SYNC before proceeding
-- @speckit has exclusive authority over all template and reference doc files
+- @write has exclusive authority over all template and reference doc files
 - @general handles all script (.sh) files
 <!-- /ANCHOR:workstreams -->
 

@@ -1,7 +1,18 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | compact -->
 ---
-title: "Validate Continuity Profile Weights - Tasks"
-status: completed
+title: "...earch-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation/tasks]"
+description: 'title: "Validate Continuity Profile Weights - Tasks"'
+trigger_phrases:
+  - "earch"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "search"
+  - "tasks"
+  - "006"
+  - "continuity"
+importance_tier: "normal"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation"
@@ -9,6 +20,7 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Completed the continuity prompt enrichment and 12-query judged fixture"
     next_safe_action: "Resume from implementation-summary.md if follow-on continuity tuning is opened"
+status: completed
 ---
 # Tasks: Validate Continuity Profile Weights
 

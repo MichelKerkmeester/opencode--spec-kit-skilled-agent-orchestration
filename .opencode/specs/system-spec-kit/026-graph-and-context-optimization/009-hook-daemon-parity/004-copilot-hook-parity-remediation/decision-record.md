@@ -1,11 +1,12 @@
 ---
-title: "Decision Record: Copilot CLI Hook Parity Remediation"
+title: "...ec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation/decision-record]"
 description: "ADRs for scoping decisions. The load-bearing decision (wire hooks vs. document gap) lands after Phase 1 investigation — this file carries placeholder scoping ADRs until then."
 trigger_phrases:
   - "026/009/004 adr"
   - "copilot hook parity decisions"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation"

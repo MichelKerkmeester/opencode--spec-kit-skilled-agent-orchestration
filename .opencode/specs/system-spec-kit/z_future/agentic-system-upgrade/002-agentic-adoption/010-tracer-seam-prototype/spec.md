@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 010 Tracer Seam Prototype [template:level_2/spec.md]"
+title: "Feature Specificat [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/010-tracer-seam-prototype/spec]"
 description: "Prototype a backend-agnostic tracer seam that can annotate current Public workflows without replacing reducers, packet artifacts, or current runtime control."
 trigger_phrases:
   - "feature"

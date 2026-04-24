@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Memory Save Heuristic Calibration"
+title: "...optimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration/plan]"
 description: "Execution plan for packet 010 covering schema, sanitizer, validator, D5, dist rebuild, strict validation, and wild-save verification."
 trigger_phrases:
   - "010 heuristic calibration plan"
   - "memory save calibration plan"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Memory Save Heuristic Calibration
 

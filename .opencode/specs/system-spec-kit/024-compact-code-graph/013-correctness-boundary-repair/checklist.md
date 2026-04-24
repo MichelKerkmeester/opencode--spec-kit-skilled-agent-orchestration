@@ -1,6 +1,22 @@
 ---
-title: "Checklist: Correctness & Boundary Repair [024/013]"
+title: "Checklist: Correctness & Boundary [system-spec-kit/024-compact-code-graph/013-correctness-boundary-repair/checklist]"
 description: "25 items across P0/P1/P2 for phase 013."
+trigger_phrases:
+  - "checklist"
+  - "correctness"
+  - "boundary"
+  - "013"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/013-correctness-boundary-repair"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->
 # Verification Checklist: Phase 013 — Correctness & Boundary Repair

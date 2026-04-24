@@ -1,8 +1,18 @@
 ---
-title: "Deep Research Report: 003-modus-memory-main"
+title: "...em-spec-kit/z_future/hybrid-rag-fusion-upgrade/001-research-hybrid-rag-fusion-systems/003-modus-memory-main/research]"
 description: "40-iteration deep research synthesis (042-compliant)"
+trigger_phrases:
+  - "spec"
+  - "kit"
+  - "future"
+  - "hybrid"
+  - "rag"
+  - "research"
+  - "003"
+  - "modus"
+importance_tier: "normal"
+contextType: "research"
 ---
-
 # Deep Research Report: 003-modus-memory-main
 
 Generated: 2026-04-11 00:27

@@ -1,12 +1,11 @@
 ---
-title: "Verification Checklist: Phase 7 — Skill Catalog Sync"
+title: "...d-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/007-skill-catalog-sync/checklist]"
 description: "Verification checklist for the Phase 7 review wave, downstream parity updates, and final sync record."
 trigger_phrases:
   - "phase 7 checklist"
   - "skill catalog sync checklist"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist + phase-child + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/007-skill-catalog-sync"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist + phase-child + level2-verify | v2.2 -->"
 ---
 # Verification Checklist: Phase 7 — Skill Catalog Sync
 

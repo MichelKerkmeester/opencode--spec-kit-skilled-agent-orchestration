@@ -1,11 +1,13 @@
 ---
-title: "Tasks: 018 / 011 — graph-metadata.json rollout"
+title: "...ph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata/tasks]"
 description: "Completed implementation task ledger for the five-phase graph-metadata.json rollout."
-trigger_phrases: ["018 011 tasks", "graph metadata tasks", "graph metadata rollout tasks", "canonical continuity graph task ledger"]
+trigger_phrases:
+  - "018 011 tasks"
+  - "graph metadata tasks"
+  - "graph metadata rollout tasks"
+  - "canonical continuity graph task ledger"
 importance_tier: "critical"
 contextType: "implementation"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata"
@@ -14,6 +16,8 @@ _memory:
     recent_action: "Shipped rollout and verified packet"
     next_safe_action: "Checklist review"
     key_files: ["tasks.md", "checklist.md", "implementation-summary.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->

@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary"
+title: "Implementation [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/implementation-summary]"
 description: "Root summary of how the graph-and-context master packet was produced, normalized, and verified against the canonical root research set."
 trigger_phrases:
   - "graph context packet summary"
   - "master research summary"
   - "v1 to v2 packet summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Merged single original phase root"
     next_safe_action: "Use context-index.md for local phase navigation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

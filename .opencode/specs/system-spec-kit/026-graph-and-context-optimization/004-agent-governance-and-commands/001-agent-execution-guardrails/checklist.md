@@ -1,12 +1,11 @@
 ---
-title: "Verification Checklist: Phase 4 — Agent Execution Guardrails"
+title: "...ec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails/checklist]"
 description: "Verification checklist for the three AGENTS-file execution-guardrail and lean structure update, plus packet closeout."
 trigger_phrases:
   - "phase 4 checklist"
   - "agent execution guardrails checklist"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist + phase-child + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist + phase-child + level2-verify | v2.2 -->"
 ---
 # Verification Checklist: Phase 4 — Agent Execution Guardrails
 

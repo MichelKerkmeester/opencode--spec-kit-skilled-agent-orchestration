@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: 009-xethryon Research Phase"
+title: "Verification [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/009-xethryon/checklist]"
 description: "Verification Date: 2026-04-10"
 trigger_phrases:
   - "009-xethryon checklist"
   - "xethryon verification checklist"
 importance_tier: "important"
-contextType: "checklist"
+contextType: "implementation"
 ---
 # Verification Checklist: 009-xethryon Research Phase
 

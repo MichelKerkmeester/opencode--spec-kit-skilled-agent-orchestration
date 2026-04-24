@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 016 Self Reflection and Reconsolidation Study [template:level_2/plan.md]"
+title: "...tem-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/016-self-reflection-and-reconsolidation-study/plan]"
 description: "Study whether lightweight self-reflection gates and deferred reconsolidation cadence can improve quality and continuity on top of current save and deep-loop paths."
 trigger_phrases:
   - "implementation"

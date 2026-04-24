@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 027/000 — Validator ESM Migration (Node 25 Compat)"
+title: "...ontext-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix/spec]"
 description: "Convert .opencode/skill/system-spec-kit/scripts/ from hybrid CJS/ESM to pure ESM so bash validate.sh runs under Node 25. Prereq for 027/001-006 post-phase verification."
 trigger_phrases:
   - "027/000"
@@ -7,8 +7,9 @@ trigger_phrases:
   - "node 25 compat"
   - "require.main migration"
   - "scripts package esm"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Input Normalizer Fast-Path Fix [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/008-input-normalizer-fastpath-fix/spec]"
+title: "...ext-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/008-input-normalizer-fastpath-fix/spec]"
 description: "Fix the fast-path normalizer so JSON-mode memory saves accept string arrays for user prompts, observations, and recent context without aborting sufficiency checks."
 trigger_phrases:
   - "input normalizer fast-path fix"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "003 phase 8"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/008-input-normalizer-fastpath-fix"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Input Normalizer Fast-Path Fix
 

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Skill Graph Research Findings Fixes [template:level_2/spec.md]"
+title: "...6-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes/spec]"
 description: "Fix the 5 P0 and 5 P1 issues found by 10-iteration deep research audit of the skill graph system."
 trigger_phrases:
   - "001-research-findings-fixes"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "graph findings fixes"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Created spec"
     next_safe_action: "Implement fixes"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Skill Graph Research Findings Fixes
 

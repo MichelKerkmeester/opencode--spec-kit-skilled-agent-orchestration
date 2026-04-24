@@ -1,17 +1,26 @@
 ---
-title: "Decision Record: Code Graph Operations Hardening [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/003-code-graph-operations-hardening]"
+title: "D [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/003-code-graph-operations-hardening/decision-record]"
 description: "Architecture decisions for Code Graph Operations Hardening: preserve the shipped runtime boundary and close the phase as a clean Level 3 artifact."
 trigger_phrases:
   - "code graph operations hardening adr"
   - "level 3 decision record"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/003-code-graph-operations-hardening"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["decision-record.md"]
 ---
 # Decision Record: Code Graph Operations Hardening
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/global/hvr_rules.md -->
 
 ---
 

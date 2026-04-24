@@ -1,11 +1,10 @@
 ---
-title: "Implementation Plan: Skill-Advisor Hook Surface"
+title: "Implemen [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/plan]"
 description: "Research-first plan for cross-runtime skill-advisor hook integration. Phase 1 scaffolds 001-initial-research for architecture investigation; Phase 2+ spawns remediation children per cluster."
 trigger_phrases:
   - "026/009/001 skill advisor hook plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface"
@@ -14,7 +13,7 @@ _memory:
     recent_action: "Already shipped"
     next_safe_action: "Create 001-initial-research sub-packet"
     completion_pct: 100
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Skill-Advisor Hook Surface
 

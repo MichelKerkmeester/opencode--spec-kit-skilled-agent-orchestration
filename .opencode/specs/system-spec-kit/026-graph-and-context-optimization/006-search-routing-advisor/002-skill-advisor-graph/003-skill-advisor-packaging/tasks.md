@@ -1,13 +1,12 @@
 ---
-title: "Tasks: Skill Advisor Packaging"
+title: "...-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging/tasks]"
 description: "Task ledger for packet remediation, metadata repair, and strict-validation recovery."
 trigger_phrases:
   - "003-skill-advisor-packaging"
   - "packaging tasks"
   - "packet remediation tasks"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging"
@@ -16,6 +15,7 @@ _memory:
     recent_action: "Tasks updated"
     next_safe_action: "Validate packet"
     key_files: ["tasks.md", "checklist.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Skill Advisor Packaging
 

@@ -1,12 +1,31 @@
 ---
-title: "Remove Cross-Encoder Length Penalty"
-status: complete
-level: 2
-type: implementation
-parent: 001-search-fusion-tuning
+title: "...ion/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/spec]"
+description: 'title: "Remove Cross-Encoder Length Penalty"'
+trigger_phrases:
+  - "ion"
+  - "006"
+  - "search"
+  - "routing"
+  - "advisor"
+  - "spec"
+  - "001"
+  - "remove"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 created: 2026-04-12
+level: 2
+parent: 001-search-fusion-tuning
+status: complete
+type: implementation
 ---
-
 # Remove Cross-Encoder Length Penalty
 
 ## Scope

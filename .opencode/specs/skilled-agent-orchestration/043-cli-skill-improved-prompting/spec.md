@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 ---
-title: "Feature Specification: CLI Skill Prompt-Quality Integration via Mirror Cards [043]"
+title: "Feature Specification: CLI Skill Prompt-Quality [skilled-agent-orchestration/043-cli-skill-improved-prompting/spec]"
 description: "Add a lightweight prompt-quality layer to the four CLI orchestrator skills by using in-skill mirror cards for routine dispatches and an isolated improve-prompt agent for high-complexity escalations."
 trigger_phrases:
   - "043"

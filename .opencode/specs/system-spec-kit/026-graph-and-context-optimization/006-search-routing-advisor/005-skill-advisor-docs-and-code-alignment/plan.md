@@ -1,13 +1,12 @@
 ---
-title: "Implementation Plan: Skill-Advisor Docs + Phase 020 Code Alignment"
+title: "...pec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment/plan]"
 description: "Plan for updating skill-advisor docs to present the Phase 020 hook surface as primary and auditing Phase 020 TypeScript files against sk-code-opencode standards."
 trigger_phrases:
   - "022 implementation plan"
   - "skill-advisor docs plan"
   - "phase 020 audit plan"
 importance_tier: "important"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment"
@@ -26,6 +25,7 @@ _memory:
     answered_questions:
       - "Use Phase 020 hook surface as primary invocation path"
       - "Preserve direct Python advisor as fallback"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 ---
 # Implementation Plan: Skill-Advisor Docs + Phase 020 Code Alignment
 

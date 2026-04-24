@@ -1,9 +1,11 @@
 ---
-title: "Tasks: CLI Runtime Executors (merged pointer)"
+title: "...m-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/tasks]"
 description: "Top-level task pointer. All work shipped. Detail in 001-executor-feature/tasks.md and 002-runtime-matrix/tasks.md."
-trigger_phrases: ["cli runtime executors tasks"]
-importance_tier: "medium"
+trigger_phrases:
+  - "cli runtime executors tasks"
+importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution"

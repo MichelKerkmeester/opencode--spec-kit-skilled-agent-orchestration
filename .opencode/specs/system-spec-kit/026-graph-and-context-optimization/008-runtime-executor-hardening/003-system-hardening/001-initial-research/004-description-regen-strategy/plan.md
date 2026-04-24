@@ -1,11 +1,10 @@
 ---
-title: "Implementation Plan: description.json Regen Strategy (RR-2)"
+title: "...ization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/004-description-regen-strategy/plan]"
 description: "Dispatch plan for RR-2 deep-research."
 trigger_phrases:
   - "rr-2 dispatch plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/004-description-regen-strategy"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Plan scaffolded"
     next_safe_action: "Wave 1 convergence then dispatch"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: description.json Regen Strategy
 

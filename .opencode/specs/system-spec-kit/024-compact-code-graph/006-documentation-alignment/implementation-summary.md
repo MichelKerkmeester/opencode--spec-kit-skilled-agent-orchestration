@@ -1,7 +1,24 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Implementation Summary: Documentation Alignment [024/006]"
+title: "Implementation Summary [system-spec-kit/024-compact-code-graph/006-documentation-alignment/implementation-summary]"
 description: "Synchronized Phase 006 documentation claims with current reality: runtime naming, Gemini detection, storage details, code-graph summary surfaces, and checklist status now reflect the current 43-tool / 291-feature / 311-scenario documentation set."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "implementation summary"
+  - "006"
+  - "documentation"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/006-documentation-alignment"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Summary
 
@@ -53,18 +70,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 006-documentation-alignment |
 | **Completed** | 2026-04-02 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:what-built -->
+<!-- ANCHOR:what-built-2 -->
 ### What Was Built
 This summary preserves both the original Phase 006 hook-documentation record and the narrower 2026-04-02 follow-up alignment diff. The historical sections below explain what the packet originally captured; the later parity section describes the current follow-up edits that are actually present in the worktree today.
 
@@ -104,7 +121,7 @@ This follow-up pass corrected those summary layers and a small set of recovery/m
 - `.opencode/skill/system-spec-kit/SKILL.md` now reflects the 43-tool MCP surface and the current feature-catalog/manual-playbook totals.
 - `.opencode/skill/system-spec-kit/README.md` now reflects the 43-tool MCP surface, 291 feature-catalog entries across 22 categories, 311 manual-testing scenarios across 22 categories, and the correct reference-file count.
 - `.opencode/skill/system-spec-kit/mcp_server/README.md` now points at the current 22-category / 291-feature catalog inventory in its related-docs section.
-- `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md` now distinguish the full 43-tool MCP surface from the smaller slash-command wrapper set.
+- `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` now distinguish the full 43-tool MCP surface from the smaller slash-command wrapper set.
 - `.opencode/skill/system-spec-kit/references/memory/memory_system.md` now lists the code-graph, session, and CCC tools in the top-level tool reference.
 - `.opencode/skill/system-spec-kit/references/config/environment_variables.md` now reflects the canonical `SPECKIT_*` / `SPECKIT_MEMORY_*` families, updated graph/eval defaults, and the current strict-schema wording.
 - `.opencode/skill/mcp-coco-index/README.md` and `.opencode/skill/mcp-coco-index/SKILL.md` now align their recovery and companion-tool wording with the current code-graph/session surfaces.
@@ -119,7 +136,7 @@ This follow-up pass corrected those summary layers and a small set of recovery/m
 | `.opencode/skill/system-spec-kit/README.md` | Modified | Refresh stale MCP, command-count, feature-catalog, and playbook totals after code-graph rollout |
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | Modified | Refresh command-surface summaries, layer labels, and recovery guidance wording |
 | `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | Modified | Root catalog now distinguishes 43 MCP tools from the command-wrapper subset |
-| `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md` | Modified | Plain-language root catalog now distinguishes full MCP surface from slash-command subset |
+| `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | Modified | Plain-language root catalog now distinguishes full MCP surface from slash-command subset |
 | `.opencode/skill/system-spec-kit/references/memory/memory_system.md` | Modified | Tool reference, spec-doc discovery roots, and watcher/recovery wording aligned to current behavior |
 | `.opencode/skill/system-spec-kit/references/config/environment_variables.md` | Modified | Canonical env-var families, graph/eval defaults, and strict-schema wording aligned to current behavior |
 | `.opencode/skill/system-spec-kit/references/config/hook_system.md` | Modified | Hook-capable runtime coverage and OpenCode fallback wording aligned to the active contract |
@@ -132,14 +149,14 @@ This follow-up pass corrected those summary layers and a small set of recovery/m
 | `AGENTS.md` / `AGENTS_example_fs_enterprises.md` | Historical packet record | Mentioned in the original packet history; not part of the current follow-up diff unless separately verified |
 | Reference freshness documentation | Not created in this phase | Keep as future follow-up if a dedicated freshness-strategy doc is still needed |
 | Hook-aware prompt asset documentation | Not created in this phase | Keep as future follow-up if dedicated prompt assets are still needed |
-<!-- /ANCHOR:what-built -->
+<!-- /ANCHOR:what-built-2 -->
 
 ---
 
-<!-- ANCHOR:how-delivered -->
+<!-- ANCHOR:how-delivered-2 -->
 ### How It Was Delivered
 Documentation was updated in dependency order: feature catalog entries first (providing canonical descriptions), then testing playbook scenarios (referencing catalog entries), then `.opencode/skill/system-spec-kit/SKILL.md` and `.opencode/skill/system-spec-kit/ARCHITECTURE.md` (referencing both), and finally READMEs and cross-references (referencing all preceding docs). This spec-folder correction pass focused on synchronizing the written record with actual delivered artifacts so future readers can see which items shipped and which remain follow-up gaps.
-<!-- /ANCHOR:how-delivered -->
+<!-- /ANCHOR:how-delivered-2 -->
 
 ---
 ### Key Decisions
@@ -151,7 +168,7 @@ Documentation was updated in dependency order: feature catalog entries first (pr
 | Prefer explicit gaps over optimistic claims | This spec folder now marks root README context preservation coverage, dedicated cross-runtime consistency playbook work, and dedicated runtime adapter docs as future follow-ups instead of treating them as already shipped. |
 ---
 
-<!-- ANCHOR:verification -->
+<!-- ANCHOR:verification-2 -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -164,14 +181,14 @@ Documentation was updated in dependency order: feature catalog entries first (pr
 | Cross-references consistent | PASS — spec-folder references now avoid treating absent follow-up docs as delivered artifacts |
 | sk-doc DQI quality standards | PASS — proper frontmatter, anchors, and section structure throughout |
 | Phase 006 checklist | PASS — original hook/code-graph items remain complete, and summary-surface follow-through items are now documented explicitly |
-<!-- /ANCHOR:verification -->
+<!-- /ANCHOR:verification-2 -->
 
 ---
 
-<!-- ANCHOR:limitations -->
+<!-- ANCHOR:limitations-2 -->
 ### Known Limitations
 1. **Mermaid diagrams require viewer support.** Terminals and plain-text editors will show raw Mermaid syntax. ASCII fallback is not provided.
 2. **Playbook scenarios are manual.** No automated test harness validates the documented scenarios; they depend on manual execution by the tester.
 3. **Cross-reference integrity is not enforced automatically.** Future documentation changes could introduce stale links between feature catalog, playbook, `.opencode/skill/system-spec-kit/SKILL.md`, and `.opencode/skill/system-spec-kit/ARCHITECTURE.md` without detection.
 4. **Three documentation items remain open.** The root README context preservation mention, dedicated cross-runtime consistency playbook coverage, and dedicated runtime adapter docs in ARCHITECTURE.md are follow-up gaps rather than delivered Phase 006 artifacts.
-<!-- /ANCHOR:limitations -->
+<!-- /ANCHOR:limitations-2 -->

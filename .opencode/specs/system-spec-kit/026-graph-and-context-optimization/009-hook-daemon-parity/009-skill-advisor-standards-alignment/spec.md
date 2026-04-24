@@ -1,6 +1,5 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
-title: "Feature Specification: Skill-Advisor Standards Alignment"
+title: "F [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment/spec]"
 description: "Two-part standards alignment from packet 008 audit: (A) add OpenCode Plugin Exemption Tier to sk-code-opencode quality_standards.md + javascript_checklist.md (recognizes ESM is required for plugins, not a violation of CommonJS rule); (B) bring spec-kit-skill-advisor.js into alignment with non-exempt standards (box header COMPONENT/PURPOSE fields, JSDoc on default export + helpers, numbered ALL-CAPS section dividers mirroring sibling compact plugin)."
 trigger_phrases:
   - "skill advisor standards alignment"
@@ -9,8 +8,9 @@ trigger_phrases:
   - "skill advisor jsdoc"
   - "skill advisor box header"
   - "026/009/009"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment"
@@ -25,6 +25,7 @@ _memory:
       - "OpenCode plugins MUST be ESM per @opencode-ai/plugin/dist/index.d.ts:23"
       - "sk-code-opencode CommonJS rule conflicts with plugin loader contract"
       - "Plugin file has 3 small alignment gaps: header fields, JSDoc, section dividers"
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Skill-Advisor Standards Alignment
 

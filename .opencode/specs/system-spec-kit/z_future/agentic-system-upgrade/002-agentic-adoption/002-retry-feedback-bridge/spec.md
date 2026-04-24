@@ -1,6 +1,6 @@
 ---
-title: "Feature Specification: 002 Retry Feedback Bridge [template:level_2/spec.md]"
-description: "Add a packet-local implement-verify-review-retry bridge for `/spec_kit:implement` that preserves compressed reviewer feedback without turning retries into a second durable memory system."
+title: "Feature Specificat [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/002-retry-feedback-bridge/spec]"
+description: "Add a packet-local implement-verify-review-retry bridge for /spec_kit:implement that preserves compressed reviewer feedback without turning retries into a second durable memory system."
 trigger_phrases:
   - "feature"
   - "specification"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Release Alignment Revisits Coordination Parent"
+title: "F [system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/spec]"
 description: "Coordination parent for the three release-alignment revisit packets promoted from the legacy continuity-refactor lane. This root spec restores a canonical packet identity surface while keeping the child packets as the operational source of truth for implementation and verification."
 trigger_phrases:
   - "007 release alignment revisits"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "phase 018 alignment"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits"
@@ -17,6 +16,7 @@ _memory:
     recent_action: "Restored coordination-parent root spec for canonical save invariants"
     next_safe_action: "Use child packet specs as the source of truth for implementation details and verification evidence"
     blockers: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Release Alignment Revisits Coordination Parent
 

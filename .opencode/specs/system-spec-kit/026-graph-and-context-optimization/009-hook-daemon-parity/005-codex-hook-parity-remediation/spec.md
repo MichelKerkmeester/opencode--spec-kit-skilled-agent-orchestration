@@ -1,17 +1,17 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
-title: "Feature Specification: Codex CLI Hook Parity Remediation"
+title: "Featu [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation/spec]"
 description: "Codex CLI exposes SessionStart / UserPromptSubmit / Stop hooks in ~/.codex/hooks.json but no Spec Kit Memory hook was wired. This phase implements native Codex startup context and advisor brief parity."
 trigger_phrases:
   - "codex hook parity"
   - "codex cli hooks"
   - "codex startup context"
   - "codex advisor brief"
-  - "codex UserPromptSubmit"
-  - "codex SessionStart"
+  - "codex userpromptsubmit"
+  - "codex sessionstart"
   - "026/009/005"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation"
@@ -35,6 +35,7 @@ _memory:
       - "Codex 0.122.0 hooks inject developer context via hookSpecificOutput.additionalContext."
       - "codex_hooks must be true in ~/.codex/config.toml."
       - "Superset notify hooks remain registered."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: Codex CLI Hook Parity Remediation
 

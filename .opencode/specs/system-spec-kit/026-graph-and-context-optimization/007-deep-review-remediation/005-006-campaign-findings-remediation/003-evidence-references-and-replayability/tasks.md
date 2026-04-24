@@ -1,10 +1,11 @@
 ---
-title: "Tasks: 003-evidence-references-and-replayability Evidence, References, and Replayability Remediation"
+title: "...on/007-deep-review-remediation/005-006-campaign-findings-remediation/003-evidence-references-and-replayability/tasks]"
 description: "Task ledger for 003-evidence-references-and-replayability Evidence, References, and Replayability Remediation."
 trigger_phrases:
-  - "tasks 003 evidence references and replayability evidence references and "
-importance_tier: "high"
-contextType: "spec"
+  - "tasks 003 evidence references and replayability evidence references and"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/003-evidence-references-and-replayability"

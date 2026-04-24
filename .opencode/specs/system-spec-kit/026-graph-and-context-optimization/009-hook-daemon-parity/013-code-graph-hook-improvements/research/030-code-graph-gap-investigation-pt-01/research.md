@@ -1,3 +1,26 @@
+---
+title: "...ion/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/research]"
+description: "This pass found 13 deduplicated missed files tied to packet 013’s code-graph + hook contract changes. Severity split: P1=9, P2=4. The missed surfaces are overwhelmingly docs, to..."
+trigger_phrases:
+  - "ion"
+  - "009"
+  - "hook"
+  - "daemon"
+  - "parity"
+  - "research"
+  - "030"
+  - "code"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
+---
 # Gap Investigation Research — 013
 
 ## Summary

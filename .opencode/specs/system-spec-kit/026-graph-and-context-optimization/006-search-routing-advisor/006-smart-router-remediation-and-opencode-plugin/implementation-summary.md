@@ -1,12 +1,11 @@
 ---
-title: "Implementation Summary: Smart-Router Remediation + OpenCode Plugin"
+title: "...text-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/implementation-summary]"
 description: "Tracks Phase 023 delivery across router remediation, static validation, keyword tuning, CLI fallback safety, observe-only telemetry, and the OpenCode skill-advisor plugin."
 trigger_phrases:
   - "023 smart router implementation summary"
   - "spec-kit-skill-advisor plugin shipped"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin"
@@ -23,6 +22,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Phase 020 runtime code and skill_advisor.py are out of scope for modification."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Smart-Router Remediation + OpenCode Plugin
 

@@ -1,11 +1,12 @@
 ---
-title: "018 / 012 — MCP config and feature-flag cleanup"
+title: "...ontext-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup/spec]"
 description: "Normalize the five Public MCP configs, remove redundant runtime flags, and verify the rerank and embedding defaults that now live in code."
-trigger_phrases: ["018 012 spec", "mcp config cleanup", "feature flag cleanup"]
+trigger_phrases:
+  - "018 012 spec"
+  - "mcp config cleanup"
+  - "feature flag cleanup"
 importance_tier: "important"
 contextType: "implementation"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup"
@@ -14,6 +15,8 @@ _memory:
     recent_action: "Rebuilt the phase packet around the shipped config cleanup"
     next_safe_action: "Run strict validation and config/code verification"
     key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md", "implementation-summary.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: 018 / 012 — MCP config and feature-flag cleanup
 

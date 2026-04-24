@@ -1,5 +1,5 @@
 ---
-title: "Research Pointer: Cache-Warning Hook System"
+title: "Rese [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks/research]"
 description: "Research-aligned pointer for packet 002 after the 2026-04-08 canonical consolidation refresh."
 trigger_phrases:
   - "cache warning research"
@@ -15,9 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["research.md"]
-
 ---
-
 # Research Pointer: Cache-Warning Hook System
 
 <!-- ANCHOR:summary -->

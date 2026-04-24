@@ -1,11 +1,12 @@
 ---
-title: "Task Breakdown: Codex Tone-of-Voice Personalization"
+title: "Task Breakdown: Codex Tone-of-Voice Personalization [skilled-agent-orchestration/046-cli-codex-tone-of-voice/tasks]"
 description: "Ordered task list for delivering Codex APP + CLI personalization assets with surgical SKILL.md integration and full spec-folder closure."
 trigger_phrases:
   - "046 tasks"
   - "codex tone tasks"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/046-cli-codex-tone-of-voice"

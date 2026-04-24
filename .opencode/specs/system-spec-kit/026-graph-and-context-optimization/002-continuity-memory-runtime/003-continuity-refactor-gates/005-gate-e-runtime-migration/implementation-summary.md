@@ -1,12 +1,11 @@
 ---
-title: "Gate E — Runtime Migration Summary"
+title: "...tion/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration/implementation-summary]"
 description: "Closeout state."
-trigger_phrases: ["gate e", "implementation summary"]
+trigger_phrases:
+  - "gate e"
+  - "implementation summary"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration"
@@ -15,6 +14,9 @@ _memory:
     recent_action: "Synced Gate E evidence"
     next_safe_action: "Add commit hash once final commit lands"
     key_files: ["implementation-summary.md", "checklist.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

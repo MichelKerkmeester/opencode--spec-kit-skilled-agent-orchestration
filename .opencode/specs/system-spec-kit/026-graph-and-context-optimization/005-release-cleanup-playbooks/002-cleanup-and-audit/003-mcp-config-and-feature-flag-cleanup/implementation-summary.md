@@ -1,11 +1,12 @@
 ---
-title: "018 / 012 — MCP config and feature-flag cleanup summary"
+title: "...n/005-release-cleanup-playbooks/002-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup/implementation-summary]"
 description: "Implementation closeout for the five-config MCP cleanup and the runtime default checks behind it."
-trigger_phrases: ["018 012 implementation summary", "mcp config cleanup summary", "feature flag cleanup summary"]
+trigger_phrases:
+  - "018 012 implementation summary"
+  - "mcp config cleanup summary"
+  - "feature flag cleanup summary"
 importance_tier: "important"
 contextType: "implementation"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup"
@@ -14,6 +15,8 @@ _memory:
     recent_action: "Closed the packet with config, code, and validation evidence"
     next_safe_action: "Review verification output and commit-ready files"
     key_files: ["implementation-summary.md", "checklist.md", "spec.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

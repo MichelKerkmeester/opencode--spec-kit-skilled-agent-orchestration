@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: OpenCode Transport Adapter [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/002-opencode-transport-adapter]"
+title: "Feature Specifica [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/002-opencode-transport-adapter/spec]"
 description: "Build the thin OpenCode transport shell that injects compact packet-024 context at the right lifecycle hooks without becoming a second retrieval backend."
 trigger_phrases:
   - "opencode transport adapter"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "level 3"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/002-opencode-transport-adapter"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: OpenCode Transport Adapter
 

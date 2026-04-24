@@ -1,11 +1,12 @@
 ---
-title: "018 / 010 — Shared memory removal checklist"
+title: "...raph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/checklist]"
 description: "Verification Date: 2026-04-12"
-trigger_phrases: ["018 010 checklist", "shared memory removal checklist", "hard delete shared memory verification"]
+trigger_phrases:
+  - "018 010 checklist"
+  - "shared memory removal checklist"
+  - "hard delete shared memory verification"
 importance_tier: "important"
 contextType: "implementation"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory"
@@ -14,6 +15,8 @@ _memory:
     recent_action: "Completed the verification checklist for shared-memory removal"
     next_safe_action: "Review implementation-summary.md for the exact command output"
     key_files: ["checklist.md", "implementation-summary.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: 018 / 010 — Remove shared memory
 

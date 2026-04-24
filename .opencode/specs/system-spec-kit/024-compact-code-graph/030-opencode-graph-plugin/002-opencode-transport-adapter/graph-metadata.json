@@ -150,6 +150,12 @@
         "source": "derived"
       },
       {
+        "name": "Feature Specifica",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -180,12 +186,6 @@
         "source": "derived"
       },
       {
-        "name": "Phase Context This",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
         "name": "Implementation Plan",
         "kind": "proper_noun",
         "path": "plan.md",
@@ -206,7 +206,8 @@
     ],
     "causal_summary": "Phase 2 turned the transport concept into a real shipped OpenCode plugin. The Level 3 repair keeps that runtime claim intact while adding the architecture and verification scaffolding needed for trustworthy packet recovery.",
     "created_at": "2026-04-12T09:02:53.436Z",
-    "last_save_at": "2026-04-18T14:39:04.179Z",
+    "last_save_at": "2026-04-24T15:34:55.446Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

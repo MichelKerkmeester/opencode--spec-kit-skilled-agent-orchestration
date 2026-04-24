@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Agent Governance And Commands"
+title: "Feature Specification [system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/spec]"
 description: "AGENTS guardrails, canonical intake, and command cleanup. Consolidated active parent for 2 direct child phase packet(s)."
 trigger_phrases:
   - "004-agent-governance-and-commands"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "002-command-graph-consolidation"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands"
@@ -29,6 +28,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Agent Governance And Commands
 

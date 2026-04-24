@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Advisor Renderer + 200-Prompt Regression Harness"
+title: "...-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness/plan]"
 description: "Pure renderer + fixture library + 200-prompt parity harness + timing lanes + observability + privacy suite. Hard gate before runtime rollout in 006/007/008."
 trigger_phrases:
   - "020 005 plan"
   - "advisor renderer plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness"
@@ -16,7 +15,7 @@ _memory:
     next_safe_action: "Dispatch /spec_kit:implement :auto after 004 converges"
     blockers: []
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Advisor Renderer + 200-Prompt Regression Harness
 

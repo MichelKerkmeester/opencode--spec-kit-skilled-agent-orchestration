@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Canonical-Save Pipeline Invariant Research (SSK-RR-2)"
+title: "...mization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants/plan]"
 description: "Dispatch plan for the SSK-RR-2 deep-research iteration. Contains the canonical /spec_kit:deep-research :auto invocation + handoff criteria + output routing."
 trigger_phrases:
   - "ssk-rr-2 dispatch plan"
   - "canonical save research plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants"
@@ -14,7 +13,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Dispatch plan scaffolded"
     next_safe_action: "Invoke /spec_kit:deep-research :auto"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Canonical-Save Pipeline Invariant Research
 

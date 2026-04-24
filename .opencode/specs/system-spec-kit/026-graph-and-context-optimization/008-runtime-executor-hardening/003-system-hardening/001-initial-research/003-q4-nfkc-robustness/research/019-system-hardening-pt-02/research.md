@@ -1,3 +1,25 @@
+---
+title: "...dening/003-system-hardening/001-initial-research/003-q4-nfkc-robustness/research/019-system-hardening-pt-02/research]"
+description: "This packet investigated the Unicode normalization and canonical-equivalence attack surface around three related hardening paths added during phase 016: the Gate 3 prompt classi..."
+trigger_phrases:
+  - "dening"
+  - "003"
+  - "system"
+  - "hardening"
+  - "001"
+  - "research"
+  - "019"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/003-q4-nfkc-robustness/research/019-system-hardening-pt-02"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
+---
 # Q4 NFKC Robustness Research Synthesis
 
 ## 1. Executive Summary

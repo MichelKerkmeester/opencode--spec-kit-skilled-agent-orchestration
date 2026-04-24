@@ -1,14 +1,13 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: Improve Graph Metadata Entity Quality"
+title: "...r/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/implementation-summary]"
 description: "This phase raised the graph-metadata entity budget to 24, blocked cross-spec canonical-doc leaks, and rejected bare runtime-name noise from the derived entity set."
 trigger_phrases:
   - "entity quality summary"
   - "graph metadata entities"
   - "scope leak closure"
 importance_tier: "important"
-contextType: "verification"
-status: complete
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements"
@@ -29,6 +28,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "How should deriveEntities keep useful local entities while dropping cross-spec canonical-doc leaks and runtime-name noise"
+status: complete
 ---
 # Implementation Summary: Improve Graph Metadata Entity Quality
 

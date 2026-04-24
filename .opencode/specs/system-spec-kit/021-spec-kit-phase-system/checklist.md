@@ -11,6 +11,15 @@ trigger_phrases:
   - "spec"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist + checklist-extended | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/021-spec-kit-phase-system"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Verification Checklist: SpecKit Phase System
@@ -187,7 +196,7 @@ State source of truth is `tasks.md` in this folder.
 ### Project: Phase 3 - Commands & Router
 
 - [x] **P0** PHASE intent, resource map, and command boost implemented [Evidence: `tasks.md` T013-T015]
-- [x] **P0** `/spec_kit:phase` command + workflow assets created [Evidence: `tasks.md` T017-T019]
+- [ ] **P0** `/spec_kit:phase` command + workflow assets created [OPEN: T017-T019 not shipped; the dedicated command file under the `spec_kit` command directory is absent. Phase work was delivered via the `:with-phases` suffix and `--phase-folder` argument on existing commands instead of a dedicated `/spec_kit:phase` command.]
 - [x] **P1** Existing commands updated for phase-aware flow [Evidence: `tasks.md` T020-T023]
 
 ---
@@ -213,8 +222,8 @@ State source of truth is `tasks.md` in this folder.
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| Tasks in `tasks.md` | 34 | 31/34 |
-| Pending tasks | 3 | T005, T028, T033 |
+| Tasks in `tasks.md` | 34 | 28/34 |
+| Pending tasks | 6 | T005, T017, T018, T019, T028, T033 |
 | Root docs sync status | 5 | 5/5 (`spec`, `plan`, `tasks`, `decision-record`, `implementation-summary`) |
 
 **Verification Date**: 2026-02-21

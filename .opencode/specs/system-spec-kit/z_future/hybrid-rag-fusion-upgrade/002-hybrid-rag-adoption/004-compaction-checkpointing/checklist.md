@@ -1,3 +1,14 @@
+---
+title: "Chec [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/004-compaction-checkpointing/checklist]"
+description: "checklist document for 004-compaction-checkpointing."
+trigger_phrases:
+  - "chec"
+  - "checklist"
+  - "004"
+  - "compaction"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Checklist: 004-compaction-checkpointing
 
 ## P0

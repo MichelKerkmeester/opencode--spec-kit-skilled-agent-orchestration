@@ -1,11 +1,20 @@
 ---
-title: "Decision Record: /create:feature-catalog [03--commands-and-skills/025-cmd-create-feature-catalog/decision-record]"
+title: "Decision Record: /create:feature-catalog [skilled-agent-orchestration/025-cmd-create-feature-catalog/decision-record]"
 description: "Accepted implementation decision covering naming, source inputs, and runtime-surface scope for /create:feature-catalog."
 trigger_phrases:
   - "feature catalog command adr"
   - "/create:feature-catalog decision record"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/025-cmd-create-feature-catalog"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["decision-record.md"]
 ---
 # Decision Record: /create:feature-catalog Command
 

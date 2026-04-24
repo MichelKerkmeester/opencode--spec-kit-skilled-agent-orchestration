@@ -1,6 +1,5 @@
 ---
-SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
-title: "Feature Specification: 027/004 — MCP Advisor Surface"
+title: "...text-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface/spec]"
 description: "Expose native advisor as MCP tools (advisor_recommend, advisor_status, advisor_validate) under self-contained mcp_server/skill-advisor/tools/ + handlers/. Zod schemas, dispatcher registration, cache/freshness integration. Consumes 027/003 normalized scorer output."
 trigger_phrases:
   - "027/004"
@@ -8,8 +7,9 @@ trigger_phrases:
   - "advisor_recommend"
   - "advisor_status"
   - "advisor_validate"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface"
@@ -29,6 +29,7 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 ---
 # Feature Specification: 027/004 — MCP Advisor Surface
 

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 008 Continuity and Memory UX Integration [template:level_2/tasks.md]"
+title: "Ta [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/008-continuity-and-memory-ux-integration/tasks]"
 description: "Task Format: T### [P?] Description (008-continuity-and-memory-ux-integration)"
 trigger_phrases:
   - "tasks"

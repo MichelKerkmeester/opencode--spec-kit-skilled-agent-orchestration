@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 003 Loop Observability [template:level_2/checklist.md]"
+title: "Verification [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/003-loop-observability/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

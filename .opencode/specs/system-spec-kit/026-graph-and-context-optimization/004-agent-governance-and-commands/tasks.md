@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Agent Governance And Commands"
+title: "Tasks: Agent Governance [system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/tasks]"
 description: "Task record for the 004-agent-governance-and-commands flattened parent layout."
 trigger_phrases:
   - "004-agent-governance-and-commands"
@@ -7,8 +7,7 @@ trigger_phrases:
   - "001-agent-execution-guardrails"
   - "002-command-graph-consolidation"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands"
@@ -29,6 +28,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Agent Governance And Commands
 

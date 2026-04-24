@@ -1,14 +1,14 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
-title: "Implementation Plan: Cross-File Symbol Dedup Defense"
+title: "...-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-cross-file-dedup-defense/plan]"
 description: "Add two runtime-independent guards against code_nodes.symbol_id UNIQUE failures: a scan-batch dedup sweep in the structural indexer and INSERT OR IGNORE persistence in replaceNodes. Verification uses focused Vitest coverage, build output, dist inspection, and strict packet validation."
 trigger_phrases:
   - "cross-file symbol dedup plan"
-  - "globalSeenIds plan"
-  - "INSERT OR IGNORE plan"
+  - "globalseenids plan"
+  - "insert or ignore plan"
   - "012/003 implementation plan"
 importance_tier: "critical"
-contextType: "spec"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/003-cross-file-dedup-defense"
@@ -29,6 +29,7 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Cross-File Symbol Dedup Defense
 

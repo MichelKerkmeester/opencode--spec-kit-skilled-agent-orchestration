@@ -1,10 +1,11 @@
 ---
-title: "Decision Record: 008-search-fusion-and-reranker-tuning Search Fusion and Reranker Tuning Remediation"
+title: "...-deep-review-remediation/005-006-campaign-findings-remediation/008-search-fusion-and-reranker-tuning/decision-record]"
 description: "ADR for 008-search-fusion-and-reranker-tuning Search Fusion and Reranker Tuning Remediation."
 trigger_phrases:
-  - "decision record 008 search fusion and reranker tuning search fusion and "
-importance_tier: "high"
-contextType: "spec"
+  - "decision record 008 search fusion and reranker tuning search fusion and"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/008-search-fusion-and-reranker-tuning"

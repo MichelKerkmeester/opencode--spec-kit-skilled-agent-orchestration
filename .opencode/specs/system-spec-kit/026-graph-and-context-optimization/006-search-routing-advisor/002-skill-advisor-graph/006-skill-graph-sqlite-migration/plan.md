@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Skill Graph SQLite Migration"
+title: "...ph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/006-skill-graph-sqlite-migration/plan]"
 description: "Implementation plan for migrating the skill graph from JSON to SQLite with MCP tools."
 trigger_phrases:
   - "006-skill-graph-sqlite-migration"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "plan"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/006-skill-graph-sqlite-migration"
@@ -16,6 +15,7 @@ _memory:
     recent_action: "Implemented SQLite migration with 4 MCP tools"
     next_safe_action: "Review and verify implementation"
     key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Skill Graph SQLite Migration
 

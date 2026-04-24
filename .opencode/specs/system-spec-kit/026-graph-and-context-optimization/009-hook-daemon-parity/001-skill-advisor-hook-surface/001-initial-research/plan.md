@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: 020 Initial Research"
+title: "...t/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/plan]"
 description: "Dispatch plan for 020/001 deep-research."
-trigger_phrases: ["020 research plan"]
+trigger_phrases:
+  - "020 research plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research"
@@ -12,7 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Plan scaffolded"
     next_safe_action: "Dispatch"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: 020 Initial Research
 

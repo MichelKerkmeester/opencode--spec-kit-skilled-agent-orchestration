@@ -1,10 +1,10 @@
 ---
-title: "Verification Checklist: NFKC Unification Hardening"
+title: "...nd-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening/checklist]"
 description: "Verification items for HP1-HP6."
-trigger_phrases: ["nfkc hardening checklist"]
+trigger_phrases:
+  - "nfkc hardening checklist"
 importance_tier: "critical"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Checklist scaffolded"
     next_safe_action: "Verify post-implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: NFKC Unification Hardening
 

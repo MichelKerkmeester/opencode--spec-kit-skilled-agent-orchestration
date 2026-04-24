@@ -1,12 +1,21 @@
 ---
-title: "Tasks: 040 Auto Deep Research / Review Improvement [template:level_1/tasks.md]"
+title: "Tasks: 040 Auto Deep Research / Review [skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "040 tasks"
   - "deep research review tasks"
   - "reducer parity tasks"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: 040 Auto Deep Research / Review Improvement
 

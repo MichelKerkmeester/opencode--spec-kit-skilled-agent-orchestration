@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Canonical Intake and Middleware Cleanup"
+title: "...026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/decision-record]"
 description: "13 ADRs covering the canonical-intake architecture and middleware cleanup: structural parity formula; shared-module extraction; --intake-only flag over separate command; hard-delete over phased stub; intake lock scoping; resume routing; forward-looking sweep policy; complete.md ownership; explicit YAML gate remediation; distributed-governance rule; /memory:save repositioning; :auto-debug flag removal."
 trigger_phrases:
   - "decision record"
@@ -11,8 +11,7 @@ trigger_phrases:
   - "middleware cleanup decisions"
   - "distributed governance"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_3/decision-record.md | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
@@ -36,6 +35,7 @@ _memory:
       - "ADR-001 (structural overlap formula) preserved verbatim"
       - "Shared-module and standalone-intake decisions documented as ADR-002 through ADR-010"
       - "Middleware cleanup governance decisions documented as ADR-011 through ADR-013"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_3/decision-record.md | v2.2 -->"
 ---
 # Decision Record: Canonical Intake and Middleware Cleanup
 

@@ -1,3 +1,14 @@
+---
+title: "Plan: 006-doc [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/006-doctor-debug-overlay/plan]"
+description: "1. Freeze the overlay scope to summary, guidance, and redacted evidence."
+trigger_phrases:
+  - "plan"
+  - "006"
+  - "doc"
+  - "doctor"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 006-doctor-debug-overlay
 
 ## Affected Files

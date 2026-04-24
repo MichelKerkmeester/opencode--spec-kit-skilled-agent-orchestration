@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 013 Channel Routing and Delegation Study [template:level_2/checklist.md]"
+title: "...tem-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/013-channel-routing-and-delegation-study/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

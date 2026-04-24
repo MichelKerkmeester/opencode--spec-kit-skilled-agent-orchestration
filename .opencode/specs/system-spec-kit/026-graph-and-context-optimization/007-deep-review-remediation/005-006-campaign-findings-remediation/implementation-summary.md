@@ -1,10 +1,11 @@
 ---
-title: "Implementation Summary"
+title: "...ph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/implementation-summary]"
 description: "Summary of the generated 005-006 campaign remediation packet structure."
 trigger_phrases:
   - "implementation summary"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation"

@@ -1,3 +1,14 @@
+---
+title: "Task [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/001-architecture-boundary-freeze/tasks]"
+description: "1. Record the preserved Public authorities and non-goals in spec.md."
+trigger_phrases:
+  - "task"
+  - "tasks"
+  - "001"
+  - "architecture"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 001-architecture-boundary-freeze
 
 1. Record the preserved Public authorities and non-goals in `spec.md`.

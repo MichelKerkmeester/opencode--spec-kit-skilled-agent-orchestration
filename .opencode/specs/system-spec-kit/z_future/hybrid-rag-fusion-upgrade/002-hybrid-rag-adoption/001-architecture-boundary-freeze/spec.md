@@ -1,8 +1,13 @@
 ---
-title: "001-architecture-boundary-freeze: Freeze Authority Boundaries"
+title: "001-a [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/001-architecture-boundary-freeze/spec]"
 description: "Locks the adoption boundary so every later phase wraps existing Public authorities instead of replacing them."
+trigger_phrases:
+  - "001"
+  - "spec"
+  - "architecture"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 001-architecture-boundary-freeze: Freeze Authority Boundaries
 
 ## 1. Scope

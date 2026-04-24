@@ -1,13 +1,13 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
-title: "Tasks: Claude Hook Findings Remediation"
+title: "T [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation/tasks]"
 description: "Task Format: T### [P?] Description (file path) — 3 phases: Spike, Patch+Normalize+Document, Verify"
 trigger_phrases:
   - "claude hook findings tasks"
   - "freshness fix tasks"
   - "026/009/006 tasks"
-importance_tier: "high"
-contextType: "tasks"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation"
@@ -19,6 +19,7 @@ _memory:
     completion_pct: 86
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Claude Hook Findings Remediation
 

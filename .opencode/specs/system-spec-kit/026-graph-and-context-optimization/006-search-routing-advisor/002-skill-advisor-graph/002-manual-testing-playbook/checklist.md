@@ -1,12 +1,11 @@
 ---
-title: "Verification Checklist: Playbook Template Alignment"
+title: "...ph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook/checklist]"
 description: "Checklist for verifying the 24 scenario snippets and root operator guide match the intended playbook contract."
 trigger_phrases:
   - "002-manual-testing-playbook"
   - "playbook checklist"
 importance_tier: "important"
-contextType: "verification"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook"
@@ -15,6 +14,7 @@ _memory:
     recent_action: "Created checklist"
     next_safe_action: "Implement playbook rewrites"
     key_files: ["checklist.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Playbook Template Alignment
 

@@ -1,3 +1,15 @@
+---
+title: "Tasks: 002-hybrid-rag-adoption [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/tasks]"
+description: "1. Create the parent adoption packet and lock the research-backed scope in [spec.md](./spec.md), [plan.md](./plan.md), [tasks.md](./tasks.md), [checklist.md](./checklist.md), [d..."
+trigger_phrases:
+  - "tasks"
+  - "002"
+  - "hybrid"
+  - "rag"
+  - "adoption"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 002-hybrid-rag-adoption
 
 1. Create the parent adoption packet and lock the research-backed scope in [spec.md](./spec.md), [plan.md](./plan.md), [tasks.md](./tasks.md), [checklist.md](./checklist.md), [decision-record.md](./decision-record.md), and [implementation-summary.md](./implementation-summary.md).

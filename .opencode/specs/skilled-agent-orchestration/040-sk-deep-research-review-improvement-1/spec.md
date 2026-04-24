@@ -1,13 +1,22 @@
 ---
-title: "Feature Specification: 040 Auto Deep Research / Review Improvement [template:level_1/spec.md]"
+title: "Feature Specification: 040 Auto Deep [skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/spec]"
 description: "Improve sk-deep-research and sk-deep-review contracts: lineage, lifecycle, reducer, naming, runtime parity — driven by a 90-iteration autonomous research packet."
 trigger_phrases:
   - "deep research improvement"
   - "deep review improvement"
   - "040 spec"
   - "lineage reducer parity"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: 040 Auto Deep Research / Review Improvement
 

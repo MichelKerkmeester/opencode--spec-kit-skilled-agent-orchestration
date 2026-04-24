@@ -41,11 +41,11 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ops-hardening.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ops-hardening.ts",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/session-health.ts",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-ops-hardening.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-ops-hardening.vitest.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/session-bootstrap.vitest.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/session-resume.vitest.ts",
       "plan.md",
@@ -59,7 +59,7 @@
       {
         "name": "ops-hardening.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ops-hardening.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ops-hardening.ts",
         "source": "derived"
       },
       {
@@ -83,7 +83,7 @@
       {
         "name": "code-graph-ops-hardening.vitest.ts",
         "kind": "test",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-ops-hardening.vitest.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-ops-hardening.vitest.ts",
         "source": "derived"
       },
       {
@@ -203,7 +203,8 @@
     ],
     "causal_summary": "Phase 3 added one reusable graph-operations hardening contract below the transport shell. The Level 3 repair keeps that shipped runtime scope intact and explains the portability and repair boundaries cleanly.",
     "created_at": "2026-04-12T09:02:53.437Z",
-    "last_save_at": "2026-04-18T14:39:04.181Z",
+    "last_save_at": "2026-04-24T15:34:55.447Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -1,12 +1,12 @@
 ---
-title: "Implementation Summary: 007-relay-main Research Phase"
+title: "Imp [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/007-relay-main/implementation-summary]"
 description: "Completed closeout for the Phase 2 continuation of the Agent Relay research packet, including new iterations, merged synthesis, packet repair, and validation."
 trigger_phrases:
   - "007-relay-main implementation summary"
   - "relay main closeout"
   - "agent relay phase summary"
 importance_tier: "important"
-contextType: "summary"
+contextType: "implementation"
 ---
 # Implementation Summary: 007-relay-main Research Phase
 

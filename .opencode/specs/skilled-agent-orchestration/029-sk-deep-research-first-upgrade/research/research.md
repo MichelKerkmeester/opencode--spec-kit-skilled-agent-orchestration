@@ -1,5 +1,5 @@
 ---
-title: "Deep Research: Improving sk-deep-research from [03--commands-and-skills/029-sk-deep-research-first-upgrade/research]"
+title: "Deep Research: Improving sk-deep-research [skilled-agent-orchestration/029-sk-deep-research-first-upgrade/research]"
 description: "Two open-source auto-research implementations — ResearcherSkill (experiment-driven, branch-aware) and pjhoberman/autoresearch (metric-driven, harness-generated) — were analyzed ..."
 trigger_phrases:
   - "deep"
@@ -8,6 +8,14 @@ trigger_phrases:
   - "029"
 importance_tier: "normal"
 contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/029-sk-deep-research-first-upgrade/research"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
 ---
 # Deep Research: Improving sk-deep-research from ResearcherSkill & autoresearch
 

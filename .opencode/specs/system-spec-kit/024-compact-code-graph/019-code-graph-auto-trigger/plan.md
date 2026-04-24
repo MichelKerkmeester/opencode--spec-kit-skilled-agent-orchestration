@@ -1,6 +1,24 @@
 ---
-title: "Plan: Code Graph Auto-Trigger [024/019]"
+title: "Plan: Code Graph Auto-Trigger [024/019] [system-spec-kit/024-compact-code-graph/019-code-graph-auto-trigger/plan]"
 description: "Implementation order for automatic code graph freshness checking and reindexing."
+trigger_phrases:
+  - "plan"
+  - "code"
+  - "graph"
+  - "auto"
+  - "trigger"
+  - "019"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/019-code-graph-auto-trigger"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Phase 019 — Code Graph Auto-Trigger

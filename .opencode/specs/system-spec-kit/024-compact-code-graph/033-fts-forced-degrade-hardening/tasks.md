@@ -1,11 +1,20 @@
 ---
-title: "Tasks: FTS Forced-Degrade Hardening [template:level_3/tasks.md]"
+title: "Tasks: FTS Forced-Degrade Hardening [system-spec-kit/024-compact-code-graph/033-fts-forced-degrade-hardening/tasks]"
 description: "Task breakdown for 033-fts-forced-degrade-hardening."
 trigger_phrases:
   - "033-fts-forced-degrade-hardening"
   - "tasks"
 importance_tier: "important"
-contextType: "tasks"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/033-fts-forced-degrade-hardening"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: FTS Forced-Degrade Hardening
 

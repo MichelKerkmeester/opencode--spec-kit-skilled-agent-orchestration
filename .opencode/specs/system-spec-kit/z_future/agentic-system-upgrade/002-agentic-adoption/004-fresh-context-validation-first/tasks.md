@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 004 Fresh Context Validation First [template:level_2/tasks.md]"
+title: "Tasks [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/004-fresh-context-validation-first/tasks]"
 description: "Task Format: T### [P?] Description (004-fresh-context-validation-first)"
 trigger_phrases:
   - "tasks"

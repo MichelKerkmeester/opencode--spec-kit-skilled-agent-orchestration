@@ -1,3 +1,18 @@
+---
+title: "...m-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation/checklist]"
+description: "checklist document for 011-tool-profile-split-investigation."
+trigger_phrases:
+  - "spec"
+  - "kit"
+  - "future"
+  - "hybrid"
+  - "rag"
+  - "checklist"
+  - "011"
+  - "tool"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Checklist: 011-tool-profile-split-investigation
 
 ## P0

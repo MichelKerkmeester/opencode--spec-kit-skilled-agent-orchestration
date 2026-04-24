@@ -10,6 +10,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const { emitResourceMap } = require('../../system-spec-kit/scripts/resource-map/extract-from-evidence.cjs');
 const { resolveArtifactRoot } = require('../../system-spec-kit/shared/review-research-paths.cjs');
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -27,6 +28,16 @@ function writeUtf8(filePath, content) {
 
 function readJson(filePath) {
   return JSON.parse(readUtf8(filePath));
+}
+
+function getResourceMapEmitSetting(config) {
+  const nested = config && typeof config === 'object'
+    ? (config.resource_map || config.resourceMap || null)
+    : null;
+  if (nested && typeof nested === 'object' && typeof nested.emit === 'boolean') {
+    return nested.emit;
+  }
+  return true;
 }
 
 function slugify(value) {
@@ -96,6 +107,26 @@ function parseJsonlDetailed(jsonlContent) {
   }
 
   return { records, corruptionWarnings };
+}
+
+function loadDeltaPayloads(deltaDir) {
+  if (!fs.existsSync(deltaDir)) {
+    return [];
+  }
+
+  return fs.readdirSync(deltaDir)
+    .filter((fileName) => /^iter-\d+\.jsonl$/.test(fileName))
+    .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }))
+    .map((fileName) => {
+      const { records, corruptionWarnings } = parseJsonlDetailed(readUtf8(path.join(deltaDir, fileName)));
+      if (!corruptionWarnings.length) {
+        return records;
+      }
+      console.warn(
+        `[sk-deep-research] resource-map extractor skipped ${corruptionWarnings.length} malformed delta row(s) from ${fileName}`,
+      );
+      return records.concat(new Array(corruptionWarnings.length).fill(null));
+    });
 }
 
 function createCorruptionError(stateLogPath, corruptionWarnings) {
@@ -819,6 +850,7 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
 function reduceResearchState(specFolder, options = {}) {
   const write = options.write !== false;
   const lenient = Boolean(options.lenient);
+  const emitResourceMapOutput = Boolean(options.emitResourceMap);
   const resolvedSpecFolder = path.resolve(specFolder);
   const { artifactDir: researchDir } = resolveArtifactRoot(resolvedSpecFolder, 'research');
   const configPath = path.join(researchDir, 'deep-research-config.json');
@@ -826,7 +858,9 @@ function reduceResearchState(specFolder, options = {}) {
   const strategyPath = path.join(researchDir, 'deep-research-strategy.md');
   const registryPath = path.join(researchDir, 'findings-registry.json');
   const dashboardPath = path.join(researchDir, 'deep-research-dashboard.md');
+  const resourceMapPath = path.join(researchDir, 'resource-map.md');
   const iterationDir = path.join(researchDir, 'iterations');
+  const deltaDir = path.join(researchDir, 'deltas');
 
   const config = readJson(configPath);
   const { records: parsedRecords, corruptionWarnings } = parseJsonlDetailed(readUtf8(stateLogPath));
@@ -863,15 +897,44 @@ function reduceResearchState(specFolder, options = {}) {
   registry.status = status;
   const strategy = updateStrategyContent(strategyContent, registry, iterationFiles, records);
   const dashboard = renderDashboard(config, registry, records, iterationFiles);
+  let resourceMap = null;
+  let resourceMapSkipped = true;
+  let resourceMapSkipReason = null;
 
   if (corruptionWarnings.length > 0 && !lenient) {
     throw createCorruptionError(stateLogPath, corruptionWarnings);
+  }
+
+  if (emitResourceMapOutput) {
+    if (getResourceMapEmitSetting(config) === false) {
+      resourceMapSkipReason = 'config.resource_map.emit=false';
+    } else {
+      const deltaPayloads = loadDeltaPayloads(deltaDir);
+      if (!deltaPayloads.length) {
+        resourceMapSkipReason = 'no delta files found';
+      } else {
+        resourceMap = emitResourceMap({
+          shape: 'research',
+          deltas: deltaPayloads,
+          packet: {
+            title: config.topic || path.basename(resolvedSpecFolder),
+            specFolder: resolvedSpecFolder,
+          },
+          scope: `research convergence output for ${path.basename(resolvedSpecFolder)}`,
+          createdAt: new Date().toISOString(),
+        });
+        resourceMapSkipped = false;
+      }
+    }
   }
 
   if (write) {
     writeUtf8(registryPath, `${JSON.stringify(registry, null, 2)}\n`);
     writeUtf8(strategyPath, strategy.endsWith('\n') ? strategy : `${strategy}\n`);
     writeUtf8(dashboardPath, dashboard);
+    if (emitResourceMapOutput && resourceMap) {
+      writeUtf8(resourceMapPath, resourceMap);
+    }
   }
 
   return {
@@ -880,9 +943,13 @@ function reduceResearchState(specFolder, options = {}) {
     strategyPath,
     registryPath,
     dashboardPath,
+    resourceMapPath,
     registry,
     strategy,
     dashboard,
+    resourceMap,
+    resourceMapSkipped,
+    resourceMapSkipReason,
     corruptionWarnings,
     hasCorruption: corruptionWarnings.length > 0,
   };
@@ -895,18 +962,19 @@ function reduceResearchState(specFolder, options = {}) {
 if (require.main === module) {
   const args = process.argv.slice(2);
   const lenient = args.includes('--lenient');
+  const emitResourceMapOutput = args.includes('--emit-resource-map');
   const positional = args.filter((arg) => !arg.startsWith('--'));
   const specFolder = positional[0];
 
   if (!specFolder) {
     process.stderr.write(
-      'Usage: node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs <spec-folder> [--lenient]\n',
+      'Usage: node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs <spec-folder> [--lenient] [--emit-resource-map]\n',
     );
     process.exit(1);
   }
 
   try {
-    const result = reduceResearchState(specFolder, { write: true, lenient });
+    const result = reduceResearchState(specFolder, { write: true, lenient, emitResourceMap: emitResourceMapOutput });
     process.stdout.write(
       `${JSON.stringify(
         {
@@ -915,6 +983,9 @@ if (require.main === module) {
           strategyPath: result.strategyPath,
           iterationsCompleted: result.registry.metrics.iterationsCompleted,
           corruptionCount: result.corruptionWarnings.length,
+          resourceMapPath: emitResourceMapOutput ? result.resourceMapPath : null,
+          resourceMapSkipped: emitResourceMapOutput ? result.resourceMapSkipped : null,
+          resourceMapSkipReason: emitResourceMapOutput ? result.resourceMapSkipReason : null,
         },
         null,
         2,

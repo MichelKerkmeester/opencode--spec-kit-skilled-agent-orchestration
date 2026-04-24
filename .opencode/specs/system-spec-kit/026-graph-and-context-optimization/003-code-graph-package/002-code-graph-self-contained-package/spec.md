@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: 028 — Code-Graph Self-Contained Package Migration"
+title: "F [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package/spec]"
 description: "Migrate mcp_server/lib/code-graph/ + handlers/code-graph/ + tools/code-graph-tools.ts + tests/code-graph-*.vitest.ts into a self-contained mcp_server/code-graph/ package mirroring the skill-advisor architecture shipped in Phase 027. Pure behavior-preserving move + import-path update + dispatcher rewiring."
 trigger_phrases:
   - "028"
   - "code-graph self-contained"
   - "code-graph package migration"
   - "mcp_server/code-graph/"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:

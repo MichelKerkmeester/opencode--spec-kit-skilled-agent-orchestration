@@ -7,11 +7,20 @@ trigger_phrases:
   - "system-spec-kit esm migration"
 importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["spec.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
-# Feature Specification: ESM Module Compliance
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
+
+# Feature Specification: ESM Module Compliance
 
 ---
 
@@ -92,11 +101,11 @@ Without this truth-sync, the parent packet would keep mixing historical planning
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `specs/system-spec-kit/023-hybrid-rag-fusion-refinement/spec.md` | Updated | Finalized packet narrative aligned to completed migration and closure phases |
-| `specs/system-spec-kit/023-hybrid-rag-fusion-refinement/plan.md` | Updated | Completed implementation plan with closed gates and evidence |
-| `specs/system-spec-kit/023-hybrid-rag-fusion-refinement/tasks.md` | Updated | Completed subsystem task tracking with evidence references |
-| `specs/system-spec-kit/023-hybrid-rag-fusion-refinement/checklist.md` | Updated | Verification gates recorded with completion evidence |
-| `specs/system-spec-kit/023-hybrid-rag-fusion-refinement/implementation-summary.md` | Updated | Final runtime and deep-review remediation summary |
+| `./spec.md` | Updated | Finalized packet narrative aligned to completed migration and closure phases |
+| `./plan.md` | Updated | Completed implementation plan with closed gates and evidence |
+| `./tasks.md` | Updated | Completed subsystem task tracking with evidence references |
+| `./checklist.md` | Updated | Verification gates recorded with completion evidence |
+| `./implementation-summary.md` | Updated | Final runtime and deep-review remediation summary |
 | `.opencode/skill/system-spec-kit/shared/**` | Completed runtime work | ESM metadata/config/import migration complete |
 | `.opencode/skill/system-spec-kit/mcp_server/**` | Completed runtime work | ESM metadata/config/import migration and boundary hardening complete |
 | `.opencode/skill/system-spec-kit/scripts/**` | Completed runtime work | CommonJS interop boundary refactor and verification complete |
@@ -190,11 +199,11 @@ Without this truth-sync, the parent packet would keep mixing historical planning
 ### Documentation Boundary
 - Standards docs outside 023 should not be updated early just because the research is complete
 - This packet should describe shipped runtime behavior, not stay frozen in an implementation-pending state after verification lands
+<!-- /ANCHOR:edge-cases -->
 
 ---
 
 <!-- ANCHOR:questions -->
-<!-- /ANCHOR:edge-cases -->
 ## 8. OPEN QUESTIONS
 
 - No strategy question remains open. `research/research.md` locks the first-pass decision.

@@ -1,8 +1,18 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | level2-verify | compact -->
 ---
-title: "Improve Graph Metadata Entity Quality - Execution Plan"
-status: complete
-parent_spec: 007-entity-quality-improvements/spec.md
+title: "...rch-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/plan]"
+description: 'title: "Improve Graph Metadata Entity Quality - Execution Plan"'
+trigger_phrases:
+  - "rch"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "search"
+  - "plan"
+  - "007"
+  - "entity"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements"
@@ -10,6 +20,8 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Closed the entity-quality phase"
     next_safe_action: "Reuse this phase if entity scope leakage or runtime-name noise returns"
+parent_spec: 007-entity-quality-improvements/spec.md
+status: complete
 ---
 # Execution Plan
 ## Summary <!-- ANCHOR:summary -->Refine `deriveEntities()` without changing the surrounding graph-metadata schema or key-file pipeline.<!-- /ANCHOR:summary -->

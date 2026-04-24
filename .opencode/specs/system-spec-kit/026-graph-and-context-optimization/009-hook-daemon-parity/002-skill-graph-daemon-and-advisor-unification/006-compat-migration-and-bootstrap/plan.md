@@ -1,13 +1,13 @@
 ---
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
-title: "027/005 — Plan"
+title: "...zation/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap/plan]"
 description: "Phased plan for compat shim + plugin bridge + install/doc migration."
 trigger_phrases:
   - "027/005 plan"
   - "compat migration plan"
   - "native advisor bootstrap"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_2/plan.md | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap"
@@ -26,6 +26,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 ---
 # Plan: 027/005
 

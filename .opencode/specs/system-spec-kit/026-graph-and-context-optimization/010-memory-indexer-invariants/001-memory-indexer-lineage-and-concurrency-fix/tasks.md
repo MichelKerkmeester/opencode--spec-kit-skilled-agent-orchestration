@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
-title: "Task Breakdown: Memory Indexer Lineage and Concurrency Fix"
+title: "...26-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix/tasks]"
 description: "Tasks for the PE lineage guard, scan serialization, targeted regressions, verification, and packet bookkeeping."
 trigger_phrases:
   - "026/010 tasks"
   - "memory indexer lineage concurrency tasks"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Replaced Fix B1 with Fix B2 after live acceptance showed B1 insufficient"
     next_safe_action: "User restart MCP and run memory_index_scan on 009 to confirm zero candidate_changed"
     completion_pct: 90
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Task Breakdown: Memory Indexer Lineage and Concurrency Fix
 

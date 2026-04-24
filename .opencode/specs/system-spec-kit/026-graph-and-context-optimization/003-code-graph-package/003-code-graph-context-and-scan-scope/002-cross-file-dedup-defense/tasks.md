@@ -1,14 +1,14 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
-title: "Tasks: Cross-File Symbol Dedup Defense"
+title: "...context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-cross-file-dedup-defense/tasks]"
 description: "Task list for packet 012/003, covering Level 2 docs, structural indexer dedup, DB INSERT OR IGNORE, focused tests, build, dist verification, and implementation summary."
 trigger_phrases:
   - "cross-file symbol dedup tasks"
   - "012/003 tasks"
-  - "globalSeenIds task"
+  - "globalseenids task"
   - "code graph db insert ignore task"
 importance_tier: "critical"
-contextType: "spec"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/003-cross-file-dedup-defense"
@@ -29,6 +29,7 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Cross-File Symbol Dedup Defense
 

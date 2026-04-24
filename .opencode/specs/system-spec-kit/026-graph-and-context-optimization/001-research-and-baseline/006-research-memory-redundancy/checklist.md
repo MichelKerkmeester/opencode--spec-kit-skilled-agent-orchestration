@@ -1,12 +1,11 @@
 ---
-title: "Verification Checklist: Research Memory Redundancy Follow-On"
+title: "...ystem-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy/checklist]"
 description: "Verification Date: 2026-04-09"
 trigger_phrases:
   - "memory redundancy follow on checklist"
   - "compact wrapper follow on verification"
 importance_tier: "important"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Research Memory Redundancy Follow-On
 

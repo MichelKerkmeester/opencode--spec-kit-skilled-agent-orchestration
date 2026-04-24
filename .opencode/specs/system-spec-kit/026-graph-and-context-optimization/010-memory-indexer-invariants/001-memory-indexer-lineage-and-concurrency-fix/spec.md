@@ -1,14 +1,14 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
-title: "Feature Specification: Memory Indexer Lineage and Concurrency Fix"
+title: "...026-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix/spec]"
 description: "Fix the spec-kit-memory indexer bugs behind E_LINEAGE and candidate_changed by preventing cross-file PE UPDATE/REINFORCE decisions and bypassing the scan-originated transactional recheck with fromScan."
 trigger_phrases:
   - "026/010 memory indexer lineage fix"
   - "e_lineage fix"
   - "candidate_changed fix"
-  - "spec-kit-memory fromScan recheck bypass"
-importance_tier: "high"
-contextType: "spec"
+  - "spec-kit-memory fromscan recheck bypass"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix"
@@ -23,6 +23,7 @@ _memory:
     answered_questions:
       - "Fix A uses A2: downgrade UPDATE/REINFORCE to CREATE when the chosen candidate is not the same canonical file."
       - "Fix B uses B2: thread fromScan from memory_index_scan into memory_save so scan-originated saves skip the transactional complement recheck."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Memory Indexer Lineage and Concurrency Fix
 

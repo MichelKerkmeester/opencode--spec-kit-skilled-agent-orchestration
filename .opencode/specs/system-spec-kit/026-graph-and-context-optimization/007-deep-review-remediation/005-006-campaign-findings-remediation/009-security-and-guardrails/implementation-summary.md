@@ -1,11 +1,12 @@
 ---
-title: "Implementation Summary: 009-security-and-guardrails"
+title: "...007-deep-review-remediation/005-006-campaign-findings-remediation/009-security-and-guardrails/implementation-summary]"
 description: "Completed Security and Guardrails remediation for CF-183 and CF-186."
 trigger_phrases:
   - "009-security-and-guardrails implementation"
   - "security guardrails remediation complete"
-importance_tier: "high"
-contextType: "implementation-summary"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/009-security-and-guardrails"

@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Feature Specification: Phase 012 — CocoIndex UX, Utilization & Usefulness"
+title: "Feature Specification: Phase 012 — [system-spec-kit/024-compact-code-graph/012-cocoindex-ux-utilization/spec]"
 description: "Align the Phase 012 packet with actual CocoIndex behavior and remaining gaps."
 trigger_phrases:
   - "phase 012"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "ux utilization usefulness"
 importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/012-cocoindex-ux-utilization"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Feature Specification: Phase 012 — CocoIndex UX, Utilization & Usefulness
 
@@ -65,7 +74,7 @@ Template compliance shim anchor for questions.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### 1. METADATA
 | Field | Value |
 |-------|-------|
@@ -74,22 +83,22 @@ Template compliance shim anchor for questions.
 | **Status** | In Progress |
 | **Created** | 2026-03-31 |
 | **Branch** | `024-compact-code-graph` |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:problem -->
+<!-- ANCHOR:problem-2 -->
 ### 2. PROBLEM & PURPOSE
 ### Problem Statement
 Phase 012 improved CocoIndex visibility and routing, but the packet drifted away from the Level 2 template and from current implementation reality. Several claims were overstated: SessionStart only reports binary availability, PreCompact only adds hint text, `ccc_status` and `ccc_feedback` are lightweight helpers, README/tool-reference updates are still pending, and SessionStart does not trigger background CocoIndex re-indexing.
 
 ### Purpose
 Keep this phase packet structurally compliant and factually accurate so implementation, review, and validation all reflect the same delivered state.
-<!-- /ANCHOR:problem -->
+<!-- /ANCHOR:problem-2 -->
 
 ---
 
-<!-- ANCHOR:scope -->
+<!-- ANCHOR:scope-2 -->
 ### 3. SCOPE
 ### In Scope
 - Document the actual delivered behavior of SessionStart, PreCompact, `ccc_status`, `ccc_reindex`, and `ccc_feedback`
@@ -110,11 +119,11 @@ Keep this phase packet structurally compliant and factually accurate so implemen
 | `tasks.md` | Modify | Track completed work versus explicit not-implemented items |
 | `checklist.md` | Modify | Rebuild the verification checklist with evidence and deferrals |
 | `implementation-summary.md` | Modify | Correct metadata and summarize delivered scope and limitations |
-<!-- /ANCHOR:scope -->
+<!-- /ANCHOR:scope-2 -->
 
 ---
 
-<!-- ANCHOR:requirements -->
+<!-- ANCHOR:requirements-2 -->
 ### 4. REQUIREMENTS
 ### P0 - Blockers (MUST complete)
 
@@ -131,33 +140,33 @@ Keep this phase packet structurally compliant and factually accurate so implemen
 | REQ-004 | PreCompact semantic integration must be described as hint-only. | Docs state it adds prompt guidance only and does not execute or cache CocoIndex semantic-neighbor queries. |
 | REQ-005 | `ccc_status` and `ccc_feedback` behavior must match the shipped helpers. | Docs describe `ccc_status` as availability/binaryPath/indexExists/indexSize and `ccc_feedback` as local JSONL append-only feedback. |
 | REQ-006 | Unfinished documentation and automation work must stay marked as not implemented. | Docs consistently mark README/tool-reference updates and SessionStart background re-index as not implemented. |
-<!-- /ANCHOR:requirements -->
+<!-- /ANCHOR:requirements-2 -->
 
 ---
 
-<!-- ANCHOR:success-criteria -->
+<!-- ANCHOR:success-criteria-2 -->
 ### 5. SUCCESS CRITERIA
 - **SC-001**: **Given** the packet is validated, **When** the validator checks template structure, **Then** it finds the required Level 2 headers and anchors.
 - **SC-002**: **Given** a reader reviews SessionStart notes, **When** they compare them to the implementation, **Then** they see status-only binary reporting rather than readiness bootstrapping.
 - **SC-003**: **Given** a reader reviews PreCompact behavior, **When** they inspect the packet, **Then** they see hint-text-only integration with no live CocoIndex query or cached snippet claims.
 - **SC-004**: **Given** a reader reviews helper-tool behavior, **When** they inspect the packet, **Then** `ccc_status` and `ccc_feedback` descriptions match the shipped helper contracts.
 - **SC-005**: Open gaps stay visible for follow-up work instead of being reported as complete.
-<!-- /ANCHOR:success-criteria -->
+<!-- /ANCHOR:success-criteria-2 -->
 
 ---
 
-<!-- ANCHOR:risks -->
+<!-- ANCHOR:risks-2 -->
 ### 6. RISKS & DEPENDENCIES
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Existing Phase 012 implementation state | Packet accuracy depends on matching shipped behavior | Keep statements limited to observed behavior and explicit gaps |
 | Risk | Documentation overstating automation | Reviewers may assume readiness/bootstrap work exists | Mark non-implemented items plainly in every packet document |
 | Risk | Validation drift | Packet remains noisy or fails strict checks | Use the Level 2 template structure and local cross-references only |
-<!-- /ANCHOR:risks -->
+<!-- /ANCHOR:risks-2 -->
 
 ---
 
-<!-- ANCHOR:questions -->
+<!-- ANCHOR:questions-2 -->
 
 ---
 
@@ -210,4 +219,4 @@ Keep this phase packet structurally compliant and factually accurate so implemen
 ### 10. OPEN QUESTIONS
 - Should a later phase add true SessionStart readiness bootstrapping, or remain status-only by design?
 - Should PreCompact eventually cache semantic-neighbor snippets, or stay as routing guidance only?
-<!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions-2 -->

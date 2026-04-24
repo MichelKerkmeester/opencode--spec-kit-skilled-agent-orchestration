@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Create Command YAML Refinement [03--commands-and-skills/027-cmd-create-yaml-refinement/spec]"
+title: "Feature Specification: Create Command YAML [skilled-agent-orchestration/027-cmd-create-yaml-refinement/spec]"
 description: "Define a Level 3 refinement packet that aligns the create-command YAML assets with the richer spec_kit-style workflow contract while preserving the current command behaviors."
 trigger_phrases:
   - "create yaml refinement"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "spec_kit style yaml alignment"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/027-cmd-create-yaml-refinement"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Create Command YAML Refinement
 

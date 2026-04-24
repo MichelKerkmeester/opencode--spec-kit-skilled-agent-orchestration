@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary: Phase 4 — Heuristics, Refactor & Guardrails"
+title: "...2-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails/implementation-summary]"
 description: "Phase 4 completed the largest packet slice: conservative predecessor discovery, explicit SaveMode branching, and reviewer checks that detect the repaired defect classes without false positives on the clean baseline."
 trigger_phrases:
   - "phase 4 implementation summary"
   - "heuristics refactor guardrails summary"
   - "d5 savemode reviewer closeout"
-importance_tier: important
+importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Phase 4 — Heuristics, Refactor & Guardrails
 

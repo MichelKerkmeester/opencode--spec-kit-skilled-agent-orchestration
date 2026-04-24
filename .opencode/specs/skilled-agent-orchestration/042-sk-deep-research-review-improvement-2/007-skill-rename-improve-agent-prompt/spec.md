@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Skill Rename - sk-improve-agent and sk-improve-prompt [042.007]"
+title: "Featu [skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/007-skill-rename-improve-agent-prompt/spec]"
 description: "Close the rename follow-through for the two improver skills by keeping folder names, changelog paths, and all active references aligned with the shipped command namespace."
 trigger_phrases:
   - "042.007"
@@ -9,6 +9,15 @@ trigger_phrases:
   - "rename closeout"
 importance_tier: "normal"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/007-skill-rename-improve-agent-prompt"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Skill Rename - sk-improve-agent and sk-improve-prompt
 

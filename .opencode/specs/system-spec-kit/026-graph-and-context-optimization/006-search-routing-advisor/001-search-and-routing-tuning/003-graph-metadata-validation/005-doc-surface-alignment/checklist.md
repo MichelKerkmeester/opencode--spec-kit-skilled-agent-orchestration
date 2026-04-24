@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 ---
-title: "Verification Checklist: Doc Surface Alignment: Graph Metadata Changes"
+title: "...arch-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment/checklist]"
 description: "Verification Date: 2026-04-13"
 trigger_phrases:
   - "verification"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "doc alignment"
   - "active-only validation"
 importance_tier: "important"
-contextType: "verification"
-status: complete
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment"
@@ -29,6 +28,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Which scanned surfaces were intentionally left unchanged"
+status: complete
 ---
 # Verification Checklist: Doc Surface Alignment: Graph Metadata Changes
 

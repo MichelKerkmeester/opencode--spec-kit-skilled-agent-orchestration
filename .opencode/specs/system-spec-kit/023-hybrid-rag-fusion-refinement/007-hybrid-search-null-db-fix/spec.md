@@ -1,20 +1,23 @@
 ---
 title: "Feature Specification: Hybrid [system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix/spec]"
 description: "The hybrid search pipeline returns 0 results for all queries because search-time filters eliminate every candidate after ESM migration follow-on changes."
-trigger_phrases:
-  - "hybrid search null db"
-  - "search returns 0 results"
-  - "memory search broken"
-  - "ftssearch db null"
-  - "vector search null reference"
-  - "esm module duplication search"
+trigger_phrases: ["hybrid search null db", "search returns 0 results", "memory search broken", "ftssearch db null", "vector search null reference", "esm module duplication search"]
 importance_tier: "critical"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["spec.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
-# Feature Specification: Hybrid Search Pipeline Null DB Fix
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
+
+# Feature Specification: Hybrid Search Pipeline Null DB Fix
 
 ---
 

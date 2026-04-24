@@ -1,5 +1,5 @@
 ---
-title: "Changelog: Nested Changelog Per Spec [025-nested-changelog-per-spec/root]"
+title: "Changelog: Nested Changelog Per Spec [system-spec-kit/025-nested-changelog-per-spec/root]"
 description: "Chronological changelog for the Nested Changelog Per Spec spec root."
 trigger_phrases:
   - "root changelog"
@@ -14,7 +14,7 @@ contextType: "implementation"
 
 ## 2026-04-03
 
-> Spec folder: `specs/system-spec-kit/025-nested-changelog-per-spec` (Level 3)
+> Spec folder: `.opencode/specs/system-spec-kit/025-nested-changelog-per-spec` (Level 3)
 
 ### Summary
 
@@ -44,7 +44,7 @@ Packet-local changelog generation now lives beside the existing implementation s
 
 ### Verification
 
-- npm run build --workspace=@spec-kit/scripts - PASS
+- cd .opencode/skill/system-spec-kit/scripts && npm run build - PASS
 - npx vitest run tests/nested-changelog.vitest.ts --config ../mcp_server/vitest.config.ts --root . - PASS
 - Root output path contract - PASS - focused test asserts changelog-<packet>-root.md
 - Phase output path contract - PASS - focused test asserts parent-packet changelog-<packet>-<phase-folder>.md output

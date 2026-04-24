@@ -1,14 +1,13 @@
 ---
-title: "Feature Specification: Memory Quality Backend Improvements"
+title: "F [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/spec]"
 description: "Parent packet spec for the shipped remediation train plus the scoped Phase 8 and Phase 9 follow-ons triggered by later packet audits."
 trigger_phrases:
   - "memory quality parent spec"
   - "d1 d8 packet closeout"
   - "five phase remediation train"
   - "phase documentation map"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Memory Quality Backend Improvements
 

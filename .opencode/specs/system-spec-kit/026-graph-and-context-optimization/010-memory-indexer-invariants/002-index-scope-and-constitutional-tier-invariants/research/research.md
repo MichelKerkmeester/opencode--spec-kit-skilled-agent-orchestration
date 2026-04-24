@@ -1,5 +1,5 @@
 ---
-title: "Research: Index Scope and Constitutional Tier Invariants"
+title: "...h-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants/research]"
 description: "Read-only investigation of memory scan discovery, save-time tier handling, code-graph scanning, constitutional injection, frontmatter parsing, and existing cleanup tooling."
 trigger_phrases:
   - "026/011 research"

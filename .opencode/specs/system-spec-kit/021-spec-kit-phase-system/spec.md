@@ -11,6 +11,15 @@ trigger_phrases:
   - "021"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/021-spec-kit-phase-system"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Feature Specification: SpecKit Phase System
@@ -199,7 +208,6 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 ---
 
 <!-- ANCHOR:nfr -->
-<!-- ANCHOR:requirements -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -224,7 +232,6 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 ---
 
 <!-- ANCHOR:edge-cases -->
-<!-- /ANCHOR:requirements -->
 ## 8. EDGE CASES
 
 ### Phase Structure Boundaries
@@ -354,7 +361,7 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 | Stakeholder | Role | Interest | Communication |
 |-------------|------|----------|---------------|
 | Project Owner | Decision maker | Feature direction, UX approval | Plan review, final acceptance |
-| AI Agents (@speckit, @general) | Primary consumers | Phase-aware behavior in workflows | SKILL.md router, command integration |
+| AI Agents (@write, @general) | Primary consumers | Phase-aware behavior in workflows | SKILL.md router, command integration |
 | spec_kit commands | Integration surface | Phase path resolution | Command md + YAML updates |
 | validate.sh pipeline | Quality gate | Phase-recursive validation | Script flag addition |
 | Template system | Content generation | Phase template addendum | CORE + ADDENDUM composition |
@@ -392,8 +399,6 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 - **Decision Records**: See `decision-record.md`
 - **Sub-Folder Versioning Reference**: See `../../../skill/system-spec-kit/references/structure/sub_folder_versioning.md`
 - **Level Specifications Reference**: See `../../../skill/system-spec-kit/references/templates/level_specifications.md`
-- **136 Spec (7-phase example)**: See `../136-mcp-working-memory-hybrid-rag/`
-- **138 Spec (3-workstream example)**: See `../138-hybrid-rag-fusion/`
 
 ---
 

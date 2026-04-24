@@ -1,3 +1,26 @@
+---
+title: "...timization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/013-code-graph-zero-calls-pt-03/research]"
+description: "This packet started from a prior report that calls_from and calls_to returned zero CALLS edges for handleMemoryContext, even though the function body clearly invokes many helper..."
+trigger_phrases:
+  - "timization"
+  - "009"
+  - "hook"
+  - "daemon"
+  - "parity"
+  - "research"
+  - "013"
+  - "code"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/013-code-graph-zero-calls-pt-03"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
+---
 # Deep Research — 013-code-graph-zero-calls-pt-03
 
 ## Summary

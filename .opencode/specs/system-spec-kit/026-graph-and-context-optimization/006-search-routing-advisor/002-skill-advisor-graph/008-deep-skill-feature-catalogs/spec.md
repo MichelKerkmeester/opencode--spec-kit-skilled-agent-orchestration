@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Deep Skill Feature Catalogs"
+title: "...aph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/spec]"
 description: "Create feature catalogs for sk-deep-research, sk-deep-review, and sk-improve-agent following the skill-advisor and system-spec-kit catalog patterns."
 trigger_phrases:
   - "008-deep-skill-feature-catalogs"
@@ -9,7 +9,6 @@ trigger_phrases:
   - "feature catalog improve agent"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs"
@@ -18,6 +17,7 @@ _memory:
     recent_action: "Created phase spec"
     next_safe_action: "Implement feature catalogs"
     key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level3-arch | v2.2 -->"
 ---
 # Feature Specification: Deep Skill Feature Catalogs
 

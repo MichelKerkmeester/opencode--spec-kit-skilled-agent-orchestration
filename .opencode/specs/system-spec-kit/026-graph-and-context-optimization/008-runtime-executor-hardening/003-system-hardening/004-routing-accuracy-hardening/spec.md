@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Routing Accuracy Hardening"
+title: "...aph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/004-routing-accuracy-hardening/spec]"
 description: "Implement routing accuracy improvements from 019/001/005 research: Wave A advisor command-surface normalization + Wave B Gate 3 deep-loop positive markers + Wave C optional follow-ons. Measured gains: Gate 3 F1 68.6%→83.3%, advisor accuracy 53.5%→60.0%."
 trigger_phrases:
   - "routing accuracy hardening"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "skill advisor command normalization"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/004-routing-accuracy-hardening"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Remediation child scaffolded from 019/001/005 research"
     next_safe_action: "Dispatch implementation"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Routing Accuracy Hardening
 

@@ -1,14 +1,13 @@
 ---
-title: "Implementation Summary: Phase 001 - Claude Optimization Settings (Reddit field-report audit)"
+title: "...026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings/implementation-summary]"
 description: "Delivery summary for the 13-iteration deep-research run: 24 findings, 11 adopt-now / 11 prototype-later / 2 reject, convergence trajectory, and next-ownership boundaries."
 trigger_phrases:
   - "claude optimization implementation summary"
   - "phase 001 delivery summary"
   - "deep research delivery"
-  - "F1-F24 findings summary"
+  - "f1-f24 findings summary"
 importance_tier: "important"
 contextType: "research"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Phase 001 - Claude Optimization Settings (Reddit field-report audit)
 

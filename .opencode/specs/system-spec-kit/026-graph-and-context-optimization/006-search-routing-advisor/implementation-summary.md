@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Search Routing Advisor"
+title: "Implementation [system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/implementation-summary]"
 description: "Summary of the 006-search-routing-advisor flattened parent and direct child phases."
 trigger_phrases:
   - "006-search-routing-advisor"
@@ -12,8 +12,7 @@ trigger_phrases:
   - "006-smart-router-remediation-and-opencode-plugin"
   - "007-deferred-remediation-and-telemetry-run"
 importance_tier: "important"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor"
@@ -34,6 +33,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

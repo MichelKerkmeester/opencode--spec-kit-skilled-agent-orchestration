@@ -1,10 +1,11 @@
 ---
-title: "Verification Checklist: 006-routing-accuracy-and-classifier-behavior Routing Accuracy and Classifier Behavior Remediation"
+title: "...deep-review-remediation/005-006-campaign-findings-remediation/006-routing-accuracy-and-classifier-behavior/checklist]"
 description: "Verification gates for 006-routing-accuracy-and-classifier-behavior Routing Accuracy and Classifier Behavior Remediation."
 trigger_phrases:
   - "verification checklist 006 routing accuracy and classifier behavior rout"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/006-routing-accuracy-and-classifier-behavior"

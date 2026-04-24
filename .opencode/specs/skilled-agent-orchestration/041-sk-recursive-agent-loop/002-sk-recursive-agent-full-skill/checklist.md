@@ -1,11 +1,20 @@
 ---
-title: "Verification Checklist: Agent Improvement Full Skill [skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/checklist]"
+title: "Verification [skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/checklist]"
 description: "Planning and implementation checklist for the follow-on full-skill packet."
 trigger_phrases:
   - "agent improvement full skill checklist"
   - "benchmark harness verification"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: Agent Improvement Full Skill
 

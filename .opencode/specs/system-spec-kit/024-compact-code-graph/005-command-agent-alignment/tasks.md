@@ -1,6 +1,24 @@
 ---
-title: "Tasks: Command & Agent Alignment [024/005]"
+title: "Tasks: Command & Agent Alignment [024/005] [system-spec-kit/024-compact-code-graph/005-command-agent-alignment/tasks]"
 description: "Task tracking for command updates and agent definition alignment across all runtimes."
+trigger_phrases:
+  - "tasks"
+  - "command"
+  - "agent"
+  - "alignment"
+  - "024"
+  - "005"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/005-command-agent-alignment"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Phase 005 — Command & Agent Alignment

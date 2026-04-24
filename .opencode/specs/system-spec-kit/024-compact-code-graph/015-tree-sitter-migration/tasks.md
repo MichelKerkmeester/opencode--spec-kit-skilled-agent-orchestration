@@ -1,6 +1,24 @@
 ---
-title: "Tasks: Tree-Sitter Migration Foundation [024/015]"
+title: "Tasks: Tree-Sitter Migration Foundation [system-spec-kit/024-compact-code-graph/015-tree-sitter-migration/tasks]"
 description: "Task tracking for 13 items across adapter interface, new edge types, ghost SymbolKinds, and cleanup."
+trigger_phrases:
+  - "tasks"
+  - "tree"
+  - "sitter"
+  - "migration"
+  - "foundation"
+  - "015"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/015-tree-sitter-migration"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Phase 015 — Tree-Sitter Migration Foundation

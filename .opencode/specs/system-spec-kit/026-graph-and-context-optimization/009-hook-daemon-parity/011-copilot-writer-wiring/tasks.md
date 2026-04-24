@@ -1,7 +1,13 @@
 ---
-title: "Tasks: Copilot Writer Wiring"
-importance_tier: "high"
-contextType: "spec"
+title: "Tasks: Copil [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring/tasks]"
+description: 'title: "Tasks: Copilot Writer Wiring"'
+trigger_phrases:
+  - "tasks"
+  - "copil"
+  - "011"
+  - "copilot"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring"

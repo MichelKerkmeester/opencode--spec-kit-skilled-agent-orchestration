@@ -1,11 +1,10 @@
 ---
-title: "Implementation Summary: Shared-Payload Advisor Contract"
+title: "...ion/009-hook-daemon-parity/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract/implementation-summary]"
 description: "Advisor shared-payload envelope contract implemented with transport tests and verification evidence."
 trigger_phrases:
   - "020 002 summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract"
@@ -15,7 +14,7 @@ _memory:
     next_safe_action: "Dispatch 020/003"
     blockers: []
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Shared-Payload Advisor Contract
 

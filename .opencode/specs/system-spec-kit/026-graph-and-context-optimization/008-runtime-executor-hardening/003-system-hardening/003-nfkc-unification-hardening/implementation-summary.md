@@ -1,10 +1,12 @@
 ---
-title: "Implementation Summary: NFKC Unification Hardening"
+title: "...timization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening/implementation-summary]"
 description: "HP1-HP6 NFKC unification hardening implementation summary with targeted adversarial verification evidence and full-suite blocker notes."
-trigger_phrases: ["nfkc hardening summary", "canonical unicode fold", "adversarial unicode corpus"]
+trigger_phrases:
+  - "nfkc hardening summary"
+  - "canonical unicode fold"
+  - "adversarial unicode corpus"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening"
@@ -12,6 +14,7 @@ _memory:
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Implemented HP1-HP6 Unicode normalization hardening and targeted adversarial tests"
     next_safe_action: "Resolve full-suite baseline"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: NFKC Unification Hardening
 

@@ -48,8 +48,14 @@ function parseArgs(argv: string[]): CliOptions {
         '',
         'Usage:',
         '  node evidence-marker-lint.js --folder <spec-folder> [--json] [--strict]',
+        '  node evidence-marker-lint.js --folder=<spec-folder> [--json] [--strict]',
+        '  node evidence-marker-lint.js <spec-folder> [--json] [--strict]',
       ].join('\n'));
       process.exit(0);
+    }
+    if (arg.startsWith('--folder=')) {
+      folder = arg.slice('--folder='.length);
+      continue;
     }
     if (arg === '--folder') {
       folder = argv[index + 1] ?? '';
@@ -62,6 +68,10 @@ function parseArgs(argv: string[]): CliOptions {
     }
     if (arg === '--strict') {
       strict = true;
+      continue;
+    }
+    if (!arg.startsWith('-') && !folder) {
+      folder = arg;
       continue;
     }
     throw new Error(`Unknown argument: ${arg}`);

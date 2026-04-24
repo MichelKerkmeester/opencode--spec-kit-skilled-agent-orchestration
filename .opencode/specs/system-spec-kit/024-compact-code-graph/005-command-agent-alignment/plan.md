@@ -10,6 +10,15 @@ trigger_phrases:
   - "005"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/005-command-agent-alignment"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Phase 5 — Command & Agent Alignment
@@ -88,12 +97,12 @@ Template compliance shim anchor for rollback.
    - Codex CLI (no hooks): verify resume still works via tool fallback
    - Verify no regression in any command's core behavior
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-2 -->
 ### Dependencies
 - Phase 1 (hook scripts must exist to test hook awareness)
 - Phase 3 (Stop hook must exist for `/memory:save` double-save detection)
 - Phase 4 (runtime detection needed for conditional behavior)
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-2 -->
 
 ### Technical Context
 - Runtime surface: system-spec-kit MCP server + hook adapters.

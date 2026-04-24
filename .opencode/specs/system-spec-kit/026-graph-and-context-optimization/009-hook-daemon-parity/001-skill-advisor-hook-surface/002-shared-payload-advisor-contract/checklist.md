@@ -1,11 +1,10 @@
 ---
-title: "Verification Checklist: Shared-Payload Advisor Contract"
+title: "...ext-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract/checklist]"
 description: "Level 2 verification for 020/002. Populate with evidence after /spec_kit:implement :auto converges."
 trigger_phrases:
   - "020 002 checklist"
 importance_tier: "critical"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract"
@@ -15,7 +14,7 @@ _memory:
     next_safe_action: "Populate after implementation"
     blockers: []
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Shared-Payload Advisor Contract
 

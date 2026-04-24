@@ -1,6 +1,24 @@
 ---
-title: "Tasks: CocoIndex Bridge + code_graph_context [024/010]"
+title: "Tasks: CocoIndex Bridge + code_graph_context [system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context/tasks]"
 description: "Task tracking for code_graph_context orchestration tool bridging CocoIndex semantic search into structural graph neighborhoods."
+trigger_phrases:
+  - "tasks"
+  - "cocoindex"
+  - "bridge"
+  - "code"
+  - "graph"
+  - "010"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Phase 010 — CocoIndex Bridge + code_graph_context

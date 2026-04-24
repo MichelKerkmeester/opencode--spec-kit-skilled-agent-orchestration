@@ -1,8 +1,13 @@
 ---
-title: "014-bm25-field-weight-evaluation: Evaluate BM25 Field Weights"
+title: "014-b [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/014-bm25-field-weight-evaluation/spec]"
 description: "Measures whether Modus-style BM25 field weighting should influence Public's constrained lexical retrieval surfaces."
+trigger_phrases:
+  - "014"
+  - "spec"
+  - "bm25"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 014-bm25-field-weight-evaluation: Evaluate BM25 Field Weights
 
 ## 1. Scope

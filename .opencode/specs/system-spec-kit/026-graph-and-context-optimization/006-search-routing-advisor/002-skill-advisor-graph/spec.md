@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Skill Advisor Graph [template:level_2/spec.md]"
+title: "Feature [system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/spec]"
 description: "Add structured graph metadata to all 20 skill folders, compile into a lightweight skill-graph.json, and integrate graph-derived boosts into skill_advisor.py routing."
 trigger_phrases:
   - "011-skill-advisor-graph"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "026-graph-and-context-optimization"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Created spec folder"
     next_safe_action: "Implement graph metadata files"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Skill Advisor Graph
 

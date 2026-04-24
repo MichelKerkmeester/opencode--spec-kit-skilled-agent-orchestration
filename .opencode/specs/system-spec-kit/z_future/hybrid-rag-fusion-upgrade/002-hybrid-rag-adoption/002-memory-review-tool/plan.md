@@ -1,3 +1,14 @@
+---
+title: "Plan: 002-memor [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/002-memory-review-tool/plan]"
+description: "1. Freeze the memory_review contract and grade vocabulary."
+trigger_phrases:
+  - "plan"
+  - "002"
+  - "memor"
+  - "memory"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 002-memory-review-tool
 
 ## Affected Files

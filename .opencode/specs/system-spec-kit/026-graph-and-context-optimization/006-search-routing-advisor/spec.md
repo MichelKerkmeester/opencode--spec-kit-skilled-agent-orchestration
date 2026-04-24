@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Search Routing Advisor"
+title: "Feature Specification: Search [system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/spec]"
 description: "Search/routing tuning, skill advisor graph, phrase boosters, and smart-router work. Consolidated active parent for 7 direct child phase packet(s)."
 trigger_phrases:
   - "006-search-routing-advisor"
@@ -13,7 +13,6 @@ trigger_phrases:
   - "007-deferred-remediation-and-telemetry-run"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor"
@@ -34,6 +33,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Search Routing Advisor
 

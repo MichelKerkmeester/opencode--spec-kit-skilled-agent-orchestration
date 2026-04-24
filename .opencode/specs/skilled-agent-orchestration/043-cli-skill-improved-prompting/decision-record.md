@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 ---
-title: "Decision Record: CLI Skill Prompt-Quality Integration via Mirror Cards [043]"
+title: "Decision Record: CLI Skill [skilled-agent-orchestration/043-cli-skill-improved-prompting/decision-record]"
 description: "Decision index for the mirror-card architecture, escalation agent, runtime parity, and command routing split."
 trigger_phrases:
   - "043 decision record"

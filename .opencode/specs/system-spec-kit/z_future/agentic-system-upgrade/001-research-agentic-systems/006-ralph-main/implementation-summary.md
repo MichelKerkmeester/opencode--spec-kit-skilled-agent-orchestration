@@ -1,12 +1,12 @@
 ---
-title: "Implementation Summary: 006-ralph-main Research Phase"
+title: "Imp [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/006-ralph-main/implementation-summary]"
 description: "Completed Phase 3 of the Ralph research packet, merged the three-phase synthesis, repaired packet-root docs, and validated the phase folder."
 trigger_phrases:
   - "006-ralph-main implementation summary"
   - "ralph phase closeout summary"
   - "phase 3 ralph research summary"
 importance_tier: "important"
-contextType: "summary"
+contextType: "implementation"
 ---
 # Implementation Summary: 006-ralph-main Research Phase
 

@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 ---
-title: "Implementation Plan: Non-System Playbook Prompt Modernization [skilled-agent-orchestration/044-non-system-playbook-prompts/plan]"
+title: "Implementation Plan: Non-System Playbook Prompt [skilled-agent-orchestration/044-non-system-playbook-prompts/plan]"
 description: "Execute a target-by-target documentation rewrite that modernizes prompt wording across 126 non-system manual testing playbook files while preserving file topology and scenario truth."
 trigger_phrases:
   - "playbook prompt modernization plan"

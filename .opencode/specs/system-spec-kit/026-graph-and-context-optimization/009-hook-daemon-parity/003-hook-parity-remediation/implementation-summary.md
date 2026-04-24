@@ -1,11 +1,12 @@
 ---
-title: "029 - Runtime Hook Parity Remediation Implementation Summary"
+title: "...pec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/implementation-summary]"
 description: "Runtime hook parity remediation across OpenCode transport, Codex advisor and pre-tool hooks, Copilot startup wiring, and documentation truth-sync."
 trigger_phrases:
   - "026/009/003 implementation summary"
   - "hook parity summary"
-importance_tier: "high"
-contextType: "implementation-summary"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"

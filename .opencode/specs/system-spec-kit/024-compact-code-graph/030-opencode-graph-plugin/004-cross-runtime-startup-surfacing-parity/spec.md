@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Cross-Runtime Startup Surfacing Parity [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/004-cross-runtime-startup-surfacing-parity]"
+title: "Featu [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/004-cross-runtime-startup-surfacing-parity/spec]"
 description: "Implements the follow-on phase that extends OpenCode's startup/session-context surfacing model to the other repo-managed CLI runtimes without reopening the completed packet 030 runtime phases."
 trigger_phrases:
   - "cross-runtime startup surfacing parity"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "level 3"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/004-cross-runtime-startup-surfacing-parity"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Cross-Runtime Startup Surfacing Parity
 
@@ -86,7 +95,7 @@ Complete the follow-on phase that aligns startup/session-context surfacing acros
 | `../tasks.md` | Modify | Mark the parity follow-on as implemented and verified |
 | `../checklist.md` | Modify | Update packet-level verification wording for phase 004 completion |
 | `../implementation-summary.md` | Modify | Record the completed parity pass in the parent closeout |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts` | Modify | Provide shared startup brief content reusable across runtimes |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts` | Modify | Provide shared startup brief content reusable across runtimes |
 | `.codex/agents/context-prime.toml` | Modify | Align Codex bootstrap output with the same startup surface |
 <!-- /ANCHOR:scope -->
 

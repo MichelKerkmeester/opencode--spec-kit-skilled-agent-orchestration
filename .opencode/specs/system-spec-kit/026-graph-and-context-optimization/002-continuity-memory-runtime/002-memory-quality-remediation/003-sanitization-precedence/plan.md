@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Phase 3 — Sanitization & Decision Precedence"
+title: "...d-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/003-sanitization-precedence/plan]"
 description: "Execution plan for PR-5 and PR-6 only: trigger-phrase sanitization, semantic-topic adjacency hardening, and a precedence-only decision gate with degraded-payload safety."
 trigger_phrases:
   - "phase 3 implementation plan"
@@ -7,9 +7,8 @@ trigger_phrases:
   - "pr-6"
   - "trigger phrase sanitizer"
   - "decision precedence"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/003-sanitization-precedence"
@@ -18,9 +17,8 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 ---
-
 # Implementation Plan: Phase 3 — Sanitization & Decision Precedence
 
 <!-- SPECKIT_LEVEL: 2 -->

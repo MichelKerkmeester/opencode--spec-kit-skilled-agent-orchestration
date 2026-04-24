@@ -247,6 +247,7 @@ When `{spec_folder}/resource-map.md` exists at init, deep review treats it as a 
 - Classify results into three buckets: entries touched, entries not touched (`expected-by-scope` vs `gap`), and implementation paths absent from the map.
 - Findings emitted from that audit use the `resource-map-coverage` category.
 - Synthesis inserts `## Resource Map Coverage Gate` into `review-report.md` when the map was present at init.
+- Convergence also emits `{artifact_dir}/resource-map.md` from review delta evidence unless the operator passes `--no-resource-map`.
 
 When `{spec_folder}/resource-map.md` is absent at init:
 
@@ -311,6 +312,7 @@ Example: `.../026-graph.../006-continuity-refactor-gates/003-gate-c-writer-ready
     deep-review-strategy.md          # Review dimensions, findings, next focus
     deep-review-dashboard.md         # Auto-generated review dashboard
     .deep-review-pause               # Pause sentinel checked between iterations
+    resource-map.md                  # Convergence-time coverage map from review deltas
     review-report.md                 # Final review report (synthesis output)
     iterations/
       iteration-NNN.md               # Write-once review findings per iteration
@@ -505,6 +507,7 @@ Local review-specific protocol documents:
 - Review loop ran to convergence or max iterations
 - All configured review dimensions have at least one iteration of coverage
 - All state files present and consistent (`config.json`, `state.jsonl`, `strategy.md`)
+- `review/resource-map.md` produced from converged deltas unless `config.resource_map.emit == false` (operator flag: `--no-resource-map`)
 - `review/review-report.md` produced with all 9 core sections, plus `## Resource Map Coverage Gate` when `resource_map_present == true`
 - Canonical continuity surfaces updated via `generate-context.js`
 

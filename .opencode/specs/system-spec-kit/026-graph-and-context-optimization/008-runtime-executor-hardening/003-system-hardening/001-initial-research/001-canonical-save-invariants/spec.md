@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Canonical-Save Pipeline Invariant Research (SSK-RR-2)"
+title: "...mization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants/spec]"
 description: "Deep-research sub-packet covering the SSK-RR-2 Tier 1 item from the 019 hardening charter. Enumerate every state write in the /memory:save pipeline, derive invariants, classify observed drift, and propose validator assertions. Wave 1 dispatch (infrastructure surfacing) per ADR-001 of 019/001."
 trigger_phrases:
   - "canonical save invariants"
@@ -10,7 +10,6 @@ trigger_phrases:
   - "description.json invariant research"
 importance_tier: "critical"
 contextType: "research"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants"
@@ -19,7 +18,7 @@ _memory:
     recent_action: "Research packet scaffolded"
     next_safe_action: "Dispatch /spec_kit:deep-research :auto"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Canonical-Save Pipeline Invariant Research
 

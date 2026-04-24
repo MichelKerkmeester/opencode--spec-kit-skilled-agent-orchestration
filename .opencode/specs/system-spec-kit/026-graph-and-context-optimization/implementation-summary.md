@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Graph and Context Optimization"
+title: "Implementation Summary: Graph and Context [system-spec-kit/026-graph-and-context-optimization/implementation-summary]"
 description: "The 026 packet now exposes nine active thematic phases while preserving all 29 original phase packets under child phase folders."
 trigger_phrases:
   - "026 graph and context optimization"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "merged phase map"
   - "graph context optimization root packet"
 importance_tier: "important"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

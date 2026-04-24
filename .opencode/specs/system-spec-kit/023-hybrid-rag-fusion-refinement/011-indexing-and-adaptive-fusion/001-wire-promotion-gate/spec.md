@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Wire PromotionGate to Action"
+title: "Feature [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate/spec]"
 description: "Connect runShadowEvaluation() promotionGate result to flip adaptive mode or apply threshold changes, closing the adaptive ranking feedback loop."
 trigger_phrases:
   - "promotion gate"
@@ -8,8 +8,16 @@ trigger_phrases:
   - "wire promotion"
 importance_tier: "normal"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["spec.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
@@ -38,7 +46,6 @@ This is **Phase 1** of the adaptive-ranking-prerequisites specification.
 - Unit tests proving the connection
 
 ---
-
 # Feature Specification: Wire PromotionGate to Action
 
 ---

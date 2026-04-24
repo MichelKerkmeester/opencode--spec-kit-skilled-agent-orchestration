@@ -1,14 +1,14 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
-title: "Implementation Summary: Cross-File Symbol Dedup Defense"
+title: "...ion/003-code-graph-package/003-code-graph-context-and-scan-scope/002-cross-file-dedup-defense/implementation-summary]"
 description: "Packet 012/003 added cross-file code graph symbol deduplication after TESTED_BY edge generation plus INSERT OR IGNORE persistence for residual duplicate symbol IDs."
 trigger_phrases:
   - "cross-file symbol dedup implementation"
   - "012/003 implementation summary"
-  - "globalSeenIds implemented"
-  - "INSERT OR IGNORE implemented"
+  - "globalseenids implemented"
+  - "insert or ignore implemented"
 importance_tier: "critical"
-contextType: "spec"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/003-cross-file-dedup-defense"
@@ -29,6 +29,7 @@ _memory:
     completion_pct: 92
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Cross-File Symbol Dedup Defense
 

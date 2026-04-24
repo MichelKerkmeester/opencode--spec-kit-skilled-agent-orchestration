@@ -238,6 +238,7 @@ When `{spec_folder}/resource-map.md` exists at init, deep research promotes it f
 - Treat files already listed on the map as known inventory, not as net-new discoveries.
 - Only flag files as gaps when they look relevant to the active investigation and are missing from the map.
 - Final synthesis cites `{spec_folder}/resource-map.md` in `research.md` References when the map was present at init.
+- Convergence also emits `{artifact_dir}/resource-map.md` from research delta evidence unless the operator passes `--no-resource-map`.
 
 When `{spec_folder}/resource-map.md` is absent at init:
 
@@ -304,6 +305,7 @@ Example: `.../026-graph.../019-system-hardening/001-initial-research/004-desc-re
     deep-research-dashboard.md       # Auto-generated loop dashboard
     .deep-research-pause             # Pause sentinel checked between lifecycle turns
     .deep-research.lock              # Advisory lock held from late INIT through cleanup
+    resource-map.md                  # Convergence-time resource map from research citations
     research.md                      # Workflow-owned final synthesis output
     iterations/
       iteration-NNN.md               # Write-once per-iteration findings
@@ -450,6 +452,7 @@ These concepts remain documented for future design work, but they are not part o
 ### Loop Completion
 - Research loop ran to convergence or max iterations
 - All state files present and consistent (config, JSONL, strategy)
+- research/resource-map.md produced from converged deltas unless `config.resource_map.emit == false` (operator flag: `--no-resource-map`)
 - research/research.md produced with findings from all iterations
 - Canonical continuity surfaces updated via generate-context.js
 

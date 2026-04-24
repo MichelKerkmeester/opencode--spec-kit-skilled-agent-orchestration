@@ -549,6 +549,10 @@ The code graph system provides structural code analysis via tree-sitter AST pars
 
 **Startup/recovery surfaces:** `session_resume`, `session_bootstrap`, and the startup brief now report freshness-aware graph status instead of count-only health. Startup surfaces are intentionally non-mutating snapshots, so later structural reads may still differ if repo state changes.
 
+**Cross-runtime startup payload parity:** all four supported runtimes transport the same compact startup shared-payload through their runtime-specific hooks — `hooks/claude/session-prime.ts`, `hooks/gemini/session-prime.ts`, `hooks/copilot/session-prime.ts`, and `hooks/codex/session-start.ts`. The transported payload includes `graphQualitySummary` (detector provenance + edge-enrichment summary) and the `sharedPayloadTransport` envelope produced by `buildStartupBrief()`. `session_bootstrap()` remains available as a manual recovery path when native startup hooks are disabled or unwired; it is no longer a Codex-only substitute.
+
+**CALLS disambiguation:** `code_graph_query` CALLS mode prefers callable implementation nodes over wrapper-shadow candidates for ambiguous subjects (e.g. `handle*`), and records ambiguity / selected-candidate metadata alongside the results so callers can audit the choice.
+
 **Query routing:** Structural queries (callers, imports, dependencies) go to `code_graph_query`. Semantic and concept queries go to CocoIndex (`mcp__cocoindex_code__search`). Session and memory queries go to `memory_context`.
 
 **Budget allocator floors:** constitutional 700, codeGraph 1200, cocoIndex 900, triggered 400, overflow pool 800 = 4000 total.
@@ -1039,6 +1043,8 @@ Generate a report showing search performance trends over time. Aggregates metric
 
 Query structural code relationships: `outline` (file symbols), `calls_from` and `calls_to` (call graph), `imports_from` and `imports_to` (dependency graph). Use this instead of Grep for structural queries. Supports multi-hop BFS traversal. Responses include a `readiness` block, and the handler may perform bounded inline selective reindex before answering when the graph is only lightly stale.
 
+When readiness requires a full scan that cannot run inline, `code_graph_query` returns the same explicit `status: "blocked"` payload as `code_graph_context` (with `data.blocked`, `graphAnswersOmitted`, `requiredAction: "code_graph_scan"`, `blockReason: "full_scan_required"`, readiness, and `lastPersistedAt`) instead of silently returning empty results. CALLS mode on ambiguous subjects (e.g. `handle*`) prefers callable implementation nodes over wrapper-shadow candidates and returns ambiguity / selected-candidate metadata so callers can audit the choice.
+
 | Parameter | Type | Notes |
 |-----------|------|-------|
 | `operation` | string | **Required.** `outline`, `calls_from`, `calls_to`, `imports_from`, `imports_to` |
@@ -1064,7 +1070,7 @@ Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results a
 | `profile` | string | Output density: `quick`, `research` or `debug` |
 | `includeTrace` | boolean | Include trace metadata for debugging |
 
-`data.metadata.partialOutput` is structured and stable: `isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, and `truncatedText`. Use it to distinguish a complete answer from one shortened by deadline or token-budget limits.
+`data.metadata.partialOutput` is structured and stable: `isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, and `truncatedText`. Use it to distinguish a complete answer from one shortened by deadline or token-budget limits. `data.metadata.deadlineMs` exposes the effective per-call deadline so callers can correlate `partialOutput.reasons` with the budget that produced them.
 
 ---
 

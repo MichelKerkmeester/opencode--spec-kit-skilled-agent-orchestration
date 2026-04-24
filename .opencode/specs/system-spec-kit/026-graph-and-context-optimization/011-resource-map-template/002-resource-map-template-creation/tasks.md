@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
-title: "Tasks: Resource Map Template"
+title: "...ystem-spec-kit/026-graph-and-context-optimization/011-resource-map-template/002-resource-map-template-creation/tasks]"
 description: "Ordered task list for authoring the new cross-cutting template and wiring it into every discovery surface."
 trigger_phrases:
   - "026/012 tasks"
   - "resource map tasks"
 importance_tier: "normal"
-contextType: "tasks"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/002-resource-map-template-creation"
@@ -18,6 +18,7 @@ _memory:
     completion_pct: 90
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Resource Map Template
 

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Graph and Context Systems Master Research Packet"
+title: "Feature Specification: Graph and [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/spec]"
 description: "Level 3 coordination packet for the v2 cross-phase synthesis, adoption decisions, and downstream sequencing for graph and context optimization in Public."
 trigger_phrases:
   - "graph and context optimization"
@@ -9,7 +9,6 @@ trigger_phrases:
   - "trust-axis separation"
 importance_tier: "critical"
 contextType: "research"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline"
@@ -18,7 +17,7 @@ _memory:
     recent_action: "Merged single original phase root"
     next_safe_action: "Use context-index.md for local phase navigation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: Graph and Context Systems Master Research Packet
 

@@ -1,9 +1,15 @@
 ---
-title: "Implementation Plan: Phase 017 Wave C — Rollout + Sweeps"
+title: "...t/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps/plan]"
 description: "Wave C execution plan: 5 tasks totalling 15h over 2 days. Staged T-CNS-03 sweep (1 smoke folder → 15 sequential), T-SRS-BND-01 permissive-mode canary, T-EVD-01 warn-then-strict activation. Per-folder rollback strategy for HIGH rollback-cost sweep."
-trigger_phrases: ["phase 017 wave c plan", "017 rollout plan", "wave c staged rollout", "t-cns-03 sixteen-folder sweep plan", "t-srs-bnd-01 canary plan"]
+trigger_phrases:
+  - "phase 017 wave c plan"
+  - "017 rollout plan"
+  - "wave c staged rollout"
+  - "t-cns-03 sixteen-folder sweep plan"
+  - "t-srs-bnd-01 canary plan"
 importance_tier: "critical"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps"

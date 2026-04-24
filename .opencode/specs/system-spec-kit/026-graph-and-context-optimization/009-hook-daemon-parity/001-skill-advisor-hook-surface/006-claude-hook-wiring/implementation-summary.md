@@ -1,11 +1,10 @@
 ---
-title: "Implementation Summary: Claude Hook Wiring"
+title: "...ext-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring/implementation-summary]"
 description: "Claude UserPromptSubmit hook wired to buildSkillAdvisorBrief via JSON hookSpecificOutput.additionalContext with fail-open diagnostics and settings registration."
 trigger_phrases:
   - "020 006 summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring"
@@ -18,7 +17,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/tests/claude-user-prompt-submit-hook.vitest.ts"
       - ".claude/settings.local.json"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Claude Hook Wiring
 

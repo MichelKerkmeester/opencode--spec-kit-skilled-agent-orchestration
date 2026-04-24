@@ -1,12 +1,21 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Checklist: Tool Routing Enforcement [025/024]"
+title: "Checklist: Tool Routing Enforcement [system-spec-kit/024-compact-code-graph/025-tool-routing-enforcement/checklist]"
 description: "Verification checklist for tool routing enforcement across all CLI runtimes."
 trigger_phrases:
   - "tool routing checklist"
   - "enforcement verification"
 importance_tier: "normal"
-contextType: "verification"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/025-tool-routing-enforcement"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Verification Checklist: Phase 025 — Tool Routing Enforcement
 

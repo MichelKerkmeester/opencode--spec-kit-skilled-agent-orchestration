@@ -1,5 +1,5 @@
 ---
-title: "Combined Deep Review: 009 + 010 + 012 + 014"
+title: "...iew-remediation/001-deep-review-and-remediation/review/015-deep-review-and-remediation-pt-01/merged-015-archive/spec]"
 description: "Meta-spec for a 50-iteration combined deep review across four sibling spec folders under 026-graph-and-context-optimization. Review only — no source-code changes."
 trigger_phrases:
   - "combined deep review"
@@ -8,7 +8,8 @@ trigger_phrases:
   - "026 combined review"
   - "deep-review combined"
 importance_tier: "normal"
-contextType: "review"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "015-combined-deep-review-four-specs"

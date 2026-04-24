@@ -1,9 +1,18 @@
 ---
-title: "Spec: Phase 017 Wave D — P2 Maintainability (Deferrable)"
+title: "...6-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability/spec]"
 description: "Child phase 004 of Phase 017 remediation. 6 P2 maintainability tasks (~40h): assertNever helper + 8 unions, runEnrichmentStep extraction, OnIndexSkipReason satisfies, runAtomicReconsolidationTxn extraction, typed YAML predicate for CP-004, Docker deployment note. Deferrable — no critical-path dependency. Parking-lot P2s tracked for Phase 018+."
-trigger_phrases: ["017 wave d", "017 p2 maintainability", "phase 017 wave d", "t-exh-01 assertnever", "t-pin-god-01 runenrichmentstep", "t-rcb-dup-01 runatomicreconsolidationtxn", "t-yml-cp4-01", "004-p2-maintainability"]
-importance_tier: "standard"
-contextType: "specification"
+trigger_phrases:
+  - "017 wave d"
+  - "017 p2 maintainability"
+  - "phase 017 wave d"
+  - "t-exh-01 assertnever"
+  - "t-pin-god-01 runenrichmentstep"
+  - "t-rcb-dup-01 runatomicreconsolidationtxn"
+  - "t-yml-cp4-01"
+  - "004-p2-maintainability"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability"

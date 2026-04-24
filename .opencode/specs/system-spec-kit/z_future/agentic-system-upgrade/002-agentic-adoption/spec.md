@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 002 Agentic Adoption [template:level_3/spec.md]"
+title: "Feature Specification: 002 Agentic [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/spec]"
 description: "Parent packet that converts nine completed external-system research phases into one implementation-ready adoption train and one parallel investigation train for Public."
 trigger_phrases:
   - "feature"

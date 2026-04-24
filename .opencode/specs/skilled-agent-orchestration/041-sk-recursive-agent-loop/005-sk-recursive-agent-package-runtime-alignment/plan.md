@@ -1,11 +1,20 @@
 ---
-title: "Implementation Plan: Recursive Agent Package and Runtime Alignment [template:level_2/plan.md]"
+title: "Implemen [skilled-agent-orchestration/041-sk-recursive-agent-loop/005-sk-recursive-agent-package-runtime-alignment/plan]"
 description: "Plan for phase 005 under packet 041 covering stricter template alignment, runtime agent rename, command alignment, and .agents mirror sync."
 trigger_phrases:
   - "041 phase 005 plan"
   - "recursive agent package runtime alignment plan"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/005-sk-recursive-agent-package-runtime-alignment"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Recursive Agent Package and Runtime Alignment
 

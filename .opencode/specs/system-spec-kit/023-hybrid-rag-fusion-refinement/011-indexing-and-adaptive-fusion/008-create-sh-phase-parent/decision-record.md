@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Append Nested Child Phases in create.sh [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent]"
+title: "...pec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/decision-record]"
 description: "Record the path-resolution and flag-surface choices for nested phase append support in create.sh."
 trigger_phrases:
   - "phase-parent adr"
@@ -7,11 +7,20 @@ trigger_phrases:
   - "parent-derived resolution adr"
 importance_tier: "critical"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["decision-record.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
-# Decision Record: Append Nested Child Phases in create.sh
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+
+# Decision Record: Append Nested Child Phases in create.sh
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Phase 5 — Operations & Tail PRs"
+title: "...h-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs/spec]"
 description: "Phase 5 packages the operational tail work after the core nine-PR train: telemetry folded into PR-9, optional historical safe-subset migration, optional D9 save-lock hardening, release communication, and phase-local closeout while parent closeout is tracked separately."
 trigger_phrases:
   - "phase 5 operations tail prs"
@@ -8,9 +8,8 @@ trigger_phrases:
   - "memory save telemetry"
   - "capture mode parity release notes"
   - "operations closeout phase"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs"
@@ -19,7 +18,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child | v2.2 -->"
 ---
 # Feature Specification: Phase 5 — Operations & Tail PRs
 

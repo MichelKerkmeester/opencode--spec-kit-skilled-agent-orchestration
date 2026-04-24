@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 002 Agentic Adoption [template:level_2/checklist.md]"
+title: "Verification Checklist: 002 Agentic [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

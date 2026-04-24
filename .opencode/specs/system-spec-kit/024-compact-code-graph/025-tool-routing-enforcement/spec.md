@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Feature Specification: Tool Routing Enforcement [025/024]"
+title: "Feature Specification: Tool Routing [system-spec-kit/024-compact-code-graph/025-tool-routing-enforcement/spec]"
 description: "Fix root cause of AI tool misjudgment — enforce CocoIndex and Code Graph usage across all CLI runtimes via MCP-level enforcement, not just passive CLAUDE.md instructions."
 trigger_phrases:
   - "tool routing enforcement"
@@ -10,8 +10,16 @@ trigger_phrases:
   - "semantic search enforcement"
 importance_tier: "critical"
 contextType: "implementation"
----
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/025-tool-routing-enforcement"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
 
+---
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 25 of 27 |

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Codex command discoverability routing update [03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing/plan]"
+title: "Implementation Plan: Codex command [skilled-agent-orchestration/039-cmd-spec-kit-codex-skill-routing/plan]"
 description: "This plan updates the existing Level 1 packet so it preserves the original four-command recommendation while recording the approved expanded all-commands quick-reference direction and downstream docs scope."
 trigger_phrases:
   - "codex shortlist plan"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "039 plan"
 importance_tier: "normal"
 contextType: "research"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/039-cmd-spec-kit-codex-skill-routing"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Codex command discoverability routing update
 

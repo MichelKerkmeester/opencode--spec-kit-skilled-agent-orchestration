@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 006 Agent Role Consolidation [template:level_2/checklist.md]"
+title: "Verificati [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/006-agent-role-consolidation/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Phase 001 - Claude Optimization Settings (Reddit field-report audit)"
+title: "Ta [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings/tasks]"
 description: "Backfilled task list for the 13-iteration deep-research run plus packet-doc reconciliation, validation, and memory save."
 trigger_phrases:
   - "claude optimization tasks"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "iteration tasks"
 importance_tier: "normal"
 contextType: "research"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Phase 001 - Claude Optimization Settings (Reddit field-report audit)
 

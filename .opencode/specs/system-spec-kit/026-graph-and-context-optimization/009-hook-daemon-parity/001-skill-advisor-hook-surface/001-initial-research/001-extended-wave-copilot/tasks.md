@@ -1,10 +1,10 @@
 ---
-title: "Tasks: 020 Extended Research (cli-copilot)"
+title: "...imization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot/tasks]"
 description: "Task list for 10 extended research iterations."
-trigger_phrases: ["020 extended tasks"]
+trigger_phrases:
+  - "020 extended tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Tasks scaffolded"
     next_safe_action: "Begin T001"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: 020 Extended Research
 

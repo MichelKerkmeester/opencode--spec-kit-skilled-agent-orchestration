@@ -1,12 +1,21 @@
 ---
-title: "Feature Specification: 041 Recursive Agent Loop [template:level_2/spec.md]"
+title: "Feature Specification: 041 Recursive Agent Loop [skilled-agent-orchestration/041-sk-recursive-agent-loop/spec]"
 description: "Parent packet for the sk-improve-agent program. Phases 001-007 build the evaluator-first MVP through doc alignment, promotion verification, runtime alignment, command rename, and wording cleanup. Phase 008 adds holistic 5-dimension evaluation with integration scanning, dynamic profiling, and any-agent support. Renamed from sk-recursive-agent to sk-improve-agent."
 trigger_phrases:
   - "041 spec"
   - "recursive agent loop"
   - "recursive agent phases"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: 041 Recursive Agent Loop
 

@@ -1,3 +1,14 @@
+---
+title: "Check [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/013-fsrs-memory-decay-study/checklist]"
+description: "checklist document for 013-fsrs-memory-decay-study."
+trigger_phrases:
+  - "check"
+  - "checklist"
+  - "013"
+  - "fsrs"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Checklist: 013-fsrs-memory-decay-study
 
 ## P0

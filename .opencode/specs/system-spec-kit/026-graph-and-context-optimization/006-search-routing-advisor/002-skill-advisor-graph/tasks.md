@@ -1,12 +1,11 @@
 ---
-title: "Tasks: Skill Advisor Graph [template:level_2/tasks.md]"
+title: "Tasks [system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/tasks]"
 description: "Task breakdown for 011-skill-advisor-graph."
 trigger_phrases:
   - "011-skill-advisor-graph"
   - "tasks"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Created tasks"
     next_safe_action: "Implement graph metadata files"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Skill Advisor Graph
 

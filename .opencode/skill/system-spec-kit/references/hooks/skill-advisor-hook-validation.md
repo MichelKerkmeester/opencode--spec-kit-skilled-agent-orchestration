@@ -1,14 +1,16 @@
 ---
 title: Skill Advisor Hook Validation Playbook
-description: Manual release validation playbook for the Phase 020 skill-advisor hook.
+description: Manual validation playbook for the shipped skill-advisor hook and MCP contract (Packet 014 surface).
 trigger_phrases:
   - "skill advisor hook validation"
   - "advisor hook release playbook"
+  - "advisor validate playbook"
+  - "advisor workspaceRoot validation"
 ---
 
 # Skill Advisor Hook Validation Playbook
 
-Use this playbook before cutting a Phase 020 release or after changing any runtime hook registration. It verifies the reference contract, runtime parity, privacy boundaries, disable flag and rollback path.
+Use this playbook after changing any runtime hook registration, any advisor MCP handler (`advisor_recommend` / `advisor_validate`), the OpenCode plugin-helper bridge, or the shared render/threshold contract. It verifies the shipped Packet 014 surface: public `workspaceRoot` + effective-threshold state on advisor outputs, `thresholdSemantics`, prompt-safe accepted/corrected/ignored totals, durable JSONL diagnostics, runtime parity, the disable flag, and the rollback path.
 
 ---
 
@@ -26,12 +28,14 @@ Required files:
 
 | File | Purpose |
 |------|---------|
-| `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md` | Operator reference |
+| `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md` | Operator reference (native tool table + runtime matrix + shared threshold/render contract) |
 | `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook-validation.md` | This playbook |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts` | Runtime parity |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-corpus-parity.vitest.ts` | 019/004 corpus parity |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-timing.vitest.ts` | Timing and replay gates |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-privacy.vitest.ts` | Privacy audit |
+| `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-recommend.ts` | `advisor_recommend` handler (must accept `workspaceRoot`) |
+| `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-validate.ts` | `advisor_validate` handler (must surface `thresholdSemantics` + telemetry totals) |
+| `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/render.ts` | Shared `renderAdvisorBrief(...)` invariants |
+| `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts` | Durable JSONL diagnostics sink + metric labels |
+| `.opencode/plugins/spec-kit-skill-advisor.js` | OpenCode plugin |
+| `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs` | OpenCode plugin-helper bridge entrypoint |
 
 ---
 
@@ -39,47 +43,81 @@ Required files:
 <!-- ANCHOR:steps -->
 ## 2. VALIDATION STEPS
 
-### Step 1: Spec Pre-Flight
+### Step 1: Public Advisor Contract — `advisor_recommend`
 
-Validate every Phase 020 child folder:
+Goal: verify `advisor_recommend` accepts explicit `workspaceRoot` and surfaces the resolved workspace + effective thresholds.
 
 ```bash
-for child in \
-  002-shared-payload-advisor-contract \
-  003-advisor-freshness-and-source-cache \
-  004-advisor-brief-producer-cache-policy \
-  005-advisor-renderer-and-regression-harness \
-  006-claude-hook-wiring \
-  007-gemini-copilot-hook-wiring \
-  008-codex-integration-and-hook-policy \
-  009-documentation-and-release-contract
-do
-  bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/020-skill-advisor-hook-surface/${child}" \
-    --strict --no-recursive
-done
+npx vitest run .opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/advisor-recommend.contract.vitest.ts \
+  --config .opencode/skill/system-spec-kit/mcp_server/vitest.config.ts \
+  --reporter verbose
 ```
 
-Pass condition: each child reports `Errors: 0`.
+Manual check (MCP or REPL):
 
-### Step 2: Cross-Runtime Smoke
-
-Use one known work-intent prompt:
-
-```text
-implement a TypeScript hook
+```js
+advisor_recommend({ prompt: "implement a TypeScript hook", workspaceRoot: "<repo-root>" })
 ```
 
-Check each runtime:
+Pass condition: the response includes `metadata.workspaceRoot` equal to the supplied root and `metadata.effectiveThresholds` with the resolved confidence/uncertainty numbers used for routing.
+
+### Step 2: Public Advisor Contract — `advisor_validate`
+
+Goal: verify `advisor_validate` surfaces `workspaceRoot`, `thresholdSemantics`, and prompt-safe `telemetry.outcomes.totals`.
+
+```js
+advisor_validate({ skillSlug: null, workspaceRoot: "<repo-root>" })
+```
+
+Pass conditions:
+
+- `workspaceRoot` equals the supplied root.
+- `thresholdSemantics` is present and distinguishes **aggregate** (across-corpus) vs **runtime** (per-invocation) semantics.
+- `telemetry.outcomes.totals` contains numeric `accepted`, `corrected`, and `ignored` counts with no raw prompt text anywhere in the payload.
+- Corpus/holdout/parity/safety/latency slices still render (existing contract preserved).
+
+### Step 3: Durable JSONL Diagnostics
+
+Goal: confirm hook diagnostics persist to bounded JSONL sinks under the temp metrics root and that `advisor_validate` can read them back across processes.
+
+```bash
+ls -la "${TMPDIR:-/tmp}"/speckit-advisor-metrics/*.jsonl
+head -3 "${TMPDIR:-/tmp}"/speckit-advisor-metrics/*.jsonl
+```
+
+Then drive a prompt through any runtime hook (e.g. the Copilot deterministic smoke in Step 5), and confirm a fresh line appears in the sink and is reflected in the next `advisor_validate` telemetry rollup.
+
+Pass condition: sinks are bounded (rotation/truncation visible), contain closed-label fields only, and are picked up by `advisor_validate` telemetry rollups.
+
+### Step 4: OpenCode Bridge Smoke
+
+Goal: confirm the plugin-helper bridge path is wired and routes through the shared render contract.
+
+```bash
+node --input-type=module -e "
+  import('./.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs').then(async mod => {
+    const res = await mod.default({ prompt: 'implement a TypeScript hook', cwd: process.cwd() });
+    console.log(JSON.stringify(res, null, 2));
+  });
+"
+```
+
+Pass conditions:
+
+- Response carries `metadata.workspaceRoot` + `metadata.effectiveThresholds` (Packet 014 surfaced state).
+- The default prompt-time threshold contract is `0.8` (confidence) / `0.35` (uncertainty) unless overridden.
+- No custom formatter is invoked — output matches the shared `renderAdvisorBrief(...)` invariants.
+
+### Step 5: Cross-Runtime Smoke
+
+One known work-intent prompt: `implement a TypeScript hook`
 
 | Runtime | Smoke |
 |---------|-------|
 | Claude | Start a prompt with the hook registered and confirm an advisor brief or documented no-op path |
 | Gemini | Trigger `BeforeAgent` and confirm JSON `additionalContext` |
 | Copilot | Trigger `userPromptSubmitted` with `SPECKIT_COPILOT_INSTRUCTIONS_PATH` pointed at a temp file; confirm stdout is `{}` and the file contains the managed advisor block |
-| Codex | Use native `UserPromptSubmit` or documented fallback and confirm `additionalContext` |
-
-Pass condition: every runtime shows the same brief when the fixture is live, or the no-brief state is documented by current freshness.
+| Codex | Use native `UserPromptSubmit` (enable `[features].codex_hooks` + `~/.codex/hooks.json`) or the documented prompt-wrapper fallback, then confirm `additionalContext` |
 
 Copilot deterministic smoke:
 
@@ -90,17 +128,17 @@ printf '%s' '{"prompt":"implement a TypeScript hook","cwd":"'"$PWD"'"}' | \
 rg -n "SPEC-KIT-COPILOT-CONTEXT|Active Advisor Brief|Advisor:" "$SPECKIT_COPILOT_INSTRUCTIONS_PATH"
 ```
 
-Expected: the hook prints `{}` and the managed custom-instructions block carries the advisor brief. For live Copilot CLI verification, run one follow-up `copilot -p` prompt and confirm it can read the refreshed `Active Advisor Brief` from custom instructions.
+Expected: hook prints `{}` and the managed custom-instructions block carries the advisor brief.
 
-### Step 3: Disable-Flag Verification
+Pass condition: every runtime shows the same brief when the advisor is live, or a documented no-brief state. The shared render contract means Codex and OpenCode produce byte-identical brief bodies for equivalent input.
 
-Set the rollback flag:
+### Step 6: Disable-Flag Verification
 
 ```bash
 export SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1
 ```
 
-Run at least one runtime hook smoke. A fast Claude-style direct smoke can use unit fixtures:
+Run a fast direct-hook smoke:
 
 ```bash
 cd .opencode/skill/system-spec-kit/mcp_server
@@ -109,7 +147,7 @@ npx vitest run tests/claude-user-prompt-submit-hook.vitest.ts \
   --reporter verbose
 ```
 
-Pass condition: the disable test reports that the producer was not called and runtime output is `{}`.
+Pass condition: producer is not called, hook output is `{}`, and no JSONL lines are written for the suppressed prompts.
 
 Unset after the check:
 
@@ -117,59 +155,26 @@ Unset after the check:
 unset SPECKIT_SKILL_ADVISOR_HOOK_DISABLED
 ```
 
-### Step 4: Corpus Parity
+### Step 7: Cross-Consistency Grep
 
-Run the 019/004 corpus parity check:
-
-```bash
-npx vitest run .opencode/skill/system-spec-kit/mcp_server/tests/advisor-corpus-parity.vitest.ts \
-  --config .opencode/skill/system-spec-kit/mcp_server/vitest.config.ts \
-  --reporter verbose
-```
-
-Pass condition: `200/200` top-1 match.
-
-### Step 5: Timing Gates
-
-Run timing and replay gates:
+Confirm no runtime or plugin still routes through a bespoke formatter or a non-shared threshold:
 
 ```bash
-npx vitest run .opencode/skill/system-spec-kit/mcp_server/tests/advisor-timing.vitest.ts \
-  --config .opencode/skill/system-spec-kit/mcp_server/vitest.config.ts \
-  --reporter verbose
-```
+rg -n "renderAdvisorBrief|effectiveThresholds|thresholdSemantics|workspaceRoot" \
+  .opencode/skill/system-spec-kit/mcp_server/skill-advisor \
+  .opencode/plugins/spec-kit-skill-advisor.js \
+  .opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs \
+  .opencode/skill/system-spec-kit/mcp_server/hooks
 
-Pass conditions:
-
-| Gate | Required |
-|------|----------|
-| Cache-hit p95 | `<= 50 ms` |
-| 30-turn replay hit rate | `>= 60%` |
-
-Current Phase 020 evidence from 005: cache-hit p95 `0.016 ms`, replay hit rate `66.7%`.
-
-### Step 6: Privacy Audit
-
-Run:
-
-```bash
-npx vitest run .opencode/skill/system-spec-kit/mcp_server/tests/advisor-privacy.vitest.ts \
-  --config .opencode/skill/system-spec-kit/mcp_server/vitest.config.ts \
-  --reporter verbose
-```
-
-Then spot-check any local diagnostic output:
-
-```bash
-rg -n "prompt|promptFingerprint|promptExcerpt|stdout|stderr" \
+rg -n "formatAdvisorBrief|legacyAdvisorRender|custom formatter" \
   .opencode/skill/system-spec-kit/mcp_server \
-  -g '*advisor*' \
-  -g '!dist/**'
+  .opencode/plugins \
+  .opencode/plugin-helpers
 ```
 
-Pass condition: tests pass and JSONL/metrics schemas do not include forbidden prompt-bearing fields.
+Pass condition: the first grep returns the expected shared-contract references; the second grep returns no hits (no drift back to branch-specific rendering).
 
-### Step 7: Observability Check
+### Step 8: Observability Check
 
 Confirm metric names match the reference doc:
 
@@ -186,17 +191,15 @@ Expected metric names:
 - `speckit_advisor_hook_fail_open_total`
 - `speckit_advisor_hook_freshness_state`
 
-Pass condition: only closed labels appear in the metrics contract.
+Pass condition: only closed labels appear in the metrics contract and the durable JSONL sink schema excludes prompt-bearing fields.
 
-### Step 8: Rollback Drill
-
-Verify the rollback path:
+### Step 9: Rollback Drill
 
 1. Enable runtime hook registration.
-2. Confirm an advisor brief appears for a work-intent prompt, or for Copilot confirm the managed custom-instructions block is refreshed.
+2. Confirm an advisor brief appears for a work-intent prompt; for Copilot confirm the managed custom-instructions block is refreshed.
 3. Set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1`.
 4. Repeat the prompt.
-5. Confirm no advisor brief appears and no producer call occurs. For Copilot, also confirm the managed custom-instructions block is not rewritten while the flag is set.
+5. Confirm no advisor brief appears, no producer call occurs, and no new JSONL lines are written. For Copilot, also confirm the managed custom-instructions block is not rewritten while the flag is set.
 6. Unset the flag.
 7. Repeat the prompt and confirm normal behavior returns.
 
@@ -210,10 +213,13 @@ Pass condition: rollback and re-enable need no state cleanup.
 
 | Symptom | Root Cause | Fix |
 |---------|------------|-----|
+| `workspaceRoot` missing from `advisor_recommend` / `advisor_validate` output | Handler not rebuilt or `workspaceRoot` resolver returning undefined | Rebuild the MCP server, confirm the request includes `workspaceRoot`, check the resolver in `skill-advisor/lib/` |
+| `thresholdSemantics` absent from `advisor_validate` | Validator still on pre-Packet-014 branch or unified-builder path bypassed | Check `skill-advisor/handlers/advisor-validate.ts` and confirm it imports the shared threshold contract |
+| Different brief bodies from Codex vs OpenCode for equivalent input | One path still routes through a custom formatter | Run Step 7 grep; any `formatAdvisorBrief`/`legacyAdvisorRender` hit is drift to fix |
 | No brief appears in any runtime | Disable flag set, advisor script missing, or prompt policy skipped | Unset `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED`, check `skill_advisor.py`, use a work-intent prompt |
-| Brief appears in Claude but not Gemini or Copilot | Runtime registration drift or Copilot custom-instructions target mismatch | Check `.gemini/settings.json`, `.github/hooks/*.json`, `SPECKIT_COPILOT_INSTRUCTIONS_PATH`, and the managed block in `$HOME/.copilot/copilot-instructions.md`, then run `advisor-runtime-parity.vitest.ts` |
+| Brief appears in Claude but not Gemini or Copilot | Runtime registration drift or Copilot custom-instructions target mismatch | Check `.gemini/settings.json`, `.github/hooks/*.json`, `SPECKIT_COPILOT_INSTRUCTIONS_PATH`, and the managed block in `$HOME/.copilot/copilot-instructions.md` |
+| JSONL sink empty or unbounded | Metrics root misconfigured or rotation disabled | Check `TMPDIR`, confirm `skill-advisor/lib/metrics.ts` sink wiring, and verify rotation bounds |
 | `freshness: "unavailable"` persists | Probe failure, missing graph, or corrupt generation counter | Check `.opencode/skill/.advisor-state/generation.json`, `skill-graph.sqlite`, and JSONL `errorCode` |
-| p95 latency exceeds 100 ms | Cache misses increased or subprocess path is hot | Inspect cache hit metrics, source-signature churn and graph rebuild frequency |
 | Fail-open rate exceeds 5% | Python missing, timeout, invalid JSON, SQLite busy or script missing | Inspect `speckit_advisor_hook_fail_open_total` by `errorCode`, then fix the top code |
 
 ---
@@ -225,15 +231,16 @@ Pass condition: rollback and re-enable need no state cleanup.
 Copy this block into release notes or the parent implementation summary:
 
 ```text
-Advisor hook validation evidence:
-- spec pre-flight: PASS, errors=0 for 002-009
-- cross-runtime smoke: PASS or documented no-op
-- disable flag: PASS, producer not called
-- corpus parity: PASS, 200/200
-- timing: PASS, cache-hit p95 <= 50 ms, hit rate >= 60%
-- privacy: PASS, advisor-privacy suite green
-- observability: PASS, metric labels closed
-- rollback drill: PASS, flag disables and re-enable restores
+Advisor hook validation evidence (Packet 014 surface):
+- advisor_recommend contract: PASS — workspaceRoot + effectiveThresholds surfaced
+- advisor_validate contract: PASS — workspaceRoot + thresholdSemantics + accepted/corrected/ignored totals present
+- durable JSONL diagnostics: PASS — bounded sinks, read back by advisor_validate across processes
+- opencode bridge smoke: PASS — shared renderAdvisorBrief path, 0.8 / 0.35 threshold contract
+- cross-runtime smoke: PASS or documented no-op for Claude, Gemini, Copilot, Codex
+- disable flag: PASS — producer not called, no JSONL lines written
+- cross-consistency grep: PASS — no drift to legacy formatters
+- observability: PASS — metric labels closed, no prompt-bearing fields
+- rollback drill: PASS — flag disables and re-enable restores
 ```
 
 ---
@@ -243,7 +250,7 @@ Advisor hook validation evidence:
 ---
 
 <!-- ANCHOR:multi-turn-regression-harness -->
-## 9. Multi-turn Regression Harness
+## 5. Multi-turn Regression Harness
 
 Use this harness when validating hook behavior across several advisor prompts. It keeps the prompts in one Claude Code session so the run pays one cache-creation cost instead of one fresh cache-creation per prompt.
 
@@ -284,8 +291,6 @@ Pass condition:
 - The final `result.total_cost_usd` is `<= 0.30`.
 - Each of the five work-intent prompts produces an `Advisor:` brief or a documented skip/fail-open reason.
 - Hook events remain stable for `UserPromptSubmit`, `SessionStart`, and `Stop`.
-
-Cost rationale: five separate `claude -p` sessions each create a fresh prompt cache and can repeat the cache-creation tax. One stream-json session creates the cache once, then spends mostly incremental input and output tokens for the remaining four prompts. This is the expected pattern for the 17-test hook pack: one cache-creation per session instead of `N` cache-creations for `N` one-shot prompts.
 
 Disable-flag note: `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` is read by the hook process environment. Do not flip it midway through a stream-json session and expect deterministic mixed behavior. Run a separate disabled fixture for rollback verification:
 

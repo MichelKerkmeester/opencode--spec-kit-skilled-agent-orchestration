@@ -1,11 +1,10 @@
 ---
-title: "Verification Checklist: 020 Wave-3 Validation Research"
+title: "...emon-parity/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot/checklist]"
 description: "Level 2 verification for wave-3. Populate post-convergence."
 trigger_phrases:
   - "020 wave 3 checklist"
 importance_tier: "critical"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot"
@@ -14,7 +13,7 @@ _memory:
     recent_action: "Checklist scaffolded"
     next_safe_action: "Populate post-convergence"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: 020 Wave-3 Validation Research
 

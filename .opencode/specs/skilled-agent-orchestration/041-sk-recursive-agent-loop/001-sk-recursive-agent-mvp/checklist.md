@@ -1,11 +1,20 @@
 ---
-title: "Verification Checklist: Agent Improvement Loop [skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/checklist]"
+title: "Verification Checklist [skilled-agent-orchestration/041-sk-recursive-agent-loop/001-sk-recursive-agent-mvp/checklist]"
 description: "Verification Date: 2026-04-03"
 trigger_phrases:
   - "agent improvement checklist"
   - "verification"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/001-sk-recursive-agent-mvp"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: Agent Improvement Loop
 

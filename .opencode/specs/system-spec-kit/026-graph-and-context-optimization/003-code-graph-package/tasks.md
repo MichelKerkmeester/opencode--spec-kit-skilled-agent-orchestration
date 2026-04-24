@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Code Graph Package"
+title: "Tasks: Code Graph Package [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/tasks]"
 description: "Task record for the 003-code-graph-package flattened parent layout."
 trigger_phrases:
   - "003-code-graph-package"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "002-code-graph-self-contained-package"
   - "003-code-graph-context-and-scan-scope"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Code Graph Package
 

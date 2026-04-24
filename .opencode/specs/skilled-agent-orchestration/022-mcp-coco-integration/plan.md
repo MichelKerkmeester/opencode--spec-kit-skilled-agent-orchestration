@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: CocoIndex Code MCP Integration [03--commands-and-skills/022-mcp-coco-integration/plan]"
+title: "Implementation Plan: CocoIndex Code MCP Integration [skilled-agent-orchestration/022-mcp-coco-integration/plan]"
 description: "Phased plan for CocoIndex integration: Phase 1 installation/config registration, Phase 2 hardening, and Phase 3 strict-readiness plus downstream adoption packaging."
 trigger_phrases:
   - "cocoindex"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "cocoindex_code mcp config"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/022-mcp-coco-integration"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: CocoIndex Code MCP Integration
 

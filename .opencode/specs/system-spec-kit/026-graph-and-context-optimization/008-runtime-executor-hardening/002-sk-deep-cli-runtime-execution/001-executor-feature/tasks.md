@@ -1,9 +1,13 @@
 ---
-title: "Tasks: Deep-Loop CLI Executor Selection for Iterative Skills"
+title: "...and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature/tasks]"
 description: "Task breakdown for Phase 018: 23 tasks across 3 standard phases (Setup / Implementation / Verification). Internally grouped into 8 sub-waves (A-H) with acceptance criteria + file paths + atomic-ship markers."
-trigger_phrases: ["018 tasks", "deep-loop executor tasks", "executor kind tasks"]
-importance_tier: "high"
+trigger_phrases:
+  - "018 tasks"
+  - "deep-loop executor tasks"
+  - "executor kind tasks"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature"

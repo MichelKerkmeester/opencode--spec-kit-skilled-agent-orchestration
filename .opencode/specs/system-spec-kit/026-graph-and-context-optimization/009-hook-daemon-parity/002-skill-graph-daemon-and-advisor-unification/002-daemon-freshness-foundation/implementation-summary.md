@@ -1,7 +1,14 @@
 ---
-title: "Implementation Summary: 027/001 — Daemon + Freshness Foundation"
+title: "...-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation/implementation-summary]"
 description: "Daemon + freshness foundation shipped with Chokidar watcher, SQLite single-writer lease, generation-tagged trust model, Track H hardening, and ≤1% CPU / <20MB RSS benchmark gate."
-importance_tier: "high"
+trigger_phrases:
+  - "daemon"
+  - "parity"
+  - "002"
+  - "skill"
+  - "graph"
+  - "implementation summary"
+importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:

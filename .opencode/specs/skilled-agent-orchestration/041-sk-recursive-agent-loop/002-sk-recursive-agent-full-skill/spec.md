@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Agent Improvement Full Skill [skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill/spec]"
+title: "Feature Specification [skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill/spec]"
 description: "Phase 002 under packet 041 expands sk-improve-agent from the bounded MVP into a fuller skill with benchmark-backed evaluation, reusable runtime architecture, and safe multi-target expansion."
 trigger_phrases:
   - "agent improvement full skill"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "multi-target agent improvement"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Agent Improvement Full Skill
 

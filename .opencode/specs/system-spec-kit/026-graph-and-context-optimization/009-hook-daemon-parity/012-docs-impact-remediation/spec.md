@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Documentation Impact Remediation for 009 Hook/Daemon Parity"
+title: "Feature [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation/spec]"
 description: "Update 13 external documentation files flagged by the 009 impact analysis (10 HIGH + 3 MED) to reflect the hook, advisor, plugin-loader, renderer, and Copilot wrapper behavior actually shipped across sub-packets 001-011. Source of truth is impact-analysis/merged-impact-report.md."
 trigger_phrases:
   - "docs impact remediation"
   - "hook daemon docs alignment"
   - "026/009/012"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/012-docs-impact-remediation"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Continuity Memory Runtime"
+title: "Feature Specification [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/spec]"
 description: "Cache hooks, memory quality, continuity refactor, and memory-save rewrite. Consolidated active parent for 4 direct child phase packet(s)."
 trigger_phrases:
   - "002-continuity-memory-runtime"
@@ -10,7 +10,6 @@ trigger_phrases:
   - "004-memory-save-rewrite"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime"
@@ -31,6 +30,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Continuity Memory Runtime
 

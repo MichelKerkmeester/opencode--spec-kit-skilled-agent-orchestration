@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Hook Daemon Parity"
+title: "Tasks: Hook Daemon Parity [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/tasks]"
 description: "Task record for the 009-hook-daemon-parity flattened parent layout."
 trigger_phrases:
   - "009-hook-daemon-parity"
@@ -16,8 +16,7 @@ trigger_phrases:
   - "010-copilot-wrapper-schema-fix"
   - "011-copilot-writer-wiring"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity"
@@ -38,6 +37,7 @@ _memory:
     completion_pct: 85
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Hook Daemon Parity
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Graph Package"
+title: "Implementation Plan: Code Graph Package [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/plan]"
 description: "Plan for keeping code graph upgrades and self-contained package migration as a parent with direct child phase packets."
 trigger_phrases:
   - "003-code-graph-package"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "002-code-graph-self-contained-package"
   - "003-code-graph-context-and-scan-scope"
 importance_tier: "important"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Code Graph Package
 

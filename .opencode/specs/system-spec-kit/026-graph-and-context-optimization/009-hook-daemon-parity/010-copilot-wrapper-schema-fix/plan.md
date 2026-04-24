@@ -1,8 +1,13 @@
 ---
-title: "Implementation Plan: Copilot Wrapper Schema Fix"
+title: "Implemen [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix/plan]"
 description: "Reapply the reverted JSON patch so .claude/settings.local.json again carries the top-level Copilot-safe wrapper fields on all four matcher wrappers."
-importance_tier: "high"
-contextType: "spec"
+trigger_phrases:
+  - "implemen"
+  - "plan"
+  - "010"
+  - "copilot"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix"

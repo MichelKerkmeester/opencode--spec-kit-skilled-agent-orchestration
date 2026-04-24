@@ -1,9 +1,11 @@
 ---
-title: "Decision Record: Phase 020 Research-Findings Remediation"
+title: "...spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation/decision-record]"
 description: "ADRs for Phase 020: enrich schema_mismatch vs new dispatch_failure; merge-preserve repair policy; save-lineage enum; retry-budget docs-vs-code."
-trigger_phrases: ["020 decisions"]
-importance_tier: "high"
+trigger_phrases:
+  - "020 decisions"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation"

@@ -1,11 +1,20 @@
 ---
-title: "Tasks: Startup Context Injection Debug — Hook Runtime Brief + Sibling Handoff"
+title: "Tasks: Startup Context Injection [system-spec-kit/024-compact-code-graph/026-session-start-injection-debug/tasks]"
 description: "Implementation tasks for phase 026 — hook-runtime startup injection plus explicit handoff to Phase 027."
 trigger_phrases:
   - "026 tasks"
   - "startup injection tasks"
 importance_tier: "critical"
-contextType: "tracking"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/026-session-start-injection-debug"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 

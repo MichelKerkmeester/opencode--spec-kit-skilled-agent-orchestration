@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Agent-Improver Deep-Loop Alignment [005]"
+title: "Tas [skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment/tasks]"
 description: "Completed task record for the improve-agent runtime-truth alignment, rewritten to the current Level 3 tasks template with evidence."
 trigger_phrases:
   - "005"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "sk-improve-agent tasks"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: Agent-Improver Deep-Loop Alignment
 

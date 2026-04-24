@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record + level3-arch | v2.2 -->"
-title: "Decision Record: OpenCode Plugin Loader + Skill-Advisor Hook Remediation"
-description: "ADRs for scoping decisions. ADR-001 captures the OpenCode 1.3.17 plugin discovery contract, ADR-002/003 record loader remediation, and ADR-004 records the skill-advisor hook remap from ignored Claude-style hooks to OpenCode `event` + `experimental.chat.system.transform`."
+title: "...kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation/decision-record]"
+description: "ADRs for scoping decisions. ADR-001 captures the OpenCode 1.3.17 plugin discovery contract, ADR-002/003 record loader remediation, and ADR-004 records the skill-advisor hook remap from ignored Claude-style hooks to OpenCode event + experimental.chat.system.transform."
 trigger_phrases:
   - "026/009/007 adr"
   - "opencode plugin loader decisions"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Phase 5 status accuracy and defensive guards implemented and verified"
     next_safe_action: "Resolve out-of-scope full-suite Copilot hook blocker, then rerun canonical verification"
     completion_pct: 100
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record + level3-arch | v2.2 -->"
 ---
 # Decision Record: OpenCode Plugin Loader Remediation
 

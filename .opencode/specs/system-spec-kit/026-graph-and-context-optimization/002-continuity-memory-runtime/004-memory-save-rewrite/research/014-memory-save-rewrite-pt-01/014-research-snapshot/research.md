@@ -1,7 +1,7 @@
 <!-- SNAPSHOT: copied from 014-save-flow-backend-relevance-review/research/research.md on 2026-04-15. Authoritative source at original packet. -->
 
 ---
-title: "Save-Flow Backend Relevance Review Post-Memory-Folder Retirement"
+title: "...tinuity-memory-runtime/004-memory-save-rewrite/research/014-memory-save-rewrite-pt-01/014-research-snapshot/research]"
 description: "20-iteration research synthesis on which post-v3.4.1.0 save-flow subsystems still earn their cost, which should be trimmed or deferred, and what the minimal replacement path looks like."
 trigger_phrases:
   - "save flow relevance"
@@ -10,7 +10,7 @@ trigger_phrases:
   - "save-flow trim recommendation"
   - "post-retirement save architecture"
 importance_tier: "important"
-contextType: "architecture"
+contextType: "research"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review"
@@ -31,7 +31,6 @@ _memory:
     answered_questions:
       - "Q1-Q10 resolved in research/research.md and findings-registry.json"
 ---
-
 # Save-Flow Backend Relevance Review
 
 ## Executive Summary

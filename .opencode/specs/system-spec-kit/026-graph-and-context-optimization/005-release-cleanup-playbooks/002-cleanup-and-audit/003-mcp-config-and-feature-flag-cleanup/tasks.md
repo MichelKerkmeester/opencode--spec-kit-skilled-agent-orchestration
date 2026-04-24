@@ -1,11 +1,12 @@
 ---
-title: "018 / 012 — MCP config and feature-flag cleanup tasks"
+title: "...ntext-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup/tasks]"
 description: "Task ledger for the five-config cleanup and packet repair."
-trigger_phrases: ["018 012 tasks", "mcp config cleanup tasks", "feature flag cleanup tasks"]
+trigger_phrases:
+  - "018 012 tasks"
+  - "mcp config cleanup tasks"
+  - "feature flag cleanup tasks"
 importance_tier: "important"
 contextType: "implementation"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup"
@@ -14,6 +15,8 @@ _memory:
     recent_action: "Closed the phase task ledger"
     next_safe_action: "Review checklist evidence"
     key_files: ["tasks.md", "checklist.md", "implementation-summary.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: 018 / 012 — MCP config and feature-flag cleanup
 

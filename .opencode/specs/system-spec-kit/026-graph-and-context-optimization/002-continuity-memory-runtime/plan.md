@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Continuity Memory Runtime"
+title: "Implementation Plan [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/plan]"
 description: "Plan for keeping cache hooks, memory quality, continuity refactor, and memory-save rewrite as a parent with direct child phase packets."
 trigger_phrases:
   - "002-continuity-memory-runtime"
@@ -9,8 +9,7 @@ trigger_phrases:
   - "003-continuity-refactor-gates"
   - "004-memory-save-rewrite"
 importance_tier: "important"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime"
@@ -31,6 +30,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Continuity Memory Runtime
 

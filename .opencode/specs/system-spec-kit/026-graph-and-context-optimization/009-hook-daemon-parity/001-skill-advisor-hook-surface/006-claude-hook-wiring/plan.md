@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Claude Hook Wiring (UserPromptSubmit)"
+title: "...026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring/plan]"
 description: "Single new Claude hook entry script that parses UserPromptSubmit JSON, calls buildSkillAdvisorBrief, and emits hookSpecificOutput.additionalContext. Fail-open on any error."
 trigger_phrases:
   - "020 006 plan"
   - "claude hook plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring"
@@ -16,7 +15,7 @@ _memory:
     next_safe_action: "Dispatch 007 Gemini/Copilot and 008 Codex follow-on adapters"
     blockers: []
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Claude Hook Wiring (UserPromptSubmit)
 

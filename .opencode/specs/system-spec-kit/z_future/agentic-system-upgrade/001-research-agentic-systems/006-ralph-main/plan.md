@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 006-ralph-main Research Phase Closeout"
+title: "Implementation [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/006-ralph-main/plan]"
 description: "Deliver Phase 3 UX and agentic-system research, then repair the packet root and prompt references so the phase validates cleanly."
 trigger_phrases:
   - "006-ralph-main plan"

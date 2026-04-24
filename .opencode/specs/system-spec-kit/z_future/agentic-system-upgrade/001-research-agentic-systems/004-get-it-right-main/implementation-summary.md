@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "...m-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main/implementation-summary]"
 description: "Phase 3 completed the Get It Right research packet as a 30-iteration synthesis focused on operator UX, commands, templates, agents, skills, hooks, and workflow friction."
 trigger_phrases:
   - "004-get-it-right-main implementation summary"

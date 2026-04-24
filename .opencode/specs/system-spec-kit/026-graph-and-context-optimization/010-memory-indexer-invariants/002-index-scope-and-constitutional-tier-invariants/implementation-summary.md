@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
-title: "Implementation Summary: Index Scope and Constitutional Tier Invariants"
+title: "...optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants/implementation-summary]"
 description: "Final implementation summary for Wave-1 and Wave-2 remediation of packet 011, including cleanup auditing, SSOT unification, realpath hardening, walker caps, and verification outcomes."
 trigger_phrases:
   - "026/011 implementation summary"
   - "index scope implementation summary"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants"
@@ -19,6 +19,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

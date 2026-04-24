@@ -1,12 +1,21 @@
 ---
-title: "Verification Checklist: Cached Summary Fidelity Gates [template:level_3/checklist.md]"
+title: "Verification Checklist: Cached [system-spec-kit/024-compact-code-graph/032-cached-summary-fidelity-gates/checklist]"
 description: "Verification checklist for 032-cached-summary-fidelity-gates."
 trigger_phrases:
   - "032-cached-summary-fidelity-gates"
   - "verification"
   - "checklist"
 importance_tier: "important"
-contextType: "verification"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/032-cached-summary-fidelity-gates"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: Cached Summary Fidelity Gates
 

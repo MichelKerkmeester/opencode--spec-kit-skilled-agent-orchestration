@@ -9,6 +9,15 @@ trigger_phrases:
   - "001"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/001-precompact-hook"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Phase 1 — PreCompact Hook
@@ -84,11 +93,11 @@ Template compliance shim anchor for rollback.
    - Empty transcript → minimal output
    - Large transcript → stays within 2s timeout
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-2 -->
 ### Dependencies
 - Compiled dist of memory-surface.ts must be up to date
 - `.claude/settings.local.json` must be writable
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-2 -->
 
 ### Budget Allocation (from iteration 049)
 - Implement floors + overflow pool allocator

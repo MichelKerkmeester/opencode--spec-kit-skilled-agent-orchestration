@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Canonical Intake and Middleware Cleanup [template:level_3/implementation-summary.md]"
+title: "...ph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/implementation-summary]"
 description: "Packet closeout for the canonical-intake architecture: shared intake-contract module at .opencode/skill/system-spec-kit/references/intake-contract.md accessible via /spec_kit:plan --intake-only; deep-research anchored to real spec.md via spec_check_protocol.md; deprecated middleware (/spec_kit:handover, /spec_kit:debug, @handover, @speckit × 4 runtimes each) hard-deleted with distributed governance replacing @speckit exclusivity. Deep review flagged 12 findings; all resolved."
 trigger_phrases:
   - "implementation summary"
@@ -11,8 +11,7 @@ trigger_phrases:
   - "spec_kit start deleted"
   - "intake only flag shipped"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
@@ -41,6 +40,7 @@ _memory:
       - "Standalone intake invocation via /spec_kit:plan --intake-only with explicit YAML gate"
       - "Deprecated middleware (/spec_kit:handover, /spec_kit:debug, @handover, @speckit × 4 runtime mirrors each) hard-deleted"
       - "Deep review flagged 12 findings (4 P0 / 4 P1 / 4 P2); 5 parallel Opus agents fixed all 12"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

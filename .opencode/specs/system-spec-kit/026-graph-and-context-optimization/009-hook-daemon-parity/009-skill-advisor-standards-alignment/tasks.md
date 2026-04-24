@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
-title: "Task Breakdown: Skill-Advisor Standards Alignment"
+title: "...ystem-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment/tasks]"
 description: "Tasks T-01..T-08: standards exemption, plugin file alignment, verification."
 trigger_phrases:
   - "026/009/009 tasks"
   - "skill advisor standards alignment tasks"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Completed documentation/cosmetic standards alignment"
     next_safe_action: "Use /spec_kit:resume if continuing the parent remediation packet"
     completion_pct: 100
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Task Breakdown: Skill-Advisor Standards Alignment
 

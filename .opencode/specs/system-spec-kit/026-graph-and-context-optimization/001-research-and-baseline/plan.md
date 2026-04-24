@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Graph and Context Systems Master Research Packet"
+title: "Implementation Plan: Graph and [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/plan]"
 description: "Execution plan for turning the v2 research synthesis into a validated coordination packet and a sequenced set of follow-on adoption packets."
 trigger_phrases:
   - "graph context packet plan"
@@ -7,8 +7,7 @@ trigger_phrases:
   - "recommendation rollback"
   - "follow-on packets"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Merged single original phase root"
     next_safe_action: "Use context-index.md for local phase navigation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Graph and Context Systems Master Research Packet
 

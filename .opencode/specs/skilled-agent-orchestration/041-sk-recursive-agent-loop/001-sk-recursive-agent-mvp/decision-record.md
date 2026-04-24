@@ -1,11 +1,20 @@
 ---
-title: "Decision Record: Agent Improvement Loop [skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/decision-record]"
+title: "Decision Record [skilled-agent-orchestration/041-sk-recursive-agent-loop/001-sk-recursive-agent-mvp/decision-record]"
 description: "Architecture decisions for building sk-improve-agent as a bounded experiment system instead of a freeform self-editing loop."
 trigger_phrases:
   - "agent improvement decisions"
   - "decision record"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/001-sk-recursive-agent-mvp"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["decision-record.md"]
 ---
 # Decision Record: Agent Improvement Loop
 

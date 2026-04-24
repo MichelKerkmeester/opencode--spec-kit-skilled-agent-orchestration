@@ -1,12 +1,11 @@
 ---
-title: "Gate E — Runtime Migration"
+title: "...d-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration/spec]"
 description: "Canonical cutover."
-trigger_phrases: ["gate e", "runtime migration"]
+trigger_phrases:
+  - "gate e"
+  - "runtime migration"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration"
@@ -15,6 +14,9 @@ _memory:
     recent_action: "Rewrote Gate E spec to immediate canonical cutover model, removed all rollout-era framing"
     next_safe_action: "Use implementation-summary.md as the closeout evidence ledger"
     key_files: ["spec.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->

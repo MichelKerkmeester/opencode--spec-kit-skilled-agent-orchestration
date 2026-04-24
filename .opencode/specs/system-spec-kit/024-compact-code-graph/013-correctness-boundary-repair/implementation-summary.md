@@ -1,7 +1,23 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Implementation Summary: Correctness & Boundary Repair [024/013]"
+title: "Implementation [system-spec-kit/024-compact-code-graph/013-correctness-boundary-repair/implementation-summary]"
 description: "Fixed most Phase 013 correctness bugs across endLine calculation, DB safety, budget allocation, and query traversal. Checklist count reconciled to 25 items, with 1 item explicitly not implemented."
+trigger_phrases:
+  - "implementation"
+  - "implementation summary"
+  - "013"
+  - "correctness"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/013-correctness-boundary-repair"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Summary
 
@@ -53,18 +69,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 013-correctness-boundary-repair |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:what-built -->
+<!-- ANCHOR:what-built-2 -->
 ### What Was Built
 The code graph and compaction pipeline now produce correct results for multi-line functions, enforce DB integrity under failure, respect caller-provided budgets, and tighten boundary validation where implemented. One planned guard remains open: `ccc_feedback` still lacks full length-bound enforcement for `comment` and `resultFile`.
 
@@ -103,14 +119,14 @@ Code-graph dispatch validation uses local `getMissingRequiredStringArgs()` check
 | `handlers/memory-context.ts` | Modified | Exception sanitization |
 | `tools/code-graph-tools.ts` | Modified | Local required-string checks before dispatch |
 | `tool-schemas.ts` | Modified | `code_graph_context` omits `includeTrace`; memory schemas still retain it |
-<!-- /ANCHOR:what-built -->
+<!-- /ANCHOR:what-built-2 -->
 
 ---
 
-<!-- ANCHOR:how-delivered -->
+<!-- ANCHOR:how-delivered-2 -->
 ### How It Was Delivered
 Five parallel Codex CLI agents (GPT-5.4, reasoning effort: high) implemented all items simultaneously. Each agent owned a non-overlapping file set. After all agents completed, focused vitest suites verified correctness: 69/69 tests across code-graph-indexer, crash-recovery, budget-allocator, and compact-merger suites. ESLint passed on all 11 modified TypeScript files with zero errors.
-<!-- /ANCHOR:how-delivered -->
+<!-- /ANCHOR:how-delivered-2 -->
 
 ---
 ### Key Decisions
@@ -122,7 +138,7 @@ Five parallel Codex CLI agents (GPT-5.4, reasoning effort: high) implemented all
 | Strict `>=` for maxDepth check | The previous `>` allowed depth=maxDepth nodes to expand their edges, leaking depth+1 nodes into results. |
 ---
 
-<!-- ANCHOR:verification -->
+<!-- ANCHOR:verification-2 -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -132,13 +148,13 @@ Five parallel Codex CLI agents (GPT-5.4, reasoning effort: high) implemented all
 | `tests/compact-merger.vitest.ts` | PASS (15/15 including 3 new tests) |
 | ESLint on 11 modified files | PASS (0 errors) |
 | Phase 013 checklist | 25 items reviewed; 24 implemented, 1 NOT IMPLEMENTED (`ccc_feedback` length validation) |
-<!-- /ANCHOR:verification -->
+<!-- /ANCHOR:verification-2 -->
 
 ---
 
-<!-- ANCHOR:limitations -->
+<!-- ANCHOR:limitations-2 -->
 ### Known Limitations
 1. **Brace-counting is approximate.** String literals containing `{` or `}` can shift the count. Tree-sitter (Phase 015) will provide exact AST-based ranges.
 2. **ccc_feedback length validation is NOT IMPLEMENTED.** The dispatch layer only checks required `query`/`rating`, and `tool-schemas.ts` defines `comment`/`resultFile` without minLength/maxLength constraints.
 3. **Pre-existing TypeScript errors** in `memory-search.ts` and `shadow-evaluation-runtime.ts` prevent `npm run build` from passing. These are unrelated to Phase 013.
-<!-- /ANCHOR:limitations -->
+<!-- /ANCHOR:limitations-2 -->

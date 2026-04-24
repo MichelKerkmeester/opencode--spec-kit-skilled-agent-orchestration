@@ -1,12 +1,11 @@
 ---
-title: "Verification Checklist: SKILL.md Smart-Router Section Efficacy"
+title: "...imization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy/checklist]"
 description: "Verification Date: 2026-04-19"
 trigger_phrases:
   - "004 002 smart router checklist"
   - "skill md router efficacy verification"
 importance_tier: "important"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy"
@@ -17,6 +16,7 @@ _memory:
     blockers: []
     key_files:
       - "research/research.md"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: SKILL.md Smart-Router Section Efficacy
 

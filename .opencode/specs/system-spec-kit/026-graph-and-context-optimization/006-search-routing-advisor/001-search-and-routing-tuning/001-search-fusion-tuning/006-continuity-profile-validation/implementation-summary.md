@@ -1,12 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: Continuity Profile Validation"
+title: "...isor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation/implementation-summary]"
 description: "This phase enriched the Tier 3 continuity prompt with the resume-ladder context and added a judged 12-query continuity fixture that keeps the baseline K=60 recommendation."
 trigger_phrases:
   - "phase 006 implementation summary"
   - "continuity profile validation summary"
 importance_tier: "critical"
-contextType: "verification"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation"

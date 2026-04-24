@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: FTS Forced-Degrade Hardening [template:level_3/spec.md]"
+title: "Feature Specification: FTS [system-spec-kit/024-compact-code-graph/033-fts-forced-degrade-hardening/spec]"
 description: "Create the conditional follow-on packet the refined plan left behind a runtime audit. This packet exists only if the current lexical-path truth surface still lacks a canonical forced-degrade matrix or clear chosen-path telemetry."
 trigger_phrases:
   - "033-fts-forced-degrade-hardening"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "024-compact-code-graph"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/033-fts-forced-degrade-hardening"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: FTS Forced-Degrade Hardening
 
@@ -32,6 +41,7 @@ Create the conditional follow-on packet the refined plan left behind a runtime a
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -44,6 +54,8 @@ Create the conditional follow-on packet the refined plan left behind a runtime a
 | **Parent Packet** | `024-compact-code-graph` |
 
 ---
+
+<!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

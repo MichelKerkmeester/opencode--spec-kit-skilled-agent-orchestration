@@ -1,6 +1,23 @@
 ---
-title: "Checklist: Cross-Runtime UX & Documentation [024/016]"
+title: "Checklist: Cross-Runtime UX & Documentation [system-spec-kit/024-compact-code-graph/016-cross-runtime-ux/checklist]"
 description: "8 items across P2/P3 for phase 016."
+trigger_phrases:
+  - "checklist"
+  - "cross"
+  - "runtime"
+  - "documentation"
+  - "016"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/016-cross-runtime-ux"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->
 # Verification Checklist: Phase 016 — Cross-Runtime UX & Documentation

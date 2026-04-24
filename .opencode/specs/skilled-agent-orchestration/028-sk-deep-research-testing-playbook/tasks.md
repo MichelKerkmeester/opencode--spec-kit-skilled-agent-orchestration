@@ -1,11 +1,20 @@
 ---
-title: "Tasks: sk-deep-research Manual Testing Playbook [03--commands-and-skills/028-sk-deep-research-testing-playbook/tasks]"
+title: "Tasks: sk-deep-research Manual Testing [skilled-agent-orchestration/028-sk-deep-research-testing-playbook/tasks]"
 description: "Task format: T### Description (target path)"
 trigger_phrases:
   - "deep research playbook tasks"
   - "manual testing playbook tasks"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/028-sk-deep-research-testing-playbook"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: sk-deep-research Manual Testing Playbook
 

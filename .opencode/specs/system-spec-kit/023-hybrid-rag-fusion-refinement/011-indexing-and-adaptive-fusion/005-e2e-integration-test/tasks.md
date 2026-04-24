@@ -1,16 +1,25 @@
 ---
-title: "Tasks: Phase 5 — End-to-End Integration Test"
+title: "Tasks [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "phase 5 tasks"
   - "adaptive ranking e2e tasks"
 importance_tier: "normal"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["tasks.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
-# Tasks: Phase 5 — End-to-End Integration Test
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+# Tasks: Phase 5 — End-to-End Integration Test
 
 ---
 

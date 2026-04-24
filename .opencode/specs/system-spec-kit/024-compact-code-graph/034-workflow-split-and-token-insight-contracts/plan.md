@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Workflow Split and Token Insight Contracts [template:level_3/plan.md]"
+title: "Implementation Plan [system-spec-kit/024-compact-code-graph/034-workflow-split-and-token-insight-contracts/plan]"
 description: "Keep the packet dormant but well-scoped until cached-summary and publication contracts are stable. If activated later, reuse existing analytics and reporting contracts."
 trigger_phrases:
   - "034-workflow-split-and-token-insight-contracts"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "plan"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/034-workflow-split-and-token-insight-contracts"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Workflow Split and Token Insight Contracts
 

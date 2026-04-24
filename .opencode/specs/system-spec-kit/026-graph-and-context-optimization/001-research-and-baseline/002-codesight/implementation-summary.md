@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary: 002-codesight Research Phase"
+title: "Impl [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight/implementation-summary]"
 description: "20-iteration deep-research audit of the codesight external Node.js/TypeScript skill produced 95 evidence-grounded findings, a retained 22-row decision matrix, and a documented memory-quality audit for the final packet closeout."
 trigger_phrases:
   - "002-codesight implementation summary"
   - "002-codesight outcome"
   - "codesight research complete"
-importance_tier: critical
-contextType: summary
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+importance_tier: "critical"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

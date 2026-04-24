@@ -1,13 +1,13 @@
 ---
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
-title: "027/004 — Plan"
+title: "...text-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface/plan]"
 description: "Phased implementation plan for MCP advisor tool surface."
 trigger_phrases:
   - "027/004 plan"
   - "mcp advisor surface plan"
   - "advisor tool implementation"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_2/plan.md | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface"
@@ -27,6 +27,7 @@ _memory:
     completion_pct: 95
     open_questions: []
     answered_questions: []
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 ---
 # Plan: 027/004
 

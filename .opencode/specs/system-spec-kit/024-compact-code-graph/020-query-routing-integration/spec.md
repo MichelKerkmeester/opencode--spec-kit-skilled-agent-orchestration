@@ -1,3 +1,25 @@
+---
+title: "Feature Specification: Query-Routing [system-spec-kit/024-compact-code-graph/020-query-routing-integration/spec]"
+description: "Template compliance shim section. Legacy phase content continues below."
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "query"
+  - "routing"
+  - "spec"
+  - "020"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/020-query-routing-integration"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 # Feature Specification: Query-Routing Integration [024/020]
 
@@ -55,7 +77,7 @@ Template compliance shim anchor for questions.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### 1. METADATA
 | Field | Value |
 |-------|-------|
@@ -64,11 +86,11 @@ Template compliance shim anchor for questions.
 | **Status** | Complete |
 | **Created** | 2026-03-31 |
 | **Branch** | `020-query-routing-integration` |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:problem -->
+<!-- ANCHOR:problem-2 -->
 ### 2. PROBLEM & PURPOSE
 ### Problem Statement
 
@@ -77,11 +99,11 @@ This packet drifted away from the shipped implementation. The stale docs describ
 ### Purpose
 
 Describe the current implementation precisely so users and future maintainers understand query-intent enrichment, `session_resume`, and passive enrichment as they actually work today.
-<!-- /ANCHOR:problem -->
+<!-- /ANCHOR:problem-2 -->
 
 ---
 
-<!-- ANCHOR:scope -->
+<!-- ANCHOR:scope-2 -->
 ### 3. SCOPE
 ### In Scope
 - Document `memory_context` as additive enrichment over the existing traced semantic flow.
@@ -107,11 +129,11 @@ Describe the current implementation precisely so users and future maintainers un
 | `schemas/tool-input-schemas.ts` | Modify | Limits `session_resume` inputs to `specFolder?` and `minimal?`. |
 | `tools/lifecycle-tools.ts` | Modify | Wires `session_resume` into tool dispatch. |
 | `tools/types.ts` | Modify | Adds `session_resume` type definitions. |
-<!-- /ANCHOR:scope -->
+<!-- /ANCHOR:scope-2 -->
 
 ---
 
-<!-- ANCHOR:requirements -->
+<!-- ANCHOR:requirements-2 -->
 ### 4. REQUIREMENTS
 ### P0 - Blockers (MUST complete)
 
@@ -128,28 +150,28 @@ Describe the current implementation precisely so users and future maintainers un
 | REQ-004 | Part 3 must be documented as implemented. | **Given** the passive enrichment phase, **when** the packet describes status, **then** it states that `context-server.ts` imports `./lib/enrichment/passive-enrichment.js` and calls `runPassiveEnrichment(...)` instead of marking the work deferred. |
 | REQ-005 | The file inventory must reflect the current implementation. | **Given** the enrichment implementation description, **when** code files are listed, **then** the docs reference `lib/enrichment/passive-enrichment.ts` for code graph symbol enrichment and do not mention `code-graph-enricher.ts`. |
 | REQ-006 | All packet files must use the same corrected terminology. | **Given** `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`, **when** they describe this phase, **then** they consistently avoid claims about selective routing, hybrid dual-backend merging, `fallbackApplied`, `ccc_status()` merging, and deferred Part 3 work. |
-<!-- /ANCHOR:requirements -->
+<!-- /ANCHOR:requirements-2 -->
 
 ---
 
-<!-- ANCHOR:success-criteria -->
+<!-- ANCHOR:success-criteria-2 -->
 ### 5. SUCCESS CRITERIA
 - **SC-001**: The packet consistently describes `memory_context` as semantic-first execution with optional graph enrichment for structural or hybrid queries.
 - **SC-002**: Every file that mentions response metadata names `queryIntentRouting` and lists the correct fields only.
 - **SC-003**: Every file that mentions `session_resume` describes the slim graph and CocoIndex summaries and omits `ccc_status()` claims.
 - **SC-004**: Passive enrichment is documented as shipped and the deleted `code-graph-enricher.ts` file is no longer referenced anywhere in the packet.
-<!-- /ANCHOR:success-criteria -->
+<!-- /ANCHOR:success-criteria-2 -->
 
 ---
 
-<!-- ANCHOR:risks -->
+<!-- ANCHOR:risks-2 -->
 ### 6. RISKS & DEPENDENCIES
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Verified code audit from `handlers/memory-context.ts`, `handlers/session-resume.ts`, `context-server.ts`, and `lib/enrichment/passive-enrichment.ts` | Medium | Keep packet language tied to the verified implementation facts and line references already confirmed. |
 | Risk | Future handler changes may reintroduce doc drift | Medium | Describe contracts precisely and keep this packet aligned with code on each implementation change. |
 | Risk | Overstating `routedBackend` semantics as hard dispatch | High | Explicitly describe it as metadata on an additive enrichment flow, not as a guarantee that the request left `memory_context`. |
-<!-- /ANCHOR:risks -->
+<!-- /ANCHOR:risks-2 -->
 
 ---
 
@@ -205,9 +227,9 @@ Describe the current implementation precisely so users and future maintainers un
 
 ---
 
-<!-- ANCHOR:questions -->
+<!-- ANCHOR:questions-2 -->
 ### 10. OPEN QUESTIONS
 - None at this time. The current goal is documentation alignment with verified runtime behavior, not additional feature scope.
-<!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions-2 -->
 
 ---

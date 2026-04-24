@@ -1,17 +1,12 @@
 ---
-title: "Implementation Summary: Phase 6 — Continuity Refactor Gates"
-description: "Parent-packet closeout for the Gates A-F continuity-refactor lane after the reorganization narrowed `006` to the six active gate folders."
+title: "...26-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/implementation-summary]"
+description: "Parent-packet closeout for the Gates A-F continuity-refactor lane after the reorganization narrowed 006 to the six active gate folders."
 trigger_phrases:
   - "phase 6 implementation summary"
   - "continuity refactor gates summary"
   - "root gate closeout"
 importance_tier: "important"
 contextType: "planning"
-feature: "phase-006-continuity-refactor-gates"
-level: 2
-status: complete
-parent: "026-graph-and-context-optimization"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates"
@@ -20,7 +15,11 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+feature: "phase-006-continuity-refactor-gates"
+level: 2
+parent: "026-graph-and-context-optimization"
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Phase 6 — Continuity Refactor Gates
 

@@ -1,3 +1,13 @@
+---
+title: "Plan [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/004-compaction-checkpointing/plan]"
+description: "1. Define the compaction action-card contract and dedupe rules."
+trigger_phrases:
+  - "plan"
+  - "004"
+  - "compaction"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 004-compaction-checkpointing
 
 ## Affected Files

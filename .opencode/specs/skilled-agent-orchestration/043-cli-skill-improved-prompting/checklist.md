@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 ---
-title: "Verification Checklist: CLI Skill Prompt-Quality Integration via Mirror Cards [043]"
+title: "Verification Checklist: CLI Skill [skilled-agent-orchestration/043-cli-skill-improved-prompting/checklist]"
 description: "Verification Date: 2026-04-11 closeout"
 trigger_phrases:
   - "043 checklist"

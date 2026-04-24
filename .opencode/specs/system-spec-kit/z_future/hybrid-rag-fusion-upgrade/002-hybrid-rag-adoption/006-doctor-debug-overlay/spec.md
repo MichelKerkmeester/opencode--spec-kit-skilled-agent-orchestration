@@ -1,8 +1,13 @@
 ---
-title: "006-doctor-debug-overlay: Add Compact Diagnostics"
+title: "006-doctor-de [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/006-doctor-debug-overlay/spec]"
 description: "Defines a compact doctor/debug overlay that summarizes existing health, validation, and routing evidence without creating a new repair authority."
+trigger_phrases:
+  - "006"
+  - "doctor"
+  - "spec"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 006-doctor-debug-overlay: Add Compact Diagnostics
 
 ## 1. Scope

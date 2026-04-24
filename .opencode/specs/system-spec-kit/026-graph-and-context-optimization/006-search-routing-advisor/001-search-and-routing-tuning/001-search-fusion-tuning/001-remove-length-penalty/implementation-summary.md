@@ -1,15 +1,12 @@
 ---
-title: "Implementation Summary: Remove Cross-Encoder Length Penalty"
+title: "...ting-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty/implementation-summary]"
 description: "Neutralizes the cross-encoder length penalty while preserving the request and helper compatibility surfaces."
 trigger_phrases:
   - "remove length penalty"
-  - "applyLengthPenalty no-op"
+  - "applylengthpenalty no-op"
   - "cross-encoder length penalty compatibility"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-closed_by_commit: 2958485d9f
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty"
@@ -20,6 +17,9 @@ _memory:
     key_files:
       - "implementation-summary.md"
       - ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts"
+closed_by_commit: 2958485d9f
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Remove Cross-Encoder Length Penalty
 

@@ -1,11 +1,12 @@
 ---
-title: "018 / 010 — Shared memory and governance cleanup summary"
+title: "...ext-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/implementation-summary]"
 description: "This phase removes the shared-memory feature surface plus the dead governance, HYDRA, and archival infrastructure left behind after the original delete."
-trigger_phrases: ["018 010 implementation summary", "shared memory removal summary", "hard delete shared memory closeout"]
+trigger_phrases:
+  - "018 010 implementation summary"
+  - "shared memory removal summary"
+  - "hard delete shared memory closeout"
 importance_tier: "important"
 contextType: "implementation"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory"
@@ -14,6 +15,8 @@ _memory:
     recent_action: "Completed the shared-memory follow-up delete for governance, HYDRA, and archival ballast"
     next_safe_action: "Review commit-ready files"
     key_files: ["implementation-summary.md", "spec.md", "plan.md", "tasks.md", "checklist.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

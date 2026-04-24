@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Deferred Remediation + Telemetry Measurement Run"
+title: "...c-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run/tasks]"
 description: "Implementation tasks for Phase 024 across Codex registration, static measurement, live-session wrapper and analyzer."
 trigger_phrases:
   - "024 tasks"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "telemetry measurement tasks"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run"
@@ -22,6 +21,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts"
       - ".opencode/skill/system-spec-kit/scripts/observability/smart-router-analyze.ts"
     completion_pct: 90
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Deferred Remediation + Telemetry Measurement Run
 

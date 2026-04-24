@@ -1,3 +1,18 @@
+---
+title: "...ystem-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation/tasks]"
+description: "1. Inventory the current startup/bootstrap guidance in .opencode/skill/system-spec-kit/mcp_server/context-server.ts and .opencode/skill/system-spec-kit/mcp_server/handlers/sessi..."
+trigger_phrases:
+  - "ystem"
+  - "spec"
+  - "kit"
+  - "future"
+  - "hybrid"
+  - "tasks"
+  - "011"
+  - "tool"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 011-tool-profile-split-investigation
 
 1. Inventory the current startup/bootstrap guidance in `.opencode/skill/system-spec-kit/mcp_server/context-server.ts` and `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts`.

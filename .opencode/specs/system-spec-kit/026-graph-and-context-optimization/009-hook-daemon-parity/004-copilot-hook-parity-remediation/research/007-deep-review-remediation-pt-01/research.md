@@ -1,10 +1,26 @@
 ---
-title: "Deep Research Synthesis — Copilot CLI Hook Parity"
+title: "...ation/009-hook-daemon-parity/004-copilot-hook-parity-remediation/research/007-deep-review-remediation-pt-01/research]"
 description: "Synthesis of 10 iterations investigating whether GitHub Copilot CLI (1.0.34, April 2026) exposes a mechanism to inject per-session startup context and per-prompt advisor brief payloads the way Claude Code does via SessionStart/UserPromptSubmit hooks. Outcome: B (file-based workaround) — Copilot has a rich extension surface but no dynamic hook-driven prompt-injection channel."
-importance_tier: "high"
+trigger_phrases:
+  - "ation"
+  - "009"
+  - "hook"
+  - "daemon"
+  - "parity"
+  - "research"
+  - "007"
+  - "deep"
+importance_tier: "important"
 contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation/research/007-deep-review-remediation-pt-01"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
 ---
-
 # Deep Research Synthesis — Copilot CLI Hook Parity
 
 **Spec phase**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation/`

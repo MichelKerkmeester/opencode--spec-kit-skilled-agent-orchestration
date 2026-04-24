@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary: Routing Accuracy and Classifier Behavior Remediation"
+title: "...emediation/005-006-campaign-findings-remediation/006-routing-accuracy-and-classifier-behavior/implementation-summary]"
 description: "Completed P0/P1 remediation for Tier 3 routing gates, cache partitioning, prompt vocabulary, continuity fixtures, prompt leakage gates, and static telemetry separation."
 trigger_phrases:
   - "routing accuracy remediation complete"
   - "tier 3 routing gate remediation"
   - "classifier behavior remediation"
-importance_tier: "high"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/006-routing-accuracy-and-classifier-behavior"
@@ -33,6 +32,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "P0 and P1 findings were remediated in scope; P2 findings are deferred for a later low-risk batch."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 ---
-title: "Feature Specification: Move changelog_template.md into sk-doc [045]"
+title: "Feature Specification: Move changelog_template.md [skilled-agent-orchestration/045-sk-doc-changelog-template/spec]"
 description: "Relocate the canonical changelog & release notes template from the create-command asset folder into sk-doc, where every other documentation template already lives. Update the changelog command YAMLs, the changelog command markdown, and the spec-kit nested-changelog reference to point at the new location."
 trigger_phrases:
   - "045"

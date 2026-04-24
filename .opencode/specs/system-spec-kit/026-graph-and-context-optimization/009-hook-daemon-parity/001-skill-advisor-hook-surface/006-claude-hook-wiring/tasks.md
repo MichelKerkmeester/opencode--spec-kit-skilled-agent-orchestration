@@ -1,11 +1,10 @@
 ---
-title: "Tasks: Claude Hook Wiring (UserPromptSubmit)"
+title: "...26-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring/tasks]"
 description: "Task list for 020/006 — single hook script + settings.json + tests."
 trigger_phrases:
   - "020 006 tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring"
@@ -18,7 +17,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/tests/claude-user-prompt-submit-hook.vitest.ts"
       - ".claude/settings.local.json"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Claude Hook Wiring (UserPromptSubmit)
 

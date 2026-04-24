@@ -8,6 +8,15 @@ trigger_phrases:
   - "hybrid rag remediation playbook"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/021-remediation-revalidation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: manual-testing-per-playbook remediation-revalidation phase
 
@@ -27,7 +36,7 @@ contextType: "general"
 | **Created** | 2026-03-24 |
 | **Branch** | `main` |
 | **Parent Spec** | [../spec.md](../spec.md) |
-| **Predecessor** | [020-feature-flag-reference](../020-feature-flag-reference/spec.md) |
+| **Predecessor** | [020-feature-flag-reference-audit](../020-feature-flag-reference-audit/spec.md) |
 | **Successor** | [022-implement-and-remove-deprecated-features](../022-implement-and-remove-deprecated-features/spec.md) |
 | **Catalog Phase** | [007-code-audit-per-feature-catalog/021-remediation-revalidation](../../007-code-audit-per-feature-catalog/021-remediation-revalidation/spec.md) |
 <!-- /ANCHOR:metadata -->
@@ -62,7 +71,7 @@ Provide a single remediation-revalidation-focused specification that maps three 
 ### Out of Scope
 - Executing the three scenarios and assigning final run verdicts.
 - Modifying the playbook or feature catalog content linked from this packet.
-- Documenting non-remediation-revalidation phases from `001-retrieval/` through `020-feature-flag-reference/`.
+- Documenting non-remediation-revalidation phases from `001-retrieval/` through `020-feature-flag-reference-audit/`.
 - Executing the DR-002 re-audit plan (27-38 hours estimated scope).
 
 ### Files to Change

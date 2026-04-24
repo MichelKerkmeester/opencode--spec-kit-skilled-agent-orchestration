@@ -1,14 +1,13 @@
 ---
-title: "Verification Checklist: Phase 3 — Sanitization & Decision Precedence"
+title: "...text-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/003-sanitization-precedence/checklist]"
 description: "Phase 3 verification checklist for PR-5 and PR-6, including F-AC3, F-AC2, degraded-payload safety, and packet handoff readiness."
 trigger_phrases:
   - "phase 3 checklist"
   - "f-ac3 checklist"
   - "f-ac2 checklist"
   - "degraded payload checklist"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/003-sanitization-precedence"
@@ -17,9 +16,8 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
-
 # Verification Checklist: Phase 3 — Sanitization & Decision Precedence
 
 <!-- SPECKIT_LEVEL: 2 -->

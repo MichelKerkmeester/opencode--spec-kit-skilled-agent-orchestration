@@ -1,13 +1,14 @@
 ---
-title: "Feature Specification: 018 / 013 — dead code and architecture audit"
+title: "...d-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit/spec]"
 description: "Audit and clean the active system-spec-kit runtime after the canonical continuity refactor so dead code, stale architecture docs, and README coverage gaps are removed with full verification."
-trigger_phrases: ["013 spec", "dead code audit", "architecture audit", "readme audit", "canonical continuity cleanup"]
+trigger_phrases:
+  - "013 spec"
+  - "dead code audit"
+  - "architecture audit"
+  - "readme audit"
+  - "canonical continuity cleanup"
 importance_tier: "critical"
 contextType: "implementation"
-status: "complete"
-level: 3
-parent: "008-cleanup-and-audit"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit"
@@ -16,6 +17,10 @@ _memory:
     recent_action: "Closed the dead code and architecture audit"
     next_safe_action: "Review packet"
     key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md", "decision-record.md", "implementation-summary.md"]
+level: 3
+parent: "008-cleanup-and-audit"
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->

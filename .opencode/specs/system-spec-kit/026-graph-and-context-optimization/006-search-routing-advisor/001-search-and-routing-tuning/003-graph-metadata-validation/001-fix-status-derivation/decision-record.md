@@ -1,5 +1,24 @@
 ---
-title: "Fix Graph Metadata Status Derivation - Decision Record"
+title: "...outing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/001-fix-status-derivation/decision-record]"
+description: 'title: "Fix Graph Metadata Status Derivation - Decision Record"'
+trigger_phrases:
+  - "outing"
+  - "advisor"
+  - "001"
+  - "search"
+  - "and"
+  - "decision record"
+  - "fix"
+importance_tier: "important"
+contextType: "planning"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/001-fix-status-derivation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["decision-record.md"]
 status: complete
 ---
 # Decision Record

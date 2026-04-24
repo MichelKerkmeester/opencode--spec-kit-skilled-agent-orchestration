@@ -1,11 +1,17 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | level2-verify | compact -->
 ---
-title: "Enrich Tier3 Prompt with Continuity Model Context"
-status: complete
-level: 2
-type: implementation
-parent: 002-content-routing-accuracy
-created: 2026-04-13
+title: "...6-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/spec]"
+description: 'title: "Enrich Tier3 Prompt with Continuity Model Context"'
+trigger_phrases:
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "spec"
+  - "006"
+  - "tier3"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment"
@@ -13,6 +19,11 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Closed the phase after the continuity prompt enrichment and prompt-shape verification landed"
     next_safe_action: "Reuse this phase if Tier 3 continuity wording drifts again"
+created: 2026-04-13
+level: 2
+parent: 002-content-routing-accuracy
+status: complete
+type: implementation
 ---
 # Enrich Tier3 Prompt with Continuity Model Context
 ## Metadata <!-- ANCHOR:metadata -->Parent `002-content-routing-accuracy`; Level 2; status complete; created 2026-04-13.<!-- /ANCHOR:metadata -->

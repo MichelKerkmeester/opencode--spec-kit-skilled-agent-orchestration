@@ -1,6 +1,6 @@
 ---
-title: "Decision Record: Skill Rename Closeout [042.007]"
-description: "Architectural decision for the improver-skill rename closeout: canonical `sk-improve-*` naming, runtime-agent filename boundary, and historical spec-folder slug preservation captured as one compound ADR."
+title: "...-agent-orchestration/042-sk-deep-research-review-improvement-2/007-skill-rename-improve-agent-prompt/decision-record]"
+description: "Architectural decision for the improver-skill rename closeout: canonical sk-improve-* naming, runtime-agent filename boundary, and historical spec-folder slug preservation captured as one compound ADR."
 trigger_phrases:
   - "042.007"
   - "skill rename decision record"
@@ -8,7 +8,16 @@ trigger_phrases:
   - "sk-improve-prompt"
   - "improve-agent"
 importance_tier: "normal"
-contextType: "decision-record"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/007-skill-rename-improve-agent-prompt"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["decision-record.md"]
 ---
 # Decision Record: Skill Rename Closeout
 

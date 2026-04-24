@@ -1,11 +1,12 @@
 ---
-title: "027 - Skill Graph Daemon and Advisor Unification Decision Record"
+title: "...graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/decision-record]"
 description: "Architectural decisions for the shipped Phase 027 skill-advisor unification work."
 trigger_phrases:
   - "027 decisions"
-  - "advisor daemon ADR"
-importance_tier: "high"
-contextType: "decision-record"
+  - "advisor daemon adr"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: adr | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification"

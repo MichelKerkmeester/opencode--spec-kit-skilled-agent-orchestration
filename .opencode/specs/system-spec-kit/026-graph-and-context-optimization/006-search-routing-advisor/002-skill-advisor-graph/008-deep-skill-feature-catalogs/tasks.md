@@ -1,12 +1,24 @@
 ---
-title: "Tasks: Deep Skill Feature Catalogs"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+title: "...ph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/tasks]"
+description: 'title: "Tasks: Deep Skill Feature Catalogs"'
+trigger_phrases:
+  - "and"
+  - "context"
+  - "optimization"
+  - "006"
+  - "search"
+  - "tasks"
+  - "008"
+  - "deep"
+importance_tier: "normal"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs"
     last_updated_at: "2026-04-13T00:00:00Z"
     last_updated_by: "claude-opus-4-6"
     key_files: ["tasks.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Deep Skill Feature Catalogs
 

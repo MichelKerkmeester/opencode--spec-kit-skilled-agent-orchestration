@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Cached Summary Fidelity Gates [template:level_3/plan.md]"
+title: "Implementation Plan: Cached Summary [system-spec-kit/024-compact-code-graph/032-cached-summary-fidelity-gates/plan]"
 description: "Use the already-shipped producer and reader seams, add explicit consumer gates, then verify behavior on a frozen resume corpus before broader startup fast-path claims."
 trigger_phrases:
   - "032-cached-summary-fidelity-gates"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "plan"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/032-cached-summary-fidelity-gates"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Cached Summary Fidelity Gates
 

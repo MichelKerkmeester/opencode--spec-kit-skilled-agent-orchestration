@@ -1,12 +1,30 @@
 ---
-title: "Wire Tier3 LLM Classifier into Save Handler"
-status: complete
-level: 2
-type: implementation
-parent: 002-content-routing-accuracy
+title: "...search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier/spec]"
+description: 'title: "Wire Tier3 LLM Classifier into Save Handler"'
+trigger_phrases:
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "spec"
+  - "003"
+  - "wire"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 created: 2026-04-12
+level: 2
+parent: 002-content-routing-accuracy
+status: complete
+type: implementation
 ---
-
 # Wire Tier3 LLM Classifier into Save Handler
 
 ## Scope

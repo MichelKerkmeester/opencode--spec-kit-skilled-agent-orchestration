@@ -1,13 +1,12 @@
 ---
-title: "Verification Checklist: 004-graphify Research Phase"
+title: "Verification [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify/checklist]"
 description: "Verification checklist for the 20-iteration two-wave deep-research audit of graphify plus Public rollout translation, including pre-implementation, testing, documentation, architecture, and sign-off."
 trigger_phrases:
   - "graphify checklist"
   - "graphify verification"
   - "004-graphify verification"
-importance_tier: critical
-contextType: checklist
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+importance_tier: "critical"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: 004-graphify Research Phase
 

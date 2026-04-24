@@ -1,3 +1,23 @@
+---
+title: "Spec: Self-Test [skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-agent-improver-self-test-fixes/spec]"
+description: "Phase 009 (self-test) found 5 issues"
+trigger_phrases:
+  - "spec"
+  - "self"
+  - "test"
+  - "010"
+  - "agent"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-agent-improver-self-test-fixes"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
+---
 # Spec: Self-Test Fixes and Reducer Improvements
 
 | Field | Value |

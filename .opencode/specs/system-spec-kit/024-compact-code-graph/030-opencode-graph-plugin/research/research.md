@@ -1,7 +1,6 @@
 ---
-title: "Deep Research Report: OpenCode LCM Plugin Fit for Packet 024 [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/research]"
+title: "Deep Research Report: OpenCode LCM Plugin [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/research]"
 description: "Evaluates the opencode-lcm plugin as a transport and architecture reference for packet 024 compact code graph work, identifies broader Spec Kit Memory improvements worth porting, maps additional improvements for the existing code-graph runtime and hook logic, incorporates 10 delegated cli-copilot GPT-5.4 high iterations, and adds 10 live-runtime loader iterations for the surviving plugin.auth startup crash."
-iterations: 26
 trigger_phrases:
   - "deep"
   - "research"
@@ -13,6 +12,15 @@ trigger_phrases:
   - "graph"
 importance_tier: "important"
 contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/research"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
+iterations: 26
 ---
 # Deep Research Report: OpenCode LCM Plugin Fit for Packet 024
 

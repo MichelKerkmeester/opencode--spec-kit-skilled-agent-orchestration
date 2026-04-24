@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "Imple [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/009-xethryon/implementation-summary]"
 description: "Phase 2 completed the Xethryon research packet as a true continuation: 10 new iterations, a merged synthesis, refreshed state/dashboard artifacts, and a repaired packet shell that now validates cleanly."
 trigger_phrases:
   - "009-xethryon implementation summary"

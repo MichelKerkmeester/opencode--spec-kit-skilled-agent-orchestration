@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 012 Runtime Manifest and Hook Extensibility [template:level_2/plan.md]"
+title: "...ystem-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/012-runtime-manifest-and-hook-extensibility/plan]"
 description: "Study a machine-readable runtime manifest that could generate operator guidance, centralize hook policy, and expose harness/runtime differences without duplicating current prose."
 trigger_phrases:
   - "implementation"

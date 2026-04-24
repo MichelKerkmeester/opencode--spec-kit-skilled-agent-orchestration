@@ -1,13 +1,12 @@
 ---
-title: "Implementation Plan: 019 Initial Research Wave"
+title: "...kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/plan]"
 description: "Dispatch plan for the six Tier 1 iterations. Contains the copy-paste-ready /spec_kit:deep-research :confirm and /spec_kit:deep-review :confirm blocks per iteration."
 trigger_phrases:
   - "019 research wave plan"
   - "019 tier 1 dispatch plan"
   - "research wave dispatch blocks"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Plan scaffolded with dispatch blocks for all 6 Tier 1 iterations"
     next_safe_action: "Record scratch-doc SHA; begin dispatch (SSK-RR-2 first per ADR-001)"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: 019 Initial Research Wave
 

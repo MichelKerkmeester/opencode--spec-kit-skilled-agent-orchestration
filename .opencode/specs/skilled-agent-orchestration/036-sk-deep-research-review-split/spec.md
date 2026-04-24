@@ -1,7 +1,6 @@
 ---
-title: "Feature Specification: Split sk-deep-research review [03--commands-and-skills/036-sk-deep-research-review-split/spec]"
+title: "Feature Specification: Split sk-deep-research [skilled-agent-orchestration/036-sk-deep-research-review-split/spec]"
 description: "The original sk-deep-research skill mixed iterative investigation and iterative code review in one command and one skill package. That overlap made routing, documentation, and runtime wrappers harder to maintain."
-template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 trigger_phrases:
   - "deep research review split"
   - "sk-deep-review split"
@@ -29,6 +28,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Advisor evidence calibration now separates graph-heavy matches and deep sibling edges were removed."
+template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Split sk-deep-research Review Mode into sk-deep-review
 

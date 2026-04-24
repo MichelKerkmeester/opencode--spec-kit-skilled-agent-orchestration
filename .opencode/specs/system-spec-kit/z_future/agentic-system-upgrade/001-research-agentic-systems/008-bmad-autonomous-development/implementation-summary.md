@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
+title: ".../z_future/agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/implementation-summary]"
 description: "Phase 2 extended the BAD research packet from 10 to 20 iterations, merged the synthesis, and repaired the packet docs so the phase validates cleanly."
 trigger_phrases:
   - "implementation"

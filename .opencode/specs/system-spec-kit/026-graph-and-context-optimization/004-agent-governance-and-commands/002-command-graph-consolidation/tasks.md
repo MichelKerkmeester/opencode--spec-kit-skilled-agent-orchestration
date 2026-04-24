@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Canonical Intake and Middleware Cleanup [template:level_3/tasks.md]"
+title: "...-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/tasks]"
 description: "Task Format: T### [P?] Description (file path). Task breakdown covering M1-M9 (intake surface + deep-research anchoring + parent delegation + hardening + middleware cleanup) and M10-M15 (shared intake module + --intake-only + hard delete + deep-review remediation)."
 trigger_phrases:
   - "tasks"
@@ -9,8 +9,7 @@ trigger_phrases:
   - "middleware cleanup tasks"
   - "m10 audit tasks"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
@@ -34,6 +33,7 @@ _memory:
     answered_questions:
       - "T001-T051 cover M1-M9 (intake surface scaffolding, deep-research anchoring, parent-command delegation, hardening, structural parity, doc audit, middleware cleanup)"
       - "T052-T097 cover M10-M15 (downstream audit, shared intake module, plan.md expansion, complete.md refactor, resume.md routing, hard delete + sweep, deep-review remediation)"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Canonical Intake and Middleware Cleanup
 

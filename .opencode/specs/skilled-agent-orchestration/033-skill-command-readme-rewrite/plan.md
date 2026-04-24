@@ -1,11 +1,20 @@
 ---
-title: "Implementation Plan: Skill and Command README Rewrite [03--commands-and-skills/033-skill-command-readme-rewrite/plan]"
+title: "Implementation Plan: Skill and Command README [skilled-agent-orchestration/033-skill-command-readme-rewrite/plan]"
 description: "Batch plan for rewriting skill README files and the command README surfaces with the upgraded sk-doc standards."
 trigger_phrases:
   - "readme rewrite plan"
   - "skill readme plan"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/033-skill-command-readme-rewrite"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Skill and Command README Rewrite
 

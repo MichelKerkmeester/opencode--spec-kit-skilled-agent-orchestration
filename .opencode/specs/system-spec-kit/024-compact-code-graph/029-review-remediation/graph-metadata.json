@@ -15,7 +15,7 @@
       "review remediation",
       "deep review findings",
       "compact code graph remediation",
-      "active P1 findings",
+      "active p1 findings",
       "029 plan",
       "review remediation plan",
       "active findings remediation",
@@ -210,7 +210,8 @@
     ],
     "causal_summary": "The completed deep review for `024-compact-code-graph` found seven active issues that leave the packet internally inconsistent across runtime contracts, hook safety, evidence traceability, and cross-runtime guidance. The current tree still advertises behavior that either is not implemented, is documented inconsistently, or is proven with stale evidence. Until these findings are remediated or explicitly downgraded with truthful packet updates, the parent packet cannot be treated as release-ready.",
     "created_at": "2026-04-12T09:02:53.434Z",
-    "last_save_at": "2026-04-18T14:39:04.172Z",
+    "last_save_at": "2026-04-24T15:34:55.440Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

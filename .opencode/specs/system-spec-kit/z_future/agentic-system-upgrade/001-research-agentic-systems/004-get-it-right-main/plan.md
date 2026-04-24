@@ -1,11 +1,11 @@
 ---
-title: "Implementation Plan: 004-get-it-right-main Research Phase"
+title: "Implementation [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main/plan]"
 description: "Phase 3 continues the existing Get It Right research packet by focusing on command UX, templates, agent architecture, skills, hooks, and end-to-end workflow friction."
 trigger_phrases:
   - "004-get-it-right-main plan"
   - "get it right phase 3 plan"
 importance_tier: "important"
-contextType: "plan"
+contextType: "planning"
 ---
 # Implementation Plan: 004-get-it-right-main Research Phase
 

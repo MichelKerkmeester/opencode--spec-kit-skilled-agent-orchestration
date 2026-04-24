@@ -1,17 +1,12 @@
 ---
-title: "Tasks: Phase 6 — Continuity Refactor Gates"
-description: "Packet-wide coordination tasks for the six Gates A-F that still live under `006-continuity-refactor-gates`."
+title: "T [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/tasks]"
+description: "Packet-wide coordination tasks for the six Gates A-F that still live under 006-continuity-refactor-gates."
 trigger_phrases:
   - "phase 6 tasks"
   - "continuity refactor gates tasks"
   - "root gate packet tasks"
 importance_tier: "critical"
 contextType: "planning"
-feature: "phase-006-continuity-refactor-gates"
-level: 2
-status: complete
-parent: "026-graph-and-context-optimization"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates"
@@ -20,7 +15,11 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+feature: "phase-006-continuity-refactor-gates"
+level: 2
+parent: "026-graph-and-context-optimization"
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Phase 6 — Continuity Refactor Gates
 

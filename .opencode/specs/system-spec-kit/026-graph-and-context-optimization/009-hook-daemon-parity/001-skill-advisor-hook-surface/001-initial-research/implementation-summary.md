@@ -1,10 +1,10 @@
 ---
-title: "Implementation Summary: 020 Initial Research"
+title: "...ntext-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/implementation-summary]"
 description: "Placeholder. Populated after convergence."
-trigger_phrases: ["020 research summary"]
+trigger_phrases:
+  - "020 research summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Placeholder scaffolded"
     next_safe_action: "Populate after dispatch"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: 020 Initial Research
 

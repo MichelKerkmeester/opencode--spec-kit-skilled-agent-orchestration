@@ -1,12 +1,11 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
-title: "Checklist: Memory Indexer Invariants (Coordination Root)"
+title: "Checklist: Memory Indexer [system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/checklist]"
 description: "Verification checklist for the coord-root restructure over the two shipped memory-indexer invariant children."
 trigger_phrases:
   - "026/010 coord root checklist"
   - "memory indexer invariants verification"
-importance_tier: "high"
-contextType: "checklist"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants"
@@ -19,6 +18,7 @@ _memory:
     status: "complete"
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
 ---
 # Checklist: Memory Indexer Invariants
 

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 007 Lifecycle Entrypoint Simplification [template:level_2/checklist.md]"
+title: "...stem-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/007-lifecycle-entrypoint-simplification/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

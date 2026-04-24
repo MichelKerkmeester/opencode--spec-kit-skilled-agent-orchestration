@@ -1,6 +1,5 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
-title: "Coordination Root: Memory Indexer Invariants"
+title: "Coordination Root: Memory [system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/spec]"
 description: "Umbrella phase coordinating two shipped memory-indexer invariant fixes: child 001 prevents cross-file PE UPDATE/REINFORCE decisions and adds fromScan recheck bypass; child 002 enforces index-scope exclusions (z_future, external paths) and stops constitutional-tier pollution by restricting constitutional rows to dedicated folders."
 trigger_phrases:
   - "026/010 memory indexer invariants"
@@ -8,8 +7,9 @@ trigger_phrases:
   - "constitutional tier pollution fix"
   - "index scope invariants"
   - "indexer correctness"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants"
@@ -22,6 +22,7 @@ _memory:
     status: "complete"
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Coordination Root: Memory Indexer Invariants
 

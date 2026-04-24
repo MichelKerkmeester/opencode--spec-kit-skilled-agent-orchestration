@@ -1,10 +1,11 @@
 ---
-title: "Tasks: 010-telemetry-measurement-and-rollout-controls Telemetry, Measurement, and Rollout Controls Remediation"
+title: "...7-deep-review-remediation/005-006-campaign-findings-remediation/010-telemetry-measurement-and-rollout-controls/tasks]"
 description: "Task ledger for 010-telemetry-measurement-and-rollout-controls Telemetry, Measurement, and Rollout Controls Remediation."
 trigger_phrases:
   - "tasks 010 telemetry measurement and rollout controls telemetry measureme"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/010-telemetry-measurement-and-rollout-controls"

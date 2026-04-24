@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code-Graph Hook Improvements [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/plan]"
+title: "Implem [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/plan]"
 description: "Implements the code-graph query, scan, startup, and context contract fixes defined by packet 013 research. The plan sequences zero-calls remediation, blocked-read handling, metadata lifecycle cleanup, and startup/context parity work using the existing code-graph and hook surfaces."
 trigger_phrases:
   - "implementation plan"
@@ -7,8 +7,8 @@ trigger_phrases:
   - "013"
   - "hook daemon parity"
 importance_tier: "important"
-contextType: "plan"
-template_source_marker: "plan-core | v2.2"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements"
@@ -28,6 +28,7 @@ _memory:
       - "Whether packet execution will propagate structured startup payloads or remove the builder-level contract for 013-F-005"
     answered_questions:
       - "Bucket A findings and zero-calls remediation must both be represented in the implementation plan"
+template_source_marker: "plan-core | v2.2"
 ---
 # Implementation Plan: Code-Graph Hook Improvements
 

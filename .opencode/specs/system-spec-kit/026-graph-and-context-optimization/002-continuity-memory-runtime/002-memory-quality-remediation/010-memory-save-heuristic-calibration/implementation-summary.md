@@ -1,12 +1,11 @@
 ---
-title: "Implementation Summary: Memory Save Heuristic Calibration"
+title: "...ontinuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration/implementation-summary]"
 description: "Closeout summary for packet 010 covering the five RCA defects, skipped research recommendations, regression coverage, strict validation, and the real dist-based save."
 trigger_phrases:
   - "010 heuristic calibration implementation summary"
   - "memory save calibration summary"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Memory Save Heuristic Calibration
 

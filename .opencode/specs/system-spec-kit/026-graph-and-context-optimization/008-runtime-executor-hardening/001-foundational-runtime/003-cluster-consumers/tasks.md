@@ -1,9 +1,17 @@
 ---
-title: "Tasks: Phase 017 Wave B — Cluster Consumers"
+title: "...6-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers/tasks]"
 description: "Wave B task manifest: 9 tasks / 30h across 3 parallel lanes. Lane B1 (4 tasks / 12h), Lane B2 (2 tasks / 16h), Lane B3 (3 tasks / 12h). Full acceptance criteria with finding crosswalk + atomic-ship constraints."
-trigger_phrases: ["017 wave b tasks", "t-cns-02 t-w1-cns-05 t-cgc-02 t-rbd-03", "t-w1-cgc-03 t-w1-hok-01", "t-scp-02 t-san-01 t-san-02 t-san-03 t-pin-ret-01", "017 lane b1 tasks", "017 lane b2 tasks", "017 lane b3 tasks"]
+trigger_phrases:
+  - "017 wave b tasks"
+  - "t-cns-02 t-w1-cns-05 t-cgc-02 t-rbd-03"
+  - "t-w1-cgc-03 t-w1-hok-01"
+  - "t-scp-02 t-san-01 t-san-02 t-san-03 t-pin-ret-01"
+  - "017 lane b1 tasks"
+  - "017 lane b2 tasks"
+  - "017 lane b3 tasks"
 importance_tier: "critical"
-contextType: "tasks"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers"

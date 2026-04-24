@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: 002 Agentic Adoption [template:level_3/decision-record.md]"
+title: "Decision Record: 002 Agentic [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/decision-record]"
 description: "Decision record for the architecture and sequencing rules that govern the adoption train."
 trigger_phrases:
   - "decision"

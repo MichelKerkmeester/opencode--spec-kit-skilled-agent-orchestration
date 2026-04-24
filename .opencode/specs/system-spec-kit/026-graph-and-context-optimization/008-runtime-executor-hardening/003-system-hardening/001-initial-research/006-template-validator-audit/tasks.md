@@ -1,11 +1,10 @@
 ---
-title: "Tasks: Template + Validator Joint Audit (SSK-DR-1)"
+title: "...mization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit/tasks]"
 description: "Task breakdown for SSK-DR-1 dispatch."
 trigger_phrases:
   - "ssk-dr-1 tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Tasks scaffolded"
     next_safe_action: "Complete metadata"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Template + Validator Joint Audit
 

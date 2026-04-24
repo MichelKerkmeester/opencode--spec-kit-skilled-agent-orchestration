@@ -1,10 +1,10 @@
 ---
-title: "Verification Checklist: Description Regen Contract"
+title: "...nd-context-optimization/008-runtime-executor-hardening/003-system-hardening/005-description-regen-contract/checklist]"
 description: "Verification items for shared schema + merge helper."
-trigger_phrases: ["description regen checklist"]
+trigger_phrases:
+  - "description regen checklist"
 importance_tier: "critical"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/005-description-regen-contract"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Checklist evidence captured for schema, merge, tests, and sweep"
     next_safe_action: "Track unrelated broader-suite failures before final packet closure"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Description Regen Contract
 

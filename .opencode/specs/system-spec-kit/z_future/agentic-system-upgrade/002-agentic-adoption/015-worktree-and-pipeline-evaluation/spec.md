@@ -1,6 +1,6 @@
 ---
-title: "Feature Specification: 015 Worktree and Pipeline Evaluation [template:level_2/spec.md]"
-description: "Measure whether isolated worktrees, CI repair loops, or backlog-style pipelines add enough value in Public to justify any integration beyond current `sk-git` and finish workflows."
+title: "Feature [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/015-worktree-and-pipeline-evaluation/spec]"
+description: "Measure whether isolated worktrees, CI repair loops, or backlog-style pipelines add enough value in Public to justify any integration beyond current sk-git and finish workflows."
 trigger_phrases:
   - "feature"
   - "specification"

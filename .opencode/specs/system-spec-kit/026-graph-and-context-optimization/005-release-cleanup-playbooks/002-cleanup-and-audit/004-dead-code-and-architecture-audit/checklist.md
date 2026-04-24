@@ -1,13 +1,12 @@
 ---
-title: "Verification Checklist: 018 / 013 — dead code and architecture audit"
+title: "...text-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit/checklist]"
 description: "Verification Date: 2026-04-12"
-trigger_phrases: ["013 checklist", "dead code audit checklist", "architecture audit checklist"]
+trigger_phrases:
+  - "013 checklist"
+  - "dead code audit checklist"
+  - "architecture audit checklist"
 importance_tier: "important"
 contextType: "implementation"
-status: "complete"
-level: 3
-parent: "008-cleanup-and-audit"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit"
@@ -16,6 +15,10 @@ _memory:
     recent_action: "Recorded the final verification checklist"
     next_safe_action: "Review packet"
     key_files: ["checklist.md", "implementation-summary.md", "tasks.md"]
+level: 3
+parent: "008-cleanup-and-audit"
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->

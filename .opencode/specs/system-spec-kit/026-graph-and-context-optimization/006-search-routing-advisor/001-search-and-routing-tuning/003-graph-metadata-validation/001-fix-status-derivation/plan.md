@@ -1,7 +1,25 @@
 ---
-title: "Fix Graph Metadata Status Derivation - Execution Plan"
-status: complete
+title: "...06-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/001-fix-status-derivation/plan]"
+description: 'title: "Fix Graph Metadata Status Derivation - Execution Plan"'
+trigger_phrases:
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "plan"
+  - "fix"
+importance_tier: "important"
+contextType: "planning"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/001-fix-status-derivation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 parent_spec: 001-fix-status-derivation/spec.md
+status: complete
 ---
 # Execution Plan
 ## Approach

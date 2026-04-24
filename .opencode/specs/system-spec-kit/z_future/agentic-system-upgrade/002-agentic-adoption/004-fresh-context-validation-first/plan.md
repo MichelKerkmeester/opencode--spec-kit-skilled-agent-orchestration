@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 004 Fresh Context Validation First [template:level_2/plan.md]"
+title: "Implement [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/004-fresh-context-validation-first/plan]"
 description: "Adopt the combination of fresh execution attempts, packet-local continuity, and validation-first sequencing for high-risk implementation and loop work."
 trigger_phrases:
   - "implementation"

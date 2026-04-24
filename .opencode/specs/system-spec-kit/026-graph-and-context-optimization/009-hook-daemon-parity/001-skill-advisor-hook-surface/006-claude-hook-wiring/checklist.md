@@ -1,11 +1,10 @@
 ---
-title: "Verification Checklist: Claude Hook Wiring"
+title: "...raph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring/checklist]"
 description: "Level 2 verification for 020/006. Populate post-implementation."
 trigger_phrases:
   - "020 006 checklist"
 importance_tier: "critical"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring"
@@ -18,7 +17,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/tests/claude-user-prompt-submit-hook.vitest.ts"
       - ".claude/settings.local.json"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Claude Hook Wiring
 

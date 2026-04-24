@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Normalized Analytics Reader [template:level_3/spec.md]"
+title: "Feature Specification: Normalized [system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader/spec]"
 description: "Reader-owned normalized replay model for cross-session token analytics, built on the completed Stop-hook producer metadata seam."
 trigger_phrases:
   - "normalized analytics reader"
@@ -9,6 +9,15 @@ trigger_phrases:
   - "024 compact code graph"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Normalized Analytics Reader
 
@@ -30,7 +39,7 @@ Packet `024/003` proved the Stop hook can persist useful session-end facts, but 
 
 **Key Decisions**: Keep the writer boundary unchanged; key `sessions` by `claudeSessionId`; key `turns` by `claude_session_id + transcript_path + byte_start`; seed model-pricing and normalized cache-tier lookup tables; keep dashboard and SessionStart consumers out of scope.
 
-**Critical Dependencies**: The producer metadata packet in `026/.../002-implement-cache-warning-hooks` must already be complete, because this packet consumes `producerMetadata.transcript` and cache-token carry-forward fields instead of recreating them.
+**Critical Dependencies**: The producer metadata packet in `026/002-continuity-memory-runtime/001-cache-warning-hooks` must already be complete, because this packet consumes `producerMetadata.transcript` and cache-token carry-forward fields instead of recreating them.
 
 ---
 
@@ -148,7 +157,7 @@ Deliver a narrow Level 3 packet that turns the producer seam into a queryable re
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Completed producer metadata packet (`026/.../002`) | High | Consume the existing `producerMetadata` seam instead of recreating transcript identity or cache-token fields in this packet. |
+| Dependency | Completed producer metadata packet (`026/002-continuity-memory-runtime/001-cache-warning-hooks`) | High | Consume the existing `producerMetadata` seam instead of recreating transcript identity or cache-token fields in this packet. |
 | Risk | Replay identity drift | High | Key turns by `claude_session_id + transcript_path + byte_start` and verify absolute line numbers in tests. |
 | Risk | Session totals drift from writer snapshots | High | Recompute session aggregates from normalized turns after every ingest. |
 | Risk | Pricing drift or overclaiming | Medium | Seed family-level pricing rows from the current runtime estimate contract and keep reporting consumers out of scope. |

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Graph Metadata Enrichment"
+title: "...graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment/spec]"
 description: "Close the packet around the already-completed schema v2 enrichment of all 21 per-skill graph-metadata.json files and align the packet docs with live corpus reality."
 trigger_phrases:
   - "004-graph-metadata-enrichment"
@@ -8,8 +8,6 @@ trigger_phrases:
   - "skill metadata closeout"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment"
@@ -18,6 +16,8 @@ _memory:
     recent_action: "Reframed the packet around the completed schema v2 enrichment and restored the Level 3 scaffold"
     next_safe_action: "Run strict packet validation plus compiler validation to confirm the closeout evidence"
     key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md", "decision-record.md", "graph-metadata.json"]
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->

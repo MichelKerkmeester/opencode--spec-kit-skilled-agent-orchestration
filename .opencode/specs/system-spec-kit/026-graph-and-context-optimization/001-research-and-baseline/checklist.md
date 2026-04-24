@@ -1,13 +1,12 @@
 ---
-title: "Verification Checklist: Graph and Context Systems Master Research Packet"
+title: "Verification Checklist: Graph [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/checklist]"
 description: "Evidence, conformance, and recommendation-readiness checklist for the root graph-and-context research packet."
 trigger_phrases:
   - "graph context packet checklist"
   - "research packet verification"
   - "recommendation readiness"
 importance_tier: "critical"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Merged source phase root"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Graph and Context Systems Master Research Packet
 

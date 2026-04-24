@@ -1,11 +1,12 @@
 ---
-title: "029 - Hook Parity Remediation Decisions"
+title: "...ystem-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/decision-record]"
 description: "Architecture decision record for hook parity remediation, including transport diagnostics, Codex recovery truth, Copilot routing, and PreToolUse policy behavior."
 trigger_phrases:
   - "029 decisions"
   - "hook parity adr"
-importance_tier: "high"
-contextType: "decision-record"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"

@@ -1,11 +1,10 @@
 ---
-title: "Verification Checklist: Delta-Review of 015 Findings"
+title: "...optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015/checklist]"
 description: "Verification checklist for DR-1 deep-review packet."
 trigger_phrases:
   - "dr-1 checklist"
 importance_tier: "critical"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Checklist scaffolded"
     next_safe_action: "Dispatch and converge"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Delta-Review of 015 Findings
 

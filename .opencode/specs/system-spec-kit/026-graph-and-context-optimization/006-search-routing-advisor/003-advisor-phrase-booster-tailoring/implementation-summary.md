@@ -1,11 +1,12 @@
 ---
-title: "Implementation Summary: Advisor Phrase-Booster Tailoring"
+title: "...raph-and-context-optimization/006-search-routing-advisor/003-advisor-phrase-booster-tailoring/implementation-summary]"
 description: "Migrated 24 tokenizer-broken multi-word INTENT_BOOSTERS entries to PHRASE_INTENT_BOOSTERS, added 15 new phrase routes, fixed hyphenated-token bug. Regression held at 1.0 top-1 and p0. Headline uplift: 5-dimension agent scoring now routes to sk-improve-agent at 0.95 instead of misrouting to sk-improve-prompt at 0.77."
 trigger_phrases:
   - "advisor phrase booster implementation"
-  - "INTENT PHRASE migration complete"
+  - "intent phrase migration complete"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/003-advisor-phrase-booster-tailoring"

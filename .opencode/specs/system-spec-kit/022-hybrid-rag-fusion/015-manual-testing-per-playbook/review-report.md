@@ -182,7 +182,7 @@ These 25 features were originally counted as P0 (no coverage) but rounds 2-6 ver
 |-------|-------|
 | **Severity** | P2 |
 | **Dimension** | maintainability |
-| **Evidence** | Both `019-feature-flag-reference/` and `020-feature-flag-reference/` exist as spec phases |
+| **Evidence** | Both `019-feature-flag-reference/` and `020-feature-flag-reference-audit/` exist as spec phases |
 | **Disposition** | Advisory — appears intentional for audit phase mapping per FEATURE_CATALOG.md |
 
 ---

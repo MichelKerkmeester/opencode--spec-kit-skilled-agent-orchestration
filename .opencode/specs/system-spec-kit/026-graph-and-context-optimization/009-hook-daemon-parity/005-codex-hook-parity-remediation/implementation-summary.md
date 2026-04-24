@@ -1,13 +1,13 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
-title: "Implementation Summary: Codex CLI Hook Parity Complete"
+title: "...t/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation/implementation-summary]"
 description: "Outcome A shipped: native Codex SessionStart and UserPromptSubmit hooks are implemented, registered beside Superset notify hooks, documented, built, tested, and smoke-tested on Codex CLI 0.122.0."
 trigger_phrases:
   - "codex hook parity complete"
   - "026/009/005 implementation"
   - "codex startup advisor hooks"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation"
@@ -22,6 +22,7 @@ _memory:
       - "Codex SessionStart and UserPromptSubmit hooks inject developer context."
       - "Live Codex config preserves Superset notify hooks."
       - "Independent re-verification on 2026-04-22 reproduced every documented check."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Codex CLI Hook Parity Remediation
 

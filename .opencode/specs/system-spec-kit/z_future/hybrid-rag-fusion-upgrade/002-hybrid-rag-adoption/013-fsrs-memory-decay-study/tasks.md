@@ -1,3 +1,13 @@
+---
+title: "Tasks [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/013-fsrs-memory-decay-study/tasks]"
+description: "1. Document the current FSRS default tables and due-state gaps in .opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts and .opencode/skill/system-spec-kit/..."
+trigger_phrases:
+  - "tasks"
+  - "013"
+  - "fsrs"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 013-fsrs-memory-decay-study
 
 1. Document the current FSRS default tables and due-state gaps in `.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts` and `.opencode/skill/system-spec-kit/mcp_server/handlers/save/types.ts`.

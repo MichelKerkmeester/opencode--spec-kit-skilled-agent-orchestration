@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: [spec]/memory/ Folder Deprecation Audit [template:level_2/spec.md]"
+title: "...y-memory-runtime/004-memory-save-rewrite/research/014-memory-save-rewrite-pt-01/013-audit-snapshot/primary-docs/spec]"
 description: "Audit the system-spec-kit tree to verify the v3.4.0.0 claim that standalone [spec]/memory/*.md files are retired, and enumerate every code path, doc, or template that still writes, reads, or assumes that directory."
 trigger_phrases:
   - "memory folder deprecation audit"
@@ -10,8 +10,7 @@ trigger_phrases:
   - "memory file corpus audit"
   - "system-spec-kit memory audit"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/013-memory-folder-deprecation-audit"
@@ -36,6 +35,7 @@ _memory:
       - "Is [spec]/memory/*.md still supposed to exist as an indexed artifact post-v3.4.0.0, or is the runtime in a half-migrated state?"
       - "Does the database still depend on memory/*.md as the primary file path for memory_index entries?"
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: [spec]/memory/ Folder Deprecation Audit
 

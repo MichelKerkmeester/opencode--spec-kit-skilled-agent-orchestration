@@ -1,3 +1,25 @@
+---
+title: "...ardening/003-system-hardening/001-initial-research/005-routing-accuracy/research/019-system-hardening-pt-03/research]"
+description: "This packet measured routing accuracy across two independent surfaces in the OpenCode assistant framework: the Gate 3 spec-folder classifier and the skill-advisor top-1 router. ..."
+trigger_phrases:
+  - "ardening"
+  - "003"
+  - "system"
+  - "hardening"
+  - "001"
+  - "research"
+  - "019"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy/research/019-system-hardening-pt-03"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
+---
 # Routing Accuracy Research Synthesis
 
 ## Executive Summary

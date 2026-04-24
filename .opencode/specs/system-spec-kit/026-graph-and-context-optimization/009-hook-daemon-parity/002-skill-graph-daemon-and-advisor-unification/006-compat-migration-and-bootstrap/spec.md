@@ -1,6 +1,5 @@
 ---
-SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
-title: "Feature Specification: 027/005 — Compat Migration + Bootstrap"
+title: "...zation/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap/spec]"
 description: "Preserve skill_advisor.py compat shim. Hook/plugin bridges route to native advisor_recommend after daemon availability check. Install guide + verification + rollback docs. Manual-testing playbook updates. Prompt-safe status surfaces for superseded/archived/future/rolled-back skills."
 trigger_phrases:
   - "027/005"
@@ -9,8 +8,9 @@ trigger_phrases:
   - "plugin bridge"
   - "install guide"
   - "redirect ux"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_2/spec.md | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap"
@@ -32,6 +32,7 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 ---
 # Feature Specification: 027/005 — Compat Migration + Bootstrap
 

@@ -1,11 +1,10 @@
 ---
-title: "Implementation Summary: Canonical-Save Hardening"
+title: "...optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening/implementation-summary]"
 description: "Implementation summary for canonical-save hardening Waves A-C: save-lineage runtime parity, packet-root remediation, and validator rollout."
 trigger_phrases:
   - "canonical save hardening summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Completed Waves A-C implementation and targeted verification"
     next_safe_action: "Orchestrator review, optional broad-suite triage, and commit"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Canonical-Save Hardening
 

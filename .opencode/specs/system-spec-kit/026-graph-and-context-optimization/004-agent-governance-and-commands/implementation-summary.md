@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Agent Governance And Commands"
+title: "Implementa [system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/implementation-summary]"
 description: "Summary of the 004-agent-governance-and-commands flattened parent and direct child phases."
 trigger_phrases:
   - "004-agent-governance-and-commands"
@@ -7,8 +7,7 @@ trigger_phrases:
   - "001-agent-execution-guardrails"
   - "002-command-graph-consolidation"
 importance_tier: "important"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands"
@@ -29,6 +28,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

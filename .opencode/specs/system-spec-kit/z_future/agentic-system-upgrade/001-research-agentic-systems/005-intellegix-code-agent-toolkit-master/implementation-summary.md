@@ -1,11 +1,11 @@
 ---
-title: "Implementation Summary: 005-intellegix-code-agent-toolkit-master Research Phase"
+title: ".../agentic-system-upgrade/001-research-agentic-systems/005-intellegix-code-agent-toolkit-master/implementation-summary]"
 description: "Closeout summary for the Intellegix Code Agent Toolkit deep-research packet through Phase 3."
 trigger_phrases:
   - "005 intellegix implementation summary"
   - "intellegix research closeout"
 importance_tier: "important"
-contextType: "summary"
+contextType: "implementation"
 ---
 # Implementation Summary: 005-intellegix-code-agent-toolkit-master Research Phase
 

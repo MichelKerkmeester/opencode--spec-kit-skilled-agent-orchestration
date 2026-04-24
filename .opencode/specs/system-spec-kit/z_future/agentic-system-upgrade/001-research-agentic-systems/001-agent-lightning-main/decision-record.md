@@ -1,12 +1,12 @@
 ---
-title: "Decision Record: 001-agent-lightning-main Research Phase"
+title: "...ystem-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/001-agent-lightning-main/decision-record]"
 description: "Records the research-method, scope, and recommendation-framing decisions for the Agent Lightning phase."
 trigger_phrases:
   - "001-agent-lightning-main decision record"
-  - "agent lightning ADR"
+  - "agent lightning adr"
   - "research phase decisions"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: 001-agent-lightning-main Research Phase
 

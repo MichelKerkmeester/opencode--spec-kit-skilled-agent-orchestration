@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 015 Deep Review Remediation"
+title: "...em-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation/checklist]"
 description: "Quality gates for 243-finding remediation across 11 workstreams. P0 blocker, per-workstream completion, cross-cutting quality, release readiness."
 trigger_phrases:
   - "remediation checklist"
@@ -8,6 +8,7 @@ trigger_phrases:
   - "release readiness"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation"

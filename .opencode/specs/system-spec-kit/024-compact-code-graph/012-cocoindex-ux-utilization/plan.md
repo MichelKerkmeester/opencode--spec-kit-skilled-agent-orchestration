@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Implementation Plan: Phase 012 — CocoIndex UX, Utilization & Usefulness"
+title: "Implementation Plan: Phase 012 — CocoIndex [system-spec-kit/024-compact-code-graph/012-cocoindex-ux-utilization/plan]"
 description: "Restate the Phase 012 delivery plan using the actual shipped CocoIndex behavior and remaining gaps."
 trigger_phrases:
   - "plan"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "cocoindex"
 importance_tier: "important"
 contextType: "planning"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/012-cocoindex-ux-utilization"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Plan: Phase 012 — CocoIndex UX, Utilization & Usefulness
 
@@ -63,7 +72,7 @@ Template compliance shim anchor for rollback.
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:summary-2 -->
 ### 1. SUMMARY
 #### Technical Context
 
@@ -76,11 +85,11 @@ Template compliance shim anchor for rollback.
 
 ### Overview
 This plan documents what Phase 012 actually delivered and how to verify it honestly. The emphasis is on status-only SessionStart reporting, hint-only PreCompact guidance, lightweight helper-tool behavior, and explicit tracking of the work that remains undone.
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:summary-2 -->
 
 ---
 
-<!-- ANCHOR:quality-gates -->
+<!-- ANCHOR:quality-gates-2 -->
 ### 2. QUALITY GATES
 ### Definition of Ready
 - [x] The packet scope is limited to Phase 012 documentation inside this folder
@@ -91,11 +100,11 @@ This plan documents what Phase 012 actually delivered and how to verify it hones
 - [x] All packet docs use the Level 2 scaffold
 - [x] Current-reality corrections are consistent across docs
 - [x] Verification references manual build checks and hook smoke tests instead of a nonexistent script
-<!-- /ANCHOR:quality-gates -->
+<!-- /ANCHOR:quality-gates-2 -->
 
 ---
 
-<!-- ANCHOR:architecture -->
+<!-- ANCHOR:architecture-2 -->
 ### 3. ARCHITECTURE
 ### Pattern
 Documentation alignment for a partially delivered implementation
@@ -108,11 +117,11 @@ Documentation alignment for a partially delivered implementation
 
 ### Data Flow
 Implementation facts flow from shipped hooks and helper tools into the packet. The packet then drives review and validation by describing what exists, how it was verified, and what still requires a future phase.
-<!-- /ANCHOR:architecture -->
+<!-- /ANCHOR:architecture-2 -->
 
 ---
 
-<!-- ANCHOR:phases -->
+<!-- ANCHOR:phases-2 -->
 ### 4. IMPLEMENTATION PHASES
 ### Phase 1: Setup
 - [x] Rebuild the packet around the Level 2 template contract
@@ -128,37 +137,37 @@ Implementation facts flow from shipped hooks and helper tools into the packet. T
 - [x] Align checklist evidence with manual build output verification and hook smoke tests
 - [x] Validate the packet after edits
 - [ ] Implement broader CocoIndex readiness automation or background re-indexing
-<!-- /ANCHOR:phases -->
+<!-- /ANCHOR:phases-2 -->
 
 ---
 
-<!-- ANCHOR:testing -->
+<!-- ANCHOR:testing-2 -->
 ### 5. TESTING STRATEGY
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Manual | `npm run build` output review for `dist/hooks/claude/*.js` | Bash |
 | Manual | Hook smoke tests for `session-prime.js`, `compact-inject.js`, `session-stop.js` | Node |
 | Integration | Routing behavior already exercised by runtime-routing coverage | Vitest |
-<!-- /ANCHOR:testing -->
+<!-- /ANCHOR:testing-2 -->
 
 ---
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-2 -->
 ### 6. DEPENDENCIES
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Existing Phase 012 code changes | Internal | Green | Packet cannot stay accurate if implementation facts are wrong |
 | Validator contract in `.opencode/skill/system-spec-kit/templates/level_2/` | Internal | Green | Packet structure drifts and validation fails |
 | Manual build and hook smoke evidence | Internal | Yellow | Verification claims weaken if evidence is not retained |
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-2 -->
 
 ---
 
-<!-- ANCHOR:rollback -->
+<!-- ANCHOR:rollback-2 -->
 ### 7. ROLLBACK PLAN
 - **Trigger**: Packet validation regresses or packet claims no longer match shipped behavior.
 - **Procedure**: Revert the packet docs to the last accurate revision, re-read current implementation facts, and re-run validation.
-<!-- /ANCHOR:rollback -->
+<!-- /ANCHOR:rollback-2 -->
 
 ---
 

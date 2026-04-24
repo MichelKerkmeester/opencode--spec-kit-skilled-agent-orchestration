@@ -1,3 +1,24 @@
+---
+title: "...9-hook-daemon-parity/014-skill-advisor-hook-improvements/research/014-skill-advisor-hook-improvements-pt-02/research]"
+description: "Packet-02 confirmed that the remaining skill-advisor improvement work is no longer centered on the already-closed CF-019 scorer bug; it is centered on parity, threshold observab..."
+trigger_phrases:
+  - "hook"
+  - "daemon"
+  - "parity"
+  - "014"
+  - "skill"
+  - "research"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/014-skill-advisor-hook-improvements-pt-02"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
+---
 # Deep Research — 014-skill-advisor-hook-improvements-pt-02
 
 ## Summary

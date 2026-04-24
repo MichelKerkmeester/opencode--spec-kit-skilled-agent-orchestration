@@ -1,11 +1,20 @@
 ---
-title: "Tasks: OpenCode Transport Adapter [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/002-opencode-transport-adapter/tasks]"
+title: "Tasks: OpenCode [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/002-opencode-transport-adapter/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "phase 2 tasks"
   - "transport adapter tasks"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/002-opencode-transport-adapter"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: OpenCode Transport Adapter
 

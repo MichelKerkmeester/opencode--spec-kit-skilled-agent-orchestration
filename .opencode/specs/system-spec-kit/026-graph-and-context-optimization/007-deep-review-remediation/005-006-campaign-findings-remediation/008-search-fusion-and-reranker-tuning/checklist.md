@@ -1,10 +1,11 @@
 ---
-title: "Verification Checklist: 008-search-fusion-and-reranker-tuning Search Fusion and Reranker Tuning Remediation"
+title: "...on/007-deep-review-remediation/005-006-campaign-findings-remediation/008-search-fusion-and-reranker-tuning/checklist]"
 description: "Verification gates for 008-search-fusion-and-reranker-tuning Search Fusion and Reranker Tuning Remediation."
 trigger_phrases:
   - "verification checklist 008 search fusion and reranker tuning search fusi"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/008-search-fusion-and-reranker-tuning"

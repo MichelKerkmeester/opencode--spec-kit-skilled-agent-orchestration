@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Skill and Command README [03--commands-and-skills/033-skill-command-readme-rewrite/checklist]"
+title: "Verification Checklist: Skill and Command [skilled-agent-orchestration/033-skill-command-readme-rewrite/checklist]"
 description: "Verification checklist for the README rewrite packet."
 trigger_phrases:
   - "verification"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "033"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/033-skill-command-readme-rewrite"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: Skill and Command README Rewrite
 

@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 ---
-title: "Tasks: Doc Surface Alignment: Graph Metadata Changes"
+title: "...6-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -9,7 +9,6 @@ trigger_phrases:
   - "active-only backfill"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment"
@@ -30,6 +29,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Which requested surfaces needed real edits vs verification-only reads"
+status: complete
 ---
 # Tasks: Doc Surface Alignment: Graph Metadata Changes
 

@@ -1,11 +1,12 @@
 ---
-title: "Implementation Summary: 018 / 011 — graph-metadata.json rollout"
+title: "...timization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata/implementation-summary]"
 description: "Implementation closeout for the graph-metadata.json schema, refresh, indexing, backfill, and workflow adoption rollout."
-trigger_phrases: ["018 011 implementation summary", "graph metadata rollout implementation", "graph metadata closeout"]
+trigger_phrases:
+  - "018 011 implementation summary"
+  - "graph metadata rollout implementation"
+  - "graph metadata closeout"
 importance_tier: "important"
 contextType: "implementation"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata"
@@ -14,6 +15,8 @@ _memory:
     recent_action: "Completed rollout and closeout"
     next_safe_action: "Release handoff"
     key_files: ["implementation-summary.md", "checklist.md", "tasks.md", "plan.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

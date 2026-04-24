@@ -1,3 +1,25 @@
+---
+title: "Phase 022: Gemini CLI Hook Porting [system-spec-kit/024-compact-code-graph/022-gemini-hook-porting/spec]"
+description: "Template compliance shim section. Legacy phase content continues below."
+trigger_phrases:
+  - "phase"
+  - "022"
+  - "gemini"
+  - "cli"
+  - "hook"
+  - "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/022-gemini-hook-porting"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Phase 022: Gemini CLI Hook Porting
 

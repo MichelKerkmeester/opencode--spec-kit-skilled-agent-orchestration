@@ -1,11 +1,20 @@
 ---
-title: "Verific [system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference/checklist]"
+title: "Verif [system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference-audit/checklist]"
 description: "Verification checklist for Phase 020 feature-flag-reference audit scenarios PB-020-01 through PB-020-03."
 trigger_phrases:
   - "phase 020 checklist"
   - "feature-flag-reference audit checklist"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference-audit"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: manual-testing-per-playbook feature-flag-reference audit phase
 
@@ -97,4 +106,3 @@ contextType: "general"
 
 **Verification Date**: Pending execution
 <!-- /ANCHOR:summary -->
-

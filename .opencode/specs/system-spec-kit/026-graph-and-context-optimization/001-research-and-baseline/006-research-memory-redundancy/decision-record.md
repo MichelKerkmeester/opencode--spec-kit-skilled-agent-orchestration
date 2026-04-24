@@ -1,12 +1,11 @@
 ---
-title: "Decision Record: Research Memory Redundancy Follow-On"
+title: "...spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy/decision-record]"
 description: "Records why the follow-on stays documentation-only and points runtime ownership back to packet 003."
 trigger_phrases:
   - "memory redundancy follow on adr"
   - "006 redundancy decision record"
 importance_tier: "important"
-contextType: "decision-record"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["decision-record.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Research Memory Redundancy Follow-On
 

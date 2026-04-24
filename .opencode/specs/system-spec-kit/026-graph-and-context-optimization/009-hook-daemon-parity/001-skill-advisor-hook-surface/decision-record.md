@@ -1,12 +1,11 @@
 ---
-title: "Decision Record: Skill-Advisor Hook Surface"
+title: "...em-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/decision-record]"
 description: "Architectural decisions for 020 — cross-runtime proactive skill-advisor hook."
 trigger_phrases:
   - "020 adr"
   - "skill advisor hook decisions"
 importance_tier: "critical"
-contextType: "decision-record"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface"
@@ -14,7 +13,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Decision record scaffolded with ADR-001 (research-first) + ADR-002 (pattern reuse)"
     next_safe_action: "Populate additional ADRs as research converges"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Skill-Advisor Hook Surface
 

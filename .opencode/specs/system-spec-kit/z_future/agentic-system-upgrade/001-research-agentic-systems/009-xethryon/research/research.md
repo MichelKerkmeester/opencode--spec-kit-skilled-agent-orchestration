@@ -1,10 +1,14 @@
 ---
-title: "Deep Research Report — 009-xethryon"
+title: "Deep Research [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/009-xethryon/research]"
 description: "30-iteration research of Xethryon for system-spec-kit improvement opportunities. 23 actionable findings, 7 rejected."
+trigger_phrases:
+  - "deep"
+  - "research"
+  - "009"
+  - "xethryon"
 importance_tier: "important"
 contextType: "research"
 ---
-
 # Deep Research Report — 009-xethryon
 
 ## 1. Executive Summary

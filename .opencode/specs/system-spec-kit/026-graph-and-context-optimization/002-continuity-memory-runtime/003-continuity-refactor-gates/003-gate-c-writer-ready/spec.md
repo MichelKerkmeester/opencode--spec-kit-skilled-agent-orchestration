@@ -1,13 +1,14 @@
 ---
-title: "Gate C — Writer Ready"
+title: "...ph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/003-gate-c-writer-ready/spec]"
 description: "Gate C defines the writer-critical path for phase 018: validator, routed save path, merge engine, template continuity rollout, and parity-plus-rollback proof readiness."
-trigger_phrases: ["gate c", "writer ready", "phase 018", "canonical continuity", "memory-save rewrite"]
+trigger_phrases:
+  - "gate c"
+  - "writer ready"
+  - "phase 018"
+  - "canonical continuity"
+  - "memory-save rewrite"
 importance_tier: "critical"
 contextType: "implementation"
-level: "3+"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/003-gate-c-writer-ready"
@@ -16,6 +17,10 @@ _memory:
     recent_action: "Closed Gate C spec against shipped writer evidence"
     next_safe_action: "Include Gate C packet docs in the commit-ready file list"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/003-gate-c-writer-ready/spec.md"]
+closed_by_commit: TBD
+level: "3+"
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.2 -->

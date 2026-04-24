@@ -1,12 +1,11 @@
 ---
-title: "Verification Checklist: Deferred Remediation + Telemetry Measurement Run"
+title: "...t/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run/checklist]"
 description: "Level 2 verification checklist for Phase 024."
 trigger_phrases:
   - "024 checklist"
   - "telemetry measurement verification"
 importance_tier: "important"
-contextType: "verification"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run"
@@ -20,6 +19,7 @@ _memory:
     key_files:
       - ".opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement-report.md"
     completion_pct: 90
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Deferred Remediation + Telemetry Measurement Run
 

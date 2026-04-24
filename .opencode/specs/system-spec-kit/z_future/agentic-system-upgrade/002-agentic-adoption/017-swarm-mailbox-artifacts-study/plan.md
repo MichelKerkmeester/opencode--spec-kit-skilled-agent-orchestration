@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 017 Swarm Mailbox Artifacts Study [template:level_2/plan.md]"
+title: "Implementa [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/017-swarm-mailbox-artifacts-study/plan]"
 description: "Explore whether packet-local mailbox or task-board artifacts can improve parallel coordination while keeping Public's orchestrate-and-packet model intact."
 trigger_phrases:
   - "implementation"

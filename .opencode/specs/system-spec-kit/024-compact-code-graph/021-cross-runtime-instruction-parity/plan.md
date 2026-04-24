@@ -1,6 +1,23 @@
 ---
-title: "Plan: Cross-Runtime Instruction Parity [024/021]"
+title: "Plan: Cross-Runtime Instruction [system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/plan]"
 description: "Implementation order for No Hook Transport tables and @context-prime agent."
+trigger_phrases:
+  - "plan"
+  - "cross"
+  - "runtime"
+  - "instruction"
+  - "021"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Phase 021 — Cross-Runtime Instruction Parity

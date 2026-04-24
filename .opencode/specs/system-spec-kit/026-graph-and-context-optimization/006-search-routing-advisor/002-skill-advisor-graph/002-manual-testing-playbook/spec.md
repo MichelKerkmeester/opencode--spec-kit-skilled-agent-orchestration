@@ -1,14 +1,13 @@
 ---
-title: "Feature Specification: Playbook Template Alignment"
+title: "...6-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook/spec]"
 description: "Align the full 24-scenario playbook package and root operator guide with live skill-advisor/scripts paths and the correct template contract."
 trigger_phrases:
   - "002-manual-testing-playbook"
   - "playbook alignment"
   - "playbook template"
-  - "RCAF prompts"
+  - "rcaf prompts"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level3-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook"
@@ -17,6 +16,7 @@ _memory:
     recent_action: "Loaded deep-review findings and identified stale scope, path, and metadata language across the packet"
     next_safe_action: "Normalize routing-accuracy prose paths and refresh packet acceptance criteria for the full 24-scenario corpus"
     key_files: ["spec.md", "plan.md", "tasks.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level3-verify | v2.2 -->"
 ---
 # Feature Specification: Playbook Template Alignment
 

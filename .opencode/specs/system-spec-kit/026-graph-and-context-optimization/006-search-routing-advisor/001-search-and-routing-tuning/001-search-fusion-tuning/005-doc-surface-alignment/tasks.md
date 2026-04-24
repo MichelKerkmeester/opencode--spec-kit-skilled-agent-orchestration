@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 ---
-title: "Tasks: Doc Surface Alignment: Search Fusion Changes"
+title: "...on/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "search fusion tasks"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "continuity profile tasks"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment"
@@ -29,6 +28,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Which requested surfaces needed real edits versus scan-only confirmation"
+status: complete
 ---
 # Tasks: Doc Surface Alignment: Search Fusion Changes
 

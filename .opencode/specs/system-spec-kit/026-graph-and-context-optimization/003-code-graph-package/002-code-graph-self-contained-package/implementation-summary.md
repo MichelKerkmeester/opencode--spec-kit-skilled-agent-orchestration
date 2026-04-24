@@ -1,7 +1,16 @@
 ---
-title: "Implementation Summary: 028 — Code-Graph Self-Contained Package Migration"
+title: "...6-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package/implementation-summary]"
 description: "Code-graph was migrated into mcp_server/code-graph/ as a self-contained package with behavior-preserving import-path rewires and verification."
-importance_tier: "high"
+trigger_phrases:
+  - "graph"
+  - "and"
+  - "context"
+  - "optimization"
+  - "003"
+  - "implementation summary"
+  - "002"
+  - "code"
+importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:

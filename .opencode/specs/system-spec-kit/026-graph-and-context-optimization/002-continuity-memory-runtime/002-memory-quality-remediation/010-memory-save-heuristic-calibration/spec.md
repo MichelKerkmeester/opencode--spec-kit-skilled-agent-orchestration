@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory Save Heuristic Calibration"
+title: "...optimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration/spec]"
 description: "Level 3 packet for closing the remaining memory-save schema, sanitizer, validator, and D5 continuation defects identified by the 2026-04-09 RCA and skipped-recommendation audits."
 trigger_phrases:
   - "010 memory save heuristic calibration"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "v8 v12 validator calibration"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: Memory Save Heuristic Calibration
 

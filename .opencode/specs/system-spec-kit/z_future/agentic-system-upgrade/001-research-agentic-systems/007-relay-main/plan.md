@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: 007-relay-main Research Phase"
+title: "Implementation [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/007-relay-main/plan]"
 description: "Level 3 packet plan for the completed Agent Relay research phase, covering prior-work review, Phase 2 investigation, merged synthesis, packet repair, and strict validation."
 trigger_phrases:
   - "007-relay-main plan"
   - "relay main research plan"
   - "agent relay phase execution plan"
 importance_tier: "important"
-contextType: "plan"
+contextType: "planning"
 ---
 # Implementation Plan: 007-relay-main Research Phase
 

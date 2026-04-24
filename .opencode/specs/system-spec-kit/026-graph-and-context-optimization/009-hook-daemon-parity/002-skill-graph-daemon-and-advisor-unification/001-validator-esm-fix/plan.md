@@ -1,10 +1,26 @@
 ---
-title: "Plan: 027/000 — Validator ESM Migration"
+title: "...ontext-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix/plan]"
 description: "Phase plan for converting scripts/ package from hybrid CJS/ESM to pure ESM."
-importance_tier: "high"
+trigger_phrases:
+  - "ontext"
+  - "optimization"
+  - "009"
+  - "hook"
+  - "daemon"
+  - "plan"
+  - "001"
+  - "validator"
+importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
-
 # Plan: 027/000 — Validator ESM Migration
 
 ## Phase Sequence

@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary: Phase 3 — Sanitization & Decision Precedence"
+title: "...tion/002-continuity-memory-runtime/002-memory-quality-remediation/003-sanitization-precedence/implementation-summary]"
 description: "Phase 3 shipped the trigger-phrase sanitizer and the authored-decision precedence gate while preserving the degraded-payload fallback contract."
 trigger_phrases:
   - "phase 3 implementation summary"
   - "sanitization precedence summary"
   - "d3 d2 closeout"
-importance_tier: important
+importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/003-sanitization-precedence"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Phase 3 — Sanitization & Decision Precedence
 

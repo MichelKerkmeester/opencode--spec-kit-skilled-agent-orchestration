@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary: 019 Initial Research Wave"
+title: "...context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/implementation-summary]"
 description: "Placeholder implementation summary for 019/001. Filled after all six Tier 1 iterations converge. Holds the Dispatch Log and the Findings Registry per ADR-002."
 trigger_phrases:
   - "019 research wave summary"
   - "tier 1 findings registry"
   - "019 dispatch log"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research"
@@ -28,7 +27,7 @@ _memory:
       fallback: "cli-copilot (max 3 concurrent)"
       injection_surfaces: ["~/.claude/projects/.../memory/feedback_019_autonomous_completion.md", ".opencode/skill/system-spec-kit/constitutional/phase-019-autonomous-completion.md", "this _memory.continuity block"]
     key_files: ["implementation-summary.md", "001-canonical-save-invariants/research.md", "002-delta-review-015/review-report.md", "003-q4-nfkc-robustness/research.md", "004-description-regen-strategy/research.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: 019 Initial Research Wave
 

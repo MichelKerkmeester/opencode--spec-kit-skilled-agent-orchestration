@@ -1,6 +1,5 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
-title: "Tasks: Index Scope and Constitutional Tier Invariants"
+title: "...raph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "026/011 tasks"
@@ -8,6 +7,7 @@ trigger_phrases:
   - "constitutional tier cleanup tasks"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants"
@@ -20,6 +20,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Index Scope and Constitutional Tier Invariants
 

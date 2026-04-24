@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 018 Git Context and Run State Evaluation [template:level_2/checklist.md]"
+title: "...tem-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/018-git-context-and-run-state-evaluation/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

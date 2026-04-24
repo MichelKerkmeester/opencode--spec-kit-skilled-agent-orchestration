@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 ---
-title: "Feature Specification: Doc Surface Alignment: Graph Metadata Changes"
+title: "...06-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment/spec]"
 description: "Several operator-facing docs still described pre-019 graph-metadata behavior. This phase aligns the requested surfaces with the shipped parser contract so operators see the same status, key-file, entity, trigger, and backfill rules that runtime now enforces."
 trigger_phrases:
   - "graph metadata spec"
@@ -10,11 +10,6 @@ trigger_phrases:
   - "canonical continuity docs"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-level: 2
-type: implementation
-parent: 003-graph-metadata-validation
-created: 2026-04-13
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment"
@@ -37,6 +32,11 @@ _memory:
     open_questions: []
     answered_questions:
       - "Which requested surfaces still described pre-019 graph metadata behavior"
+created: 2026-04-13
+level: 2
+parent: 003-graph-metadata-validation
+status: complete
+type: implementation
 ---
 # Feature Specification: Doc Surface Alignment: Graph Metadata Changes
 

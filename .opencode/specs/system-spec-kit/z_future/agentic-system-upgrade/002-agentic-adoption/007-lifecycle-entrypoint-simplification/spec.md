@@ -1,6 +1,6 @@
 ---
-title: "Feature Specification: 007 Lifecycle Entrypoint Simplification [template:level_2/spec.md]"
-description: "Shrink the visible lifecycle front door so routine work starts through a guided wrapper or smaller command family while the existing `/spec_kit:*` internals remain authoritative."
+title: "Feat [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/007-lifecycle-entrypoint-simplification/spec]"
+description: "Shrink the visible lifecycle front door so routine work starts through a guided wrapper or smaller command family while the existing /spec_kit:* internals remain authoritative."
 trigger_phrases:
   - "feature"
   - "specification"

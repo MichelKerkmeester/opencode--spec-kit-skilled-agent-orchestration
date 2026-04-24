@@ -1,9 +1,15 @@
 ---
-title: "Tasks: Phase 017 Review-Findings Remediation"
+title: "Tasks [system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/tasks]"
 description: "27 tasks across 4 waves (A=5, B=9, C=5, D=8). Full acceptance criteria with finding crosswalk. Status tracking per task. Evidence citations pending implementation."
-trigger_phrases: ["017 tasks", "phase 017 tasks", "t-cns-01", "t-w1-cgc-03", "t-w1-hok-01 copilot compact"]
+trigger_phrases:
+  - "017 tasks"
+  - "phase 017 tasks"
+  - "t-cns-01"
+  - "t-w1-cgc-03"
+  - "t-w1-hok-01 copilot compact"
 importance_tier: "critical"
-contextType: "tasks"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime"

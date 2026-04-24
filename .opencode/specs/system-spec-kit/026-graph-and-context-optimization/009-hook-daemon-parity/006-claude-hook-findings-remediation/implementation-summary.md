@@ -1,13 +1,13 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
-title: "Implementation Summary: Claude Hook Findings Remediation"
+title: "...26-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation/implementation-summary]"
 description: "Scanner sourceSignature persistence, Claude hook settings normalization, and multi-turn hook regression playbook updates. Verification passed for build, freshness, schema, disable flag, and advisor regression suites; live Claude parity is blocked by user-global hook count and Claude authentication in this sandbox."
 trigger_phrases:
   - "claude hook findings summary"
   - "026/009/006 summary"
   - "implementation summary"
-importance_tier: "high"
-contextType: "summary"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation"
@@ -29,6 +29,7 @@ _memory:
     answered_questions:
       - "sourceSignature null was a scan publication gap."
       - "Direct hook smoke returns freshness live."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Claude Hook Findings Remediation
 

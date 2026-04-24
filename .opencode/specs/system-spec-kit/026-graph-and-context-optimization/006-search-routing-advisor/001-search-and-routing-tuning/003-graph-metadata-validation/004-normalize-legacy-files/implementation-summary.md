@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Normalize Legacy Graph Metadata Files"
+title: "...dvisor/001-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files/implementation-summary]"
 description: "Narrows graph-metadata backfill traversal to active packets by default while preserving an explicit archive opt-in."
 trigger_phrases:
   - "graph metadata active only"
@@ -7,9 +7,6 @@ trigger_phrases:
   - "normalize legacy graph metadata traversal"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-closed_by_commit: 2958485d9f
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files"
@@ -20,6 +17,9 @@ _memory:
     key_files:
       - "implementation-summary.md"
       - ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts"
+closed_by_commit: 2958485d9f
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Normalize Legacy Graph Metadata Files
 

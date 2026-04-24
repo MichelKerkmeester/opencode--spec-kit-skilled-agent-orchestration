@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Graph and Context Optimization"
+title: "Feature Specification: Graph and Context Optimization [system-spec-kit/026-graph-and-context-optimization/spec]"
 description: "Root coordination packet for the consolidated nine-phase graph-and-context optimization surface, with historical phases preserved under child phase folders."
 trigger_phrases:
   - "026 graph and context optimization"
@@ -9,7 +9,6 @@ trigger_phrases:
   - "graph context optimization root packet"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Graph and Context Optimization
 

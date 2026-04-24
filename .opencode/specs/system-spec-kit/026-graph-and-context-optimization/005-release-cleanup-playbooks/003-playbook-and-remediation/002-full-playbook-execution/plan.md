@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 ---
-title: "Implementation Plan: Phase 015 Full Playbook Execution"
+title: "...and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/plan]"
 description: "Run the system-spec-kit manual playbook against the current Phase 006 codebase, capture packet-local evidence, and pair that with automated-suite failure signals."
 trigger_phrases:
   - "phase 015 plan"

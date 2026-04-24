@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary: 004-graphify Research Phase"
+title: "Imple [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify/implementation-summary]"
 description: "20 total deep-research iterations across two waves produced 42 consolidated findings (K1 to K42) and a phased rollout translation for Public's Code Graph, CocoIndex, hooks, validation, and scoring surfaces."
 trigger_phrases:
   - "graphify implementation summary"
   - "004-graphify outcome"
   - "graphify research complete"
-importance_tier: critical
-contextType: summary
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+importance_tier: "critical"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

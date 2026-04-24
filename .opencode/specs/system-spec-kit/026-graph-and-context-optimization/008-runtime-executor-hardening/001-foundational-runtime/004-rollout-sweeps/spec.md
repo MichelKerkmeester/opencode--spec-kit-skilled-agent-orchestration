@@ -1,9 +1,17 @@
 ---
-title: "Feature Specification: Phase 017 Wave C — Rollout + Sweeps"
+title: "...t/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps/spec]"
 description: "Child spec for Wave C: 5 tree-wide rollout and sweep tasks (15h / 2 days). Activates evidence-marker lint, runs 16-folder canonical-save sweep, amends stale closing-pass-notes, renames memory-context readiness field, and binds session-resume auth to MCP transport identity with staged rollout. Depends on Waves A + B merged."
-trigger_phrases: ["phase 017 wave c", "017 rollout sweeps", "t-evd-01 evidence lint", "t-cns-03 sixteen-folder sweep", "t-srs-bnd-01 session-resume auth", "t-cpn-01 cp-002 amend", "t-w1-mcx-01 memory-context rename"]
+trigger_phrases:
+  - "phase 017 wave c"
+  - "017 rollout sweeps"
+  - "t-evd-01 evidence lint"
+  - "t-cns-03 sixteen-folder sweep"
+  - "t-srs-bnd-01 session-resume auth"
+  - "t-cpn-01 cp-002 amend"
+  - "t-w1-mcx-01 memory-context rename"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps"

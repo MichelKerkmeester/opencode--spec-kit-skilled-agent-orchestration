@@ -1,9 +1,17 @@
 ---
-title: "Tasks: Phase 017 Wave A — Infrastructure Primitives"
+title: "...and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives/tasks]"
 description: "5 Wave A tasks with full acceptance criteria, atomic-ship annotations, and evidence placeholders. T-CNS-01 + T-W1-CNS-04 merged PR, T-CGC-01 readiness contract, T-W1-HOK-02 shared provenance, T-SCP-01 normalizer collapse, T-EVD-01-prep 016 checklist rewrap."
-trigger_phrases: ["017 wave a tasks", "phase 017 wave a task list", "t-cns-01 acceptance", "t-cgc-01 acceptance", "t-w1-hok-02 acceptance", "t-scp-01 acceptance", "t-evd-01-prep acceptance"]
+trigger_phrases:
+  - "017 wave a tasks"
+  - "phase 017 wave a task list"
+  - "t-cns-01 acceptance"
+  - "t-cgc-01 acceptance"
+  - "t-w1-hok-02 acceptance"
+  - "t-scp-01 acceptance"
+  - "t-evd-01-prep acceptance"
 importance_tier: "critical"
-contextType: "tasks"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives"

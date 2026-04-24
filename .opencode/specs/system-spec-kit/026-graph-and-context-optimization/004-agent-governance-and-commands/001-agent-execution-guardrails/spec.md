@@ -1,14 +1,13 @@
 ---
-title: "Feature Specification: Phase 4 — Agent Execution Guardrails"
-description: "Phase 4 defines the execution-guardrail update for three AGENTS files so the moved request-analysis block under Critical Rules is leaner, later sections remain renumbered cleanly, and agents keep the same operational execution behavior without duplicate scaffolding." 
+title: "...em-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails/spec]"
+description: "Phase 4 defines the execution-guardrail update for three AGENTS files so the moved request-analysis block under Critical Rules is leaner, later sections remain renumbered cleanly, and agents keep the same operational execution behavior without duplicate scaffolding."
 trigger_phrases:
   - "phase 4 agent execution guardrails"
   - "agent execution guardrails"
   - "agents enterprise guardrail update"
   - "barter coder agents guardrails"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + phase-child + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + phase-child + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Phase 4 — Agent Execution Guardrails
 

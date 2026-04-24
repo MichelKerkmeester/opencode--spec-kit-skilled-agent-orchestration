@@ -1,14 +1,23 @@
 ---
-title: "Spec: Startup Highlights Remediation [024/028]"
+title: "Spec: Startup Highlights Remediation [system-spec-kit/024-compact-code-graph/028-startup-highlights-remediation/spec]"
 description: "Fix 3 P1 findings in queryStartupHighlights(): deduplication by display fields, path exclusion for vendored/test code, and incoming-call-count heuristic."
 trigger_phrases:
   - "startup highlights"
   - "028"
   - "remediation"
-  - "queryStartupHighlights"
+  - "querystartuphighlights"
   - "highlights fix"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/028-startup-highlights-remediation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 2 -->
@@ -66,7 +75,7 @@ The `queryStartupHighlights()` function in `code-graph-db.ts` has 3 correctness 
 
 | File | Change |
 |------|--------|
-| `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts` | Rewrite `queryStartupHighlights()` SQL |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts` | Rewrite `queryStartupHighlights()` SQL |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/startup-brief.vitest.ts` | Add test for dedup, exclusion, incoming-call ranking |
 <!-- /ANCHOR:scope -->
 

@@ -1,10 +1,11 @@
 ---
-title: "Implementation Summary: 010 Telemetry Measurement and Rollout Controls"
+title: "...ediation/005-006-campaign-findings-remediation/010-telemetry-measurement-and-rollout-controls/implementation-summary]"
 description: "CF-271 remediation closeout for Codex PreToolUse starter policy scope, verification, and rollout evidence."
 trigger_phrases:
   - "implementation summary 010 telemetry measurement rollout controls"
-importance_tier: "high"
-contextType: "implementation-summary"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/010-telemetry-measurement-and-rollout-controls"

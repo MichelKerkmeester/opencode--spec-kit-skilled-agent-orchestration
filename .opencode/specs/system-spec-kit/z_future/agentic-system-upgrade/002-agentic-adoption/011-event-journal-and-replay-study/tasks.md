@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 011 Event Journal and Replay Study [template:level_2/tasks.md]"
+title: "Tasks [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/011-event-journal-and-replay-study/tasks]"
 description: "Task Format: T### [P?] Description (011-event-journal-and-replay-study)"
 trigger_phrases:
   - "tasks"

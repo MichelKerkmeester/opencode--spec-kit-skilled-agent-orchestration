@@ -1,12 +1,11 @@
 ---
-title: "Verification Checklist: Post-Save Render Fixes"
+title: "...ntext-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes/checklist]"
 description: "Verification checklist for the 009 render-layer fixes in the memory-save pipeline."
 trigger_phrases:
   - "009 render checklist"
   - "post-save render verification"
 importance_tier: "important"
-contextType: "verification"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Post-Save Render Fixes
 

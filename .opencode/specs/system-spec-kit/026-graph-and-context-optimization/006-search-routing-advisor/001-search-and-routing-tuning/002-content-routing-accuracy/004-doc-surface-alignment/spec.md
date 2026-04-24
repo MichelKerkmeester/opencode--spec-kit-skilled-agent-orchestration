@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 ---
-title: "Feature Specification: Doc Surface Alignment for Research Content Routing Accuracy"
+title: "...006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment/spec]"
 description: "This phase aligns the doc surfaces that describe canonical save routing to the shipped runtime behavior. The goal is to remove stale statements about category count, Tier 3 availability, delivery versus progress boundaries, handover versus drop handling, routeAs overrides, and packet_kind derivation."
 trigger_phrases:
   - "001 002 004 spec"

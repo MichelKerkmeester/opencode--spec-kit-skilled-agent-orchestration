@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Skill-Advisor Hook Surface (cross-runtime, context-efficient)"
+title: "Feature [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/spec]"
 description: "Research-first umbrella for proactive skill-advisor integration across all CLI runtimes (Claude, Codex, Copilot, Gemini). Goal: run advisor on every relevant prompt via hook infrastructure (not explicit AI invocation), surface minimal context (top-1 skill + confidence only), cache within session to avoid redundant calls. Follows the code-graph buildStartupBrief pattern."
 trigger_phrases:
   - "026/009/001 skill advisor hook"
@@ -10,7 +10,6 @@ trigger_phrases:
   - "skill advisor brief"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface"
@@ -26,7 +25,7 @@ _memory:
       - "tasks.md"
       - "checklist.md"
       - "decision-record.md"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: Skill-Advisor Hook Surface
 

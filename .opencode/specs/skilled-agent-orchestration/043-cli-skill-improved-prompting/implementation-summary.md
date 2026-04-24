@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: CLI Skill Prompt-Quality Integration via Mirror Cards [043]"
+title: "Implementation Summary: CLI [skilled-agent-orchestration/043-cli-skill-improved-prompting/implementation-summary]"
 description: "Delivered feature summary for the mirror-card fast path, improve-prompt escalation agent, command routing updates, and landed drift-check automation."
 trigger_phrases:
   - "043 implementation summary"

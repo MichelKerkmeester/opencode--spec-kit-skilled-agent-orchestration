@@ -1,13 +1,13 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
-title: "Verification Checklist: Claude Hook Findings Remediation"
+title: "...em-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation/checklist]"
 description: "Verification Date: pending; 16 items across 6 categories; 8 P0 / 6 P1 / 2 P2"
 trigger_phrases:
   - "claude hook findings checklist"
   - "freshness fix verification"
   - "026/009/006 checklist"
-importance_tier: "high"
-contextType: "checklist"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation"
@@ -19,6 +19,7 @@ _memory:
     completion_pct: 86
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Claude Hook Findings Remediation
 

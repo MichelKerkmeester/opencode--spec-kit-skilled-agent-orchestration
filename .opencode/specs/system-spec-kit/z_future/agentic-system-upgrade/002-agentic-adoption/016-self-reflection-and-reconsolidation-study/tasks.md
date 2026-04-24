@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 016 Self Reflection and Reconsolidation Study [template:level_2/tasks.md]"
+title: "...em-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/016-self-reflection-and-reconsolidation-study/tasks]"
 description: "Task Format: T### [P?] Description (016-self-reflection-and-reconsolidation-study)"
 trigger_phrases:
   - "tasks"

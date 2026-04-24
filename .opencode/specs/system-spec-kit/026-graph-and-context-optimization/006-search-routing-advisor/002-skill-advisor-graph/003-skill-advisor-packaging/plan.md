@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Skill Advisor Packaging"
+title: "...6-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging/plan]"
 description: "Plan for restoring packet template compliance, aligning the packet with the shipped skill-advisor layout, and clearing the targeted review findings."
 trigger_phrases:
   - "003-skill-advisor-packaging"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "packet remediation plan"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging"
@@ -16,6 +15,7 @@ _memory:
     recent_action: "Remediation planned"
     next_safe_action: "Apply packet edits"
     key_files: ["plan.md", "tasks.md", "checklist.md", "graph-metadata.json"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Skill Advisor Packaging
 

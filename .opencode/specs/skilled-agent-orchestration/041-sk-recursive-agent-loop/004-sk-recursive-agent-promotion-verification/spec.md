@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Recursive Agent Promotion Verification [template:level_2/spec.md]"
+title: "Feature [skilled-agent-orchestration/041-sk-recursive-agent-loop/004-sk-recursive-agent-promotion-verification/spec]"
 description: "Phase 004 under packet 041 proves the guarded promotion path for handover, adds context-prime repeatability evidence, and records the no-net-drift rollback result."
 trigger_phrases:
   - "recursive agent promotion verification"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "context-prime repeatability"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/004-sk-recursive-agent-promotion-verification"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Recursive Agent Promotion Verification
 

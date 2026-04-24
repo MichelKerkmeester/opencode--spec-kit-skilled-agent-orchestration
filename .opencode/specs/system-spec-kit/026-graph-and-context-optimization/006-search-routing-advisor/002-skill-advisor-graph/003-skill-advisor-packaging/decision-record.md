@@ -1,13 +1,12 @@
 ---
-title: "Decision Record: Skill Advisor Packaging"
+title: "...-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging/decision-record]"
 description: "Accepted decisions covering package naming, feature-catalog scope, and the move into the scripts/ runtime subfolder."
 trigger_phrases:
   - "003-skill-advisor-packaging"
   - "packaging decisions"
   - "skill-advisor scripts adr"
 importance_tier: "important"
-contextType: "decisions"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging"
@@ -16,6 +15,7 @@ _memory:
     recent_action: "ADR set updated"
     next_safe_action: "Use the accepted packaging decisions as historical implementation evidence"
     key_files: ["decision-record.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Skill Advisor Packaging
 

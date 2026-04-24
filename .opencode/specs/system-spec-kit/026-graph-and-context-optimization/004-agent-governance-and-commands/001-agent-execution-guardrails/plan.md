@@ -1,13 +1,12 @@
 ---
-title: "Implementation Plan: Phase 4 — Agent Execution Guardrails"
+title: "...em-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails/plan]"
 description: "Phase 4 updates three AGENTS instruction files so request-analysis guidance stays under Critical Rules, duplicate support scaffolding is removed, later headings stay renumbered cleanly, and the execution guardrails remain explicit across all three targets."
 trigger_phrases:
   - "phase 4 plan"
   - "agent execution guardrails plan"
   - "agents guardrail update plan"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + phase-child + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + phase-child + level2-verify | v2.2 -->"
 ---
 # Implementation Plan: Phase 4 — Agent Execution Guardrails
 

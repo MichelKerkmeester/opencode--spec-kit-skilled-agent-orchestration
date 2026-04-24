@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Release Cleanup Playbooks"
+title: "Implementation Plan: Release [system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/plan]"
 description: "Plan for keeping release alignment, cleanup/audit, and playbook repair/remediation as a parent with direct child phase packets."
 trigger_phrases:
   - "005-release-cleanup-playbooks"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "002-cleanup-and-audit"
   - "003-playbook-and-remediation"
 importance_tier: "important"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Release Cleanup Playbooks
 

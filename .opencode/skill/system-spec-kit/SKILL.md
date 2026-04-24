@@ -750,6 +750,8 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 
 **Cross-runtime handling:** Claude and Gemini use runtime hook configuration for prompt-time advice and startup injection. Codex supports native `SessionStart` + `UserPromptSubmit` when `[features].codex_hooks = true` in `~/.codex/config.toml` and `~/.codex/hooks.json` is wired; when native Codex hooks are unavailable, recover with `/spec_kit:resume` or `session_bootstrap()` rather than assuming lifecycle parity. OpenCode exposes prompt-time advisor delivery through the skill-advisor plugin bridge and should still be treated as bootstrap-first when startup surfacing is unavailable. Copilot uses the shared `.claude/settings.local.json` wrapper contract to run writer commands that refresh the managed block in `$HOME/.copilot/copilot-instructions.md`; this is file-based, next-prompt fresh, and not true in-turn prompt mutation. See `references/config/hook_system.md` for the current cross-runtime matrix and wrapper contract. Use `session_bootstrap()` for fresh start or after `/clear`, `session_resume()` for reconnect-style recovery when bootstrap is unnecessary, and `session_health()` only to re-check drift or readiness mid-session.
 
+**Advisor public contract:** `advisor_recommend` and `advisor_validate` accept an explicit `workspaceRoot` argument; both responses surface the resolved `workspaceRoot` and `effectiveThresholds` used for routing. `advisor_validate` additionally publishes `thresholdSemantics` (aggregate-vs-runtime) plus a prompt-safe `telemetry.outcomes.totals` block (`accepted` / `corrected` / `ignored`). Hook diagnostics persist to bounded JSONL sinks under the temp metrics root, and validator analysis reads those sinks back across processes. The default OpenCode prompt-time threshold contract is `0.8` (confidence) / `0.35` (uncertainty). Codex and OpenCode share the same `renderAdvisorBrief(...)` invariants and the same builder/timeout/threshold contract; custom formatters and branch-specific threshold behavior have been removed.
+
 `session_resume()` auth now binds `args.sessionId` to the transport-layer caller identity from `lib/context/caller-context.ts` (`getCallerContext()` inside handlers). Default mode is strict rejection for mismatches; `MCP_SESSION_RESUME_AUTH_MODE=permissive` is the canary override.
 
 **Token budgets:** Compaction injection: 4000 tokens. Session priming: 2000 tokens. Hook timeout: 1800ms (<2s hard cap).
@@ -778,6 +780,14 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 **Edge types:** CONTAINS, CALLS, IMPORTS, EXPORTS, EXTENDS, IMPLEMENTS, DECORATES, OVERRIDES, TYPE_OF.
 
 **Read-path freshness:** Startup and bootstrap surfaces report graph freshness without mutating the index. Bounded inline refresh happens on structural read paths when stale sets are small; otherwise callers receive `readiness` guidance to run `code_graph_scan`.
+
+**Blocked/degraded contract:** when readiness requires a suppressed `full_scan`, both `code_graph_query` and `code_graph_context` return an explicit `status: "blocked"` payload with `requiredAction: "code_graph_scan"`, `blockReason: "full_scan_required"`, `degraded`, and `graphAnswersOmitted` instead of silently returning empty results. This is uniform across query and context reads.
+
+**Context metadata:** `code_graph_context` success payloads carry structured `data.metadata.partialOutput` (`isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, `truncatedText`) plus an explicit `deadlineMs` field so callers can distinguish a complete answer from one trimmed by deadline or budget pressure. `code_graph_status` exposes `graphQualitySummary` (detector provenance + edge-enrichment confidence). CocoIndex seed fidelity preserves `score`, `snippet`, and range metadata through context resolution.
+
+**CALLS disambiguation:** `code_graph_query` CALLS mode on ambiguous subjects (e.g. `handle*`) prefers callable implementation nodes over wrapper-shadow candidates, and records ambiguity / selected-candidate metadata so callers can audit the choice.
+
+**Startup payload parity:** all four runtimes (Claude, Gemini, Copilot, Codex) transport the same compact startup shared-payload through their runtime-specific startup hooks, including the `graphQualitySummary` summary. `session_bootstrap()` remains available as a manual recovery surface when native hooks are disabled.
 
 `lib/code-graph/readiness-contract.ts` is now the shared readiness source for query, scan, status, context, and CCC handlers. Its readiness blocks project onto the canonical `SharedPayloadTrustState` type instead of introducing a new local trust-state enum.
 

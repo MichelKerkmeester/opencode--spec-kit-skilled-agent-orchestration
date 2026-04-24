@@ -1,15 +1,33 @@
 ---
-title: "Research: Memory Save Quality Pipeline — Full Synthesis"
+title: "Research: Memory Save [system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/research]"
 description: "20-iteration deep research campaign analyzing why JSON-mode memory saves produce 0/100 quality output and how to fix the generate-context.js pipeline."
+trigger_phrases:
+  - "research"
+  - "memory"
+  - "save"
+  - "012"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/research"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["research/research.md"]
 ---
-
 # Research: Memory Save Quality Pipeline
 
+<!-- ANCHOR:executive-summary -->
 ## Executive Summary
 
 The `generate-context.js` memory save pipeline fails catastrophically when invoked via `--json` mode (the primary save path after context compaction). JSON-mode saves produce 0/100 quality scores, empty observation sections, generic boilerplate descriptions, poor trigger phrases, and 300+ key_files entries. The root cause is a single architectural assumption: the pipeline treats `userPrompts[]` as the sole primary data source. When JSON-mode provides structured data (sessionSummary, keyDecisions, observations) instead of conversation transcripts, the extraction pipeline produces empty or minimal output.
 
 **Fix scope:** 156-171 LOC across 8 files. Expected quality improvement: 0/100 -> 55-75/100 for typical JSON-mode saves. Minimum viable fix (3 items, ~83 LOC) resolves the worst symptom (0/100 quality abort).
+
+Source: `scripts/core/workflow.ts`, `scripts/extractors/conversation-extractor.ts`, `scripts/core/quality-scorer.ts`, and `scripts/lib/validate-memory-quality.ts`.
+<!-- /ANCHOR:executive-summary -->
 
 ---
 

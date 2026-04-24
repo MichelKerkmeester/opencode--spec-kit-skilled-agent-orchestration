@@ -1,3 +1,22 @@
+---
+title: "Spec: Skill [skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync/spec]"
+description: "After Phase 008-010, the skill advisor and skill README are outdated"
+trigger_phrases:
+  - "spec"
+  - "skill"
+  - "011"
+  - "agent"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
+---
 # Spec: Skill Advisor Routing + README Sync
 
 | Field | Value |

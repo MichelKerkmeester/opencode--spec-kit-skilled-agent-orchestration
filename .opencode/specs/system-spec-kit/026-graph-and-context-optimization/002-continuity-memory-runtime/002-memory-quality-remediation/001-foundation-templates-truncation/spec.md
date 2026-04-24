@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Phase 1: Foundation (Templates & Truncation)"
+title: "...t-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/001-foundation-templates-truncation/spec]"
 description: "Phase 1 defines the P0 foundation slice for memory-quality remediation: fix the OVERVIEW anchor mismatch, introduce the shared truncation helper, and preserve OVERVIEW text on word boundaries before later metadata and heuristic phases build on it."
 trigger_phrases:
   - "phase 1 foundation templates truncation"
@@ -7,9 +7,8 @@ trigger_phrases:
   - "truncate on word boundary"
   - "overview anchor fix"
   - "foundation templates truncation"
-importance_tier: important
-contextType: planning
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/001-foundation-templates-truncation"
@@ -18,7 +17,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Phase 1: Foundation (Templates & Truncation)
 

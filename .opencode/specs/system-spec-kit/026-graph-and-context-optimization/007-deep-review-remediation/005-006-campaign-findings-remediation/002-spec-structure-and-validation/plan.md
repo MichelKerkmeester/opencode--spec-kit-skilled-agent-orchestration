@@ -1,10 +1,11 @@
 ---
-title: "Implementation Plan: 002-spec-structure-and-validation Spec Structure and Validation Remediation"
+title: "...ptimization/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation/plan]"
 description: "Technical plan for 002-spec-structure-and-validation Spec Structure and Validation Remediation."
 trigger_phrases:
   - "implementation plan 002 spec structure and validation spec structure and"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation"

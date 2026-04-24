@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary: Memory Quality Backend Improvements"
+title: "...6-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/implementation-summary]"
 description: "Parent packet closeout summary for the completed five-phase remediation train across PR-1 through PR-11."
 trigger_phrases:
   - "memory quality parent implementation summary"
   - "five phase closeout summary"
   - "pr1 pr11 packet summary"
-importance_tier: important
+importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Memory Quality Backend Improvements
 

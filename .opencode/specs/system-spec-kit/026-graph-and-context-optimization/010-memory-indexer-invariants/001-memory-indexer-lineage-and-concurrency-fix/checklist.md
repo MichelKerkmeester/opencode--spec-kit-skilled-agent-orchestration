@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
-title: "Verification Checklist: Memory Indexer Lineage and Concurrency Fix"
+title: "...raph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix/checklist]"
 description: "Verification log for the PE lineage guard, scan serialization, regression coverage, and required build checks."
 trigger_phrases:
   - "026/010 checklist"
   - "memory indexer lineage concurrency checklist"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Readiness gate reset pending live rerun"
     next_safe_action: "Restart MCP, rerun memory_index_scan on 026/009, record counts"
     completion_pct: 85
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
 ---
 # Verification Checklist: Memory Indexer Lineage and Concurrency Fix
 

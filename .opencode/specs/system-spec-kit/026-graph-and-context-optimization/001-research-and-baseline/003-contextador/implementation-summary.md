@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Contextador Research Phase (003-contextador)"
+title: "Im [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/003-contextador/implementation-summary]"
 description: "Summary of the 003-contextador deep research phase. 13 cli-codex (gpt-5.4 high) iterations produced 18 evidence-backed findings covering Contextador's MCP query surface, routing, self-healing loop, Mainframe shared cache + budget subsystem, token-efficiency claims, provider abstraction, GitHub automation pipeline, core helper modules, and AGPL+commercial licensing. ~84.8% of external/src/ source files were read by some iteration; ~100% of non-test production source. Headline conclusion: Public already wins on retrieval substrate; Contextador's surviving value is runtime retrieval ergonomics."
 trigger_phrases:
   - "contextador summary"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "contextador research findings"
 importance_tier: "normal"
 contextType: "general"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

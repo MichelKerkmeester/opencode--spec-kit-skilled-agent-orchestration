@@ -1,9 +1,32 @@
+---
+title: "Deep Research: Spec Kit Memory Feature Audit & Quality [system-spec-kit/023-hybrid-rag-fusion-refinement/research]"
+description: "This research audited the entire Spec Kit Memory system -- feature flags, search quality, fusion pipeline, UX automation, and cross-cutting infrastructure -- across specs 009 (r..."
+trigger_phrases:
+  - "deep"
+  - "research"
+  - "spec"
+  - "kit"
+  - "memory"
+  - "023"
+  - "hybrid"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/research"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["research/research.md"]
+---
 # Deep Research: Spec Kit Memory Feature Audit & Quality Verification
 
 > **20 iterations | 19 research + 1 synthesis | All 10 key questions answered | 0 critical bugs | 14 actionable items**
 
 ---
 
+<!-- ANCHOR:executive-summary -->
 ## Executive Summary
 
 This research audited the entire Spec Kit Memory system -- feature flags, search quality, fusion pipeline, UX automation, and cross-cutting infrastructure -- across specs 009 (reindex validator), 010 (retrieval quality), and 011 (indexing and adaptive fusion). The investigation spanned 20 iterations with progressive convergence from newInfoRatio 1.0 to 0.21.
@@ -21,6 +44,9 @@ This research audited the entire Spec Kit Memory system -- feature flags, search
 5. **Three fusion refinements identified.** Recency signal is negligibly small in hybrid mode (max 0.02 effective), graph bonus cap mismatches adaptive weights, and doc-type weight shift is disproportionate. All three have complete designs ready for implementation.
 
 6. **Implementation-ready roadmap.** 14 items across 5 phases: Phases A-D (~7.25h, LOW-to-ZERO risk) are ready to implement; Phase E (~8-14h, MEDIUM risk) covers infrastructure improvements.
+
+Source: `009-reindex-validator-false-positives/spec.md`, `010-search-retrieval-quality-fixes/spec.md`, `011-indexing-and-adaptive-fusion/spec.md`, and `mcp_server/lib/search/search-flags.ts`.
+<!-- /ANCHOR:executive-summary -->
 
 ---
 

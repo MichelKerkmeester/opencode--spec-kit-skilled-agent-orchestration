@@ -1,13 +1,13 @@
 ---
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
-title: "027/004 — Implementation Summary"
+title: "...009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface/implementation-summary]"
 description: "Implementation summary for the MCP advisor surface."
 trigger_phrases:
   - "027/004 implementation summary"
   - "advisor_recommend implementation"
   - "mcp advisor surface complete"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_2/implementation-summary.md | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface"
@@ -31,6 +31,7 @@ _memory:
     answered_questions:
       - "Use existing MCP dispatcher, not a new server."
       - "Use existing HMAC prompt cache and freshness generation/trust-state primitives."
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 ---
 # Implementation Summary: 027/004
 

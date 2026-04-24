@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: /memory:save Planner-First Default"
+title: "Ver [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/checklist]"
 description: "Verification ledger covering audit + retirement, relevance research, planner + trim implementation, deep-review remediation, and packet-level merge checks. Every item is source-backed."
 trigger_phrases:
   - "verification checklist"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "save flow verification"
   - "deep review remediation checklist"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite"
@@ -30,6 +29,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Every verification item is source-backed via snapshot references or release notes."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: /memory:save Planner-First Default
 

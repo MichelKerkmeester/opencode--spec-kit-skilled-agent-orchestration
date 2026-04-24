@@ -1,10 +1,15 @@
 ---
-title: "Deep Research Report — 004-get-it-right-main"
+title: "Deep Resea [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main/research]"
 description: "30-iteration research of Get It Right for system-spec-kit improvement, UX simplification, and refactor opportunities. 26 actionable findings, 4 rejected."
+trigger_phrases:
+  - "deep"
+  - "resea"
+  - "research"
+  - "004"
+  - "get"
 importance_tier: "important"
 contextType: "research"
 ---
-
 # Deep Research Report — 004-get-it-right-main
 
 ## 1. Executive Summary

@@ -1,7 +1,18 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | compact -->
 ---
-title: "Improve Graph Metadata Entity Quality - Tasks"
-status: complete
+title: "...ch-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/tasks]"
+description: 'title: "Improve Graph Metadata Entity Quality - Tasks"'
+trigger_phrases:
+  - "routing"
+  - "advisor"
+  - "001"
+  - "search"
+  - "and"
+  - "tasks"
+  - "007"
+  - "entity"
+importance_tier: "normal"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements"
@@ -9,6 +20,7 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Completed deriveEntities improvements, focused tests, and repo-wide entity-quality verification"
     next_safe_action: "Reuse this phase if cross-spec entity leakage or runtime-name noise reappears"
+status: complete
 ---
 # Tasks
 ## Notation <!-- ANCHOR:notation -->`[ ]` pending, `[x]` complete, `T-V*` verification-only.<!-- /ANCHOR:notation -->

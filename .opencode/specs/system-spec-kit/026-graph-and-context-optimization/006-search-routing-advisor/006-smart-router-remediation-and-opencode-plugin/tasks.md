@@ -1,12 +1,11 @@
 ---
-title: "Tasks: Smart-Router Remediation + OpenCode Plugin"
+title: "...026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/tasks]"
 description: "Task tracking for Phase 023: stale router paths, static checker, ON_DEMAND tuning, CLI fallback safety, observe-only telemetry, OpenCode plugin, and verification."
 trigger_phrases:
   - "023 smart router tasks"
   - "spec-kit-skill-advisor plugin tasks"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin"
@@ -22,6 +21,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "The user pre-approved this spec folder and requested progressive task updates."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
 ---
 # Tasks: Smart-Router Remediation + OpenCode Plugin
 

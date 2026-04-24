@@ -1,13 +1,13 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
-title: "Implementation Summary: Skill-Advisor Standards Alignment"
+title: "...6-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment/implementation-summary]"
 description: "Completed Level 1 standards-alignment packet: added the OpenCode Plugin Exemption Tier, annotated the JavaScript CommonJS checklist item, and aligned the skill-advisor plugin header/JSDoc/section dividers without behavior changes."
 trigger_phrases:
   - "skill advisor standards alignment complete"
   - "026/009/009 implementation"
   - "opencode plugin exemption tier complete"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment"
@@ -22,6 +22,7 @@ _memory:
       - "OpenCode plugin entrypoints and helpers are exempt only from the CommonJS module.exports requirement."
       - "All non-exempt standards still apply to .opencode/plugins and .opencode/plugin-helpers files."
       - "spec-kit-skill-advisor.js changed only in comments, JSDoc, section dividers, and box header lines for packet 009."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Skill-Advisor Standards Alignment
 

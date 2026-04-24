@@ -1,10 +1,11 @@
 ---
-title: "Tasks: 008-search-fusion-and-reranker-tuning Search Fusion and Reranker Tuning Remediation"
+title: "...zation/007-deep-review-remediation/005-006-campaign-findings-remediation/008-search-fusion-and-reranker-tuning/tasks]"
 description: "Task ledger for 008-search-fusion-and-reranker-tuning Search Fusion and Reranker Tuning Remediation."
 trigger_phrases:
   - "tasks 008 search fusion and reranker tuning search fusion and reranker t"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/008-search-fusion-and-reranker-tuning"

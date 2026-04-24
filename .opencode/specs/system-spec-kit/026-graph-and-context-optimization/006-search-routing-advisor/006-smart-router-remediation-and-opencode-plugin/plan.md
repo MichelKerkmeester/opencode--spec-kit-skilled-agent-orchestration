@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Smart-Router Remediation + OpenCode Plugin"
+title: ".../026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/plan]"
 description: "Implements the six research recommendations from 021/002 and the 021/001 V8/V9 OpenCode plugin proposal. The plan keeps Phase 020 runtime code unchanged while adding router validation, telemetry, plugin integration, tests, and phase documentation."
 trigger_phrases:
   - "023 smart router remediation plan"
   - "spec-kit-skill-advisor plugin plan"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin"
@@ -23,6 +22,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Gate 3 spec folder was pre-approved by the user for the full packet."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 ---
 # Implementation Plan: Smart-Router Remediation + OpenCode Plugin
 

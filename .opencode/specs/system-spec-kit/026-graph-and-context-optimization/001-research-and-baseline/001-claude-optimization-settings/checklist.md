@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Phase 001 - Claude Optimization Settings (Reddit field-report audit)"
+title: "...tem-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings/checklist]"
 description: "P0/P1/P2 verification checklist for the research-only deep-research run. Each P0/P1 item references the research.md section or finding ID where evidence lives."
 trigger_phrases:
   - "claude optimization checklist"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "phase 001 verification"
 importance_tier: "normal"
 contextType: "research"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Phase 001 - Claude Optimization Settings (Reddit field-report audit)
 

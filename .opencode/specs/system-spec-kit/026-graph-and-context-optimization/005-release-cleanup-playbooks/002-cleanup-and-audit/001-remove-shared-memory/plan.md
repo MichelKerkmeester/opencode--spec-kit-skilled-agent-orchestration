@@ -1,11 +1,12 @@
 ---
-title: "018 / 010 — Shared memory removal plan"
+title: "...026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/plan]"
 description: "Execution plan for deleting the shared-memory lifecycle, shared-space runtime, and all related documentation/test surfaces while preserving the schema-column exception."
-trigger_phrases: ["018 010 plan", "shared memory removal plan", "hard delete shared memory plan"]
+trigger_phrases:
+  - "018 010 plan"
+  - "shared memory removal plan"
+  - "hard delete shared memory plan"
 importance_tier: "critical"
 contextType: "implementation"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory"
@@ -14,6 +15,8 @@ _memory:
     recent_action: "Defined the execution plan for the hard-delete pass"
     next_safe_action: "Review implementation-summary.md for exact verification output"
     key_files: ["plan.md", "tasks.md", "implementation-summary.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: 018 / 010 — Remove shared memory
 

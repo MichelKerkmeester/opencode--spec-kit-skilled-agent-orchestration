@@ -1,5 +1,5 @@
 ---
-title: "Feature [system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference/spec]"
+title: "Feature [system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference-audit/spec]"
 description: "Phase 020 documents the feature-flag-reference audit manual test packet for the Spec Kit Memory system. It groups three flag-inventory and flag-lifecycle scenarios from the central playbook so testers can verify flag inventory accuracy, graduated flag documentation, and flag removal workflow."
 trigger_phrases:
   - "feature flag reference audit manual testing"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "hybrid rag fusion flag audit playbook"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference-audit"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: manual-testing-per-playbook feature-flag-reference audit phase
 

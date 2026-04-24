@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Contextador Research Phase (003-contextador)"
+title: "Implementation [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/003-contextador/plan]"
 description: "Research-only execution plan that orchestrates a sk-deep-research loop over Contextador's checked-in source, with cli-codex (gpt-5.4 high) preferred for iteration delegation."
 trigger_phrases:
   - "contextador research plan"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "mcp query interface"
 importance_tier: "normal"
 contextType: "general"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Contextador Research Phase
 

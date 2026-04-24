@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: Template/Validator Contract Alignment"
+title: "...text-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment/plan]"
 description: "Rule registry + semantic frontmatter + anchor parity."
-trigger_phrases: ["validator alignment plan"]
+trigger_phrases:
+  - "validator alignment plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Plan scaffolded"
     next_safe_action: "Dispatch implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Template/Validator Contract Alignment
 

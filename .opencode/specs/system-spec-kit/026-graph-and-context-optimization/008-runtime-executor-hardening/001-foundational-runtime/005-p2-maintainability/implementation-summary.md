@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Phase 017 Wave D — P2 Maintainability"
+title: "...t-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability/implementation-summary]"
 description: "Wave D shipped the exhaustiveness hardening, extraction helpers, YAML timing-note cleanup, and deployment guidance without touching the concurrent session-resume or Wave C files."
 trigger_phrases:
   - "implementation summary"
@@ -7,6 +7,7 @@ trigger_phrases:
   - "004 p2 maintainability"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability"

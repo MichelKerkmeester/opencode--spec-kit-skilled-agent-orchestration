@@ -1,14 +1,13 @@
 ---
-title: "Feature Specification: 002-codesight Research Phase"
+title: "Feature Specification [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight/spec]"
 description: "Read-only 20-iteration research investigation of the codesight external Node.js/TypeScript skill covering detector discipline, MCP/cache semantics, profile generation safety, scanner heuristics, and adoption patterns Public should adopt, adapt, or reject."
 trigger_phrases:
   - "002-codesight research spec"
   - "002-codesight phase spec"
-  - "codesight Adopt Adapt Reject"
-  - "codesight AST detector research"
-importance_tier: critical
-contextType: spec
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+  - "codesight adopt adapt reject"
+  - "codesight ast detector research"
+importance_tier: "critical"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: 002-codesight Research Phase
 

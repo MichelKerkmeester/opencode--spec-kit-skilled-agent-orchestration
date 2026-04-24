@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Graph Metadata Enrichment"
+title: "...graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment/plan]"
 description: "Packet-closeout plan for documenting the already-completed schema v2 enrichment across 21 skill metadata files and restoring Level 3 packet validity."
 trigger_phrases:
   - "004-graph-metadata-enrichment"
@@ -7,8 +7,6 @@ trigger_phrases:
   - "schema v2 packet plan"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment"
@@ -17,6 +15,8 @@ _memory:
     recent_action: "Replaced the packet plan with an evidence-backed closeout plan"
     next_safe_action: "Sync tasks, checklist, and packet metadata to the finished-state narrative"
     key_files: ["plan.md", "tasks.md", "checklist.md", "decision-record.md"]
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Graph Metadata Enrichment
 

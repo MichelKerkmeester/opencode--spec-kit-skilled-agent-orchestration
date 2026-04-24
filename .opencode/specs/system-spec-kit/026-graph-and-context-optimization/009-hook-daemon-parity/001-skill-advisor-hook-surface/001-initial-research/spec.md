@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 020 Initial Research Wave (hook architecture investigation)"
+title: "...t/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/spec]"
 description: "Level 2 research packet dispatched via /spec_kit:deep-research :auto with cli-codex gpt-5.4 high fast. Investigates cross-runtime hook trigger points, empirical cache/TTL curve, context-budget tradeoffs, freshness semantics, and failure-mode contract. 10-iteration budget."
 trigger_phrases:
   - "020 initial research"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "hook trigger point research"
 importance_tier: "critical"
 contextType: "research"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Research packet scaffolded; about to dispatch"
     next_safe_action: "Dispatch iteration 1 via codex exec gpt-5.4 high fast"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: 020 Initial Research Wave
 

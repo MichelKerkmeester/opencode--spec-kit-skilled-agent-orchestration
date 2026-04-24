@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Nested Changelog Per Spec [system-spec-kit/025-nested-changelog-per-spec]"
+title: "Implementation Summary: Nested Changelog Per [system-spec-kit/025-nested-changelog-per-spec/implementation-summary]"
 description: "Packet-local changelog generation now ships with system-spec-kit, so packet roots and child phases can keep chronological history beside their implementation summaries."
 trigger_phrases:
   - "implementation summary"
@@ -8,11 +8,21 @@ trigger_phrases:
   - "025"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/025-nested-changelog-per-spec"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/global/hvr_rules.md -->
 
 ---
 
@@ -79,7 +89,7 @@ Verification stayed narrow and honest. The scripts workspace build was rerun aft
 
 | Check | Result |
 |-------|--------|
-| `npm run build --workspace=@spec-kit/scripts` | PASS |
+| `cd .opencode/skill/system-spec-kit/scripts && npm run build` | PASS |
 | `npx vitest run tests/nested-changelog.vitest.ts --config ../mcp_server/vitest.config.ts --root .` | PASS |
 | Root output path contract | PASS - focused test asserts `changelog-<packet>-root.md` |
 | Phase output path contract | PASS - focused test asserts parent-packet `changelog-<packet>-<phase-folder>.md` output |

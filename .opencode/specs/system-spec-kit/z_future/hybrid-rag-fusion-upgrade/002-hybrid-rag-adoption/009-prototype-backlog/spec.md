@@ -1,8 +1,13 @@
 ---
-title: "009-prototype-backlog: Record Flagged Prototype Candidates"
+title: "009-prototype-ba [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/009-prototype-backlog/spec]"
 description: "Collects prototype-only candidates such as lexical fallback, connected-doc hints, and other deferred experiments under the frozen architecture boundary."
+trigger_phrases:
+  - "009"
+  - "prototype"
+  - "spec"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 009-prototype-backlog: Record Flagged Prototype Candidates
 
 ## 1. Scope

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Normalized Analytics Reader [template:level_3/tasks.md]"
+title: "Tasks: Normalized Analytics Reader [system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader/tasks]"
 description: "Task Format: T### [P0|P1|P2] Description (file path)"
 trigger_phrases:
   - "analytics reader tasks"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "normalized analytics tasks"
 importance_tier: "normal"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: Normalized Analytics Reader
 
@@ -34,7 +43,7 @@ contextType: "planning"
 ## Phase 1: Setup
 
 ### Packet Alignment
-- [x] T001 [P0] Confirm the producer metadata predecessor packet is complete and usable (`spec.md`, `plan.md`) [EVIDENCE: packet scope now explicitly depends on `026/.../002-implement-cache-warning-hooks` rather than recreating producer changes.]
+- [x] T001 [P0] Confirm the producer metadata predecessor packet is complete and usable (`spec.md`, `plan.md`) [EVIDENCE: packet scope now explicitly depends on `026/002-continuity-memory-runtime/001-cache-warning-hooks` rather than recreating producer changes.]
 - [x] T002 [P0] Narrow packet scope to a reader-owned replay model (`spec.md`, `plan.md`, `tasks.md`) [EVIDENCE: docs explicitly defer dashboards, startup consumers, and Stop-hook writer changes.]
 - [x] T003 [P1] Reuse the existing replay fixture instead of introducing a second producer fixture (`tests/fixtures/hooks/session-stop-replay.jsonl`) [EVIDENCE: the packet reuses the existing fixture-backed transcript for all replay checks.]
 <!-- /ANCHOR:phase-1 -->

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Phase 2 Deep Research Continuation for BMad Autonomous Development [template:level_1/plan.md]"
+title: "Impl [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/plan]"
 description: "Extend packet 008 from 10 to 20 research iterations, merge the synthesis, and repair packet-level documentation so the phase validates cleanly."
 trigger_phrases:
   - "implementation plan"

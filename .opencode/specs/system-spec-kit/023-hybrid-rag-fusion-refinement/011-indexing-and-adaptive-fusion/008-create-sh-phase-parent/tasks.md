@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Append Nested Child Phases in create.sh [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent]"
+title: "Tas [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "phase parent tasks"
@@ -7,11 +7,20 @@ trigger_phrases:
   - "create sh phase planning tasks"
 importance_tier: "critical"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["tasks.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
-# Tasks: Append Nested Child Phases in create.sh
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+# Tasks: Append Nested Child Phases in create.sh
 
 ---
 

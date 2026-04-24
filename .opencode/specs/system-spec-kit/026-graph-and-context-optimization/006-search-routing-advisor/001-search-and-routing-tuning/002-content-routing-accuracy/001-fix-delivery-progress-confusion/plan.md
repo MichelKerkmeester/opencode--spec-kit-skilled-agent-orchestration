@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Fix Delivery vs Progress Routing Confusion"
+title: "...-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/plan]"
 description: "Execution plan for the delivery/progress routing remediation and evidence refresh."
 trigger_phrases:
   - "delivery progress routing plan"
   - "strong delivery mechanics"
 importance_tier: "important"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion"
@@ -15,6 +14,7 @@ _memory:
     recent_action: "Refreshed plan anchors and current code evidence"
     next_safe_action: "No further phase-local work required"
     completion_pct: 100
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Fix Delivery vs Progress Routing Confusion
 

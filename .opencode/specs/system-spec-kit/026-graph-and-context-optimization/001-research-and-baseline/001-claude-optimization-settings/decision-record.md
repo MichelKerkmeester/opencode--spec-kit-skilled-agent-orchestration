@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Phase 001 - Claude Optimization Settings (Reddit field-report audit)"
+title: "...ec-kit/026-graph-and-context-optimization/001-research-and-baseline/001-claude-optimization-settings/decision-record]"
 description: "Four key decisions made during the 13-iteration deep-research run: source framing, discrepancy handling, prioritization framework, and implementation deferral."
 trigger_phrases:
   - "claude optimization decisions"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "phase 005 deferral"
 importance_tier: "important"
 contextType: "research"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["decision-record.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Phase 001 - Claude Optimization Settings (Reddit field-report audit)
 

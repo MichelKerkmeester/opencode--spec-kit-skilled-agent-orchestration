@@ -1,3 +1,13 @@
+---
+title: "Checklist [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/005-bootstrap-guidance/checklist]"
+description: "checklist document for 005-bootstrap-guidance."
+trigger_phrases:
+  - "checklist"
+  - "005"
+  - "bootstrap"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Checklist: 005-bootstrap-guidance
 
 ## P0

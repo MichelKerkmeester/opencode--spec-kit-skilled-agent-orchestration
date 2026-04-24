@@ -1,8 +1,25 @@
 ---
-title: "027/006 — Checklist"
+title: "...ext-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/007-promotion-gates/checklist]"
 description: "Acceptance verification for promotion gates."
-importance_tier: "high"
+trigger_phrases:
+  - "ext"
+  - "optimization"
+  - "009"
+  - "hook"
+  - "daemon"
+  - "checklist"
+  - "007"
+  - "promotion"
+importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/007-promotion-gates"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # 027/006 Checklist
 

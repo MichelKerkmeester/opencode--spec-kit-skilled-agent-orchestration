@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Code Graph Package"
+title: "Implementation [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/implementation-summary]"
 description: "Summary of the 003-code-graph-package flattened parent and direct child phases."
 trigger_phrases:
   - "003-code-graph-package"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "002-code-graph-self-contained-package"
   - "003-code-graph-context-and-scan-scope"
 importance_tier: "important"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

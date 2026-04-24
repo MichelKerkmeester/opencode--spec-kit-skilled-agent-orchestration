@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Graph Metadata Enrichment"
+title: "...optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment/implementation-summary]"
 description: "The packet now closes on the shipped schema v2 metadata rollout across 21 live skill files and records the proof needed to trust that closure."
 trigger_phrases:
   - "004-graph-metadata-enrichment"
@@ -7,8 +7,6 @@ trigger_phrases:
   - "schema v2 closeout summary"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment"
@@ -17,6 +15,8 @@ _memory:
     recent_action: "Closed packet"
     next_safe_action: "Use this packet as the canonical closeout reference for the delivered 21-file schema v2 rollout"
     key_files: ["implementation-summary.md", "spec.md", "decision-record.md", "graph-metadata.json"]
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Graph Metadata Enrichment
 

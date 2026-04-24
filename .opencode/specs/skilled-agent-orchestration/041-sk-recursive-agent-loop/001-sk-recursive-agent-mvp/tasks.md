@@ -1,11 +1,20 @@
 ---
-title: "Task Breakdown: Agent Improvement Loop [skilled-agent-orchestration/041-sk-improve-agent-loop/001-sk-improve-agent-mvp/tasks]"
+title: "Task Breakdown: Agent [skilled-agent-orchestration/041-sk-recursive-agent-loop/001-sk-recursive-agent-mvp/tasks]"
 description: "Ordered task list for the evaluator-first sk-improve-agent MVP and later rollout phases."
 trigger_phrases:
   - "agent improvement tasks"
   - "sk-improve-agent tasks"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/001-sk-recursive-agent-mvp"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: Agent Improvement Loop
 

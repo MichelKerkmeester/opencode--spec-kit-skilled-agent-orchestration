@@ -1,12 +1,12 @@
 ---
-title: "018 / 009 — README revisit plan"
+title: "...-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/003-readme-alignment-revisit/plan]"
 description: "Evidence-first plan for rechecking the 016 README targets against the Phase 018 continuity model."
-trigger_phrases: ["009 revisit plan", "readme revisit plan", "phase 018 readme parity"]
+trigger_phrases:
+  - "009 revisit plan"
+  - "readme revisit plan"
+  - "phase 018 readme parity"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/003-readme-alignment-revisit"
@@ -15,6 +15,9 @@ _memory:
     recent_action: "Completed the README-surface revisit plan for the 016 release-alignment targets"
     next_safe_action: "Reuse the README update ledger for future alignment passes"
     key_files: ["plan.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: 018 / 009 — README revisit
 <!-- SPECKIT_LEVEL: 2 -->

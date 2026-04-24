@@ -27,6 +27,8 @@ Release-readiness states are derived alongside convergence:
 - `converged` once coverage and stabilization pass without new P0/P1 findings
 - `release-blocking` whenever unresolved P0 findings remain active
 
+When the loop stops and enters synthesis, the workflow emits `{artifact_dir}/resource-map.md` from converged review deltas before compiling `review-report.md`. Operators can disable that write with `--no-resource-map`.
+
 ### Key Defaults
 
 | Setting | Value | Purpose |

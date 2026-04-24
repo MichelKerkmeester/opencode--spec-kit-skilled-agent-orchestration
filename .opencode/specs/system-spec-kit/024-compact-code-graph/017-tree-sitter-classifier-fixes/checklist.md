@@ -1,6 +1,22 @@
 ---
-title: "Checklist: Tree-Sitter & Classifier Fixes [024/017]"
+title: "Checklist: Tree-Sitter & [system-spec-kit/024-compact-code-graph/017-tree-sitter-classifier-fixes/checklist]"
 description: "15 items across P1/P2 for phase 017."
+trigger_phrases:
+  - "checklist"
+  - "tree"
+  - "sitter"
+  - "017"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/017-tree-sitter-classifier-fixes"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->
 # Verification Checklist: Phase 017 — Tree-Sitter & Classifier Fixes

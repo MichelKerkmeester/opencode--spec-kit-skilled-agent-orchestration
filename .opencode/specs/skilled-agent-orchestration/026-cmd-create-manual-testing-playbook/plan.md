@@ -1,11 +1,20 @@
 ---
-title: "Implementation Plan: /create:testing-playbook [03--commands-and-skills/026-cmd-create-manual-testing-playbook/plan]"
+title: "Implementation Plan: /create:testing-playbook [skilled-agent-orchestration/026-cmd-create-manual-testing-playbook/plan]"
 description: "Plan the new create command, its YAML pair, runtime mirror, and discovery-doc updates using the shipped sk-doc testing-playbook references and templates."
 trigger_phrases:
   - "testing playbook command plan"
   - "/create:testing-playbook plan"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/026-cmd-create-manual-testing-playbook"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: /create:testing-playbook Command
 

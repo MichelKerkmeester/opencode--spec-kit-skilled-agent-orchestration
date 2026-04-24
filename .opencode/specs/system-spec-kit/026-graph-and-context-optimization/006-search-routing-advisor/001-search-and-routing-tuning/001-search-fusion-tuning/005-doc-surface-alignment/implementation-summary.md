@@ -1,15 +1,13 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: Doc Surface Alignment for Search Fusion Changes"
+title: "...ting-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment/implementation-summary]"
 description: "This packet aligned the requested search docs with the shipped 017 runtime so reranker telemetry, continuity tuning, and Stage 3 behavior all match what the code now does."
 trigger_phrases:
   - "search fusion implementation summary"
   - "continuity search profile docs"
   - "reranker telemetry docs"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: 254461c386
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment"
@@ -31,6 +29,8 @@ _memory:
     open_questions: []
     answered_questions:
       - "Which requested surfaces changed and which stayed scan-only"
+closed_by_commit: 254461c386
+status: complete
 ---
 # Implementation Summary: Doc Surface Alignment for Search Fusion Changes
 

@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
-title: "Implementation Plan: Reverse Parent Research/Review Folder Placement"
+title: "...pec-kit/026-graph-and-context-optimization/011-resource-map-template/001-reverse-parent-research-review-folders/plan]"
 description: "Restore local-owner deep-loop packet placement, migrate misplaced child packets repo-wide, and rebase dependent packet docs onto the restored path contract."
 trigger_phrases:
   - "013/001 rollback plan"
   - "reverse parent folders plan"
 importance_tier: "normal"
-contextType: "plan"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/001-reverse-parent-research-review-folders"
@@ -25,6 +25,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 ---
 # Implementation Plan: Reverse Parent Research/Review Folder Placement
 

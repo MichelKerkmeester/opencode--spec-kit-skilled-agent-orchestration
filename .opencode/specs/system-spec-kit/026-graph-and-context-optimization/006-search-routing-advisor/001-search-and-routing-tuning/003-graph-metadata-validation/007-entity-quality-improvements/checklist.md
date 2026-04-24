@@ -1,7 +1,18 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | level2-verify | compact -->
 ---
-title: "Improve Graph Metadata Entity Quality - Checklist"
-status: complete
+title: "...outing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/checklist]"
+description: 'title: "Improve Graph Metadata Entity Quality - Checklist"'
+trigger_phrases:
+  - "outing"
+  - "advisor"
+  - "001"
+  - "search"
+  - "and"
+  - "checklist"
+  - "007"
+  - "entity"
+importance_tier: "normal"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements"
@@ -9,6 +20,7 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Marked entity-quality verification complete with parser, test, and corpus evidence"
     next_safe_action: "Reuse this checklist if entity cap or scope regressions return"
+status: complete
 ---
 # Verification Checklist
 ## Protocol <!-- ANCHOR:protocol -->Treat leak closure, focused tests, and cap behavior as the blocking closure signals.<!-- /ANCHOR:protocol -->

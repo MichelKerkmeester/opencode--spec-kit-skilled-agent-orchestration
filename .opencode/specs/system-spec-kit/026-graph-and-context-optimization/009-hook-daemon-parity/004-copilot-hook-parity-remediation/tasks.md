@@ -1,11 +1,12 @@
 ---
-title: "Task Breakdown: Copilot CLI Hook Parity Remediation"
+title: "Ta [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation/tasks]"
 description: "Ordered tasks across Phase 1 investigation, Phase 2 conditional implementation, Phase 3 documentation. Branch points explicit."
 trigger_phrases:
   - "026/009/004 tasks"
   - "copilot hook parity tasks"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation"

@@ -1,10 +1,11 @@
 ---
-title: "Tasks: 006-routing-accuracy-and-classifier-behavior Routing Accuracy and Classifier Behavior Remediation"
+title: "...007-deep-review-remediation/005-006-campaign-findings-remediation/006-routing-accuracy-and-classifier-behavior/tasks]"
 description: "Task ledger for 006-routing-accuracy-and-classifier-behavior Routing Accuracy and Classifier Behavior Remediation."
 trigger_phrases:
-  - "tasks 006 routing accuracy and classifier behavior routing accuracy and "
-importance_tier: "high"
-contextType: "spec"
+  - "tasks 006 routing accuracy and classifier behavior routing accuracy and"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/006-routing-accuracy-and-classifier-behavior"

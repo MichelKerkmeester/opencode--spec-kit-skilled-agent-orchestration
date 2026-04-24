@@ -1,11 +1,20 @@
 ---
-title: "Verification Checklist: Recursive Agent Command Rename [template:level_2/checklist.md]"
+title: "Verification [skilled-agent-orchestration/041-sk-recursive-agent-loop/006-sk-recursive-agent-command-rename/checklist]"
 description: "Verification Date: 2026-04-03"
 trigger_phrases:
   - "041 phase 006 checklist"
   - "recursive agent command rename checklist"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/006-sk-recursive-agent-command-rename"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: Recursive Agent Command Rename
 

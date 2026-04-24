@@ -1,10 +1,11 @@
 ---
-title: "Decision Record: 007-skill-advisor-packaging-and-graph Skill Advisor Packaging and Graph Remediation"
+title: "...-deep-review-remediation/005-006-campaign-findings-remediation/007-skill-advisor-packaging-and-graph/decision-record]"
 description: "ADR for 007-skill-advisor-packaging-and-graph Skill Advisor Packaging and Graph Remediation."
 trigger_phrases:
   - "decision record 007 skill advisor packaging and graph skill advisor pack"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/007-skill-advisor-packaging-and-graph"

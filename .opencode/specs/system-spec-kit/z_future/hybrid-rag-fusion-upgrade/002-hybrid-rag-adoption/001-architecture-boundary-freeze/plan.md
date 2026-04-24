@@ -1,3 +1,13 @@
+---
+title: "Plan [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/001-architecture-boundary-freeze/plan]"
+description: "1. Document the preserved authorities and explicit non-goals."
+trigger_phrases:
+  - "plan"
+  - "001"
+  - "architecture"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 001-architecture-boundary-freeze
 
 ## Affected Files

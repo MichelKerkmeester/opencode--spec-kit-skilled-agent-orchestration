@@ -1,3 +1,14 @@
+---
+title: "Verification Checklist [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/checklist]"
+description: "checklist document for 002-hybrid-rag-adoption."
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "002"
+  - "hybrid"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Verification Checklist: 002-hybrid-rag-adoption
 
 ## P0

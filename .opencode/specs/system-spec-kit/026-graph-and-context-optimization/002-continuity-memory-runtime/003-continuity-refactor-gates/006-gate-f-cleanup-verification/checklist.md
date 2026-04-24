@@ -1,12 +1,12 @@
 ---
-title: "Gate F — Cleanup Verification Checklist"
+title: "...t-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/006-gate-f-cleanup-verification/checklist]"
 description: "Verified closeout checklist for the cleanup-only Gate F pass."
-trigger_phrases: ["gate f checklist", "cleanup verification checklist", "orphan edge verification"]
+trigger_phrases:
+  - "gate f checklist"
+  - "cleanup verification checklist"
+  - "orphan edge verification"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/006-gate-f-cleanup-verification"
@@ -15,6 +15,9 @@ _memory:
     recent_action: "Converted checklist to cleanup-verification exit gates"
     next_safe_action: "Close packet once commit hash exists"
     key_files: ["checklist.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Gate F — Cleanup Verification
 <!-- SPECKIT_LEVEL: 2 -->

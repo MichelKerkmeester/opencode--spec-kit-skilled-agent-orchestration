@@ -1,14 +1,33 @@
 ---
-title: "Research: Content Routing Classification Accuracy"
-status: complete
-level: 3
-type: research
-parent: 010-search-and-routing-tuning
-predecessor: 001-search-fusion-tuning
+title: "...-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/spec]"
+description: 'title: "Research: Content Routing Classification Accuracy"'
+trigger_phrases:
+  - "and"
+  - "context"
+  - "optimization"
+  - "006"
+  - "search"
+  - "spec"
+  - "002"
+  - "content"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 branch: main
 created: 2026-04-13
+level: 3
+parent: 010-search-and-routing-tuning
+predecessor: 001-search-fusion-tuning
+status: complete
+type: research
 ---
-
 # Research: Content Routing Classification Accuracy
 
 Investigate whether the 3-tier content router (Tier1 keyword heuristic, Tier2 prototype similarity, Tier3 LLM classification) correctly classifies saves into the 8 routing categories. No historical save data needed - uses synthetic payloads against the current router code.

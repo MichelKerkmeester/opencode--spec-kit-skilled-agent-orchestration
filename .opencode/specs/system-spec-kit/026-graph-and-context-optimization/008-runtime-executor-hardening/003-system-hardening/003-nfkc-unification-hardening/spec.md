@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: NFKC Unification Hardening"
+title: "...aph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening/spec]"
 description: "Implement HP1-HP6 from 019/001/003 Q4 NFKC research: unify Unicode normalization across Gate 3, shared-provenance, and trigger-phrase-sanitizer; add post-normalization instruction denylist; expand confusable coverage (RT5 Greek-omicron); semantic recovered-payload contract; provenance enforcement; adversarial regression corpus."
 trigger_phrases:
   - "nfkc unification"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "shared provenance hardening"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Remediation child scaffolded from 019/001/003 research"
     next_safe_action: "Dispatch /spec_kit:implement :auto"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: NFKC Unification Hardening
 

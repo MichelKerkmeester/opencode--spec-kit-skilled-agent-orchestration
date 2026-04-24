@@ -1,11 +1,20 @@
 ---
-title: "Implementation Plan: 041 Recursive Agent Loop [template:level_2/plan.md]"
+title: "Implementation Plan: 041 Recursive Agent Loop [skilled-agent-orchestration/041-sk-recursive-agent-loop/plan]"
 description: "Plan for maintaining 041 as the parent packet with completed child phases 001, 002, 003, 004, 005, 006, and 007."
 trigger_phrases:
   - "041 plan"
   - "recursive agent phase plan"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: 041 Recursive Agent Loop
 

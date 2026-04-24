@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 027/006 — Promotion Gates"
+title: "...-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/007-promotion-gates/spec]"
 description: "Shadow-cycle infrastructure for semantic + learned channels. Semantic live weight stays 0.00 through first wave. Only bounded learned/adaptive live influence eligible first. Accuracy/safety/latency gates: ≥75% full corpus + ≥72.5% holdout + two positive shadow cycles + no regression + exact parity."
 trigger_phrases:
   - "027/006"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "semantic channel"
   - "learned ranking"
   - "accuracy threshold"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:

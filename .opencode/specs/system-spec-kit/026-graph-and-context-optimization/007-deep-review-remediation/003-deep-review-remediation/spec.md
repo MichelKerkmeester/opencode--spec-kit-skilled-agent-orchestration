@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Phase 025 — Deep-Review Remediation"
+title: "Featur [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation/spec]"
 description: "Close the 7 deduplicated findings (5 P1 + 2 P2) surfaced by the 40-iteration r02 deep-review of the skill-advisor phase stack (Phases 020-024). Privacy, cache correctness, telemetry fidelity, plugin parity, operator docs."
 trigger_phrases:
   - "deep-review remediation"
@@ -9,6 +9,7 @@ trigger_phrases:
   - "dr-p2"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation"

@@ -1,12 +1,11 @@
 ---
-title: "Decision Record: System Hardening"
+title: "...stem-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/decision-record]"
 description: "ADRs for 019-system-hardening umbrella packet: research-first ordering and cluster-per-child layout."
 trigger_phrases:
   - "019 decision record"
   - "system hardening adr"
 importance_tier: "critical"
-contextType: "decision-record"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Decision record scaffolded"
     next_safe_action: "Charter approval"
     key_files: ["decision-record.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: System Hardening
 

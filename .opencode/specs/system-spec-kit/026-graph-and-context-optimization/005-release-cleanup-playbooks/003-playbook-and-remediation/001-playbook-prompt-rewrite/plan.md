@@ -1,13 +1,12 @@
 ---
-title: "Implementation Plan: Phase 014 — Manual Testing Playbook Prompt Rewrite [template:level_2/plan.md]"
+title: "...and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/plan]"
 description: "Describe how the Phase 014 packet tracks the completed prompt-field rewrite and how this documentation repair returns the packet to a valid Level 2 shape."
-trigger_phrases: ["implementation plan", "phase 014 plan", "manual testing playbook"]
+trigger_phrases:
+  - "implementation plan"
+  - "phase 014 plan"
+  - "manual testing playbook"
 importance_tier: "important"
 contextType: "implementation"
-level: 2
-status: "in_progress"
-parent: "009-playbook-and-remediation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite"
@@ -15,6 +14,10 @@ _memory:
     last_updated_by: "speckit"
     recent_action: "Reopened packet closeout after the required manual prompt spot-check stayed deferred"
     next_safe_action: "Complete or explicitly re-scope CHK-023 before closing the packet"
+level: 2
+parent: "009-playbook-and-remediation"
+status: "in_progress"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->

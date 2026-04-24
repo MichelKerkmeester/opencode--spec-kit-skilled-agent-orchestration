@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Code Graph Upgrades"
+title: "Feature Specifi [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/spec]"
 description: "Plan the bounded post-R5/R6 code-graph upgrade packet that adds detector provenance, graph payload richness, and code-graph-local query ergonomics without overlapping packet 008."
 trigger_phrases:
   - "005-code-graph-upgrades"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "026-graph-and-context-optimization"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: Code Graph Upgrades
 

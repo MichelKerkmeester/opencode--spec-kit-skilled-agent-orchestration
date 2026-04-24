@@ -1,3 +1,18 @@
+---
+title: "...ystem-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/014-bm25-field-weight-evaluation/checklist]"
+description: "checklist document for 014-bm25-field-weight-evaluation."
+trigger_phrases:
+  - "ystem"
+  - "spec"
+  - "kit"
+  - "future"
+  - "hybrid"
+  - "checklist"
+  - "014"
+  - "bm25"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Checklist: 014-bm25-field-weight-evaluation
 
 ## P0

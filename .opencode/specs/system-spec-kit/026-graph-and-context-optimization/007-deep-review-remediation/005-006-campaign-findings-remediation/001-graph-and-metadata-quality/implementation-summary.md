@@ -1,16 +1,14 @@
 ---
-title: "Implementation Summary: 001-graph-and-metadata-quality"
+title: "...-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality/implementation-summary]"
 description: "Partial remediation summary for graph and metadata quality findings, including verified code fixes and blocked source-packet rewrites."
 trigger_phrases:
   - "graph metadata quality remediation"
-  - "CF-181"
-  - "CF-071"
-  - "CF-133"
-  - "CF-116"
-importance_tier: "high"
-contextType: "spec"
-status: "blocked"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+  - "cf-181"
+  - "cf-071"
+  - "cf-133"
+  - "cf-116"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality"
@@ -38,6 +36,8 @@ _memory:
       - "Should the orchestrator expand write authority to update historical source packet docs and generated metadata?"
     answered_questions:
       - "Code-scope CF-181, CF-071, CF-133, and CF-116 are fixed and tested"
+status: "blocked"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

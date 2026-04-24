@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
-title: "Implementation Summary: Skill-Advisor Plugin Hardening"
+title: ".../026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening/implementation-summary]"
 description: "Completed packet 008: per-instance skill-advisor plugin state, in-flight bridge dedup, bounded prompt/brief payloads, cache LRU eviction, and focused Vitest coverage."
 trigger_phrases:
   - "skill advisor hardening complete"
   - "026/009/008 implementation"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening"
@@ -21,6 +21,7 @@ _memory:
       - "All plugin runtime state is per-instance closure state."
       - "Concurrent identical cache misses share one in-flight bridge promise."
       - "Bridge stdin payload, advisor brief output, and cache entries are bounded with configurable caps."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Skill-Advisor Plugin Hardening
 

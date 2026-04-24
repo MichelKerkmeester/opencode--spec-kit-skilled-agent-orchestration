@@ -1,13 +1,13 @@
 ---
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
-title: "027/004 — Checklist"
+title: "...optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface/checklist]"
 description: "Acceptance verification for MCP advisor surface."
 trigger_phrases:
   - "027/004 checklist"
   - "advisor mcp verification"
   - "advisor tool acceptance"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_2/checklist.md | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/005-mcp-advisor-surface"
@@ -25,6 +25,7 @@ _memory:
     completion_pct: 95
     open_questions: []
     answered_questions: []
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 ---
 # Verification Checklist: 027/004 MCP Advisor Surface
 

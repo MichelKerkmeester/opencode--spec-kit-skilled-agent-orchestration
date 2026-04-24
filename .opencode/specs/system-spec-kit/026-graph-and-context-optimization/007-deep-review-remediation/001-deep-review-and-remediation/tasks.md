@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 015 Deep Review Remediation — 243 Findings"
+title: "T [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation/tasks]"
 description: "Task Format: T### [P?] Description (file path or finding ref). All 243 findings mapped to actionable tasks across 11 workstreams."
 trigger_phrases:
   - "remediation tasks"
@@ -8,6 +8,7 @@ trigger_phrases:
   - "workstream tasks"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation"

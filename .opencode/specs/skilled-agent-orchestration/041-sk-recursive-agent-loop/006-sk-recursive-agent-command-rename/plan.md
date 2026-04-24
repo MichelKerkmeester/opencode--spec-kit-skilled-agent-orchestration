@@ -1,11 +1,20 @@
 ---
-title: "Implementation Plan: Recursive Agent Command Rename [template:level_2/plan.md]"
+title: "Implementation [skilled-agent-orchestration/041-sk-recursive-agent-loop/006-sk-recursive-agent-command-rename/plan]"
 description: "Plan for phase 006 under packet 041 covering the command-entrypoint rename, command-asset rename, wrapper rename, and packet-history sync."
 trigger_phrases:
   - "041 phase 006 plan"
   - "recursive agent command rename plan"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/006-sk-recursive-agent-command-rename"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Recursive Agent Command Rename
 

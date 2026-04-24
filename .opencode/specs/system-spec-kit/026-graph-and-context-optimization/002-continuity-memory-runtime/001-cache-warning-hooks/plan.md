@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Cache-Warning Hook System [template:level_3/plan.md]"
+title: "Implemen [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks/plan]"
 description: "Research-aligned plan for packet 002: predecessor confirmation, replay isolation, bounded Stop-hook metadata patch, and idempotent verification."
 trigger_phrases:
   - "cache warning plan"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "claudest continuation order"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Cache-Warning Hook System
 

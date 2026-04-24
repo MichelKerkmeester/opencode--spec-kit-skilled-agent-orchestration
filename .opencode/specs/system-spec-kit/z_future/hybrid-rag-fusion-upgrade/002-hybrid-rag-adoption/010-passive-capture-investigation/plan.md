@@ -1,3 +1,13 @@
+---
+title: "Plan [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/010-passive-capture-investigation/plan]"
+description: "1. Baseline the current explicit save path from session summary to indexed memory."
+trigger_phrases:
+  - "plan"
+  - "010"
+  - "passive"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 010-passive-capture-investigation
 
 ## Affected Files

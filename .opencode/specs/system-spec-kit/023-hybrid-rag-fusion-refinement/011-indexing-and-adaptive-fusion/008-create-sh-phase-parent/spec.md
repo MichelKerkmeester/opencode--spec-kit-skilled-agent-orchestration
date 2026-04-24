@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Append Nested Child Phases in create.sh [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent]"
+title: "Feat [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/spec]"
 description: "Document the implemented create.sh changes that append child phases under existing nested parent folders in .opencode/specs without breaking current flat-spec behavior."
 trigger_phrases:
   - "phase parent alias"
@@ -8,11 +8,20 @@ trigger_phrases:
   - "phase-parent planning"
 importance_tier: "critical"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["spec.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
-# Feature Specification: Append Nested Child Phases in create.sh
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
+
+# Feature Specification: Append Nested Child Phases in create.sh
 
 ---
 

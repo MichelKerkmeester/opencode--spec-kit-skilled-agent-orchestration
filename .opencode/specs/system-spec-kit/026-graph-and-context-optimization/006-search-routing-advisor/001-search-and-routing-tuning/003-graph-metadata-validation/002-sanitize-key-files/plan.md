@@ -1,7 +1,27 @@
 ---
-title: "Sanitize Key Files in Graph Metadata - Execution Plan"
-status: complete
+title: "...n/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/002-sanitize-key-files/plan]"
+description: 'title: "Sanitize Key Files in Graph Metadata - Execution Plan"'
+trigger_phrases:
+  - "006"
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "plan"
+  - "002"
+  - "sanitize"
+importance_tier: "important"
+contextType: "planning"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/002-sanitize-key-files"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 parent_spec: 002-sanitize-key-files/spec.md
+status: complete
 ---
 # Execution Plan
 ## Approach

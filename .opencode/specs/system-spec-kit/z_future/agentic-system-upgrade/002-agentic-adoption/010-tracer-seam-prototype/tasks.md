@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 010 Tracer Seam Prototype [template:level_2/tasks.md]"
+title: "Tasks: 010 [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/010-tracer-seam-prototype/tasks]"
 description: "Task Format: T### [P?] Description (010-tracer-seam-prototype)"
 trigger_phrases:
   - "tasks"

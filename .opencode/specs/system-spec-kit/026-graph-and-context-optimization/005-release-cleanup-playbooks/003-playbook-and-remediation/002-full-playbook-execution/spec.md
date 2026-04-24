@@ -1,13 +1,13 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 ---
-title: "Feature Specification: Phase 015 Playbook Coverage Accounting and Partial Execution"
+title: "...and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/spec]"
 description: "Account for the live system-spec-kit playbook inventory against the post-006 codebase, capture real handler-level evidence, and document where current runtime automation is only partial instead of complete."
 trigger_phrases:
   - "playbook coverage accounting"
   - "manual testing run"
   - "phase 015 spec"
 importance_tier: "critical"
-contextType: "verification"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution"
@@ -33,8 +33,8 @@ _memory:
     answered_questions:
       - "How many active scenario files exist in the live filesystem"
 level: 2
-status: "completed"
 parent: "009-playbook-and-remediation"
+status: "completed"
 ---
 # Feature Specification: Phase 015 Playbook Coverage Accounting and Partial Execution
 

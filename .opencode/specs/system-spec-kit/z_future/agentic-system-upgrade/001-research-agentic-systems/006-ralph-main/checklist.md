@@ -1,12 +1,12 @@
 ---
-title: "Verification Checklist: 006-ralph-main Research Phase"
+title: "Verification [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/006-ralph-main/checklist]"
 description: "Verification Date: 2026-04-10"
 trigger_phrases:
   - "006-ralph-main checklist"
   - "ralph research verification checklist"
   - "agentic systems ralph verification"
 importance_tier: "important"
-contextType: "checklist"
+contextType: "implementation"
 ---
 # Verification Checklist: 006-ralph-main Research Phase
 

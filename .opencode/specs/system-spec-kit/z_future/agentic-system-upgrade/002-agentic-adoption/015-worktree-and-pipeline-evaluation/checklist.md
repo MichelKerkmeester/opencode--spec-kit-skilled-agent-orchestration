@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 015 Worktree and Pipeline Evaluation [template:level_2/checklist.md]"
+title: "Ve [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/015-worktree-and-pipeline-evaluation/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

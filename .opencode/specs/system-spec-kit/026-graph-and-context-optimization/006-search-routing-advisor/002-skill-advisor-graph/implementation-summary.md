@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary: Skill Advisor Graph [template:level_2/implementation-summary.md]"
+title: "...pec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/implementation-summary]"
 description: "Implementation summary for 011-skill-advisor-graph."
 trigger_phrases:
   - "011-skill-advisor-graph"
   - "implementation"
   - "summary"
 importance_tier: "important"
-contextType: "summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Completed implementation"
     next_safe_action: "Save context"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->"
 ---
 # Implementation Summary: Skill Advisor Graph
 

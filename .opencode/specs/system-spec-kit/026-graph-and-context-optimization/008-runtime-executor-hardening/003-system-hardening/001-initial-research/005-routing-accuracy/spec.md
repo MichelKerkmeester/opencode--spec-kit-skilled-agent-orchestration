@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Gate 3 + Skill-Advisor Routing Accuracy Research (SSK-RR-1)"
+title: "...text-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy/spec]"
 description: "Deep-research sub-packet covering the SSK-RR-1 Tier 1 item. Build a labeled corpus, compute classifier accuracy for Gate 3 and skill-advisor, report precision/recall per classifier, and propose rule or threshold changes. Wave 3 dispatch per ADR-001 of 019/001."
 trigger_phrases:
   - "routing accuracy research"
@@ -9,7 +9,6 @@ trigger_phrases:
   - "classifier evaluation"
 importance_tier: "critical"
 contextType: "research"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy"
@@ -18,7 +17,7 @@ _memory:
     recent_action: "Research packet scaffolded"
     next_safe_action: "Dispatch after Wave 2 convergence"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Gate 3 + Skill-Advisor Routing Accuracy Research
 

@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Documentation + Release Contract"
+title: "...ntext-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract/plan]"
 description: "New hook-surface reference doc + CLAUDE.md update + runtime README updates + release checklist in 020 parent implementation-summary."
 trigger_phrases:
   - "020 009 plan"
   - "skill advisor hook doc plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract"
@@ -16,7 +15,7 @@ _memory:
     next_safe_action: "Dispatch T9 integration gauntlet"
     blockers: []
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Documentation + Release Contract
 

@@ -10,6 +10,15 @@ trigger_phrases:
   - "session"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/002-session-start-hook"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Phase 2 — SessionStart Hook
@@ -84,10 +93,10 @@ Template compliance shim anchor for rollback.
    - `compact` → verify cache read + injection
    - `clear` → verify minimal output
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-2 -->
 ### Dependencies
 - Phase 1 (shared `session-prime.ts`, `hook-state.ts`, `shared.ts`)
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-2 -->
 
 ### Technical Context
 - Runtime surface: system-spec-kit MCP server + hook adapters.

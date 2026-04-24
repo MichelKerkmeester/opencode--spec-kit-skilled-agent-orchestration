@@ -1,13 +1,12 @@
 ---
-title: "Verification Checklist: Phase 014 — Manual Testing Playbook Prompt Rewrite [template:level_2/checklist.md]"
+title: "...ontext-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/checklist]"
 description: "Verification Date: 2026-04-24"
-trigger_phrases: ["verification", "checklist", "phase 014"]
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "phase 014"
 importance_tier: "important"
 contextType: "implementation"
-level: 2
-status: "in_progress"
-parent: "009-playbook-and-remediation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite"
@@ -15,6 +14,10 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Re-ran strict validation and refreshed the packet evidence after the wrapper-level release sweep"
     next_safe_action: "Refresh continuity freshness evidence and resolve or re-scope the remaining open checklist items"
+level: 2
+parent: "009-playbook-and-remediation"
+status: "in_progress"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->

@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
-title: "Implementation Plan: Code Graph Context + Scan Scope Remediation"
+title: "I [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/plan]"
 description: "Three scoped fixes: stale-graph highlights computation, scan exclude expansion + .gitignore awareness, and surface matrix doc."
 trigger_phrases:
   - "026/003/003 plan"
   - "code graph context plan"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Plan drafted"
     next_safe_action: "Dispatch codex"
     completion_pct: 5
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Code Graph Context + Scan Scope Remediation
 

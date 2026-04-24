@@ -1,12 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 ---
-title: "Verification Checklist: 027/002 Lifecycle and Derived Metadata"
+title: "...n/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/003-lifecycle-and-derived-metadata/checklist]"
 description: "Acceptance verification for lifecycle + derived metadata."
 trigger_phrases:
   - "027/002 checklist"
   - "lifecycle derived metadata checklist"
   - "skill graph daemon advisor unification verification"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:

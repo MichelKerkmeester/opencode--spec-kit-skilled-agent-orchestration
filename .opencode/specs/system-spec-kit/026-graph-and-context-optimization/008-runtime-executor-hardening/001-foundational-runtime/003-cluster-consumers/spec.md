@@ -1,9 +1,18 @@
 ---
-title: "Feature Specification: Phase 017 Wave B — Cluster Consumers"
+title: "...26-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers/spec]"
 description: "Wave B child of Phase 017. 9 tasks / 30h across 3 parallel lanes consuming Wave A primitives: Lane B1 Cluster B consumers (12h), Lane B2 Cluster D + Cluster E (16h), Lane B3 Cluster A + Cluster C + Standalone P1 (12h). Resolves FC-3/FC-4/FC-5/FC-6/FC-8."
-trigger_phrases: ["017 wave b", "phase 017 wave b cluster consumers", "t-cns-02 research backfill", "t-w1-cgc-03 readiness propagation", "t-w1-hok-01 copilot compact-cache", "017 lane b1", "017 lane b2", "017 lane b3"]
+trigger_phrases:
+  - "017 wave b"
+  - "phase 017 wave b cluster consumers"
+  - "t-cns-02 research backfill"
+  - "t-w1-cgc-03 readiness propagation"
+  - "t-w1-hok-01 copilot compact-cache"
+  - "017 lane b1"
+  - "017 lane b2"
+  - "017 lane b3"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers"

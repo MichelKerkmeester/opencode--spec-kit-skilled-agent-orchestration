@@ -1,10 +1,11 @@
 ---
-title: "Decision Record: 003-evidence-references-and-replayability Evidence, References, and Replayability Remediation"
+title: "...p-review-remediation/005-006-campaign-findings-remediation/003-evidence-references-and-replayability/decision-record]"
 description: "ADR for 003-evidence-references-and-replayability Evidence, References, and Replayability Remediation."
 trigger_phrases:
   - "decision record 003 evidence references and replayability evidence refer"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/003-evidence-references-and-replayability"

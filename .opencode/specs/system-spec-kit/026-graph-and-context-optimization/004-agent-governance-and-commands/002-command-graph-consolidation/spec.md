@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Canonical Intake and Middleware Cleanup [template:level_3/spec.md]"
+title: "...m-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/spec]"
 description: "Establish one canonical intake surface for spec-folder creation and repair via a shared reference module at .opencode/skill/system-spec-kit/references/intake-contract.md, accessible through /spec_kit:plan --intake-only, and delete deprecated middleware (/spec_kit:handover, /spec_kit:debug, @handover, @speckit) in favor of distributed governance and /memory:save."
 trigger_phrases:
   - "canonical intake"
@@ -11,8 +11,7 @@ trigger_phrases:
   - "distributed governance"
   - "handover debug deprecation"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
@@ -38,6 +37,7 @@ _memory:
       - "Single canonical intake surface delivered via shared intake-contract.md referenced by /spec_kit:plan and /spec_kit:complete"
       - "Standalone intake invocation preserved via /spec_kit:plan --intake-only flag with explicit YAML gate"
       - "Deprecated middleware (/spec_kit:handover, /spec_kit:debug, @handover, @speckit with 4 runtime mirrors each) deleted in favor of distributed governance"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: Canonical Intake and Middleware Cleanup
 

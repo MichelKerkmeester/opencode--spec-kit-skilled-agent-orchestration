@@ -1,5 +1,5 @@
 ---
-title: "Session Handover: Deep Review Remediation"
+title: "Session Handover: Deep [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/handover]"
 description: "Packet-level handover for 007-deep-review-remediation child phases. Copilot and Codex hook parity outcomes migrated to 009-hook-daemon-parity."
 trigger_phrases:
   - "007-deep-review-remediation handover"
@@ -7,7 +7,8 @@ trigger_phrases:
   - "codex hook parity outcome"
   - "deep review remediation handover"
 importance_tier: "important"
-contextType: "handover"
+contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: handover | v1.0 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation"

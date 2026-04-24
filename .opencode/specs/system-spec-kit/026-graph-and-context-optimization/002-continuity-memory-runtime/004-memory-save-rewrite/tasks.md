@@ -1,5 +1,5 @@
 ---
-title: "Tasks: /memory:save Planner-First Default"
+title: "Tasks [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/tasks]"
 description: "Completed task ledger covering audit + retirement (P013-), research (P014-), implementation (P015-), and remediation (P015-R). Task IDs preserve source-packet lineage for traceability."
 trigger_phrases:
   - "tasks"
@@ -10,8 +10,7 @@ trigger_phrases:
   - "implementation tasks"
   - "remediation tasks"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite"
@@ -33,6 +32,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Task IDs preserve P013-/P014-/P015-/P015-R lineage so evidence cites the right artifact."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: /memory:save Planner-First Default
 

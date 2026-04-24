@@ -1,6 +1,6 @@
 ---
-title: "Feature Specification: 008 Continuity and Memory UX Integration [template:level_2/spec.md]"
-description: "Absorb common resume and save flows into the main lifecycle UX while keeping the governed `/memory:*` subsystem available for search, governance, and maintenance work."
+title: "Fea [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/008-continuity-and-memory-ux-integration/spec]"
+description: "Absorb common resume and save flows into the main lifecycle UX while keeping the governed /memory:* subsystem available for search, governance, and maintenance work."
 trigger_phrases:
   - "feature"
   - "specification"

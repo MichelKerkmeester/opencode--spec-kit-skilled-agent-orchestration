@@ -104,6 +104,7 @@ state_paths:
   delta_dir: "{artifact_dir}/deltas"
   delta_pattern: "{artifact_dir}/deltas/iter-{NNN}.jsonl"
   review_output: "{artifact_dir}/review-report.md"
+  resource_map_output: "{artifact_dir}/resource-map.md"
   archive_root: "{artifact_archive_root}"
 
 # ─────────────────────────────────────────────────────────────────
@@ -308,6 +309,7 @@ workflow:
           stuckThreshold: 2
           maxDurationMinutes: 120
           specFolder: "{spec_folder}"
+          resource_map.emit: true
           createdAt: "{ISO_8601_NOW}"
           status: "initialized"
           releaseReadinessState: "in-progress"
@@ -317,7 +319,7 @@ workflow:
       step_create_state_log:
         action: "Initialize JSONL state log with config record including review fields and lineage metadata"
         note: "Reuse review_dimensions_json from step_normalize_review_dimensions. Never re-normalize or wrap the raw template value."
-        content: '{"type":"config","mode":"review","reviewTarget":"{review_target}","reviewTargetType":"{review_target_type}","reviewDimensions":{review_dimensions_json},"resource_map_present":{resource_map_present},"sessionId":"{ISO_8601_NOW}","parentSessionId":null,"lineageMode":"new","generation":1,"continuedFromRun":null,"maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
+        content: '{"type":"config","mode":"review","reviewTarget":"{review_target}","reviewTargetType":"{review_target_type}","reviewDimensions":{review_dimensions_json},"resource_map_present":{resource_map_present},"resource_map":{"emit":true},"sessionId":"{ISO_8601_NOW}","parentSessionId":null,"lineageMode":"new","generation":1,"continuedFromRun":null,"maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
         output: "{state_paths.state_log}"
 
       step_create_findings_registry:
@@ -945,6 +947,16 @@ workflow:
             2. Skeptic: Challenge severity — is this really P0/P1? Could it be P2?
             3. Referee: Final call — confirm, downgrade, or mark false_positive
           Update finding_registry with adjudicated results.
+
+      step_emit_resource_map:
+        action: "Emit {state_paths.resource_map_output} from converged review deltas unless config.resource_map.emit is false"
+        command: "node .opencode/skill/sk-deep-review/scripts/reduce-state.cjs {spec_folder} --emit-resource-map"
+        read:
+          - "{state_paths.config}"
+          - "{state_paths.delta_dir}/iter-*.jsonl"
+        write:
+          - "{state_paths.resource_map_output}"
+        guarantee: "Reducer skips cleanly when config.resource_map.emit == false and writes a deterministic resource-map when enabled."
 
       step_resource_map_coverage_gate:
         action: "If resource_map_present, compute the Resource Map Coverage Gate synthesis inputs; otherwise preserve the skip note"

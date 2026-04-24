@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: 009-xethryon Research Phase"
+title: "Feature Specification [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/009-xethryon/spec]"
 description: "Read-only Phase 2 research on the bundled Xethryon repository to extract evidence-backed recommendations for system-spec-kit around memory, reflection, autonomy, orchestration, and operator UX."
 trigger_phrases:
   - "009-xethryon research spec"
   - "xethryon phase spec"
   - "system-spec-kit xethryon study"
 importance_tier: "important"
-contextType: "spec"
+contextType: "implementation"
 ---
 # Feature Specification: 009-xethryon Research Phase
 

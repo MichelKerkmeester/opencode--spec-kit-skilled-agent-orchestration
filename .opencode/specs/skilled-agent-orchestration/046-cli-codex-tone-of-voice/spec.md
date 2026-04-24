@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Codex Tone-of-Voice Personalization"
+title: "Feature Specification: Codex Tone-of-Voice [skilled-agent-orchestration/046-cli-codex-tone-of-voice/spec]"
 description: "Codex (APP + CLI) responses default to eager, sycophantic, command-executor style that skips trade-off reasoning, over-engineers silently, and pads with filler. Final outcome: a user-global voice addendum at <repo>/.codex/AGENTS.md (symlinked to ~/.codex/AGENTS.md) that shifts Codex toward Claude Opus's voice, covering Voice / Tone / Reasoning Visibility only."
 trigger_phrases:
   - "codex tone"
@@ -12,6 +12,7 @@ trigger_phrases:
   - "codex global voice"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/046-cli-codex-tone-of-voice"

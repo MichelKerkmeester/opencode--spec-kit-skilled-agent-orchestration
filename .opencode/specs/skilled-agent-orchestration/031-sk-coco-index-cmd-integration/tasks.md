@@ -1,5 +1,5 @@
 ---
-title: "Tasks: sk-coco-index Command Integration [03--commands-and-skills/031-sk-coco-index-cmd-integration/tasks]"
+title: "Tasks: sk-coco-index Command Integration [skilled-agent-orchestration/031-sk-coco-index-cmd-integration/tasks]"
 description: "Draft task breakdown for planning and validating the sk-coco-index command integration work."
 trigger_phrases:
   - "031"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "command integration tasks"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/031-sk-coco-index-cmd-integration"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: sk-coco-index Command Integration
 

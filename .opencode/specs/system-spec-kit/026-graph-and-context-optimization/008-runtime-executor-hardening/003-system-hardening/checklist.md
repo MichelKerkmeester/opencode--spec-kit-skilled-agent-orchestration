@@ -1,12 +1,11 @@
 ---
-title: "Verification Checklist: System Hardening"
+title: "Verif [system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/checklist]"
 description: "Verification checklist for 019-system-hardening umbrella packet."
 trigger_phrases:
   - "019 parent checklist"
   - "system hardening verification"
 importance_tier: "critical"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Checklist scaffolded"
     next_safe_action: "Charter approval"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: System Hardening
 

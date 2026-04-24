@@ -1,10 +1,15 @@
 ---
-type: deep-research
-topic: Memory quality root cause analysis - generate-context.js JSON mode
-spec_folder: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation
-status: complete
-iterations: 10
-generated: 2026-04-06T17:20:00Z
+title: ".../002-continuity-memory-runtime/002-memory-quality-remediation/research/003-memory-quality-remediation-pt-01/research]"
+description: "type: deep-research"
+trigger_phrases:
+  - "002"
+  - "continuity"
+  - "memory"
+  - "runtime"
+  - "research"
+  - "003"
+importance_tier: "normal"
+contextType: "research"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation"
@@ -13,9 +18,13 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["research/research.md"]
-
+generated: 2026-04-06T17:20:00Z
+iterations: 10
+spec_folder: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation
+status: complete
+topic: Memory quality root cause analysis - generate-context.js JSON mode
+type: deep-research
 ---
-
 # Memory Quality Backend Improvements — Deep Research Report
 
 <!-- ANCHOR:summary -->

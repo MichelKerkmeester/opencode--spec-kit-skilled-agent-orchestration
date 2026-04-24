@@ -1,12 +1,30 @@
 ---
-title: "Retired: Normalize Legacy Graph Metadata Files"
-status: complete
-level: 2
-type: implementation
-parent: 003-graph-metadata-validation
+title: "...6-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files/spec]"
+description: 'title: "Retired: Normalize Legacy Graph Metadata Files"'
+trigger_phrases:
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "spec"
+  - "004"
+  - "normalize"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 created: 2026-04-12
+level: 2
+parent: 003-graph-metadata-validation
+status: complete
+type: implementation
 ---
-
 # Normalize Legacy Graph Metadata Files
 
 ## Scope

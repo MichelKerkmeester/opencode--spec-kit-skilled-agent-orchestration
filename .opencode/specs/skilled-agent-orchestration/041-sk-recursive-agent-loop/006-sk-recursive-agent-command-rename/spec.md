@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Recursive Agent Command Rename [template:level_2/spec.md]"
+title: "Feature Specificati [skilled-agent-orchestration/041-sk-recursive-agent-loop/006-sk-recursive-agent-command-rename/spec]"
 description: "Phase 006 under packet 041 renames the agent-improver command entrypoint itself, renames command assets and wrappers, and syncs command references across runtime docs and packet history."
 trigger_phrases:
   - "recursive agent command rename"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "recursive agent command entrypoint"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/006-sk-recursive-agent-command-rename"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Recursive Agent Command Rename
 

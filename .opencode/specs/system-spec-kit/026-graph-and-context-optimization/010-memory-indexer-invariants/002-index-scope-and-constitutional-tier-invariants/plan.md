@@ -1,6 +1,5 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
-title: "Implementation Plan: Index Scope and Constitutional Tier Invariants"
+title: "...graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants/plan]"
 description: "Implement one shared index-scope helper, wire it into memory and code-graph scanning, add a save-time constitutional tier gate, then clean the polluted SQLite state with a transactional maintenance CLI."
 trigger_phrases:
   - "026/011 plan"
@@ -8,6 +7,7 @@ trigger_phrases:
   - "constitutional tier cleanup plan"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants"
@@ -22,6 +22,7 @@ _memory:
     answered_questions:
       - "The memory invariant enforcement point will be shared helper plus save-time guard."
       - "The constitutional downgrade target is important."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Index Scope and Constitutional Tier Invariants
 

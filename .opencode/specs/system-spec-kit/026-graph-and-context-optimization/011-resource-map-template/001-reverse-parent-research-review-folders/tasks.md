@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
-title: "Tasks: Reverse Parent Research/Review Folder Placement"
+title: "...ec-kit/026-graph-and-context-optimization/011-resource-map-template/001-reverse-parent-research-review-folders/tasks]"
 description: "Ordered rollback and migration tasks for restoring local-owner deep-loop packet placement."
 trigger_phrases:
   - "013/001 rollback tasks"
   - "reverse parent folders tasks"
 importance_tier: "normal"
-contextType: "tasks"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/001-reverse-parent-research-review-folders"
@@ -25,6 +25,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Reverse Parent Research/Review Folder Placement
 

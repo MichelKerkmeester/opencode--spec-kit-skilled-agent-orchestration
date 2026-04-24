@@ -1,10 +1,22 @@
 ---
-title: "Phase 025 — Tasks"
+title: "Phase [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation/tasks]"
 description: "Task breakdown for deep-review remediation (7 findings, 8 phases A-H)."
+trigger_phrases:
+  - "phase"
+  - "tasks"
+  - "003"
+  - "deep"
 importance_tier: "normal"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
-
 # Phase 025 Tasks
 
 ## T001 — Scaffold packet

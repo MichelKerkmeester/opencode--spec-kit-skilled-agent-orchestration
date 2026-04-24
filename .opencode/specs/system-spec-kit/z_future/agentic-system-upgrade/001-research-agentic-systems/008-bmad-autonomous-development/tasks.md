@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Phase 2 Deep Research Continuation for BMad Autonomous Development [template:level_1/tasks.md]"
+title: "Tas [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"

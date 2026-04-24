@@ -1,13 +1,12 @@
 ---
-title: "Decision Record: Code Graph Upgrades"
+title: "Deci [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/decision-record]"
 description: "Decision record for 005-code-graph-upgrades."
 trigger_phrases:
   - "005-code-graph-upgrades"
   - "decision"
   - "record"
 importance_tier: "important"
-contextType: "decision-record"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["decision-record.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Code Graph Upgrades
 

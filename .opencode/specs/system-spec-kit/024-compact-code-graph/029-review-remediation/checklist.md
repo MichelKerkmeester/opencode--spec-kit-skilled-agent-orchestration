@@ -1,11 +1,20 @@
 ---
-title: "Checklist: Review Remediation [024/029]"
+title: "Checklist: Review Remediation [024/029] [system-spec-kit/024-compact-code-graph/029-review-remediation/checklist]"
 description: "Verification checklist for the active deep-review blocker set and optional advisory parity follow-up."
 trigger_phrases:
   - "029 checklist"
   - "review remediation checklist"
 importance_tier: "normal"
-contextType: "verification"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/029-review-remediation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
@@ -68,7 +77,7 @@ contextType: "verification"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Remediation changes stay limited to the reviewed workstream surfaces and do not spill into `030-opencode-plugin/`. [EVIDENCE: changed-file review stayed inside WS-1 through WS-6 runtime, packet, and agent surfaces]
+- [x] CHK-050 [P1] Remediation changes stay limited to the reviewed workstream surfaces and do not spill into `030-opencode-graph-plugin/`. [EVIDENCE: changed-file review stayed inside WS-1 through WS-6 runtime, packet, and agent surfaces]
 - [x] CHK-051 [P1] Planning-only packet files remain truthful and do not claim completed implementation before evidence exists. [EVIDENCE: this phase packet now documents the completed implementation state and includes a packet-local implementation summary]
 <!-- /ANCHOR:file-org -->
 

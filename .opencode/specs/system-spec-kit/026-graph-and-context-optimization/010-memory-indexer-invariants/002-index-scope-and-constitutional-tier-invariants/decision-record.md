@@ -1,6 +1,5 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
-title: "Decision Record: Index Scope and Constitutional Tier Invariants"
+title: "...ontext-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants/decision-record]"
 description: "Records the invariant enforcement point, cleanup strategy, Wave-1 bypass remediation, and Wave-2 hardening decisions for packet 011."
 trigger_phrases:
   - "026/011 decisions"
@@ -8,6 +7,7 @@ trigger_phrases:
   - "constitutional tier adr"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants"
@@ -20,6 +20,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Index Scope and Constitutional Tier Invariants
 

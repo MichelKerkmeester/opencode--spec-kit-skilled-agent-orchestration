@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Descri [system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/006-description-enrichment/tasks]"
-description: "title: \"Tasks: Description Enrichment [template:level_2/tasks.md]\""
+description: 'title: "Tasks: Description Enrichment [template:level_2/tasks.md]"'
 trigger_phrases:
   - "tasks"
   - "descri"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "description"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/006-description-enrichment"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: Description Enrichment
 

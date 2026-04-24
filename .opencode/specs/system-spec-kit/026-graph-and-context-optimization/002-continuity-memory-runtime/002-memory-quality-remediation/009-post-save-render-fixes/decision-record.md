@@ -1,12 +1,11 @@
 ---
-title: "Decision Record: Post-Save Render Fixes"
+title: "...optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes/decision-record]"
 description: "Decision record for the scoped render-layer remediation packet 009."
 trigger_phrases:
   - "009 render adr"
   - "post-save render decisions"
 importance_tier: "important"
-contextType: "decision-record"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["decision-record.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Post-Save Render Fixes
 

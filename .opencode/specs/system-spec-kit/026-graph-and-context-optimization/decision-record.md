@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Graph and Context Optimization"
+title: "Decision Record: Graph and Context Optimization [system-spec-kit/026-graph-and-context-optimization/decision-record]"
 description: "Records decisions for consolidating the 026 active phase surface while preserving child phase folders."
 trigger_phrases:
   - "026 graph and context optimization"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "merged phase map"
   - "graph context optimization root packet"
 importance_tier: "important"
-contextType: "decision-record"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Graph and Context Optimization
 

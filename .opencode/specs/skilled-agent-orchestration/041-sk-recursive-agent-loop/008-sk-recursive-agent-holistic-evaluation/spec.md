@@ -1,3 +1,22 @@
+---
+title: "Spec: Holistic [skilled-agent-orchestration/041-sk-recursive-agent-loop/008-sk-recursive-agent-holistic-evaluation/spec]"
+description: 'The sk-improve-agent skill evaluates agents by checking keyword presence in markdown (~15-20% of what a true agent improvement system needs). The scorer tests "does the file men...'
+trigger_phrases:
+  - "spec"
+  - "holistic"
+  - "008"
+  - "recursive"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/008-sk-recursive-agent-holistic-evaluation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
+---
 # Spec: Holistic Agent Evaluation & Integration-Aware Improvement
 
 | Field | Value |

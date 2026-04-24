@@ -1,11 +1,12 @@
 ---
-title: "Tasks: Combined Deep Review — 009 + 010 + 012 + 014"
+title: "...ew-remediation/001-deep-review-and-remediation/review/015-deep-review-and-remediation-pt-01/merged-015-archive/tasks]"
 description: "Task tracking for the combined deep review loop over four sibling packets under 026-graph-and-context-optimization."
 trigger_phrases:
   - "combined deep review tasks"
   - "four-specs review tasks"
 importance_tier: "normal"
-contextType: "review"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "015-combined-deep-review-four-specs"

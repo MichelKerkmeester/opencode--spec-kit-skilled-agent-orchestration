@@ -1,12 +1,14 @@
 ---
-title: "Decision Record: Gate D — Reader Ready"
+title: "...ext-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/004-gate-d-reader-ready/decision-record]"
 description: "Reader-ready ADRs for helper placement and archive-threshold handling."
-trigger_phrases: ["gate d", "reader ready", "decision record", "resume ladder", "archived hit rate"]
+trigger_phrases:
+  - "gate d"
+  - "reader ready"
+  - "decision record"
+  - "resume ladder"
+  - "archived hit rate"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/004-gate-d-reader-ready"
@@ -15,6 +17,9 @@ _memory:
     recent_action: "Marked Gate D ADR packet complete after syncing shipped evidence"
     next_safe_action: "Reuse ADR-001 and ADR-002 if a follow-on reader packet opens"
     key_files: ["decision-record.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->

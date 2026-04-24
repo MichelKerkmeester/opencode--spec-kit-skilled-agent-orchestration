@@ -1,12 +1,12 @@
 ---
-title: "018 / 009 — README revisit checklist"
+title: "...ext-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/003-readme-alignment-revisit/checklist]"
 description: "Verification checklist for the 016 README release-alignment revisit."
-trigger_phrases: ["009 checklist", "readme revisit checklist", "phase 018 readme verification"]
+trigger_phrases:
+  - "009 checklist"
+  - "readme revisit checklist"
+  - "phase 018 readme verification"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/003-readme-alignment-revisit"
@@ -15,6 +15,9 @@ _memory:
     recent_action: "Checked the 009 revisit verification gates"
     next_safe_action: "Reuse the checklist to verify future README drift sweeps"
     key_files: ["checklist.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: 018 / 009 — README revisit
 <!-- SPECKIT_LEVEL: 2 -->

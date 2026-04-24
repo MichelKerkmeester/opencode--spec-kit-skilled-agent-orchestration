@@ -7,6 +7,15 @@ trigger_phrases:
   - "025"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/025-nested-changelog-per-spec"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: Nested Changelog Per Spec
 
@@ -40,7 +49,7 @@ contextType: "implementation"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Scripts package build passes with nested changelog support [EVIDENCE: `npm run build --workspace=@spec-kit/scripts`]
+- [x] CHK-010 [P0] Scripts package build passes with nested changelog support [EVIDENCE: `cd .opencode/skill/system-spec-kit/scripts && npm run build`]
 - [x] CHK-011 [P0] Root and phase generator paths render successfully in focused tests [EVIDENCE: `npx vitest run tests/nested-changelog.vitest.ts --config ../mcp_server/vitest.config.ts --root .`]
 - [x] CHK-012 [P1] Generator falls back gracefully when packet sections are missing [EVIDENCE: fallback copy in `nested-changelog.ts` and template-driven rendering]
 - [x] CHK-013 [P1] Workflow stays aligned with existing project patterns [EVIDENCE: command assets, skill docs, template docs, and references updated together]
@@ -94,9 +103,9 @@ contextType: "implementation"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | 9/9 |
-| P1 Items | 10 | 10/10 |
-| P2 Items | 2 | 1/2 |
+| P0 Items | 11 | 11/11 |
+| P1 Items | 20 | 20/20 |
+| P2 Items | 10 | 6/10 |
 
 **Verification Date**: 2026-04-03
 <!-- /ANCHOR:summary -->
@@ -141,7 +150,7 @@ contextType: "implementation"
 ## L3+: COMPLIANCE VERIFICATION
 
 - [x] CHK-130 [P1] No new secrets, network access, or data-handling paths introduced [EVIDENCE: local file-generation scope only]
-- [x] CHK-131 [P1] No new third-party dependencies introduced for this packet | [EVIDENCE: generator uses existing scripts package helpers]
+- [x] CHK-131 [P1] No new third-party dependencies introduced for this packet [EVIDENCE: generator uses existing scripts package helpers]
 - [ ] CHK-132 [P2] OWASP Top 10 checklist completed [DEFERRED: not applicable to this documentation-generation packet]
 - [x] CHK-133 [P2] Data handling remains within approved spec folders [EVIDENCE: path-security helpers reused]
 <!-- /ANCHOR:compliance-verify -->

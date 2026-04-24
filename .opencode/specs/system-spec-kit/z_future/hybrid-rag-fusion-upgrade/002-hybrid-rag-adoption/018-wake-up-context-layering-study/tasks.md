@@ -1,3 +1,13 @@
+---
+title: "Ta [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/018-wake-up-context-layering-study/tasks]"
+description: "1. Document the current recovery surfaces in .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory..."
+trigger_phrases:
+  - "tasks"
+  - "018"
+  - "wake"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 018-wake-up-context-layering-study
 
 1. Document the current recovery surfaces in `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts`, `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts`, and `.opencode/skill/system-spec-kit/mcp_server/context-server.ts`.

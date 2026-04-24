@@ -1,10 +1,11 @@
 ---
-title: "Feature Specification: 001-graph-and-metadata-quality Graph and Metadata Quality Remediation"
+title: "...t-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality/spec]"
 description: "Level 3 remediation packet for Graph and Metadata Quality findings from the 006 campaign consolidated review."
 trigger_phrases:
-  - "feature specification 001 graph and metadata quality graph and metadata "
-importance_tier: "high"
-contextType: "spec"
+  - "feature specification 001 graph and metadata quality graph and metadata"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality"

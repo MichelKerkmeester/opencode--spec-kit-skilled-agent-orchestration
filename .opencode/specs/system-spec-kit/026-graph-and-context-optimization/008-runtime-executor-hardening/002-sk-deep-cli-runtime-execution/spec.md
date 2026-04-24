@@ -1,9 +1,17 @@
 ---
-title: "Feature Specification: CLI Runtime Executors for Iterative Skills (merged)"
+title: "...em-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/spec]"
 description: "Merged packet covering the CLI executor arc: 001-executor-feature (ex-018, native + cli-codex) plus 002-runtime-matrix (ex-019, cli-copilot + cli-gemini + cli-claude-code). Shared executor-config.ts, dispatch YAML branching, per-kind flag validation."
-trigger_phrases: ["cli runtime executors", "cli executor selection", "cli-codex deep research", "cli-copilot executor", "cli-gemini executor", "cli-claude-code executor", "executor kind config"]
-importance_tier: "high"
+trigger_phrases:
+  - "cli runtime executors"
+  - "cli executor selection"
+  - "cli-codex deep research"
+  - "cli-copilot executor"
+  - "cli-gemini executor"
+  - "cli-claude-code executor"
+  - "executor kind config"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution"

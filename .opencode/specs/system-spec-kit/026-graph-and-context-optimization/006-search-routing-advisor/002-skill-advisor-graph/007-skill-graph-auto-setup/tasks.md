@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Skill Graph Auto-Setup"
+title: "...6-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup/tasks]"
 description: "Completed packet-repair tasks for the Skill Graph Auto-Setup phase."
 trigger_phrases:
   - "phase 007 tasks"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "packet repair tasks"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup"
@@ -29,6 +28,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "All packet-repair tasks are complete."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Skill Graph Auto-Setup
 

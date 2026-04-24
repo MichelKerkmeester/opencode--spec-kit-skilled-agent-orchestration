@@ -1,8 +1,24 @@
 ---
-title: "Deep Research: Advisor Phrase-Booster Tailoring"
+title: "...ch-routing-advisor/003-advisor-phrase-booster-tailoring/research/013-advisor-phrase-booster-tailoring-pt-01/research]"
 description: "Canonical synthesis of 5-iteration deep-research loop (cli-copilot gpt-5.4) on migrating 24 tokenizer-broken multi-word INTENT_BOOSTERS entries to PHRASE_INTENT_BOOSTERS. Converged newInfoRatio 0.90 → 0.08; migration is regression-safe and implementation-ready."
+trigger_phrases:
+  - "routing"
+  - "advisor"
+  - "003"
+  - "phrase"
+  - "research"
+  - "013"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/003-advisor-phrase-booster-tailoring/research/013-advisor-phrase-booster-tailoring-pt-01"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
 ---
-
 # Research: Advisor Phrase-Booster Tailoring
 
 Canonical synthesis of the 5-iteration deep-research loop. Driver: cli-copilot `gpt-5.4` (user-selected override of default `@deep-research` agent). Topic: migrate tokenizer-broken multi-word `INTENT_BOOSTERS` entries in `skill_advisor.py` to `PHRASE_INTENT_BOOSTERS`, add phrase routes for under-covered identifiers, preserve regression top-1 ≥ 0.92 with zero P0 regressions.

@@ -1,3 +1,14 @@
+---
+title: "Plan: 009-protot [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/009-prototype-backlog/plan]"
+description: "1. Separate prototype-only items from approved delivery work."
+trigger_phrases:
+  - "plan"
+  - "009"
+  - "protot"
+  - "prototype"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 009-prototype-backlog
 
 ## Affected Files

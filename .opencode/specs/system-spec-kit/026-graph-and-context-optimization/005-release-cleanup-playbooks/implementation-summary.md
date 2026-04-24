@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Release Cleanup Playbooks"
+title: "Implementation [system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/implementation-summary]"
 description: "Summary of the 005-release-cleanup-playbooks flattened parent and direct child phases."
 trigger_phrases:
   - "005-release-cleanup-playbooks"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "002-cleanup-and-audit"
   - "003-playbook-and-remediation"
 importance_tier: "important"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 017 Swarm Mailbox Artifacts Study [template:level_2/tasks.md]"
+title: "Tasks [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/017-swarm-mailbox-artifacts-study/tasks]"
 description: "Task Format: T### [P?] Description (017-swarm-mailbox-artifacts-study)"
 trigger_phrases:
   - "tasks"

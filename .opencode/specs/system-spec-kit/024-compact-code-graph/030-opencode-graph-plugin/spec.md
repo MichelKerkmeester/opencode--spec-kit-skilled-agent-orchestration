@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: OpenCode Graph Plugin Phased Execution [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/spec]"
+title: "Feature Specification: OpenCode Graph Plugin [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/spec]"
 description: "Tracks packet 030 as six completed runtime phases and clean Level 3 packet documentation."
 trigger_phrases:
   - "opencode graph plugin"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "compact code graph"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 <!-- SPECKIT_LEVEL: 3 -->

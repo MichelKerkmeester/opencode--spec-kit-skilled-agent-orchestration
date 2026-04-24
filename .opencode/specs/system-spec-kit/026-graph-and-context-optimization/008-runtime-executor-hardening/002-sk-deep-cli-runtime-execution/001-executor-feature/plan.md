@@ -1,12 +1,13 @@
 ---
-title: "Implementation Plan: Deep-Loop CLI Executor Selection for Iterative Skills"
+title: "...-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature/plan]"
 description: "5-phase sequential plan implementing executor-selection branch in sk-deep-research + sk-deep-review YAML dispatch while preserving YAML-owned state, convergence, and lifecycle invariants. Ships native + cli-codex executor kinds; stubs cli-copilot/gemini/claude-code for future packets."
 trigger_phrases:
   - "018 plan"
   - "deep-loop executor plan"
   - "cli executor implementation plan"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature"

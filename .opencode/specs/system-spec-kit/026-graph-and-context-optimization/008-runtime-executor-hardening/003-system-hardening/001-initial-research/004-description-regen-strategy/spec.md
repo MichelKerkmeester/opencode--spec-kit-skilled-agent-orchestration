@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: description.json Rich-Content Regen Strategy (RR-2)"
+title: "...ization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/004-description-regen-strategy/spec]"
 description: "Deep-research sub-packet covering the RR-2 Tier 1 item. Research preservation strategies for hand-authored rich content in description.json under canonical-save regen. Wave 2 dispatch per ADR-001 of 019/001."
 trigger_phrases:
   - "description regen strategy"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "rich content regen research"
 importance_tier: "critical"
 contextType: "research"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/004-description-regen-strategy"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Research packet scaffolded"
     next_safe_action: "Dispatch after Wave 1 convergence"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: description.json Rich-Content Regen Strategy
 

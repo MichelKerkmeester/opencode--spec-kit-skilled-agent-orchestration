@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: SKILL.md Smart-Router Section Efficacy"
+title: "...t-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy/plan]"
 description: "Plan for completing the 20-iteration deep research packet, generating synthesis artifacts, and validating the packet without editing runtime or skill code."
 trigger_phrases:
   - "004 002 smart router plan"
   - "skill md router efficacy plan"
 importance_tier: "important"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy"
@@ -18,6 +17,7 @@ _memory:
     key_files:
       - "research/research.md"
       - "research/findings-registry.json"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: SKILL.md Smart-Router Section Efficacy
 

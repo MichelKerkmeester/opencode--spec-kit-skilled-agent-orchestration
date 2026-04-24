@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Upgrade [03--commands-and-skills/038-cmd-create-changelog-and-releases/checklist]"
+title: "Verification Checklist: Upgrade [skilled-agent-orchestration/038-cmd-create-changelog-and-releases/checklist]"
 description: "Verification checklist for 038-cmd-create-changelog-and-releases — P0/P1/P2 items covering pre-implementation, code quality, testing, security, documentation, and file organization."
 trigger_phrases:
   - "changelog release checklist"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "create changelog verification"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/038-cmd-create-changelog-and-releases"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: Upgrade create:changelog with GitHub Release Creation
 

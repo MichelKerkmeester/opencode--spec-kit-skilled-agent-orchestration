@@ -1,8 +1,14 @@
 ---
-title: "002-memory-review-tool: Ship Memory Review First"
+title: "002-memory-revi [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/002-memory-review-tool/spec]"
 description: "Defines the first new helper surface as a graded memory review tool built on existing FSRS and validation primitives."
+trigger_phrases:
+  - "002"
+  - "memory"
+  - "revi"
+  - "spec"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 002-memory-review-tool: Ship Memory Review First
 
 ## 1. Scope

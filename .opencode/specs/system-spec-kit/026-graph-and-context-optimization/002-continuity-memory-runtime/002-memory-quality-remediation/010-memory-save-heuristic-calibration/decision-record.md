@@ -1,12 +1,11 @@
 ---
-title: "Decision Record: Memory Save Heuristic Calibration"
+title: "...n/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration/decision-record]"
 description: "Decision record for packet 010 and its schema, validator, sanitizer, and D5 calibration choices."
 trigger_phrases:
   - "010 heuristic calibration adr"
   - "memory save calibration decisions"
 importance_tier: "important"
-contextType: "decision-record"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["decision-record.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Memory Save Heuristic Calibration
 

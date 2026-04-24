@@ -1,14 +1,13 @@
 ---
-title: "Tasks: Phase 2 — Single-Owner Metadata Fixes"
+title: "...nd-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata/tasks]"
 description: "Execution tasks for PR-3 and PR-4 in Phase 2. Task format: T2xx [P?] Description."
 trigger_phrases:
   - "phase 2 tasks"
   - "single-owner metadata tasks"
   - "pr-3 tasks"
   - "pr-4 tasks"
-importance_tier: important
-contextType: planning
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
 ---
 # Tasks: Phase 2 — Single-Owner Metadata Fixes
 

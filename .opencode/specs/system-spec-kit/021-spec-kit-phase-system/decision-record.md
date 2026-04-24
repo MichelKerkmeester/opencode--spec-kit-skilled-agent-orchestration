@@ -1,6 +1,6 @@
 ---
 title: "Decision Record: SpecKit Phase System [system-spec-kit/021-spec-kit-phase-system/decision-record]"
-description: "The phase system needed a home in the existing SpecKit architecture. Three options existed: introduce a new Level 4 tier for \"phased\" specs, implement phases as a behavioral lay..."
+description: 'The phase system needed a home in the existing SpecKit architecture. Three options existed: introduce a new Level 4 tier for "phased" specs, implement phases as a behavioral lay...'
 trigger_phrases:
   - "decision"
   - "record"
@@ -12,12 +12,21 @@ trigger_phrases:
   - "spec"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/021-spec-kit-phase-system"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["decision-record.md"]
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 # Decision Record: SpecKit Phase System
 
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/global/hvr_rules.md -->
 
 ---
 
@@ -139,7 +148,7 @@ The phase system needed a home in the existing SpecKit architecture. Three optio
 
 ### Context
 
-The existing `--subfolder` flag in create.sh creates versioned iterations within a spec folder — the same scope worked on again with a different approach. The new phase concept is semantically different: decomposition of a large scope into parallel or sequential execution slices. Both produce child directories under a parent spec folder with identical directory structures (memory/, scratch/, level files). We needed to decide whether to reuse the subfolder mechanism or create a distinct flag.
+The existing `--subfolder` flag in create.sh creates versioned iterations within a spec folder — the same scope worked on again with a different approach. The new phase concept is semantically different: decomposition of a large scope into parallel or sequential execution slices. Both produce child directories under a parent spec folder with identical directory structures (scratch/, level files; continuity lives in each child's `implementation-summary.md`). We needed to decide whether to reuse the subfolder mechanism or create a distinct flag.
 
 ### Constraints
 
@@ -155,7 +164,7 @@ The existing `--subfolder` flag in create.sh creates versioned iterations within
 
 **We chose**: Separate flags (`--phase` vs `--subfolder`), mutually exclusive, with shared directory infrastructure.
 
-**How it works**: Both flags create child directories under the parent spec folder using the same `[0-9][0-9][0-9]-name/` numbering and identical directory scaffolding (memory/, scratch/, level-appropriate files). The distinction is in metadata injection only: `--phase` injects parent back-references and handoff criteria; `--subfolder` does not. The flags are mutually exclusive — you cannot pass both to a single create.sh invocation.
+**How it works**: Both flags create child directories under the parent spec folder using the same `[0-9][0-9][0-9]-name/` numbering and identical directory scaffolding (scratch/, level-appropriate files; continuity lives in each child's `implementation-summary.md`). The distinction is in metadata injection only: `--phase` injects parent back-references and handoff criteria; `--subfolder` does not. The flags are mutually exclusive — you cannot pass both to a single create.sh invocation.
 <!-- /ANCHOR:adr-002-decision -->
 
 ---
@@ -429,7 +438,6 @@ When `--phase` creates child spec folders, each child needs a documentation leve
 ---
 
 <!-- ANCHOR:adr-005 -->
-<!-- ANCHOR:context -->
 ### ADR-005: Gate 3 Option E Contextual Display
 
 <!-- ANCHOR:adr-005-context -->
@@ -529,7 +537,6 @@ Gate 3 in CLAUDE.md currently presents four options: A (existing spec), B (new s
 <!-- /ANCHOR:adr-005-impl -->
 <!-- /ANCHOR:adr-005 -->
 
-<!-- /ANCHOR:context -->
 ---
 
 <!-- ANCHOR:decision -->
@@ -547,6 +554,6 @@ Gate 3 in CLAUDE.md currently presents four options: A (existing spec), B (new s
 Level 3+ Decision Record: One ADR per major decision.
 Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
 State decisions with certainty. Be honest about trade-offs.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+HVR rules: .opencode/skill/sk-doc/references/global/hvr_rules.md
 -->
 <!-- /ANCHOR:decision -->

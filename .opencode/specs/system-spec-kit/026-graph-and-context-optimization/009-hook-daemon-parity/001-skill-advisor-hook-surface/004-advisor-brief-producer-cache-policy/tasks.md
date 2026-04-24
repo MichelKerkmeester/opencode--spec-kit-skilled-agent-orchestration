@@ -1,11 +1,10 @@
 ---
-title: "Tasks: Advisor Brief Producer + Cache Policy"
+title: "...ext-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy/tasks]"
 description: "Task list for 020/004 — 4 new lib files + 4 test files + integration."
 trigger_phrases:
   - "020 004 tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy"
@@ -15,7 +14,7 @@ _memory:
     next_safe_action: "Begin T001 after 003 converges"
     blockers: ["002-shared-payload-advisor-contract", "003-advisor-freshness-and-source-cache"]
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Advisor Brief Producer + Cache Policy
 

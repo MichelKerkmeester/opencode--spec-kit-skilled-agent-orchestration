@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Template v2.2 + Validator Ruleset Joint Audit (SSK-DR-1)"
+title: "...imization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit/spec]"
 description: "Deep-review sub-packet covering the SSK-DR-1 Tier 1 item. Audit template v2.2 against validator ruleset to find orphan rules, orphan fields, duplicate coverage, and unenforced invariants. Wave 3 dispatch per ADR-001 of 019/001."
 trigger_phrases:
   - "template validator audit"
@@ -7,8 +7,7 @@ trigger_phrases:
   - "validator ruleset hygiene"
   - "template v2.2 review"
 importance_tier: "critical"
-contextType: "review"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/006-template-validator-audit"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Deep-review packet scaffolded"
     next_safe_action: "Dispatch after Wave 2 convergence"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Template v2.2 + Validator Ruleset Joint Audit
 

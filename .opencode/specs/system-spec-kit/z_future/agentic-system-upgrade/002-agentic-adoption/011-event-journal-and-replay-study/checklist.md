@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 011 Event Journal and Replay Study [template:level_2/checklist.md]"
+title: "Veri [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/011-event-journal-and-replay-study/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

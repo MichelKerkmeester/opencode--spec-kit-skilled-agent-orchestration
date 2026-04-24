@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
-title: "Decision Record: Integrity Parity Closure"
+title: "...spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/decision-record]"
 description: "Architecture decisions captured during the 026 cross-phase remediation run."
 trigger_phrases:
   - "decision record integrity parity closure"
   - "026 007 006 adr"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure"
@@ -19,6 +19,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Integrity Parity Closure
 

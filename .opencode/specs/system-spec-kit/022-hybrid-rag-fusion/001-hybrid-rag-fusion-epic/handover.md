@@ -1,6 +1,6 @@
 ---
 title: "006 Core RAG Sprints 0 to 8 [system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/handover]"
-description: "title: \"006 Core RAG Sprints 0 to 8 - Consolidated handover\""
+description: 'title: "006 Core RAG Sprints 0 to 8 - Consolidated handover"'
 trigger_phrases:
   - "006"
   - "core"
@@ -11,6 +11,15 @@ trigger_phrases:
   - "hybrid"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: handover | v1.0 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["handover.md"]
 ---
 # 006 Core RAG Sprints 0 to 8 - Consolidated handover
 
@@ -18,7 +27,7 @@ This file consolidates `handover.md` from sprint folders 006 through 018.
 
 Source folders:
 - 006-measurement-foundation/handover.md
-- 014-feedback-and-quality/handover.md
+- 005-sprint-4-feedback-and-quality/handover.md
 
 ---
 
@@ -153,7 +162,7 @@ contextType: "general"
 3. **Record BM25 MRR@5 and execute contingency decision** — `evaluateContingency(bm25MRR)` implements the 3-band matrix (≥0.80 → PAUSE, 0.50–0.79 → RATIONALIZE, <0.50 → PROCEED). Once the actual MRR@5 is known, call the function and document the outcome in scratch/t009-exit-gate-verification.md.
 4. **Close 3 PARTIAL exit gates** — update T009 gate status to PASS after live execution.
 5. **Investigate `relevanceWeight=0.2` anomaly** — scratch/t000c-search-weights-audit.md documents a 60% de-weighting of relevance vs the fallback 0.5 value. Determine if this is intentional before baseline metrics are interpreted; an anomalous weight will skew BM25 comparison results.
-6. **Transition to Sprint 1** after Sprint 0 close-out — next sprint folder: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-graph-signal-activation
+6. **Transition to Sprint 1** after Sprint 0 close-out — next sprint folder: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation
 
 ### 3.3 Critical Context to Load
 
@@ -195,11 +204,11 @@ Before handover, verify:
 **`relevanceWeight=0.2` anomaly (T000c)**: The `smartRanking` section of `search-weights.json` sets relevance weight to 0.2, compared to the fallback of 0.5. This deprioritizes relevance by 60% relative to the fallback. The anomaly is flagged but not resolved. Investigate before concluding that BM25 baseline metrics represent normal system behavior.
 
 **Sprint 1 entry point:**
-.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-graph-signal-activation
+.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation
 
 **Continuation command:**
 `
-/spec_kit:resume .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/010-measurement-foundation
+/spec_kit:resume .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation
 `
 
 **Quick-start checklist for next session:**
@@ -217,20 +226,20 @@ Before handover, verify:
 
 <!--
 CONTINUATION - Attempt 1
-Spec: system-spec-kit/022-hybrid-rag-fusion/010-measurement-foundation
+Spec: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation
 Last: Committed Wave 3b (781da275) — BM25 baseline + exit gate verification; memory #2032 saved and indexed
 Next: Map ground truth IDs to live DB, run runBM25Baseline(), close 3 PARTIAL exit gates (T009 gates 3/5/6)
 -->
 
 ---
 
-## 014-feedback-and-quality
+## 005-sprint-4-feedback-and-quality
 
-Source: 014-feedback-and-quality/handover.md
+Source: 005-sprint-4-feedback-and-quality/handover.md
 
 # Session Handover: Sprint 4 — Feedback and Quality
 
-**Spec Folder**: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/014-feedback-and-quality
+**Spec Folder**: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality
 **Created**: 2026-02-28
 **Session Duration**: ~25 min (5 parallel opus agents)
 
@@ -300,7 +309,7 @@ Source: 014-feedback-and-quality/handover.md
 
 ### 3.1 Recommended Starting Point
 
-- **File**: 014-feedback-and-quality/checklist.md
+- **File**: 005-sprint-4-feedback-and-quality/checklist.md
 - **Context**: Mark all checklist items with evidence. Many P0 and P1 items can now be verified against the test results and implementation.
 
 ### 3.2 Priority Tasks Remaining
@@ -308,7 +317,7 @@ Source: 014-feedback-and-quality/handover.md
 1. **Update checklist.md** — Mark verified items `[x]` with evidence from test results (315 tests passing)
 2. **Update tasks.md** — Mark completed tasks `[x]` (T001, T001a, T002, T002a, T002b, T003, T003a, T007, T008, T027a, T027b)
 3. **Commit changes** — Stage and commit all Sprint 4 implementation files
-4. **Begin Sprint 5** — /spec_kit:implement .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/015-pipeline-refactor
+4. **Begin Sprint 5** — /spec_kit:implement .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/006-sprint-5-pipeline-refactor
 5. **S4b timeline planning** — When R13 completes 2+ eval cycles (28+ days), enable R11 learned feedback
 
 ### 3.3 Critical Context to Load
@@ -363,13 +372,13 @@ Before handover, verify:
 ## Resume Instructions
 
 `
-/spec_kit:resume .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/014-feedback-and-quality
+/spec_kit:resume .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality
 `
 
 Or paste:
 `
 CONTINUATION - Attempt 1
-Spec: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/014-feedback-and-quality
+Spec: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality
 Last: Sprint 4 implementation complete (315 tests, 18 new files, 3 modified files)
 Next: Update checklist.md and tasks.md with evidence, commit changes, begin Sprint 5
 `
@@ -506,7 +515,7 @@ Run the remaining runtime/eval verification tasks still open in `tasks.md`. The 
 
 ### Resume Command
 ```
-/spec_kit:resume 022-hybrid-rag-fusion/006-extra-features
+/spec_kit:resume .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features
 ```
 
 ### Quick-Start Checklist

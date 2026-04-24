@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Phase 2 Deep Research Continuation for BMad Autonomous Development [template:level_1/spec.md]"
+title: "Feat [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/spec]"
 description: "Document the Phase 2 continuation of packet 008 so the BAD research extension is fully specified, merged into packet artifacts, and left in a validator-clean Level 1 state."
 trigger_phrases:
   - "bmad"

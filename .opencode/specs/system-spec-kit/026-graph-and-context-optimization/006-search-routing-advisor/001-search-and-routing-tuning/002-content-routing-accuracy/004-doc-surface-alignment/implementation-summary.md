@@ -1,12 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: Doc Surface Alignment for Research Content Routing Accuracy"
+title: "...-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment/implementation-summary]"
 description: "This phase aligned the save-path docs to the shipped 8-category canonical router, the live Tier 3 gate, and the corrected delivery versus handover boundaries."
 trigger_phrases:
   - "phase 004 implementation summary"
   - "doc surface alignment summary"
 importance_tier: "critical"
-contextType: "verification"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment"

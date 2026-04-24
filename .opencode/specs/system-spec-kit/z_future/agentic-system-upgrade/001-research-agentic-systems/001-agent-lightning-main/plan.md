@@ -1,12 +1,12 @@
 ---
-title: "Implementation Plan: 001-agent-lightning-main Research Phase"
+title: "Implementat [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/001-agent-lightning-main/plan]"
 description: "A three-wave, 30-iteration deep-research loop that validates the phase docs, maps the Agent Lightning repo, investigates narrow RL and operator-surface questions, records structured iteration state, and synthesizes actionable system-spec-kit recommendations."
 trigger_phrases:
   - "001-agent-lightning-main research plan"
   - "agent lightning execution plan"
   - "deep research loop plan"
 importance_tier: "important"
-contextType: "plan"
+contextType: "planning"
 ---
 # Implementation Plan: 001-agent-lightning-main Research Phase
 

@@ -1,12 +1,12 @@
 ---
-title: "018 / 007 — system-spec-kit revisit checklist"
+title: "...xt-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/001-sk-system-speckit-revisit/checklist]"
 description: "Verification checklist for the 016 SKILL/internal-doc revisit."
-trigger_phrases: ["007 checklist", "system-spec-kit revisit checklist", "release-alignment verification"]
+trigger_phrases:
+  - "007 checklist"
+  - "system-spec-kit revisit checklist"
+  - "release-alignment verification"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/001-sk-system-speckit-revisit"
@@ -15,6 +15,9 @@ _memory:
     recent_action: "Checked the 007 revisit verification gates"
     next_safe_action: "Reuse the checklist as the release-alignment baseline"
     key_files: ["checklist.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: 018 / 007 — system-spec-kit revisit
 <!-- SPECKIT_LEVEL: 2 -->

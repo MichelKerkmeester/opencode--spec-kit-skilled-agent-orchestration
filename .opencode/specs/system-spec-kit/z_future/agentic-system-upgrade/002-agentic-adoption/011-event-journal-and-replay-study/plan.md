@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 011 Event Journal and Replay Study [template:level_2/plan.md]"
+title: "Implement [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/011-event-journal-and-replay-study/plan]"
 description: "Evaluate whether a journaled replay layer could improve determinism for specific long-running flows without replacing current JSONL and packet artifact contracts."
 trigger_phrases:
   - "implementation"

@@ -1,11 +1,12 @@
 ---
-title: "Implementation Plan: Copilot CLI Hook Parity Remediation"
+title: "Imp [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation/plan]"
 description: "Three-phase plan: investigate Copilot CLI extension surface, decide between wire-hooks vs document-gap, execute the chosen path. Implementation is conditional on Phase 1 findings."
 trigger_phrases:
   - "026/009/004 plan"
   - "copilot hook parity plan"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation"

@@ -1,14 +1,12 @@
 ---
-title: "Decision Record: Repo-Wide Path Migration"
+title: "...context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration/decision-record]"
 description: "Packet-closeout ADR for template restoration, prose-based history retention, and evidence-backed completion."
 trigger_phrases:
   - "005-repo-wide-path-migration"
   - "path migration decisions"
   - "packet closeout adr"
 importance_tier: "important"
-contextType: "decisions"
-status: complete
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration"
@@ -17,6 +15,8 @@ _memory:
     recent_action: "Recorded closeout ADR"
     next_safe_action: "Keep as rationale record"
     key_files: ["decision-record.md", "implementation-summary.md"]
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->

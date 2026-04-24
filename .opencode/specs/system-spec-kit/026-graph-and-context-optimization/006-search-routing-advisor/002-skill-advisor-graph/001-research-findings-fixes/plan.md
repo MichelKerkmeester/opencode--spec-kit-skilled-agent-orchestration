@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Skill Graph Research Findings Fixes [template:level_2/plan.md]"
+title: "...6-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes/plan]"
 description: "Plan for fixing P0 and P1 issues from the deep research audit."
 trigger_phrases:
   - "001-research-findings-fixes"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "plan"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Created plan"
     next_safe_action: "Implement fixes"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Skill Graph Research Findings Fixes
 

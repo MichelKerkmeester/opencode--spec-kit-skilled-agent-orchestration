@@ -1,8 +1,17 @@
 ---
-title: "017-temporal-knowledge-graph-investigation: Investigate Temporal Knowledge Graphs"
+title: "...-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/017-temporal-knowledge-graph-investigation/spec]"
 description: "Designs the narrowest safe temporal-fact sidecar inspired by MemPalace without creating a second truth authority."
+trigger_phrases:
+  - "spec"
+  - "kit"
+  - "future"
+  - "hybrid"
+  - "rag"
+  - "017"
+  - "temporal"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 017-temporal-knowledge-graph-investigation: Investigate Temporal Knowledge Graphs
 
 ## 1. Scope

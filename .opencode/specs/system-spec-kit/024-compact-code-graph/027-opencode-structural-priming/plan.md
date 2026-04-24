@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: OpenCode Structural Priming"
+title: "Implementation Plan: OpenCode Structural [system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/plan]"
 description: "Plan the non-hook runtime work needed to define and wire a shared structural bootstrap contract for OpenCode-first startup and recovery flows."
 trigger_phrases:
   - "opencode structural priming plan"
@@ -7,8 +7,16 @@ trigger_phrases:
   - "027 structural priming plan"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/027-opencode-structural-priming"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
-
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 # Implementation Plan: OpenCode Structural Priming

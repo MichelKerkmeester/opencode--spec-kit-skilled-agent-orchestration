@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Template/Validator Contract Alignment"
+title: "...text-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment/spec]"
 description: "Canonicalize validator rule registry, add semantic frontmatter validation, align anchor-check with preflight, repair malformed decision-record placeholder. From 019/001/006 joint audit."
 trigger_phrases:
   - "validator contract alignment"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "semantic frontmatter validation"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/007-template-validator-contract-alignment"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Remediation child scaffolded from 019/001/006 audit"
     next_safe_action: "Dispatch implementation"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Template/Validator Contract Alignment
 

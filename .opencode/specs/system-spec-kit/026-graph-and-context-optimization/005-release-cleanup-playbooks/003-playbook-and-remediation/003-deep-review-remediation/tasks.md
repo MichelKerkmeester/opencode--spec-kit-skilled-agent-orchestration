@@ -1,8 +1,27 @@
 ---
-title: "Deep Review Remediation — Tasks"
+title: "...nd-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-remediation/tasks]"
+description: 'title: "Deep Review Remediation — Tasks"'
+trigger_phrases:
+  - "context"
+  - "optimization"
+  - "005"
+  - "release"
+  - "cleanup"
+  - "tasks"
+  - "003"
+  - "deep"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/003-deep-review-remediation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 status: complete
 ---
-
 # Tasks
 
 ## Wave 1: Documentation Fixes

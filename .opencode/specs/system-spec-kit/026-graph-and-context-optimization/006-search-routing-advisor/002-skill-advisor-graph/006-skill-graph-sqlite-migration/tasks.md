@@ -1,12 +1,11 @@
 ---
-title: "Tasks: Skill Graph SQLite Migration"
+title: "...h-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/006-skill-graph-sqlite-migration/tasks]"
 description: "Task breakdown for 006-skill-graph-sqlite-migration."
 trigger_phrases:
   - "006-skill-graph-sqlite-migration"
   - "tasks"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/006-skill-graph-sqlite-migration"
@@ -15,6 +14,7 @@ _memory:
     recent_action: "Implemented SQLite migration with 4 MCP tools"
     next_safe_action: "Review and verify implementation"
     key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Skill Graph SQLite Migration
 

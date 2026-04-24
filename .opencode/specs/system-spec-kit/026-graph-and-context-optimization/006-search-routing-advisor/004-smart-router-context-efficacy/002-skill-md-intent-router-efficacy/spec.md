@@ -1,13 +1,12 @@
 ---
-title: "Feature Specification: SKILL.md Smart-Router Section Efficacy"
+title: "...t-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy/spec]"
 description: "Research whether the Smart Routing section inside each top-level .opencode/skill/*/SKILL.md actually reduces AI context load or remains advisory only. The packet measures inventory, byte budgets, behavioral signals, classifier accuracy, compliance gaps, fallback safety, enforcement, and a future harness design."
 trigger_phrases:
   - "004 002 skill md smart router"
   - "skill-md intent router efficacy"
   - "resource loading tier effectiveness"
 importance_tier: "important"
-contextType: "research-charter"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy"
@@ -31,6 +30,7 @@ _memory:
       - "What is the live Read-call compliance rate once telemetry exists?"
     answered_questions:
       - "V1-V10 research questions"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: SKILL.md Smart-Router Section Efficacy
 

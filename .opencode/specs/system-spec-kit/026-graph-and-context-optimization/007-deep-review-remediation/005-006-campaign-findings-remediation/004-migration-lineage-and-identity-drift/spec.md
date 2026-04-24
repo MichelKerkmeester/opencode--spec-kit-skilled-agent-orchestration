@@ -1,10 +1,11 @@
 ---
-title: "Feature Specification: 004-migration-lineage-and-identity-drift Migration, Lineage, and Identity Drift Remediation"
+title: "...tion/007-deep-review-remediation/005-006-campaign-findings-remediation/004-migration-lineage-and-identity-drift/spec]"
 description: "Level 3 remediation packet for Migration, Lineage, and Identity Drift findings from the 006 campaign consolidated review."
 trigger_phrases:
   - "feature specification 004 migration lineage and identity drift migration"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/004-migration-lineage-and-identity-drift"

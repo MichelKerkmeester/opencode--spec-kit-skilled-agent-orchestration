@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Merge spec_kit:phase into [03--commands-and-skills/037-cmd-merge-spec-kit-phase/checklist]"
+title: "Verification Checklist: Merge spec_kit:phase into [skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/checklist]"
 description: "Verification Date: TBD"
 trigger_phrases:
   - "verification"
@@ -11,6 +11,15 @@ trigger_phrases:
   - "cmd"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/037-cmd-merge-spec-kit-phase"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: Merge spec_kit:phase into plan and complete
 

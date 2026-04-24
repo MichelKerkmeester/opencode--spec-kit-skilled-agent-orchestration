@@ -1,6 +1,24 @@
 ---
-title: "Tasks: Non-Hook Auto-Priming & Session Health [024/018]"
+title: "Tasks: Non-Hook Auto-Priming & Session Health [system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming/tasks]"
 description: "Task tracking for MCP first-call auto-priming and session health."
+trigger_phrases:
+  - "tasks"
+  - "non"
+  - "hook"
+  - "auto"
+  - "priming"
+  - "018"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Phase 018 — Non-Hook Auto-Priming & Session Health

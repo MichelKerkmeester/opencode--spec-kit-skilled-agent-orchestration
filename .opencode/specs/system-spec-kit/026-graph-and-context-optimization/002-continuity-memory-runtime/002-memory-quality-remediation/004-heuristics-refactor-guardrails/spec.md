@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Phase 4 — Heuristics, Refactor & Guardrails"
+title: "...xt-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails/spec]"
 description: "Phase 4 of the memory quality remediation train: D5 auto-supersedes with continuation gating, SaveMode enum refactor, and post-save reviewer CHECK-D1..D8 coverage."
 trigger_phrases:
   - "phase 4 heuristics refactor guardrails"
@@ -8,10 +8,8 @@ trigger_phrases:
   - "post save reviewer checks"
   - "f-ac5 lineage fixture"
   - "f-ac8 clean reviewer"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-status: complete
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails"
@@ -20,9 +18,9 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2 -->"
 ---
-
 # Feature Specification: Phase 4 — Heuristics, Refactor & Guardrails
 
 <!-- SPECKIT_LEVEL: 2 -->

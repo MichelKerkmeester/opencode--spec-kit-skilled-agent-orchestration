@@ -1,11 +1,12 @@
 ---
-title: "027 - Skill Graph Daemon and Advisor Unification Checklist"
+title: "...t/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/checklist]"
 description: "Verification checklist for the completed Phase 027 advisor unification packet."
 trigger_phrases:
   - "027 checklist"
   - "advisor daemon checklist"
-importance_tier: "high"
-contextType: "qa-checklist"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification"

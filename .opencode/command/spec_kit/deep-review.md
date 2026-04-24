@@ -68,7 +68,8 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    |-- --reasoning-effort=<level> -> config.executor.reasoningEffort (`none` | `minimal` | `low` | `medium` | `high` | `xhigh`)
    |-- --service-tier=<tier> -> config.executor.serviceTier (`priority` | `standard` | `fast`)
    |-- --executor-timeout=<seconds> -> config.executor.timeoutSeconds (positive integer, default `900`)
-   +-- Defaults: maxIterations=7, convergenceThreshold=0.10, config.executor.kind=`native`, config.executor.timeoutSeconds=900
+   |-- --no-resource-map -> config.resource_map.emit = false
+   +-- Defaults: maxIterations=7, convergenceThreshold=0.10, config.executor.kind=`native`, config.executor.timeoutSeconds=900, config.resource_map.emit=`true`
 
    Executor precedence for setup resolution:
    - CLI flag > config file > schema defaults
@@ -184,14 +185,14 @@ operating_mode:
 
 ## 1. PURPOSE
 
-Run an iterative loop for code review: Initialize the review packet under `{spec_folder}/review/`, dispatch `@deep-review` agent per iteration, evaluate convergence across review dimensions, and synthesize findings into `{spec_folder}/review/review-report.md`. Use when auditing code, specs, skills, agents, or tracks for quality and release readiness.
+Run an iterative loop for code review: Initialize the review packet under `{spec_folder}/review/`, dispatch `@deep-review` agent per iteration, evaluate convergence across review dimensions, synthesize findings into `{spec_folder}/review/review-report.md`, and emit `{spec_folder}/review/resource-map.md` at convergence unless `--no-resource-map` disables it. Use when auditing code, specs, skills, agents, or tracks for quality and release readiness.
 
 ---
 
 ## 2. CONTRACT
 
 **Inputs:** `$ARGUMENTS` -- Review target with optional flags and mode suffix
-**Outputs:** Spec folder with `{spec_folder}/review/` packet + state files + `STATUS=<OK|FAIL|CANCELLED>`
+**Outputs:** Spec folder with `{spec_folder}/review/` packet, `review-report.md`, optional `resource-map.md`, state files, and `STATUS=<OK|FAIL|CANCELLED>`
 
 ---
 
@@ -201,7 +202,7 @@ Run an iterative loop for code review: Initialize the review packet under `{spec
 |-------|------|---------|---------|
 | Init | Initialize | Scope discovery, resolve files, create config + strategy with review dimensions | Review packet in `{spec_folder}/review/` |
 | Loop | Iterate | Dispatch @deep-review agent per dimension, evaluate review convergence + quality guards | `review/iterations/iteration-NNN.md` files, `review/deep-review-dashboard.md` |
-| Synth | Synthesize | Build finding registry, deduplicate, compile `review/review-report.md` | `review/review-report.md` (9 sections) |
+| Synth | Synthesize | Build finding registry, emit `review/resource-map.md`, deduplicate, compile `review/review-report.md` | `review/resource-map.md`, `review/review-report.md` (9 sections) |
 | Save | Preserve | Refresh continuity update in canonical spec docs | canonical spec doc updated via `generate-context.js` |
 
 ### Execution Modes
@@ -252,7 +253,7 @@ The YAML contains the full loop workflow: initialization, iteration dispatch, co
 Deep review complete.
 Iterations: [N] | Stop reason: [converged|max_iterations|all_dimensions_clean]
 Findings: P0=[N] P1=[N] P2=[N] | Verdict: [PASS|CONDITIONAL|FAIL] [PASS may include hasAdvisories=true]
-Artifacts: review/review-report.md, [N] iteration files in review/, continuity update in canonical spec docs refreshed
+Artifacts: review/review-report.md, review/resource-map.md (unless `--no-resource-map`), [N] iteration files in review/, continuity update in canonical spec docs refreshed
 Ready for: /spec_kit:plan [remediation] (if FAIL/CONDITIONAL)
 STATUS=OK PATH=[spec-folder-path]
 ```

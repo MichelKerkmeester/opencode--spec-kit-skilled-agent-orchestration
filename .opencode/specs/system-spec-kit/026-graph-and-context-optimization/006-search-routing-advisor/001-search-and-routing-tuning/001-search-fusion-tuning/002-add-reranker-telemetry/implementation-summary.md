@@ -1,15 +1,12 @@
 ---
-title: "Implementation Summary: Add Reranker Cache Telemetry"
+title: "...ing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry/implementation-summary]"
 description: "Adds process-wide cache counters to the cross-encoder reranker and exposes them through the canonical reranker status surface."
 trigger_phrases:
   - "reranker cache telemetry"
   - "cross-encoder cache status"
-  - "getRerankerStatus cache counters"
+  - "getrerankerstatus cache counters"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-closed_by_commit: 2958485d9f
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry"
@@ -20,6 +17,9 @@ _memory:
     key_files:
       - "implementation-summary.md"
       - ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts"
+closed_by_commit: 2958485d9f
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Add Reranker Cache Telemetry
 

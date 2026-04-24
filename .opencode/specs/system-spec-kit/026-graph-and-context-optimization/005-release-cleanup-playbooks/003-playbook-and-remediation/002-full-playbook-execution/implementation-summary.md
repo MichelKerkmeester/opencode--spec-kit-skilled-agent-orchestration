@@ -1,12 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: Phase 015 Playbook Coverage Accounting and Partial Execution"
+title: "...zation/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/implementation-summary]"
 description: "This phase now distinguishes the historical 297-scenario packet-local run from the current 300-scenario wrapper revalidation sweep, which cleared former Vitest blockers but exposed parser and fixture drift."
 trigger_phrases:
   - "phase 015 implementation summary"
   - "playbook coverage accounting summary"
 importance_tier: "critical"
-contextType: "verification"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution"

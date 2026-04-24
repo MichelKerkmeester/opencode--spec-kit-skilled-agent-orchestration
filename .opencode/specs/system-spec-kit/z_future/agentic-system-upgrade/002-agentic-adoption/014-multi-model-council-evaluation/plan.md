@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 014 Multi-Model Council Evaluation [template:level_2/plan.md]"
+title: "Implement [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/014-multi-model-council-evaluation/plan]"
 description: "Investigate when optional multi-model cross-checks are worth their cost for deep loops or high-risk synthesis work, and when they are just budget inflation."
 trigger_phrases:
   - "implementation"

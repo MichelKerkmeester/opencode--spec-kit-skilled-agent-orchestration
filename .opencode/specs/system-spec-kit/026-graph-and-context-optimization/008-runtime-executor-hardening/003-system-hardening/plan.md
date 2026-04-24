@@ -1,13 +1,12 @@
 ---
-title: "Implementation Plan: System Hardening (Post-Consolidation Research + Remediation Train)"
+title: "Implementa [system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/plan]"
 description: "Coordination plan for 019-system-hardening: dispatch the Tier 1 research wave via 001-initial-research, consolidate findings, then spawn implementation children (002+)."
 trigger_phrases:
   - "019 parent plan"
   - "system hardening plan"
   - "019 research wave coordination"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Plan scaffolded alongside spec.md"
     next_safe_action: "Approve and dispatch 001-initial-research"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: System Hardening
 

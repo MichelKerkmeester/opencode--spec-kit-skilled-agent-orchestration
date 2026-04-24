@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Runtime Executor Hardening"
+title: "Feature Specification [system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/spec]"
 description: "Foundational runtime, CLI executor matrix, and system hardening. Consolidated active parent for 3 direct child phase packet(s)."
 trigger_phrases:
   - "008-runtime-executor-hardening"
@@ -9,7 +9,6 @@ trigger_phrases:
   - "003-system-hardening"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Runtime Executor Hardening
 

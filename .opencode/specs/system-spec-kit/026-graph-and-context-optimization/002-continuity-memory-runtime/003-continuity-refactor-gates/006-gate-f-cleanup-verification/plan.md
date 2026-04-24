@@ -1,12 +1,13 @@
 ---
-title: "Gate F — Cleanup Verification Plan"
+title: "...ontext-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/006-gate-f-cleanup-verification/plan]"
 description: "Execute a narrow verification pass for Gate B cleanup, confirm archived-tier deprecation work is already complete, and close the packet with evidence."
-trigger_phrases: ["gate f plan", "cleanup verification plan", "gate b cleanup verification", "archived-tier deprecation audit"]
+trigger_phrases:
+  - "gate f plan"
+  - "cleanup verification plan"
+  - "gate b cleanup verification"
+  - "archived-tier deprecation audit"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/006-gate-f-cleanup-verification"
@@ -15,6 +16,9 @@ _memory:
     recent_action: "Replaced observation plan with cleanup verification phases"
     next_safe_action: "Reuse the recorded evidence if follow-up packet opens"
     key_files: ["plan.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Gate F — Cleanup Verification
 <!-- SPECKIT_LEVEL: 2 -->

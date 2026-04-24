@@ -1,13 +1,21 @@
 ---
-title: "Verification Checklist: OpenCode Structural Priming"
+title: "Verification Checklist: OpenCode [system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/checklist]"
 description: "Level 2 verification checklist for the non-hook runtime structural bootstrap phase."
 trigger_phrases:
   - "027 structural priming checklist"
   - "opencode bootstrap checklist"
 importance_tier: "normal"
-contextType: "verification"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/027-opencode-structural-priming"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
-
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 # Verification Checklist: OpenCode Structural Priming

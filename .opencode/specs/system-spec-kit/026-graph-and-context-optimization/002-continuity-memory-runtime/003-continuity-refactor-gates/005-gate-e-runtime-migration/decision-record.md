@@ -1,12 +1,11 @@
 ---
-title: "Gate E — Runtime Migration Decisions"
+title: "...ptimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration/decision-record]"
 description: "Cutover ADRs."
-trigger_phrases: ["gate e", "decision record"]
+trigger_phrases:
+  - "gate e"
+  - "decision record"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration"
@@ -15,6 +14,9 @@ _memory:
     recent_action: "Recorded three ADRs for canonical cutover, spec-first continuity, and evidence-backed closeout"
     next_safe_action: "Keep as historical record; no further edits expected"
     key_files: ["decision-record.md", "spec.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->

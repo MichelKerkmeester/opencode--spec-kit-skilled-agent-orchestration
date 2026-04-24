@@ -1,13 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: Fix Graph Metadata Status Derivation"
+title: "...advisor/001-search-and-routing-tuning/003-graph-metadata-validation/001-fix-status-derivation/implementation-summary]"
 description: "This phase taught graph metadata how to recognize finished packets more safely by combining implementation-summary presence with checklist completion instead of defaulting unfinished packets to planned."
 trigger_phrases:
   - "phase 001 implementation summary"
   - "status derivation summary"
 importance_tier: "critical"
-contextType: "verification"
-status: complete
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/001-fix-status-derivation"
@@ -28,6 +27,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Should implementation-summary presence alone promote packets when no checklist exists"
+status: complete
 ---
 # Implementation Summary: Fix Graph Metadata Status Derivation
 

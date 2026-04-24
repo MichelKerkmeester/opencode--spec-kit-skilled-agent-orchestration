@@ -1,6 +1,23 @@
 ---
-title: "Tasks: Documentation Alignment [024/006]"
+title: "Tasks: Documentation Alignment [024/006] [system-spec-kit/024-compact-code-graph/006-documentation-alignment/tasks]"
 description: "Task tracking for documentation updates covering hooks, feature catalog, playbook, and cross-references."
+trigger_phrases:
+  - "tasks"
+  - "documentation"
+  - "alignment"
+  - "024"
+  - "006"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/006-documentation-alignment"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Phase 006 — Documentation Alignment
@@ -93,6 +110,6 @@ These step labels preserve the earlier audit lineage for this follow-up packet. 
 
 - [x] Refresh stale top-level totals in `../../../../skill/system-spec-kit/SKILL.md` — MCP tool count now reflects 43 tools, feature catalog count reflects 291 entries across 22 categories, and testing playbook count reflects 311 scenario files across 22 categories
 - [x] Refresh stale summary references in `../../../../skill/system-spec-kit/README.md` and `../../../../skill/system-spec-kit/mcp_server/README.md` — top-level stats, related-doc cross-references, feature catalog counts, reference-file counts, and manual playbook counts now match the checked-in docs
-- [x] Refresh command-surface wording in `../../../../skill/system-spec-kit/feature_catalog/feature_catalog.md` and `../../../../skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md` — both roots now distinguish the 43-tool MCP surface from the smaller slash-command subset
+- [x] Refresh command-surface wording in `../../../../skill/system-spec-kit/feature_catalog/feature_catalog.md` and `../../../../skill/system-spec-kit/feature_catalog/feature_catalog.md` — both roots now distinguish the 43-tool MCP surface from the smaller slash-command subset
 - [x] Refresh stale tool-surface totals in `../../../../skill/system-spec-kit/references/memory/memory_system.md` and `../../../../skill/system-spec-kit/references/config/environment_variables.md` — memory reference now lists the code graph, session, and CCC tools; strict-schema docs now point to all 43 tools
 - [x] Audit `../../../../skill/mcp-coco-index/` for 023/024 follow-through — follow-up edits were required in `.opencode/skill/mcp-coco-index/README.md`, `.opencode/skill/mcp-coco-index/SKILL.md`, and the category-07 / root manual testing playbook docs to align recovery semantics and integrated code-graph wording with current behavior

@@ -1,7 +1,13 @@
 ---
-title: "Task Breakdown: Copilot Wrapper Schema Fix"
-importance_tier: "high"
-contextType: "spec"
+title: "Task [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix/tasks]"
+description: 'title: "Task Breakdown: Copilot Wrapper Schema Fix"'
+trigger_phrases:
+  - "task"
+  - "tasks"
+  - "010"
+  - "copilot"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix"

@@ -1,3 +1,14 @@
+---
+title: "Pla [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/018-wake-up-context-layering-study/plan]"
+description: "1. Baseline today's bootstrap, resume, and compaction-recovery outputs."
+trigger_phrases:
+  - "pla"
+  - "plan"
+  - "018"
+  - "wake"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 018-wake-up-context-layering-study
 
 ## Affected Files

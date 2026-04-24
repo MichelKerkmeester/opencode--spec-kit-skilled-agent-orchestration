@@ -1,13 +1,12 @@
 ---
-title: "Verification Checklist: Skill Graph Auto-Setup"
+title: "...aph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup/checklist]"
 description: "Phase 007 Level 2 verification checklist for packet repair and completed auto-setup behavior."
 trigger_phrases:
   - "phase 007 checklist"
   - "skill graph auto setup verification"
   - "packet repair checklist"
 importance_tier: "important"
-contextType: "verification"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup"
@@ -30,6 +29,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Checklist items are tied to the completed implementation and packet integrity."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Skill Graph Auto-Setup
 

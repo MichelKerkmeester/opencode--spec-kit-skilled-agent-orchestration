@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
-title: "Plan: Memory Indexer Invariants (Coordination Root)"
+title: "Plan: Memory Indexer [system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/plan]"
 description: "Coordination-root plan for the two shipped memory-indexer invariant children. No implementation work planned at this level — execution lives in the child packets."
 trigger_phrases:
   - "026/010 coord root plan"
   - "memory indexer invariants plan"
-importance_tier: "high"
-contextType: "plan"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants"
@@ -19,6 +19,7 @@ _memory:
     status: "complete"
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 ---
 # Plan: Memory Indexer Invariants
 

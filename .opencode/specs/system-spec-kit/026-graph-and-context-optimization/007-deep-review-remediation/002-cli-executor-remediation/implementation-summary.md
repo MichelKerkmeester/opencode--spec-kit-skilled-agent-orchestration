@@ -1,9 +1,12 @@
 ---
-title: "Implementation Summary: Phase 020 Research-Findings Remediation"
+title: "...t/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation/implementation-summary]"
 description: "Phase 020 shipped: R1-R11 remediations complete, R12 deferred. 116/116 scoped tests pass. Executor first-write provenance, description.json merge-preserving repair, Copilot @path fallback, metadata lineage, fence parser, retry telemetry, caller-context coverage, docs parity all shipped."
-trigger_phrases: ["020 implementation summary", "phase 020 verdict"]
-importance_tier: "high"
+trigger_phrases:
+  - "020 implementation summary"
+  - "phase 020 verdict"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation"

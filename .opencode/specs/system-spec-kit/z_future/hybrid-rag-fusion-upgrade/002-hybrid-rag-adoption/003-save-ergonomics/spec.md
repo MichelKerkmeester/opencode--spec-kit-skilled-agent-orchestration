@@ -1,8 +1,14 @@
 ---
-title: "003-save-ergonomics: Wrap JSON-Primary Save Authority"
+title: "003-save-ergonomic [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/003-save-ergonomics/spec]"
 description: "Defines wrapper ergonomics for saving context without changing Public's JSON-primary save authority."
+trigger_phrases:
+  - "003"
+  - "save"
+  - "ergonomic"
+  - "spec"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 003-save-ergonomics: Wrap JSON-Primary Save Authority
 
 ## 1. Scope

@@ -1,7 +1,24 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Implementation Summary: CocoIndex Bridge + code_graph_context [024/010]"
+title: "Implementation Summary [system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context/implementation-summary]"
 description: "Implemented code_graph_context orchestration tool bridging CocoIndex semantic search into structural graph neighborhoods with seed resolution, three query modes, and budget-aware formatting. 22/22 checklist items verified."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "implementation summary"
+  - "010"
+  - "cocoindex"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/010-cocoindex-bridge-context"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Summary
 
@@ -53,18 +70,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 010-cocoindex-bridge-context |
 | **Completed** | 2026-03-31 |
 | **Level** | 3 |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:what-built -->
+<!-- ANCHOR:what-built-2 -->
 ### What Was Built
 Phase 010 delivers the LLM-oriented orchestration layer that bridges CocoIndex semantic search results into structural graph neighborhoods. The `code_graph_context` tool accepts seeds from any provider (CocoIndex MCP, manual, graph), resolves them to graph nodes, expands structurally via Phase 009 queries, and returns compact context packages optimized for AI consumption.
 
@@ -101,14 +118,14 @@ The `code_graph_context` schema was added to `tool-schemas.ts` with strict JSON 
 | `handlers/code-graph/context.ts` | New | MCP handler wiring for code_graph_context |
 | `tool-schemas.ts` | Modified | Added code_graph_context schema |
 | `context-server.ts` | Modified | Registered code_graph_context handler |
-<!-- /ANCHOR:what-built -->
+<!-- /ANCHOR:what-built-2 -->
 
 ---
 
-<!-- ANCHOR:how-delivered -->
+<!-- ANCHOR:how-delivered-2 -->
 ### How It Was Delivered
 Implemented in plan order: seed-resolver first (foundation), then the context orchestrator with all three query modes, then server integration. Each query mode was tested with real CocoIndex results and manual seeds against indexed repository files to verify resolution chain correctness, expansion behavior, and budget compliance.
-<!-- /ANCHOR:how-delivered -->
+<!-- /ANCHOR:how-delivered-2 -->
 
 ---
 ### Key Decisions
@@ -122,7 +139,7 @@ Implemented in plan order: seed-resolver first (foundation), then the context or
 | Profile parameter for density control | Different use cases (quick lookup vs. deep research vs. debugging) need different levels of detail. Profile avoids forcing callers to set multiple flags individually. |
 ---
 
-<!-- ANCHOR:verification -->
+<!-- ANCHOR:verification-2 -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -139,13 +156,13 @@ Implemented in plan order: seed-resolver first (foundation), then the context or
 | Budget enforcement stays within budgetTokens target | Verified |
 | Text fallback renders compact brief | Verified |
 | Tool registered and callable via MCP | Verified |
-<!-- /ANCHOR:verification -->
+<!-- /ANCHOR:verification-2 -->
 
 ---
 
-<!-- ANCHOR:limitations -->
+<!-- ANCHOR:limitations-2 -->
 ### Known Limitations
 1. **No live CocoIndex round-trip for reverse augmentation.** The `nextActions` suggests CocoIndex queries but does not execute them inline. Full bidirectional semantic-structural fusion is deferred.
 2. **File anchor resolution is coarse.** When no graph nodes exist for a file, the entire file becomes the anchor. This can produce overly broad context for large files.
 3. **Budget estimation is token-approximate.** Token counting uses a character-based heuristic rather than a tokenizer. Actual LLM token counts may differ by up to 15%.
-<!-- /ANCHOR:limitations -->
+<!-- /ANCHOR:limitations-2 -->

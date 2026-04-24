@@ -1,0 +1,650 @@
+
+───────────────────────────────────────────────────────────────
+
+  Spec Folder Validation v2.0.0
+───────────────────────────────────────────────────────────────
+
+
+  Folder: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement
+  Level:  2 (explicit)
+
+───────────────────────────────────────────────────────────────
+
+
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+✓ EVIDENCE_CITED: All completed P0/P1 items have evidence
+✗ ANCHORS_VALID: Found 1 anchor mismatch(es)
+    - plan.md:143: Duplicate anchor ID 'dependencies' - each anchor must be unique
+⚠ FRONTMATTER_MEMORY_BLOCK: 5 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: checklist.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✗ SPEC_DOC_SUFFICIENCY: 3 spec_doc_sufficiency issue(s) found
+    - SPECDOC_SUFFICIENCY_001: spec.md: anchor parse failure: line 197: orphaned closing anchor 'edge-cases'
+    - SPECDOC_SUFFICIENCY_001: spec.md: anchor parse failure: line 203: orphaned closing anchor 'questions'
+    - SPECDOC_SUFFICIENCY_004: research/research.md: research content is missing a citation
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+⚠ PHASE_LINKS: 3 phase link issue(s) found
+    - 014-feedback-signal-pipeline/spec.md missing parent back-reference (expected: '| **Parent Spec** | ../spec.md |' or 'parent:' field)
+    - 014-feedback-signal-pipeline/spec.md missing predecessor reference (013-fts5-fix-and-search-dashboard)
+    - 013-fts5-fix-and-search-dashboard/spec.md missing successor reference (014-feedback-signal-pipeline)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 2; phases=5, tasks=21, stories=0, scenarios=5)
+✓ FOLDER_NAMING: Folder name '023-hybrid-rag-fusion-refinement' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 2
+✗ SPEC_DOC_INTEGRITY: 5 spec documentation integrity issue(s) found
+    - spec.md references missing markdown file: specs/system-spec-kit/023-hybrid-rag-fusion-refinement/spec.md
+    - spec.md references missing markdown file: specs/system-spec-kit/023-hybrid-rag-fusion-refinement/plan.md
+    - spec.md references missing markdown file: specs/system-spec-kit/023-hybrid-rag-fusion-refinement/tasks.md
+    - spec.md references missing markdown file: specs/system-spec-kit/023-hybrid-rag-fusion-refinement/checklist.md
+    - spec.md references missing markdown file: specs/system-spec-kit/023-hybrid-rag-fusion-refinement/implementation-summary.md
+✓ TEMPLATE_SOURCE: Template source headers present in all 5 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 5 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Live packet root exposes a canonical spec.md surface
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Live packet root graph metadata has non-empty derived.source_docs
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.619Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: _memory.continuity.last_updated_at missing
+✓ EVIDENCE_MARKER_LINT: Evidence marker lint passed: all markers closed with balanced brackets
+    - filesScanned=570
+    - totalMarkers=503
+
+───────────────────────────────────────────────────────────────
+
+  Recursive Phase Validation (14 phases found)
+───────────────────────────────────────────────────────────────
+
+
+  Phase: 001-shared-esm-migration
+✓ FILE_EXISTS: All required files present for Level 1
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 1 explicitly declared
+✓ ANCHORS_VALID: All anchor pairs valid in 4 file(s)
+⚠ FRONTMATTER_MEMORY_BLOCK: 4 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 1
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 1; phases=1, tasks=11, stories=0, scenarios=6)
+✓ FOLDER_NAMING: Folder name '001-shared-esm-migration' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 1)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 1
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 4 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 4 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.622Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/001-shared-esm-migration/[0-9][0-9][0-9]-*'
+
+  Phase: 002-mcp-server-esm-migration
+✓ FILE_EXISTS: All required files present for Level 1
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 1 explicitly declared
+✓ ANCHORS_VALID: All anchor pairs valid in 4 file(s)
+⚠ FRONTMATTER_MEMORY_BLOCK: 4 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 1
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 1; phases=1, tasks=20, stories=0, scenarios=6)
+✓ FOLDER_NAMING: Folder name '002-mcp-server-esm-migration' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 1)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 1
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 4 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 4 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.623Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/002-mcp-server-esm-migration/[0-9][0-9][0-9]-*'
+
+  Phase: 003-scripts-interop-refactor
+✓ FILE_EXISTS: All required files present for Level 1
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 1 explicitly declared
+✓ ANCHORS_VALID: All anchor pairs valid in 4 file(s)
+⚠ FRONTMATTER_MEMORY_BLOCK: 4 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 1
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 1; phases=1, tasks=27, stories=0, scenarios=6)
+✓ FOLDER_NAMING: Folder name '003-scripts-interop-refactor' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 1)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 1
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 4 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 4 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.625Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/003-scripts-interop-refactor/[0-9][0-9][0-9]-*'
+
+  Phase: 004-verification-and-standards
+✓ FILE_EXISTS: All required files present for Level 1
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 1 explicitly declared
+✓ ANCHORS_VALID: All anchor pairs valid in 4 file(s)
+⚠ FRONTMATTER_MEMORY_BLOCK: 4 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 1
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 1; phases=1, tasks=21, stories=0, scenarios=6)
+✓ FOLDER_NAMING: Folder name '004-verification-and-standards' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 1)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 1
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 4 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 4 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.626Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/004-verification-and-standards/[0-9][0-9][0-9]-*'
+
+  Phase: 005-test-and-scenario-remediation
+✓ FILE_EXISTS: All required files present for Level 1
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 1 explicitly declared
+✓ ANCHORS_VALID: All anchor pairs valid in 4 file(s)
+⚠ FRONTMATTER_MEMORY_BLOCK: 4 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 1
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 1; phases=1, tasks=18, stories=0, scenarios=6)
+✓ FOLDER_NAMING: Folder name '005-test-and-scenario-remediation' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 1)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 1
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 4 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 4 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.628Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/005-test-and-scenario-remediation/[0-9][0-9][0-9]-*'
+
+  Phase: 006-review-remediation
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+✓ EVIDENCE_CITED: All completed P0/P1 items have evidence
+✓ ANCHORS_VALID: All anchor pairs valid in 5 file(s)
+⚠ FRONTMATTER_MEMORY_BLOCK: 5 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: checklist.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 2; phases=6, tasks=41, stories=0, scenarios=6)
+✓ FOLDER_NAMING: Folder name '006-review-remediation' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 2
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 5 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 5 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.629Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/006-review-remediation/[0-9][0-9][0-9]-*'
+
+  Phase: 007-hybrid-search-null-db-fix
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+✓ EVIDENCE_CITED: All completed P0/P1 items have evidence
+✓ ANCHORS_VALID: All anchor pairs valid in 5 file(s)
+⚠ FRONTMATTER_MEMORY_BLOCK: 6 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: checklist.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: research/research.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+⚠ SPEC_DOC_SUFFICIENCY: 2 spec_doc_sufficiency issue(s) found
+    - SPECDOC_SUFFICIENCY_002: implementation-summary.md:verification is missing a concrete command or verification artifact
+    - SPECDOC_SUFFICIENCY_004: research/research.md: research content is missing a citation
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 2; phases=5, tasks=41, stories=0, scenarios=6)
+✓ FOLDER_NAMING: Folder name '007-hybrid-search-null-db-fix' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 2
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 5 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 5 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.631Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix/[0-9][0-9][0-9]-*'
+
+  Phase: 008-spec-memory-compliance-audit
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+✓ EVIDENCE_CITED: All completed P0/P1 items have evidence
+✗ ANCHORS_VALID: Found 1 anchor mismatch(es)
+    - plan.md:401: Duplicate anchor ID 'dependencies' - each anchor must be unique
+⚠ FRONTMATTER_MEMORY_BLOCK: 5 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: checklist.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✗ SPEC_DOC_SUFFICIENCY: 3 spec_doc_sufficiency issue(s) found
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 414: orphaned closing anchor 'phase-deps'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 419: orphaned closing anchor 'dependencies'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 429: orphaned closing anchor 'effort'
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 2; phases=4, tasks=217, stories=0, scenarios=6)
+✓ FOLDER_NAMING: Folder name '008-spec-memory-compliance-audit' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 2
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 5 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 5 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.634Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit/[0-9][0-9][0-9]-*'
+
+  Phase: 009-reindex-validator-false-positives
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+✓ EVIDENCE_CITED: All completed P0/P1 items have evidence
+✓ ANCHORS_VALID: All anchor pairs valid in 5 file(s)
+⚠ FRONTMATTER_MEMORY_BLOCK: 5 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: checklist.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 2; phases=3, tasks=16, stories=0, scenarios=6)
+✓ FOLDER_NAMING: Folder name '009-reindex-validator-false-positives' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 2
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 5 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 5 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.636Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives/[0-9][0-9][0-9]-*'
+
+  Phase: 010-search-retrieval-quality-fixes
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+✓ EVIDENCE_CITED: All completed P0/P1 items have evidence
+✓ ANCHORS_VALID: All anchor pairs valid in 5 file(s)
+⚠ FRONTMATTER_MEMORY_BLOCK: 5 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: checklist.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 2; phases=2, tasks=16, stories=0, scenarios=6)
+✓ FOLDER_NAMING: Folder name '010-search-retrieval-quality-fixes' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 2
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 5 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 5 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.638Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/[0-9][0-9][0-9]-*'
+
+  Phase: 011-indexing-and-adaptive-fusion
+✓ FILE_EXISTS: All required files present for Level 1
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 1 explicitly declared
+✓ ANCHORS_VALID: All anchor pairs valid in 4 file(s)
+⚠ FRONTMATTER_MEMORY_BLOCK: 4 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: Phase links valid (9 phases verified)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 1
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 1; phases=3, tasks=14, stories=0, scenarios=6)
+✓ FOLDER_NAMING: Folder name '011-indexing-and-adaptive-fusion' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 1)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 1
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 4 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 4 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Live packet root exposes a canonical spec.md surface
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Live packet root graph metadata has non-empty derived.source_docs
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.640Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: _memory.continuity.last_updated_at missing
+✓ EVIDENCE_MARKER_LINT: Evidence marker lint passed: all markers closed with balanced brackets
+    - filesScanned=19
+    - totalMarkers=89
+
+  Phase: 012-memory-save-quality-pipeline
+✓ FILE_EXISTS: All required files present for Level 3
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 3 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+✓ EVIDENCE_CITED: All completed P0/P1 items have evidence
+✗ ANCHORS_VALID: 1 required anchor(s) missing
+    - spec.md: Missing required anchor 'metadata'
+⚠ FRONTMATTER_MEMORY_BLOCK: 7 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: checklist.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: decision-record.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: research/research.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+⚠ SPEC_DOC_SUFFICIENCY: 1 spec_doc_sufficiency issue(s) found
+    - SPECDOC_SUFFICIENCY_004: research/research.md: research content is missing a citation
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocols present and complete (4/4)
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 3; phases=3, tasks=17, stories=2, scenarios=12)
+✓ FOLDER_NAMING: Folder name '012-memory-save-quality-pipeline' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 3)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 3
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 6 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 6 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.658Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/[0-9][0-9][0-9]-*'
+
+  Phase: 013-fts5-fix-and-search-dashboard
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+✓ EVIDENCE_CITED: All completed P0/P1 items have evidence
+✓ ANCHORS_VALID: All anchor pairs valid in 5 file(s)
+⚠ FRONTMATTER_MEMORY_BLOCK: 6 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: checklist.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: handover.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 2; phases=5, tasks=34, stories=0, scenarios=5)
+✓ FOLDER_NAMING: Folder name '013-fts5-fix-and-search-dashboard' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 2
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 5 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 5 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.660Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/[0-9][0-9][0-9]-*'
+
+  Phase: 014-feedback-signal-pipeline
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+✓ EVIDENCE_CITED: All completed P0/P1 items have evidence
+✓ ANCHORS_VALID: All anchor pairs valid in 5 file(s)
+⚠ FRONTMATTER_MEMORY_BLOCK: 5 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: checklist.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: implementation-summary.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 2; phases=3, tasks=19, stories=0, scenarios=4)
+✓ FOLDER_NAMING: Folder name '014-feedback-signal-pipeline' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 2
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 5 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 5 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is grandfathered for graph writes before 2026-05-01T00:00:00Z
+    - last_save_at=2026-04-18T14:39:00.662Z
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/014-feedback-signal-pipeline/[0-9][0-9][0-9]-*'
+
+  Phase Summary: 14 phases, 16 errors, 16 warnings
+
+───────────────────────────────────────────────────────────────
+
+
+  Summary: Errors: 19  Warnings: 18
+
+  RESULT: FAILED
+

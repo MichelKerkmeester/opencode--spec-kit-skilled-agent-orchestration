@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 014 Multi-Model Council Evaluation [template:level_2/tasks.md]"
+title: "Tasks [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/014-multi-model-council-evaluation/tasks]"
 description: "Task Format: T### [P?] Description (014-multi-model-council-evaluation)"
 trigger_phrases:
   - "tasks"

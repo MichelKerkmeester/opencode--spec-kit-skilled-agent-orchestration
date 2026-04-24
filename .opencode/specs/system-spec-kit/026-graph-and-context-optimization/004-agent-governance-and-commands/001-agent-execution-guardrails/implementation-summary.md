@@ -1,12 +1,11 @@
 ---
-title: "Implementation Summary: Phase 4 — Agent Execution Guardrails"
+title: "...aph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails/implementation-summary]"
 description: "This same-session packet documents the completed execution-guardrail and lean structure update in three AGENTS files across Public and Barter, plus the clean packet validation result."
 trigger_phrases:
   - "phase 4 implementation summary"
   - "agent execution guardrails summary"
-importance_tier: important
+importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Phase 4 — Agent Execution Guardrails
 

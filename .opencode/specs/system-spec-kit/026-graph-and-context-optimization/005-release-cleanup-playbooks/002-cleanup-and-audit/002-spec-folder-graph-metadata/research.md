@@ -1,10 +1,12 @@
 ---
-title: "018 / 011 — Per-spec-folder graph metadata research"
+title: "...and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata/research]"
 description: "Ten-iteration design research for a dedicated packet-level graph metadata file."
-trigger_phrases: ["018 011 research", "graph metadata research", "per spec folder graph metadata iterations"]
+trigger_phrases:
+  - "018 011 research"
+  - "graph metadata research"
+  - "per spec folder graph metadata iterations"
 importance_tier: "critical"
 contextType: "research"
-status: "complete"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata"
@@ -13,6 +15,7 @@ _memory:
     recent_action: "Completed the 10-iteration design research and option synthesis"
     next_safe_action: "Use this research packet to implement graph metadata save and indexing follow-ons"
     key_files: ["research.md", "spec.md", "plan.md", "decision-record.md"]
+status: "complete"
 ---
 # Research: 018 / 011 — Per-spec-folder graph metadata
 

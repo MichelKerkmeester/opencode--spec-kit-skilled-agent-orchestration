@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 018 Git Context and Run State Evaluation [template:level_2/tasks.md]"
+title: "Ta [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/018-git-context-and-run-state-evaluation/tasks]"
 description: "Task Format: T### [P?] Description (018-git-context-and-run-state-evaluation)"
 trigger_phrases:
   - "tasks"

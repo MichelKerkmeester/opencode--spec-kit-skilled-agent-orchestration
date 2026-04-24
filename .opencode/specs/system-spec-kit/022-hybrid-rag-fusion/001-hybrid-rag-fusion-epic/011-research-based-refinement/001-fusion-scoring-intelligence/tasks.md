@@ -1,16 +1,23 @@
 ---
-title: "Tasks: Fusion & Scoring Intelligence"
+title: "...022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/001-fusion-scoring-intelligence/tasks]"
 description: "Detailed task breakdown across 4 phases: calibration foundations, shadow infrastructure, query-aware fusion, and learned weights."
-# SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2
 trigger_phrases:
-  - "D1 tasks"
+  - "d1 tasks"
   - "fusion scoring tasks"
   - "calibration tasks"
   - "shadow lab tasks"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/001-fusion-scoring-intelligence"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
-
 # Tasks: Fusion & Scoring Intelligence
 
 <!-- SPECKIT_LEVEL: 2 -->

@@ -1,11 +1,20 @@
 ---
-title: "Implementation Summary: OpenCode Graph Plugin Phased Execution [030/024]"
+title: "Implementation Summary [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/implementation-summary]"
 description: "Packet 030 now includes six completed phases: shared payloads, OpenCode transport, graph hardening, startup parity, bounded auto-reindex parity, and Copilot startup-hook wiring repair."
 trigger_phrases:
   - "packet 030 implementation summary"
   - "opencode graph plugin closeout"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 # Implementation Summary: OpenCode Graph Plugin Phased Execution
 

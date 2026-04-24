@@ -1,10 +1,10 @@
 ---
-title: "Tasks: NFKC Unification Hardening"
+title: "...ph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening/tasks]"
 description: "Task list for HP1-HP6 implementation."
-trigger_phrases: ["nfkc hardening tasks"]
+trigger_phrases:
+  - "nfkc hardening tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/003-nfkc-unification-hardening"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Tasks scaffolded"
     next_safe_action: "Begin T001"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: NFKC Unification Hardening
 

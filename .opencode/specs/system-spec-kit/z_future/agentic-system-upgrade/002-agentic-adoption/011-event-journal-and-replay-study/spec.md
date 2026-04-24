@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 011 Event Journal and Replay Study [template:level_2/spec.md]"
+title: "Feature [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/011-event-journal-and-replay-study/spec]"
 description: "Evaluate whether a journaled replay layer could improve determinism for specific long-running flows without replacing current JSONL and packet artifact contracts."
 trigger_phrases:
   - "feature"

@@ -98,6 +98,7 @@ state_paths:
   delta_dir: "{artifact_dir}/deltas"
   delta_pattern: "{artifact_dir}/deltas/iter-{NNN}.jsonl"
   research_output: "{artifact_dir}/research.md"
+  resource_map_output: "{artifact_dir}/resource-map.md"
   archive_root: "{artifact_archive_root}"
   synthesis_snapshot_pattern: "{artifact_dir}/synthesis-v{generation}.md"
 
@@ -208,6 +209,8 @@ workflow:
           stuckThreshold: 3
           maxDurationMinutes: 120
           specFolder: "{spec_folder}"
+          resource_map_present: "{resource_map_present}"
+          resource_map.emit: true
           createdAt: "{ISO_8601_NOW}"
           status: "initialized"
           executionMode: "confirm"
@@ -220,7 +223,7 @@ workflow:
 
       step_create_state_log:
         action: "Initialize JSONL state log with config record"
-        content: '{"type":"config","topic":"{research_topic}","maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
+        content: '{"type":"config","topic":"{research_topic}","maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"resource_map_present":{resource_map_present},"resource_map":{"emit":true},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
         output: "{state_paths.state_log}"
 
       step_create_strategy:
@@ -825,6 +828,16 @@ workflow:
         action: "Read all iteration files and strategy"
         read_pattern: "{state_paths.iteration_dir}/iteration-*.md"
         read_also: "{state_paths.strategy}"
+
+      step_emit_resource_map:
+        action: "Emit {state_paths.resource_map_output} from converged research deltas unless config.resource_map.emit is false"
+        command: "node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs {spec_folder} --emit-resource-map"
+        read:
+          - "{state_paths.config}"
+          - "{state_paths.delta_dir}/iter-*.jsonl"
+        write:
+          - "{state_paths.resource_map_output}"
+        guarantee: "Reducer skips cleanly when config.resource_map.emit == false and writes a deterministic resource-map when enabled."
 
       step_compile_research:
         action: "Compile or finalize research/research.md"

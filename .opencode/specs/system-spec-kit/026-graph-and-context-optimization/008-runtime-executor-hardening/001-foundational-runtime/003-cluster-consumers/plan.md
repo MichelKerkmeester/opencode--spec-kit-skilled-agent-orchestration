@@ -1,9 +1,16 @@
 ---
-title: "Implementation Plan: Phase 017 Wave B — Cluster Consumers"
+title: "...26-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers/plan]"
 description: "Wave B plan: 9 tasks / 30h / 3 parallel lanes. Lane B1 Cluster B consumers (12h), Lane B2 Cluster D + E (16h, atomic-ship T-W1-CGC-03), Lane B3 Cluster A + C + Standalone P1 (12h). Quality gate after all lanes complete via /spec_kit:deep-review :auto ×7."
-trigger_phrases: ["017 wave b plan", "wave b 3-lane execution", "017 lane b1 plan", "017 lane b2 plan", "017 lane b3 plan", "t-w1-cgc-03 atomic ship"]
+trigger_phrases:
+  - "017 wave b plan"
+  - "wave b 3-lane execution"
+  - "017 lane b1 plan"
+  - "017 lane b2 plan"
+  - "017 lane b3 plan"
+  - "t-w1-cgc-03 atomic ship"
 importance_tier: "critical"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers"

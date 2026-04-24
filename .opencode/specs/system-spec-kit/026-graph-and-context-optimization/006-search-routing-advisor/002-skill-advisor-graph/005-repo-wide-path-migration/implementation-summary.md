@@ -1,5 +1,5 @@
 ---
-title: "Repo-Wide Path Migration Summary"
+title: "...-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration/implementation-summary]"
 description: "Phase 005 closeout summary after packet repair, grep cleanup, and migrated runtime verification."
 trigger_phrases:
   - "005-repo-wide-path-migration"
@@ -7,8 +7,6 @@ trigger_phrases:
   - "packet closeout summary"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration"
@@ -17,6 +15,8 @@ _memory:
     recent_action: "Refreshed replayable path evidence for Phase 005"
     next_safe_action: "No action required; packet validation is replayable"
     key_files: ["implementation-summary.md", "tasks.md", "checklist.md"]
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

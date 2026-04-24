@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Contextador Research Phase (003-contextador)"
+title: "Verification [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/003-contextador/checklist]"
 description: "Verification checklist for the 003-contextador research deliverables and phase prompt completion bar."
 trigger_phrases:
   - "contextador checklist"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "phase 003 checklist"
 importance_tier: "normal"
 contextType: "general"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Contextador Research Phase
 

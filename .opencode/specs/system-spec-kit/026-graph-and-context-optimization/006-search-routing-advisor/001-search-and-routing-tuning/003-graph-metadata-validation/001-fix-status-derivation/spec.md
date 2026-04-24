@@ -1,12 +1,29 @@
 ---
-title: "Fix Graph Metadata Status Derivation"
-status: complete
-level: 2
-type: implementation
-parent: 003-graph-metadata-validation
+title: "...06-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/001-fix-status-derivation/spec]"
+description: 'title: "Fix Graph Metadata Status Derivation"'
+trigger_phrases:
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "spec"
+  - "fix"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/001-fix-status-derivation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 created: 2026-04-12
+level: 2
+parent: 003-graph-metadata-validation
+status: complete
+type: implementation
 ---
-
 # Fix Graph Metadata Status Derivation
 
 ## Scope

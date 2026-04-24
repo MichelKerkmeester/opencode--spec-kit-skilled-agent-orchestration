@@ -1,11 +1,10 @@
 ---
-title: "Tasks: Documentation + Release Contract"
+title: "...text-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract/tasks]"
 description: "Task list for 020/009 — final doc + CLAUDE.md + READMEs + release checklist."
 trigger_phrases:
   - "020 009 tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/009-documentation-and-release-contract"
@@ -15,7 +14,7 @@ _memory:
     next_safe_action: "Begin T001 after 006/007/008 converge"
     blockers: ["006-claude-hook-wiring", "007-gemini-copilot-hook-wiring", "008-codex-integration-and-hook-policy"]
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Documentation + Release Contract
 

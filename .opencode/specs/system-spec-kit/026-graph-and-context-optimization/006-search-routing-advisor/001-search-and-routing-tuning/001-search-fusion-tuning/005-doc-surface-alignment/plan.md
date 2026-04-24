@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 ---
-title: "Implementation Plan: Doc Surface Alignment: Search Fusion Changes"
+title: "...ion/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment/plan]"
 description: "This plan performs a targeted doc-only alignment across the requested search surfaces, then closes the packet with Level 2 execution docs and strict validation. The approach keeps scope tight by editing only files that still describe stale runtime behavior."
 trigger_phrases:
   - "search fusion plan"
@@ -9,7 +9,6 @@ trigger_phrases:
   - "level 2 plan"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment"
@@ -30,6 +29,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "How to close the packet cleanly after the doc sweep"
+status: complete
 ---
 # Implementation Plan: Doc Surface Alignment: Search Fusion Changes
 

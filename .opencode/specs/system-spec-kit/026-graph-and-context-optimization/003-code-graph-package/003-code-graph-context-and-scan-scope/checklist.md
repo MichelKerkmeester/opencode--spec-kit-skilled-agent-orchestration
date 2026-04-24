@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
-title: "Verification Checklist: Code Graph Context + Scan Scope Remediation"
+title: "...m-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/checklist]"
 description: "Evidence-backed checklist for stale-highlights, scan excludes, gitignore awareness, and surface doc."
 trigger_phrases:
   - "026/003/003 checklist"
   - "code graph context checklist"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Checklist completed with implementation and verification evidence"
     next_safe_action: "Run future operator-driven code_graph_scan when ready"
     completion_pct: 100
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
 ---
 # Verification Checklist: Code Graph Context + Scan Scope Remediation
 

@@ -1,11 +1,13 @@
 ---
-title: "Implementation Plan: 018 / 011 — graph-metadata.json rollout"
+title: "...aph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata/plan]"
 description: "Five-phase implementation plan for introducing graph-metadata.json as the packet-level graph contract across canonical save, indexing, validation, and workflow surfaces."
-trigger_phrases: ["018 011 plan", "graph metadata implementation plan", "graph metadata rollout plan", "canonical continuity graph rollout"]
+trigger_phrases:
+  - "018 011 plan"
+  - "graph metadata implementation plan"
+  - "graph metadata rollout plan"
+  - "canonical continuity graph rollout"
 importance_tier: "critical"
 contextType: "planning"
-status: "planned"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata"
@@ -14,6 +16,8 @@ _memory:
     recent_action: "Rewrote the packet plan around the five implementation phases from Iteration 10"
     next_safe_action: "Start Phase 1 schema and parser work"
     key_files: ["plan.md", "tasks.md", "spec.md", "research.md"]
+status: "planned"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->

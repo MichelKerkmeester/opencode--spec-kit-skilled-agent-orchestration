@@ -1,6 +1,23 @@
 ---
-title: "Tasks: Cross-Runtime Instruction Parity [024/021]"
+title: "Tasks: Cross-Runtime Instruction [system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/tasks]"
 description: "Task tracking for instruction file parity and @context-prime agent."
+trigger_phrases:
+  - "tasks"
+  - "cross"
+  - "runtime"
+  - "instruction"
+  - "021"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Phase 021 — Cross-Runtime Instruction Parity

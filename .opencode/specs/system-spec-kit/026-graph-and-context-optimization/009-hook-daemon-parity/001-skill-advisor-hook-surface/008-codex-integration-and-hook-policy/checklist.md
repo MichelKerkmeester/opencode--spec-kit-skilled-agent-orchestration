@@ -1,11 +1,10 @@
 ---
-title: "Verification Checklist: Codex Integration + Hook Policy"
+title: "...t-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy/checklist]"
 description: "Level 2 verification for 020/008."
 trigger_phrases:
   - "020 008 checklist"
 importance_tier: "critical"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy"
@@ -15,7 +14,7 @@ _memory:
     next_safe_action: "Populate post-implementation"
     blockers: []
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Codex Integration + Hook Policy
 

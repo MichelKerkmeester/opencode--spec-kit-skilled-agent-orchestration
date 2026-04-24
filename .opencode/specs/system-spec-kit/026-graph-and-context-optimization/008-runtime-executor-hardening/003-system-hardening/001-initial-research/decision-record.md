@@ -1,12 +1,11 @@
 ---
-title: "Decision Record: 019 Initial Research Wave"
+title: "...ph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/decision-record]"
 description: "ADRs for 019/001: dispatch order and findings registry schema."
 trigger_phrases:
   - "019 research wave adr"
   - "tier 1 dispatch adr"
 importance_tier: "critical"
-contextType: "decision-record"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Decision record scaffolded"
     next_safe_action: "Charter approval"
     key_files: ["decision-record.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: 019 Initial Research Wave
 

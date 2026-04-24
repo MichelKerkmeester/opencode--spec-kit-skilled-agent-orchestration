@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify + level3-arch | v2.2 -->"
-title: "Verification Checklist: OpenCode Plugin Loader Remediation"
-description: "Evidence-backed verification checklist for restoring OpenCode 1.3.17 TUI startup by isolating non-plugin helper modules out of `.opencode/plugins/`."
+title: "...-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation/checklist]"
+description: "Evidence-backed verification checklist for restoring OpenCode 1.3.17 TUI startup by isolating non-plugin helper modules out of .opencode/plugins/."
 trigger_phrases:
   - "026/009/007 checklist"
   - "opencode plugin loader checklist"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Phase 5 status accuracy and defensive guards implemented and verified"
     next_safe_action: "Resolve Copilot hook wiring mismatch, rerun full vitest, then refresh canonical save if needed"
     completion_pct: 100
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Verification Checklist: OpenCode Plugin Loader Remediation
 

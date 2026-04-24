@@ -1,9 +1,15 @@
 ---
-title: "Feature Specification: CLI Runtime Matrix for Iterative Skills"
+title: "...ph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix/spec]"
 description: "Wire cli-copilot, cli-gemini, cli-claude-code as executors alongside the existing cli-codex in sk-deep-research + sk-deep-review. Document cross-CLI delegation. Per-kind flag-compatibility validation in executor-config.ts."
-trigger_phrases: ["cli runtime matrix", "cli-copilot executor", "cli-gemini executor", "cli-claude-code executor", "cross-cli delegation"]
-importance_tier: "high"
+trigger_phrases:
+  - "cli runtime matrix"
+  - "cli-copilot executor"
+  - "cli-gemini executor"
+  - "cli-claude-code executor"
+  - "cross-cli delegation"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix"

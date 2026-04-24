@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: Doc Surface Alignment for Graph Metadata"
+title: "...advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment/implementation-summary]"
 description: "This phase aligned the requested operator-facing docs with the shipped graph metadata parser behavior so status, key-file, entity, trigger, and backfill guidance all match runtime reality."
 trigger_phrases:
   - "graph metadata doc alignment"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "active-only backfill"
   - "checklist aware status"
 importance_tier: "important"
-contextType: "verification"
-status: complete
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment"
@@ -30,6 +29,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Which listed surfaces still described pre-019 graph metadata behavior"
+status: complete
 ---
 # Implementation Summary: Doc Surface Alignment for Graph Metadata
 

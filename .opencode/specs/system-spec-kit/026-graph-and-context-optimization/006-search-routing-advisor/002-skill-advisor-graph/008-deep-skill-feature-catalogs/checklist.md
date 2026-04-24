@@ -1,12 +1,24 @@
 ---
-title: "Verification Checklist: Deep Skill Feature Catalogs"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+title: "...nd-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/checklist]"
+description: 'title: "Verification Checklist: Deep Skill Feature Catalogs"'
+trigger_phrases:
+  - "context"
+  - "optimization"
+  - "006"
+  - "search"
+  - "routing"
+  - "checklist"
+  - "008"
+  - "deep"
+importance_tier: "normal"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs"
     last_updated_at: "2026-04-13T00:00:00Z"
     last_updated_by: "claude-opus-4-6"
     key_files: ["checklist.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Deep Skill Feature Catalogs
 

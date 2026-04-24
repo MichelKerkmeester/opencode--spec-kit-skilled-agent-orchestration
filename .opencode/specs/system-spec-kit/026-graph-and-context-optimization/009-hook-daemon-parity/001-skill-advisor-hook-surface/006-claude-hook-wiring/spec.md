@@ -1,14 +1,13 @@
 ---
-title: "Feature Specification: Claude Hook Wiring (UserPromptSubmit)"
+title: "...026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring/spec]"
 description: "Wire the advisor brief into Claude's UserPromptSubmit event via JSON hookSpecificOutput.additionalContext. First user-visible runtime slice."
 trigger_phrases:
   - "020 claude hook"
-  - "UserPromptSubmit advisor"
+  - "userpromptsubmit advisor"
   - "claude additional context advisor"
   - "advisor prompt submit wire"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/006-claude-hook-wiring"
@@ -23,7 +22,7 @@ _memory:
       - "tasks.md"
       - "checklist.md"
       - "implementation-summary.md"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Claude Hook Wiring (UserPromptSubmit)
 

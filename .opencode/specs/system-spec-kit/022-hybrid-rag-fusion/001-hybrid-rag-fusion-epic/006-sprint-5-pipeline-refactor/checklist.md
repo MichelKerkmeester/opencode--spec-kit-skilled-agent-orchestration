@@ -1,12 +1,22 @@
 ---
-title: "Verification Checklist: Sprint 5 — Pipeline Refactor"
+title: "Verification [system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/006-sprint-5-pipeline-refactor/checklist]"
 description: "Verification checklist for 4-stage pipeline refactor, spec folder pre-filter, query expansion, and spec-kit retrieval metadata."
 trigger_phrases:
   - "sprint 5 checklist"
   - "pipeline refactor checklist"
   - "sprint 5 verification"
 importance_tier: "normal"
-contextType: "implementation" ---
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/006-sprint-5-pipeline-refactor"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
+---
 # Verification Checklist: Sprint 5 — Pipeline Refactor
 
 <!-- SPECKIT_LEVEL: 2 -->

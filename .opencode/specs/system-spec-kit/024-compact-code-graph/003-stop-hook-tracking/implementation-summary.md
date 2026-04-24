@@ -1,7 +1,24 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Implementation Summary: Stop Hook + Token Tracking [024/003]"
+title: "Implementation Summary: Stop [system-spec-kit/024-compact-code-graph/003-stop-hook-tracking/implementation-summary]"
 description: "Implemented async Stop hook for session-end token tracking and context auto-save, with streaming transcript parser and incremental offset-based parsing."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "stop"
+  - "implementation summary"
+  - "003"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/003-stop-hook-tracking"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Summary
 
@@ -53,18 +70,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 003-stop-hook-tracking |
 | **Completed** | 2026-03-28 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:what-built -->
+<!-- ANCHOR:what-built-2 -->
 ### What Was Built
 An async Stop hook that fires when a Claude Code session ends, parses the transcript JSONL for token usage, stores snapshots in hook state, and optionally triggers a lightweight context save when significant work was performed.
 
@@ -94,14 +111,14 @@ Token usage feeds back into the MCP budget system: `getTokenUsageRatio()` in `co
 | `lib/code-graph/code-graph-db.ts` | Modified | Added `getTokenUsageRatio()` for pressure feedback |
 | `hooks/claude/shared.ts` | Modified | Added `calculatePressureAdjustedBudget()` using token ratio |
 | `tests/hook-stop-token-tracking.vitest.ts` | New | Test suite for token parsing, cost estimation, snapshots |
-<!-- /ANCHOR:what-built -->
+<!-- /ANCHOR:what-built-2 -->
 
 ---
 
-<!-- ANCHOR:how-delivered -->
+<!-- ANCHOR:how-delivered-2 -->
 ### How It Was Delivered
 Implemented in a single session as part of the 024-compact-code-graph hook pipeline (phases 1-4 were developed together). The transcript parser was built first as a standalone module, then integrated into the Stop hook. Token storage was simplified from the original spec's SQLite `session_token_snapshots` table to hook-state JSON — the append-only semantic was preserved while avoiding schema migration complexity.
-<!-- /ANCHOR:how-delivered -->
+<!-- /ANCHOR:how-delivered-2 -->
 
 ---
 ### Key Decisions
@@ -114,7 +131,7 @@ Implemented in a single session as part of the 024-compact-code-graph hook pipel
 | `--finalize` flag over separate script | Reuses existing session-stop.ts code path; enables SessionEnd hook reuse without a new file |
 ---
 
-<!-- ANCHOR:verification -->
+<!-- ANCHOR:verification-2 -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -125,15 +142,15 @@ Implemented in a single session as part of the 024-compact-code-graph hook pipel
 | `stop_hook_active` guard | Verified — early return when false |
 | Auto-save threshold | Verified — triggers at >1000 output tokens |
 | Phase 003 checklist | 15/15 items verified (P0: 7, P1: 4, P2: 4) |
-<!-- /ANCHOR:verification -->
+<!-- /ANCHOR:verification-2 -->
 
 ---
 
-<!-- ANCHOR:limitations -->
+<!-- ANCHOR:limitations-2 -->
 ### Known Limitations
 1. **Token counts are estimates.** Transcript JSONL may not contain usage data for all message types (e.g., tool results). Counts represent a lower bound of actual usage.
 2. **Hook-state JSON is not queryable across sessions.** Unlike the originally-specced SQLite table, multi-session token reporting requires reading individual state files. Sufficient for v1 needs.
 3. **Auto-save now executes `generate-context.js` directly.** The hook attempts a best-effort save when thresholds are met and logs non-fatal warnings when script resolution or execution fails.
 4. **Cost estimation is incomplete.** The current estimate covers input and output tokens only and does not include cache read or cache write pricing.
 5. **Compiled hook artifacts require a build step.** Hook registration points to `dist/hooks/claude/session-stop.js`, so source changes do not take effect until the `dist/` files are rebuilt.
-<!-- /ANCHOR:limitations -->
+<!-- /ANCHOR:limitations-2 -->

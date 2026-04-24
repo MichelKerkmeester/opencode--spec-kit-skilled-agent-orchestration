@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
-title: "Task Breakdown: Code Graph Context + Scan Scope Remediation"
+title: "...ystem-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/tasks]"
 description: "Tasks T-01..T-12 across stale highlights, scan excludes + gitignore, surface doc, and verification."
 trigger_phrases:
   - "026/003/003 tasks"
   - "code graph context tasks"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Implementation complete; verification evidence captured"
     next_safe_action: "Run future operator-driven code_graph_scan when ready"
     completion_pct: 100
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Task Breakdown: Code Graph Context + Scan Scope Remediation
 

@@ -1,13 +1,12 @@
 ---
-title: "Tasks: Memory Quality Backend Improvements"
+title: "...ystem-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/tasks]"
 description: "Historical pre-decomposition task list retained for traceability; execution moved to phase folders 001-005."
 trigger_phrases:
   - "memory quality tasks"
   - "research tasks complete"
   - "remediation task placeholder"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation"
@@ -16,9 +15,8 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
 ---
-
 # Tasks: Memory Quality Backend Improvements
 
 <!-- SPECKIT_LEVEL: 2 -->

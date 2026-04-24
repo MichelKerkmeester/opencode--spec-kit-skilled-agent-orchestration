@@ -1,11 +1,10 @@
 ---
-title: "Implementation Summary: Advisor Renderer + 200-Prompt Regression Harness"
+title: "...hook-daemon-parity/001-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness/implementation-summary]"
 description: "020/005 hard gate shipped: pure renderer, 10 fixtures, 5 advisor harnesses, metrics/privacy contract, 200/200 parity, cache-hit p95 gate, and gate-lift confirmation."
 trigger_phrases:
   - "020 005 summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness"
@@ -15,7 +14,7 @@ _memory:
     next_safe_action: "Dispatch 020/006 Claude hook wiring"
     blockers: []
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Advisor Renderer + 200-Prompt Regression Harness
 

@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 006-ralph-main Research Phase Closeout"
+title: "Tasks: 006-ralph-mai [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/006-ralph-main/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "006-ralph-main tasks"

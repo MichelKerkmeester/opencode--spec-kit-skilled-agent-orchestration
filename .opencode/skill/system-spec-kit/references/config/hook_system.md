@@ -77,6 +77,35 @@ Prompt hooks and lifecycle hooks are separate capabilities. A runtime can suppor
 
 Claude Code uses native `UserPromptSubmit`, `SessionStart`, `PreCompact`, and `Stop` hooks. Gemini CLI uses native `BeforeAgent`, `SessionStart`, `PreCompress`, and `SessionEnd` hooks. Copilot CLI uses the merged `.claude/settings.local.json` wrapper path: top-level `type`, `bash`, and `timeoutSec` fields on `UserPromptSubmit` and `SessionStart` invoke the Copilot writers, those writers refresh the Spec Kit managed block in `$HOME/.copilot/copilot-instructions.md`, and hook output remains `{}` with next-prompt freshness semantics. Generic `.github/hooks/*.json` files do not prove Spec Kit Copilot readiness on their own. OpenCode uses plugin-based transport rather than shell wrappers: `.opencode/plugins/spec-kit-skill-advisor.js` delivers prompt-time advisor briefs through `experimental.chat.system.transform`, while `.opencode/plugins/spec-kit-compact-code-graph.js` and plugin `event` handlers cover startup, compaction, readiness, and session cleanup. Codex CLI only reports live native-hook readiness when `[features].codex_hooks = true` is enabled in `~/.codex/config.toml` and `~/.codex/hooks.json` is wired; use `/spec_kit:resume` when those hooks are unavailable or disabled. If automatic hook delivery is unavailable in any runtime, or the advisor hook path is intentionally disabled (`SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1`), fall back to the canonical operator path: start with `/spec_kit:resume`, rebuild packet continuity from `handover.md -> _memory.continuity -> spec docs`, then use `session_bootstrap()` or `session_resume()` only when you need lower-level structural health or merged recovery detail.
 
+## Shared Startup Payload Parity
+
+All four supported runtimes transport the same compact startup shared-payload through their runtime-specific hooks. The payload is produced by `buildStartupBrief()` in `mcp_server/lib/startup-brief.ts` and includes `graphQualitySummary` (detector provenance + edge-enrichment summary) alongside the `sharedPayloadTransport` envelope. Runtime-specific startup entrypoints:
+
+| Runtime | Startup entrypoint | Transport |
+| --- | --- | --- |
+| Claude | `hooks/claude/session-prime.ts` | stdout context injection |
+| Gemini | `hooks/gemini/session-prime.ts` | SessionStart injection |
+| Copilot | `hooks/copilot/session-prime.ts` | refreshes managed block in `$HOME/.copilot/copilot-instructions.md` |
+| Codex | `hooks/codex/session-start.ts` | native `SessionStart` hook (requires `[features].codex_hooks = true` + `~/.codex/hooks.json`) |
+
+`graphQualitySummary` is also surfaced on `code_graph_status` and `session_bootstrap()` / startup-brief responses, so operators can inspect the same quality envelope regardless of transport. `session_bootstrap()` remains a manual fallback when native startup hooks are disabled — it is no longer a Codex-only substitute.
+
+## Advisor Bridge and Threshold Contract
+
+OpenCode delivers prompt-time advisor context through a plugin-helper bridge rather than a shell wrapper:
+
+- Plugin: `.opencode/plugins/spec-kit-skill-advisor.js`
+- Bridge entrypoint: `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs`
+- Target: native compat entrypoint under `mcp_server/skill-advisor/compat/`
+
+The bridge routes through the shared `renderAdvisorBrief(...)` invariants used by the Codex prompt-submit hook and prompt-wrapper fallback. The default OpenCode prompt-time threshold contract is **`0.8` confidence / `0.35` uncertainty**.
+
+Packet 014 unified the public MCP contract:
+
+- `advisor_recommend` and `advisor_validate` accept an explicit `workspaceRoot` argument; both responses surface the resolved `workspaceRoot` and `effectiveThresholds` used for routing.
+- `advisor_validate` additionally publishes `thresholdSemantics` (aggregate vs runtime) plus a prompt-safe `telemetry.outcomes.totals` block (`accepted` / `corrected` / `ignored`).
+- Hook diagnostics persist to bounded JSONL sinks under the temp metrics root (`${TMPDIR}/speckit-advisor-metrics/`), so `advisor_validate` can read the sinks back across processes.
+
 ## Retrieval Primitives
 
 The same retrieval building blocks power both hook delivery and explicit recovery:

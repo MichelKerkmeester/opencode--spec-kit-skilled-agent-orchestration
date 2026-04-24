@@ -1,14 +1,13 @@
 ---
-title: "Tasks: Phase 3 — Sanitization & Decision Precedence"
+title: "...-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/003-sanitization-precedence/tasks]"
 description: "Execution tasks for PR-5 and PR-6 in Phase 3, including sanitizer extraction, precedence gating, fixture work, and phase validation."
 trigger_phrases:
   - "phase 3 tasks"
   - "pr-5 tasks"
   - "pr-6 tasks"
   - "sanitization precedence tasks"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + phase execution detail | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/003-sanitization-precedence"
@@ -17,9 +16,8 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + phase execution detail | v2.2 -->"
 ---
-
 # Tasks: Phase 3 — Sanitization & Decision Precedence
 
 <!-- SPECKIT_LEVEL: 2 -->

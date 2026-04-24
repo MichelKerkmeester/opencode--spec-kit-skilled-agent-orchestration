@@ -36,6 +36,7 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
+      ".opencode/skill/mcp-coco-index/feedback/search-feedback.jsonl",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -46,6 +47,12 @@
       ".opencode/skill/mcp-coco-index/README.md"
     ],
     "entities": [
+      {
+        "name": "search-feedback.jsonl",
+        "kind": "file",
+        "path": ".opencode/skill/mcp-coco-index/feedback/search-feedback.jsonl",
+        "source": "derived"
+      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -183,17 +190,12 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
-      },
-      {
-        "name": "Verification Template",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
     "created_at": "2026-04-12T09:02:50.350Z",
-    "last_save_at": "2026-04-18T14:39:00.679Z",
+    "last_save_at": "2026-04-24T15:34:55.412Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

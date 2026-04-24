@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Contextador Research Phase (003-contextador)"
+title: "Decision [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/003-contextador/decision-record]"
 description: "ADRs governing the research-only scope, cli-codex iteration delegation, and Level 3 documentation choices for the 003-contextador phase."
 trigger_phrases:
   - "contextador adr"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "research-only scope"
 importance_tier: "normal"
 contextType: "general"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["decision-record.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Contextador Research Phase
 

@@ -1,13 +1,12 @@
 ---
-title: "Tasks: Graph and Context Systems Master Research Packet"
+title: "Tasks: Graph and Context Systems [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/tasks]"
 description: "Executable packet tasks for parent-doc completion truth, canonical root research alignment, and root support-folder verification."
 trigger_phrases:
   - "graph context packet tasks"
   - "follow-on packet tasks"
   - "root packet conformance"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Merged single original phase root"
     next_safe_action: "Use context-index.md for local phase navigation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Graph and Context Systems Master Research Packet
 

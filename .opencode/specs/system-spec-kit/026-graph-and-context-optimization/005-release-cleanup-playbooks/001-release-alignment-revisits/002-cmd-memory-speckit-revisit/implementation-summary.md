@@ -1,12 +1,12 @@
 ---
-title: "018 / 008 — command revisit summary"
+title: "...n/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit/implementation-summary]"
 description: "Evidence ledger for the 016 command release-alignment revisit under the Phase 018 continuity model."
-trigger_phrases: ["008 implementation summary", "command revisit summary", "phase 018 command evidence"]
+trigger_phrases:
+  - "008 implementation summary"
+  - "command revisit summary"
+  - "phase 018 command evidence"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit"
@@ -15,6 +15,9 @@ _memory:
     recent_action: "Recorded the 008 revisit evidence"
     next_safe_action: "Reference"
     key_files: ["implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: 018 / 008 — command revisit
 <!-- SPECKIT_LEVEL: 2 -->

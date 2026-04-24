@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 017 Swarm Mailbox Artifacts Study [template:level_2/checklist.md]"
+title: "Verif [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/017-swarm-mailbox-artifacts-study/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

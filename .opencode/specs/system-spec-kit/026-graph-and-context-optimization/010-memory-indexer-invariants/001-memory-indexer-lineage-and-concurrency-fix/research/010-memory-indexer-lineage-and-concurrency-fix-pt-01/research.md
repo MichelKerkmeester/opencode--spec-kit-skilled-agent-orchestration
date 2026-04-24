@@ -1,3 +1,25 @@
+---
+title: "...01-memory-indexer-lineage-and-concurrency-fix/research/010-memory-indexer-lineage-and-concurrency-fix-pt-01/research]"
+description: "This phase investigated whether the recent memory-indexer fix packet actually closes the original lineage and scan-concurrency failures, and where residual risk still remains. T..."
+trigger_phrases:
+  - "memory"
+  - "indexer"
+  - "lineage"
+  - "and"
+  - "concurrency"
+  - "research"
+  - "010"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix/research/010-memory-indexer-lineage-and-concurrency-fix-pt-01"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
+---
 # Deep Research — 010-memory-indexer-lineage-and-concurrency-fix
 
 ## Summary

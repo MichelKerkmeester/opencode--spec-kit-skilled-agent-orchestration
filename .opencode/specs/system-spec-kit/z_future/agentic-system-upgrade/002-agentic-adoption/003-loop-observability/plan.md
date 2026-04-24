@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 003 Loop Observability [template:level_2/plan.md]"
+title: "Implementation [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/003-loop-observability/plan]"
 description: "Improve operator-facing deep-loop visibility by adding richer metrics, status cards, and progress summaries above the existing JSONL and packet artifact layer."
 trigger_phrases:
   - "implementation"

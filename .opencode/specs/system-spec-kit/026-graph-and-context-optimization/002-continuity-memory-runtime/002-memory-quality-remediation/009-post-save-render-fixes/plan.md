@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Post-Save Render Fixes"
+title: "...nd-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes/plan]"
 description: "Plan for the nine render-layer fixes in the memory-save pipeline plus round-trip verification."
 trigger_phrases:
   - "009 render fixes plan"
   - "post-save render plan"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Post-Save Render Fixes
 

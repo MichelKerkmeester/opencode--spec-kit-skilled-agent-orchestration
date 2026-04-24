@@ -1,10 +1,11 @@
 ---
-title: "Tasks: 004-migration-lineage-and-identity-drift Migration, Lineage, and Identity Drift Remediation"
+title: "...ion/007-deep-review-remediation/005-006-campaign-findings-remediation/004-migration-lineage-and-identity-drift/tasks]"
 description: "Task ledger for 004-migration-lineage-and-identity-drift Migration, Lineage, and Identity Drift Remediation."
 trigger_phrases:
   - "tasks 004 migration lineage and identity drift migration lineage and ide"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/004-migration-lineage-and-identity-drift"

@@ -1,11 +1,11 @@
 ---
-title: "Decision Record: 009-xethryon Research Phase"
+title: "Decision [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/009-xethryon/decision-record]"
 description: "Accepted decision for how the Xethryon Phase 2 continuation was executed and closed out."
 trigger_phrases:
   - "009-xethryon decision record"
-  - "xethryon ADR"
+  - "xethryon adr"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: 009-xethryon Research Phase
 

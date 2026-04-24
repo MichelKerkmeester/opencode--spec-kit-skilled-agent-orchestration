@@ -1,9 +1,14 @@
 ---
-title: "Verification Checklist: Phase 017 Wave D — P2 Maintainability"
+title: "...ph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability/checklist]"
 description: "CHK-D-01..06 verification items + parking-lot tracking + light gate (×3 deep-review). All items use canonical [EVIDENCE:] closers with ] per T-EVD-01 contract. Deferrable: partial completion acceptable."
-trigger_phrases: ["017 wave d checklist", "004 p2 maintainability checklist", "chk-d-01", "chk-d-gate"]
-importance_tier: "standard"
-contextType: "verification"
+trigger_phrases:
+  - "017 wave d checklist"
+  - "004 p2 maintainability checklist"
+  - "chk-d-01"
+  - "chk-d-gate"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability"

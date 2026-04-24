@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Hook Daemon Parity"
+title: "Implementation Plan: Hook Daemon Parity [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/plan]"
 description: "Plan for keeping skill graph daemon, hook parity, plugin/runtime parity, and parity remediation as a parent with direct child phase packets."
 trigger_phrases:
   - "009-hook-daemon-parity"
@@ -16,8 +16,7 @@ trigger_phrases:
   - "010-copilot-wrapper-schema-fix"
   - "011-copilot-writer-wiring"
 importance_tier: "important"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity"
@@ -38,6 +37,7 @@ _memory:
     completion_pct: 85
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Hook Daemon Parity
 

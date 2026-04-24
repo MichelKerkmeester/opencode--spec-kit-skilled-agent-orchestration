@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Q4 NFKC Robustness Research (RR-1)"
+title: "...xt-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/003-q4-nfkc-robustness/plan]"
 description: "Dispatch plan for the RR-1 deep-research iteration."
 trigger_phrases:
   - "rr-1 dispatch plan"
   - "nfkc research plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/003-q4-nfkc-robustness"
@@ -14,7 +13,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Dispatch plan scaffolded"
     next_safe_action: "Wait for Wave 1 convergence"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Q4 NFKC Robustness Research
 

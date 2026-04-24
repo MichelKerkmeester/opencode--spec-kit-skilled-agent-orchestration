@@ -1,15 +1,23 @@
 ---
-title: "Plan: Startup Context Injection Debug — Hook Runtime Brief + Sibling Handoff"
+title: "Plan: Startup Context Injection Debug [system-spec-kit/024-compact-code-graph/026-session-start-injection-debug/plan]"
 description: "Build a reusable startup brief helper for Claude/Gemini startup injection, keep hookless bootstrap work out of scope, and hand that contract to Phase 027."
 trigger_phrases:
   - "startup injection plan"
-  - "handleStartup fix"
+  - "handlestartup fix"
   - "026 plan"
   - "cross-runtime priming"
 importance_tier: "critical"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/026-session-start-injection-debug"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
-
 # Plan: Startup Context Injection Debug — Hook Runtime Brief + Sibling Handoff
 
 <!-- SPECKIT_LEVEL: 2 -->

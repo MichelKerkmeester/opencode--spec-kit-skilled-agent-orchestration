@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 008 Continuity and Memory UX Integration [template:level_2/checklist.md]"
+title: "...tem-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/008-continuity-and-memory-ux-integration/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

@@ -1,9 +1,18 @@
 ---
-title: "Phase 017 Wave A: Infrastructure Primitives"
+title: "...-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives/spec]"
 description: "Child phase 001 of Phase 017 remediation — Wave A infrastructure primitives (~20h, CRITICAL PATH). 5 tasks: canonical save metadata writer (merged PR), readiness-contract extraction, shared-provenance extraction, normalizer collapse, 016 checklist evidence rewrap. Blocks everything downstream."
-trigger_phrases: ["phase 017 wave a", "017 wave a infrastructure primitives", "wave a critical path", "t-cns-01 t-w1-cns-04 merged pr", "readiness-contract extract", "shared-provenance extract", "normalizer collapse wave a", "016 checklist evidence rewrap prep"]
+trigger_phrases:
+  - "phase 017 wave a"
+  - "017 wave a infrastructure primitives"
+  - "wave a critical path"
+  - "t-cns-01 t-w1-cns-04 merged pr"
+  - "readiness-contract extract"
+  - "shared-provenance extract"
+  - "normalizer collapse wave a"
+  - "016 checklist evidence rewrap prep"
 importance_tier: "critical"
-contextType: "specification"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives"

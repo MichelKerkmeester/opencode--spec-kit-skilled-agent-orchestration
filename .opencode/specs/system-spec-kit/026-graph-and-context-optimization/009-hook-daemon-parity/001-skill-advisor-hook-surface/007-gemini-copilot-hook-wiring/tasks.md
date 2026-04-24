@@ -1,11 +1,10 @@
 ---
-title: "Tasks: Gemini + Copilot Hook Wiring"
+title: "...-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring/tasks]"
 description: "Task list for 020/007 — 2 adapters + parity test + 2 settings."
 trigger_phrases:
   - "020 007 tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring"
@@ -15,7 +14,7 @@ _memory:
     next_safe_action: "Begin T001 after 006 converges"
     blockers: ["005-advisor-renderer-and-regression-harness", "006-claude-hook-wiring"]
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Gemini + Copilot Hook Wiring
 

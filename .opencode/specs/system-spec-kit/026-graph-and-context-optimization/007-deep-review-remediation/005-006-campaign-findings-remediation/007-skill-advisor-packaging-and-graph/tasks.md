@@ -1,10 +1,11 @@
 ---
-title: "Tasks: 007-skill-advisor-packaging-and-graph Skill Advisor Packaging and Graph Remediation"
+title: "...zation/007-deep-review-remediation/005-006-campaign-findings-remediation/007-skill-advisor-packaging-and-graph/tasks]"
 description: "Task ledger for 007-skill-advisor-packaging-and-graph Skill Advisor Packaging and Graph Remediation."
 trigger_phrases:
-  - "tasks 007 skill advisor packaging and graph skill advisor packaging and "
-importance_tier: "high"
-contextType: "spec"
+  - "tasks 007 skill advisor packaging and graph skill advisor packaging and"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/007-skill-advisor-packaging-and-graph"

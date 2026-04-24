@@ -93,6 +93,12 @@
         "source": "derived"
       },
       {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -102,12 +108,6 @@
         "name": "External Graph Memory Research",
         "kind": "proper_noun",
         "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Spec Kit Memory",
-        "kind": "proper_noun",
-        "path": "research/research.md",
         "source": "derived"
       },
       {
@@ -183,13 +183,13 @@
         "source": "derived"
       },
       {
-        "name": "Verification Checklist",
+        "name": "Verification Date",
         "kind": "proper_noun",
         "path": "checklist.md",
         "source": "derived"
       },
       {
-        "name": "Verification Date",
+        "name": "Verification Checklist",
         "kind": "proper_noun",
         "path": "checklist.md",
         "source": "derived"
@@ -197,7 +197,8 @@
     ],
     "causal_summary": "The Spec Kit Memory causal graph currently has 3,854 edges at 79.92% coverage, dominated by `supports` (2,578) and `caused` (1,265) relations. While structurally healthy, the graph is used reactively — retrieved only when causal boost or co-activation fires — rather than as a proactive, first-class retrieval channel. This research phase investigates how leading external graph memory systems (Zep, Mem0, GraphRAG, Memoripy, LightRAG, Cognee) handle graph construction, traversal, UX surface, and automatic utilization, and produces a ranked shortlist of improvements applicable to our system.",
     "created_at": "2026-04-12T09:02:50.335Z",
-    "last_save_at": "2026-04-18T14:39:00.653Z",
+    "last_save_at": "2026-04-24T15:33:55.022Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

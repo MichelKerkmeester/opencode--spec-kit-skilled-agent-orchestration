@@ -1,10 +1,11 @@
 ---
-title: "Verification Checklist: 010-telemetry-measurement-and-rollout-controls Telemetry, Measurement, and Rollout Controls Remediation"
+title: "...ep-review-remediation/005-006-campaign-findings-remediation/010-telemetry-measurement-and-rollout-controls/checklist]"
 description: "Verification gates for 010-telemetry-measurement-and-rollout-controls Telemetry, Measurement, and Rollout Controls Remediation."
 trigger_phrases:
   - "verification checklist 010 telemetry measurement and rollout controls te"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/010-telemetry-measurement-and-rollout-controls"

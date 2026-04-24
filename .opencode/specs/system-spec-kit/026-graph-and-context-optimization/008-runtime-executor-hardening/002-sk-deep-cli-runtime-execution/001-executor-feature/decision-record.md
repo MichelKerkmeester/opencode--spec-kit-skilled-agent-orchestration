@@ -1,11 +1,12 @@
 ---
-title: "Decision Record: Deep-Loop CLI Executor Selection"
+title: "...t-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature/decision-record]"
 description: "ADRs for Phase 018 architectural choices: dispatch-branch vs. loop-replacement, config-block vs. runtime_capabilities.json extension, cli-codex-first vs. cli-copilot-first, stdin-piping vs. positional-prompt, sk-deep-review co-ship vs. sequential."
 trigger_phrases:
   - "018 decisions"
   - "deep-loop executor adr"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature"

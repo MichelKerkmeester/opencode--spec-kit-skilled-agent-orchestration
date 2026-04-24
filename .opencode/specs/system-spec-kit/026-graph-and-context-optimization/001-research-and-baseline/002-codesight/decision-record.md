@@ -1,14 +1,13 @@
 ---
-title: "Decision Record: 002-codesight Research Phase"
+title: "Decision [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight/decision-record]"
 description: "Architecture Decision Records covering engine selection, native fallback after codex stalls, parallel background dispatch for the first continuation charter, and sandbox-extract workaround within the 20-iteration codesight deep-research packet."
 trigger_phrases:
   - "002-codesight decision record"
-  - "002-codesight ADR"
+  - "002-codesight adr"
   - "codesight engine choice"
   - "codesight sandbox extract workaround"
-importance_tier: critical
-contextType: decision-record
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+importance_tier: "critical"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["decision-record.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: 002-codesight Research Phase
 

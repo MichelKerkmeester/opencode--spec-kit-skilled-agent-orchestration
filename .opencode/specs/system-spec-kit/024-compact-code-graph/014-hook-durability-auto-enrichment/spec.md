@@ -1,6 +1,22 @@
 ---
-title: "Spec: Hook Durability & Auto-Enrichment [024/014]"
+title: "Spec: Hook Durability & [system-spec-kit/024-compact-code-graph/014-hook-durability-auto-enrichment/spec]"
 description: "Fix 6 P1 hook reliability/security bugs and implement 8 P2 auto-enrichment features. Covers cache race, error propagation, injection fencing, hook path bypass, session aliasing, file permissions, MCP priming, auto-enrichment, stale-on-read, cache freshness, dead code cleanup."
+trigger_phrases:
+  - "spec"
+  - "hook"
+  - "durability"
+  - "014"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/014-hook-durability-auto-enrichment"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Phase 014 — Hook Durability & Auto-Enrichment

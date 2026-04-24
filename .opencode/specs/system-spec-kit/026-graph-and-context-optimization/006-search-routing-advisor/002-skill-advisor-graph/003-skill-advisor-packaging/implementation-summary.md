@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Skill Advisor Packaging"
+title: "...t-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging/implementation-summary]"
 description: "The packet now matches the shipped skill-advisor layout, records the scripts/ subfolder decision, and passes strict validation without error status."
 trigger_phrases:
   - "003-skill-advisor-packaging"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "scripts subfolder summary"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging"
@@ -16,6 +15,7 @@ _memory:
     recent_action: "Completed remediation"
     next_safe_action: "Re-run strict validation"
     key_files: ["implementation-summary.md", "spec.md", "graph-metadata.json"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Skill Advisor Packaging
 

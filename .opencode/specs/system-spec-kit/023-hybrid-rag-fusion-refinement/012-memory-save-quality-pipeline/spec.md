@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory Save Quality Pipeline [system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/spec]"
+title: "Feature Specification: Memory [system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/spec]"
 description: "Stabilize JSON-mode memory saves so structured input reliably produces usable, non-boilerplate memory context output."
 trigger_phrases:
   - "memory save quality"
@@ -8,11 +8,20 @@ trigger_phrases:
   - "context compaction save"
 importance_tier: "critical"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["spec.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
-# Feature Specification: Memory Save Quality Pipeline
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
+
+# Feature Specification: Memory Save Quality Pipeline
 
 ---
 
@@ -26,6 +35,7 @@ This phase addresses structured-input (`--json`/`--stdin`) quality regressions i
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -38,6 +48,7 @@ This phase addresses structured-input (`--json`/`--stdin`) quality regressions i
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | 011-indexing-and-adaptive-fusion |
 | **Successor** | 013-fts5-fix-and-search-dashboard |
+<!-- /ANCHOR:metadata -->
 
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Skill Advisor Graph [template:level_2/plan.md]"
+title: "Implementat [system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/plan]"
 description: "Implementation plan for adding graph metadata to all skills and integrating into the skill advisor."
 trigger_phrases:
   - "011-skill-advisor-graph"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "plan"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Created plan"
     next_safe_action: "Implement graph metadata files"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Skill Advisor Graph
 

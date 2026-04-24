@@ -1,11 +1,20 @@
 ---
-title: "Tasks: 041 Recursive Agent Loop [template:level_2/tasks.md]"
+title: "Tasks: 041 Recursive Agent Loop [template:level_2/tasks. [skilled-agent-orchestration/041-sk-recursive-agent-loop/tasks]"
 description: "Parent packet task tracking for the agent-improver program phases."
 trigger_phrases:
   - "041 tasks"
   - "recursive agent phase tasks"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: 041 Recursive Agent Loop
 

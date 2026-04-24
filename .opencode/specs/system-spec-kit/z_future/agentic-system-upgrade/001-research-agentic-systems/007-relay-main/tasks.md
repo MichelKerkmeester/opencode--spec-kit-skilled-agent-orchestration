@@ -1,12 +1,12 @@
 ---
-title: "Tasks: 007-relay-main Research Phase"
+title: "Tasks: 007-relay-mai [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/007-relay-main/tasks]"
 description: "Task Format: T### [P?] Description (phase artifact or evidence target)"
 trigger_phrases:
   - "007-relay-main tasks"
   - "relay main tasks"
   - "agent relay research tasks"
 importance_tier: "important"
-contextType: "tasks"
+contextType: "implementation"
 ---
 # Tasks: 007-relay-main Research Phase
 

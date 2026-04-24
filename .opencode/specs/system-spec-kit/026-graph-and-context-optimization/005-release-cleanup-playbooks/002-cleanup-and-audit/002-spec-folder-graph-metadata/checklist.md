@@ -1,11 +1,13 @@
 ---
-title: "Verification Checklist: 018 / 011 — graph-metadata.json rollout"
+title: "...nd-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata/checklist]"
 description: "Verification Date: 2026-04-12"
-trigger_phrases: ["018 011 checklist", "graph metadata checklist", "graph metadata rollout verification", "canonical continuity graph checklist"]
+trigger_phrases:
+  - "018 011 checklist"
+  - "graph metadata checklist"
+  - "graph metadata rollout verification"
+  - "canonical continuity graph checklist"
 importance_tier: "important"
 contextType: "implementation"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata"
@@ -14,6 +16,8 @@ _memory:
     recent_action: "Recorded rollout evidence"
     next_safe_action: "Closeout"
     key_files: ["checklist.md", "implementation-summary.md", "tasks.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->

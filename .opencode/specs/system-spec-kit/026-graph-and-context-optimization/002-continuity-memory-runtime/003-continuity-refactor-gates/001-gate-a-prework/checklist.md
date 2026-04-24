@@ -1,12 +1,5 @@
 ---
-
-title: "Gate A — Pre-work"
-feature: phase-018-gate-a-prework
-level: 2
-status: complete
-closed_by_commit: TBD
-parent: 006-continuity-refactor-gates
-gate: A
+title: "...ph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/001-gate-a-prework/checklist]"
 description: "Exit-gate checklist for the week-0 blocker-removal lane. The Phase 018 completion pass re-verifies template hardening, backfill, backup/rollback proof, and later resume-budget evidence."
 trigger_phrases:
   - "gate a checklist"
@@ -15,8 +8,7 @@ trigger_phrases:
   - "phase 018"
   - "exit gate"
 importance_tier: "important"
-contextType: "verification"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/001-gate-a-prework"
@@ -25,6 +17,13 @@ _memory:
     recent_action: "Validated Gate A checklist continuity during the Phase 018 deep review pass"
     next_safe_action: "Use the checklist as closure evidence for the prework gate"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/001-gate-a-prework/checklist.md"]
+closed_by_commit: TBD
+feature: phase-018-gate-a-prework
+gate: A
+level: 2
+parent: 006-continuity-refactor-gates
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->

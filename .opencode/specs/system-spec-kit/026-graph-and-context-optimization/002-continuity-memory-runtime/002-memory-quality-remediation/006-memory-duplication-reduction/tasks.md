@@ -1,13 +1,12 @@
 ---
-title: "Tasks: Phase 6 — Memory Duplication Reduction"
+title: "...ext-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/006-memory-duplication-reduction/tasks]"
 description: "Task format: T6xx [modifier] Phase 6 setup, five research iterations, synthesis, implementation, and verification."
 trigger_phrases:
   - "phase 6 tasks"
   - "memory duplication tasks"
   - "phase 6 research wave"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + phase-child + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/006-memory-duplication-reduction"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + phase-child + level2-verify | v2.2 -->"
 ---
 # Tasks: Phase 6 — Memory Duplication Reduction
 

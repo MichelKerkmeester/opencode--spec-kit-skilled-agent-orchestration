@@ -1,12 +1,13 @@
 ---
-title: "Implementation Summary: Copilot CLI Hook Parity Remediation"
+title: "...026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation/implementation-summary]"
 description: "Final outcome B: Copilot CLI parity ships through a managed custom-instructions block because Copilot hook output cannot mutate prompts."
 trigger_phrases:
   - "copilot hook parity implementation"
   - "copilot custom instructions writer"
   - "026/009/004 implementation summary"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation"

@@ -1,3 +1,13 @@
+---
+title: "Plan: 007-wo [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/007-workflow-guidance-map/plan]"
+description: "1. Define the task categories: bootstrap, recall, save, review, health, structural search, and prototype-only workflows."
+trigger_phrases:
+  - "plan"
+  - "007"
+  - "workflow"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 007-workflow-guidance-map
 
 ## Affected Files

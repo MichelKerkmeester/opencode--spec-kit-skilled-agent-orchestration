@@ -8,6 +8,15 @@ trigger_phrases:
   - "006"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/006-documentation-alignment"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->
 # Verification Checklist: Phase 6 — Documentation Alignment
@@ -127,7 +136,7 @@ The checklist items below preserve the original hook-documentation delivery reco
 ### P1 — Summary-Surface Follow-Through
 - [x] `.opencode/skill/system-spec-kit/SKILL.md` summary totals match the live 43-tool MCP surface and current catalog/playbook counts [EVIDENCE: `.opencode/skill/system-spec-kit/SKILL.md` updated to 43 tools, 291 feature entries / 22 categories, and 311 scenario files / 22 categories]
 - [x] `.opencode/skill/system-spec-kit/README.md` and `.opencode/skill/system-spec-kit/mcp_server/README.md` no longer cite the pre-code-graph 33/37-tool totals or pre-Phase-024 catalog counts [EVIDENCE: README summary table, MCP README references, related-doc inventory links, and feature catalog references refreshed]
-- [x] Feature-catalog root docs distinguish the full 43-tool MCP surface from the smaller command-wrapper subset [EVIDENCE: both `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md` now describe 43 overall tools with 4 top-level memory slash commands, the `/memory:manage shared` subcommand area, and `/spec_kit:resume`]
+- [x] Feature-catalog root docs distinguish the full 43-tool MCP surface from the smaller command-wrapper subset [EVIDENCE: both `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` now describe 43 overall tools with 4 top-level memory slash commands, the `/memory:manage shared` subcommand area, and `/spec_kit:resume`]
 
 ### P2 — Reference-Surface Follow-Through
 - [x] `.opencode/skill/system-spec-kit/references/memory/memory_system.md` includes the code-graph, session, and CCC tools in its top-level tool reference [EVIDENCE: Tool Reference updated from 33 to 43 tools and now lists `session_*`, `code_graph_*`, and `ccc_*` entries]

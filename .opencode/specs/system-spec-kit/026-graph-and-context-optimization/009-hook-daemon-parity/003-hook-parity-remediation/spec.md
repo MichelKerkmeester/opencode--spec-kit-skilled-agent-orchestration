@@ -1,13 +1,13 @@
 ---
-title: "029 - Runtime Hook Parity Remediation"
+title: "029 - Runti [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/spec]"
 description: "Fix 10 hook findings from the 2026-04-21 hook parity review, including OpenCode transport, Codex hook reliability, Copilot startup wiring, and documentation truth-sync."
 trigger_phrases:
   - "026/009/003 hook parity"
   - "opencode plugin bridge"
   - "codex advisor hook"
-importance_tier: "high"
-contextType: "feature-specification"
-packet_level: 3
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"
@@ -16,6 +16,7 @@ _memory:
     recent_action: "Deferred Vitest baseline failures closed"
     next_safe_action: "Run strict validation and close remaining review remediation gates"
     completion_pct: 100
+packet_level: 3
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 <!-- SPECKIT_LEVEL: 3 -->

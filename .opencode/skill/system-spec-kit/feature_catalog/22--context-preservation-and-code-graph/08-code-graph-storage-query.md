@@ -10,7 +10,7 @@ audited_post_018: true
 
 Code graph provides SQLite storage with code_files, code_nodes, and code_edges tables plus 4 MCP tools for structural queries, readiness reporting, and compact graph context.
 
-SQLite database (`code-graph.sqlite`) stores indexed files, symbol nodes, and relationship edges. 4 MCP tools: `code_graph_scan` (workspace indexing), `code_graph_query` (outline/calls/imports), `code_graph_status` (freshness plus readiness, trust, parse-health, and `graphQualitySummary` reporting), and `code_graph_context` (LLM neighborhoods with readiness metadata, blocked full-scan responses, and `metadata.partialOutput` when budget or deadline limits trim output). WAL mode, foreign keys, directional indexes.
+SQLite database (`code-graph.sqlite`) stores indexed files, symbol nodes, and relationship edges. 4 MCP tools: `code_graph_scan` (workspace indexing, with null-summary clearing of stale persisted edge-enrichment summaries), `code_graph_query` (outline/calls/imports; CALLS mode prefers callable implementation nodes over wrapper-shadow candidates for ambiguous subjects and returns ambiguity / selected-candidate metadata; shares the blocked/degraded `full_scan` response contract with `code_graph_context`), `code_graph_status` (freshness plus readiness, trust, parse-health, and `graphQualitySummary` reporting), and `code_graph_context` (LLM neighborhoods with readiness metadata, blocked full-scan responses, structured `metadata.partialOutput`, and an explicit `metadata.deadlineMs` when budget or deadline limits trim output). WAL mode, foreign keys, directional indexes.
 
 ---
 

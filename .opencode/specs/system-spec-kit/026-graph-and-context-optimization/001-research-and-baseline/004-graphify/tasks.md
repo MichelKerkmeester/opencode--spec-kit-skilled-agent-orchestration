@@ -1,13 +1,12 @@
 ---
-title: "Tasks: 004-graphify Research Phase"
+title: "Tasks: 004-graphify [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify/tasks]"
 description: "Task tracking for the 20-iteration two-wave deep-research loop on graphify plus Public-internal rollout translation, synthesis, memory save, and verification."
 trigger_phrases:
   - "graphify research tasks"
   - "004-graphify task list"
   - "graphify deep-research tasks"
-importance_tier: critical
-contextType: tasks
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+importance_tier: "critical"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: 004-graphify Research Phase
 

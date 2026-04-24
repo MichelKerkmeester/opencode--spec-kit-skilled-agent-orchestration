@@ -1,6 +1,6 @@
 ---
-title: "Implementation Plan: 008 Continuity and Memory UX Integration [template:level_2/plan.md]"
-description: "Absorb common resume and save flows into the main lifecycle UX while keeping the governed `/memory:*` subsystem available for search, governance, and maintenance work."
+title: "Imp [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/008-continuity-and-memory-ux-integration/plan]"
+description: "Absorb common resume and save flows into the main lifecycle UX while keeping the governed /memory:* subsystem available for search, governance, and maintenance work."
 trigger_phrases:
   - "implementation"
   - "plan"

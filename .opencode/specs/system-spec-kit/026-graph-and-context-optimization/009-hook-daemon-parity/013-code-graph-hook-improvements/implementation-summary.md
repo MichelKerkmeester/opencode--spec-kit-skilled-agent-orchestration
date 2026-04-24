@@ -1,18 +1,12 @@
 ---
-title: "Implementation Summary: Code-Graph Hook Improvements"
+title: "...it/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/implementation-summary]"
 description: "Packet 013 implementation closeout for resolver correctness, blocked-read handling, graph-quality observability, startup payload parity, and bounded context contracts."
 trigger_phrases:
   - "013 implementation summary"
   - "code-graph hook improvements closeout"
-importance_tier: "high"
-contextType: "implementation-summary"
-level: 2
-status: "Complete"
-completed_at: "2026-04-24"
-template_source_marker: "implementation-summary-core | v2.2"
-source_docs:
-  - "plan.md"
-  - "../../research/013-code-graph-hook-improvements-pt-02/research.md"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements"
@@ -31,6 +25,13 @@ _memory:
     open_questions: []
     answered_questions:
       - "The startup parity fix kept the builder shared payload and transported a compact serialized derivative through Claude, Gemini, Copilot, and Codex runtime hooks, with direct startup regressions covering all four."
+completed_at: "2026-04-24"
+level: 2
+source_docs:
+  - "plan.md"
+  - "../../research/013-code-graph-hook-improvements-pt-02/research.md"
+status: "Complete"
+template_source_marker: "implementation-summary-core | v2.2"
 ---
 # Implementation Summary: Code-Graph Hook Improvements
 

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Skill Graph Auto-Setup"
+title: "...26-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup/spec]"
 description: "Repair the Phase 007 packet so it accurately documents the completed auto-setup work for skill graph initialization, fallback loading, startup logging, setup guide updates, and regression verification."
 trigger_phrases:
   - "007-skill-graph-auto-setup"
@@ -9,7 +9,6 @@ trigger_phrases:
   - "skill advisor setup guide"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup"
@@ -36,6 +35,7 @@ _memory:
     answered_questions:
       - "Packet references now point at the real setup guide path outside the packet."
       - "Phase 007 remains limited to auto-setup, logging, guide, and regression-verification surfaces."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Skill Graph Auto-Setup
 

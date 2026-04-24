@@ -1,3 +1,14 @@
+---
+title: "Tasks: 002-mem [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/002-memory-review-tool/tasks]"
+description: "1. Define the graded review contract in spec.md using the Modus ranking and sequencing evidence."
+trigger_phrases:
+  - "tasks"
+  - "002"
+  - "mem"
+  - "memory"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 002-memory-review-tool
 
 1. Define the graded review contract in `spec.md` using the Modus ranking and sequencing evidence.

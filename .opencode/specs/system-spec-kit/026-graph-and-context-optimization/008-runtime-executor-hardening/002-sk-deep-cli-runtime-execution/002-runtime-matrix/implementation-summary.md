@@ -1,9 +1,13 @@
 ---
-title: "Implementation Summary: CLI Runtime Matrix for Iterative Skills"
+title: "...imization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix/implementation-summary]"
 description: "Phase 019 shipped the CLI runtime matrix, and the 2026-04-24 CF-026 remediation made codex/gemini/claude permission controls executable while adding subprocess smoke coverage for the Copilot wrapper and audited failure paths."
-trigger_phrases: ["019 implementation summary", "cli matrix shipped", "phase 019 verdict"]
-importance_tier: "high"
+trigger_phrases:
+  - "019 implementation summary"
+  - "cli matrix shipped"
+  - "phase 019 verdict"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix"

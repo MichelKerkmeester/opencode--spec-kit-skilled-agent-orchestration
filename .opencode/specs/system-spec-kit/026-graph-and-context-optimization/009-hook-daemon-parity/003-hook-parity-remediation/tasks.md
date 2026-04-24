@@ -1,11 +1,12 @@
 ---
-title: "029 - Hook Parity Remediation Tasks"
+title: "029 - Hook [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/tasks]"
 description: "Granular task list for closing hook parity findings and the 2026-04-21 deep-review P1 remediation items."
 trigger_phrases:
   - "026/009/003 tasks"
   - "hook parity tasks"
-importance_tier: "high"
-contextType: "task-list"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"

@@ -1,14 +1,13 @@
 ---
-title: "Feature Specification: 004-graphify Research Phase"
+title: "Feature Specification [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify/spec]"
 description: "Read-only research investigation of the graphify external Python skill to identify two-pass AST+LLM extraction, Leiden clustering, evidence-tagging, multimodal, and PreToolUse hook patterns Public should adopt, adapt, or reject."
 trigger_phrases:
   - "graphify research spec"
   - "004-graphify phase spec"
   - "two-pass extraction research"
-  - "graphify Adopt Adapt Reject"
-importance_tier: critical
-contextType: spec
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+  - "graphify adopt adapt reject"
+importance_tier: "critical"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: 004-graphify Research Phase
 

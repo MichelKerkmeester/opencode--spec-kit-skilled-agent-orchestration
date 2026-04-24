@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 019 Initial Research Wave"
+title: "...kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/spec]"
 description: "Research-wave child packet for 019-system-hardening. Dispatches the six Tier 1 candidates from scratch/deep-review-research-suggestions.md (DR-1, RR-1, RR-2, SSK-RR-1, SSK-DR-1, SSK-RR-2) through /spec_kit:deep-research :confirm and /spec_kit:deep-review :confirm. Produces a findings registry that future sibling implementation children consume."
 trigger_phrases:
   - "019 initial research"
@@ -9,7 +9,6 @@ trigger_phrases:
   - "findings registry research"
 importance_tier: "critical"
 contextType: "research"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research"
@@ -24,7 +23,7 @@ _memory:
       - "tasks.md"
       - "../spec.md"
       - "../../scratch/deep-review-research-suggestions.md"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: 019 Initial Research Wave
 

@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Graph Metadata Enrichment"
+title: "...ontext-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment/decision-record]"
 description: "Level 3 ADRs for the shipped schema v2 skill metadata rollout and dual-schema compiler validation."
 trigger_phrases:
   - "004-graph-metadata-enrichment"
@@ -7,8 +7,6 @@ trigger_phrases:
   - "schema v2 decision record"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment"
@@ -17,6 +15,8 @@ _memory:
     recent_action: "Added the Level 3 ADRs that explain the shipped schema and compiler decisions"
     next_safe_action: "Keep packet docs and packet metadata aligned with these accepted decisions"
     key_files: ["decision-record.md", "spec.md", "graph-metadata.json"]
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Graph Metadata Enrichment
 

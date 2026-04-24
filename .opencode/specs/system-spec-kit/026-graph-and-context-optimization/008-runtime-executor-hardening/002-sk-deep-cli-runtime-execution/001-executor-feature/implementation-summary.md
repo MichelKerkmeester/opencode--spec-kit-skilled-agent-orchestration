@@ -1,9 +1,13 @@
 ---
-title: "Implementation Summary: Deep-Loop CLI Executor Selection for Iterative Skills"
+title: "...ization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature/implementation-summary]"
 description: "Post-ship summary for Phase 018: executor-selection feature shipped to sk-deep-research + sk-deep-review with native (default) and cli-codex (new) dispatch branches. YAML owns state/convergence/lifecycle unchanged. 22 files touched, 40/40 vitest green, tsc clean. Verdict: PASS."
-trigger_phrases: ["018 implementation summary", "deep-loop executor shipped", "phase 018 verdict"]
-importance_tier: "high"
+trigger_phrases:
+  - "018 implementation summary"
+  - "deep-loop executor shipped"
+  - "phase 018 verdict"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature"

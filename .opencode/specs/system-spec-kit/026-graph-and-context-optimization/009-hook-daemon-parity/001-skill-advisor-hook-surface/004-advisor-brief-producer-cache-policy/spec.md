@@ -1,16 +1,15 @@
 ---
-title: "Feature Specification: Advisor Brief Producer + Cache Policy"
+title: "...text-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy/spec]"
 description: "buildSkillAdvisorBrief() producer + AdvisorHookResult + prompt policy + fail-open contract + optional HMAC exact prompt cache + 80/120 token caps. Depends on 002 and 003. Mirrors buildStartupBrief() orchestration shape."
 trigger_phrases:
   - "020 advisor brief producer"
-  - "buildSkillAdvisorBrief"
-  - "AdvisorHookResult"
+  - "buildskilladvisorbrief"
+  - "advisorhookresult"
   - "advisor fail open"
   - "advisor prompt policy"
   - "advisor exact cache"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy"
@@ -25,7 +24,7 @@ _memory:
       - "tasks.md"
       - "checklist.md"
       - "implementation-summary.md"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Advisor Brief Producer + Cache Policy
 

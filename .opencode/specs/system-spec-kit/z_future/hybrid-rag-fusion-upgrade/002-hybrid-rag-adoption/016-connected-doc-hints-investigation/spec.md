@@ -1,8 +1,17 @@
 ---
-title: "016-connected-doc-hints-investigation: Investigate Connected-Doc Hints"
+title: "...ystem-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/016-connected-doc-hints-investigation/spec]"
 description: "Evaluates whether Modus-style connected-doc appendices belong in Public only as low-authority result hints."
+trigger_phrases:
+  - "ystem"
+  - "spec"
+  - "kit"
+  - "future"
+  - "hybrid"
+  - "016"
+  - "connected"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 016-connected-doc-hints-investigation: Investigate Connected-Doc Hints
 
 ## 1. Scope

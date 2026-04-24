@@ -1,10 +1,11 @@
 ---
-title: "Tasks: 002-spec-structure-and-validation Spec Structure and Validation Remediation"
+title: "...timization/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation/tasks]"
 description: "Task ledger for 002-spec-structure-and-validation Spec Structure and Validation Remediation."
 trigger_phrases:
   - "tasks 002 spec structure and validation spec structure and validation re"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation"

@@ -1,6 +1,5 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
-title: "Feature Specification: Resource Map Integration for sk-deep-review and sk-deep-research"
+title: "...em-spec-kit/026-graph-and-context-optimization/011-resource-map-template/003-resource-map-deep-loop-integration/spec]"
 description: "Teach the two autonomous deep-loop skills to emit a resource-map.md at convergence, aggregated from per-iteration evidence already captured in delta files. Review version carries findings counts; research version carries citation counts. Zero new scan cost; high reviewer value."
 trigger_phrases:
   - "026/013 resource map deep loop"
@@ -9,7 +8,8 @@ trigger_phrases:
   - "convergence-time resource map"
   - "iteration evidence aggregation"
 importance_tier: "important"
-contextType: "spec"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/003-resource-map-deep-loop-integration"
@@ -28,6 +28,7 @@ _memory:
       - "resource_map_present persists in deep-research-config.json and deep-review-config.json so iterations read the flag without re-detecting."
       - "{artifact_dir} is the canonical resolver-output variable across agent definitions, READMEs, state schemas, dashboards, command YAMLs — replaces mixed {spec_folder}/research|review|{review_root}|{research_root}."
       - "Spec packet files (spec/plan/tasks/checklist) stay out of sk-doc DQI lift per loose-enforcement rule for in-progress spec docs."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Resource Map Integration for sk-deep-review and sk-deep-research
 

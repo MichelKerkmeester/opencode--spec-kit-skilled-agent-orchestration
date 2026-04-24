@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
-title: "Verification Checklist: Resource Map Template"
+title: "...m-spec-kit/026-graph-and-context-optimization/011-resource-map-template/002-resource-map-template-creation/checklist]"
 description: "P0/P1/P2 verification for the new template and its wiring across every discovery surface."
 trigger_phrases:
   - "026/012 checklist"
   - "resource map checklist"
 importance_tier: "normal"
-contextType: "checklist"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/002-resource-map-template-creation"
@@ -18,6 +18,7 @@ _memory:
     completion_pct: 90
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Resource Map Template
 

@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: 004-get-it-right-main Research Phase"
+title: "Feature Specif [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main/spec]"
 description: "Phase 3 deep research on the bundled Get It Right repository, focused on UX, commands, templates, agents, skills, hooks, and operator-facing workflow friction in system-spec-kit."
 trigger_phrases:
   - "004-get-it-right-main spec"
   - "get it right phase 3 spec"
   - "system-spec-kit ux research spec"
 importance_tier: "important"
-contextType: "spec"
+contextType: "implementation"
 ---
 # Feature Specification: 004-get-it-right-main Research Phase
 

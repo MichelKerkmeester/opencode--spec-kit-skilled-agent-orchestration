@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Integrati [system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing/tasks]"
-description: "title: \"Tasks: Integration Testing [template:level_2/tasks.md]\""
+description: 'title: "Tasks: Integration Testing [template:level_2/tasks.md]"'
 trigger_phrases:
   - "tasks"
   - "integrati"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "integration"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: Integration Testing
 

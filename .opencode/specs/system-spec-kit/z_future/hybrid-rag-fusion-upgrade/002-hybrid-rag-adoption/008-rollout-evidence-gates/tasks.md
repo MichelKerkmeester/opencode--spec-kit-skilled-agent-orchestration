@@ -1,3 +1,13 @@
+---
+title: "Tasks [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/008-rollout-evidence-gates/tasks]"
+description: "1. Define the gate categories and evidence expectations in spec.md."
+trigger_phrases:
+  - "tasks"
+  - "008"
+  - "rollout"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 008-rollout-evidence-gates
 
 1. Define the gate categories and evidence expectations in `spec.md`.

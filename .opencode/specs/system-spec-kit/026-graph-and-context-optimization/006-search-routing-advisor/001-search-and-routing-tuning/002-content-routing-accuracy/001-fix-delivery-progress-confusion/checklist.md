@@ -1,12 +1,11 @@
 ---
-title: "Verification Checklist: Fix Delivery vs Progress Routing Confusion"
+title: "...ing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/checklist]"
 description: "Verification gates for delivery/progress routing remediation."
 trigger_phrases:
   - "delivery progress checklist"
   - "content router delivery verification"
 importance_tier: "important"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion"
@@ -15,6 +14,7 @@ _memory:
     recent_action: "Refreshed structured checklist evidence"
     next_safe_action: "No further phase-local work required"
     completion_pct: 100
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Fix Delivery vs Progress Routing Confusion
 

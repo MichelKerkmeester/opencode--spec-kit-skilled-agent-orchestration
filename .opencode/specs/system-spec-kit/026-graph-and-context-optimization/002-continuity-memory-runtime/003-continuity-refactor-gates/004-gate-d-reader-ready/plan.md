@@ -1,12 +1,14 @@
 ---
-title: "Implementation Plan: Gate D — Reader Ready"
+title: "...ph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/004-gate-d-reader-ready/plan]"
 description: "Retarget the reader handlers onto canonical docs and continuity records, then clear fallback, regression, and p95 performance gates before runtime rollout."
-trigger_phrases: ["gate d", "reader ready", "implementation plan", "resume ladder", "reader handlers"]
+trigger_phrases:
+  - "gate d"
+  - "reader ready"
+  - "implementation plan"
+  - "resume ladder"
+  - "reader handlers"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/004-gate-d-reader-ready"
@@ -15,6 +17,9 @@ _memory:
     recent_action: "Marked Gate D execution phases complete and captured shipped evidence"
     next_safe_action: "Reuse the recorded evidence if a follow-on reader packet opens"
     key_files: ["plan.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->

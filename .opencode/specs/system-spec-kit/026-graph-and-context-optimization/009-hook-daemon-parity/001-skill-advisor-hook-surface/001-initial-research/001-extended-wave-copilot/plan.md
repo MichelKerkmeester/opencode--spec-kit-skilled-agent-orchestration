@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: 020 Extended Research (cli-copilot)"
+title: "...timization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot/plan]"
 description: "Dispatch plan for 10-iteration extended research wave."
-trigger_phrases: ["020 extended plan"]
+trigger_phrases:
+  - "020 extended plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/001-extended-wave-copilot"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Plan scaffolded"
     next_safe_action: "Dispatch iter 1"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: 020 Extended Research (cli-copilot)
 

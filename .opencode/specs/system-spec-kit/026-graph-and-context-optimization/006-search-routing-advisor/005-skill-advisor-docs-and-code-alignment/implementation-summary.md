@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary: Skill-Advisor Docs + Phase 020 Code Alignment"
+title: "...and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment/implementation-summary]"
 description: "Phase 022 updated skill-advisor docs for hook-first invocation and completed a sk-code-opencode audit of Phase 020 TypeScript hook files with nine minor remediations."
 trigger_phrases:
   - "022 implementation summary"
   - "skill-advisor hook docs complete"
   - "phase 020 code alignment complete"
 importance_tier: "important"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment"
@@ -22,6 +21,7 @@ _memory:
       - "../../../../skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md"
       - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment/scratch/audit-findings.md"
     completion_pct: 100
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Skill-Advisor Docs + Phase 020 Code Alignment
 

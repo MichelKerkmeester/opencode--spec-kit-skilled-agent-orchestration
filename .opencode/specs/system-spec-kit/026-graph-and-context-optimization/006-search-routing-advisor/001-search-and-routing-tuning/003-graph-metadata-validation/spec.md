@@ -1,14 +1,33 @@
 ---
-title: "Research: Graph Metadata Quality & Relationship Validation"
-status: complete
-level: 3
-type: research
-parent: 001-search-and-routing-tuning
-predecessor: 002-content-routing-accuracy
+title: "...and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/spec]"
+description: 'title: "Research: Graph Metadata Quality & Relationship Validation"'
+trigger_phrases:
+  - "and"
+  - "context"
+  - "optimization"
+  - "006"
+  - "search"
+  - "spec"
+  - "003"
+  - "graph"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 branch: main
 created: 2026-04-13
+level: 3
+parent: 001-search-and-routing-tuning
+predecessor: 002-content-routing-accuracy
+status: complete
+type: research
 ---
-
 # Research: Graph Metadata Quality & Relationship Validation
 
 Scan all 515+ graph-metadata.json files on disk to validate relationship integrity, entity quality, and derived field accuracy. No historical save data needed - this is a pure filesystem and code analysis.

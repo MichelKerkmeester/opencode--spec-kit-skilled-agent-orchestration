@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Deep Review Remediation"
+title: "Implementation Plan: Deep Review [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/plan]"
 description: "Plan for keeping deep review waves and post-review remediation as a parent with direct child phase packets."
 trigger_phrases:
   - "007-deep-review-remediation"
@@ -10,8 +10,7 @@ trigger_phrases:
   - "004-r03-post-remediation"
   - "005-006-campaign-findings-remediation"
 importance_tier: "important"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation"
@@ -32,6 +31,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Deep Review Remediation
 

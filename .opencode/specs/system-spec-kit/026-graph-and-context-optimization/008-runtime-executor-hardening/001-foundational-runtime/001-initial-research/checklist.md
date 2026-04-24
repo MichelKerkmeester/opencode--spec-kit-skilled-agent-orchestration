@@ -1,9 +1,12 @@
 ---
-title: "Verification Checklist: Foundational Runtime Remediation"
+title: "...raph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/checklist]"
 description: "Phase 016 remediation verification for 63 findings. Every item includes acceptance evidence. P0 blocks; P1 must complete or defer; P2 optional."
-trigger_phrases: ["016 remediation checklist", "phase 016 remediation checklist"]
+trigger_phrases:
+  - "016 remediation checklist"
+  - "phase 016 remediation checklist"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research"

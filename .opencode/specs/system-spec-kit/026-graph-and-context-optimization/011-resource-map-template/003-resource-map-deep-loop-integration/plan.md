@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
-title: "Implementation Plan: Resource Map Deep-Loop Integration"
+title: "...em-spec-kit/026-graph-and-context-optimization/011-resource-map-template/003-resource-map-deep-loop-integration/plan]"
 description: "Author a shared evidence extractor, wire it into both deep-loop reducers and YAML workflows at convergence, update SKILL + command surfaces, and add vitest coverage."
 trigger_phrases:
   - "026/013 deep loop plan"
   - "deep loop resource map plan"
 importance_tier: "normal"
-contextType: "plan"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/003-resource-map-deep-loop-integration"
@@ -18,6 +18,7 @@ _memory:
     completion_pct: 10
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 ---
 # Implementation Plan: Resource Map Deep-Loop Integration
 

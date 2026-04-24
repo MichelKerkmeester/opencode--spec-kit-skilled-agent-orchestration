@@ -1,7 +1,24 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Implementation Summary: Compaction Working-Set [024/011]"
+title: "Implementation Summary [system-spec-kit/024-compact-code-graph/011-compaction-working-set/implementation-summary]"
 description: "Built 3-source compaction pipeline with working-set tracker, budget allocator, and compact merger replacing Memory-only compaction. 18/18 checklist items verified."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "implementation summary"
+  - "011"
+  - "compaction"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/011-compaction-working-set"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Summary
 
@@ -53,18 +70,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 011-compaction-working-set |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:what-built -->
+<!-- ANCHOR:what-built-2 -->
 ### What Was Built
 The compaction pipeline now merges three sources (constitutional/triggered memory, structural code graph, CocoIndex semantic neighbors) through a budget-aware allocator instead of the previous Memory-only path. A session working-set tracker seeds graph expansion and semantic search at compaction time.
 
@@ -97,14 +114,14 @@ The compaction pipeline now merges three sources (constitutional/triggered memor
 | `tests/budget-allocator.vitest.ts` | New | 15 budget allocation scenario tests |
 | `tests/compact-merger.vitest.ts` | Modified | 15 tests including 3 new merge scenarios |
 | `tests/dual-scope-hooks.vitest.ts` | New | End-to-end hook integration tests |
-<!-- /ANCHOR:what-built -->
+<!-- /ANCHOR:what-built-2 -->
 
 ---
 
-<!-- ANCHOR:how-delivered -->
+<!-- ANCHOR:how-delivered-2 -->
 ### How It Was Delivered
 Implementation followed the 6-step plan: working-set tracker first, then budget allocator, compact merger, hook integration, budget allocation tests, and end-to-end compaction flow tests. All three new modules were designed as pure functions with no side effects beyond the tracker's mutable state, making them independently testable.
-<!-- /ANCHOR:how-delivered -->
+<!-- /ANCHOR:how-delivered-2 -->
 
 ---
 ### Key Decisions
@@ -117,7 +134,7 @@ Implementation followed the 6-step plan: working-set tracker first, then budget 
 | Zero-budget sections suppressed | Rendering an empty "Semantic Neighbors" header when CocoIndex is unavailable wastes tokens and confuses the AI. |
 ---
 
-<!-- ANCHOR:verification -->
+<!-- ANCHOR:verification-2 -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -130,11 +147,11 @@ Implementation followed the 6-step plan: working-set tracker first, then budget 
 | Over-budget trim order deterministic | Verified |
 | Total output within 4000-token budget | Verified |
 | Phase 011 checklist | PARTIAL — tracker/merge scaffolding verified, but live compaction still relies on transcript heuristics |
-<!-- /ANCHOR:verification -->
+<!-- /ANCHOR:verification-2 -->
 
 ---
 
-<!-- ANCHOR:limitations -->
+<!-- ANCHOR:limitations-2 -->
 ### Known Limitations
 1. **Code graph and CocoIndex sources are placeholder text.** The current output renders placeholder content for structural and semantic sections instead of real retrieval results.
 2. **Working-set tracker is built but not wired into `compact-inject`.** The tracker exists, but `compact-inject` does not yet use it to drive compaction retrieval.
@@ -142,4 +159,4 @@ Implementation followed the 6-step plan: working-set tracker first, then budget 
 4. **The 1800ms timeout only covers stdin parsing.** `buildMergedContext` is not fully covered by that timeout boundary.
 5. **Constitutional content can still be trimmed by the allocator.** The implementation can trim constitutional content even though the spec says it is "never dropped."
 6. **Triggered memories render as `Relevant Memories`.** The rendered section label does not match the spec wording.
-<!-- /ANCHOR:limitations -->
+<!-- /ANCHOR:limitations-2 -->

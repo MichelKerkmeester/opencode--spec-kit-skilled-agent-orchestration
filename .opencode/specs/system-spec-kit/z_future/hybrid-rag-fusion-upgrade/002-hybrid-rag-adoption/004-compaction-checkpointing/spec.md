@@ -1,8 +1,14 @@
 ---
-title: "004-compaction-checkpointing: Preserve Context Before Compaction"
+title: "004-compa [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/004-compaction-checkpointing/spec]"
 description: "Adds a fail-open, JSON-primary pre-compaction preservation contract over the existing transport hook and save authority."
+trigger_phrases:
+  - "004"
+  - "compa"
+  - "spec"
+  - "compaction"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 004-compaction-checkpointing: Preserve Context Before Compaction
 
 ## 1. Scope

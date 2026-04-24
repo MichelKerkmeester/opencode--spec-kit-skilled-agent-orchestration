@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Root-Level Review/Research Folder Convention"
+title: "F [skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/010-root-level-review-research-convention/spec]"
 description: "Change sk-deep-review and sk-deep-research so review/ and research/ folders are always created at the spec tree root with phase-based subfolders, never inside nested child phases."
 trigger_phrases:
   - "root level review folder"
@@ -9,7 +9,7 @@ trigger_phrases:
   - "consolidate review folders"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/010-root-level-review-research-convention"
@@ -19,8 +19,8 @@ _memory:
     recent_action: "Implemented and shipped — resolver, reducers, YAMLs, agents, docs all updated"
     next_safe_action: "None — complete"
     key_files: ["spec.md", "plan.md"]
+status: complete
 ---
-
 # Feature Specification: Root-Level Review/Research Folder Convention
 
 <!-- SPECKIT_LEVEL: 2 -->

@@ -1,12 +1,11 @@
 ---
-title: "Tasks: Canonical-Save Pipeline Invariant Research (SSK-RR-2)"
+title: "...ization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants/tasks]"
 description: "Task breakdown for the SSK-RR-2 research dispatch."
 trigger_phrases:
   - "ssk-rr-2 tasks"
   - "canonical save research tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/001-canonical-save-invariants"
@@ -14,7 +13,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Tasks scaffolded"
     next_safe_action: "Complete Phase 1 metadata generation"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Canonical-Save Pipeline Invariant Research
 

@@ -1,10 +1,11 @@
 ---
-title: "Decision Record: 009-security-and-guardrails Security and Guardrails Remediation"
+title: "...zation/007-deep-review-remediation/005-006-campaign-findings-remediation/009-security-and-guardrails/decision-record]"
 description: "ADR for 009-security-and-guardrails Security and Guardrails Remediation."
 trigger_phrases:
   - "decision record 009 security and guardrails security and guardrails reme"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/009-security-and-guardrails"

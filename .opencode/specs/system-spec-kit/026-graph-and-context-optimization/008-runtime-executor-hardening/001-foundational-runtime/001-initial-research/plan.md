@@ -1,9 +1,12 @@
 ---
-title: "Implementation Plan: Foundational Runtime Remediation"
+title: "...026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/plan]"
 description: "5-phase execution plan for 63 findings: P0 composites, structural, medium, quick wins, test migration. 24.5 engineer-weeks, 3 engineers, 10-12 weeks wall clock."
-trigger_phrases: ["016 remediation plan", "phase 016 remediation plan"]
+trigger_phrases:
+  - "016 remediation plan"
+  - "phase 016 remediation plan"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research"

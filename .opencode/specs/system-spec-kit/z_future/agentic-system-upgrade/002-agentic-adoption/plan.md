@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 002 Agentic Adoption [template:level_3/plan.md]"
+title: "Implementation Plan: 002 Agentic Adoption [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/plan]"
 description: "Plan for sequencing the adoption and investigation tracks after the architecture boundary freeze."
 trigger_phrases:
   - "implementation"

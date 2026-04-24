@@ -1,9 +1,15 @@
 ---
-title: "Implementation Summary: Phase 017 Review-Findings Remediation"
+title: "...it/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/implementation-summary]"
 description: "Phase 017 complete: 25 commits shipped to main closing all 10 original review P1 findings + 9 new segment-2 P1 findings + 10 P2 refactors. Verdict: CONDITIONAL → PASS. Headline: H-56-1 canonical save metadata no-op eliminated. Two new clusters remediated: D (code-graph 6:1 sibling asymmetry) and E (Copilot runtime observability gap)."
-trigger_phrases: ["017 implementation summary", "phase 017 summary", "review findings remediation summary", "h-56-1 fix", "canonical save metadata"]
+trigger_phrases:
+  - "017 implementation summary"
+  - "phase 017 summary"
+  - "review findings remediation summary"
+  - "h-56-1 fix"
+  - "canonical save metadata"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime"

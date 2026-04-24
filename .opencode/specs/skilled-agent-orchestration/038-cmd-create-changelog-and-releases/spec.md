@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Upgrade create:changelog [03--commands-and-skills/038-cmd-create-changelog-and-releases/spec]"
+title: "Feature Specification: Upgrade [skilled-agent-orchestration/038-cmd-create-changelog-and-releases/spec]"
 description: "The create:changelog command only generates changelog files. It cannot create git tags, push them, or publish GitHub releases — meaning users must manually complete the release workflow after every changelog generation."
 trigger_phrases:
   - "changelog release creation"
@@ -9,6 +9,15 @@ trigger_phrases:
   - "gh release create command"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/038-cmd-create-changelog-and-releases"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Upgrade create:changelog with GitHub Release Creation
 

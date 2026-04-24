@@ -1,14 +1,14 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
-title: "Implementation Plan: Code Graph Incremental Fullscan Recovery"
+title: "...ext-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/001-incremental-fullscan-recovery/plan]"
 description: "Implement a minimal code graph remediation by threading scan mode into the indexer, deduping duplicate symbol IDs, adding response observability, and validating with vitest plus build output."
 trigger_phrases:
   - "incremental fullscan plan"
   - "code graph stale gate plan"
-  - "IndexFilesOptions plan"
+  - "indexfilesoptions plan"
   - "012/002 plan"
 importance_tier: "critical"
-contextType: "spec"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery"
@@ -29,6 +29,7 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Code Graph Incremental Fullscan Recovery
 

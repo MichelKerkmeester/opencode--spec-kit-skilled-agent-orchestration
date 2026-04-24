@@ -1,15 +1,15 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
-title: "Feature Specification: Code Graph Incremental Fullscan Recovery"
+title: "...ext-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/001-incremental-fullscan-recovery/spec]"
 description: "Recover code graph full-scan behavior after packet 012 by honoring caller-requested non-incremental scans and preventing duplicate symbol IDs from aborting persistence."
 trigger_phrases:
   - "code graph scan stale gate"
   - "incremental false full scan"
   - "duplicate symbol id"
-  - "IndexFilesOptions skipFreshFiles"
+  - "indexfilesoptions skipfreshfiles"
   - "012/002 incremental fullscan recovery"
 importance_tier: "critical"
-contextType: "spec"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery"
@@ -33,6 +33,7 @@ _memory:
     answered_questions:
       - "The research packet selected Option A dedupe as the minimal crash fix."
       - "The scan response must supplement fullReindexTriggered rather than rename it."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: Code Graph Incremental Fullscan Recovery
 

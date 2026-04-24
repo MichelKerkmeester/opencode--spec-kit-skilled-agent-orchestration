@@ -1,14 +1,13 @@
 ---
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
-title: "027/005 — Checklist"
+title: "...n/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap/checklist]"
 description: "Acceptance verification for compat migration + bootstrap."
 trigger_phrases:
   - "027/005 checklist"
   - "compat migration checklist"
   - "advisor bootstrap verification"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
-level: 2
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_2/checklist.md | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap"
@@ -27,6 +26,8 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+level: 2
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 ---
 # Verification Checklist: 027/005 Compat Migration + Bootstrap
 

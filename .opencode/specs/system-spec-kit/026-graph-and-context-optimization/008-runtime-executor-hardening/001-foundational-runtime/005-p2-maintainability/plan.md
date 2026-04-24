@@ -1,9 +1,14 @@
 ---
-title: "Implementation Plan: Phase 017 Wave D — P2 Maintainability"
+title: "...6-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability/plan]"
 description: "Wave D plan: 6 P2 maintainability tasks (~40h total, DEFERRABLE, OFF critical path). No intra-Wave-D dependencies — each task independently schedulable in parallel. Light gate: /spec_kit:deep-review :auto ×3 (not ×7). Parking-lot P2s cited but not scheduled."
-trigger_phrases: ["017 wave d plan", "phase 017 wave d plan", "004 p2 maintainability plan", "p2 maintainability implementation plan"]
-importance_tier: "standard"
+trigger_phrases:
+  - "017 wave d plan"
+  - "phase 017 wave d plan"
+  - "004 p2 maintainability plan"
+  - "p2 maintainability implementation plan"
+importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/005-p2-maintainability"

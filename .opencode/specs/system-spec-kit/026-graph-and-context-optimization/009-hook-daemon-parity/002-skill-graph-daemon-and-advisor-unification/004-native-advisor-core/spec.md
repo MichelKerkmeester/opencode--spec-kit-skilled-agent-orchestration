@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 027/003 — Native Advisor Core"
+title: "...text-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core/spec]"
 description: "Port scoring to TypeScript under self-contained mcp_server/skill-advisor/. 5-lane analytical fusion (0.45/0.30/0.15/0.10/0.00). Skill projection, bounded skill_edges traversal, ambiguity handling, Python↔TS parity harness. Consumes 027/002 lifecycle-normalized inputs."
 trigger_phrases:
   - "027/003"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "5-lane fusion"
   - "parity harness"
   - "skill projection"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:

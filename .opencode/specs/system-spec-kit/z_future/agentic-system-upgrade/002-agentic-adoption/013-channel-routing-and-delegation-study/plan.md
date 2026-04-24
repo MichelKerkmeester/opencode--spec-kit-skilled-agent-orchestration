@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 013 Channel Routing and Delegation Study [template:level_2/plan.md]"
+title: "Imp [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/013-channel-routing-and-delegation-study/plan]"
 description: "Evaluate whether channel-style routing, delivery acknowledgements, and richer delegation topology would meaningfully improve current orchestrator behavior without replacing Task-based coordination."
 trigger_phrases:
   - "implementation"

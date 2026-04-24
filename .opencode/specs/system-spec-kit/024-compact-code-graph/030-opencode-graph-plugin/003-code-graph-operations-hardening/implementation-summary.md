@@ -1,11 +1,20 @@
 ---
-title: "Implementation Summary: Code Graph Operations Hardening [003/030]"
+title: "...spec-kit/024-compact-code-graph/030-opencode-graph-plugin/003-code-graph-operations-hardening/implementation-summary]"
 description: "Phase 3 delivered a reusable graph operations hardening contract for readiness, repair guidance, portability boundaries, and metadata-only previews."
 trigger_phrases:
   - "phase 3 implementation summary"
   - "code graph operations hardening implementation"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/003-code-graph-operations-hardening"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 # Implementation Summary: Code Graph Operations Hardening
 
@@ -29,7 +38,7 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 3 is now implemented in runtime code. Packet 030 has a new hardening helper in `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ops-hardening.ts`, and the session-facing handlers now emit a reusable `graphOps` contract alongside their existing payload contracts.
+Phase 3 is now implemented in runtime code. Packet 030 has a new hardening helper in `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ops-hardening.ts`, and the session-facing handlers now emit a reusable `graphOps` contract alongside their existing payload contracts.
 
 ### Hardening Contract
 
@@ -49,11 +58,11 @@ The helper now standardizes:
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ops-hardening.ts` | Created | Graph hardening contract and metadata-only preview helper |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ops-hardening.ts` | Created | Graph hardening contract and metadata-only preview helper |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/session-health.ts` | Modified | Emit graph ops contract for health surfaces |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts` | Modified | Emit graph ops contract for resume surfaces |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts` | Modified | Emit graph ops contract for bootstrap surfaces |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-ops-hardening.vitest.ts` | Created | Verify graph ops helper behavior |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-ops-hardening.vitest.ts` | Created | Verify graph ops helper behavior |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/session-bootstrap.vitest.ts` | Modified | Verify bootstrap output includes graph ops data |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/session-resume.vitest.ts` | Modified | Verify resume output includes graph ops data |
 <!-- /ANCHOR:what-built -->

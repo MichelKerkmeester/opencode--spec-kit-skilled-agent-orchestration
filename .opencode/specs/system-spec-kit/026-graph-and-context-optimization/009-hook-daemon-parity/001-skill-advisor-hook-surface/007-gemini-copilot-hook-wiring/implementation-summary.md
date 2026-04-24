@@ -1,11 +1,10 @@
 ---
-title: "Implementation Summary: Gemini + Copilot Hook Wiring"
+title: "...mization/009-hook-daemon-parity/001-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring/implementation-summary]"
 description: "Gemini + Copilot user-prompt advisor hooks shipped with 3-runtime parity harness and runtime capability matrix."
 trigger_phrases:
   - "020 007 summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring"
@@ -18,7 +17,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/user-prompt-submit.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Gemini + Copilot Hook Wiring
 

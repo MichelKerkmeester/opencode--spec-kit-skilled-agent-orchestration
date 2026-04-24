@@ -1,5 +1,5 @@
 ---
-title: "Tasks: CocoIndex Code MCP Integration [03--commands-and-skills/022-mcp-coco-integration/tasks]"
+title: "Tasks: CocoIndex Code MCP Integration [skilled-agent-orchestration/022-mcp-coco-integration/tasks]"
 description: "Phase-based task breakdown for CocoIndex installation, config registration, cross-CLI validation, Phase 2 hardening, and Phase 3 strict-readiness packaging."
 trigger_phrases:
   - "cocoindex tasks"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "semantic search tasks"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/022-mcp-coco-integration"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: CocoIndex Code MCP Integration
 

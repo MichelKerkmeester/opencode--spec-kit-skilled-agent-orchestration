@@ -1,13 +1,13 @@
 ---
-title: "Checklist: 027/000 — Validator ESM Migration"
-template_source: "SPECKIT_TEMPLATE_SOURCE: level2-checklist | v2.2"
+title: "...t-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix/checklist]"
 description: "Level 2 verification checklist for ESM migration."
 trigger_phrases:
   - "027/000 checklist"
   - "validator esm verification"
   - "node 25 validator evidence"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level2-checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix"
@@ -19,8 +19,8 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source: "SPECKIT_TEMPLATE_SOURCE: level2-checklist | v2.2"
 ---
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: level2-checklist | v2.2 -->
 <!-- ANCHOR:verification-checklist -->

@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record + level3-arch | v2.2 -->"
-title: "Decision Record: Codex CLI Hook Parity Remediation"
+title: "...spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation/decision-record]"
 description: "ADRs for scoping decisions. Contract ADR (ADR-003) lands after Phase 1 probe completes."
 trigger_phrases:
   - "026/009/005 adr"
   - "codex hook parity decisions"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Independent review and live re-verification — all claims hold"
     next_safe_action: "Run strict validation and memory save"
     completion_pct: 100
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record + level3-arch | v2.2 -->"
 ---
 # Decision Record: Codex CLI Hook Parity Remediation
 

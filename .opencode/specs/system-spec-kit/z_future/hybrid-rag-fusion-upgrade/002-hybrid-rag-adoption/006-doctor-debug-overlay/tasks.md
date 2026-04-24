@@ -1,3 +1,13 @@
+---
+title: "Tasks: 006-d [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/006-doctor-debug-overlay/tasks]"
+description: "1. Capture the bounded diagnostics goal and non-goals in spec.md."
+trigger_phrases:
+  - "tasks"
+  - "006"
+  - "doctor"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 006-doctor-debug-overlay
 
 1. Capture the bounded diagnostics goal and non-goals in `spec.md`.

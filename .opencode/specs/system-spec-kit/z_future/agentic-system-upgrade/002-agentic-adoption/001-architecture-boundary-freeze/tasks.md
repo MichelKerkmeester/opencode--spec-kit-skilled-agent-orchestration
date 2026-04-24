@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 001 Architecture Boundary Freeze [template:level_2/tasks.md]"
+title: "Tasks [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/001-architecture-boundary-freeze/tasks]"
 description: "Task Format: T### [P?] Description (001-architecture-boundary-freeze)"
 trigger_phrases:
   - "tasks"

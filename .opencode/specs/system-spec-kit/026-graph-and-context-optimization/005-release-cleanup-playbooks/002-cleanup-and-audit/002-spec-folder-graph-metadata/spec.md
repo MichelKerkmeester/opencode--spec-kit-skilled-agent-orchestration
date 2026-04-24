@@ -1,11 +1,14 @@
 ---
-title: "Feature Specification: 018 / 011 — graph-metadata.json packet contract"
+title: "...aph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata/spec]"
 description: "Define a dedicated per-spec-folder graph-metadata.json contract so packet relationships, ranking signals, and key files can be refreshed on canonical save and indexed without reviving legacy memory markdown."
-trigger_phrases: ["018 011 spec", "graph metadata json", "spec folder graph metadata", "canonical continuity graph contract", "graph metadata packet contract"]
+trigger_phrases:
+  - "018 011 spec"
+  - "graph metadata json"
+  - "spec folder graph metadata"
+  - "canonical continuity graph contract"
+  - "graph metadata packet contract"
 importance_tier: "critical"
 contextType: "planning"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata"
@@ -14,6 +17,8 @@ _memory:
     recent_action: "Implementation complete; status updated during deep review"
     next_safe_action: "Release handoff"
     key_files: ["spec.md", "plan.md", "tasks.md", "decision-record.md", "research.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->

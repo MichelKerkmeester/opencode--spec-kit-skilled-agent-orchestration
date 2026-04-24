@@ -1,18 +1,27 @@
 ---
-title: "Deep Research — Code Graph Scan Scope Anomaly (33 vs 1425 files)"
+title: "...ion/003-code-graph-package/003-code-graph-context-and-scan-scope/research/007-deep-review-remediation-pt-04/research]"
 description: "Root-cause investigation of why mcp__spec_kit_memory__code_graph_scan returned 33 files / 809 nodes / 376 edges after packet 012, when the predicted post-exclude count was 1000-3000."
-sessionId: dr-2026-04-23-130100-pt04
-specFolder: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope
-iterations: 5
-stop_reason: maxIterationsReached
 trigger_phrases:
   - "code graph scan 33 files"
   - "incremental false stale gate"
   - "code_nodes symbol_id unique constraint"
   - "packet 012 scan scope anomaly"
-  - "indexFiles skipFreshFiles"
+  - "indexfiles skipfreshfiles"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/research/007-deep-review-remediation-pt-04"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
+iterations: 5
+sessionId: dr-2026-04-23-130100-pt04
+specFolder: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope
+stop_reason: maxIterationsReached
 ---
-
 # Deep Research — Code Graph Scan Scope Anomaly After Packet 012
 
 ## 1. Executive Summary

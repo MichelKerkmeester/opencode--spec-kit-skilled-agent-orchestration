@@ -1,13 +1,12 @@
 ---
-title: "Tasks: Phase 014 — Manual Testing Playbook Prompt Rewrite [template:level_2/tasks.md]"
+title: "...nd-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
-trigger_phrases: ["tasks", "phase 014", "packet repair"]
+trigger_phrases:
+  - "tasks"
+  - "phase 014"
+  - "packet repair"
 importance_tier: "important"
 contextType: "implementation"
-level: 2
-status: "complete"
-parent: "009-playbook-and-remediation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite"
@@ -15,6 +14,10 @@ _memory:
     last_updated_by: "speckit"
     recent_action: "Tasks file added"
     next_safe_action: "Keep tasks synced"
+level: 2
+parent: "009-playbook-and-remediation"
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->

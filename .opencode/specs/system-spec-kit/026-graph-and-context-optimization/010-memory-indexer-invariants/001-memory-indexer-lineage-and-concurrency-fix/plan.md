@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
-title: "Implementation Plan: Memory Indexer Lineage and Concurrency Fix"
+title: "...026-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix/plan]"
 description: "Focused pass across PE orchestration, scan batching, and targeted regressions for the E_LINEAGE and candidate_changed failures."
 trigger_phrases:
   - "026/010 plan"
   - "memory indexer lineage concurrency plan"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Replaced Fix B1 with Fix B2 after live acceptance showed B1 insufficient"
     next_safe_action: "User restart MCP and run memory_index_scan on 009 to confirm zero candidate_changed"
     completion_pct: 90
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Memory Indexer Lineage and Concurrency Fix
 

@@ -1,12 +1,11 @@
 ---
-title: "Tasks: Research Memory Redundancy Follow-On"
+title: "Task [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy/tasks]"
 description: "Task breakdown for syncing parent docs, classifying downstream packets, and closing the Level 3 packet surface."
 trigger_phrases:
   - "memory redundancy follow on tasks"
   - "compact wrapper follow on tasks"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Research Memory Redundancy Follow-On
 

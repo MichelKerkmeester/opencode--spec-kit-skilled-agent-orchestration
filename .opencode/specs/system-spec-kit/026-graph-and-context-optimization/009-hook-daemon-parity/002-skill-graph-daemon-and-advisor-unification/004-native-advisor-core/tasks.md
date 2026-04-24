@@ -1,12 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 ---
-title: "027/003 — Tasks"
+title: "...ext-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core/tasks]"
 description: "Task breakdown for native advisor core + parity harness."
 trigger_phrases:
   - "027/003 tasks"
   - "native advisor core tasks"
   - "regression-protection parity tasks"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:

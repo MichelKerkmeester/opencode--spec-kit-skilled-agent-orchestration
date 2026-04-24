@@ -1,11 +1,20 @@
 ---
-title: "Tasks: Copilot Startup Hook Wiring [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring]"
+title: "Tasks: Copilot [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring/tasks]"
 description: "Task Format: T### [P?] Description (file path). Tracks the completed Phase 031 Copilot startup-hook wiring follow-on."
 trigger_phrases:
   - "phase 031 tasks"
   - "copilot startup hook tasks"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: Copilot Startup Hook Wiring
 

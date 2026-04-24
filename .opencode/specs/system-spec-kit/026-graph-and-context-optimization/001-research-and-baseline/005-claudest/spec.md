@@ -1,14 +1,13 @@
 ---
-title: "Feature Specification: 005-claudest Research Phase"
+title: "Feature Specification [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest/spec]"
 description: "Read-only 20-iteration research investigation of the Claudest external Claude Code plugin marketplace and the claude-memory plugin (FTS5/BM25 conversation recall, SessionStart context injection, extract-learnings consolidation, get-token-insights observability) to identify adopt/prototype/reject patterns and execution-ready follow-on packet contracts for Code_Environment/Public's Spec Kit Memory and Code Graph stack."
 trigger_phrases:
   - "005-claudest research spec"
   - "005-claudest phase spec"
-  - "Claudest claude-memory research"
-  - "FTS5 BM25 cascade research"
-importance_tier: critical
-contextType: spec
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+  - "claudest claude-memory research"
+  - "fts5 bm25 cascade research"
+importance_tier: "critical"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: 005-claudest Research Phase
 

@@ -1,14 +1,13 @@
 ---
-title: "Tasks: Phase 4 — Heuristics, Refactor & Guardrails"
+title: "...t-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails/tasks]"
 description: "Task Format: T### [P?] Description (file path or fixture surface)"
 trigger_phrases:
   - "phase 4 tasks"
   - "d5 lineage tasks"
   - "savemode refactor tasks"
   - "reviewer contract tasks"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails"
@@ -17,9 +16,8 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
 ---
-
 # Tasks: Phase 4 — Heuristics, Refactor & Guardrails
 
 <!-- SPECKIT_LEVEL: 2 -->

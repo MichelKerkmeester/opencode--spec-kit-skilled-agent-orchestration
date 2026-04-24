@@ -1,11 +1,10 @@
 ---
-title: "Tasks: Delta-Review of 015's 243 Findings (DR-1)"
+title: "...ext-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015/tasks]"
 description: "Task breakdown for the DR-1 deep-review dispatch."
 trigger_phrases:
   - "dr-1 tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Tasks scaffolded"
     next_safe_action: "Complete Phase 1 metadata"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Delta-Review of 015's 243 Findings
 

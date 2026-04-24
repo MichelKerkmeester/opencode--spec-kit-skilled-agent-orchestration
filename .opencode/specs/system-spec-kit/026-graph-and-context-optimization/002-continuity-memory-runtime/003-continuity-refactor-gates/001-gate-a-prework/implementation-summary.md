@@ -1,12 +1,5 @@
 ---
-
-title: "Gate A — Pre-work"
-feature: phase-018-gate-a-prework
-level: 2
-status: complete
-closed_by_commit: TBD
-parent: 006-continuity-refactor-gates
-gate: A
+title: "...t-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/001-gate-a-prework/implementation-summary]"
 description: "Gate A execution and follow-up verification are complete. Template anchor fixes, validator exclusion rule, sqlite backup + rollback drill, and later resume-budget evidence are all re-verified in this no-commit completion pass."
 trigger_phrases:
   - "gate a implementation summary"
@@ -15,8 +8,7 @@ trigger_phrases:
   - "phase 018"
   - "blocked summary"
 importance_tier: "important"
-contextType: "documentation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/001-gate-a-prework"
@@ -25,6 +17,13 @@ _memory:
     recent_action: "Validated Gate A closeout evidence during the Phase 018 deep review pass"
     next_safe_action: "Reuse Gate A closure evidence"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/001-gate-a-prework/implementation-summary.md"]
+closed_by_commit: TBD
+feature: phase-018-gate-a-prework
+gate: A
+level: 2
+parent: 006-continuity-refactor-gates
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

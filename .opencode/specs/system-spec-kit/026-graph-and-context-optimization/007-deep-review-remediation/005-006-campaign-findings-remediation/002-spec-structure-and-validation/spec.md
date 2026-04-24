@@ -1,10 +1,11 @@
 ---
-title: "Feature Specification: 002-spec-structure-and-validation Spec Structure and Validation Remediation"
+title: "...ptimization/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation/spec]"
 description: "Level 3 remediation packet for Spec Structure and Validation findings from the 006 campaign consolidated review."
 trigger_phrases:
   - "feature specification 002 spec structure and validation spec structure a"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/002-spec-structure-and-validation"

@@ -1,3 +1,15 @@
+---
+title: "Implementation Plan: 002-hybrid-rag-ad [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/plan]"
+description: "1. 001-architecture-boundary-freeze"
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "002"
+  - "hybrid"
+  - "rag"
+importance_tier: "important"
+contextType: "planning"
+---
 # Implementation Plan: 002-hybrid-rag-adoption
 
 ## 1. Affected Files

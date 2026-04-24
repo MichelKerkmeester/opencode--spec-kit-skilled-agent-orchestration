@@ -1,11 +1,11 @@
 ---
-title: "Tasks: 004-get-it-right-main Research Phase"
+title: "Tasks: 004-ge [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main/tasks]"
 description: "Completed task tracking for the Get It Right Phase 3 deep-research continuation"
 trigger_phrases:
   - "004-get-it-right-main tasks"
   - "get it right phase 3 tasks"
 importance_tier: "important"
-contextType: "tasks"
+contextType: "implementation"
 ---
 # Tasks: 004-get-it-right-main Research Phase
 

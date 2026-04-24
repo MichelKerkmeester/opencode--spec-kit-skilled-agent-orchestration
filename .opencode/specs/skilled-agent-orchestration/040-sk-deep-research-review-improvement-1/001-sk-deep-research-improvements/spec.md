@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Phase 1 -- sk-deep-research Improvements [template:level_1/spec.md]"
+title: "Feature [skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/001-sk-deep-research-improvements/spec]"
 description: "Complete the Phase 1 lineage-aware, reducer-driven runtime contract for sk-deep-research across docs, runtime mirrors, executable helpers, and verification surfaces."
 trigger_phrases:
   - "deep research"
@@ -7,8 +7,17 @@ trigger_phrases:
   - "reducer"
   - "runtime parity"
   - "phase 1 spec"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/001-sk-deep-research-improvements"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Phase 1 -- sk-deep-research Improvements
 

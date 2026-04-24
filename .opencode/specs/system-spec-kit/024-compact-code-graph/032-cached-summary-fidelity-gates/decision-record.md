@@ -1,18 +1,27 @@
 ---
-title: "Decision Record: Cached Summary Fidelity Gates [template:level_3/decision-record.md]"
+title: "Decision Record: Cached [system-spec-kit/024-compact-code-graph/032-cached-summary-fidelity-gates/decision-record]"
 description: "Decision record for 032-cached-summary-fidelity-gates."
 trigger_phrases:
   - "032-cached-summary-fidelity-gates"
   - "decision"
   - "record"
 importance_tier: "important"
-contextType: "decision-record"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/032-cached-summary-fidelity-gates"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["decision-record.md"]
 ---
 # Decision Record: Cached Summary Fidelity Gates
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/global/hvr_rules.md -->
 
 ---
 

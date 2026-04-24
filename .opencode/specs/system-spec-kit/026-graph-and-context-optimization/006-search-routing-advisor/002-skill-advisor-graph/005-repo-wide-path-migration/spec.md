@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Repo-Wide Path Migration"
+title: "...-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration/spec]"
 description: "Close the packet for the migrated skill-advisor runtime layout, remove stale legacy path wording from active 007 docs, and align packet evidence with the already-shipped repo updates."
 trigger_phrases:
   - "005-repo-wide-path-migration"
@@ -8,8 +8,6 @@ trigger_phrases:
   - "packet validation closure"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration"
@@ -18,6 +16,8 @@ _memory:
     recent_action: "Rebuilt the packet on the active Level 3 scaffold and aligned it with shipped repo state"
     next_safe_action: "Run final strict validation and attach the closeout evidence in implementation-summary.md"
     key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md", "decision-record.md", "implementation-summary.md"]
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->

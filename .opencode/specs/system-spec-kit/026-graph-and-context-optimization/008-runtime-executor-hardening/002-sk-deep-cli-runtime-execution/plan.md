@@ -1,9 +1,12 @@
 ---
-title: "Implementation Plan: CLI Runtime Executors (merged)"
+title: "...em-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/plan]"
 description: "Top-level plan pointer for the merged CLI executor arc. Detail lives in 001-executor-feature/plan.md and 002-runtime-matrix/plan.md."
-trigger_phrases: ["cli runtime executors plan", "cli executor plan"]
-importance_tier: "medium"
+trigger_phrases:
+  - "cli runtime executors plan"
+  - "cli executor plan"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution"

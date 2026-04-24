@@ -1,12 +1,11 @@
 ---
-title: "Verification Checklist: Smart-Router Remediation + OpenCode Plugin"
+title: "...graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/checklist]"
 description: "Level 2 verification checklist for Phase 023 smart-router remediation, telemetry, OpenCode plugin delivery, and regression checks."
 trigger_phrases:
   - "023 smart router checklist"
   - "spec-kit-skill-advisor plugin verification"
 importance_tier: "important"
-contextType: "verification"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin"
@@ -21,6 +20,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Smart-Router Remediation + OpenCode Plugin
 

@@ -1,3 +1,13 @@
+---
+title: "Checklist [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/002-memory-review-tool/checklist]"
+description: "checklist document for 002-memory-review-tool."
+trigger_phrases:
+  - "checklist"
+  - "002"
+  - "memory"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Checklist: 002-memory-review-tool
 
 ## P0

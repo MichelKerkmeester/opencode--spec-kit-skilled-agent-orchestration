@@ -1,12 +1,11 @@
 ---
-title: "Gate E — Runtime Migration Plan"
+title: "...d-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration/plan]"
 description: "Cutover plan."
-trigger_phrases: ["gate e", "plan"]
+trigger_phrases:
+  - "gate e"
+  - "plan"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration"
@@ -15,6 +14,9 @@ _memory:
     recent_action: "Rewrote Gate E plan to immediate canonical cutover with parity fanout phases"
     next_safe_action: "Use implementation-summary.md for evidence consolidation"
     key_files: ["plan.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->

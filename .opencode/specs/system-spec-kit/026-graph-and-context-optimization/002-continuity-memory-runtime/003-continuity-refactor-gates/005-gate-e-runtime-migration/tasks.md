@@ -1,12 +1,11 @@
 ---
-title: "Gate E — Runtime Migration Tasks"
+title: "...-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration/tasks]"
 description: "Execution tasks."
-trigger_phrases: ["gate e", "tasks"]
+trigger_phrases:
+  - "gate e"
+  - "tasks"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/005-gate-e-runtime-migration"
@@ -15,6 +14,9 @@ _memory:
     recent_action: "Marked all Gate E tasks complete with evidence references"
     next_safe_action: "Reuse task list if follow-on runtime migration work opens"
     key_files: ["tasks.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->

@@ -1,14 +1,13 @@
 ---
-title: "Feature Specification: Advisor Freshness + Source Cache"
+title: "...ntext-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache/spec]"
 description: "getAdvisorFreshness() analogous to code-graph getGraphFreshness(). Per-skill fingerprints, generation-tagged graph snapshots, deleted/renamed skill suppression, 15-min source cache. Trust-state mapping matches Phase 016 M8 vocabulary."
 trigger_phrases:
   - "020 advisor freshness"
   - "advisor source cache"
-  - "getAdvisorFreshness"
+  - "getadvisorfreshness"
   - "per-skill fingerprint"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache"
@@ -23,7 +22,7 @@ _memory:
       - "tasks.md"
       - "checklist.md"
       - "implementation-summary.md"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Advisor Freshness + Source Cache
 

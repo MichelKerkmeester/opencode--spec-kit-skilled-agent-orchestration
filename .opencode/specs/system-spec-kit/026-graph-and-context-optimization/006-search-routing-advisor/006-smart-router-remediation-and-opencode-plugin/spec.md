@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Smart-Router Remediation + OpenCode Plugin"
+title: ".../026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/spec]"
 description: "Act on all 6 recommendations from 021/002 Smart-Router research + build spec-kit-skill-advisor OpenCode plugin per 021/001 V8/V9. Scope: fix stale paths, tune ON_DEMAND keywords, replace CLI silent fallbacks, build CI check, ship observe-only telemetry harness, ship advisor plugin."
 trigger_phrases:
   - "023 smart router remediation"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "smart router ci check"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Phase 023 scaffolded — acts on all 021/001+021/002 research recommendations"
     next_safe_action: "Dispatch cli-codex gpt-5.4 high fast"
     dispatch_policy: "cli-codex gpt-5.4 high fast primary; cli-copilot gpt-5.4 high fallback"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Smart-Router Remediation + OpenCode Plugin
 

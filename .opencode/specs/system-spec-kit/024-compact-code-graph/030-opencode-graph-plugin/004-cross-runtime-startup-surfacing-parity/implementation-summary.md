@@ -1,11 +1,20 @@
 ---
-title: "Implementation Summary: Cross-Runtime Startup Surfacing Parity [004/030]"
+title: "...t/024-compact-code-graph/030-opencode-graph-plugin/004-cross-runtime-startup-surfacing-parity/implementation-summary]"
 description: "Phase 004 implemented the shared startup-status surface across the repo-managed CLI runtimes without reopening phases 001-003."
 trigger_phrases:
   - "phase 4 implementation summary"
   - "startup surfacing parity summary"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/004-cross-runtime-startup-surfacing-parity"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 # Implementation Summary: Cross-Runtime Startup Surfacing Parity
 
@@ -48,7 +57,7 @@ The startup surfaces were later refined to become freshness-aware instead of cou
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts` | Modified | Define the shared startup-status surface |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts` | Modified | Define the shared startup-status surface |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts` | Modified | Align structural startup/resume freshness with the shared readiness engine |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts` | Modified | Emit freshness-aware graph status in the OpenCode startup digest source |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts` | Modified | Lead Claude startup injection with the shared startup surface |

@@ -1,9 +1,15 @@
 ---
-title: "Implementation Summary: Wave C — Rollout + Sweeps"
+title: "...ntext-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps/implementation-summary]"
 description: "Phase 017 Wave C complete: 4 commits on main landing evidence-marker lint strict activation, closing-pass CP-002 amend, memory-context readiness field rename, and 16-folder canonical-save sweep."
-trigger_phrases: ["017 wave c summary", "wave c implementation", "rollout sweeps summary", "16 folder sweep", "evidence marker lint strict"]
+trigger_phrases:
+  - "017 wave c summary"
+  - "wave c implementation"
+  - "rollout sweeps summary"
+  - "16 folder sweep"
+  - "evidence marker lint strict"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/004-rollout-sweeps"

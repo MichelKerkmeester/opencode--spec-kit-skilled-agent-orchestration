@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Code-Graph Hook Improvements [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/tasks]"
+title: "Tasks [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/tasks]"
 description: "Task plan for implementing the code-graph resolver, scan, startup, and bounded-context fixes defined by packet 013 research and merged Bucket A synthesis."
 trigger_phrases:
   - "tasks"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "hook daemon parity"
 importance_tier: "important"
 contextType: "implementation"
-template_source_marker: "tasks-core | v2.2"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements"
@@ -28,6 +28,7 @@ _memory:
       - "Whether 013-F-005 will be solved by transport propagation or by removing the unused sharedPayload contract"
     answered_questions:
       - "Phase 2 tasks must map directly to the P0/P1 findings from pt-02 research and merged synthesis"
+template_source_marker: "tasks-core | v2.2"
 ---
 # Tasks: Code-Graph Hook Improvements
 

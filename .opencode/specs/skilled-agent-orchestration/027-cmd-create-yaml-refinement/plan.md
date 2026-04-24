@@ -1,11 +1,20 @@
 ---
-title: "Implementation Plan: Create Command YAML Refinement [03--commands-and-skills/027-cmd-create-yaml-refinement/plan]"
+title: "Implementation Plan: Create Command YAML Refinement [skilled-agent-orchestration/027-cmd-create-yaml-refinement/plan]"
 description: "Plan the refinement pass that aligns the create-command YAML assets with a richer spec_kit-style top-level workflow contract."
 trigger_phrases:
   - "create yaml refinement plan"
   - "create command yaml standardization plan"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/027-cmd-create-yaml-refinement"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Create Command YAML Refinement
 

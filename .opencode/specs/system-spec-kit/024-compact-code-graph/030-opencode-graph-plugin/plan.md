@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: OpenCode Graph Plugin Phased Execution [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/plan]"
+title: "Implementation Plan: OpenCode Graph Plugin [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/plan]"
 description: "Captures the completed packet 030 runtime delivery, including Phase 031 Copilot startup-hook wiring repair."
 trigger_phrases:
   - "packet 030 plan"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "opencode graph plugin plan"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: OpenCode Graph Plugin Phased Execution
 

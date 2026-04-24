@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 ---
-title: "Implementation Plan: Doc Surface Alignment for Research Content Routing Accuracy"
+title: "...006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment/plan]"
 description: "This phase is a documentation-parity pass anchored to the shipped canonical save router. The approach is to verify runtime behavior first, patch only routing-aware surfaces, then close the phase with strict packet validation."
 trigger_phrases:
   - "001 002 004 plan"

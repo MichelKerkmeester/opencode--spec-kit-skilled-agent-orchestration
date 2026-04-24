@@ -1,11 +1,12 @@
 ---
-title: "027 - Skill Graph Daemon and Advisor Unification Implementation Summary"
+title: "...nd-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/implementation-summary]"
 description: "Phase 027 shipped the skill-graph daemon, derived metadata, native advisor, MCP tools, compatibility shims, and promotion gates."
 trigger_phrases:
   - "026/009/002 implementation summary"
   - "advisor daemon shipped"
-importance_tier: "high"
-contextType: "implementation-summary"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification"

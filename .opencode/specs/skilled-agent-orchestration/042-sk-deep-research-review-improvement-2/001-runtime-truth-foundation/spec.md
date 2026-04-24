@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Deep Research and Deep Review Runtime Improvement Bundle [042]"
+title: "Feature Specif [skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtime-truth-foundation/spec]"
 description: "Plan the next improvement wave for sk-deep-research and sk-deep-review by turning the consolidated research findings into an implementation-ready Level 3 packet."
 trigger_phrases:
   - "042"
@@ -10,6 +10,15 @@ trigger_phrases:
   - "coordination board"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtime-truth-foundation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Deep Research and Deep Review Runtime Improvement Bundle
 

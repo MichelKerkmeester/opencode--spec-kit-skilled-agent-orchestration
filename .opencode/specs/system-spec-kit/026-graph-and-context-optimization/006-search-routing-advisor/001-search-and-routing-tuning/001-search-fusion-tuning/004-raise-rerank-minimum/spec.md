@@ -1,12 +1,31 @@
 ---
-title: "Raise Minimum Rerank Candidate Threshold"
-status: complete
-level: 2
-type: implementation
-parent: 001-search-fusion-tuning
+title: "...tion/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum/spec]"
+description: 'title: "Raise Minimum Rerank Candidate Threshold"'
+trigger_phrases:
+  - "tion"
+  - "006"
+  - "search"
+  - "routing"
+  - "advisor"
+  - "spec"
+  - "004"
+  - "raise"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 created: 2026-04-12
+level: 2
+parent: 001-search-fusion-tuning
+status: complete
+type: implementation
 ---
-
 # Raise Minimum Rerank Candidate Threshold
 
 ## Scope

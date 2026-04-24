@@ -1,7 +1,6 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
-title: "Feature Specification: OpenCode Plugin Loader Remediation"
-description: "OpenCode 1.3.17 TUI crash remediation plus Phase 4 skill-advisor hook remap: plugin helpers live outside `.opencode/plugins/`, `parseTransportPlan()` fail-opens for legacy loader invocation, and the skill-advisor plugin now uses OpenCode `event` + `experimental.chat.system.transform` hooks so advisor briefs reach model context."
+title: "...ystem-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation/spec]"
+description: "OpenCode 1.3.17 TUI crash remediation plus Phase 4 skill-advisor hook remap: plugin helpers live outside .opencode/plugins/, parseTransportPlan() fail-opens for legacy loader invocation, and the skill-advisor plugin now uses OpenCode event + experimental.chat.system.transform hooks so advisor briefs reach model context."
 trigger_phrases:
   - "opencode plugin loader"
   - "opencode plugin crash"
@@ -10,8 +9,9 @@ trigger_phrases:
   - "opencode plugin discovery"
   - "opencode tui worker plugin2"
   - "026/009/007"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation"
@@ -37,6 +37,7 @@ _memory:
       - "Is there a documented opt-out (e.g., underscore prefix, opencode.json `plugins.exclude`) for files that should not be auto-loaded?"
       - "What is the canonical OpenCode-bundled location for plugin helper modules that ship alongside plugins but are not themselves plugins?"
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: OpenCode Plugin Loader Remediation
 

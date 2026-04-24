@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 ---
-title: "Feature Specification: Doc Surface Alignment: Search Fusion Changes"
+title: "...ion/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment/spec]"
 description: "Several operator-facing search docs still described pre-017 tuning behavior. This packet realigns only the requested surfaces so public guidance matches the shipped runtime for reranking, continuity fusion, and cache telemetry."
 trigger_phrases:
   - "search fusion doc alignment"
@@ -9,11 +9,6 @@ trigger_phrases:
   - "doc-only parity pass"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-level: 2
-type: implementation
-parent: 001-search-fusion-tuning
-created: 2026-04-13
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment"
@@ -34,6 +29,11 @@ _memory:
     open_questions: []
     answered_questions:
       - "Which requested surfaces needed edits versus scan-only confirmation"
+created: 2026-04-13
+level: 2
+parent: 001-search-fusion-tuning
+status: complete
+type: implementation
 ---
 # Feature Specification: Doc Surface Alignment: Search Fusion Changes
 

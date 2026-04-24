@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch | v2.2 -->"
-title: "Task Breakdown: Codex CLI Hook Parity Remediation"
+title: "Task [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation/tasks]"
 description: "Completed task breakdown for Codex native hook parity: contract research, adapter port, live registration, documentation, validation, and memory save."
 trigger_phrases:
   - "026/009/005 tasks"
   - "codex hook parity tasks"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Independent review and live re-verification — all claims hold"
     next_safe_action: "Validate and save"
     completion_pct: 100
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch | v2.2 -->"
 ---
 # Task Breakdown: Codex CLI Hook Parity Remediation
 

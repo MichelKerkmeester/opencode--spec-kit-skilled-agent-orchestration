@@ -1,9 +1,17 @@
 ---
-title: "Feature Specification: Foundational Runtime (merged)"
+title: "Featur [system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/spec]"
 description: "Merged packet covering the foundational runtime arc: 50-iter research charter (ex-016) plus 27 remediation tasks across 4 Phase-017 sub-phases. Five sub-phases preserve history: 001-initial-research, 002-infrastructure-primitives, 003-cluster-consumers, 004-rollout-sweeps, 005-p2-maintainability."
-trigger_phrases: ["foundational runtime remediation", "phase 017 remediation", "017 review findings", "h-56-1 canonical save fix", "cluster d code-graph asymmetry", "cluster e copilot observability", "50-iter foundational research"]
+trigger_phrases:
+  - "foundational runtime remediation"
+  - "phase 017 remediation"
+  - "017 review findings"
+  - "h-56-1 canonical save fix"
+  - "cluster d code-graph asymmetry"
+  - "cluster e copilot observability"
+  - "50-iter foundational research"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime"

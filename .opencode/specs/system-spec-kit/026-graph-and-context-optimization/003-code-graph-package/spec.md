@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Code Graph Package"
+title: "Feature Specification: Code Graph [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/spec]"
 description: "Code graph upgrades and self-contained package migration. Consolidated active parent for 3 direct child phase packet(s)."
 trigger_phrases:
   - "003-code-graph-package"
@@ -9,7 +9,6 @@ trigger_phrases:
   - "003-code-graph-context-and-scan-scope"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Code Graph Package
 

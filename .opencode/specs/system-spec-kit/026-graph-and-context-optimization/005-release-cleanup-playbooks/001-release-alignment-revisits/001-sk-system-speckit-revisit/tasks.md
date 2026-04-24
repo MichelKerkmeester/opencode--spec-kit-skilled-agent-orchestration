@@ -1,12 +1,12 @@
 ---
-title: "018 / 007 — system-spec-kit revisit tasks"
+title: "...ontext-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/001-sk-system-speckit-revisit/tasks]"
 description: "Completed task log for the 016 SKILL/internal-doc revisit."
-trigger_phrases: ["007 revisit tasks", "system-spec-kit revisit tasks", "phase 018 release-alignment tasks"]
+trigger_phrases:
+  - "007 revisit tasks"
+  - "system-spec-kit revisit tasks"
+  - "phase 018 release-alignment tasks"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/001-sk-system-speckit-revisit"
@@ -15,6 +15,9 @@ _memory:
     recent_action: "Recorded the completed 007 revisit tasks"
     next_safe_action: "Use the updated-count ledger for future release-alignment deltas"
     key_files: ["tasks.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: 018 / 007 — system-spec-kit revisit
 <!-- SPECKIT_LEVEL: 2 -->

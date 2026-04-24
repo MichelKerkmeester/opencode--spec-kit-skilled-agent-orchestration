@@ -6,11 +6,20 @@ trigger_phrases:
   - "mcp_server esm migration plan"
 importance_tier: "important"
 contextType: "planning"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["plan.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
-# Implementation Plan: ESM Module Compliance
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+# Implementation Plan: ESM Module Compliance
 
 ---
 
@@ -140,14 +149,12 @@ Coordinated sibling-package ESM migration with an explicit CommonJS-to-ESM inter
 
 ---
 
-<!-- ANCHOR:dependencies -->
 ## L2: PHASE DEPENDENCIES
 
 `Phase 0 -> Phase 1 -> Phase 2 -> Phase 3 -> Phase 4`
 
 Phase 4 cannot begin until `scripts` interoperability proof exists. Standards-doc updates outside 023 are downstream of the verification matrix, not peers of the runtime work.
 
-<!-- /ANCHOR:dependencies -->
 ---
 
 <!-- ANCHOR:effort -->

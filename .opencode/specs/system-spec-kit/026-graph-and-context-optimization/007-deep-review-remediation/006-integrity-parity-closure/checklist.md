@@ -1,11 +1,12 @@
 ---
-title: "Verification Checklist: Integrity Parity Closure"
+title: "...ystem-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/checklist]"
 description: "Completion checklist for the Integrity Parity Closure remediation packet."
 trigger_phrases:
   - "verification checklist integrity parity closure"
   - "026 007 006 checklist"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure"

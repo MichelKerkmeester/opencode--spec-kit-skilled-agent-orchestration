@@ -1,6 +1,24 @@
 ---
-title: "Plan: Non-Hook Auto-Priming & Session Health [024/018]"
+title: "Plan: Non-Hook Auto-Priming & Session Health [system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming/plan]"
 description: "Implementation order for MCP first-call auto-priming and session health monitoring."
+trigger_phrases:
+  - "plan"
+  - "non"
+  - "hook"
+  - "auto"
+  - "priming"
+  - "018"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Phase 018 — Non-Hook Auto-Priming & Session Health

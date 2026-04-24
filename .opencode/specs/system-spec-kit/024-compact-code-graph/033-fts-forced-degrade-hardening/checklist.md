@@ -1,12 +1,21 @@
 ---
-title: "Verification Checklist: FTS Forced-Degrade Hardening [template:level_3/checklist.md]"
+title: "Verification Checklist: FTS [system-spec-kit/024-compact-code-graph/033-fts-forced-degrade-hardening/checklist]"
 description: "Verification checklist for 033-fts-forced-degrade-hardening."
 trigger_phrases:
   - "033-fts-forced-degrade-hardening"
   - "verification"
   - "checklist"
 importance_tier: "important"
-contextType: "verification"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/033-fts-forced-degrade-hardening"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: FTS Forced-Degrade Hardening
 

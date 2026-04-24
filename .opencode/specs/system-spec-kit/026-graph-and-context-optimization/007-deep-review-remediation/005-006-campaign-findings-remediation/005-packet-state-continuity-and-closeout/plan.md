@@ -1,10 +1,11 @@
 ---
-title: "Implementation Plan: 005-packet-state-continuity-and-closeout Packet State, Continuity, and Closeout Remediation"
+title: "...tion/007-deep-review-remediation/005-006-campaign-findings-remediation/005-packet-state-continuity-and-closeout/plan]"
 description: "Technical plan for 005-packet-state-continuity-and-closeout Packet State, Continuity, and Closeout Remediation."
 trigger_phrases:
   - "implementation plan 005 packet state continuity and closeout packet stat"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/005-packet-state-continuity-and-closeout"

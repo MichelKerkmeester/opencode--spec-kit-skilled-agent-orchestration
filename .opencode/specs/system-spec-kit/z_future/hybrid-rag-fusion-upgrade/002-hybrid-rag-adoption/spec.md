@@ -1,8 +1,15 @@
 ---
-title: "002-hybrid-rag-adoption: Hybrid RAG Adoption"
+title: "002-hybrid-rag-adoption: Hybrid RAG [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/spec]"
 description: "Executive synthesis of the completed five-system research into nine adopt-now sub-phases plus nine investigation sub-phases for Public."
+trigger_phrases:
+  - "002"
+  - "hybrid"
+  - "rag"
+  - "adoption"
+  - "spec"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 002-hybrid-rag-adoption: Hybrid RAG Adoption
 
 ## 1. Scope

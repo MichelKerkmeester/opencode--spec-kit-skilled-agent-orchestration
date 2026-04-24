@@ -1,13 +1,12 @@
 ---
-title: "Decision Record: 018 / 013 — dead code and architecture audit"
+title: "...ptimization/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit/decision-record]"
 description: "Accepted decision for keeping the audit focused on the active runtime and shared truth surfaces."
-trigger_phrases: ["013 decision record", "dead code audit adr", "architecture audit adr"]
+trigger_phrases:
+  - "013 decision record"
+  - "dead code audit adr"
+  - "architecture audit adr"
 importance_tier: "important"
 contextType: "implementation"
-status: "complete"
-level: 3
-parent: "008-cleanup-and-audit"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit"
@@ -16,6 +15,10 @@ _memory:
     recent_action: "Recorded the accepted audit decision"
     next_safe_action: "Review packet"
     key_files: ["decision-record.md", "spec.md", "implementation-summary.md"]
+level: 3
+parent: "008-cleanup-and-audit"
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->

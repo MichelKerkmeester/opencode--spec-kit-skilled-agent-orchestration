@@ -1,8 +1,14 @@
 ---
-title: "Deep Research Report: 005-mempalace"
+title: "Deep [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/001-research-hybrid-rag-fusion-systems/005-mempalace/research]"
 description: "40-iteration deep research synthesis (042-compliant)"
+trigger_phrases:
+  - "deep"
+  - "research"
+  - "005"
+  - "mempalace"
+importance_tier: "normal"
+contextType: "research"
 ---
-
 # Deep Research Report: 005-mempalace
 
 Generated: 2026-04-11 00:15

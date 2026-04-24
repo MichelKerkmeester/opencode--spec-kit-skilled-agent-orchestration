@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: /memory:save Planner-First Default"
+title: "...em-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/decision-record]"
 description: "ADR ledger for the planner-first /memory:save contract: the trim-targeted verdict, planner-first default output, reconsolidation opt-in, enrichment deferral, router category contract, hard-blocker preservation, and the scoped content-router.ts exception."
 trigger_phrases:
   - "decision record"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "trim-targeted verdict"
   - "content-router scoped exception"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite"
@@ -30,6 +29,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "All ADRs reframed under the planner-first delivery arc."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: /memory:save Planner-First Default
 

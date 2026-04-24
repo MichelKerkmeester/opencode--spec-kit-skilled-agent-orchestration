@@ -1,11 +1,20 @@
 ---
-title: "Implementation Summary [03--commands-and-skills/034-sk-deep-research-review-folders/implementation-summary]"
+title: "Implementation Summary [skilled-agent-orchestration/034-sk-deep-research-review-folders/implementation-summary]"
 description: "Review mode now stores its durable packet under review/, including the final report, with a legacy scratch-to-review migration path, synchronized runtime and documentation contracts, and follow-up command-surface compatibility fixes."
 trigger_phrases:
   - "review folder implementation summary"
   - "review folder summary"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/034-sk-deep-research-review-folders"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 # Implementation Summary: sk-deep-research Review Folder Contract
 

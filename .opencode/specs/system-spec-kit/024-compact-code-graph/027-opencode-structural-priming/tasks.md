@@ -1,13 +1,21 @@
 ---
-title: "Tasks: OpenCode Structural Priming"
+title: "Tasks: OpenCode Structural Priming [system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/tasks]"
 description: "Task tracker for non-hook runtime structural bootstrap and recovery alignment."
 trigger_phrases:
   - "027 structural priming tasks"
   - "opencode structural bootstrap tasks"
 importance_tier: "normal"
-contextType: "tracking"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/027-opencode-structural-priming"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
-
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 # Tasks: OpenCode Structural Priming

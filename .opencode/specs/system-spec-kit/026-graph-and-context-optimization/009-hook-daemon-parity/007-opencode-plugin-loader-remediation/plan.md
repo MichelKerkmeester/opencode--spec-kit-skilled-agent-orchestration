@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level3-arch | v2.2 -->"
-title: "Implementation Plan: OpenCode Plugin Loader Remediation"
-description: "Three-phase plan: confirm OpenCode 1.3.17 plugin discovery contract, isolate non-plugin helper modules out of `.opencode/plugins/`, then add a regression guard and documentation so the colocated-helper crash cannot return."
+title: "...ystem-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation/plan]"
+description: "Three-phase plan: confirm OpenCode 1.3.17 plugin discovery contract, isolate non-plugin helper modules out of .opencode/plugins/, then add a regression guard and documentation so the colocated-helper crash cannot return."
 trigger_phrases:
   - "026/009/007 plan"
   - "opencode plugin loader plan"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Phase 5 status accuracy and defensive guards implemented and verified"
     next_safe_action: "Execute Phase 1 contract investigation"
     completion_pct: 100
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level3-arch | v2.2 -->"
 ---
 # Implementation Plan: OpenCode Plugin Loader Remediation
 

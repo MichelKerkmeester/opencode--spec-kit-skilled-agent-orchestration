@@ -1,9 +1,15 @@
 ---
-title: "Feature Specification: Phase 020 Research-Findings Remediation"
+title: "Featu [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation/spec]"
 description: "Remediates the 12 prioritized findings (R1-R12) from the Phase 018 deep-loop-cli-executor research pass. Highest-leverage slice: shared deep-loop executor provenance (R1-R2), description.json repair safety (R4-R5), Copilot @path fallback (R3), metadata lineage (R6-R7), evidence-marker fence parser (R9), retry-budget + caller-context + docs parity smaller slices."
-trigger_phrases: ["phase 020 remediation", "020 research findings", "deep-loop hardening", "description.json repair safety", "executor provenance first-write"]
-importance_tier: "high"
+trigger_phrases:
+  - "phase 020 remediation"
+  - "020 research findings"
+  - "deep-loop hardening"
+  - "description.json repair safety"
+  - "executor provenance first-write"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation"

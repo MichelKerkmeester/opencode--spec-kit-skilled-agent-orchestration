@@ -1,11 +1,13 @@
 ---
-title: "Decision Record: 018 / 011 — graph-metadata.json architecture"
+title: "...text-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata/decision-record]"
 description: "Accepted ADRs for the dedicated graph-metadata.json contract, the manual-versus-derived split, merge-based save refresh, and direct _memory.continuity frontmatter edits."
-trigger_phrases: ["018 011 decision record", "graph metadata adr", "graph metadata architecture decisions", "graph metadata merge adr"]
+trigger_phrases:
+  - "018 011 decision record"
+  - "graph metadata adr"
+  - "graph metadata architecture decisions"
+  - "graph metadata merge adr"
 importance_tier: "critical"
 contextType: "planning"
-status: "planned"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/002-spec-folder-graph-metadata"
@@ -14,6 +16,8 @@ _memory:
     recent_action: "Expanded the packet ADR into three accepted design decisions grounded in the completed research"
     next_safe_action: "Use these ADRs as hard implementation guardrails"
     key_files: ["decision-record.md", "research.md", "plan.md"]
+status: "planned"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->

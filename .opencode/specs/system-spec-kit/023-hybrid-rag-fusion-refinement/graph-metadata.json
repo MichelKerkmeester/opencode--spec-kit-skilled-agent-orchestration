@@ -60,22 +60,22 @@
       "shared/paths.ts",
       "api/index.ts",
       "research/research.md",
-      "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/spec.md",
-      "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/plan.md",
-      "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/tasks.md",
-      "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/checklist.md",
-      "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/implementation-summary.md",
-      "scripts/package.json",
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
+      "scripts/package.json",
       "mcp_server/handlers/memory-save.ts",
       "mcp_server/handlers/memory-index.ts",
       "mcp_server/lib/search/vector-index-store.ts",
       "mcp_server/lib/session/session-manager.ts",
-      "scripts/memory/generate-context.ts"
+      "scripts/memory/generate-context.ts",
+      "shared/package.json",
+      "dist/context-server.js",
+      "scripts/dist/memory/generate-context.js",
+      "mcp_server/package.json",
+      "mcp_server/handlers/v-rule-bridge.ts"
     ],
     "entities": [
       {
@@ -105,31 +105,31 @@
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/spec.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
         "name": "plan.md",
         "kind": "doc",
-        "path": "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/plan.md",
+        "path": "plan.md",
         "source": "derived"
       },
       {
         "name": "tasks.md",
         "kind": "doc",
-        "path": "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/tasks.md",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
         "name": "checklist.md",
         "kind": "doc",
-        "path": "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/checklist.md",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
         "name": "implementation-summary.md",
         "kind": "doc",
-        "path": "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/implementation-summary.md",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
@@ -169,6 +169,24 @@
         "source": "derived"
       },
       {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "dist/context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "scripts/dist/memory/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "v-rule-bridge.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/v-rule-bridge.ts",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -203,29 +221,12 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "Implementation Plan",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "Technical Context",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "Overview This",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "The finished 20-iteration research in `research/research.md` locked the migration strategy that this packet now records as shipped. The delivered implementation migrated `@spec-kit/shared` and `@spec-kit/mcp-server` to native ESM, kept `@spec-kit/scripts` as CommonJS, and used explicit package-boundary async loading plus scripts-owned bridge code where CommonJS had to cross into ESM. Dual-build or conditional exports remained a fallback option only and were not needed for the shipped path.",
     "created_at": "2026-04-12T09:02:50.316Z",
-    "last_save_at": "2026-04-18T14:39:00.619Z",
+    "last_save_at": "2026-04-24T15:33:54.984Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

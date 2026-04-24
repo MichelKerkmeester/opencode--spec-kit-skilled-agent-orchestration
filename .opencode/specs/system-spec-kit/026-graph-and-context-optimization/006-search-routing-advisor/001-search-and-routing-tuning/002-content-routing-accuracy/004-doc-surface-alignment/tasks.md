@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 ---
-title: "Tasks: Doc Surface Alignment for Research Content Routing Accuracy"
+title: "...06-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "001 002 004 tasks"

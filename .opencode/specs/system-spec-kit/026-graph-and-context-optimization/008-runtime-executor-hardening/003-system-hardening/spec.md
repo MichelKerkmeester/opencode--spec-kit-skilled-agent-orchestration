@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: System Hardening (Post-Consolidation Research + Remediation Train)"
+title: "Feature [system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/spec]"
 description: "Research-first umbrella packet for the post-026-consolidation hardening train. Coordinates the Tier 1 research/review items surfaced in scratch/deep-review-research-suggestions.md: three 026 close-out candidates (015 delta-review, Q4 NFKC robustness, description.json regen strategy) and three system-spec-kit-wide candidates (Gate 3 + skill-advisor routing accuracy, template v2.2 + validator joint audit, canonical-save pipeline invariants). Child 001-initial-research runs the investigation; future children 002+ carry the resulting implementation waves."
 trigger_phrases:
   - "019 system hardening"
@@ -10,7 +10,6 @@ trigger_phrases:
   - "019 research umbrella"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening"
@@ -27,7 +26,7 @@ _memory:
       - "decision-record.md"
       - "001-initial-research/spec.md"
       - "001-initial-research/findings-registry.json"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: System Hardening (Post-Consolidation Research + Remediation Train)
 

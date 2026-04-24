@@ -1,7 +1,18 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | level2-verify | compact -->
 ---
-title: "Add Task Update Merge Safety Guard - Checklist"
-status: completed
+title: "...ch-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/checklist]"
+description: 'title: "Add Task Update Merge Safety Guard - Checklist"'
+trigger_phrases:
+  - "routing"
+  - "advisor"
+  - "001"
+  - "search"
+  - "and"
+  - "checklist"
+  - "005"
+  - "task"
+importance_tier: "normal"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety"
@@ -9,6 +20,7 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Verified document-wide task matching, explicit refusal messaging, and focused task-update regressions"
     next_safe_action: "No further checklist work remains for this phase"
+status: completed
 ---
 # Verification Checklist
 ## Protocol <!-- ANCHOR:protocol -->Prioritize pre-mutation safety, explicit rejection messaging, and targeted regression coverage.<!-- /ANCHOR:protocol -->

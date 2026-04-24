@@ -1,13 +1,12 @@
 ---
-title: "Feature Specification: Playbook Prompt Rewrite [template:level_2/spec.md]"
+title: "...and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite/spec]"
 description: "Document the completed prompt-field rewrite for the manual testing playbook and restore this phase packet to the active Level 2 scaffold."
-trigger_phrases: ["playbook prompt rewrite", "manual testing prompt cleanup", "playbook spec repair"]
+trigger_phrases:
+  - "playbook prompt rewrite"
+  - "manual testing prompt cleanup"
+  - "playbook spec repair"
 importance_tier: "important"
 contextType: "implementation"
-level: 2
-status: "in_progress"
-parent: "009-playbook-and-remediation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/001-playbook-prompt-rewrite"
@@ -15,6 +14,10 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Recorded freshness-only strict-validation failure"
     next_safe_action: "Refresh continuity evidence; resolve or re-scope CHK-020 and CHK-023"
+level: 2
+parent: "009-playbook-and-remediation"
+status: "in_progress"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

@@ -1,7 +1,6 @@
 ---
-title: "Tasks: Split sk-deep-research review mode [03--commands-and-skills/036-sk-deep-research-review-split/tasks]"
+title: "Tasks: Split sk-deep-research review mode [skilled-agent-orchestration/036-sk-deep-research-review-split/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
-template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 trigger_phrases:
   - "036 tasks"
   - "deep-review split tasks"
@@ -28,6 +27,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Advisor evidence calibration now separates graph-heavy matches and deep sibling edges were removed."
+template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Split sk-deep-research Review Mode into sk-deep-review
 

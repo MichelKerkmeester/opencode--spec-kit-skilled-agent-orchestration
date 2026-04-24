@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Code-Graph System + Hooks Improvement Investigation"
+title: "Featur [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/spec]"
 description: "Deep-research investigation into how the code-graph package and its hook wiring can be improved beyond the state delivered by 009-hook-daemon-parity and 012-docs-impact-remediation. Research-only packet — output is findings + recommendations, no implementation in this sub-phase."
 trigger_phrases:
   - "code-graph hook improvements"
   - "code-graph system research"
   - "026/009/013"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements"

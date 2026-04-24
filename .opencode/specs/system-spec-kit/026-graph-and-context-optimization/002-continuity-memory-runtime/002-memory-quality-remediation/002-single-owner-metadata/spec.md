@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Phase 2 — Single-Owner Metadata Fixes"
+title: "...and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata/spec]"
 description: "Phase 2 specifies the P1 metadata fixes for D4 importance-tier drift and D7 empty git provenance, using the parent research packet as the sole planning authority."
 trigger_phrases:
   - "phase 2 single-owner metadata"
@@ -8,9 +8,8 @@ trigger_phrases:
   - "d7 provenance injection"
   - "f-ac4"
   - "f-ac6"
-importance_tier: important
-contextType: planning
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + phase-child + level2-verify | v2.2 -->"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata"
@@ -19,7 +18,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + phase-child + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Phase 2 — Single-Owner Metadata Fixes
 

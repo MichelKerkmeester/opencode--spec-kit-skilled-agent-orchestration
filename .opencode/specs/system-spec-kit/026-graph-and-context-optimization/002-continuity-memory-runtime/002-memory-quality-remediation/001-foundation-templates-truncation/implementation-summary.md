@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Phase 1 - Foundation (Templates & Truncation)"
+title: "...-continuity-memory-runtime/002-memory-quality-remediation/001-foundation-templates-truncation/implementation-summary]"
 description: "Post-implementation narrative: PR-1 OVERVIEW anchor alignment (template + validator + parser), PR-2 shared truncateOnWordBoundary helper, fixtures, and verification results."
 trigger_phrases:
   - "phase 1 implementation summary"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "overview anchor fixed"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/001-foundation-templates-truncation"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

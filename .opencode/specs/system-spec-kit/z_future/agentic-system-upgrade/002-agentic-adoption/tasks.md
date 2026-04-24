@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 002 Agentic Adoption [template:level_2/tasks.md]"
+title: "Tasks: 002 Agentic Adoption [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/tasks]"
 description: "Task Format: T### [P?] Description (packet file path)"
 trigger_phrases:
   - "tasks"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Research Memory Redundancy Follow-On"
+title: "Featu [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy/spec]"
 description: "Level 3 coordination packet that turns the completed memory-redundancy research into parent-sync and downstream packet-alignment work without reopening runtime implementation inside the research lane."
 trigger_phrases:
   - "006 research memory redundancy"
@@ -7,8 +7,7 @@ trigger_phrases:
   - "compact wrapper follow on"
   - "canonical doc ownership"
 importance_tier: "important"
-contextType: "spec"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: Research Memory Redundancy Follow-On
 

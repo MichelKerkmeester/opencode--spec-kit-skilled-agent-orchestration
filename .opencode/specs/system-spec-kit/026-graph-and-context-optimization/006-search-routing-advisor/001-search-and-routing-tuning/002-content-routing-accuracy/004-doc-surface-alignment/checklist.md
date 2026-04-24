@@ -1,12 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 ---
-title: "Verification Checklist: Doc Surface Alignment for Research Content Routing Accuracy"
+title: "...earch-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment/checklist]"
 description: "Verification Date: 2026-04-13"
 trigger_phrases:
   - "001 002 004 checklist"
   - "doc surface alignment verification"
 importance_tier: "critical"
-contextType: "verification"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment"

@@ -1,11 +1,20 @@
 ---
-title: "Tasks: Review Remediation [024/029]"
+title: "Tasks: Review Remediation [024/029] [system-spec-kit/024-compact-code-graph/029-review-remediation/tasks]"
 description: "Task tracking for the active deep-review blocker set and the optional advisory follow-up."
 trigger_phrases:
   - "029 tasks"
   - "review remediation tasks"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/029-review-remediation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -30,7 +39,7 @@ contextType: "implementation"
 ## Phase 1: Setup
 
 - [x] T001 [WS-0] Read the active review registry and adjacent phase packet style (`../review/review-report.md`, `../028-startup-highlights-remediation/`).
-- [x] T002 [WS-0] Confirm the child packet stays limited to `029-review-remediation` and excludes parent packet edits plus `030-opencode-plugin/`.
+- [x] T002 [WS-0] Confirm the child packet stays limited to `029-review-remediation` and excludes parent packet edits plus `030-opencode-graph-plugin/`.
 - [x] T003 [WS-1] Decide the truth-sync direction for `session_bootstrap`: add `nextActions` or downgrade the contract surfaces (`session-bootstrap.ts`, `tool-schemas.ts`, MCP README).
 - [x] T004 [WS-2] Decide the root evidence ownership model for shipped Phase 015/016 status before implementation begins (root summary refresh vs checklist repointing vs both).
 <!-- /ANCHOR:phase-1 -->

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Shared-Payload Advisor Contract"
+title: "...-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract/spec]"
 description: "Extend shared-payload envelope with advisor producer/source vocabulary + typed advisor metadata fields + privacy rejection rules. Gate for all runtime wiring in children 006/007/008."
 trigger_phrases:
   - "020 shared payload advisor contract"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "advisor metadata contract"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract"
@@ -23,7 +22,7 @@ _memory:
       - "tasks.md"
       - "checklist.md"
       - "implementation-summary.md"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Shared-Payload Advisor Contract
 

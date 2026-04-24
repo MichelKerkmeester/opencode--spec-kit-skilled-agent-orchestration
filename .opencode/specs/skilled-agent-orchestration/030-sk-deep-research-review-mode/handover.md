@@ -1,5 +1,5 @@
 ---
-title: "Session Handover Document [03--commands-and-skills/030-sk-deep-research-review-mode/handover]"
+title: "Session Handover Document [03--commands-and-skil [skilled-agent-orchestration/030-sk-deep-research-review-mode/handover]"
 description: "CONTINUATION - Attempt 1 | Spec: .opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode | Last: Implementation Phases 2-5 via codex agents | Next: Verify Phase..."
 trigger_phrases:
   - "session"
@@ -9,6 +9,14 @@ trigger_phrases:
   - "deep"
 importance_tier: "normal"
 contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/030-sk-deep-research-review-mode"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["handover.md"]
 ---
 # Session Handover Document
 

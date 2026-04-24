@@ -1,0 +1,748 @@
+{
+  "generatedAt": "2026-04-24T14:51:19.250Z",
+  "mode": "dry-run",
+  "options": {
+    "includeArchive": false,
+    "skipTemplates": false,
+    "allowMalformed": true,
+    "roots": [
+      "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement"
+    ]
+  },
+  "summary": {
+    "total": 206,
+    "changed": 98,
+    "unchanged": 108,
+    "failed": 0,
+    "malformedSkipped": 1,
+    "skippedDirs": 0
+  },
+  "byKind": {
+    "template:template": {
+      "total": 83,
+      "changed": 5
+    },
+    "spec_doc:implementation_summary": {
+      "total": 24,
+      "changed": 20
+    },
+    "spec_doc:plan": {
+      "total": 24,
+      "changed": 18
+    },
+    "spec_doc:spec": {
+      "total": 23,
+      "changed": 15
+    },
+    "spec_doc:tasks": {
+      "total": 24,
+      "changed": 17
+    },
+    "spec_doc:checklist": {
+      "total": 18,
+      "changed": 15
+    },
+    "spec_doc:research": {
+      "total": 4,
+      "changed": 3
+    },
+    "spec_doc:decision_record": {
+      "total": 4,
+      "changed": 4
+    },
+    "spec_doc:handover": {
+      "total": 1,
+      "changed": 1
+    }
+  },
+  "changedFiles": [
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/templates/addendum/level3-arch/decision-record.md",
+      "kind": "template",
+      "documentType": "template",
+      "title": "Decision Record: [NAME] [template:addendum/level3-arch/decision-record.md]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/templates/changelog/README.md",
+      "kind": "template",
+      "documentType": "template",
+      "title": "Nested Changelog Templates [template:changelog/README.md]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/templates/changelog/phase.md",
+      "kind": "template",
+      "documentType": "template",
+      "title": "{{TITLE}} [template:changelog/phase.md]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/templates/changelog/root.md",
+      "kind": "template",
+      "documentType": "template",
+      "title": "{{TITLE}} [template:changelog/root.md]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/templates/level_3+/decision-record.md",
+      "kind": "template",
+      "documentType": "template",
+      "title": "Decision Record: [NAME] [template:level_3+/decision-record.md]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/001-shared-esm-migration/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "Implementation [system-spec-kit/023-hybrid-rag-fusion-refinement/001-shared-esm-migration/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/001-shared-esm-migration/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Implementation Plan: Shared ESM [system-spec-kit/023-hybrid-rag-fusion-refinement/001-shared-esm-migration/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/002-mcp-server-esm-migration/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "Implementation [system-spec-kit/023-hybrid-rag-fusion-refinement/002-mcp-server-esm-migration/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/003-scripts-interop-refactor/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "Implementation [system-spec-kit/023-hybrid-rag-fusion-refinement/003-scripts-interop-refactor/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/003-scripts-interop-refactor/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Implementation Plan: Scripts [system-spec-kit/023-hybrid-rag-fusion-refinement/003-scripts-interop-refactor/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/004-verification-and-standards/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks: Verification and [system-spec-kit/023-hybrid-rag-fusion-refinement/004-verification-and-standards/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/005-test-and-scenario-remediation/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "Implementati [system-spec-kit/023-hybrid-rag-fusion-refinement/005-test-and-scenario-remediation/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/005-test-and-scenario-remediation/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Feature Specification: Test [system-spec-kit/023-hybrid-rag-fusion-refinement/005-test-and-scenario-remediation/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/006-review-remediation/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Implementation Plan: Deep Review [system-spec-kit/023-hybrid-rag-fusion-refinement/006-review-remediation/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "Verification Checklist: [system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks: Hybrid Search Pipeline [system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "Implementatio [system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks: Spec & Memory [system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "Verification [system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "Implemen [system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Implementation Plan: [system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Feature Specification: [system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks: Reindex Validator [system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "Verification Checklist: [system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "Implementat [system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Implementation Plan: Search [system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Feature Specification: [system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks: Search Retrieval [system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "Ve [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "...kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Impleme [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Feature [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks: [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/002-persist-tuned-thresholds/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "...em-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/002-persist-tuned-thresholds/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/002-persist-tuned-thresholds/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "...23-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/002-persist-tuned-thresholds/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/002-persist-tuned-thresholds/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Im [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/002-persist-tuned-thresholds/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/002-persist-tuned-thresholds/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "T [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/002-persist-tuned-thresholds/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "V [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "...it/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Implem [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Featur [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "...stem-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": ".../023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Impl [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Feat [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tas [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "V [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "...it/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Implem [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Featur [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "...em-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "...23-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Im [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Fe [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "T [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "...c-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/decision-record.md",
+      "kind": "spec_doc",
+      "documentType": "decision_record",
+      "title": "...023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/decision-record]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "...rid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "...m-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/research/research.md",
+      "kind": "spec_doc",
+      "documentType": "research",
+      "title": "...ec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/research]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "...m-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "...-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "...stem-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/decision-record.md",
+      "kind": "spec_doc",
+      "documentType": "decision_record",
+      "title": "...pec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/decision-record]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": ".../023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Impl [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Feat [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tas [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "...pec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements/decision-record.md",
+      "kind": "spec_doc",
+      "documentType": "decision_record",
+      "title": "...t/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements/decision-record]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "...ybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "...tem-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "...tem-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "...em-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "Implementatio [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Implementation Plan: Indexing [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Feature Specification: [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks: Indexing and Adaptive [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "Verification Checklist: [system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/decision-record.md",
+      "kind": "spec_doc",
+      "documentType": "decision_record",
+      "title": "Decision Record: [system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/decision-record]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "Implementatio [system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Implementation Plan: Memory [system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/research/research.md",
+      "kind": "spec_doc",
+      "documentType": "research",
+      "title": "Research: Memory Save [system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/research]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Feature Specification: Memory [system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks: Memory Save Quality [system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "Verification Checklist: [system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/handover.md",
+      "kind": "spec_doc",
+      "documentType": "handover",
+      "title": "Session Handover: FTS5 [system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/handover]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "Implementati [system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Implementation Plan: FTS5 [system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Feature Specification: FTS5 [system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks: FTS5 Fix, Search [system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/014-feedback-signal-pipeline/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "Verification Checklist: [system-spec-kit/023-hybrid-rag-fusion-refinement/014-feedback-signal-pipeline/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/014-feedback-signal-pipeline/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "Implementation [system-spec-kit/023-hybrid-rag-fusion-refinement/014-feedback-signal-pipeline/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/014-feedback-signal-pipeline/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Implementation Plan: Feedback [system-spec-kit/023-hybrid-rag-fusion-refinement/014-feedback-signal-pipeline/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/014-feedback-signal-pipeline/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Feature Specification: Feedback [system-spec-kit/023-hybrid-rag-fusion-refinement/014-feedback-signal-pipeline/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/research/research.md",
+      "kind": "spec_doc",
+      "documentType": "research",
+      "title": "Deep Research: Spec Kit Memory Feature Audit & Quality [system-spec-kit/023-hybrid-rag-fusion-refinement/research]",
+      "hadFrontmatter": false
+    }
+  ],
+  "failedFiles": [],
+  "skippedDirs": []
+}

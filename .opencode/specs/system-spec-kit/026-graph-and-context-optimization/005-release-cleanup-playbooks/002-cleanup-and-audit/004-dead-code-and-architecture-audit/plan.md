@@ -1,13 +1,12 @@
 ---
-title: "Implementation Plan: 018 / 013 — dead code and architecture audit"
+title: "...d-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit/plan]"
 description: "Execution plan for cleaning the active runtime, aligning architecture docs, completing README coverage, and closing the packet with verification evidence."
-trigger_phrases: ["013 plan", "dead code audit plan", "architecture audit plan"]
+trigger_phrases:
+  - "013 plan"
+  - "dead code audit plan"
+  - "architecture audit plan"
 importance_tier: "important"
 contextType: "implementation"
-status: "complete"
-level: 3
-parent: "008-cleanup-and-audit"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit"
@@ -16,6 +15,10 @@ _memory:
     recent_action: "Recorded the executed implementation plan"
     next_safe_action: "Review packet"
     key_files: ["plan.md", "tasks.md", "checklist.md", "implementation-summary.md"]
+level: 3
+parent: "008-cleanup-and-audit"
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->

@@ -1,3 +1,22 @@
+---
+title: "Spec: Agent-Improver [skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test/spec]"
+description: "The sk-improve-agent skill has been validated against handover, debug, orchestrate, and review agents (Phases 001-008), but never against itself. The agent-improver's own agent ..."
+trigger_phrases:
+  - "spec"
+  - "agent"
+  - "improver"
+  - "009"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
+---
 # Spec: Agent-Improver Self-Test
 
 | Field | Value |

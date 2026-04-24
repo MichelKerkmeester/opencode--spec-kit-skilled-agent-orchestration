@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Skill Advisor Packaging"
+title: "...6-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging/spec]"
 description: "Repair the packaging packet so it matches the shipped skill-advisor layout, uses concrete evidence paths, and passes strict Level 3 validation."
 trigger_phrases:
   - "003-skill-advisor-packaging"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "skill-advisor scripts subfolder"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/003-skill-advisor-packaging"
@@ -17,6 +16,7 @@ _memory:
     recent_action: "Review findings triaged"
     next_safe_action: "Use the validated packaging docs as historical implementation evidence"
     key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md", "decision-record.md", "graph-metadata.json"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: Skill Advisor Packaging
 

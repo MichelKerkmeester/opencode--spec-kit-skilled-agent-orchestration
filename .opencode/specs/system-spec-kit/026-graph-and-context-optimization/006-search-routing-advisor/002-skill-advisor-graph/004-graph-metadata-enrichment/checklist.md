@@ -1,14 +1,12 @@
 ---
-title: "Verification Checklist: Graph Metadata Enrichment"
+title: "...-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment/checklist]"
 description: "Completed verification checklist for the shipped schema v2 enrichment across all 21 skill metadata files."
 trigger_phrases:
   - "004-graph-metadata-enrichment"
   - "graph metadata checklist"
   - "schema v2 verification"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/004-graph-metadata-enrichment"
@@ -17,6 +15,8 @@ _memory:
     recent_action: "Converted the packet checklist into an evidence-backed closeout checklist"
     next_safe_action: "Attach final strict-validator and compiler-validation outputs"
     key_files: ["checklist.md", "tasks.md", "decision-record.md"]
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Graph Metadata Enrichment
 

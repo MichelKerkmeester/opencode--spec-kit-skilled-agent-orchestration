@@ -1,12 +1,13 @@
 ---
-title: "Gate F — Cleanup Verification Tasks"
+title: "...ntext-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/006-gate-f-cleanup-verification/tasks]"
 description: "Completed task log for the Gate F cleanup-verification pass."
-trigger_phrases: ["gate f tasks", "cleanup verification tasks", "gate b cleanup result", "orphan edges"]
+trigger_phrases:
+  - "gate f tasks"
+  - "cleanup verification tasks"
+  - "gate b cleanup result"
+  - "orphan edges"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/006-gate-f-cleanup-verification"
@@ -15,6 +16,9 @@ _memory:
     recent_action: "Recorded completed Gate F verification tasks"
     next_safe_action: "Update"
     key_files: ["tasks.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Gate F — Cleanup Verification
 <!-- SPECKIT_LEVEL: 2 -->

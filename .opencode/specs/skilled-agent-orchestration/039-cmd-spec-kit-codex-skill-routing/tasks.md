@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Codex command discoverability routing update [03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing/tasks]"
+title: "Tasks: Codex command discoverability routing [skilled-agent-orchestration/039-cmd-spec-kit-codex-skill-routing/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "039 tasks"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "research packet tasks"
 importance_tier: "normal"
 contextType: "research"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/039-cmd-spec-kit-codex-skill-routing"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: Codex command discoverability routing update
 

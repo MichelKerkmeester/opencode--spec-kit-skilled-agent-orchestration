@@ -1,12 +1,23 @@
 ---
-title: "Implementation Plan: Feedback & Quality Learning"
+title: "...it/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/004-feedback-quality-learning/plan]"
 description: "Three-phase plan implementing implicit feedback event ledger, FSRS hybrid decay, quality gate exceptions, batch learning, assistive reconsolidation, and shadow scoring."
-# SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2
-trigger_phrases: ["D4 plan", "feedback learning plan", "event ledger plan", "shadow scoring plan"]
+trigger_phrases:
+  - "d4 plan"
+  - "feedback learning plan"
+  - "event ledger plan"
+  - "shadow scoring plan"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/004-feedback-quality-learning"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
-
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->
 # Implementation Plan: Feedback & Quality Learning
 

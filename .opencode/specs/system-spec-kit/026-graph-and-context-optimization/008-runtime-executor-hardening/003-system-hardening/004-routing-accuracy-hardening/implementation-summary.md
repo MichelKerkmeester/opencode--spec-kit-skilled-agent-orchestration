@@ -1,10 +1,10 @@
 ---
-title: "Implementation Summary: Routing Accuracy Hardening"
+title: "...timization/008-runtime-executor-hardening/003-system-hardening/004-routing-accuracy-hardening/implementation-summary]"
 description: "Wave A/B/C routing accuracy hardening delivered with final corpus advisor accuracy 60.0%, Gate 3 F1 97.66%, and joint TT 115 / FT 5 / FF 1."
-trigger_phrases: ["routing accuracy summary"]
+trigger_phrases:
+  - "routing accuracy summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/004-routing-accuracy-hardening"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Delivered routing hardening"
     next_safe_action: "Review diff and commit/push from orchestrator"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Routing Accuracy Hardening
 

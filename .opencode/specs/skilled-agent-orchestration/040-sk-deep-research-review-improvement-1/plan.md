@@ -1,12 +1,21 @@
 ---
-title: "Implementation Plan: 040 Auto Deep Research / Review Improvement [template:level_1/plan.md]"
+title: "Implementation Plan: 040 Auto Deep [skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/plan]"
 description: "Two sequential phases: Phase 1 establishes the deep-research contract (lineage, reducer, parity), Phase 2 brings deep-review to the same model."
 trigger_phrases:
   - "040 plan"
   - "deep research review plan"
   - "reducer parity plan"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: 040 Auto Deep Research / Review Improvement
 

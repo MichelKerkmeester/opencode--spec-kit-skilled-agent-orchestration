@@ -1,3 +1,14 @@
+---
+title: "Task [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/014-bm25-field-weight-evaluation/tasks]"
+description: "1. Document the lexical field surfaces in .opencode/skill/system-spec-kit/mcp_server/lib/search/bm25-index.ts and .opencode/skill/system-spec-kit/mcp_server/handlers/memory-sear..."
+trigger_phrases:
+  - "task"
+  - "tasks"
+  - "014"
+  - "bm25"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 014-bm25-field-weight-evaluation
 
 1. Document the lexical field surfaces in `.opencode/skill/system-spec-kit/mcp_server/lib/search/bm25-index.ts` and `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`.

@@ -1,7 +1,6 @@
 ---
-title: "Implementation Summary [03--commands-and-skills/036-sk-deep-research-review-split/implementation-summary]"
+title: "Implementation Summary [skilled-agent-orchestration/036-sk-deep-research-review-split/implementation-summary]"
 description: "Repository artifacts show that review mode was split out of sk-deep-research into a dedicated sk-deep-review skill and command."
-template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 trigger_phrases:
   - "036 implementation summary"
   - "deep-review split summary"
@@ -29,6 +28,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Advisor evidence calibration now separates graph-heavy matches and deep sibling edges were removed."
+template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

@@ -1,11 +1,20 @@
 ---
-title: "Implementation Summary [03--commands-and-skills/035-sk-deep-research-path-migration/implementation-summary]"
+title: "Implementation Summary [skilled-agent-orchestration/035-sk-deep-research-path-migration/implementation-summary]"
 description: "Deep-research packet paths now use the canonical research packet root and review iteration folders across the touched command, skill, runtime, helper, doc, test, and corpus-migration surfaces, with verification evidence captured and residual caveats kept explicit."
 trigger_phrases:
   - "deep-research path migration implementation summary"
   - "research packet summary"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/035-sk-deep-research-path-migration"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 # Implementation Summary: sk-deep-research Path Migration
 

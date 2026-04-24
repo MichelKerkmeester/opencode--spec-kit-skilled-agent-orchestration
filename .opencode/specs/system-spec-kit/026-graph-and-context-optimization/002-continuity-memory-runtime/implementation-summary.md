@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Continuity Memory Runtime"
+title: "Implementation [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/implementation-summary]"
 description: "Summary of the 002-continuity-memory-runtime flattened parent and direct child phases."
 trigger_phrases:
   - "002-continuity-memory-runtime"
@@ -9,8 +9,7 @@ trigger_phrases:
   - "003-continuity-refactor-gates"
   - "004-memory-save-rewrite"
 importance_tier: "important"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime"
@@ -31,6 +30,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

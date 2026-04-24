@@ -1,11 +1,20 @@
 ---
-title: "Plan: Startup Highlights Remediation [024/028]"
+title: "Plan: Startup Highlights Remediation [system-spec-kit/024-compact-code-graph/028-startup-highlights-remediation/plan]"
 description: "Implementation plan for 3 P1 fixes: deduplication, path exclusion, incoming-call heuristic in queryStartupHighlights()."
 trigger_phrases:
   - "startup highlights plan"
   - "028 plan"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/028-startup-highlights-remediation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
@@ -91,7 +100,7 @@ This surfaces nodes that are *called by* many others — the most depended-upon 
 
 ### Technical Context
 
-- The query lives in `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts`.
+- The query lives in `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts`.
 - The runtime consumer already expects compact startup highlights rather than a large report payload.
 - Validation for this phase is documentation-heavy, but runtime proof still depends on build/test evidence from the underlying implementation.
 

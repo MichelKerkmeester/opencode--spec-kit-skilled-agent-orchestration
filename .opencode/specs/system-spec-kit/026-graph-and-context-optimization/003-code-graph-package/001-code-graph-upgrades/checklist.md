@@ -1,13 +1,12 @@
 ---
-title: "Verification Checklist: Code Graph Upgrades"
+title: "Verificati [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/checklist]"
 description: "Verification checklist for 005-code-graph-upgrades."
 trigger_phrases:
   - "005-code-graph-upgrades"
   - "verification"
   - "checklist"
 importance_tier: "important"
-contextType: "verification"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Code Graph Upgrades
 

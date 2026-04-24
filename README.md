@@ -498,7 +498,7 @@ The intended routing order is graph-first: the code graph resolves structural qu
 
 The Code Graph is a SQLite-backed structural index that ships as part of the Spec Kit MCP server (`context-server.ts`). It is available to **every supported CLI** - Claude Code, Codex CLI, Gemini CLI, and GitHub Copilot - because each runtime connects to the same MCP server via its own config (`.claude/mcp.json`, `.mcp.json`, `.codex/config.toml`, `.agents/mcp.json`).
 
-**Startup injection.** When the MCP server starts, it initializes the `code-graph.sqlite` database, runs a non-blocking startup scan, and activates a file watcher. Runtimes with SessionStart hooks (Claude Code, Gemini CLI) inject a startup brief into the conversation's first turn with a one-line health summary (e.g., "Code Graph: healthy - 42 files, 8.3K nodes, 15.2K edges"). Codex CLI achieves equivalent startup via `session_bootstrap()` MCP tool. Copilot hook behavior varies by environment.
+**Startup injection.** When the MCP server starts, it initializes the `code-graph.sqlite` database, runs a non-blocking startup scan, and activates a file watcher. All four supported runtimes (Claude Code, Gemini CLI, GitHub Copilot, Codex CLI) transport the same compact startup shared-payload through their runtime hooks (`session-prime.ts` on Claude/Gemini/Copilot, `session-start.ts` on Codex). The payload includes a one-line health summary, `graphQualitySummary` (detector provenance + edge-enrichment summary), and the `sharedPayloadTransport` envelope so downstream consumers receive identical structural context regardless of runtime. `session_bootstrap()` remains available as a manual recovery surface when native hooks are disabled.
 
 **Auto-indexing.** The graph stays current through three mechanisms:
 1. **Startup scan** - indexes on server boot (async, non-blocking)
@@ -506,6 +506,13 @@ The Code Graph is a SQLite-backed structural index that ships as part of the Spe
 3. **Lazy refresh** - `code_graph_query` calls `ensureCodeGraphReady()` which detects staleness and triggers a bounded inline refresh before returning results
 
 The indexer uses tree-sitter to parse source files and extract functions, classes, imports, and call relationships. It tracks per-file content hashes to skip unchanged files, making incremental scans fast.
+
+&nbsp;
+#### Readiness & Response Contract
+
+`code_graph_query` and `code_graph_context` share a readiness-aware response contract. When the graph is fresh enough, both return `status: "ok"` with resolved results plus a `readiness` / `canonicalReadiness` / `trustState` block. When readiness requires a full scan that cannot run inline, both return an explicit **`status: "blocked"`** payload naming `requiredAction: "code_graph_scan"`, `blockReason: "full_scan_required"`, `degraded`, and `graphAnswersOmitted` instead of silently returning empty results. Callers should run `code_graph_scan` before retrying.
+
+Success payloads of `code_graph_context` carry structured `data.metadata.partialOutput` (`isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, `truncatedText`) and an explicit `deadlineMs` field so callers can distinguish a complete answer from one trimmed by deadline or budget pressure. `code_graph_status` exposes `graphQualitySummary` (detector provenance + edge-enrichment confidence). CALLS queries on ambiguous subjects (e.g. `handle*`) now prefer callable implementation nodes over wrapper-shadow candidates, and return ambiguity / selected-candidate metadata so callers can audit the choice.
 
 &nbsp;
 #### What Each System Does
@@ -604,9 +611,9 @@ The native package is self-contained:
 
 | Tool | Purpose |
 |------|---------|
-| `advisor_recommend` | Prompt-safe recommendations, lane attribution, lifecycle redirects, cache and freshness trust |
+| `advisor_recommend` | Prompt-safe recommendations, lane attribution, lifecycle redirects, cache and freshness trust. Accepts explicit `workspaceRoot`; output surfaces the resolved `workspaceRoot` and `effectiveThresholds` used for routing. |
 | `advisor_status` | Freshness, generation, trust state, lane weights, `skillCount`, `lastScanAt`, daemon status |
-| `advisor_validate` | Real corpus, holdout, parity, safety, and latency slice measurements |
+| `advisor_validate` | Real corpus, holdout, parity, safety, and latency slice measurements. Accepts explicit `workspaceRoot`; output surfaces `workspaceRoot`, `effectiveThresholds`, `thresholdSemantics` (aggregate-vs-runtime), and a prompt-safe `telemetry.outcomes.totals` block (`accepted` / `corrected` / `ignored`). |
 
 &nbsp;
 #### Runtime Integrations
@@ -616,10 +623,12 @@ Claude Code, Copilot CLI, Gemini CLI, and Codex CLI call prompt-time hook adapte
 &nbsp;
 #### Validation and Testing
 
-- `advisor_validate({"skillSlug":null})` returns measured corpus, holdout, parity, safety, and latency slices
+- `advisor_validate({"skillSlug":null})` returns measured corpus, holdout, parity, safety, and latency slices, plus `thresholdSemantics` and prompt-safe `telemetry.outcomes.totals` (`accepted` / `corrected` / `ignored`)
 - Python compatibility regression suite passed 52/52
 - Native package baseline: 23 advisor test files / 167 tests
 - Manual testing playbook now contains 17 scenarios across native MCP tools, runtime hooks/plugin, compatibility controls, and H5 operator states
+- Hook diagnostics persist to bounded JSONL sinks under the temp metrics root; validator analysis reads those sinks back across processes
+- OpenCode runs the advisor via `.opencode/plugins/spec-kit-skill-advisor.js` + `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs` against the native compat entrypoint, with the default prompt-time threshold contract of `0.8 / 0.35`
 - `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` disables all prompt-time advisor surfaces
 
 For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_server/skill-advisor/README.md).

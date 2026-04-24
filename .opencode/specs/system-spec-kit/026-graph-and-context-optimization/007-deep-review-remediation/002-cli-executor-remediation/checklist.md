@@ -1,9 +1,11 @@
 ---
-title: "Verification Checklist: Phase 020 Research-Findings Remediation"
+title: "...ystem-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation/checklist]"
 description: "P0/P1 verification gate for R1-R12 remediation. Follows Phase 018/019 EVIDENCE-closer convention."
-trigger_phrases: ["020 checklist"]
-importance_tier: "high"
+trigger_phrases:
+  - "020 checklist"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation"

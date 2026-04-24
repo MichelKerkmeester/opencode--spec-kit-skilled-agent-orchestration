@@ -1,10 +1,18 @@
 ---
-title: "Deep Research Report — 008-bmad-autonomous-development"
+title: "...ystem-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development/research]"
 description: "30-iteration research of BMad Autonomous Development for system-spec-kit adoption, refactor, simplification, and UX redesign opportunities. 22 actionable findings, 8 rejected."
+trigger_phrases:
+  - "ystem"
+  - "spec"
+  - "kit"
+  - "future"
+  - "agentic"
+  - "research"
+  - "008"
+  - "bmad"
 importance_tier: "important"
 contextType: "research"
 ---
-
 # Deep Research Report — 008-bmad-autonomous-development
 
 ## 1. Executive Summary

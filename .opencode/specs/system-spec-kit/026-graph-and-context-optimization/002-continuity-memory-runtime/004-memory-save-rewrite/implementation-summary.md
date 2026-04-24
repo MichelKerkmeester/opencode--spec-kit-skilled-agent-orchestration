@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary"
+title: "...-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/implementation-summary]"
 description: "Packet closeout for the /memory:save planner-first default: audit + retirement, relevance research, planner + trim implementation, transcript-grounded verification, and deep-review remediation all documented in one surface."
 trigger_phrases:
   - "implementation summary"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "planner-first save closeout"
   - "save flow planner first delivery"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite"
@@ -31,6 +30,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Packet is complete; shipped contract is planner-first default with explicit full-auto fallback."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

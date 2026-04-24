@@ -1,3 +1,26 @@
+---
+title: "...pec-kit/026-graph-and-context-optimization/011-resource-map-template/003-resource-map-deep-loop-integration/research]"
+description: "Automatic convergence-time resource-map.md emission for sk-deep-review and sk-deep-research, grounded in live deep-loop evidence shapes and reducer boundaries."
+trigger_phrases:
+  - "pec"
+  - "kit"
+  - "026"
+  - "graph"
+  - "and"
+  - "research"
+  - "003"
+  - "resource"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/003-resource-map-deep-loop-integration/research"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
+---
 # Research Synthesis
 
 ## Topic

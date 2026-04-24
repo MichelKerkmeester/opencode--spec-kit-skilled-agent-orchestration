@@ -1,14 +1,14 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
-title: "Decision Record: Code Graph Incremental Fullscan Recovery"
+title: "...ation/003-code-graph-package/003-code-graph-context-and-scan-scope/001-incremental-fullscan-recovery/decision-record]"
 description: "Architecture decisions for duplicate-symbol handling and scan response metadata in the code graph full-scan recovery packet."
 trigger_phrases:
-  - "Option A dedupe"
-  - "fullReindexTriggered supplement"
-  - "code graph ADR"
+  - "option a dedupe"
+  - "fullreindextriggered supplement"
+  - "code graph adr"
   - "012/002 decision record"
 importance_tier: "critical"
-contextType: "spec"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery"
@@ -27,6 +27,7 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Code Graph Incremental Fullscan Recovery
 

@@ -1,3 +1,14 @@
+---
+title: "Tasks: 005-boo [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/005-bootstrap-guidance/tasks]"
+description: "1. Record the bounded bootstrap-guidance contract in spec.md."
+trigger_phrases:
+  - "tasks"
+  - "005"
+  - "boo"
+  - "bootstrap"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 005-bootstrap-guidance
 
 1. Record the bounded bootstrap-guidance contract in `spec.md`.

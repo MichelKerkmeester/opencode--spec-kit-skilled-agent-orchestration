@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 027/001 — Daemon + Freshness Foundation"
+title: "...imization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation/spec]"
 description: "Chokidar narrow metadata watcher, workspace-scoped single-writer lease, hash-aware scan wiring, post-commit generation + cache invalidation, fail-open freshness semantics, and watcher benchmark release gate (≤1% CPU / <20MB RSS)."
 trigger_phrases:
   - "027/001"
@@ -7,8 +7,9 @@ trigger_phrases:
   - "skill-graph watcher"
   - "single-writer lease"
   - "watcher benchmark"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/002-daemon-freshness-foundation"

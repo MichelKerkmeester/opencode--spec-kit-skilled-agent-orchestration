@@ -1,13 +1,12 @@
 ---
-title: "Tasks: Phase 5 — Operations & Tail PRs"
+title: "...-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs/tasks]"
 description: "Task format: T5xx [modifier] Phase 5 operations-tail deliverables, approval gates, and closeout work."
 trigger_phrases:
   - "phase 5 tasks"
   - "operations tail prs tasks"
   - "telemetry migration save lock tasks"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify + phase-child | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify + phase-child | v2.2 -->"
 ---
 # Tasks: Phase 5 — Operations & Tail PRs
 

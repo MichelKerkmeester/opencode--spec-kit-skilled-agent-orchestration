@@ -1,12 +1,11 @@
 ---
-title: "Implementation Summary: Post-Save Render Fixes"
+title: "...ation/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes/implementation-summary]"
 description: "Closeout for the nine render-layer fixes that make fresh memory saves match the compact-wrapper contract without reopening 003/006-owned runtime surfaces."
 trigger_phrases:
   - "009 implementation summary"
   - "post-save render fixes closeout"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/009-post-save-render-fixes"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

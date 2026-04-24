@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary: Research Findings Fixes"
+title: "...t-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes/implementation-summary]"
 description: "Summary of P0/P1 fixes landed from the 10-iteration deep research audit."
 trigger_phrases:
   - "001-research-findings-fixes"
   - "implementation"
   - "summary"
 importance_tier: "important"
-contextType: "summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/001-research-findings-fixes"
@@ -16,6 +15,7 @@ _memory:
     recent_action: "Documented completed fixes"
     next_safe_action: "Phase 002/003 implementation"
     key_files: ["implementation-summary.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->"
 ---
 # Implementation Summary: Research Findings Fixes
 

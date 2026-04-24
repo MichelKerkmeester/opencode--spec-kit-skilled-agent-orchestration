@@ -1,3 +1,25 @@
+---
+title: "...on-parity/001-skill-advisor-hook-surface/001-initial-research/research/020-skill-advisor-hook-surface-pt-01/research]"
+description: "The 020 skill-advisor hook surface should ship as a contract-first, renderer-first train, not as direct runtime hook wiring. The refined path is"
+trigger_phrases:
+  - "parity"
+  - "001"
+  - "skill"
+  - "advisor"
+  - "hook"
+  - "research"
+  - "020"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/research/020-skill-advisor-hook-surface-pt-01"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
+---
 # Skill-Advisor Hook Surface Research Synthesis
 
 ## Executive Summary

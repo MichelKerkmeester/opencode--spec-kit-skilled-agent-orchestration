@@ -1,13 +1,22 @@
 ---
-title: "Verification Checklist: 040 Auto Deep Research / Review Improvement [template:level_2/checklist.md]"
+title: "Verification Checklist: 040 Auto [skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/checklist]"
 description: "Verification Date: 2026-04-03"
 trigger_phrases:
   - "verification"
   - "checklist"
   - "040 checklist"
   - "deep research review checklist"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: 040 Auto Deep Research / Review Improvement
 

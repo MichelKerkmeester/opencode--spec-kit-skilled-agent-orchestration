@@ -1,12 +1,13 @@
 ---
-title: "018 / 008 — command release-alignment revisit"
+title: "...ontext-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit/spec]"
 description: "Revisit the 016 command-surface release-alignment targets and align them to the Phase 018 canonical continuity contract."
-trigger_phrases: ["phase 018 command revisit", "memory command revisit", "spec kit command revisit", "016 command alignment revisit"]
+trigger_phrases:
+  - "phase 018 command revisit"
+  - "memory command revisit"
+  - "spec kit command revisit"
+  - "016 command alignment revisit"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit"
@@ -15,6 +16,9 @@ _memory:
     recent_action: "008 revisit closed"
     next_safe_action: "See implementation-summary.md"
     key_files: ["spec.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: 018 / 008 — command release-alignment revisit
 <!-- SPECKIT_LEVEL: 2 -->

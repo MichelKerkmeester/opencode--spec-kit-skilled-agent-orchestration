@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Code Graph Auto-Reindex Parity [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/005-code-graph-auto-reindex-parity]"
+title: "Feature [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/005-code-graph-auto-reindex-parity/spec]"
 description: "Implements the Phase 5 runtime pass that brings code graph on-use freshness behavior closer to CocoIndex without removing existing debounce, timeout, and stale-reporting safety rails."
 trigger_phrases:
   - "code graph auto reindex parity"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "cocoindex parity"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/005-code-graph-auto-reindex-parity"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Code Graph Auto-Reindex Parity
 
@@ -86,12 +95,12 @@ Bring code graph on-use freshness behavior closer to CocoIndex while preserving 
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ensure-ready.ts` | Modify | Tune bounded auto-reindex decisions and return metadata |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts` | Modify | Allow safe inline refresh behavior on read |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts` | Modify | Allow safe inline refresh behavior on structural queries |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ensure-ready.ts` | Modify | Tune bounded auto-reindex decisions and return metadata |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts` | Modify | Allow safe inline refresh behavior on read |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts` | Modify | Allow safe inline refresh behavior on structural queries |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/ensure-ready.vitest.ts` | Modify | Cover bounded inline refresh decisions |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-query-handler.vitest.ts` | Modify | Verify query path behavior when graph is stale |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-context*.vitest.ts` | Modify | Verify context path behavior when graph is stale |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts` | Modify | Verify query path behavior when graph is stale |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts*.vitest.ts` | Modify | Verify context path behavior when graph is stale |
 | `../spec.md` | Modify | Record Phase 5 as the completed bounded follow-on |
 | `../plan.md` | Modify | Add the new follow-on implementation track |
 | `../tasks.md` | Modify | Close the Phase 5 packet tasks after implementation |

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: /memory:save Planner-First Default"
+title: "Feature [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite/spec]"
 description: "Make /memory:save planner-first (non-mutating) by default while preserving full-auto as an explicit fallback, retire the legacy [spec]/memory/*.md write path, and decouple freshness (graph-metadata refresh, spec-doc reindex, enrichment) from the hot save path via explicit follow-up APIs."
 trigger_phrases:
   - "004-memory-save-rewrite"
@@ -7,15 +7,14 @@ trigger_phrases:
   - "memory save planner first"
   - "planner-first memory save"
   - "full-auto fallback"
-  - "SPECKIT_SAVE_PLANNER_MODE"
+  - "speckit_save_planner_mode"
   - "memory folder retirement"
   - "content-router scoped exception"
-  - "refreshGraphMetadata reindexSpecDocs runEnrichmentBackfill"
+  - "refreshgraphmetadata reindexspecdocs runenrichmentbackfill"
   - "v3.4.1.0 save flow"
   - "026-graph-and-context-optimization"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-gov | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/004-memory-save-rewrite"
@@ -45,6 +44,7 @@ _memory:
       - "Research classified 15 save-flow subsystems and concluded that the writer core earns its cost while Tier 3 routing, reconsolidation, heavy quality automation, and enrichment do not."
       - "Implementation shipped planner-first default with explicit full-auto fallback; freshness work moved to explicit follow-up APIs."
       - "Deep review found 9 issues (3 P0, 5 P1, 1 P2); all resolved."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-gov | v2.2 -->"
 ---
 # Feature Specification: /memory:save Planner-First Default
 

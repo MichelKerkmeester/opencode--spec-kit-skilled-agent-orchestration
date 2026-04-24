@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: Move changelog_template.md into sk-doc [045]"
+title: "Implementation Summary: Move [skilled-agent-orchestration/045-sk-doc-changelog-template/implementation-summary]"
 description: "The canonical changelog and release-notes template now lives next to every other documentation template in sk-doc. Smart Routing exposes it on changelog or release-notes intents, the changelog command surfaces resolve to the new path, and the spec-kit nested-changelog reference points at sk-doc instead of the deleted create-command asset path."
 trigger_phrases:
   - "045 implementation summary"

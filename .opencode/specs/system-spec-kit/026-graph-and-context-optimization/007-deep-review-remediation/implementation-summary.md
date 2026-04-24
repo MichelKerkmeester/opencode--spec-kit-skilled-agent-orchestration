@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Deep Review Remediation"
+title: "Implementation [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/implementation-summary]"
 description: "Summary of the 007-deep-review-remediation flattened parent and direct child phases."
 trigger_phrases:
   - "007-deep-review-remediation"
@@ -10,8 +10,7 @@ trigger_phrases:
   - "004-r03-post-remediation"
   - "005-006-campaign-findings-remediation"
 importance_tier: "important"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation"
@@ -32,6 +31,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

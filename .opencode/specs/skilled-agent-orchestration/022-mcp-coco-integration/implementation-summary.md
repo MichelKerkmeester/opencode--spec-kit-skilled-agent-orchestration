@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: CocoIndex Code MCP [03--commands-and-skills/022-mcp-coco-integration/implementation-summary]"
+title: "Implementation Summary: CocoIndex Code [skilled-agent-orchestration/022-mcp-coco-integration/implementation-summary]"
 description: "Phase 1 installed CocoIndex across the repo; Phase 2 hardened the skill; Phase 3 added strict readiness semantics and downstream adoption packaging."
 trigger_phrases:
   - "cocoindex implementation"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "semantic code search delivered"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core + level2-verify | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/022-mcp-coco-integration"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 # Implementation Summary
 

@@ -1,11 +1,10 @@
 ---
-title: "Verification Checklist: Canonical-Save Hardening"
+title: "...-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening/checklist]"
 description: "Pre-completion verification for canonical-save hardening child."
 trigger_phrases:
   - "canonical save hardening checklist"
 importance_tier: "critical"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Checklist updated with Wave A-C evidence"
     next_safe_action: "Orchestrator review and commit"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Canonical-Save Hardening
 

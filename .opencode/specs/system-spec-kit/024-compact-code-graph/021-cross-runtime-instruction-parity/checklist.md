@@ -1,6 +1,22 @@
 ---
-title: "Checklist: Cross-Runtime Instruction Parity [024/021]"
+title: "Checklist: Cross-Runtime [system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/checklist]"
 description: "7 items across P1/P2 for phase 021."
+trigger_phrases:
+  - "checklist"
+  - "cross"
+  - "runtime"
+  - "021"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->
 # Verification Checklist: Phase 021 — Cross-Runtime Instruction Parity

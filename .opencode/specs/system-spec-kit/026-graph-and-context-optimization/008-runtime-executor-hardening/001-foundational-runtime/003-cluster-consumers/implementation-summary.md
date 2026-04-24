@@ -1,9 +1,15 @@
 ---
-title: "Implementation Summary: Wave B — Cluster Consumers"
+title: "...xt-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers/implementation-summary]"
 description: "Phase 017 Wave B complete: 10 commits on main across 4 parallel lanes. Lane B1 canonical-save consumers, Lane B2 Cluster D+E (code-graph 6-sibling readiness + Copilot compact-cache parity), Lane B3 Cluster A lint + C NFKC + retry budget, Lane B4a AsyncLocalStorage + Lane B4b session-resume auth binding."
-trigger_phrases: ["017 wave b summary", "wave b implementation", "cluster consumers summary", "copilot compact cache", "mcp caller context"]
+trigger_phrases:
+  - "017 wave b summary"
+  - "wave b implementation"
+  - "cluster consumers summary"
+  - "copilot compact cache"
+  - "mcp caller context"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers"

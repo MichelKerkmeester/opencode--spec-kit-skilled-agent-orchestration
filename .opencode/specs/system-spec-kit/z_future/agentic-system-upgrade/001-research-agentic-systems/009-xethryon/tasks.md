@@ -1,11 +1,11 @@
 ---
-title: "Tasks: 009-xethryon Research Phase"
+title: "Tasks: 009-xethryon [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/009-xethryon/tasks]"
 description: "Completed task tracking for the Xethryon Phase 2 deep-research continuation"
 trigger_phrases:
   - "009-xethryon tasks"
   - "xethryon research tasks"
 importance_tier: "important"
-contextType: "tasks"
+contextType: "implementation"
 ---
 # Tasks: 009-xethryon Research Phase
 

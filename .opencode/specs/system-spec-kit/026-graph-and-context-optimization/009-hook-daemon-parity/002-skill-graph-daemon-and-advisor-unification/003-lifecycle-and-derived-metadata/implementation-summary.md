@@ -1,12 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "027/002 — Implementation Summary"
+title: "...emon-parity/002-skill-graph-daemon-and-advisor-unification/003-lifecycle-and-derived-metadata/implementation-summary]"
 description: "Populated post-implementation."
 trigger_phrases:
   - "027/002 implementation summary"
   - "lifecycle derived metadata implementation"
   - "skill graph daemon advisor unification summary"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:

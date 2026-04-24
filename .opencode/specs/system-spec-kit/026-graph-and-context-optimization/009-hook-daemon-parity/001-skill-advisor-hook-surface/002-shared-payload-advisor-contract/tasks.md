@@ -1,11 +1,10 @@
 ---
-title: "Tasks: Shared-Payload Advisor Contract"
+title: "...context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract/tasks]"
 description: "Task list for 020/002 — additive envelope extension."
 trigger_phrases:
   - "020 002 tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract"
@@ -15,7 +14,7 @@ _memory:
     next_safe_action: "Begin T001"
     blockers: []
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Shared-Payload Advisor Contract
 

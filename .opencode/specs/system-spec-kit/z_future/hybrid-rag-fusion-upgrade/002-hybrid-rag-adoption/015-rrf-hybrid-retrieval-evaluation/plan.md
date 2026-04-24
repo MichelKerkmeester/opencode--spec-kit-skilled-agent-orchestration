@@ -1,3 +1,13 @@
+---
+title: "Pl [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/015-rrf-hybrid-retrieval-evaluation/plan]"
+description: "1. Baseline current Public hybrid retrieval and current RRF tests."
+trigger_phrases:
+  - "plan"
+  - "015"
+  - "rrf"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 015-rrf-hybrid-retrieval-evaluation
 
 ## Affected Files

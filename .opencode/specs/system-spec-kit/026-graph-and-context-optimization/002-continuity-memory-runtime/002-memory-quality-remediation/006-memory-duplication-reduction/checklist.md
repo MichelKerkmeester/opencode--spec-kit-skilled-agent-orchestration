@@ -1,12 +1,11 @@
 ---
-title: "Verification Checklist: Phase 6 — Memory Duplication Reduction"
+title: "...optimization/002-continuity-memory-runtime/002-memory-quality-remediation/006-memory-duplication-reduction/checklist]"
 description: "Re-validation checklist for the shipped Phase 6 memory-duplication-reduction runtime and packet closeout evidence."
 trigger_phrases:
   - "phase 6 checklist"
   - "memory duplication checklist"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist + phase-child + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/006-memory-duplication-reduction"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist + phase-child + level2-verify | v2.2 -->"
 ---
 # Verification Checklist: Phase 6 — Memory Duplication Reduction
 

@@ -1,3 +1,22 @@
+---
+title: "Tasks: Phase 010 [skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-agent-improver-self-test-fixes/tasks]"
+description: "tasks document for 010-sk-agent-improver-self-test-fixes."
+trigger_phrases:
+  - "tasks"
+  - "phase"
+  - "010"
+  - "agent"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-agent-improver-self-test-fixes"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
+---
 # Tasks: Phase 010 — Self-Test Fixes and Reducer Improvements
 
 ## Bug Fix: Stale Command Path (D1)

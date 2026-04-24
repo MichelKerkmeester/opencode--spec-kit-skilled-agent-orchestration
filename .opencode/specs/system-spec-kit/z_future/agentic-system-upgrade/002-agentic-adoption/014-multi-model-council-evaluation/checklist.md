@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 014 Multi-Model Council Evaluation [template:level_2/checklist.md]"
+title: "Veri [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/014-multi-model-council-evaluation/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

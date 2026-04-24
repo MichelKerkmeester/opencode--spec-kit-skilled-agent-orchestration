@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch | v2.2 -->"
-title: "Task Breakdown: OpenCode Plugin Loader Remediation"
+title: "...stem-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation/tasks]"
 description: "Task breakdown for investigating the OpenCode 1.3.17 plugin loader contract, isolating non-plugin helpers, smoke-testing the TUI in two directories, and adding a regression guard."
 trigger_phrases:
   - "026/009/007 tasks"
   - "opencode plugin loader tasks"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/007-opencode-plugin-loader-remediation"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Phase 5 status accuracy and defensive guards implemented and verified"
     next_safe_action: "Resolve out-of-scope Copilot hook wiring test, then rerun full vitest"
     completion_pct: 100
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch | v2.2 -->"
 ---
 # Task Breakdown: OpenCode Plugin Loader Remediation
 

@@ -1,6 +1,5 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
-title: "Feature Specification: Code Graph Context + Scan Scope Remediation"
+title: "F [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/spec]"
 description: "Three-part fix from the code-graph scale investigation: (A) surface code-graph highlights in OpenCode session context (currently only minimal-mode payload reaches plugin path); (B) tighten scan scope to exclude z_future/z_archive/coco-index and respect .gitignore (currently 26K files indexed where only ~1-3K are active code); (C) document the difference between OpenCode plugin's minimal payload and MCP startup-brief's full payload."
 trigger_phrases:
   - "code graph context surface"
@@ -10,8 +9,9 @@ trigger_phrases:
   - "scan scope gitignore"
   - "compact code graph minimal"
   - "026/003/003"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
@@ -26,6 +26,7 @@ _memory:
       - "Highlights gated on status='ready' at session-snapshot.js:159; SQL works for stale graphs too"
       - "Scanner uses process.cwd() with minimal excludes (node_modules/dist/.git/vendor); no .gitignore"
       - "Plugin hardcodes RESUME_MODE='minimal' which strips highlights from OpenCode payload"
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Code Graph Context + Scan Scope Remediation
 

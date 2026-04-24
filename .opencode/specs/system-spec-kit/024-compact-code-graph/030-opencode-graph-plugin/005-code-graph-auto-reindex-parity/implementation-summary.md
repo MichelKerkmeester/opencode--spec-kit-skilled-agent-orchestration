@@ -1,11 +1,20 @@
 ---
-title: "Implementation Summary: Code Graph Auto-Reindex Parity [005/030]"
+title: "...-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/005-code-graph-auto-reindex-parity/implementation-summary]"
 description: "Phase 005 implements bounded code graph auto-reindex parity so structural reads now behave more like CocoIndex while still refusing inline full scans."
 trigger_phrases:
   - "phase 5 implementation summary"
   - "auto reindex parity summary"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/005-code-graph-auto-reindex-parity"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 # Implementation Summary: Code Graph Auto-Reindex Parity
 

@@ -1,10 +1,11 @@
 ---
-title: "Implementation Plan: 009-security-and-guardrails Security and Guardrails Remediation"
+title: "...text-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/009-security-and-guardrails/plan]"
 description: "Technical plan for 009-security-and-guardrails Security and Guardrails Remediation."
 trigger_phrases:
-  - "implementation plan 009 security and guardrails security and guardrails "
-importance_tier: "high"
-contextType: "spec"
+  - "implementation plan 009 security and guardrails security and guardrails"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/009-security-and-guardrails"

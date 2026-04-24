@@ -1,14 +1,33 @@
 ---
-title: "Research: Search Fusion & Reranking Configuration Tuning"
-status: complete
-level: 3
-type: research
-parent: 010-search-and-routing-tuning
-predecessor: 016-deep-review-remediation
+title: "...raph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/spec]"
+description: 'title: "Research: Search Fusion & Reranking Configuration Tuning"'
+trigger_phrases:
+  - "raph"
+  - "and"
+  - "context"
+  - "optimization"
+  - "006"
+  - "spec"
+  - "001"
+  - "search"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 branch: main
 created: 2026-04-13
+level: 3
+parent: 010-search-and-routing-tuning
+predecessor: 016-deep-review-remediation
+status: complete
+type: research
 ---
-
 # Research: Search Fusion & Reranking Configuration Tuning
 
 Investigate whether the hardcoded thresholds, weights, and decay constants in the search pipeline are optimal. No historical save data is needed - all research uses the current codebase, schema, and synthetic query generation.

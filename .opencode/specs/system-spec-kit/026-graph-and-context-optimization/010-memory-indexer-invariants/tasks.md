@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
-title: "Tasks: Memory Indexer Invariants (Coordination Root)"
+title: "Tasks: Memory Indexer [system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/tasks]"
 description: "Coordination-root task ledger for the umbrella restructure over the two shipped memory-indexer invariant children."
 trigger_phrases:
   - "026/010 coord root tasks"
   - "memory indexer invariants tasks"
-importance_tier: "high"
-contextType: "tasks"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants"
@@ -19,6 +19,7 @@ _memory:
     status: "complete"
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->"
 ---
 # Tasks: Memory Indexer Invariants
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Normalized Analytics Reader [template:level_3/plan.md]"
+title: "Implementation Plan: Normalized [system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader/plan]"
 description: "Reader-owned replay plan for normalized session analytics, built on the completed Stop-hook producer metadata seam."
 trigger_phrases:
   - "normalized analytics plan"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "024 compact code graph plan"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Normalized Analytics Reader
 
@@ -105,7 +114,7 @@ The reader starts from a completed `HookState` that already contains transcript 
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [x] Confirm predecessor packet `026/.../002` is complete
+- [x] Confirm predecessor packet `026/002-continuity-memory-runtime/001-cache-warning-hooks` is complete
 - [x] Define reader-only packet scope and follow-on boundaries
 - [x] Reuse the existing replay fixture instead of creating a second producer seam
 
@@ -142,7 +151,7 @@ The reader starts from a completed `HookState` that already contains transcript 
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Producer metadata packet (`026/.../002`) | Internal predecessor | Green | Without transcript identity and cache tokens the reader cannot ingest truthfully |
+| Producer metadata packet (`026/002-continuity-memory-runtime/001-cache-warning-hooks`) | Internal predecessor | Green | Without transcript identity and cache tokens the reader cannot ingest truthfully |
 | `better-sqlite3` analytics storage | Internal runtime dependency | Green | Needed for normalized analytics tables |
 | Replay fixture `session-stop-replay.jsonl` | Internal test dependency | Green | Used to prove first replay and idempotency |
 | Reporting/dashboard packet | Internal successor | Green | Does not block this packet and remains deferred |

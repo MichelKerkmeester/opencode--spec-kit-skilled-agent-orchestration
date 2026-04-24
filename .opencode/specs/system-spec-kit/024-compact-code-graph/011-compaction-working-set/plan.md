@@ -9,6 +9,15 @@ trigger_phrases:
   - "working"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/011-compaction-working-set"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Phase 011 — Compaction Working-Set Integration
@@ -101,14 +110,14 @@ Template compliance shim anchor for rollback.
    - Verify cached compact brief has all sections
    - Verify total token count ≤ 4000
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-2 -->
 ### Dependencies
 
 - Phase 001 hook-state for session state storage
 - Phase 008-010 for code graph structural context
 - CocoIndex Code MCP for semantic search
 - Existing `autoSurfaceAtCompaction` in memory-surface.ts
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-2 -->
 
 ### Risk Mitigation
 

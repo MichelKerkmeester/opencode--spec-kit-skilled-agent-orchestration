@@ -1,3 +1,25 @@
+---
+title: "...advisor/001-search-and-routing-tuning/001-search-fusion-tuning/research/010-search-and-routing-tuning-pt-01/research]"
+description: "This packet investigated fusion-weight optimization and rerank-threshold calibration for continuity-oriented system-spec-kit MCP searches, then resumed for a second 10-iteration..."
+trigger_phrases:
+  - "advisor"
+  - "001"
+  - "search"
+  - "and"
+  - "routing"
+  - "research"
+  - "010"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/research/010-search-and-routing-tuning-pt-01"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
+---
 # Research Synthesis: Search Fusion Weight Optimization and Safe Continuity-Focused Follow-Ons
 
 ## Scope

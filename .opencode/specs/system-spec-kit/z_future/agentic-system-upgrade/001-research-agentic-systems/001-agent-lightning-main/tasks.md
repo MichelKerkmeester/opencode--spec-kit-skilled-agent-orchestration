@@ -1,12 +1,12 @@
 ---
-title: "Tasks: 001-agent-lightning-main Research Phase"
+title: "Tasks [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/001-agent-lightning-main/tasks]"
 description: "Task Format: T### [P?] Description (phase artifact or evidence target)"
 trigger_phrases:
   - "001-agent-lightning-main tasks"
   - "agent lightning research tasks"
   - "deep research task list"
 importance_tier: "important"
-contextType: "tasks"
+contextType: "implementation"
 ---
 # Tasks: 001-agent-lightning-main Research Phase
 

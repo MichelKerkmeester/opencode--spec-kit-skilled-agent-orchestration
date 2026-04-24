@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 003 Loop Observability [template:level_2/tasks.md]"
+title: "Tasks: 003 Loop [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/003-loop-observability/tasks]"
 description: "Task Format: T### [P?] Description (003-loop-observability)"
 trigger_phrases:
   - "tasks"

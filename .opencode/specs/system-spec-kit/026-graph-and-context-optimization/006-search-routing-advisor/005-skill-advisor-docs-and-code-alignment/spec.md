@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Skill-Advisor Docs + Phase 020 Code Alignment"
+title: "...pec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment/spec]"
 description: "Update skill-advisor feature catalog, manual testing playbook, and README with Phase 020 hook surface additions. Verify all Phase 020 lib + hook code aligns with sk-code-opencode standards."
 trigger_phrases:
   - "022 skill-advisor docs alignment"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "sk-code-opencode alignment check"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Phase 022 scaffolded"
     next_safe_action: "Dispatch cli-codex to implement"
     dispatch_policy: "cli-codex gpt-5.4 high fast primary; cli-copilot gpt-5.4 high fallback"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Skill-Advisor Docs + Phase 020 Code Alignment
 

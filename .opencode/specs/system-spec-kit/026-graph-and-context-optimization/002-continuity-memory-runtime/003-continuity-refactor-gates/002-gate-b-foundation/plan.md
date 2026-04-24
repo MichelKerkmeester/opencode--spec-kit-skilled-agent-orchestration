@@ -1,12 +1,14 @@
 ---
-title: "Gate B — Foundation"
-feature: phase-018-gate-b-foundation
-level: 3
-status: complete
-closed_by_commit: TBD
-parent: 006-continuity-refactor-gates
-gate: B
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+title: "...raph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/002-gate-b-foundation/plan]"
+description: "Execution plan for the two-week Gate B foundation lane: prove the migration on a copy, execute the approved schema and archive changes in production, then validate ranking and archived-hit observability before Gate C starts."
+trigger_phrases:
+  - "gate b plan"
+  - "foundation plan"
+  - "archive flip"
+  - "causal edges migration"
+  - "phase 018"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/002-gate-b-foundation"
@@ -15,10 +17,13 @@ _memory:
     recent_action: "Recorded Gate B archived-tier cleanup follow-through"
     next_safe_action: "Have orchestrator commit the validated Gate B cleanup"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/002-gate-b-foundation/plan.md"]
-description: "Execution plan for the two-week Gate B foundation lane: prove the migration on a copy, execute the approved schema and archive changes in production, then validate ranking and archived-hit observability before Gate C starts."
-trigger_phrases: ["gate b plan", "foundation plan", "archive flip", "causal edges migration", "phase 018"]
-importance_tier: "important"
-contextType: "planning"
+closed_by_commit: TBD
+feature: phase-018-gate-b-foundation
+gate: B
+level: 3
+parent: 006-continuity-refactor-gates
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->

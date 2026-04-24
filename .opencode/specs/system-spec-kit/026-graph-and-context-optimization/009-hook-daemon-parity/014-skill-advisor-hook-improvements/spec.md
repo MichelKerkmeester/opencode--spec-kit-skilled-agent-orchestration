@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Skill-Advisor Hook Improvements"
+title: "Fea [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/spec]"
 description: "Level-2 implementation packet that translates the packet-02 skill-advisor research findings into shipped runtime parity, public MCP contract normalization, and durable prompt-safe telemetry across the skill-advisor and hook surfaces."
 trigger_phrases:
   - "skill-advisor hook improvements"
   - "skill-advisor system research"
   - "026/009/014"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements"

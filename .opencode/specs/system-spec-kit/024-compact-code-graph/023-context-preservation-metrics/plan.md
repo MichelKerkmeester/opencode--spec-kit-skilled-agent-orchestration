@@ -1,7 +1,24 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Plan: Context Preservation Metrics [024/023]"
+title: "Plan: Context Preservation Metrics [system-spec-kit/024-compact-code-graph/023-context-preservation-metrics/plan]"
 description: "Implementation order for session metrics collection and quality scoring."
+trigger_phrases:
+  - "plan"
+  - "context"
+  - "preservation"
+  - "metrics"
+  - "023"
+importance_tier: "important"
+contextType: "planning"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/023-context-preservation-metrics"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Plan: Phase 023 — Context Preservation Metrics
 
@@ -57,7 +74,7 @@ Template compliance shim anchor for rollback.
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:summary-2 -->
 ### 1. SUMMARY
 #### Technical Context
 
@@ -70,11 +87,11 @@ Template compliance shim anchor for rollback.
 
 ### Overview
 This phase delivered metrics collection and quality score computation, but not the full reporting architecture originally described. The plan record now reflects the actual implementation boundary: aggregate in-memory counters, computed quality factors, legacy-driven final health status, and deferred dashboard, envelope, and persistence work.
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:summary-2 -->
 
 ---
 
-<!-- ANCHOR:quality-gates -->
+<!-- ANCHOR:quality-gates-2 -->
 ### 2. QUALITY GATES
 ### Definition of Ready
 - [x] Problem statement and limitations are documented in `spec.md`
@@ -85,11 +102,11 @@ This phase delivered metrics collection and quality score computation, but not t
 - [x] Metrics collection and scoring scope match the documented implementation
 - [x] Deferred items are named consistently across spec docs
 - [x] Implementation summary metadata uses the folder basename only
-<!-- /ANCHOR:quality-gates -->
+<!-- /ANCHOR:quality-gates-2 -->
 
 ---
 
-<!-- ANCHOR:architecture -->
+<!-- ANCHOR:architecture-2 -->
 ### 3. ARCHITECTURE
 ### Pattern
 Incremental observability added to the existing session-management flow.
@@ -101,11 +118,11 @@ Incremental observability added to the existing session-management flow.
 
 ### Data Flow
 Lifecycle events are recorded in memory, the scorer derives quality factors from that in-process state, and `session_health` reads those factors. Dashboard reporting, shared response envelope wiring, and persistent storage are still outside the shipped path.
-<!-- /ANCHOR:architecture -->
+<!-- /ANCHOR:architecture-2 -->
 
 ---
 
-<!-- ANCHOR:phases -->
+<!-- ANCHOR:phases-2 -->
 ### 4. IMPLEMENTATION PHASES
 ### Phase 1: Setup
 - [x] Define `SessionMetrics` and `MetricEvent` types
@@ -123,11 +140,11 @@ Lifecycle events are recorded in memory, the scorer derives quality factors from
 - [x] Review implementation against shipped files and handlers
 - [x] Correct phase documentation to match actual behavior
 - [ ] Complete dashboard integration and response envelope work in a later phase
-<!-- /ANCHOR:phases -->
+<!-- /ANCHOR:phases-2 -->
 
 ---
 
-<!-- ANCHOR:testing -->
+<!-- ANCHOR:testing-2 -->
 ### 5. TESTING STRATEGY
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
@@ -139,11 +156,11 @@ Lifecycle events are recorded in memory, the scorer derives quality factors from
 - Final `session_health` status is not yet sourced from the computed quality score.
 - Graph freshness expectations differ between scorer logic and session snapshot reporting.
 - No persisted metrics history exists because storage is still in-memory only.
-<!-- /ANCHOR:testing -->
+<!-- /ANCHOR:testing-2 -->
 
 ---
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-2 -->
 ### 6. DEPENDENCIES
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
@@ -151,15 +168,15 @@ Lifecycle events are recorded in memory, the scorer derives quality factors from
 | `session-snapshot` freshness rules | Internal | Yellow | Threshold mismatch remains unresolved |
 | `eval_reporting_dashboard` integration | Internal | Yellow | Metrics are not visible in dashboard output until Phase C lands |
 | `lib/response/envelope.ts` | Internal | Yellow | Shared response metadata path remains unimplemented |
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-2 -->
 
 ---
 
-<!-- ANCHOR:rollback -->
+<!-- ANCHOR:rollback-2 -->
 ### 7. ROLLBACK PLAN
 - **Trigger**: Documentation or implementation claims drift from the actual shipped behavior.
 - **Procedure**: Revert inaccurate claims, keep only verified implementation details, and preserve deferred items as explicit follow-up work.
-<!-- /ANCHOR:rollback -->
+<!-- /ANCHOR:rollback-2 -->
 
 ---
 

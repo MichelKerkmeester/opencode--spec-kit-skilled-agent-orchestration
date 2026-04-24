@@ -1,9 +1,11 @@
 ---
-title: "Tasks: Phase 020 Research-Findings Remediation"
+title: "Task [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation/tasks]"
 description: "~30 tasks across 8 waves. R1-R12 remediations. Atomic-ship groups honored."
-trigger_phrases: ["020 tasks"]
-importance_tier: "high"
+trigger_phrases:
+  - "020 tasks"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/002-cli-executor-remediation"

@@ -1,11 +1,20 @@
 ---
-title: "Decision Record: Further Deep-Loop Improvements [008]"
+title: "...led-agent-orchestration/042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements/decision-record]"
 description: "Consolidated Phase 008 decision record preserving the three accepted design choices that shaped graph wiring, replay consumers, and tool routing."
 trigger_phrases:
   - "008"
-  - "phase 8 ADR"
+  - "phase 8 adr"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["decision-record.md"]
 ---
 # Decision Record: Further Deep-Loop Improvements
 

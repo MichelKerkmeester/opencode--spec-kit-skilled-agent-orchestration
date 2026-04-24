@@ -1,10 +1,11 @@
 ---
-title: "Implementation Summary: 008 Search Fusion and Reranker Tuning Remediation"
+title: "...eview-remediation/005-006-campaign-findings-remediation/008-search-fusion-and-reranker-tuning/implementation-summary]"
 description: "Search fusion and reranker tuning P1 findings were remediated with cache regression coverage, docs alignment, and strict packet closeout evidence."
 trigger_phrases:
   - "008 search fusion reranker remediation implementation summary"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/008-search-fusion-and-reranker-tuning"

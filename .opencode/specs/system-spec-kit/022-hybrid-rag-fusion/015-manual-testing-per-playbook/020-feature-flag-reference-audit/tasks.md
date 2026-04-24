@@ -1,11 +1,20 @@
 ---
-title: "Tasks [system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference/tasks]"
+title: "Tasks [system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference-audit/tasks]"
 description: "Task tracker for Phase 020 feature-flag-reference audit scenarios PB-020-01 through PB-020-03."
 trigger_phrases:
   - "phase 020 tasks"
   - "feature-flag-reference audit tasks"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference-audit"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: manual-testing-per-playbook feature-flag-reference audit phase
 
@@ -83,4 +92,3 @@ contextType: "general"
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
 <!-- /ANCHOR:cross-refs -->
-

@@ -1,20 +1,23 @@
 ---
 title: "Implementation [system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix/implementation-summary]"
 description: "Fixed two bugs in the Spec Kit Memory search pipeline that silently filtered ALL search results to zero: scope enforcement defaulting ON and TRM state filtering against a nonexistent column."
-trigger_phrases:
-  - "hybrid search fix"
-  - "search pipeline 0 results"
-  - "scope enforcement bug"
-  - "trm state unknown filter"
-  - "minstate warm bug"
-  - "isscopeenforcementenabled"
+trigger_phrases: ["hybrid search fix", "search pipeline 0 results", "scope enforcement bug", "trm state unknown filter", "minstate warm bug", "isscopeenforcementenabled"]
 importance_tier: "critical"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["implementation-summary.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
-# Implementation Summary: Hybrid Search Pipeline Fix
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+
+# Implementation Summary: Hybrid Search Pipeline Fix
 
 ---
 
@@ -91,6 +94,8 @@ The fix started with direct pipeline tracing, then narrowed the failure to two s
 ## Verification
 
 Pipeline test results after fix:
+
+Command evidence: `memory_search("semantic search")`, `memory_search("SpecKit Phase System")`, and `memory_search("compact code graph")` all returned non-zero results after the handler fixes.
 
 | Query | Results | Stage 1 Candidates | Top Hit |
 |-------|---------|-------------------|---------|

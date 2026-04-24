@@ -1,8 +1,25 @@
 ---
-title: "027/003 — Plan"
+title: "...text-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core/plan]"
 description: "Phased implementation plan for native advisor core + parity harness."
-importance_tier: "high"
+trigger_phrases:
+  - "text"
+  - "optimization"
+  - "009"
+  - "hook"
+  - "daemon"
+  - "plan"
+  - "004"
+  - "native"
+importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Plan: 027/003
 

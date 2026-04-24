@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_3/implementation-summary.md]"
+title: "Implementation Summary [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/implementation-summary]"
 description: "This packet now gives the research train one implementation-ready adoption map and one parallel investigation map, so future work can start from a stable architectural source of truth."
 trigger_phrases:
   - "implementation"

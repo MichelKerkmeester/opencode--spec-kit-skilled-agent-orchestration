@@ -1,14 +1,14 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
-title: "Decision Record: Cross-File Symbol Dedup Defense"
+title: "...timization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-cross-file-dedup-defense/decision-record]"
 description: "Decision record for packet 012/003 covering defense in depth over more root-cause investigation and INSERT OR IGNORE over INSERT REPLACE."
 trigger_phrases:
   - "cross-file dedup decision"
   - "defense in depth decision"
-  - "INSERT OR IGNORE over INSERT REPLACE"
+  - "insert or ignore over insert replace"
   - "012/003 decision record"
 importance_tier: "critical"
-contextType: "spec"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/003-cross-file-dedup-defense"
@@ -29,6 +29,7 @@ _memory:
     answered_questions:
       - "Defense in depth is accepted because standalone parsing did not reproduce live collisions."
       - "INSERT OR IGNORE is accepted because INSERT REPLACE could overwrite the first owner row."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Cross-File Symbol Dedup Defense
 

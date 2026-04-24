@@ -70,7 +70,8 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    |-- --reasoning-effort=<level> -> config.executor.reasoningEffort (`none` | `minimal` | `low` | `medium` | `high` | `xhigh`)
    |-- --service-tier=<tier> -> config.executor.serviceTier (`priority` | `standard` | `fast`)
    |-- --executor-timeout=<seconds> -> config.executor.timeoutSeconds (positive integer, default `900`)
-   +-- Defaults: maxIterations=10, convergenceThreshold=0.05, config.executor.kind=`native`, config.executor.timeoutSeconds=900
+   |-- --no-resource-map -> config.resource_map.emit = false
+   +-- Defaults: maxIterations=10, convergenceThreshold=0.05, config.executor.kind=`native`, config.executor.timeoutSeconds=900, config.resource_map.emit=`true`
 
    Executor precedence for setup resolution:
    - CLI flag > config file > schema defaults
@@ -173,14 +174,14 @@ operating_mode:
 
 ## 1. PURPOSE
 
-Run an iterative loop for deep research: Initialize state, dispatch `@deep-research` agent per iteration, evaluate convergence, and synthesize findings into research/research.md. Use when deep investigation requiring multiple rounds of discovery.
+Run an iterative loop for deep research: Initialize state, dispatch `@deep-research` agent per iteration, evaluate convergence, synthesize findings into `research/research.md`, and emit `research/resource-map.md` at convergence unless `--no-resource-map` disables it. Use when deep investigation requiring multiple rounds of discovery.
 
 ---
 
 ## 2. CONTRACT
 
 **Inputs:** `$ARGUMENTS` -- Research topic with optional flags and mode suffix
-**Outputs:** Spec folder with research/research.md + state files + `STATUS=<OK|FAIL|CANCELLED>`
+**Outputs:** Spec folder with `research/research.md`, optional `research/resource-map.md`, state files, and `STATUS=<OK|FAIL|CANCELLED>`
 
 ---
 
@@ -190,7 +191,7 @@ Run an iterative loop for deep research: Initialize state, dispatch `@deep-resea
 |-------|------|---------|---------|
 | Init | Initialize | Create config, strategy (with research charter), state files | State files in `research/` |
 | Loop | Iterate | Dispatch @deep-research agent, evaluate convergence + quality guards, generate dashboard | iteration-NNN.md files, deep-research-dashboard.md |
-| Synth | Synthesize | Compile final research/research.md | research/research.md (17 sections) |
+| Synth | Synthesize | Emit `research/resource-map.md` and compile final research/research.md | research/resource-map.md, research/research.md (17 sections) |
 | Save | Preserve | Refresh continuity update in canonical spec docs | canonical spec doc updated via `generate-context.js` |
 
 ### Execution Modes
@@ -220,7 +221,7 @@ The YAML contains the full loop workflow: initialization, iteration dispatch, co
 ```
 Deep research complete.
 Iterations: [N] | Stop reason: [converged|max_iterations|all_answered]
-Artifacts: research/research.md, [N] iteration files, continuity update in canonical spec docs refreshed
+Artifacts: research/research.md, research/resource-map.md (unless `--no-resource-map`), [N] iteration files, continuity update in canonical spec docs refreshed
 Ready for: /spec_kit:plan [feature-description]
 STATUS=OK PATH=[spec-folder-path]
 ```

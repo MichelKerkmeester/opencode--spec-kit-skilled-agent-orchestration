@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Phase 6 — Continuity Refactor Gates"
+title: "...em-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "phase 6 checklist"
@@ -7,11 +7,6 @@ trigger_phrases:
   - "root gate packet checklist"
 importance_tier: "important"
 contextType: "planning"
-feature: "phase-006-continuity-refactor-gates"
-level: 2
-status: complete
-parent: "026-graph-and-context-optimization"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates"
@@ -20,7 +15,11 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+feature: "phase-006-continuity-refactor-gates"
+level: 2
+parent: "026-graph-and-context-optimization"
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Phase 6 — Continuity Refactor Gates
 

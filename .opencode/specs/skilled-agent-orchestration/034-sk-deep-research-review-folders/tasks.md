@@ -1,11 +1,20 @@
 ---
-title: "Tasks: sk-deep-research Review Folder Contract [03--commands-and-skills/034-sk-deep-research-review-folders/tasks]"
+title: "Tasks: sk-deep-research Review Folder Contract [skilled-agent-orchestration/034-sk-deep-research-review-folders/tasks]"
 description: "Task Format: T### [P?] Description (file path or file family)"
 trigger_phrases:
   - "review folder tasks"
   - "deep-review task breakdown"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/034-sk-deep-research-review-folders"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: sk-deep-research Review Folder Contract
 

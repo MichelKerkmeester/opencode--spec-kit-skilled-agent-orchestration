@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 012 Runtime Manifest and Hook Extensibility [template:level_2/checklist.md]"
+title: "...-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/012-runtime-manifest-and-hook-extensibility/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

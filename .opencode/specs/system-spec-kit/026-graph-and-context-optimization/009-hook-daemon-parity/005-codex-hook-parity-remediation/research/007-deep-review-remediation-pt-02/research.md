@@ -1,10 +1,26 @@
 ---
-title: "Deep Research Synthesis — Codex CLI Hook Parity Contract"
+title: "...ization/009-hook-daemon-parity/005-codex-hook-parity-remediation/research/007-deep-review-remediation-pt-02/research]"
 description: "Synthesis of 10 iterations investigating the exact Codex CLI 0.122.0 hook contract (stdin payload, stdout-to-model-context injection, exit codes, timeouts, concurrency, event taxonomy, env propagation). Outcome: A (full parity achievable) — Codex hooks DO inject stdout as developer-role messages, exactly the behavior needed to mirror Claude's SessionStart + UserPromptSubmit payloads."
-importance_tier: "high"
+trigger_phrases:
+  - "ization"
+  - "009"
+  - "hook"
+  - "daemon"
+  - "parity"
+  - "research"
+  - "007"
+  - "deep"
+importance_tier: "important"
 contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation/research/007-deep-review-remediation-pt-02"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
 ---
-
 # Deep Research Synthesis — Codex CLI Hook Parity Contract
 
 **Spec phase**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/005-codex-hook-parity-remediation/`

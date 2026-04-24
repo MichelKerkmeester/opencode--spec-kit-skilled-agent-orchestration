@@ -1,7 +1,18 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | level2-verify | compact -->
 ---
-title: "Verification Checklist: Validate Continuity Profile Weights"
-status: completed
+title: "...h-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation/checklist]"
+description: 'title: "Verification Checklist: Validate Continuity Profile Weights"'
+trigger_phrases:
+  - "routing"
+  - "advisor"
+  - "001"
+  - "search"
+  - "and"
+  - "checklist"
+  - "006"
+  - "continuity"
+importance_tier: "normal"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation"
@@ -9,6 +20,7 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Verified the continuity fixture, prompt enrichment, and targeted checks"
     next_safe_action: "Resume from implementation-summary.md if continuity tuning follow-on work is opened"
+status: completed
 ---
 # Verification Checklist: Validate Continuity Profile Weights
 

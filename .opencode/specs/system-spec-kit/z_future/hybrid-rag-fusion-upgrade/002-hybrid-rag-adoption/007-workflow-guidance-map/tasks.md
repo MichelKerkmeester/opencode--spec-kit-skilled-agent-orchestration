@@ -1,3 +1,13 @@
+---
+title: "Tasks [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/007-workflow-guidance-map/tasks]"
+description: "1. Define the task-to-tool categories in spec.md."
+trigger_phrases:
+  - "tasks"
+  - "007"
+  - "workflow"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 007-workflow-guidance-map
 
 1. Define the task-to-tool categories in `spec.md`.

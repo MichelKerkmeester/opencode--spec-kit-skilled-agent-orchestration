@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Gemini + Copilot Hook Wiring"
+title: "...h-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring/plan]"
 description: "Two new hook adapters (Gemini JSON additionalContext, Copilot SDK + wrapper fallback) + cross-runtime parity test. Blocked by 005 hard gate and 006 landing."
 trigger_phrases:
   - "020 007 plan"
   - "gemini copilot hook plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring"
@@ -16,7 +15,7 @@ _memory:
     next_safe_action: "Dispatch /spec_kit:implement :auto after 006 converges"
     blockers: []
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Gemini + Copilot Hook Wiring
 

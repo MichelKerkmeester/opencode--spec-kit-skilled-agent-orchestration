@@ -1,7 +1,16 @@
 ---
-title: "027/006 — Implementation Summary"
+title: "...ion/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/007-promotion-gates/implementation-summary]"
 description: "027/006 shipped promotion gates and post-review remediation added the missing §11 correctness slices."
-importance_tier: "high"
+trigger_phrases:
+  - "ion"
+  - "009"
+  - "hook"
+  - "daemon"
+  - "parity"
+  - "implementation summary"
+  - "007"
+  - "promotion"
+importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:

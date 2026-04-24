@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Canonical-Save Hardening (P0 #1 + P0 #2 + validator rules)"
+title: "...graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening/spec]"
 description: "Fix two P0 defects surfaced by 019/001/001 canonical-save research: (P0 #1) repair 007/008/009/010 packet roots missing spec.md; (P0 #2) save_lineage runtime parity via wrapper+dist rebuild. Then roll out 5 new validator assertions with grandfathering."
 trigger_phrases:
   - "canonical save hardening"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "canonical save validator rules"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/002-canonical-save-hardening"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Remediation child scaffolded from 019/001/001 research findings"
     next_safe_action: "Dispatch /spec_kit:implement :auto with cli-codex gpt-5.4 high fast"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Canonical-Save Hardening
 

@@ -1,9 +1,12 @@
 ---
-title: "Decision Record: CLI Runtime Matrix"
+title: "...ext-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix/decision-record]"
 description: "ADRs for Phase 019: per-kind validation vs discriminated union, cross-CLI delegation as docs not code, cli-copilot positional prompt strategy, gemini model whitelist."
-trigger_phrases: ["019 decisions", "cli matrix adr"]
-importance_tier: "high"
+trigger_phrases:
+  - "019 decisions"
+  - "cli matrix adr"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix"

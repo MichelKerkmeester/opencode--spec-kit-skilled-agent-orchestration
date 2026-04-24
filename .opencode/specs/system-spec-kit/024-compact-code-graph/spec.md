@@ -11,6 +11,15 @@ trigger_phrases:
   - "compact"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Hybrid Context Injection — Hook + Tool Architecture
@@ -23,6 +32,7 @@ contextType: "implementation"
 ## EXECUTIVE SUMMARY
 Template compliance shim section. Legacy phase content continues below.
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 Template compliance shim section. Legacy phase content continues below.
 
@@ -61,6 +71,8 @@ Template compliance shim section. Legacy phase content continues below.
 
 ## RELATED DOCUMENTS
 Template compliance shim section. Legacy phase content continues below.
+
+<!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->
 Template compliance shim anchor for problem.
@@ -308,13 +320,13 @@ Deep research (95 iterations, segments 1-7) and deep review (30 iterations acros
 
 **Evidence base:** Research iterations 056-095, review iterations 001-030. Cross-validated by 3 AI systems (Claude Opus, GPT-5.4 via Codex CLI, GPT-5.4 via Copilot CLI). Review verdict during remediation intake was CONDITIONAL (0 P0, 16 P1, 16 P2 active findings), and later closure phases 029-030 resolved the active packet-level review drift.
 
-<!-- ANCHOR:scope -->
+<!-- ANCHOR:scope-2 -->
 ### Out of Scope
 
 - Dual-Graph installation or graperoot integration — rejected per research (DR-001)
 - Token tracking dashboard UI — future work
 - Additional runtime-specific adapter expansion beyond delivered Gemini work and later Copilot startup/runtime parity follow-through
-<!-- /ANCHOR:scope -->
+<!-- /ANCHOR:scope-2 -->
 
 ---
 <!-- ANCHOR:phase-map -->

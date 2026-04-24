@@ -1,16 +1,15 @@
 ---
-title: "Implementation Plan: Memory Quality Backend Improvements"
+title: "I [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/plan]"
 description: "Original pre-decomposition implementation plan retained for traceability; actual execution is recorded in phase folders 001-005."
 trigger_phrases:
   - "memory quality plan"
   - "remediation priority"
-  - "P0 D1 D8"
-  - "P1 D4 D7"
-  - "P2 D2 D3"
-  - "P3 D5 D6"
-importance_tier: important
+  - "p0 d1 d8"
+  - "p1 d4 d7"
+  - "p2 d2 d3"
+  - "p3 d5 d6"
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation"
@@ -19,9 +18,8 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 ---
-
 # Implementation Plan: Memory Quality Backend Improvements
 
 <!-- SPECKIT_LEVEL: 2 -->

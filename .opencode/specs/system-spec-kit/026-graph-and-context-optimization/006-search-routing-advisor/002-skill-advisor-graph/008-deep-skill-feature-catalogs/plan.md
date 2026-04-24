@@ -1,7 +1,17 @@
 ---
-title: "Implementation Plan: Deep Skill Feature Catalogs"
+title: "...aph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs/plan]"
 description: "Plan for creating feature catalogs for sk-deep-research, sk-deep-review, and sk-improve-agent."
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+trigger_phrases:
+  - "aph"
+  - "and"
+  - "context"
+  - "optimization"
+  - "006"
+  - "plan"
+  - "008"
+  - "deep"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/008-deep-skill-feature-catalogs"
@@ -10,6 +20,7 @@ _memory:
     recent_action: "Created plan"
     next_safe_action: "Implement catalogs"
     key_files: ["plan.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Deep Skill Feature Catalogs
 

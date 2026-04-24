@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: Copilot Wrapper Schema Fix for .claude/settings.local.json"
+title: "Feature [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix/spec]"
 description: "Eliminate the 'Neither bash nor powershell specified in hook command configuration' error that Copilot CLI 1.0.34 throws on every user prompt by adding top-level Copilot-safe fields to the Claude-style matcher wrappers in .claude/settings.local.json. Cross-runtime compatibility with Claude Code was empirically verified in pt-03 research iter-6."
 trigger_phrases:
   - "copilot wrapper schema fix"
   - "copilot claude settings collision"
   - "026/009/010"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix"

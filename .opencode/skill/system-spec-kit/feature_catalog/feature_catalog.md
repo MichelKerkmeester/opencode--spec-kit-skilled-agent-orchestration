@@ -132,6 +132,21 @@ Use this catalog as the canonical inventory for both current behavior and delive
 | `021-remediation-revalidation` | Covered as cross-category remediation records (for example: [08--bug-fixes-and-data-integrity/06](08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md), [14--pipeline-architecture/07](14--pipeline-architecture/07-search-pipeline-safety.md), [16--tooling-and-scripts/05](16--tooling-and-scripts/05-code-standards-alignment.md)). See [`20--remediation-revalidation/01-category-stub.md`](20--remediation-revalidation/01-category-stub.md). |
 | `022-implement-and-remove-deprecated-features` | Covered by implementation/deprecation closure records ([16--tooling-and-scripts/04](16--tooling-and-scripts/04-dead-code-removal.md), [17--governance/_deprecated/02](17--governance/_deprecated/02-feature-flag-sunset-audit.md)). See [`21--implement-and-remove-deprecated-features/01-category-stub.md`](21--implement-and-remove-deprecated-features/01-category-stub.md). |
 
+### Packet 013 & 014 coverage map
+
+Packets 013 (code-graph hook improvements) and 014 (skill-advisor hook improvements) under `026/009-hook-daemon-parity/` ship contract-level changes surfaced in the following catalog entries and references:
+
+| Packet | Shipped surface | Primary catalog / reference entry |
+|---|---|---|
+| 013 | Blocked/degraded `full_scan` contract on `code_graph_query` **and** `code_graph_context` | [`22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md`](22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md), [`09-cocoindex-bridge-context.md`](22--context-preservation-and-code-graph/09-cocoindex-bridge-context.md) |
+| 013 | CALLS disambiguation + `deadlineMs` + null-summary clearing | [`22--context-preservation-and-code-graph/08-code-graph-storage-query.md`](22--context-preservation-and-code-graph/08-code-graph-storage-query.md) |
+| 013 | `graphQualitySummary` on status/startup surfaces | [`08-code-graph-storage-query.md`](22--context-preservation-and-code-graph/08-code-graph-storage-query.md), [`mcp_server/code-graph/README.md`](../mcp_server/code-graph/README.md) |
+| 013 | Shared startup payload parity across Claude/Gemini/Copilot/Codex | [`18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md`](18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md), [`22--context-preservation-and-code-graph/03-session-start-priming.md`](22--context-preservation-and-code-graph/03-session-start-priming.md) (Claude slice), `references/config/hook_system.md` (Shared Startup Payload Parity section) |
+| 014 | `advisor_recommend`/`advisor_validate` `workspaceRoot` + `effectiveThresholds` | `mcp_server/skill-advisor/README.md`, `references/hooks/skill-advisor-hook.md` |
+| 014 | `advisor_validate` `thresholdSemantics` + `telemetry.outcomes.totals` | `mcp_server/skill-advisor/README.md`, `references/hooks/skill-advisor-hook-validation.md` |
+| 014 | Durable JSONL diagnostics sinks + cross-process readback | `references/hooks/skill-advisor-hook.md`, `references/hooks/skill-advisor-hook-validation.md` (Step 3) |
+| 014 | OpenCode plugin-helper bridge + `0.8 / 0.35` threshold contract | `references/config/hook_system.md` (Advisor Bridge and Threshold Contract section), `references/hooks/skill-advisor-hook.md` |
+
 ### Command-Surface Contract
 
 The Spec Kit Memory MCP server exposes **43 tools** overall across the 7-layer MCP surface. The command layer wraps the memory-focused subset under **4 top-level memory slash commands**, with session recovery still owned by `/spec_kit:resume` as a spec-folder workflow using the memory/session recovery stack. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for primary tool ownership is the coverage matrix in `.opencode/command/memory/README.txt`, while each command file's `allowed-tools` frontmatter shows the full operational surface. Recovery behavior is documented in `.opencode/command/spec_kit/resume.md`.

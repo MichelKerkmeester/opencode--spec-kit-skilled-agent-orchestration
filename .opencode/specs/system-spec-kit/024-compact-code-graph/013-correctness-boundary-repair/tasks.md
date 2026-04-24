@@ -1,6 +1,23 @@
 ---
-title: "Tasks: Correctness & Boundary Repair [024/013]"
+title: "Tasks: Correctness & Boundary Repair [system-spec-kit/024-compact-code-graph/013-correctness-boundary-repair/tasks]"
 description: "Task tracking for 15 items (25 checklist items total)."
+trigger_phrases:
+  - "tasks"
+  - "correctness"
+  - "boundary"
+  - "repair"
+  - "013"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/013-correctness-boundary-repair"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Phase 013 — Correctness & Boundary Repair

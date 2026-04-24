@@ -1,13 +1,14 @@
 ---
-title: "Gate C — Writer Ready"
+title: "...ph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/003-gate-c-writer-ready/plan]"
 description: "Implementation plan for the Gate C writer-critical path: validator bridge, routed save modules, template rollout, and parity-plus-rollback proof assembly."
-trigger_phrases: ["gate c", "writer ready", "plan", "canonical continuity", "parity proof"]
+trigger_phrases:
+  - "gate c"
+  - "writer ready"
+  - "plan"
+  - "canonical continuity"
+  - "parity proof"
 importance_tier: "critical"
 contextType: "implementation"
-level: "3+"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/003-gate-c-writer-ready"
@@ -16,6 +17,10 @@ _memory:
     recent_action: "Closed Gate C implementation plan against shipped writer evidence"
     next_safe_action: "Keep Gate C docs grouped for the final commit-ready list"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/003-gate-c-writer-ready/plan.md"]
+closed_by_commit: TBD
+level: "3+"
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->

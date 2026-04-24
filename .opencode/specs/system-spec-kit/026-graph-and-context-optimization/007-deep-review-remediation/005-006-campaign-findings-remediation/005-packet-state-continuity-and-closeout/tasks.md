@@ -1,10 +1,11 @@
 ---
-title: "Tasks: 005-packet-state-continuity-and-closeout Packet State, Continuity, and Closeout Remediation"
+title: "...ion/007-deep-review-remediation/005-006-campaign-findings-remediation/005-packet-state-continuity-and-closeout/tasks]"
 description: "Task ledger for 005-packet-state-continuity-and-closeout Packet State, Continuity, and Closeout Remediation."
 trigger_phrases:
   - "tasks 005 packet state continuity and closeout packet state continuity a"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/005-packet-state-continuity-and-closeout"

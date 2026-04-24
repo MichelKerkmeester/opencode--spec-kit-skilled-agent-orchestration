@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: sk-deep-research [03--commands-and-skills/024-sk-deep-research-refinement/checklist]"
+title: "Verification Checklist: sk-deep-research [skilled-agent-orchestration/024-sk-deep-research-refinement/checklist]"
 description: "Verification Date: 2026-03-18"
 trigger_phrases:
   - "verification"
@@ -9,6 +9,15 @@ trigger_phrases:
   - "024"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/024-sk-deep-research-refinement"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: sk-deep-research Refinement via Self-Research
 

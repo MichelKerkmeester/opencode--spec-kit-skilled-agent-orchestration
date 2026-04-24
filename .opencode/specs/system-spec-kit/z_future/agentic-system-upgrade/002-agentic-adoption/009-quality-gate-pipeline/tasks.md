@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 009 Quality Gate Pipeline [template:level_2/tasks.md]"
+title: "Tasks: 009 [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/009-quality-gate-pipeline/tasks]"
 description: "Task Format: T### [P?] Description (009-quality-gate-pipeline)"
 trigger_phrases:
   - "tasks"

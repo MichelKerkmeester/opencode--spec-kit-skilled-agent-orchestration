@@ -1,9 +1,14 @@
 ---
-title: "Verification Checklist: Phase 017 Wave A — Infrastructure Primitives"
+title: "...context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives/checklist]"
 description: "Verification items for 5 Wave A tasks (CHK-A-01..08 extracted from parent 017/checklist.md). Canonical ] closers throughout. Code quality, testing, security, docs, and file-org gates for Wave A scope."
-trigger_phrases: ["017 wave a checklist", "phase 017 wave a verification", "chk-a-01 through chk-a-08 wave a", "wave a gate verification"]
+trigger_phrases:
+  - "017 wave a checklist"
+  - "phase 017 wave a verification"
+  - "chk-a-01 through chk-a-08 wave a"
+  - "wave a gate verification"
 importance_tier: "critical"
-contextType: "verification"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/002-infrastructure-primitives"

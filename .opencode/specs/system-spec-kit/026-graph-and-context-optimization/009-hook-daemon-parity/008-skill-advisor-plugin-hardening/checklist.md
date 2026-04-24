@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
-title: "Verification Checklist: Skill-Advisor Plugin Hardening"
+title: "...stem-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening/checklist]"
 description: "Evidence-backed checklist for the 3 deferred P2 items: per-instance state, in-flight dedup, size caps + LRU."
 trigger_phrases:
   - "026/009/008 checklist"
   - "skill advisor hardening checklist"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "Implemented plugin hardening and verified focused tests/build"
     next_safe_action: "Dispatch codex"
     completion_pct: 100
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
 ---
 # Verification Checklist: Skill-Advisor Plugin Hardening
 

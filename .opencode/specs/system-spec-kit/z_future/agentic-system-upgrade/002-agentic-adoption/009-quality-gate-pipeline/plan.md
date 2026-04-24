@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 009 Quality Gate Pipeline [template:level_2/plan.md]"
+title: "Implementation [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/009-quality-gate-pipeline/plan]"
 description: "Create a clearer staged quality-gate pipeline that separates implementation, verification, review, and completion evidence while keeping current validators and packet contracts authoritative."
 trigger_phrases:
   - "implementation"

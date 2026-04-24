@@ -1,3 +1,14 @@
+---
+title: "Tas [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/010-passive-capture-investigation/tasks]"
+description: "1. Document the current save authority and governance handoff using .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js, .opencode/skill/system-spec-kit/mcp_..."
+trigger_phrases:
+  - "tas"
+  - "tasks"
+  - "010"
+  - "passive"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 010-passive-capture-investigation
 
 1. Document the current save authority and governance handoff using `.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`, `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts`, and `.opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts`.

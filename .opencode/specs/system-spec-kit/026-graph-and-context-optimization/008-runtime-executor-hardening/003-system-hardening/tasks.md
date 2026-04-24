@@ -1,12 +1,11 @@
 ---
-title: "Tasks: System Hardening (Post-Consolidation Research + Remediation Train)"
+title: "Tasks [system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/tasks]"
 description: "Task breakdown for 019-system-hardening umbrella packet."
 trigger_phrases:
   - "019 tasks"
   - "system hardening tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Tasks scaffolded"
     next_safe_action: "Charter approval, then dispatch 001-initial-research"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: System Hardening
 

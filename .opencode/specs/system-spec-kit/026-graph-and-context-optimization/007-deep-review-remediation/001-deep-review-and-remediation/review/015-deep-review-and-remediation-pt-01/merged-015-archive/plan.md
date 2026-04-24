@@ -1,12 +1,13 @@
 ---
-title: "Implementation Plan: Combined Deep Review — 009 + 010 + 012 + 014"
+title: "...iew-remediation/001-deep-review-and-remediation/review/015-deep-review-and-remediation-pt-01/merged-015-archive/plan]"
 description: "Loop-manager plan for a 50-iteration combined deep review using cli-copilot (gpt-5.4, high) as the dispatch substitute for @deep-review."
 trigger_phrases:
   - "combined deep review plan"
   - "loop manager plan"
   - "cli-copilot dispatch plan"
 importance_tier: "normal"
-contextType: "review"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "015-combined-deep-review-four-specs"

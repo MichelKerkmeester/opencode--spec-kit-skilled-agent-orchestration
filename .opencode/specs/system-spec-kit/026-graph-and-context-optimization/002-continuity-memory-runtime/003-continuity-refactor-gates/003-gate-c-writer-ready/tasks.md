@@ -1,13 +1,14 @@
 ---
-title: "Gate C — Writer Ready"
+title: "...h-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/003-gate-c-writer-ready/tasks]"
 description: "Gate C task ledger for the writer-critical path of phase 018."
-trigger_phrases: ["gate c", "writer ready", "tasks", "phase 018", "parity proof"]
+trigger_phrases:
+  - "gate c"
+  - "writer ready"
+  - "tasks"
+  - "phase 018"
+  - "parity proof"
 importance_tier: "critical"
 contextType: "implementation"
-level: "3+"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/003-gate-c-writer-ready"
@@ -16,6 +17,10 @@ _memory:
     recent_action: "Closed Gate C task ledger against the shipped writer contract"
     next_safe_action: "Include Gate C packet docs in the commit-ready file list"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/003-gate-c-writer-ready/tasks.md"]
+closed_by_commit: TBD
+level: "3+"
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3+ -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->

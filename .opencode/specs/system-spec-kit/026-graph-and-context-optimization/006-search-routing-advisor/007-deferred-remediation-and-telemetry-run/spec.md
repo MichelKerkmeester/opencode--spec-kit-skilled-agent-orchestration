@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Deferred Remediation + Telemetry Measurement Run"
+title: "...ec-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run/spec]"
 description: "Address the consolidated deferred items across Phases 020-023. Scope: (1) apply .codex settings + policy registration; (2) build static corpus measurement harness; (3) build live-session instrumentation wrapper; (4) run 019/004 corpus through harness and emit compliance report; (5) answer what can be answered without live AI (advisor top-1 accuracy, savings ceiling, predicted vs labeled)."
 trigger_phrases:
   - "024 deferred remediation"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "codex config registration"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Phase 024 scaffolded — closes 020/021/022/023 deferrals"
     next_safe_action: "Dispatch cli-codex gpt-5.4 high fast"
     dispatch_policy: "cli-codex gpt-5.4 high fast primary; cli-copilot gpt-5.4 high fallback"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Deferred Remediation + Telemetry Measurement Run
 

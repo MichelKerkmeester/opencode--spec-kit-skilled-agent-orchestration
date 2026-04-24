@@ -1,10 +1,21 @@
 ---
-title: "Phase 025 — Checklist"
+title: "P [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation/checklist]"
 description: "Acceptance verification for deep-review remediation."
+trigger_phrases:
+  - "checklist"
+  - "003"
+  - "deep"
 importance_tier: "normal"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/003-deep-review-remediation"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
-
 # Phase 025 Checklist
 
 ## P0 Items

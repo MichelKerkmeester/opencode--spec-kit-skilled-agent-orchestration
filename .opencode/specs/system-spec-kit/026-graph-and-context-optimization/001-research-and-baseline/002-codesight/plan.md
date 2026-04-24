@@ -1,13 +1,12 @@
 ---
-title: "Implementation Plan: 002-codesight Research Phase"
+title: "Implementation Plan [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight/plan]"
 description: "20-iteration deep-research packet for the codesight external Node.js/TypeScript skill using cli-codex, native fallback, direct Codex continuation, reducer-managed state, and post-closeout doc reconciliation."
 trigger_phrases:
   - "002-codesight research plan"
   - "002-codesight execution plan"
   - "deep-research loop codesight"
-importance_tier: critical
-contextType: plan
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+importance_tier: "critical"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: 002-codesight Research Phase
 

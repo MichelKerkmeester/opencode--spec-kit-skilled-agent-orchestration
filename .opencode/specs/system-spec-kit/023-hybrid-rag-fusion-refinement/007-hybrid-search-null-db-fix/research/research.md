@@ -9,12 +9,24 @@ trigger_phrases:
   - "hybrid"
 importance_tier: "normal"
 contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix/research"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["research/research.md"]
 ---
 # Research: Memory Search Pipeline — 10 Agent Deep Investigation
 
+<!-- ANCHOR:summary -->
 ## Summary
 
 10 GPT-5.4 agents (5 research + 5 review) investigated the memory search pipeline. While agents focused on code exploration rather than producing structured documents, the collective analysis confirms the root causes and surfaces additional optimization opportunities.
+
+Source: `mcp_server/lib/governance/scope-governance.ts`, `mcp_server/handlers/memory-search.ts`, `mcp_server/handlers/memory-context.ts`, and `mcp_server/tests/pipeline-v2.vitest.ts`.
+<!-- /ANCHOR:summary -->
 
 ## Consolidated Findings
 

@@ -1,13 +1,13 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 ---
-title: "Tasks: Phase 015 Playbook Coverage Accounting and Partial Execution"
+title: "...nd-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/tasks]"
 description: "Coverage-accounting tasks and per-category results for the Phase 015 playbook run, including the reclassified partial and failing scenarios."
 trigger_phrases:
   - "phase 015 tasks"
   - "playbook coverage accounting tasks"
   - "manual playbook results"
 importance_tier: "important"
-contextType: "verification"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution"

@@ -1,10 +1,15 @@
 ---
-title: "Deep Research Report — 002-babysitter-main"
+title: "Deep Researc [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/002-babysitter-main/research]"
 description: "30-iteration research of Babysitter for system-spec-kit improvement opportunities. 27 actionable findings, 3 rejected."
+trigger_phrases:
+  - "deep"
+  - "researc"
+  - "research"
+  - "002"
+  - "babysitter"
 importance_tier: "important"
 contextType: "research"
 ---
-
 # Deep Research Report — 002-babysitter-main
 
 ## 1. Executive Summary

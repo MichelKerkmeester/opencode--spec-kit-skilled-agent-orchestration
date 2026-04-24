@@ -1,14 +1,15 @@
 ---
-title: "Tasks: Skill-Advisor Hook Improvements"
+title: "Ta [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/tasks]"
 description: "Task breakdown for implementing the packet-02 skill-advisor parity, MCP-surface, and telemetry findings while keeping every task traced to a concrete 014 finding."
 trigger_phrases:
   - "tasks"
   - "skill-advisor hook improvements"
-  - "014-F-001"
-  - "014-F-007"
-  - "Bucket B"
-importance_tier: "high"
-contextType: "spec"
+  - "014-f-001"
+  - "014-f-007"
+  - "bucket b"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements"

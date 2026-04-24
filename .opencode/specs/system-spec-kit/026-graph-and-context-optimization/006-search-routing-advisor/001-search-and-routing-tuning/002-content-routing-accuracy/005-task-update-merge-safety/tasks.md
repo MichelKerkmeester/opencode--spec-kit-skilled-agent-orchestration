@@ -1,7 +1,17 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | compact -->
 ---
-title: "Add Task Update Merge Safety Guard - Tasks"
-status: completed
+title: "...search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/tasks]"
+description: 'title: "Add Task Update Merge Safety Guard - Tasks"'
+trigger_phrases:
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "tasks"
+  - "005"
+  - "task"
+importance_tier: "normal"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety"
@@ -9,6 +19,7 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Added document-wide task-match prevalidation and covered the success and refusal paths"
     next_safe_action: "No further phase-local work required beyond packet-level follow-through"
+status: completed
 ---
 # Tasks
 ## Notation <!-- ANCHOR:notation -->`[ ]` pending, `[x]` complete, `T9##` verification-only.<!-- /ANCHOR:notation -->

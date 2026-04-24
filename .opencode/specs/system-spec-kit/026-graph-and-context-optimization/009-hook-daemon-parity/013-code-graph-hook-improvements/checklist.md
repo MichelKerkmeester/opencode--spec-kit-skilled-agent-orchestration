@@ -1,14 +1,12 @@
 ---
-title: "Verification Checklist: Code-Graph Hook Improvements"
+title: "V [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/checklist]"
 description: "Level 2 closeout checklist for packet 013."
 trigger_phrases:
   - "013 checklist"
   - "code-graph hook improvements verification"
-importance_tier: "high"
-contextType: "checklist"
-level: 2
-status: "Complete"
-template_source_marker: "checklist-core | v2.2"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements"
@@ -24,6 +22,9 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+level: 2
+status: "Complete"
+template_source_marker: "checklist-core | v2.2"
 ---
 # Verification Checklist: Code-Graph Hook Improvements
 

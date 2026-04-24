@@ -1,12 +1,11 @@
 ---
-title: "Verification Checklist: 019 Initial Research Wave"
+title: "...26-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/checklist]"
 description: "Verification checklist for the 019/001 research wave."
 trigger_phrases:
   - "019 research wave checklist"
   - "tier 1 verification"
 importance_tier: "critical"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Checklist scaffolded"
     next_safe_action: "Charter approval"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: 019 Initial Research Wave
 

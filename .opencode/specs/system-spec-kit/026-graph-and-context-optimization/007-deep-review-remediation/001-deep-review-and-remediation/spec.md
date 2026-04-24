@@ -1,15 +1,16 @@
 ---
-title: "Remediation Plan: 120-Iteration Deep Review — 243 Findings Across 009/010/012/014"
+title: "Re [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation/spec]"
 description: "Remediation of 243 deduplicated findings (1 P0, 114 P1, 133 P2) from the merged 120-iteration deep review of 920 files across packets 009, 010, 012, and 014."
 trigger_phrases:
   - "remediation"
   - "deep review remediation"
   - "015 remediation"
   - "243 findings"
-  - "P0 reconsolidation"
+  - "p0 reconsolidation"
   - "review findings fix"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation"

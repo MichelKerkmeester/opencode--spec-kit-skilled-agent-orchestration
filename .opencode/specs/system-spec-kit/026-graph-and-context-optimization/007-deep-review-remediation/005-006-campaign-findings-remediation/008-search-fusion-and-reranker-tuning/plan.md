@@ -1,10 +1,11 @@
 ---
-title: "Implementation Plan: 008-search-fusion-and-reranker-tuning Search Fusion and Reranker Tuning Remediation"
+title: "...ization/007-deep-review-remediation/005-006-campaign-findings-remediation/008-search-fusion-and-reranker-tuning/plan]"
 description: "Technical plan for 008-search-fusion-and-reranker-tuning Search Fusion and Reranker Tuning Remediation."
 trigger_phrases:
-  - "implementation plan 008 search fusion and reranker tuning search fusion "
-importance_tier: "high"
-contextType: "spec"
+  - "implementation plan 008 search fusion and reranker tuning search fusion"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/008-search-fusion-and-reranker-tuning"

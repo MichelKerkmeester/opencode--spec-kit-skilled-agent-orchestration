@@ -11,6 +11,15 @@ trigger_phrases:
   - "compact"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Hybrid Context Injection — Hook + Tool Architecture
@@ -333,7 +342,7 @@ Phase 013 (P0/P1 fixes, no deps)
 |------|-------|------------|---------------|
 | 45: SessionStart scope | 016 | settings.local.json schema investigation | 5-20 |
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-2 -->
 ### Dependencies
 
 ### v1 Phases (001-012) — Complete
@@ -349,7 +358,7 @@ Phase 013 (P0/P1 fixes, no deps)
 - Phase 014 depends on Phase 013 (correctness fixes first)
 - Phase 015 depends on Phase 013 (endLine fix enables tree-sitter comparison testing)
 - Phase 016 depends on Phase 014 (MCP first-call priming enables cross-runtime UX)
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-2 -->
 
 ### Risk Mitigation
 

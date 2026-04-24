@@ -1,17 +1,17 @@
 ---
-title: "Phase 018 Autonomous Execution — Live Handover"
-purpose: "Resume document for the orchestrator session running Gates A→F via cli-codex gpt-5.4 high fast. Updated after each gate close. Read this first if context was compacted."
-last_updated: 2026-04-12T00:30:00Z
-session_role: orchestrator (claude-opus-4-6 in Claude Code)
-worker: cli-codex gpt-5.4 high fast (primary), cli-copilot gpt-5.4 high (fallback after 3 codex failures)
-branch: system-speckit/026-graph-and-context-optimization
-directives:
-  - DELETE old memories, do not archive — phase 018 makes them irrelevant
-  - NO observation windows (D0 2-week, canonical 7-day, F 180-day all dead)
-  - Run all gates autonomously without confirmation
-  - After all 6 gates code-complete: dispatch /spec_kit:deep-review × 7 iterations per gate, fix every finding
-  - Mark every spec.md/plan.md/tasks.md/checklist.md/decision-record.md/implementation-summary.md across all 6 gate packets `status: complete` + verified at end
-  - Commit + push to 026 after every gate close
+title: "...tem-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/handover]"
+description: 'title: "Phase 018 Autonomous Execution — Live Handover"'
+trigger_phrases:
+  - "tem"
+  - "spec"
+  - "kit"
+  - "026"
+  - "graph"
+  - "handover"
+  - "003"
+  - "continuity"
+importance_tier: "normal"
+contextType: "general"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates"
@@ -20,9 +20,19 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["handover.md"]
-
+branch: system-speckit/026-graph-and-context-optimization
+directives:
+  - DELETE old memories, do not archive — phase 018 makes them irrelevant
+  - NO observation windows (D0 2-week, canonical 7-day, F 180-day all dead)
+  - Run all gates autonomously without confirmation
+  - After all 6 gates code-complete: dispatch /spec_kit:deep-review × 7 iterations per gate, fix every finding
+  - Mark every spec.md/plan.md/tasks.md/checklist.md/decision-record.md/implementation-summary.md across all 6 gate packets `status: complete` + verified at end
+  - Commit + push to 026 after every gate close
+last_updated: 2026-04-12T00:30:00Z
+purpose: "Resume document for the orchestrator session running Gates A→F via cli-codex gpt-5.4 high fast. Updated after each gate close. Read this first if context was compacted."
+session_role: orchestrator (claude-opus-4-6 in Claude Code)
+worker: cli-codex gpt-5.4 high fast (primary), cli-copilot gpt-5.4 high (fallback after 3 codex failures)
 ---
-
 # Phase 018 Live Handover
 
 **If you are reading this after a context compaction**, this is your current state. Read sections 1–4 first, then act.

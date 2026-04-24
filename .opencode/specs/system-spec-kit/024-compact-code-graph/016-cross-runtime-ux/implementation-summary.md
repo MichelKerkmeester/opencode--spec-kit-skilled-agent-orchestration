@@ -1,7 +1,24 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Implementation Summary: Cross-Runtime UX & Documentation [024/016]"
+title: "Implementation Summary [system-spec-kit/024-compact-code-graph/016-cross-runtime-ux/implementation-summary]"
 description: "Near-exact seed resolution, query-intent metadata annotation, auto-reindex on branch switch, cross-runtime Session Start Protocol, recovery doc consolidation, truth-sync annotations. Partial: 11/14 items completed, 3 deferred."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "implementation summary"
+  - "016"
+  - "cross"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/016-cross-runtime-ux"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Summary
 
@@ -53,7 +70,7 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### Metadata
 | Field | Value |
 |-------|-------|
@@ -61,11 +78,11 @@ Template compliance shim anchor for limitations.
 | **Status** | Partial (11/14 items complete; 3 deferred) |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:what-built -->
+<!-- ANCHOR:what-built-2 -->
 ### What Was Built
 Seed resolution is now more precise with a near-exact tier, query intent is annotated for observability, the index auto-refreshes on branch switches, and all 5 runtimes have session start instructions that auto-trigger code graph and memory context loading.
 
@@ -115,14 +132,14 @@ Five v1 checklist items that overstated shipped behavior now carry PARTIAL annot
 | `CLAUDE.md` | Modified | Universal recovery |
 | `.claude/CLAUDE.md` | Modified | Claude-specific only |
 | Root `checklist.md` | Modified | PARTIAL annotations |
-<!-- /ANCHOR:what-built -->
+<!-- /ANCHOR:what-built-2 -->
 
 ---
 
-<!-- ANCHOR:how-delivered -->
+<!-- ANCHOR:how-delivered-2 -->
 ### How It Was Delivered
 Two Codex CLI agents (GPT-5.4, high reasoning). Agent 016-A handled seed resolution, auto-reindex, and DB changes. Agent 016-B handled all documentation updates and truth-sync annotations. New test coverage added for seed resolver (near-exact tier) and scan (git HEAD tracking). Verified with focused test suites and git diff checks on documentation files.
-<!-- /ANCHOR:how-delivered -->
+<!-- /ANCHOR:how-delivered-2 -->
 
 ---
 ### Key Decisions
@@ -134,7 +151,7 @@ Two Codex CLI agents (GPT-5.4, high reasoning). Agent 016-A handled seed resolut
 | Shared Session Start Protocol across runtimes | One pattern for all runtimes means consistent documentation and testing. Runtime-specific hooks add reliability but the baseline works everywhere. |
 ---
 
-<!-- ANCHOR:verification -->
+<!-- ANCHOR:verification-2 -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -143,13 +160,13 @@ Two Codex CLI agents (GPT-5.4, high reasoning). Agent 016-A handled seed resolut
 | `tests/crash-recovery.vitest.ts` | PASS (metadata table, index verification) |
 | `git diff --check` on doc files | PASS |
 | Phase 016 checklist | Partial (11/14 items complete; 3 deferred) |
-<!-- /ANCHOR:verification -->
+<!-- /ANCHOR:verification-2 -->
 
 ---
 
-<!-- ANCHOR:limitations -->
+<!-- ANCHOR:limitations-2 -->
 ### Known Limitations
 1. **Intent metadata does not yet drive backend routing (Item 40 deferred portion).** `classifyQueryIntent()` annotates `queryIntentMetadata` / `queryIntentRouting`, but this phase does not claim end-to-end routing to different retrieval backends from that metadata.
 2. **CocoIndex score propagation not implemented.** Near-exact confidence is based on line distance only. Blending with CocoIndex relevance scores requires API work.
 3. **Runtime verification is manual.** Each instruction file needs testing on its target runtime to confirm it loads correctly. Automated verification would require CI integration with all 5 CLIs.
-<!-- /ANCHOR:limitations -->
+<!-- /ANCHOR:limitations-2 -->

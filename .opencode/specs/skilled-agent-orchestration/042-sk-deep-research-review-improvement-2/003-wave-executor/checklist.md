@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Wave Executor [042.003]"
+title: "Verification [skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "042.003"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "wave executor"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: Wave Executor
 

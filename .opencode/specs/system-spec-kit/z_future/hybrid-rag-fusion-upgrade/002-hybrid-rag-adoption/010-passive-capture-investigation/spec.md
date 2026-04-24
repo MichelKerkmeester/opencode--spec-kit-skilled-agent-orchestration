@@ -1,8 +1,13 @@
 ---
-title: "010-passive-capture-investigation: Investigate Passive Capture"
+title: "010 [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/010-passive-capture-investigation/spec]"
 description: "Evaluates whether Engram-style passive capture or close-session helpers can fit Public without creating a second save authority."
+trigger_phrases:
+  - "010"
+  - "spec"
+  - "passive"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 010-passive-capture-investigation: Investigate Passive Capture
 
 ## 1. Scope

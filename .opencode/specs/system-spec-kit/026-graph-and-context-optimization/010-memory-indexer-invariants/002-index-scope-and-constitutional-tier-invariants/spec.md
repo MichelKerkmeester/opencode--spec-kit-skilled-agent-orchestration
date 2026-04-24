@@ -1,6 +1,5 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
-title: "Feature Specification: Index Scope and Constitutional Tier Invariants"
+title: "...graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants/spec]"
 description: "Permanently enforce index-scope exclusions for z_future and external paths, and stop constitutional tier pollution by restricting constitutional rows to files under dedicated constitutional folders."
 trigger_phrases:
   - "026/011 index scope invariants"
@@ -9,7 +8,8 @@ trigger_phrases:
   - "external indexing exclusion"
   - "constitutional path gate"
 importance_tier: "important"
-contextType: "spec"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants"
@@ -25,6 +25,7 @@ _memory:
       - "z_future rows will be deleted instead of downgraded because the invariant says they must never be indexed."
       - "constitutional tier saves outside /constitutional/ will be downgraded to important instead of rejected."
       - ".opencode/skill/system-spec-kit/constitutional/README.md must remain out of the index because it is an overview doc, not a rule surface."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: Index Scope and Constitutional Tier Invariants
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Cache-Warning Hook System"
+title: "...-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks/implementation-summary]"
 description: "Producer-first continuity closeout for packet 002, including the compact-wrapper boundary and replay-safe Stop-path handoff."
 trigger_phrases:
   - "002 implementation summary"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "stop hook metadata handoff"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["implementation-summary.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

@@ -1,12 +1,11 @@
 ---
-title: "Tasks: Memory Save Heuristic Calibration"
+title: "...ptimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration/tasks]"
 description: "Task breakdown for packet 010 across setup, runtime implementation, verification, and closeout."
 trigger_phrases:
   - "010 heuristic calibration tasks"
   - "memory save calibration tasks"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/010-memory-save-heuristic-calibration"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Memory Save Heuristic Calibration
 

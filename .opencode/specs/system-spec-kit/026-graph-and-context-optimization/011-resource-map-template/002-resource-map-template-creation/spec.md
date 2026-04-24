@@ -1,6 +1,5 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
-title: "Feature Specification: Resource Map Template"
+title: "F [system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/002-resource-map-template-creation/spec]"
 description: "Introduce a lean, level-agnostic resource-map template that catalogs every file path touched by a packet (created, updated, analyzed, removed) grouped by category, and wire it into the system-spec-kit template architecture across all documentation levels."
 trigger_phrases:
   - "026/012 resource map template"
@@ -9,7 +8,8 @@ trigger_phrases:
   - "files touched summary"
   - "lean path ledger"
 importance_tier: "important"
-contextType: "spec"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/002-resource-map-template-creation"
@@ -24,6 +24,7 @@ _memory:
       - "The template file lives at the templates/ root (peer of handover, research, debug-delegation) because it is cross-cutting and any-level."
       - "The template stays optional at every level (no validate.sh hard block) so it remains additive."
       - "Categories mirror the 005/009 path-references-audit shape so existing audit muscle memory carries over."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Resource Map Template
 

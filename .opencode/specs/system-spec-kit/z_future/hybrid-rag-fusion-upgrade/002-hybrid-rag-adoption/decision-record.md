@@ -1,3 +1,15 @@
+---
+title: "Decision Record [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/decision-record]"
+description: "decision record document for 002-hybrid-rag-adoption."
+trigger_phrases:
+  - "decision"
+  - "record"
+  - "decision record"
+  - "002"
+  - "hybrid"
+importance_tier: "important"
+contextType: "planning"
+---
 # Decision Record: 002-hybrid-rag-adoption
 
 ## DECISION 1: Keep Public's Routed Multi-Lane Architecture

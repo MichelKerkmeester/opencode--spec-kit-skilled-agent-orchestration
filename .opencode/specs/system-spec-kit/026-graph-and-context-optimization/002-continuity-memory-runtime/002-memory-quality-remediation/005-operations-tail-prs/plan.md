@@ -1,14 +1,13 @@
 ---
-title: "Implementation Plan: Phase 5 — Operations & Tail PRs"
+title: "...h-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs/plan]"
 description: "Phase 5 executes the packet closeout plan for telemetry, alerting, optional historical migration, optional D9 lock hardening, release communication, and final parent closure."
 trigger_phrases:
   - "phase 5 plan"
   - "tail prs implementation plan"
   - "telemetry migration save lock rollout"
   - "pr-10 pr-11 plan"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + phase-child | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/005-operations-tail-prs"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + phase-child | v2.2 -->"
 ---
 # Implementation Plan: Phase 5 — Operations & Tail PRs
 

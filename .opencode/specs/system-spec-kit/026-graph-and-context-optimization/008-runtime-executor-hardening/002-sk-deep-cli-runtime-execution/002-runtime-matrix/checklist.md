@@ -1,9 +1,12 @@
 ---
-title: "Verification Checklist: CLI Runtime Matrix"
+title: "...d-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix/checklist]"
 description: "P0/P1/P2 gate for Phase 019. Wire cli-copilot + cli-gemini + cli-claude-code with per-kind flag validation. Cross-CLI delegation documented."
-trigger_phrases: ["019 checklist", "cli matrix verification"]
-importance_tier: "high"
+trigger_phrases:
+  - "019 checklist"
+  - "cli matrix verification"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix"

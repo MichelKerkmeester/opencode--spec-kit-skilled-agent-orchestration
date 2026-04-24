@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: 020 Wave-3 Validation Research"
+title: "...ok-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot/plan]"
 description: "20-iteration cli-copilot gpt-5.4 high dispatch via /spec_kit:deep-research :auto. Validates the 8-child scaffold against wave-1 + wave-2 synthesis. No architecture re-opening."
 trigger_phrases:
   - "020 wave 3 plan"
   - "wave 3 validation plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Plan scaffolded"
     next_safe_action: "Dispatch via /spec_kit:deep-research :auto"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: 020 Wave-3 Validation Research
 

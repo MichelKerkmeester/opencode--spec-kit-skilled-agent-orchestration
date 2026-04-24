@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Playbook and Remediation Coordination Parent"
+title: "Fea [system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/spec]"
 description: "Coordination parent for playbook follow-on work and remediation phases. This root spec restores the packet's canonical identity while keeping the child packets as the source of truth for prompt rewrites, playbook execution, and deep-review remediation."
 trigger_phrases:
   - "009 playbook and remediation"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "deep-review remediation"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation"
@@ -17,6 +16,7 @@ _memory:
     recent_action: "Restored coordination-parent root spec for canonical save invariants"
     next_safe_action: "Use child packet docs for playbook prompt, execution, and remediation details"
     blockers: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Playbook and Remediation Coordination Parent
 

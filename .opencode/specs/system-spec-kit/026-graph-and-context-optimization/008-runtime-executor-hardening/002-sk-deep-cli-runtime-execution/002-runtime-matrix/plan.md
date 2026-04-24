@@ -1,9 +1,12 @@
 ---
-title: "Implementation Plan: CLI Runtime Matrix for Iterative Skills"
+title: "...ph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix/plan]"
 description: "5-phase plan wiring cli-copilot, cli-gemini, cli-claude-code as executors alongside cli-codex. Per-kind config validation. Cross-CLI delegation documentation."
-trigger_phrases: ["019 plan", "cli runtime matrix plan"]
-importance_tier: "high"
+trigger_phrases:
+  - "019 plan"
+  - "cli runtime matrix plan"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix"

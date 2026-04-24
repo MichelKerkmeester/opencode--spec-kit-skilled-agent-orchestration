@@ -1,12 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: Add Task Update Merge Safety Guard"
+title: "...visor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/implementation-summary]"
 description: "This phase added document-wide checklist-match prevalidation for task updates, preserved the single-match mutation path, and locked the new refusal messages with focused merge and handler tests."
 trigger_phrases:
   - "phase 005 implementation summary"
   - "task update merge safety summary"
 importance_tier: "critical"
-contextType: "verification"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety"

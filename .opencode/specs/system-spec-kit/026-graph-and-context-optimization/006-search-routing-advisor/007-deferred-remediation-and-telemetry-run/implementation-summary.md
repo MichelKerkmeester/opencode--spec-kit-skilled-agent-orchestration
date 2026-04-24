@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Deferred Remediation + Telemetry Measurement Run"
+title: "...nd-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run/implementation-summary]"
 description: "Phase 024 shipped the static measurement harness, live-session wrapper, analyzer and reports while documenting the sandbox block on top-level Codex registration."
 trigger_phrases:
   - "024 implementation summary"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "smart router measurement report"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/007-deferred-remediation-and-telemetry-run"
@@ -22,6 +21,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts"
       - ".opencode/skill/system-spec-kit/scripts/observability/smart-router-analyze.ts"
     completion_pct: 90
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Deferred Remediation + Telemetry Measurement Run
 

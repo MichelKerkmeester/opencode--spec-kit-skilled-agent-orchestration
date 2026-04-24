@@ -1,3 +1,13 @@
+---
+title: "Tasks [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/004-compaction-checkpointing/tasks]"
+description: "1. Record the fail-open compaction preservation contract in spec.md."
+trigger_phrases:
+  - "tasks"
+  - "004"
+  - "compaction"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Tasks: 004-compaction-checkpointing
 
 1. Record the fail-open compaction preservation contract in `spec.md`.

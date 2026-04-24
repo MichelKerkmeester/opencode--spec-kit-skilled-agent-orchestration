@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: FTS Forced-Degrade Hardening [template:level_3/implementation-summary.md]"
+title: "Implementation [system-spec-kit/024-compact-code-graph/033-fts-forced-degrade-hardening/implementation-summary]"
 description: "Closeout placeholder for 033-fts-forced-degrade-hardening."
 trigger_phrases:
   - "033-fts-forced-degrade-hardening"
@@ -7,12 +7,21 @@ trigger_phrases:
   - "summary"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/033-fts-forced-degrade-hardening"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 # Implementation Summary: FTS Forced-Degrade Hardening
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/global/hvr_rules.md -->
 
 ---
 

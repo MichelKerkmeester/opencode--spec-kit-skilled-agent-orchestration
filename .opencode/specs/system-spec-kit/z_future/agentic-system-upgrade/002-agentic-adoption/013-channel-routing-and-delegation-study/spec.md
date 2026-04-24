@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 013 Channel Routing and Delegation Study [template:level_2/spec.md]"
+title: "Fea [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/013-channel-routing-and-delegation-study/spec]"
 description: "Evaluate whether channel-style routing, delivery acknowledgements, and richer delegation topology would meaningfully improve current orchestrator behavior without replacing Task-based coordination."
 trigger_phrases:
   - "feature"

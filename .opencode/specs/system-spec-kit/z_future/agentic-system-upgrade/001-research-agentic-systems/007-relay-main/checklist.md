@@ -1,12 +1,12 @@
 ---
-title: "Verification Checklist: 007-relay-main Research Phase"
+title: "Verification [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/007-relay-main/checklist]"
 description: "Verification Date: 2026-04-10"
 trigger_phrases:
   - "007-relay-main checklist"
   - "relay main verification checklist"
   - "agent relay research verification"
 importance_tier: "important"
-contextType: "checklist"
+contextType: "implementation"
 ---
 # Verification Checklist: 007-relay-main Research Phase
 

@@ -1,11 +1,12 @@
 ---
-title: "Verification Checklist: Copilot CLI Hook Parity Remediation"
+title: "...tem-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation/checklist]"
 description: "P0/P1/P2 verification items mapped to REQs. Evidence-driven. Marks complete only when cited from the artifact itself."
 trigger_phrases:
   - "026/009/004 checklist"
   - "copilot hook parity checklist"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation"

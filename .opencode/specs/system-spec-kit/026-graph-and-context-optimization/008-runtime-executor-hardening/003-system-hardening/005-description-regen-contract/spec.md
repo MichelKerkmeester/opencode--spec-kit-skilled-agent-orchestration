@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Description Regen Contract"
+title: "...aph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/005-description-regen-contract/spec]"
 description: "Formalize field-level merge policy for description.json regeneration per 019/001/004 research. Introduce shared schema around FolderDescription/PerFolderDescription, unify schema-valid and 018 R4 merge-preserving lanes, preserve unknown non-reserved keys as explicit passthrough."
 trigger_phrases:
   - "description regen contract"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "description json preservation"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/005-description-regen-contract"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Remediation child scaffolded from 019/001/004 research"
     next_safe_action: "Dispatch implementation"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Description Regen Contract
 

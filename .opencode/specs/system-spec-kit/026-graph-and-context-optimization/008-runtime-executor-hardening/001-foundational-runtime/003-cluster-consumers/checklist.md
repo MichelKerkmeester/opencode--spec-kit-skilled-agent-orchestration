@@ -1,9 +1,16 @@
 ---
-title: "Verification Checklist: Phase 017 Wave B — Cluster Consumers"
+title: "...aph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers/checklist]"
 description: "Wave B verification items: CHK-B1/B2/B3 per-lane checks + CHK-B-GATE wave gate. All items use canonical [EVIDENCE:] closers with ] per T-EVD-01 contract."
-trigger_phrases: ["017 wave b checklist", "chk-b1-* verification", "chk-b2-* verification", "chk-b3-* verification", "chk-b-gate", "wave b gate verification"]
+trigger_phrases:
+  - "017 wave b checklist"
+  - "chk-b1-* verification"
+  - "chk-b2-* verification"
+  - "chk-b3-* verification"
+  - "chk-b-gate"
+  - "wave b gate verification"
 importance_tier: "critical"
-contextType: "verification"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/003-cluster-consumers"

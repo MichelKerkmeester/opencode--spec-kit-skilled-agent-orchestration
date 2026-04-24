@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [03--commands-and-skills/038-cmd-create-changelog-and-releases/implementation-summary]"
+title: "Implementation Summary [skilled-agent-orchestration/038-cmd-create-changelog-and-releases/implementation-summary]"
 description: "This summary records the intended documentation and command-workflow changes for the create:changelog release integration spec. The implementation file is added for compliance and does not claim the command changes have shipped."
 trigger_phrases:
   - "038 implementation summary"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "release creation summary"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/038-cmd-create-changelog-and-releases"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 # Implementation Summary
 

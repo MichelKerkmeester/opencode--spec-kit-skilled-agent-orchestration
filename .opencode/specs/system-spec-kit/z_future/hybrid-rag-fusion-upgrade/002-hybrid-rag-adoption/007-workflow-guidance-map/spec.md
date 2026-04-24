@@ -1,8 +1,13 @@
 ---
-title: "007-workflow-guidance-map: Publish Task-To-Tool Routing"
+title: "007-workflow [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/007-workflow-guidance-map/spec]"
 description: "Maps operator tasks to existing Public tools and approved thin facades so guidance improves before deeper runtime changes ship."
+trigger_phrases:
+  - "007"
+  - "workflow"
+  - "spec"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 007-workflow-guidance-map: Publish Task-To-Tool Routing
 
 ## 1. Scope

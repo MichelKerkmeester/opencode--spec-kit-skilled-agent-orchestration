@@ -1,8 +1,17 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | level2-verify | compact -->
 ---
-title: "Add Task Update Merge Safety Guard - Execution Plan"
-status: complete
-parent_spec: 005-task-update-merge-safety/spec.md
+title: "...-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/plan]"
+description: 'title: "Add Task Update Merge Safety Guard - Execution Plan"'
+trigger_phrases:
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "plan"
+  - "005"
+  - "task"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety"
@@ -10,6 +19,8 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Closed the task-update merge-safety phase"
     next_safe_action: "Reuse this phase if task-update matching drifts again"
+parent_spec: 005-task-update-merge-safety/spec.md
+status: complete
 ---
 # Execution Plan
 ## Summary <!-- ANCHOR:summary -->Add an exact-match guard for `task_update` before canonical writes reach the merge transform.<!-- /ANCHOR:summary -->

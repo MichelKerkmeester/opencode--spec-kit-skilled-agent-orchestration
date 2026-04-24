@@ -1,10 +1,11 @@
 ---
-title: "Tasks: 009-security-and-guardrails Security and Guardrails Remediation"
+title: "...ext-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/009-security-and-guardrails/tasks]"
 description: "Task ledger for 009-security-and-guardrails Security and Guardrails Remediation."
 trigger_phrases:
   - "tasks 009 security and guardrails security and guardrails remediation"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/009-security-and-guardrails"

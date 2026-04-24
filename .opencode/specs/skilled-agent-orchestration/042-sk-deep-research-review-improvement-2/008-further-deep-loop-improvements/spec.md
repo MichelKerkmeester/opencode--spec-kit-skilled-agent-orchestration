@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Further Deep-Loop Improvements [008]"
+title: "Feature [skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements/spec]"
 description: "Completed Level 3 child-phase packet for the Phase 008 runtime-truth, graph-wiring, reducer-surfacing, fixture, and release-closeout work across sk-deep-research, sk-deep-review, sk-improve-agent, and the shared coverage-graph stack."
 trigger_phrases:
   - "008"
@@ -10,6 +10,15 @@ trigger_phrases:
   - "session isolation"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Further Deep-Loop Improvements
 

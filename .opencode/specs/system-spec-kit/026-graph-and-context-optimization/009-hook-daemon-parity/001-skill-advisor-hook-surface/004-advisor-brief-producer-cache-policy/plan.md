@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Advisor Brief Producer + Cache Policy"
+title: "...text-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy/plan]"
 description: "Four new lib files composing buildSkillAdvisorBrief(): producer orchestration, prompt policy, HMAC exact cache, subprocess wrapper. Depends on 002 envelope + 003 freshness."
 trigger_phrases:
   - "020 004 plan"
   - "advisor brief producer plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/004-advisor-brief-producer-cache-policy"
@@ -16,7 +15,7 @@ _memory:
     next_safe_action: "Dispatch /spec_kit:implement :auto after 003 converges"
     blockers: []
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Advisor Brief Producer + Cache Policy
 

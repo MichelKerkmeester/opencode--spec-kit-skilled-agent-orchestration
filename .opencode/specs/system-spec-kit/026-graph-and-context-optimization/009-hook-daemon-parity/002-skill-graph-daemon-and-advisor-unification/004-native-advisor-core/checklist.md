@@ -1,14 +1,13 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 ---
-title: "027/003 — Checklist"
+title: "...optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core/checklist]"
 description: "Acceptance verification for native advisor core."
 trigger_phrases:
   - "027/003 checklist"
   - "native advisor core verification"
   - "regression-protection parity checklist"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
-level: 2
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core"
@@ -28,6 +27,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "All P0/P1 deterministic gates passed."
+level: 2
 ---
 # Verification Checklist: 027/003 Native Advisor Core
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Semantic Coverage Graph [042.002]"
+title: "Implementation [skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph/plan]"
 description: "Deliver the deep-loop coverage graph substrate by extracting shared graph primitives, adding dedicated storage and MCP tools, and wiring graph-backed convergence into deep research and deep review."
 trigger_phrases:
   - "042.002"
@@ -9,6 +9,15 @@ trigger_phrases:
   - "deep_loop_graph_convergence"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Semantic Coverage Graph
 

@@ -1,7 +1,18 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | level2-verify | compact -->
 ---
-title: "Enrich Tier3 Prompt with Continuity Model Context - Checklist"
-status: completed
+title: "...rch-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/checklist]"
+description: 'title: "Enrich Tier3 Prompt with Continuity Model Context - Checklist"'
+trigger_phrases:
+  - "rch"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "search"
+  - "checklist"
+  - "006"
+  - "tier3"
+importance_tier: "normal"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment"
@@ -9,6 +20,7 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Verified the continuity context paragraph and prompt-shape coverage"
     next_safe_action: "No further checklist work remains for this phase"
+status: completed
 ---
 # Verification Checklist
 ## Protocol <!-- ANCHOR:protocol -->Treat prompt-contract parity and targeted router tests as the blocking closure signals.<!-- /ANCHOR:protocol -->

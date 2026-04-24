@@ -1,7 +1,24 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Implementation Summary: Code Graph Storage + Query [024/009]"
+title: "Implementation Summary [system-spec-kit/024-compact-code-graph/009-code-graph-storage-query/implementation-summary]"
 description: "Implemented SQLite-based persistent storage for the structural code graph and three MCP query tools (code_graph_scan, code_graph_query, code_graph_status). 20/20 checklist items verified."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "implementation summary"
+  - "009"
+  - "code"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/009-code-graph-storage-query"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Summary
 
@@ -53,18 +70,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 009-code-graph-storage-query |
 | **Completed** | 2026-03-31 |
 | **Level** | 3 |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:what-built -->
+<!-- ANCHOR:what-built-2 -->
 ### What Was Built
 Phase 009 delivers the persistent storage layer and deterministic query interface for the structural code graph. A separate `code-graph.sqlite` database stores files, nodes, and edges produced by the Phase 008 indexer, and three MCP tools expose scan, query, and status operations to all downstream consumers.
 
@@ -99,14 +116,14 @@ All three tool schemas were added to `tool-schemas.ts` with strict JSON schema v
 | `handlers/code-graph/index.ts` | New | Handler barrel export |
 | `tool-schemas.ts` | Modified | Added 3 tool schemas (code_graph_scan, code_graph_query, code_graph_status) |
 | `context-server.ts` | Modified | Registered tool handlers, initialized code-graph DB on startup |
-<!-- /ANCHOR:what-built -->
+<!-- /ANCHOR:what-built-2 -->
 
 ---
 
-<!-- ANCHOR:how-delivered -->
+<!-- ANCHOR:how-delivered-2 -->
 ### How It Was Delivered
 Implemented as a single-pass phase following the plan sequence: storage layer first, then scan, query, and status handlers, and finally server integration. Each tool was tested end-to-end against real repository files after registration.
-<!-- /ANCHOR:how-delivered -->
+<!-- /ANCHOR:how-delivered-2 -->
 
 ---
 ### Key Decisions
@@ -120,7 +137,7 @@ Implemented as a single-pass phase following the plan sequence: storage layer fi
 | SCHEMA_VERSION=3 metadata and version tables | Future migrations need a reliable version check and durable graph metadata. The version and metadata tables make that explicit. |
 ---
 
-<!-- ANCHOR:verification -->
+<!-- ANCHOR:verification-2 -->
 ### Verification
 | Check | Result |
 |-------|--------|
@@ -132,13 +149,13 @@ Implemented as a single-pass phase following the plan sequence: storage layer fi
 | code_graph_query all 5 operations return correct results | Verified |
 | code_graph_status reports accurate metrics | Verified |
 | All tools registered and callable via MCP | Verified |
-<!-- /ANCHOR:verification -->
+<!-- /ANCHOR:verification-2 -->
 
 ---
 
-<!-- ANCHOR:limitations -->
+<!-- ANCHOR:limitations-2 -->
 ### Known Limitations
 1. **Single-writer model.** Concurrent scans are not supported; scan operations are sequential. Concurrent reads are safe via WAL mode.
 2. **No partial symbol diffing.** When a file changes, all its nodes and edges are replaced atomically. Incremental freshness is file-level via mtimes, not symbol-level patching.
 3. **Schema version is v1.** Migration infrastructure exists but has not been exercised with an actual version upgrade.
-<!-- /ANCHOR:limitations -->
+<!-- /ANCHOR:limitations-2 -->

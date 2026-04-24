@@ -1,10 +1,19 @@
 ---
-title: "Verification Checklist: Startup Context Injection Debug — Hook Runtime Brief + Sibling Handoff"
+title: "Verification Checklist: Startup [system-spec-kit/024-compact-code-graph/026-session-start-injection-debug/checklist]"
 description: "Verification Date: 2026-04-02"
 trigger_phrases:
   - "026 checklist"
 importance_tier: "critical"
-contextType: "verification"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/026-session-start-injection-debug"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->

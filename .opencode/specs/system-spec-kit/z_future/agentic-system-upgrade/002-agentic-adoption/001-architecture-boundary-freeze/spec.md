@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 001 Architecture Boundary Freeze [template:level_2/spec.md]"
+title: "Feature [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/001-architecture-boundary-freeze/spec]"
 description: "Lock the non-negotiable adoption rule: keep Public's current authorities, preserve externalized loop state, and only import compatible patterns at the shell layer."
 trigger_phrases:
   - "feature"

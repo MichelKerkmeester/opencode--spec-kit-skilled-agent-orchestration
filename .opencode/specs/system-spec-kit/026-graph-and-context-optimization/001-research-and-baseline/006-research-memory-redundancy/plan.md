@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Research Memory Redundancy Follow-On"
+title: "Imple [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy/plan]"
 description: "Documentation-first plan for syncing the parent research canonicals, classifying downstream packets, and closing this folder as a complete Level 3 coordination packet."
 trigger_phrases:
   - "memory redundancy follow on plan"
   - "compact wrapper coordination plan"
 importance_tier: "important"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy"
@@ -15,7 +14,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Research Memory Redundancy Follow-On
 

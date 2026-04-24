@@ -1,10 +1,11 @@
 ---
-title: "Implementation Plan: 001-graph-and-metadata-quality Graph and Metadata Quality Remediation"
+title: "...t-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality/plan]"
 description: "Technical plan for 001-graph-and-metadata-quality Graph and Metadata Quality Remediation."
 trigger_phrases:
   - "implementation plan 001 graph and metadata quality graph and metadata qu"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Contextador Research Phase (003-contextador)"
+title: "Feature Specificatio [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/003-contextador/spec]"
 description: "Research Contextador's MCP query architecture, self-healing feedback loop, and Mainframe shared cache to identify concrete, evidence-backed improvements for Code_Environment/Public's retrieval surfaces."
 trigger_phrases:
   - "contextador"
@@ -9,7 +9,6 @@ trigger_phrases:
   - "token efficient navigation"
 importance_tier: "normal"
 contextType: "general"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador"
@@ -18,7 +17,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["spec.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: Contextador Research Phase
 

@@ -1,11 +1,12 @@
 ---
-title: "029 - Hook Parity Remediation Checklist"
+title: "029 [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation/checklist]"
 description: "Acceptance checklist for hook parity remediation and the 2026-04-21 deep-review P1 closure."
 trigger_phrases:
   - "029 checklist"
   - "hook parity checklist"
-importance_tier: "high"
-contextType: "qa-checklist"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/003-hook-parity-remediation"

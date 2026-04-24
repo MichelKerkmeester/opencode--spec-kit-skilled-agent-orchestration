@@ -1,11 +1,11 @@
 ---
-title: "Tasks: 005-intellegix-code-agent-toolkit-master Research Phase"
+title: "...spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/005-intellegix-code-agent-toolkit-master/tasks]"
 description: "Task list for the Intellegix Code Agent Toolkit research packet."
 trigger_phrases:
   - "005 intellegix tasks"
   - "intellegix research tasks"
 importance_tier: "important"
-contextType: "tasks"
+contextType: "implementation"
 ---
 # Tasks: 005-intellegix-code-agent-toolkit-master Research Phase
 

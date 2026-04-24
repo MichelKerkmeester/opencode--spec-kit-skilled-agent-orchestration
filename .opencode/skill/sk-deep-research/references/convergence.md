@@ -16,6 +16,8 @@ Convergence detection prevents infinite loops and stops research when additional
 
 For operator-facing docs, this reference and the deep-research YAML workflow are the authoritative 3-signal contract. Quick references and command-adjacent summaries should mirror the weights and signal names published here.
 
+When the loop stops and enters synthesis, the workflow emits `{artifact_dir}/resource-map.md` from converged research deltas before finalizing `research.md`. Operators can disable that write with `--no-resource-map`.
+
 ### Shared Stop Contract
 
 Both deep-loop products normalize their terminal and blocked-stop outcomes through the same completion-gate contract before any stop decision is persisted to JSONL, dashboards, or synthesis output.

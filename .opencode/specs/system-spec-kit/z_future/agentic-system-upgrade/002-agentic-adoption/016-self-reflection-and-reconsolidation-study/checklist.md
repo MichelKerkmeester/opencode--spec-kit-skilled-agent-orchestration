@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 016 Self Reflection and Reconsolidation Study [template:level_2/checklist.md]"
+title: "...pec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/016-self-reflection-and-reconsolidation-study/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

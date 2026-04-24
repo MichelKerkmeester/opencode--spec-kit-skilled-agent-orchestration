@@ -1,12 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "027/003 — Implementation Summary"
+title: "...009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/004-native-advisor-core/implementation-summary]"
 description: "Native TS advisor core with 5-lane fusion and regression-protection parity."
 trigger_phrases:
   - "027/003 implementation summary"
   - "native advisor core summary"
-  - "regression-protection parity ADR"
-importance_tier: "high"
+  - "regression-protection parity adr"
+importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:

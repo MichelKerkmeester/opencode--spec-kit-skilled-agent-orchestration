@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
-title: "Implementation Summary: Resource Map Template [002-resource-map-template-creation]"
+title: "...6-graph-and-context-optimization/011-resource-map-template/002-resource-map-template-creation/implementation-summary]"
 description: "A new cross-cutting template catalogs every file path a packet touched grouped by category, wired into every discovery surface in one coordinated pass."
 trigger_phrases:
   - "026/012 implementation summary"
   - "resource map implementation"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/002-resource-map-template-creation"
@@ -27,6 +27,7 @@ _memory:
     completion_pct: 92
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Resource Map Template
 

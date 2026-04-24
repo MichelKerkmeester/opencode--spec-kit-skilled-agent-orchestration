@@ -9,6 +9,15 @@ trigger_phrases:
   - "006"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/006-documentation-alignment"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Phase 6 — Documentation Alignment
@@ -95,12 +104,12 @@ Template compliance shim anchor for rollback.
     - Remove or clearly mark any absent follow-up reference or prompt-template documents as not created when they are missing
     - Record undelivered items as future gaps: dedicated cross-runtime consistency playbook, ARCHITECTURE.md runtime adapter docs, root README context preservation mention
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-2 -->
 ### Dependencies
 - Phase 1-4 (all hook implementations must be designed for accurate documentation)
 - Phase 5 (agent definition changes affect AGENTS.md)
 - Can begin drafts in parallel with Phases 1-5, finalize after implementation
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-2 -->
 
 ### Technical Context
 - Runtime surface: system-spec-kit MCP server + hook adapters.

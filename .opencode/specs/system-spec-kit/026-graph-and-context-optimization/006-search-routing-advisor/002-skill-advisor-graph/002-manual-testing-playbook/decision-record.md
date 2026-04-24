@@ -1,12 +1,11 @@
 ---
-title: "Decision Record: Playbook Template Alignment"
+title: "...-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook/decision-record]"
 description: "Decisions on template choice, prompt pattern, and alignment strategy for playbook snippets."
 trigger_phrases:
   - "002-manual-testing-playbook"
   - "playbook decisions"
 importance_tier: "important"
-contextType: "decisions"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook"
@@ -15,6 +14,7 @@ _memory:
     recent_action: "Created decision record"
     next_safe_action: "Implement playbook rewrites"
     key_files: ["decision-record.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Playbook Template Alignment
 

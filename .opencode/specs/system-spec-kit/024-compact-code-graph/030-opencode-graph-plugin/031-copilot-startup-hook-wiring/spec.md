@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Copilot Startup Hook Wiring [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring]"
+title: "Feature Specific [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring/spec]"
 description: "Implements the Phase 031 follow-on that closes the live Copilot sessionStart wiring gap and truth-syncs runtime detection with the actual repo hook configuration."
 trigger_phrases:
   - "copilot startup hook wiring"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "packet 030 copilot"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Copilot Startup Hook Wiring
 
@@ -89,7 +98,7 @@ Close the real runtime gap instead of just refining wording. After this phase, C
 | `.github/hooks/superset-notify.json` | Modify | Route Copilot `sessionStart` through a repo-local wrapper |
 | `.github/hooks/scripts/session-start.sh` | Create | Emit the shared startup banner, then fan out to Superset silently |
 | `.github/hooks/scripts/superset-notify.sh` | Create | Provide a repo-local best-effort Superset notifier for non-banner events |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/runtime-detection.ts` | Modify | Make Copilot hookPolicy depend on actual repo hook config |
+| `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/runtime-detection.ts` | Modify | Make Copilot hookPolicy depend on actual repo hook config |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/runtime-detection.vitest.ts` | Modify | Cover enabled and missing-config Copilot branches |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/cross-runtime-fallback.vitest.ts` | Modify | Align recovery expectations to dynamic Copilot hook policy |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/copilot-hook-wiring.vitest.ts` | Create | Verify the repo hook wiring and wrapper output |

@@ -1,3 +1,23 @@
+---
+title: "Plan: Self-Test [skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-agent-improver-self-test-fixes/plan]"
+description: "What: The canonical agent-improver.md line 156 has"
+trigger_phrases:
+  - "plan"
+  - "self"
+  - "test"
+  - "010"
+  - "agent"
+importance_tier: "important"
+contextType: "planning"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-agent-improver-self-test-fixes"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
+---
 # Plan: Self-Test Fixes and Reducer Improvements
 
 | Field | Value |

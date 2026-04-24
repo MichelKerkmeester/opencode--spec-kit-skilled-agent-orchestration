@@ -1,13 +1,13 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
-title: "Implementation Plan: Resource Map Template"
+title: "I [system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/002-resource-map-template-creation/plan]"
 description: "Author the new template at the templates root and wire it through every discovery surface, with one constant edit in the MCP spec-doc classifier."
 trigger_phrases:
   - "026/012 resource map plan"
   - "resource map plan"
   - "template wiring plan"
 importance_tier: "normal"
-contextType: "plan"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-resource-map-template/002-resource-map-template-creation"
@@ -19,6 +19,7 @@ _memory:
     completion_pct: 90
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 ---
 # Implementation Plan: Resource Map Template
 

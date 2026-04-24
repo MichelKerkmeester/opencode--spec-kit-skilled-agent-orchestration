@@ -1,10 +1,11 @@
 ---
-title: "Verification Checklist: 007-skill-advisor-packaging-and-graph Skill Advisor Packaging and Graph Remediation"
+title: "...on/007-deep-review-remediation/005-006-campaign-findings-remediation/007-skill-advisor-packaging-and-graph/checklist]"
 description: "Verification gates for 007-skill-advisor-packaging-and-graph Skill Advisor Packaging and Graph Remediation."
 trigger_phrases:
   - "verification checklist 007 skill advisor packaging and graph skill advis"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/007-skill-advisor-packaging-and-graph"

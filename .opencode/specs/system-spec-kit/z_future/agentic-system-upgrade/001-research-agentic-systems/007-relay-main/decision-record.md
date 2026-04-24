@@ -1,12 +1,12 @@
 ---
-title: "Decision Record: 007-relay-main Research Phase"
+title: "Decision [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/007-relay-main/decision-record]"
 description: "Records the scope, boundary, and synthesis decisions that governed the Agent Relay phase."
 trigger_phrases:
   - "007-relay-main decision record"
   - "relay main adr"
   - "agent relay research decisions"
 importance_tier: "important"
-contextType: "decision"
+contextType: "planning"
 ---
 # Decision Record: 007-relay-main Research Phase
 

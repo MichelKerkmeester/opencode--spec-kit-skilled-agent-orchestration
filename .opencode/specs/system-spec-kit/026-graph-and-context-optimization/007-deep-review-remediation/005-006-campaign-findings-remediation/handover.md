@@ -1,8 +1,18 @@
 ---
-title: "Handover: 007/005 — 006 Campaign Findings Remediation (COMPACTION-SURVIVABLE)"
+title: "...ec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/handover]"
 description: "Durable handover doc for a multi-phase remediation campaign. Survives context compaction. Lists campaign state, next steps, dispatch commands, exit criteria."
-importance_tier: "high"
-contextType: "handover"
+trigger_phrases:
+  - "kit"
+  - "026"
+  - "graph"
+  - "and"
+  - "context"
+  - "handover"
+  - "005"
+  - "006"
+importance_tier: "important"
+contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: handover-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation"
@@ -12,7 +22,6 @@ _memory:
     next_safe_action: "None — packet closed"
     completion_pct: 100
 ---
-
 <!-- SPECKIT_TEMPLATE_SOURCE: handover-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 3 -->
 

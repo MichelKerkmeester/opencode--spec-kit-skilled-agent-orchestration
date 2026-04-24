@@ -1,8 +1,22 @@
 ---
-title: "Session Handover: Skill Advisor Graph System"
+title: "Session [system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/handover]"
 description: "Handover for 011-skill-advisor-graph — graph system built, research-audited, P0 fixes landed, packaging in progress."
+trigger_phrases:
+  - "session"
+  - "handover"
+  - "002"
+  - "skill"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["handover.md"]
 ---
-
 # CONTINUATION - Attempt 1 | Spec: 011-skill-advisor-graph | Last: Phase 003 spec created | Next: Write playbook snippets + feature catalog
 
 ---

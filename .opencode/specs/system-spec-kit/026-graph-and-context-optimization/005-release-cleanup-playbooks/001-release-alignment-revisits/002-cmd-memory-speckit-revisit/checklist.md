@@ -1,12 +1,12 @@
 ---
-title: "018 / 008 — command revisit checklist"
+title: "...t-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit/checklist]"
 description: "Verification checklist for the 016 command release-alignment revisit."
-trigger_phrases: ["008 checklist", "command revisit checklist", "phase 018 command verification"]
+trigger_phrases:
+  - "008 checklist"
+  - "command revisit checklist"
+  - "phase 018 command verification"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/002-cmd-memory-speckit-revisit"
@@ -15,6 +15,9 @@ _memory:
     recent_action: "Checked the 008 revisit verification gates"
     next_safe_action: "Use the wrapper-block list to scope any follow-on mirror sync"
     key_files: ["checklist.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: 018 / 008 — command revisit
 <!-- SPECKIT_LEVEL: 2 -->

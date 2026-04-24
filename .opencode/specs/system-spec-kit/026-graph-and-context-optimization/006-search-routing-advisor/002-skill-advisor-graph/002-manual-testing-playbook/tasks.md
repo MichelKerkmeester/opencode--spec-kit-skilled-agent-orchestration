@@ -1,12 +1,11 @@
 ---
-title: "Tasks: Playbook Template Alignment"
+title: "...-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook/tasks]"
 description: "Task breakdown for reconciling the full 24-scenario playbook package and root operator guide."
 trigger_phrases:
   - "002-manual-testing-playbook"
   - "playbook tasks"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/002-manual-testing-playbook"
@@ -15,6 +14,7 @@ _memory:
     recent_action: "Created tasks"
     next_safe_action: "Implement playbook rewrites"
     key_files: ["tasks.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Playbook Template Alignment
 

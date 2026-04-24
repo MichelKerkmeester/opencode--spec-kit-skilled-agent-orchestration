@@ -1,9 +1,13 @@
 ---
-title: "Implementation Summary: Foundational Runtime Remediation"
+title: "...ext-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research/implementation-summary]"
 description: "Phase 016 remediation complete: 27 commits shipped to main closing 63 distinct findings + 4 P0 composite attack scenarios + 7 structural refactors + 13 medium refactors + 29 quick wins + full test suite migration across 4 P0 regression suites and 34 T-TEST tasks. Phase 017 follow-on surfaced 28 review findings + 14 segment-2 findings (see 017 folder)."
-trigger_phrases: ["016 implementation summary", "phase 017 summary", "foundational runtime remediation"]
+trigger_phrases:
+  - "016 implementation summary"
+  - "phase 017 summary"
+  - "foundational runtime remediation"
 importance_tier: "critical"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/001-initial-research"

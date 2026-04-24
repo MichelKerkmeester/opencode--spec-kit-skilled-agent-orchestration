@@ -1,13 +1,12 @@
 ---
-title: "Implementation Summary: 018 / 013 — dead code and architecture audit"
+title: "...tion/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit/implementation-summary]"
 description: "Closeout summary for the runtime cleanup, architecture rewrite, README coverage pass, and verification evidence."
-trigger_phrases: ["013 implementation summary", "dead code audit summary", "architecture audit summary"]
+trigger_phrases:
+  - "013 implementation summary"
+  - "dead code audit summary"
+  - "architecture audit summary"
 importance_tier: "important"
 contextType: "implementation"
-status: "complete"
-level: 3
-parent: "008-cleanup-and-audit"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/004-dead-code-and-architecture-audit"
@@ -16,6 +15,10 @@ _memory:
     recent_action: "Closed the packet with verification evidence"
     next_safe_action: "Review commit scope"
     key_files: ["implementation-summary.md", "tasks.md", "checklist.md"]
+level: 3
+parent: "008-cleanup-and-audit"
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

@@ -12,7 +12,7 @@
   "derived": {
     "trigger_phrases": [
       "real feedback labels",
-      "buildReplayRanks",
+      "buildreplayranks",
       "query-scoped feedback",
       "feedback-informed evaluation",
       "real feedback labels plan",
@@ -101,18 +101,6 @@
         "source": "derived"
       },
       {
-        "name": "Feature Specification",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Real Feedback Labels",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
         "name": "Child Header",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -137,7 +125,25 @@
         "source": "derived"
       },
       {
+        "name": "Phase Context This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scope Boundary",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Real Feedback Labels",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
@@ -189,17 +195,12 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
-      },
-      {
-        "name": "the",
-        "kind": "key_phrase",
-        "path": "tasks.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 3** of the adaptive-ranking packet.",
     "created_at": "2026-04-12T09:02:50.333Z",
-    "last_save_at": "2026-04-18T14:39:00.643Z",
+    "last_save_at": "2026-04-24T15:33:55.015Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

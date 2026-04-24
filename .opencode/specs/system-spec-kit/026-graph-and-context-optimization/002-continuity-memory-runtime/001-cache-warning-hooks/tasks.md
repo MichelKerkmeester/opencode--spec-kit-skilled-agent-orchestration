@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Cache-Warning Hook System [template:level_3/tasks.md]"
+title: "Tasks [system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks/tasks]"
 description: "Task Format: T### [P0|P1|P2] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "idempotency"
 importance_tier: "normal"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/001-cache-warning-hooks"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Cache-Warning Hook System
 

@@ -1,13 +1,13 @@
 ---
-title: "Tasks: 027/000 — Validator ESM Migration"
-template_source: "SPECKIT_TEMPLATE_SOURCE: level2-tasks | v2.2"
+title: "...ntext-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix/tasks]"
 description: "Ordered task ladder for ESM migration of scripts/ package."
 trigger_phrases:
   - "027/000 tasks"
   - "validator esm task ladder"
   - "scripts esm migration tasks"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level2-tasks | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/001-validator-esm-fix"
@@ -19,8 +19,8 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source: "SPECKIT_TEMPLATE_SOURCE: level2-tasks | v2.2"
 ---
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: level2-tasks | v2.2 -->
 <!-- ANCHOR:task-ladder -->

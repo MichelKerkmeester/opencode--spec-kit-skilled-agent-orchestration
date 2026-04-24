@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 005 Budget and Stagnation Enforcement [template:level_2/plan.md]"
+title: "Implementa [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/005-budget-stagnation-enforcement/plan]"
 description: "Formalize budgets, cooldowns, and stagnation rules for long-running loops so autonomous work stops or escalates predictably before wasting tokens or cycling forever."
 trigger_phrases:
   - "implementation"

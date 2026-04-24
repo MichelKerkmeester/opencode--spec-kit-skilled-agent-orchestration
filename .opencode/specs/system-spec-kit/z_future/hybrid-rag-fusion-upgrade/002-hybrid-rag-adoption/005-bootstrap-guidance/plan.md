@@ -1,3 +1,14 @@
+---
+title: "Plan: 005-boots [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/005-bootstrap-guidance/plan]"
+description: "1. Identify the current hint and recovery surfaces."
+trigger_phrases:
+  - "plan"
+  - "005"
+  - "boots"
+  - "bootstrap"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 005-bootstrap-guidance
 
 ## Affected Files

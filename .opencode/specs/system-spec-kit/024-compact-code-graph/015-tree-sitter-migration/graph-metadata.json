@@ -10,30 +10,37 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
-    "key_topics": [
-      "template",
-      "compliance",
-      "shim",
-      "section",
-      "legacy",
-      "phase",
-      "content",
-      "continues",
+    "trigger_phrases": [
       "spec",
-      "tree-sitter",
+      "tree",
+      "sitter",
       "wasm",
-      "migration"
+      "migration",
+      "015",
+      "plan",
+      "tasks",
+      "foundation",
+      "checklist",
+      "implementation",
+      "summary"
+    ],
+    "key_topics": [
+      "spec",
+      "tree",
+      "sitter",
+      "wasm",
+      "migration",
+      "015",
+      "plan",
+      "tasks",
+      "foundation",
+      "checklist",
+      "implementation",
+      "summary"
     ],
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "lib/code-graph/structural-indexer.ts",
-      "lib/code-graph/indexer-types.ts",
-      "tests/code-graph-indexer.vitest.ts",
-      "mcp_server/lib/code-graph/structural-indexer.ts",
-      "mcp_server/lib/code-graph/tree-sitter-parser.ts",
-      "mcp_server/lib/code-graph/indexer-types.ts",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -41,30 +48,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "structural-indexer.ts",
-        "kind": "code",
-        "path": "lib/code-graph/structural-indexer.ts",
-        "source": "derived"
-      },
-      {
-        "name": "indexer-types.ts",
-        "kind": "code",
-        "path": "lib/code-graph/indexer-types.ts",
-        "source": "derived"
-      },
-      {
-        "name": "code-graph-indexer.vitest.ts",
-        "kind": "test",
-        "path": "tests/code-graph-indexer.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "tree-sitter-parser.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/code-graph/tree-sitter-parser.ts",
-        "source": "derived"
-      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -184,11 +167,36 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "Implementation Template",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Template",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria Template",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
     "created_at": "2026-04-13T04:55:08.078Z",
-    "last_save_at": "2026-04-18T14:39:00.683Z",
+    "last_save_at": "2026-04-24T15:34:55.418Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

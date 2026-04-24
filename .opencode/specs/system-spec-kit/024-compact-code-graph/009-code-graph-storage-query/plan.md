@@ -9,6 +9,15 @@ trigger_phrases:
   - "graph"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/009-code-graph-storage-query"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Phase 009 — Code Graph Storage + Query
@@ -96,13 +105,13 @@ Template compliance shim anchor for rollback.
    - Check status output for accuracy
    - Verify incremental scan skips unchanged files
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-2 -->
 ### Dependencies
 
 - Phase 008 indexer must produce `CodeNode[]` and `CodeEdge[]`
 - Existing `better-sqlite3` dependency (already used for memory DB)
 - `context-server.ts` must accept new tool registrations
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-2 -->
 
 ### Risk Mitigation
 

@@ -8,6 +8,15 @@ trigger_phrases:
   - "umbrella spec"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: manual-testing-per-playbook
 
@@ -37,7 +46,7 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The live manual-testing tree now contains **290** scenario files across **21** numbered categories, but this wrapper packet still mixes older `231 scenario files / 272 exact IDs / 19 categories` language with current phase folders `021` and `022` plus a retained duplicate `020-feature-flag-reference` wrapper. That makes the root packet materially stale and self-contradictory for release-control use.
+The live manual-testing tree now contains **290** scenario files across **21** numbered categories, but this wrapper packet still mixes older `231 scenario files / 272 exact IDs / 19 categories` language with current phase folders `021` and `022` plus a retained duplicate `020-feature-flag-reference-audit` wrapper. That makes the root packet materially stale and self-contradictory for release-control use.
 
 ### Purpose
 Keep the root wrapper honest about the current live playbook tree while preserving the older `272 exact ID` execution wave as historical evidence only. This packet should coordinate the live wrapper state, not imply that the entire current tree has already been re-verified end to end.
@@ -50,7 +59,7 @@ Keep the root wrapper honest about the current live playbook tree while preservi
 
 ### In Scope
 - Root-wrapper truth for the live playbook denominator: `290` scenario files across `21` categories
-- The current 22 numbered phase folders in this packet, including the retained duplicate `020-feature-flag-reference`
+- The current 22 numbered phase folders in this packet, including the retained duplicate `020-feature-flag-reference-audit`
 - Historical execution evidence from the earlier `272 exact ID` wave
 - Still-open traceability-remediation status from the 2026-03-26 review
 
@@ -97,7 +106,7 @@ Keep the root wrapper honest about the current live playbook tree while preservi
 | 017 | `017-governance/` | Governance | 8 | Live category count |
 | 018 | `018-ux-hooks/` | UX Hooks | 19 | Live category count |
 | 019 | `019-feature-flag-reference/` | Feature Flag Reference | 10 | Live category count |
-| 020 | `020-feature-flag-reference/` | Feature Flag Reference (duplicate wrapper) | 0 | Retained phase folder, not a new category denominator |
+| 020 | `020-feature-flag-reference-audit/` | Feature Flag Reference (duplicate wrapper) | 0 | Retained phase folder, not a new category denominator |
 | 021 | `021-remediation-revalidation/` | Remediation and Revalidation | 3 | Live category count |
 | 022 | `022-implement-and-remove-deprecated-features/` | Implement and Remove Deprecated Features | 5 | Live category count |
 | **TOTAL** | | **21 live categories across 22 numbered phase folders** | **290** | Root playbook index [manual-testing source of truth](../../../../skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) excluded |
@@ -158,7 +167,7 @@ Historical execution note:
 | Dependency | Manual testing playbook (290 scenario files across 21 categories) | Source of live wrapper truth | Treat the playbook as read-only source of truth |
 | Dependency | Feature catalog (255 entries across 21 categories) | Traceability target for the wrapper packet | Treat the catalog as read-only reference truth |
 | Risk | Historical execution evidence may be mistaken for current live coverage | High | Keep the historical boundary explicit in every root wrapper file |
-| Risk | Duplicate phase `020` can be mistaken for a new category | Medium | Explain that `020-feature-flag-reference` is retained as a duplicate wrapper, not a new denominator bucket |
+| Risk | Duplicate phase `020` can be mistaken for a new category | Medium | Explain that `020-feature-flag-reference-audit` is retained as a duplicate wrapper, not a new denominator bucket |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -188,7 +197,7 @@ Historical execution note:
 
 ### Data Boundaries
 - The live wrapper denominator excludes the root playbook index [manual-testing source of truth](../../../../skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md).
-- The duplicate `020-feature-flag-reference` phase folder remains in the packet even though it does not add a new live category.
+- The duplicate `020-feature-flag-reference-audit` phase folder remains in the packet even though it does not add a new live category.
 
 ### Error Scenarios
 - If a live recount changes, the wrapper packet must update before any release summary cites it.
@@ -217,7 +226,7 @@ Historical execution note:
 <!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
-- When the traceability backlog lands, should this wrapper preserve the duplicate `020-feature-flag-reference` folder or collapse it?
+- When the traceability backlog lands, should this wrapper preserve the duplicate `020-feature-flag-reference-audit` folder or collapse it?
 <!-- /ANCHOR:questions -->
 
 ---

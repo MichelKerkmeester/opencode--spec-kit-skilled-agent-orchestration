@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Graph and Context Optimization"
+title: "Implementation Plan: Graph and Context Optimization [system-spec-kit/026-graph-and-context-optimization/plan]"
 description: "Plan for consolidating the 026 packet from 29 active top-level phase folders to 9 thematic wrappers."
 trigger_phrases:
   - "026 graph and context optimization"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "merged phase map"
   - "graph context optimization root packet"
 importance_tier: "important"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Graph and Context Optimization
 

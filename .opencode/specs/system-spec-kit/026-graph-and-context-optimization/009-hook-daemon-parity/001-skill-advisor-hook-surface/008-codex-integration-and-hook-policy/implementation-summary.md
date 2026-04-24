@@ -1,11 +1,10 @@
 ---
-title: "Implementation Summary: Codex Integration + Hook Policy"
+title: "...n/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy/implementation-summary]"
 description: "Codex detector, UserPromptSubmit adapter, Bash-only PreToolUse deny, prompt-wrapper fallback, and 4-runtime parity shipped; .codex registration blocked by sandbox EPERM."
 trigger_phrases:
   - "020 008 summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/008-codex-integration-and-hook-policy"
@@ -15,7 +14,7 @@ _memory:
     next_safe_action: "Apply .codex registration"
     blockers: [".codex/settings.json and .codex/policy.json writes denied by sandbox EPERM"]
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Codex Integration + Hook Policy
 

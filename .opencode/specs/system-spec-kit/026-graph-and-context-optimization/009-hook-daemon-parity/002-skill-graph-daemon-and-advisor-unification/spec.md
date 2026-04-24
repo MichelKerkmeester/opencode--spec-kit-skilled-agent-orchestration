@@ -1,13 +1,13 @@
 ---
-title: "027 - Skill Graph Daemon and Advisor Unification"
+title: "...ec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/spec]"
 description: "Completed Phase 027 implementation for skill-graph freshness, derived metadata, native advisor scoring, MCP advisor tools, compatibility shims, and promotion gates."
 trigger_phrases:
   - "026/009/002 skill graph daemon"
   - "advisor unification"
   - "native advisor"
-importance_tier: "high"
-contextType: "feature-specification"
-packet_level: 3
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification"
@@ -16,6 +16,7 @@ _memory:
     recent_action: "Shipped implementation preserved; strict validation follow-up still pending"
     next_safe_action: "Keep validation green"
     completion_pct: 95
+packet_level: 3
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 <!-- SPECKIT_LEVEL: 3 -->

@@ -1,11 +1,10 @@
 ---
-title: "Research Charter: Smart-Router Context-Load Efficacy"
+title: "...raph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research/spec]"
 description: "Research charter for 004/001 — 20-iteration deep-research on V1-V10 questions covering context-load measurement + OpenCode plugin design."
 trigger_phrases:
   - "004 001 research charter"
 importance_tier: "important"
-contextType: "research-charter"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/001-initial-research"
@@ -14,7 +13,7 @@ _memory:
     recent_action: "Charter scaffolded"
     next_safe_action: "Dispatch cli-codex deep-research 20 iterations"
     dispatch_policy: "cli-codex gpt-5.4 high fast"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Research Charter: Smart-Router Context-Load Efficacy
 

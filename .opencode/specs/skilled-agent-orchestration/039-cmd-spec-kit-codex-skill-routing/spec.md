@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Codex command discoverability routing update [03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing/spec]"
+title: "Feature Specification: Codex command [skilled-agent-orchestration/039-cmd-spec-kit-codex-skill-routing/spec]"
 description: "This packet already contains research that recommended a four-command first-touch shortlist. The Level 1 docs now need to preserve that finding, record the user's expanded all-commands override, and define the downstream quick-reference update honestly."
 trigger_phrases:
   - "codex command discoverability"
@@ -9,6 +9,15 @@ trigger_phrases:
   - "039 spec"
 importance_tier: "normal"
 contextType: "research"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/039-cmd-spec-kit-codex-skill-routing"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Codex command discoverability routing update
 

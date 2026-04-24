@@ -1,5 +1,5 @@
 ---
-title: "Research Seed: Save-Flow Backend Relevance Review Post-Memory-Folder Retirement [template:level_1/spec.md]"
+title: "...emory-runtime/004-memory-save-rewrite/research/014-memory-save-rewrite-pt-01/014-research-snapshot/primary-docs/spec]"
 description: "Investigate whether generate-context.js and its save-flow backend remain proportionate to the remaining value after [spec]/memory/*.md retirement (v3.4.1.0 + 013 r2), or whether a simpler operator-visible command could do the work with less machinery."
 trigger_phrases:
   - "save flow relevance"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "save path audit"
   - "memory save simplification"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review"
@@ -37,8 +36,8 @@ _memory:
       - "What are the concrete risks of a simpler manual-update path vs the current automated pipeline?"
       - "Which save-flow features still deliver proportional value (semantic indexing, entity linking, quality gates, content routing, graph-metadata refresh, trigger-phrase harmonization, _memory.continuity sync)?"
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
-
 # Research Seed: Save-Flow Backend Relevance Review Post-Memory-Folder Retirement
 
 <!-- SPECKIT_LEVEL: 1 -->

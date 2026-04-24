@@ -1,3 +1,26 @@
+---
+title: "...em-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/research/009-hook-daemon-parity-pt-01/research]"
+description: "This investigation focused on the residual hook/daemon parity gaps still visible after 012-docs-impact-remediation refreshed the operator-facing docs. The strongest gaps are no ..."
+trigger_phrases:
+  - "spec"
+  - "kit"
+  - "026"
+  - "graph"
+  - "and"
+  - "research"
+  - "009"
+  - "hook"
+importance_tier: "normal"
+contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/research/009-hook-daemon-parity-pt-01"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
+---
 # Deep Research — 009-hook-daemon-parity
 
 <!-- ANCHOR:summary -->

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Skill Graph Auto-Setup"
+title: "...xt-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup/implementation-summary]"
 description: "Phase 007 delivered automatic skill-graph setup and the packet now reflects that completed work with Level 2-compliant documentation."
 trigger_phrases:
   - "phase 007 implementation summary"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "packet repair completion"
 importance_tier: "important"
 contextType: "general"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/007-skill-graph-auto-setup"
@@ -30,6 +29,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Implementation is complete; this summary documents the shipped behavior and packet repair."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

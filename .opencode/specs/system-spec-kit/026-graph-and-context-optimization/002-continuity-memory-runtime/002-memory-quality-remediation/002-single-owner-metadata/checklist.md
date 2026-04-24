@@ -1,14 +1,13 @@
 ---
-title: "Verification Checklist: Phase 2 — Single-Owner Metadata Fixes"
+title: "...ontext-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata/checklist]"
 description: "Verification checklist for PR-3 and PR-4 delivery in Phase 2."
 trigger_phrases:
   - "phase 2 checklist"
   - "single-owner metadata checklist"
   - "f-ac4 checklist"
   - "f-ac6 checklist"
-importance_tier: important
-contextType: planning
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist + level2-verify | v2.2 -->"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/002-single-owner-metadata"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist + level2-verify | v2.2 -->"
 ---
 # Verification Checklist: Phase 2 — Single-Owner Metadata Fixes
 

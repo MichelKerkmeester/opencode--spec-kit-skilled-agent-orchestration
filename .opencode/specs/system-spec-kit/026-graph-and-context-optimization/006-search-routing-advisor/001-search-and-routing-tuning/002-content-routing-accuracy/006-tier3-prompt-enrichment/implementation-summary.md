@@ -1,12 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: Enrich Tier3 Prompt with Continuity Model Context"
+title: "...dvisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/implementation-summary]"
 description: "This phase refreshed the Tier 3 system prompt with the explicit resume ladder context, corrected the metadata-only target wording, and locked the prompt contract with focused router assertions."
 trigger_phrases:
   - "phase 006 implementation summary"
   - "tier3 prompt enrichment summary"
 importance_tier: "critical"
-contextType: "verification"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment"

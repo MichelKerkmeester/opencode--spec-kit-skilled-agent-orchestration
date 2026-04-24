@@ -1,9 +1,13 @@
 ---
-title: "Verification Checklist: Phase 017 Review-Findings Remediation"
+title: "V [system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/checklist]"
 description: "P0/P1/P2 verification items for all 27 remediation tasks + compound hypothesis sign-off. All items use canonical [EVIDENCE:] closers with ] per T-EVD-01 contract."
-trigger_phrases: ["017 checklist", "phase 017 verification", "h-56-1 verification"]
+trigger_phrases:
+  - "017 checklist"
+  - "phase 017 verification"
+  - "h-56-1 verification"
 importance_tier: "critical"
-contextType: "verification"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime"

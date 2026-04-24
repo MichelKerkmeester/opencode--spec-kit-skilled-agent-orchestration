@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 001 Architecture Boundary Freeze [template:level_2/checklist.md]"
+title: "Verifi [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/001-architecture-boundary-freeze/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

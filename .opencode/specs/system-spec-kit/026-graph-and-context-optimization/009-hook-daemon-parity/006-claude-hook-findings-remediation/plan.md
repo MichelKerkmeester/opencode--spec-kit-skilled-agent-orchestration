@@ -1,15 +1,15 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-plan | v2.2 -->"
-title: "Implementation Plan: Claude Hook Findings Remediation"
+title: "Im [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation/plan]"
 description: "Level 2 implementation: (1) spike freshness.ts to locate sourceSignature write gap; (2) patch scanner to persist signature; (3) normalize .claude/settings.local.json to Claude-schema; (4) add multi-turn stream-json harness section to skill-advisor validation playbook. All verified via direct script smokes + one real claude -p parity check."
 trigger_phrases:
   - "claude hook findings plan"
-  - "freshness sourceSignature fix"
+  - "freshness sourcesignature fix"
   - "settings.local.json normalization plan"
   - "multi-turn stream-json harness plan"
   - "026/009/006 plan"
-importance_tier: "high"
-contextType: "plan"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-plan | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/006-claude-hook-findings-remediation"
@@ -22,6 +22,7 @@ _memory:
     open_questions:
       - "Confirm freshness.ts is the right module before spending spike time"
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-plan | v2.2 -->"
 ---
 # Implementation Plan: Claude Hook Findings Remediation
 

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Phase 1 — Wire PromotionGate to Action"
+title: "Ve [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate/checklist]"
 description: "Quality gates for wiring shadow evaluation promotionGate outcomes into adaptive tuning."
 trigger_phrases:
   - "wire promotion gate checklist"
@@ -7,11 +7,20 @@ trigger_phrases:
   - "phase 1 checklist"
 importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["checklist.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
-# Verification Checklist: Phase 1 — Wire PromotionGate to Action
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+
+# Verification Checklist: Phase 1 — Wire PromotionGate to Action
 
 ---
 

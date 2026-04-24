@@ -1,3 +1,13 @@
+---
+title: "Plan [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/012-drift-detection-evaluation/plan]"
+description: "1. Baseline the already-approved advisory trio and their current issue-envelope needs."
+trigger_phrases:
+  - "plan"
+  - "012"
+  - "drift"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 012-drift-detection-evaluation
 
 ## Affected Files

@@ -1,10 +1,10 @@
 ---
-title: "Implementation Plan: Routing Accuracy Hardening"
+title: "...aph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/004-routing-accuracy-hardening/plan]"
 description: "2-wave plan: advisor normalization, Gate 3 deep-loop markers. Wave C optional."
-trigger_phrases: ["routing accuracy plan"]
+trigger_phrases:
+  - "routing accuracy plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/004-routing-accuracy-hardening"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Plan scaffolded"
     next_safe_action: "Dispatch implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Routing Accuracy Hardening
 

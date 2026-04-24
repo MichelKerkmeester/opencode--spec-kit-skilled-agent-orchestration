@@ -1,11 +1,10 @@
 ---
-title: "Implementation Summary: Advisor Freshness + Source Cache"
+title: ".../009-hook-daemon-parity/001-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache/implementation-summary]"
 description: "Implemented getAdvisorFreshness() with per-skill fingerprints, generation-tagged snapshots, 15-minute LRU source cache, JSON fallback stale contract, and corrupt generation recovery."
 trigger_phrases:
   - "020 003 summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/003-advisor-freshness-and-source-cache"
@@ -15,7 +14,7 @@ _memory:
     next_safe_action: "Dispatch 020/004 advisor brief producer + cache policy"
     blockers: []
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Advisor Freshness + Source Cache
 

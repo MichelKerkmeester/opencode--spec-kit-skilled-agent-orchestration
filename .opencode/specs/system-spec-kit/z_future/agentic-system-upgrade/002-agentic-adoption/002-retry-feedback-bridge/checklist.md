@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: 002 Retry Feedback Bridge [template:level_2/checklist.md]"
+title: "Verification [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/002-retry-feedback-bridge/checklist]"
 description: "Verification Date: 2026-04-11"
 trigger_phrases:
   - "verification"

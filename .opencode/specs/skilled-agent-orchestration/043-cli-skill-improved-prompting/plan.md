@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 ---
-title: "Implementation Plan: CLI Skill Prompt-Quality Integration via Mirror Cards [043]"
+title: "Implementation Plan: CLI Skill Prompt-Quality [skilled-agent-orchestration/043-cli-skill-improved-prompting/plan]"
 description: "Add a canonical prompt-quality card, four local CLI mirrors, a shared improve-prompt escalation agent, and matching command/skill contracts without breaking the current same-skill routing invariant."
 trigger_phrases:
   - "043 plan"

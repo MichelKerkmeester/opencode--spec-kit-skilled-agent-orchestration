@@ -9,6 +9,15 @@ trigger_phrases:
   - "bridge"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Phase 010 — CocoIndex Bridge + code_graph_context
@@ -94,14 +103,14 @@ Template compliance shim anchor for rollback.
     - Budget of 0 → minimal response (root + one edge)
     - Multiple seeds resolving to same node → deduplicated
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-2 -->
 ### Dependencies
 
 - Phase 008 indexer (for node data in graph)
 - Phase 009 storage + query tools (for graph queries)
 - CocoIndex Code MCP (for semantic seeds — already deployed)
 - Existing profile-formatters.ts patterns (for output style)
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-2 -->
 
 ### Risk Mitigation
 

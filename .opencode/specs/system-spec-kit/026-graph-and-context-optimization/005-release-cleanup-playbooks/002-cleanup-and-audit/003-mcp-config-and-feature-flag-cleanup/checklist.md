@@ -1,11 +1,12 @@
 ---
-title: "018 / 012 — MCP config and feature-flag cleanup checklist"
+title: "...t-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup/checklist]"
 description: "Verification Date: 2026-04-12"
-trigger_phrases: ["018 012 checklist", "mcp config cleanup checklist", "feature flag cleanup checklist"]
+trigger_phrases:
+  - "018 012 checklist"
+  - "mcp config cleanup checklist"
+  - "feature flag cleanup checklist"
 importance_tier: "important"
 contextType: "implementation"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup"
@@ -14,6 +15,8 @@ _memory:
     recent_action: "Recorded the final verification checklist"
     next_safe_action: "Review implementation-summary.md"
     key_files: ["checklist.md", "implementation-summary.md", "tasks.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: 018 / 012 — MCP config and feature-flag cleanup
 

@@ -1,12 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: Wire Tier3 LLM Classifier into Save Handler"
+title: "...isor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier/implementation-summary]"
 description: "This phase turned the frozen Tier 3 contract into a live, env-gated save-path dependency with a real cache, fail-open transport, and natural-routing handler coverage."
 trigger_phrases:
   - "phase 003 implementation summary"
   - "tier3 save handler summary"
 importance_tier: "critical"
-contextType: "verification"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier"

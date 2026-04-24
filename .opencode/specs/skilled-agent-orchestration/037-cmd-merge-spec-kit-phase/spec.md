@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Merge spec_kit:phase into plan and [03--commands-and-skills/037-cmd-merge-spec-kit-phase/spec]"
+title: "Feature Specification: Merge spec_kit:phase into plan [skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/spec]"
 description: "The /spec_kit:phase command is a standalone 7-step workflow that only creates folder structure (parent + N children) without doing any planning or implementation. Users must the..."
 trigger_phrases:
   - "feature"
@@ -11,6 +11,15 @@ trigger_phrases:
   - "cmd"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/037-cmd-merge-spec-kit-phase"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: Merge spec_kit:phase into plan and complete
 

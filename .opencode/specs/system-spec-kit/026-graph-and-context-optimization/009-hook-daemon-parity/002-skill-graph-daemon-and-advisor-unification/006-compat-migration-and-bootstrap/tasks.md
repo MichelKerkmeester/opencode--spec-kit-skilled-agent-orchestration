@@ -1,13 +1,13 @@
 ---
-SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
-title: "027/005 — Tasks"
+title: "...ation/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap/tasks]"
 description: "Task breakdown for compat migration + bootstrap."
 trigger_phrases:
   - "027/005 tasks"
   - "compat migration tasks"
   - "advisor bootstrap tasks"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_2/tasks.md | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap"
@@ -26,6 +26,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 ---
 # Tasks: 027/005
 

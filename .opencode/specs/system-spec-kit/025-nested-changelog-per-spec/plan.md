@@ -8,6 +8,15 @@ trigger_phrases:
   - "phase changelog"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/025-nested-changelog-per-spec"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Nested Changelog Per Spec
 
@@ -98,7 +107,7 @@ The user or command resolves a packet root or child phase folder, the generator 
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Build | Scripts package compiles with the new generator | `npm run build --workspace=@spec-kit/scripts` |
+| Build | Scripts package compiles with the new generator | `cd .opencode/skill/system-spec-kit/scripts && npm run build` |
 | Unit | Root and phase nested changelog generation paths | `npx vitest run tests/nested-changelog.vitest.ts --config ../mcp_server/vitest.config.ts --root .` |
 | Manual | Command and packet-doc wording consistency | Direct file review across command, skill, template, and reference surfaces |
 <!-- /ANCHOR:testing -->
@@ -252,6 +261,10 @@ Packet analysis ──► Generator + templates ──► Command/docs alignment
 
 ## L3: ARCHITECTURE DECISION RECORD
 
+> **Note:** This section summarizes the key architectural decision. The authoritative source is [`decision-record.md`](./decision-record.md), which contains the full ADR-001 record including context, alternatives, consequences, and implementation details.
+
 ### ADR-001: Keep nested changelog additive and packet-scoped
 
 **Status**: Accepted
+
+**Summary**: Nested changelog generation is additive to `implementation-summary.md` and scoped per packet (root or nested phase folder). Output lands under the parent packet's `changelog/` directory with consistent `changelog-<packet>-root.md` / `changelog-<packet>-<phase-folder>.md` naming. See `decision-record.md` for the full decision record.

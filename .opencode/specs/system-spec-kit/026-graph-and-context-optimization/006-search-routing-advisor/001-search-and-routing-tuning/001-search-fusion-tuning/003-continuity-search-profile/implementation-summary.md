@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Add Continuity Search Intent Profile"
+title: "...-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile/implementation-summary]"
 description: "Adds a narrow internal-only continuity fusion profile and wires the adaptive-fusion path without expanding the public intent API."
 trigger_phrases:
   - "continuity search profile"
@@ -7,9 +7,6 @@ trigger_phrases:
   - "internal continuity intent"
 importance_tier: "important"
 contextType: "implementation"
-status: complete
-closed_by_commit: 2958485d9f
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile"
@@ -20,6 +17,9 @@ _memory:
     key_files:
       - "implementation-summary.md"
       - ".opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts"
+closed_by_commit: 2958485d9f
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Add Continuity Search Intent Profile
 

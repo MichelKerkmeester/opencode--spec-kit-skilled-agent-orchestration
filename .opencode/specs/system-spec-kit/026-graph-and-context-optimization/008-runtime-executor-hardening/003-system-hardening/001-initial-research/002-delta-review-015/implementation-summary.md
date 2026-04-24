@@ -1,11 +1,10 @@
 ---
-title: "Implementation Summary: Delta-Review of 015 Findings"
+title: "...008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015/implementation-summary]"
 description: "Placeholder implementation summary for DR-1 review packet."
 trigger_phrases:
   - "dr-1 summary"
 importance_tier: "critical"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015"
@@ -13,7 +12,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Packet scaffolded"
     next_safe_action: "Dispatch and converge"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Delta-Review of 015 Findings
 

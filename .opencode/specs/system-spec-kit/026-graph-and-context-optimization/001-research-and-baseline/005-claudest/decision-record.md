@@ -1,14 +1,13 @@
 ---
-title: "Decision Record: 005-claudest Research Phase"
+title: "Decision [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest/decision-record]"
 description: "Architecture Decision Records covering engine selection (cli-codex with workspace-write fast mode), sequential continuation dispatch, reducer/analyst section ownership, and cross-phase boundary with sibling phase 001-claude-optimization-settings for the Claudest deep-research audit."
 trigger_phrases:
   - "005-claudest decision record"
-  - "005-claudest ADR"
+  - "005-claudest adr"
   - "claudest engine choice"
   - "claudest cli-codex workspace-write"
-importance_tier: critical
-contextType: decision-record
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+importance_tier: "critical"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["decision-record.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: 005-claudest Research Phase
 

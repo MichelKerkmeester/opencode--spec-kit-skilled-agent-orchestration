@@ -1,14 +1,12 @@
 ---
-title: "Verification Checklist: Repo-Wide Path Migration"
+title: "...h-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration/checklist]"
 description: "Phase 005 closeout checklist for packet compliance, grep cleanup, and migrated runtime evidence."
 trigger_phrases:
   - "005-repo-wide-path-migration"
   - "path migration checklist"
   - "packet closeout checklist"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/005-repo-wide-path-migration"
@@ -17,6 +15,8 @@ _memory:
     recent_action: "Rebuilt the packet checklist on the active scaffold"
     next_safe_action: "Attach final validation results"
     key_files: ["checklist.md", "implementation-summary.md"]
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Repo-Wide Path Migration
 

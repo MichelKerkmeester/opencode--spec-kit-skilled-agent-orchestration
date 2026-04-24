@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 018 Git Context and Run State Evaluation [template:level_2/plan.md]"
+title: "Imp [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/018-git-context-and-run-state-evaluation/plan]"
 description: "Evaluate lightweight git-aware orientation and run-state overlays as supplements to current continuity and save flows, without making git the primary memory system."
 trigger_phrases:
   - "implementation"

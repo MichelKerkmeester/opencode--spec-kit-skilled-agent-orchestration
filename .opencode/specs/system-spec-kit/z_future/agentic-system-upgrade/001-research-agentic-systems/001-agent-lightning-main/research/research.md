@@ -1,10 +1,14 @@
 ---
-title: "Deep Research Report — 001-agent-lightning-main"
+title: "Deep [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/001-agent-lightning-main/research]"
 description: "30-iteration research of Agent Lightning for system-spec-kit improvement, including architecture, UX, agent-system, command, skill, and workflow recommendations. 24 actionable findings, 6 rejected."
+trigger_phrases:
+  - "deep"
+  - "research"
+  - "001"
+  - "agent"
 importance_tier: "important"
 contextType: "research"
 ---
-
 # Deep Research Report — 001-agent-lightning-main
 
 ## 1. Executive Summary

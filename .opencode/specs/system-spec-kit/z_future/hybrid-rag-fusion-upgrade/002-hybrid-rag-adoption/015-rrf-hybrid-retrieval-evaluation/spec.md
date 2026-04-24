@@ -1,8 +1,13 @@
 ---
-title: "015-rrf-hybrid-retrieval-evaluation: Evaluate RRF Hybrid Retrieval"
+title: "01 [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/015-rrf-hybrid-retrieval-evaluation/spec]"
 description: "Benchmarks Mnemosyne's documented BM25/vector/RRF story against Public's existing hybrid retrieval stack."
+trigger_phrases:
+  - "spec"
+  - "015"
+  - "rrf"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 015-rrf-hybrid-retrieval-evaluation: Evaluate RRF Hybrid Retrieval
 
 ## 1. Scope

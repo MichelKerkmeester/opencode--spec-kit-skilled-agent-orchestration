@@ -1,8 +1,13 @@
 ---
-title: "Implementation Plan: Copilot Writer Wiring"
+title: "Implementatio [system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring/plan]"
 description: "Reapply the reverted top-level Copilot writer commands on UserPromptSubmit and SessionStart after packet 010 restores the wrapper schema."
-importance_tier: "high"
-contextType: "spec"
+trigger_phrases:
+  - "implementatio"
+  - "plan"
+  - "011"
+  - "copilot"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/011-copilot-writer-wiring"

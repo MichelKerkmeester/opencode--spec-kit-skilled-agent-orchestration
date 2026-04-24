@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 006-ralph-main Research Phase Closeout"
+title: "Feature Specification [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/006-ralph-main/spec]"
 description: "Complete Phase 3 of the Ralph research packet, preserve the prior 20 iterations, and repair the packet root so the phase is structurally valid for future continuation."
 trigger_phrases:
   - "006-ralph-main spec"

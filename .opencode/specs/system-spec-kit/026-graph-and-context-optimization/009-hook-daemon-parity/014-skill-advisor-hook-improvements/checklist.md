@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
-title: "Verification Checklist: Skill-Advisor Hook Improvements"
+title: "...tem-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/checklist]"
 description: "Evidence-backed implementation checklist for packet 014 skill-advisor runtime parity, MCP surface normalization, and telemetry durability."
 trigger_phrases:
   - "014 skill-advisor checklist"
   - "026/009/014 verification"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements"
@@ -15,6 +15,7 @@ _memory:
     recent_action: "rg-019-codex-evidence-relinked"
     next_safe_action: "continue-review-gap-remediation-packet"
     completion_pct: 100
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify | v2.2 -->"
 ---
 # Verification Checklist: Skill-Advisor Hook Improvements
 

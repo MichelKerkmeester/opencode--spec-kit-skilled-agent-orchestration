@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Graph Operations Hardening [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/003-code-graph-operations-hardening]"
+title: "Implementati [system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/003-code-graph-operations-hardening/plan]"
 description: "This phase delivered the graph-operations hardening contract that sits below the transport shell. The Level 3 plan records how readiness, repair, portability, and preview rules were shipped without replacing the graph backend."
 trigger_phrases:
   - "code graph operations hardening plan"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "level 3"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/003-code-graph-operations-hardening"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Code Graph Operations Hardening
 

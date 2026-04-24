@@ -1,6 +1,24 @@
 ---
-title: "Tasks: Compaction Working-Set [024/011]"
+title: "Tasks: Compaction Working-Set [024/011] [system-spec-kit/024-compact-code-graph/011-compaction-working-set/tasks]"
 description: "Task tracking for working-set tracker, budget allocator, compact merger, and compaction integration."
+trigger_phrases:
+  - "tasks"
+  - "compaction"
+  - "working"
+  - "set"
+  - "024"
+  - "011"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/011-compaction-working-set"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Phase 011 — Compaction Working-Set Integration

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: 010 Tracer Seam Prototype [template:level_2/plan.md]"
+title: "Implementation [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/010-tracer-seam-prototype/plan]"
 description: "Prototype a backend-agnostic tracer seam that can annotate current Public workflows without replacing reducers, packet artifacts, or current runtime control."
 trigger_phrases:
   - "implementation"

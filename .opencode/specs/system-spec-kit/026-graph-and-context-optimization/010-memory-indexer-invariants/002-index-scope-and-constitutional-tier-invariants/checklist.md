@@ -1,6 +1,5 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
-title: "Verification Checklist: Index Scope and Constitutional Tier Invariants"
+title: "...-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants/checklist]"
 description: "Verification log for shared path exclusions, constitutional tier gating, cleanup CLI results, and Level 3 packet validation."
 trigger_phrases:
   - "026/011 checklist"
@@ -8,6 +7,7 @@ trigger_phrases:
   - "constitutional cleanup checklist"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants"
@@ -20,6 +20,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Index Scope and Constitutional Tier Invariants
 

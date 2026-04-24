@@ -1,12 +1,13 @@
 ---
-title: "Gate F — Cleanup Verification Summary"
+title: "...n/002-continuity-memory-runtime/003-continuity-refactor-gates/006-gate-f-cleanup-verification/implementation-summary]"
 description: "Audit record for the Gate F cleanup-verification pass, including the earlier minimal DB cleanup and the current closeout re-verification."
-trigger_phrases: ["gate f implementation summary", "cleanup verification summary", "stale memory rows", "baseline archived row"]
+trigger_phrases:
+  - "gate f implementation summary"
+  - "cleanup verification summary"
+  - "stale memory rows"
+  - "baseline archived row"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/006-gate-f-cleanup-verification"
@@ -15,6 +16,9 @@ _memory:
     recent_action: "Recorded Gate F cleanup evidence and closeout re-verification"
     next_safe_action: "Add commit hash after commit"
     key_files: ["implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Gate F — Cleanup Verification
 <!-- SPECKIT_LEVEL: 2 -->

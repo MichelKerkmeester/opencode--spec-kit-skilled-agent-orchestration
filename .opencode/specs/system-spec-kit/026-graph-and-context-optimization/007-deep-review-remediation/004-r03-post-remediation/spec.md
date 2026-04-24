@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Phase 026 — R03 Post-Remediation Remediation"
+title: "Feature [system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/004-r03-post-remediation/spec]"
 description: "Close 8 P1 + 4 P2 findings surfaced by R03 deep-review (iters 1-38) of the skill-advisor phase stack. One cli-copilot agent per finding, sequential dispatch, fresh process per fix."
 trigger_phrases:
   - "phase 026"

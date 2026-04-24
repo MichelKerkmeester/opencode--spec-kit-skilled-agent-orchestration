@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Agent Governance And Commands"
+title: "Implementation Plan: Agent [system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/plan]"
 description: "Plan for keeping agents guardrails, canonical intake, and command cleanup as a parent with direct child phase packets."
 trigger_phrases:
   - "004-agent-governance-and-commands"
@@ -7,8 +7,7 @@ trigger_phrases:
   - "001-agent-execution-guardrails"
   - "002-command-graph-consolidation"
 importance_tier: "important"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands"
@@ -29,6 +28,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Agent Governance And Commands
 

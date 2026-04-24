@@ -1,6 +1,23 @@
 ---
-title: "Decision Record: Hook Durability & Auto-Enrichment [024/014]"
+title: "Decision Record: Hook [system-spec-kit/024-compact-code-graph/014-hook-durability-auto-enrichment/decision-record]"
 description: "Key decisions for session hashing, injection fencing, first-call priming, and graph enrichment timeout."
+trigger_phrases:
+  - "decision"
+  - "record"
+  - "hook"
+  - "decision record"
+  - "014"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/014-hook-durability-auto-enrichment"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["decision-record.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record-core | v2.2 -->
 # Decision Record: Phase 014

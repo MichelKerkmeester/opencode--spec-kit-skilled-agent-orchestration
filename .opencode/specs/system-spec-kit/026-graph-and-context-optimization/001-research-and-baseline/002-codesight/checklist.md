@@ -1,13 +1,12 @@
 ---
-title: "Verification Checklist: 002-codesight Research Phase"
+title: "Verification [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight/checklist]"
 description: "Verification checklist for the 20-iteration deep-research audit of the codesight external Node.js/TypeScript skill, including completed-continue closeout, memory audit, and final doc synchronization."
 trigger_phrases:
   - "002-codesight checklist"
   - "002-codesight verification"
   - "codesight verification"
-importance_tier: critical
-contextType: checklist
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+importance_tier: "critical"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: 002-codesight Research Phase
 

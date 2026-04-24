@@ -1,12 +1,11 @@
 ---
-title: "Tasks: SKILL.md Smart-Router Section Efficacy"
+title: "...-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy/tasks]"
 description: "Completed task list for the Smart Routing efficacy research packet."
 trigger_phrases:
   - "004 002 smart router tasks"
   - "skill md router efficacy tasks"
 importance_tier: "important"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy"
@@ -19,6 +18,7 @@ _memory:
       - "research/research.md"
       - "research/research-validation.md"
       - "research/findings-registry.json"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: SKILL.md Smart-Router Section Efficacy
 

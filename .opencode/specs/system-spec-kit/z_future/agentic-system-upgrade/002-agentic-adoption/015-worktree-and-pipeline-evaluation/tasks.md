@@ -1,5 +1,5 @@
 ---
-title: "Tasks: 015 Worktree and Pipeline Evaluation [template:level_2/tasks.md]"
+title: "Tasks [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/015-worktree-and-pipeline-evaluation/tasks]"
 description: "Task Format: T### [P?] Description (015-worktree-and-pipeline-evaluation)"
 trigger_phrases:
   - "tasks"

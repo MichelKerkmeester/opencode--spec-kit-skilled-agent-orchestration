@@ -1,5 +1,5 @@
 ---
-title: "Feature Research: CocoIndex Code MCP Integration [03--commands-and-skills/022-mcp-coco-integration/research]"
+title: "Feature Research: CocoIndex Code MCP Integration [skilled-agent-orchestration/022-mcp-coco-integration/research]"
 description: "Complete research documentation for integrating CocoIndex Code semantic code search into the OpenCode multi-CLI ecosystem."
 trigger_phrases:
   - "cocoindex"
@@ -9,6 +9,15 @@ trigger_phrases:
   - "code intelligence"
 importance_tier: "important"
 contextType: "research"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/022-mcp-coco-integration/research"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["research.md"]
 ---
 # Feature Research: CocoIndex Code MCP Integration - Comprehensive Technical Investigation
 

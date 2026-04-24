@@ -1,13 +1,13 @@
 ---
-SPECKIT_TEMPLATE_SOURCE: "implementation-summary | v2.2"
-title: "027/005 — Implementation Summary"
+title: "...emon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap/implementation-summary]"
 description: "Compat migration and bootstrap implementation summary for Phase 027/005."
 trigger_phrases:
   - "027/005 implementation summary"
   - "compat migration summary"
-  - "Gate 7 closure"
-importance_tier: "high"
+  - "gate 7 closure"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_2/implementation-summary.md | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/006-compat-migration-and-bootstrap"
@@ -34,6 +34,7 @@ _memory:
     answered_questions:
       - "Native advisor stays primary through MCP advisor tools; Python remains compat fallback."
       - "Gate 7 carry-over P0-CMD-002 and P0-CMD-003 closed in Python scorer."
+SPECKIT_TEMPLATE_SOURCE: "implementation-summary | v2.2"
 ---
 # Implementation Summary — 027/005
 

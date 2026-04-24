@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 004 Fresh Context Validation First [template:level_2/spec.md]"
+title: "Feature [system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/004-fresh-context-validation-first/spec]"
 description: "Adopt the combination of fresh execution attempts, packet-local continuity, and validation-first sequencing for high-risk implementation and loop work."
 trigger_phrases:
   - "feature"

@@ -1,12 +1,12 @@
 ---
-title: "018 / 009 — README revisit tasks"
+title: "...context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/003-readme-alignment-revisit/tasks]"
 description: "Completed task log for the 016 README release-alignment revisit."
-trigger_phrases: ["009 revisit tasks", "readme revisit tasks", "phase 018 readme alignment tasks"]
+trigger_phrases:
+  - "009 revisit tasks"
+  - "readme revisit tasks"
+  - "phase 018 readme alignment tasks"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/003-readme-alignment-revisit"
@@ -15,6 +15,9 @@ _memory:
     recent_action: "Recorded the completed 009 revisit tasks"
     next_safe_action: "Use the README ledger as the next release-alignment baseline"
     key_files: ["tasks.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: 018 / 009 — README revisit
 <!-- SPECKIT_LEVEL: 2 -->

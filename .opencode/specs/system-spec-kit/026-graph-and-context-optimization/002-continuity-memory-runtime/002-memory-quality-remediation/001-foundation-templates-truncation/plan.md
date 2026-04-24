@@ -1,7 +1,17 @@
 ---
-title: "Implementation Plan: Phase 1: Foundation (Templates & Truncation)"
+title: "...t-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/001-foundation-templates-truncation/plan]"
 description: "Execution plan for PR-1 and PR-2: align OVERVIEW anchors, extract the shared truncation helper, migrate the OVERVIEW and observation-summary callsites, update the contract validator + memory parser couplings, and verify both fixture-driven acceptance checks before Phase 2 begins."
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
+trigger_phrases:
+  - "optimization"
+  - "002"
+  - "continuity"
+  - "memory"
+  - "runtime"
+  - "plan"
+  - "001"
+  - "foundation"
+importance_tier: "important"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/001-foundation-templates-truncation"
@@ -10,7 +20,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->"
 ---
 # Implementation Plan: Phase 1: Foundation (Templates & Truncation)
 

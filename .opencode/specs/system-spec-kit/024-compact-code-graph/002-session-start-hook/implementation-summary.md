@@ -1,7 +1,24 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Implementation Summary: SessionStart Hook [024/002]"
+title: "Implementation Summary [system-spec-kit/024-compact-code-graph/002-session-start-hook/implementation-summary]"
 description: "Auto-prime every new Claude Code session with source-aware context routing across startup, resume, clear, and compact lifecycle events."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "implementation summary"
+  - "002"
+  - "session"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/002-session-start-hook"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Summary
 
@@ -53,18 +70,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 002-session-start-hook |
 | **Completed** | 2026-03-31 |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:what-built -->
+<!-- ANCHOR:what-built-2 -->
 ### What Was Built
 Implemented a unified SessionStart hook that auto-primes every Claude Code session with relevant prior context. The `session-prime.ts` script handles all four SessionStart sources (startup, resume, clear, compact) with source-aware routing, each producing appropriately scoped context. Shared with Phase 1's compact injection path to eliminate code duplication.
 
@@ -89,11 +106,11 @@ Implemented a unified SessionStart hook that auto-primes every Claude Code sessi
 | `mcp_server/hooks/claude/shared.ts` | Modified | Added session budget profiles (startup/resume/clear) |
 | `mcp_server/hooks/claude/hook-state.ts` | Modified | Added lastSpecFolder, workingSet state persistence |
 | `.claude/settings.local.json` | Modified | SessionStart hook registration (no matcher, all sources) |
-<!-- /ANCHOR:what-built -->
+<!-- /ANCHOR:what-built-2 -->
 
 ---
 
-<!-- ANCHOR:verification -->
+<!-- ANCHOR:verification-2 -->
 ### Verification
 - [x] SessionStart hook registered and fires on all 4 sources (startup, resume, clear, compact)
 - [x] Source routing produces appropriate context for each source type
@@ -106,4 +123,4 @@ Implemented a unified SessionStart hook that auto-primes every Claude Code sessi
 - [x] No code duplication with Phase 1 compact path (shared session-prime.ts)
 - [x] Token pressure awareness scales budget at >70%/>90% context window usage
 - [x] Spec folder auto-detected from project context
-<!-- /ANCHOR:verification -->
+<!-- /ANCHOR:verification-2 -->

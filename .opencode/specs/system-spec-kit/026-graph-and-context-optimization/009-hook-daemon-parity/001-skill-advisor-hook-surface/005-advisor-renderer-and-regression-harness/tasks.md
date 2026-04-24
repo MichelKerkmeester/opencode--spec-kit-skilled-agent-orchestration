@@ -1,11 +1,10 @@
 ---
-title: "Tasks: Advisor Renderer + 200-Prompt Regression Harness"
+title: "...optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness/tasks]"
 description: "Task list for 020/005 — pure renderer + 5 test harnesses + 10 fixtures. Hard gate."
 trigger_phrases:
   - "020 005 tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/005-advisor-renderer-and-regression-harness"
@@ -15,7 +14,7 @@ _memory:
     next_safe_action: "Begin T001 after 004 converges"
     blockers: ["004-advisor-brief-producer-cache-policy"]
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Advisor Renderer + 200-Prompt Regression Harness
 

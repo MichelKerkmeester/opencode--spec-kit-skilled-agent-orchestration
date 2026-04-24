@@ -1,8 +1,17 @@
 ---
-title: "Implementation Summary: Copilot Wrapper Schema Fix"
+title: "...-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix/implementation-summary]"
 description: "The Copilot-safe wrapper-field patch has been reapplied in .claude/settings.local.json, restoring the top-level fields that packet 010 requires for Copilot-safe matcher wrappers."
-importance_tier: "high"
-contextType: "spec"
+trigger_phrases:
+  - "kit"
+  - "026"
+  - "graph"
+  - "and"
+  - "context"
+  - "implementation summary"
+  - "010"
+  - "copilot"
+importance_tier: "important"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/010-copilot-wrapper-schema-fix"

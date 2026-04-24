@@ -1,12 +1,12 @@
 ---
-title: "018 / 009 — README revisit summary"
+title: "...ion/005-release-cleanup-playbooks/001-release-alignment-revisits/003-readme-alignment-revisit/implementation-summary]"
 description: "Evidence ledger for the 016 README release-alignment revisit under the Phase 018 continuity model."
-trigger_phrases: ["009 implementation summary", "readme revisit summary", "phase 018 readme evidence"]
+trigger_phrases:
+  - "009 implementation summary"
+  - "readme revisit summary"
+  - "phase 018 readme evidence"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/001-release-alignment-revisits/003-readme-alignment-revisit"
@@ -15,6 +15,9 @@ _memory:
     recent_action: "Recorded the 009 revisit evidence"
     next_safe_action: "Reference"
     key_files: ["implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: 018 / 009 — README revisit
 <!-- SPECKIT_LEVEL: 2 -->

@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 ---
-title: "Feature Specification: Non-System Playbook Prompt Modernization [skilled-agent-orchestration/044-non-system-playbook-prompts/spec]"
+title: "Feature Specification: Non-System Playbook Prompt [skilled-agent-orchestration/044-non-system-playbook-prompts/spec]"
 description: "Modernize prompt wording and scenario-contract prose across five non-system-spec-kit manual testing playbook targets without changing runtime code, scenario inventories, or folder topology."
 trigger_phrases:
   - "non-system playbook prompts"

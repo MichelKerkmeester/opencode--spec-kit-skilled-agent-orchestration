@@ -1,12 +1,14 @@
 ---
-title: "Gate F — Cleanup Verification"
+title: "...ontext-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/006-gate-f-cleanup-verification/spec]"
 description: "Verify Gate B cleanup completeness, confirm no orphan references remain, and record whether archived-tier runtime cleanup is already complete or still needs follow-up."
-trigger_phrases: ["gate f", "cleanup verification", "gate b cleanup", "archived-tier deprecation", "orphan causal edges"]
+trigger_phrases:
+  - "gate f"
+  - "cleanup verification"
+  - "gate b cleanup"
+  - "archived-tier deprecation"
+  - "orphan causal edges"
 importance_tier: "important"
-contextType: "verification"
-status: complete
-closed_by_commit: TBD
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/006-gate-f-cleanup-verification"
@@ -15,6 +17,9 @@ _memory:
     recent_action: "Rewrote packet to cleanup-only Gate F scope"
     next_safe_action: "Use implementation-summary.md as the audit record"
     key_files: ["spec.md", "implementation-summary.md"]
+closed_by_commit: TBD
+status: complete
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Gate F — Cleanup Verification
 <!-- SPECKIT_LEVEL: 2 -->

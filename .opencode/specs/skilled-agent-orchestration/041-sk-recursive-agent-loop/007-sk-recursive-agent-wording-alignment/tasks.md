@@ -1,11 +1,20 @@
 ---
-title: "Tasks: Recursive Agent Wording Alignment [template:level_2/tasks.md]"
+title: "Tasks: Recursiv [skilled-agent-orchestration/041-sk-recursive-agent-loop/007-sk-recursive-agent-wording-alignment/tasks]"
 description: "Task tracking for phase 007 under packet 041."
 trigger_phrases:
   - "041 phase 007 tasks"
   - "recursive agent wording alignment tasks"
 importance_tier: "important"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/041-sk-recursive-agent-loop/007-sk-recursive-agent-wording-alignment"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: Recursive Agent Wording Alignment
 

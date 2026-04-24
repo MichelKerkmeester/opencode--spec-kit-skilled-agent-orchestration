@@ -1,7 +1,17 @@
 ---
-title: "Verification Checklist: Phase 1: Foundation (Templates & Truncation)"
+title: "...imization/002-continuity-memory-runtime/002-memory-quality-remediation/001-foundation-templates-truncation/checklist]"
 description: "Verification checklist for PR-1 and PR-2 completion, covering helper correctness, template anchor alignment, validator/parser coupling, fixture success, and parent packet handoff."
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+trigger_phrases:
+  - "imization"
+  - "002"
+  - "continuity"
+  - "memory"
+  - "runtime"
+  - "checklist"
+  - "001"
+  - "foundation"
+importance_tier: "normal"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/001-foundation-templates-truncation"
@@ -10,7 +20,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Phase 1: Foundation (Templates & Truncation)
 

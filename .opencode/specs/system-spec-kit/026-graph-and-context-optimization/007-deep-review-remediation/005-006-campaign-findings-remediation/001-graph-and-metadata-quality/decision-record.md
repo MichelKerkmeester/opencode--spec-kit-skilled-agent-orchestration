@@ -1,10 +1,11 @@
 ---
-title: "Decision Record: 001-graph-and-metadata-quality Graph and Metadata Quality Remediation"
+title: "...ion/007-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality/decision-record]"
 description: "ADR for 001-graph-and-metadata-quality Graph and Metadata Quality Remediation."
 trigger_phrases:
   - "decision record 001 graph and metadata quality graph and metadata qualit"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/005-006-campaign-findings-remediation/001-graph-and-metadata-quality"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: 020 Wave-3 Implementation Plan Validation (cli-copilot)"
+title: "...ok-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot/spec]"
 description: "Third research wave (20 iterations, cli-copilot gpt-5.4 high) validating the scaffolded 8-child implementation plan (002-009) against wave-1 + wave-2 synthesis. Challenges and validates the current scope, ordering, and per-child contracts. Does NOT re-open architecture."
 trigger_phrases:
   - "020 wave 3 validation"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "020 pre-implementation cross-check"
 importance_tier: "critical"
 contextType: "research"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/001-initial-research/002-implementation-plan-validation-copilot"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Wave-3 validation packet scaffolded post-8-child-scaffold"
     next_safe_action: "Dispatch iteration 1 via cli-copilot gpt-5.4 high"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: 020 Wave-3 Implementation Plan Validation (cli-copilot)
 

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Canonical Intake and Middleware Cleanup [template:level_3/plan.md]"
+title: "...m-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/plan]"
 description: "Milestoned delivery (M1-M15) establishing a single canonical intake reference module at .opencode/skill/system-spec-kit/references/intake-contract.md accessible via /spec_kit:plan --intake-only, anchoring /spec_kit:deep-research to real spec.md, and hard-deleting deprecated middleware (/spec_kit:handover, /spec_kit:debug, @handover, @speckit × 4 runtimes each) in favor of distributed governance and /memory:save-owned packet handover maintenance."
 trigger_phrases:
   - "implementation"
@@ -10,8 +10,7 @@ trigger_phrases:
   - "deep research spec check"
   - "middleware cleanup"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
@@ -37,6 +36,7 @@ _memory:
       - "Shared reference-module pattern + /spec_kit:plan --intake-only is the chosen end-state architecture"
       - "Deep-research spec sync uses a bounded generated findings block under a stable host anchor"
       - "Delivered through sequential milestones M1-M15 with parallel middleware deletion and cli-copilot-delegated downstream sweep"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Canonical Intake and Middleware Cleanup
 

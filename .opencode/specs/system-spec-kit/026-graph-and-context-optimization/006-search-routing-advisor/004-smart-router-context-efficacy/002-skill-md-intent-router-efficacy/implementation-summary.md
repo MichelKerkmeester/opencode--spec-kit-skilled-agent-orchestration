@@ -1,12 +1,11 @@
 ---
-title: "Implementation Summary: SKILL.md Smart-Router Section Efficacy"
+title: "...-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy/implementation-summary]"
 description: "Completed 20-iteration deep research packet on the efficacy of intra-skill Smart Routing sections."
 trigger_phrases:
   - "004 002 smart router summary"
   - "skill md router efficacy complete"
 importance_tier: "important"
-contextType: "implementation-summary"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy"
@@ -28,6 +27,7 @@ _memory:
       - "Which runtime should host observe-only telemetry first?"
     answered_questions:
       - "V1-V10 research questions answered"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

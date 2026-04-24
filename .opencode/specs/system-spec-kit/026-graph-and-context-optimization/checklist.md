@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Graph and Context Optimization"
+title: "Verification Checklist: Graph and Context Optimization [system-spec-kit/026-graph-and-context-optimization/checklist]"
 description: "Verification checklist for the 2026-04-21 phase consolidation."
 trigger_phrases:
   - "026 graph and context optimization"
@@ -8,8 +8,7 @@ trigger_phrases:
   - "merged phase map"
   - "graph context optimization root packet"
 importance_tier: "important"
-contextType: "checklist"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Graph and Context Optimization
 

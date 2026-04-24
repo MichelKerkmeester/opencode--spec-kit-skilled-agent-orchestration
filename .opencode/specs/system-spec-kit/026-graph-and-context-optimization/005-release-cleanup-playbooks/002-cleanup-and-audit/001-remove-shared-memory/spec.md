@@ -1,11 +1,12 @@
 ---
-title: "018 / 010 — Remove shared memory feature surface"
+title: "...026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec]"
 description: "Hard-delete the shared-memory lifecycle, runtime filters, tests, and documentation so the system no longer exposes shared spaces or shared-memory collaboration."
-trigger_phrases: ["018 010 spec", "remove shared memory", "hard delete shared memory"]
+trigger_phrases:
+  - "018 010 spec"
+  - "remove shared memory"
+  - "hard delete shared memory"
 importance_tier: "critical"
 contextType: "implementation"
-status: "complete"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory"
@@ -14,6 +15,8 @@ _memory:
     recent_action: "Defined the hard-delete scope for shared memory removal"
     next_safe_action: "Review implementation-summary.md for the verification evidence"
     key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md", "implementation-summary.md"]
+status: "complete"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: 018 / 010 — Remove shared memory feature surface
 

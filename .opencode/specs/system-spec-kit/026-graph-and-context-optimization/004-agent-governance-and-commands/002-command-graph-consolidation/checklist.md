@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Canonical Intake and Middleware Cleanup [template:level_3/checklist.md]"
+title: "...c-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation/checklist]"
 description: "Verification Date: 2026-04-15. Unified checklist covering intake surface + deep-research anchoring + parent delegation + middleware cleanup (CHK-001 through CHK-076) and shared-module consolidation + hard-delete + deep-review remediation (CHK-023/034/041 through CHK-098)."
 trigger_phrases:
   - "verification"
@@ -9,8 +9,7 @@ trigger_phrases:
   - "middleware cleanup checklist"
   - "intake contract verification"
 importance_tier: "important"
-contextType: "architecture"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/002-command-graph-consolidation"
@@ -34,6 +33,7 @@ _memory:
       - "P0 covers REQ-001..REQ-017 (intake + deep-research blockers, middleware deletion blockers, standalone-intake deletion blockers)"
       - "P1 covers REQ-018..REQ-030 (relationship capture, preservation, governance, forward-looking refs)"
       - "P2 covers NFRs and SC-001..SC-023"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Canonical Intake and Middleware Cleanup
 

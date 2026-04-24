@@ -1,14 +1,13 @@
 ---
-title: "Decision Record: Graph and Context Systems Master Research Packet"
+title: "Decision Record: Graph [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/decision-record]"
 description: "Root ADRs for the v2 master packet covering measurement honesty, P0 sequencing, trust-axis separation, and conditional warm-start handling."
 trigger_phrases:
-  - "graph context packet ADR"
+  - "graph context packet adr"
   - "measurement contract"
   - "trust-axis separation"
   - "conditional warm-start"
 importance_tier: "critical"
-contextType: "decision-record"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Merged source phase root"
     next_safe_action: "Use context-index.md for local phase navigation"
     key_files: ["decision-record.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Graph and Context Systems Master Research Packet
 

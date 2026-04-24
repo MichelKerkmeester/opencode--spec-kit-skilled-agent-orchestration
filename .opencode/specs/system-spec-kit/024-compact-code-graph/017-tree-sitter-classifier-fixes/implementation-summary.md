@@ -1,7 +1,23 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Implementation Summary: Tree-Sitter & Classifier Fixes [024/017]"
+title: "Implementation [system-spec-kit/024-compact-code-graph/017-tree-sitter-classifier-fixes/implementation-summary]"
 description: "15 bug fixes across tree-sitter parser and query-intent classifier — 12 fixed, 3 deferred."
+trigger_phrases:
+  - "implementation"
+  - "implementation summary"
+  - "017"
+  - "tree"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/017-tree-sitter-classifier-fixes"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Summary
 
@@ -53,18 +69,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 017-tree-sitter-classifier-fixes |
 | **Completed** | 2026-03-31 (3 items deferred) |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:what-built -->
+<!-- ANCHOR:what-built-2 -->
 ### What Was Built
 Fixed 12 of 15 bugs found by a 10-iteration GPT-5.4 review of the tree-sitter WASM parser and query-intent classifier. The parser now handles abstract methods, class expressions, multi-import/export, decorated definitions, init poisoning recovery, and nested class qualified names. The classifier has improved pattern narrowing, word boundary matching, evidence-based confidence scaling, and expanded keyword coverage.
 
@@ -87,7 +103,7 @@ Fixed 12 of 15 bugs found by a 10-iteration GPT-5.4 review of the tree-sitter WA
 ### Shared Contract Unification (F043)
 
 - `RawCapture` and `ParserAdapter` contracts moved to a single source of truth in `structural-indexer.ts`, imported by `tree-sitter-parser.ts`.
-<!-- /ANCHOR:what-built -->
+<!-- /ANCHOR:what-built-2 -->
 
 ---
 ### Files Changed
@@ -100,9 +116,9 @@ Fixed 12 of 15 bugs found by a 10-iteration GPT-5.4 review of the tree-sitter WA
 | `lib/config/capability-flags.ts` | Modified | SPECKIT_PARSER env var reference (internal) |
 ---
 
-<!-- ANCHOR:verification -->
+<!-- ANCHOR:verification-2 -->
 ### Verification
 - TypeScript: 0 errors
 - Tests: 327 passed, 23 failed (pre-existing, unrelated)
 - Review: Opus CONDITIONAL PASS 78/100, GPT-5.4 CONDITIONAL 82%
-<!-- /ANCHOR:verification -->
+<!-- /ANCHOR:verification-2 -->

@@ -1,13 +1,12 @@
 ---
-title: "Feature Specification: Fix Delivery vs Progress Routing Confusion"
+title: "...-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/spec]"
 description: "Level 2 remediation packet for delivery/progress routing evidence and replayability."
 trigger_phrases:
   - "delivery progress routing"
   - "narrative delivery"
   - "content router cue asymmetry"
 importance_tier: "important"
-contextType: "spec"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion"
@@ -16,6 +15,7 @@ _memory:
     recent_action: "Refreshed packet template and evidence anchors"
     next_safe_action: "No further phase-local work required"
     completion_pct: 100
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Fix Delivery vs Progress Routing Confusion
 

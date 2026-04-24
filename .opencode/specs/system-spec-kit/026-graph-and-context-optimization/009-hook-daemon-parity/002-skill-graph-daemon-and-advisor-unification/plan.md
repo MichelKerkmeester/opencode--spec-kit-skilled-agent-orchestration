@@ -1,11 +1,12 @@
 ---
-title: "027 - Skill Graph Daemon and Advisor Unification Plan"
+title: "...ec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/plan]"
 description: "Implementation plan for Phase 027 parent coordination across daemon freshness, derived metadata, native advisor scoring, MCP surface, compatibility, and promotion gates."
 trigger_phrases:
   - "026/009/002 plan"
   - "advisor daemon plan"
-importance_tier: "high"
-contextType: "implementation-plan"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification"

@@ -1,13 +1,12 @@
 ---
-title: "Tasks: Phase 4 — Agent Execution Guardrails"
+title: "...m-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails/tasks]"
 description: "Task format: T4xx [modifier] review three AGENTS files, keep the lean request-analysis block under Critical Rules, verify direct transition into Tools & Search, and close the packet."
 trigger_phrases:
   - "phase 4 tasks"
   - "agent execution guardrails tasks"
   - "agents guardrail packet tasks"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + phase-child + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/001-agent-execution-guardrails"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + phase-child + level2-verify | v2.2 -->"
 ---
 # Tasks: Phase 4 — Agent Execution Guardrails
 

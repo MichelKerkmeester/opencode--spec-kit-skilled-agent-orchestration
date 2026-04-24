@@ -1,11 +1,11 @@
 ---
-title: "Phase 6 Research: Memory File Duplication Landscape & Remediation"
+title: "...2-memory-quality-remediation/006-memory-duplication-reduction/research/003-memory-quality-remediation-pt-02/research]"
 description: "Synthesized output of 5 parallel deep-research iterations on residual memory duplication after Phases 1-5 fixed D1-D8"
 trigger_phrases:
   - "phase 6 research"
   - "memory duplication research"
   - "residual duplication remediation"
-importance_tier: important
+importance_tier: "important"
 contextType: "research"
 _memory:
   continuity:
@@ -15,9 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["research/research.md"]
-
 ---
-
 # Phase 6 Research: Memory File Duplication Landscape & Remediation
 
 <!-- ANCHOR:summary -->

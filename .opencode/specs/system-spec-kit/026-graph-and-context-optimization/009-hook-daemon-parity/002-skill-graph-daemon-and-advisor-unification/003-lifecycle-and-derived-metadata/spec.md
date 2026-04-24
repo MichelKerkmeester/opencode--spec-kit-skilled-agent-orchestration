@@ -1,6 +1,6 @@
 ---
-title: "Feature Specification: 027/002 — Lifecycle + Derived Metadata"
-description: "Derived keyword extraction with trust lanes + provenance fingerprints, schema-v2 `derived` block + v1→v2 additive backfill + rollback, age/status haircuts, asymmetric supersession, z_archive/z_future split, DF/IDF corpus stats, anti-stuffing caps."
+title: "...zation/009-hook-daemon-parity/002-skill-graph-daemon-and-advisor-unification/003-lifecycle-and-derived-metadata/spec]"
+description: "Derived keyword extraction with trust lanes + provenance fingerprints, schema-v2 derived block + v1→v2 additive backfill + rollback, age/status haircuts, asymmetric supersession, z_archive/z_future split, DF/IDF corpus stats, anti-stuffing caps."
 trigger_phrases:
   - "027/002"
   - "derived metadata"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "schema v2"
   - "supersession"
   - "anti-stuffing"
-importance_tier: "high"
+importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:

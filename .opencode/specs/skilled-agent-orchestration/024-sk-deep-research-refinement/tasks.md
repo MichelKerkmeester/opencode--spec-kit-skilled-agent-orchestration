@@ -1,5 +1,5 @@
 ---
-title: "Tasks: sk-deep-research Refinement via Self-Research [03--commands-and-skills/024-sk-deep-research-refinement/tasks]"
+title: "Tasks: sk-deep-research Refinement via [skilled-agent-orchestration/024-sk-deep-research-refinement/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
@@ -10,6 +10,15 @@ trigger_phrases:
   - "024"
 importance_tier: "normal"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/024-sk-deep-research-refinement"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 # Tasks: sk-deep-research Refinement via Self-Research
 

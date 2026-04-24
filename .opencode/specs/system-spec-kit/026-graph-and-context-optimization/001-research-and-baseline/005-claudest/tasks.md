@@ -1,13 +1,12 @@
 ---
-title: "Tasks: 005-claudest Research Phase"
+title: "Tasks: 005-claudest [system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest/tasks]"
 description: "Task tracking for the full 20-iteration Claudest deep-research packet, including the original charter, the first continuation, the completed-continue execution charter, doc sync, memory review, and verification."
 trigger_phrases:
   - "005-claudest research tasks"
   - "005-claudest task list"
   - "claudest deep-research tasks"
-importance_tier: critical
-contextType: tasks
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+importance_tier: "critical"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["tasks.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: 005-claudest Research Phase
 

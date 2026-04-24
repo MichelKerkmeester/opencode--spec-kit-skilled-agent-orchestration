@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 ---
-title: "Tasks: CLI Skill Prompt-Quality Integration via Mirror Cards [043]"
+title: "Tasks: CLI Skill Prompt-Quality Integration via [skilled-agent-orchestration/043-cli-skill-improved-prompting/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "043 tasks"

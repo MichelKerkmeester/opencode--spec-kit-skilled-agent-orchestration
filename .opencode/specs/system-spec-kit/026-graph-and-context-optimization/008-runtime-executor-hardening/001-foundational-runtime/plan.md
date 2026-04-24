@@ -1,9 +1,15 @@
 ---
-title: "Implementation Plan: Phase 017 Review-Findings Remediation"
+title: "Implem [system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime/plan]"
 description: "4-wave implementation plan: Wave A infrastructure primitives (20h), Wave B cluster consumers (30h parallel 3 lanes), Wave C rollout + sweeps (15h), Wave D P2 maintainability (40h deferrable). Critical path ~60h / 6 working days."
-trigger_phrases: ["017 phase 017 plan", "wave a infrastructure", "wave b consumers", "wave c rollout", "phase 017 implementation plan"]
+trigger_phrases:
+  - "017 phase 017 plan"
+  - "wave a infrastructure"
+  - "wave b consumers"
+  - "wave c rollout"
+  - "phase 017 implementation plan"
 importance_tier: "critical"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/001-foundational-runtime"

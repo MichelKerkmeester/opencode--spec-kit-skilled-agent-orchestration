@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Gemini + Copilot Hook Wiring"
+title: "...h-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring/spec]"
 description: "Parity expansion: Gemini JSON additionalContext adapter + Copilot SDK onUserPromptSubmitted adapter with notification-wrapper fallback. Normalized parity with Claude hook via 005 comparator."
 trigger_phrases:
   - "020 gemini copilot hook"
@@ -8,7 +8,6 @@ trigger_phrases:
   - "cross-runtime advisor parity"
 importance_tier: "critical"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/007-gemini-copilot-hook-wiring"
@@ -23,7 +22,7 @@ _memory:
       - "tasks.md"
       - "checklist.md"
       - "implementation-summary.md"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Gemini + Copilot Hook Wiring
 

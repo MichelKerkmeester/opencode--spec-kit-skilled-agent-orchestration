@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Graph Upgrades"
+title: "Implementation [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/plan]"
 description: "Plan the bounded post-R5/R6 code-graph upgrade packet using the §20 roadmap as the direct source of truth."
 trigger_phrases:
   - "005-code-graph-upgrades"
@@ -7,7 +7,6 @@ trigger_phrases:
   - "plan"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Code Graph Upgrades
 

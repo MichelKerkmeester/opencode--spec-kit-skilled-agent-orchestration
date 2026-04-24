@@ -1,11 +1,20 @@
 ---
-title: "Verification Checklist: sk-deep-research [03--commands-and-skills/028-sk-deep-research-testing-playbook/checklist]"
+title: "Verification Checklist: sk-deep-research [skilled-agent-orchestration/028-sk-deep-research-testing-playbook/checklist]"
 description: "Verification date: 2026-03-19"
 trigger_phrases:
   - "deep research playbook checklist"
   - "manual testing playbook checklist"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/028-sk-deep-research-testing-playbook"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: sk-deep-research Manual Testing Playbook
 

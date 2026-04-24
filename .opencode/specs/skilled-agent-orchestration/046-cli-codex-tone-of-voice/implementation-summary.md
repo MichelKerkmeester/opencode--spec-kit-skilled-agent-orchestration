@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Codex Tone-of-Voice Personalization"
+title: "Implementation Summary: Codex [skilled-agent-orchestration/046-cli-codex-tone-of-voice/implementation-summary]"
 description: "Post-implementation closeout. Final deliverable is a user-global voice addendum at <repo>/.codex/AGENTS.md (symlinked from ~/.codex/AGENTS.md) covering Voice / Tone / Reasoning Visibility only. Original cli-codex/assets/ artifacts were removed during the pivot — see ADR-006/007/008."
 trigger_phrases:
   - "046 summary"
@@ -8,6 +8,7 @@ trigger_phrases:
   - "codex voice final state"
 importance_tier: "normal"
 contextType: "general"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/046-cli-codex-tone-of-voice"

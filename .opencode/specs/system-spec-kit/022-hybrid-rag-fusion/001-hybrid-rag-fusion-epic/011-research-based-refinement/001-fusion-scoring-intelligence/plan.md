@@ -1,16 +1,23 @@
 ---
-title: "Implementation Plan: Fusion & Scoring Intelligence"
+title: ".../022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/001-fusion-scoring-intelligence/plan]"
 description: "Four-phase implementation plan for D1 fusion calibration, shadow fusion lab, query-aware routing, and learned Stage 2 weights across the 4-stage retrieval pipeline."
-# SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + phase-child-header | v2.2
 trigger_phrases:
-  - "D1 implementation plan"
+  - "d1 implementation plan"
   - "fusion calibration phases"
   - "shadow fusion lab plan"
   - "learned weights plan"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + phase-child-header | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/001-fusion-scoring-intelligence"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
-
 # Implementation Plan: Fusion & Scoring Intelligence
 
 <!-- SPECKIT_LEVEL: 2 -->

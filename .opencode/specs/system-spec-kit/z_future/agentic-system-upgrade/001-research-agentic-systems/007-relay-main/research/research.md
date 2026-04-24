@@ -1,10 +1,14 @@
 ---
-title: "Deep Research Report — 007-relay-main"
+title: "Deep Research [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/007-relay-main/research]"
 description: "30-iteration research of Agent Relay for system-spec-kit improvement, simplification, refactor, and UX redesign opportunities. 26 actionable findings, 4 rejected."
+trigger_phrases:
+  - "deep"
+  - "research"
+  - "007"
+  - "relay"
 importance_tier: "important"
 contextType: "research"
 ---
-
 # Deep Research Report — 007-relay-main
 
 ## 1. Executive Summary

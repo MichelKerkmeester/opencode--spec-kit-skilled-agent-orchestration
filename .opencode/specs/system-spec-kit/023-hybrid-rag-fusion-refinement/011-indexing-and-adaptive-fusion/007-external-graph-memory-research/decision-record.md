@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: External Graph Memory Research [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research]"
+title: "...023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research/decision-record]"
 description: "Record the research framing choices that turn external graph survey work into implementable follow-on improvements."
 trigger_phrases:
   - "phase 007 adr"
@@ -7,11 +7,20 @@ trigger_phrases:
   - "external graph comparison decision"
 importance_tier: "important"
 contextType: "research"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["decision-record.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
-# Decision Record: External Graph Memory Research
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+
+# Decision Record: External Graph Memory Research
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---

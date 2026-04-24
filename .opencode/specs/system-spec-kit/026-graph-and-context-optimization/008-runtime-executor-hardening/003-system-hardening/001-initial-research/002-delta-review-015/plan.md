@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Delta-Review of 015's 243 Findings (DR-1)"
+title: "...text-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015/plan]"
 description: "Dispatch plan for the DR-1 deep-review iteration."
 trigger_phrases:
   - "dr-1 dispatch plan"
   - "delta review 015 plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015"
@@ -14,7 +13,7 @@ _memory:
     last_updated_by: "claude-opus-4.7-1m"
     recent_action: "Dispatch plan scaffolded"
     next_safe_action: "Invoke /spec_kit:deep-review :auto"
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Delta-Review of 015's 243 Findings
 

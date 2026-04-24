@@ -1,10 +1,10 @@
 ---
-title: "Tasks: Description Regen Contract"
+title: "...ph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/005-description-regen-contract/tasks]"
 description: "Task list for shared schema + unified merge helper."
-trigger_phrases: ["description regen tasks"]
+trigger_phrases:
+  - "description regen tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/005-description-regen-contract"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Description merge contract implemented; focused verification complete"
     next_safe_action: "Resolve unrelated baseline failures before claiming T015 full-suite green"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Description Regen Contract
 

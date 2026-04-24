@@ -17,7 +17,12 @@
       "spec",
       "006",
       "plan",
-      "checklist"
+      "tasks",
+      "024",
+      "checklist",
+      "implementation",
+      "summary",
+      "implementation summary"
     ],
     "key_topics": [
       "phase",
@@ -26,12 +31,12 @@
       "spec",
       "006",
       "plan",
+      "tasks",
+      "024",
       "checklist",
-      "template",
-      "compliance",
-      "shim",
-      "section",
-      "legacy"
+      "implementation",
+      "summary",
+      "template"
     ],
     "importance_tier": "important",
     "status": "complete",
@@ -205,7 +210,8 @@
     ],
     "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
     "created_at": "2026-04-12T09:02:50.346Z",
-    "last_save_at": "2026-04-18T14:39:00.672Z",
+    "last_save_at": "2026-04-24T15:34:55.403Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -1,13 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: Deduplicate Graph Metadata Entities"
+title: "...-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/003-deduplicate-entities/implementation-summary]"
 description: "This phase stopped graph metadata from wasting entity slots on basename duplicates by giving both entity write paths a shared collision policy."
 trigger_phrases:
   - "phase 003 implementation summary"
   - "deduplicate entities summary"
 importance_tier: "critical"
-contextType: "verification"
-status: complete
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/003-deduplicate-entities"
@@ -28,6 +27,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Should the parser own the trigger_phrases cap while the metadata schema remains permissive"
+status: complete
 ---
 # Implementation Summary: Deduplicate Graph Metadata Entities
 

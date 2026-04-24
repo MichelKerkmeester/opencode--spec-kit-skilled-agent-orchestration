@@ -1,11 +1,20 @@
 ---
-title: "Implementation Summary: OpenCode Transport Adapter [002/030]"
+title: "...stem-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/002-opencode-transport-adapter/implementation-summary]"
 description: "Phase 2 delivered a real OpenCode plugin hook layer backed by the shared transport contract and wired it into session resume/bootstrap outputs without introducing a second retrieval backend."
 trigger_phrases:
   - "phase 2 implementation summary"
   - "opencode transport adapter implementation"
 importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/002-opencode-transport-adapter"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["implementation-summary.md"]
 ---
 # Implementation Summary: OpenCode Transport Adapter
 

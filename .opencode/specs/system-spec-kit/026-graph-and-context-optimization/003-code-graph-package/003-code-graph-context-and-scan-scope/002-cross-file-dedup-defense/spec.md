@@ -1,15 +1,15 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
-title: "Feature Specification: Cross-File Symbol Dedup Defense"
+title: "...-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-cross-file-dedup-defense/spec]"
 description: "Live full code graph scans still fail many files with code_nodes.symbol_id UNIQUE constraint errors even after the stale-gate recovery packet. This packet adds runtime-independent defense in depth by deduping parsed nodes across the scan batch and making per-file node replacement tolerate residual conflicts."
 trigger_phrases:
   - "cross-file symbol dedup defense"
   - "code_nodes symbol_id unique constraint"
-  - "INSERT OR IGNORE code_nodes"
-  - "globalSeenIds"
+  - "insert or ignore code_nodes"
+  - "globalseenids"
   - "012/003 cross file dedup"
 importance_tier: "critical"
-contextType: "spec"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/003-cross-file-dedup-defense"
@@ -33,6 +33,7 @@ _memory:
       - "The fix is defense in depth rather than another root-cause-only investigation."
       - "The global dedup sweep runs after TESTED_BY edge construction."
       - "replaceNodes uses INSERT OR IGNORE rather than INSERT REPLACE."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Cross-File Symbol Dedup Defense
 

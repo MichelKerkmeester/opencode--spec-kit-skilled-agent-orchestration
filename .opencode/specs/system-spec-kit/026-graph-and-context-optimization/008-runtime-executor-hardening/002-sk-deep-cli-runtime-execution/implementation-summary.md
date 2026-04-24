@@ -1,9 +1,11 @@
 ---
-title: "Implementation Summary: CLI Runtime Executors (merged)"
+title: "...aph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/implementation-summary]"
 description: "Shipped-state summary for the merged CLI executor arc. Both child packets complete and pushed to main before packet consolidation."
-trigger_phrases: ["cli runtime executors summary"]
-importance_tier: "high"
+trigger_phrases:
+  - "cli runtime executors summary"
+importance_tier: "important"
 contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution"

@@ -1,13 +1,12 @@
 ---
-title: "Implementation Plan: Phase 7 — Skill Catalog Sync"
+title: "...ph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/007-skill-catalog-sync/plan]"
 description: "Phase 7 runs ten deep-review iterations in 4/4/2 waves, synthesizes downstream parity drift, and updates only the surfaces that need sync after Phase 1-6."
 trigger_phrases:
   - "phase 7 plan"
   - "skill catalog sync plan"
   - "ten review iterations"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + phase-child + level2-verify | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/007-skill-catalog-sync"
@@ -16,7 +15,7 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["plan.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + phase-child + level2-verify | v2.2 -->"
 ---
 # Implementation Plan: Phase 7 — Skill Catalog Sync
 

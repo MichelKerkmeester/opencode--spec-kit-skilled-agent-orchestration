@@ -1,8 +1,13 @@
 ---
-title: "013-fsrs-memory-decay-study: Study FSRS Decay Defaults"
+title: "013-fsrs-m [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/013-fsrs-memory-decay-study/spec]"
 description: "Measures whether Modus-inspired FSRS default changes are justified before Public changes decay or review-queue behavior."
+trigger_phrases:
+  - "013"
+  - "fsrs"
+  - "spec"
+importance_tier: "important"
+contextType: "implementation"
 ---
-
 # 013-fsrs-memory-decay-study: Study FSRS Decay Defaults
 
 ## 1. Scope

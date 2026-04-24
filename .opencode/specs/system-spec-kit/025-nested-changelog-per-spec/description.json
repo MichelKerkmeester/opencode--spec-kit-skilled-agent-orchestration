@@ -9,12 +9,14 @@
     "per",
     "spec"
   ],
-  "lastUpdated": "2026-04-13T04:56:38.898Z",
+  "lastUpdated": "2026-04-24T14:53:25.171Z",
   "specId": "025",
   "folderSlug": "nested-changelog-per-spec",
   "parentChain": [
     "system-spec-kit"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "24-04-26_15-53__applied-cli-copilot-audit-fixes-added-missing.md"
+  ]
 }

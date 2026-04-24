@@ -1,7 +1,6 @@
 ---
-title: "Implementation Plan: Split sk-deep-research review mode [03--commands-and-skills/036-sk-deep-research-review-split/plan]"
+title: "Implementation Plan: Split sk-deep-research [skilled-agent-orchestration/036-sk-deep-research-review-split/plan]"
 description: "Separates review mode into a dedicated skill and command while simplifying sk-deep-research back to investigation-only behavior."
-template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 trigger_phrases:
   - "deep-review split plan"
   - "review mode split implementation"
@@ -28,6 +27,7 @@ _memory:
     open_questions: []
     answered_questions:
       - "Advisor evidence calibration now separates graph-heavy matches and deep sibling edges were removed."
+template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Split sk-deep-research Review Mode into sk-deep-review
 

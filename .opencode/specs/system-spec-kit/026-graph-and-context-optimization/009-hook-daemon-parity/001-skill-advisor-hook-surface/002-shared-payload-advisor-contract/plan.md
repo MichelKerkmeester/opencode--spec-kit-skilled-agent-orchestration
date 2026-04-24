@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: Shared-Payload Advisor Contract"
+title: "...-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract/plan]"
 description: "Additive TypeScript enum + type extension on lib/context/shared-payload.ts. Adds advisor producer/source vocabulary + typed AdvisorEnvelopeMetadata + privacy rejection validator. Vitest coverage for 6 acceptance scenarios."
 trigger_phrases:
   - "020 002 plan"
   - "shared payload advisor plan"
 importance_tier: "critical"
-contextType: "plan"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/002-shared-payload-advisor-contract"
@@ -16,7 +15,7 @@ _memory:
     next_safe_action: "Dispatch /spec_kit:implement :auto"
     blockers: []
     key_files: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Shared-Payload Advisor Contract
 

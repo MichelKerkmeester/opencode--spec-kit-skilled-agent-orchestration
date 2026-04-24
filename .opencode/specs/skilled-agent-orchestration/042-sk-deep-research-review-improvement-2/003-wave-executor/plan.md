@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Wave Executor [042.003]"
+title: "Implementation Plan [skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor/plan]"
 description: "Deliver orchestrator-managed wave execution for deep research and deep review by adding segment planning, coordination-board tracking, and deterministic merge behavior on top of the Phase 002 graph substrate."
 trigger_phrases:
   - "042.003"
@@ -9,6 +9,15 @@ trigger_phrases:
   - "coordination board"
 importance_tier: "important"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 ---
 # Implementation Plan: Wave Executor
 

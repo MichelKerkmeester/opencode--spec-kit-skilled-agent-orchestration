@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 ---
-title: "Implementation Plan: Move changelog_template.md into sk-doc [045]"
+title: "Implementation Plan: Move changelog_template.md into [skilled-agent-orchestration/045-sk-doc-changelog-template/plan]"
 description: "Path-only relocation of the canonical changelog template plus updates to the four downstream references and a sk-doc Smart Router wire-up."
 trigger_phrases:
   - "045 plan"

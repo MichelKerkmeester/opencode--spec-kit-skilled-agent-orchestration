@@ -1,14 +1,13 @@
 ---
-title: "Verification Checklist: Phase 4 — Heuristics, Refactor & Guardrails"
+title: "...timization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails/checklist]"
 description: "Verification Date: 2026-04-08"
 trigger_phrases:
   - "phase 4 checklist"
   - "f-ac5 verification"
   - "savemode verification"
   - "check d1 d8 verification"
-importance_tier: important
+importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist + phase-child verification | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/002-memory-quality-remediation/004-heuristics-refactor-guardrails"
@@ -17,9 +16,8 @@ _memory:
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
     key_files: ["checklist.md"]
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist + phase-child verification | v2.2 -->"
 ---
-
 # Verification Checklist: Phase 4 — Heuristics, Refactor & Guardrails
 
 <!-- SPECKIT_LEVEL: 2 -->

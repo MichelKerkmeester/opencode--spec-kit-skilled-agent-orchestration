@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Verification Checklist: Phase 012 — CocoIndex UX, Utilization & Usefulness"
+title: "Verification Checklist: Phase 012 — [system-spec-kit/024-compact-code-graph/012-cocoindex-ux-utilization/checklist]"
 description: "Verification Date: 2026-04-01"
 trigger_phrases:
   - "verification checklist"
@@ -8,6 +8,15 @@ trigger_phrases:
   - "cocoindex"
 importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/012-cocoindex-ux-utilization"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Verification Checklist: Phase 012 — CocoIndex UX, Utilization & Usefulness
 
@@ -69,76 +78,76 @@ Template compliance shim anchor for summary.
 
 ---
 
-<!-- ANCHOR:protocol -->
+<!-- ANCHOR:protocol-2 -->
 ### Verification Protocol
 | Priority | Handling | Completion Impact |
 |----------|----------|-------------------|
 | **[P0]** | HARD BLOCKER | Cannot claim done until packet structure and core reality corrections are aligned |
 | **[P1]** | Required | Must complete or remain explicitly deferred as not implemented |
 | **[P2]** | Optional | Can stay open with documented follow-up |
-<!-- /ANCHOR:protocol -->
+<!-- /ANCHOR:protocol-2 -->
 
 ---
 
-<!-- ANCHOR:pre-impl -->
+<!-- ANCHOR:pre-impl-2 -->
 ### Pre-Implementation
 ### P1
 
 - [x] CHK-001 [P0] Requirements documented in `spec.md` [EVIDENCE: Level 2 spec sections rebuilt with REQ-001 through REQ-006]
 - [x] CHK-002 [P0] Technical approach defined in `plan.md` [EVIDENCE: plan now covers status-only SessionStart, hint-only PreCompact, helper-tool reality, and manual verification]
 - [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: packet lists validator templates, existing Phase 012 implementation, and manual verification inputs]
-<!-- /ANCHOR:pre-impl -->
+<!-- /ANCHOR:pre-impl-2 -->
 
 ---
 
-<!-- ANCHOR:code-quality -->
+<!-- ANCHOR:code-quality-2 -->
 ### Code Quality
 - [x] CHK-010 [P0] Packet uses required Level 2 headers and anchors [EVIDENCE: docs rewritten against `.opencode/skill/system-spec-kit/templates/level_2/`]
 - [x] CHK-011 [P0] No stale claims about automated build verification remain [EVIDENCE: checklist, plan, and summary all describe manual build output verification only]
 - [x] CHK-012 [P1] Current helper-tool behavior is described precisely [EVIDENCE: `ccc_status` and `ccc_feedback` language aligned across packet docs]
 - [x] CHK-013 [P1] Packet follows project patterns [EVIDENCE: local cross-references retained and unresolved external markdown links avoided]
-<!-- /ANCHOR:code-quality -->
+<!-- /ANCHOR:code-quality-2 -->
 
 ---
 
-<!-- ANCHOR:testing -->
+<!-- ANCHOR:testing-2 -->
 ### Testing
 - [x] CHK-020 [P0] Manual build verification is recorded [EVIDENCE: `npm run build` output verification for `dist/hooks/claude/*.js` captured in packet text]
 - [x] CHK-021 [P0] Hook smoke tests are recorded [EVIDENCE: `echo '{}' | node dist/hooks/claude/session-prime.js`, `compact-inject.js`, and `session-stop.js` noted as exit-0 checks]
 - [x] CHK-022 [P1] Edge cases documented [EVIDENCE: missing binary, missing build script, and deferred automation gaps listed in `spec.md`]
 - [x] CHK-023 [P1] Error scenarios validated in documentation [EVIDENCE: packet now states SessionStart does not ensure readiness and does not trigger background re-index]
-<!-- /ANCHOR:testing -->
+<!-- /ANCHOR:testing-2 -->
 
 ---
 
-<!-- ANCHOR:security -->
+<!-- ANCHOR:security-2 -->
 ### Security
 - [x] CHK-030 [P0] No hardcoded secrets introduced in packet docs [EVIDENCE: packet contains documentation only]
 - [x] CHK-031 [P0] Storage behavior is not overstated [EVIDENCE: `ccc_feedback` documented as local JSONL at `.opencode/skill/mcp-coco-index/feedback/search-feedback.jsonl`]
 - [x] CHK-032 [P1] SessionStart readiness-bootstrap limitation is documented accurately [EVIDENCE: checklist, tasks, and implementation summary all state that SessionStart remains status-only and does not call `ensure_ready.sh`]
-<!-- /ANCHOR:security -->
+<!-- /ANCHOR:security-2 -->
 
 ---
 
-<!-- ANCHOR:docs -->
+<!-- ANCHOR:docs-2 -->
 ### Documentation
 - [x] CHK-040 [P1] Spec, plan, tasks, checklist, and summary are synchronized [EVIDENCE: all docs repeat the same seven current-reality corrections]
 - [x] CHK-041 [P1] Known limitations are explicit [EVIDENCE: implementation summary lists status-only SessionStart, hint-only PreCompact, lightweight helpers, and no background re-index]
 - [x] CHK-042 [P2] Broader CocoIndex README and tool reference updated [EVIDENCE: `.opencode/skill/mcp-coco-index/README.md` now documents system-spec-kit integration and helper-tool reality]
-<!-- /ANCHOR:docs -->
+<!-- /ANCHOR:docs-2 -->
 
 ---
 
-<!-- ANCHOR:file-org -->
+<!-- ANCHOR:file-org-2 -->
 ### File Organization
 - [x] CHK-050 [P1] Changes stay inside this phase packet [EVIDENCE: only the five packet markdown files were edited]
 - [x] CHK-051 [P1] Local packet references resolve [EVIDENCE: cross-references use `spec.md` and `plan.md`]
 - [x] CHK-052 [P2] SessionStart background re-index limitation is documented accurately [EVIDENCE: docs explicitly state that background CocoIndex re-index is not implemented in this phase]
-<!-- /ANCHOR:file-org -->
+<!-- /ANCHOR:file-org-2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:summary-2 -->
 ### Verification Summary
 | Category | Total | Verified |
 |----------|-------|----------|
@@ -147,4 +156,4 @@ Template compliance shim anchor for summary.
 | P2 Items | 2 | 0/2 |
 
 **Verification Date**: 2026-04-01
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:summary-2 -->

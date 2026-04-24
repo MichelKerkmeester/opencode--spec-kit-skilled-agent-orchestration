@@ -1,3 +1,13 @@
+---
+title: "P [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation/plan]"
+description: "1. Baseline today's startup, bootstrap, and workflow guidance for tool discoverability."
+trigger_phrases:
+  - "plan"
+  - "011"
+  - "tool"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 011-tool-profile-split-investigation
 
 ## Affected Files

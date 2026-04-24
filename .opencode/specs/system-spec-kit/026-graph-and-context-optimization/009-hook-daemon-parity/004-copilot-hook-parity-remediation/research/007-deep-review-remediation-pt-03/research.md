@@ -1,7 +1,16 @@
 ---
-title: "Deep Research Synthesis — Copilot CLI Hook Schema & userPromptSubmitted Failure"
+title: "...ation/009-hook-daemon-parity/004-copilot-hook-parity-remediation/research/007-deep-review-remediation-pt-03/research]"
 description: "Synthesis of 8 iterations converging on the root cause of the 'Neither bash nor powershell specified in hook command configuration' error blocking 026/009/004. Root cause: Copilot 1.0.34 merges .claude/settings.local.json into its hook pipeline and executes the Claude matcher wrapper as a command; the wrapper lacks top-level bash/powershell. Fix: add top-level no-op bash to the Claude wrapper — empirically cross-runtime safe."
-importance_tier: "high"
+trigger_phrases:
+  - "ation"
+  - "009"
+  - "hook"
+  - "daemon"
+  - "parity"
+  - "research"
+  - "007"
+  - "deep"
+importance_tier: "important"
 contextType: "research"
 _memory:
   continuity:
@@ -12,7 +21,6 @@ _memory:
     next_safe_action: "Open implementation packet to patch .claude/settings.local.json UserPromptSubmit wrapper"
     completion_pct: 100
 ---
-
 # Deep Research Synthesis — Copilot CLI Hook Schema & userPromptSubmitted Failure
 
 **Parent spec phase**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/004-copilot-hook-parity-remediation/`

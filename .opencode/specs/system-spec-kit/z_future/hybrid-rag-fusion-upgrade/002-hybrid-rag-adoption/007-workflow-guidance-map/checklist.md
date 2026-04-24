@@ -1,3 +1,14 @@
+---
+title: "Checkli [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/007-workflow-guidance-map/checklist]"
+description: "checklist document for 007-workflow-guidance-map."
+trigger_phrases:
+  - "checkli"
+  - "checklist"
+  - "007"
+  - "workflow"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Checklist: 007-workflow-guidance-map
 
 ## P0

@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Normalized Analytics Reader [template:level_3/checklist.md]"
+title: "Verification Checklist: Normalized [system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader/checklist]"
 description: "Verification Date: 2026-04-08"
 trigger_phrases:
   - "analytics reader verification"
@@ -7,6 +7,15 @@ trigger_phrases:
   - "normalized analytics checklist"
 importance_tier: "normal"
 contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["checklist.md"]
 ---
 # Verification Checklist: Normalized Analytics Reader
 
@@ -32,7 +41,7 @@ contextType: "planning"
 
 - [x] CHK-001 [P0] `spec.md` documents the reader-only packet boundary [EVIDENCE: the spec keeps Stop-hook writer changes, startup consumers, and dashboards out of scope.]
 - [x] CHK-002 [P0] `plan.md` defines replay parser, analytics DB, and idempotent replay phases [EVIDENCE: the plan's implementation phases match the delivered runtime work.]
-- [x] CHK-003 [P0] The producer metadata predecessor packet is called out explicitly [EVIDENCE: packet docs depend on `026/.../002-implement-cache-warning-hooks` rather than recreating producer logic.]
+- [x] CHK-003 [P0] The producer metadata predecessor packet is called out explicitly [EVIDENCE: packet docs depend on `026/002-continuity-memory-runtime/001-cache-warning-hooks` rather than recreating producer logic.]
 - [x] CHK-004 [P1] Follow-on dashboard and startup consumers remain deferred [EVIDENCE: docs name later reporting/startup packets without implying they shipped here.]
 <!-- /ANCHOR:pre-impl -->
 

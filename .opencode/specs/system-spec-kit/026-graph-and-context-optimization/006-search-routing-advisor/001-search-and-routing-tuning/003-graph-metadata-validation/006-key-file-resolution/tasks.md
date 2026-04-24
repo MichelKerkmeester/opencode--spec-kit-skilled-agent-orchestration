@@ -1,7 +1,17 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | compact -->
 ---
-title: "Improve Graph Metadata Key File Resolution - Tasks"
-status: complete
+title: "...006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/tasks]"
+description: 'title: "Improve Graph Metadata Key File Resolution - Tasks"'
+trigger_phrases:
+  - "006"
+  - "search"
+  - "routing"
+  - "advisor"
+  - "001"
+  - "tasks"
+  - "key"
+importance_tier: "normal"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/001-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution"
@@ -9,6 +19,7 @@ _memory:
     last_updated_by: "codex"
     recent_action: "Completed parser fixes, focused tests, and repo-wide graph metadata refresh for key-file resolution"
     next_safe_action: "Reuse this phase if another key-file resolution regression appears in graph metadata"
+status: complete
 ---
 # Tasks
 ## Notation <!-- ANCHOR:notation -->`[ ]` pending, `[x]` complete, `T-V*` verification-only.<!-- /ANCHOR:notation -->

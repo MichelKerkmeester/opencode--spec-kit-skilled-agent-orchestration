@@ -1,9 +1,23 @@
 ---
-title: "Implementation Plan: Root-Level Review/Research Folder Convention"
+title: "I [skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/010-root-level-review-research-convention/plan]"
 description: "3-phase plan: shared resolver, consumer updates, documentation alignment"
+trigger_phrases:
+  - "plan"
+  - "010"
+  - "root"
+importance_tier: "important"
+contextType: "planning"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/010-root-level-review-research-convention"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["plan.md"]
 status: complete
 ---
-
 # Implementation Plan
 
 <!-- SPECKIT_LEVEL: 2 -->

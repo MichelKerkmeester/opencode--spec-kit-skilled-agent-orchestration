@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: sk-deep-research First Upgrade [03--commands-and-skills/029-sk-deep-research-first-upgrade/spec]"
+title: "Feature Specification: sk-deep-research First [skilled-agent-orchestration/029-sk-deep-research-first-upgrade/spec]"
 description: "Document the first upgrade pass for sk-deep-research based on comparative research into ResearcherSkill and autoresearch."
 trigger_phrases:
   - "029"
@@ -9,6 +9,15 @@ trigger_phrases:
   - "autoresearch"
 importance_tier: "important"
 contextType: "research"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/029-sk-deep-research-first-upgrade"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["spec.md"]
 ---
 # Feature Specification: sk-deep-research First Upgrade
 

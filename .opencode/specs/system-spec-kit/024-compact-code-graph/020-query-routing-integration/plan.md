@@ -1,7 +1,25 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Plan: Query-Routing Integration [024/020]"
+title: "Plan: Query-Routing Integration [024/020] [system-spec-kit/024-compact-code-graph/020-query-routing-integration/plan]"
 description: "Implementation order for query-intent enrichment in memory_context, session_resume, and passive enrichment."
+trigger_phrases:
+  - "plan"
+  - "query"
+  - "routing"
+  - "integration"
+  - "024"
+  - "020"
+importance_tier: "important"
+contextType: "planning"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/020-query-routing-integration"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Plan: Query-Routing Integration [024/020]
 
@@ -57,7 +75,7 @@ Template compliance shim anchor for rollback.
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:summary-2 -->
 ### 1. SUMMARY
 #### Technical Context
 
@@ -70,11 +88,11 @@ Template compliance shim anchor for rollback.
 
 ### Overview
 This phase adds query-intent awareness without replacing `memory_context`'s core semantic flow. The shipped implementation classifies intent, optionally appends graph context for structural or hybrid queries, exposes `queryIntentRouting` metadata, adds a slim `session_resume` composite tool, and wires passive enrichment into the response path.
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:summary-2 -->
 
 ---
 
-<!-- ANCHOR:quality-gates -->
+<!-- ANCHOR:quality-gates-2 -->
 ### 2. QUALITY GATES
 ### Definition of Ready
 - [x] Problem statement captured: docs had drifted from verified implementation behavior.
@@ -85,11 +103,11 @@ This phase adds query-intent awareness without replacing `memory_context`'s core
 - [x] All five packet documents use the same corrected contract language.
 - [x] `session_resume` is described without `ccc_status()` or full CocoIndex status claims.
 - [x] Part 3 is documented as implemented and `code-graph-enricher.ts` is removed from the file inventory.
-<!-- /ANCHOR:quality-gates -->
+<!-- /ANCHOR:quality-gates-2 -->
 
 ---
 
-<!-- ANCHOR:architecture -->
+<!-- ANCHOR:architecture-2 -->
 ### 3. ARCHITECTURE
 ### Pattern
 Documentation for additive enrichment over a semantic-first handler flow.
@@ -102,11 +120,11 @@ Documentation for additive enrichment over a semantic-first handler flow.
 
 ### Data Flow
 User query enters `memory_context`, query intent is classified, the normal traced semantic result is produced, and graph context is appended only when structural or hybrid signals justify it and context can be built. `session_resume` separately combines memory resume data with graph and CocoIndex summaries rather than proxying full status-tool payloads.
-<!-- /ANCHOR:architecture -->
+<!-- /ANCHOR:architecture-2 -->
 
 ---
 
-<!-- ANCHOR:phases -->
+<!-- ANCHOR:phases-2 -->
 ### 4. IMPLEMENTATION PHASES
 ### Phase 1: Query-Intent Enrichment
 - Classify query intent near the top of `memory_context`.
@@ -124,22 +142,22 @@ User query enters `memory_context`, query intent is classified, the normal trace
 - Run `runPassiveEnrichment(result.content[0].text)` on response output.
 - Keep code graph symbol enrichment inside `lib/enrichment/passive-enrichment.ts`.
 - Verify the packet does not claim deferred Part 3 work or deleted enrichment files.
-<!-- /ANCHOR:phases -->
+<!-- /ANCHOR:phases-2 -->
 
 ---
 
-<!-- ANCHOR:testing -->
+<!-- ANCHOR:testing-2 -->
 ### 5. TESTING STRATEGY
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Contract audit | `memory_context` metadata and enrichment behavior | Verified handler line references |
 | Integration audit | `session_resume` schema and response summary | Verified handler + schema references |
 | Manual documentation review | Packet-wide terminology consistency | Cross-file comparison and targeted stale-term search |
-<!-- /ANCHOR:testing -->
+<!-- /ANCHOR:testing-2 -->
 
 ---
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-2 -->
 ### 6. DEPENDENCIES
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
@@ -147,15 +165,15 @@ User query enters `memory_context`, query intent is classified, the normal trace
 | `buildContext()` | Internal | Green | Structural and hybrid enrichment cannot append `graphContext` if this is unavailable. |
 | `graphDb.getStats()` + `isCocoIndexAvailable()` | Internal | Green | `session_resume` cannot expose its lightweight status summary. |
 | Passive enrichment hook in `context-server.ts` | Internal | Green | Packet would need to describe Part 3 as incomplete if this wiring were absent. |
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-2 -->
 
 ---
 
-<!-- ANCHOR:rollback -->
+<!-- ANCHOR:rollback-2 -->
 ### 7. ROLLBACK PLAN
 - **Trigger**: Revert if query-intent enrichment or passive enrichment causes incorrect tool responses.
 - **Procedure**: Remove the query-intent append path, unregister `session_resume`, and remove the passive enrichment hook from `context-server.ts`.
-<!-- /ANCHOR:rollback -->
+<!-- /ANCHOR:rollback-2 -->
 
 ---
 

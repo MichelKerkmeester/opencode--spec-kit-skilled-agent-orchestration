@@ -1,15 +1,15 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
-title: "Implementation Summary: Code Graph Incremental Fullscan Recovery"
+title: "...03-code-graph-package/003-code-graph-context-and-scan-scope/001-incremental-fullscan-recovery/implementation-summary]"
 description: "The code graph scan path now distinguishes explicit full scans from stale-only incremental scans, blocks duplicate symbol IDs before persistence, and exposes additive scan-mode response fields."
 trigger_phrases:
   - "incremental fullscan implementation"
   - "code graph stale gate fixed"
-  - "skipFreshFiles implemented"
-  - "seenSymbolIds implemented"
+  - "skipfreshfiles implemented"
+  - "seensymbolids implemented"
   - "012/002 implementation summary"
 importance_tier: "critical"
-contextType: "spec"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery"
@@ -38,6 +38,7 @@ _memory:
       - "scan.ts passes skipFreshFiles: effectiveIncremental and keeps fullReindexTriggered unchanged."
       - "capturesToNodes dedupes generated symbolIds and preserves the first-seen node."
       - "README documents fullScanRequested, effectiveIncremental, and IndexFilesOptions."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
 

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Delta-Review of 015 Findings (DR-1)"
+title: "...text-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015/spec]"
 description: "Deep-review sub-packet covering the DR-1 Tier 1 item. Re-audit all 243 findings from 015-deep-review-and-remediation against current main post-016/017/018 ship. Classify each as ADDRESSED / STILL_OPEN / SUPERSEDED / UNVERIFIED. Wave 1 dispatch per ADR-001 of 019/001."
 trigger_phrases:
   - "delta review 015 findings"
@@ -7,8 +7,7 @@ trigger_phrases:
   - "243 findings delta audit"
   - "015 remediation scope narrowing"
 importance_tier: "critical"
-contextType: "review"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/002-delta-review-015"
@@ -17,7 +16,7 @@ _memory:
     recent_action: "Deep-review packet scaffolded"
     next_safe_action: "Dispatch /spec_kit:deep-review :auto"
     blockers: []
-
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
 # Feature Specification: Delta-Review of 015's 243 Findings
 

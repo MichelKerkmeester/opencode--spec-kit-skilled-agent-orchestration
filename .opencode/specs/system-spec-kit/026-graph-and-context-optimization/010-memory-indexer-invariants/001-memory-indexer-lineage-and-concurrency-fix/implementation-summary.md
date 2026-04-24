@@ -1,12 +1,12 @@
 ---
-template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
-title: "Implementation Summary: Memory Indexer Lineage and Concurrency Fix"
+title: "...ext-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix/implementation-summary]"
 description: "Implemented the spec-kit-memory indexer fixes for cross-file PE lineage reuse and scan-triggered candidate_changed self-interference, with focused regressions and parent metadata updates."
 trigger_phrases:
   - "026/010 implementation"
   - "memory indexer lineage concurrency implementation"
-importance_tier: "high"
-contextType: "spec"
+importance_tier: "important"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix"
@@ -21,6 +21,7 @@ _memory:
     answered_questions:
       - "A2 was chosen over A1 to preserve the existing similarity search surface and localize the safety rule to PE orchestration."
       - "B2 replaced B1 after live acceptance showed the transactional reconsolidation recheck, not batch overlap, was the real source of candidate_changed."
+template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Memory Indexer Lineage and Concurrency Fix
 

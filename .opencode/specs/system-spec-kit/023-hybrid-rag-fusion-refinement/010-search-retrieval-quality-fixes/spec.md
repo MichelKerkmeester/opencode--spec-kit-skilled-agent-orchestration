@@ -1,22 +1,23 @@
 ---
-title: "Feature Specification: Search Retrieval Quality Fixes [system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/spec]"
+title: "Feature Specification [system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes/spec]"
 description: "Fix six retrieval quality issues in memory_context/memory_search: intent propagation bug, silent folder auto-narrowing, aggressive token budget truncation, folder discovery as boost signal, two-tier metadata+content response, and intent confidence floor."
-trigger_phrases:
-  - "search retrieval quality"
-  - "intent propagation bug"
-  - "folder auto-narrowing"
-  - "token budget truncation"
-  - "memory context 0 results"
-  - "folder discovery boost"
-  - "search returns nothing"
-  - "evidence gap false positive"
+trigger_phrases: ["search retrieval quality", "intent propagation bug", "folder auto-narrowing", "token budget truncation", "memory context 0 results", "folder discovery boost", "search returns nothing", "evidence gap false positive"]
 importance_tier: "critical"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes"
+    last_updated_at: "2026-04-24T14:55:00Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Backfilled memory block"
+    next_safe_action: "Revalidate packet docs"
+    key_files: ["spec.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 ---
-# Feature Specification: Search Retrieval Quality Fixes
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
+
+# Feature Specification: Search Retrieval Quality Fixes
 
 ---
 

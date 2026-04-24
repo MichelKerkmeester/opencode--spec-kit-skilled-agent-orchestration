@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Release Cleanup Playbooks"
+title: "Feature Specification: Release [system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/spec]"
 description: "Release alignment, cleanup/audit, and playbook repair/remediation. Consolidated active parent for 3 direct child phase packet(s)."
 trigger_phrases:
   - "005-release-cleanup-playbooks"
@@ -9,7 +9,6 @@ trigger_phrases:
   - "003-playbook-and-remediation"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks"
@@ -30,6 +29,7 @@ _memory:
     completion_pct: 100
     open_questions: []
     answered_questions: []
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Release Cleanup Playbooks
 

@@ -1,6 +1,23 @@
 ---
-title: "Tasks: Structural Indexer [024/008]"
+title: "Tasks: Structural Indexer [024/008] [system-spec-kit/024-compact-code-graph/008-structural-indexer/tasks]"
 description: "Task tracking for the structural indexer with tree-sitter default parsing, regex fallback, node/edge extraction, and content-hash-aware indexing."
+trigger_phrases:
+  - "tasks"
+  - "structural"
+  - "indexer"
+  - "024"
+  - "008"
+importance_tier: "normal"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph/008-structural-indexer"
+    last_updated_at: "2026-04-24T15:25:01Z"
+    last_updated_by: "backfill-memory-block"
+    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
+    next_safe_action: "Revalidate packet docs and update continuity on next save"
+    key_files: ["tasks.md"]
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Phase 008 — Structural Indexer

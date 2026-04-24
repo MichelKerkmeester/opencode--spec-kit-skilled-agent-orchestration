@@ -1,7 +1,24 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit templates | v2.2 -->
 ---
-title: "Implementation Summary: Gemini CLI Hook Porting [024/022]"
+title: "Implementation Summary: Gemini [system-spec-kit/024-compact-code-graph/022-gemini-hook-porting/implementation-summary]"
 description: "Full Gemini CLI hook suite: SessionStart, PreCompress, BeforeAgent, SessionEnd with shared utilities."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "gemini"
+  - "implementation summary"
+  - "022"
+importance_tier: "normal"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "024-compact-code-graph/022-gemini-hook-porting"
+    last_updated_at: "2026-04-24T15:33:48Z"
+    last_updated_by: "claude-opus-4-7-spec-audit-2026-04-24"
+    recent_action: "Spec audit + path reference remediation (Pass 1-3)"
+    next_safe_action: "Continue systematic remediation or reindex"
+    blockers: []
+
 ---
 # Implementation Summary
 
@@ -53,18 +70,18 @@ Template compliance shim anchor for limitations.
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-2 -->
 ### Metadata
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 022-gemini-hook-porting |
 | **Completed** | 2026-03-31 (1 item deferred) |
 | **Level** | 2 |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-2 -->
 
 ---
 
-<!-- ANCHOR:what-built -->
+<!-- ANCHOR:what-built-2 -->
 ### What Was Built
 Gemini CLI now has full hook support matching Claude Code's capabilities, raising its context parity from 50% to 85%. Five hook scripts cover all four Gemini lifecycle events, with shared utilities to prevent Claude/Gemini drift.
 
@@ -91,7 +108,7 @@ Maps to Gemini's single `SessionEnd` event. It saves session state and can extra
 ### Settings Registration (.gemini/settings.json)
 
 `.gemini/settings.json` is the expected user config target, not a checked-in repository file. Registration guidance exists, but the local workspace path must be verified before this can be treated as complete.
-<!-- /ANCHOR:what-built -->
+<!-- /ANCHOR:what-built-2 -->
 
 ---
 ### Files Changed
@@ -106,10 +123,10 @@ Maps to Gemini's single `SessionEnd` event. It saves session state and can extra
 | `.gemini/settings.json` | Expected user-local config | Hook registration target only; no checked-in repo file |
 ---
 
-<!-- ANCHOR:how-delivered -->
+<!-- ANCHOR:how-delivered-2 -->
 ### How It Was Delivered
 The Gemini hook port shipped as runtime-specific hook scripts plus shared parsing helpers. Review confirmed the lifecycle mapping needed correction: Gemini uses one `SessionEnd` hook for stop handling, not `AfterAgent` plus `AfterModel`, so the documentation now reflects the actual event model and the remaining partial-token-tracking gap.
-<!-- /ANCHOR:how-delivered -->
+<!-- /ANCHOR:how-delivered-2 -->
 
 ---
 ### Key Decisions
@@ -120,19 +137,19 @@ The Gemini hook port shipped as runtime-specific hook scripts plus shared parsin
 | Call out shallow spec detection | The current regex only captures `.opencode/specs/<segment>/<segment>/`, which can truncate deeper nested phase paths and affect saved context accuracy. |
 ---
 
-<!-- ANCHOR:verification -->
+<!-- ANCHOR:verification-2 -->
 ### Verification
 - TypeScript: 0 errors
 - Tests: 327 passed, 23 failed (pre-existing, unrelated)
 - Review: Opus CONDITIONAL PASS 78/100, GPT-5.4 CONDITIONAL 82%
-<!-- /ANCHOR:verification -->
+<!-- /ANCHOR:verification-2 -->
 
 ---
 
-<!-- ANCHOR:limitations -->
+<!-- ANCHOR:limitations-2 -->
 ### Known Limitations
 1. **User-local settings only** `.gemini/settings.json` is not checked into the repo. The workspace path may be stale and must be verified locally.
 2. **Partial token tracking** `session-stop.ts` does not parse Gemini transcript token usage.
 3. **Shallow nested spec detection** The Gemini stop flow uses regex-based shallow detection and can truncate deeper nested phase paths.
 4. **Incomplete transcript hardening** `compact-cache.ts` still uses unbounded `readFileSync(filePath, 'utf-8')`, so F056 remains open.
-<!-- /ANCHOR:limitations -->
+<!-- /ANCHOR:limitations-2 -->

@@ -1,13 +1,12 @@
 ---
-title: "Verification Checklist: Skill Graph SQLite Migration"
+title: "...d-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/006-skill-graph-sqlite-migration/checklist]"
 description: "Verification checklist for 006-skill-graph-sqlite-migration."
 trigger_phrases:
   - "006-skill-graph-sqlite-migration"
   - "verification"
   - "checklist"
 importance_tier: "important"
-contextType: "verification"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor/002-skill-advisor-graph/006-skill-graph-sqlite-migration"
@@ -16,6 +15,7 @@ _memory:
     recent_action: "Implemented SQLite migration with 4 MCP tools"
     next_safe_action: "Review and verify implementation"
     key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Skill Graph SQLite Migration
 

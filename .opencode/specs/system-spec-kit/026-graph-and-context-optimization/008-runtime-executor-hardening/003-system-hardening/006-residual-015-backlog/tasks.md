@@ -1,10 +1,10 @@
 ---
-title: "Tasks: 015 Residuals Restart"
+title: "...26-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/006-residual-015-backlog/tasks]"
 description: "Task list and evidence for 19 residuals across 6 clusters."
-trigger_phrases: ["015 residuals tasks"]
+trigger_phrases:
+  - "015 residuals tasks"
 importance_tier: "critical"
-contextType: "tasks"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/006-residual-015-backlog"
@@ -12,6 +12,7 @@ _memory:
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Residual implementation and wave verification completed"
     next_safe_action: "Run final validator and orchestrator-owned commit"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: 015 Residuals Restart
 

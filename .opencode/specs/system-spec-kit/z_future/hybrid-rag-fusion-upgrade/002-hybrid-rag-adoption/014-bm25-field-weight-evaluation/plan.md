@@ -1,3 +1,13 @@
+---
+title: "Plan [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/014-bm25-field-weight-evaluation/plan]"
+description: "1. Map Modus's weighted fields to actual Public lexical fields."
+trigger_phrases:
+  - "plan"
+  - "014"
+  - "bm25"
+importance_tier: "important"
+contextType: "planning"
+---
 # Plan: 014-bm25-field-weight-evaluation
 
 ## Affected Files

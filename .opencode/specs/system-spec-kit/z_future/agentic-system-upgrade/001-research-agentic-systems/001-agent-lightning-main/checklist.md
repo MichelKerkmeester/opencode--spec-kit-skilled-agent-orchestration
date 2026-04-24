@@ -1,12 +1,12 @@
 ---
-title: "Verification Checklist: 001-agent-lightning-main Research Phase"
+title: "Verifi [system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/001-agent-lightning-main/checklist]"
 description: "Verification Date: 2026-04-10"
 trigger_phrases:
   - "001-agent-lightning-main checklist"
   - "agent lightning verification checklist"
   - "research phase verification"
 importance_tier: "important"
-contextType: "checklist"
+contextType: "implementation"
 ---
 # Verification Checklist: 001-agent-lightning-main Research Phase
 

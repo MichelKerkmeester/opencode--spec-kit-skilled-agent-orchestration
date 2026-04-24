@@ -134,7 +134,7 @@ Shared regression coverage for the migrated runtime also lives in the parent `mc
 <!-- ANCHOR:context-surfaces -->
 ## 3. CONTEXT SURFACES
 
-The subsystem now exposes three operator-visible contract families: `code_graph_status`, `code_graph_context`, and startup/compaction payloads. They share the readiness vocabulary (`readiness`, `canonicalReadiness`, `trustState`) but now also surface graph-quality and structured transport metadata that were not present in the older counts-only/readiness overview.
+The subsystem now exposes four operator-visible contract families: `code_graph_status`, `code_graph_context`, `code_graph_query`, and startup/compaction payloads. They share the readiness vocabulary (`readiness`, `canonicalReadiness`, `trustState`) but now also surface graph-quality and structured transport metadata that were not present in the older counts-only/readiness overview. Both `code_graph_context` and `code_graph_query` enforce the same explicit blocked/degraded contract when readiness requires a suppressed `full_scan`, and `code_graph_query` additionally carries CALLS ambiguity resolution metadata.
 
 ### Status and Readiness Surfaces
 
@@ -143,6 +143,8 @@ The subsystem now exposes three operator-visible contract families: `code_graph_
 | **`code_graph_status`** | `status: "ok"` | `freshness`, `readiness`, `canonicalReadiness`, `trustState`, `parseHealth`, `graphQualitySummary` | Primary operator health probe; keeps counts plus parser/enrichment quality in one response |
 | **`code_graph_context` (success path)** | `status: "ok"` | `readiness`, `canonicalReadiness`, `trustState`, `lastPersistedAt`, `anchors`, `graphContext`, `textBrief`, `metadata`, `graphMetadata` | Context reads always echo readiness so callers can judge freshness and detector provenance alongside the returned neighborhood |
 | **`code_graph_context` (blocked path)** | `status: "blocked"` | `blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, `blockReason`, `readiness`, `canonicalReadiness`, `trustState`, `lastPersistedAt` | Returned when readiness requires a full scan and inline full scans are disallowed; callers should run `code_graph_scan` before retrying |
+| **`code_graph_query` (success path)** | `status: "ok"` | `readiness`, `canonicalReadiness`, `trustState`, operation results, ambiguity / selected-candidate metadata | CALLS queries on ambiguous `handle*` subjects now prefer callable implementation nodes over wrapper-shadow candidates; metadata records the chosen candidate and other candidates considered |
+| **`code_graph_query` (blocked path)** | `status: "blocked"` | Same shape as the `code_graph_context` blocked payload (`blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, `blockReason`, readiness + trust) | Query reads now mirror the context read contract instead of silently returning empty results when readiness requires a suppressed `full_scan` |
 
 ### Structured Context Metadata
 
@@ -151,6 +153,7 @@ The subsystem now exposes three operator-visible contract families: `code_graph_
 | Field group | Contents | Why it matters |
 |---|---|---|
 | `metadata.partialOutput` | `isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, `truncatedText` | Explains whether deadline or budget pressure trimmed the response |
+| `metadata.deadlineMs` | Effective per-call deadline (ms) | Makes the bounded-work deadline explicit so callers can correlate `partialOutput.reasons` with the budget that produced them |
 | `metadata.freshness` | `lastScanAt`, `staleness` | Separates context freshness from the higher-level readiness block |
 | `graphMetadata` | `detectorProvenance` | Makes parser/detector provenance visible to downstream callers without re-querying status |
 | `anchors[*]` | `source`, `provider`, `score`, `snippet`, `range` | Preserves seed provenance so CocoIndex/manual/graph-sourced anchors stay traceable |
@@ -162,6 +165,7 @@ The structural snapshot reaches startup and compaction consumers through shared 
 | Surface | Includes summary | Includes highlights | Structured metadata | Typical caller |
 |---|---|---|---|---|
 | **MCP `session_bootstrap` / `startup-brief`** | Yes | Yes | `graphSummary`, `graphQualitySummary`, `graphState`, `sharedPayload`, `sharedPayloadTransport` | MCP clients calling the startup or bootstrap surface directly |
+| **Runtime startup hooks** (Claude/Gemini/Copilot `session-prime.ts`, Codex `session-start.ts`) | Yes | Yes | Same `graphQualitySummary` + `sharedPayloadTransport` envelope delivered through the hook-specific transport for each runtime | All four supported runtimes now transport the same compact startup payload; there is no longer a Codex-only `session_bootstrap()` fallback path at startup |
 | **OpenCode plugin compact-code-graph `--minimal` resume** | Yes | Yes (including stale graphs after packet 012) | Reuses the shared snapshot payload while keeping `RESUME_MODE = 'minimal'` for token economy | OpenCode TUI session compaction |
 
 `buildStartupBrief()` returns both human-readable and transport-friendly shapes:
