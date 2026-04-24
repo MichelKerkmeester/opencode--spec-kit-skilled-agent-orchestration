@@ -1,5 +1,6 @@
 ---
 title: "Feature Specification [system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/spec]"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 description: "Unified packet covering three coordinated surgery passes on the agent and command graph: lean execution-guardrail update across three AGENTS files, canonical intake consolidation with shared intake-contract.md module plus /spec_kit:plan --intake-only, and hard-delete of /spec_kit:handover + /spec_kit:debug + @handover + @speckit middleware with distributed-governance replacement."
 trigger_phrases:
   - "004-agent-governance-and-commands"
@@ -39,7 +40,6 @@ _memory:
       - "Packet promoted from nested phase layout to flat Level 3 root docs with no child phases"
       - "Workstream A (AGENTS guardrails) and Workstream B (canonical intake + middleware cleanup) fused into one narrative"
       - "REQ, CHK, and ADR identifiers preserved verbatim for audit continuity"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 ---
 # Feature Specification: Agent Governance And Commands
 

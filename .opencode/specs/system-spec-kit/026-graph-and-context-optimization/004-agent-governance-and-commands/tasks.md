@@ -1,5 +1,6 @@
 ---
 title: "Tasks [system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/tasks]"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 description: "Unified task ledger. Task IDs preserved verbatim from the two originating phase packets: T401-T412 cover Workstream A (AGENTS execution guardrails); T001-T097 cover Workstreams B + C (canonical intake + middleware cleanup via milestones M1-M15)."
 trigger_phrases:
   - "tasks"
@@ -37,7 +38,6 @@ _memory:
       - "T401-T412 cover Workstream A (AGENTS guardrail edits + verification + closeout)"
       - "T001-T051 cover M1-M9 (intake surface scaffolding, deep-research anchoring, parent delegation, hardening, structural parity, doc audit, middleware cleanup)"
       - "T052-T097 cover M10-M15 (downstream audit, shared intake module, plan.md expansion, complete.md refactor, resume.md routing, hard delete + sweep, deep-review remediation)"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Agent Governance And Commands
 

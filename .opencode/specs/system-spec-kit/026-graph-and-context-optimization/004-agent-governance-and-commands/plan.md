@@ -1,5 +1,6 @@
 ---
 title: "Implementation Plan [system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/plan]"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 description: "Unified implementation plan: Workstream A delivers lean AGENTS execution guardrails under Critical Rules across three files; Workstream B delivers the shared intake-contract.md module plus /spec_kit:plan --intake-only and deep-research spec anchoring; Workstream C hard-deletes /spec_kit:handover + /spec_kit:debug + @handover + @speckit middleware with distributed-governance replacement. M1-M15 milestone delivery preserved; AGENTS pass runs in parallel during M9."
 trigger_phrases:
   - "plan"
@@ -37,7 +38,6 @@ _memory:
       - "All three workstreams complete; plan preserved as authoritative record"
       - "AGENTS guardrail work tracked as Workstream A (parallel to M9 middleware cleanup)"
       - "M1-M15 milestone sequence preserved for audit continuity"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Agent Governance And Commands
 

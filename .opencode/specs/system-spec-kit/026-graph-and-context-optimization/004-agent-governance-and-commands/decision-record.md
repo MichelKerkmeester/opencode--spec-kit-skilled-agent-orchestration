@@ -1,5 +1,6 @@
 ---
 title: "Decision Record [system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/decision-record]"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_3/decision-record.md | v2.2 -->"
 description: "13 ADRs covering the canonical-intake architecture and middleware cleanup (Workstreams B + C) that shipped in this packet. Workstream A (AGENTS execution guardrails) relied on the same governance thesis — distributed responsibility over agent exclusivity, enforced by templates and validators — but introduced no standalone ADRs."
 trigger_phrases:
   - "decision record"
@@ -35,7 +36,6 @@ _memory:
       - "Shared-module and standalone-intake decisions documented as ADR-002 through ADR-010"
       - "Middleware cleanup governance decisions documented as ADR-011 through ADR-013"
       - "Workstream A introduced no standalone ADRs; its governance logic is the same one encoded in ADR-011"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: level_3/decision-record.md | v2.2 -->"
 ---
 # Decision Record: Agent Governance And Commands
 

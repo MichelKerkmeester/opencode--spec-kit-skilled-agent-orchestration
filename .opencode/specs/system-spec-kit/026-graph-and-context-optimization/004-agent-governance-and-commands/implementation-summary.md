@@ -1,5 +1,6 @@
 ---
 title: "Implementation Summary [system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/implementation-summary]"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 description: "Closeout for the unified agent-governance-and-commands packet. Workstream A delivered the lean AGENTS execution-guardrail update under Critical Rules (three files, delivered 2026-04-08). Workstreams B and C delivered the canonical intake architecture — shared intake-contract.md module with /spec_kit:plan --intake-only, deep-research spec anchoring, /memory:save repositioning — and the hard-delete of deprecated middleware (/spec_kit:handover, /spec_kit:debug, @handover, @speckit × 4 runtimes each), delivered across 2026-04-14 and 2026-04-15 after a 10-iteration deep review and five parallel Opus remediation agents. Flattened to a single Level 3 root on 2026-04-24."
 trigger_phrases:
   - "implementation summary"
@@ -47,7 +48,6 @@ _memory:
       - "Workstream C: deprecated middleware (/spec_kit:handover, /spec_kit:debug, @handover, @speckit × 4 runtime mirrors each) hard-deleted"
       - "Deep review flagged 12 findings (4 P0 / 4 P1 / 4 P2); 5 parallel Opus agents fixed all 12"
       - "Phase flatten 2026-04-24: child phase folders removed; authoritative docs live at packet root"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary: Agent Governance And Commands
 

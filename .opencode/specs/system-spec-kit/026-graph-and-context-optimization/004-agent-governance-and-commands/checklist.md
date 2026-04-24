@@ -1,5 +1,6 @@
 ---
 title: "Verification Checklist [system-spec-kit/026-graph-and-context-optimization/004-agent-governance-and-commands/checklist]"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 description: "Unified verification checklist covering Workstream A (AGENTS execution guardrails; CHK-401..CHK-452) and Workstreams B + C (canonical intake + middleware cleanup; CHK-001..CHK-098). Totals: 26 P0 items, 23 P1 items, 38 P2 items; one P2 (CHK-452) intentionally open by design."
 trigger_phrases:
   - "verification"
@@ -35,7 +36,6 @@ _memory:
       - "P0 combined from REQ-001..REQ-017 (intake + middleware blockers) + REQ-401..REQ-407 (AGENTS guardrail blockers)"
       - "P1 combined from REQ-018..REQ-030 + REQ-408..REQ-414"
       - "P2 covers NFRs, SC-001..SC-023, and L3+ architecture/docs/deep-review verification"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Agent Governance And Commands
 
