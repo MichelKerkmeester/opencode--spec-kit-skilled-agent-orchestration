@@ -12,9 +12,9 @@ contextType: "spec"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/013-sk-deep-refinement/001-reverse-parent-research-review-folders"
-    last_updated_at: "2026-04-24T14:30:20+02:00"
+    last_updated_at: "2026-04-24T16:20:00+02:00"
     last_updated_by: "codex"
-    recent_action: "Completed rollback implementation, repo-wide migration, and packet closure docs"
+    recent_action: "Synced packet docs after residual owner-map cleanup"
     next_safe_action: "Phase 002 can proceed on the restored local-owner artifact contract"
     blockers: []
     key_files:
@@ -58,7 +58,7 @@ _memory:
 
 ### Phase Context
 
-This packet reverses the parent-root artifact placement policy introduced during the `007-deep-review-remediation/006-integrity-parity-closure` follow-up work and reinforced by later canonical-placement commits. It restores the earlier ownership model: root specs keep root-local `research/` and `review/`, while child phases and sub-phases keep packet folders inside their own local `research/` and `review/` directories. It also owns the repo-wide migration of child packets that were already centralized under ancestor roots.
+This packet reverses the parent-root artifact placement policy introduced during the `007-deep-review-remediation/006-integrity-parity-closure` follow-up work and reinforced by later canonical-placement commits. It restores the earlier ownership model: root specs keep root-local `research/` and `review/`, while child phases and sub-phases keep packet folders inside their own local `research/` and `review/` directories. It also owns the repo-wide migration of child packets that were already centralized under ancestor roots, including the later manual owner-map cleanup that emptied the remaining root `research/` and `review/` packet directories under `026-graph-and-context-optimization`.
 
 ---
 

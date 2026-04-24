@@ -1,5 +1,5 @@
 {
-  "research_topic": "Skill-advisor system and hooks improvement investigation, pt-02. Build on pt-01 (at .opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/029-skill-advisor-hook-improvements-pt-01/). Focus on recommendation quality, threshold drift, cross-runtime brief parity, MCP tool surface, telemetry beyond closed CF-019.",
+  "research_topic": "Skill-advisor system and hooks improvement investigation, pt-02. Build on pt-01 (at .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/029-skill-advisor-hook-improvements-pt-01/). Focus on recommendation quality, threshold drift, cross-runtime brief parity, MCP tool surface, telemetry beyond closed CF-019.",
   "spec_folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements",
   "max_iterations": 10,
   "convergence_threshold": 0.05,

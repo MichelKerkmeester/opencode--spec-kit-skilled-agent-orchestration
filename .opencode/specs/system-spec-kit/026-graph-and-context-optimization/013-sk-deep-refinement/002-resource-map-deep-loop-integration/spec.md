@@ -15,8 +15,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/013-sk-deep-refinement/002-resource-map-deep-loop-integration"
     last_updated_at: "2026-04-24T14:30:00+02:00"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "Canonical resource-map integration shipped across sk-deep-research and sk-deep-review skills; artifact_dir terminology polished across 30 downstream surfaces; sk-doc DQI pass lifted 11 touched skill files to 88+/good with 9 at excellent; 2627-file tree sync reconciled research packet reorganization + path references. Commits 2d190c0bd, 146682e2c, 9a1dbe481, 80b66dff2 on main."
-    next_safe_action: "Future packets with resource-map.md now get the integration automatically — no per-run prompt wiring needed. Monitor first autonomous deep-research/deep-review run that carries a resource-map.md to verify strategy.md Known Context injection and Coverage Gate section rendering behave as specified."
+    recent_action: "Shipped resource-map integration + sk-doc DQI alignment + tree sync"
+    next_safe_action: "Monitor first autonomous run carrying resource-map.md"
     blockers: []
     completion_pct: 100
     status: "complete"

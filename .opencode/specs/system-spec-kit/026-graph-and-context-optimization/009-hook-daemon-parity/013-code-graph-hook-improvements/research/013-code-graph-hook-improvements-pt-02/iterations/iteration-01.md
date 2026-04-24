@@ -6,8 +6,8 @@ This round re-anchored the packet on the parent charter, pt-01 synthesis, and th
 
 ### Context Consumed
 
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/028-code-graph-hook-improvements-pt-01/research.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/028-code-graph-hook-improvements-pt-01/findings-registry.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/028-code-graph-hook-improvements-pt-01/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/028-code-graph-hook-improvements-pt-01/findings-registry.json`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/spec.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-009.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-010.md`
@@ -15,7 +15,7 @@ This round re-anchored the packet on the parent charter, pt-01 synthesis, and th
 
 ### Findings
 
-- Pt-01 already narrowed the unresolved field to subtree scan scope, readiness caching, context freshness/provenance drift, latent deadline handling, and startup transport loss, so this packet should deepen those lanes or find new downstream residuals rather than re-surveying the whole subsystem [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/028-code-graph-hook-improvements-pt-01/research.md:3-4,13-20].
+- Pt-01 already narrowed the unresolved field to subtree scan scope, readiness caching, context freshness/provenance drift, latent deadline handling, and startup transport loss, so this packet should deepen those lanes or find new downstream residuals rather than re-surveying the whole subsystem [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/028-code-graph-hook-improvements-pt-01/research.md:3-4,13-20].
 - The parent packet explicitly kept scan/read/readiness paths, the CocoIndex bridge, session-prime startup wiring, and operator-facing status/docs in scope, which legitimizes deeper work in those exact surfaces [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/spec.md:54-74].
 - CF-009, CF-010, and CF-014 already closed staged persistence, query trust mapping, and artifact-root drift, so new work should look for residual metadata, transport, or read-path gaps downstream of those fixes rather than reopening the fixes themselves [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-009.md:5-12; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-010.md:5-13; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-014.md:5-13].
 

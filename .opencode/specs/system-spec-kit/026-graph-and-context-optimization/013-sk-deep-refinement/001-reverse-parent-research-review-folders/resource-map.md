@@ -9,9 +9,9 @@ contextType: "general"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/013-sk-deep-refinement/001-reverse-parent-research-review-folders"
-    last_updated_at: "2026-04-24T14:30:20+02:00"
+    last_updated_at: "2026-04-24T16:20:00+02:00"
     last_updated_by: "codex"
-    recent_action: "Captured the rollback resource map and evidence surfaces"
+    recent_action: "Expanded the rollback ledger with the residual root-packet owner-map migration pass"
     next_safe_action: "Use this ledger as the path baseline for phase 002"
     blockers: []
     key_files:
@@ -35,11 +35,11 @@ _memory:
 
 ## Summary
 
-- **Total references**: 48
-- **By category**: READMEs=2, Commands=4, Agents=8, Skills=17, Specs=14, Tests=3
+- **Total references**: 49
+- **By category**: READMEs=2, Commands=4, Agents=8, Skills=18, Specs=14, Tests=3
 - **Missing on disk**: 0
-- **Scope**: Historical rollback ledger for the parent-root placement reversal plus the repo-wide migration of 86 child-owned deep-loop packets back into owner-local `research/` and `review/` folders
-- **Generated**: 2026-04-24T14:30:20+02:00
+- **Scope**: Historical rollback ledger for the parent-root placement reversal plus the repo-wide migration of 135 child-owned deep-loop packets back into owner-local `research/` and `review/` folders
+- **Generated**: 2026-04-24T16:20:00+02:00
 
 > **Action vocabulary**: `Created` · `Updated` · `Analyzed` · `Removed` · `Cited` · `Validated` · `Moved` · `Renamed`.
 > **Status vocabulary**: `OK` (exists on disk) · `MISSING` (referenced but absent) · `PLANNED` (intentional future path).
@@ -79,6 +79,7 @@ _memory:
 |------|--------|--------|------|
 | `.opencode/skill/system-spec-kit/shared/review-research-paths.cjs` | Updated | OK | Single source of truth now distinguishes root-local runs from child/sub-phase owner-local packet folders. |
 | `.opencode/skill/system-spec-kit/scripts/migrate-deep-loop-local-owner.cjs` | Created | OK | Repo-wide migration utility that relocates misplaced child packets and rewrites live canonical references. |
+| `.opencode/skill/system-spec-kit/scripts/migrate-deep-loop-legacy-owner-map.cjs` | Created | OK | Explicit owner-map cleanup for the residual root packet directories that metadata heuristics did not classify correctly. |
 | `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs` | Updated | OK | Reducer now writes only to resolver-provided `researchDir`. |
 | `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs` | Updated | OK | Reducer now writes only to resolver-provided `reviewDir`. |
 | `.opencode/skill/sk-deep-research/SKILL.md` | Updated | OK | Core skill doc now explains root-local vs owner-local research packet placement. |
@@ -99,7 +100,7 @@ _memory:
 
 | Path | Action | Status | Note |
 |------|--------|--------|------|
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/` | Updated | OK | Migration scope root; 86 misplaced child-owned packets moved into descendant owner-local `research/` and `review/` folders while root-owned packets stayed in place. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/` | Updated | OK | Migration scope root; the first pass moved 86 child-owned packets, the manual owner-map pass moved 49 more, and the root `research/` and `review/` packet directories are now empty. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-014.md` | Cited | OK | Primary closure evidence for the parent-root placement policy being reversed. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-sk-deep-refinement/001-reverse-parent-research-review-folders/spec.md` | Created | OK | Rollback contract, scope, requirements, and acceptance scenarios. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-sk-deep-refinement/001-reverse-parent-research-review-folders/plan.md` | Created | OK | Implementation and migration plan for the rollback packet. |

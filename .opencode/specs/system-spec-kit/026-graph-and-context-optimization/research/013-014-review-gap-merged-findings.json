@@ -145,7 +145,7 @@
       "source_audit_finding_id": "F-001",
       "summary": "The central MCP server README still documents `code_graph_status` and `code_graph_context` at the pre-013 contract level, so operators do not see `graphQualitySummary`, blocked-read payloads, or structured `partialOutput` in the main reference.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-001",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-001",
         ".opencode/skill/system-spec-kit/mcp_server/README.md:540",
         ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/status.ts:47"
       ],
@@ -162,7 +162,7 @@
       "source_audit_finding_id": "F-002",
       "summary": "The code-graph subsystem README still presents the older status/readiness surface and omits the post-013 status, blocked-read, and startup-quality details.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-002",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-002",
         ".opencode/skill/system-spec-kit/mcp_server/code-graph/README.md:35",
         ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts:42"
       ],
@@ -179,7 +179,7 @@
       "source_audit_finding_id": "F-003",
       "summary": "The install guide still explains only freshness/full-scan behavior, so operators do not get the newer 013-era status/context vocabulary in the troubleshooting path.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-003",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-003",
         ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md:124",
         ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md:203"
       ],
@@ -196,7 +196,7 @@
       "source_audit_finding_id": "F-004",
       "summary": "The public tool-schema descriptions still describe the old `code_graph_status` and `code_graph_context` outputs, so generated tool docs and downstream consumers inherit stale contract text.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-004",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-004",
         ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:591",
         ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts:171"
       ],
@@ -213,7 +213,7 @@
       "source_audit_finding_id": "F-005",
       "summary": "The feature-catalog page for code-graph storage/query still points at the old indexer test path and describes `code_graph_status` generically, so the curated feature reference is stale.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-005",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-005",
         ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/08-code-graph-storage-query.md:13",
         ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/08-code-graph-storage-query.md:32"
       ],
@@ -230,7 +230,7 @@
       "source_audit_finding_id": "F-006",
       "summary": "The CocoIndex bridge feature page still points at the old seed-resolver test path and does not capture the richer post-013 context contract.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-006",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-006",
         ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/09-cocoindex-bridge-context.md:13",
         ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts:56"
       ],
@@ -247,7 +247,7 @@
       "source_audit_finding_id": "F-007",
       "summary": "The startup manual-testing playbook still validates only the old tool-listing and budget contract, even though packet 013 added startup payload and graph-quality assertions in the hook test suite.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-007",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-007",
         ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/250-session-start-startup.md:18",
         ".opencode/skill/system-spec-kit/mcp_server/tests/hook-session-start.vitest.ts:245"
       ],
@@ -264,7 +264,7 @@
       "source_audit_finding_id": "F-008",
       "summary": "The storage/query playbook still uses the old `tests/code-graph-indexer.vitest.ts` path and validates counts-only status behavior, so the operator scenario lags the live packet 013 contract.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-008",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-008",
         ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/254-code-graph-scan-query.md:17",
         ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/254-code-graph-scan-query.md:103"
       ],
@@ -281,7 +281,7 @@
       "source_audit_finding_id": "F-009",
       "summary": "The semantic-vs-structural routing playbook still uses the old indexer test path and never mentions the 013-era `partialOutput` or blocked-read contract for `code_graph_context`.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-009",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-009",
         ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/255-cocoindex-code-graph-routing.md:17",
         ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts:117"
       ],
@@ -413,7 +413,7 @@
       "source_audit_finding_id": "F-001",
       "summary": "The OpenCode plugin-bridge feature catalog page still points at the old `.opencode/plugins/` helper location and the pre-014 `0.7` threshold wording.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-001",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-001",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/feature_catalog/07--hooks-and-plugin/05-opencode-plugin-bridge.md:31",
         ".opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs:193"
       ],
@@ -432,7 +432,7 @@
       "source_audit_finding_id": "F-002",
       "summary": "The OpenCode bridge manual playbook still tells operators to invoke the old bridge path with `thresholdConfidence:0.7`.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-002",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-002",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/02--cli-hooks-and-plugin/005-opencode-plugin-bridge.md:34",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/plugin-bridge.vitest.ts:46"
       ],
@@ -451,7 +451,7 @@
       "source_audit_finding_id": "F-003",
       "summary": "The `advisor_recommend` feature catalog page still describes the pre-014 public output shape and omits `workspaceRoot` plus `effectiveThresholds`.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-003",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-003",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/feature_catalog/06--mcp-surface/01-advisor-recommend.md:31",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-recommend.ts:162"
       ],
@@ -470,7 +470,7 @@
       "source_audit_finding_id": "F-004",
       "summary": "The native `advisor_recommend` manual scenario still validates only the recommendation payload and does not check the new public 014 output fields.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-004",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-004",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/01--native-mcp-tools/001-native-recommend-happy-path.md:43",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-recommend.ts:210"
       ],
@@ -489,7 +489,7 @@
       "source_audit_finding_id": "F-005",
       "summary": "The `advisor_validate` feature catalog page still reflects the older slice-only description and omits `thresholdSemantics`, telemetry diagnostics, and outcome totals.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-005",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-005",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/feature_catalog/06--mcp-surface/03-advisor-validate.md:31",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-validate.ts:354"
       ],
@@ -508,7 +508,7 @@
       "source_audit_finding_id": "F-006",
       "summary": "The native `advisor_validate` playbook still checks only slice presence and baseline metrics, not the 014 telemetry and outcome surfaces.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-006",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-006",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/01--native-mcp-tools/003-native-validate-slices.md:43",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-validate.ts:412"
       ],
@@ -611,7 +611,7 @@
       "source_audit_finding_id": "F-010",
       "summary": "The handler-local README for `code-graph/handlers/` still summarizes `status.ts` and `context.ts` generically after packet 013 changed those surfaces materially.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-010",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-010",
         ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/README.md:11"
       ],
       "recommended_fix": "Refresh the handler-local README to reflect the post-013 status/context/query surface.",
@@ -627,7 +627,7 @@
       "source_audit_finding_id": "F-011",
       "summary": "The readiness-contract feature page still stops at shared helper fields and an old sibling-readiness test path, even though callers now see richer blocked-read payloads on top of that layer.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-011",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-011",
         ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md"
       ],
       "recommended_fix": "Extend the readiness-contract page so it documents the richer blocked-read payload surface and current supporting test locations.",
@@ -643,7 +643,7 @@
       "source_audit_finding_id": "F-012",
       "summary": "The auto-trigger feature page still frames stale/empty handling purely as helper actions, not as the explicit blocked query/context payloads that operators now encounter after packet 013.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-012",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-012",
         ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/15-code-graph-auto-trigger.md"
       ],
       "recommended_fix": "Update the auto-trigger feature page so it teaches the caller-visible blocked query/context payload contract, not only helper actions.",
@@ -659,7 +659,7 @@
       "source_audit_finding_id": "F-013",
       "summary": "The auto-trigger manual-testing playbook still validates action-only helper outcomes and the old indexer-suite path instead of the newer blocked query/context contract.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-013",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/findings-registry.json#F-013",
         ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/260-code-graph-auto-trigger.md"
       ],
       "recommended_fix": "Refresh the auto-trigger manual-testing playbook so it validates the blocked query/context contract and current supporting test paths.",
@@ -692,7 +692,7 @@
       "source_audit_finding_id": "F-007",
       "summary": "The `advisor_recommend` happy-path handler test never asserts the new public `workspaceRoot` and `effectiveThresholds` fields.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-007",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-007",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/handlers/advisor-recommend.vitest.ts:99",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-recommend.ts:210"
       ],
@@ -710,7 +710,7 @@
       "source_audit_finding_id": "F-008",
       "summary": "The setup guide still uses stale OpenCode bridge wording after the helper relocation, even though the plugin README is already correct.",
       "evidence": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-008",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/031-skill-advisor-gap-investigation-pt-01/findings-registry.json#F-008",
         ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/SET-UP_GUIDE.md:117",
         ".opencode/plugins/README.md:8"
       ],

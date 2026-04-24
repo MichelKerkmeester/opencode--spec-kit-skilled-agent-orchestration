@@ -14,16 +14,16 @@ This round was a revalidation pass. The goal was to confirm that the emerging pa
 - `iterations/iteration-06.md`
 - `iterations/iteration-07.md`
 - `iterations/iteration-08.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/028-code-graph-hook-improvements-pt-01/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/028-code-graph-hook-improvements-pt-01/research.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-009.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-010.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-014.md`
 
 ### Findings
 
-- The strongest new packet themes are not the pt-01 headline gaps themselves, but downstream residuals: read-path soft continuation on `full_scan`, CocoIndex seed fidelity loss, stale post-scan summary metadata, unsurfaced summary readers, startup transport/test drift, and unlabeled deadline truncation [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/028-code-graph-hook-improvements-pt-01/research.md:13-20; .opencode/skill/system-spec-kit/mcp_server/code-graph/lib/seed-resolver.ts:86-92; .opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts:239-242].
+- The strongest new packet themes are not the pt-01 headline gaps themselves, but downstream residuals: read-path soft continuation on `full_scan`, CocoIndex seed fidelity loss, stale post-scan summary metadata, unsurfaced summary readers, startup transport/test drift, and unlabeled deadline truncation [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/028-code-graph-hook-improvements-pt-01/research.md:13-20; .opencode/skill/system-spec-kit/mcp_server/code-graph/lib/seed-resolver.ts:86-92; .opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts:239-242].
 - CF-009, CF-010, and CF-014 remain closed with respect to their original targets, so pt-02 should cite them as background and avoid restating them as open findings [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-009.md:5-12; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-010.md:5-13; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-014.md:5-13].
-- The packet still has enough synthesis-worthy material without reopening subtree scan scope or readiness debounce invalidation, which keeps pt-02 from duplicating pt-01's center of gravity [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/028-code-graph-hook-improvements-pt-01/research.md:3-4,22-28].
+- The packet still has enough synthesis-worthy material without reopening subtree scan scope or readiness debounce invalidation, which keeps pt-02 from duplicating pt-01's center of gravity [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/028-code-graph-hook-improvements-pt-01/research.md:3-4,22-28].
 
 ### Evidence
 

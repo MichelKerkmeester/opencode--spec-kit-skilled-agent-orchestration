@@ -81,17 +81,17 @@ _memory:
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening/` | Cited | OK | Related sibling packet. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment/` | Cited | OK | Related sibling packet. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-019.md` | Cited | OK | Upstream parity remediation report. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/research.md` | Cited | OK | Packet-02 research synthesis. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/iterations/` | Cited | OK | Packet-02 iteration reports directory. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/deep-research-dashboard.md` | Cited | OK | Packet-02 research dashboard. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/deep-research-strategy.md` | Cited | OK | Packet-02 research strategy. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/014-skill-advisor-hook-improvements-pt-02/research.md` | Cited | OK | Packet-02 research synthesis. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/014-skill-advisor-hook-improvements-pt-02/iterations/` | Cited | OK | Packet-02 iteration reports directory. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/014-skill-advisor-hook-improvements-pt-02/deep-research-dashboard.md` | Cited | OK | Packet-02 research dashboard. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/014-skill-advisor-hook-improvements-pt-02/deep-research-strategy.md` | Cited | OK | Packet-02 research strategy. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/013-014-review-gap-merged-synthesis.md` | Cited | OK | Canonical merged review-gap synthesis. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/013-014-review-gap-merged-findings.json` | Cited | OK | Canonical merged review-gap findings. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/description.json` | Updated | OK | Packet description metadata. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/graph-metadata.json` | Updated | OK | Packet graph metadata. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/deep-research-config.json` | Cited | OK | Packet-02 research config. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/findings-registry.json` | Cited | OK | Packet-02 findings registry. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/deep-research-state.jsonl` | Cited | OK | Packet-02 research state. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/014-skill-advisor-hook-improvements-pt-02/deep-research-config.json` | Cited | OK | Packet-02 research config. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/014-skill-advisor-hook-improvements-pt-02/findings-registry.json` | Cited | OK | Packet-02 findings registry. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/014-skill-advisor-hook-improvements-pt-02/deep-research-state.jsonl` | Cited | OK | Packet-02 research state. |
 
 ---
 

@@ -159,12 +159,12 @@ Success criteria:
 
 ### Source Research Packets
 
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/013-code-graph-hook-improvements-pt-02/research.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/013-code-graph-hook-improvements-pt-02/findings-registry.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/research.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/findings-registry.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/013-code-graph-zero-calls-pt-03/research.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/013-code-graph-zero-calls-pt-03/findings-registry.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/013-code-graph-hook-improvements-pt-02/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/013-code-graph-hook-improvements-pt-02/findings-registry.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/014-skill-advisor-hook-improvements-pt-02/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/014-skill-advisor-hook-improvements-pt-02/findings-registry.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/013-code-graph-zero-calls-pt-03/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/013-code-graph-zero-calls-pt-03/findings-registry.json`
 
 ### Code-Graph Paths Cited
 

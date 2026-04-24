@@ -10,7 +10,7 @@ This round revisited the context deadline contract, but with a narrower question
 - `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/028-code-graph-hook-improvements-pt-01/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/research/028-code-graph-hook-improvements-pt-01/research.md`
 
 ### Findings
 

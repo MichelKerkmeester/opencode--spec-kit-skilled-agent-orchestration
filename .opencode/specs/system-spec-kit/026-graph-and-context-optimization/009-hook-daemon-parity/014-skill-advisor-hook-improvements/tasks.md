@@ -19,7 +19,7 @@ _memory:
     blockers: []
     key_files:
       - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/plan.md"
-      - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/findings-registry.json"
+      - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/014-skill-advisor-hook-improvements-pt-02/findings-registry.json"
     completion_pct: 10
     status: "tasks-ready"
 ---

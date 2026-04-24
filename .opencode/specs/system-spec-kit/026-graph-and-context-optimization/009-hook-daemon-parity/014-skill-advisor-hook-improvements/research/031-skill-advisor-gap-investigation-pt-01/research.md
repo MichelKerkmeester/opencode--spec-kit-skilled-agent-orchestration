@@ -96,7 +96,7 @@ Add these paths to packet 014's `resource-map.md` as `Analyzed` plus follow-up n
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/resource-map.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/spec.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/findings-registry.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/014-skill-advisor-hook-improvements-pt-02/findings-registry.json`
 - `.opencode/plugins/spec-kit-skill-advisor.js`
 - `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/README.md`

@@ -158,7 +158,7 @@ Novelty trended as `0.32, 0.24, 0.19, 0.15, 0.12, 0.09, 0.08, 0.07, 0.06, 0.04`.
 
 ## Related Work
 
-- Pt-01 packet: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/029-skill-advisor-hook-improvements-pt-01/`.
+- Pt-01 packet: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/029-skill-advisor-hook-improvements-pt-01/`.
 - Originating packet spec: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/spec.md`.
 - Applied closure baseline: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-019.md`.
 - Relevant sibling implementation packets: `001-skill-advisor-hook-surface`, `008-skill-advisor-plugin-hardening`, `009-skill-advisor-standards-alignment`.
@@ -175,8 +175,8 @@ Novelty trended as `0.32, 0.24, 0.19, 0.15, 0.12, 0.09, 0.08, 0.07, 0.06, 0.04`.
 
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/spec.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-019.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/029-skill-advisor-hook-improvements-pt-01/research.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/029-skill-advisor-hook-improvements-pt-01/findings-registry.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/029-skill-advisor-hook-improvements-pt-01/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/029-skill-advisor-hook-improvements-pt-01/findings-registry.json`
 - `.opencode/plugins/spec-kit-skill-advisor.js`
 - `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs`
 - `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md`

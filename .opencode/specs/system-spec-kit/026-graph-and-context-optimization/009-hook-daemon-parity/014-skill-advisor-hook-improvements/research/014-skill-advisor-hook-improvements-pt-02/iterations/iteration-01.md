@@ -9,14 +9,14 @@ This opening pass re-anchored the packet against the originating spec, the pt-01
 - `../deep-research-strategy.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/spec.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-019.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/029-skill-advisor-hook-improvements-pt-01/research.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/029-skill-advisor-hook-improvements-pt-01/findings-registry.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/029-skill-advisor-hook-improvements-pt-01/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/029-skill-advisor-hook-improvements-pt-01/findings-registry.json`
 
 ### Findings
 
 - The originating packet explicitly scopes the remaining investigation to recommendation quality, threshold drift, runtime-brief staleness, cross-runtime cache/render parity, telemetry, and MCP-tool scoping, so packet-02 should concentrate on those surfaces instead of re-opening base hook wiring [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/spec.md:56-63].
 - CF-019 already fixed the earlier Python scorer bug where threshold decisions froze before graph-conflict penalties and post-normalization, so the old pass/fail-freeze defect is closed context, not an active packet-02 target [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-019.md:6-12] [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-019.md:24-40].
-- Pt-01 already localized the main unresolved fronts to OpenCode threshold/cache drift, Codex fast-path divergence, static `laneWeights`, validator scope limits, and telemetry gaps, which gives packet-02 a concrete deeper-reading agenda rather than a blank-slate search [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/029-skill-advisor-hook-improvements-pt-01/research.md:9-20] [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/029-skill-advisor-hook-improvements-pt-01/findings-registry.json:4-150].
+- Pt-01 already localized the main unresolved fronts to OpenCode threshold/cache drift, Codex fast-path divergence, static `laneWeights`, validator scope limits, and telemetry gaps, which gives packet-02 a concrete deeper-reading agenda rather than a blank-slate search [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/029-skill-advisor-hook-improvements-pt-01/research.md:9-20] [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/029-skill-advisor-hook-improvements-pt-01/findings-registry.json:4-150].
 
 ### Evidence
 
@@ -29,7 +29,7 @@ This opening pass re-anchored the packet against the originating spec, the pt-01
 
 > - `F-001` OpenCode uses a lower default threshold (`0.7`) than the shared runtime path (`0.8`), and the native bridge path ignores configured `thresholdConfidence`...
 > - `F-003` Codex native-hook mode bypasses the shared brief pipeline...
-> - `F-005` Hook telemetry is effectively write-only... [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/029-skill-advisor-hook-improvements-pt-01/research.md:11-19]
+> - `F-005` Hook telemetry is effectively write-only... [.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/research/029-skill-advisor-hook-improvements-pt-01/research.md:11-19]
 
 ### Negative Knowledge
 
