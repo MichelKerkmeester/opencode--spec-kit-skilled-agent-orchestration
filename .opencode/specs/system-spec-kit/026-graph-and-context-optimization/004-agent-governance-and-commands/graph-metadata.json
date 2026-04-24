@@ -50,6 +50,7 @@
       ".opencode/command/improve/agent.md",
       ".opencode/skill/sk-doc/assets/agents/agent_template.md",
       ".opencode/command/memory/save.md",
+      "research/research.md",
       ".opencode/skill/system-spec-kit/templates/debug-delegation.md",
       ".opencode/command/README.txt",
       ".opencode/command/spec_kit/README.txt",
@@ -61,8 +62,7 @@
       ".opencode/command/spec_kit/deep-review.md",
       ".opencode/skill/system-spec-kit/SKILL.md",
       ".opencode/README.md",
-      ".opencode/changelog/01--system-spec-kit/v3.4.0.0.md",
-      "tasks.md"
+      ".opencode/changelog/01--system-spec-kit/v3.4.0.0.md"
     ],
     "entities": [
       {
@@ -105,6 +105,12 @@
         "name": "save.md",
         "kind": "doc",
         "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
@@ -168,12 +174,6 @@
         "source": "derived"
       },
       {
-        "name": "tasks.md",
-        "kind": "doc",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -212,7 +212,7 @@
     ],
     "causal_summary": "This packet closes three coordinated surgery passes on the agent and command graph for `026-graph-and-context-optimization`. All three passes landed together because they reshape the same surface: who speaks for SpecKit, how agents are told to behave, and which commands still exist.",
     "created_at": "2026-04-08T00:00:00Z",
-    "last_save_at": "2026-04-24T19:15:08.618Z",
+    "last_save_at": "2026-04-24T19:19:15.663Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -221,7 +221,8 @@
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "implementation-summary.md"
+      "implementation-summary.md",
+      "research/research.md"
     ]
   }
 }
