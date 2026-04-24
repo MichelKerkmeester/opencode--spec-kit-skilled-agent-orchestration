@@ -1,6 +1,6 @@
 ---
-title: "Feature Specification: Skill-Advisor System + Hooks Improvement Investigation"
-description: "Deep-research investigation into how the skill-advisor package and its hook-surfacing wiring can be improved beyond the state delivered by 009-hook-daemon-parity and 012-docs-impact-remediation. Research-only packet — output is findings + recommendations, no implementation in this sub-phase."
+title: "Feature Specification: Skill-Advisor Hook Improvements"
+description: "Level-2 implementation packet that translates the packet-02 skill-advisor research findings into shipped runtime parity, public MCP contract normalization, and durable prompt-safe telemetry across the skill-advisor and hook surfaces."
 trigger_phrases:
   - "skill-advisor hook improvements"
   - "skill-advisor system research"
@@ -10,18 +10,18 @@ contextType: "spec"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements"
-    last_updated_at: "2026-04-24T01:10:00Z"
-    last_updated_by: "claude-opus-4-7"
-    recent_action: "Research packet spec scaffolded; sk-deep-research with 10 iterations queued"
-    next_safe_action: "Run sk-deep-research (cli-codex gpt-5.4 high fast) on this spec folder"
+    last_updated_at: "2026-04-24T12:15:00+02:00"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Governing spec reconciled to the shipped packet-02-derived implementation"
+    next_safe_action: "Continue packet-015 remediation for the remaining packet-014 review gaps"
     blockers: []
     key_files: []
-    completion_pct: 5
+    completion_pct: 100
     open_questions: []
     answered_questions: []
-    status: "research-queued"
+    status: "complete"
 ---
-# Feature Specification: Skill-Advisor System + Hooks Improvement Investigation
+# Feature Specification: Skill-Advisor Hook Improvements
 
 <!-- SPECKIT_LEVEL: 2 -->
 
@@ -33,11 +33,11 @@ _memory:
 |---|---|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Research queued |
+| **Status** | Complete |
 | **Created** | 2026-04-24 |
 | **Parent** | `026-graph-and-context-optimization/009-hook-daemon-parity/` |
 | **Parent Spec** | `../spec.md` |
-| **Related** | `../001-skill-advisor-hook-surface/`, `../008-skill-advisor-plugin-hardening/`, `../009-skill-advisor-standards-alignment/`, `../006-integrity-parity-closure/applied/CF-019.md` |
+| **Related** | `../001-skill-advisor-hook-surface/`, `../008-skill-advisor-plugin-hardening/`, `../009-skill-advisor-standards-alignment/`, `../../007-deep-review-remediation/006-integrity-parity-closure/applied/CF-019.md` |
 
 ---
 
@@ -45,22 +45,21 @@ _memory:
 
 ### Problem Statement
 
-The skill-advisor system has been through three sibling sub-phases (001 surface, 008 hardening, 009 standards alignment) plus targeted P0 fixes in `007/006-integrity-parity-closure/` (CF-019 freezes-before-graph-penalty, etc.). The hook-surfacing story is now end-to-end: Claude / Codex / Copilot / Gemini / OpenCode-plugin-bridge all have automatic brief delivery wired when hooks are enabled, with `skill_advisor.py` as scripted fallback.
+The skill-advisor system has already passed through sibling sub-phases `001`, `008`, and `009`, plus targeted parity closure in `007/006-integrity-parity-closure/`. That earlier work established the end-to-end hook surfaces, but packet-02 research still identified a bounded implementation set across OpenCode threshold parity, shared brief rendering, MCP surface symmetry, validator threshold semantics, and durable prompt-safe telemetry.
 
-The open question: **beyond what has landed, where else can the skill-advisor system and its hook wiring improve?**
-
-This packet scopes a focused deep-research investigation into that question. It is research-only; any implementation work becomes follow-up sub-phases.
+Those gaps were concrete shipped-behavior and contract issues rather than open-ended research questions. This packet owns the implementation follow-through for that research bundle so the governing spec, in-folder plan/tasks, and closeout docs all describe the same authorized work.
 
 ### Purpose
 
-Produce a `research/research.md` that answers, with evidence drawn directly from the code and prior research:
+Implement the packet-02 findings in one Level-2 packet by:
 
-1. How well does the current advisor recommendation quality correlate with actual skill activation outcomes? Where does it miss?
-2. Where do threshold / fusion weights, decay, or graph-conflict penalties introduce recommendation drift?
-3. Which runtime hook surfaces still surface stale or over-verbose advisor briefs? How can prompt-entry latency be reduced?
-4. What cross-runtime parity gaps remain in how the advisor brief is rendered, cached, and invalidated?
-5. Which telemetry or feedback loops are under-used for adaptive tuning of advisor behavior?
-6. Where are the skill-advisor MCP tools (`advisor_recommend`, `advisor_status`, `advisor_validate`) mis-scoped, missing, or redundant with skill-graph equivalents?
+1. Unifying the effective-threshold contract across the OpenCode plugin defaults, native bridge route, and fallback route.
+2. Routing OpenCode native rendering through the shared advisor brief invariants instead of a bespoke formatter.
+3. Normalizing Codex prompt submission and prompt-wrapper fallback against the shared builder contract.
+4. Exposing explicit `workspaceRoot` and effective state on the public `advisor_recommend` and `advisor_validate` surfaces.
+5. Publishing aggregate-vs-runtime threshold semantics so operator tooling can distinguish validation gates from runtime routing.
+6. Persisting prompt-safe diagnostics in a bounded durable sink that validator analysis can read across processes.
+7. Capturing accepted/corrected/ignored outcome totals for validator feedback without persisting raw prompt text.
 
 ---
 
@@ -74,15 +73,16 @@ Produce a `research/research.md` that answers, with evidence drawn directly from
 - Hook adapters that deliver the brief: Claude `UserPromptSubmit`, Codex prompt/session hooks (gated by `codex_hooks`), Copilot `.claude/settings.local.json` writer commands, Gemini hooks, OpenCode plugin bridge `experimental.chat.system.transform`.
 - Advisor MCP tools: `advisor_recommend`, `advisor_status`, `advisor_validate`.
 - Skill-graph interactions: how advisor recommendations are influenced by skill-graph state.
-- Telemetry / feedback: how advisor outcomes are (or aren't) fed back for adaptive ranking.
+- Telemetry / feedback surfaces touched by the shipped packet-02 findings, including durable diagnostics and outcome totals.
 - Operator-facing surfaces: ENV_REFERENCE entries for advisor tunables, hook_system.md rows for advisor-related hooks, AGENTS.md Gate 2 prose.
 
 ### Out of Scope
 
-- Implementation of any discovered improvements (that's follow-up sub-phases).
+- New exploratory deep-research beyond the packet-02 findings bundle.
 - Skill package itself beyond how the advisor consumes it (skill content generation is covered elsewhere).
-- Memory system beyond the advisor's cache integration points.
-- New hook-engine work beyond advisor surface integration.
+- Memory-system redesign beyond the advisor's cache and diagnostics integration points.
+- New hook-engine work beyond the runtime surfaces touched by `014-F-001` through `014-F-007`.
+- Packet-015 follow-up remediation items that are not part of the shipped 014 implementation contract.
 
 ### Files Likely to be Referenced
 
@@ -96,7 +96,7 @@ Produce a `research/research.md` that answers, with evidence drawn directly from
 | `026/009/001-skill-advisor-hook-surface/research/research.md` (if present) | Prior 001 research |
 | `026/009/008-skill-advisor-plugin-hardening/implementation-summary.md` | Prior 008 outcomes |
 | `026/009/009-skill-advisor-standards-alignment/implementation-summary.md` | Prior 009 outcomes |
-| `026/007/006-integrity-parity-closure/applied/CF-019.md` | Already-applied advisor fix |
+| `026/007/006-integrity-parity-closure/applied/CF-019.md` | Upstream parity fix consumed as implementation baseline |
 
 ---
 
@@ -106,30 +106,30 @@ Produce a `research/research.md` that answers, with evidence drawn directly from
 
 | ID | Requirement | Acceptance |
 |---|---|---|
-| REQ-001 | Complete 10 sk-deep-research iterations on the topic defined in §2.Purpose | `research/iterations/iteration-01.md` … `iteration-10.md` written; `deep-research-state.jsonl` has 10 delta entries |
-| REQ-002 | Final `research.md` synthesis written with required sections | Summary, Scope, Key Findings (grouped by severity), Evidence Trail, Recommended Fixes, Convergence Report, Open Questions, References |
-| REQ-003 | Findings registry JSON emitted | `research/findings-registry.json` with per-finding severity, category, evidence, recommended_fix, target_files |
+| REQ-001 | OpenCode and Codex runtime entrypoints share the packet-014 threshold/render contract | OpenCode native + fallback paths and Codex prompt submission + prompt-wrapper fallback all consume the shared builder/render flow without branch-specific threshold drift |
+| REQ-002 | Public advisor MCP surfaces expose explicit workspace and threshold state | `advisor_recommend` and `advisor_validate` surface `workspaceRoot`, effective threshold details, and validator threshold semantics through handlers, schemas, and operator docs |
+| REQ-003 | Prompt-safe diagnostics and outcome totals persist beyond process-local stderr output | Durable bounded telemetry sinks exist for hook diagnostics, and validator analysis can read accepted/corrected/ignored outcomes back across processes |
 
 ### P1 — Recommended
 
 | ID | Requirement | Acceptance |
 |---|---|---|
-| REQ-004 | Every finding cites code paths or prior-research sections with line-level specificity | Random-sample check: 3 findings each have at least one `path:line` or `doc#anchor` citation |
-| REQ-005 | Recommended-fix section groups by logical bucket (recommendation quality / hook latency / cross-runtime parity / telemetry / MCP-tool surface / env tunables) | Synthesizer output visibly uses those buckets |
+| REQ-004 | Focused verification covers the shipped runtime, MCP, and telemetry surfaces | Packet closeout includes targeted Vitest/smoke evidence for OpenCode parity, Codex parity, validator outputs, and durable telemetry behavior |
+| REQ-005 | Packet lineage remains internally consistent after implementation | `spec.md`, `plan.md`, `tasks.md`, `implementation-summary.md`, and `checklist.md` all describe packet 014 as the implementation follow-through for packet-02 research |
 
 ---
 
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: 10 iterations completed or convergence detected early.
-- **SC-002**: `research.md` has ≥ 3 P0/P1 findings that represent net-new gaps beyond what is already closed in sibling sub-phases + `007/006-integrity-parity-closure/`.
-- **SC-003**: Every recommended fix names concrete target files so a downstream implementation packet can act on it without re-investigation.
-- **SC-004**: Research completes using `cli-codex gpt-5.4 high fast` (gpt-5.5 verified unavailable earlier this session).
+- **SC-001**: Packet 014 closes the packet-02 implementation set for `014-F-001` through `014-F-007` inside this folder rather than deferring the actual code changes to an unnamed child packet.
+- **SC-002**: OpenCode, Codex, and public MCP surfaces describe one threshold/render/operator contract after implementation.
+- **SC-003**: The packet's governing spec and closeout docs consistently describe packet-02 research as upstream input and packet 014 as the implementation packet.
+- **SC-004**: Verification records focused Vitest and smoke evidence for the shipped surfaces, while honestly documenting any remaining packet-external build blockers.
 
 ---
 
 ## 6. EXECUTION NOTE
 
-Dispatched via the same direct `codex exec` pattern documented in `../006-integrity-parity-closure/decision-record.md#adr-001`. Output file layout matches sk-deep-research conventions.
+Packet 014 consumes the packet-02 research bundle at `../../research/014-skill-advisor-hook-improvements-pt-02/` as its upstream implementation input and records the authorized execution in this folder's `plan.md`, `tasks.md`, `implementation-summary.md`, and `checklist.md`.
 
-**Research output location (canonical):** `../../research/029-skill-advisor-hook-improvements-pt-01/` at the 026 coordination-root (following the `{phase-slug}-pt-NN` nested-packet convention used by sk-deep-research). Contains: `research.md` (synthesis), `iterations/iteration-01..10.md`, `findings-registry.json`, `deep-research-state.jsonl`, `deep-research-dashboard.md`.
+Implementation execution followed the same direct `codex exec` pattern documented in `../../007-deep-review-remediation/006-integrity-parity-closure/decision-record.md#adr-001`, but the canonical implementation record for this work lives in packet `014-skill-advisor-hook-improvements/` rather than in a separate child packet.

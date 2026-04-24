@@ -174,6 +174,7 @@ function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecom
   const key = advisorPromptCache.makeKey({
     canonicalPrompt: input.prompt.trim(),
     sourceSignature,
+    workspaceRoot,
     runtime: 'mcp',
     maxTokens: input.options?.topK,
     thresholdConfig: {

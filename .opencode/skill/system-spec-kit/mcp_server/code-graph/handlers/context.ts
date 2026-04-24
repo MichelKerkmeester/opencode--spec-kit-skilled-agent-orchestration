@@ -165,11 +165,12 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
       const source = typeof seed.source === 'string' && seed.source.trim().length > 0
         ? seed.source
         : seed.provider;
+      const cocoindexFile = seed.file ?? seed.filePath;
 
-      if (seed.provider === 'cocoindex' && seed.file) {
+      if (seed.provider === 'cocoindex' && cocoindexFile) {
         return {
           provider: 'cocoindex' as const,
-          file: seed.file,
+          file: cocoindexFile,
           range: seed.range ?? { start: seed.startLine ?? 1, end: seed.endLine ?? seed.startLine ?? 1 },
           score: seed.score ?? 0,
           snippet: seed.snippet,

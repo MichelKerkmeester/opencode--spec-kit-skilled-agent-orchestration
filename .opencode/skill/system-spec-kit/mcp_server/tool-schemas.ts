@@ -588,13 +588,13 @@ const codeGraphQuery: ToolDefinition = {
 
 const codeGraphStatus: ToolDefinition = {
   name: 'code_graph_status',
-  description: '[L7:Maintenance] Report code graph index health. Returns totalFiles, totalNodes, totalEdges, freshness, lastScanAt, lastGitHead, dbFileSize, schemaVersion, nodesByKind, edgesByType, and parseHealth. Token Budget: 500.',
+  description: '[L7:Maintenance] Report code graph index health. Returns totalFiles, totalNodes, totalEdges, freshness, readiness, canonicalReadiness, trustState, lastScanAt, lastPersistedAt, lastGitHead, dbFileSize, schemaVersion, nodesByKind, edgesByType, parseHealth, and graphQualitySummary. Token Budget: 500.',
   inputSchema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
 };
 
 const codeGraphContext: ToolDefinition = {
   name: 'code_graph_context',
-  description: '[L6:Analysis] Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds — use CocoIndex (mcp__cocoindex_code__search) for semantic search first, then pass results here for structural expansion. Supports manual seeds (provider: manual) and graph seeds (provider: graph). Modes: neighborhood (1-hop calls+imports), outline (file symbols), impact (reverse callers). Token Budget: 1200.',
+  description: '[L6:Analysis] Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds — use CocoIndex (mcp__cocoindex_code__search) for semantic search first, then pass results here for structural expansion. Supports manual seeds (provider: manual) and graph seeds (provider: graph). Modes: neighborhood (1-hop calls+imports), outline (file symbols), impact (reverse callers). When readiness requires a full scan, returns an explicit blocked payload with requiredAction `code_graph_scan`, readiness metadata, and lastPersistedAt instead of degraded graph answers. Successful responses include metadata.partialOutput for deadline/budget truncation details (reasons, omittedSections, omittedAnchors, truncatedText). Token Budget: 1200.',
   inputSchema: {
     type: 'object', additionalProperties: false,
     properties: {

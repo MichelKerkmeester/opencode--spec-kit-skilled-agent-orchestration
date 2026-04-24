@@ -73,8 +73,9 @@ advisor_validate({"confirmHeavyRun":true,"workspaceRoot":"/absolute/path/to/repo
 Expected shape:
 
 - `advisor_status` returns `freshness`, `generation`, `trustState`, `lastScanAt`, `skillCount`, and `laneWeights`.
-- `advisor_recommend` returns `workspaceRoot`, prompt-safe `recommendations[]`, `effectiveThresholds`, cache state, lifecycle redirect metadata, and freshness trust.
+- `advisor_recommend` returns the resolved `workspaceRoot`, prompt-safe `recommendations[]`, `effectiveThresholds` (`confidenceThreshold`, `uncertaintyThreshold`, `confidenceOnly`), cache state, lifecycle redirect metadata, freshness/trust metadata, and optional warnings or abstain reasons for fail-open or threshold-filtered results.
 - `advisor_validate` returns `workspaceRoot`, `thresholdSemantics`, telemetry rollups, and real corpus, holdout, parity, safety, and latency slices.
+- When `skillSlug` is provided, `advisor_validate.telemetry.outcomes.scope` reports `{"kind":"skill","skillSlug":"..."}` and `telemetry.outcomes.totals` counts only outcome records that touch that skill via `skillLabel` or `correctedSkillLabel`.
 
 ### Python Compatibility Fallback
 
@@ -224,6 +225,7 @@ Aggregate validation thresholds are intentionally different from prompt-time rou
 - Prompt-time routing defaults: confidence `0.8`, uncertainty `0.35`.
 - Aggregate validation gates: full corpus `0.75`, holdout `0.725`, per-skill `0.7`, UNKNOWN `<= 10`.
 - `advisor_validate` now publishes both sets under `thresholdSemantics` so runtime routing and release-gate scoring stay explicit.
+- `advisor_validate` keeps diagnostics workspace-global, but subset validation now scopes telemetry outcome totals to the requested `skillSlug` and reports that scope explicitly.
 
 Python compatibility regression:
 

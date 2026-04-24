@@ -56,6 +56,9 @@ This folder contains the structural code graph subsystem. It walks a workspace, 
 | **Working set tracking** | Recently-touched file tracking for fresh-context retrieval (`lib/working-set-tracker.ts`) |
 | **Budget allocation** | Token budget enforcement on context payloads (`lib/budget-allocator.ts`) |
 | **Readiness contract** | Trust state probing (`live` / `stale` / `missing`) via `lib/readiness-contract.ts` |
+| **Status diagnostics** | `code_graph_status` returns readiness, parse-health, and `graphQualitySummary` for operator-visible health checks |
+| **Blocked read contract** | `code_graph_context` returns a structured `status:"blocked"` payload when a broader full scan is required before graph answers can be trusted |
+| **Startup transport metadata** | `buildStartupBrief()` carries `graphQualitySummary` plus shared-payload provenance for hook/runtime startup surfaces |
 | **Staged persistence** | Shared `persistIndexedFileResult()` keeps files stale until nodes and edges land (`lib/ensure-ready.ts`) |
 
 <!-- /ANCHOR:overview -->
@@ -131,22 +134,58 @@ Shared regression coverage for the migrated runtime also lives in the parent `mc
 <!-- ANCHOR:context-surfaces -->
 ## 3. CONTEXT SURFACES
 
-The structural snapshot reaches consumers through two distinct payload paths. Both call `lib/session/session-snapshot.ts` (in the parent `mcp_server/lib/session/` folder) but differ in completeness and caller.
+The subsystem now exposes three operator-visible contract families: `code_graph_status`, `code_graph_context`, and startup/compaction payloads. They share the readiness vocabulary (`readiness`, `canonicalReadiness`, `trustState`) but now also surface graph-quality and structured transport metadata that were not present in the older counts-only/readiness overview.
 
-| Surface | Includes summary | Includes highlights | Typical caller |
+### Status and Readiness Surfaces
+
+| Surface | Status shape | Key fields | Notes |
 |---|---|---|---|
-| **MCP `session_bootstrap` / `startup-brief`** | Yes | Yes | MCP clients calling the startup or bootstrap surface directly (also `code_graph_status`) |
-| **OpenCode plugin compact-code-graph `--minimal` resume** | Yes | Yes (including stale graphs after packet 012) | OpenCode TUI session compaction |
+| **`code_graph_status`** | `status: "ok"` | `freshness`, `readiness`, `canonicalReadiness`, `trustState`, `parseHealth`, `graphQualitySummary` | Primary operator health probe; keeps counts plus parser/enrichment quality in one response |
+| **`code_graph_context` (success path)** | `status: "ok"` | `readiness`, `canonicalReadiness`, `trustState`, `lastPersistedAt`, `anchors`, `graphContext`, `textBrief`, `metadata`, `graphMetadata` | Context reads always echo readiness so callers can judge freshness and detector provenance alongside the returned neighborhood |
+| **`code_graph_context` (blocked path)** | `status: "blocked"` | `blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, `blockReason`, `readiness`, `canonicalReadiness`, `trustState`, `lastPersistedAt` | Returned when readiness requires a full scan and inline full scans are disallowed; callers should run `code_graph_scan` before retrying |
+
+### Structured Context Metadata
+
+`code_graph_context` success payloads now carry structured metadata instead of a text-only readiness hint.
+
+| Field group | Contents | Why it matters |
+|---|---|---|
+| `metadata.partialOutput` | `isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, `truncatedText` | Explains whether deadline or budget pressure trimmed the response |
+| `metadata.freshness` | `lastScanAt`, `staleness` | Separates context freshness from the higher-level readiness block |
+| `graphMetadata` | `detectorProvenance` | Makes parser/detector provenance visible to downstream callers without re-querying status |
+| `anchors[*]` | `source`, `provider`, `score`, `snippet`, `range` | Preserves seed provenance so CocoIndex/manual/graph-sourced anchors stay traceable |
+
+### Startup and Compaction Payloads
+
+The structural snapshot reaches startup and compaction consumers through shared startup payloads.
+
+| Surface | Includes summary | Includes highlights | Structured metadata | Typical caller |
+|---|---|---|---|---|
+| **MCP `session_bootstrap` / `startup-brief`** | Yes | Yes | `graphSummary`, `graphQualitySummary`, `graphState`, `sharedPayload`, `sharedPayloadTransport` | MCP clients calling the startup or bootstrap surface directly |
+| **OpenCode plugin compact-code-graph `--minimal` resume** | Yes | Yes (including stale graphs after packet 012) | Reuses the shared snapshot payload while keeping `RESUME_MODE = 'minimal'` for token economy | OpenCode TUI session compaction |
+
+`buildStartupBrief()` returns both human-readable and transport-friendly shapes:
+
+| Field | Shape | Notes |
+|---|---|---|
+| `graphQualitySummary` | `detectorProvenanceSummary`, `graphEdgeEnrichmentSummary` | Mirrors the quality summary emitted by `code_graph_status` |
+| `sharedPayload` | shared envelope with `kind`, `summary`, `sections`, `provenance` | Canonical structured context for hook-capable runtimes |
+| `sharedPayloadTransport` | compact JSON with `kind`, `summary`, `provenance`, `sectionKeys` | Lightweight startup digest for transports that do not need full section bodies |
+| `provenance` | `producer`, `sourceSurface`, `trustState`, `generatedAt`, `lastUpdated`, `sourceRefs` | Preserves startup-quality/source metadata across runtime boundaries |
 
 ### Surface Citations
 
 | Aspect | Source | Notes |
 |---|---|---|
-| Highlights gate | `mcp_server/lib/session/session-snapshot.ts:227` | Allows both `ready` and `stale` (packet 012) |
-| Highlights SQL | `lib/code-graph-db.ts:652` | `getStartupHighlights()` aggregate query |
-| Default scan excludes | `lib/indexer-types.ts:117` | `DEFAULT_EXCLUDE_PATHS` |
-| `.gitignore` filtering | `lib/structural-indexer.ts:1149-1188` | `ignore` package, per-directory cache |
-| Compact plugin resume mode | `.opencode/plugins/spec-kit-compact-code-graph.js:40` | `RESUME_MODE = 'minimal'` is intentional, kept for token economy |
+| Status quality summary | `handlers/status.ts` | `code_graph_status` includes `parseHealth` and `graphQualitySummary` in the public payload |
+| Blocked read contract | `handlers/context.ts` | `status:"blocked"` payload names `requiredAction`, `graphAnswersOmitted`, readiness, and persisted timestamp |
+| Partial-output metadata | `lib/code-graph-context.ts` | `metadata.partialOutput` tracks deadline/budget truncation with omitted section/anchor counts |
+| Startup quality + transport | `lib/startup-brief.ts` | `buildStartupBrief()` returns `graphQualitySummary`, `sharedPayload`, and `sharedPayloadTransport` |
+| Shared payload provenance | `mcp_server/lib/context/shared-payload.ts` | Startup transport provenance carries producer/source/trust/timestamp/source-ref metadata |
+| Highlights SQL | `lib/code-graph-db.ts` | `getStartupHighlights()` aggregate query still powers stale-or-ready startup highlights |
+| Default scan excludes | `lib/indexer-types.ts` | `DEFAULT_EXCLUDE_PATHS` |
+| `.gitignore` filtering | `lib/structural-indexer.ts` | `ignore` package, per-directory cache |
+| Compact plugin resume mode | `.opencode/plugins/spec-kit-compact-code-graph.js` | `RESUME_MODE = 'minimal'` is intentional, kept for token economy |
 
 The OpenCode plugin keeps `RESUME_MODE = 'minimal'` deliberately. Packet 012 enriches the shared snapshot payload itself rather than expanding the plugin's mode.
 

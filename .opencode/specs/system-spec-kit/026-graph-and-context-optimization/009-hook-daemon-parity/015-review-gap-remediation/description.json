@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/015-review-gap-remediation",
+  "description": "Level-2 remediation packet for the merged 013/014 review-gap backlog in 009-hook-daemon-parity, covering one P0 workspace-isolation defect and 26 P1 follow-on fixes.",
+  "keywords": [
+    "review",
+    "gap",
+    "remediation",
+    "015",
+    "hook",
+    "daemon",
+    "parity",
+    "code-graph",
+    "skill-advisor"
+  ],
+  "lastUpdated": "2026-04-24T10:41:09Z",
+  "specId": "015",
+  "folderSlug": "review-gap-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-daemon-parity"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

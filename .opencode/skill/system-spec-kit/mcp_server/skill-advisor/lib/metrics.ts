@@ -247,6 +247,14 @@ function writeBoundedJsonl(path: string, line: string, maxRecords: number): void
   writeFileSync(path, `${lines.slice(-maxRecords).join('\n')}\n`, 'utf8');
 }
 
+function tryParseJsonLine(line: string): unknown | null {
+  try {
+    return JSON.parse(line) as unknown;
+  } catch {
+    return null;
+  }
+}
+
 // ───────────────────────────────────────────────────────────────
 // 4. CORE LOGIC
 // ───────────────────────────────────────────────────────────────
@@ -388,6 +396,18 @@ export function createAdvisorHookOutcomeRecord(input: {
   };
 }
 
+export function validateAdvisorHookOutcomeRecord(value: unknown): value is AdvisorHookOutcomeRecord {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
+  const record = value as Record<string, unknown>;
+  return typeof record.timestamp === 'string'
+    && enumIncludes(ADVISOR_RUNTIME_VALUES, record.runtime)
+    && (record.outcome === 'accepted' || record.outcome === 'corrected' || record.outcome === 'ignored')
+    && typeof record.skillLabel === 'string'
+    && (record.correctedSkillLabel === undefined || typeof record.correctedSkillLabel === 'string');
+}
+
 export function persistAdvisorHookOutcomeRecord(
   workspaceRoot: string,
   record: AdvisorHookOutcomeRecord,
@@ -403,7 +423,8 @@ export function readAdvisorHookOutcomeRecords(
 ): AdvisorHookOutcomeRecord[] {
   return readJsonlLines(durableMetricsPath(workspaceRoot, 'outcomes'))
     .slice(-limit)
-    .map((line) => JSON.parse(line) as AdvisorHookOutcomeRecord);
+    .map((line) => tryParseJsonLine(line))
+    .filter(validateAdvisorHookOutcomeRecord);
 }
 
 export function summarizeAdvisorHookOutcomeRecords(

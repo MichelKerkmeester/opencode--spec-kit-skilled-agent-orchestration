@@ -36,10 +36,10 @@ Keep this file **paths-only** — no narrative, no decisions, no test evidence. 
 
 ## Summary
 
-- **Total references**: 67
-- **By category**: READMEs=1, Documents=2, Commands=0, Agents=0, Skills=0, Specs=31, Scripts=21, Tests=6, Config=6, Meta=0
+- **Total references**: 53
+- **By category**: READMEs=1, Documents=2, Commands=0, Agents=0, Skills=0, Specs=17, Scripts=21, Tests=6, Config=6, Meta=0
 - **Missing on disk**: 0
-- **Scope**: all packet-local docs, evidence reports, related 026 research inputs, implementation target files, validation scripts, and closeout metadata for `026/009/013-code-graph-hook-improvements`
+- **Scope**: all packet-local docs, packet-local review artifacts used for auditability, related 026 research inputs, implementation target files, validation scripts, and closeout metadata for `026/009/013-code-graph-hook-improvements`
 - **Generated**: 2026-04-24T12:10:00+02:00
 
 > Action vocabulary: `Created` · `Updated` · `Analyzed` · `Removed` · `Cited` · `Validated` · `Moved` · `Renamed`.
@@ -94,25 +94,11 @@ No standalone skill-package docs outside the implementation/test/doc surfaces al
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/spec.md` | Analyzed | OK | Scope and requirements input. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/plan.md` | Analyzed | OK | Architecture, phases, and dependency input. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/tasks.md` | Analyzed | OK | Task-to-finding mapping input. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/implementation-summary.md` | Created | OK | Packet closeout and changed-files ledger. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/checklist.md` | Created | OK | Verification closeout doc. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/implementation-summary.md` | Created | OK | Packet closeout and verification ledger; packet-local audit evidence now points at present docs only. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/checklist.md` | Created | OK | Verification closeout doc rewritten to cite only present packet artifacts. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/code-graph-zero-calls-investigation.md` | Analyzed | OK | Packet-local zero-calls incident note cited by research. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-001.md` | Created | OK | Applied evidence for blocked query/context regression scaffolds. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-002.md` | Created | OK | Applied evidence for ambiguous CALLS subject baselines. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-003.md` | Created | OK | Applied evidence for seed, startup, and boundedness contract capture. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-004.md` | Created | OK | Applied evidence for operation-aware CALLS resolver. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-005.md` | Created | OK | Applied evidence for selected-candidate metadata. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-006.md` | Created | OK | Applied evidence for wrapper-shadow CALLS regressions. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-007.md` | Created | OK | Applied evidence for blocked/degraded `full_scan` reads. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-008.md` | Created | OK | Applied evidence for CocoIndex seed fidelity. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-009.md` | Created | OK | Applied evidence for null-summary scan clearing. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-010.md` | Created | OK | Applied evidence for graph-quality readers. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-011.md` | Created | OK | Applied evidence for startup payload parity. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-012.md` | Created | OK | Applied evidence for deadline and partial-output metadata. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-013.md` | Created | OK | Applied evidence for sibling `handle*` shadow verification. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-014.md` | Created | OK | Applied evidence for targeted Vitest execution. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-015.md` | Created | OK | Applied evidence for cross-consistency grep checks. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/applied/T-016.md` | Created | OK | Applied evidence for strict packet validation. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/review/review-report.md` | Cited | OK | Packet-local audit report used to anchor the present closeout evidence trail. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/013-code-graph-hook-improvements/review/deep-review-findings-registry.json` | Cited | OK | Packet-local findings registry used to confirm the missing `applied/` ledger and surviving follow-up gaps. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/013-code-graph-hook-improvements-pt-02/research.md` | Analyzed | OK | Primary implementation research input. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/013-014-pt-02-merged-synthesis.md` | Analyzed | OK | Bucket A merged synthesis input cited by `tasks.md` and `plan.md`. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/028-code-graph-hook-improvements-pt-01/research.md` | Analyzed | OK | Prior packet synthesis used as boundary context. |

@@ -117,7 +117,7 @@ export function buildContext(args: ContextArgs): ContextResult {
     // Deadline check: stop processing further anchors if over budget
     if (performance.now() - contextStart > deadlineMs) {
       partialReasons.add('deadline');
-      omittedAnchors += 1;
+      omittedAnchors += resolvedAnchors.length - sections.length;
       break;
     }
 
@@ -144,6 +144,8 @@ export function buildContext(args: ContextArgs): ContextResult {
     omittedSections += expansion.section.partial ? 1 : 0;
     if (expansion.deadlineExceeded) {
       partialReasons.add('deadline');
+      omittedAnchors += resolvedAnchors.length - sections.length;
+      break;
     }
   }
 

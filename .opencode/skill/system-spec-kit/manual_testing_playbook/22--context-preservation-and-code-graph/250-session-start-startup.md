@@ -15,23 +15,27 @@ This scenario validates SessionStart priming (startup).
 
 ## 2. CURRENT REALITY
 
-- **Objective**: Verify that the SessionStart hook, when triggered with `source=startup` (fresh session), outputs a "Session Priming" section to stdout listing available Spec Kit Memory tools (`memory_context`, `memory_match_triggers`, `memory_search`), CocoIndex Code availability status, Code Graph tools (`code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`), and resume instructions that point to `/spec_kit:resume` and the packet continuity chain. Output must stay within SESSION_PRIME_TOKEN_BUDGET (2000 tokens).
+- **Objective**: Verify that the SessionStart hook, when triggered with `source=startup` (fresh session), outputs the current startup contract: a `Session Context` startup surface, `Recovery Tools`, `Structural Context`, and `Startup Payload Contract` sections when the startup brief is available; Spec Kit Memory tools (`memory_context`, `memory_match_triggers`, `memory_search`); CocoIndex Code availability status; Code Graph tools (`code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`); graph-quality context sourced from `graphQualitySummary`; and resume instructions that point to `/spec_kit:resume` and the packet continuity chain. Output must stay within `SESSION_PRIME_TOKEN_BUDGET` (2000 tokens).
 - **Prerequisites**:
   - Node.js installed and `npx vitest` available
   - Working directory is the project root
   - No prior session state required (fresh startup scenario)
-- **Prompt**: `As a context-and-code-graph validation operator, validate SessionStart primes fresh session against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify the SessionStart hook, when triggered with source=startup (fresh session), outputs a "Session Priming" section to stdout listing available Spec Kit Memory tools (memory_context, memory_match_triggers, memory_search), CocoIndex Code availability status, Code Graph tools (code_graph_scan, code_graph_query, code_graph_context, code_graph_status), and resume instructions that point to /spec_kit:resume and the packet continuity chain. Output must stay within SESSION_PRIME_TOKEN_BUDGET (2000 tokens). Return a concise pass/fail verdict with the main reason and cited evidence.`
+- **Prompt**: `As a context-and-code-graph validation operator, validate SessionStart primes fresh session against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify the SessionStart hook, when triggered with source=startup (fresh session), outputs the current startup contract: Session Context, Recovery Tools, Structural Context, and Startup Payload Contract sections when the startup brief is available; Spec Kit Memory tools (memory_context, memory_match_triggers, memory_search); CocoIndex availability status; Code Graph tools (code_graph_scan, code_graph_query, code_graph_context, code_graph_status); graph-quality context sourced from graphQualitySummary; and resume instructions that point to /spec_kit:resume and the packet continuity chain. Output must stay within SESSION_PRIME_TOKEN_BUDGET (2000 tokens). Return a concise pass/fail verdict with the main reason and cited evidence.`
 - **Expected signals**:
   - All vitest tests in `hook-session-start.vitest.ts` pass for startup source
-  - Stdout contains `## Session Priming` header
-  - Body mentions `memory_context`, `memory_match_triggers`, `memory_search`
-  - Body mentions `code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`
-  - CocoIndex status line shows either "available" or "not installed" based on `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` existence
+  - Startup output contains `Session Context` and `Recovery Tools`
+  - Recovery tools mention `memory_context`, `memory_match_triggers`, `memory_search`
+  - Recovery tools mention `code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`
+  - CocoIndex status line shows either "available" or "missing" based on `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` existence
+  - Startup output contains `Structural Context` when the startup brief is available
+  - Startup output contains `Startup Payload Contract` when the startup brief is available
+  - Startup payload transport includes `"kind": "startup"`, `"producer": "startup_brief"`, and `sectionKeys` containing `structural-context`
+  - Startup brief fixture includes `graphQualitySummary`, and the startup formatter keeps graph-quality information on the structural-context path
   - Resume instruction: `/spec_kit:resume` with the `handover.md -> _memory.continuity -> spec docs` chain
   - Output length stays within 2000 tokens (8000 chars)
 - **Pass/fail criteria**:
-  - PASS: All tool references present in stdout, CocoIndex status accurate, output within budget
-  - FAIL: Missing tool references, incorrect CocoIndex status, or output exceeds 2000 tokens
+  - PASS: Startup sections, payload contract, tool references, graph-quality evidence, CocoIndex status, and token budget all match the live startup contract
+  - FAIL: Missing startup sections, missing payload or graph-quality evidence, incorrect CocoIndex status, or output exceeds 2000 tokens
 
 ---
 
@@ -40,7 +44,7 @@ This scenario validates SessionStart priming (startup).
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate Fresh startup outputs Spec Kit Memory tool overview against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify stdout "Session Priming" section lists memory_context, memory_match_triggers, memory_search, code graph tools. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate fresh startup recovery surfaces against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify the startup output includes Session Context and Recovery Tools, and that Recovery Tools list memory_context, memory_match_triggers, memory_search, and the code graph tools. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -49,15 +53,15 @@ As a context-and-code-graph validation operator, validate Fresh startup outputs 
 
 ### Expected
 
-Stdout "Session Priming" section lists `memory_context`, `memory_match_triggers`, `memory_search`, code graph tools
+Startup output includes `Session Context` and `Recovery Tools`, and `Recovery Tools` lists `memory_context`, `memory_match_triggers`, `memory_search`, and the code graph tools
 
 ### Evidence
 
-Test output showing tool names in stdout
+Test output showing the startup sections and recovery-tool names
 
 ### Pass / Fail
 
-- **Pass**: all 7+ tools listed in session priming output
+- **Pass**: startup sections exist and all 7+ tools are listed in the recovery surface
 - **Fail**: Any contradicting evidence appears or the pass condition is not met.
 
 ### Failure Triage
@@ -69,7 +73,7 @@ Check `session-prime.ts` handleStartup() for expected tool names
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate CocoIndex availability check returns correct status against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify cocoIndex line shows "available" when binary exists or "not installed" when missing. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate startup payload transport against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify startup output includes a Startup Payload Contract section when the startup brief is available, and that the payload transport shows kind=startup, producer=startup_brief, and sectionKeys including structural-context. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -78,20 +82,78 @@ As a context-and-code-graph validation operator, validate CocoIndex availability
 
 ### Expected
 
-CocoIndex line shows "available" when binary exists or "not installed" when missing
+Startup output includes `Startup Payload Contract` with `"kind": "startup"`, `"producer": "startup_brief"`, and `sectionKeys` containing `structural-context`
 
 ### Evidence
 
-Test output showing CocoIndex status line
+Test output showing the `Startup Payload Contract` section and payload fields
 
 ### Pass / Fail
 
-- **Pass**: CocoIndex status matches filesystem reality
+- **Pass**: payload contract section appears and carries the expected startup payload fields
 - **Fail**: Any contradicting evidence appears or the pass condition is not met.
 
 ### Failure Triage
 
-Verify `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` path
+Check `hooks/claude/session-prime.ts` payload-section wiring and `code-graph/lib/startup-brief.ts` shared payload transport formatting
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate startup graph-quality context against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify the startup path preserves graph-quality evidence by exposing Structural Context when the startup brief is available, carrying graphQualitySummary in the startup brief fixture, and keeping graph-quality formatting on the structural-context path. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts
+
+### Expected
+
+Startup path preserves graph-quality evidence through `Structural Context`, `graphQualitySummary`, and the structural-context formatter path
+
+### Evidence
+
+Test output and source evidence showing `Structural Context`, `graphQualitySummary`, and the structural-context formatter path
+
+### Pass / Fail
+
+- **Pass**: startup output keeps structural context present and the graph-quality path is evidenced by the test fixture plus formatter implementation
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `tests/hook-session-start.vitest.ts` startup fixture plus `code-graph/lib/startup-brief.ts` graph-quality formatting
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate CocoIndex availability check returns correct status against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify the CocoIndex line shows "available" when the binary exists or "missing"/fallback state when the startup brief is unavailable. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts
+
+### Expected
+
+CocoIndex line reflects runtime availability or fallback startup behavior
+
+### Evidence
+
+Test output showing the CocoIndex status line
+
+### Pass / Fail
+
+- **Pass**: CocoIndex status matches the startup-brief or fallback path under test
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` path and `buildFallbackStartupSurface(...)`
 
 ---
 

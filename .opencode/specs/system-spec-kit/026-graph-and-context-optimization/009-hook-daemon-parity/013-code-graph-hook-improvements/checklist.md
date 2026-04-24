@@ -33,22 +33,22 @@ _memory:
 <!-- ANCHOR:protocol -->
 ## Verification Protocol
 
-- [x] [P1] T001 blocked-read regression scaffolds complete. [Evidence: applied/T-001.md]
-- [x] [P0] T002 ambiguous CALLS subject-selection baselines complete. [Evidence: applied/T-002.md]
-- [x] [P1] T003 semantic-seed / graph-quality / startup-context expectations captured. [Evidence: applied/T-003.md]
-- [x] [P0] T004 operation-aware CALLS resolution shipped. [Evidence: applied/T-004.md]
-- [x] [P1] T005 ambiguity warning and selected-candidate metadata shipped. [Evidence: applied/T-005.md]
-- [x] [P1] T006 wrapper-vs-function CALLS regressions replaced first-candidate assertions. [Evidence: applied/T-006.md]
-- [x] [P1] T007 blocked/degraded `full_scan` read contract shipped. [Evidence: applied/T-007.md]
-- [x] [P1] T008 CocoIndex score/snippet/range fidelity shipped. [Evidence: applied/T-008.md]
-- [x] [P1] T009 null-summary scan clearing shipped. [Evidence: applied/T-009.md]
-- [x] [P2] T010 graph-quality summary readers shipped. [Evidence: applied/T-010.md]
-- [x] [P2] T011 startup payload contract parity shipped. [Evidence: applied/T-011.md]
-- [x] [P2] T012 bounded-work deadlines and partial-output metadata shipped. [Evidence: applied/T-012.md]
-- [x] [P2] T013 sibling `handle*` shadow verification shipped. [Evidence: applied/T-013.md]
-- [x] [P1] T014 targeted Vitest regression suites passed. [Evidence: applied/T-014.md]
-- [x] [P2] T015 cross-consistency grep checks passed. [Evidence: applied/T-015.md]
-- [x] [P1] T016 packet validator executed and residual failures documented. [Evidence: applied/T-016.md]
+- [x] [P1] T001 blocked-read regression scaffolds complete. [Evidence: tasks.md; implementation-summary.md; resource-map.md]
+- [x] [P0] T002 ambiguous CALLS subject-selection baselines complete. [Evidence: tasks.md; implementation-summary.md; resource-map.md]
+- [x] [P1] T003 semantic-seed / graph-quality / startup-context expectations captured. [Evidence: tasks.md; implementation-summary.md; resource-map.md]
+- [x] [P0] T004 operation-aware CALLS resolution shipped. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P1] T005 ambiguity warning and selected-candidate metadata shipped. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P1] T006 wrapper-vs-function CALLS regressions replaced first-candidate assertions. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P1] T007 blocked/degraded `full_scan` read contract shipped. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P1] T008 CocoIndex score/snippet/range fidelity shipped. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P1] T009 null-summary scan clearing shipped. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P2] T010 graph-quality summary readers shipped. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P2] T011 startup payload contract parity shipped. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P2] T012 bounded-work deadlines and partial-output metadata shipped. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P2] T013 sibling `handle*` shadow verification shipped. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P1] T014 targeted Vitest regression suites passed. [Evidence: implementation-summary.md]
+- [x] [P2] T015 cross-consistency grep checks passed. [Evidence: implementation-summary.md]
+- [x] [P1] T016 packet validator executed and residual failures documented. [Evidence: implementation-summary.md; review/review-report.md]
 <!-- /ANCHOR:protocol -->
 
 <!-- ANCHOR:pre-impl -->
@@ -61,10 +61,10 @@ _memory:
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] [P0] CALLS-oriented ambiguity resolution now prefers callable implementation nodes over wrapper shadows. [Evidence: applied/T-004.md]
-- [x] [P1] Query and context handlers no longer continue silently when a suppressed `full_scan` is required. [Evidence: applied/T-007.md]
-- [x] [P1] CocoIndex seed fidelity is preserved through context resolution and output. [Evidence: applied/T-008.md]
-- [x] [P1] Null-summary scans clear stale persisted enrichment summaries. [Evidence: applied/T-009.md]
+- [x] [P0] CALLS-oriented ambiguity resolution now prefers callable implementation nodes over wrapper shadows. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P1] Query and context handlers no longer continue silently when a suppressed `full_scan` is required. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P1] CocoIndex seed fidelity is preserved through context resolution and output. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P1] Null-summary scans clear stale persisted enrichment summaries. [Evidence: implementation-summary.md; resource-map.md]
 - [x] [P1] Modified-file eslint passed. [Evidence: implementation-summary.md]
 - [x] [P1] TypeScript compile passed. [Evidence: implementation-summary.md]
 <!-- /ANCHOR:code-quality -->
@@ -72,23 +72,23 @@ _memory:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] [P1] Focused regression coverage exists for resolver, blocked-read, scan-summary, startup-parity, and bounded-context behaviors. [Evidence: applied/T-014.md]
-- [x] [P1] Targeted Vitest packet suites passed. [Evidence: applied/T-014.md]
-- [x] [P2] Cross-consistency grep passed. [Evidence: applied/T-015.md]
+- [x] [P1] Focused regression coverage exists for resolver, blocked-read, scan-summary, startup-parity, and bounded-context behaviors. [Evidence: implementation-summary.md]
+- [x] [P1] Targeted Vitest packet suites passed. [Evidence: implementation-summary.md]
+- [x] [P2] Cross-consistency grep passed. [Evidence: implementation-summary.md]
 <!-- /ANCHOR:testing -->
 
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] [P1] Query/context blocked contracts avoid silently returning misleading graph answers when a full scan is required. [Evidence: applied/T-007.md]
-- [x] [P2] Startup payload transport is serialized from the validated shared payload rather than inventing an untyped adapter-only format. [Evidence: applied/T-011.md]
+- [x] [P1] Query/context blocked contracts avoid silently returning misleading graph answers when a full scan is required. [Evidence: implementation-summary.md; resource-map.md]
+- [x] [P2] Startup payload transport is serialized from the validated shared payload rather than inventing an untyped adapter-only format. [Evidence: implementation-summary.md; resource-map.md]
 <!-- /ANCHOR:security -->
 
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] [P1] All tasks have packet-local applied reports. [Evidence: implementation-summary.md]
-- [x] [P2] The environment reference now documents the operator-facing `graphQualitySummary` reader. [Evidence: applied/T-010.md]
+- [x] [P1] Packet-local audit evidence points only at present closeout docs and review artifacts. [Evidence: implementation-summary.md; resource-map.md; review/review-report.md; review/deep-review-findings-registry.json]
+- [x] [P2] The environment reference now documents the operator-facing `graphQualitySummary` reader. [Evidence: implementation-summary.md; resource-map.md]
 <!-- /ANCHOR:docs -->
 
 <!-- ANCHOR:file-org -->
@@ -101,7 +101,7 @@ _memory:
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
-- [x] [P0] All P0 blocker work completed. [Evidence: applied/T-004.md]
-- [x] [P1] All P1 required work completed. [Evidence: applied/T-007.md, applied/T-008.md, applied/T-009.md, applied/T-014.md]
-- [x] [P1] Validator executed and residual immutable-doc failures were recorded instead of hidden. [Evidence: applied/T-016.md]
+- [x] [P0] All P0 blocker work completed. [Evidence: tasks.md; implementation-summary.md; resource-map.md]
+- [x] [P1] All P1 required work completed. [Evidence: tasks.md; implementation-summary.md; resource-map.md]
+- [x] [P1] Validator executed and residual immutable-doc failures were recorded instead of hidden. [Evidence: implementation-summary.md; review/review-report.md]
 <!-- /ANCHOR:summary -->

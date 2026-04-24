@@ -53,10 +53,53 @@ interface SkillAggregate {
   matched: number;
 }
 
+interface OutcomeTotals {
+  accepted: number;
+  corrected: number;
+  ignored: number;
+}
+
+type AdvisorValidateThresholdSemantics = AdvisorValidateOutput['thresholdSemantics'];
+type AdvisorValidateTelemetry = AdvisorValidateOutput['telemetry'];
+
 const FULL_CORPUS_THRESHOLD = 0.75;
 const HOLDOUT_THRESHOLD = 0.725;
 const PER_SKILL_THRESHOLD = 0.7;
 const UNKNOWN_TARGET_MAX = 10;
+
+const VALIDATION_THRESHOLD_SEMANTICS: AdvisorValidateThresholdSemantics = {
+  aggregateValidation: {
+    fullCorpusTop1: FULL_CORPUS_THRESHOLD,
+    holdoutTop1: HOLDOUT_THRESHOLD,
+    perSkillTop1: PER_SKILL_THRESHOLD,
+    unknownCountTargetMax: UNKNOWN_TARGET_MAX,
+  },
+  runtimeRouting: {
+    confidenceThreshold: DEFAULT_ADVISOR_CONFIDENCE_THRESHOLD,
+    uncertaintyThreshold: DEFAULT_ADVISOR_UNCERTAINTY_THRESHOLD,
+    confidenceOnly: false,
+  },
+};
+
+function matchesOutcomeScope(
+  record: { skillLabel: string; correctedSkillLabel?: string | null },
+  skillSlug: string | null,
+): boolean {
+  if (skillSlug === null) return true;
+  return record.skillLabel === skillSlug || record.correctedSkillLabel === skillSlug;
+}
+
+function summarizeScopedOutcomeTotals(
+  records: ReadonlyArray<{ outcome: 'accepted' | 'corrected' | 'ignored'; skillLabel: string; correctedSkillLabel?: string | null }>,
+  skillSlug: string | null,
+): OutcomeTotals {
+  const scopedRecords = records.filter((record) => matchesOutcomeScope(record, skillSlug));
+  return {
+    accepted: scopedRecords.filter((record) => record.outcome === 'accepted').length,
+    corrected: scopedRecords.filter((record) => record.outcome === 'corrected').length,
+    ignored: scopedRecords.filter((record) => record.outcome === 'ignored').length,
+  };
+}
 
 function findWorkspaceRoot(start = dirname(fileURLToPath(import.meta.url))): string {
   let current = start;
@@ -296,9 +339,39 @@ function adversarialStuffingBlocked(workspaceRoot: string): boolean {
   }).topSkill === null;
 }
 
+function buildThresholdSemantics(): AdvisorValidateThresholdSemantics {
+  return {
+    aggregateValidation: { ...VALIDATION_THRESHOLD_SEMANTICS.aggregateValidation },
+    runtimeRouting: { ...VALIDATION_THRESHOLD_SEMANTICS.runtimeRouting },
+  };
+}
+
+function buildTelemetrySummary(args: AdvisorValidateInput, workspaceRoot: string, selectedSkillSlug: string | null, totals: OutcomeTotals): AdvisorValidateTelemetry {
+  const telemetryHealth = readAdvisorHookHealthSection(workspaceRoot);
+  return {
+    diagnostics: {
+      recordsPath: advisorHookDiagnosticsPath(workspaceRoot),
+      recordsRetained: telemetryHealth.lastInvocations.length,
+      rollingCacheHitRate: telemetryHealth.rollingCacheHitRate,
+      rollingP95Ms: telemetryHealth.rollingP95Ms,
+      rollingFailOpenRate: telemetryHealth.rollingFailOpenRate,
+    },
+    outcomes: {
+      recordsPath: advisorHookOutcomesPath(workspaceRoot),
+      recordedThisRun: args.outcomeEvents?.length ?? 0,
+      scope: {
+        kind: selectedSkillSlug === null ? 'workspace' : 'skill',
+        skillSlug: selectedSkillSlug,
+      },
+      totals: { ...totals },
+    },
+  };
+}
+
 export function validateAdvisor(input: AdvisorValidateInput = { confirmHeavyRun: true }): AdvisorValidateOutput {
   const args = AdvisorValidateInputSchema.parse(input);
   const workspaceRoot = args.workspaceRoot ? resolve(args.workspaceRoot) : findWorkspaceRoot();
+  const selectedSkillSlug = args.skillSlug ?? null;
   for (const outcomeEvent of args.outcomeEvents ?? []) {
     persistAdvisorHookOutcomeRecord(workspaceRoot, createAdvisorHookOutcomeRecord({
       runtime: outcomeEvent.runtime,
@@ -309,7 +382,7 @@ export function validateAdvisor(input: AdvisorValidateInput = { confirmHeavyRun:
     }));
   }
   const corpus = loadCorpus(workspaceRoot)
-    .filter((row) => args.skillSlug ? row.skill_top_1 === args.skillSlug : true);
+    .filter((row) => selectedSkillSlug ? row.skill_top_1 === selectedSkillSlug : true);
   const full = evaluateRows(corpus, workspaceRoot);
   const holdout = stratifiedHoldout(corpus);
   const holdoutResult = evaluateRows(holdout, workspaceRoot);
@@ -322,8 +395,8 @@ export function validateAdvisor(input: AdvisorValidateInput = { confirmHeavyRun:
   const safety = adversarialStuffingBlocked(workspaceRoot);
   const latency = runPromotionLatencyBench(workspaceRoot);
   const regressionSuite = evaluateRegressionCases(loadRegressionCases(workspaceRoot), workspaceRoot);
-  const telemetryHealth = readAdvisorHookHealthSection(workspaceRoot);
   const outcomeSummary = summarizeAdvisorHookOutcomeRecords(workspaceRoot);
+  const scopedOutcomeTotals = summarizeScopedOutcomeTotals(outcomeSummary.records, selectedSkillSlug);
   const p0Checks = [
     fullSlice.passed,
     holdoutSlice.passed,
@@ -350,20 +423,9 @@ export function validateAdvisor(input: AdvisorValidateInput = { confirmHeavyRun:
     }));
   const output: AdvisorValidateOutput = {
     workspaceRoot,
-    skillSlug: args.skillSlug ?? null,
-    thresholdSemantics: {
-      aggregateValidation: {
-        fullCorpusTop1: FULL_CORPUS_THRESHOLD,
-        holdoutTop1: HOLDOUT_THRESHOLD,
-        perSkillTop1: PER_SKILL_THRESHOLD,
-        unknownCountTargetMax: UNKNOWN_TARGET_MAX,
-      },
-      runtimeRouting: {
-        confidenceThreshold: DEFAULT_ADVISOR_CONFIDENCE_THRESHOLD,
-        uncertaintyThreshold: DEFAULT_ADVISOR_UNCERTAINTY_THRESHOLD,
-        confidenceOnly: false,
-      },
-    },
+    skillSlug: selectedSkillSlug,
+    // Keep the operator-facing threshold contract centralized so playbooks and schema docs verify the same surface.
+    thresholdSemantics: buildThresholdSemantics(),
     overallAccuracy: fullSlice.percentage,
     perSkill,
     slices: {
@@ -409,20 +471,7 @@ export function validateAdvisor(input: AdvisorValidateInput = { confirmHeavyRun:
         },
       },
     },
-    telemetry: {
-      diagnostics: {
-        recordsPath: advisorHookDiagnosticsPath(workspaceRoot),
-        recordsRetained: telemetryHealth.lastInvocations.length,
-        rollingCacheHitRate: telemetryHealth.rollingCacheHitRate,
-        rollingP95Ms: telemetryHealth.rollingP95Ms,
-        rollingFailOpenRate: telemetryHealth.rollingFailOpenRate,
-      },
-      outcomes: {
-        recordsPath: advisorHookOutcomesPath(workspaceRoot),
-        recordedThisRun: args.outcomeEvents?.length ?? 0,
-        totals: outcomeSummary.totals,
-      },
-    },
+    telemetry: buildTelemetrySummary(args, workspaceRoot, selectedSkillSlug, scopedOutcomeTotals),
     generatedAt: new Date().toISOString(),
   };
   return AdvisorValidateOutputSchema.parse(output);

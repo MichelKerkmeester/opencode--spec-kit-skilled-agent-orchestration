@@ -40,6 +40,10 @@ export interface IndexFilesOptions {
   specificFiles?: string[];
 }
 
+export interface IndexFilesResult extends Array<ParseResult> {
+  preParseSkippedCount: number;
+}
+
 const require = createRequire(import.meta.url);
 let ignoreFactory: IgnoreFactory | null = null;
 
@@ -1332,8 +1336,9 @@ export function finalizeIndexResults(results: ParseResult[]): ParseResult[] {
 }
 
 /** Index all matching files in the workspace */
-export async function indexFiles(config: IndexerConfig, options: IndexFilesOptions = {}): Promise<ParseResult[]> {
-  const results: ParseResult[] = [];
+export async function indexFiles(config: IndexerConfig, options: IndexFilesOptions = {}): Promise<IndexFilesResult> {
+  const results = [] as IndexFilesResult;
+  results.preParseSkippedCount = 0;
   const skipFreshFiles = options.skipFreshFiles ?? true;
   let candidateFiles: string[];
 
@@ -1363,7 +1368,10 @@ export async function indexFiles(config: IndexerConfig, options: IndexFilesOptio
     // P1 perf: skip read+parse for files whose mtime matches the DB record.
     // isFileStale returns true when the file is absent from the DB or its
     // mtime has changed — only then do we pay the I/O + parse cost.
-    if (skipFreshFiles && !isFileStale(file)) continue;
+    if (skipFreshFiles && !isFileStale(file)) {
+      results.preParseSkippedCount++;
+      continue;
+    }
 
     try {
       const content = readFileSync(file, 'utf-8');
@@ -1372,5 +1380,7 @@ export async function indexFiles(config: IndexerConfig, options: IndexFilesOptio
     } catch { /* skip unreadable */ }
   }
 
-  return finalizeIndexResults(results);
+  const finalizedResults = finalizeIndexResults(results) as IndexFilesResult;
+  finalizedResults.preParseSkippedCount = results.preParseSkippedCount;
+  return finalizedResults;
 }

@@ -44,13 +44,24 @@ advisor_recommend({"prompt":"save this conversation context to memory","options"
 ```
 
 2. Save the JSON response.
-3. Inspect `data.recommendations[0]`.
+3. Inspect `data.workspaceRoot`, `data.effectiveThresholds`, and `data.recommendations[0]`.
 
 ---
 
 ## 4. EXPECTED
 
 - Response envelope has `status: "ok"`.
+- `data.workspaceRoot` is the absolute repository root for the current checkout.
+- `data.effectiveThresholds` is present and, for this exact call with no overrides, equals:
+
+```json
+{
+  "confidenceThreshold": 0.8,
+  "uncertaintyThreshold": 0.35,
+  "confidenceOnly": false
+}
+```
+
 - `data.freshness` is `live` or `stale`.
 - First recommendation has `skillId: "system-spec-kit"`.
 - `laneBreakdown[]` contains lane contribution metadata only: `lane`, `rawScore`, `weightedScore`, `weight`, `shadowOnly`.

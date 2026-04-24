@@ -42,7 +42,7 @@ const SUPPORTED_EDGE_TYPES = [
 ] as const satisfies readonly EdgeType[];
 
 const SUPPORTED_EDGE_TYPE_SET = new Set<string>(SUPPORTED_EDGE_TYPES);
-const RESOLVE_SUBJECT_CANDIDATE_LIMIT = 10;
+const AMBIGUOUS_SUBJECT_WARNING_CANDIDATE_LIMIT = 10;
 const SUPPORTED_RELATIONSHIP_OPERATIONS = [
   'calls_from',
   'calls_to',
@@ -136,8 +136,7 @@ function querySubjectMatches(
     FROM code_nodes
     WHERE ${field} = ?
     ORDER BY file_path, start_line, symbol_id
-    LIMIT ?
-  `).all(subject, RESOLVE_SUBJECT_CANDIDATE_LIMIT) as Array<{
+  `).all(subject) as Array<{
     symbol_id: string;
     fq_name: string | null;
     name: string | null;
@@ -150,12 +149,6 @@ function querySubjectMatches(
     return { candidates: [], count: 0 };
   }
 
-  const count = (d.prepare(`
-    SELECT COUNT(*) as count
-    FROM code_nodes
-    WHERE ${field} = ?
-  `).get(subject) as { count: number }).count;
-
   return {
     candidates: candidates.map((candidate) => ({
       symbolId: candidate.symbol_id,
@@ -165,7 +158,7 @@ function querySubjectMatches(
       filePath: candidate.file_path,
       startLine: candidate.start_line,
     })),
-    count,
+    count: candidates.length,
   };
 }
 
@@ -325,7 +318,7 @@ function resolveSubject(
       ...(byFq.count > 1
         ? { warnings: [buildAmbiguousSubjectWarning(subject, 'fq_name', {
           ...byFq,
-          candidates: selection.candidates,
+          candidates: selection.candidates.slice(0, AMBIGUOUS_SUBJECT_WARNING_CANDIDATE_LIMIT),
         }, selection.selectedCandidate, selection.selectionReason)] }
         : {}),
     };
@@ -341,7 +334,7 @@ function resolveSubject(
       ...(byName.count > 1
         ? { warnings: [buildAmbiguousSubjectWarning(subject, 'name', {
           ...byName,
-          candidates: selection.candidates,
+          candidates: selection.candidates.slice(0, AMBIGUOUS_SUBJECT_WARNING_CANDIDATE_LIMIT),
         }, selection.selectedCandidate, selection.selectionReason)] }
         : {}),
     };

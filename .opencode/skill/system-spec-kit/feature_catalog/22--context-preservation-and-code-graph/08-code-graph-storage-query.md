@@ -1,6 +1,6 @@
 ---
 title: "Code graph SQLite storage and MCP query tools"
-description: "Code graph provides SQLite storage with code_files, code_nodes, code_edges tables and 4 MCP tools for structural queries."
+description: "Code graph provides SQLite storage plus MCP tools for structural queries, readiness-aware status, and compact graph context."
 audited_post_018: true
 ---
 
@@ -8,9 +8,9 @@ audited_post_018: true
 
 ## 1. OVERVIEW
 
-Code graph provides SQLite storage with code_files, code_nodes, code_edges tables and 4 MCP tools for structural queries.
+Code graph provides SQLite storage with code_files, code_nodes, and code_edges tables plus 4 MCP tools for structural queries, readiness reporting, and compact graph context.
 
-SQLite database (code-graph.sqlite) stores indexed files, symbol nodes, and relationship edges. 4 MCP tools: code_graph_scan (workspace indexing), code_graph_query (outline/calls/imports), code_graph_status (health), code_graph_context (LLM neighborhoods). WAL mode, foreign keys, directional indexes.
+SQLite database (`code-graph.sqlite`) stores indexed files, symbol nodes, and relationship edges. 4 MCP tools: `code_graph_scan` (workspace indexing), `code_graph_query` (outline/calls/imports), `code_graph_status` (freshness plus readiness, trust, parse-health, and `graphQualitySummary` reporting), and `code_graph_context` (LLM neighborhoods with readiness metadata, blocked full-scan responses, and `metadata.partialOutput` when budget or deadline limits trim output). WAL mode, foreign keys, directional indexes.
 
 ---
 
@@ -36,8 +36,8 @@ mcp_server/code-graph/lib/code-graph-db.ts
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/code-graph-scan.vitest.ts` | Scan flow, persistence, and incremental refresh behavior |
-| `mcp_server/tests/code-graph-indexer.vitest.ts` | Indexer-to-storage integration and edge persistence coverage |
+| `mcp_server/code-graph/tests/code-graph-scan.vitest.ts` | Scan flow, persistence, and incremental refresh behavior |
+| `mcp_server/code-graph/tests/code-graph-indexer.vitest.ts` | Indexer-to-storage integration and edge persistence coverage |
 
 ---
 

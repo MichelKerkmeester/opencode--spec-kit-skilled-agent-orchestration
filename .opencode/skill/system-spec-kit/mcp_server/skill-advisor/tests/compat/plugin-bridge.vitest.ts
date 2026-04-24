@@ -51,10 +51,28 @@ describe('spec-kit skill advisor plugin bridge compat path', () => {
     });
   });
 
+  it('defaults omitted thresholdConfidence to the live 014 threshold pair', () => {
+    const result = runBridge({
+      prompt: 'save this conversation context to memory',
+      thresholdConfidence: undefined,
+    });
+    expect(result.status).toBe(0);
+    const parsed = parseBridge(result.stdout);
+    expect(parsed.status).toBe('ok');
+    expect(parsed.metadata.effectiveThresholds).toEqual({
+      confidenceThreshold: 0.8,
+      uncertaintyThreshold: 0.35,
+      confidenceOnly: false,
+    });
+  });
+
   it('renders native uncertainty from the recommendation instead of a literal zero', () => {
     const source = readFileSync(bridgePath, 'utf8');
 
+    expect(source).toContain("const DEFAULT_CONFIDENCE_THRESHOLD = 0.8;");
+    expect(source).toContain("const DEFAULT_UNCERTAINTY_THRESHOLD = 0.35;");
     expect(source).toContain('${formatScore(top.confidence)}/${formatScore(top.uncertainty)} pass.');
+    expect(source).not.toContain('0.7');
     expect(source).not.toContain('${formatScore(top.confidence)}/0.00 pass.');
   });
 

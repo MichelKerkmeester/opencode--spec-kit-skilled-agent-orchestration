@@ -22,6 +22,7 @@ export interface AdvisorThresholds {
 export interface AdvisorPromptCacheKeyParts {
   readonly canonicalPrompt: string;
   readonly sourceSignature: string;
+  readonly workspaceRoot?: string;
   readonly runtime: string;
   readonly maxTokens?: number;
   readonly thresholdConfig?: AdvisorThresholds;
@@ -70,6 +71,7 @@ export function createAdvisorPromptCacheKey(
   const payload = [
     parts.canonicalPrompt,
     parts.sourceSignature,
+    parts.workspaceRoot ?? '',
     parts.runtime,
     String(normalizeMaxTokens(parts.maxTokens)),
     stableThresholdConfig(parts.thresholdConfig),

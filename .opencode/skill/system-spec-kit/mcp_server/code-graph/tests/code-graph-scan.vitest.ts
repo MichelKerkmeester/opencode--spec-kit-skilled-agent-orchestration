@@ -24,6 +24,13 @@ const mocks = vi.hoisted(() => ({
   getStatsMock: vi.fn(),
 }));
 
+function withPreParseSkippedCount<T>(
+  results: T[],
+  preParseSkippedCount = 0,
+): T[] & { preParseSkippedCount: number } {
+  return Object.assign(results, { preParseSkippedCount });
+}
+
 vi.mock('node:child_process', () => ({
   execSync: mocks.execSyncMock,
 }));
@@ -73,7 +80,7 @@ describe('handleCodeGraphScan', () => {
         graphEdgeEnrichmentSummary: null,
       },
     });
-    mocks.indexFilesMock.mockResolvedValue([{
+    mocks.indexFilesMock.mockResolvedValue(withPreParseSkippedCount([{
       filePath: '/workspace/current.ts',
       language: 'typescript',
       contentHash: 'hash-1',
@@ -85,7 +92,7 @@ describe('handleCodeGraphScan', () => {
       parseHealth: 'clean',
       parseDurationMs: 10,
       parseErrors: [],
-    }]);
+    }]));
   });
 
   it('forces a full reindex when git HEAD changes', async () => {
@@ -147,8 +154,9 @@ describe('handleCodeGraphScan', () => {
   it('clears the persisted edge-enrichment summary when a later scan reports no summary', async () => {
     mocks.execSyncMock.mockReturnValue('same-head\n');
     mocks.getLastGitHeadMock.mockReturnValue('same-head');
+    mocks.isFileStaleMock.mockReturnValue(true);
     mocks.indexFilesMock
-      .mockResolvedValueOnce([{
+      .mockResolvedValueOnce(withPreParseSkippedCount([{
         filePath: '/workspace/current.ts',
         language: 'typescript',
         contentHash: 'hash-1',
@@ -164,8 +172,8 @@ describe('handleCodeGraphScan', () => {
         parseHealth: 'clean',
         parseDurationMs: 10,
         parseErrors: [],
-      }])
-      .mockResolvedValueOnce([{
+      }]))
+      .mockResolvedValueOnce(withPreParseSkippedCount([{
         filePath: '/workspace/current.ts',
         language: 'typescript',
         contentHash: 'hash-2',
@@ -181,7 +189,7 @@ describe('handleCodeGraphScan', () => {
         parseHealth: 'clean',
         parseDurationMs: 10,
         parseErrors: [],
-      }]);
+      }]));
 
     await handleCodeGraphScan({
       rootDir: process.cwd(),
@@ -197,6 +205,33 @@ describe('handleCodeGraphScan', () => {
       numericConfidence: 0.95,
     });
     expect(mocks.clearLastGraphEdgeEnrichmentSummaryMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('counts pre-parse incremental skips without clearing persisted enrichment summaries', async () => {
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+    mocks.indexFilesMock.mockResolvedValueOnce(withPreParseSkippedCount([], 3));
+
+    const response = await handleCodeGraphScan({
+      rootDir: process.cwd(),
+      incremental: true,
+    });
+
+    const payload = JSON.parse(response.content[0].text) as {
+      status: string;
+      data: {
+        filesIndexed: number;
+        filesSkipped: number;
+        graphEdgeEnrichmentSummary: null;
+      };
+    };
+
+    expect(payload.status).toBe('ok');
+    expect(payload.data.filesIndexed).toBe(0);
+    expect(payload.data.filesSkipped).toBe(3);
+    expect(payload.data.graphEdgeEnrichmentSummary).toBeNull();
+    expect(mocks.setLastGraphEdgeEnrichmentSummaryMock).not.toHaveBeenCalled();
+    expect(mocks.clearLastGraphEdgeEnrichmentSummaryMock).not.toHaveBeenCalled();
   });
 
   it('removes deleted tracked files during incremental scans', async () => {

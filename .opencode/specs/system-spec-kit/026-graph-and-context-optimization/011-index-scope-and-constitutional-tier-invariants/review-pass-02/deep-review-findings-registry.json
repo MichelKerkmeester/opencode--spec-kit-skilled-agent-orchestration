@@ -6,6 +6,24 @@
   "pass": 2,
   "openFindings": [
     {
+      "id": "P1-pass2-004",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Cleanup script bypasses governance_audit on bulk tier downgrades and deletes existing audit rows",
+      "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts",
+      "lines": [324, 330],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/scripts/memory/cleanup-index-scope-violations.ts", "lines": [309, 309] },
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts", "lines": [314, 336] },
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts", "lines": [314, 334] }
+      ],
+      "iterationFirstSeen": 3,
+      "pass": 2,
+      "evidence": "Bulk UPDATE memory_index SET importance_tier='important' at :324-330 emits zero governance_audit rows. Generic reference-cleanup loop at :309 deletes governance_audit rows for deleted memory ids. Both actions contradict Wave-1 audit-emit contract in the highest-volume operator scenario. Does not violate Invariant 3 (moving AWAY from constitutional), but makes governance_audit non-authoritative for compliance/forensics after --apply.",
+      "status": "open",
+      "relatedFindings": ["P1-008", "P1-016"]
+    },
+    {
       "id": "P2-pass2-001",
       "severity": "P2",
       "dimension": "maintainability",
@@ -18,8 +36,12 @@
       ],
       "iterationFirstSeen": 1,
       "pass": 2,
-      "evidence": "Three code sites emit action='tier_downgrade_non_constitutional_path'. Handler condition (previousTier==='constitutional' && nextTier==='important') can overlap with SQL-layer unconditional emit when a previously-constitutional row's path is non-constitutional AND request is constitutional — produces duplicate audits.",
-      "status": "open"
+      "evidence": "Three code sites emit action='tier_downgrade_non_constitutional_path'. Iter-3 control-flow trace confirms max redundancy is 2 rows per decision (S2 and S5 in iteration-003.md), not 3. Handler narrow condition + SQL-layer unconditional emit can co-fire in one scenario; post-insert-metadata cannot co-fire with the handler. P2 severity confirmed.",
+      "status": "open",
+      "redundancyAnalysis": {
+        "maxRowsPerDecision": 2,
+        "verifiedInIteration": 3
+      }
     },
     {
       "id": "P2-pass2-002",
@@ -48,6 +70,25 @@
       "evidence": "Guard only triggers for importanceTier==='constitutional' requests. A request importanceTier='critical' against a currently-constitutional row on a non-constitutional path downgrades to 'critical' without any typed governance_audit. Handler audit condition nextTier==='important' also fails. Observability gap, not Invariant-3 violation.",
       "status": "open",
       "relatedFindings": ["P1-008", "P1-016"]
+    },
+    {
+      "id": "P2-pass2-004",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Governance-audit emission pattern duplicated across 5 sites without shared helper or action-string constants",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-mutations.ts",
+      "lines": [76, 114],
+      "relatedFiles": [
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/lib/storage/post-insert-metadata.ts", "lines": [105, 120] },
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts", "lines": [315, 329] },
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts", "lines": [182, 202] },
+        { "file": ".opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts", "lines": [1343, 1357] }
+      ],
+      "iterationFirstSeen": 4,
+      "pass": 2,
+      "evidence": "tryRecordTierDowngradeAudit helper is module-local to vector-index-mutations.ts (not exported). 4 of 5 sites duplicate recordGovernanceAudit payload inline with subtle drift (anchor sentinel, metadata shape). Action string 'tier_downgrade_non_constitutional_path' appears at 5 production + 3 test sites as bare literal with no enum/constant. Action string 'checkpoint_restore_excluded_path_rejected' appears at 1 production + 1 test bare literal. Recommend: move tryRecordTierDowngradeAudit into scope-governance.ts and export; define GOVERNANCE_AUDIT_ACTIONS const-namespace enum. checkpoints.ts deferred-flush variant remains legitimate.",
+      "status": "open",
+      "relatedFindings": ["P2-pass2-001"]
     }
   ],
   "resolvedFindings": [
@@ -90,6 +131,33 @@
       "chainIntegrity": "compound-P0-001+P0-002-attack-chain-severed-at-step-4"
     },
     {
+      "id": "P1-008",
+      "severity": "P1",
+      "resolvedInPass": 2,
+      "resolvedInIteration": 3,
+      "resolution": "closed",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:314-336 (save-path downgrade now emits typed tier_downgrade_non_constitutional_path row with decision='conflict', source='memory_save')",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts:314-334 (canonical recordGovernanceAudit writer; INSERT into governance_audit with action, decision, memory_id, logical_key, reason, metadata)",
+        "Pre-transaction audit placement (prepareParsedMemoryForIndexing runs before the save write transaction) ensures audit row survives downstream rollback",
+        "try/catch at memory-save.ts:330-335 logs console.warn on audit-insert failure without failing the primary save (audit-fail-safe contract satisfied)"
+      ]
+    },
+    {
+      "id": "P1-016",
+      "severity": "P1",
+      "resolvedInPass": 2,
+      "resolvedInIteration": 3,
+      "resolution": "closed",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-mutations.ts:76-114 (tryRecordTierDowngradeAudit emits tier_downgrade_non_constitutional_path from update_memory's SQL-layer guard at :465)",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts:182-207 (handler-layer narrow re-verification audit emits same action when previousTier='constitutional' and nextTier='important')",
+        "Both emitters route through canonical recordGovernanceAudit writer in scope-governance.ts",
+        "Both emitters wrap recordGovernanceAudit in try/catch with console.warn/logger.warn on failure (audit-fail-safe contract)",
+        "Live DB spot check: SELECT COUNT(*) FROM governance_audit = 0 (expected clean-slate; no downgrades triggered yet)"
+      ]
+    },
+    {
       "id": "P1-018",
       "severity": "P1",
       "resolvedInPass": 2,
@@ -104,24 +172,24 @@
   "repeatedFindings": [],
   "dimensionCoverage": {
     "correctness": true,
-    "security": false,
+    "security": true,
     "traceability": false,
-    "maintainability": false
+    "maintainability": true
   },
   "findingsBySeverity": {
     "P0": 0,
-    "P1": 0,
-    "P2": 3
+    "P1": 1,
+    "P2": 4
   },
-  "openFindingsCount": 3,
-  "resolvedFindingsCount": 3,
+  "openFindingsCount": 5,
+  "resolvedFindingsCount": 5,
   "convergenceScore": 0.0,
   "pass": 2,
   "waveOneVerification": {
     "P0-001": "CLOSED",
     "P0-002": "CLOSED",
-    "P1-008": "PENDING-iter-3",
-    "P1-016": "PENDING-iter-3",
+    "P1-008": "CLOSED",
+    "P1-016": "CLOSED",
     "P1-018": "RESOLVED-IN-SPIRIT"
   }
 }

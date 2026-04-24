@@ -123,7 +123,11 @@ The Code Graph system uses a separate database stored alongside the memory index
 
 Current code-graph behavior is intentionally bounded:
 - startup and resume surfaces report freshness-aware graph status (`fresh`, `stale`, `empty`, `error`)
+- startup/bootstrap payloads may also include `graphQualitySummary` so operators can see detector provenance and edge-enrichment quality from the last persisted scan
+- `code_graph_status` returns counts plus `readiness`, `canonicalReadiness`, `trustState`, and `graphQualitySummary`
 - `code_graph_query` and `code_graph_context` may repair small stale deltas inline
+- read-path tools do not run inline full scans; when the graph is empty or too stale they return a blocked payload with `status: "blocked"`, `requiredAction: "code_graph_scan"`, and `blockReason: "full_scan_required"`
+- successful `code_graph_context` responses include `metadata.partialOutput` and `graphMetadata.detectorProvenance` so you can tell whether the response was partial and which persisted graph metadata backed it
 - empty or broadly stale graphs still require explicit `code_graph_scan`
 
 ### Runtime Coverage Note (2026-04-04)
@@ -451,9 +455,11 @@ Run session bootstrap, then query the code graph for symbols in .opencode/skill/
 ```
 
 Expected result:
-- the startup or bootstrap response reports freshness-aware graph status
-- the structural query returns a `readiness` block
+- the startup or bootstrap response reports freshness-aware graph status and may include `graphQualitySummary`
+- the structural query returns a `readiness` block with canonical/trust labels instead of only counts
+- successful `code_graph_context` responses include `metadata.partialOutput` and `graphMetadata.detectorProvenance`
 - if the graph is only lightly stale, the read path may refresh inline before returning results
+- if the graph is empty or too stale for bounded repair, the read path returns `status: "blocked"` with `requiredAction: "code_graph_scan"`
 
 ### Step 3: Run a Test Query
 
@@ -796,7 +802,7 @@ bash .opencode/skill/system-spec-kit/scripts/validate.sh \
 | `NODE_MODULE_VERSION mismatch` | Node.js was updated after native modules were compiled | Run `bash scripts/setup/rebuild-native-modules.sh` |
 | `sqlite-vec unavailable` | Platform-specific native package failed to load | Run `npm install && npm rebuild` in both `mcp_server/` and `scripts/` |
 | Server starts but returns no memories | No indexed memories yet, or embeddings are pending | Run `memory_index_scan({ force: true })` via your AI |
-| `code_graph_query` reports `full_scan` or `inline full scan skipped for read path` | The graph is empty or too stale for bounded read-path repair | Run `code_graph_scan`, then retry the structural read |
+| `code_graph_query` reports `full_scan`, or `code_graph_context` / `code_graph_query` returns `status: "blocked"` with `requiredAction: "code_graph_scan"` | The graph is empty or too stale for bounded read-path repair | Run `code_graph_scan`, then retry the structural read |
 | Startup or resume shows graph `stale` | Freshness-aware startup detected drift before a structural read ran | Run a structural read to allow bounded inline repair, or run `code_graph_scan` for broader stale states |
 | Database appears stale after restore | Client still uses old MCP process with in-memory state | Fully restart OpenCode or Claude Code |
 | MCP server not in tools list | Configuration file error or path is wrong | Validate JSON syntax and verify binary path (see below) |
@@ -905,6 +911,14 @@ After restoring a database backup or switching branches, the MCP server process 
 ```
 
 The MCP process loads the database on startup. A client reload does not always restart the MCP server process.
+
+### Code Graph Status and Context Signals
+
+Use `code_graph_status` as the quickest operator probe for structural health. Expect `freshness`, `readiness`, `canonicalReadiness`, `trustState`, `parseHealth`, and `graphQualitySummary` in the response when the graph has persisted scan metadata.
+
+`graphQualitySummary` summarizes what kind of detector provenance and edge-enrichment evidence the last persisted scan produced. If the graph is brand new or still empty, the field may be `null` or absent until `code_graph_scan` writes the first persisted graph state.
+
+`code_graph_context` can refuse broad repair on the read path. In that case it returns `status: "blocked"` with `requiredAction: "code_graph_scan"` and `blockReason: "full_scan_required"` instead of attempting a full scan inline. Successful context responses still include `readiness`, `trustState`, `graphMetadata.detectorProvenance`, and `metadata.partialOutput`, which is the operator-facing signal that budget or deadline limits trimmed sections or anchors.
 
 ### Root Cause Summary (Post-Update Failures)
 

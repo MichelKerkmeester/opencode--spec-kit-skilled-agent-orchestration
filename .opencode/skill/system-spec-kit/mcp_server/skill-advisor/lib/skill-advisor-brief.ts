@@ -32,6 +32,10 @@ import {
   classifyAdvisorFailure,
   type AdvisorErrorClass,
 } from './error-diagnostics.js';
+import {
+  renderAdvisorBrief,
+  type AdvisorBriefRenderableResult,
+} from './render.js';
 
 export type AdvisorRuntime = 'claude' | 'gemini' | 'copilot' | 'codex';
 export type AdvisorHookStatus = AdvisorEnvelopeStatus;
@@ -108,26 +112,6 @@ function clampTokenCap(maxTokens: number | undefined, ambiguous: boolean): numbe
   return Math.min(Math.max(1, Math.floor(requested)), HARD_TOKEN_CAP);
 }
 
-function estimateTokens(text: string): number {
-  return Math.ceil(text.length / 4);
-}
-
-function capTextByTokenEstimate(text: string, tokenCap: number): string {
-  if (estimateTokens(text) <= tokenCap) {
-    return text;
-  }
-  const words = text.split(/\s+/);
-  const kept: string[] = [];
-  for (const word of words) {
-    const candidate = [...kept, word].join(' ');
-    if (estimateTokens(`${candidate}...`) > tokenCap) {
-      break;
-    }
-    kept.push(word);
-  }
-  return kept.length > 0 ? `${kept.join(' ')}...` : text.slice(0, Math.max(1, tokenCap * 4 - 3)).trimEnd() + '...';
-}
-
 export function resolveAdvisorThresholdConfig(
   thresholdConfig: AdvisorThresholds | undefined,
 ): ResolvedAdvisorThresholdConfig {
@@ -169,18 +153,23 @@ function hasAmbiguitySignal(recommendations: readonly AdvisorRecommendation[]): 
   return Math.abs(first.confidence - second.confidence) <= 0.05;
 }
 
-function renderBrief(
+function renderSharedBrief(
   recommendations: readonly AdvisorRecommendation[],
   freshness: AdvisorHookFreshness,
   tokenCap: number,
+  thresholdConfig: AdvisorThresholds | undefined,
 ): string | null {
-  const top = recommendations[0];
-  if (!top) {
-    return null;
-  }
-  const prefix = freshness === 'stale' ? 'Advisor: stale - ' : 'Advisor: ';
-  const brief = `${prefix}use ${top.skill} (confidence ${top.confidence.toFixed(2)}, uncertainty ${top.uncertainty.toFixed(2)}).`;
-  return capTextByTokenEstimate(brief, tokenCap);
+  const renderableResult: AdvisorBriefRenderableResult = {
+    status: 'ok',
+    freshness,
+    recommendations,
+    metrics: { tokenCap },
+    sharedPayload: null,
+  };
+  return renderAdvisorBrief(renderableResult, {
+    tokenCap,
+    thresholdConfig,
+  });
 }
 
 export function buildAdvisorHookResultFromRecommendations(args: {
@@ -207,7 +196,12 @@ export function buildAdvisorHookResultFromRecommendations(args: {
 
   const filteredRecommendations = passingRecommendations(args.recommendations, args.thresholdConfig);
   const tokenCap = clampTokenCap(args.maxTokens, hasAmbiguitySignal(filteredRecommendations));
-  const brief = renderBrief(filteredRecommendations, freshness, tokenCap);
+  const brief = renderSharedBrief(
+    filteredRecommendations,
+    freshness,
+    tokenCap,
+    args.thresholdConfig,
+  );
   return result({
     startedAt: args.startedAt ?? performance.now(),
     status: brief ? 'ok' : 'skipped',
@@ -251,24 +245,24 @@ function sourceRefsForFreshness(freshness: AdvisorFreshnessResult): SharedPayloa
 function buildSharedPayload(args: {
   status: AdvisorHookStatus;
   freshness: AdvisorHookFreshness;
-  brief: string | null;
+  renderedBrief: string | null;
   recommendations: readonly AdvisorRecommendation[];
   freshnessResult: AdvisorFreshnessResult;
   generatedAt: string;
 }): SharedPayloadEnvelope | null {
   const top = args.recommendations[0] ?? null;
-  const sections: SharedPayloadSection[] = args.brief
+  const sections: SharedPayloadSection[] = args.renderedBrief
     ? [{
       key: 'advisor-brief',
       title: 'Advisor Brief',
-      content: args.brief,
+      content: args.renderedBrief,
       source: 'advisor-runtime',
     }]
     : [];
   return createSharedPayloadEnvelope({
     kind: 'resume',
     sections,
-    summary: args.brief ?? `Advisor ${args.status} (${args.freshness})`,
+    summary: args.renderedBrief ?? `Advisor ${args.status} (${args.freshness})`,
     metadata: {
       freshness: args.freshness,
       confidence: top?.confidence ?? 0,
@@ -318,7 +312,7 @@ function result(args: {
     ? buildSharedPayload({
       status: args.status,
       freshness: args.freshness,
-      brief: args.brief,
+      renderedBrief: args.brief,
       recommendations,
       freshnessResult: args.freshnessResult,
       generatedAt,
@@ -500,7 +494,12 @@ export async function buildSkillAdvisorBrief(
 
     const recommendations = passingRecommendations(subprocess.recommendations, options.thresholdConfig);
     const tokenCap = clampTokenCap(options.maxTokens, hasAmbiguitySignal(recommendations));
-    const brief = renderBrief(recommendations, freshness.state, tokenCap);
+    const brief = renderSharedBrief(
+      recommendations,
+      freshness.state,
+      tokenCap,
+      options.thresholdConfig,
+    );
     const okResult = result({
       startedAt,
       status: brief ? 'ok' : 'skipped',

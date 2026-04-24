@@ -1,6 +1,6 @@
 ---
 title: "advisor_validate MCP Tool"
-description: "Native MCP tool that returns real corpus, holdout, parity, safety, and latency slice measurements for release-gate evaluation."
+description: "Native MCP tool that returns release-gate slices plus explicit threshold semantics and prompt-safe telemetry/outcome rollups."
 trigger_phrases:
   - "advisor_validate"
   - "mcp validate tool"
@@ -22,13 +22,31 @@ trigger_phrases:
 
 ## 1. PURPOSE
 
-Drive release-readiness decisions from real measurements. Consolidate corpus, holdout, parity, safety, and latency slices behind one tool call.
+Drive release-readiness decisions from real measurements. Consolidate corpus, holdout, parity, safety, and latency slices behind one tool call, while also exposing the threshold contract and prompt-safe telemetry summaries operators need to interpret the run.
 
 ---
 
 ## 2. CURRENT REALITY
 
-`handlers/advisor-validate.ts` runs the bundled validation slices and returns per-slice results. The current baseline:
+`handlers/advisor-validate.ts` runs the bundled validation slices and returns the landed public contract:
+
+| Top-Level Field | What It Publishes |
+| --- | --- |
+| `workspaceRoot` / `skillSlug` | The resolved workspace plus optional skill-scoped validation target. |
+| `thresholdSemantics` | Separates aggregate release-gate thresholds from prompt-time routing thresholds. |
+| `overallAccuracy` / `perSkill` | Aggregate top-1 results for the active corpus selection. |
+| `slices` | Corpus, holdout, parity, safety, and latency slice payloads. |
+| `telemetry` | Prompt-safe diagnostics and durable outcome rollups. |
+| `generatedAt` | Run timestamp for the validation envelope. |
+
+Threshold semantics are explicit so release gating does not get conflated with prompt-time routing:
+
+| Threshold Group | Current Values |
+| --- | --- |
+| `aggregateValidation` | `fullCorpusTop1=0.75`, `holdoutTop1=0.725`, `perSkillTop1=0.7`, `unknownCountTargetMax=10` |
+| `runtimeRouting` | `confidenceThreshold=0.8`, `uncertaintyThreshold=0.35`, `confidenceOnly=false` |
+
+The current baseline slices remain:
 
 | Slice | Target | Measured |
 | --- | --- | --- |
@@ -39,7 +57,14 @@ Drive release-readiness decisions from real measurements. Consolidate corpus, ho
 | Latency (cache-hit p95) | <= 50 ms | ~6.99 ms |
 | Latency (uncached p95) | <= 60 ms | ~11.45 ms |
 
-The tool also exposes ablation slices when requested.
+Telemetry is published as prompt-safe rollups rather than raw prompt content:
+
+| Telemetry Surface | Fields |
+| --- | --- |
+| `telemetry.diagnostics` | `recordsPath`, `recordsRetained`, `rollingCacheHitRate`, `rollingP95Ms`, `rollingFailOpenRate` |
+| `telemetry.outcomes` | `recordsPath`, `recordedThisRun`, `totals` |
+
+`telemetry.outcomes.totals` reports durable outcome counts, and `recordedThisRun` reflects any `outcomeEvents` supplied on the validating call.
 
 ---
 

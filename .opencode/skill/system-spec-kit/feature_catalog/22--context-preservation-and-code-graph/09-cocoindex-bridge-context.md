@@ -1,6 +1,6 @@
 ---
 title: "CocoIndex bridge and code_graph_context"
-description: "CocoIndex bridge resolves semantic search results to code graph nodes and expands into LLM-oriented neighborhoods."
+description: "CocoIndex bridge resolves semantic search results to code graph nodes, preserves seed fidelity, and exposes blocked or partial context outcomes."
 audited_post_018: true
 ---
 
@@ -10,7 +10,7 @@ audited_post_018: true
 
 CocoIndex bridge resolves semantic search results to code graph nodes and expands into LLM-oriented neighborhoods.
 
-Seed resolver normalizes CocoIndex file:line results to ArtifactRef via resolution chain: exact symbol, near-exact symbol, enclosing symbol, file anchor. `code_graph_context` expands resolved anchors in 3 modes: neighborhood (1-hop), outline (file symbols), and impact (reverse callers plus reverse imports). Budget-aware truncation.
+Seed resolver normalizes CocoIndex file:line results to `ArtifactRef` via resolution chain: exact symbol, near-exact symbol, enclosing symbol, file anchor. `code_graph_context` preserves CocoIndex seed fidelity across both `file` and `filePath` inputs so provider metadata such as `source`, `score`, `snippet`, and `range` survive into resolved anchors. When readiness requires a suppressed full scan, the handler returns an explicit blocked payload instead of degraded graph answers. Successful responses still expand resolved anchors in 3 modes: neighborhood (1-hop), outline (file symbols), and impact (reverse callers plus reverse imports), and now expose structured `metadata.partialOutput` fields for deadline or budget omissions.
 
 ---
 
@@ -27,14 +27,15 @@ mcp_server/code-graph/lib/seed-resolver.ts
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/code-graph/lib/seed-resolver.ts` | Lib | Resolves CocoIndex file-range hits to graph anchors or file-level fallbacks |
-| `mcp_server/code-graph/lib/code-graph-context.ts` | Lib | Expands resolved seeds into budget-aware structural neighborhoods |
-| `mcp_server/code-graph/handlers/context.ts` | Handler | Exposes `code_graph_context` over MCP |
+| `mcp_server/code-graph/lib/code-graph-context.ts` | Lib | Expands resolved seeds into structural neighborhoods and reports structured partial-output metadata |
+| `mcp_server/code-graph/handlers/context.ts` | Handler | Exposes `code_graph_context`, preserves CocoIndex seed fidelity, and returns blocked-read payloads when full scans are required |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/code-graph-seed-resolver.vitest.ts` | Seed resolution across exact-symbol, enclosing-symbol, and file-anchor fallbacks |
+| `mcp_server/code-graph/tests/code-graph-seed-resolver.vitest.ts` | Seed resolution across exact-symbol, enclosing-symbol, and file-anchor fallbacks |
+| `mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts` | CocoIndex seed fidelity, blocked full-scan responses, and structured `partialOutput` metadata |
 
 ---
 

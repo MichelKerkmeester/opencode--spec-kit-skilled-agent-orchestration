@@ -20,16 +20,16 @@ This scenario validates Code graph storage and query.
   - Working directory is the project root
   - SQLite3 available (bundled via better-sqlite3)
   - Test fixture files available for indexing
-- **Prompt**: `As a context-and-code-graph validation operator, validate Code graph scan and structural query against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify the code graph SQLite storage (code-graph.sqlite) correctly indexes source files into code_files, code_nodes, and code_edges tables. The structural indexer must extract function declarations, class definitions, and import statements as nodes, and build call/import relationship edges. The 4 MCP tools (code_graph_scan, code_graph_query, code_graph_status, code_graph_context) must return correct results. WAL mode and foreign keys must be enabled. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- **Prompt**: `As a context-and-code-graph validation operator, validate Code graph scan and structural query against the live handler suites under cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run code-graph/tests/code-graph-indexer.vitest.ts code-graph/tests/code-graph-query-handler.vitest.ts code-graph/tests/code-graph-siblings-readiness.vitest.ts code-graph/tests/code-graph-scan.vitest.ts tests/unit-path-security.vitest.ts. Verify the code graph SQLite storage (code-graph.sqlite) correctly indexes source files into code_files, code_nodes, and code_edges tables. The structural indexer must extract function declarations, class definitions, and import statements as nodes, and build call/import relationship edges. The 4 MCP tools (code_graph_scan, code_graph_query, code_graph_status, code_graph_context) must return correct results, and code_graph_status must surface graphQualitySummary with detector provenance plus edge-enrichment detail. WAL mode and foreign keys must be enabled. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - **Expected signals**:
-  - All vitest tests in `code-graph-indexer.vitest.ts` pass
+  - All targeted vitest suites in `code-graph/tests/` and `tests/unit-path-security.vitest.ts` pass
   - `code_graph_scan` populates `code_files` table with indexed file paths and hashes
   - `code_nodes` table contains entries with types: function, class, import (with fqName, file, line, column)
   - `code_edges` table contains directional relationships (source_id, target_id, edge_type: calls/imports)
   - `code_graph_query` for outline mode returns symbol list for a given file
   - `code_graph_query` for calls mode returns callers/callees of a symbol
   - `code_graph_query` for imports mode returns import relationships
-  - `code_graph_status` returns counts (files indexed, nodes, edges)
+  - `code_graph_status` returns counts (files indexed, nodes, edges) plus `graphQualitySummary.detectorProvenanceSummary` and `graphQualitySummary.graphEdgeEnrichmentSummary`
   - Database uses WAL journal mode and has foreign keys enabled
 - **Pass/fail criteria**:
   - PASS: All tables populated correctly, query tools return expected results, WAL mode confirmed
@@ -42,12 +42,12 @@ This scenario validates Code graph storage and query.
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate Indexer extracts function/class/import nodes from source files against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify code_nodes contains function, class, import entries with fqName, file path, line numbers. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate Indexer extracts function/class/import nodes from source files against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run code-graph/tests/code-graph-indexer.vitest.ts. Verify code_nodes contains function, class, import entries with fqName, file path, line numbers. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
 
-1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run code-graph/tests/code-graph-indexer.vitest.ts
 
 ### Expected
 
@@ -71,12 +71,12 @@ Check structural indexer regex/parser for supported syntax patterns
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate Edge builder produces call and import relationships against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify code_edges contains directional edges with source_id, target_id, edge_type (calls, imports). Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate Edge builder produces call and import relationships against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run code-graph/tests/code-graph-indexer.vitest.ts. Verify code_edges contains directional edges with source_id, target_id, edge_type (calls, imports). Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
 
-1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run code-graph/tests/code-graph-indexer.vitest.ts
 
 ### Expected
 
@@ -100,41 +100,41 @@ Verify edge direction: source calls target, source imports target
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate Query tools (outline, calls, imports, status) against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify code_graph_query returns results for outline/calls/imports modes, code_graph_status returns file/node/edge counts. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate Query tools (outline, calls, imports, status) against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run code-graph/tests/code-graph-query-handler.vitest.ts code-graph/tests/code-graph-siblings-readiness.vitest.ts. Verify code_graph_query returns results for outline/calls/imports modes, and code_graph_status returns file/node/edge counts plus graphQualitySummary.detectorProvenanceSummary and graphQualitySummary.graphEdgeEnrichmentSummary. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
 
-1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run code-graph/tests/code-graph-query-handler.vitest.ts code-graph/tests/code-graph-siblings-readiness.vitest.ts
 
 ### Expected
 
-`code_graph_query` returns results for outline/calls/imports modes, `code_graph_status` returns file/node/edge counts
+`code_graph_query` returns results for outline/calls/imports modes, and `code_graph_status` returns file/node/edge counts plus `graphQualitySummary` with detector provenance and edge-enrichment detail
 
 ### Evidence
 
-Test output showing query results
+Vitest output showing query-mode assertions, canonical readiness emission, and `graphQualitySummary` payload fields
 
 ### Pass / Fail
 
-- **Pass**: all 4 MCP tool operations return non-empty valid results
+- **Pass**: outline/calls/imports operations return valid results, and `code_graph_status` emits non-empty counts plus `graphQualitySummary`
 - **Fail**: Any contradicting evidence appears or the pass condition is not met.
 
 ### Failure Triage
 
-Check handler implementations in `handlers/code-graph/`
+Check `handlers/code-graph/query.ts`, `handlers/code-graph/status.ts`, and `code-graph/tests/code-graph-siblings-readiness.vitest.ts`
 
 ---
 
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate Deleted files purged during incremental scan against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-scan.vitest.ts. Verify incremental scan removes deleted tracked files and purges their nodes/edges from code_files, code_nodes, and code_edges. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate Deleted files purged during incremental scan against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run code-graph/tests/code-graph-scan.vitest.ts. Verify incremental scan removes deleted tracked files and purges their nodes/edges from code_files, code_nodes, and code_edges. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
 
-1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-scan.vitest.ts
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run code-graph/tests/code-graph-scan.vitest.ts
 
 ### Expected
 
@@ -151,19 +151,19 @@ Vitest output showing deleted file removal path and follow-up DB assertions
 
 ### Failure Triage
 
-Check `handlers/code-graph/scan.ts` delete path and `tests/code-graph-scan.vitest.ts` coverage for tracked-file removal
+Check `handlers/code-graph/scan.ts` delete path and `code-graph/tests/code-graph-scan.vitest.ts` coverage for tracked-file removal
 
 ---
 
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate Symlink boundary validation against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/unit-path-security.vitest.ts tests/code-graph-scan.vitest.ts. Verify code_graph_scan canonicalizes rootDir, rejects broken or escaping symlinks, and does not index files outside the project root. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate Symlink boundary validation against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/unit-path-security.vitest.ts code-graph/tests/code-graph-scan.vitest.ts. Verify code_graph_scan canonicalizes rootDir, rejects broken or escaping symlinks, and does not index files outside the project root. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
 
-1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/unit-path-security.vitest.ts tests/code-graph-scan.vitest.ts
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/unit-path-security.vitest.ts code-graph/tests/code-graph-scan.vitest.ts
 
 ### Expected
 

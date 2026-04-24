@@ -186,9 +186,10 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
   const results = await indexFiles(config, { skipFreshFiles: effectiveIncremental });
   const detectorProvenanceSummary = summarizeDetectorProvenance(results);
   const graphEdgeEnrichmentSummary = summarizeGraphEdgeEnrichment(results);
+  const preParseSkippedCount = effectiveIncremental ? (results.preParseSkippedCount ?? 0) : 0;
 
   let filesIndexed = 0;
-  let filesSkipped = 0;
+  let filesSkipped = preParseSkippedCount;
   let totalNodes = 0;
   let totalEdges = 0;
   const errors: string[] = [];
@@ -237,9 +238,9 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     graphDb.setLastDetectorProvenance(detectorProvenanceSummary.dominant);
   }
   graphDb.setLastDetectorProvenanceSummary(detectorProvenanceSummary);
-  if (graphEdgeEnrichmentSummary) {
+  if (filesIndexed > 0 && graphEdgeEnrichmentSummary) {
     graphDb.setLastGraphEdgeEnrichmentSummary(graphEdgeEnrichmentSummary);
-  } else {
+  } else if (filesIndexed > 0) {
     graphDb.clearLastGraphEdgeEnrichmentSummary();
   }
 

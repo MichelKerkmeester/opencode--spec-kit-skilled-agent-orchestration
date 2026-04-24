@@ -3,7 +3,6 @@
 // ───────────────────────────────────────────────────────────────
 
 import { canonicalFold } from '@spec-kit/shared/unicode-normalization';
-import type { AdvisorHookResult } from './skill-advisor-brief.js';
 import type { AdvisorRecommendation } from './subprocess.js';
 
 // ───────────────────────────────────────────────────────────────
@@ -17,6 +16,20 @@ export interface AdvisorBriefRenderOptions {
     readonly uncertaintyThreshold?: number;
     readonly confidenceOnly?: boolean;
   };
+}
+
+export interface AdvisorBriefRenderableResult {
+  readonly status: 'ok' | 'stale' | 'skipped' | 'degraded' | 'fail_open';
+  readonly freshness: 'live' | 'stale' | 'absent' | 'unavailable';
+  readonly recommendations: readonly AdvisorRecommendation[];
+  readonly metrics?: {
+    readonly tokenCap?: number;
+  } | null;
+  readonly sharedPayload?: {
+    readonly metadata?: {
+      readonly skillLabel?: string | null;
+    } | null;
+  } | null;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -79,7 +92,7 @@ function isAmbiguous(recommendations: readonly AdvisorRecommendation[]): boolean
   return !!first && !!second && Math.abs(first.confidence - second.confidence) <= 0.05 + AMBIGUITY_EPSILON;
 }
 
-function metadataSkillLabel(result: AdvisorHookResult): string | null {
+function metadataSkillLabel(result: AdvisorBriefRenderableResult): string | null {
   const metadata = result.sharedPayload?.metadata;
   return typeof metadata?.skillLabel === 'string' ? metadata.skillLabel : null;
 }
@@ -96,7 +109,7 @@ function metadataSkillLabel(result: AdvisorHookResult): string | null {
  * repository-authored skill label looks instruction-shaped after folding.
  */
 export function renderAdvisorBrief(
-  result: AdvisorHookResult,
+  result: AdvisorBriefRenderableResult,
   options: AdvisorBriefRenderOptions = {},
 ): string | null {
   if (result.status !== 'ok') {

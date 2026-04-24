@@ -1046,7 +1046,7 @@ Query structural code relationships: `outline` (file symbols), `calls_from` and 
 
 ##### `code_graph_context`
 
-Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds for structural expansion. Modes: `neighborhood` (1-hop calls plus imports), `outline` (file symbols), `impact` (reverse callers). Responses include a `readiness` block, and the handler may perform bounded inline selective reindex before answering when the graph is only lightly stale.
+Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds for structural expansion. Modes: `neighborhood` (1-hop calls plus imports), `outline` (file symbols), `impact` (reverse callers). Successful responses return `status: "ok"` plus readiness/trust metadata, resolved anchors, graph context, and `data.metadata.partialOutput` so callers can see whether deadline or token-budget pressure produced partial output. When the read path determines the graph needs a full scan, the tool returns an explicit `status: "blocked"` payload with `data.blocked`, `graphAnswersOmitted`, `requiredAction: "code_graph_scan"`, and the same readiness/trust metadata instead of partial graph answers.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1057,6 +1057,8 @@ Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results a
 | `budgetTokens` | number | Token budget for response (100-4000, default 1200) |
 | `profile` | string | Output density: `quick`, `research` or `debug` |
 | `includeTrace` | boolean | Include trace metadata for debugging |
+
+`data.metadata.partialOutput` is structured and stable: `isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, and `truncatedText`. Use it to distinguish a complete answer from one shortened by deadline or token-budget limits.
 
 ---
 
@@ -1136,7 +1138,7 @@ Scan workspace files and build the structural code graph index (functions, class
 
 ##### `code_graph_status`
 
-Report code graph index health: file count, node and edge counts by type, parse health summary, last scan timestamp, DB file size and schema version.
+Report code graph index health: file count, node and edge counts by type, parse health summary, last scan timestamp, DB file size, schema version, readiness/trust fields for the current freshness probe, and `graphQualitySummary` so operators can inspect detector provenance plus edge-enrichment confidence instead of relying on counts alone.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|

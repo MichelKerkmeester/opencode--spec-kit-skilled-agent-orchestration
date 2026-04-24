@@ -9,6 +9,7 @@ import {
 } from '../../lib/skill-advisor-brief.js';
 import type { AdvisorFreshnessResult } from '../../lib/freshness.js';
 import { getAdvisorFreshness } from '../../lib/freshness.js';
+import { renderAdvisorBrief } from '../../lib/render.js';
 import { runAdvisorSubprocess } from '../../lib/subprocess.js';
 
 vi.mock('../../lib/freshness.js', () => ({
@@ -91,12 +92,67 @@ describe('buildSkillAdvisorBrief', () => {
 
   it('AS3 fires on work-intent prompt and wraps advisor envelope', async () => {
     const result = await buildSkillAdvisorBrief('implement feature X', options);
+    const rendered = renderAdvisorBrief(result);
 
     expect(result.status).toBe('ok');
-    expect(result.brief).toContain('sk-code-opencode');
+    expect(result.brief).toBe('Advisor: live; use sk-code-opencode 0.91/0.10 pass.');
+    expect(result.brief).toBe(rendered);
     expect(result.sharedPayload?.provenance.producer).toBe('advisor');
     expect(result.sharedPayload?.metadata?.status).toBe('ok');
+    expect(result.sharedPayload?.summary).toBe(rendered);
+    expect(result.sharedPayload?.sections).toEqual([
+      expect.objectContaining({
+        key: 'advisor-brief',
+        content: rendered,
+      }),
+    ]);
     expect(runAdvisorSubprocess).toHaveBeenCalledTimes(1);
+  });
+
+  it('uses the shared ambiguous renderer contract for payload and brief content', async () => {
+    vi.mocked(runAdvisorSubprocess).mockResolvedValue({
+      ok: true,
+      recommendations: [
+        {
+          skill: 'sk-code-opencode',
+          confidence: 0.91,
+          uncertainty: 0.1,
+          passes_threshold: true,
+        },
+        {
+          skill: 'sk-doc',
+          confidence: 0.89,
+          uncertainty: 0.11,
+          passes_threshold: true,
+        },
+      ],
+      errorCode: null,
+      exitCode: 0,
+      signal: null,
+      stderr: null,
+      durationMs: 5,
+      retriesAttempted: 0,
+    });
+
+    const result = await buildSkillAdvisorBrief('implement feature X', {
+      ...options,
+      maxTokens: 120,
+    });
+    const rendered = renderAdvisorBrief(result);
+
+    expect(result.status).toBe('ok');
+    expect(result.metrics.tokenCap).toBe(120);
+    expect(result.brief).toBe(
+      'Advisor: live; ambiguous: sk-code-opencode 0.91/0.10 vs sk-doc 0.89/0.11 pass.',
+    );
+    expect(result.brief).toBe(rendered);
+    expect(result.sharedPayload?.summary).toBe(rendered);
+    expect(result.sharedPayload?.sections).toEqual([
+      expect.objectContaining({
+        key: 'advisor-brief',
+        content: rendered,
+      }),
+    ]);
   });
 
   it('AS4 fail-opens on subprocess timeout', async () => {

@@ -18,7 +18,7 @@ Reducer-generated observability surface for the active research packet.
 - Topic: Deeply investigate what needs to be implemented for packet 026/013 to integrate automatic convergence-time resource-map.md emission into sk-deep-review and sk-deep-research in a smart, low-coupling way. Determine the live delta/state schemas, safest integration points, template-fit constraints, workflow/docs/test changes, and the edge-case handling needed for a production-quality implementation.
 - Started: 2026-04-24T10:30:43.408Z
 - Status: INITIALIZED
-- Iteration: 2 of 7
+- Iteration: 5 of 7
 - Session ID: dr-2026-04-24T10-30-43-408Z
 - Parent Session: none
 - Lifecycle Mode: new
@@ -33,30 +33,33 @@ Reducer-generated observability surface for the active research packet.
 |---|-------|-------|-------|----------|--------|
 | 1 | Validate the live deep-loop data contracts first: inspect real reducer inputs, JSONL records, and delta expectations in both sk-deep-review and sk-deep-research so the resource-map design is grounded in shipped shapes rather than packet assumptions. | - | 1.00 | 4 | complete |
 | 2 | Trace the live convergence/finalization path in both deep-loop workflows and reducers: determine whether resource-map emission should run inside reducer finalization, in a dedicated post-reducer workflow step, or alongside synthesis/report generation, and catalog the docs/tests/YAML surfaces that already describe that boundary. | integration-boundary | 0.75 | 4 | complete |
+| 3 | Pin the exact implementation contract for a workflow-owned emitter step at `{artifact_dir}/resource-map.md`, then map the required auto/confirm YAML, command/docs, playbook/catalog, and edge-case updates. | implementation-contract | 0.90 | 5 | complete |
+| 4 | Turn this contract into an implementation-ready delta list: pin the exact config/CLI plumbing for the opt-out flag, define the extractor input/output API around event-stream delta files plus template-faithful Note-column counts, and revise the phase-013 packet acceptance criteria/tasks so they point at the workflow-owned synthesis step and the existing synthesis docs/playbooks instead of reducer-local hooks and custom output columns. | implementation-delta | 0.88 | 4 | complete |
+| 5 | Audit the current phase-013 packet docs against the live contract and produce an explicit rewrite list with file/requirement/task drift called out precisely. | packet-rewrite-audit | 0.85 | 4 | insight |
 
-- iterationsCompleted: 2
-- keyFindings: 8
-- openQuestions: 3
-- resolvedQuestions: 2
+- iterationsCompleted: 5
+- keyFindings: 21
+- openQuestions: 0
+- resolvedQuestions: 5
 
 <!-- /ANCHOR:progress -->
 <!-- ANCHOR:questions -->
 ## 4. QUESTIONS
-- Answered: 2/5
+- Answered: 5/5
 - [x] What are the real reducer inputs and per-iteration evidence shapes in sk-deep-review and sk-deep-research today, and what normalization is actually required?
 - [x] What is the smartest minimal-coupling integration point for resource-map emission: inside the reducers, as a post-reducer workflow step, or during synthesis?
-- [ ] How should the emitted review and research maps extend the phase-012 resource-map template without creating format drift or brittle template coupling?
-- [ ] Which command, YAML, docs, catalog, playbook, and test surfaces must change to satisfy the phase-013 acceptance criteria end-to-end?
-- [ ] Which failure modes and edge cases need explicit handling so the feature is idempotent, child-phase-safe, and resilient to malformed or partial evidence?
+- [x] How should the emitted review and research maps extend the phase-012 resource-map template without creating format drift or brittle template coupling?
+- [x] Which command, YAML, docs, catalog, playbook, and test surfaces must change to satisfy the phase-013 acceptance criteria end-to-end?
+- [x] Which failure modes and edge cases need explicit handling so the feature is idempotent, child-phase-safe, and resilient to malformed or partial evidence?
 
 <!-- /ANCHOR:questions -->
 <!-- ANCHOR:trend -->
 ## 5. TREND
-- Last 3 ratios: 1.00 -> 0.75
+- Last 3 ratios: 0.90 -> 0.88 -> 0.85
 - Stuck count: 0
 - Guard violations: none recorded by the reducer pass
-- convergenceScore: 0.75
-- coverageBySources: {"code":18}
+- convergenceScore: 0.85
+- coverageBySources: {"code":78}
 
 <!-- /ANCHOR:trend -->
 <!-- ANCHOR:dead-ends -->
@@ -67,11 +70,20 @@ Reducer-generated observability surface for the active research packet.
 - Emitting from `step_compile_research` or `step_compile_review_report`. Those steps already own narrative/report assembly, while the template explicitly positions `resource-map.md` as a separate coverage ledger rather than another narrative section. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:857] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:928] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:29] (iteration 2)
 - Looking for an existing hidden `resource-map.md` hook in either deep-loop workflow. The live phase declarations enumerate reducer, dashboard, synthesis/report, and save outputs but no current resource-map emission step, so phase 013 needs a new explicit workflow-owned step rather than enabling a dormant path. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:748] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:827] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:760] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:873] (iteration 2)
 - Reducer-local ownership as the primary emission point. Reducers currently guarantee synchronized registry/strategy/dashboard refreshes only; adding convergence-only artifact emission there would widen reducer scope and make every refresh path responsible for template rendering. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:748] [SOURCE: .opencode/skill/sk-deep-review/scripts/reduce-state.cjs:1128] (iteration 2)
+- Extending the emitted maps with custom `Findings (P0/P1/P2)` or `Citations` table columns. The locked phase-012 template already standardizes the table shape and drift rules, so custom columns would make deep-loop maps a template fork instead of a template reuse. [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:55] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:181] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:136] (iteration 3)
+- Re-resolving artifact roots inside the emitter or extractor. Child-phase packet allocation is not stable across repeated fresh resolves, so the emitter must inherit the already-resolved `{artifact_dir}` from workflow state instead. [SOURCE: .opencode/skill/system-spec-kit/shared/review-research-paths.cjs:31] [SOURCE: .opencode/skill/system-spec-kit/shared/review-research-paths.cjs:117] [SOURCE: .opencode/skill/sk-deep-research/scripts/reduce-state.cjs:823] (iteration 3)
+- Treating the packet's current file list as "new standalone feature/playbook docs everywhere" without first updating the existing synthesis docs. The shipped synthesis feature files and finalization playbooks are already the authoritative contract surface, so ignoring them would leave the main operator-facing sources stale even if new helper docs were added. [SOURCE: .opencode/skill/sk-deep-research/feature_catalog/01--loop-lifecycle/04-synthesis.md:24] [SOURCE: .opencode/skill/sk-deep-review/feature_catalog/01--loop-lifecycle/04-synthesis.md:31] [SOURCE: .opencode/skill/sk-deep-research/manual_testing_playbook/06--synthesis-save-and-guardrails/019-final-synthesis-memory-save-and-guardrail-behavior.md:60] [SOURCE: .opencode/skill/sk-deep-review/manual_testing_playbook/06--synthesis-save-and-guardrails/027-final-synthesis-memory-save-and-guardrail-behavior.md:60] (iteration 3)
+- Adding the opt-out switch to `executor-config.ts` or `config.executor.*`. That schema only governs executor selection and executor-specific validation, so a resource-map flag there would conflate dispatch concerns with synthesis artifact policy. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts:21] [SOURCE: .opencode/command/spec_kit/deep-research.md:79] (iteration 4)
+- Preserving phase-013's custom `Findings` / `Citations` columns or special summary headers like `created_at` as part of the shipped contract. The phase-012 template already fixes the column set and summary structure, so these are template forks rather than edge-case handling. [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:39] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:67] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:80] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:220] (iteration 4)
+- Treating the extractor input as the packet's current `findings[]`-style pseudo-schema. The live deltas are line-oriented event streams, so any implementation that skips a normalization stage will drift from real workflow data immediately. [SOURCE: .opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl:50] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78] (iteration 4)
+- No new dead ends beyond the previously blocked directions. This iteration reaffirmed that reducer-local emission, nested `findings[]` extractor inputs, and custom `Findings` / `Citations` columns must stay out of the implementation packet. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:136] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:181] (iteration 5)
+- Preserving the packet's wildcard “create new feature/playbook entry” approach as the primary docs plan. The live operator-facing synthesis contract already lives in the existing synthesis pages and finalization scenarios, so leaving those unchanged would keep the canonical docs stale. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/tasks.md:73] [SOURCE: .opencode/skill/sk-deep-research/feature_catalog/01--loop-lifecycle/04-synthesis.md:18] [SOURCE: .opencode/skill/sk-deep-review/manual_testing_playbook/06--synthesis-save-and-guardrails/027-final-synthesis-memory-save-and-guardrail-behavior.md:66] (iteration 5)
+- Treating the current phase-013 packet as implementation-ready without first rewriting `spec.md`, `tasks.md`, and `checklist.md`. The current packet would route work back into reducers and custom table columns that the live workflow/template contract does not support. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-resource-map-deep-loop-integration/spec.md:78] [SOURCE: .opencode/skill/system-spec-kit/templates/resource-map.md:55] (iteration 5)
 
 <!-- /ANCHOR:dead-ends -->
 <!-- ANCHOR:next-focus -->
 ## 7. NEXT FOCUS
-Pin the exact implementation contract for the new emitter step across both auto and confirm workflows: target path should be the canonical resolved artifact root (`{artifact_dir}/resource-map.md`), opt-out/config wiring should stay workflow-owned, and the remaining work should map the precise docs/catalog/playbook/test surfaces plus idempotency and child-phase edge cases against that chosen boundary.
+Rewrite phase-013 `spec.md`, `tasks.md`, and `checklist.md` to match the live contract, then implement the shared delta-file extractor, `resourceMap.emit` / `--no-resource-map` plumbing, and the workflow-owned `step_emit_resource_map` in both deep-loop synthesis flows.
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:active-risks -->

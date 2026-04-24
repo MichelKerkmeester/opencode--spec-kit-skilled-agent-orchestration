@@ -281,6 +281,48 @@ describe('advisor_recommend handler', () => {
     ]);
   });
 
+  it('isolates cache entries by resolved workspace root', async () => {
+    mockReadAdvisorStatus.mockReturnValue(status('live'));
+    mockScoreAdvisorPrompt
+      .mockReturnValueOnce(scoreResult([recommendation({ skill: 'repo-a-skill' })]))
+      .mockReturnValueOnce(scoreResult([recommendation({ skill: 'repo-b-skill' })]));
+
+    const workspaceA = '/tmp/spec-kit-repo-a';
+    const workspaceB = '/tmp/spec-kit-repo-b';
+
+    const first = parseResponse(await handleAdvisorRecommend({
+      prompt: 'Implement cache isolation',
+      workspaceRoot: workspaceA,
+    }));
+    const second = parseResponse(await handleAdvisorRecommend({
+      prompt: 'Implement cache isolation',
+      workspaceRoot: workspaceB,
+    }));
+    const third = parseResponse(await handleAdvisorRecommend({
+      prompt: 'Implement cache isolation',
+      workspaceRoot: workspaceA,
+    }));
+
+    expect(first.data.workspaceRoot).toBe(workspaceA);
+    expect(first.data.recommendations).toEqual([
+      expect.objectContaining({ skillId: 'repo-a-skill' }),
+    ]);
+    expect((first.data.cache as { hit: boolean }).hit).toBe(false);
+
+    expect(second.data.workspaceRoot).toBe(workspaceB);
+    expect(second.data.recommendations).toEqual([
+      expect.objectContaining({ skillId: 'repo-b-skill' }),
+    ]);
+    expect((second.data.cache as { hit: boolean }).hit).toBe(false);
+
+    expect(third.data.workspaceRoot).toBe(workspaceA);
+    expect(third.data.recommendations).toEqual([
+      expect.objectContaining({ skillId: 'repo-a-skill' }),
+    ]);
+    expect((third.data.cache as { hit: boolean }).hit).toBe(true);
+    expect(mockScoreAdvisorPrompt).toHaveBeenCalledTimes(2);
+  });
+
   it('returns stale freshness with warning metadata', async () => {
     mockReadAdvisorStatus.mockReturnValue(status('stale'));
     mockScoreAdvisorPrompt.mockReturnValue(scoreResult());

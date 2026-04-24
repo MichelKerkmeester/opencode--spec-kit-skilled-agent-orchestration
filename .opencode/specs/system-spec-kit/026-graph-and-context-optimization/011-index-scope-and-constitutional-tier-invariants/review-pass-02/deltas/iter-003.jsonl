@@ -1,0 +1,1 @@
+{"type":"iteration","run":3,"dimension":"audit-trail-verification","pass":2,"p1008Status":"CLOSED","p1016Status":"CLOSED","newFindings":1,"p0":0,"p1":1,"p2":0,"auditSitesVerified":4,"maxRedundancy":2,"resolved":["P1-008","P1-016"],"newOpen":["P1-pass2-004"],"timestamp":"2026-04-24T11:00:00Z","sessionId":"2026-04-24T09:48:20.783Z","generation":2}

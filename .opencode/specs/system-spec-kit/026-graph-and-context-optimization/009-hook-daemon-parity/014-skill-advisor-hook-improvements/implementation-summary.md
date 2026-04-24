@@ -1,7 +1,7 @@
 ---
 template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 title: "Implementation Summary: Skill-Advisor Hook Improvements"
-description: "Completed packet 014: OpenCode threshold/render parity, Codex shared-brief normalization, public MCP workspace/threshold semantics, and durable prompt-safe telemetry with outcome capture."
+description: "Completed packet-02-derived implementation for packet 014: OpenCode threshold/render parity, Codex shared-brief normalization, public MCP workspace/threshold semantics, and durable prompt-safe telemetry with outcome capture."
 trigger_phrases:
   - "014 skill-advisor hook improvements complete"
   - "026/009/014 implementation"
@@ -10,10 +10,10 @@ contextType: "spec"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements"
-    last_updated_at: "2026-04-24T08:13:17Z"
+    last_updated_at: "2026-04-24T10:44:39Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "packet-014-implemented"
-    next_safe_action: "track-external-build-blockers"
+    recent_action: "rg-019-codex-verification-evidence-remediated"
+    next_safe_action: "continue-review-gap-remediation-packet"
     blockers:
       - "Global package build still fails in unrelated files outside this packet scope"
     completion_pct: 100
@@ -33,7 +33,7 @@ _memory:
 | **Level** | 2 |
 | **Status** | Complete |
 | **Completed** | 2026-04-24T08:13:17Z |
-| **Source** | `plan.md` + `../../research/014-skill-advisor-hook-improvements-pt-02/research.md` |
+| **Source** | `spec.md`, `plan.md`, `tasks.md`, and `../../research/014-skill-advisor-hook-improvements-pt-02/research.md` |
 <!-- /ANCHOR:metadata -->
 
 ## What Was Built
@@ -70,7 +70,7 @@ _memory:
 ## How It Was Delivered
 <!-- ANCHOR:how-delivered -->
 
-The packet was executed in task order: first by reading the packet docs and research inputs, then by landing the shared threshold/result primitives that the runtime adapters depend on, then by wiring OpenCode, Codex, the public MCP handlers, and the telemetry surfaces onto that shared contract. Once the code paths were aligned, focused Vitest suites, direct hook/bridge smokes, validator/output smokes, and cross-consistency greps were run and captured into per-task applied reports.
+Packet 014 was delivered as the implementation follow-through for the packet-02 research bundle: first by reconciling the in-folder plan/tasks against the research inputs, then by landing the shared threshold/result primitives that the runtime adapters depend on, then by wiring OpenCode, Codex, the public MCP handlers, and the telemetry surfaces onto that shared contract. Once the code paths were aligned, focused Vitest suites, direct hook/bridge smokes, validator/output smokes, and cross-consistency greps were run. Packet-local direct smokes captured the stale/fail-open Codex path, while the surviving success-path evidence for Codex is anchored to the repo tests that assert live brief injection and prompt-wrapper rendering.
 <!-- /ANCHOR:how-delivered -->
 
 ## Key Decisions
@@ -91,7 +91,7 @@ The packet was executed in task order: first by reading the packet docs and rese
 | OpenCode parity vitest | Pass | `./node_modules/.bin/vitest run ./skill-advisor/tests/compat/plugin-bridge.vitest.ts --reporter=dot` -> `Tests 4 passed (4)` |
 | Validator vitest | Pass | `./node_modules/.bin/vitest run ./skill-advisor/tests/handlers/advisor-validate.vitest.ts --reporter=dot` -> `Tests 3 passed (3)` |
 | Direct bridge smoke | Pass | Returned prompt-safe brief plus `workspaceRoot` and `effectiveThresholds` |
-| Direct Codex smokes | Pass | Both entrypoints returned prompt-safe fail-open `{}` output with durable diagnostics |
+| Codex hook + wrapper verification | Pass | Packet-local direct smokes covered prompt-safe fail-open `{}` output with durable diagnostics, and repo success-path evidence comes from `tests/codex-user-prompt-submit-hook.vitest.ts` (live `hookSpecificOutput.additionalContext` plus non-empty CLI smoke output) and `tests/codex-prompt-wrapper.vitest.ts` (rendered advisor brief injection when native hooks are unavailable) |
 | Direct handler smokes | Pass | `advisor_recommend` and `advisor_validate` returned the new public fields and telemetry totals |
 | Cross-consistency grep | Pass | README, hook reference, and schema now agree on `workspaceRoot`, `effectiveThresholds`, and `thresholdSemantics` |
 | Full package build | Fail | Blocked by unrelated pre-existing TypeScript errors in `hooks/claude/hook-state.ts`, `lib/context/shared-payload.ts`, and `code-graph/lib/code-graph-context.ts` outside this packet scope |
@@ -102,4 +102,5 @@ The packet was executed in task order: first by reading the packet docs and rese
 
 - The repository-wide `npm --prefix .opencode/skill/system-spec-kit/mcp_server run build` remains blocked by unrelated packet-external TypeScript errors, so full-package build parity could not be re-established inside this scope lock.
 - The current workspace reports stale advisor freshness during direct hook/bridge smokes, so the verification evidence exercised prompt-safe stale/fallback behavior rather than a live daemon path.
+- The packet-local `applied/T-###.md` evidence set referenced by earlier closeout docs is not present in this checkout, so verification currently depends on `tasks.md`, this summary, and `checklist.md` rather than per-task reports.
 <!-- /ANCHOR:limitations -->

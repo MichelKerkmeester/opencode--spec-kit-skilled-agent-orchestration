@@ -450,6 +450,68 @@ describe('code-graph-query handler', () => {
     });
   });
 
+  it('re-ranks more than 10 ambiguous fq_name matches before selecting a calls_from candidate', async () => {
+    const leadingCandidates = Array.from({ length: 11 }, (_, index) => ({
+      symbolId: `wrapper-${index + 1}`,
+      fqName: 'handlers.memory-context.handleMemoryContext',
+      name: 'handleMemoryContext',
+      kind: index % 2 === 0 ? 'variable' : 'function',
+      filePath: `handlers/wrapper-${String(index + 1).padStart(2, '0')}.ts`,
+      startLine: index + 1,
+    }));
+    const implementationCandidate = {
+      symbolId: 'implementation-after-cap',
+      fqName: 'handlers.memory-context.handleMemoryContext',
+      name: 'handleMemoryContext',
+      kind: 'function',
+      filePath: 'handlers/wrapper-12.ts',
+      startLine: 12,
+    };
+
+    mocks.getDb.mockReturnValue(createDb({
+      byFq: [...leadingCandidates, implementationCandidate],
+    }));
+    mocks.queryEdgesFrom.mockImplementation((symbolId: string) => (
+      symbolId === 'implementation-after-cap'
+        ? [{
+          edge: { targetId: 'symbol-2', edgeType: 'CALLS', metadata: { confidence: 0.9 } },
+          targetNode: { fqName: 'TargetSymbol', filePath: 'src/target.ts', startLine: 12 },
+        }]
+        : []
+    ));
+
+    const result = await handleCodeGraphQuery({
+      operation: 'calls_from',
+      subject: 'handleMemoryContext',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.status).toBe('ok');
+    expect(parsed.data.selectedCandidate).toMatchObject({
+      symbolId: 'implementation-after-cap',
+      kind: 'function',
+      operationEdgeCount: 1,
+      selectedForOperation: 'calls_from',
+    });
+    expect(parsed.data.warnings).toEqual([
+      expect.objectContaining({
+        code: 'ambiguous_subject',
+        subject: 'handleMemoryContext',
+        matchField: 'fq_name',
+        count: 12,
+        selectionReason: 'calls_from edge count',
+        candidates: expect.arrayContaining([
+          expect.objectContaining({ symbolId: 'implementation-after-cap' }),
+        ]),
+        selectedCandidate: expect.objectContaining({
+          symbolId: 'implementation-after-cap',
+        }),
+      }),
+    ]);
+    expect(parsed.data.warnings[0].candidates).toHaveLength(10);
+    expect(parsed.data.warnings[0].message).toContain('12 total; showing first 10');
+  });
+
   it('adds nested edge evidence metadata without collapsing trust axes', async () => {
     mocks.queryEdgesFrom.mockReturnValue([
       {

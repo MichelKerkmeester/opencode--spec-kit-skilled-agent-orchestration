@@ -25,7 +25,8 @@ _memory:
     key_files:
       - "implementation-summary.md"
       - "checklist.md"
-      - "applied/T-014.md"
+      - "resource-map.md"
+      - "review/review-report.md"
     completion_pct: 100
     open_questions: []
     answered_questions:
@@ -79,6 +80,7 @@ The packet hardened code-graph CALLS resolution so ambiguous `handle*` subjects 
 ## How It Was Delivered
 
 The work stayed inside the packet’s declared target files and followed the research buckets directly: first by encoding the missing regressions, then by tightening the query/context contracts and metadata transport, and finally by running the exact Vitest suites, grep checks, and packet validation steps named in `tasks.md`.
+This checkout does not include a packet-local `applied/` ledger, so the auditable packet evidence is the on-disk task plan, this summary, `checklist.md`, `resource-map.md`, and the packet review artifacts under `review/`.
 <!-- /ANCHOR:how-delivered -->
 
 <!-- ANCHOR:decisions -->
@@ -100,6 +102,7 @@ The work stayed inside the packet’s declared target files and followed the res
 | Targeted eslint on modified files | Pass | `npx eslint ...` over all touched packet files |
 | TypeScript compile (`mcp_server`) | Pass | `npx tsc --noEmit` |
 | Cross-consistency grep | Pass | `full_scan`, `selectedCandidate`, `graphQualitySummary`, `sharedPayload`, `deadlineMs`, `partialOutput`, `graphAnswersOmitted` all found in expected surfaces |
+| Packet-local audit trail | Pass | `tasks.md`, `implementation-summary.md`, `checklist.md`, `resource-map.md`, `review/review-report.md`, and `review/deep-review-findings-registry.json` are present in this checkout |
 | Workspace `npm run check --workspace=@spec-kit/mcp-server` | Fail | blocked by unrelated pre-existing lint errors in untouched files |
 | Packet validator | Fail | residual immutable-doc issues in `spec.md`, `plan.md`, and `tasks.md` |
 <!-- /ANCHOR:verification -->

@@ -117,22 +117,52 @@ const validationSliceSchema = z.object({
   }).strict(),
 }).strict();
 
+const advisorValidateAggregateValidationSchema = z.object({
+  fullCorpusTop1: z.number().min(0).max(1),
+  holdoutTop1: z.number().min(0).max(1),
+  perSkillTop1: z.number().min(0).max(1),
+  unknownCountTargetMax: z.number().int().nonnegative(),
+}).strict().describe('Release-gate thresholds for full corpus, holdout, per-skill accuracy, and UNKNOWN counts.');
+
+const advisorValidateRuntimeRoutingSchema = z.object({
+  confidenceThreshold: z.number().min(0).max(1),
+  uncertaintyThreshold: z.number().min(0).max(1),
+  confidenceOnly: z.boolean(),
+}).strict().describe('Live runtime routing thresholds surfaced by advisor_validate so manual checks can compare runtime semantics with release gates.');
+
+const advisorValidateTelemetryDiagnosticsSchema = z.object({
+  recordsPath: z.string().min(1),
+  recordsRetained: z.number().int().nonnegative(),
+  rollingCacheHitRate: z.number().min(0).max(1),
+  rollingP95Ms: z.number().min(0),
+  rollingFailOpenRate: z.number().min(0).max(1),
+}).strict().describe('Prompt-safe rolling diagnostics from retained advisor hook telemetry records.');
+
+const advisorValidateTelemetryScopeSchema = z.object({
+  kind: z.enum(['workspace', 'skill']),
+  skillSlug: z.string().min(1).nullable(),
+}).strict().describe('Whether recorded outcome totals are workspace-wide or scoped to the selected skillSlug.');
+
+const advisorValidateOutcomeTotalsSchema = z.object({
+  accepted: z.number().int().nonnegative(),
+  corrected: z.number().int().nonnegative(),
+  ignored: z.number().int().nonnegative(),
+}).strict().describe('Recorded outcome totals retained for the active workspace or skill scope.');
+
+const advisorValidateTelemetryOutcomesSchema = z.object({
+  recordsPath: z.string().min(1),
+  recordedThisRun: z.number().int().nonnegative(),
+  scope: advisorValidateTelemetryScopeSchema,
+  totals: advisorValidateOutcomeTotalsSchema,
+}).strict().describe('Outcome recording summary, including injected event count and retained accepted/corrected/ignored totals.');
+
 export const AdvisorValidateOutputSchema = z.object({
   workspaceRoot: z.string().min(1),
   skillSlug: z.string().nullable(),
   thresholdSemantics: z.object({
-    aggregateValidation: z.object({
-      fullCorpusTop1: z.number().min(0).max(1),
-      holdoutTop1: z.number().min(0).max(1),
-      perSkillTop1: z.number().min(0).max(1),
-      unknownCountTargetMax: z.number().int().nonnegative(),
-    }).strict(),
-    runtimeRouting: z.object({
-      confidenceThreshold: z.number().min(0).max(1),
-      uncertaintyThreshold: z.number().min(0).max(1),
-      confidenceOnly: z.boolean(),
-    }).strict(),
-  }).strict(),
+    aggregateValidation: advisorValidateAggregateValidationSchema,
+    runtimeRouting: advisorValidateRuntimeRoutingSchema,
+  }).strict().describe('Public threshold contract for advisor_validate, covering release-gate scoring and runtime-routing semantics.'),
   overallAccuracy: z.number().min(0).max(1),
   perSkill: z.array(z.object({
     skillId: z.string().min(1),
@@ -184,23 +214,9 @@ export const AdvisorValidateOutputSchema = z.object({
     }).strict(),
   }).strict(),
   telemetry: z.object({
-    diagnostics: z.object({
-      recordsPath: z.string().min(1),
-      recordsRetained: z.number().int().nonnegative(),
-      rollingCacheHitRate: z.number().min(0).max(1),
-      rollingP95Ms: z.number().min(0),
-      rollingFailOpenRate: z.number().min(0).max(1),
-    }).strict(),
-    outcomes: z.object({
-      recordsPath: z.string().min(1),
-      recordedThisRun: z.number().int().nonnegative(),
-      totals: z.object({
-        accepted: z.number().int().nonnegative(),
-        corrected: z.number().int().nonnegative(),
-        ignored: z.number().int().nonnegative(),
-      }).strict(),
-    }).strict(),
-  }).strict(),
+    diagnostics: advisorValidateTelemetryDiagnosticsSchema,
+    outcomes: advisorValidateTelemetryOutcomesSchema,
+  }).strict().describe('Prompt-safe telemetry diagnostics and recorded outcome summaries exposed for operator validation.'),
   generatedAt: z.string().datetime(),
 }).strict();
 

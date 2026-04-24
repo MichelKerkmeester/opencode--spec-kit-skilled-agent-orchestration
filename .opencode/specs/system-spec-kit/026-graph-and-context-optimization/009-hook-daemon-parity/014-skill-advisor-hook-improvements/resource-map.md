@@ -1,6 +1,6 @@
 ---
 title: "Resource Map: Skill-Advisor Hook Improvements [014-skill-advisor-hook-improvements]"
-description: "Lean, scannable catalog of every packet-owned path analyzed, updated, created, or cited while delivering skill-advisor threshold parity, rendering invariants, MCP surface normalization, and durable telemetry."
+description: "Lean, scannable catalog of every packet-owned path analyzed, updated, created, or cited while delivering the packet-02-derived skill-advisor implementation for threshold parity, rendering invariants, MCP surface normalization, and durable telemetry."
 trigger_phrases:
   - "skill-advisor hook improvements resource map"
   - "014 resource map"
@@ -10,10 +10,10 @@ contextType: "general"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements"
-    last_updated_at: "2026-04-24T11:27:03+02:00"
+    last_updated_at: "2026-04-24T12:44:39+02:00"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Authored resource map"
-    next_safe_action: "Track packet lint drift"
+    recent_action: "Aligned the resource map to the governing implementation packet lineage"
+    next_safe_action: "Track the remaining packet-014 review gaps outside RG-016"
     blockers: []
     completion_pct: 100
 ---
@@ -31,11 +31,11 @@ Keep this file **paths-only** — no narrative, no decisions, no test evidence. 
 
 ## Summary
 
-- **Total references**: 48
-- **By category**: READMEs=1, Documents=2, Commands=0, Agents=0, Skills=14, Specs=18, Scripts=5, Tests=2, Config=6, Meta=0
-- **Missing on disk**: 0
-- **Scope**: all packet-owned docs, runtime surfaces, verification artifacts, upstream packet references, and related research surfaces analyzed, updated, created, or cited for `026/009/014-skill-advisor-hook-improvements`
-- **Generated**: 2026-04-24T11:27:03+02:00
+- **Total references**: 49
+- **By category**: READMEs=1, Documents=2, Commands=0, Agents=0, Skills=14, Specs=17, Scripts=5, Tests=4, Config=6, Meta=0
+- **Missing on disk**: 1
+- **Scope**: all packet-owned implementation docs, runtime surfaces, verification artifacts, upstream packet references, research inputs, and Codex success-path evidence cited for `026/009/014-skill-advisor-hook-improvements`
+- **Generated**: 2026-04-24T12:44:39+02:00
 
 > Action vocabulary: `Created` · `Updated` · `Analyzed` · `Removed` · `Cited` · `Validated` · `Moved` · `Renamed`.
 > Status vocabulary: `OK` (exists on disk) · `MISSING` (referenced but absent) · `PLANNED` (intentional future path).
@@ -107,27 +107,23 @@ No agent definition files were created, updated, or analyzed for this packet.
 
 | Path | Action | Status | Note |
 |------|--------|--------|------|
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/spec.md` | Updated | OK | Packet scope and research-to-implementation bridge. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/spec.md` | Updated | OK | Governing spec now authorizes the packet-02-derived implementation in this folder. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/plan.md` | Updated | OK | Implementation contract for `014-F-001` through `014-F-007`. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/tasks.md` | Updated | OK | Task ledger for `T-001` through `T-015`. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/implementation-summary.md` | Created | OK | Delivery summary and verification outcomes. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/checklist.md` | Created | OK | Evidence-backed completion checklist. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/implementation-summary.md` | Created | OK | Delivery summary for the spec-authorized implementation packet. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/checklist.md` | Created | OK | Verification checklist aligned to the implementation requirements in `spec.md`. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/resource-map.md` | Created | OK | This path ledger. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/applied/` | Created | OK | Per-task evidence reports for all 15 implementation tasks. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/014-skill-advisor-hook-improvements/applied/` | Cited | MISSING | Packet docs referenced this directory as the intended per-task evidence ledger, but the current checkout does not retain a packet-local `applied/` set. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/spec.md` | Analyzed | OK | Parent packet context for the hook-daemon parity track. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/001-skill-advisor-hook-surface/` | Cited | OK | Prior hook-surface baseline referenced from the packet spec. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/008-skill-advisor-plugin-hardening/` | Cited | OK | Prior OpenCode/plugin hardening baseline. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-daemon-parity/009-skill-advisor-standards-alignment/` | Cited | OK | Prior standards-alignment baseline. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-019.md` | Cited | OK | NEEDS VERIFICATION: `spec.md` still cites a stale sibling `../006-integrity-parity-closure/...` path, while implementation surfaces use this existing packet. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/research.md` | Cited | OK | Packet-02 synthesis consumed by `plan.md`, `tasks.md`, and `checklist.md`. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-019.md` | Cited | OK | Upstream parity-closure fix referenced as implementation baseline. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/research.md` | Cited | OK | Packet-02 synthesis consumed by `spec.md`, `plan.md`, `tasks.md`, and `checklist.md`. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/iterations/` | Cited | OK | Ten iteration reports for the packet-02 research run. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/deep-research-dashboard.md` | Cited | OK | Packet-02 convergence dashboard. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/014-skill-advisor-hook-improvements-pt-02/deep-research-strategy.md` | Cited | OK | Packet-02 strategy surface. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/013-014-pt-02-merged-synthesis.md` | Cited | OK | `Bucket B` merged synthesis used as plan input. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/029-skill-advisor-hook-improvements-pt-01/` | Cited | OK | NEEDS VERIFICATION: `spec.md` names this bundle as the canonical research output, but implementation packet docs use `014-skill-advisor-hook-improvements-pt-02`. |
-
----
-
 ## 7. Scripts
 
 > Executable or build/test scripts: `.sh`, `.js`, `.ts`, `.mjs`, `.cjs`, `.py`.
@@ -150,6 +146,8 @@ No agent definition files were created, updated, or analyzed for this packet.
 |------|--------|--------|------|
 | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/compat/plugin-bridge.vitest.ts` | Updated | OK | OpenCode threshold/render parity regressions. |
 | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/handlers/advisor-validate.vitest.ts` | Validated | OK | Validator/output parity suite exercised in `T-003`, `T-008`, `T-009`, and `T-014`. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/codex-user-prompt-submit-hook.vitest.ts` | Analyzed | OK | Success-path Codex hook evidence now cited for live brief injection and prompt-safe CLI smoke output. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/codex-prompt-wrapper.vitest.ts` | Analyzed | OK | Success-path Codex prompt-wrapper evidence now cited for rendered advisor brief injection when native hooks are unavailable. |
 
 ---
 
