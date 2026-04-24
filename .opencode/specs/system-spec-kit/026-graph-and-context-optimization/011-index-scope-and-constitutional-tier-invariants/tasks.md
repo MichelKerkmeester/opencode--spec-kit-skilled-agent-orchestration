@@ -11,12 +11,13 @@ contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T06:50:00Z"
+    last_updated_at: "2026-04-24T09:31:49Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Implementation, README reversal, and verification completed"
-    next_safe_action: "User review and MCP restart before relying on the rebuilt dist output"
+    recent_action: "Wave-1 remediation landed; P0-001 and P0-002 patched at SQL layer, audit-trail gap closed"
+    next_safe_action: "Run 7-iteration deep review pass 2 to confirm P0s resolved"
+    status: "wave1-remediation-complete"
     blockers: []
-    completion_pct: 100
+    completion_pct: 95
     open_questions: []
     answered_questions: []
 ---
@@ -104,6 +105,11 @@ _memory:
 - [x] T012 Run packet strict validation (`spec/validate.sh --strict --no-recursive`)
 - [x] T013 Run `npm run typecheck`, `npm run build`, focused Vitest commands, and `npm run test:core`; record outcomes honestly (`implementation-summary.md`, `checklist.md`)
 - [x] T014 Run cleanup dry-run, apply, and verify against the Voyage-4 DB; capture before/after counts (`implementation-summary.md`, `checklist.md`)
+- [x] T-W1-01 Hoist the constitutional tier guard into SQL-layer update writes and protect post-insert metadata tier writes (`mcp_server/lib/search/vector-index-mutations.ts`, `mcp_server/lib/storage/post-insert-metadata.ts`)
+- [x] T-W1-02 Re-assert index-scope and constitutional-tier invariants during checkpoint restore inside the barrier-held transaction (`mcp_server/lib/storage/checkpoints.ts`)
+- [x] T-W1-03 Emit durable `governance_audit` rows for non-constitutional tier downgrade attempts without failing the write path (`mcp_server/handlers/memory-save.ts`, `mcp_server/lib/search/vector-index-mutations.ts`, `mcp_server/lib/storage/checkpoints.ts`)
+- [x] T-W1-04 Add focused Vitest coverage for `memory_update` and `checkpoint_restore` invariant enforcement (`mcp_server/tests/memory-crud-update-constitutional-guard.vitest.ts`, `mcp_server/tests/checkpoint-restore-invariant-enforcement.vitest.ts`)
+- [x] T-W1-05 Refresh packet continuity, append the remediation ADR, rerun strict validation, and capture the Wave-1 verification results (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`)
 <!-- /ANCHOR:phase-3 -->
 
 ---

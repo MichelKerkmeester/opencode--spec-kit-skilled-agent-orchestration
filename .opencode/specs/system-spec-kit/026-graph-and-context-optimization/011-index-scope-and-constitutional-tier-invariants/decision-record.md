@@ -11,12 +11,13 @@ contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T00:00:00Z"
+    last_updated_at: "2026-04-24T09:31:49Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "ADRs drafted"
-    next_safe_action: "Keep the decision record aligned with the final implementation"
+    recent_action: "Wave-1 remediation landed; P0-001 and P0-002 patched at SQL layer, audit-trail gap closed"
+    next_safe_action: "Run 7-iteration deep review pass 2 to confirm P0s resolved"
+    status: "wave1-remediation-complete"
     blockers: []
-    completion_pct: 20
+    completion_pct: 95
     open_questions: []
     answered_questions: []
 ---
@@ -408,3 +409,82 @@ The first implementation pass for packet 011 backfilled `.opencode/skill/system-
 - Delete live README rows from `memory_index` and companion tables without touching `memory_fts` directly.
 
 **How to roll back**: Re-allow constitutional README discovery/parser admission and re-index the README intentionally.
+
+---
+
+### ADR-006: Wave-1 Remediation Uses SQL-Layer Tier Guards and Atomic Restore Validation
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-24 |
+| **Deciders** | Codex + user request |
+
+### Context
+
+The deep-review packet for 011 found two release-blocking bypasses after the original save-path invariant work shipped. `memory_update` could still promote arbitrary rows to `importance_tier='constitutional'`, and `checkpoint_restore` could replay snapshot rows with raw `(file_path, importance_tier)` pairs that never re-entered the save pipeline. The earlier save-time downgrade path also wrote only a console warning, leaving no durable audit row for attempted smuggling.
+
+### Constraints
+
+- The constitutional-path invariant must hold for every mutation surface, not only the `memory_save` insert path.
+- `checkpoint_restore` must remain atomic: one invalid row aborts the restore instead of silently skipping part of the snapshot.
+- Governance audit writes must not block the correctness fix when audit persistence itself fails.
+
+### Decision
+
+**We chose**: enforce the constitutional-tier guard at the SQL write layer, validate restore rows inside the barrier-held restore transaction, and standardize downgrade auditing around a stable `governance_audit.action`.
+
+**How it works**:
+- `vector-index-mutations.ts` now downgrades `importance_tier='constitutional'` to `important` before `UPDATE memory_index ...` runs when the stored path is outside `/constitutional/`.
+- `post-insert-metadata.ts` applies the same inline guard so post-insert metadata writes cannot bypass the invariant.
+- `checkpoints.ts` validates each replay row inside the restore transaction, rejects walker-excluded paths, downgrades invalid constitutional tiers in place, and aborts the restore on the first rejected row.
+- The downgrade audit contract uses `action='tier_downgrade_non_constitutional_path'` with `decision='conflict'`, `reason='non_constitutional_path'`, and metadata that captures the source plus before/after tier context.
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **SQL-layer guard + atomic restore validation** | Covers every caller, removes handler-only blind spots, keeps restore semantics explicit | Touches storage-layer code and tests | 10/10 |
+| Handler-only `memory_update` check | Smaller patch | Leaves future internal callers and restore paths exposed | 3/10 |
+| Restore-time silent reject of bad rows | Keeps the rest of the snapshot | Hides corruption and can leave operators with a partially replayed state | 2/10 |
+
+**Why this one**: the bypasses existed because the invariant lived too high in the stack. The storage layer is the only place shared by both user-facing and internal mutation paths.
+
+### Consequences
+
+**What improves**:
+- `memory_update`, checkpoint replay, and post-insert tier writes now inherit the same constitutional-path rule.
+- Restore-time rejection is all-or-nothing for memory rows, which is safer than a partial replay during incident recovery.
+- Operators get a durable `governance_audit` trail for attempted non-constitutional constitutional-tier writes.
+
+**What it costs**:
+- The storage layer now owns a small amount of policy logic. Mitigation: keep the action string and metadata shape explicit in this ADR and in the focused tests.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Future callers bypass the downgrade audit helper shape | M | Keep the action string stable and cover all current write surfaces with focused tests |
+| Restore-time audit persistence fails after a rejected replay | L | Catch audit insertion errors, warn, and preserve the invariant/rollback outcome |
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Two public write paths bypassed the save-time invariant |
+| 2 | **Beyond Local Maxima?** | PASS | Compared handler-only, SQL-layer, and partial-restore alternatives explicitly |
+| 3 | **Sufficient?** | PASS | SQL-layer downgrades plus restore validation cover the release-blocking paths |
+| 4 | **Fits Goal?** | PASS | Restores the constitutional-tier invariant without widening Wave-1 scope |
+| 5 | **Open Horizons?** | PASS | The audit contract is stable and machine-greppable for re-review and ops follow-up |
+
+**Checks Summary**: 5/5 PASS
+
+### Implementation
+
+**What changes**:
+- Patch `vector-index-mutations.ts`, `post-insert-metadata.ts`, `memory-save.ts`, and `checkpoints.ts`.
+- Add focused Vitest coverage for `memory_update`, `checkpoint_restore`, and save-path downgrade auditing.
+
+**How to roll back**: revert the Wave-1 remediation patch set, rebuild `mcp_server`, and rerun the focused Vitest and cleanup `--verify` commands before restoring broader use.

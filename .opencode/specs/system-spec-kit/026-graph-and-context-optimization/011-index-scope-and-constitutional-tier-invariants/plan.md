@@ -11,12 +11,13 @@ contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T00:00:00Z"
+    last_updated_at: "2026-04-24T09:31:49Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Plan drafted"
-    next_safe_action: "Land helper wiring, tests, cleanup CLI, and verification"
+    recent_action: "Wave-1 remediation landed; P0-001 and P0-002 patched at SQL layer, audit-trail gap closed"
+    next_safe_action: "Run 7-iteration deep review pass 2 to confirm P0s resolved"
+    status: "wave1-remediation-complete"
     blockers: []
-    completion_pct: 20
+    completion_pct: 95
     open_questions: []
     answered_questions:
       - "The memory invariant enforcement point will be shared helper plus save-time guard."
@@ -56,9 +57,9 @@ This packet introduces one shared path-scope module and uses it as the lowest-ri
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (or documented carryover failures isolated from this packet)
-- [ ] Docs updated (spec/plan/tasks/checklist/decision record/implementation summary)
+- [x] All acceptance criteria met
+- [x] Tests passing (or documented carryover failures isolated from this packet)
+- [x] Docs updated (spec/plan/tasks/checklist/decision record/implementation summary)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -85,19 +86,19 @@ Path candidates are normalized once and checked against shared segment rules bef
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Packet and Shared Helper
-- [ ] Create the Level 3 packet and parent metadata updates
-- [ ] Add `lib/utils/index-scope.ts`
-- [ ] Decide and document helper semantics in `decision-record.md`
+- [x] Create the Level 3 packet and parent metadata updates
+- [x] Add `lib/utils/index-scope.ts`
+- [x] Decide and document helper semantics in `decision-record.md`
 
 ### Phase 2: Memory and Code-Graph Enforcement
-- [ ] Wire memory discovery, spec-doc classification, and `isMemoryFile()` to the shared helper
-- [ ] Add save-time path rejection plus constitutional tier downgrade
-- [ ] Wire code-graph recursive and specific-file scans to the shared helper while preserving existing exclusions
+- [x] Wire memory discovery, spec-doc classification, and `isMemoryFile()` to the shared helper
+- [x] Add save-time path rejection plus constitutional tier downgrade
+- [x] Wire code-graph recursive and specific-file scans to the shared helper while preserving existing exclusions
 
 ### Phase 3: Cleanup and Verification
-- [ ] Add focused Vitest coverage
-- [ ] Add cleanup CLI and README docs
-- [ ] Run validation, build, tests, dry-run/apply/verify cleanup, and capture the results
+- [x] Add focused Vitest coverage
+- [x] Add cleanup CLI and README docs
+- [x] Run validation, build, tests, dry-run/apply/verify cleanup, and capture the results
 <!-- /ANCHOR:phases -->
 
 ---

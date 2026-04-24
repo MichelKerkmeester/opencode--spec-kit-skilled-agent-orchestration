@@ -1,0 +1,112 @@
+{
+  "iteration": 5,
+  "dimension": "Skill docs + references coherence",
+  "executor": "direct-read",
+  "copilot_dispatched": false,
+  "copilot_dispatch_reason": "14 focus surfaces all small-to-medium; 10 targeted grep + Read passes gave full coverage. Dispatching gpt-5.4 high would add latency without new signal.",
+  "files_audited": [
+    ".opencode/skill/system-spec-kit/SKILL.md",
+    ".opencode/skill/system-spec-kit/README.md",
+    ".opencode/skill/system-spec-kit/templates/README.md",
+    ".opencode/skill/system-spec-kit/templates/level_1/README.md",
+    ".opencode/skill/system-spec-kit/templates/level_2/README.md",
+    ".opencode/skill/system-spec-kit/templates/level_3/README.md",
+    ".opencode/skill/system-spec-kit/templates/level_3+/README.md",
+    ".opencode/skill/system-spec-kit/references/templates/level_specifications.md",
+    ".opencode/skill/system-spec-kit/references/templates/template_guide.md",
+    ".opencode/skill/system-spec-kit/references/templates/template_style_guide.md",
+    ".opencode/skill/system-spec-kit/references/structure/folder_structure.md",
+    ".opencode/skill/system-spec-kit/references/workflows/quick_reference.md",
+    ".opencode/skill/system-spec-kit/assets/template_mapping.md",
+    ".opencode/skill/system-spec-kit/assets/level_decision_matrix.md"
+  ],
+  "resource_map_mentions_found": 30,
+  "assertions_verified": {
+    "skill_md_distributed_governance_rule_lists_resource_map": true,
+    "skill_md_distributed_governance_annotates_resource_map_as_optional": true,
+    "skill_md_rule_9_toc_forbidden_includes_resource_map": true,
+    "skill_md_line_842_toc_forbidden_list_correct": true,
+    "skill_md_line_401_optional_cross_cutting_line_correct": true,
+    "skill_md_line_872_success_criteria_toc_check_correct": true,
+    "readme_line_271_structure_tree_correct": true,
+    "readme_line_512_special_templates_table_correct": true,
+    "readme_line_596_structure_section_4_correct": true,
+    "templates_readme_line_53_structure_table_correct": true,
+    "templates_readme_line_87_workflow_notes_correct": true,
+    "templates_readme_line_114_related_link_correct": true,
+    "level_1_readme_optional_files_correct": true,
+    "level_2_readme_optional_files_correct": true,
+    "level_3_readme_optional_files_correct": true,
+    "level_3plus_readme_optional_files_correct": true,
+    "level_specifications_l1_l2_l3_l3plus_optional_files_correct": true,
+    "level_specifications_section_9_cross_cutting_correct": true,
+    "level_specifications_related_resources_link_correct": true,
+    "template_guide_level3_optional_templates_block_includes_resource_map": true,
+    "template_guide_line_745_pre_delivery_checklist_toc_policy_correct": true,
+    "template_guide_line_1166_cross_level_row_includes_resource_map": true,
+    "template_style_guide_line_36_utility_row_correct": true,
+    "folder_structure_line_37_cross_level_templates_includes_resource_map": true,
+    "quick_reference_table_lines_41_44_cover_all_four_levels": true,
+    "quick_reference_line_749_session_management_includes_resource_map": true,
+    "template_mapping_line_158_optional_templates_table_correct": true,
+    "template_mapping_line_164_notes_correct": true,
+    "template_mapping_line_220_level_3_tree_includes_resource_map": true,
+    "level_decision_matrix_line_50_progressive_model_includes_resource_map": true,
+    "sentinel_handover_debug_without_resource_map_found": false,
+    "stale_canonical_8_doc_counts_found": false
+  },
+  "findings": [
+    {
+      "id": "SD-001",
+      "severity": "P1",
+      "title": "Anchor slug drift after (Level 3 Only) -> (Any Level) rename",
+      "description": "Two files renamed the H2 heading to '(Any Level)' but retained the old anchor ID `optional-templates-level-3-only`. Any deep link or auto-ToC slug-matcher targeting the new title will miss. Rename anchor ID to `optional-templates-any-level` for both.",
+      "files": [
+        ".opencode/skill/system-spec-kit/assets/template_mapping.md:150,168",
+        ".opencode/skill/system-spec-kit/references/templates/level_specifications.md:149,168"
+      ],
+      "blocker": false,
+      "fix_suggestion": "Rename ANCHOR id to `optional-templates-any-level` (open and close tags) in both files. No heading change needed; title already reads 'OPTIONAL TEMPLATES (Any Level)'."
+    },
+    {
+      "id": "SD-002",
+      "severity": "P2",
+      "title": "Level 2 folder-tree diagrams omit optional resource-map.md",
+      "description": "§5 Level 2 tree (level_specifications.md:193-200) and parallel tree in template_mapping.md:194-200 do not show `resource-map.md`, while the Level 3 tree does (lines 211-221 and 209-221 respectively). Prose Optional Files subsection at L2 correctly lists it, so tree is inconsistent with prose. Minor: Level 1 tree (lines 174-180) similarly omits it.",
+      "files": [
+        ".opencode/skill/system-spec-kit/references/templates/level_specifications.md:174-200",
+        ".opencode/skill/system-spec-kit/assets/template_mapping.md:174-200"
+      ],
+      "blocker": false,
+      "fix_suggestion": "Add `└── resource-map.md  (OPTIONAL - lean path catalog)` to Level 1 and Level 2 ASCII trees."
+    },
+    {
+      "id": "SD-003",
+      "severity": "INFO",
+      "title": "Four distinct phrasings used to describe resource-map.md across surfaces",
+      "description": "No canonical one-liner is enforced. The four variants are semantically compatible: (a) 'Optional lean path catalog (any level)', (b) 'lean path catalog (cross-cutting, see §9)', (c) 'lean, scannable catalog of every path analyzed, created, updated, or removed', (d) 'Lean path catalog of every file analyzed/created/updated/removed'. No finding — recorded for future style-guide hardening.",
+      "files": [
+        ".opencode/skill/system-spec-kit/README.md:271,512,596",
+        ".opencode/skill/system-spec-kit/references/templates/level_specifications.md:100,193,311,397",
+        ".opencode/skill/system-spec-kit/templates/level_1/README.md:67",
+        ".opencode/skill/system-spec-kit/assets/template_mapping.md:158"
+      ],
+      "blocker": false
+    }
+  ],
+  "p0_count": 0,
+  "p1_count": 1,
+  "p2_count": 1,
+  "info_count": 1,
+  "questions_answered": {
+    "q1_wording_consistency_across_13_surfaces": "Semantically consistent across 4 phrasings. No contradictions. No canonical one-liner required.",
+    "q2_stale_8_doc_tables_without_resource_map": "None. All sentinel matches of 'handover.md, debug-delegation.md' co-occur with 'resource-map.md' in the same row or list.",
+    "q3_skill_md_rule_9_toc_forbidden_list": "Correctly includes resource-map.md at SKILL.md:842 and mirrored in template_guide.md:745 and SKILL.md:872 success-criteria check.",
+    "q4_template_style_guide_utility_row_consistency": "Matches template_guide.md:1166 and folder_structure.md:37. Consistent.",
+    "q5_template_mapping_title_change_coherence": "Table at 155-158 and tree at 220 align with new '(Any Level)' title. One remaining issue: anchor ID at 150/168 still reflects old title (see SD-001).",
+    "q6_quick_reference_four_level_coverage": "Yes — lines 41-44 list resource-map.md as optional at all four levels. Correct.",
+    "q7_stale_canonical_N_enumerations_missed": "None found. Searched for 'canonical 8/9', '8-doc', 'nine canonical', etc. Packet 003 test assertion CONFIGS.length=11 already reflects new cardinality (validated iteration 03)."
+  },
+  "blockers_for_packet_012": [],
+  "convergence_signal": "low-severity-only"
+}

@@ -6,9 +6,11 @@
 // Index, update, delete, and status/confidence updates.
 
 import * as embeddingsProvider from '../providers/embeddings.js';
+import { recordGovernanceAudit } from '../governance/scope-governance.js';
 import { clearGraphSignalsCache } from '../graph/graph-signals.js';
 import { recordHistory } from '../storage/history.js';
 import { getCanonicalPathKey } from '../utils/canonical-path.js';
+import { isConstitutionalPath } from '../utils/index-scope.js';
 import { createLogger } from '../utils/logger.js';
 import { clearDegreeCacheForDb } from './graph-search-fn.js';
 import * as bm25Index from './bm25-index.js';
@@ -53,6 +55,61 @@ function invalidateGraphCaches(database: Database.Database): void {
     clearGraphSignalsCache();
   } catch (_error: unknown) {
     // Graph signal cache invalidation is best-effort for legacy mutation paths.
+  }
+}
+
+function buildMemoryLogicalKey(
+  specFolder: string | null | undefined,
+  canonicalFilePath: string | null | undefined,
+  filePath: string | null | undefined,
+  anchorId: string | null | undefined,
+): string | null {
+  const resolvedPath = canonicalFilePath || filePath;
+  if (!specFolder || !resolvedPath) {
+    return null;
+  }
+
+  const normalizedAnchor = anchorId && anchorId.trim().length > 0 ? anchorId : '_';
+  return `${specFolder}::${resolvedPath}::${normalizedAnchor}`;
+}
+
+function tryRecordTierDowngradeAudit(
+  database: Database.Database,
+  params: {
+    memoryId: number;
+    specFolder: string | null | undefined;
+    anchorId: string | null | undefined;
+    filePath: string | null | undefined;
+    canonicalFilePath: string | null | undefined;
+    source: string;
+  },
+): void {
+  try {
+    recordGovernanceAudit(database, {
+      action: 'tier_downgrade_non_constitutional_path',
+      decision: 'conflict',
+      memoryId: params.memoryId,
+      logicalKey: buildMemoryLogicalKey(
+        params.specFolder,
+        params.canonicalFilePath,
+        params.filePath,
+        params.anchorId,
+      ),
+      reason: 'non_constitutional_path',
+      metadata: {
+        source: params.source,
+        requestedTier: 'constitutional',
+        appliedTier: 'important',
+        filePath: params.filePath ?? null,
+        canonicalFilePath: params.canonicalFilePath ?? null,
+      },
+    });
+  } catch (error: unknown) {
+    logger.warn('Failed to record governance audit for tier downgrade', {
+      memoryId: params.memoryId,
+      source: params.source,
+      message: get_error_message(error),
+    });
   }
 }
 
@@ -397,8 +454,26 @@ export function update_memory(
       values.push(importanceWeight);
     }
     if (importanceTier !== undefined) {
+      let nextImportanceTier = importanceTier;
+      if (
+        importanceTier === 'constitutional'
+        && existingRow
+      ) {
+        const guardPath = existingRow.canonical_file_path || existingRow.file_path;
+        if (guardPath && !isConstitutionalPath(guardPath)) {
+          nextImportanceTier = 'important';
+          tryRecordTierDowngradeAudit(database, {
+            memoryId: id,
+            specFolder: existingRow.spec_folder,
+            anchorId: existingRow.anchor_id,
+            filePath: existingRow.file_path,
+            canonicalFilePath: existingRow.canonical_file_path,
+            source: 'update_memory',
+          });
+        }
+      }
       updates.push('importance_tier = ?');
-      values.push(importanceTier);
+      values.push(nextImportanceTier);
       clear_constitutional_cache();
     }
     if (canonicalFilePath !== undefined) {

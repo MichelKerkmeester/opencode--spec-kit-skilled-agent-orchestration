@@ -1,0 +1,105 @@
+{
+  "iteration": 4,
+  "dimension": "Command + YAML wiring consistency",
+  "executor": "direct-read+python-yaml",
+  "copilot_dispatched": false,
+  "copilot_dispatch_reason": "Scope fully verifiable inline: 8 YAMLs + 2 MD files, all <1.2K LOC; yaml.safe_load + grep + AST walk sufficient to answer all 7 questions deterministically",
+  "files_audited": [
+    ".opencode/command/memory/save.md",
+    ".opencode/command/spec_kit/resume.md",
+    ".opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml",
+    ".opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml",
+    ".opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml",
+    ".opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml",
+    ".opencode/command/spec_kit/assets/spec_kit_implement_auto.yaml",
+    ".opencode/command/spec_kit/assets/spec_kit_implement_confirm.yaml",
+    ".opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml",
+    ".opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml",
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
+    ".opencode/skill/system-spec-kit/templates/resource-map.md"
+  ],
+  "assertions_verified": {
+    "yaml_syntax_all_8_valid": true,
+    "shared_block_resource_map_after_debug_delegation": {
+      "plan_auto": "[research, handover, debug_delegation, resource_map]",
+      "plan_confirm": "[research, handover, debug_delegation, resource_map]",
+      "complete_auto": "[research, handover, debug_delegation, resource_map]",
+      "complete_confirm": "[research, handover, debug_delegation, resource_map]",
+      "implement_auto": "[handover, debug_delegation, resource_map]",
+      "implement_confirm": "[handover, debug_delegation, resource_map]",
+      "implement_omits_research_note": "pre-existing pattern, not a 012 regression"
+    },
+    "save_md_157_enumeration": ["decision-record.md", "implementation-summary.md", "handover.md", "resource-map.md"],
+    "memory_save_ts_2722_enumeration": ["spec.md", "plan.md", "tasks.md", "checklist.md", "decision-record.md", "implementation-summary.md", "handover.md", "research.md", "resource-map.md", "description.json", "graph-metadata.json"],
+    "save_md_157_vs_handler_divergence": "intentional — L157 is ANCHOR-audit subset, L2722 is runtime allow-list",
+    "save_md_353_enumeration": ["spec.md", "plan.md", "tasks.md", "checklist.md", "decision-record.md", "implementation-summary.md", "handover.md", "research/research.md", "resource-map.md", "graph-metadata.json"],
+    "spec_document_filenames_set": ["spec.md", "plan.md", "tasks.md", "checklist.md", "decision-record.md", "implementation-summary.md", "research.md", "resource-map.md", "handover.md", "description.json"],
+    "save_md_353_omits_description_json": true,
+    "save_md_353_path_form_research": "research/research.md (legacy basename also accepted, not incorrect)",
+    "resume_yamls_internally_consistent": true,
+    "resume_auto_line_138_has_explicit_activity": true,
+    "resume_confirm_has_no_parallel_line": "pre-existing asymmetry, confirm uses different Q&A flow",
+    "resume_line_57_glob_should_include_resource_map": false,
+    "resource_map_template_anchor_tag_count": 0
+  },
+  "findings": [
+    {
+      "id": "W-001",
+      "severity": "P2",
+      "title": "resource-map.md template lacks ANCHOR markers, making save.md:157 a no-op",
+      "description": "save.md:157 enumerates resource-map.md among docs requiring ANCHOR-tag validation, but the template itself has zero <!-- ANCHOR: --> markers today. The check trivially passes whenever resource-map.md is read. Fix by either (a) adding ANCHOR tags to the template or (b) dropping resource-map.md from the L157 enumeration.",
+      "file": ".opencode/command/memory/save.md",
+      "line": 157,
+      "blocker": false
+    },
+    {
+      "id": "W-002",
+      "severity": "P2",
+      "title": "save.md:353 narrative omits description.json",
+      "description": "L353 enumerates indexed canonical docs but misses description.json, which IS re-scanned by the auto-index pass per SPEC_DOCUMENT_FILENAMES. Pure narrative drift; no runtime impact.",
+      "file": ".opencode/command/memory/save.md",
+      "line": 353,
+      "blocker": false
+    },
+    {
+      "id": "W-003",
+      "severity": "INFO",
+      "title": "save.md:353 uses path-form research/research.md vs Set basename research.md",
+      "description": "Narrative says research/research.md; source SPEC_DOCUMENT_FILENAMES Set uses bare research.md. Legacy research.md is also accepted at the root of a spec folder, so the path-form is not incorrect — just a stylistic divergence.",
+      "file": ".opencode/command/memory/save.md",
+      "line": 353,
+      "blocker": false
+    },
+    {
+      "id": "W-004",
+      "severity": "INFO",
+      "title": "resume_auto vs resume_confirm verbosity asymmetry (pre-existing)",
+      "description": "resume_auto.yaml:138 has an explicit 'Read supporting spec docs (tasks.md, checklist.md, plan.md, decision-record.md, resource-map.md)' activity line. resume_confirm.yaml has no parallel line (confirm uses a different Q&A + user-choice flow). The resource-map update was correctly applied to the line that exists. Not a packet 012 regression.",
+      "file": ".opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml",
+      "blocker": false,
+      "pre_existing": true
+    }
+  ],
+  "p0_count": 0,
+  "p1_count": 0,
+  "p2_count": 2,
+  "info_count": 2,
+  "audit_b_resolution": {
+    "claim": "resume.yaml:57 glob should include resource-map.md for recovery scanning",
+    "verdict": "REJECTED",
+    "reasoning": "Tier-4 glob is a session-detection mtime heuristic ranking active folders, NOT a context-recovery list. Adding resource-map.md would add noise: a one-time catalog edit would dominate tier-4 signal without indicating active work."
+  },
+  "blockers_for_packet_012": [],
+  "questions_answered": {
+    "q1_all_8_yamls_valid_syntax": "Yes — python3 yaml.safe_load passes on all 8; no duplicate keys",
+    "q2_resource_map_placement_consistent": "Yes — after debug_delegation in all 6 YAMLs with a shared block",
+    "q3_save_md_157_matches_handler_error_string": "Divergent by design — L157 is ANCHOR-audit subset (4 docs); L2722 is runtime allow-list (11 docs). Both internally correct.",
+    "q4_save_md_353_matches_filenames_set": "Close but not exact — L353 omits description.json and uses research/research.md path-form (both minor)",
+    "q5_resume_yamls_consistent": "Yes — order: and context_priority: strings match across auto/confirm. Auto has one extra verbose activity line (pre-existing asymmetry)",
+    "q6_resume_line_57_glob_miss": "No — glob is session-detection heuristic, not recovery list. AUDIT-B possible-miss correctly rejected",
+    "q7_other_command_md_missed_updates": "None — deep-research/deep-review use generic phrasing; create/agent and create/testing-playbook context-load enumerations don't require resource-map (optional doc)"
+  },
+  "recommendation": "Ship packet 012 as-is. Optional <5 LOC polish: add ANCHOR tags to resource-map.md template (resolves W-001) OR drop it from save.md:157 enumeration.",
+  "convergence_signal": "low-severity-only"
+}

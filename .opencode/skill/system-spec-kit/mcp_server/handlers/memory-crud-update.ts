@@ -17,6 +17,8 @@ import { MemoryError, ErrorCodes } from '../lib/errors.js';
 import * as mutationLedger from '../lib/storage/mutation-ledger.js';
 import { runInTransaction } from '../lib/storage/transaction-manager.js';
 import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope.js';
+import { recordGovernanceAudit } from '../lib/governance/scope-governance.js';
+import { isConstitutionalPath } from '../lib/utils/index-scope.js';
 import { toErrorMessage } from '../utils/index.js';
 
 import { recordHistory } from '../lib/storage/history.js';
@@ -147,6 +149,64 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
       }
 
       vectorIndex.updateMemory(updateParams);
+
+      if (importanceTier !== undefined) {
+        const updated = vectorIndex.getMemory(id) as (Record<string, unknown> | null);
+        const previousTier = existing.importance_tier;
+        const nextTier = typeof updated?.importance_tier === 'string'
+          ? updated.importance_tier
+          : previousTier;
+        const guardPathCandidate = [
+          updated?.canonical_file_path,
+          updated?.file_path,
+          existing.canonical_file_path,
+          existing.file_path,
+        ].find((value) => typeof value === 'string' && value.length > 0);
+        const guardPath = typeof guardPathCandidate === 'string' ? guardPathCandidate : null;
+
+        if (
+          guardPath
+          && !isConstitutionalPath(guardPath)
+          && previousTier === 'constitutional'
+          && nextTier === 'important'
+        ) {
+          try {
+            const specFolder = typeof updated?.spec_folder === 'string'
+              ? updated.spec_folder
+              : existing.spec_folder;
+            const anchorIdCandidate = typeof updated?.anchor_id === 'string'
+              ? updated.anchor_id
+              : existing.anchor_id;
+            const anchorId = typeof anchorIdCandidate === 'string' ? anchorIdCandidate : null;
+            const normalizedAnchor = anchorId && anchorId.trim().length > 0 ? anchorId : '_';
+            recordGovernanceAudit(database, {
+              action: 'tier_downgrade_non_constitutional_path',
+              decision: 'conflict',
+              memoryId: id,
+              logicalKey: specFolder
+                ? `${specFolder}::${guardPath}::${normalizedAnchor}`
+                : null,
+              reason: 'non_constitutional_path',
+              metadata: {
+                source: 'memory_update',
+                requestedTier: importanceTier,
+                previousTier,
+                appliedTier: nextTier,
+                filePath: typeof updated?.file_path === 'string'
+                  ? updated.file_path
+                  : existing.file_path,
+                canonicalFilePath: typeof updated?.canonical_file_path === 'string'
+                  ? updated.canonical_file_path
+                  : existing.canonical_file_path,
+              },
+            });
+          } catch (error: unknown) {
+            console.warn(
+              `[memory-crud-update] governance_audit insert failed for memory ${id}: ${toErrorMessage(error)}`,
+            );
+          }
+        }
+      }
 
       // T2-6 — BM25 index stores title + trigger phrases; must re-index when either changes
       // So keyword search reflects the updated content.

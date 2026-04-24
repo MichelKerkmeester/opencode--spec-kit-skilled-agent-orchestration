@@ -5,6 +5,8 @@
 // so storage-layer writers do not depend on handler modules.
 
 import type Database from 'better-sqlite3';
+import { recordGovernanceAudit } from '../governance/scope-governance.js';
+import { isConstitutionalPath } from '../utils/index-scope.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -82,10 +84,53 @@ export function applyPostInsertMetadata(
   memoryId: number,
   fields: PostInsertMetadataFields,
 ): void {
+  const normalizedFields: PostInsertMetadataFields = { ...fields };
+  if (normalizedFields.importance_tier === 'constitutional') {
+    const row = db.prepare(`
+      SELECT spec_folder, anchor_id, file_path, canonical_file_path
+      FROM memory_index
+      WHERE id = ?
+    `).get(memoryId) as {
+      spec_folder: string | null;
+      anchor_id: string | null;
+      file_path: string | null;
+      canonical_file_path: string | null;
+    } | undefined;
+
+    const guardPath = row?.canonical_file_path || row?.file_path || null;
+    if (guardPath && !isConstitutionalPath(guardPath)) {
+      normalizedFields.importance_tier = 'important';
+      try {
+        const normalizedAnchor = row?.anchor_id && row.anchor_id.trim().length > 0 ? row.anchor_id : '_';
+        recordGovernanceAudit(db, {
+          action: 'tier_downgrade_non_constitutional_path',
+          decision: 'conflict',
+          memoryId,
+          logicalKey: row?.spec_folder && guardPath
+            ? `${row.spec_folder}::${guardPath}::${normalizedAnchor}`
+            : null,
+          reason: 'non_constitutional_path',
+          metadata: {
+            source: 'applyPostInsertMetadata',
+            requestedTier: 'constitutional',
+            appliedTier: 'important',
+            filePath: row?.file_path ?? null,
+            canonicalFilePath: row?.canonical_file_path ?? null,
+          },
+        });
+      } catch (error: unknown) {
+        console.warn(
+          '[post-insert-metadata] governance_audit insert failed for tier downgrade:',
+          error instanceof Error ? error.message : String(error),
+        );
+      }
+    }
+  }
+
   const setClauses: string[] = [];
   const values: unknown[] = [];
 
-  for (const [col, val] of Object.entries(fields)) {
+  for (const [col, val] of Object.entries(normalizedFields)) {
     if (val === undefined) continue;
     if (!ALLOWED_POST_INSERT_COLUMNS.has(col)) continue;
 

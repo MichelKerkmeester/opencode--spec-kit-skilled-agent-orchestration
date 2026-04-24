@@ -63,6 +63,7 @@ async function loadMemorySaveHarness(parsedMemory: ParsedMemoryFixture) {
   const createMemoryRecordMock = vi.fn((_db, parsed) => {
     return parsed.importanceTier === 'constitutional' ? 8101 : 8102;
   });
+  const recordGovernanceAuditMock = vi.fn();
 
   vi.resetModules();
   vi.doUnmock('../handlers/memory-save');
@@ -256,7 +257,7 @@ async function loadMemorySaveHarness(parsedMemory: ParsedMemoryFixture) {
       ...actual,
       ensureGovernanceRuntime: vi.fn(),
       buildGovernancePostInsertFields: vi.fn(() => ({})),
-      recordGovernanceAudit: vi.fn(),
+      recordGovernanceAudit: recordGovernanceAuditMock,
       validateGovernedIngest: vi.fn(() => ({
         allowed: true,
         issues: [],
@@ -314,7 +315,7 @@ async function loadMemorySaveHarness(parsedMemory: ParsedMemoryFixture) {
   });
 
   const module = await import('../handlers/memory-save');
-  return { module, createMemoryRecordMock };
+  return { module, createMemoryRecordMock, recordGovernanceAuditMock };
 }
 
 afterEach(() => {
@@ -338,6 +339,14 @@ describe('memory-save index scope and constitutional tier invariants', () => {
     });
     expect(harness.createMemoryRecordMock).toHaveBeenCalledTimes(1);
     expect(harness.createMemoryRecordMock.mock.calls[0][1].importanceTier).toBe('important');
+    expect(harness.recordGovernanceAuditMock).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        action: 'tier_downgrade_non_constitutional_path',
+        decision: 'conflict',
+        reason: 'non_constitutional_path',
+      }),
+    );
     expect(
       warnSpy.mock.calls.some(([message]) => String(message).includes('importance_tier=constitutional rejected for non-constitutional path'))
     ).toBe(true);
@@ -353,6 +362,14 @@ describe('memory-save index scope and constitutional tier invariants', () => {
     expect(result.importanceTier).toBe('important');
     expect(harness.createMemoryRecordMock).toHaveBeenCalledTimes(1);
     expect(harness.createMemoryRecordMock.mock.calls[0][1].importanceTier).toBe('important');
+    expect(harness.recordGovernanceAuditMock).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        action: 'tier_downgrade_non_constitutional_path',
+        decision: 'conflict',
+        reason: 'non_constitutional_path',
+      }),
+    );
     expect(
       warnSpy.mock.calls.some(([message]) => String(message).includes('importance_tier=constitutional rejected for non-constitutional path'))
     ).toBe(true);
@@ -372,6 +389,10 @@ describe('memory-save index scope and constitutional tier invariants', () => {
       },
     });
     expect(harness.createMemoryRecordMock.mock.calls[0][1].importanceTier).toBe('constitutional');
+    expect(
+      harness.recordGovernanceAuditMock.mock.calls.some(([, entry]) =>
+        (entry as { action?: string }).action === 'tier_downgrade_non_constitutional_path')
+    ).toBe(false);
     expect(
       warnSpy.mock.calls.some(([message]) => String(message).includes('importance_tier=constitutional rejected for non-constitutional path'))
     ).toBe(false);

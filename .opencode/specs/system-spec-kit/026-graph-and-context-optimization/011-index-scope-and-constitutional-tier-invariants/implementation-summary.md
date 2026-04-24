@@ -10,12 +10,13 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T06:50:00Z"
+    last_updated_at: "2026-04-24T09:31:49Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Implementation, README reversal, and verification completed"
-    next_safe_action: "User review and MCP restart before using the new dist output in a live client"
+    recent_action: "Wave-1 remediation landed; P0-001 and P0-002 patched at SQL layer, audit-trail gap closed"
+    next_safe_action: "Run 7-iteration deep review pass 2 to confirm P0s resolved"
+    status: "wave1-remediation-complete"
     blockers: []
-    completion_pct: 100
+    completion_pct: 95
     open_questions: []
     answered_questions: []
 ---
@@ -32,7 +33,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 011-index-scope-and-constitutional-tier-invariants |
-| **Completed** | Yes |
+| **Completed** | Wave-1 Complete (re-review pending) |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
@@ -71,6 +72,31 @@ The work stayed in three passes:
 
 ---
 
+Wave-1 remediation closed the release-blocking constitutional-tier bypasses without widening into the deferred Wave-2 cleanup work. The remediation keeps the invariant at the storage layer, re-validates checkpoint replay before snapshot rows are applied, and adds durable downgrade auditing so operators can see when a non-constitutional path tried to claim constitutional priority.
+
+**Findings Addressed**
+
+| Finding IDs | Patch Surface | Evidence |
+|-------------|---------------|----------|
+| `P0-001` | `mcp_server/lib/search/vector-index-mutations.ts:61-113,456-477` | `update_memory()` now downgrades non-constitutional `importance_tier='constitutional'` requests before the SQL update executes and records a best-effort governance audit row |
+| `P0-001`, `P1-018` | `mcp_server/lib/storage/post-insert-metadata.ts:82-154` | Post-insert metadata writes now apply the same constitutional-path guard inline before updating `importance_tier` |
+| `P0-002` | `mcp_server/lib/storage/checkpoints.ts:75-103,1291-1367,1545-1777` | `checkpoint_restore` validates replay rows inside the barrier-held transaction, rejects walker-excluded paths, downgrades invalid constitutional rows, and flushes governance audit entries after the restore attempt |
+| `P1-008` | `mcp_server/handlers/memory-save.ts:306-337` | Save-path constitutional downgrades now write `governance_audit.action='tier_downgrade_non_constitutional_path'` in addition to the warning |
+| `P1-016` | `mcp_server/handlers/memory-crud-update.ts:151-208` | Update-path downgrades of already-poisoned non-constitutional rows now emit the same governance audit action after the SQL-layer guard runs |
+
+**Focused Test Coverage**
+
+- `mcp_server/tests/memory-save-index-scope.vitest.ts:340-399`
+- `mcp_server/tests/memory-crud-update-constitutional-guard.vitest.ts:1-194`
+- `mcp_server/tests/checkpoint-restore-invariant-enforcement.vitest.ts:1-245`
+
+**Live Verify Result**
+
+- `node scripts/dist/memory/cleanup-index-scope-violations.js --verify` exit `0` from `.opencode/skill/system-spec-kit`
+- Final verify counts: `constitutional_total=2`, `constitutional_in_folder=2`, `z_future_rows=0`, `external_rows=0`, `invalid_constitutional_rows=0`, `gate_enforcement_rows=1`
+
+---
+
 <!-- ANCHOR:verification -->
 ## Verification
 
@@ -86,12 +112,14 @@ The work stayed in three passes:
 | `cd .opencode/skill/system-spec-kit/scripts && npm run typecheck` | Exit `0` |
 | `cd .opencode/skill/system-spec-kit/scripts && npm run build` | Exit `0` |
 | Requested focused Vitest | Exit `0` (`8` tests passed across `tests/index-scope.vitest.ts` and `tests/memory-save-index-scope.vitest.ts`) |
+| Wave-1 focused Vitest | Exit `0` (`13` tests passed across `tests/index-scope.vitest.ts`, `tests/memory-save-index-scope.vitest.ts`, `tests/memory-crud-update-constitutional-guard.vitest.ts`, and `tests/checkpoint-restore-invariant-enforcement.vitest.ts`) |
 | README regression Vitest | Exit `0` (`218` tests passed across `tests/handler-memory-index.vitest.ts`, `tests/memory-parser-extended.vitest.ts`, `tests/full-spec-doc-indexing.vitest.ts`, and `tests/gate-d-regression-constitutional-memory.vitest.ts`) |
 | `timeout 300 npm run test:core` | Exit `124`; observed carryover failures in `tests/copilot-hook-wiring.vitest.ts` and `tests/stage3-rerank-regression.vitest.ts` before timeout |
 | Cleanup dry-run | Exit `0`; planned `0` deletions and `0` downgrades in the corrected final state |
 | Cleanup first apply | Exit `0`; post-apply counts `constitutional_total=2`, `constitutional_in_folder=2`, `z_future_rows=0`, `external_rows=0`, `invalid_constitutional_rows=0`, `gate_enforcement_rows=1` |
 | README reversal delete | Exit `0`; deleted memory `11672` plus `memory_history=1`, `memory_lineage=1`, `vec_memories=1`, and `active_memory_projection=1`, while `memory_index` handled FTS cleanup via trigger |
 | Cleanup verify after reversal | Exit `0` |
+| Wave-1 cleanup verify | Exit `0`; `constitutional_total=2`, `constitutional_in_folder=2`, `z_future_rows=0`, `external_rows=0`, `invalid_constitutional_rows=0`, `gate_enforcement_rows=1` |
 | Final SQL check | Exit `0`; `constitutional_total=2`, `constitutional_in_folder=2`, and the only remaining constitutional rows are the gate enforcement and gate tool routing rule files |
 | Strict packet validate | Exit `0` |
 

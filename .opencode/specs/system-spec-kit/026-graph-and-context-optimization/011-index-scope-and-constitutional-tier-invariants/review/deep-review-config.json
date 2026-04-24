@@ -38,8 +38,14 @@
   "maxDurationMinutes": 120,
   "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants",
   "createdAt": "2026-04-24T08:04:38.636Z",
-  "status": "initialized",
-  "releaseReadinessState": "in-progress",
+  "status": "complete",
+  "releaseReadinessState": "fail",
   "executionMode": "auto",
-  "executor": { "kind": "native" }
+  "executor": { "kind": "native" },
+  "completedAt": "2026-04-24T14:00:00Z",
+  "iterationsExecuted": 7,
+  "stopReason": "maxIterationsReached",
+  "verdict": "FAIL",
+  "reportPath": "review/review-report.md",
+  "finalFindingsSummary": { "P0": 2, "P1": 18, "P2": 22 }
 }

@@ -10,12 +10,13 @@ contextType: "research"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T00:00:00Z"
+    last_updated_at: "2026-04-24T09:31:49Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Research logged"
-    next_safe_action: "Use these file:line references during implementation and verification"
+    recent_action: "Wave-1 remediation landed; P0-001 and P0-002 patched at SQL layer, audit-trail gap closed"
+    next_safe_action: "Run 7-iteration deep review pass 2 to confirm P0s resolved"
+    status: "wave1-remediation-complete"
     blockers: []
-    completion_pct: 100
+    completion_pct: 95
     open_questions: []
     answered_questions:
       - "Memory discovery lacks permanent z_future and external exclusions."

@@ -1,0 +1,82 @@
+{
+  "iteration": 2,
+  "dimension": "MCP runtime code correctness",
+  "executor": "cli-copilot",
+  "model": "gpt-5.4",
+  "reasoning_effort": "high",
+  "timestamp": "2026-04-24T09:24:56.546Z",
+  "files_reviewed": [
+    ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/config/memory-types.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/resume/resume-ladder.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/memory-types.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/session-bootstrap.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/folder-discovery.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/spec/spec-level.ts"
+  ],
+  "questions_answered": {
+    "q1_consistent_registration": {
+      "answer": "yes",
+      "evidence": "lib/config/spec-doc-paths.ts:7-18 adds resource-map.md to SPEC_DOCUMENT_FILENAMES; lib/config/memory-types.ts:367-425 adds resource_map, SPEC_DOCUMENT_CONFIGS, and BASENAME_BY_DOCUMENT_TYPE; lib/parsing/memory-parser.ts:394-405 maps 'resource-map.md' to 'resource_map'; lib/graph/graph-metadata-parser.ts:36-52, lib/resume/resume-ladder.ts:76-86, lib/validation/spec-doc-structure.ts:185-190, handlers/memory-save.ts:2700, tool-schemas.ts:223 and 496, and handlers/memory-index-discovery.ts:51-54 all include the filename."
+    },
+    "q2_tier_weight_defaults": {
+      "answer": "appropriate",
+      "evidence": "lib/config/memory-types.ts:402-403 gives handover.md and resource-map.md the same defaultImportanceTier ('normal') and defaultImportanceWeight (0.5), while preserving resource_map as semantic and handover as episodic, which is consistent for optional auxiliary packet documents."
+    },
+    "q3_regex_correctness": {
+      "answer": "correct",
+      "evidence": "lib/config/memory-types.ts:403 uses /(?:^|\\/)resource-map\\.md$/i, so the match requires either start-of-string or '/' before resource-map.md and end-of-string after .md; this matches resource-map.md and /path/resource-map.md, but not some-resource-map.md or resource-map.md.backup."
+    },
+    "q4_infer_document_type": {
+      "answer": "correct",
+      "evidence": "lib/config/memory-types.ts:413-437 iterates SPEC_DOCUMENT_CONFIGS and returns config.documentType when both the regex and matchesSpecDocumentPath() succeed; lib/config/spec-doc-paths.ts:104-133 accepts basename matches only under spec-leaf folders, so a spec-folder resource-map.md resolves to 'resource_map'."
+    },
+    "q5_regex_alternation_safe": {
+      "answer": "safe",
+      "evidence": "lib/graph/graph-metadata-parser.ts:51-52 appends resource-map.md as a final alternation inside the existing anchored group, and lib/graph/graph-metadata-parser.ts:599-600 applies that regex only as a canonical bare-file allowlist check, so existing alternations are unchanged."
+    },
+    "q6_other_hardcoded_lists": {
+      "answer": "none_missed",
+      "missed_files": [],
+      "evidence": "handlers/memory-index-discovery.ts:51-54 already includes resource-map.md; handlers/memory-context.ts:917 and lib/routing/content-router.ts:1282-1291 refer to generic spec-doc phases rather than hardcoded canonical filename sets; tests/session-bootstrap.vitest.ts:199 is ladder wording only. tests/memory-types.vitest.ts:104-120 lacks a direct resource-map case, but it is a coverage gap rather than a missed runtime classifier list."
+    },
+    "q7_dist_mirror_rebuild": {
+      "answer": "not_applicable",
+      "evidence": "A workspace glob for .opencode/skill/system-spec-kit/mcp_server/**/dist and for .opencode/skill/system-spec-kit/mcp_server/**/*.js returned no matches, so there is no checked-in dist mirror under mcp_server to rebuild."
+    }
+  },
+  "findings": [
+    {
+      "id": "F001",
+      "severity": "P2",
+      "dimension": "MCP runtime code correctness",
+      "title": "Add a direct regression test for resource-map path inference",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/tests/memory-types.vitest.ts",
+      "line": 104,
+      "evidence": "The canonical spec-document path inference cases cover spec.md, plan.md, decision-record.md, implementation-summary.md, and research.md at lines 104-120, but omit resource-map.md, leaving the new resource_map branch without a dedicated regression assertion."
+    }
+  ],
+  "findings_summary": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 1
+  },
+  "strengths": [
+    "Canonical runtime registration is consistent across SPEC_DOCUMENT_FILENAMES, SPEC_DOCUMENT_CONFIGS, BASENAME_BY_DOCUMENT_TYPE, FILENAME_TO_DOC_TYPE, CANONICAL_PACKET_DOCS, resume priority, validation optional docs, memory-save UX strings, and tool schemas.",
+    "inferDocumentTypeFromPath() and matchesSpecDocumentPath() combine regex matching with spec-folder placement checks, preventing false positives outside canonical packet leaves.",
+    "No checked-in dist mirror exists under mcp_server, so there is no secondary generated runtime surface that can silently drift from the TypeScript sources."
+  ],
+  "verdict": "PASS",
+  "notes": "No P0/P1 runtime correctness defects were found in the reviewed MCP TypeScript surfaces."
+}

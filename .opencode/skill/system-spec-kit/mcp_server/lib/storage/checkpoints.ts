@@ -17,7 +17,9 @@ import {
   createScopeFilterPredicate,
   hasScopeConstraints,
   normalizeScopeContext,
+  recordGovernanceAudit,
   type ScopeContext,
+  type GovernanceAuditEntry,
 } from '../governance/scope-governance.js';
 import { detectCommunities, storeCommunityAssignments } from '../graph/community-detection.js';
 import { generateCommunitySummaries } from '../graph/community-summaries.js';
@@ -25,6 +27,7 @@ import { storeCommunities } from '../graph/community-storage.js';
 import { snapshotDegrees } from '../graph/graph-signals.js';
 import { deleteEdgesForMemory } from './causal-edges.js';
 import { runLineageBackfill } from './lineage-state.js';
+import { isConstitutionalPath, shouldIndexForMemory } from '../utils/index-scope.js';
 
 function batchedInQuery<T>(db: Database.Database, sql: string, ids: (number | string)[], batchSize = 500): T[] {
   const results: T[] = [];
@@ -67,6 +70,36 @@ function getSnapshotColumnsFromRows(rows: Array<Record<string, unknown>>): strin
   }
 
   return Array.from(columns);
+}
+
+function buildCheckpointLogicalKey(
+  row: Record<string, unknown>,
+  resolvedPath: string,
+): string | null {
+  const specFolder = typeof row.spec_folder === 'string' && row.spec_folder.length > 0
+    ? row.spec_folder
+    : null;
+  if (!specFolder) {
+    return null;
+  }
+
+  const anchorId = typeof row.anchor_id === 'string' && row.anchor_id.trim().length > 0
+    ? row.anchor_id
+    : '_';
+  return `${specFolder}::${resolvedPath}::${anchorId}`;
+}
+
+function flushGovernanceAudits(
+  database: Database.Database,
+  entries: GovernanceAuditEntry[],
+): void {
+  for (const entry of entries) {
+    try {
+      recordGovernanceAudit(database, entry);
+    } catch (error: unknown) {
+      console.warn(`[checkpoints] governance_audit insert failed: ${toErrorMessage(error)}`);
+    }
+  }
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -1255,7 +1288,11 @@ function getMemoryRestoreColumns(
  * Optional fields (anchor_id, embedding_*, etc.) may be null/undefined for
  * backwards compatibility with older checkpoint formats.
  */
-function validateMemoryRow(row: unknown, index: number): void {
+function validateMemoryRow(
+  row: unknown,
+  index: number,
+  governanceAudits: GovernanceAuditEntry[] = [],
+): void {
   if (!row || typeof row !== 'object') {
     throw new Error(`Checkpoint row ${index}: not an object (got ${typeof row})`);
   }
@@ -1278,6 +1315,47 @@ function validateMemoryRow(row: unknown, index: number): void {
     if (r[field] === undefined) {
       throw new Error(`Checkpoint row ${index}: missing required field '${field}'`);
     }
+  }
+
+  const resolvedPath = typeof r.canonical_file_path === 'string' && r.canonical_file_path.length > 0
+    ? r.canonical_file_path
+    : r.file_path;
+
+  if (!shouldIndexForMemory(resolvedPath as string)) {
+    governanceAudits.push({
+      action: 'checkpoint_restore_excluded_path_rejected',
+      decision: 'deny',
+      memoryId: r.id as number,
+      logicalKey: buildCheckpointLogicalKey(r, resolvedPath as string),
+      reason: 'checkpoint_restore_path_excluded',
+      metadata: {
+        source: 'checkpoint_restore',
+        rowIndex: index,
+        filePath: r.file_path,
+        canonicalFilePath: typeof r.canonical_file_path === 'string' ? r.canonical_file_path : null,
+        importanceTier: r.importance_tier ?? null,
+      },
+    });
+    throw new Error(`Checkpoint row ${index}: path excluded from memory indexing (${resolvedPath as string})`);
+  }
+
+  if (r.importance_tier === 'constitutional' && !isConstitutionalPath(resolvedPath as string)) {
+    governanceAudits.push({
+      action: 'tier_downgrade_non_constitutional_path',
+      decision: 'conflict',
+      memoryId: r.id as number,
+      logicalKey: buildCheckpointLogicalKey(r, resolvedPath as string),
+      reason: 'non_constitutional_path',
+      metadata: {
+        source: 'checkpoint_restore',
+        rowIndex: index,
+        requestedTier: 'constitutional',
+        appliedTier: 'important',
+        filePath: r.file_path,
+        canonicalFilePath: typeof r.canonical_file_path === 'string' ? r.canonical_file_path : null,
+      },
+    });
+    r.importance_tier = 'important';
   }
 }
 
@@ -1480,6 +1558,7 @@ function restoreCheckpoint(
   };
 
   let restoreBarrierHeld = false;
+  const governanceAudits: GovernanceAuditEntry[] = [];
 
   try {
     const checkpoint = getCheckpoint(nameOrId, scope);
@@ -1510,21 +1589,6 @@ function restoreCheckpoint(
       new Set([...currentScopedMemoryIds, ...snapshotMemoryIds])
     );
     const edgeIds = getEdgeIds(tableSnapshots.causal_edges?.rows ?? []);
-
-    // T107 FIX: Validate every row BEFORE any DB mutations.
-    // Reject the entire restore on schema violations to prevent
-    // Partial restores or silent NULL insertions.
-    if (memoryRows.length > 0) {
-      try {
-        for (let i = 0; i < memoryRows.length; i++) {
-          validateMemoryRow(memoryRows[i], i);
-        }
-      } catch (validationError: unknown) {
-        const msg = toErrorMessage(validationError);
-        result.errors.push(`Schema validation failed: ${msg}`);
-        return result;
-      }
-    }
 
     const memoryRestoreColumns = memoryRows.length > 0
       ? getMemoryRestoreColumns(database, memoryRows)
@@ -1570,6 +1634,16 @@ function restoreCheckpoint(
     // Previously, individual insert errors were silently swallowed inside
     // The transaction, allowing COMMIT after DELETE + partial inserts = data loss.
     const restoreTx = database.transaction(() => {
+      if (memoryRows.length > 0) {
+        for (let i = 0; i < memoryRows.length; i++) {
+          try {
+            validateMemoryRow(memoryRows[i], i, governanceAudits);
+          } catch (validationError: unknown) {
+            throw new Error(`Restore validation failed: ${toErrorMessage(validationError)}`);
+          }
+        }
+      }
+
       // Clear existing data if requested
       if (clearExisting) {
         try {
@@ -1770,6 +1844,9 @@ function restoreCheckpoint(
     result.errors.push(msg);
     console.warn(`[checkpoints] restoreCheckpoint error: ${msg}`);
   } finally {
+    if (governanceAudits.length > 0) {
+      flushGovernanceAudits(database, governanceAudits);
+    }
     if (restoreBarrierHeld) {
       releaseRestoreBarrier();
     }

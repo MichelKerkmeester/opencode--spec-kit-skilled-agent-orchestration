@@ -1,0 +1,102 @@
+{
+  "iteration": 6,
+  "dimension": "AGENTS triad + governance rule",
+  "executor": "cli-copilot (gpt-5.4, high) + direct-read",
+  "copilot_dispatched": true,
+  "copilot_dispatch_reason": "Governance-rule wording is cross-file and subjective; second-opinion from gpt-5.4 high valuable for drift detection across AGENTS triad.",
+  "files_audited": [
+    "AGENTS.md",
+    "AGENTS_example_fs_enterprises.md",
+    "AGENTS_Barter.md",
+    "CLAUDE.md"
+  ],
+  "files_audited_line_ranges": {
+    "AGENTS.md": ["258-272 (Documentation Levels + cross-cutting note)", "322-332 (Distributed Governance Rule)"],
+    "AGENTS_example_fs_enterprises.md": ["286-305 (Documentation Levels + cross-cutting note)", "352-362 (Distributed Governance Rule)"],
+    "AGENTS_Barter.md": ["186 (table row)", "305-313 (Documentation Levels)", "365-375 (governance rule)"],
+    "CLAUDE.md": ["255-280 (Documentation Levels + cross-cutting note)"]
+  },
+  "assertions_verified": {
+    "agents_md_line_330_governance_sentence_grammatical": true,
+    "agents_md_line_330_preserves_deep_research_iterations_exemption": true,
+    "agents_md_line_330_preserves_deep_research_research_md_exemption": true,
+    "agents_md_line_330_preserves_debug_delegation_md_exemption": true,
+    "agents_md_line_330_includes_resource_map_md_in_authored_doc_list": true,
+    "agents_md_line_330_includes_resource_map_optionality_clause": true,
+    "agents_md_line_268_cross_cutting_note_lists_4_files_correct": true,
+    "fs_enterprises_line_299_cross_cutting_note_lists_same_4_files": true,
+    "claude_md_line_268_cross_cutting_note_lists_same_4_files": true,
+    "agents_md_line_265_level_3_row_mentions_resource_map": false,
+    "fs_enterprises_line_294_level_3_row_mentions_resource_map": true,
+    "barter_md_generic_spec_folder_docs_phrasing_unchanged": true,
+    "barter_md_symlink_to_external_repo_confirmed": true,
+    "agents_md_line_330_defines_resource_map_exclusive_writer": false,
+    "agents_md_line_330_defines_research_md_exclusive_writer_deep_research": true,
+    "agents_md_line_330_defines_debug_delegation_exclusive_writer_debug": true,
+    "templates_root_contains_resource_map_md": true,
+    "templates_root_contains_handover_md": true,
+    "templates_root_contains_debug_delegation_md": true,
+    "templates_root_contains_research_md": true
+  },
+  "findings": [
+    {
+      "id": "AG-01",
+      "severity": "P2",
+      "title": "Distributed Governance Rule bullet overloaded; optionality clause duplicates cross-cutting note",
+      "description": "AGENTS.md:330 is grammatically valid but packs enforcement + workflow exemptions + exclusive-write owners + resource-map optionality guidance into a single bullet. The tail clause 'resource-map.md is optional at any level — copy it from .opencode/skill/system-spec-kit/templates/resource-map.md when a packet wants a lean path ledger alongside implementation-summary.md' duplicates the cross-cutting note at AGENTS.md:268 and switches register from enforcement to usage guidance, reading as bolted on.",
+      "files": ["AGENTS.md:330", "AGENTS.md:268"],
+      "blocker": false,
+      "fix_suggestion": "Drop the optionality tail clause from §5 governance rule. Keep resource-map.md in the authored-doc enumeration; rely on §3 cross-cutting note (line 268) as the single source for optionality + copy-from-templates guidance."
+    },
+    {
+      "id": "AG-02",
+      "severity": "P1",
+      "title": "Documentation Levels Level-3 row drift between AGENTS.md and fs_enterprises sibling",
+      "description": "AGENTS.md:265 says 'Level 2 + decision-record.md (+ optional research.md)'. AGENTS_example_fs_enterprises.md:294 says 'Level 2 + decision-record.md (+ optional research.md, resource-map.md)'. Since resource-map.md is framed as any-level cross-cutting via §3 notes, enumerating it only on Level-3 in one sibling creates reader confusion about whether resource-map.md is Level-3-specific.",
+      "files": ["AGENTS.md:265", "AGENTS_example_fs_enterprises.md:294"],
+      "blocker": false,
+      "fix_suggestion": "Option A (preferred): drop 'resource-map.md' from fs_enterprises:294 to match AGENTS.md and keep cross-cutting docs in the §3 note only. Option B: add 'resource-map.md' to AGENTS.md:265 to match fs_enterprises. Either way, sync the triad."
+    },
+    {
+      "id": "AG-03",
+      "severity": "P2",
+      "title": "No explicit writer for resource-map.md in Distributed Governance Rule",
+      "description": "AGENTS.md:330 assigns @deep-research exclusive write for research/research.md and @debug exclusive write for debug-delegation.md. resource-map.md is in the authored-doc list but has no owner declaration, leaving it implicitly 'any agent following the authored-doc rule.' Readers may assume parallel ownership and search in vain for a resource-map owner agent.",
+      "files": ["AGENTS.md:330"],
+      "blocker": false,
+      "fix_suggestion": "Append one sentence: 'resource-map.md has no exclusive writer — any agent following this governance rule may author it.' Place after the @debug exclusive-write sentence for symmetry."
+    },
+    {
+      "id": "AG-04",
+      "severity": "INFO",
+      "title": "AGENTS_Barter.md intentionally unchanged (AUDIT-C)",
+      "description": "AGENTS_Barter.md is a symlink into /Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter/coder/AGENTS.md. Its line ~372 governance rule uses generic 'spec folder docs (*.md)' glob phrasing that implicitly covers resource-map.md. AUDIT-C rationale (minimize cross-repo drift) still holds; no change recommended. Recorded for traceability.",
+      "files": ["AGENTS_Barter.md:372"],
+      "blocker": false
+    },
+    {
+      "id": "AG-05",
+      "severity": "INFO",
+      "title": "Cross-cutting note same 4-file set across CLAUDE.md, AGENTS.md, fs_enterprises",
+      "description": "All three active-in-Public docs list the same 4 cross-cutting docs (handover.md, debug-delegation.md, research.md, resource-map.md) with only formatting differences (em-dash vs hyphen, note-block vs paragraph). No semantic drift. All 4 template files exist at .opencode/skill/system-spec-kit/templates/ root, matching the 'copy from templates/' pointer.",
+      "files": ["AGENTS.md:268", "AGENTS_example_fs_enterprises.md:299", "CLAUDE.md:268"],
+      "blocker": false
+    }
+  ],
+  "p0_count": 0,
+  "p1_count": 1,
+  "p2_count": 2,
+  "info_count": 2,
+  "questions_answered": {
+    "q1_agents_md_330_grammar": "Grammatically valid; no run-ons or double negatives. Semantically overloaded (enforcement + exemption + ownership + optionality in one bullet) but not broken.",
+    "q2_optionality_clause_flow": "Bolted on. Switches register from enforcement to usage guidance and duplicates AGENTS.md:268 cross-cutting note. See AG-01.",
+    "q3_exemptions_preserved": "Yes. research/iterations/*.md, research/deep-research-*.md, research/research.md progressive-update exemption, @deep-research exclusive-write, @debug exclusive-write all intact.",
+    "q4_fs_enterprises_level3_row_drift": "Drift confirmed. AGENTS.md:265 lacks resource-map.md; fs_enterprises:294 includes it. See AG-02.",
+    "q5_barter_no_change_sound": "Sound. Generic 'spec folder docs (*.md)' glob implicitly covers resource-map.md; AUDIT-C rationale (minimize cross-repo drift in symlinked shared file) holds. See AG-04.",
+    "q6_claude_md_cross_cutting_match": "Match. Same 4-file set in all three docs; only punctuation/formatting differs. See AG-05.",
+    "q7_resource_map_owner": "Implicit 'any agent following the authored-doc rule.' No exclusive writer declared, which is reasonable for a non-workflow-owned optional doc. Recommend short clarifier (AG-03) rather than full owner clause."
+  },
+  "blockers_for_packet_012": [],
+  "convergence_signal": "low-severity-only",
+  "notes": "Iteration 04 is missing from the review/iterations/ directory; iterations 01, 02, 03, 05 present. Not a finding in this dimension's scope — flagged for orchestrator awareness only."
+}

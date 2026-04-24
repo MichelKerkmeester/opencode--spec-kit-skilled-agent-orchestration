@@ -1,0 +1,75 @@
+{
+  "iteration": 1,
+  "dimension": "Template design quality",
+  "executor": "cli-copilot gpt-5.4 high",
+  "findings": [
+    {
+      "id": "IT01-P1-001",
+      "severity": "P1",
+      "file": ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      "line": 118,
+      "issue": "Category taxonomy overlaps: description.json/graph-metadata.json legitimately belong to both Specs (§6) and Config (§9); root README.md fits both READMEs (§1) and Meta (§10); skill-local scripts/tests/configs fit both Skills (§5) and the file-type categories.",
+      "recommendation": "Add an explicit precedence rule near the Action/Status vocabulary block (line 34): location-based categories (Specs, Skills, Meta) take precedence over file-type categories (Scripts, Tests, Config); list each path exactly once in the highest-precedence bucket."
+    },
+    {
+      "id": "IT01-P1-002",
+      "severity": "P1",
+      "file": ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      "line": 14,
+      "issue": "No ANCHOR-tagged sections and no visible 'WHEN TO USE THIS TEMPLATE' section, breaking the structural convention established by peer cross-cutting templates (handover.md, research.md, debug-delegation.md).",
+      "recommendation": "Wrap the intro prose (lines 18-22) and the trailing HTML-comment author instructions (lines 138-153) in a visible '## WHEN TO USE THIS TEMPLATE' section plus '## TEMPLATE INSTRUCTIONS' section with ANCHOR:when-to-use and ANCHOR:template-instructions tags matching peer templates."
+    },
+    {
+      "id": "IT01-P1-003",
+      "severity": "P1",
+      "file": ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      "line": 28,
+      "issue": "Bare bracketed hints ([count], [n], [path to README.md], [note]) do not match the [YOUR_VALUE_HERE: ...] placeholder convention used by all peer templates, breaking visual parity and automated placeholder scanning.",
+      "recommendation": "Convert all fillable slots to the [YOUR_VALUE_HERE: ...] convention (e.g., [YOUR_VALUE_HERE: total_count], [YOUR_VALUE_HERE: path], [YOUR_VALUE_HERE: optional_note]) to match handover/research/debug-delegation."
+    },
+    {
+      "id": "IT01-P1-004",
+      "severity": "P1",
+      "file": ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      "line": 145,
+      "issue": "Author instruction 'Delete any category whose table is empty' is explicit, but the template never says whether remaining categories should be renumbered sequentially or retain their original numbers. The filled example at packet 012 silently renumbers 1->7 after deletions.",
+      "recommendation": "Add a sibling bullet on line 146: 'After deleting empty categories, renumber remaining sections sequentially (1..N) so the document reads cleanly top to bottom.'"
+    },
+    {
+      "id": "IT01-P2-001",
+      "severity": "P2",
+      "file": ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      "line": 34,
+      "issue": "Action verbs Removed and Validated are semantically ambiguous (file deleted vs reference removed; existence-checked vs validator-run). The 009 reference audit already drifted into compound verbs like 'cited/consulted' and 'reviewed/audited'.",
+      "recommendation": "Add a one-line gloss per action verb next to the vocabulary list on line 34 (e.g., 'Removed = file deleted from disk during this packet', 'Validated = validator or test executed against the file')."
+    },
+    {
+      "id": "IT01-P2-002",
+      "severity": "P2",
+      "file": ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      "line": 31,
+      "issue": "Scope line is directional ('one-line scope') with no fixed phrasing pattern, so phase-child vs parent-aggregated maps will vary in wording and be harder to distinguish at a glance.",
+      "recommendation": "Specify a canonical phrasing on line 31 such as 'Scope: packet-local NNN-name' or 'Scope: parent-aggregated (children: A, B, C)' with matching author instruction at line 146."
+    },
+    {
+      "id": "IT01-P2-003",
+      "severity": "P2",
+      "file": ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      "line": 142,
+      "issue": "Glob guidance says 'use glob suffixes only when every file under the glob received the same Action' but does not state the default (one row per file), leaving first-time users unsure.",
+      "recommendation": "Append to line 142: 'Otherwise, use one row per file.'"
+    },
+    {
+      "id": "IT01-P2-004",
+      "severity": "P2",
+      "file": ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      "line": 28,
+      "issue": "The full Summary block (Total + 10-category breakdown + Missing + Scope + Generated) is heavyweight for a Level 1 two-file change where category breakdowns are mostly zeros.",
+      "recommendation": "Document a minimal Level 1 variant (Total + Scope only) near line 20, mirroring the template's own 'optional but recommended' framing."
+    }
+  ],
+  "findings_count": { "P0": 0, "P1": 4, "P2": 4 },
+  "timestamp": "2026-04-24T11:30:00+02:00",
+  "copilot_retries": 0,
+  "fallback_used": false
+}

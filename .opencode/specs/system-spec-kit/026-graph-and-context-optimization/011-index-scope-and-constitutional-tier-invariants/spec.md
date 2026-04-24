@@ -13,12 +13,13 @@ contextType: "spec"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T00:00:00Z"
+    last_updated_at: "2026-04-24T09:31:49Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Packet scaffolded"
-    next_safe_action: "Implement shared path-exclusion helpers, wire save-time guards, add tests, and run cleanup"
+    recent_action: "Wave-1 remediation landed; P0-001 and P0-002 patched at SQL layer, audit-trail gap closed"
+    next_safe_action: "Run 7-iteration deep review pass 2 to confirm P0s resolved"
+    status: "wave1-remediation-complete"
     blockers: []
-    completion_pct: 20
+    completion_pct: 95
     open_questions: []
     answered_questions:
       - "z_future rows will be deleted instead of downgraded because the invariant says they must never be indexed."
@@ -53,7 +54,7 @@ This packet adds one shared source of truth for index-scope rules, wires it into
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | In Progress |
+| **Status** | Wave-1 Complete |
 | **Created** | 2026-04-24 |
 | **Branch** | `011-index-scope-and-constitutional-tier-invariants` |
 <!-- /ANCHOR:metadata -->

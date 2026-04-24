@@ -311,6 +311,28 @@ function prepareParsedMemoryForIndexing(
     console.warn('[memory-save] importance_tier=constitutional rejected for non-constitutional path; downgrading to important', {
       file_path: parsed.filePath,
     });
+    try {
+      recordGovernanceAudit(database, {
+        action: 'tier_downgrade_non_constitutional_path',
+        decision: 'conflict',
+        logicalKey: parsed.specFolder
+          ? `${parsed.specFolder}::${canonicalFilePath}::_`
+          : null,
+        reason: 'non_constitutional_path',
+        metadata: {
+          source: 'memory_save',
+          requestedTier: 'constitutional',
+          appliedTier: 'important',
+          filePath: parsed.filePath,
+          canonicalFilePath,
+        },
+      });
+    } catch (error: unknown) {
+      console.warn(
+        '[memory-save] governance_audit insert failed for tier downgrade:',
+        error instanceof Error ? error.message : String(error),
+      );
+    }
     parsed.importanceTier = 'important';
   }
 

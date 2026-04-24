@@ -11,12 +11,13 @@ contextType: "general"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants"
-    last_updated_at: "2026-04-24T06:50:00Z"
+    last_updated_at: "2026-04-24T09:31:49Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "README reversal verification finalized"
-    next_safe_action: "User review and MCP restart"
+    recent_action: "Wave-1 remediation landed; P0-001 and P0-002 patched at SQL layer, audit-trail gap closed"
+    next_safe_action: "Run 7-iteration deep review pass 2 to confirm P0s resolved"
+    status: "wave1-remediation-complete"
     blockers: []
-    completion_pct: 100
+    completion_pct: 95
     open_questions: []
     answered_questions: []
 ---
@@ -56,6 +57,7 @@ _memory:
 - [x] CHK-011 [P0] Shared helper enforces code-graph exclusions for `external` plus existing default excludes [EVIDENCE: `mcp_server/code-graph/lib/indexer-types.ts` preserves legacy excludes and `structural-indexer.ts` now also consults `shouldIndexForCodeGraph()`]
 - [x] CHK-012 [P0] Save-time guard rejects excluded paths and downgrades invalid constitutional tiers [EVIDENCE: `mcp_server/handlers/memory-save.ts` rejects helper-excluded paths and downgrades non-constitutional `constitutional` saves to `important` before DB writes]
 - [x] CHK-013 [P1] Constitutional README stays excluded while constitutional rule files remain indexable [EVIDENCE: `memory-index-discovery.ts` and `memory-parser.ts` both reject `README.md` under `/constitutional/`; `handler-memory-index.vitest.ts`, `memory-parser-extended.vitest.ts`, `full-spec-doc-indexing.vitest.ts`, and `gate-d-regression-constitutional-memory.vitest.ts` all pass]
+- [x] CHK-W1-001 [P0] SQL-layer update writes cannot persist `importance_tier='constitutional'` for non-constitutional paths [EVIDENCE: `mcp_server/lib/search/vector-index-mutations.ts` now downgrades invalid update writes before the SQL `UPDATE`, and `tests/memory-crud-update-constitutional-guard.vitest.ts` passes]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -71,6 +73,7 @@ _memory:
 - [x] CHK-025 [P1] `npm run build` exits `0` [EVIDENCE: `mcp_server` and `scripts` build commands both exit `0`]
 - [x] CHK-026 [P1] Focused Vitest command exits `0` [EVIDENCE: requested run across `tests/index-scope.vitest.ts` and `tests/memory-save-index-scope.vitest.ts` passed with `8` tests; the four README-regression files also passed with `218` tests]
 - [x] CHK-027 [P1] `npm run test:core` outcome recorded honestly, including carryover failures if any [EVIDENCE: `timeout 300 npm run test:core` exited `124`; observed existing failures included `tests/copilot-hook-wiring.vitest.ts` and `tests/stage3-rerank-regression.vitest.ts` before timeout]
+- [x] CHK-W1-004 [P1] Wave-1 focused Vitest command exits `0` [EVIDENCE: `npx vitest run tests/index-scope.vitest.ts tests/memory-save-index-scope.vitest.ts tests/memory-crud-update-constitutional-guard.vitest.ts tests/checkpoint-restore-invariant-enforcement.vitest.ts` exit `0`]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -81,6 +84,9 @@ _memory:
 - [x] CHK-030 [P0] Cleanup CLI runs all mutations inside a single transaction [EVIDENCE: `cleanup-index-scope-violations.ts` wraps `applyCleanup()` in `database.transaction(...)`]
 - [x] CHK-031 [P0] Cleanup CLI is idempotent across repeat runs [EVIDENCE: second `--apply` reported zero planned and zero applied changes]
 - [x] CHK-032 [P1] Duplicate `.opencode/skill/system-spec-kit/constitutional/gate-enforcement.md` handling keeps the newer row and rewrites references safely [EVIDENCE: survivor `9868`; first apply reported `rewritten_feedback_rows=2` and `rewritten_lineage_rows=3`, then `gate_enforcement_rows=1`]
+- [x] CHK-W1-002 [P0] `checkpoint_restore` re-validates index-scope and constitutional-tier invariants before replaying snapshot rows [EVIDENCE: `mcp_server/lib/storage/checkpoints.ts` validates inside the barrier-held restore transaction, and `tests/checkpoint-restore-invariant-enforcement.vitest.ts` passes]
+- [x] CHK-W1-003 [P0] Non-constitutional tier downgrade attempts write a durable `governance_audit` row without failing the mutation [EVIDENCE: `mcp_server/handlers/memory-save.ts`, `mcp_server/lib/search/vector-index-mutations.ts`, and `mcp_server/lib/storage/checkpoints.ts` now emit `action='tier_downgrade_non_constitutional_path'`; focused Vitest coverage passes]
+- [x] CHK-W1-005 [P1] Live cleanup verify still exits `0` after the Wave-1 runtime rebuild [EVIDENCE: `node scripts/dist/memory/cleanup-index-scope-violations.js --verify` exit `0` with the final constitutional and exclusion counts recorded in `implementation-summary.md`]
 <!-- /ANCHOR:security -->
 
 ---
@@ -110,8 +116,8 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 14 | 14/14 |
-| P1 Items | 16 | 16/16 |
+| P0 Items | 17 | 17/17 |
+| P1 Items | 18 | 18/18 |
 | P2 Items | 0 | 0/0 |
 
 **Verification Date**: 2026-04-24
