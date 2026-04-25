@@ -2,6 +2,8 @@
 // MODULE: Advisor Scorer Types
 // ───────────────────────────────────────────────────────────────
 
+import type { AffordanceInput } from '../affordance-normalizer.js';
+
 export type ScorerLane =
   | 'explicit_author'
   | 'lexical'
@@ -89,6 +91,7 @@ export interface AdvisorScoredRecommendation {
 export interface AdvisorScoringOptions {
   readonly workspaceRoot: string;
   readonly projection?: AdvisorProjection;
+  readonly affordances?: readonly AffordanceInput[];
   readonly confidenceThreshold?: number;
   readonly uncertaintyThreshold?: number;
   readonly includeAllCandidates?: boolean;

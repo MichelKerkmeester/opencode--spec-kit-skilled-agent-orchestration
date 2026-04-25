@@ -2,6 +2,7 @@
 // MODULE: Graph Causal Lane
 // ───────────────────────────────────────────────────────────────
 
+import type { NormalizedAffordance } from '../../affordance-normalizer.js';
 import type { AdvisorProjection, LaneMatch } from '../types.js';
 
 export interface GraphCausalOptions {
@@ -21,6 +22,7 @@ export function scoreGraphCausalLane(
   seedMatches: readonly LaneMatch[],
   projection: AdvisorProjection,
   options: GraphCausalOptions = {},
+  affordances: readonly NormalizedAffordance[] = [],
 ): LaneMatch[] {
   const maxDepth = options.maxDepth ?? 2;
   const maxBreadth = options.maxBreadth ?? 4;
@@ -28,6 +30,19 @@ export function scoreGraphCausalLane(
   for (const edge of projection.edges) {
     const current = adjacency.get(edge.sourceId) ?? [];
     adjacency.set(edge.sourceId, [...current, edge]);
+  }
+  for (const affordance of affordances) {
+    const current = adjacency.get(affordance.skillId) ?? [];
+    adjacency.set(affordance.skillId, [
+      ...current,
+      ...affordance.edges.map((edge) => ({
+        sourceId: affordance.skillId,
+        targetId: edge.targetSkillId,
+        edgeType: edge.edgeType,
+        weight: edge.weight,
+        context: affordance.evidenceLabel,
+      })),
+    ]);
   }
 
   const seedScores = new Map<string, number>();
@@ -50,7 +65,8 @@ export function scoreGraphCausalLane(
       for (const edge of outgoing) {
         if (seen.has(edge.targetId)) continue;
         seen.add(edge.targetId);
-        const multiplier = EDGE_MULTIPLIER[edge.edgeType] ?? 0.2;
+        const multiplier = EDGE_MULTIPLIER[edge.edgeType];
+        if (multiplier === undefined) continue;
         const propagated = current.strength * edge.weight * Math.abs(multiplier) * (1 / (current.depth + 1));
         if (propagated < 0.05) continue;
         const signed = multiplier < 0 ? -propagated : propagated;

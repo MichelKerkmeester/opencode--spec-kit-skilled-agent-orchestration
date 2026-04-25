@@ -10,6 +10,7 @@ import {
   isSpeckitMetricsEnabled,
   speckitMetrics,
 } from '../metrics.js';
+import { normalize } from '../affordance-normalizer.js';
 import { scoreDerivedLane } from './lanes/derived.js';
 import { scoreExplicitLane } from './lanes/explicit.js';
 import { scoreGraphCausalLane } from './lanes/graph-causal.js';
@@ -34,6 +35,7 @@ import type {
   ScorerLane,
   SkillProjection,
 } from './types.js';
+import type { NormalizedAffordance } from '../affordance-normalizer.js';
 
 const DEFAULT_CONFIDENCE_THRESHOLD = 0.8;
 const DEFAULT_UNCERTAINTY_THRESHOLD = 0.35;
@@ -134,18 +136,23 @@ function uncertaintyFor(contributions: readonly LaneContribution[], confidence: 
   return Number(Math.max(0.08, Math.min(0.95, uncertainty)).toFixed(2));
 }
 
-function buildLaneScores(prompt: string, projection: AdvisorProjection, disabled: Set<ScorerLane>): LaneScores {
+function buildLaneScores(
+  prompt: string,
+  projection: AdvisorProjection,
+  disabled: Set<ScorerLane>,
+  affordances: readonly NormalizedAffordance[],
+): LaneScores {
   const scores = emptyLaneScores();
   if (!disabled.has('explicit_author')) scores.explicit_author = scoreExplicitLane(prompt, projection);
   if (!disabled.has('lexical')) scores.lexical = scoreLexicalLane(prompt, projection);
-  if (!disabled.has('derived_generated')) scores.derived_generated = scoreDerivedLane(prompt, projection);
+  if (!disabled.has('derived_generated')) scores.derived_generated = scoreDerivedLane(prompt, projection, new Date(), affordances);
   if (!disabled.has('semantic_shadow')) scores.semantic_shadow = scoreSemanticShadowLane(prompt, projection);
   if (!disabled.has('graph_causal')) {
     scores.graph_causal = scoreGraphCausalLane([
       ...scores.explicit_author,
       ...scores.lexical,
       ...scores.derived_generated,
-    ], projection);
+    ], projection, {}, affordances);
   }
   return scores;
 }
@@ -231,7 +238,8 @@ export function scoreAdvisorPrompt(prompt: string, options: AdvisorScoringOption
   const projection = options.projection ?? loadAdvisorProjection(options.workspaceRoot);
   const weights = parseScorerWeights(DEFAULT_SCORER_WEIGHTS);
   const disabled = new Set(options.disabledLanes ?? []);
-  const laneScores = buildLaneScores(prompt, projection, disabled);
+  const affordances = normalize(options.affordances ?? []);
+  const laneScores = buildLaneScores(prompt, projection, disabled, affordances);
   const liveTotal = SCORER_LANES
     .filter((lane) => !disabled.has(lane))
     .reduce((total, lane) => lane === 'semantic_shadow' ? total : total + weights[lane], 0) || liveWeightTotal(weights);

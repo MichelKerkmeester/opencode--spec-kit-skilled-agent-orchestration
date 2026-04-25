@@ -3,17 +3,32 @@
 // ───────────────────────────────────────────────────────────────
 
 import { applyAgeHaircutToLane } from '../../lifecycle/age-haircut.js';
+import type { NormalizedAffordance } from '../../affordance-normalizer.js';
 import type { AdvisorProjection, LaneMatch } from '../types.js';
 import { matchesPhraseBoundary, phraseSpecificity, scoreTokenOverlap, tokenize } from '../text.js';
 
-export function scoreDerivedLane(prompt: string, projection: AdvisorProjection, now: Date = new Date()): LaneMatch[] {
+function affordancesForSkill(
+  affordances: readonly NormalizedAffordance[],
+  skillId: string,
+): NormalizedAffordance[] {
+  return affordances.filter((affordance) => affordance.skillId === skillId);
+}
+
+export function scoreDerivedLane(
+  prompt: string,
+  projection: AdvisorProjection,
+  now: Date = new Date(),
+  affordances: readonly NormalizedAffordance[] = [],
+): LaneMatch[] {
   const lower = prompt.toLowerCase();
   const tokens = tokenize(prompt);
   const matches: LaneMatch[] = [];
 
   for (const skill of projection.skills) {
     const phrases = [...skill.derivedTriggers, ...skill.derivedKeywords];
-    if (phrases.length === 0) continue;
+    const skillAffordances = affordancesForSkill(affordances, skill.id);
+    const affordancePhrases = skillAffordances.flatMap((affordance) => [...affordance.derivedTriggers]);
+    if (phrases.length === 0 && affordancePhrases.length === 0) continue;
     const evidence: string[] = [];
     let score = 0;
     for (const phrase of phrases) {
@@ -21,7 +36,17 @@ export function scoreDerivedLane(prompt: string, projection: AdvisorProjection, 
       score += phraseSpecificity(phrase) * 0.7;
       evidence.push(`derived:${phrase}`);
     }
+    for (const affordance of skillAffordances) {
+      let matched = false;
+      for (const phrase of affordance.derivedTriggers) {
+        if (!matchesPhraseBoundary(lower, phrase)) continue;
+        matched = true;
+        score += phraseSpecificity(phrase) * 0.45;
+      }
+      if (matched) evidence.push(affordance.evidenceLabel);
+    }
     score += scoreTokenOverlap(tokens, phrases) * 0.45;
+    score += scoreTokenOverlap(tokens, affordancePhrases) * 0.25;
     const adjusted = applyAgeHaircutToLane(
       { trustLane: 'derived_generated', score: Math.min(score, 1) },
       {

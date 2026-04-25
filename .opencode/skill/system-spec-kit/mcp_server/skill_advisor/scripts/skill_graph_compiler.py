@@ -18,6 +18,7 @@ Usage:
 import argparse
 import json
 import os
+import re
 import sys
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Set, Tuple
@@ -41,6 +42,28 @@ ALLOWED_CATEGORIES = {
 }
 EDGE_TYPES = {"depends_on", "enhances", "siblings", "conflicts_with", "prerequisite_for"}
 ALLOWED_ENTITY_KINDS = {"skill", "agent", "script", "config", "reference"}
+AFFORDANCE_RELATION_FIELDS = {
+    "dependsOn": "depends_on",
+    "depends_on": "depends_on",
+    "enhances": "enhances",
+    "siblings": "siblings",
+    "prerequisiteFor": "prerequisite_for",
+    "prerequisite_for": "prerequisite_for",
+    "conflictsWith": "conflicts_with",
+    "conflicts_with": "conflicts_with",
+}
+AFFORDANCE_ALLOWED_FIELDS = {
+    "skillId", "skill_id", "name", "triggers", "category",
+    *AFFORDANCE_RELATION_FIELDS.keys(),
+}
+AFFORDANCE_INSTRUCTION_PATTERN = re.compile(
+    r"\b(ignore\s+(previous|all)\s+instructions|system\s*:|developer\s*:|"
+    r"assistant\s*:|execute\s*:|instruction\s*:)\b",
+    re.IGNORECASE,
+)
+AFFORDANCE_EMAIL_PATTERN = re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.IGNORECASE)
+AFFORDANCE_URL_PATTERN = re.compile(r"\bhttps?://\S+|\bwww\.\S+", re.IGNORECASE)
+AFFORDANCE_TOKEN_PATTERN = re.compile(r"\b(?:bearer|token|secret|apikey|api_key)\s*[:=]\s*\S+", re.IGNORECASE)
 
 
 # ───────────────────────────────────────────────────────────────
@@ -189,12 +212,12 @@ def validate_skill_metadata(
         errors.append("missing or invalid 'intent_signals' array")
 
     if schema_version == 2:
-        errors.extend(validate_derived_metadata(folder_name, data.get("derived")))
+        errors.extend(validate_derived_metadata(folder_name, data.get("derived"), all_skill_ids))
 
     return errors
 
 
-def validate_derived_metadata(folder_name: str, derived: Any) -> List[str]:
+def validate_derived_metadata(folder_name: str, derived: Any, all_skill_ids: Set[str]) -> List[str]:
     """Validate additive schema-version-2 derived metadata."""
     errors = []
 
@@ -283,6 +306,157 @@ def validate_derived_metadata(folder_name: str, derived: Any) -> List[str]:
             elif not os.path.isfile(resolved_path):
                 errors.append(f"derived.entities[{index}].path does not exist: {entity_path}")
 
+    errors.extend(validate_derived_affordances(folder_name, derived, all_skill_ids))
+
+    return errors
+
+
+def sanitize_affordance_phrase(value: Any) -> Optional[str]:
+    """Return a privacy-stripped, prompt-safe affordance phrase."""
+    if not isinstance(value, str):
+        return None
+    stripped = AFFORDANCE_URL_PATTERN.sub(" ", value)
+    stripped = AFFORDANCE_EMAIL_PATTERN.sub(" ", stripped)
+    stripped = AFFORDANCE_TOKEN_PATTERN.sub(" ", stripped)
+    if AFFORDANCE_INSTRUCTION_PATTERN.search(stripped):
+        return None
+    cleaned = re.sub(r"[\x00-\x1f\x7f]", " ", stripped)
+    cleaned = re.sub(r"[^A-Za-z0-9:/._ -]+", " ", cleaned)
+    cleaned = re.sub(r"\s+", " ", cleaned).strip().lower()
+    if len(cleaned) < 2:
+        return None
+    return cleaned[:80]
+
+
+def sanitize_affordance_skill_id(value: Any) -> Optional[str]:
+    """Normalize a skill id without creating a compiler entity kind."""
+    if not isinstance(value, str):
+        return None
+    cleaned = re.sub(r"[^a-z0-9_-]+", "-", value.strip().lower()).strip("-")
+    return cleaned or None
+
+
+def normalize_affordance_edges(raw_affordance: dict) -> List[dict]:
+    """Convert allowlisted relation fields into existing edge types."""
+    normalized: List[dict] = []
+    for field_name, edge_type in AFFORDANCE_RELATION_FIELDS.items():
+        raw_edges = raw_affordance.get(field_name)
+        if raw_edges is None:
+            continue
+        if not isinstance(raw_edges, list):
+            continue
+        for raw_edge in raw_edges:
+            if isinstance(raw_edge, str):
+                target = sanitize_affordance_skill_id(raw_edge)
+                weight = 0.7
+            elif isinstance(raw_edge, dict):
+                target = sanitize_affordance_skill_id(
+                    raw_edge.get("targetSkillId")
+                    or raw_edge.get("target_skill_id")
+                    or raw_edge.get("target")
+                )
+                raw_weight = raw_edge.get("weight")
+                weight = raw_weight if isinstance(raw_weight, (int, float)) else 0.7
+            else:
+                continue
+            if target:
+                normalized.append({
+                    "edge_type": edge_type,
+                    "target": target,
+                    "weight": max(0.0, min(1.0, float(weight))),
+                })
+    return normalized[:12]
+
+
+def normalize_affordance_input(raw_affordance: Any) -> Optional[dict]:
+    """Normalize one allowlisted affordance object for derived inputs."""
+    if not isinstance(raw_affordance, dict):
+        return None
+
+    skill_id = sanitize_affordance_skill_id(
+        raw_affordance.get("skillId")
+        or raw_affordance.get("skill_id")
+    )
+    triggers: List[str] = []
+    for raw_phrase in (
+        raw_affordance.get("name"),
+        raw_affordance.get("category"),
+    ):
+        phrase = sanitize_affordance_phrase(raw_phrase)
+        if phrase:
+            triggers.append(phrase)
+
+    raw_triggers = raw_affordance.get("triggers")
+    if isinstance(raw_triggers, list):
+        for raw_trigger in raw_triggers:
+            phrase = sanitize_affordance_phrase(raw_trigger)
+            if phrase:
+                triggers.append(phrase)
+
+    deduped_triggers = list(dict.fromkeys(triggers))[:12]
+    edges = normalize_affordance_edges(raw_affordance)
+    if not skill_id or (not deduped_triggers and not edges):
+        return None
+    return {
+        "skill_id": skill_id,
+        "derived_triggers": deduped_triggers,
+        "edges": edges,
+    }
+
+
+def normalized_affordances(derived: Any) -> List[dict]:
+    """Return normalized affordances from a derived metadata object."""
+    if not isinstance(derived, dict):
+        return []
+    raw_affordances = derived.get("affordances")
+    if raw_affordances is None:
+        return []
+    if not isinstance(raw_affordances, list):
+        return []
+    return [
+        affordance for affordance in (
+            normalize_affordance_input(raw_affordance)
+            for raw_affordance in raw_affordances
+        )
+        if affordance is not None
+    ]
+
+
+def validate_derived_affordances(folder_name: str, derived: dict, all_skill_ids: Set[str]) -> List[str]:
+    """Validate affordance-derived inputs without extending entity kinds."""
+    errors = []
+    raw_affordances = derived.get("affordances")
+    if raw_affordances is None:
+        return errors
+    if not isinstance(raw_affordances, list):
+        return ["derived.affordances must be an array when present"]
+
+    for index, raw_affordance in enumerate(raw_affordances):
+        if not isinstance(raw_affordance, dict):
+            errors.append(f"derived.affordances[{index}] must be an object")
+            continue
+        unexpected = set(raw_affordance.keys()) - AFFORDANCE_ALLOWED_FIELDS - {"description"}
+        if unexpected:
+            errors.append(
+                f"derived.affordances[{index}] has unsupported field(s): "
+                f"{sorted(unexpected)}"
+            )
+        normalized = normalize_affordance_input(raw_affordance)
+        if normalized is None:
+            errors.append(f"derived.affordances[{index}] has no usable allowlisted fields")
+            continue
+        if normalized["skill_id"] != folder_name:
+            errors.append(
+                f"derived.affordances[{index}].skillId must match owning skill "
+                f"{folder_name!r}, got {normalized['skill_id']!r}"
+            )
+        for edge in normalized["edges"]:
+            target = edge["target"]
+            if target not in all_skill_ids:
+                errors.append(
+                    f"derived.affordances[{index}].{edge['edge_type']} "
+                    f"target {target!r} is not a known skill"
+                )
     return errors
 
 
@@ -619,6 +793,10 @@ def compile_graph(
     """
     families: Dict[str, List[str]] = {}
     adjacency: Dict[str, dict] = {}
+    known_skill_ids = {
+        data.get("skill_id", folder_name)
+        for folder_name, _, data in all_metadata
+    }
     # T-SGC-03 / T-SAP-04 (R46-002): only emit `conflicts` pairs when BOTH
     # sides declared `conflicts_with` for each other. Unilateral declarations
     # are upstream-gated to exit 2 by `validate_edge_symmetry()`, but the
@@ -653,6 +831,16 @@ def compile_graph(
                 if targets:
                     skill_adj[edge_type] = targets
 
+        for affordance in normalized_affordances(data.get("derived")):
+            for edge in affordance.get("edges", []):
+                edge_type = edge.get("edge_type")
+                if edge_type not in ("depends_on", "enhances", "siblings", "prerequisite_for"):
+                    continue
+                target = edge.get("target")
+                weight = edge.get("weight", 0.0)
+                if target in known_skill_ids and isinstance(weight, (int, float)) and weight > 0.0:
+                    skill_adj.setdefault(edge_type, {})[target] = weight
+
         if skill_adj:
             adjacency[skill_id] = skill_adj
 
@@ -678,9 +866,11 @@ def compile_graph(
     signals = {}
     for folder_name, _, data in all_metadata:
         skill_id = data.get("skill_id", folder_name)
-        sigs = data.get("intent_signals", [])
+        sigs = list(data.get("intent_signals", []))
+        for affordance in normalized_affordances(data.get("derived")):
+            sigs.extend(affordance.get("derived_triggers", []))
         if sigs:
-            signals[skill_id] = sigs
+            signals[skill_id] = list(dict.fromkeys(sigs))
 
     # Sort family members
     for family in families:
