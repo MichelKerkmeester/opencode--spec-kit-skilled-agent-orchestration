@@ -1,7 +1,7 @@
 ---
-description: Diagnose code-graph index health (stale + missed + bloat), produce a markdown report, no mutations. Phase A diagnostic-only release. Supports :auto and :confirm modes
-argument-hint: "[:auto|:confirm] [--scope=stale|missed|bloat|all]"
-allowed-tools: Read, Bash, Grep, Glob, mcp__cocoindex_code__search, mcp__spec_kit_memory__code_graph_status, mcp__spec_kit_memory__code_graph_query, mcp__spec_kit_memory__code_graph_context, mcp__spec_kit_memory__detect_changes, mcp__spec_kit_memory__memory_context, mcp__spec_kit_memory__memory_search
+description: Diagnose + optionally fix code-graph index health (stale + missed + bloat). Diagnostic-only via :auto/:confirm; apply mode via :apply/:apply-confirm consumes 007 research outputs (gold battery, staleness model, exclude-rule confidence tiers).
+argument-hint: "[:auto|:confirm|:apply|:apply-confirm] [--scope=stale|missed|bloat|all|excludes] [--tier-floor=high|medium|low|all]"
+allowed-tools: Read, Edit, Write, Bash, Grep, Glob, mcp__cocoindex_code__search, mcp__spec_kit_memory__code_graph_status, mcp__spec_kit_memory__code_graph_query, mcp__spec_kit_memory__code_graph_context, mcp__spec_kit_memory__code_graph_scan, mcp__spec_kit_memory__detect_changes, mcp__spec_kit_memory__memory_context, mcp__spec_kit_memory__memory_search
 ---
 
 > **EXECUTION PROTOCOL — READ FIRST**
@@ -11,10 +11,12 @@ allowed-tools: Read, Bash, Grep, Glob, mcp__cocoindex_code__search, mcp__spec_ki
 > **Ownership:** Markdown owns setup (resolves all inputs). YAML owns execution. Setup values resolved here are passed to the YAML workflow.
 >
 > **YOUR FIRST ACTION:**
-> 1. Run the unified setup phase in this Markdown entrypoint and resolve: `execution_mode`, `scope`
+> 1. Run the unified setup phase in this Markdown entrypoint and resolve: `execution_mode`, `scope`, `tier_floor` (apply modes only)
 > 2. Load the corresponding YAML file from `assets/` only after all setup values are resolved:
->    - Auto: `doctor_code-graph_auto.yaml`
->    - Confirm: `doctor_code-graph_confirm.yaml`
+>    - Auto (diagnostic): `doctor_code-graph_auto.yaml`
+>    - Confirm (diagnostic): `doctor_code-graph_confirm.yaml`
+>    - Apply (autonomous mutate): `doctor_code-graph_apply.yaml`
+>    - Apply-Confirm (interactive mutate): `doctor_code-graph_apply-confirm.yaml`
 > 3. Execute the YAML workflow step by step using those resolved values
 >
 > All content below is reference context for the YAML workflow. Do not treat reference sections as direct instructions to execute.
@@ -25,8 +27,9 @@ allowed-tools: Read, Bash, Grep, Glob, mcp__cocoindex_code__search, mcp__spec_ki
 - **ALL** workflow execution happens through the YAML — this document is setup + reference only
 - **MARKDOWN OWNS SETUP**: resolve setup inputs here first, then hand off to YAML
 - **YAML START CONDITION**: do not load YAML until ALL required inputs are bound: `execution_mode`, `scope`
-- **PHASE A IS READ-ONLY**: zero mutations to repo files; report goes to packet-local scratch only
-- **PHASE B (apply mode) is gated** on the resilience-research sibling packet at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/` producing the verification battery + staleness model + recovery playbook + exclude-rule confidence tiers
+- **DIAGNOSTIC MODE (:auto, :confirm) IS READ-ONLY**: zero mutations to repo files; report goes to packet-local scratch only
+- **APPLY MODE (:apply, :apply-confirm) MUTATES `.opencode/code-graph.config.json`**: pre-apply snapshot + post-verify gold-battery + auto-rollback on regression in autonomous mode; user-approval gates in confirm mode
+- **APPLY MODE consumes 007 research outputs** at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/` (exclude-rule-confidence.json, staleness-model.md, code-graph-gold-queries.json, recovery-playbook.md)
 
 > **Format:** `/doctor:code-graph [:auto|:confirm] [flags]`
 > Examples: `/doctor:code-graph:auto` | `/doctor:code-graph:confirm --scope=bloat` | `/doctor:code-graph --scope=stale`
@@ -57,13 +60,16 @@ This workflow gathers ALL inputs in ONE prompt. No mode suffix prompts the user 
 EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
 1. CHECK mode suffix:
-   ├─ ":auto"    → execution_mode = "AUTONOMOUS" (omit Q0)
-   ├─ ":confirm" → execution_mode = "INTERACTIVE" (omit Q0)
-   └─ No suffix  → execution_mode = "ASK" (include Q0)
+   ├─ ":auto"          → execution_mode = "AUTONOMOUS",       intent = "DIAGNOSE", yaml = "doctor_code-graph_auto.yaml"
+   ├─ ":confirm"       → execution_mode = "INTERACTIVE",      intent = "DIAGNOSE", yaml = "doctor_code-graph_confirm.yaml"
+   ├─ ":apply"         → execution_mode = "AUTONOMOUS",       intent = "APPLY",    yaml = "doctor_code-graph_apply.yaml"
+   ├─ ":apply-confirm" → execution_mode = "INTERACTIVE",      intent = "APPLY",    yaml = "doctor_code-graph_apply-confirm.yaml"
+   └─ No suffix        → execution_mode = "ASK"               intent = "ASK"       (include Q0)
 
 2. PARSE flags from $ARGUMENTS:
-   ├─ --scope=X → scope = X (default "all"; values: all|stale|missed|bloat)
-   └─ Defaults: scope="all"
+   ├─ --scope=X       → scope = X (diagnose default "all": all|stale|missed|bloat; apply default "excludes": excludes|all)
+   ├─ --tier-floor=X  → tier_floor = X (apply mode only; values: high|medium|low|all)
+   └─ Defaults: scope="all" (diagnose) or "excludes" (apply); tier_floor="high" (apply autonomous) or ASK (apply confirm)
 
 3. Lightweight discovery (read-only):
    - code_graph_status({})
@@ -143,13 +149,14 @@ $ARGUMENTS
 
 ## 4. WORKFLOW OVERVIEW
 
-| Phase | Name      | Purpose                                          | Outputs                       |
-| ----- | --------- | ------------------------------------------------ | ----------------------------- |
-| 0     | Discovery | code_graph_status, file count, bloat-dir candidates | discovery_report          |
-| 1     | Analysis  | compute stale + missed + bloat sets via detect_changes + glob | analysis_report     |
-| 2     | Proposal  | generate exclude-rule + language-filter recommendations; write report to packet scratch | report_path |
-
-Phase 3 (Apply) and Phase 4 (Verify) are NOT present in Phase A. They will be added in a future Phase B release once the resilience-research packet provides the verification battery.
+| Phase | Name      | Purpose                                          | Diagnostic | Apply |
+| ----- | --------- | ------------------------------------------------ | :--------: | :---: |
+| 0     | Discovery | code_graph_status + detect_changes + load 007 assets | ✓        | ✓     |
+| 1     | Analysis  | stale + missed + bloat sets; per-pattern safety verdicts | ✓    | ✓     |
+| 2     | Proposal  | exclude-rule + language-filter recommendations; report | ✓     | ✓     |
+| 3     | Apply     | snapshot config + atomic write `.opencode/code-graph.config.json` | — | ✓ |
+| 4     | Verify    | re-scan + run gold battery; pass-rate vs pass_policy floor | — | ✓ |
+| 5     | Rollback or Finalize | restore snapshot if verify failed (auto in `:apply`, user-choice in `:apply-confirm`) | — | ✓ |
 
 ---
 

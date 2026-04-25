@@ -67,28 +67,42 @@ code_graph_scan({})
 | Stale files only | `/doctor:code-graph:auto --scope=stale` |
 | Missed files only | `/doctor:code-graph:auto --scope=missed` |
 | Bloat dirs only | `/doctor:code-graph:auto --scope=bloat` |
+| Apply high-tier excludes (auto rollback if regression) | `/doctor:code-graph:apply` |
+| Review apply plan before mutating + before keeping | `/doctor:code-graph:apply-confirm` |
+| Apply medium tier (interactive only) | `/doctor:code-graph:apply-confirm --tier-floor=medium` |
 
-**The three phases:**
+**Diagnostic phases (auto / confirm):**
 
 ```
 Phase 0 Discovery  → Phase 1 Analysis  → Phase 2 Proposal-as-report
 ```
 
-No Phase 3 / Phase 4 in Phase A. Phase B will add mutation + verification once research packet 007 produces the verification battery.
+**Apply phases (apply / apply-confirm):**
+
+```
+Phase 0 Discovery → Phase 1 Analysis → Phase 2 Proposal → Phase 3 Apply (write config + snapshot) → Phase 4 Verify (re-scan + gold battery) → Phase 5 Rollback-if-needed
+```
+
+Apply mode mutates `.opencode/code-graph.config.json` only. Pre-apply snapshot lives at `<packet_scratch>/apply-snapshot-<timestamp>.json` and is never auto-deleted.
 
 ---
 
 ## 3. WHAT IT TOUCHES
 
-**Mutates only:** the diagnostic report at `<packet_scratch>/code-graph-diagnostic-<timestamp>.md`.
+**Diagnostic modes (`:auto`, `:confirm`)** mutate only the diagnostic report at `<packet_scratch>/code-graph-diagnostic-<timestamp>.md`.
 
-**Never touches:**
+**Apply modes (`:apply`, `:apply-confirm`)** mutate:
+- `.opencode/code-graph.config.json` (the user-level scanner config)
+- `<packet_scratch>/apply-snapshot-<timestamp>.json` (rollback snapshot)
+- `<packet_scratch>/apply-report-<timestamp>.md` + `verify-<timestamp>.log`
+
+**Never touches (any mode):**
 - Any source file in the workspace
 - Any code under `.opencode/skill/system-spec-kit/mcp_server/`
-- The code-graph SQLite database
-- Any scanner config
+- The code-graph SQLite database (mutations happen via `code_graph_scan` only)
+- The 007 research assets (`.opencode/specs/.../assets/` is read-only)
 
-After running, `git status` should show no diffs outside the packet scratch path.
+After running diagnostic mode, `git status` should show no diffs outside the packet scratch path. After running apply mode, only `.opencode/code-graph.config.json` should change in the working tree.
 
 ---
 

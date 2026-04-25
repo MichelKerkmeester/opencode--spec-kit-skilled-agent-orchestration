@@ -1,0 +1,184 @@
+# ─────────────────────────────────────────────────────────────────
+# DOCTOR: CODE-GRAPH WORKFLOW (APPLY MODE — INTERACTIVE)
+# ─────────────────────────────────────────────────────────────────
+# Phase B apply mode with explicit user gates at proposal, post-apply,
+# and post-verify decision points. Allows medium + low tier excludes
+# under user judgment.
+# ─────────────────────────────────────────────────────────────────
+role: Diagnostic Operator running code-graph apply pass with interactive gating
+purpose: Apply exclude-rule recommendations with user review at each decision boundary
+action: Execute discovery → analysis → propose → APPROVE → apply → verify → APPROVE → finalize-or-rollback
+
+# ─────────────────────────────────────────────────────────────────
+# OPERATING MODE
+# ─────────────────────────────────────────────────────────────────
+operating_mode:
+  workflow: sequential
+  compliance: MANDATORY
+  execution: interactive
+  approvals: gate_at_proposal_AND_post_verify
+  tracking: phase_by_phase
+  validation: post_apply_gold_battery
+
+phase_b_invariant: |
+  Confirm mode allows the user to approve high/medium/low tier excludes
+  individually. Pre-apply snapshot still mandatory; post-verify rollback
+  is offered as a user choice when verify fails.
+
+# ─────────────────────────────────────────────────────────────────
+# UPSTREAM RESEARCH ASSETS (read-only inputs)
+# ─────────────────────────────────────────────────────────────────
+upstream_assets:
+  packet: ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research"
+  files:
+    exclude_rule_confidence: "assets/exclude-rule-confidence.json"
+    staleness_model: "assets/staleness-model.md"
+    gold_queries: "assets/code-graph-gold-queries.json"
+    recovery_playbook: "assets/recovery-playbook.md"
+  load_policy: "Read each file once at Phase 1 start; cache in memory for the run"
+
+# ─────────────────────────────────────────────────────────────────
+# USER INPUTS
+# ─────────────────────────────────────────────────────────────────
+user_inputs:
+  scope: "[SCOPE] - excludes|all (default excludes)"
+  tier_floor: "[TIER_FLOOR] - high|medium|low|all (no default; ask)"
+
+field_handling:
+  defaults:
+    scope_empty: "excludes"
+    tier_floor_empty: "ASK_USER"
+  scope_policy:
+    excludes: "apply only exclude-rule recommendations"
+    all: "apply excludes + any other auto-safe recommendations"
+  tier_floor_policy:
+    high: "Show only tiers.high"
+    medium: "Show tiers.high + tiers.medium"
+    low: "Show tiers.high + tiers.medium + tiers.low"
+    all: "Show all tiers"
+
+# ─────────────────────────────────────────────────────────────────
+# MUTATION BOUNDARIES (Phase B — CONSTRAINED MUTATIONS)
+# ─────────────────────────────────────────────────────────────────
+mutation_boundaries:
+  allowed_targets:
+    - ".opencode/code-graph.config.json"
+    - "<packet_scratch>/apply-snapshot-<timestamp>.json"
+    - "<packet_scratch>/apply-report-<timestamp>.md"
+    - "<packet_scratch>/verify-<timestamp>.log"
+  forbidden_targets:
+    - "Any source file in the workspace"
+    - "Any file under .opencode/skill/system-spec-kit/mcp_server/"
+    - "code-graph SQLite database (handled via code_graph_scan only)"
+    - ".opencode/specs/.../assets/"
+  enforcement: |
+    Phase 3 (Apply) writes to .opencode/code-graph.config.json with patterns
+    chosen by the user during the proposal gate. Phase 4 (Verify) calls
+    code_graph_scan + code_graph_query without further edits. Phase 5
+    (Rollback) restores from snapshot only when the user approves rollback.
+  rollback_contract: |
+    Pre-apply: capture current config → snapshot at <packet_scratch>/.
+    Post-verify-fail: present user with verify failures and ask whether to
+    ROLLBACK or KEEP and accept the regression. Rollback is NOT automatic
+    in confirm mode.
+
+# ─────────────────────────────────────────────────────────────────
+# PHASES
+# ─────────────────────────────────────────────────────────────────
+phases:
+  phase_1_discovery:
+    name: "Discovery"
+    intent: "Probe code-graph status + load 007 assets + identify candidate excludes"
+    actions:
+      - "Same as autonomous Phase 1: code_graph_status + detect_changes + load 007 assets"
+      - "Identify candidates per user tier_floor selection (or ask if not provided)"
+    user_gate:
+      - "Optional: if tier_floor was not provided, present tier choice and wait for user input"
+
+  phase_2_analysis:
+    name: "Analysis"
+    intent: "Cross-check candidates against staleness model + project safety rules"
+    actions:
+      - "Same as autonomous Phase 2: glob match counts + safety verdicts"
+      - "Build apply_plan[] with per-candidate {pattern, tier, file_match_count, safety_verdict, rationale}"
+
+  phase_2_5_proposal_gate:
+    name: "Proposal Gate (HARD STOP)"
+    intent: "Present apply_plan to user; wait for explicit approval"
+    user_gate:
+      prompt: |
+        Apply Plan ({{apply_plan.length}} excludes proposed):
+        {{for each entry: "{{tier}} | {{pattern}} | matches {{file_match_count}} files | {{rationale}}"}}
+
+        Choose:
+        A) Apply all
+        B) Apply selected (provide indices)
+        C) Cancel (no mutations)
+      blocking: true
+      escapes:
+        cancel: "STATUS=CANCELLED"
+
+  phase_3_apply:
+    name: "Apply"
+    intent: "Snapshot + write new config with user-approved patterns"
+    actions:
+      - "Snapshot: capture current .opencode/code-graph.config.json → <packet_scratch>/apply-snapshot-<timestamp>.json"
+      - "Build new config: existing config merged with user-approved patterns"
+      - "Atomic write to .opencode/code-graph.config.json"
+      - "Append user-approved apply_plan to <packet_scratch>/apply-report-<timestamp>.md"
+
+  phase_4_verify:
+    name: "Verify"
+    intent: "Re-scan + run gold battery; report pass/fail"
+    actions:
+      - "code_graph_scan({ incremental: false })"
+      - "Load assets/code-graph-gold-queries.json"
+      - "Run each query via code_graph_query; compute pass_rate_overall + pass_rate_per_bucket"
+      - "Compare against pass_policy floors (90% overall, 80% per-bucket)"
+
+  phase_4_5_verify_gate:
+    name: "Verify Gate (HARD STOP)"
+    intent: "Show verify result to user; ask whether to keep or rollback"
+    user_gate:
+      prompt: |
+        Verify Result:
+        - Overall pass rate: {{verify_result.pass_rate_overall}}
+        - Per-bucket: {{verify_result.pass_rate_per_bucket}}
+        - Missing critical symbols: {{verify_result.missing_critical_symbols}}
+        - Verdict: {{verify_result.verdict}}
+
+        Choose:
+        A) Keep changes (accept verdict)
+        B) Rollback to pre-apply snapshot
+      blocking: true
+
+  phase_5_finalize_or_rollback:
+    name: "Finalize or Rollback"
+    intent: "Apply user choice from verify gate"
+    actions_if_user_chose_keep:
+      - "Append FINAL_KEEP section to apply-report-<timestamp>.md"
+      - "STATUS=APPLIED_USER_CONFIRMED"
+    actions_if_user_chose_rollback:
+      - "Atomic restore: copy snapshot → .opencode/code-graph.config.json"
+      - "code_graph_scan({ incremental: false }) to rebuild graph from prior config"
+      - "Append ROLLBACK_USER_REQUESTED section to apply-report-<timestamp>.md"
+      - "STATUS=ROLLED_BACK_USER_REQUESTED"
+
+# ─────────────────────────────────────────────────────────────────
+# OUTPUT
+# ─────────────────────────────────────────────────────────────────
+output_format: |
+  Single-line STATUS: APPLIED_USER_CONFIRMED | ROLLED_BACK_USER_REQUESTED | CANCELLED | FAIL
+
+# ─────────────────────────────────────────────────────────────────
+# CROSS-REFERENCES
+# ─────────────────────────────────────────────────────────────────
+cross_references:
+  spec: ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command/spec.md"
+  research: ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/"
+  recovery_playbook: "{upstream_assets.files.recovery_playbook}"
+  install_guide: ".opencode/install_guides/SET-UP - Code Graph.md"
+
+known_limitations:
+  - "Same as autonomous apply mode: harness lands in 008; scanner config read-path lands in 008"
+  - "User gates require interactive runtime; running this YAML autonomously is not supported (use :apply for that)"
