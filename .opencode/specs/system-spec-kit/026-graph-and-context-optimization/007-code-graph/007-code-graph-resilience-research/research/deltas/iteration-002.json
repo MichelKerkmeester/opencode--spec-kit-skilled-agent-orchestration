@@ -1,0 +1,45 @@
+{
+  "iteration": 2,
+  "research_questions_answered": ["Q1", "Q2"],
+  "findings": [
+    {
+      "id": "F-ST-001",
+      "class": "mtime-only per-file stale predicate with persisted but unused content hashes",
+      "frequency": 1,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:55-65; .opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:380-388"
+    },
+    {
+      "id": "F-ST-002",
+      "class": "readiness-level staleness includes empty graph, git HEAD drift, deleted tracked files, and stale-count threshold",
+      "frequency": 1,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:112-187"
+    },
+    {
+      "id": "F-ST-003",
+      "class": "selective-to-full reindex threshold is already quantitative at 50 stale files",
+      "frequency": 1,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:47-52; .opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:161-186"
+    },
+    {
+      "id": "F-ST-004",
+      "class": "detect_changes blocks on any non-fresh graph before per-file line-overlap attribution",
+      "frequency": 1,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:94-106; .opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:245-264; .opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:319-369"
+    },
+    {
+      "id": "F-ST-005",
+      "class": "Sourcegraph provides external timing anchors: 8-hour repo update floor and 24-hour same-repository auto-index delay",
+      "frequency": 1,
+      "evidence": "https://3.30.sourcegraph.com/admin/repo/update_frequency; https://docs.sourcegraph.com/code_navigation/explanations/auto_indexing"
+    },
+    {
+      "id": "F-ST-006",
+      "class": "ctags is a static full-generation baseline, not an auto-staleness authority",
+      "frequency": 1,
+      "evidence": "https://docs.ctags.io/en/latest/man/ctags.1.html"
+    }
+  ],
+  "newFindingsCount": 6,
+  "newFindingsRatio": 0.86,
+  "timestamp": "2026-04-25T20:47:52+02:00"
+}

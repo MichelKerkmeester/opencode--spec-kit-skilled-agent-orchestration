@@ -1,0 +1,323 @@
+{
+  "iteration": 4,
+  "research_questions_answered": ["Q5"],
+  "gold_queries": [
+    {
+      "id": "GQ-MCP-001",
+      "category": "mcp_tool_handler",
+      "query": "code_graph_query handler",
+      "expected_count": 3,
+      "expected_count_range": "2-4",
+      "expected_top_K_symbols": ["handleCodeGraphQuery", "codeGraphQuery", "handleTool"],
+      "edge_focus": ["define", "import", "call"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:570-588", ".opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:20-69", ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts:1031-1036"]
+    },
+    {
+      "id": "GQ-MCP-002",
+      "category": "mcp_tool_handler",
+      "query": "code_graph_scan handler",
+      "expected_count": 3,
+      "expected_count_range": "2-4",
+      "expected_top_K_symbols": ["handleCodeGraphScan", "codeGraphScan", "handleTool"],
+      "edge_focus": ["define", "import", "call"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:555-568", ".opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:20-63", ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:127-186"]
+    },
+    {
+      "id": "GQ-MCP-003",
+      "category": "mcp_tool_handler",
+      "query": "code_graph_status readiness handler",
+      "expected_count": 3,
+      "expected_count_range": "2-4",
+      "expected_top_K_symbols": ["handleCodeGraphStatus", "codeGraphStatus", "buildReadinessBlock"],
+      "edge_focus": ["define", "import", "ref"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:590-594", ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/status.ts:10-65"]
+    },
+    {
+      "id": "GQ-MCP-004",
+      "category": "mcp_tool_handler",
+      "query": "code_graph_context seeds handler",
+      "expected_count": 4,
+      "expected_count_range": "3-5",
+      "expected_top_K_symbols": ["handleCodeGraphContext", "buildContext", "resolveSeeds"],
+      "edge_focus": ["define", "import", "call"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:596-634", ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/context.ts:107-225", ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-context.ts:102-123"]
+    },
+    {
+      "id": "GQ-MCP-005",
+      "category": "mcp_tool_handler",
+      "query": "detect_changes stale graph blocked handler",
+      "expected_count": 4,
+      "expected_count_range": "3-5",
+      "expected_top_K_symbols": ["handleDetectChanges", "readinessRequiresBlock", "detectChanges"],
+      "edge_focus": ["define", "call", "ref"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:636-647", ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:94-106", ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:211-264"]
+    },
+    {
+      "id": "GQ-MCP-006",
+      "category": "mcp_tool_handler",
+      "query": "advisor_recommend handler scorer fusion",
+      "expected_count": 4,
+      "expected_count_range": "3-5",
+      "expected_top_K_symbols": ["advisorRecommendTool", "handleAdvisorRecommend", "scoreAdvisorPrompt"],
+      "edge_focus": ["define", "import", "call"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/skill_advisor/tools/advisor-recommend.ts:7-27", ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-recommend.ts:238-256", ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts:237-245"]
+    },
+    {
+      "id": "GQ-MCP-007",
+      "category": "mcp_tool_handler",
+      "query": "skill_graph_query queryType handler",
+      "expected_count": 5,
+      "expected_count_range": "4-6",
+      "expected_top_K_symbols": ["handleSkillGraphQuery", "skillGraphQuery", "dependsOn"],
+      "edge_focus": ["define", "import", "call"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:661-678", ".opencode/skill/system-spec-kit/mcp_server/tools/skill-graph-tools.ts:15-61", ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/query.ts:44-147"]
+    },
+    {
+      "id": "GQ-XMOD-001",
+      "category": "cross_module_function",
+      "query": "code graph readiness selective reindex threshold",
+      "expected_count": 4,
+      "expected_count_range": "3-5",
+      "expected_top_K_symbols": ["ensureCodeGraphReady", "detectState", "SELECTIVE_REINDEX_THRESHOLD"],
+      "edge_focus": ["call", "ref", "define"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:47-52", ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:102-187", ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:290-387"]
+    },
+    {
+      "id": "GQ-XMOD-002",
+      "category": "cross_module_function",
+      "query": "structural indexer scan phase runner",
+      "expected_count": 4,
+      "expected_count_range": "3-5",
+      "expected_top_K_symbols": ["indexFiles", "buildIndexPhases", "runPhases"],
+      "edge_focus": ["call", "define", "import"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1399-1508", ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1510-1535"]
+    },
+    {
+      "id": "GQ-XMOD-003",
+      "category": "cross_module_function",
+      "query": "code graph persistence mtime staging retry",
+      "expected_count": 4,
+      "expected_count_range": "3-5",
+      "expected_top_K_symbols": ["persistIndexedFileResult", "upsertFile", "replaceNodes"],
+      "edge_focus": ["call", "define", "ref"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:227-248", ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:281-355", ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:380-424"]
+    },
+    {
+      "id": "GQ-XMOD-004",
+      "category": "cross_module_function",
+      "query": "skill advisor five lane fusion scoring",
+      "expected_count": 6,
+      "expected_count_range": "5-7",
+      "expected_top_K_symbols": ["scoreAdvisorPrompt", "buildLaneScores", "scoreGraphCausalLane"],
+      "edge_focus": ["import", "call", "define"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts:14-26", ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts:139-158", ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts:237-256"]
+    },
+    {
+      "id": "GQ-XMOD-005",
+      "category": "cross_module_function",
+      "query": "skill graph generation publish after startup scan",
+      "expected_count": 4,
+      "expected_count_range": "3-5",
+      "expected_top_K_symbols": ["runSkillGraphIndex", "indexSkillMetadata", "publishSkillGraphGeneration"],
+      "edge_focus": ["call", "import", "define"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/context-server.ts:1467-1490", ".opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts:463-642", ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/freshness/generation.ts:110-133"]
+    },
+    {
+      "id": "GQ-XMOD-006",
+      "category": "cross_module_function",
+      "query": "advisor daemon lease watcher lifecycle",
+      "expected_count": 5,
+      "expected_count_range": "4-6",
+      "expected_top_K_symbols": ["startSkillGraphDaemon", "acquireSkillGraphLease", "createSkillGraphWatcher"],
+      "edge_focus": ["call", "import", "define"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/daemon/lifecycle.ts:28-70", ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/daemon/lease.ts:110-180"]
+    },
+    {
+      "id": "GQ-XMOD-007",
+      "category": "cross_module_function",
+      "query": "memory retrieval stage2 single scoring point",
+      "expected_count": 5,
+      "expected_count_range": "4-6",
+      "expected_top_K_symbols": ["applyValidationSignalScoring", "loadPersistedLearnedStage2Model", "sortDeterministicRows"],
+      "edge_focus": ["call", "import", "define"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:21-44", ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:169-218", ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:220-259"]
+    },
+    {
+      "id": "GQ-TYPE-001",
+      "category": "exported_type",
+      "query": "CodeNode CodeEdge ParseResult indexer types",
+      "expected_count": 4,
+      "expected_count_range": "3-5",
+      "expected_top_K_symbols": ["CodeNode", "CodeEdge", "ParseResult"],
+      "edge_focus": ["define", "ref"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:31-79"]
+    },
+    {
+      "id": "GQ-TYPE-002",
+      "category": "exported_type",
+      "query": "QueryArgs code_graph_query operations",
+      "expected_count": 3,
+      "expected_count_range": "2-4",
+      "expected_top_K_symbols": ["QueryArgs", "EdgeType", "SUPPORTED_EDGE_TYPES"],
+      "edge_focus": ["define", "ref"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts:23-56"]
+    },
+    {
+      "id": "GQ-TYPE-003",
+      "category": "exported_type",
+      "query": "ContextArgs ContextResult code_graph_context types",
+      "expected_count": 3,
+      "expected_count_range": "2-4",
+      "expected_top_K_symbols": ["ContextArgs", "ContextResult", "QueryMode"],
+      "edge_focus": ["define", "ref"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-context.ts:19-54"]
+    },
+    {
+      "id": "GQ-TYPE-004",
+      "category": "exported_type",
+      "query": "SkillNode SkillEdge SkillGraphStats types",
+      "expected_count": 3,
+      "expected_count_range": "2-4",
+      "expected_top_K_symbols": ["SkillNode", "SkillEdge", "SkillGraphStats"],
+      "edge_focus": ["define", "ref"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts:18-68"]
+    },
+    {
+      "id": "GQ-TYPE-005",
+      "category": "exported_type",
+      "query": "AdvisorHookResult threshold config types",
+      "expected_count": 4,
+      "expected_count_range": "3-5",
+      "expected_top_K_symbols": ["AdvisorHookResult", "SkillAdvisorBriefOptions", "ResolvedAdvisorThresholdConfig"],
+      "edge_focus": ["define", "ref"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/skill-advisor-brief.ts:47-88", ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/skill-advisor-brief.ts:108-150"]
+    },
+    {
+      "id": "GQ-TYPE-006",
+      "category": "exported_type",
+      "query": "DetectChangesResult AffectedSymbol status types",
+      "expected_count": 3,
+      "expected_count_range": "2-4",
+      "expected_top_K_symbols": ["DetectChangesResult", "AffectedSymbol", "DetectChangesStatus"],
+      "edge_focus": ["define", "ref"],
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:21-50"]
+    },
+    {
+      "id": "GQ-REG-001",
+      "category": "regression_detection",
+      "query": "default code graph indexer config include exclude globs",
+      "expected_count": 2,
+      "expected_count_range": "1-3",
+      "expected_top_K_symbols": ["getDefaultConfig", "includeGlobs", "excludeGlobs"],
+      "edge_focus": ["define", "ref"],
+      "rationale": "if this query fails, the canonical indexer config or its include/exclude scope rules are missing from the index",
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:112-120"]
+    },
+    {
+      "id": "GQ-REG-002",
+      "category": "regression_detection",
+      "query": "index scope excludes code graph canonical roots",
+      "expected_count": 3,
+      "expected_count_range": "2-4",
+      "expected_top_K_symbols": ["EXCLUDED_FOR_CODE_GRAPH", "shouldIndexForCodeGraph", "shouldExcludePath"],
+      "edge_focus": ["call", "define", "ref"],
+      "rationale": "if this query fails, the shared scope filter that distinguishes canonical code from legitimate excluded fixtures is missing from the index",
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts:31-48", ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1146-1158"]
+    },
+    {
+      "id": "GQ-REG-003",
+      "category": "regression_detection",
+      "query": "MCP tool definitions include code graph tools",
+      "expected_count": 4,
+      "expected_count_range": "3-5",
+      "expected_top_K_symbols": ["TOOL_DEFINITIONS", "codeGraphQuery", "codeGraphStatus"],
+      "edge_focus": ["define", "ref"],
+      "rationale": "if this query fails, the MCP registration layer that makes code graph tools discoverable is missing from the index",
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:875-928"]
+    },
+    {
+      "id": "GQ-REG-004",
+      "category": "regression_detection",
+      "query": "code_graph_query relationship operations calls imports blast_radius",
+      "expected_count": 5,
+      "expected_count_range": "4-6",
+      "expected_top_K_symbols": ["QueryArgs", "handleCodeGraphQuery", "SUPPORTED_RELATIONSHIP_OPERATIONS"],
+      "edge_focus": ["define", "call", "ref"],
+      "rationale": "if this query fails, the canonical outline/calls/imports/blast_radius query surface is missing from the index",
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts:23-56", ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts:1097-1134", ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts:1136-1319", ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts:1321-1436"]
+    },
+    {
+      "id": "GQ-REG-005",
+      "category": "regression_detection",
+      "query": "skill advisor scorer lanes explicit lexical graph causal derived semantic shadow",
+      "expected_count": 6,
+      "expected_count_range": "5-7",
+      "expected_top_K_symbols": ["scoreAdvisorPrompt", "buildLaneScores", "SCORER_LANES"],
+      "edge_focus": ["import", "call", "define"],
+      "rationale": "if this query fails, advisor scoring lanes or the scorer subtree are missing from the index",
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts:14-26", ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts:52-59", ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts:139-158"]
+    },
+    {
+      "id": "GQ-REG-006",
+      "category": "regression_detection",
+      "query": "skill graph query prepared statements relations",
+      "expected_count": 6,
+      "expected_count_range": "5-7",
+      "expected_top_K_symbols": ["getPreparedStatements", "dependsOn", "transitivePath"],
+      "edge_focus": ["call", "define", "ref"],
+      "rationale": "if this query fails, the skill-graph relationship query layer is missing from the index",
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-queries.ts:83-193", ".opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-queries.ts:254-430"]
+    },
+    {
+      "id": "GQ-REG-007",
+      "category": "regression_detection",
+      "query": "detect_changes hard block stale graph false safe empty",
+      "expected_count": 4,
+      "expected_count_range": "3-5",
+      "expected_top_K_symbols": ["handleDetectChanges", "readinessRequiresBlock", "blockedResponse"],
+      "edge_focus": ["call", "define", "ref"],
+      "rationale": "if this query fails, the hard safety guard that blocks false-safe empty affectedSymbols output is missing from the index",
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:7-12", ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:69-80", ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:94-106", ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:245-264"]
+    },
+    {
+      "id": "GQ-REG-008",
+      "category": "regression_detection",
+      "query": "phase runner scan phases find candidates parse candidates finalize emit metrics",
+      "expected_count": 4,
+      "expected_count_range": "3-5",
+      "expected_top_K_symbols": ["buildIndexPhases", "indexFiles", "runPhases"],
+      "edge_focus": ["call", "define", "ref"],
+      "rationale": "if this query fails, the scanner phase pipeline that exercises find/parse/finalize/metrics edges is missing from the index",
+      "citations": [".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1399-1508", ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1510-1535"]
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-GQ-001",
+      "class": "MCP handler/tool-descriptor queries are the first canary for dropped mcp_server registration code",
+      "frequency": 7,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:555-678; .opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:20-69; .opencode/skill/system-spec-kit/mcp_server/tools/index.ts:53-78"
+    },
+    {
+      "id": "F-GQ-002",
+      "class": "cross-module seeds should span scanner, readiness, persistence, advisor scorer, skill graph, daemon freshness, and retrieval scoring boundaries",
+      "frequency": 7,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:290-387; .opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1399-1535; .opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts:139-256; .opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts:463-642"
+    },
+    {
+      "id": "F-GQ-003",
+      "class": "exported type queries catch partial scans that index handlers but miss shared contracts",
+      "frequency": 6,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:31-79; .opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts:18-68; .opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/skill-advisor-brief.ts:47-150"
+    },
+    {
+      "id": "F-GQ-004",
+      "class": "regression-detection queries should fail on over-aggressive excludes but tolerate excluded external/generated fixture roots",
+      "frequency": 8,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts:31-48; .opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:112-120"
+    }
+  ],
+  "newFindingsCount": 4,
+  "newFindingsRatio": 0.66,
+  "timestamp": "2026-04-25T20:54:48+02:00"
+}

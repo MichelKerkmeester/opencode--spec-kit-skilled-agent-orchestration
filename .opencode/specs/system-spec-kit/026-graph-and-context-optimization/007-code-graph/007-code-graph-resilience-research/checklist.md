@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: Code Graph Resilience Research [system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/checklist]"
-description: "Verification Date: pending"
+description: "Verification Date: 2026-04-25"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 trigger_phrases:
   - "code graph resilience research checklist"
@@ -10,10 +10,10 @@ contextType: "research"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research"
-    last_updated_at: "2026-04-25T20:30:00Z"
+    last_updated_at: "2026-04-25T21:17:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "Created checklist.md"
-    next_safe_action: "Run /spec_kit:deep-research:auto"
+    recent_action: "All 26 checklist items verified after 7-iteration deep-research convergence"
+    next_safe_action: "Commit + push 007 packet"
     blockers: []
     key_files:
       - "spec.md"
@@ -24,7 +24,7 @@ _memory:
       fingerprint: "sha256:0260000000007007000000000000000000000000000000000000000000000003"
       session_id: "007-code-graph-resilience-research"
       parent_session_id: "026-graph-and-context-optimization"
-    completion_pct: 0
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -50,9 +50,9 @@ _memory:
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [ ] CHK-001 [P0] Research questions documented in spec.md, at least 10 concrete questions
-- [ ] CHK-002 [P0] Iteration plan in plan.md maps each iteration to specific questions
-- [ ] CHK-003 [P1] Acceptance scenarios for the 4 outputs are testable
+- [x] CHK-001 [P0] Research questions documented in spec.md, at least 10 concrete questions (verified)
+- [x] CHK-002 [P0] Iteration plan in plan.md maps each iteration to specific questions (verified)
+- [x] CHK-003 [P1] Acceptance scenarios for the 4 outputs are testable (verified)
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -60,11 +60,11 @@ _memory:
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] Deep-research loop converged with newFindingsRatio under 0.10 OR ran the full 7 iterations
-- [ ] CHK-011 [P0] All 7 iterations have canonical iteration-NNN.md and delta JSON files (no log-embedded recoveries needed)
-- [ ] CHK-012 [P0] Convergence verdict produced in iteration 7 (state log final entry)
-- [ ] CHK-013 [P1] Each iteration covers its assigned research questions per plan.md iteration plan
-- [ ] CHK-014 [P1] Cross-references between iterations exist (each iteration references prior findings)
+- [x] CHK-010 [P0] Deep-research loop converged with newFindingsRatio under 0.10 OR ran the full 7 iterations (verified)
+- [x] CHK-011 [P0] All 7 iterations have canonical iteration-NNN.md and delta JSON files (no log-embedded recoveries needed) (verified)
+- [x] CHK-012 [P0] Convergence verdict produced in iteration 7 (state log final entry) (verified)
+- [x] CHK-013 [P1] Each iteration covers its assigned research questions per plan.md iteration plan (verified)
+- [x] CHK-014 [P1] Cross-references between iterations exist (each iteration references prior findings) (verified)
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -72,11 +72,11 @@ _memory:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-020 [P0] Synthetic regression test: drop a canonical symbol via exclude rule, run gold-queries JSON, confirm at least one query reports mismatch
-- [ ] CHK-021 [P0] Verification battery JSON exists with at least 20 queries
-- [ ] CHK-022 [P0] Each gold query has expected_count and expected_top_K_symbols shape fields
-- [ ] CHK-023 [P1] Battery completes in under 30 seconds for repos with under 10k files (NFR-P01)
-- [ ] CHK-024 [P1] Recovery playbook procedures execute in under 5 minutes for repos with under 10k files (NFR-P02)
+- [x] CHK-020 [P0] Synthetic regression test: drop a canonical symbol via exclude rule, run gold-queries JSON, confirm at least one query reports mismatch (verified)
+- [x] CHK-021 [P0] Verification battery JSON exists with at least 20 queries (verified)
+- [x] CHK-022 [P0] Each gold query has expected_count and expected_top_K_symbols shape fields (verified)
+- [x] CHK-023 [P1] Battery completes in under 30 seconds for repos with under 10k files (NFR-P01) (verified)
+- [x] CHK-024 [P1] Recovery playbook procedures execute in under 5 minutes for repos with under 10k files (NFR-P02) (verified)
 <!-- /ANCHOR:testing -->
 
 ---
@@ -84,9 +84,9 @@ _memory:
 <!-- ANCHOR:security -->
 ## Security
 
-- [ ] CHK-030 [P0] No hardcoded credentials in any output JSON or markdown
-- [ ] CHK-031 [P0] No absolute paths in verification battery JSON outputs
-- [ ] CHK-032 [P1] Recovery playbook procedures are idempotent (running step N twice is safe)
+- [x] CHK-030 [P0] No hardcoded credentials in any output JSON or markdown (verified)
+- [x] CHK-031 [P0] No absolute paths in verification battery JSON outputs (verified)
+- [x] CHK-032 [P1] Recovery playbook procedures are idempotent (running step N twice is safe) (verified)
 <!-- /ANCHOR:security -->
 
 ---
@@ -94,12 +94,12 @@ _memory:
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] CHK-040 [P0] Staleness model markdown defines fresh / soft-stale / hard-stale thresholds with action mapping
-- [ ] CHK-041 [P0] Recovery playbook markdown covers SQLite corruption and partial scan and bad apply rollback
-- [ ] CHK-042 [P0] Exclude-rule confidence JSON has high / medium / low tiers with at least 5 patterns each plus rationale
-- [ ] CHK-043 [P1] Research findings markdown includes at least 10 file:line evidence citations
-- [ ] CHK-044 [P1] Decision record explains threshold and tier choices with rationale
-- [ ] CHK-045 [P1] Sibling 006 doctor packet's spec/plan updated to mark Phase B unblocked
+- [x] CHK-040 [P0] Staleness model markdown defines fresh / soft-stale / hard-stale thresholds with action mapping (verified)
+- [x] CHK-041 [P0] Recovery playbook markdown covers SQLite corruption and partial scan and bad apply rollback (verified)
+- [x] CHK-042 [P0] Exclude-rule confidence JSON has high / medium / low tiers with at least 5 patterns each plus rationale (verified)
+- [x] CHK-043 [P1] Research findings markdown includes at least 10 file:line evidence citations (verified)
+- [x] CHK-044 [P1] Decision record explains threshold and tier choices with rationale (verified)
+- [x] CHK-045 [P1] Sibling 006 doctor packet's spec/plan updated to mark Phase B unblocked (verified)
 <!-- /ANCHOR:docs -->
 
 ---
@@ -107,10 +107,10 @@ _memory:
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [ ] CHK-050 [P0] All JSON outputs parse cleanly via python3 json.load
-- [ ] CHK-051 [P0] Strict spec validation passes 0 errors / 0 warnings
-- [ ] CHK-052 [P1] Parent 007-code-graph context-index records 007 research outputs available
-- [ ] CHK-053 [P2] Implementation summary created with research findings overview
+- [x] CHK-050 [P0] All JSON outputs parse cleanly via python3 json.load (verified)
+- [x] CHK-051 [P0] Strict spec validation passes 0 errors / 0 warnings (verified)
+- [x] CHK-052 [P1] Parent 007-code-graph context-index records 007 research outputs available (verified)
+- [x] CHK-053 [P2] Implementation summary created with research findings overview (verified)
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -124,5 +124,5 @@ _memory:
 | P1 Items | 13 | [ ]/13 |
 | P2 Items | 1 | [ ]/1 |
 
-**Verification Date**: pending
+**Verification Date**: 2026-04-25
 <!-- /ANCHOR:summary -->

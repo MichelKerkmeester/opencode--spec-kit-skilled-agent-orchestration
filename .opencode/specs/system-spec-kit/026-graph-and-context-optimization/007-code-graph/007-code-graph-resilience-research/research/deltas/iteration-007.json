@@ -1,0 +1,62 @@
+{
+  "iteration": 7,
+  "research_questions_answered": ["Q9", "Q10"],
+  "findings": [
+    {
+      "id": "F-CF-001",
+      "class": "confidence-floor hard-stale signal",
+      "summary": "Doctor should emit the full-rescan warning for empty/error freshness, absent/unavailable trust state, full_scan action, missing persisted scan evidence, failed gold query floors, or severe edge drift.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/readiness-contract.ts:73-124",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:47-52",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:118-186",
+        "research/iterations/iteration-004.md:59-354",
+        "research/iterations/iteration-006.md:29-58"
+      ]
+    },
+    {
+      "id": "F-SH-001",
+      "class": "self-healing selective reindex boundary",
+      "summary": "Auto partial re-scan is safe only for <=50 existing stale tracked files, unchanged Git HEAD, healthy DB/schema, workspace-contained paths, caller opt-in, and timeout-bounded execution.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:38-51",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:176-186",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:290-367",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:135-168"
+      ]
+    },
+    {
+      "id": "F-SH-002",
+      "class": "read-only paths must not silently self-heal",
+      "summary": "detect_changes is the reference safety-sensitive surface: it disables inline index/full scan and blocks on non-fresh graph state to avoid false-safe empty results.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:94-106",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:245-264"
+      ]
+    }
+  ],
+  "assets_materialized": [
+    "assets/code-graph-gold-queries.json",
+    "assets/staleness-model.md",
+    "assets/recovery-playbook.md",
+    "assets/exclude-rule-confidence.json"
+  ],
+  "synthesis_outputs": [
+    "research/research.md",
+    "decision-record.md"
+  ],
+  "newFindingsCount": 3,
+  "newFindingsRatio": 0.34,
+  "newInfoRatio": 0.34,
+  "status": "complete",
+  "convergenceVerdict": {
+    "newFindingsRatio": 0.34,
+    "research_questions_answered_total": "10/10",
+    "assets_materialized": "4/4",
+    "research_md_synthesized": true,
+    "decision_record_written": true,
+    "verdict": "CONVERGED",
+    "stop_reason": "max_iterations"
+  },
+  "timestamp": "2026-04-25T21:08:09+02:00"
+}

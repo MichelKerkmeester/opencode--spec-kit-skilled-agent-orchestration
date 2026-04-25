@@ -1,0 +1,159 @@
+{
+  "iteration": 5,
+  "research_questions_answered": ["Q6"],
+  "confidence_tiers": {
+    "high": [
+      {
+        "pattern": "**/.git/**",
+        "tier": "high",
+        "rationale": "Git metadata is traversal noise and already hard-excluded by EXCLUDED_FOR_CODE_GRAPH.",
+        "false_positive_examples": []
+      },
+      {
+        "pattern": "**/node_modules/**",
+        "tier": "high",
+        "rationale": "Installed dependency trees are reproducible package-manager output and already excluded by scanner defaults plus root .gitignore.",
+        "false_positive_examples": ["Package-manager fixture tests may intentionally model node_modules trees; use explicit fixture include overrides instead of indexing all installed deps."]
+      },
+      {
+        "pattern": "**/__pycache__/**",
+        "tier": "high",
+        "rationale": "Python bytecode cache; source authority is the .py file.",
+        "false_positive_examples": []
+      },
+      {
+        "pattern": "**/.pytest_cache/**",
+        "tier": "high",
+        "rationale": "Pytest runtime cache; explicitly ignored by pytest and Python ignore templates.",
+        "false_positive_examples": []
+      },
+      {
+        "pattern": "**/.venv/**",
+        "tier": "high",
+        "rationale": "Local Python environment/dependency install, analogous to node_modules.",
+        "false_positive_examples": []
+      },
+      {
+        "pattern": "**/.DS_Store",
+        "tier": "high",
+        "rationale": "OS metadata, not code.",
+        "false_positive_examples": []
+      },
+      {
+        "pattern": "**/node-compile-cache/**",
+        "tier": "high",
+        "rationale": "Runtime compile cache excluded as temporary output.",
+        "false_positive_examples": []
+      },
+      {
+        "pattern": ".cocoindex_code/**",
+        "tier": "high",
+        "rationale": "Local semantic-index database/cache, not source for code-graph symbols.",
+        "false_positive_examples": []
+      }
+    ],
+    "medium": [
+      {
+        "pattern": "**/dist/**",
+        "tier": "medium",
+        "rationale": "Usually compiled/package output, but distribution fixtures and checked-in browser/package bundles can be meaningful regression context.",
+        "false_positive_examples": ["Open-source package/test fixtures sometimes keep built distribution trees; dist means distribution, not always disposable source."]
+      },
+      {
+        "pattern": "**/build/**",
+        "tier": "medium",
+        "rationale": "Often build output, but segment-style matching can hit legitimate source package names.",
+        "false_positive_examples": ["bazelbuild/bazel: src/main/java/com/google/devtools/build contains canonical Java source."]
+      },
+      {
+        "pattern": "**/out/**",
+        "tier": "medium",
+        "rationale": "Often output, but expected-output fixtures and APIs with 'out' naming can be test-critical.",
+        "false_positive_examples": ["pytorch/pytorch: committed test_out_dtype_op.py is source-like regression coverage around out APIs."]
+      },
+      {
+        "pattern": "**/vendor/**",
+        "tier": "medium",
+        "rationale": "Vendored dependencies are often bloat, but may be required for dependency graph fidelity.",
+        "false_positive_examples": ["kubernetes/kubernetes: vendor/ contains committed Go module source and modules.txt."]
+      },
+      {
+        "pattern": "**/external/**",
+        "tier": "medium",
+        "rationale": "Local repo treats external as temporary/non-canonical, but other monorepos use external integrations as source inputs.",
+        "false_positive_examples": ["Bazel/TensorFlow-style ecosystems may expose external repositories or wrappers under external-like paths."]
+      },
+      {
+        "pattern": "**/generated/**",
+        "tier": "medium",
+        "rationale": "Generated code is often derivable noise but can be the checked-in public API/client surface.",
+        "false_positive_examples": ["Generated API/client repositories can commit generated sources as the implementation users consume."]
+      }
+    ],
+    "low": [
+      {
+        "pattern": "**/tests/fixtures/**",
+        "tier": "low",
+        "rationale": "Fixtures are often intentionally committed and semantically useful; iteration 4 warned not to globally exclude fixtures except under known excluded roots.",
+        "false_positive_examples": ["eslint/eslint: tests/fixtures is committed test source/context.", "golang/go: src/cmd/go/testdata contains committed Go testdata files."]
+      },
+      {
+        "pattern": "**/scratch/**",
+        "tier": "low",
+        "rationale": "Scratch can mean throwaway work, imported sample repos, or active investigation material depending on repo policy.",
+        "false_positive_examples": ["This repo has scratch paths under spec archives/templates that may be useful for migration or historical debugging."]
+      },
+      {
+        "pattern": "**/z_archive/**",
+        "tier": "low",
+        "rationale": "Repo lifecycle convention, not ecosystem-wide generated/noise signal.",
+        "false_positive_examples": ["This repo's z_archive contains prior spec packets and scratch repos that can be important historical context."]
+      },
+      {
+        "pattern": "**/z_future/**",
+        "tier": "low",
+        "rationale": "Repo lifecycle convention for future/experimental work; can contain real source-like prototypes and research packets.",
+        "false_positive_examples": ["This repo's z_future contains agentic-system and hybrid-RAG research packets."]
+      },
+      {
+        "pattern": ".opencode/specs/00--*/**",
+        "tier": "low",
+        "rationale": "Repo-specific ignored product spec trees; useful when the operator targets those product areas.",
+        "false_positive_examples": ["This repo has .opencode/specs/00--ai-systems, .opencode/specs/00--anobel.com, and .opencode/specs/00--barter."]
+      },
+      {
+        "pattern": "/a_nobel_en_zn/**",
+        "tier": "low",
+        "rationale": "Root .gitignore marks this as not part of the framework, but it is a local project-area decision.",
+        "false_positive_examples": ["This repo's working tree includes /a_nobel_en_zn as a real project directory for non-framework tasks."]
+      },
+      {
+        "pattern": "/ai_systems/**",
+        "tier": "low",
+        "rationale": "Root .gitignore marks this as not part of the framework, but it is a local project-area decision.",
+        "false_positive_examples": ["This repo's working tree includes /ai_systems as a real project directory for non-framework tasks."]
+      }
+    ]
+  },
+  "evidence": {
+    "local_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:112-120",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts:31-48",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1178-1268",
+      ".gitignore:23-126",
+      ".opencode/skill/mcp-code-mode/mcp_server/.gitignore:1-205",
+      ".pytest_cache/.gitignore:1-3",
+      "research/iterations/iteration-004.md:3-8"
+    ],
+    "external_examples": [
+      "https://github.com/kubernetes/kubernetes/tree/e1cf06b9b41f3534fd1ce475a18ef20d46e8f876/vendor",
+      "https://github.com/bazelbuild/bazel/tree/ad2e223235bcacd1d026b1ee8ff851347bc41f7f/src/main/java/com/google/devtools/build",
+      "https://github.com/facebook/react/tree/561ed529b3a6a16e5b2b76fa5ee86c09f959686c/scripts/rollup",
+      "https://github.com/eslint/eslint/tree/54080dad4f77bb39a1a843933d4ff3a2b7c175e2/tests/fixtures",
+      "https://github.com/golang/go/tree/02b3e0d4dd9a94b005189a10d398db61326bf1c0/src/cmd/go/testdata"
+    ]
+  },
+  "newFindingsCount": 5,
+  "newFindingsRatio": 0.72,
+  "timestamp": "2026-04-25T21:01:30+02:00"
+}

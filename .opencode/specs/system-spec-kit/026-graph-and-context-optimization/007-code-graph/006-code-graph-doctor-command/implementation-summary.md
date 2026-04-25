@@ -141,13 +141,13 @@ Authoring happened in parallel with the sibling research packet 007 deep-researc
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Phase B (apply mode) is deferred.** The command currently only produces a markdown report. To act on the recommendations, operators must manually edit the scanner config and re-run `code_graph_scan`. Phase B will automate this once the resilience-research packet 007 produces the verification battery + staleness model + recovery playbook + exclude-rule confidence tiers.
+1. **Phase B (apply mode) is now unblocked but not yet implemented.** Research packet 007 converged 2026-04-25 and shipped the four prerequisite assets (verification battery, staleness model, recovery playbook, exclude-rule confidence tiers). This packet remains Phase A diagnostic-only; a follow-up packet (e.g. `008-code-graph-doctor-apply`) would consume the 007 outputs to add the apply mode + verification battery harness + auto-rollback flow.
 
-2. **Bloat-dir tier definitions are placeholders.** The auto and confirm YAMLs list `node_modules/`, `__pycache__/`, `.git/`, `dist/`, `build/`, etc. as bloat candidates with high/medium/low tiers. These are common-sense defaults; the authoritative tiers (with rationale + false-positive examples) come from research packet 007's `assets/exclude-rule-confidence.json`.
+2. **Bloat-dir tier definitions are now defined upstream.** The auto and confirm YAMLs still use placeholder tiers; the authoritative tiers now live in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/exclude-rule-confidence.json`. Promoting Phase A's defaults to use that file is a cheap follow-up.
 
-3. **Staleness threshold is not yet quantified.** Phase A reports stale files via `detect_changes`, but does not classify the index as `fresh` / `soft-stale` / `hard-stale` with thresholds. The threshold model lands in research packet 007's assets/staleness-model.md (research output).
+3. **Staleness threshold model now defined upstream.** Phase A still reports stale files via `detect_changes` without `fresh` / `soft-stale` / `hard-stale` classification. The threshold model is now materialized at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/staleness-model.md`; a Phase A.5 update could surface those tiers in the diagnostic report.
 
-4. **No verification battery.** Phase A does not assert that canonical symbols still resolve after operator-applied changes (because Phase A doesn't apply changes). The verification battery (research packet 007 output, `assets/code-graph-gold-queries.json`) is the prerequisite for Phase B.
+4. **Verification battery now defined upstream.** The 28-query gold battery is materialized at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/code-graph-gold-queries.json` with `pass_policy` (≥90% overall, ≥80% per edge-focus). Running it requires a harness that drops a canonical symbol via exclude rule, re-scans, and counts query mismatches — that harness is the Phase B work item.
 
 5. **MCP tool fallback paths not exhaustively tested.** The YAMLs document fallback to `git status` + glob comparison if `code_graph_status` or `detect_changes` are unavailable, but those fallback paths have not been smoke-tested against a real degraded state.
 <!-- /ANCHOR:limitations -->

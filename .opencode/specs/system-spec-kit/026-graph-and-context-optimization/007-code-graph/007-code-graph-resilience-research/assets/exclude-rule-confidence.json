@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "description": "Exclude-rule confidence tiers for code-graph scan scope, built from iteration 5.",
+  "source_iteration": "research/iterations/iteration-005.md",
+  "tiers": {
+    "high": {
+      "definition": "Infrastructure, dependency caches, interpreter caches, runtime indexes, or metadata paths with near-zero source-authority value for code graph answers.",
+      "default_action": "exclude_without_prompt; allow explicit include override for narrow fixture/debug investigations",
+      "patterns": [
+        {
+          "pattern": "**/.git/**",
+          "rationale": "Git metadata is traversal noise and already hard-excluded by EXCLUDED_FOR_CODE_GRAPH.",
+          "false_positive_examples": ["Throwaway Git repositories in tests may contain .git directories, but those internals are runtime fixture metadata rather than source symbols."]
+        },
+        {
+          "pattern": "**/node_modules/**",
+          "rationale": "Installed dependency trees are reproducible package-manager output and already excluded by scanner defaults plus root ignore rules.",
+          "false_positive_examples": ["Package-manager fixture tests may intentionally model node_modules trees; use explicit fixture include overrides."]
+        },
+        {
+          "pattern": "**/__pycache__/**",
+          "rationale": "Python bytecode cache; source authority is the .py file.",
+          "false_positive_examples": ["Cleanup/ignore-rule test fixtures may intentionally include __pycache__ path samples; include only the fixture, not all interpreter caches."]
+        },
+        {
+          "pattern": "**/.pytest_cache/**",
+          "rationale": "Pytest runtime cache, not structural source.",
+          "false_positive_examples": ["Cache contents may aid debugging but should not drive symbol graph answers."]
+        },
+        {
+          "pattern": "**/.venv/**",
+          "rationale": "Local Python environment/dependency install, analogous to node_modules.",
+          "false_positive_examples": ["Tutorial repos may mention virtualenv layout, but committed source should live outside the environment directory."]
+        },
+        {
+          "pattern": "**/venv/**",
+          "rationale": "Local Python dependency environment; indexing it would fold third-party installed packages into the workspace graph.",
+          "false_positive_examples": ["Legacy tutorials may commit a minimal venv-like fixture; include explicitly if that fixture is the target."]
+        },
+        {
+          "pattern": "**/.DS_Store",
+          "rationale": "OS metadata file, not code.",
+          "false_positive_examples": ["Ignore-rule or file-sanitization tests may include a .DS_Store fixture path; include explicitly if that metadata behavior is the subject."]
+        },
+        {
+          "pattern": ".cocoindex_code/**",
+          "rationale": "Local semantic-index database/cache, not source for code-graph symbols.",
+          "false_positive_examples": ["Inspecting CocoIndex internals is a separate database/debug task, not default code-graph indexing."]
+        }
+      ]
+    },
+    "medium": {
+      "definition": "Conventional build outputs, vendored trees, generated trees, or output folders that are often noise but have common real-world source/test exceptions.",
+      "default_action": "exclude_by_default_for_general_scans; surface before adding new global defaults",
+      "patterns": [
+        {
+          "pattern": "**/dist/**",
+          "rationale": "Usually compiled/package output, but distribution fixtures and checked-in browser/package bundles can be meaningful regression context.",
+          "false_positive_examples": ["Open-source package/test fixtures sometimes keep built distribution trees; dist means distribution, not always disposable source."]
+        },
+        {
+          "pattern": "**/build/**",
+          "rationale": "Often build output, but segment-style matching can hit legitimate source package names.",
+          "false_positive_examples": ["Bazel has canonical Java source under src/main/java/com/google/devtools/build."]
+        },
+        {
+          "pattern": "**/out/**",
+          "rationale": "Often output, but expected-output fixtures and APIs with 'out' naming can be test-critical.",
+          "false_positive_examples": ["PyTorch has committed test_out_dtype_op.py source-like regression coverage around out APIs."]
+        },
+        {
+          "pattern": "**/vendor/**",
+          "rationale": "Vendored dependencies are often bloat, but may be required for dependency graph fidelity.",
+          "false_positive_examples": ["Kubernetes commits a large vendor tree with Go module source and vendor/modules.txt."]
+        },
+        {
+          "pattern": "**/external/**",
+          "rationale": "This repo treats external as temporary/non-canonical, but monorepos can use external integrations as source inputs.",
+          "false_positive_examples": ["Bazel/TensorFlow-style ecosystems may expose external repositories or wrappers under external-like paths."]
+        },
+        {
+          "pattern": "**/generated/**",
+          "rationale": "Generated code is often derivable noise but can be the checked-in public API/client surface.",
+          "false_positive_examples": ["Generated API/client repositories can commit generated sources as the implementation users consume."]
+        }
+      ]
+    },
+    "low": {
+      "definition": "Repo-local names or lifecycle folders whose meaning is project policy, not ecosystem convention.",
+      "default_action": "do_not_globally_exclude; require repo-level operator decision",
+      "patterns": [
+        {
+          "pattern": "**/tests/fixtures/**",
+          "rationale": "Fixtures are often intentionally committed and semantically useful; iteration 4 warned not to globally exclude fixtures except under known excluded roots.",
+          "false_positive_examples": ["ESLint commits tests/fixtures as test context.", "Go commits src/cmd/go/testdata files."]
+        },
+        {
+          "pattern": "**/testdata/**",
+          "rationale": "Language ecosystems commonly use testdata as committed regression material, not generated output.",
+          "false_positive_examples": ["Go's src/cmd/go/testdata contains committed files needed for tests."]
+        },
+        {
+          "pattern": "**/scratch/**",
+          "rationale": "Scratch can mean throwaway work, imported sample repos, or active investigation material depending on repo policy.",
+          "false_positive_examples": ["This repo has scratch paths under spec archives/templates that may be useful for migration or historical debugging."]
+        },
+        {
+          "pattern": "**/z_archive/**",
+          "rationale": "Repo lifecycle convention, not ecosystem-wide generated/noise signal.",
+          "false_positive_examples": ["This repo's z_archive contains prior spec packets and scratch repos that can be important historical context."]
+        },
+        {
+          "pattern": "**/z_future/**",
+          "rationale": "Repo lifecycle convention for future/experimental work; can contain real source-like prototypes and research packets.",
+          "false_positive_examples": ["This repo's z_future contains agentic-system and hybrid-RAG research packets."]
+        },
+        {
+          "pattern": ".opencode/specs/00--*/**",
+          "rationale": "Repo-specific ignored product spec trees; useful when the operator targets those product areas.",
+          "false_positive_examples": ["This repo has .opencode/specs/00--ai-systems, .opencode/specs/00--anobel.com, and .opencode/specs/00--barter."]
+        },
+        {
+          "pattern": "/ai_systems/**",
+          "rationale": "Root ignore rules mark this as not part of the framework, but it is a local project-area decision.",
+          "false_positive_examples": ["This repo's working tree includes /ai_systems as a real project directory for non-framework tasks."]
+        }
+      ]
+    }
+  },
+  "evidence": {
+    "local_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:112-120",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts:31-48",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1178-1268",
+      ".gitignore:23-126",
+      "research/iterations/iteration-004.md:3-8",
+      "research/iterations/iteration-005.md:11-43"
+    ],
+    "external_examples": [
+      "https://github.com/kubernetes/kubernetes/tree/e1cf06b9b41f3534fd1ce475a18ef20d46e8f876/vendor",
+      "https://github.com/bazelbuild/bazel/tree/ad2e223235bcacd1d026b1ee8ff851347bc41f7f/src/main/java/com/google/devtools/build",
+      "https://github.com/eslint/eslint/tree/54080dad4f77bb39a1a843933d4ff3a2b7c175e2/tests/fixtures",
+      "https://github.com/golang/go/tree/02b3e0d4dd9a94b005189a10d398db61326bf1c0/src/cmd/go/testdata"
+    ]
+  }
+}

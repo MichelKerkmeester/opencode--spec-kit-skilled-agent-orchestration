@@ -51,8 +51,8 @@ Code graph upgrades and self-contained package migration. The original phase pac
 | `003-code-graph-context-and-scan-scope/` | Feature Specification: Code Graph Context + Scan Scope Remediation | Complete | `003-code-graph-package/003-code-graph-context-and-scan-scope/` |
 | `004-code-graph-hook-improvements/` | Feature Specification: Code Graph Hook Improvements | Pre-existing | `007-code-graph/004-code-graph-hook-improvements/` |
 | `005-code-graph-advisor-refinement/` | Feature Specification: Code Graph Advisor Refinement | Pre-existing | `007-code-graph/005-code-graph-advisor-refinement/` |
-| `006-code-graph-doctor-command/` | Feature Specification: Code Graph Doctor Command | Draft (created 2026-04-25) | `007-code-graph/006-code-graph-doctor-command/` |
-| `007-code-graph-resilience-research/` | Feature Specification: Code Graph Resilience Research | Research Queued (created 2026-04-25) | `007-code-graph/007-code-graph-resilience-research/` |
+| `006-code-graph-doctor-command/` | Feature Specification: Code Graph Doctor Command | Phase A Shipped (2026-04-25) | `007-code-graph/006-code-graph-doctor-command/` |
+| `007-code-graph-resilience-research/` | Feature Specification: Code Graph Resilience Research | Research Complete (2026-04-25 — 7-iteration cli-copilot loop converged, 10/10 questions answered, 4/4 assets materialized) | `007-code-graph/007-code-graph-resilience-research/` |
 
 ## Key Implementation Summaries
 
@@ -67,8 +67,8 @@ Code graph upgrades and self-contained package migration. The original phase pac
 - **`001-code-graph-upgrades/`**: status before consolidation was Complete; 2 unchecked task/checklist item(s) remain in the child packet docs.
 - **`002-code-graph-self-contained-package/`**: status before consolidation was In Progress; 8 unchecked task/checklist item(s) remain in the child packet docs.
 - **`003-code-graph-context-and-scan-scope/`**: status before migration was Complete; nested follow-up packets remain inside the moved packet.
-- **`006-code-graph-doctor-command/`**: created 2026-04-25; Level 2; status Draft; refer to the child packet for Phase A scaffolding tasks.
-- **`007-code-graph-resilience-research/`**: created 2026-04-25; Level 2; status Research Queued; awaits invocation via `/spec_kit:deep-research:auto` to produce the four asset deliverables.
+- **`006-code-graph-doctor-command/`**: completed 2026-04-25; Level 2; Phase A diagnostic-only command shipped (`.opencode/command/doctor/code-graph.md` + auto/confirm YAMLs + install guide). Phase B (apply mode) now unblocked by 007 outputs — implementation can proceed when scoped.
+- **`007-code-graph-resilience-research/`**: completed 2026-04-25; Level 2; 7-iteration deep-research loop converged via cli-copilot gpt-5.5 high. All 10 research questions answered; 4 mandatory assets materialized in `assets/` (`code-graph-gold-queries.json` with 28 queries, `staleness-model.md` with fresh/soft-stale/hard-stale tiers, `recovery-playbook.md` with 3 procedures, `exclude-rule-confidence.json` with high/medium/low tiers). `research/research.md` + `decision-record.md` synthesize the findings.
 
 ## Root Support References
 

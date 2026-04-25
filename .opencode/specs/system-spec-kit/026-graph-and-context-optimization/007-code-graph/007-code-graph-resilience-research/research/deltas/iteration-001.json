@@ -1,0 +1,27 @@
+{
+  "iteration": 1,
+  "research_questions_answered": ["Q3"],
+  "findings": [
+    {
+      "id": "F-FM-001",
+      "class": "full-scan stale-gate pruning",
+      "frequency": 4,
+      "evidence": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/research/logs/iteration-001.log:21-33; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/research/logs/iteration-002.log:23-30; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/research/logs/iteration-003.log:23-30; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/research/logs/iteration-004.log:23-31"
+    },
+    {
+      "id": "F-FM-002",
+      "class": "duplicate symbol identity collision",
+      "frequency": 4,
+      "evidence": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/research/logs/iteration-001.log:23-32; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/research/logs/iteration-002.log:25-30; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/research/logs/iteration-003.log:35-39; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/research/logs/iteration-004.log:25-31"
+    },
+    {
+      "id": "F-FM-003",
+      "class": "misleading SQLite file-size/status signal",
+      "frequency": 2,
+      "evidence": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/research/logs/iteration-001.log:23-33; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/research/logs/iteration-002.log:25-30; .opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:701-710"
+    }
+  ],
+  "newFindingsCount": 3,
+  "newFindingsRatio": 1.0,
+  "timestamp": "2026-04-25T20:47:09+02:00"
+}

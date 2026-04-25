@@ -1,0 +1,205 @@
+{
+  "iteration": 6,
+  "research_questions_answered": ["Q7", "Q8"],
+  "edge_weight_catalog": [
+    {
+      "edge_type": "CONTAINS",
+      "weight": 1.0,
+      "evidence_class": "EXTRACTED",
+      "detector_provenance": "ast_or_structured",
+      "source": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:895-905"
+    },
+    {
+      "edge_type": "IMPORTS",
+      "weight": 1.0,
+      "evidence_class": "EXTRACTED",
+      "detector_provenance": "ast_or_structured",
+      "source": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:909-920"
+    },
+    {
+      "edge_type": "EXPORTS",
+      "weight": 1.0,
+      "evidence_class": "EXTRACTED",
+      "detector_provenance": "ast_or_structured",
+      "source": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:922-933"
+    },
+    {
+      "edge_type": "EXTENDS",
+      "weight": 0.95,
+      "evidence_class": "EXTRACTED",
+      "detector_provenance": "ast_or_structured",
+      "source": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:935-947"
+    },
+    {
+      "edge_type": "IMPLEMENTS",
+      "weight": 0.95,
+      "evidence_class": "EXTRACTED",
+      "detector_provenance": "ast_or_structured",
+      "source": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:950-965"
+    },
+    {
+      "edge_type": "CALLS",
+      "weight": 0.8,
+      "evidence_class": "INFERRED",
+      "detector_provenance": "heuristic",
+      "source": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:967-997"
+    },
+    {
+      "edge_type": "DECORATES",
+      "weight": 0.9,
+      "evidence_class": "EXTRACTED",
+      "detector_provenance": "ast_or_structured",
+      "source": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1000-1020"
+    },
+    {
+      "edge_type": "OVERRIDES",
+      "weight": 0.9,
+      "evidence_class": "INFERRED",
+      "detector_provenance": "ast_or_structured",
+      "source": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1022-1046"
+    },
+    {
+      "edge_type": "TYPE_OF",
+      "weight": 0.85,
+      "evidence_class": "EXTRACTED",
+      "detector_provenance": "ast_or_structured",
+      "source": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1048-1069"
+    },
+    {
+      "edge_type": "TESTED_BY",
+      "weight": 0.6,
+      "evidence_class": "AMBIGUOUS",
+      "detector_provenance": "heuristic",
+      "source": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1357-1377"
+    }
+  ],
+  "drift_detection": {
+    "signals": [
+      "edge_type_count_share",
+      "edge_type_weight_distribution",
+      "edge_type_metadata_confidence_distribution",
+      "cross_file_import_edge_coverage",
+      "gold_query_top_k_pass_rate_by_edge_focus",
+      "weakest_returned_edge_confidence"
+    ],
+    "thresholds": {
+      "edge_share_relative_change_warn": 0.3,
+      "edge_share_absolute_change_warn_percentage_points": 5,
+      "gold_query_overall_pass_floor": 0.9,
+      "gold_query_edge_focus_pass_floor": 0.8,
+      "blast_radius_import_coverage_relative_drop_warn": 0.2,
+      "average_returned_confidence_shift_warn": 0.15,
+      "psi_warn": 0.1,
+      "psi_review": 0.25,
+      "jsd_warn": 0.1
+    }
+  },
+  "resolver_failures": [
+    {
+      "mode": "cross_module_imports",
+      "status": "reproduced_current_code",
+      "broken_case": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts imports isFileStale from ./code-graph-db.js, but extractEdges resolves IMPORTS only against nodes from the same parse result.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:10-21",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:857-872",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:909-920",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:380-388",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:602-612"
+      ]
+    },
+    {
+      "mode": "path_aliases",
+      "status": "reproduced_current_code",
+      "broken_case": "tsconfig defines @spec-kit/shared/* and context-server imports @spec-kit/shared/embeddings/factory, but import captures discard module specifiers and no resolver reads tsconfig paths.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tsconfig.json:12-15",
+        ".opencode/skill/system-spec-kit/mcp_server/context-server.ts:70-74",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/tree-sitter-parser.ts:340-397",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:485-502"
+      ]
+    },
+    {
+      "mode": "dynamic_imports",
+      "status": "reproduced_current_code",
+      "broken_case": "await import('./tree-sitter-parser.js') and await import('web-tree-sitter') are not static import captures; fallback regex sees import only as an unresolvable call token.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:756-776",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/tree-sitter-parser.ts:51-60",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:485-502",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:967-997"
+      ],
+      "probe": {
+        "line": "const mod = await import('web-tree-sitter');",
+        "staticImport": null,
+        "namedExport": null,
+        "calls": ["import"]
+      }
+    },
+    {
+      "mode": "decorator_mutated_names",
+      "status": "latent_not_reproduced_in_current_sources",
+      "broken_case": "No decorator sites were found under mcp_server; implementation would only add DECORATES when decorator and decorated symbol resolve in the same parse result and would keep the original declaration name.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/tree-sitter-parser.ts:243-260",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/tree-sitter-parser.ts:521-534",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1000-1020"
+      ]
+    },
+    {
+      "mode": "type_only_imports",
+      "status": "reproduced_regex_backend_current_code",
+      "broken_case": "import type { EdgeType } is present in query.ts; fallback static import regex does not match import type, and tree-sitter captures do not become cross-file TYPE_OF edges.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts:8",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:485-502",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/tree-sitter-parser.ts:483-488",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1048-1069"
+      ],
+      "probe": {
+        "line": "import type { EdgeType } from '../lib/indexer-types.js';",
+        "staticImport": null,
+        "namedExport": null,
+        "calls": []
+      }
+    },
+    {
+      "mode": "re_exports",
+      "status": "reproduced_current_code",
+      "broken_case": "lib/index.ts uses export * barrels; fallback export regex does not match export star, and named re-exports discard the source module path.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/index.ts:4-15",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/index.ts:4-11",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/tree-sitter-parser.ts:399-465",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:504-517"
+      ],
+      "probe": {
+        "exportStar": {
+          "line": "export * from './indexer-types.js';",
+          "namedExport": null
+        },
+        "namedReExport": {
+          "line": "export { handleCodeGraphScan } from './scan.js';",
+          "namedExport": [" handleCodeGraphScan "]
+        }
+      }
+    },
+    {
+      "mode": "default_exports_vs_named_exports",
+      "status": "reproduced_current_code_default_import",
+      "broken_case": "code-graph-db.ts imports default Database from better-sqlite3; fallback captures only local alias Database and cannot resolve whether it came from default export or a named target.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:7",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:485-502"
+      ],
+      "probe": {
+        "line": "import Database from 'better-sqlite3';",
+        "staticImport": [null, "Database", "better-sqlite3"]
+      }
+    }
+  ],
+  "newFindingsCount": 7,
+  "newFindingsRatio": 0.7,
+  "newInfoRatio": 0.7,
+  "status": "insight",
+  "timestamp": "2026-04-25T21:03:09+02:00"
+}

@@ -1,0 +1,51 @@
+{
+  "iteration": 3,
+  "research_questions_answered": ["Q4"],
+  "findings": [
+    {
+      "id": "F-RC-001",
+      "class": "code graph DB is a rebuildable cache at database/code-graph.sqlite with WAL sidecars",
+      "frequency": 1,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/code_graph/README.md:37-47; .opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:145-153; local sqlite file listing"
+    },
+    {
+      "id": "F-RC-002",
+      "class": "schema has only code_files, code_nodes, code_edges, schema_version, code_graph_metadata plus ordinary indexes",
+      "frequency": 1,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:50-115; local sqlite3 .schema output"
+    },
+    {
+      "id": "F-RC-003",
+      "class": "sqlite3 .recover emits a SQL reconstruction stream with pragmas, CREATE statements, surviving INSERT OR IGNORE rows, indexes, and COMMIT",
+      "frequency": 1,
+      "evidence": "https://www.sqlite.org/recovery.html; local temp-copy .recover experiment using SQLite 3.51.0"
+    },
+    {
+      "id": "F-RC-004",
+      "class": ".recover output remains suspect and may miss, resurrect, alter, or misplace content",
+      "frequency": 1,
+      "evidence": "https://www.sqlite.org/recovery.html"
+    },
+    {
+      "id": "F-RC-005",
+      "class": "partial scan persistence is retryable because file_mtime_ms is staged at 0 until nodes and edges land",
+      "frequency": 1,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:227-248; .opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:380-424"
+    },
+    {
+      "id": "F-RC-006",
+      "class": "bad recovery/import should roll back by quarantining the DB triplet and running a full source scan",
+      "frequency": 1,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ops-hardening.ts:21-43; .opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ops-hardening.ts:102-109; .opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:174-206"
+    },
+    {
+      "id": "F-RC-007",
+      "class": "verification requires integrity_check, foreign_key_check, orphan-node/edge checks, WAL checkpoint, status readiness, and a query smoke test",
+      "frequency": 1,
+      "evidence": "https://www.sqlite.org/pragma.html#pragma_integrity_check; https://www.sqlite.org/pragma.html#pragma_wal_checkpoint; .opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/status.ts:10-76"
+    }
+  ],
+  "newFindingsCount": 7,
+  "newFindingsRatio": 0.78,
+  "timestamp": "2026-04-25T20:51:30+02:00"
+}

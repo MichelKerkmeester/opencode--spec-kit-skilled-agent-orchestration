@@ -1,0 +1,25 @@
+{
+  "research_topic": "Code-graph resilience: staleness signals, error modes, recovery playbook, exclude-rule confidence",
+  "spec_folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research",
+  "max_iterations": 7,
+  "convergence_threshold": 0.10,
+  "stuck_threshold": 3,
+  "research_questions_count": 10,
+  "executor": {
+    "kind": "cli-copilot",
+    "model": "gpt-5.5",
+    "reasoningEffort": "high",
+    "serviceTier": null,
+    "timeoutSeconds": 900
+  },
+  "concurrency_strategy": "sequential_iterations_within_packet",
+  "created_at": "2026-04-25T20:50:00Z",
+  "outputs_required": [
+    "research/research.md",
+    "decision-record.md",
+    "assets/code-graph-gold-queries.json",
+    "assets/staleness-model.md",
+    "assets/recovery-playbook.md",
+    "assets/exclude-rule-confidence.json"
+  ]
+}
