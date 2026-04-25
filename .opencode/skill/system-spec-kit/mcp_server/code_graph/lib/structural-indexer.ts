@@ -18,6 +18,7 @@ import { isFileStale } from './code-graph-db.js';
 import { shouldIndexForCodeGraph } from '../../lib/utils/index-scope.js';
 import { resolveCanonicalPath } from '../../lib/utils/canonical-path.js';
 import { isSpeckitMetricsEnabled, speckitMetrics } from '../../skill_advisor/lib/metrics.js';
+import { runPhases, type Phase } from './phase-runner.js';
 
 interface IgnoreInstance {
   add(patterns: string | string[]): IgnoreInstance;
@@ -1365,63 +1366,145 @@ export function finalizeIndexResults(results: ParseResult[]): ParseResult[] {
   return results;
 }
 
+/**
+ * Phases that compose the scan flow.
+ *
+ * The flow is decomposed into typed phases declared with explicit
+ * `inputs[]` / `output` so the phase-runner can topologically sort,
+ * reject cycles/duplicates/missing-deps, and pass each phase ONLY
+ * the outputs of phases it lists in `inputs` (R-002-1, R-002-2).
+ *
+ * The decomposition mirrors the existing inline flow — it does not
+ * change behavior, ordering, or persistence semantics:
+ *   1. find-candidates  → discovers candidate files
+ *   2. parse-candidates → reads + parses each candidate
+ *   3. finalize         → cross-file dedup + heuristic edges
+ *   4. emit-metrics     → speckit metrics histograms/counters
+ */
+type FindCandidatesOutput = { candidateFiles: string[] };
+type ParseCandidatesOutput = { results: ParseResult[]; preParseSkippedCount: number };
+type FinalizeOutput = { finalizedResults: ParseResult[]; preParseSkippedCount: number };
+
+function buildIndexPhases(
+  config: IndexerConfig,
+  options: IndexFilesOptions,
+  speckitScanStart: number,
+  scanOutcomeRef: { value: 'success' | 'error' },
+): Phase[] {
+  const skipFreshFiles = options.skipFreshFiles ?? true;
+
+  const findCandidates: Phase<Record<string, unknown>, FindCandidatesOutput> = {
+    name: 'find-candidates',
+    inputs: [],
+    run() {
+      if (options.specificFiles && options.specificFiles.length > 0) {
+        const candidateFiles = collectSpecificFiles(
+          config.rootDir,
+          options.specificFiles,
+          config.maxFileSizeBytes,
+        );
+        console.info(`[structural-indexer] refreshed ${candidateFiles.length} specific file(s)`);
+        return { candidateFiles };
+      }
+
+      const allFiles = new Set<string>();
+      let excludedByDefault = 0;
+      let excludedByGitignore = 0;
+
+      for (const pattern of config.includeGlobs) {
+        const found = findFiles(config.rootDir, pattern, config.excludeGlobs, config.maxFileSizeBytes);
+        excludedByDefault += found.excludedByDefault;
+        excludedByGitignore += found.excludedByGitignore;
+        found.files.forEach(f => allFiles.add(f));
+      }
+
+      console.info(`[structural-indexer] scanned ${allFiles.size} files (excluded: gitignored=${excludedByGitignore}, default=${excludedByDefault})`);
+      return { candidateFiles: [...allFiles] };
+    },
+  };
+
+  const parseCandidates: Phase<{ 'find-candidates': FindCandidatesOutput }, ParseCandidatesOutput> = {
+    name: 'parse-candidates',
+    inputs: ['find-candidates'],
+    async run(deps) {
+      const { candidateFiles } = deps['find-candidates'];
+      const results: ParseResult[] = [];
+      let preParseSkippedCount = 0;
+
+      for (const file of candidateFiles) {
+        const language = detectLanguage(file);
+        if (!language || !config.languages.includes(language)) continue;
+
+        // P1 perf: skip read+parse for files whose mtime matches the DB record.
+        // isFileStale returns true when the file is absent from the DB or its
+        // mtime has changed — only then do we pay the I/O + parse cost.
+        if (skipFreshFiles && !isFileStale(file)) {
+          preParseSkippedCount++;
+          continue;
+        }
+
+        try {
+          const content = readFileSync(file, 'utf-8');
+          const result = await parseFile(file, content, language);
+          results.push(result);
+        } catch { /* skip unreadable */ }
+      }
+
+      return { results, preParseSkippedCount };
+    },
+  };
+
+  const finalize: Phase<{ 'parse-candidates': ParseCandidatesOutput }, FinalizeOutput> = {
+    name: 'finalize',
+    inputs: ['parse-candidates'],
+    run(deps) {
+      const { results, preParseSkippedCount } = deps['parse-candidates'];
+      const finalizedResults = finalizeIndexResults(results);
+      return { finalizedResults, preParseSkippedCount };
+    },
+  };
+
+  const emitMetrics: Phase<{ finalize: FinalizeOutput }, FinalizeOutput> = {
+    name: 'emit-metrics',
+    inputs: ['finalize'],
+    run(deps) {
+      const finalize = deps.finalize;
+      if (isSpeckitMetricsEnabled()) {
+        speckitMetrics.recordHistogram(
+          'spec_kit.graph.scan_duration_ms',
+          Date.now() - speckitScanStart,
+          { outcome: scanOutcomeRef.value },
+        );
+        const runtimeLabel = process.env.SPECKIT_RUNTIME ?? 'unknown';
+        for (const r of finalize.finalizedResults) {
+          for (const edge of r.edges) {
+            speckitMetrics.incrementCounter(
+              'spec_kit.graph.edge_detection_total',
+              { edge_type: edge.edgeType, runtime: runtimeLabel },
+            );
+          }
+        }
+      }
+      return finalize;
+    },
+  };
+
+  return [findCandidates, parseCandidates, finalize, emitMetrics];
+}
+
 /** Index all matching files in the workspace */
 export async function indexFiles(config: IndexerConfig, options: IndexFilesOptions = {}): Promise<IndexFilesResult> {
-  const results = [] as unknown as IndexFilesResult;
-  results.preParseSkippedCount = 0;
-  const skipFreshFiles = options.skipFreshFiles ?? true;
-  let candidateFiles: string[];
   const speckitScanStart = isSpeckitMetricsEnabled() ? Date.now() : 0;
-  let speckitScanOutcome: 'success' | 'error' = 'success';
+  const scanOutcomeRef: { value: 'success' | 'error' } = { value: 'success' };
 
-  if (options.specificFiles && options.specificFiles.length > 0) {
-    candidateFiles = collectSpecificFiles(config.rootDir, options.specificFiles, config.maxFileSizeBytes);
-    console.info(`[structural-indexer] refreshed ${candidateFiles.length} specific file(s)`);
-  } else {
-    const allFiles = new Set<string>();
-    let excludedByDefault = 0;
-    let excludedByGitignore = 0;
+  const phases = buildIndexPhases(config, options, speckitScanStart, scanOutcomeRef);
+  const outputs = await runPhases(phases);
+  const emitOutput = outputs['emit-metrics'] as FinalizeOutput;
 
-    for (const pattern of config.includeGlobs) {
-      const found = findFiles(config.rootDir, pattern, config.excludeGlobs, config.maxFileSizeBytes);
-      excludedByDefault += found.excludedByDefault;
-      excludedByGitignore += found.excludedByGitignore;
-      found.files.forEach(f => allFiles.add(f));
-    }
-
-    console.info(`[structural-indexer] scanned ${allFiles.size} files (excluded: gitignored=${excludedByGitignore}, default=${excludedByDefault})`);
-    candidateFiles = [...allFiles];
-  }
-
-  for (const file of candidateFiles) {
-    const language = detectLanguage(file);
-    if (!language || !config.languages.includes(language)) continue;
-
-    // P1 perf: skip read+parse for files whose mtime matches the DB record.
-    // isFileStale returns true when the file is absent from the DB or its
-    // mtime has changed — only then do we pay the I/O + parse cost.
-    if (skipFreshFiles && !isFileStale(file)) {
-      results.preParseSkippedCount++;
-      continue;
-    }
-
-    try {
-      const content = readFileSync(file, 'utf-8');
-      const result = await parseFile(file, content, language);
-      results.push(result);
-    } catch { /* skip unreadable */ }
-  }
-
-  const finalizedResults = finalizeIndexResults(results) as IndexFilesResult;
-  finalizedResults.preParseSkippedCount = results.preParseSkippedCount;
-  if (isSpeckitMetricsEnabled()) {
-    speckitMetrics.recordHistogram('spec_kit.graph.scan_duration_ms', Date.now() - speckitScanStart, { outcome: speckitScanOutcome });
-    const runtimeLabel = process.env.SPECKIT_RUNTIME ?? 'unknown';
-    for (const r of finalizedResults) {
-      for (const edge of r.edges) {
-        speckitMetrics.incrementCounter('spec_kit.graph.edge_detection_total', { edge_type: edge.edgeType, runtime: runtimeLabel });
-      }
-    }
-  }
+  // Preserve the array-with-preParseSkippedCount shape exported by the
+  // historical inline flow so existing callers (handlers/scan.ts,
+  // ensure-ready.ts) keep working unchanged (R-002-3 backward compat).
+  const finalizedResults = emitOutput.finalizedResults as IndexFilesResult;
+  finalizedResults.preParseSkippedCount = emitOutput.preParseSkippedCount;
   return finalizedResults;
 }
