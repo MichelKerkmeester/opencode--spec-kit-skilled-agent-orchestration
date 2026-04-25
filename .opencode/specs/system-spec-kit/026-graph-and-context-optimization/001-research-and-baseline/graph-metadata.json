@@ -10,7 +10,7 @@
     "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify",
     "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest",
     "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy",
-    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-git-nexus"
+    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-external-project"
   ],
   "migrated": true,
   "migration_source": "legacy",

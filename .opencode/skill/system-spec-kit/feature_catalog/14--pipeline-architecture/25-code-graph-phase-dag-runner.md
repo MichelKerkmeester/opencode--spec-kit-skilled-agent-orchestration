@@ -9,7 +9,7 @@ description: "Typed phase-DAG runner that wraps the Code Graph structural-indexe
 
 Typed phase-DAG runner that wraps the Code Graph structural-indexer scan flow, validates the dependency graph (duplicates, missing deps, cycles), topologically orders phases, and passes each phase only the outputs of phases it explicitly declared as dependencies.
 
-This is a pipeline-architecture entry because it reshapes the internal coordination surface of the structural indexer without changing the public scan tool count or the SQLite schema. The goal is to give Code Graph the same explicit phase contract GitNexus uses for its 12-phase ingestion DAG, while keeping Public's compact storage model intact (pt-02 §4 "Public adaptation" row).
+This is a pipeline-architecture entry because it reshapes the internal coordination surface of the structural indexer without changing the public scan tool count or the SQLite schema. The goal is to give Code Graph the same explicit phase contract External Project uses for its 12-phase ingestion DAG, while keeping Public's compact storage model intact (pt-02 §4 "Public adaptation" row).
 
 ---
 

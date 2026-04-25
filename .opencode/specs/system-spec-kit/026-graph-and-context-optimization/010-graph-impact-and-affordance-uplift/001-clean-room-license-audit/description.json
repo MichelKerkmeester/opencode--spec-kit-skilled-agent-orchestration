@@ -1,12 +1,12 @@
 {
   "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/001-clean-room-license-audit",
-  "description": "P0 governance gate. Audit external/gitnexus/LICENSE; record clean-room rule and pattern-allow-list ADR. Blocks all 012 code sub-phases until signed of",
+  "description": "P0 governance gate. Audit external/LICENSE; record clean-room rule and pattern-allow-list ADR. Blocks all 012 code sub-phases until signed of",
   "keywords": [
     "governance",
     "gate",
     "audit",
     "external",
-    "gitnexus",
+    "external-project",
     "license",
     "record",
     "clean-room",

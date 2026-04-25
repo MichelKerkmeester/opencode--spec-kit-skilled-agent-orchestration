@@ -1,0 +1,38 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation",
+  "description": "Remediation sub-phase consolidating 21 P1 + 12 actionable P2 findings from the 7-iteration deep-review pass over 010/001-006. P0 LICENSE finding resol",
+  "keywords": [
+    "remediation",
+    "sub-phase",
+    "consolidating",
+    "actionable",
+    "findings",
+    "7-iteration",
+    "deep-review",
+    "pass",
+    "010",
+    "001-006",
+    "license",
+    "finding",
+    "resolved",
+    "scrubbing",
+    "external",
+    "project",
+    "name",
+    "codebase"
+  ],
+  "lastUpdated": "2026-04-25T13:51:18.730Z",
+  "specId": "007",
+  "folderSlug": "review-remediation",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-graph-impact-and-affordance-uplift"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "25-04-26_14-51__initialized-010-007-review-remediation-sub-phase.md"
+  ]
+}

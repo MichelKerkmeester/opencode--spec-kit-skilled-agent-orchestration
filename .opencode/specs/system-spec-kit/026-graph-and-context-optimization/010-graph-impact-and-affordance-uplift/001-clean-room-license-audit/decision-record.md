@@ -28,15 +28,15 @@ contextType: "implementation"
 
 ### Context
 
-Phase 012 plans to land selective adaptations of GitNexus patterns into Public's Code Graph (002, 003), Skill Advisor (004), and Memory trust display (005). pt-02 deep-research iteration 9 read the upstream LICENSE and identified it as **PolyForm Noncommercial 1.0.0**, ranking direct source reuse as a P0 governance blocker [SOURCE: research/007-git-nexus-pt-02/iterations/iteration-009.md:3] [SOURCE: research/007-git-nexus-pt-02/iterations/iteration-009.md:10] [SOURCE: research/007-git-nexus-pt-02/iterations/iteration-009.md:18]. No formal sub-phase audit had been recorded; this ADR closes that gate.
+Phase 012 plans to land selective adaptations of External Project patterns into Public's Code Graph (002, 003), Skill Advisor (004), and Memory trust display (005). pt-02 deep-research iteration 9 read the upstream LICENSE and identified it as **PolyForm Noncommercial 1.0.0**, ranking direct source reuse as a P0 governance blocker [SOURCE: research/007-external-project-pt-02/iterations/iteration-009.md:3] [SOURCE: research/007-external-project-pt-02/iterations/iteration-009.md:10] [SOURCE: research/007-external-project-pt-02/iterations/iteration-009.md:18]. No formal sub-phase audit had been recorded; this ADR closes that gate.
 
 ### Source-of-Record Path Correction
 
-The agent brief refers to `external/gitnexus/LICENSE`. The pt-02 research evidence chain consistently cites the LICENSE at `external/LICENSE` (no nested `gitnexus/` subdirectory) [SOURCE: research/007-git-nexus-pt-02/iterations/iteration-009.md:3] [SOURCE: research/007-git-nexus-pt-02/deltas/iter-009.jsonl]. This ADR uses the research-cited path because that is the verifiable evidence trail; orchestrator should normalize the path in any subsequent briefs.
+The agent brief refers to `external/LICENSE`. The pt-02 research evidence chain consistently cites the LICENSE at `external/LICENSE` (no nested `external-project/` subdirectory) [SOURCE: research/007-external-project-pt-02/iterations/iteration-009.md:3] [SOURCE: research/007-external-project-pt-02/deltas/iter-009.jsonl]. This ADR uses the research-cited path because that is the verifiable evidence trail; orchestrator should normalize the path in any subsequent briefs.
 
 ### Worktree Constraint
 
-The repository's `.gitignore` excludes `external/` (line 76). Detached-HEAD worktrees created via `git worktree add` therefore do not contain the upstream LICENSE file in their checkout. This audit reproduces the **canonical PolyForm Noncommercial 1.0.0** text published by the PolyForm Project at `https://polyformproject.org/licenses/noncommercial/1.0.0`, which is the licence identity established by the pt-02 research executor (`cli-codex` model `gpt-5.5`, reasoning `high`, service tier `fast`) when it read `external/LICENSE` lines 1, 19, and 31 in iteration 9 [SOURCE: research/007-git-nexus-pt-02/iterations/iteration-009.md:10].
+The repository's `.gitignore` excludes `external/` (line 76). Detached-HEAD worktrees created via `git worktree add` therefore do not contain the upstream LICENSE file in their checkout. This audit reproduces the **canonical PolyForm Noncommercial 1.0.0** text published by the PolyForm Project at `https://polyformproject.org/licenses/noncommercial/1.0.0`, which is the licence identity established by the pt-02 research executor (`cli-codex` model `gpt-5.5`, reasoning `high`, service tier `fast`) when it read `external/LICENSE` lines 1, 19, and 31 in iteration 9 [SOURCE: research/007-external-project-pt-02/iterations/iteration-009.md:10].
 
 If a future reviewer with direct access to `external/LICENSE` finds any deviation from the canonical text reproduced below (e.g. an additional `Required Notice:` line, copyright header, or modified clause), this ADR MUST be reopened and the sub-phase status reset.
 
@@ -184,7 +184,7 @@ of your licenses.
 
 | Clause | Effect on Phase 012 |
 |--------|---------------------|
-| **Acceptance** | Anyone reading or using `external/gitnexus` accepts the terms as both obligations and conditions of every grant. Non-compliance terminates all grants. |
+| **Acceptance** | Anyone reading or using `external/external-project` accepts the terms as both obligations and conditions of every grant. Non-compliance terminates all grants. |
 | **Copyright License (purpose-bounded)** | Permits "everything you might do" with the software that would otherwise infringe copyright — **only for a permitted purpose**. Distribution and derivative works are bounded by the next two clauses. |
 | **Distribution License** | Distributing copies (including modified copies) requires the recipient to also receive the licence terms or the canonical URL. |
 | **Notices** | Any `Required Notice:` lines provided with the software MUST be carried forward in distributions. |
@@ -206,11 +206,11 @@ A Public-side change is **clean-room** when it satisfies **all** of the followin
 
 1. **No copy of upstream copyrightable expression.** No verbatim source code, no SQL/DDL schema text, no comment blocks, no struct/interface declarations, no test fixtures, no string literals.
 2. **No translated copy.** Cosmetic transliteration (e.g. TypeScript → Python with identical structure) is forbidden.
-3. **Pattern citation only.** Public's commits, ADRs, and code comments may name the GitNexus pattern as architectural inspiration with `[SOURCE: external/...:line]` references — these citations are research metadata, not derivative works.
+3. **Pattern citation only.** Public's commits, ADRs, and code comments may name the External Project pattern as architectural inspiration with `[SOURCE: external/...:line]` references — these citations are research metadata, not derivative works.
 4. **Public-side fresh implementation.** The implementing engineer or model writes the Public-side code from a behavioural specification and the public ARCHITECTURE.md / README description, not from the upstream source files.
 5. **Audit trail.** Every commit touching a 002–005 surface MUST cite the source-of-record line in the architecture description and explicitly state that no upstream source was copied.
 
-This definition aligns with phase-root ADR-012-001's "clean-room adaptation only" decision and with pt-02 INV-04 [SOURCE: research/007-git-nexus-pt-02/research.md:174].
+This definition aligns with phase-root ADR-012-001's "clean-room adaptation only" decision and with pt-02 INV-04 [SOURCE: research/007-external-project-pt-02/research.md:174].
 
 ---
 
@@ -220,12 +220,12 @@ Each row is judged against the LICENSE clauses above and the clean-room definiti
 
 | Sub-phase | Pattern | Verdict | Conditions / Forbidden Forms |
 |-----------|---------|---------|------------------------------|
-| **002** Code Graph foundation | Phase-DAG runner with typed `inputs[]` / `outputs[]`, topological execution, cycle/duplicate/missing-dep rejection | **ALLOWED (clean-room)** | Pattern only. Forbidden: copying GitNexus's `Process`/phase TypeScript/Python source, schema column names, or test JSON fixtures. Public must use its own type/interface names, error vocabulary, and reject-rule wording. |
-| **002** Code Graph foundation | `detect_changes` read-only preflight: diff-hunk → indexed-symbol mapping with `status: blocked` when full scan required | **ALLOWED (clean-room)** | Pattern only. Forbidden: GitNexus's `detect_changes` handler source, its diff-parser library, its rule strings (e.g. exact error messages), or its tool description. Public must implement diff parsing against its own schema and use its own readiness contract verbiage. |
-| **003** Edge metadata | Edge `reason` + `step` JSON columns surfaced in `code_graph_query` output | **CONDITIONAL** | Pattern allowed; forbidden source forms: copying GitNexus's `relationships` table DDL, exact field names if they would constitute schema-text copying (Public is free to use the words "reason"/"step" as natural-language identifiers — they are not copyrightable individually, but the combined schema layout is). Public must derive its column shape from its own ADR, not from the upstream `relationships` schema. |
-| **003** Edge metadata | `blast_radius` uplift: `riskLevel`, `minConfidence` filter, `ambiguityCandidates`, structured `failureFallback` | **ALLOWED (clean-room)** | Pattern only. Forbidden: copying GitNexus's blast-radius traversal source, its risk-level enum strings if they are taken verbatim from upstream code, or its example outputs. Public defines its own risk vocabulary against its own confidence model. |
-| **004** Skill Advisor affordance evidence | Affordance-normalizer ingests tool/resource descriptions through allowlist sanitizer, feeds `derived` + `graph-causal` lanes, no new entity_kinds | **ALLOWED (clean-room)** | Pattern only. Forbidden: copying GitNexus's `resources.ts` / `tools.ts` source, its tool-description string templates, or its prompt-stuffing examples. Allowlist tokens must be Public-defined. |
-| **005** Memory trust display | Display-only badges read from existing `causal-edges.ts` columns (confidence, age, orphan, weight history) | **ALLOWED (clean-room)** | No upstream source involvement at all — purely Public-internal display change against existing Public columns. The only GitNexus connection is conceptual ("trust badges as a freshness UX pattern"). |
+| **002** Code Graph foundation | Phase-DAG runner with typed `inputs[]` / `outputs[]`, topological execution, cycle/duplicate/missing-dep rejection | **ALLOWED (clean-room)** | Pattern only. Forbidden: copying External Project's `Process`/phase TypeScript/Python source, schema column names, or test JSON fixtures. Public must use its own type/interface names, error vocabulary, and reject-rule wording. |
+| **002** Code Graph foundation | `detect_changes` read-only preflight: diff-hunk → indexed-symbol mapping with `status: blocked` when full scan required | **ALLOWED (clean-room)** | Pattern only. Forbidden: External Project's `detect_changes` handler source, its diff-parser library, its rule strings (e.g. exact error messages), or its tool description. Public must implement diff parsing against its own schema and use its own readiness contract verbiage. |
+| **003** Edge metadata | Edge `reason` + `step` JSON columns surfaced in `code_graph_query` output | **CONDITIONAL** | Pattern allowed; forbidden source forms: copying External Project's `relationships` table DDL, exact field names if they would constitute schema-text copying (Public is free to use the words "reason"/"step" as natural-language identifiers — they are not copyrightable individually, but the combined schema layout is). Public must derive its column shape from its own ADR, not from the upstream `relationships` schema. |
+| **003** Edge metadata | `blast_radius` uplift: `riskLevel`, `minConfidence` filter, `ambiguityCandidates`, structured `failureFallback` | **ALLOWED (clean-room)** | Pattern only. Forbidden: copying External Project's blast-radius traversal source, its risk-level enum strings if they are taken verbatim from upstream code, or its example outputs. Public defines its own risk vocabulary against its own confidence model. |
+| **004** Skill Advisor affordance evidence | Affordance-normalizer ingests tool/resource descriptions through allowlist sanitizer, feeds `derived` + `graph-causal` lanes, no new entity_kinds | **ALLOWED (clean-room)** | Pattern only. Forbidden: copying External Project's `resources.ts` / `tools.ts` source, its tool-description string templates, or its prompt-stuffing examples. Allowlist tokens must be Public-defined. |
+| **005** Memory trust display | Display-only badges read from existing `causal-edges.ts` columns (confidence, age, orphan, weight history) | **ALLOWED (clean-room)** | No upstream source involvement at all — purely Public-internal display change against existing Public columns. The only External Project connection is conceptual ("trust badges as a freshness UX pattern"). |
 
 **No row is BLOCKED.** All five rows fit clean-room adaptation under PolyForm Noncommercial 1.0.0.
 
@@ -233,11 +233,11 @@ Each row is judged against the LICENSE clauses above and the clean-room definiti
 
 ### Fail-Closed Rule (binding for all 012 PRs)
 
-> **Any PR that copies GitNexus source code, schema text, or implementation-specific logic — verbatim, transliterated, or paraphrased to the point of substantial similarity — is auto-rejected unless an explicit external legal review approves it. The author bears the burden of proof; reviewers default to rejection. There is no "small-snippet exception" or "obvious-implementation exception".**
+> **Any PR that copies External Project source code, schema text, or implementation-specific logic — verbatim, transliterated, or paraphrased to the point of substantial similarity — is auto-rejected unless an explicit external legal review approves it. The author bears the burden of proof; reviewers default to rejection. There is no "small-snippet exception" or "obvious-implementation exception".**
 
 #### Enforcement mechanics
 
-1. **PR template addition (handled by sub-phase 006 docs rollup):** every 012 PR description MUST include a "Clean-room attestation" line: *"I confirm no source/schema-text/implementation-logic from `external/gitnexus` was copied, transliterated, or paraphrased into this change."*
+1. **PR template addition (handled by sub-phase 006 docs rollup):** every 012 PR description MUST include a "Clean-room attestation" line: *"I confirm no source/schema-text/implementation-logic from `external/external-project` was copied, transliterated, or paraphrased into this change."*
 2. **Reviewer checklist (this sub-phase publishes the rule; 002–005 inherit it):** reviewers verify the attestation, spot-check 1–2 changed files against upstream, and reject on any doubt.
 3. **Discovery escalation:** if any future audit finds copied content already merged, the offending commits MUST be reverted and the phase reopened with legal review before any new work continues.
 4. **Reopen criterion for stronger reuse path:** only an external counsel sign-off (recorded as a new ADR superseding this one) can lift the clean-room boundary. AI agents MUST NOT lift it autonomously.
@@ -281,7 +281,7 @@ The LICENSE does **not** forbid the clean-room path needed by 012/002–005. Pha
 
 - Phase-root ADR: `012/decision-record.md` ADR-012-001 (clean-room rule)
 - Phase-root spec: `012/spec.md` §6 risks (license contamination row)
-- pt-02 risk basis: `001-research-and-baseline/007-git-nexus/research/007-git-nexus-pt-02/iterations/iteration-009.md:3,10,18`
-- pt-02 invariant: `research/007-git-nexus-pt-02/research.md:174` (INV-04 clean-room gate)
+- pt-02 risk basis: `001-research-and-baseline/007-external-project/research/007-external-project-pt-02/iterations/iteration-009.md:3,10,18`
+- pt-02 invariant: `research/007-external-project-pt-02/research.md:174` (INV-04 clean-room gate)
 - Canonical license text source: `https://polyformproject.org/licenses/noncommercial/1.0.0`
 - Sub-phase spec: `001-clean-room-license-audit/spec.md` (R-001-1 through R-001-4)

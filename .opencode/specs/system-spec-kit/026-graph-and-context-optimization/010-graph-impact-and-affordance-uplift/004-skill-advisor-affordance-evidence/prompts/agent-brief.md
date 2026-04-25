@@ -17,7 +17,7 @@ You wire tool/resource/MCP-resource affordances into the existing `derived` and 
 4. **License clearance:**
    `.../012/001-clean-room-license-audit/implementation-summary.md` — must show APPROVED. If HALT, **STOP**.
 5. **Research basis:**
-   `.../research/007-git-nexus-pt-02/research.md` §6 (Skill Advisor findings), §11 Packet 3, §12 RISK-05 (prompt-stuffing risk)
+   `.../research/007-external-project-pt-02/research.md` §6 (Skill Advisor findings), §11 Packet 3, §12 RISK-05 (prompt-stuffing risk)
 6. **Existing Public code (READ before EDIT):**
    - `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_graph_compiler.py` (line 43: `ALLOWED_ENTITY_KINDS = {"skill", "agent", "script", "config", "reference"}` — must stay unchanged)
    - `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/derived.ts` (lines 9-43)

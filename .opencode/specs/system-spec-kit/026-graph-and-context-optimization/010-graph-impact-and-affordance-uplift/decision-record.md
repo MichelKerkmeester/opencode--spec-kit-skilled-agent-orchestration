@@ -1,7 +1,7 @@
 ---
 speckit_template_source: "SPECKIT_TEMPLATE_SOURCE: decision-record-core | v2.2"
 title: "Decision Record: Graph Impact and Affordance Uplift (012)"
-description: "ADRs governing the GitNexus pattern adoption phase: license posture, sub-phase decomposition, deferred Packet 5."
+description: "ADRs governing the External Project pattern adoption phase: license posture, sub-phase decomposition, deferred Packet 5."
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -14,8 +14,8 @@ contextType: "implementation"
 ## ADR-012-001 — Clean-room adaptation only
 
 **Status:** Accepted (2026-04-25)
-**Context:** pt-02 §12 raises license contamination as P0 risk. No formal license audit of `external/gitnexus/` has been performed.
-**Decision:** All code work in 012 follows clean-room adaptation: read GitNexus as architectural evidence, reimplement Public-side from scratch. No source/schema-text/implementation-logic copy.
+**Context:** pt-02 §12 raises license contamination as P0 risk. No formal license audit of `external/` has been performed.
+**Decision:** All code work in 012 follows clean-room adaptation: read External Project as architectural evidence, reimplement Public-side from scratch. No source/schema-text/implementation-logic copy.
 **Consequences:** Sub-phase 001 owns the license audit and publishes the explicit allow-list. Any deviation requires sub-phase 001 to be reopened with legal review. Pattern-only citations (with `[SOURCE: external/...]` references in commit messages and docs) are explicitly allowed.
 **Alternatives rejected:**
 - Direct source reuse: blocked until license audit approves stronger reuse path.
@@ -54,7 +54,7 @@ contextType: "implementation"
 ## ADR-012-004 — Reject mutating rename
 
 **Status:** Accepted (2026-04-25)
-**Context:** GitNexus's `rename` tool has preview/apply semantic divergence (apply does whole-file word-boundary replacement). pt-02 §4 (Code Graph table, Rename split row) confirms this finding.
+**Context:** External Project's `rename` tool has preview/apply semantic divergence (apply does whole-file word-boundary replacement). pt-02 §4 (Code Graph table, Rename split row) confirms this finding.
 **Decision:** No mutating rename in 012. Sub-phase 003 may adopt read-only advisory rename preview only — separating graph hits from text hits, never executing edits.
 **Consequences:** Public users can preview rename impact but apply via existing IDE/editor tooling. Aligns with pt-02 risk RISK-10.
 **Reopen criterion:** Exact preview ranges + apply equivalence + post-change validation proven identical (none of which 012 will produce).
@@ -99,7 +99,7 @@ contextType: "implementation"
 
 - spec.md (this folder)
 - plan.md (this folder)
-- pt-01 synthesis: `.../001-research-and-baseline/007-git-nexus/research/007-git-nexus-pt-01/research.md`
-- pt-02 synthesis: `.../001-research-and-baseline/007-git-nexus/research/007-git-nexus-pt-02/research.md`
+- pt-01 synthesis: `.../001-research-and-baseline/007-external-project/research/007-external-project-pt-01/research.md`
+- pt-02 synthesis: `.../001-research-and-baseline/007-external-project/research/007-external-project-pt-02/research.md`
 - pt-02 §12 (risks), §13 (ownership), §15 (cross-check)
 - Plan source: `/Users/michelkerkmeester/.claude/plans/create-new-phase-with-zazzy-lighthouse.md`

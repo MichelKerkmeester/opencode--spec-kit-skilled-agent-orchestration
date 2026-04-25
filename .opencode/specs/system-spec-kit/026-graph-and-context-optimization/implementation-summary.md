@@ -146,7 +146,7 @@ A second topical consolidation pass refined the nine-wrapper output of the first
 | `008-skill-advisor/` | 11 | Unified advisor home: search/routing, advisor graph, phrase boosters, smart-router, advisor docs/standards, hook surface, daemon unification, plugin hardening, hook improvements. |
 | `009-memory-causal-graph/` | 0 (post-hoc docs) | Level-2 documentation packet, no code changes. |
 | `009-hook-parity/` | 8 | Renamed from `009-hook-parity/`; pure runtime hook-parity scope after advisor + code-graph children moved out. |
-| `010-graph-impact-and-affordance-uplift/` | 6 | GitNexus pt-01 + pt-02 adoption uplift. |
+| `010-graph-impact-and-affordance-uplift/` | 6 | External Project pt-01 + pt-02 adoption uplift. |
 
 ### Numbering Gaps
 
@@ -187,7 +187,7 @@ A post-push topology adjustment narrowed the active surface from 11 wrappers to 
 | `007-code-graph/` | 5 | Code-graph upgrades, self-contained package, context/scan scope, plus second-pass hook + advisor refinement children. |
 | `008-skill-advisor/` | 11 | Unified advisor home: search/routing, advisor graph, phrase boosters, smart-router, advisor docs/standards, hook surface, daemon unification, plugin hardening, hook improvements. |
 | `009-hook-parity/` | 8 | Renamed from `010-hook-parity/`; pure runtime hook-parity scope after advisor + code-graph children moved out during the second pass. |
-| `010-graph-impact-and-affordance-uplift/` | 6 | GitNexus pt-01 + pt-02 adoption uplift; owns memory-causal-trust display documentation under `005-memory-causal-trust-display/`. |
+| `010-graph-impact-and-affordance-uplift/` | 6 | External Project pt-01 + pt-02 adoption uplift; owns memory-causal-trust display documentation under `005-memory-causal-trust-display/`. |
 
 ### Numbering Gaps (after post-push adjustment)
 

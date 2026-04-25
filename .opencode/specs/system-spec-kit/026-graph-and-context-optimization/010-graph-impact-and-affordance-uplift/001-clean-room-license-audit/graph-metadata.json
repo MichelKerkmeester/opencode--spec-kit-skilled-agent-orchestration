@@ -13,7 +13,7 @@
     "trigger_phrases": [
       "012 license audit",
       "clean room license",
-      "gitnexus license",
+      "external-project license",
       "012/001 implementation summary",
       "license audit summary"
     ],
@@ -23,7 +23,7 @@
       "audit",
       "clean",
       "room",
-      "gitnexus",
+      "external-project",
       "001",
       "implementation",
       "summary",

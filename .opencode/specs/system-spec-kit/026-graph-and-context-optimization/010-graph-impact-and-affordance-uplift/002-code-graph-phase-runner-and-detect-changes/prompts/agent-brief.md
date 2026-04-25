@@ -17,7 +17,7 @@ You own the Code Graph foundation sub-phase. You wrap the existing scan flow in 
 4. **License clearance:**
    `.../012/001-clean-room-license-audit/implementation-summary.md` — must show APPROVED before you write any code. If HALT, **STOP**.
 5. **Research basis:**
-   `.../research/007-git-nexus-pt-02/research.md` §4 (Code Graph findings), §11 Packet 1, §12 RISK-03
+   `.../research/007-external-project-pt-02/research.md` §4 (Code Graph findings), §11 Packet 1, §12 RISK-03
 6. **Existing Public code (READ before EDIT):**
    - `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts` (target: line ~1369 `indexFiles` body)
    - `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts` (schema reference, do NOT modify)
@@ -59,7 +59,7 @@ You own the Code Graph foundation sub-phase. You wrap the existing scan flow in 
 
 ## Hard rules
 
-1. **Clean-room only** (ADR-012-001) — read GitNexus as architectural reference; do NOT copy source/schema text/implementation logic. Cite patterns with `[SOURCE: external/...]` if helpful, but write Public code from scratch.
+1. **Clean-room only** (ADR-012-001) — read External Project as architectural reference; do NOT copy source/schema text/implementation logic. Cite patterns with `[SOURCE: external/...]` if helpful, but write Public code from scratch.
 2. **`detect_changes` MUST return `status: "blocked"` when graph readiness requires full scan.** NEVER `"no affected symbols"` on stale state. This is the P1 safety invariant.
 3. **NO SQLite schema migration.** Reuse existing `code_files`, `code_nodes`, `code_edges` tables.
 4. **Phase runner contract:** rejects duplicate phase names, missing dependencies, cycles. Phases see only their declared dependency outputs.

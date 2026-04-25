@@ -1,0 +1,28 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-external-project/research/007-external-project-pt-02/iterations",
+  "description": "Research iteration artifacts for 007-external-project-pt-02.",
+  "keywords": [
+    "research",
+    "iteration",
+    "artifacts",
+    "007-external-project-pt-02",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "001-research-and-baseline",
+    "007-external-project",
+    "iterations"
+  ],
+  "lastUpdated": "2026-04-25T09:49:47.524Z",
+  "specId": "007",
+  "folderSlug": "external-project-pt-02-iterations",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "001-research-and-baseline",
+    "007-external-project",
+    "research",
+    "007-external-project-pt-02"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

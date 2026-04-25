@@ -9,7 +9,8 @@
     "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/003-code-graph-edge-explanation-and-impact-uplift",
     "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/004-skill-advisor-affordance-evidence",
     "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/005-memory-causal-trust-display",
-    "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/006-docs-and-catalogs-rollup"
+    "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/006-docs-and-catalogs-rollup",
+    "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation"
   ],
   "manual": {
     "depends_on": [],
@@ -20,7 +21,7 @@
     "trigger_phrases": [
       "graph impact and affordance uplift",
       "010-graph-impact-and-affordance-uplift",
-      "gitnexus adoption",
+      "external-project adoption",
       "phase-dag runner",
       "detect_changes preflight",
       "blast radius uplift",
@@ -28,7 +29,7 @@
       "memory trust display",
       "012 plan",
       "graph impact uplift plan",
-      "gitnexus adoption plan",
+      "external-project adoption plan",
       "012 implementation summary"
     ],
     "key_topics": [
@@ -37,7 +38,7 @@
       "affordance",
       "uplift",
       "010-graph-impact-and-affordance-uplift",
-      "gitnexus",
+      "external-project",
       "adoption",
       "phase-dag",
       "runner",
@@ -50,24 +51,24 @@
     "key_files": [
       "spec.md",
       "decision-record.md",
+      "code_graph/lib/phase-runner.ts",
+      "code_graph/lib/diff-parser.ts",
+      "code_graph/handlers/detect-changes.ts",
       "handlers/index.ts",
+      "skill_advisor/lib/affordance-normalizer.ts",
       "formatters/search-results.ts",
       "lib/response/profile-formatters.ts",
       "mcp_server/README.md",
       "mcp_server/INSTALL_GUIDE.md",
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-git-nexus/research/007-git-nexus-pt-01/research.md",
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-git-nexus/research/007-git-nexus-pt-02/research.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-external-project/research/007-external-project-pt-01/research.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-external-project/research/007-external-project-pt-02/research.md",
       ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/merged-phase-map.md",
+      "code_graph/handlers/index.ts",
+      "code_graph/lib/code-graph-context.ts",
       ".opencode/skill/system-spec-kit/SKILL.md",
       ".opencode/skill/system-spec-kit/README.md",
       ".opencode/skill/system-spec-kit/mcp_server/README.md",
-      ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
-      ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
-      ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
-      "checklist.md",
-      "tasks.md",
-      "plan.md",
-      "implementation-summary.md"
+      ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md"
     ],
     "entities": [
       {
@@ -83,9 +84,33 @@
         "source": "derived"
       },
       {
+        "name": "phase-runner.ts",
+        "kind": "code",
+        "path": "code_graph/lib/phase-runner.ts",
+        "source": "derived"
+      },
+      {
+        "name": "diff-parser.ts",
+        "kind": "code",
+        "path": "code_graph/lib/diff-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "detect-changes.ts",
+        "kind": "code",
+        "path": "code_graph/handlers/detect-changes.ts",
+        "source": "derived"
+      },
+      {
         "name": "index.ts",
         "kind": "code",
         "path": "handlers/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "affordance-normalizer.ts",
+        "kind": "code",
+        "path": "skill_advisor/lib/affordance-normalizer.ts",
         "source": "derived"
       },
       {
@@ -119,45 +144,15 @@
         "source": "derived"
       },
       {
+        "name": "code-graph-context.ts",
+        "kind": "code",
+        "path": "code_graph/lib/code-graph-context.ts",
+        "source": "derived"
+      },
+      {
         "name": "SKILL.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "feature_catalog.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
-        "source": "derived"
-      },
-      {
-        "name": "manual_testing_playbook.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
-        "source": "derived"
-      },
-      {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": "checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "tasks.md",
-        "kind": "doc",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "plan.md",
-        "kind": "doc",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
@@ -179,6 +174,12 @@
         "source": "derived"
       },
       {
+        "name": "External Project",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Code Graph",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -186,12 +187,6 @@
       },
       {
         "name": "Skill Advisor",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Initialized Level",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -213,11 +208,17 @@
         "kind": "key_phrase",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Task Summary Each",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
-    "causal_summary": "Implement the converged pt-01 + pt-02 GitNexus research recommendations as a 6-sub-phase Level 3 implementation packet. pt-02 cross-checked pt-01 with an independent executor (cli-codex gpt-5.5 high fast) and reached the same core conclusions: GitNexus is **architectural evidence**, not a source transplant; Code Graph / Memory / Skill Advisor stay **separately owned**; route/tool/shape work is **deferred** until Public has the substrate.",
+    "causal_summary": "Implement the converged pt-01 + pt-02 External Project research recommendations as a 6-sub-phase Level 3 implementation packet. pt-02 cross-checked pt-01 with an independent executor (cli-codex gpt-5.5 high fast) and reached the same core conclusions: External Project is **architectural evidence**, not a source transplant; Code Graph / Memory / Skill Advisor stay **separately owned**; route/tool/shape work is **deferred** until Public has the substrate.",
     "created_at": "2026-04-25T10:47:55.572Z",
-    "last_save_at": "2026-04-25T10:47:55.572Z",
+    "last_save_at": "2026-04-25T13:51:23.157Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

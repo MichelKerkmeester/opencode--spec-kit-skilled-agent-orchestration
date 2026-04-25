@@ -4,7 +4,7 @@ You are an autonomous governance agent. **No conversation context** — this bri
 
 ## Your role
 
-You own the P0 governance gate for phase `010-graph-impact-and-affordance-uplift`. You audit the GitNexus license, articulate a clean-room rule, and publish an explicit allow-list of pattern-only adaptations vs forbidden source forms. **All downstream code work is blocked until you sign off.**
+You own the P0 governance gate for phase `010-graph-impact-and-affordance-uplift`. You audit the External Project license, articulate a clean-room rule, and publish an explicit allow-list of pattern-only adaptations vs forbidden source forms. **All downstream code work is blocked until you sign off.**
 
 ## Read first (in this exact order)
 
@@ -17,10 +17,10 @@ You own the P0 governance gate for phase `010-graph-impact-and-affordance-uplift
 4. **Phase-root context (read-only):**
    `.../010-graph-impact-and-affordance-uplift/{spec.md,decision-record.md}`
 5. **License source (your audit target):**
-   `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-git-nexus/external/gitnexus/LICENSE`
+   `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-external-project/external/LICENSE`
    `.../external/ARCHITECTURE.md` (license-relevant sections only)
 6. **Research basis:**
-   `.../research/007-git-nexus-pt-02/research.md` §12 (RISK-01 license contamination)
+   `.../research/007-external-project-pt-02/research.md` §12 (RISK-01 license contamination)
 
 ## Worktree + branch
 
@@ -39,14 +39,14 @@ You own the P0 governance gate for phase `010-graph-impact-and-affordance-uplift
 
 - Phase-root files: `012/{spec.md,plan.md,tasks.md,checklist.md,decision-record.md,implementation-summary.md}`
 - Any other sub-phase folder (002-006)
-- `external/gitnexus/` (read-only)
+- `external/` (read-only)
 - Any code under `mcp_server/`
 
 ## Hard rules
 
 1. **Read the LICENSE in full** — quote the exact license text verbatim in your ADR
 2. **Classify each in-scope adaptation pattern** explicitly: phase-DAG (002), edge metadata (003), blast_radius (003), affordance evidence (004), Memory trust display (005). Each is ALLOWED (clean-room, pattern-only), CONDITIONAL (specific constraints), or BLOCKED (requires external counsel).
-3. **Articulate the fail-closed rule:** any future PR copying GitNexus source code, schema text, or implementation logic verbatim is auto-rejected unless legal review explicitly approves.
+3. **Articulate the fail-closed rule:** any future PR copying External Project source code, schema text, or implementation logic verbatim is auto-rejected unless legal review explicitly approves.
 4. **Halt criterion:** if the LICENSE forbids the clean-room path needed by 012/002-005, **STOP** the entire 012 phase and write `HALT: 012 PHASE BLOCKED` at the top of `implementation-summary.md` with reasoning. Do not proceed to sign off.
 
 ## Success criteria

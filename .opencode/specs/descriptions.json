@@ -4083,12 +4083,12 @@
       "lastUpdated": "2026-04-24T15:56:56.017Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-git-nexus",
-      "description": "Feature Specification: GitNexus Research for Graph and Context Optimization",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-external-project",
+      "description": "Feature Specification: External Project Research for Graph and Context Optimization",
       "keywords": [
         "feature",
         "specification",
-        "gitnexus",
+        "external-project",
         "research",
         "graph",
         "context",

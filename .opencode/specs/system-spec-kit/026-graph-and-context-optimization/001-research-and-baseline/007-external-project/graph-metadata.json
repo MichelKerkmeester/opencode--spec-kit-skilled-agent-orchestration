@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-external-project",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-external-project",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "git nexus research",
+      "external-project code graph",
+      "code graph git nexus",
+      "memory causal graph external-project",
+      "skill graph external-project",
+      "007-external-project",
+      "git nexus research plan",
+      "external-project deep research",
+      "007-external-project plan",
+      "git nexus research tasks",
+      "007-external-project tasks",
+      "git nexus research checklist"
+    ],
+    "key_topics": [
+      "git",
+      "nexus",
+      "research",
+      "external-project",
+      "code",
+      "graph",
+      "memory",
+      "causal",
+      "skill",
+      "007-external-project",
+      "plan",
+      "deep"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "spec.md",
+      "external/README.md",
+      "external/ARCHITECTURE.md",
+      "external/RUNBOOK.md",
+      "external/TESTING.md",
+      "external/AGENTS.md",
+      "research/007-external-project-pt-01/research.md",
+      "research/007-external-project-pt-01/deep-research-dashboard.md",
+      "research/007-external-project-pt-01/findings-registry.json",
+      "research/007-external-project-pt-01/resource-map.md",
+      "implementation-summary.md",
+      "research/007-external-project-pt-01/iterations/iteration-001.md",
+      "research/007-external-project-pt-01/iterations/iteration-010.md"
+    ],
+    "entities": [
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "external/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "ARCHITECTURE.md",
+        "kind": "doc",
+        "path": "external/ARCHITECTURE.md",
+        "source": "derived"
+      },
+      {
+        "name": "RUNBOOK.md",
+        "kind": "doc",
+        "path": "external/RUNBOOK.md",
+        "source": "derived"
+      },
+      {
+        "name": "TESTING.md",
+        "kind": "doc",
+        "path": "external/TESTING.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "external/AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-dashboard.md",
+        "kind": "doc",
+        "path": "research/007-external-project-pt-01/deep-research-dashboard.md",
+        "source": "derived"
+      },
+      {
+        "name": "findings-registry.json",
+        "kind": "config",
+        "path": "research/007-external-project-pt-01/findings-registry.json",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-001.md",
+        "kind": "doc",
+        "path": "research/007-external-project-pt-01/iterations/iteration-001.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-010.md",
+        "kind": "doc",
+        "path": "research/007-external-project-pt-01/iterations/iteration-010.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Context Optimization",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Graph",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Graph",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Deep Research Closeout",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Public Code Graph",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet seeds a future deep-research flow over the downloaded External Project project in this `external/` folder. The research should determine whether External Project patterns can be adopted, adapted, or rejected for three Public systems: the Code Graph package, Spec Kit Memory's causal graph, and the emerging Skill Graph surface.",
+    "created_at": "2026-04-25T06:35:02.794Z",
+    "last_save_at": "2026-04-25T06:39:18.527Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

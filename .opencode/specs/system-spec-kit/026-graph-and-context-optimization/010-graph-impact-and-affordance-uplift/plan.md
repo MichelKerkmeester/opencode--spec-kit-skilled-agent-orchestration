@@ -5,7 +5,7 @@ description: "6-sub-phase plan implementing converged pt-01 + pt-02 research. Li
 trigger_phrases:
   - "012 plan"
   - "graph impact uplift plan"
-  - "gitnexus adoption plan"
+  - "external-project adoption plan"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -30,7 +30,7 @@ Implement converged pt-01 + pt-02 research as 6 owner-scoped sub-phases. Sequenc
 ## 2. SUB-PHASE PLAN
 
 ### 012/001 — clean-room-license-audit
-- **Goal:** Decision-record ADR confirming `external/gitnexus/LICENSE` posture; clean-room rule articulated; allow-list of pattern-only adaptations vs forbidden source forms.
+- **Goal:** Decision-record ADR confirming `external/LICENSE` posture; clean-room rule articulated; allow-list of pattern-only adaptations vs forbidden source forms.
 - **Output:** `decision-record.md` ADR; halt criterion if license forbids reuse and clean-room cannot satisfy adaptation needs.
 - **Effort:** S (1-2h)
 - **Dependencies:** None.

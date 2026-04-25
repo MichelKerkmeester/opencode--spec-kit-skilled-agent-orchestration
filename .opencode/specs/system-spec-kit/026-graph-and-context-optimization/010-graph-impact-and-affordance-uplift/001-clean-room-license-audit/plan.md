@@ -1,6 +1,6 @@
 ---
 title: "Plan: Clean-Room License Audit (012/001)"
-description: "Steps to read external/gitnexus/LICENSE and produce the clean-room allow-list ADR."
+description: "Steps to read external/LICENSE and produce the clean-room allow-list ADR."
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -10,7 +10,7 @@ contextType: "implementation"
 
 ## Steps
 
-1. Read `external/gitnexus/LICENSE` in full
+1. Read `external/LICENSE` in full
 2. Read license-relevant sections of `external/ARCHITECTURE.md` and `external/README.md`
 3. Classify each in-scope adaptation pattern:
    - Phase-DAG runner (002)

@@ -19,7 +19,7 @@ You add `reason`/`step` explanation fields to code-graph edge metadata and enric
 5. **Sub-phase 002 status (you depend on it for structural-indexer.ts):**
    `.../012/002-code-graph-phase-runner-and-detect-changes/implementation-summary.md` — should be populated; you may need to **rebase your branch onto 002 before merge**
 6. **Research basis:**
-   `.../research/007-git-nexus-pt-02/research.md` §4 (Code Graph findings — Confidence edges, Explanation gap, Public blast radius rows), §11 Packet 2, §12 RISK-07
+   `.../research/007-external-project-pt-02/research.md` §4 (Code Graph findings — Confidence edges, Explanation gap, Public blast radius rows), §11 Packet 2, §12 RISK-07
 7. **Existing Public code (READ before EDIT):**
    - `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:80-100` (metadata writer at lines 85-94 per pt-02 verification)
    - `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts` (lines 862-909 for `computeBlastRadius`; 978-981 for relationship-query output)

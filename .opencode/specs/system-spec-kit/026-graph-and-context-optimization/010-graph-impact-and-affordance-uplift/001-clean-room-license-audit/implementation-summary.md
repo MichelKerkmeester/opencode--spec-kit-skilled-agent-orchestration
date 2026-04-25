@@ -49,12 +49,12 @@ _memory:
 
 ## License Posture
 
-The upstream `external/LICENSE` (path corrected from the brief's `external/gitnexus/LICENSE` per pt-02 evidence chain) is **PolyForm Noncommercial 1.0.0**, identified by the pt-02 deep-research executor (`cli-codex` model `gpt-5.5`, reasoning `high`, service tier `fast`) in iteration 9 [SOURCE: research/007-git-nexus-pt-02/iterations/iteration-009.md:10].
+The upstream `external/LICENSE` (path corrected from the brief's `external/LICENSE` per pt-02 evidence chain) is **PolyForm Noncommercial 1.0.0**, identified by the pt-02 deep-research executor (`cli-codex` model `gpt-5.5`, reasoning `high`, service tier `fast`) in iteration 9 [SOURCE: research/007-external-project-pt-02/iterations/iteration-009.md:10].
 
 | Attribute | Value |
 |-----------|-------|
 | Licence identity | PolyForm Noncommercial 1.0.0 |
-| Source-of-record path | `.../007-git-nexus/external/LICENSE` (gitignored; not present in detached worktree checkouts) |
+| Source-of-record path | `.../007-external-project/external/LICENSE` (gitignored; not present in detached worktree checkouts) |
 | Canonical text source | `https://polyformproject.org/licenses/noncommercial/1.0.0` (reproduced verbatim in `decision-record.md`) |
 | Permitted purposes | Personal study, hobby, education, research, charitable / public-safety / public-health / environmental / government use |
 | Forbidden purposes | All commercial use of upstream source, schema text, or implementation logic |
@@ -84,7 +84,7 @@ Full classification rationale and the verbatim LICENSE quote live in `decision-r
 
 ## Fail-Closed Rule (binding for all 012 PRs)
 
-> **Any PR that copies GitNexus source code, schema text, or implementation-specific logic — verbatim, transliterated, or paraphrased to the point of substantial similarity — is auto-rejected unless an explicit external legal review approves it. The author bears the burden of proof; reviewers default to rejection. There is no "small-snippet exception" or "obvious-implementation exception".**
+> **Any PR that copies External Project source code, schema text, or implementation-specific logic — verbatim, transliterated, or paraphrased to the point of substantial similarity — is auto-rejected unless an explicit external legal review approves it. The author bears the burden of proof; reviewers default to rejection. There is no "small-snippet exception" or "obvious-implementation exception".**
 
 Enforcement (fully specified in `decision-record.md`):
 1. Every 012 PR description MUST include a "Clean-room attestation" line.
@@ -123,7 +123,7 @@ Phase-root files (`012/spec.md`, `012/plan.md`, `012/tasks.md`, `012/checklist.m
 The audit ran as a single autonomous pass under the clean-room rule:
 
 1. Read sub-phase spec/plan/tasks/checklist + phase-root spec/decision-record.
-2. Discovered that `external/` is gitignored (`.gitignore:76`) and therefore absent from detached-HEAD worktrees. The brief's referenced `external/gitnexus/LICENSE` path also disagrees with the pt-02 research evidence chain, which consistently cites `external/LICENSE`.
+2. Discovered that `external/` is gitignored (`.gitignore:76`) and therefore absent from detached-HEAD worktrees. The brief's referenced `external/LICENSE` path also disagrees with the pt-02 research evidence chain, which consistently cites `external/LICENSE`.
 3. Reconstructed the licence identity (PolyForm Noncommercial 1.0.0) from pt-02 iteration 9, where a `cli-codex gpt-5.5 high fast` executor read `external/LICENSE:1`, `:19`, `:31` and recorded the identity into the deltas/findings registry.
 4. Reproduced the canonical PolyForm Noncommercial 1.0.0 text published by the PolyForm Project as the verbatim quote, with explicit transparency that any deviation discovered in the actual file (e.g. an additional `Required Notice:` header) re-opens this ADR.
 5. Classified each 002–005 adaptation pattern against the licence clauses and the clean-room definition.
@@ -138,7 +138,7 @@ The audit ran as a single autonomous pass under the clean-room rule:
 |----------|-----|
 | Reproduce canonical PolyForm Noncommercial 1.0.0 text in the ADR | The detached worktree does not contain `external/`. Canonical text matches the licence identity established by the pt-02 executor; deviations re-open the ADR. |
 | Sign off as APPROVED rather than HALT | The licence permits clean-room reimplementation. The brief's HALT criterion is reserved for "LICENSE forbids the clean-room path". Worktree absence of the file is an infrastructure note, not a licence-forbid signal. |
-| Use `external/LICENSE` (no `gitnexus/` subdir) as the source-of-record path | pt-02 evidence chain consistently cites this path. Brief's `external/gitnexus/LICENSE` is normalized in this ADR. |
+| Use `external/LICENSE` (no `external-project/` subdir) as the source-of-record path | pt-02 evidence chain consistently cites this path. Brief's `external/LICENSE` is normalized in this ADR. |
 | Add a binding fail-closed rule with reviewer-side enforcement | Audit alone is insufficient; downstream PRs need a default-reject posture and an attestation contract. Aligns with phase-root ADR-012-001 consequences. |
 | Mark 003 edge-metadata pattern CONDITIONAL | Public's column shape must derive from its own ADR rather than the upstream `relationships` schema to keep the boundary defensible. |
 
@@ -179,7 +179,7 @@ If the strict run flags any issue, this implementation-summary and the underlyin
 ## Known Limitations
 
 1. **Verbatim text reproduced from canonical source, not the actual `external/LICENSE` file.** The detached-HEAD worktree does not contain the gitignored `external/` directory. The reproduction is from the canonical PolyForm Noncommercial 1.0.0 text published by the PolyForm Project, identified-as-applied by the pt-02 research executor in iteration 9. Any reviewer with direct access to `external/LICENSE` who finds a deviation (e.g. a `Required Notice:` line, modified clause, or different licence version) MUST re-open this ADR.
-2. **Path correction not propagated upstream.** The agent brief refers to `external/gitnexus/LICENSE` while the pt-02 evidence consistently cites `external/LICENSE`. The orchestrator should fix this in any future briefs or scaffolds.
+2. **Path correction not propagated upstream.** The agent brief refers to `external/LICENSE` while the pt-02 evidence consistently cites `external/LICENSE`. The orchestrator should fix this in any future briefs or scaffolds.
 3. **External legal counsel sign-off is not held by this ADR.** The clean-room verdict relies on a structural reading of the PolyForm Noncommercial 1.0.0 clauses; it does not constitute legal advice. Lifting the clean-room boundary (e.g. to allow source vendoring) requires external counsel review recorded as a superseding ADR.
 4. **`validate.sh --strict` is operator-pending.** The autonomous-worktree sandbox denies `bash`/script invocations. Sub-phase sign-off is conditional on the orchestrator running the strict validation post-merge-prep and amending this summary if any issue surfaces.
 5. **Commit is operator-pending.** The same sandbox denies `git add` / `git commit`. Deliverables are written to disk in the worktree but unstaged. The orchestrator should run, from the worktree root, the equivalent of: `git add .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/001-clean-room-license-audit/{decision-record.md,implementation-summary.md,checklist.md,tasks.md}` and then `git commit -m "feat(012/001): clean-room license audit — APPROVED per LICENSE assessment"`.
@@ -191,5 +191,5 @@ If the strict run flags any issue, this implementation-summary and the underlyin
 - `decision-record.md` — verbatim LICENSE text + allow-list table + fail-closed rule + halt analysis (this folder)
 - `spec.md`, `plan.md`, `tasks.md`, `checklist.md` (this folder)
 - Phase-root: `012/spec.md` §6 (risks), `012/decision-record.md` ADR-012-001
-- pt-02 risk basis: `research/007-git-nexus-pt-02/iterations/iteration-009.md:3,10,18` and `deltas/iter-009.jsonl`
+- pt-02 risk basis: `research/007-external-project-pt-02/iterations/iteration-009.md:3,10,18` and `deltas/iter-009.jsonl`
 - Canonical licence text: `https://polyformproject.org/licenses/noncommercial/1.0.0`

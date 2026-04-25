@@ -1,4 +1,4 @@
-# Planning Review: Phase 012 GitNexus Adoption
+# Planning Review: Phase 012 External Project Adoption
 
 You are reviewing a freshly-scaffolded implementation phase for **planning mistakes** (logical inconsistencies, scope drift, broken cross-references, contradictory ADRs, sub-phase ordering errors, out-of-scope content, false claims about Public's current code state, missing dependencies).
 
@@ -7,8 +7,8 @@ You are **NOT** reviewing for code quality (no code shipped yet) — you are rev
 ## Read these in order
 
 ### 1. Source research (the ground truth that 012 is supposed to implement)
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-git-nexus/research/007-git-nexus-pt-01/research.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-git-nexus/research/007-git-nexus-pt-02/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-external-project/research/007-external-project-pt-01/research.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-external-project/research/007-external-project-pt-02/research.md`
 
 ### 2. The plan file (what was approved)
 - `/Users/michelkerkmeester/.claude/plans/create-new-phase-with-zazzy-lighthouse.md`

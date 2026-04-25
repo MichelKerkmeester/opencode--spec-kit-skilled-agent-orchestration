@@ -17,7 +17,7 @@ You add display-only trust badges (`confidence`, `extractionAge`, `lastAccessAge
 4. **License clearance:**
    `.../012/001-clean-room-license-audit/implementation-summary.md` — must show APPROVED. If HALT, **STOP**.
 5. **Research basis:**
-   `.../research/007-git-nexus-pt-02/research.md` §5 (Memory findings), §11 Packet 4, §12 RISK-06
+   `.../research/007-external-project-pt-02/research.md` §5 (Memory findings), §11 Packet 4, §12 RISK-06
 6. **Existing Public code (READ before EDIT):**
    - `.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts` (lines 82-94 schema — DO NOT modify; columns: `strength`, `evidence`, `source_anchor`, `target_anchor`, `extracted_at`, `created_by`, `last_accessed`)
    - `.opencode/skill/system-spec-kit/mcp_server/lib/search/causal-boost.ts` (lines 327-338 `computeTraversalFreshnessFactor` decay logic — DO NOT modify)

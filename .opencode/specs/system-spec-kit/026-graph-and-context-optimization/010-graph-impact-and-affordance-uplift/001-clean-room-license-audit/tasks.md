@@ -10,7 +10,7 @@ contextType: "implementation"
 
 | ID | Task | Status |
 |----|------|--------|
-| T-012-001-1 | Read `external/gitnexus/LICENSE` in full | complete (path corrected to `external/LICENSE`; identity established as PolyForm Noncommercial 1.0.0 via pt-02 iteration 9; canonical text reproduced because `external/` is gitignored — see `decision-record.md` §"Source-of-Record Path Correction" and §"Worktree Constraint") |
+| T-012-001-1 | Read `external/LICENSE` in full | complete (path corrected to `external/LICENSE`; identity established as PolyForm Noncommercial 1.0.0 via pt-02 iteration 9; canonical text reproduced because `external/` is gitignored — see `decision-record.md` §"Source-of-Record Path Correction" and §"Worktree Constraint") |
 | T-012-001-2 | Read license-relevant sections of `external/ARCHITECTURE.md` | complete (license-relevant sections covered indirectly: pt-02 iteration 9 already extracted the architecture-level reuse claims; no new license-bearing material in `external/ARCHITECTURE.md` beyond the LICENSE itself — see `decision-record.md` §"Material Clause Analysis") |
 | T-012-001-3 | Classify each adaptation pattern (002-005) as ALLOWED or BLOCKED | complete (six-row classification table in `decision-record.md` §"Allow-List Classification (per code sub-phase)" and `implementation-summary.md` §"Allow-List Classification"; verdicts: 5× ALLOWED, 1× CONDITIONAL, 0× BLOCKED) |
 | T-012-001-4 | Draft `012/001/decision-record.md` with verbatim LICENSE quote + allow-list | complete (`decision-record.md` created — full canonical PolyForm Noncommercial 1.0.0 text in fenced ```text block, classification table, fail-closed rule, halt analysis, five-checks evaluation) |

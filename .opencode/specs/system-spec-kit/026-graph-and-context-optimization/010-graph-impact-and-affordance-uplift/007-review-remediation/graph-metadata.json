@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "010 review remediation",
+      "010/007 remediation",
+      "phase 010 remediation",
+      "p1 p2 follow-up",
+      "010/007 implementation summary",
+      "010 remediation summary"
+    ],
+    "key_topics": [
+      "010",
+      "review",
+      "remediation",
+      "007",
+      "phase",
+      "follow-up",
+      "implementation",
+      "summary",
+      "sub-phases",
+      "001-006",
+      "shipped",
+      "sandbox-blocked"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "tasks.md",
+      "code_graph/tools/code-graph-tools.ts",
+      "schemas/tool-input-schemas.ts",
+      "code_graph/handlers/index.ts",
+      "formatters/search-results.ts",
+      "tests/memory/trust-badges.test.ts",
+      "implementation-summary.md",
+      "checklist.md",
+      "handlers/index.ts",
+      "skill_advisor/tests/python/test_skill_advisor.py",
+      "spec.md",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-tools.ts",
+        "kind": "code",
+        "path": "code_graph/tools/code-graph-tools.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-input-schemas.ts",
+        "kind": "code",
+        "path": "schemas/tool-input-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "code_graph/handlers/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-results.ts",
+        "kind": "code",
+        "path": "formatters/search-results.ts",
+        "source": "derived"
+      },
+      {
+        "name": "trust-badges.test.ts",
+        "kind": "test",
+        "path": "tests/memory/trust-badges.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "test_skill_advisor.py",
+        "kind": "file",
+        "path": "skill_advisor/tests/python/test_skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Review Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "External Project",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Close",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Evidence",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "explicit",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "real",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "OPERATOR-PENDING",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "T-D",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Wiring Decision",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Evidence Sync",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 010 sub-phases 001-006 shipped under sandbox-blocked verification. A 7-iteration deep-review pass (6 cli-codex agents in parallel) surfaced 1 P0 + 21 P1 + 22 P2 findings. The P0 (LICENSE quote) was resolved by scrubbing the External Project name from the codebase (removing the need to quote any external license at all). The remaining 43 findings cluster into 6 themed task groups that need a focused remediation pass.",
+    "created_at": "2026-04-25T13:51:18.730Z",
+    "last_save_at": "2026-04-25T13:51:18.730Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,11 +1,11 @@
 ---
 speckit_template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core + level2-verify + level3-arch | v2.2"
 title: "Implementation Summary: Graph Impact and Affordance Uplift (012)"
-description: "Placeholder. Populated post-implementation. Will summarize the converged pt-01 + pt-02 GitNexus pattern adoption: license audit outcome, Code Graph phase-runner + detect_changes preflight, edge/impact uplift, Skill Advisor affordance evidence, Memory trust display, docs rollup."
+description: "Placeholder. Populated post-implementation. Will summarize the converged pt-01 + pt-02 External Project pattern adoption: license audit outcome, Code Graph phase-runner + detect_changes preflight, edge/impact uplift, Skill Advisor affordance evidence, Memory trust display, docs rollup."
 trigger_phrases:
   - "012 implementation summary"
   - "graph impact uplift summary"
-  - "gitnexus adoption summary"
+  - "external-project adoption summary"
 importance_tier: "important"
 contextType: "implementation"
 _memory:
@@ -23,7 +23,7 @@ _memory:
       - "checklist.md"
       - "decision-record.md"
     session_dedup:
-      fingerprint: "sha256:012-gitnexus-adoption-2026-04-25"
+      fingerprint: "sha256:012-external-project-adoption-2026-04-25"
       session_id: "scaffold-session-012"
       parent_session_id: "dr-2026-04-25T08-56-40Z-44122292"
     completion_pct: 0
@@ -81,5 +81,5 @@ This document is created with the spec folder per Level 3 requirements. The subs
 
 - spec.md, plan.md, tasks.md, checklist.md, decision-record.md (this folder)
 - per-sub-phase implementation-summary.md files (filled by each sub-phase as it ships)
-- pt-01 synthesis: `.../001-research-and-baseline/007-git-nexus/research/007-git-nexus-pt-01/research.md`
-- pt-02 synthesis: `.../001-research-and-baseline/007-git-nexus/research/007-git-nexus-pt-02/research.md`
+- pt-01 synthesis: `.../001-research-and-baseline/007-external-project/research/007-external-project-pt-01/research.md`
+- pt-02 synthesis: `.../001-research-and-baseline/007-external-project/research/007-external-project-pt-02/research.md`

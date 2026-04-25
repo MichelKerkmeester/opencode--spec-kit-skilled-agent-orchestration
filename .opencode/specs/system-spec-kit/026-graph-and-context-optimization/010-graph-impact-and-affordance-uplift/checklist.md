@@ -16,7 +16,7 @@ contextType: "implementation"
 - [ ] Sub-phase 001 ADR records license assessment with explicit decision
 - [ ] Clean-room rule articulated and signed off
 - [ ] Allow-list of pattern-only adaptations published in 001 decision-record.md
-- [ ] No GitNexus source code, schema text, or implementation logic copied into Public
+- [ ] No External Project source code, schema text, or implementation logic copied into Public
 
 ---
 

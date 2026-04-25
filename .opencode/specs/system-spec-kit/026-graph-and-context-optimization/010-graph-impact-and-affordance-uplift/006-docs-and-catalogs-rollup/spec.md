@@ -60,7 +60,7 @@ _memory:
 - `.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` — verification steps for new behaviors
 - `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` — top-level index reflecting new entries
 - `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` — top-level index reflecting new entries
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/merged-phase-map.md` — record 012 as the GitNexus adoption phase
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/merged-phase-map.md` — record 012 as the External Project adoption phase
 
 ### Out of Scope (handled inline by 002-005)
 - Per-packet `feature_catalog/{NN--category}/` entries — written by their respective code sub-phases

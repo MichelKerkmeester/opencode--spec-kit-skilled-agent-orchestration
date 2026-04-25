@@ -31,7 +31,7 @@ Each sub-phase carries its own detailed `tasks.md`. This file is the phase-level
 - [ ] **T-012-X1** — Run `validate.sh --strict` after each sub-phase scaffold completes
 - [ ] **T-012-X2** — Run `backfill-research-metadata.js --apply` after sub-phase scaffolds land
 - [ ] **T-012-X3** — Refresh `026/graph-metadata.json` to include `012` in `children_ids` (via `generate-context.js` on 026 root)
-- [ ] **T-012-X4** — Update `merged-phase-map.md` to record 012 as the GitNexus adoption phase
+- [ ] **T-012-X4** — Update `merged-phase-map.md` to record 012 as the External Project adoption phase
 - [ ] **T-012-X5** — Phase-completion deep-review pass via `/spec_kit:deep-review:auto` after all sub-phases ship
 
 ---

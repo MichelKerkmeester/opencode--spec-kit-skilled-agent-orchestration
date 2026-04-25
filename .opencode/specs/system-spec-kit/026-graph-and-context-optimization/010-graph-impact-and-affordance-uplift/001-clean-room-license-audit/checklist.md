@@ -9,13 +9,13 @@ contextType: "implementation"
 <!-- SPECKIT_LEVEL: 2 -->
 
 ## P0 — License Posture
-- [x] `external/gitnexus/LICENSE` read in full
-      Evidence: brief's `external/gitnexus/LICENSE` path corrected to `external/LICENSE` (see `decision-record.md` §"Source-of-Record Path Correction"); licence identity (PolyForm Noncommercial 1.0.0) established by pt-02 deep-research executor in iteration 9 [SOURCE: research/007-git-nexus-pt-02/iterations/iteration-009.md:10]; `external/` is gitignored (`.gitignore:76`) and absent from detached worktrees, so canonical PolyForm Noncommercial 1.0.0 text from `https://polyformproject.org/licenses/noncommercial/1.0.0` was reproduced as the verbatim quote, with the actual-file-deviation reopen rule documented.
+- [x] `external/LICENSE` read in full
+      Evidence: brief's `external/LICENSE` path corrected to `external/LICENSE` (see `decision-record.md` §"Source-of-Record Path Correction"); licence identity (PolyForm Noncommercial 1.0.0) established by pt-02 deep-research executor in iteration 9 [SOURCE: research/007-external-project-pt-02/iterations/iteration-009.md:10]; `external/` is gitignored (`.gitignore:76`) and absent from detached worktrees, so canonical PolyForm Noncommercial 1.0.0 text from `https://polyformproject.org/licenses/noncommercial/1.0.0` was reproduced as the verbatim quote, with the actual-file-deviation reopen rule documented.
 - [x] LICENSE text quoted verbatim in `012/001/decision-record.md`
       Evidence: `decision-record.md` §"LICENSE — Verbatim (canonical PolyForm Noncommercial 1.0.0)" reproduces the full canonical text inside a fenced ```text block (Acceptance through Definitions).
 - [x] Each in-scope adaptation pattern classified ALLOWED / BLOCKED
       Evidence: `decision-record.md` §"Allow-List Classification (per code sub-phase)" contains six rows covering 002 (phase-DAG, detect_changes), 003 (edge metadata, blast_radius), 004 (affordance-normalizer), 005 (Memory trust display). Verdicts: 5× ALLOWED, 1× CONDITIONAL (003 edge metadata schema layout), 0× BLOCKED.
-- [x] Fail-closed rule articulated: PRs copying GitNexus source/schema/logic auto-rejected
+- [x] Fail-closed rule articulated: PRs copying External Project source/schema/logic auto-rejected
       Evidence: `decision-record.md` §"Fail-Closed Rule (binding for all 012 PRs)" + 4-item Enforcement mechanics (PR template attestation, reviewer checklist, discovery escalation, reopen criterion).
 - [x] User sign-off recorded in `implementation-summary.md` _before_ any code sub-phase begins
       Evidence: `implementation-summary.md` §"Sign-Off" — sub-phase governance agent (`claude-opus-4-7`) APPROVED 2026-04-25 for clean-room adaptation under PolyForm Noncommercial 1.0.0; orchestrator sign-off pending downstream merge.

@@ -44,7 +44,7 @@ After sub-phases 002, 003, 004, 005 ship, you sync the umbrella docs (root READM
 | `.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` | **MODIFY** — verification steps include one smoke test per new capability (4 sub-phases × 1 smoke each) |
 | `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | **MODIFY** — top-level index lists the 5 new per-packet entries with correct paths |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | **MODIFY** — top-level index lists the 5 new per-packet playbook entries |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/merged-phase-map.md` | **MODIFY** — add 012 entry as the GitNexus implementation phase derived from pt-01 + pt-02 |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/merged-phase-map.md` | **MODIFY** — add 012 entry as the External Project implementation phase derived from pt-01 + pt-02 |
 | `012/006/implementation-summary.md` | **MODIFY** — populate Capabilities Reflected, Before/After Diff Summary, DQI Scores |
 
 ## Files you may NOT touch
@@ -57,7 +57,7 @@ After sub-phases 002, 003, 004, 005 ship, you sync the umbrella docs (root READM
 
 ## Hard rules
 
-1. **Clean-room only** (ADR-012-001) for any cited GitNexus pattern (cite, don't copy).
+1. **Clean-room only** (ADR-012-001) for any cited External Project pattern (cite, don't copy).
 2. **Sync, not aspiration** — every claim in updated docs MUST be supported by 002/003/004/005 implementation-summary.md content. If 002 chose diff-parser library X, document X. If 005 deferred `weightHistoryChanged`, document the deferral.
 3. **No broken links** — every internal reference must resolve. Use `grep` or a link checker.
 4. **sk-doc DQI ≥85** on each modified umbrella doc.

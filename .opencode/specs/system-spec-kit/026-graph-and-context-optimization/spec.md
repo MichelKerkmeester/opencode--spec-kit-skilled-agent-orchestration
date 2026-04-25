@@ -117,7 +117,7 @@ Provide one canonical 10-wrapper active map after two topical consolidation pass
 | `007-code-graph/` | Code graph upgrades, self-contained package migration, context/scan scope, and code-graph hook/advisor refinement | Five child phases (last two added in second pass from former `009-hook-package/013` and `009-hook-package/015`). |
 | `008-skill-advisor/` | Skill advisor system: search/routing tuning, advisor graph, phrase boosters, smart-router, advisor docs/standards, hook surface, daemon unification, plugin hardening, and hook improvements | 11 child phases (six absorbed from former `006-search-routing-advisor/` plus five from former `009-hook-package/{001,002,008,009,014}`). |
 | `009-hook-parity/` | Runtime hook parity across Claude / Codex / Copilot / OpenCode plugin: schema fixes, wrapper wiring fixes, parity remediations | Eight child phases renumbered 001-008 after second-pass migrations out. Renamed from `010-hook-parity/` during the post-push topology adjustment. |
-| `010-graph-impact-and-affordance-uplift/` | GitNexus pt-01 + pt-02 adoption: phase-DAG runner, edge explanation/impact uplift, advisor affordance evidence, memory causal trust display, docs/catalogs rollup | Six child phases. Owns memory-causal-trust display documentation under `005-memory-causal-trust-display/`. |
+| `010-graph-impact-and-affordance-uplift/` | External Project pt-01 + pt-02 adoption: phase-DAG runner, edge explanation/impact uplift, advisor affordance evidence, memory causal trust display, docs/catalogs rollup | Six child phases. Owns memory-causal-trust display documentation under `005-memory-causal-trust-display/`. |
 
 ### Current State Model
 
@@ -146,7 +146,7 @@ Research convergence in the archived `001-research-and-baseline` corpus means sy
 | `003-continuity-memory-runtime` | `007-code-graph` | Continuity and memory surfaces are stable enough for graph-package and graph-context work. | Child packets covering memory/runtime are preserved with metadata aliases. |
 | `007-code-graph` | `008-skill-advisor` | Code-graph upgrades and hook/advisor refinement land before advisor system unification. | Second-pass code-graph children (`004`, `005`) carry migration aliases from `009-hook-package/{013,015}`. |
 | `008-skill-advisor` | `009-hook-parity` | Advisor consolidation precedes runtime hook parity work that touches advisor + memory hooks. | `008-skill-advisor` has 11 children; `009-hook-parity` retains migration aliases for `009-hook-package`, `010-hook-package`, and `010-hook-parity`. |
-| `009-hook-parity` | `010-graph-impact-and-affordance-uplift` | Runtime hook parity precedes the GitNexus adoption uplift program. | `010-graph-impact-and-affordance-uplift` consumes graph and advisor surfaces in display-only mode and houses the causal-graph display documentation. |
+| `009-hook-parity` | `010-graph-impact-and-affordance-uplift` | Runtime hook parity precedes the External Project adoption uplift program. | `010-graph-impact-and-affordance-uplift` consumes graph and advisor surfaces in display-only mode and houses the causal-graph display documentation. |
 <!-- /ANCHOR:phase-map -->
 
 ---

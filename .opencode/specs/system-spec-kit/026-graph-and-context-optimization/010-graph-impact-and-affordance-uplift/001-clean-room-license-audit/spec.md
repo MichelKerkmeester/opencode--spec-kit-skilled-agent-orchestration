@@ -1,11 +1,11 @@
 ---
 speckit_template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2"
 title: "Feature Specification: Clean-Room License Audit (012/001)"
-description: "P0 governance gate. Audit external/gitnexus/LICENSE; record clean-room rule and pattern-allow-list ADR. Blocks all 012 code sub-phases until signed off."
+description: "P0 governance gate. Audit external/LICENSE; record clean-room rule and pattern-allow-list ADR. Blocks all 012 code sub-phases until signed off."
 trigger_phrases:
   - "012 license audit"
   - "clean room license"
-  - "gitnexus license"
+  - "external-project license"
 importance_tier: "important"
 contextType: "implementation"
 _memory:
@@ -14,7 +14,7 @@ _memory:
     last_updated_at: "2026-04-25T11:00:00Z"
     last_updated_by: "claude-orchestrator"
     recent_action: "Initialized sub-phase scaffold"
-    next_safe_action: "Read external/gitnexus/LICENSE and external/ARCHITECTURE.md; draft ADR"
+    next_safe_action: "Read external/LICENSE and external/ARCHITECTURE.md; draft ADR"
     blockers: []
     key_files:
       - "spec.md"
@@ -48,7 +48,7 @@ _memory:
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-pt-02 §12 ranks license contamination from direct GitNexus reuse as a P0 risk. No formal license audit of `external/gitnexus/` has been performed. Code work in 012/002-005 cannot safely begin without a recorded license posture.
+pt-02 §12 ranks license contamination from direct External Project reuse as a P0 risk. No formal license audit of `external/` has been performed. Code work in 012/002-005 cannot safely begin without a recorded license posture.
 
 ### Purpose
 Produce a single ADR in this sub-phase's `decision-record.md` (or surfaced into 012 phase-root `decision-record.md` ADR-012-001) confirming the license posture and explicit allow-list of pattern-only adaptations.
@@ -58,7 +58,7 @@ Produce a single ADR in this sub-phase's `decision-record.md` (or surfaced into 
 ## 3. SCOPE
 
 ### In Scope
-- Read `external/gitnexus/LICENSE`
+- Read `external/LICENSE`
 - Read `external/ARCHITECTURE.md` (license-relevant sections)
 - Record license posture decision
 - Articulate clean-room adaptation rule
@@ -82,9 +82,9 @@ Produce a single ADR in this sub-phase's `decision-record.md` (or surfaced into 
 
 | ID | Requirement |
 |----|-------------|
-| R-001-1 | LICENSE file at `external/gitnexus/LICENSE` is read in full and quoted verbatim in the audit ADR |
+| R-001-1 | LICENSE file at `external/LICENSE` is read in full and quoted verbatim in the audit ADR |
 | R-001-2 | Audit ADR explicitly classifies each in-scope adaptation pattern (phase-DAG, edge metadata, blast_radius enrichment, affordance evidence, trust display) as ALLOWED (clean-room) or BLOCKED (requires external review) |
-| R-001-3 | Audit ADR articulates fail-closed rule: any future PR copying GitNexus source/schema/logic verbatim is auto-rejected |
+| R-001-3 | Audit ADR articulates fail-closed rule: any future PR copying External Project source/schema/logic verbatim is auto-rejected |
 | R-001-4 | If LICENSE forbids the clean-room path needed by 012/002-005, this sub-phase HALTS the entire phase and escalates to user |
 
 ---
@@ -102,5 +102,5 @@ Produce a single ADR in this sub-phase's `decision-record.md` (or surfaced into 
 ## 6. REFERENCES
 - 012/spec.md §6 (risks) — license contamination row
 - 012/decision-record.md ADR-012-001 (clean-room rule)
-- pt-02 §12 RISK-01: `.../007-git-nexus/research/007-git-nexus-pt-02/research.md`
-- External source: `external/gitnexus/LICENSE`
+- pt-02 §12 RISK-01: `.../007-external-project/research/007-external-project-pt-02/research.md`
+- External source: `external/LICENSE`

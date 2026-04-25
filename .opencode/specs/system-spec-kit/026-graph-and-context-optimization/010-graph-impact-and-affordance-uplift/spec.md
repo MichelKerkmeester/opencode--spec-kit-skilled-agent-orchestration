@@ -1,11 +1,11 @@
 ---
 speckit_template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2"
 title: "Feature Specification: Graph Impact and Affordance Uplift (012)"
-description: "Implement the converged pt-01 + pt-02 GitNexus research recommendations across Code Graph, Memory causal graph, and Skill Advisor — selective adaptation only, clean-room, with strict ownership boundaries."
+description: "Implement the converged pt-01 + pt-02 External Project research recommendations across Code Graph, Memory causal graph, and Skill Advisor — selective adaptation only, clean-room, with strict ownership boundaries."
 trigger_phrases:
   - "graph impact and affordance uplift"
   - "010-graph-impact-and-affordance-uplift"
-  - "gitnexus adoption"
+  - "external-project adoption"
   - "phase-dag runner"
   - "detect_changes preflight"
   - "blast radius uplift"
@@ -29,7 +29,7 @@ _memory:
       - "decision-record.md"
       - "implementation-summary.md"
     session_dedup:
-      fingerprint: "sha256:012-gitnexus-adoption-2026-04-25"
+      fingerprint: "sha256:012-external-project-adoption-2026-04-25"
       session_id: "scaffold-session-012"
       parent_session_id: "dr-2026-04-25T08-56-40Z-44122292"
     completion_pct: 5
@@ -47,7 +47,7 @@ _memory:
 
 ## EXECUTIVE SUMMARY
 
-Implement the converged pt-01 + pt-02 GitNexus research recommendations as a 6-sub-phase Level 3 implementation packet. pt-02 cross-checked pt-01 with an independent executor (cli-codex gpt-5.5 high fast) and reached the same core conclusions: GitNexus is **architectural evidence**, not a source transplant; Code Graph / Memory / Skill Advisor stay **separately owned**; route/tool/shape work is **deferred** until Public has the substrate.
+Implement the converged pt-01 + pt-02 External Project research recommendations as a 6-sub-phase Level 3 implementation packet. pt-02 cross-checked pt-01 with an independent executor (cli-codex gpt-5.5 high fast) and reached the same core conclusions: External Project is **architectural evidence**, not a source transplant; Code Graph / Memory / Skill Advisor stay **separately owned**; route/tool/shape work is **deferred** until Public has the substrate.
 
 **Key Decisions**: Clean-room adaptation is mandatory (P0 license gate); sub-phase 002 (Code Graph foundation) sequences first; sub-phases 003-005 run in parallel; pt-02 Packet 5 (route/tool/shape contract safety) is explicitly out of scope.
 
@@ -73,10 +73,10 @@ Implement the converged pt-01 + pt-02 GitNexus research recommendations as a 6-s
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Public's Code Graph, Memory causal graph, and Skill Advisor systems each carry known gaps that the 007-git-nexus deep-research effort surfaced concretely (pt-01 + pt-02 syntheses). Without an implementation phase, those gaps stay open: scan flow has no phase-DAG discipline, edge metadata lacks `reason`/`step` explanation fields, blast_radius is file-only, Memory trust signals aren't surfaced, and skill-advisor scoring lanes don't ingest tool/resource affordance evidence.
+Public's Code Graph, Memory causal graph, and Skill Advisor systems each carry known gaps that the 007-external-project deep-research effort surfaced concretely (pt-01 + pt-02 syntheses). Without an implementation phase, those gaps stay open: scan flow has no phase-DAG discipline, edge metadata lacks `reason`/`step` explanation fields, blast_radius is file-only, Memory trust signals aren't surfaced, and skill-advisor scoring lanes don't ingest tool/resource affordance evidence.
 
 ### Purpose
-Land the converged research recommendations as four code sub-phases (002-005) plus a license-audit gate (001) and a docs rollup (006). Strict ownership boundaries preserved. No source transplant from GitNexus.
+Land the converged research recommendations as four code sub-phases (002-005) plus a license-audit gate (001) and a docs rollup (006). Strict ownership boundaries preserved. No source transplant from External Project.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -181,7 +181,7 @@ See per-sub-phase `spec.md` for detailed change lists. Summary:
 
 | Risk | Severity | Mitigation |
 |------|----------|------------|
-| License contamination from direct GitNexus reuse | **P0** | 001 audit; clean-room rule; rollback any copied source/schema/logic |
+| License contamination from direct External Project reuse | **P0** | 001 audit; clean-room rule; rollback any copied source/schema/logic |
 | Unified graph collapse | **P0** | Architectural separation enforced; share evidence as translated summaries only |
 | False-safe `detect_changes` on stale graph | P1 | Hard rule: status=blocked when full scan required; never `"no affected symbols"` |
 | Route/tool overreach (false precision) | P1 | Packet 5 stays deferred; sub-phase 003 doesn't ship route/shape fields |
@@ -195,12 +195,12 @@ See per-sub-phase `spec.md` for detailed change lists. Summary:
 <!-- ANCHOR:references -->
 ## 7. REFERENCES
 
-- pt-01 synthesis: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-git-nexus/research/007-git-nexus-pt-01/research.md`
-- pt-02 synthesis: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-git-nexus/research/007-git-nexus-pt-02/research.md`
-- pt-02 cross-check section: `research/007-git-nexus-pt-02/research.md` §15
-- pt-02 implementation roadmap: `research/007-git-nexus-pt-02/research.md` §11 (5 packets, packet 5 deferred → out of scope here)
-- pt-02 ownership contracts: `research/007-git-nexus-pt-02/research.md` §13
-- pt-02 risk plan: `research/007-git-nexus-pt-02/research.md` §12
+- pt-01 synthesis: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-external-project/research/007-external-project-pt-01/research.md`
+- pt-02 synthesis: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-external-project/research/007-external-project-pt-02/research.md`
+- pt-02 cross-check section: `research/007-external-project-pt-02/research.md` §15
+- pt-02 implementation roadmap: `research/007-external-project-pt-02/research.md` §11 (5 packets, packet 5 deferred → out of scope here)
+- pt-02 ownership contracts: `research/007-external-project-pt-02/research.md` §13
+- pt-02 risk plan: `research/007-external-project-pt-02/research.md` §12
 - Plan file: `/Users/michelkerkmeester/.claude/plans/create-new-phase-with-zazzy-lighthouse.md`
 - Phase consolidation map: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/merged-phase-map.md`
 <!-- /ANCHOR:references -->
