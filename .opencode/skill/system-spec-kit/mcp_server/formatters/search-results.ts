@@ -147,6 +147,33 @@ export interface MemoryResultTrace {
   };
   adaptiveMode?: string | null;
   sessionTransition?: SessionTransitionTrace;
+  /**
+   * R-007-P2-11: Observability flag for trust-badge derivation.
+   * Populated when `includeTrace` is set so operators can see
+   * whether the derivation query was attempted, how many badges
+   * actually came from the DB-side path (vs. fallback/explicit),
+   * and why derivation failed when it did.
+   *
+   * - `attempted`: true if the DB query ran (i.e. there were
+   *   numeric IDs to query); false if no IDs were resolvable.
+   * - `derivedCount`: number of result rows for which a derived
+   *   snapshot was returned by the DB query.
+   * - `failureReason`: structured reason when `attempted` was
+   *   true but `derivedCount` is zero or the query crashed:
+   *   * `'no_db'`           — `requireDb` threw / returned null
+   *   * `'no_results'`      — query ran cleanly, returned 0 rows
+   *   * `'query_error'`     — query threw during execute/iterate
+   *   * `null`              — no failure to attribute
+   */
+  trustBadgeDerivation?: {
+    attempted: boolean;
+    derivedCount: number;
+    failureReason:
+      | 'no_db'
+      | 'no_results'
+      | 'query_error'
+      | null;
+  };
 }
 
 export interface MemoryTrustBadges {
@@ -232,20 +259,73 @@ function clampConfidence(value: unknown): number | null {
   return Math.max(0, Math.min(1, numeric));
 }
 
-function normalizeTrustBadges(value: unknown): MemoryTrustBadges | null {
+/**
+ * R-007-P2-10: Allowlisted grammar for explicit `extractionAge` /
+ * `lastAccessAge` strings. Mirrors the output of `formatAgeString`:
+ *
+ *   never | today | yesterday |
+ *   <n> days ago | <n> week ago | <n> weeks ago |
+ *   <n> month ago | <n> months ago
+ *
+ * Strings that don't match are dropped to `null` rather than
+ * passed through (which previously allowed arbitrary attacker-
+ * controlled strings to surface in result badges). The numeric
+ * portion is capped at 6 digits (max ~99,999 days, ~999,999
+ * months) to prevent visual-spam injection.
+ */
+const ALLOWED_AGE_LABEL = /^(?:never|today|yesterday|\d{1,6}\s+(?:day|days|week|weeks|month|months)\s+ago)$/;
+const MAX_AGE_LABEL_LENGTH = 32;
+
+function sanitizeAgeLabel(value: unknown, fallbackIso: unknown): string {
+  if (typeof value === 'string') {
+    const trimmed = value.trim().toLowerCase();
+    if (trimmed.length <= MAX_AGE_LABEL_LENGTH && ALLOWED_AGE_LABEL.test(trimmed)) {
+      return trimmed;
+    }
+    // Explicit string supplied but failed allowlist — fall through
+    // to derivation rather than surfacing the raw value.
+  }
+  return formatAgeString(typeof fallbackIso === 'string' ? fallbackIso : null);
+}
+
+/**
+ * R-007-11: Normalize a caller-supplied `trustBadges` payload into
+ * a strict `MemoryTrustBadges` shape. Each field is sanitized
+ * independently — `null` / wrong type means "fall through to
+ * derivation" at merge time. Returns `null` only when the input is
+ * not an object at all.
+ */
+function normalizeExplicitTrustBadges(value: unknown): MemoryTrustBadgePartial | null {
   if (!value || typeof value !== 'object') return null;
   const candidate = value as Record<string, unknown>;
+  const confidence = clampConfidence(candidate.confidence);
+
+  // Age strings: allowlist or fallback to ISO-derived format.
+  const extractionAge = sanitizeAgeLabel(candidate.extractionAge, candidate.extractedAt);
+  const lastAccessAge = sanitizeAgeLabel(candidate.lastAccessAge, candidate.lastAccessed);
+
+  // Booleans: only `true` counts; anything else (including absent)
+  // falls through so the derived value can supply truth.
+  const orphan = typeof candidate.orphan === 'boolean' ? candidate.orphan : null;
+  const weightHistoryChanged = typeof candidate.weightHistoryChanged === 'boolean'
+    ? candidate.weightHistoryChanged
+    : null;
+
   return {
-    confidence: clampConfidence(candidate.confidence),
-    extractionAge: typeof candidate.extractionAge === 'string'
-      ? candidate.extractionAge
-      : formatAgeString(typeof candidate.extractedAt === 'string' ? candidate.extractedAt : null),
-    lastAccessAge: typeof candidate.lastAccessAge === 'string'
-      ? candidate.lastAccessAge
-      : formatAgeString(typeof candidate.lastAccessed === 'string' ? candidate.lastAccessed : null),
-    orphan: candidate.orphan === true,
-    weightHistoryChanged: candidate.weightHistoryChanged === true,
+    confidence,
+    extractionAge,
+    lastAccessAge,
+    orphan,
+    weightHistoryChanged,
   };
+}
+
+interface MemoryTrustBadgePartial {
+  confidence: number | null;
+  extractionAge: string;
+  lastAccessAge: string;
+  orphan: boolean | null;
+  weightHistoryChanged: boolean | null;
 }
 
 function toTrustBadges(snapshot: TrustBadgeSnapshot | null): MemoryTrustBadges | undefined {
@@ -259,20 +339,91 @@ function toTrustBadges(snapshot: TrustBadgeSnapshot | null): MemoryTrustBadges |
   };
 }
 
-function fetchTrustBadgeSnapshots(results: RawSearchResult[]): Map<number, TrustBadgeSnapshot> {
+/**
+ * R-007-11: Merge an explicit caller-supplied partial onto the
+ * derived snapshot per-field. Non-null explicit fields override
+ * matching derived fields; null/missing fields fall through to
+ * derived. When `derived` is undefined and the explicit partial is
+ * incomplete (any required field still null after merge), returns
+ * undefined so the caller can omit the badge entirely rather than
+ * shipping a half-formed shape.
+ */
+function mergeTrustBadges(
+  explicit: MemoryTrustBadgePartial | null,
+  derived: MemoryTrustBadges | undefined,
+): MemoryTrustBadges | undefined {
+  if (!explicit) return derived;
+
+  const confidence = explicit.confidence ?? derived?.confidence ?? null;
+  const extractionAge = explicit.extractionAge !== 'never' && explicit.extractionAge.length > 0
+    ? explicit.extractionAge
+    : (derived?.extractionAge ?? explicit.extractionAge);
+  const lastAccessAge = explicit.lastAccessAge !== 'never' && explicit.lastAccessAge.length > 0
+    ? explicit.lastAccessAge
+    : (derived?.lastAccessAge ?? explicit.lastAccessAge);
+  const orphan = explicit.orphan ?? derived?.orphan;
+  const weightHistoryChanged = explicit.weightHistoryChanged ?? derived?.weightHistoryChanged;
+
+  if (orphan === undefined || weightHistoryChanged === undefined) {
+    // Required boolean fields still missing — derived wasn't
+    // available and caller didn't supply. Drop the badge rather
+    // than shipping `undefined` casts.
+    return undefined;
+  }
+
+  return {
+    confidence,
+    extractionAge,
+    lastAccessAge,
+    orphan,
+    weightHistoryChanged,
+  };
+}
+
+interface TrustBadgeFetchResult {
+  readonly snapshots: Map<number, TrustBadgeSnapshot>;
+  readonly attempted: boolean;
+  readonly derivedCount: number;
+  readonly failureReason:
+    | 'no_db'
+    | 'no_results'
+    | 'query_error'
+    | null;
+}
+
+/**
+ * R-007-P2-11: trust-badge derivation now returns observability
+ * fields alongside the snapshot map. The fields feed
+ * `MemoryResultTrace.trustBadgeDerivation` so operators can
+ * distinguish "no IDs to query" / "DB unavailable" / "query error"
+ * / "0 rows" without inspecting logs. Existing fast paths (no IDs,
+ * `requireDb` failure, query exception) preserve their previous
+ * graceful-empty-Map return value — only the metadata is new.
+ */
+function fetchTrustBadgeSnapshots(results: RawSearchResult[]): TrustBadgeFetchResult {
   const resultIds = results
     .map((result) => toNullableNumber(result.id))
     .filter((id): id is number => id !== null);
 
   if (resultIds.length === 0) {
-    return new Map();
+    return {
+      snapshots: new Map(),
+      attempted: false,
+      derivedCount: 0,
+      failureReason: null,
+    };
   }
 
   let database: ReturnType<typeof requireDb>;
   try {
     database = requireDb();
   } catch {
-    return new Map();
+    return {
+      snapshots: new Map(),
+      attempted: true,
+      derivedCount: 0,
+      failureReason: 'no_db',
+    };
   }
 
   try {
@@ -345,9 +496,19 @@ function fetchTrustBadgeSnapshots(results: RawSearchResult[]): Map<number, Trust
       });
     }
 
-    return snapshots;
+    return {
+      snapshots,
+      attempted: true,
+      derivedCount: snapshots.size,
+      failureReason: snapshots.size === 0 ? 'no_results' : null,
+    };
   } catch {
-    return new Map();
+    return {
+      snapshots: new Map(),
+      attempted: true,
+      derivedCount: 0,
+      failureReason: 'query_error',
+    };
   }
 }
 
@@ -579,7 +740,7 @@ export async function formatSearchResults(
 
   // Count constitutional results
   const constitutionalCount = results.filter(rawResult => rawResult.isConstitutional).length;
-  const trustBadgeSnapshots = fetchTrustBadgeSnapshots(results);
+  const trustBadgeFetch = fetchTrustBadgeSnapshots(results);
 
   const formatted: MemoryResultEnvelope[] = await Promise.all(results.map(async (rawResult: RawSearchResult) => {
     const resultId = toNullableNumber(rawResult.id);
@@ -606,11 +767,17 @@ export async function formatSearchResults(
         : undefined,
     };
 
-    const explicitTrustBadges = normalizeTrustBadges(rawResult.trustBadges);
+    // R-007-11 + P2-10: explicit `trustBadges` payloads are
+    // sanitized per-field (allowlisted age strings, clamped
+    // confidence, type-checked booleans). R-007-11 + merge: the
+    // sanitized partial is merged onto the derived snapshot
+    // per-field so callers can override specific fields without
+    // wholesale-replacing the badge.
+    const explicitTrustBadgePartial = normalizeExplicitTrustBadges(rawResult.trustBadges);
     const derivedTrustBadges = toTrustBadges(
-      resultId !== null ? (trustBadgeSnapshots.get(resultId) ?? null) : null
+      resultId !== null ? (trustBadgeFetch.snapshots.get(resultId) ?? null) : null
     );
-    formattedResult.trustBadges = explicitTrustBadges ?? derivedTrustBadges;
+    formattedResult.trustBadges = mergeTrustBadges(explicitTrustBadgePartial, derivedTrustBadges);
 
     if (includeTrace) {
       const anchorsInfo = extractAnchorDetails(rawResult);
@@ -633,6 +800,14 @@ export async function formatSearchResults(
         memoryState: typeof rawResult.memoryState === 'string' ? rawResult.memoryState : null,
       };
       formattedResult.trace = extractTrace(rawResult, extraData);
+      // R-007-P2-11: stamp the badge-derivation observability
+      // fields onto the trace so operators can distinguish
+      // explicit-vs-derived without inspecting logs.
+      formattedResult.trace.trustBadgeDerivation = {
+        attempted: trustBadgeFetch.attempted,
+        derivedCount: trustBadgeFetch.derivedCount,
+        failureReason: trustBadgeFetch.failureReason,
+      };
     }
 
     // Phase C T029: Include graphEvidence provenance when present on the pipeline row.

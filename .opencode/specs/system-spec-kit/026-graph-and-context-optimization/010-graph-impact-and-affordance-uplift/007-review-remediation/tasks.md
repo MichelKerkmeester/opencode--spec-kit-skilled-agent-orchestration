@@ -38,16 +38,16 @@ contextType: "implementation"
 
 | ID | Task | Status | Notes |
 |----|------|--------|-------|
-| R-007-3 | Diff-parser: canonicalize each candidate path; reject anything outside `canonicalRootDir` (`code_graph/handlers/detect-changes.ts:122-152`) | pending | P1 security |
-| R-007-4 | Diff-parser: track expected hunk line counts so multi-file diffs don't eat the next file's headers (`code_graph/lib/diff-parser.ts:179-190`) | pending | P1 correctness |
-| R-007-8 | Compiler: decide `conflicts_with` affordance contract (validate-or-serialize) (`skill_graph_compiler.py:834-847`) | pending | P1 |
-| R-007-9 | Affordance-normalizer: broaden prompt-injection denylist in both TS + PY (`affordance-normalizer.ts:59`, `skill_graph_compiler.py:59`) | pending | P1 |
-| R-007-11 | Trust-badges: reject incomplete explicit `trustBadges` (or merge per-field) (`formatters/search-results.ts:235-246, 609-613`) | pending | P1 |
-| R-007-P2-1 | Phase runner: reject duplicate `output` keys same as duplicate names (`code_graph/lib/phase-runner.ts:87-89, 174-186`) | pending | P2 |
-| R-007-P2-3 | Edge metadata: allowlist `reason`/`step` on read path (`code-graph-db.ts:763`, `query.ts:614-615`, `code-graph-context.ts:545`) | pending | P2 |
-| R-007-P2-8 | Shared adversarial fixture for TS + PY sanitizers (`tests/affordance-normalizer.test.ts:51`, `python/test_skill_advisor.py:1457`) | pending | P2 |
-| R-007-P2-10 | Memory: sanitize/cap explicit `extractionAge`/`lastAccessAge` strings (`formatters/search-results.ts:239-243`) | pending | P2 |
-| R-007-P2-11 | Memory: trace flag `{attempted, derivedCount, failureReason}` for badge derivation (`formatters/search-results.ts:271-275, 348-350`) | pending | P2 |
+| R-007-3 | Diff-parser: canonicalize each candidate path; reject anything outside `canonicalRootDir` (`code_graph/handlers/detect-changes.ts:122-152`) | done | P1 security — explicit `parse_error` reject (no silent drop) |
+| R-007-4 | Diff-parser: track expected hunk line counts so multi-file diffs don't eat the next file's headers (`code_graph/lib/diff-parser.ts:179-190`) | done | P1 correctness — `remainingOldLines` / `remainingNewLines` per side |
+| R-007-8 | Compiler: decide `conflicts_with` affordance contract (validate-or-serialize) (`skill_graph_compiler.py:834-847`) | done | P1 — VALIDATE chosen; `AFFORDANCE_REJECTED_RELATION_FIELDS` enforces |
+| R-007-9 | Affordance-normalizer: broaden prompt-injection denylist in both TS + PY (`affordance-normalizer.ts:59`, `skill_graph_compiler.py:59`) | done | P1 — broadened with stacked-modifier support; row-for-row TS/PY parity |
+| R-007-11 | Trust-badges: reject incomplete explicit `trustBadges` (or merge per-field) (`formatters/search-results.ts:235-246, 609-613`) | done | P1 — merge-per-field; `mergeTrustBadges` overlays explicit non-null on derived |
+| R-007-P2-1 | Phase runner: reject duplicate `output` keys same as duplicate names (`code_graph/lib/phase-runner.ts:87-89, 174-186`) | done | P2 — `'duplicate-output'` PhaseRunnerError kind |
+| R-007-P2-3 | Edge metadata: allowlist `reason`/`step` on read path (`code-graph-db.ts:763`, `query.ts:614-615`, `code-graph-context.ts:545`) | done | P2 — allowlist (single-line, ≤200 chars, no control chars) at all 3 read sites |
+| R-007-P2-8 | Shared adversarial fixture for TS + PY sanitizers (`tests/affordance-normalizer.test.ts:51`, `python/test_skill_advisor.py:1457`) | done | P2 — `tests/__shared__/affordance-injection-fixtures.json` (28 injection / 11 benign / 4 privacy) |
+| R-007-P2-10 | Memory: sanitize/cap explicit `extractionAge`/`lastAccessAge` strings (`formatters/search-results.ts:239-243`) | done | P2 — `ALLOWED_AGE_LABEL` regex + `MAX_AGE_LABEL_LENGTH` cap |
+| R-007-P2-11 | Memory: trace flag `{attempted, derivedCount, failureReason}` for badge derivation (`formatters/search-results.ts:271-275, 348-350`) | done | P2 — `MemoryResultTrace.trustBadgeDerivation` populated when `includeTrace` |
 
 ## T-E — Test Rig Fixes (P1, parallel)
 

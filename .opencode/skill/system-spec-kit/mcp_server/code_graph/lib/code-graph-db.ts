@@ -753,14 +753,58 @@ function rowToNode(r: Record<string, unknown>): CodeNode {
   };
 }
 
+/**
+ * R-007-P2-3: Allowlist `reason` / `step` strings on the edge-
+ * metadata read path. Stale or imported rows may contain values
+ * that pre-date a sanitizer change, were written by a different
+ * branch, or simply contain control characters/newlines that
+ * would break downstream rendering. Strict allowlist keeps the
+ * read path safe even if a write-path regression slips a bad
+ * value into `code_edges.metadata`.
+ *
+ * Allowlist rules (single line, length-cap, non-control-char):
+ *   - No control characters (0x00-0x1F, 0x7F)
+ *   - No CR/LF (single line)
+ *   - Length ≤ 200
+ *   - Falls back to `null` on any violation
+ *
+ * The cap is intentionally generous (200 chars) since the values
+ * are operator-supplied free-form attribution strings; we need
+ * to preserve readability while rejecting injection-shaped input.
+ */
+const EDGE_METADATA_STRING_MAX_LENGTH = 200;
+const EDGE_METADATA_STRING_BLOCKED = /[\x00-\x1F\x7F]/;
+
+function sanitizeEdgeMetadataString(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  if (value.length === 0) return null;
+  if (value.length > EDGE_METADATA_STRING_MAX_LENGTH) return null;
+  if (EDGE_METADATA_STRING_BLOCKED.test(value)) return null;
+  return value;
+}
+
 /** Convert DB row to CodeEdge */
 function rowToEdge(r: Record<string, unknown>): CodeEdge {
+  const rawMetadata = r.metadata ? JSON.parse(r.metadata as string) : undefined;
+  if (rawMetadata && typeof rawMetadata === 'object') {
+    // Sanitize the two free-form attribution strings on the read
+    // path. Other metadata fields (`confidence`, `detectorProvenance`,
+    // `evidenceClass`, ...) are validated by their own typecheck
+    // sites and don't need string-shape filtering here.
+    const meta = rawMetadata as Record<string, unknown>;
+    if ('reason' in meta) {
+      meta.reason = sanitizeEdgeMetadataString(meta.reason);
+    }
+    if ('step' in meta) {
+      meta.step = sanitizeEdgeMetadataString(meta.step);
+    }
+  }
   return {
     sourceId: r.source_id as string,
     targetId: r.target_id as string,
     edgeType: r.edge_type as CodeEdge['edgeType'],
     weight: r.weight as number,
-    metadata: r.metadata ? JSON.parse(r.metadata as string) : undefined,
+    metadata: rawMetadata,
   };
 }
 

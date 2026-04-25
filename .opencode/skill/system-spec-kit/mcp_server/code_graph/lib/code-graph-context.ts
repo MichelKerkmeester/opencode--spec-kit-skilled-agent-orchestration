@@ -284,6 +284,21 @@ function computeFreshness(): { lastScanAt: string | null; staleness: 'fresh' | '
   }
 }
 
+// R-007-P2-3: Read-path allowlist for `reason` / `step` strings on
+// edge metadata. The same sanitizer pattern as `code-graph-db` and
+// `query.ts`: defense-in-depth single-line, length-capped, non-
+// control-char check.
+const CONTEXT_EDGE_REASON_MAX_LENGTH = 200;
+const CONTEXT_EDGE_REASON_BLOCKED = /[\x00-\x1F\x7F]/;
+
+function sanitizeContextEdgeString(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  if (value.length === 0) return null;
+  if (value.length > CONTEXT_EDGE_REASON_MAX_LENGTH) return null;
+  if (CONTEXT_EDGE_REASON_BLOCKED.test(value)) return null;
+  return value;
+}
+
 function formatContextEdge(edge: graphDb.CodeEdgeTargetResult['edge'] | graphDb.CodeEdgeSourceResult['edge']): {
   confidence: number | null;
   detectorProvenance: string | null;
@@ -298,8 +313,8 @@ function formatContextEdge(edge: graphDb.CodeEdgeTargetResult['edge'] | graphDb.
       ? edge.metadata.detectorProvenance
       : null,
     evidenceClass: typeof edge.metadata?.evidenceClass === 'string' ? edge.metadata.evidenceClass : null,
-    reason: typeof edge.metadata?.reason === 'string' ? edge.metadata.reason : null,
-    step: typeof edge.metadata?.step === 'string' ? edge.metadata.step : null,
+    reason: sanitizeContextEdgeString(edge.metadata?.reason),
+    step: sanitizeContextEdgeString(edge.metadata?.step),
   };
 }
 

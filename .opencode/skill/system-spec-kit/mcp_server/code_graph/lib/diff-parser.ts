@@ -120,6 +120,14 @@ export function parseUnifiedDiff(diff: string): DiffParseResult {
   let currentNewPath: string | null = null;
   let currentHunks: DiffHunk[] = [];
   let inHunkBody = false;
+  // R-007-4: Track expected remaining old/new line counts for the
+  // active hunk body. When BOTH counters reach zero the hunk body
+  // is complete, and any subsequent line — even one starting with
+  // `-` (the next file's `--- a/<path>` header) or `+` (the next
+  // file's `+++ b/<path>` header) — must NOT be consumed as part
+  // of this hunk.
+  let remainingOldLines = 0;
+  let remainingNewLines = 0;
 
   const finalizeCurrentFile = (): void => {
     if (currentOldPath !== null && currentNewPath !== null) {
@@ -133,6 +141,8 @@ export function parseUnifiedDiff(diff: string): DiffParseResult {
     currentNewPath = null;
     currentHunks = [];
     inHunkBody = false;
+    remainingOldLines = 0;
+    remainingNewLines = 0;
   };
 
   for (let i = 0; i < lines.length; i++) {
@@ -151,11 +161,17 @@ export function parseUnifiedDiff(diff: string): DiffParseResult {
       // A new `---` always starts a new file section. If we were
       // mid-file from a previous block, flush it first so we never
       // mix headers across files.
+      //
+      // R-007-4: when the active hunk body has counted down its
+      // expected old/new line counts, the next `--- ` IS the next
+      // file's pre-image header — finalize and start a fresh file.
       if (currentOldPath !== null || currentNewPath !== null) {
         finalizeCurrentFile();
       }
       currentOldPath = stripGitPrefix(line.slice(4).trim());
       inHunkBody = false;
+      remainingOldLines = 0;
+      remainingNewLines = 0;
       continue;
     }
 
@@ -165,6 +181,8 @@ export function parseUnifiedDiff(diff: string): DiffParseResult {
       }
       currentNewPath = stripGitPrefix(line.slice(4).trim());
       inHunkBody = false;
+      remainingOldLines = 0;
+      remainingNewLines = 0;
       continue;
     }
 
@@ -178,6 +196,8 @@ export function parseUnifiedDiff(diff: string): DiffParseResult {
       }
       currentHunks.push(hunk);
       inHunkBody = true;
+      remainingOldLines = hunk.oldLines;
+      remainingNewLines = hunk.newLines;
       continue;
     }
 
@@ -185,9 +205,65 @@ export function parseUnifiedDiff(diff: string): DiffParseResult {
       // Hunk body lines are ' ', '+', '-', '\\' (no-newline marker)
       // or empty (trailing blank). We don't retain them — only
       // ranges matter for symbol mapping.
-      if (line.length === 0) continue;
+      //
+      // R-007-4 boundary fix: maintain `remainingOldLines` /
+      // `remainingNewLines` so that once the declared hunk size is
+      // exhausted, the body terminates BEFORE we look at the next
+      // line. Without this, a hunk body's tail lines starting with
+      // `-` could greedily eat the following file's `--- a/<path>`
+      // header (same first character).
+      if (remainingOldLines <= 0 && remainingNewLines <= 0) {
+        // Hunk body fully consumed. Re-process the current line in
+        // the outer loop so headers/`@@`/`diff --git` are seen by
+        // their own branches.
+        inHunkBody = false;
+        i--;
+        continue;
+      }
+      if (line.length === 0) {
+        // A trailing blank inside the body counts as a context
+        // line (the canonical `git diff` output preserves blank
+        // context lines as a single ` ` but some tools emit a
+        // truly empty line). Treat it as one context line on both
+        // sides so the counter advances.
+        if (remainingOldLines > 0) remainingOldLines--;
+        if (remainingNewLines > 0) remainingNewLines--;
+        continue;
+      }
       const ch = line[0];
-      if (ch === ' ' || ch === '+' || ch === '-' || ch === '\\') continue;
+      if (ch === '\\') {
+        // `\ No newline at end of file` — neither pre nor post
+        // counter advances.
+        continue;
+      }
+      if (ch === ' ') {
+        if (remainingOldLines > 0) remainingOldLines--;
+        if (remainingNewLines > 0) remainingNewLines--;
+        continue;
+      }
+      if (ch === '-') {
+        if (remainingOldLines > 0) {
+          remainingOldLines--;
+          continue;
+        }
+        // `-` with no remaining old-side budget: this is NOT a
+        // hunk-body line; it is the next file's `--- ` header (or
+        // garbage). Terminate body and re-process.
+        inHunkBody = false;
+        i--;
+        continue;
+      }
+      if (ch === '+') {
+        if (remainingNewLines > 0) {
+          remainingNewLines--;
+          continue;
+        }
+        // Same reasoning as `-`: out-of-budget `+` is the next
+        // file's `+++ ` header. Re-process in the outer loop.
+        inHunkBody = false;
+        i--;
+        continue;
+      }
       // Anything else inside the hunk body terminates it; the
       // line might be `diff --git`, `index`, etc. for the next
       // file. Re-process the line in the outer loop.

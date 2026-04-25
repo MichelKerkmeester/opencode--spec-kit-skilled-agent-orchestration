@@ -56,8 +56,27 @@ export const AFFORDANCE_TRIGGER_FIELDS = ['name', 'triggers', 'category'] as con
 const MAX_PHRASE_LENGTH = 80;
 const MAX_TRIGGERS_PER_AFFORDANCE = 12;
 const MAX_EDGES_PER_AFFORDANCE = 12;
+// R-007-9: broadened prompt-injection denylist. The original pattern
+// only caught the exact strings `ignore previous/all instructions`,
+// `system:`, `developer:`, `assistant:`, `execute:`, `instruction:`.
+// Real-world prompt-injection corpora (Anthropic, OpenAI, Lakera) also
+// use common synonyms ("disregard", "override", "forget all prior"),
+// directional variants ("the above", "earlier", "prior"), and
+// role-prefix variants ("user:", "human:", "[system]", "<system>").
+//
+// Anchoring strategy: keyword/role-prefix branches use a
+// `(?:^|\s|\b)` lead so they fire at sentence start, after
+// whitespace, or after a word boundary — but legitimate phrases
+// like "ignore the cache when stale" or "system call audit" still
+// pass because the keyword + directional-modifier pair is required.
+// Bracketed/angled role markers (`[INST]`, `<system>`) deliberately
+// have NO leading boundary so they trigger anywhere they appear.
+//
+// The list intentionally remains a denylist because affordance
+// triggers are free-form short phrases — we cannot enumerate the
+// allowed grammar without breaking valid skill descriptions.
 const INSTRUCTION_PATTERN =
-  /\b(ignore\s+(previous|all)\s+instructions|system\s*:|developer\s*:|assistant\s*:|execute\s*:|instruction\s*:)\b/i;
+  /(?:(?:^|\s|\b)(?:(?:ignore|disregard|forget|skip|bypass|override)\s+(?:the\s+)?(?:previous|prior|earlier|above|all|any)(?:\s+(?:and\s+)?(?:previous|prior|earlier|above|all|any))*\s+(?:instruction|instructions|prompt|prompts|directions?|rule|rules|context|guidance|message|messages|system\s+prompt)|override\s+system\s+(?:prompt|message|instructions)|new\s+instructions?\s*:|reveal\s+(?:the\s+)?(?:system|developer)\s+(?:prompt|instruction|instructions)|system\s*:|developer\s*:|assistant\s*:|user\s*:|human\s*:|execute\s*:|instruction\s*:)|\[\s*(?:system|developer|assistant|user|human|inst|instruction)\s*\]|<\s*(?:system|developer|assistant|user|human)\s*>)/i;
 const EMAIL_PATTERN = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi;
 const URL_PATTERN = /\bhttps?:\/\/\S+|\bwww\.\S+/gi;
 const TOKEN_PATTERN = /\b(?:bearer|token|secret|apikey|api_key)\s*[:=]\s*\S+/gi;

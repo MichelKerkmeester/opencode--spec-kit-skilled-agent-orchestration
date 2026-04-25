@@ -3,10 +3,34 @@
 // ───────────────────────────────────────────────────────────────
 
 import { describe, expect, it } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { normalize } from '../lib/affordance-normalizer.js';
 import { scoreAdvisorPrompt } from '../lib/scorer/fusion.js';
 import { createFixtureProjection } from '../lib/scorer/projection.js';
 import type { SkillProjection } from '../lib/scorer/types.js';
+
+// R-007-P2-8: Shared adversarial fixture consumed by both this TS
+// test and `python/test_skill_advisor.py`. Single source of truth
+// for the prompt-injection denylist coverage.
+interface SharedAffordanceFixture {
+  readonly schema_version: number;
+  readonly injection_phrases: readonly string[];
+  readonly benign_phrases: readonly string[];
+  readonly privacy_phrases: ReadonlyArray<{
+    readonly input: string;
+    readonly must_drop_substrings: readonly string[];
+  }>;
+}
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const SHARED_FIXTURE: SharedAffordanceFixture = JSON.parse(
+  readFileSync(
+    resolve(__dirname, '__shared__/affordance-injection-fixtures.json'),
+    'utf-8',
+  ),
+);
 
 function skill(overrides: Partial<SkillProjection> & Pick<SkillProjection, 'id'>): SkillProjection {
   const { id, ...rest } = overrides;
@@ -92,5 +116,53 @@ describe('012/004 affordance normalizer', () => {
       ]),
     );
     expect(JSON.stringify(result.recommendations)).not.toContain(rawPhrase);
+  });
+});
+
+// R-007-P2-8: Shared adversarial fixture coverage. Each phrase
+// either MUST be dropped (injection) or MUST survive normalization
+// (benign). The same fixture is loaded by `python/test_skill_advisor.py`
+// so the TS and PY sanitizers must agree row-for-row.
+describe('010/007 affordance-normalizer — shared injection fixture (R-007-P2-8)', () => {
+  it('drops every injection phrase from derived triggers', () => {
+    for (const phrase of SHARED_FIXTURE.injection_phrases) {
+      const [affordance] = normalize([{
+        skillId: 'fixture-skill',
+        triggers: [phrase],
+      }]);
+      // Either no affordance is produced (only-trigger was rejected,
+      // and there are no edges) OR the trigger is dropped from the
+      // derived list. Both outcomes prove the phrase didn't survive.
+      const triggers = affordance?.derivedTriggers ?? [];
+      expect(triggers, `injection phrase "${phrase}" should not appear in derivedTriggers`).not.toContain(phrase);
+      expect(triggers, `injection phrase "${phrase}" should not appear case-insensitively`).not.toContain(phrase.toLowerCase());
+    }
+  });
+
+  it('preserves every benign phrase through normalization', () => {
+    for (const phrase of SHARED_FIXTURE.benign_phrases) {
+      const [affordance] = normalize([{
+        skillId: 'fixture-skill',
+        triggers: [phrase],
+      }]);
+      // The normalizer lowercases and may compress whitespace, so
+      // we assert the lowercased phrase is preserved and skill_id
+      // is present (proving the affordance wasn't outright dropped).
+      expect(affordance?.skillId, `benign phrase "${phrase}" must produce a normalized affordance`).toBe('fixture-skill');
+      expect(affordance?.derivedTriggers, `benign phrase "${phrase}" must survive normalization`).toContain(phrase.toLowerCase());
+    }
+  });
+
+  it('strips privacy substrings from each privacy-shaped phrase', () => {
+    for (const { input, must_drop_substrings } of SHARED_FIXTURE.privacy_phrases) {
+      const [affordance] = normalize([{
+        skillId: 'fixture-skill',
+        triggers: [input],
+      }]);
+      const serialized = JSON.stringify(affordance ?? null);
+      for (const dropped of must_drop_substrings) {
+        expect(serialized, `privacy phrase "${input}" must drop substring "${dropped}"`).not.toContain(dropped);
+      }
+    }
   });
 });

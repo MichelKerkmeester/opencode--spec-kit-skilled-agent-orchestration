@@ -9,10 +9,10 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation"
-    last_updated_at: "2026-04-25T18:35:00Z"
+    last_updated_at: "2026-04-25T18:40:00Z"
     last_updated_by: "claude-opus-4-7-orchestrator-wave-1-integration"
-    recent_action: "T-B + T-C cherry-picked onto main; T-B doc evidence sync (R-007-1/5/7/15/19/20/21) + T-C minConfidence WIRED + affordances DEFER (R-007-6/10) integrated"
-    next_safe_action: "Cherry-pick T-D, T-E, T-F (in that order); resolve implementation-summary append conflicts; run final tsc + vitest"
+    recent_action: "T-B + T-C + T-D cherry-picked onto main. T-D sanitization hardening: 5 P1 + 5 P2 closed (R-007-3,4,8,9,11,P2-1,P2-3,P2-8,P2-10,P2-11)."
+    next_safe_action: "Cherry-pick T-E, T-F; resolve implementation-summary append conflicts; run final tsc + vitest"
     completion_pct: 35
     blockers: []
     key_files:
@@ -24,17 +24,25 @@ _memory:
       - "../../mcp_server/tool-schemas.ts"
       - "../../mcp_server/skill_advisor/schemas/advisor-tool-schemas.ts"
       - "../../mcp_server/tests/tool-input-schema.vitest.ts"
+      - "../../mcp_server/code_graph/handlers/detect-changes.ts"
+      - "../../mcp_server/code_graph/lib/diff-parser.ts"
+      - "../../mcp_server/skill_advisor/lib/affordance-normalizer.ts"
+      - "../../mcp_server/skill_advisor/scripts/skill_graph_compiler.py"
+      - "../../mcp_server/formatters/search-results.ts"
+      - "../../mcp_server/code_graph/lib/phase-runner.ts"
+      - "implementation-summary.md"
 ---
 # Implementation Summary: Review Remediation (010/007)
 
 <!-- SPECKIT_LEVEL: 2 -->
 
 ## Status
-T-A, T-B, T-C complete. T-D, T-E, T-F pending integration.
+T-A, T-B, T-C, T-D complete. T-E, T-F pending integration.
 
 - **T-A (detect_changes MCP wiring):** detect_changes registered as MCP tool across dispatcher, JSON schema, Zod validator, allowed-parameter ledger, and 6 umbrella docs. Closes R-007-2, R-007-14.
 - **T-B (verification evidence sync):** Wave-3 canonical evidence (`tsc --noEmit` exit 0; `vitest run` 9 passed | 1 skipped (10), 90 passed | 3 skipped (93), 1.34s; per-sub-phase `validate.sh --strict` results) synced across 010/001/002/003/005/006 sub-phase implementation-summary.md + checklist.md files. Premature `[x]` PASS marks unchecked and rewritten with the 3-state convention (`[x]` real evidence captured | `[ ] OPERATOR-PENDING` command can't run from this context | `[ ] BLOCKED` blocked with reason). Closes R-007-1, R-007-5, R-007-7, R-007-15, R-007-19, R-007-20, R-007-21.
 - **T-C (public API surface gaps):** `minConfidence` exposed end-to-end on `code_graph_query` (Zod schema, JSON schema, allowed-parameter ledger, accept/reject tests). `affordances` DEFER decision: stays compile-time-only scorer seam (prompt-injection surface concern). Closes R-007-6, R-007-10.
+- **T-D (sanitization hardening):** 7 files hardened (`detect-changes.ts` canonical-root path containment, `diff-parser.ts` per-side hunk counters, `skill_graph_compiler.py` validate-reject `conflicts_with` + broadened denylist, `affordance-normalizer.ts` broadened denylist, `formatters/search-results.ts` merge-per-field trustBadges + allowlisted age strings + trace flag, `phase-runner.ts` duplicate-output rejection, `code-graph-db.ts`/`query.ts:614-615`/`code-graph-context.ts` `reason`/`step` allowlist on read path). New shared adversarial fixture `affordance-injection-fixtures.json` consumed by both TS and Python tests. Closes R-007-3, 4, 8, 9, 11, P2-1, P2-3, P2-8, P2-10, P2-11. Verify: tsc clean; vitest 37/37 PASS; pytest 57/57 PASS.
 
 ## Findings Closed
 
@@ -183,6 +191,58 @@ $ cd mcp_server && npx --no-install vitest run \
 - `mcp_server/skill_advisor/lib/scorer/types.ts` — `AdvisorScoringOptions.affordances` remains the internal seam.
 - Public docs — no public surface to update; the option is internal.
 
+### R-007-3 — Diff-path canonicalization (T-D)
+
+**Decision:** REJECT-EXPLICITLY paths that resolve outside `canonicalRootDir`.
+
+`mcp_server/code_graph/handlers/detect-changes.ts:118-160` now returns a structured `CandidatePathResult` (`ok | skip | reject`). Relative diff paths are resolved against `canonicalRootDir`; absolute paths are accepted only when contained by the canonical root (path-prefix containment with platform-separator boundary). Any rejection surfaces as `status: 'parse_error'` with the offending path in `blockedReason`. No silent drop. The check uses path-string prefix containment instead of `realpathSync` so pure-add hunks on not-yet-existing files still validate.
+
+### R-007-4 — Diff-parser multi-file boundary fix (T-D)
+
+`mcp_server/code_graph/lib/diff-parser.ts:109-220` now tracks `remainingOldLines` / `remainingNewLines` for the active hunk body. Once both counters reach zero the body terminates — a subsequent `-` (next file's `--- a/<path>` header) or `+` (next file's `+++ b/<path>` header) is no longer eaten as a hunk-body line. Body lines additionally decrement counters per-side (`-` decrements old only, `+` decrements new only, ` ` decrements both, `\` is no-op). Out-of-budget `-`/`+` triggers re-process.
+
+### R-007-8 — `conflicts_with` affordance contract (T-D)
+
+**Decision:** VALIDATE — reject `conflicts_with`/`conflictsWith` in affordance derived inputs.
+
+`mcp_server/skill_advisor/scripts/skill_graph_compiler.py:45-78` — `AFFORDANCE_RELATION_FIELDS` no longer includes `conflicts_with`/`conflictsWith`. New `AFFORDANCE_REJECTED_RELATION_FIELDS` frozen-set lists them as reserved. `validate_derived_affordances` (line ~470) emits a structured "declares reserved field(s) … : conflict edges require an authoritative reciprocal declaration in `edges.conflicts_with` and cannot be derived from affordances" error.
+
+Test added: `R-007-8: affordance \`conflicts_with\` is rejected with explicit reserved-field error` in `python/test_skill_advisor.py`.
+
+### R-007-9 — Prompt-injection denylist broadened (T-D)
+
+Both sanitizers expanded with synonyms (`disregard`, `forget`, `skip`, `bypass`, `override`), directional variants (`previous|prior|earlier|above|all|any`, including stacked forms like "all prior"), reveal-prompt probes, role-prefix variants (`user:|human:`), and bracketed/angled role markers (`[INST]`, `<system>`).
+
+- TS: `mcp_server/skill_advisor/lib/affordance-normalizer.ts:59-73`
+- PY: `mcp_server/skill_advisor/scripts/skill_graph_compiler.py:78-101`
+
+Anchoring uses `(?:^|\s|\b)` lead so `ignore the cache when stale` and `system call audit` still pass.
+
+### R-007-11 + P2-10 + P2-11 — Trust-badge merge / age-allowlist / trace flag (T-D)
+
+`mcp_server/formatters/search-results.ts:235-360` rewrites the explicit-trust-badge path:
+
+- **R-007-11 merge-per-field**: `normalizeExplicitTrustBadges` returns a partial shape; `mergeTrustBadges` overlays non-null explicit fields onto the derived snapshot per-field. Required boolean fields missing on both sides cause the badge to be omitted entirely (no half-formed shape).
+- **R-007-P2-10 age-label allowlist**: `sanitizeAgeLabel` rejects strings outside `^(?:never|today|yesterday|\d{1,6}\s+(?:day|days|week|weeks|month|months)\s+ago)$` and falls through to `formatAgeString` derivation. Length cap 32 chars.
+- **R-007-P2-11 trace flag**: `fetchTrustBadgeSnapshots` now returns `{snapshots, attempted, derivedCount, failureReason}`. Failure reasons: `'no_db' | 'no_results' | 'query_error' | null`. Trace exposes `MemoryResultTrace.trustBadgeDerivation` when `includeTrace` is set.
+
+### R-007-P2-1 — Phase runner duplicate-output rejection (T-D)
+
+`mcp_server/code_graph/lib/phase-runner.ts:45-110` extends `PhaseRunnerError.kind` with `'duplicate-output'`. `topologicalSort` rejects (a) two phases publishing the same `output` key and (b) a phase whose `output` collides with another phase's `name`. Mirrors the duplicate-name rejection.
+
+### R-007-P2-3 — Edge-metadata `reason`/`step` allowlist on read path (T-D)
+
+Read-path defense-in-depth at three sites:
+- `mcp_server/code_graph/lib/code-graph-db.ts:756-805` — `rowToEdge` now sanitizes `reason`/`step` on JSON parse.
+- `mcp_server/code_graph/handlers/query.ts:608-635` — `edgeMetadataOutput` re-validates (defense-in-depth for non-DB-sourced edges).
+- `mcp_server/code_graph/lib/code-graph-context.ts:287-320` — `formatContextEdge` uses the same sanitizer.
+
+Allowlist: single-line, length ≤ 200, no control chars (`\x00-\x1F\x7F`). Failures fall through to `null` rather than passing the raw value.
+
+### R-007-P2-8 — Shared adversarial fixture (T-D)
+
+Created `mcp_server/skill_advisor/tests/__shared__/affordance-injection-fixtures.json` (28 injection phrases, 11 benign phrases, 4 privacy phrases). Both `affordance-normalizer.test.ts` (TS) and `python/test_skill_advisor.py` (PY) load this fixture and run identical drop-vs-survive assertions. Forces row-for-row sanitizer parity.
+
 ## Findings Deferred (with Defer-To pointers)
 [TBD per task ID]
 
@@ -207,6 +267,12 @@ $ cd mcp_server && npx --no-install vitest run \
 - `cd .opencode/skill/system-spec-kit/mcp_server && vitest run tests/tool-input-schema.vitest.ts` — **PASS** (`Test Files 1 passed (1) | Tests 79 passed (79) | Duration 233ms`). 6 new T-C cases included (3 accept + 3 reject for `minConfidence`).
 - Backward compat: existing `code_graph_query` callers without `minConfidence` continue to pass schema validation (covered by the pre-existing `'code_graph_query accepts structural traversal options'` case at lines 503-514 of the test file, which omits `minConfidence`).
 - Affordance DEFER: no behavioural change — `AdvisorRecommendInputSchema.strict()` continues to reject `affordances` at the public boundary, matching the design intent.
+
+**T-D scope (sanitization hardening):**
+
+- `npx --no-install tsc --noEmit --composite false -p tsconfig.json` from `mcp_server/`: **CLEAN** (exit 0, no diagnostics).
+- `npx --no-install vitest run skill_advisor/tests/affordance-normalizer.test.ts code_graph/tests/detect-changes.test.ts code_graph/tests/phase-runner.test.ts`: **PASSED** — 37/37 tests green (3 files), including the new R-007-P2-8 shared-fixture coverage in `affordance-normalizer.test.ts`.
+- `python3 skill_advisor/tests/python/test_skill_advisor.py`: **PASSED** — 57/57 tests green, including the new R-007-8 (`affordance \`conflicts_with\` is rejected`) and R-007-P2-8 (shared fixture: injection / benign / privacy) assertions.
 
 ## References
 - spec.md, plan.md, tasks.md, checklist.md (this folder)

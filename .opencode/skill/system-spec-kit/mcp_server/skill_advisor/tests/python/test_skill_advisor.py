@@ -1536,6 +1536,102 @@ def test_graph_compiler():
     except Exception as exc:
         fail_test("T246-GC-012: affordance validation preserves entity-kind allowlist", str(exc))
 
+    # R-007-8: affordance validation rejects `conflicts_with` /
+    # `conflictsWith` because conflict edges require authoritative
+    # bilateral declarations in `edges.conflicts_with` instead.
+    try:
+        errors = compiler.validate_derived_affordances(
+            "alpha",
+            {
+                "affordances": [{
+                    "skillId": "alpha",
+                    "triggers": ["safe trigger"],
+                    "conflicts_with": [{"target": "beta"}],
+                }],
+            },
+            {"alpha", "beta"},
+        )
+        if any("conflict" in err.lower() and "reserved" in err.lower() for err in errors):
+            ok("R-007-8: affordance `conflicts_with` is rejected with explicit reserved-field error")
+        else:
+            fail_test(
+                "R-007-8: affordance `conflicts_with` is rejected with explicit reserved-field error",
+                f"errors={errors}",
+            )
+    except Exception as exc:
+        fail_test("R-007-8: affordance `conflicts_with` is rejected with explicit reserved-field error", str(exc))
+
+    # R-007-P2-8: shared adversarial fixture coverage. Mirrors the
+    # TS-side test in `affordance-normalizer.test.ts` so both
+    # sanitizers stay row-for-row identical.
+    try:
+        fixture_path = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
+            "..",
+            "__shared__",
+            "affordance-injection-fixtures.json",
+        )
+        fixture_path = os.path.realpath(fixture_path)
+        with open(fixture_path, "r", encoding="utf-8") as fh:
+            fixture = json.load(fh)
+
+        # Injection phrases must be dropped.
+        injection_failures = []
+        for phrase in fixture["injection_phrases"]:
+            normalized = compiler.normalize_affordance_input({
+                "skillId": "fixture-skill",
+                "triggers": [phrase],
+            })
+            triggers = (normalized or {}).get("derived_triggers", [])
+            if phrase in triggers or phrase.lower() in triggers:
+                injection_failures.append(phrase)
+        if not injection_failures:
+            ok("R-007-P2-8: every shared injection phrase is dropped (PY)")
+        else:
+            fail_test(
+                "R-007-P2-8: every shared injection phrase is dropped (PY)",
+                f"survived={injection_failures}",
+            )
+
+        # Benign phrases must survive.
+        benign_failures = []
+        for phrase in fixture["benign_phrases"]:
+            normalized = compiler.normalize_affordance_input({
+                "skillId": "fixture-skill",
+                "triggers": [phrase],
+            })
+            triggers = (normalized or {}).get("derived_triggers", [])
+            if phrase.lower() not in triggers:
+                benign_failures.append(phrase)
+        if not benign_failures:
+            ok("R-007-P2-8: every shared benign phrase survives (PY)")
+        else:
+            fail_test(
+                "R-007-P2-8: every shared benign phrase survives (PY)",
+                f"missing={benign_failures}",
+            )
+
+        # Privacy phrases must drop the listed substrings.
+        privacy_failures = []
+        for entry in fixture["privacy_phrases"]:
+            normalized = compiler.normalize_affordance_input({
+                "skillId": "fixture-skill",
+                "triggers": [entry["input"]],
+            })
+            serialized = json.dumps(normalized) if normalized is not None else "null"
+            for dropped in entry["must_drop_substrings"]:
+                if dropped in serialized:
+                    privacy_failures.append((entry["input"], dropped))
+        if not privacy_failures:
+            ok("R-007-P2-8: every shared privacy substring is stripped (PY)")
+        else:
+            fail_test(
+                "R-007-P2-8: every shared privacy substring is stripped (PY)",
+                f"leaked={privacy_failures}",
+            )
+    except Exception as exc:
+        fail_test("R-007-P2-8: shared adversarial fixture suite (PY)", str(exc))
+
 
 # ───────────────────────────────────────────────────────────────
 # 6. MAIN

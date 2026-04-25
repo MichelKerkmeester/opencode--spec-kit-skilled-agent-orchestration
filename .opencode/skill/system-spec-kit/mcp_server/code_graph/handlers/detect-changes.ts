@@ -114,15 +114,46 @@ function readinessRequiresBlock(readiness: ReadyResult): boolean {
  * Returns `null` for `/dev/null` (pure delete) — the caller must
  * skip such files since deleted symbols are no longer present in
  * the graph anyway.
+ *
+ * Returns `{ rejected: true, reason }` for paths whose canonical
+ * resolution falls outside `canonicalRootDir`. Per R-007-3
+ * (sanitization hardening), diff paths are untrusted input — a
+ * relative `../../etc/passwd` or absolute `/etc/passwd` MUST be
+ * refused explicitly rather than silently resolved against the
+ * graph (which would expose unrelated rows or trigger spurious
+ * lookups).
+ *
+ * The check uses path-prefix containment against the already-
+ * canonicalized rootDir; we deliberately do NOT call `realpathSync`
+ * on the candidate because the candidate file may not exist yet
+ * (e.g. a pure-add hunk on a new file). Path-string containment is
+ * sufficient for the workspace-boundary invariant.
  */
+type CandidatePathResult =
+  | { readonly kind: 'ok'; readonly path: string }
+  | { readonly kind: 'skip' }
+  | { readonly kind: 'reject'; readonly reason: string };
+
 function resolveCandidatePath(
   diffFile: DiffFile,
   canonicalRootDir: string,
-): string | null {
+): CandidatePathResult {
   const path = diffFile.newPath !== '/dev/null' ? diffFile.newPath : diffFile.oldPath;
-  if (!path || path === '/dev/null') return null;
+  if (!path || path === '/dev/null') return { kind: 'skip' };
   const normalized = normalize(path);
-  return isAbsolute(normalized) ? normalized : resolve(canonicalRootDir, normalized);
+  const resolved = isAbsolute(normalized) ? normalized : resolve(canonicalRootDir, normalized);
+
+  // Path-prefix containment. Append the platform separator before
+  // comparing so that `/foo/bar` does NOT match `/foo/barbaz`.
+  const rootWithSep = canonicalRootDir.endsWith(sep) ? canonicalRootDir : `${canonicalRootDir}${sep}`;
+  if (resolved !== canonicalRootDir && !resolved.startsWith(rootWithSep)) {
+    return {
+      kind: 'reject',
+      reason: `diff path resolved outside workspace root: ${path}`,
+    };
+  }
+
+  return { kind: 'ok', path: resolved };
 }
 
 /** Handle the `detect_changes` MCP tool call. */
@@ -208,14 +239,27 @@ export async function handleDetectChanges(args: DetectChangesArgs): Promise<MCPR
   const affectedFiles = new Set<string>();
 
   for (const diffFile of parsed.files) {
-    const candidatePath = resolveCandidatePath(diffFile, canonicalRootDir);
-    if (!candidatePath) continue;
+    const candidate = resolveCandidatePath(diffFile, canonicalRootDir);
+    if (candidate.kind === 'skip') continue;
+    if (candidate.kind === 'reject') {
+      // R-007-3: never silently drop a path that escaped the
+      // workspace root. Surface a parse_error with the offending
+      // path so callers can see exactly why the diff was refused.
+      return buildResponse({
+        status: 'parse_error',
+        affectedSymbols: [],
+        affectedFiles: [],
+        blockedReason: candidate.reason,
+        timestamp: ts(),
+        readiness: readinessBlock,
+      });
+    }
 
     // Resolve the diff path through the same canonical-path lookup
     // that `code_files` rows use, falling back to the raw resolved
     // path. We never invent a row — if the file is unknown to the
     // graph, the file is reported as touched with zero symbols.
-    const resolvedPath = graphDb.resolveSubjectFilePath(candidatePath) ?? candidatePath;
+    const resolvedPath = graphDb.resolveSubjectFilePath(candidate.path) ?? candidate.path;
     affectedFiles.add(resolvedPath);
 
     if (diffFile.hunks.length === 0) continue;

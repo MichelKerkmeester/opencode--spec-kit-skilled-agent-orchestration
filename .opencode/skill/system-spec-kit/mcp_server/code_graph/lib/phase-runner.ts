@@ -37,11 +37,21 @@ export interface Phase<I extends Record<string, unknown> = Record<string, unknow
 
 /** Error thrown when a runner invocation cannot construct a valid DAG. */
 export class PhaseRunnerError extends Error {
-  readonly kind: 'duplicate-phase' | 'missing-dependency' | 'cycle-detected' | 'phase-failure';
+  readonly kind:
+    | 'duplicate-phase'
+    | 'duplicate-output'
+    | 'missing-dependency'
+    | 'cycle-detected'
+    | 'phase-failure';
   readonly phaseName?: string;
 
   constructor(
-    kind: 'duplicate-phase' | 'missing-dependency' | 'cycle-detected' | 'phase-failure',
+    kind:
+      | 'duplicate-phase'
+      | 'duplicate-output'
+      | 'missing-dependency'
+      | 'cycle-detected'
+      | 'phase-failure',
     message: string,
     phaseName?: string,
     options?: { cause?: unknown },
@@ -65,9 +75,11 @@ function outputKey(phase: Phase): string {
  *
  * Rejection paths (in evaluation order):
  *   1. Duplicate phase name        → PhaseRunnerError('duplicate-phase')
- *   2. Dependency that does not    → PhaseRunnerError('missing-dependency')
+ *   2. Duplicate `output` key      → PhaseRunnerError('duplicate-output')
+ *      across phases (R-007-P2-1)
+ *   3. Dependency that does not    → PhaseRunnerError('missing-dependency')
  *      resolve to any phase output
- *   3. Any cycle                    → PhaseRunnerError('cycle-detected')
+ *   4. Any cycle                    → PhaseRunnerError('cycle-detected')
  */
 export function topologicalSort(phases: readonly Phase[]): string[] {
   const phasesByName = new Map<string, Phase>();
@@ -82,11 +94,43 @@ export function topologicalSort(phases: readonly Phase[]): string[] {
     phasesByName.set(phase.name, phase);
   }
 
-  // Build output-key → phase-name lookup so dependencies can name
-  // either the phase or its declared output.
+  // R-007-P2-1: Build output-key → phase-name lookup AND reject any
+  // duplicate output keys. Two phases publishing the same output
+  // key are just as ambiguous as two phases sharing a name —
+  // dependents that reference that key cannot deterministically
+  // resolve which producer's value they receive. Mirror the
+  // duplicate-name rejection so the failure modes stay symmetric.
   const phaseNamesByOutputKey = new Map<string, string>();
   for (const phase of phases) {
-    phaseNamesByOutputKey.set(outputKey(phase), phase.name);
+    const key = outputKey(phase);
+    const existingProducer = phaseNamesByOutputKey.get(key);
+    if (existingProducer !== undefined && existingProducer !== phase.name) {
+      throw new PhaseRunnerError(
+        'duplicate-output',
+        `Phase runner rejected: phases "${existingProducer}" and "${phase.name}" both publish output key "${key}"`,
+        phase.name,
+      );
+    }
+    phaseNamesByOutputKey.set(key, phase.name);
+  }
+
+  // Also reject when a phase's `output` key collides with a
+  // *different* phase's `name` (which would also cause ambiguous
+  // dependency resolution). This is the second half of the
+  // symmetry: a phase named `X` and another phase whose `output`
+  // is `X` collide because dependents naming `X` can't tell which
+  // producer is meant.
+  for (const phase of phases) {
+    const key = outputKey(phase);
+    if (key === phase.name) continue;
+    const collidingPhase = phasesByName.get(key);
+    if (collidingPhase !== undefined && collidingPhase.name !== phase.name) {
+      throw new PhaseRunnerError(
+        'duplicate-output',
+        `Phase runner rejected: phase "${phase.name}" output "${key}" collides with phase name "${collidingPhase.name}"`,
+        phase.name,
+      );
+    }
   }
 
   for (const phase of phases) {

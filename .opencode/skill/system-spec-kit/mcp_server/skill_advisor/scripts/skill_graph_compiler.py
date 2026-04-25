@@ -42,6 +42,22 @@ ALLOWED_CATEGORIES = {
 }
 EDGE_TYPES = {"depends_on", "enhances", "siblings", "conflicts_with", "prerequisite_for"}
 ALLOWED_ENTITY_KINDS = {"skill", "agent", "script", "config", "reference"}
+# R-007-8 contract decision: affordance derived inputs MAY declare
+# routing-direction edges (`depends_on`, `enhances`, `siblings`,
+# `prerequisite_for`) but MUST NOT declare `conflicts_with`.
+#
+# Conflict semantics require authoritative reciprocal declarations
+# in `edges.conflicts_with` (validated by `validate_edge_symmetry`),
+# not derived/inferred affordance lanes. Allowing affordances to
+# inject conflict edges would (a) bypass the bilateral-declaration
+# invariant and (b) silently no-op anyway in `compile_graph` —
+# either path violates the explicitness rule.
+#
+# Therefore we VALIDATE: any `conflicts_with`/`conflictsWith` field
+# on an affordance is reported as `derived.affordances[i] has
+# unsupported field(s)` by `validate_derived_affordances`. This
+# closes R-007-8 with an explicit (validate, do not serialize)
+# contract that mirrors `derived.entities` constraints.
 AFFORDANCE_RELATION_FIELDS = {
     "dependsOn": "depends_on",
     "depends_on": "depends_on",
@@ -49,16 +65,46 @@ AFFORDANCE_RELATION_FIELDS = {
     "siblings": "siblings",
     "prerequisiteFor": "prerequisite_for",
     "prerequisite_for": "prerequisite_for",
-    "conflictsWith": "conflicts_with",
-    "conflicts_with": "conflicts_with",
 }
+# Reserved (rejected by validation) — kept here so the key set is
+# explicit at the call site rather than implicit through a missing
+# entry. Listed in `AFFORDANCE_REJECTED_RELATION_FIELDS` below.
+AFFORDANCE_REJECTED_RELATION_FIELDS = frozenset({
+    "conflictsWith",
+    "conflicts_with",
+})
 AFFORDANCE_ALLOWED_FIELDS = {
     "skillId", "skill_id", "name", "triggers", "category",
     *AFFORDANCE_RELATION_FIELDS.keys(),
 }
+# R-007-9: broadened prompt-injection denylist. Mirrors the TS-side
+# `INSTRUCTION_PATTERN` in `affordance-normalizer.ts` so both compile-
+# time (Python) and score-time (TypeScript) input paths reject the
+# same set of injection-shaped phrases. Real-world corpora include
+# synonyms (disregard/override/forget), directional variants
+# (above/prior/earlier/all/any), reveal-prompt probes, role-prefix
+# variants (user:/human:), and bracketed/angled role markers
+# (`[INST]`, `<system>`). Anchoring matches the TS pattern: keyword
+# branches use `(?:^|\s|\b)` so legitimate phrases like "ignore the
+# cache" or "system call audit" pass.
 AFFORDANCE_INSTRUCTION_PATTERN = re.compile(
-    r"\b(ignore\s+(previous|all)\s+instructions|system\s*:|developer\s*:|"
-    r"assistant\s*:|execute\s*:|instruction\s*:)\b",
+    r"(?:"
+    r"(?:^|\s|\b)(?:"
+    r"(?:ignore|disregard|forget|skip|bypass|override)\s+"
+    r"(?:the\s+)?(?:previous|prior|earlier|above|all|any)"
+    r"(?:\s+(?:and\s+)?(?:previous|prior|earlier|above|all|any))*\s+"
+    r"(?:instruction|instructions|prompt|prompts|directions?|"
+    r"rule|rules|context|guidance|message|messages|system\s+prompt)|"
+    r"override\s+system\s+(?:prompt|message|instructions)|"
+    r"new\s+instructions?\s*:|"
+    r"reveal\s+(?:the\s+)?(?:system|developer)\s+"
+    r"(?:prompt|instruction|instructions)|"
+    r"system\s*:|developer\s*:|assistant\s*:|user\s*:|human\s*:|"
+    r"execute\s*:|instruction\s*:"
+    r")|"
+    r"\[\s*(?:system|developer|assistant|user|human|inst|instruction)\s*\]|"
+    r"<\s*(?:system|developer|assistant|user|human)\s*>"
+    r")",
     re.IGNORECASE,
 )
 AFFORDANCE_EMAIL_PATTERN = re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.IGNORECASE)
@@ -435,7 +481,24 @@ def validate_derived_affordances(folder_name: str, derived: dict, all_skill_ids:
         if not isinstance(raw_affordance, dict):
             errors.append(f"derived.affordances[{index}] must be an object")
             continue
-        unexpected = set(raw_affordance.keys()) - AFFORDANCE_ALLOWED_FIELDS - {"description"}
+        # R-007-8: conflict edges from affordances are explicitly
+        # rejected. Report them BEFORE the generic "unsupported
+        # field" message so operators see a contract reason, not a
+        # generic allowlist miss.
+        rejected = AFFORDANCE_REJECTED_RELATION_FIELDS & set(raw_affordance.keys())
+        if rejected:
+            errors.append(
+                f"derived.affordances[{index}] declares reserved field(s) "
+                f"{sorted(rejected)}: conflict edges require an authoritative "
+                f"reciprocal declaration in `edges.conflicts_with` and cannot "
+                f"be derived from affordances"
+            )
+        unexpected = (
+            set(raw_affordance.keys())
+            - AFFORDANCE_ALLOWED_FIELDS
+            - AFFORDANCE_REJECTED_RELATION_FIELDS
+            - {"description"}
+        )
         if unexpected:
             errors.append(
                 f"derived.affordances[{index}] has unsupported field(s): "
