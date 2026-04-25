@@ -1,30 +1,12 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import Database from 'better-sqlite3';
 
-let activeDb: Database.Database | null = null;
-
-vi.mock('../../lib/search/vector-index.js', () => ({
-  getDb: () => activeDb,
-}));
-
-vi.mock('../../utils/index.js', () => ({
-  requireDb: () => {
-    if (!activeDb) throw new Error('test db not initialized');
-    return activeDb;
-  },
-}));
-
-vi.mock('../../utils/db-helpers.js', () => ({
-  requireDb: () => {
-    if (!activeDb) throw new Error('test db not initialized');
-    return activeDb;
-  },
-  toErrorMessage: (e: unknown) => (e instanceof Error ? e.message : String(e)),
-}));
-
 import {
+  fetchTrustBadgeSnapshots,
   formatSearchResults,
+  toTrustBadges,
   type MemoryResultEnvelope,
+  type RawSearchResult,
 } from '../../formatters/search-results';
 import type { MCPEnvelope, MCPResponse } from '../../lib/response/envelope';
 import { formatAgeString } from '../../lib/utils/format-helpers';
@@ -74,14 +56,19 @@ function createDb(): Database.Database {
   return db;
 }
 
-// FOLLOW-UP (012/005): two SQL-dependent tests currently fail due to a vitest
-// mock-resolution path mismatch (requireDb is re-exported through utils/index
-// barrel and the mock layer doesn't intercept the formatter's resolved path
-// reliably). Skipping until the test rig is rewritten to inject the DB via
-// dependency override or move to integration-style test against a real DB
-// fixture. Implementation logic is otherwise verified manually + by the
-// response-profile-formatters.vitest.ts envelope-propagation test.
-describe.skip('memory trust badges', () => {
+// 010/007 R-007-13: previously skipped due to a vitest mock-resolution path
+// mismatch — `requireDb` is re-exported through `utils/index` and the mock
+// layer did not intercept the formatter's resolved path reliably. The
+// formatter now exposes a `dbGetter` injection seam on
+// `fetchTrustBadgeSnapshots` (default = production `requireDb`); tests pass
+// their own getter pointing at an in-memory better-sqlite3 instance and
+// verify the SQL-derivation pipeline directly via `fetchTrustBadgeSnapshots`
+// + `toTrustBadges`. The explicit-pass-through test continues to exercise
+// the public `formatSearchResults` envelope path because it does not depend
+// on the database.
+describe('memory trust badges', () => {
+  let activeDb: Database.Database | null = null;
+
   beforeEach(() => {
     activeDb = createDb();
   });
@@ -93,7 +80,15 @@ describe.skip('memory trust badges', () => {
     activeDb = null;
   });
 
-  it('derives trust badges from connected causal-edge metadata', async () => {
+  // Test getter that returns the per-test in-memory DB. The cast is safe
+  // because the production `requireDb` returns a `better-sqlite3` Database
+  // instance and the test creates one of the same type.
+  function testDbGetter(): ReturnType<typeof Database> {
+    if (!activeDb) throw new Error('test db not initialized');
+    return activeDb;
+  }
+
+  it('derives trust badges from connected causal-edge metadata', () => {
     const extractedAt = new Date(Date.now() - (10 * 24 * 60 * 60 * 1000)).toISOString();
     const lastAccessed = new Date(Date.now() - (2 * 24 * 60 * 60 * 1000)).toISOString();
 
@@ -108,17 +103,24 @@ describe.skip('memory trust badges', () => {
       VALUES (?, ?, ?, ?)
     `).run(1, 0.5, 0.82, 'promoted');
 
-    const response = await formatSearchResults([
+    const rawResults: RawSearchResult[] = [
       {
         id: 11,
         spec_folder: 'specs/011-trust',
         file_path: '/tmp/11.md',
         title: 'Trust Target',
       },
-    ], 'semantic');
+    ];
 
-    const result = parseEnvelope(response).data.results[0];
-    expect(result.trustBadges).toEqual({
+    const fetchResult = fetchTrustBadgeSnapshots(
+      rawResults,
+      testDbGetter as unknown as () => ReturnType<typeof Database>,
+    );
+    const badges = toTrustBadges(fetchResult.snapshots.get(11) ?? null);
+
+    expect(fetchResult.attempted).toBe(true);
+    expect(fetchResult.derivedCount).toBeGreaterThan(0);
+    expect(badges).toEqual({
       confidence: 0.82,
       extractionAge: formatAgeString(extractedAt),
       lastAccessAge: formatAgeString(lastAccessed),
@@ -127,7 +129,7 @@ describe.skip('memory trust badges', () => {
     });
   });
 
-  it('marks results as orphaned when they have no incoming edges', async () => {
+  it('marks results as orphaned when they have no incoming edges', () => {
     const extractedAt = new Date(Date.now() - (4 * 24 * 60 * 60 * 1000)).toISOString();
 
     activeDb?.prepare(`
@@ -136,17 +138,23 @@ describe.skip('memory trust badges', () => {
       ) VALUES (?, ?, ?, ?, ?)
     `).run('12', '13', 'supports', 0.4, extractedAt);
 
-    const response = await formatSearchResults([
+    const rawResults: RawSearchResult[] = [
       {
         id: 12,
         spec_folder: 'specs/012-trust',
         file_path: '/tmp/12.md',
         title: 'Orphan Candidate',
       },
-    ], 'semantic');
+    ];
 
-    const result = parseEnvelope(response).data.results[0];
-    expect(result.trustBadges).toEqual({
+    const fetchResult = fetchTrustBadgeSnapshots(
+      rawResults,
+      testDbGetter as unknown as () => ReturnType<typeof Database>,
+    );
+    const badges = toTrustBadges(fetchResult.snapshots.get(12) ?? null);
+
+    expect(fetchResult.attempted).toBe(true);
+    expect(badges).toEqual({
       confidence: 0.4,
       extractionAge: formatAgeString(extractedAt),
       lastAccessAge: 'never',
@@ -156,6 +164,11 @@ describe.skip('memory trust badges', () => {
   });
 
   it('preserves explicit trust badges when callers precompute them', async () => {
+    // This case exercises the explicit-badges pass-through path on
+    // `formatSearchResults`. It does not depend on the database — the
+    // formatter's internal `fetchTrustBadgeSnapshots` call is allowed to
+    // fall through (its try/catch returns an empty Map when `requireDb`
+    // throws), and the explicit `trustBadges` value wins regardless.
     const response = await formatSearchResults([
       {
         id: 20,

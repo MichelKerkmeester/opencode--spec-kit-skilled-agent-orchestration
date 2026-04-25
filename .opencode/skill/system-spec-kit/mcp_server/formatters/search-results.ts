@@ -202,7 +202,7 @@ export interface MemoryParserLike {
   extractAnchors(content: string): Record<string, string>;
 }
 
-interface TrustBadgeSnapshot {
+export interface TrustBadgeSnapshot {
   confidence: number | null;
   extractedAt: string | null;
   lastAccessed: string | null;
@@ -328,7 +328,7 @@ interface MemoryTrustBadgePartial {
   weightHistoryChanged: boolean | null;
 }
 
-function toTrustBadges(snapshot: TrustBadgeSnapshot | null): MemoryTrustBadges | undefined {
+export function toTrustBadges(snapshot: TrustBadgeSnapshot | null): MemoryTrustBadges | undefined {
   if (!snapshot) return undefined;
   return {
     confidence: snapshot.confidence,
@@ -365,9 +365,6 @@ function mergeTrustBadges(
   const weightHistoryChanged = explicit.weightHistoryChanged ?? derived?.weightHistoryChanged;
 
   if (orphan === undefined || weightHistoryChanged === undefined) {
-    // Required boolean fields still missing — derived wasn't
-    // available and caller didn't supply. Drop the badge rather
-    // than shipping `undefined` casts.
     return undefined;
   }
 
@@ -392,15 +389,20 @@ interface TrustBadgeFetchResult {
 }
 
 /**
- * R-007-P2-11: trust-badge derivation now returns observability
- * fields alongside the snapshot map. The fields feed
- * `MemoryResultTrace.trustBadgeDerivation` so operators can
- * distinguish "no IDs to query" / "DB unavailable" / "query error"
- * / "0 rows" without inspecting logs. Existing fast paths (no IDs,
- * `requireDb` failure, query exception) preserve their previous
- * graceful-empty-Map return value — only the metadata is new.
+ * Resolve causal-edge / weight-history badge snapshots for the given results.
+ *
+ * R-007-P2-11: returns observability fields alongside the snapshot map so
+ * operators can distinguish "no IDs to query" / "DB unavailable" / "query
+ * error" / "0 rows" via `MemoryResultTrace.trustBadgeDerivation`.
+ *
+ * R-007-13 (T-E): `dbGetter` is a DI seam for testability. Production callers
+ * omit it and use `requireDb`; tests can pass a closure returning a `:memory:`
+ * better-sqlite3 instance.
  */
-function fetchTrustBadgeSnapshots(results: RawSearchResult[]): TrustBadgeFetchResult {
+export function fetchTrustBadgeSnapshots(
+  results: RawSearchResult[],
+  dbGetter: () => ReturnType<typeof requireDb> = requireDb,
+): TrustBadgeFetchResult {
   const resultIds = results
     .map((result) => toNullableNumber(result.id))
     .filter((id): id is number => id !== null);
@@ -416,7 +418,7 @@ function fetchTrustBadgeSnapshots(results: RawSearchResult[]): TrustBadgeFetchRe
 
   let database: ReturnType<typeof requireDb>;
   try {
-    database = requireDb();
+    database = dbGetter();
   } catch {
     return {
       snapshots: new Map(),
@@ -445,6 +447,12 @@ function fetchTrustBadgeSnapshots(results: RawSearchResult[]): TrustBadgeFetchRe
     const historySelect = hasWeightHistory
       ? 'MAX(CASE WHEN wh.edge_id IS NOT NULL THEN 1 ELSE 0 END) AS weight_history_changed'
       : '0 AS weight_history_changed';
+
+    // Bind IDs as TEXT strings so the SQL CAST(... AS TEXT) joins compare
+    // cleanly against the TEXT-typed source_id/target_id columns in
+    // causal_edges. better-sqlite3 binds JS numbers as REAL, which would
+    // make CAST(11 AS TEXT) yield '11.0' and never match a stored '11'.
+    const boundIds = resultIds.map((id) => String(id));
 
     const rows = (database.prepare(`
       WITH result_ids(memory_id) AS (
@@ -480,8 +488,8 @@ function fetchTrustBadgeSnapshots(results: RawSearchResult[]): TrustBadgeFetchRe
       ${historyJoin}
       GROUP BY ce.memory_id
     `) as {
-      all(...params: number[]): Array<Record<string, unknown>>;
-    }).all(...resultIds);
+      all(...params: string[]): Array<Record<string, unknown>>;
+    }).all(...boundIds);
 
     const snapshots = new Map<number, TrustBadgeSnapshot>();
     for (const row of rows) {

@@ -9,11 +9,11 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation"
-    last_updated_at: "2026-04-25T18:40:00Z"
+    last_updated_at: "2026-04-25T18:50:00Z"
     last_updated_by: "claude-opus-4-7-orchestrator-wave-1-integration"
-    recent_action: "T-B + T-C + T-D cherry-picked onto main. T-D sanitization hardening: 5 P1 + 5 P2 closed (R-007-3,4,8,9,11,P2-1,P2-3,P2-8,P2-10,P2-11)."
-    next_safe_action: "Cherry-pick T-E, T-F; resolve implementation-summary append conflicts; run final tsc + vitest"
-    completion_pct: 35
+    recent_action: "T-B + T-C + T-D + T-E cherry-picked onto main. T-E unskips trust-badges SQL tests via DI; latent better-sqlite3 binding bug fixed (resultIds bound as TEXT). Formatter return type harmonized to T-D's TrustBadgeFetchResult shape; tests dereference fetchResult.snapshots.get(...)."
+    next_safe_action: "Cherry-pick T-F; final tsc + vitest; commit Wave 2 integration; push"
+    completion_pct: 50
     blockers: []
     key_files:
       - "spec.md"
@@ -30,6 +30,7 @@ _memory:
       - "../../mcp_server/skill_advisor/scripts/skill_graph_compiler.py"
       - "../../mcp_server/formatters/search-results.ts"
       - "../../mcp_server/code_graph/lib/phase-runner.ts"
+      - "../../mcp_server/tests/memory/trust-badges.test.ts"
       - "implementation-summary.md"
 ---
 # Implementation Summary: Review Remediation (010/007)
@@ -37,12 +38,13 @@ _memory:
 <!-- SPECKIT_LEVEL: 2 -->
 
 ## Status
-T-A, T-B, T-C, T-D complete. T-E, T-F pending integration.
+T-A, T-B, T-C, T-D, T-E complete. T-F pending integration.
 
 - **T-A (detect_changes MCP wiring):** detect_changes registered as MCP tool across dispatcher, JSON schema, Zod validator, allowed-parameter ledger, and 6 umbrella docs. Closes R-007-2, R-007-14.
 - **T-B (verification evidence sync):** Wave-3 canonical evidence (`tsc --noEmit` exit 0; `vitest run` 9 passed | 1 skipped (10), 90 passed | 3 skipped (93), 1.34s; per-sub-phase `validate.sh --strict` results) synced across 010/001/002/003/005/006 sub-phase implementation-summary.md + checklist.md files. Premature `[x]` PASS marks unchecked and rewritten with the 3-state convention (`[x]` real evidence captured | `[ ] OPERATOR-PENDING` command can't run from this context | `[ ] BLOCKED` blocked with reason). Closes R-007-1, R-007-5, R-007-7, R-007-15, R-007-19, R-007-20, R-007-21.
 - **T-C (public API surface gaps):** `minConfidence` exposed end-to-end on `code_graph_query` (Zod schema, JSON schema, allowed-parameter ledger, accept/reject tests). `affordances` DEFER decision: stays compile-time-only scorer seam (prompt-injection surface concern). Closes R-007-6, R-007-10.
 - **T-D (sanitization hardening):** 7 files hardened (`detect-changes.ts` canonical-root path containment, `diff-parser.ts` per-side hunk counters, `skill_graph_compiler.py` validate-reject `conflicts_with` + broadened denylist, `affordance-normalizer.ts` broadened denylist, `formatters/search-results.ts` merge-per-field trustBadges + allowlisted age strings + trace flag, `phase-runner.ts` duplicate-output rejection, `code-graph-db.ts`/`query.ts:614-615`/`code-graph-context.ts` `reason`/`step` allowlist on read path). New shared adversarial fixture `affordance-injection-fixtures.json` consumed by both TS and Python tests. Closes R-007-3, 4, 8, 9, 11, P2-1, P2-3, P2-8, P2-10, P2-11. Verify: tsc clean; vitest 37/37 PASS; pytest 57/57 PASS.
+- **T-E (test rig fix — DI strategy):** `fetchTrustBadgeSnapshots` exposes optional `dbGetter` parameter (defaults to `requireDb`). Three previously-skipped trust-badges SQL tests unskipped (3/3 pass). Latent production bug fixed: `resultIds.map(String)` at bind time so `CAST(rid.memory_id AS TEXT)` matches TEXT-typed `causal_edges.{source_id,target_id}` columns (better-sqlite3 was binding JS numbers as REAL → `'11.0'` instead of `'11'`). Formatter return type harmonized to T-D's `TrustBadgeFetchResult` shape during integration; tests now dereference `fetchResult.snapshots.get(...)`. Closes R-007-13.
 
 ## Findings Closed
 
@@ -242,6 +244,25 @@ Allowlist: single-line, length ≤ 200, no control chars (`\x00-\x1F\x7F`). Fail
 ### R-007-P2-8 — Shared adversarial fixture (T-D)
 
 Created `mcp_server/skill_advisor/tests/__shared__/affordance-injection-fixtures.json` (28 injection phrases, 11 benign phrases, 4 privacy phrases). Both `affordance-normalizer.test.ts` (TS) and `python/test_skill_advisor.py` (PY) load this fixture and run identical drop-vs-survive assertions. Forces row-for-row sanitizer parity.
+
+### R-007-13 — Trust-badges SQL test rig fix (T-E)
+
+**Strategy:** **DI** (dependency injection on `fetchTrustBadgeSnapshots`).
+
+**Rationale:** The Wave 3 follow-up note attributed the test failures to vitest mock-resolution. After re-running with all three mock layers active, the mocks intercepted correctly but two of three cases still returned `confidence: null`. Tracing the SQL pipeline directly against an in-memory better-sqlite3 revealed the actual blocker: `better-sqlite3` binds JavaScript numbers as REAL, so `VALUES (?)` with the integer `11` stores `11.0`, and `CAST(11.0 AS TEXT)` yields `'11.0'`, which never matches the TEXT-typed `target_id='11'` column. The mock theory was a red herring — the SQL itself was latently broken since 010/005 and only invisible because the tests were skipped. The DI seam (additive optional `dbGetter` parameter) plus a one-line bind-side coercion (`resultIds.map(String)`) jointly close R-007-13: tests exercise the SQL path against an in-memory DB with no mock plumbing, and production callers using JS-number IDs correctly resolve causal-edge metadata against TEXT-typed source/target columns. DI was preferred over real-DB integration fixture because it leaves the production caller signature unchanged, avoids cross-suite global mocks, and surfaces the bind-type bug as a localized fix.
+
+**Evidence — files modified:**
+
+| File | Change |
+|------|--------|
+| `mcp_server/formatters/search-results.ts` | `fetchTrustBadgeSnapshots` exported with new optional `dbGetter = requireDb` parameter (DI seam); `toTrustBadges` and `TrustBadgeSnapshot` exported for direct test assertion; bind-type coercion `resultIds.map(String)` so SQL `CAST(memory_id AS TEXT)` joins resolve against TEXT-typed `source_id`/`target_id` columns. **Integration note:** function returns the T-D `TrustBadgeFetchResult` shape (`{snapshots, attempted, derivedCount, failureReason}`); tests dereference `fetchResult.snapshots.get(...)`. |
+| `mcp_server/tests/memory/trust-badges.test.ts` | Removed `describe.skip(...)`; removed all `vi.mock(...)` plumbing; SQL-derivation tests call `fetchTrustBadgeSnapshots` + `toTrustBadges` directly with per-test `:memory:` better-sqlite3 getter; explicit-pass-through test continues to exercise `formatSearchResults`. |
+
+**Verification (real command output, T-E worktree):**
+- `cd mcp_server && npx --no-install tsc --noEmit` → exit 0 (clean).
+- `cd mcp_server && npx --no-install vitest run tests/memory/trust-badges.test.ts` → 3 passed (3).
+- `cd mcp_server && npx --no-install vitest run tests/response-profile-formatters.vitest.ts` → 2 passed (2).
+- Sanity-check on causal suites → 9 passed (9), no regression.
 
 ## Findings Deferred (with Defer-To pointers)
 [TBD per task ID]
