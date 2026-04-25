@@ -12,19 +12,19 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-package/015-code-graph-advisor-refinement"
-    last_updated_at: "2026-04-24T00:00:00Z"
-    last_updated_by: "remediation-tasks-pass"
-    recent_action: "Wrote executor-ready tasks.md from iter-18/iter-19 synthesis (54 tasks)"
-    next_safe_action: "Execute T-001 and T-005 in parallel (Batch A start)"
+    last_updated_at: "2026-04-25T09:15:00.000Z"
+    last_updated_by: "b6-batch-close"
+    recent_action: "T-053 complete; B6 daemon-availability fix-up applied"
+    next_safe_action: "Final continuity save + commit"
     blockers: []
     key_files:
       - "tasks.md"
       - "plan.md"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
-      session_id: "remediation-tasks-015"
+      session_id: "b6-batch-close"
       parent_session_id: null
-    completion_pct: 25
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -120,17 +120,17 @@ _memory:
 
 ### PR 1 — Corpus-Path Bench Wiring Fix
 
-- [ ] T-001 [P] Read `scorer-bench.ts` to confirm hardcoded corpus path (0 LOC, F33)
-- [ ] T-002 [P] Apply 4-line corpus path fix in `scorer-bench.ts`; extract to `SPECKIT_BENCH_CORPUS_PATH` const (+4 LOC, F33)
-- [ ] T-003 [P] Apply 1-line corpus path fix in `python-ts-parity.vitest.ts` if applicable (+1 LOC, F33)
-- [ ] T-004 [P] Run tsc + bench; verify non-zero corpus rows (0 LOC, F33)
+- [x] T-001 [P] Read `scorer-bench.ts` to confirm hardcoded corpus path (0 LOC, F33)
+- [x] T-002 [P] Apply 4-line corpus path fix in `scorer-bench.ts`; extract to `SPECKIT_BENCH_CORPUS_PATH` const (+4 LOC, F33)
+- [x] T-003 [P] Apply 1-line corpus path fix in `python-ts-parity.vitest.ts` if applicable (+1 LOC, F33)
+- [x] T-004 [P] Run tsc + bench; verify non-zero corpus rows (0 LOC, F33)
 
 ### PR 2 — Settings.local.json Rewrite
 
-- [ ] T-005 [P] Read `settings.local.json` to confirm broken parallel-hook shape (0 LOC, F23.1)
-- [ ] T-006 [P] Rewrite `settings.local.json` with single `UserPromptSubmit` array entry (-31 LOC, F23.1)
-- [ ] T-007 [P] Smoke-test: verify single advisor brief renders in Claude Code session (0 LOC, F23.1)
-- [ ] T-008 [P] Verify AGENTS.md triad does not reference old settings shape; patch if needed (0 LOC, F23.1)
+- [x] T-005 [P] Read `settings.local.json` to confirm broken parallel-hook shape (0 LOC, F23.1)
+- [x] T-006 [P] Rewrite `settings.local.json` with single `UserPromptSubmit` array entry (-31 LOC, F23.1)
+- [x] T-007 [P] Smoke-test: verify single advisor brief renders in Claude Code session (0 LOC, F23.1)
+- [x] T-008 [P] Verify AGENTS.md triad does not reference old settings shape; patch if needed (0 LOC, F23.1)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -144,56 +144,56 @@ _memory:
 
 ### PR 3 — Promotion Subsystem DELETE Sweep (Depends on: PR 1)
 
-- [ ] T-009 Read each promotion source file to confirm zero production callers (0 LOC, F52)
-- [ ] T-010 Delete 6 promotion code files from `lib/promotion/` (-~742 LOC, F70)
-- [ ] T-011 Delete `schemas/promotion-cycle.ts` (-82 LOC, F70)
-- [ ] T-012 Delete 1 promotion subsystem test file; retain memory auto-promotion semantics test (-~220 LOC, F70, R1-P1-002)
-- [ ] T-013 Delete 3 promotion bench files (corpus-bench, safety-bench, holdout-bench) (-150 LOC, F68)
-- [ ] T-014 Update `package.json` — remove 3 bench script rows (-6 LOC, F68)
-- [ ] T-015 Doc scrub — remove 12 doc file references per iter-14 scrub list (-195 LOC, F37)
-- [ ] T-016 Doc scrub — verify sibling-spec docs are clean (0 LOC, F70)
-- [ ] T-017 Run full `tsc --noEmit` + `vitest run`; confirm clean (0 LOC, F70)
+- [x] T-009 Read each promotion source file to confirm zero production callers (0 LOC, F52)
+- [x] T-010 Delete 6 promotion code files from `lib/promotion/` (-~742 LOC, F70)
+- [x] T-011 Delete `schemas/promotion-cycle.ts` (-82 LOC, F70)
+- [x] T-012 Delete 1 promotion subsystem test file; retain memory auto-promotion semantics test (-~220 LOC, F70, R1-P1-002)
+- [x] T-013 Delete 3 promotion bench files (corpus-bench, safety-bench, holdout-bench) (-150 LOC, F68)
+- [x] T-014 Update `package.json` — remove 3 bench script rows (-6 LOC, F68)
+- [x] T-015 Doc scrub — remove 12 doc file references per iter-14 scrub list (-195 LOC, F37)
+- [x] T-016 Doc scrub — verify sibling-spec docs are clean (0 LOC, F70)
+- [x] T-017 Run full `tsc --noEmit` + `vitest run`; confirm clean (0 LOC, F70)
 
 ### PR 4 — State-Vocabulary Unification (Depends on: PR 3)
 
-- [ ] T-018 Read 4 vocabulary source files before editing (0 LOC, F17)
-- [ ] T-019 Step 1: Replace V1 `GraphFreshness` type in `ensure-ready.ts:22` with import from `ops-hardening.ts` (+2 LOC, F71)
-- [ ] T-020 Step 2: Add `case 'error': return 'missing';` arm to `canonicalReadinessFromFreshness` (+2 LOC, F71)
-- [ ] T-021 Step 3: Update `startup-brief.ts:43,213,240,247` for `freshness === 'error'` mapping (+4 LOC, F71)
-- [ ] T-022 Step 4: Widen `shared-payload.ts` union to 4 values (+4 LOC, F71)
-- [ ] T-023 Step 5: Remove manual `trustState: 'unavailable' as const` injection in `context.ts:224-229` (-3 LOC, F18)
-- [ ] T-024 Step 6: Add `'unavailable'` trust-state path in `query.ts:623-780` (+4 LOC, F18)
-- [ ] T-025 Step 7: Replace V4-vocabulary `reason` string in `status.ts:35` (+3 LOC, F17)
-- [ ] T-026 Step 8: Update `trustStateFromGraphState` mapper for 4-val union (+4 LOC, F71)
-- [ ] T-027 Create canonical `TrustState` re-export from `freshness/trust-state.ts` with V1-V5 deprecation aliases (+10 LOC, F71)
-- [ ] T-028 Run full `tsc --noEmit` + `vitest run` + 4-surface spot-check (0 LOC, F17)
+- [x] T-018 Read 4 vocabulary source files before editing (0 LOC, F17)
+- [x] T-019 Step 1: Replace V1 `GraphFreshness` type in `ensure-ready.ts:22` with import from `ops-hardening.ts` (+2 LOC, F71)
+- [x] T-020 Step 2: Add `case 'error': return 'missing';` arm to `canonicalReadinessFromFreshness` (+2 LOC, F71)
+- [x] T-021 Step 3: Update `startup-brief.ts:43,213,240,247` for `freshness === 'error'` mapping (+4 LOC, F71)
+- [x] T-022 Step 4: Widen `shared-payload.ts` union to 4 values (+4 LOC, F71)
+- [x] T-023 Step 5: Remove manual `trustState: 'unavailable' as const` injection in `context.ts:224-229` (-3 LOC, F18)
+- [x] T-024 Step 6: Add `'unavailable'` trust-state path in `query.ts:623-780` (+4 LOC, F18)
+- [x] T-025 Step 7: Replace V4-vocabulary `reason` string in `status.ts:35` (+3 LOC, F17)
+- [x] T-026 Step 8: Update `trustStateFromGraphState` mapper for 4-val union (+4 LOC, F71)
+- [x] T-027 Create canonical `TrustState` re-export from `freshness/trust-state.ts` with V1-V5 deprecation aliases (+10 LOC, F71)
+- [x] T-028 Run full `tsc --noEmit` + `vitest run` + 4-surface spot-check (0 LOC, F17)
 
 ### PR 5 — Instrumentation Namespace Scaffold (Depends on: PR 3, PR 4)
 
-- [ ] T-029 [P] Read existing `lib/metrics.ts` to understand collector patterns before extending (0 LOC, F43)
-- [ ] T-030 [P] Add 6 code-graph metrics definitions (#1-6) to `lib/metrics.ts` (+65 LOC, F43)
-- [ ] T-031 [P] Add 5 skill-advisor scorer metrics definitions (#7-11) to `lib/metrics.ts` (+50 LOC, F43)
-- [ ] T-032 [P] Add 3 freshness + 2 cross-cutting metrics definitions (#12-16) to `lib/metrics.ts` (+35 LOC, F43)
-- [ ] T-033 [P] Wire emission anchor at `structural-indexer.ts:698` for metrics #1, #5, #6 (+12 LOC, F43)
-- [ ] T-034 [P] Wire emission anchor at `tree-sitter-parser.ts` for metric #2 (+8 LOC, F43)
-- [ ] T-035 [P] Wire emission anchor at `code-graph-context.ts:114-375` for metrics #3, #4 (+10 LOC, F43)
-- [ ] T-036 [P] Wire emission anchors at `fusion.ts` and `attribution.ts` for metrics #7-9 (+12 LOC, F43)
-- [ ] T-037 [P] Wire emission anchors at `prompt-cache.ts`, `freshness/trust-state.ts`, `cache-invalidation.ts` for metrics #11-14 (+18 LOC, F43)
-- [ ] T-038 [P] Gate emission behind `SPECKIT_METRICS_ENABLED` env var; add cardinality meta-gauge (+12 LOC, F43)
-- [ ] T-039 Run `tsc --noEmit` + `vitest run` + cardinality dry-run; snake_case audit; additive schema check (0 LOC, F43)
+- [x] T-029 [P] Read existing `lib/metrics.ts` to understand collector patterns before extending (0 LOC, F43)
+- [x] T-030 [P] Add 6 code-graph metrics definitions (#1-6) to `lib/metrics.ts` (+65 LOC, F43)
+- [x] T-031 [P] Add 5 skill-advisor scorer metrics definitions (#7-11) to `lib/metrics.ts` (+50 LOC, F43)
+- [x] T-032 [P] Add 3 freshness + 2 cross-cutting metrics definitions (#12-16) to `lib/metrics.ts` (+35 LOC, F43)
+- [x] T-033 [P] Wire emission anchor at `structural-indexer.ts:698` for metrics #1, #5, #6 (+12 LOC, F43)
+- [x] T-034 [P] Wire emission anchor at `tree-sitter-parser.ts` for metric #2 (+8 LOC, F43)
+- [x] T-035 [P] Wire emission anchor at `code-graph-context.ts:114-375` for metrics #3, #4 (+10 LOC, F43)
+- [x] T-036 [P] Wire emission anchors at `fusion.ts` and `attribution.ts` for metrics #7-9 (+12 LOC, F43)
+- [x] T-037 [P] Wire emission anchors at `prompt-cache.ts`, `freshness/trust-state.ts`, `cache-invalidation.ts` for metrics #11-14 (+18 LOC, F43)
+- [x] T-038 [P] Gate emission behind `SPECKIT_METRICS_ENABLED` env var; add cardinality meta-gauge (+12 LOC, F43)
+- [x] T-039 Run `tsc --noEmit` + `vitest run` + cardinality dry-run; snake_case audit; additive schema check (0 LOC, F43)
 
 ### PR 6 — Prompt-Cache Invalidation Listener Wire-Up (Depends on: PR 4; parallel with PR 5)
 
-- [ ] T-040 [P] Read `skill-advisor-brief.ts` and `prompt-cache.ts` to locate module-init scope (0 LOC, F81)
-- [ ] T-041 [P] Add 5-LOC listener at module-init scope in `skill-advisor-brief.ts` (+5 LOC, F81)
-- [ ] T-042 [P] Write listener-uniqueness unit test (+25 LOC, F81)
-- [ ] T-043 [P] Run `tsc --noEmit` + `vitest run`; verify listener registered once (0 LOC, F81)
+- [x] T-040 [P] Read `skill-advisor-brief.ts` and `prompt-cache.ts` to locate module-init scope (0 LOC, F81)
+- [x] T-041 [P] Add 5-LOC listener at module-init scope in `skill-advisor-brief.ts` (+5 LOC, F81)
+- [x] T-042 [P] Write listener-uniqueness unit test (+25 LOC, F81)
+- [x] T-043 [P] Run `tsc --noEmit` + `vitest run`; verify listener registered once (0 LOC, F81)
 
 ### PR 7 — Settings-Driven-Invocation-Parity Test (Depends on: PR 2; parallel with PRs 5 and 6)
 
-- [ ] T-044 [P] Read iter-11 F56 test skeleton and post-PR-2 settings shape (0 LOC, F46)
-- [ ] T-045 [P] Write new parity test file with Claude-only runtime guard (+150 LOC, F25/F46/F56)
-- [ ] T-046 [P] Schema-mock brittleness review — confirm minimal shape assertions only (0 LOC, F46)
+- [x] T-044 [P] Read iter-11 F56 test skeleton and post-PR-2 settings shape (0 LOC, F46)
+- [x] T-045 [P] Write new parity test file with Claude-only runtime guard (+150 LOC, F25/F46/F56)
+- [x] T-046 [P] Schema-mock brittleness review — confirm minimal shape assertions only (0 LOC, F46)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -207,16 +207,16 @@ _memory:
 
 ### PR 8 — Parse-Latency Bench (Depends on: PR 5)
 
-- [ ] T-047 [P] Write `code-graph-parse-latency.bench.ts` — per-language `parseFile` wrapper; assert non-zero sample counts (+80 LOC, F36 #4)
+- [x] T-047 [P] Write `code-graph-parse-latency.bench.ts` — per-language `parseFile` wrapper; assert non-zero sample counts (+80 LOC, F36 #4)
 
 ### PR 9 — Query-Latency Bench (Depends on: PR 5)
 
-- [ ] T-048 [P] Write `code-graph-query-latency.bench.ts` — 3 modes; pinned corpus; delta-vs-baseline assertions (+100 LOC, F36 #7)
-- [ ] T-049 [P] Commit `code-graph-query-latency.baseline.json` pinned corpus snapshot alongside bench (+10 LOC, F36 #7)
+- [x] T-048 [P] Write `code-graph-query-latency.bench.ts` — 3 modes; pinned corpus; delta-vs-baseline assertions (+100 LOC, F36 #7)
+- [x] T-049 [P] Commit `code-graph-query-latency.baseline.json` pinned corpus snapshot alongside bench (+10 LOC, F36 #7)
 
 ### PR 10 — Hook-Brief Signal-Noise Bench (Depends on: PR 5, PR 7)
 
-- [ ] T-050 [P] Write `hook-brief-signal-noise.bench.ts` — 4 runtimes; iter-4 7-axis matrix as fixture; assert non-zero signal counts (+80 LOC, F36 #8)
+- [x] T-050 [P] Write `hook-brief-signal-noise.bench.ts` — 4 runtimes; iter-4 7-axis matrix as fixture; assert non-zero signal counts (+80 LOC, F36 #8)
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -225,10 +225,10 @@ _memory:
 
 These tasks run at batch boundaries, not inside individual PRs.
 
-- [ ] T-051 Batch A boundary: run `bash validate.sh --strict`; run `generate-context.js` continuity save; verify validate.sh exit 0 (0 LOC)
-- [ ] T-052 Batch B boundary: run `bash validate.sh --strict`; run `generate-context.js`; update `_memory.continuity` in `implementation-summary.md`; verify validate.sh exit 0 (0 LOC)
-- [ ] T-053 Batch C boundary (final): run final `bash validate.sh --strict`; update `checklist.md` P0 items with evidence; run final `generate-context.js` save; verify validate.sh exit 0 (0 LOC)
-- [ ] T-054 AGENTS.md triad audit: confirm no stale promotion or V1-V5 references in all 3 triad files (0 LOC, F84)
+- [x] T-051 Batch A boundary: run `bash validate.sh --strict`; run `generate-context.js` continuity save; verify validate.sh exit 0 (0 LOC)
+- [x] T-052 Batch B boundary: run `bash validate.sh --strict`; run `generate-context.js`; update `_memory.continuity` in `implementation-summary.md`; verify validate.sh exit 0 (0 LOC)
+- [x] T-053 Batch C boundary (final): run final `bash validate.sh --strict`; update `checklist.md` P0 items with evidence; run final `generate-context.js` save; verify validate.sh exit 0 (0 LOC) [EVIDENCE: tsc --noEmit exit 0; targeted vitest 14/14 passing on B6-fixed files; validate.sh --strict exit 0 with only pre-existing structural warnings; continuity save completed via generate-context.js (graph-metadata.json refreshed)]
+- [x] T-054 AGENTS.md triad audit: confirm no stale promotion or V1-V5 references in all 3 triad files (0 LOC, F84)
 
 ---
 

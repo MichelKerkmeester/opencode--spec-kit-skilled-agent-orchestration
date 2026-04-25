@@ -75,10 +75,23 @@ NATIVE_ADVISOR_COMPAT = os.path.join(
     "compat",
     "index.js",
 )
+NATIVE_GENERATION_MODULE = os.path.join(
+    REPO_ROOT,
+    ".opencode",
+    "skill",
+    "system-spec-kit",
+    "mcp_server",
+    "dist",
+    "skill-advisor",
+    "lib",
+    "freshness",
+    "generation.js",
+)
 
 NATIVE_ADVISOR_BRIDGE = r"""
 import { readFileSync } from 'node:fs';
 import { readAdvisorStatus, handleAdvisorRecommend } from 'ADVISOR_COMPAT_MODULE';
+import { readSkillGraphGeneration } from 'GENERATION_MODULE';
 
 const input = JSON.parse(readFileSync(0, 'utf8') || '{}');
 const workspaceRoot = input.workspaceRoot || process.cwd();
@@ -105,9 +118,27 @@ function probe() {
   }
   try {
     const status = readAdvisorStatus({ workspaceRoot });
+    // Compat-shim eligibility: native MCP callers gate on daemon liveness via
+    // status.freshness, but the Python shim is itself a one-shot reader that
+    // has no daemon to probe. Fall back to the underlying generation state so
+    // a fresh skill-graph artifact is still considered usable when invoked
+    // through skill_advisor.py (--force-native and the default routing path).
+    let shimEligible = status.freshness === 'live' || status.freshness === 'stale';
+    let effectiveFreshness = status.freshness;
+    if (!shimEligible) {
+      try {
+        const generation = readSkillGraphGeneration(workspaceRoot);
+        if (generation.state === 'live' || generation.state === 'stale') {
+          shimEligible = true;
+          effectiveFreshness = generation.state;
+        }
+      } catch {
+        // Keep shimEligible=false; surface the original status reason below.
+      }
+    }
     return {
-      available: status.freshness === 'live' || status.freshness === 'stale',
-      freshness: status.freshness,
+      available: shimEligible,
+      freshness: effectiveFreshness,
       generation: status.generation,
       trustState: status.trustState,
       daemonPid: status.daemonPid || null,
@@ -194,12 +225,13 @@ def _native_bridge_source() -> str:
     return (
         NATIVE_ADVISOR_BRIDGE
         .replace("ADVISOR_COMPAT_MODULE", _file_url(NATIVE_ADVISOR_COMPAT))
+        .replace("GENERATION_MODULE", _file_url(NATIVE_GENERATION_MODULE))
     )
 
 
 def _native_bridge_available() -> bool:
     """Return True when compiled native advisor handlers are present."""
-    return os.path.exists(NATIVE_ADVISOR_COMPAT)
+    return os.path.exists(NATIVE_ADVISOR_COMPAT) and os.path.exists(NATIVE_GENERATION_MODULE)
 
 
 def _sanitize_native_label(value: Any) -> Optional[str]:

@@ -41,8 +41,17 @@
       "implementation"
     ],
     "importance_tier": "normal",
-    "status": "in_progress",
+    "status": "complete",
     "key_files": [
+      "review/015-code-graph-advisor-refinement-pt-01/review-report.md",
+      "applied/B1.md",
+      "applied/B2.md",
+      "applied/B3.md",
+      "applied/B4.md",
+      "applied/B5.md",
+      "applied/F35-calibration.md",
+      "applied/B6.md",
+      "mcp_server/tests/promotion-positive-validation-semantics.vitest.ts",
       ".claude/settings.local.json",
       "research/015-code-graph-advisor-refinement-pt-01/research.md",
       "plan.md",
@@ -53,18 +62,63 @@
       ".opencode/skill/system-spec-kit/mcp_server/code-graph/README.md",
       ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/README.md",
       "implementation-summary.md",
-      "mcp_server/skill-advisor/lib/metrics.ts",
-      "mcp_server/skill-advisor/lib/freshness/trust-state.ts",
-      "mcp_server/skill-advisor/tests/hooks/settings-driven-invocation-parity.vitest.ts",
-      "mcp_server/skill-advisor/bench/scorer-bench.ts",
-      "mcp_server/skill-advisor/tests/parity/python-ts-parity.vitest.ts",
-      "dist/hooks/claude/user-prompt-submit.js",
-      "mcp_server/tests/promotion-positive-validation-semantics.vitest.ts",
-      "mcp_server/package.json",
-      "code-graph/lib/readiness-contract.ts",
-      "skill-advisor/lib/freshness/trust-state.ts"
+      "mcp_server/skill-advisor/lib/metrics.ts"
     ],
     "entities": [
+      {
+        "name": "review-report.md",
+        "kind": "doc",
+        "path": "review/015-code-graph-advisor-refinement-pt-01/review-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "B1.md",
+        "kind": "doc",
+        "path": "applied/B1.md",
+        "source": "derived"
+      },
+      {
+        "name": "B2.md",
+        "kind": "doc",
+        "path": "applied/B2.md",
+        "source": "derived"
+      },
+      {
+        "name": "B3.md",
+        "kind": "doc",
+        "path": "applied/B3.md",
+        "source": "derived"
+      },
+      {
+        "name": "B4.md",
+        "kind": "doc",
+        "path": "applied/B4.md",
+        "source": "derived"
+      },
+      {
+        "name": "B5.md",
+        "kind": "doc",
+        "path": "applied/B5.md",
+        "source": "derived"
+      },
+      {
+        "name": "F35-calibration.md",
+        "kind": "doc",
+        "path": "applied/F35-calibration.md",
+        "source": "derived"
+      },
+      {
+        "name": "B6.md",
+        "kind": "doc",
+        "path": "applied/B6.md",
+        "source": "derived"
+      },
+      {
+        "name": "promotion-positive-validation-semantics.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/promotion-positive-validation-semantics.vitest.ts",
+        "source": "derived"
+      },
       {
         "name": "settings.local.json",
         "kind": "config",
@@ -114,54 +168,6 @@
         "source": "derived"
       },
       {
-        "name": "trust-state.ts",
-        "kind": "code",
-        "path": "mcp_server/skill-advisor/lib/freshness/trust-state.ts",
-        "source": "derived"
-      },
-      {
-        "name": "settings-driven-invocation-parity.vitest.ts",
-        "kind": "test",
-        "path": "mcp_server/skill-advisor/tests/hooks/settings-driven-invocation-parity.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "scorer-bench.ts",
-        "kind": "code",
-        "path": "mcp_server/skill-advisor/bench/scorer-bench.ts",
-        "source": "derived"
-      },
-      {
-        "name": "python-ts-parity.vitest.ts",
-        "kind": "test",
-        "path": "mcp_server/skill-advisor/tests/parity/python-ts-parity.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "user-prompt-submit.js",
-        "kind": "code",
-        "path": "dist/hooks/claude/user-prompt-submit.js",
-        "source": "derived"
-      },
-      {
-        "name": "promotion-positive-validation-semantics.vitest.ts",
-        "kind": "test",
-        "path": "mcp_server/tests/promotion-positive-validation-semantics.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "package.json",
-        "kind": "config",
-        "path": "mcp_server/package.json",
-        "source": "derived"
-      },
-      {
-        "name": "readiness-contract.ts",
-        "kind": "code",
-        "path": "code-graph/lib/readiness-contract.ts",
-        "source": "derived"
-      },
-      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -202,17 +208,11 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
-      },
-      {
-        "name": "Skill Advisor Refinement",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Both the Code Graph subsystem and the Skill Advisor system have matured independently, but no systematic investigation has been conducted into their combined correctness, performance boundaries, and UX consistency. This research phase uses 20 deep-research iterations to produce actionable, evidence-based recommendations across both systems so that a follow-up implementation phase can make targeted improvements with confidence rather than guesswork.",
     "created_at": "2026-04-24T00:00:00Z",
-    "last_save_at": "2026-04-25T06:46:12.369Z",
+    "last_save_at": "2026-04-25T09:15:45.850Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

@@ -1,0 +1,57 @@
+{
+  "sessionId": "dr-2026-04-25T08-56-40Z-44122292",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "terminalStop": null,
+  "openQuestions": [
+    {
+      "id": "question-1-rq1-what-gitnexus-ingestion-graph-schema-process-flow-and-query-context-patterns",
+      "text": "RQ1: What GitNexus ingestion, graph schema, process-flow, and query/context patterns are portable to Public's Code Graph package?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-2-rq2-which-gitnexus-impact-detect-changes-rename-route-map-tool-map-shape-check-o",
+      "text": "RQ2: Which GitNexus impact, detect-changes, rename, route-map, tool-map, shape-check, or group-contract mechanisms are worth adapting for graph safety?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-3-rq3-which-gitnexus-concepts-can-improve-spec-kit-memory-s-causal-graph-without-t",
+      "text": "RQ3: Which GitNexus concepts can improve Spec Kit Memory's causal graph without turning memory into a duplicate code index?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-4-rq4-which-gitnexus-tool-resource-agent-affordances-can-inform-skill-graph-or-ski",
+      "text": "RQ4: Which GitNexus tool/resource/agent affordances can inform Skill Graph or Skill Advisor routing evidence?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-5-rq5-what-should-be-adopted-adapted-rejected-or-deferred-and-what-follow-up-imple",
+      "text": "RQ5: What should be adopted, adapted, rejected, or deferred, and what follow-up implementation packets should be created?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    }
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "blockedStopHistory": [],
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "metrics": {
+    "iterationsCompleted": 4,
+    "openQuestions": 5,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0.74,
+    "coverageBySources": {}
+  },
+  "corruptionWarnings": [],
+  "status": "INITIALIZED"
+}

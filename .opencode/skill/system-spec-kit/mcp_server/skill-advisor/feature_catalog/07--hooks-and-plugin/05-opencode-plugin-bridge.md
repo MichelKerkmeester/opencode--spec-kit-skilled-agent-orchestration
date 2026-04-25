@@ -28,14 +28,14 @@ Give OpenCode a first-class plugin that surfaces advisor output at prompt time w
 
 ## 2. CURRENT REALITY
 
-`.opencode/plugins/spec-kit-skill-advisor.js` exports the plugin. `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs` runs `buildSkillAdvisorBrief` + `renderAdvisorBrief` out-of-process via IPC. Cache TTL is 5 minutes; the live threshold pair is `confidenceThreshold: 0.8` and `uncertaintyThreshold: 0.35`; the bridge times out after 1000 ms with SIGKILL escalation. Opt-out via `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1`, the legacy `SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED=1` alias, or `enabled: false` in plugin config. Phase 025/026 regressions are preserved by routing through the stable `compat/index.ts` entrypoint.
+`.opencode/plugins/spec-kit-skill-advisor.js` exports the plugin. `.opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs` runs `buildSkillAdvisorBrief` + `renderAdvisorBrief` out-of-process via IPC. Cache TTL is 5 minutes; the live threshold pair is `confidenceThreshold: 0.8` and `uncertaintyThreshold: 0.35`; the bridge times out after 1000 ms with SIGKILL escalation. Opt-out via `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1`, the legacy `SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED=1` alias, or `enabled: false` in plugin config. Phase 025/026 regressions are preserved by routing through the stable `compat/index.ts` entrypoint.
 
 ---
 
 ## 3. SOURCE FILES
 
 - `.opencode/plugins/spec-kit-skill-advisor.js`
-- `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs`
+- `.opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/compat/index.ts`
 
 ---

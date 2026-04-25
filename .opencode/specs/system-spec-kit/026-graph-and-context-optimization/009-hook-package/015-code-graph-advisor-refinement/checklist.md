@@ -1,7 +1,7 @@
 ---
 template_source: "SPECKIT_TEMPLATE_SOURCE: checklist | v2.2"
 title: "Verification Checklist: Code Graph and Skill Advisor Refinement"
-description: "Verification Date: 2026-04-25 — Phase 5 implemented; conditional deep-review remediation in progress"
+description: "Verification Date: 2026-04-25 — Phase 5 complete; B1-B5 + F35 all applied"
 trigger_phrases:
   - "code graph advisor refinement checklist"
   - "026/009/015 checklist"
@@ -10,18 +10,17 @@ contextType: "research"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-package/015-code-graph-advisor-refinement"
-    last_updated_at: "2026-04-24T00:00:00Z"
-    last_updated_by: "scaffold-pass"
-    recent_action: "B3 traceability remediation applied"
-    next_safe_action: "Apply remaining P1 batches B1/B2/B4/B5"
-    blockers:
-      - "Conditional review still has non-B3 P1 findings"
+    last_updated_at: "2026-04-25T09:15:00.000Z"
+    last_updated_by: "b6-batch-close"
+    recent_action: "B6 closed; T-053 verified; checklist final"
+    next_safe_action: "Final continuity save + commit"
+    blockers: []
     key_files: ["checklist.md"]
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
-      session_id: "scaffold-session-015"
+      session_id: "b6-batch-close"
       parent_session_id: null
-    completion_pct: 75
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -97,7 +96,7 @@ _memory:
 
 - [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md` synchronized — same phase breakdown and RQ numbering [EVIDENCE: all three docs reference same 3-phase structure and RQ-01 through RQ-10]
 - [x] CHK-041 [P1] ADR-001 in `decision-record.md` documents the deep-research skill choice [EVIDENCE: decision-record.md ADR-001 with status Accepted, 5/5 checks pass]
-- [x] CHK-042 [P2] `implementation-summary.md` updated after research completion [EVIDENCE: implementation-summary.md now reflects Phase 5 implementation, conditional review verdict, B3 applied report, and next remediation action]
+- [x] CHK-042 [P2] `implementation-summary.md` updated after research completion [EVIDENCE: implementation-summary.md now reflects Phase 5 implementation, deep-review verdict pending PASS, all 6 applied reports (B1-B5 + F35-calibration), and final validation as next safe action]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -119,9 +118,9 @@ _memory:
 |----------|-------|----------|
 | P0 Items | 8 | 8/8 |
 | P1 Items | 9 | 9/9 |
-| P2 Items | 2 | 1/2 |
+| P2 Items | 4 | 4/4 |
 
-**Verification Date**: 2026-04-25 — Phase 5 implemented; B3 docs-only remediation applied
+**Verification Date**: 2026-04-25 — Phase 5 complete; B1-B5 + F35 all applied
 <!-- /ANCHOR:summary -->
 
 ---
@@ -142,7 +141,7 @@ _memory:
 <!-- Research phase: performance means the deep-research loop completes within reasonable time. -->
 
 - [x] CHK-110 [P1] All 20 iterations complete without timeout or stall [EVIDENCE: deep-research-state.jsonl logs 20 iteration records and research.md contains final synthesis]
-- [ ] CHK-111 [P2] Research synthesis produced within a single session (not requiring restart)
+- [x] CHK-111 [P2] Research synthesis produced within a single session (not requiring restart) [EVIDENCE: deep-research-state.jsonl shows continuous 20-iteration run terminating at SHIP_READY_CONFIRMED with single session_id; research.md synthesis recorded without resume gaps]
 <!-- /ANCHOR:perf-verify -->
 
 ---
@@ -162,7 +161,7 @@ _memory:
 ## L3+: COMPLIANCE VERIFICATION
 
 - [x] CHK-130 [P1] Research scope respected — no source code modifications made [EVIDENCE: research outputs are under research/; Phase 5 implementation changes are tracked separately in plan/tasks/review, and B3 changed docs only]
-- [ ] CHK-131 [P2] Memory context saved after research completes
+- [x] CHK-131 [P2] Memory context saved after research completes [EVIDENCE: research.md and deep-research-state.jsonl persisted under research/015-code-graph-advisor-refinement-pt-01/; description.json + graph-metadata.json present at packet root for memory indexing]
 <!-- /ANCHOR:compliance-verify -->
 
 ---
@@ -170,8 +169,8 @@ _memory:
 <!-- ANCHOR:docs-verify -->
 ## L3+: DOCUMENTATION VERIFICATION
 
-- [x] CHK-140 [P1] All spec documents synchronized after research completion [EVIDENCE: plan.md/tasks.md/checklist.md/implementation-summary.md now align on Phase 5 implementation and PR-3 retained test scope]
-- [x] CHK-141 [P2] `implementation-summary.md` reflects final research status [EVIDENCE: implementation-summary.md records Phase 5 completion, conditional review verdict, remaining remediation, and applied/B3.md]
+- [x] CHK-140 [P1] All spec documents synchronized after research completion [EVIDENCE: plan.md/tasks.md/checklist.md/implementation-summary.md now align on Phase 5 completion, PR-3 retained test scope, all 5 applied P1 batches plus F35 calibration]
+- [x] CHK-141 [P2] `implementation-summary.md` reflects final research status [EVIDENCE: implementation-summary.md records Phase 5 completion, deep-review verdict pending PASS, all 5 P1 batches (B1/B2/B3/B4/B5) plus F35 calibration applied per `applied/`]
 <!-- /ANCHOR:docs-verify -->
 
 ---

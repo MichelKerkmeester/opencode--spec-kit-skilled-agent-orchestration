@@ -31,7 +31,7 @@ Validate the OpenCode plugin path that delegates through the stable native compa
 
 - MCP server build is current.
 - Plugin host file exists at `.opencode/plugins/spec-kit-skill-advisor.js`.
-- Bridge helper exists at `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs`.
+- Bridge helper exists at `.opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs`.
 
 ---
 
@@ -46,7 +46,7 @@ npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 2. Run bridge directly:
 
 ```bash
-printf '%s' '{"prompt":"save this conversation context to memory","workspaceRoot":"'"$PWD"'","runtime":"opencode","maxTokens":80,"thresholdConfidence":0.8}' | node .opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs
+printf '%s' '{"prompt":"save this conversation context to memory","workspaceRoot":"'"$PWD"'","runtime":"opencode","maxTokens":80,"thresholdConfidence":0.8}' | node .opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs
 ```
 
 3. Inspect plugin status tool in OpenCode, when available:
@@ -80,5 +80,5 @@ spec_kit_skill_advisor_status({})
 ## 6. RELATED
 
 - `.opencode/plugins/spec-kit-skill-advisor.js`
-- `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs`
+- `.opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/compat/index.ts`

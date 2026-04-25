@@ -35,7 +35,7 @@ Required files:
 | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/render.ts` | Shared `renderAdvisorBrief(...)` invariants |
 | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/metrics.ts` | Durable JSONL diagnostics sink + metric labels |
 | `.opencode/plugins/spec-kit-skill-advisor.js` | OpenCode plugin |
-| `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs` | OpenCode plugin-helper bridge entrypoint |
+| `.opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs` | OpenCode plugin-helper bridge entrypoint |
 
 ---
 
@@ -95,7 +95,7 @@ Goal: confirm the plugin-helper bridge path is wired and routes through the shar
 
 ```bash
 node --input-type=module -e "
-  import('./.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs').then(async mod => {
+  import('./.opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs').then(async mod => {
     const res = await mod.default({ prompt: 'implement a TypeScript hook', cwd: process.cwd() });
     console.log(JSON.stringify(res, null, 2));
   });
@@ -163,13 +163,13 @@ Confirm no runtime or plugin still routes through a bespoke formatter or a non-s
 rg -n "renderAdvisorBrief|effectiveThresholds|thresholdSemantics|workspaceRoot" \
   .opencode/skill/system-spec-kit/mcp_server/skill-advisor \
   .opencode/plugins/spec-kit-skill-advisor.js \
-  .opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs \
+  .opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs \
   .opencode/skill/system-spec-kit/mcp_server/hooks
 
 rg -n "formatAdvisorBrief|legacyAdvisorRender|custom formatter" \
   .opencode/skill/system-spec-kit/mcp_server \
   .opencode/plugins \
-  .opencode/plugin-helpers
+  .opencode/skill/system-spec-kit/mcp_server/plugin-bridges
 ```
 
 Pass condition: the first grep returns the expected shared-contract references; the second grep returns no hits (no drift back to branch-specific rendering).

@@ -145,7 +145,7 @@ function renderNativeBrief(data, maxTokens) {
 }
 
 async function loadNativeAdvisorModules() {
-  const compatModule = await import('../skill/system-spec-kit/mcp_server/dist/skill-advisor/compat/index.js');
+  const compatModule = await import('../dist/skill-advisor/compat/index.js');
 
   return {
     readAdvisorStatus: compatModule.readAdvisorStatus,

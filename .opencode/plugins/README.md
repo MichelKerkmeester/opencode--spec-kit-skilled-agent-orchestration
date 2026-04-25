@@ -7,7 +7,7 @@ Current entrypoints:
 - `spec-kit-skill-advisor.js` - prompt-time Spec Kit skill advisor plugin.
 - `spec-kit-compact-code-graph.js` - transport-backed context and compact-code-graph plugin.
 
-Helper modules live in `.opencode/plugin-helpers/`:
+Helper bridge modules live in `.opencode/skill/system-spec-kit/mcp_server/plugin-bridges/` (colocated with their owning skill, alongside `mcp_server/hooks/`):
 
 - `spec-kit-skill-advisor-bridge.mjs`
 - `spec-kit-compact-code-graph-bridge.mjs`
