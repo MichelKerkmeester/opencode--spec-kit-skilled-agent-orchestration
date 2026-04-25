@@ -490,6 +490,11 @@ const codeGraphContextSchema = getSchema({
   includeTrace: z.boolean().optional(),
 });
 
+const detectChangesSchema = getSchema({
+  diff: z.string().min(1),
+  rootDir: optionalPathString(),
+});
+
 const skillGraphScanSchema = getSchema({
   skillsRoot: optionalPathString(),
 });
@@ -610,6 +615,7 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   code_graph_query: codeGraphQuerySchema as unknown as ToolInputSchema,
   code_graph_status: getSchema({}) as unknown as ToolInputSchema,
   code_graph_context: codeGraphContextSchema as unknown as ToolInputSchema,
+  detect_changes: detectChangesSchema as unknown as ToolInputSchema,
   skill_graph_scan: skillGraphScanSchema as unknown as ToolInputSchema,
   skill_graph_query: skillGraphQuerySchema as unknown as ToolInputSchema,
   skill_graph_status: skillGraphStatusSchema as unknown as ToolInputSchema,
@@ -669,6 +675,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   code_graph_query: ['operation', 'subject', 'subjects', 'unionMode', 'edgeType', 'limit', 'includeTransitive', 'maxDepth'],
   code_graph_status: [],
   code_graph_context: ['input', 'queryMode', 'subject', 'seeds', 'budgetTokens', 'profile', 'includeTrace'],
+  detect_changes: ['diff', 'rootDir'],
   skill_graph_scan: ['skillsRoot'],
   skill_graph_query: ['queryType', 'skillId', 'sourceSkillId', 'targetSkillId', 'family', 'minInbound', 'depth', 'limit'],
   skill_graph_status: [],

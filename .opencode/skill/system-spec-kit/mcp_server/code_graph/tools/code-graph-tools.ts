@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Code Graph Tools
 // ───────────────────────────────────────────────────────────────
-// Dispatch for code graph MCP tools: scan, query, status, context.
+// Dispatch for code graph MCP tools: scan, query, status, context, detect_changes.
 import {
   handleCodeGraphScan,
   handleCodeGraphQuery,
@@ -10,6 +10,7 @@ import {
   handleCccStatus,
   handleCccReindex,
   handleCccFeedback,
+  handleDetectChanges,
 } from '../handlers/index.js';
 
 import type { MCPResponse } from '../../tools/types.js';
@@ -21,6 +22,7 @@ export const TOOL_NAMES = new Set([
   'code_graph_query',
   'code_graph_status',
   'code_graph_context',
+  'detect_changes',
   'ccc_status',
   'ccc_reindex',
   'ccc_feedback',
@@ -70,6 +72,13 @@ export async function handleTool(name: string, args: Record<string, unknown>): P
       return toMCP(await handleCodeGraphStatus());
     case 'code_graph_context':
       return toMCP(await handleCodeGraphContext(parseArgs<Parameters<typeof handleCodeGraphContext>[0]>(args)));
+    case 'detect_changes': {
+      const missingKeys = getMissingRequiredStringArgs(args, ['diff']);
+      if (missingKeys.length > 0) {
+        return validationError(name, missingKeys);
+      }
+      return toMCP(await handleDetectChanges(parseArgs<Parameters<typeof handleDetectChanges>[0]>(args)));
+    }
     case 'ccc_status':
       parseArgs<Record<string, never>>(args);
       return toMCP(await handleCccStatus());

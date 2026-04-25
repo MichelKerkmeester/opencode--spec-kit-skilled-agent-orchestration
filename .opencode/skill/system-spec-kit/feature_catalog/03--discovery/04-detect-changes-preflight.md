@@ -15,7 +15,7 @@ Read-only Code Graph handler that maps a unified-diff input to the structural sy
 
 ## 2. CURRENT REALITY
 
-The handler lives at `mcp_server/code_graph/handlers/detect-changes.ts` and is exported from `mcp_server/code_graph/handlers/index.ts` alongside the existing seven handlers. It accepts `{ diff: string, rootDir?: string }` and returns `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`.
+The handler lives at `mcp_server/code_graph/handlers/detect-changes.ts` and is exported from `mcp_server/code_graph/handlers/index.ts` alongside the other Code Graph handlers. As of 010/007 T-A it is also registered as a top-level MCP tool: dispatched from `mcp_server/code_graph/tools/code-graph-tools.ts` (`'detect_changes'` in `TOOL_NAMES`, switch case + `parseArgs`), declared in the JSON schema catalog `mcp_server/tool-schemas.ts`, validated by the strict Zod schema in `mcp_server/schemas/tool-input-schemas.ts`, and listed in the allowed-parameter ledger. It accepts `{ diff: string, rootDir?: string }` and returns `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`.
 
 Order of operations is fixed by the P1 safety invariant (pt-02 §12 RISK-03):
 
@@ -40,7 +40,10 @@ The output preserves the readiness envelope (`canonicalReadiness`, `trustState`)
 |------|-------|------|
 | `mcp_server/code_graph/handlers/detect-changes.ts` | Handler | Read-only preflight; orchestrates readiness probe, diff parse, and overlap attribution |
 | `mcp_server/code_graph/lib/diff-parser.ts` | Lib | Custom unified-diff parser (`parseUnifiedDiff`) plus `rangesOverlap` helper |
-| `mcp_server/code_graph/handlers/index.ts` | Handler | Registers `handleDetectChanges` alongside the existing seven Code Graph exports |
+| `mcp_server/code_graph/handlers/index.ts` | Handler | Exports `handleDetectChanges` alongside the other Code Graph handlers |
+| `mcp_server/code_graph/tools/code-graph-tools.ts` | Dispatcher | `'detect_changes'` in `TOOL_NAMES`; switch case dispatches to `handleDetectChanges` after validating `diff` is a non-empty string (010/007 T-A) |
+| `mcp_server/tool-schemas.ts` | JSON schema | `detectChanges` ToolDefinition with `{ diff: string, rootDir?: string }` declared inputSchema; appended to `TOOL_DEFINITIONS` (010/007 T-A) |
+| `mcp_server/schemas/tool-input-schemas.ts` | Zod validator | Strict `detectChangesSchema` (`z.string().min(1)` + `optionalPathString()`); entries in `TOOL_SCHEMAS` and `ALLOWED_PARAMETERS` (010/007 T-A) |
 | `mcp_server/code_graph/lib/ensure-ready.ts` | Lib (existing) | Source of `ensureCodeGraphReady` readiness probe (consumed read-only) |
 | `mcp_server/code_graph/lib/readiness-contract.ts` | Lib (existing) | Source of `buildReadinessBlock` envelope shape mirrored in the response |
 | `mcp_server/code_graph/lib/code-graph-db.ts` | Lib (existing) | Source of `queryOutline` and `resolveSubjectFilePath` (consumed read-only) |

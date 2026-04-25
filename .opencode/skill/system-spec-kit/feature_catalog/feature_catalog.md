@@ -48,13 +48,13 @@ Phase 012 (`026-graph-and-context-optimization/010-graph-impact-and-affordance-u
 
 | Sub-phase | Category | Entry |
 |-----------|----------|-------|
-| 012/002 | `03--discovery` | [`03--discovery/04-detect-changes-preflight.md`](03--discovery/04-detect-changes-preflight.md) — read-only `detect_changes` preflight handler with hard refuse on stale graph |
+| 012/002 | `03--discovery` | [`03--discovery/04-detect-changes-preflight.md`](03--discovery/04-detect-changes-preflight.md) — read-only `detect_changes` preflight MCP tool with hard refuse on stale graph (010/007 T-A wired the dispatcher, JSON schema, and Zod validator) |
 | 012/002 | `14--pipeline-architecture` | [`14--pipeline-architecture/25-code-graph-phase-dag-runner.md`](14--pipeline-architecture/25-code-graph-phase-dag-runner.md) — typed phase-DAG runner wrapping `indexFiles()` |
 | 012/003 | `06--analysis` | [`06--analysis/08-code-graph-edge-explanation-blast-radius-uplift.md`](06--analysis/08-code-graph-edge-explanation-blast-radius-uplift.md) — edge `reason`/`step` display + enriched `blast_radius` (depthGroups, riskLevel, minConfidence, ambiguityCandidates, failureFallback) |
 | 012/004 | `11--scoring-and-calibration` | [`11--scoring-and-calibration/24-skill-advisor-affordance-evidence.md`](11--scoring-and-calibration/24-skill-advisor-affordance-evidence.md) — sanitized affordance evidence routing through existing `derived_generated` and `graph_causal` lanes |
 | 012/005 | `13--memory-quality-and-indexing` | [`13--memory-quality-and-indexing/28-memory-causal-trust-display.md`](13--memory-quality-and-indexing/28-memory-causal-trust-display.md) — display-only `trustBadges` derived from existing causal-edge columns |
 
-Phase 012 ships zero schema changes. Code Graph adds a registered `detect_changes` handler whose tool-schema wiring in `tool-schemas.ts` is intentionally deferred (ADR-012-003); external clients reach it through the shared MCP router rather than as a top-level tool. License posture stays clean-room per ADR-012-001 (012/001 sign-off).
+Phase 012 ships zero schema changes. Code Graph adds the read-only `detect_changes` MCP tool — fully wired in 010/007 T-A (dispatcher in `code_graph/tools/code-graph-tools.ts`, JSON schema in `tool-schemas.ts`, Zod validator in `schemas/tool-input-schemas.ts`, allowed-parameter ledger). ADR-012-003's deferral covers the new route/tool/shape graph entities (`route_map`, `tool_map`, `shape_check`, `api_impact`), not the routine MCP exposure of this read-only handler. License posture stays clean-room per ADR-012-001 (012/001 sign-off).
 
 ---
 

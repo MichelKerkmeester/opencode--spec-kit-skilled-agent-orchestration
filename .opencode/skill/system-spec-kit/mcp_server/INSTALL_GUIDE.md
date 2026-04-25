@@ -475,7 +475,7 @@ You should get relevant memories about Gate 3 (the spec folder question) from AG
 
 Run one smoke test per capability shipped in Phase 012 to confirm the new behaviors are wired correctly. Each test is short and end-to-end runnable; they expand the regular structural-query verification above with new-feature-specific signals.
 
-#### 4a. `detect_changes` preflight (012/002)
+#### 4a. `detect_changes` preflight (012/002, MCP-tool wired in 010/007 T-A)
 
 ```bash
 # 1. Stale path: leave the graph stale OR scan once and then modify a tracked source file
@@ -483,13 +483,15 @@ Run one smoke test per capability shipped in Phase 012 to confirm the new behavi
 # 2. Generate a unified diff that touches a known indexed function:
 git diff -- .opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts > /tmp/diff.txt
 
-# 3. Call detect_changes with the stale graph. Expected:
-#    { status: "blocked", affectedSymbols: [], blockedReason: "graph readiness is \"stale\" ...",
-#      readiness.freshness: "stale" }
+# 3. Call the detect_changes MCP tool with the stale graph:
+#       detect_changes({ diff: <contents of /tmp/diff.txt>, rootDir: <workspace root> })
+#    Expected payload:
+#      { status: "blocked", affectedSymbols: [], blockedReason: "graph readiness is \"stale\" ...",
+#        readiness.freshness: "stale" }
 #    PASS criterion: status MUST be "blocked", affectedSymbols MUST be empty.
 #    FAIL criterion: status: "ok" with empty affectedSymbols (false-safe RISK-03 violation).
 
-# 4. Refresh the graph and retry. Expected:
+# 4. Refresh the graph (code_graph_scan) and retry the same detect_changes call. Expected:
 #    { status: "ok", affectedSymbols: [...], affectedFiles: [...], readiness.freshness: "fresh" }
 ```
 

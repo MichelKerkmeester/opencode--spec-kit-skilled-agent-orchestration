@@ -69,13 +69,13 @@ Phase 012 (`026-graph-and-context-optimization/010-graph-impact-and-affordance-u
 
 | Sub-phase | Category | Playbook ID | Entry |
 |-----------|----------|-------------|-------|
-| 012/002 | `03--discovery` | EX-014 | [`03--discovery/014-detect-changes-preflight.md`](03--discovery/014-detect-changes-preflight.md) — stale vs fresh `detect_changes` walkthrough with explicit pass/fail (false-safe RISK-03 mitigation) |
+| 012/002 | `03--discovery` | EX-014 | [`03--discovery/014-detect-changes-preflight.md`](03--discovery/014-detect-changes-preflight.md) — stale vs fresh `detect_changes` walkthrough with explicit pass/fail (false-safe RISK-03 mitigation); MCP-tool wired in 010/007 T-A |
 | 012/002 | `14--pipeline-architecture` | 271 | [`14--pipeline-architecture/271-code-graph-phase-dag-runner.md`](14--pipeline-architecture/271-code-graph-phase-dag-runner.md) — runner rejection paths plus regression check that scan output matches the pre-wrap baseline |
 | 012/003 | `06--analysis` | EX-026 | [`06--analysis/026-code-graph-edge-explanation-blast-radius-uplift.md`](06--analysis/026-code-graph-edge-explanation-blast-radius-uplift.md) — relationship `reason`/`step` display + `blast_radius` enrichment (depthGroups, riskLevel, minConfidence, ambiguityCandidates, failureFallback) |
 | 012/004 | `11--scoring-and-calibration` | 199 | [`11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md`](11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md) — affordance routing through existing `derived_generated`/`graph_causal` lanes with privacy assertions |
 | 012/005 | `13--memory-quality-and-indexing` | 203 | [`13--memory-quality-and-indexing/203-memory-causal-trust-display.md`](13--memory-quality-and-indexing/203-memory-causal-trust-display.md) — additive `trustBadges` per result envelope + response-profile preservation, with protected-file diff guard |
 
-Phase 012 ships zero schema changes. The `detect_changes` handler is registered alongside the existing seven Code Graph handlers; tool-schema wiring in `tool-schemas.ts` is intentionally deferred (ADR-012-003), so the playbook scenario reaches the handler through the shared MCP router rather than as a top-level tool. License posture stays clean-room per ADR-012-001 (012/001 sign-off).
+Phase 012 ships zero schema changes. The `detect_changes` handler is registered alongside the other Code Graph handlers AND wired as a top-level MCP tool — 010/007 T-A added the dispatcher case (`code_graph/tools/code-graph-tools.ts`), JSON schema (`tool-schemas.ts`), and Zod validator (`schemas/tool-input-schemas.ts`). The playbook scenario reaches `detect_changes` as a callable MCP tool. License posture stays clean-room per ADR-012-001 (012/001 sign-off).
 
 ---
 

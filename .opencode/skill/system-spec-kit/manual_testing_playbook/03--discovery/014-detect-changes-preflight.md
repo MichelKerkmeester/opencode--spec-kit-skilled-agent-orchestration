@@ -34,7 +34,7 @@ As a discovery validation operator, validate detect_changes preflight against th
 
 1. Modify a tracked source file to make the graph stale (or skip running `code_graph_scan`).
 2. Generate a unified diff that touches a known indexed function: `git diff -- path/to/file.ts > /tmp/diff.txt`.
-3. Call `code_graph.detect_changes({ diff: <diff text>, rootDir: <workspace> })` with the stale graph and confirm `status: 'blocked'` plus a `blockedReason` describing the stale state.
+3. Call `detect_changes({ diff: <diff text>, rootDir: <workspace> })` with the stale graph and confirm `status: 'blocked'` plus a `blockedReason` describing the stale state.
 4. Run `code_graph_scan({ incremental: true })` to refresh the graph.
 5. Re-run `detect_changes` with the same diff and confirm `status: 'ok'` plus `affectedSymbols[]` containing the touched function/class/method by `fqName`.
 6. Inspect `affectedFiles` to confirm the touched file paths roll up correctly.

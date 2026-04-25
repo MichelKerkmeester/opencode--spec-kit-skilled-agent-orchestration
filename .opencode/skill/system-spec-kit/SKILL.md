@@ -565,7 +565,7 @@ _memory:
 
 Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS5, BM25, graph, and degree) with Reciprocal Rank Fusion, intent-aware routing, and post-fusion reranking/filtering.
 
-**Server:** `@spec-kit/mcp-server` v1.7.2 - `context-server.ts` with 47 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
+**Server:** `@spec-kit/mcp-server` v1.7.2 - `context-server.ts` with 48 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
 
 **Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `spec_kit` surface now uses `/spec_kit:plan --intake-only` as the standalone intake workflow; `/spec_kit:plan` and `/spec_kit:complete` execute the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) inline when the Step 0 local `folder_state` shows repair or creation is needed, and downstream callers should consume the contract's canonical `start_state` rather than reusing the local classifier name. `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` for bounded `spec.md` anchoring. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/`, `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/complete.md`, `.opencode/skill/system-spec-kit/references/intake-contract.md`, and `.opencode/command/spec_kit/resume.md` for command documentation.
 
@@ -666,7 +666,7 @@ Flags below describe live runtime behavior. Several retrieval and scoring contro
 | `SPECKIT_ENTITY_LINKING`     | on      | Links memories sharing extracted entities during search |
 | `SPECKIT_QUALITY_LOOP`       | off     | Enables verify-fix-verify quality loop on save with up to 2 autofix retries |
 | `SPECKIT_RELATIONS`          | on      | Correction tracking with undo semantics (superseded/deprecated/refined/merged). Graduated to default ON |
-| `SPECKIT_STRICT_SCHEMAS`     | on      | Strict Zod validation for all 47 MCP tools; rejects hallucinated parameters |
+| `SPECKIT_STRICT_SCHEMAS`     | on      | Strict Zod validation for all 48 MCP tools; rejects hallucinated parameters |
 | `SPECKIT_DEGREE_BOOST`       | on      | Typed weighted-degree channel in graph signal scoring |
 | `SPECKIT_GRAPH_SIGNALS`      | on      | Graph momentum and causal depth scoring signals |
 | `SPECKIT_COMMUNITY_DETECTION` | on     | Community detection clustering for graph-aware retrieval |
@@ -762,15 +762,15 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 
 ### Code Graph (Structural Code Analysis)
 
-4 MCP tools plus one registered preflight handler for structural code analysis via tree-sitter WASM indexing (default, with regex fallback) and SQLite storage:
+5 MCP tools for structural code analysis via tree-sitter WASM indexing (default, with regex fallback) and SQLite storage:
 
-| Tool / Handler | Purpose |
-|----------------|---------|
+| Tool | Purpose |
+|------|---------|
 | `code_graph_scan` | Index workspace files, build structural graph. Internally orchestrated by a typed phase-DAG runner (`find-candidates` → `parse-candidates` → `finalize` → `emit-metrics`) since 012/002 |
 | `code_graph_query` | Query relationships: outline, calls_from/to, imports_from/to, blast_radius. Edge rows now carry `reason` and `step` next to `confidence`/`detectorProvenance`/`evidenceClass`; `blast_radius` adds `depthGroups`, `riskLevel`, `minConfidence`, `ambiguityCandidates`, `failureFallback` (012/003) |
 | `code_graph_status` | Report graph health and statistics |
 | `code_graph_context` | LLM-oriented compact graph neighborhoods (neighborhood/outline/impact modes); now propagates edge `reason`/`step` through structured edges and compact text (012/003) |
-| `detect_changes` (handler) | Read-only preflight: maps unified-diff hunks to indexed symbols via line-range overlap. Returns `status: 'blocked'` on any non-`fresh` readiness state — no false-safe answers on stale graphs (012/002, ADR-012-001 clean-room). Registered in `handlers/index.ts`; tool-schema wiring in `tool-schemas.ts` deferred per ADR-012-003 |
+| `detect_changes` | Read-only preflight: maps unified-diff hunks to indexed symbols via line-range overlap. Returns `status: 'blocked'` on any non-`fresh` readiness state — no false-safe answers on stale graphs (012/002, ADR-012-001 clean-room). Registered as a top-level MCP tool (010/007 T-A) alongside the handler in `handlers/index.ts`, dispatcher in `code_graph/tools/code-graph-tools.ts`, JSON schema in `tool-schemas.ts`, and Zod validator in `schemas/tool-input-schemas.ts` |
 
 **Architecture:** CocoIndex (semantic, external MCP) finds code by concept. Code Graph (structural, this system) maps imports, calls, hierarchy. Memory (session, existing MCP) preserves decisions. The compact-merger combines all three under a 4000-token budget for compaction injection.
 

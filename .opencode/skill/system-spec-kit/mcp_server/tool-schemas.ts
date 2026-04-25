@@ -632,6 +632,19 @@ const codeGraphContext: ToolDefinition = {
   },
 };
 
+const detectChanges: ToolDefinition = {
+  name: 'detect_changes',
+  description: '[L6:Analysis] Read-only preflight: maps a unified-diff input to the structural symbols it touches via line-range overlap against indexed code_nodes. Refuses to answer when graph readiness is anything other than "fresh" — returns status: "blocked" instead of a false-safe empty affectedSymbols[]. Use BEFORE acting on a diff so callers see hard refuse on stale/empty/error state. Token Budget: 1200.',
+  inputSchema: {
+    type: 'object', additionalProperties: false,
+    properties: {
+      diff: { type: 'string', minLength: 1, description: 'Unified-diff text (e.g. `git diff` output) to map onto indexed symbols' },
+      rootDir: { type: 'string', description: 'Workspace root (default: process.cwd()). Must resolve under the workspace; symlinks are canonicalized via realpathSync.' },
+    },
+    required: ['diff'],
+  },
+};
+
 const skillGraphScan: ToolDefinition = {
   name: 'skill_graph_scan',
   description: '[L7:Maintenance] Index or re-index all .opencode/skill/*/graph-metadata.json files into skill-graph.sqlite using the hash-aware SQLite indexer. Token Budget: 800.',
@@ -903,6 +916,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   codeGraphQuery,
   codeGraphStatus,
   codeGraphContext,
+  detectChanges,
   // L8: Skill Graph
   skillGraphScan,
   skillGraphQuery,
