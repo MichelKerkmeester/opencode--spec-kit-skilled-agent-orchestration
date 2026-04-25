@@ -112,7 +112,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 - [x] CHK-054 [P1] `008-skill-advisor/spec.md` records `migration_aliases` for `006-search-routing-advisor`. [EVIDENCE: 008-skill-advisor/spec.md] - VERIFIED 2026-04-25
 - [x] CHK-055 [P1] `009-hook-parity/spec.md` records `migration_aliases` for `009-hook-package`, `010-hook-package`, and `010-hook-parity`. [EVIDENCE: 009-hook-parity/spec.md] - VERIFIED 2026-04-25 14:45 (post-push adjustment)
 - [x] CHK-056 [P1] `007-code-graph/` has five children including the second-pass additions `004-code-graph-hook-improvements/` and `005-code-graph-advisor-refinement/`. [EVIDENCE: 007-code-graph/] - VERIFIED 2026-04-25
-- [x] CHK-057 [P1] Post-push topology adjustment applied: `010-hook-parity/` renamed to `009-hook-parity/`; post-hoc `009-memory-causal-graph/` documentation packet removed; causal-graph infrastructure remains in production code with display-layer documentation owned by `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`. [EVIDENCE: implementation-summary.md; decision-record.md ADR-005] - VERIFIED 2026-04-25 14:45
+- [x] CHK-057 [P1] Post-push topology adjustment applied: `010-hook-parity/` renamed to `009-hook-parity/`; post-hoc `009-memory-causal-graph/` documentation packet removed; causal-graph infrastructure remains in production code with display-layer documentation owned by `010-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`. [EVIDENCE: implementation-summary.md; decision-record.md ADR-005] - VERIFIED 2026-04-25 14:45
 <!-- /ANCHOR:file-org -->
 
 ---

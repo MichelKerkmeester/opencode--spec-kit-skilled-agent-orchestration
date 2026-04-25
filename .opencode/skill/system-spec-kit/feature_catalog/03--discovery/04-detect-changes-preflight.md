@@ -57,7 +57,7 @@ The output preserves the readiness envelope (`canonicalReadiness`, `trustState`)
 
 - Group: Discovery
 - Source feature title: detect_changes preflight (Code Graph)
-- Phase / sub-phase: `026-graph-and-context-optimization/012-graph-impact-and-affordance-uplift/002-code-graph-phase-runner-and-detect-changes`
+- Phase / sub-phase: `026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/002-code-graph-phase-runner-and-detect-changes`
 - Research basis: pt-02 §4 (Code Graph findings, `detect_changes` row), §11 Packet 1, §12 RISK-03 (false-safe changed-symbol impact)
 - Decision record: 012/decision-record.md ADR-012-001 (clean-room), ADR-012-002 (sub-phase split)
 - Current reality source: `mcp_server/code_graph/handlers/detect-changes.ts`, `mcp_server/code_graph/lib/diff-parser.ts`

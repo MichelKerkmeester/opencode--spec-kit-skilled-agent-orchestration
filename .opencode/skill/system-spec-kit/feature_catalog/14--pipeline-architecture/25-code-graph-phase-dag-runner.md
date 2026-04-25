@@ -61,7 +61,7 @@ The decomposition mirrors the previous inline flow exactly. No phase reorders pe
 
 - Group: Pipeline Architecture
 - Source feature title: Code Graph phase-DAG runner
-- Phase / sub-phase: `026-graph-and-context-optimization/012-graph-impact-and-affordance-uplift/002-code-graph-phase-runner-and-detect-changes`
+- Phase / sub-phase: `026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/002-code-graph-phase-runner-and-detect-changes`
 - Research basis: pt-02 §4 (Code Graph "Phase registry" + "Runner contract" rows), §11 Packet 1
 - Decision record: 012/decision-record.md ADR-012-001 (clean-room), ADR-012-002 (sub-phase split)
 - Current reality source: `mcp_server/code_graph/lib/phase-runner.ts`, `mcp_server/code_graph/lib/structural-indexer.ts:buildIndexPhases`

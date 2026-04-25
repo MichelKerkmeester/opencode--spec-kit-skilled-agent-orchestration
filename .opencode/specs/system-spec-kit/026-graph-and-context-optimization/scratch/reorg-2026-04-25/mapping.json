@@ -4,7 +4,7 @@
   "spec_root": "system-spec-kit/026-graph-and-context-optimization",
   "untouched": [
     "001-research-and-baseline",
-    "012-graph-impact-and-affordance-uplift",
+    "010-graph-impact-and-affordance-uplift",
     "scratch/deep-research-prompts",
     "scratch/manual-test-prompts-029-hooks"
   ],

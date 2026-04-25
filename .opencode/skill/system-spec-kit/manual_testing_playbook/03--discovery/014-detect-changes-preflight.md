@@ -69,5 +69,5 @@ Confirm `ensureCodeGraphReady` is wired with `allowInlineIndex: false` so the re
 - Playbook ID: EX-014
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `03--discovery/014-detect-changes-preflight.md`
-- Phase / sub-phase: `026-graph-and-context-optimization/012-graph-impact-and-affordance-uplift/002-code-graph-phase-runner-and-detect-changes`
+- Phase / sub-phase: `026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/002-code-graph-phase-runner-and-detect-changes`
 - Research basis: pt-02 §11 Packet 1, §12 RISK-03

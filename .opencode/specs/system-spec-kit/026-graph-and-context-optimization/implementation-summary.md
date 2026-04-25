@@ -146,7 +146,7 @@ A second topical consolidation pass refined the nine-wrapper output of the first
 | `008-skill-advisor/` | 11 | Unified advisor home: search/routing, advisor graph, phrase boosters, smart-router, advisor docs/standards, hook surface, daemon unification, plugin hardening, hook improvements. |
 | `009-memory-causal-graph/` | 0 (post-hoc docs) | Level-2 documentation packet, no code changes. |
 | `009-hook-parity/` | 8 | Renamed from `009-hook-parity/`; pure runtime hook-parity scope after advisor + code-graph children moved out. |
-| `012-graph-impact-and-affordance-uplift/` | 6 | GitNexus pt-01 + pt-02 adoption uplift. |
+| `010-graph-impact-and-affordance-uplift/` | 6 | GitNexus pt-01 + pt-02 adoption uplift. |
 
 ### Numbering Gaps
 
@@ -172,7 +172,7 @@ A post-push topology adjustment narrowed the active surface from 11 wrappers to 
 ### What Changed
 
 - **`010-hook-parity/` renamed to `009-hook-parity/`.** After the second pass, `009/` had been occupied by the post-hoc `009-memory-causal-graph/` documentation packet, forcing the runtime hook-parity wrapper into the `010/` slot. With the documentation packet removed (see below), `010-hook-parity/` was renamed in place to occupy the now-vacant `009/` slot. All eight surviving children (`001-hook-parity-remediation/` through `008-docs-impact-remediation/`) and their internal narratives are unchanged. Migration aliases on `009-hook-parity/spec.md` now record three prior slugs: `009-hook-package`, `010-hook-package`, and `010-hook-parity`.
-- **`009-memory-causal-graph/` post-hoc documentation packet removed by user.** The Level-2 packet created during the second pass to provide a canonical documentation home for the live causal-graph infrastructure (four MCP tools `memory_causal_link` / `memory_causal_unlink` / `memory_causal_stats` / `memory_drift_why`; the `causal_edges` schema; the six-relation taxonomy; the ownership boundary between Memory, Code Graph, and Skill Graph) was retracted. **The causal-graph infrastructure itself remains in production code unchanged.** Documentation coverage from a display-layer perspective is owned by `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`. The retraction is intentional: a freshly created post-hoc Level-2 documentation wrapper for already-shipped infrastructure was deemed redundant once the display-layer packet was confirmed to cover the consumer-facing surface area, and the wrapper added one more numeric slot to scan in the active phase map without owning any executable scope.
+- **`009-memory-causal-graph/` post-hoc documentation packet removed by user.** The Level-2 packet created during the second pass to provide a canonical documentation home for the live causal-graph infrastructure (four MCP tools `memory_causal_link` / `memory_causal_unlink` / `memory_causal_stats` / `memory_drift_why`; the `causal_edges` schema; the six-relation taxonomy; the ownership boundary between Memory, Code Graph, and Skill Graph) was retracted. **The causal-graph infrastructure itself remains in production code unchanged.** Documentation coverage from a display-layer perspective is owned by `010-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`. The retraction is intentional: a freshly created post-hoc Level-2 documentation wrapper for already-shipped infrastructure was deemed redundant once the display-layer packet was confirmed to cover the consumer-facing surface area, and the wrapper added one more numeric slot to scan in the active phase map without owning any executable scope.
 
 ### Active Wrapper Map (after post-push adjustment)
 
@@ -187,7 +187,7 @@ A post-push topology adjustment narrowed the active surface from 11 wrappers to 
 | `007-code-graph/` | 5 | Code-graph upgrades, self-contained package, context/scan scope, plus second-pass hook + advisor refinement children. |
 | `008-skill-advisor/` | 11 | Unified advisor home: search/routing, advisor graph, phrase boosters, smart-router, advisor docs/standards, hook surface, daemon unification, plugin hardening, hook improvements. |
 | `009-hook-parity/` | 8 | Renamed from `010-hook-parity/`; pure runtime hook-parity scope after advisor + code-graph children moved out during the second pass. |
-| `012-graph-impact-and-affordance-uplift/` | 6 | GitNexus pt-01 + pt-02 adoption uplift; owns memory-causal-trust display documentation under `005-memory-causal-trust-display/`. |
+| `010-graph-impact-and-affordance-uplift/` | 6 | GitNexus pt-01 + pt-02 adoption uplift; owns memory-causal-trust display documentation under `005-memory-causal-trust-display/`. |
 
 ### Numbering Gaps (after post-push adjustment)
 
@@ -204,4 +204,4 @@ A post-push topology adjustment narrowed the active surface from 11 wrappers to 
 | Post-push adjustment sub-section appended | PASS — `merged-phase-map.md` records the rename `010-hook-parity/` → `009-hook-parity/` and the removal of `009-memory-causal-graph/`. |
 | Migration aliases for the rename chain | PASS — `009-hook-parity/spec.md` carries `migration_aliases` for `009-hook-package`, `010-hook-package`, and `010-hook-parity`. |
 | Root-level `description.json` and `graph-metadata.json` refreshed | PASS — regenerated by `generate-context.js` outside this narrative-update pass. |
-| Causal-graph infrastructure status | UNCHANGED — production code, schema, MCP tools, and ownership boundaries remain in place. Display-layer documentation lives in `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`. |
+| Causal-graph infrastructure status | UNCHANGED — production code, schema, MCP tools, and ownership boundaries remain in place. Display-layer documentation lives in `010-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`. |

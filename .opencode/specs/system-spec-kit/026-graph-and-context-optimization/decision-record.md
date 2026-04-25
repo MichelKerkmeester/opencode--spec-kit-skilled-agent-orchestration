@@ -238,7 +238,7 @@ After the first consolidation pass (ADR-001) the skill-advisor system was browsa
 <!-- ANCHOR:adr-003-context -->
 ### Context
 
-The causal-graph infrastructure (vector-index schema migration v8, `causal_edges` table, four MCP tools `memory_causal_link` / `memory_causal_unlink` / `memory_causal_stats` / `memory_drift_why`, six-relation taxonomy, ownership boundary between Memory, Code Graph, and Skill Graph) shipped to production multiple release cycles ago. It is referenced from `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/` (display-only consumer) and `005-memory-indexer-invariants/` (in passing for indexer correctness), but the 026 packet tree did not contain a single canonical documentation home for the infrastructure itself.
+The causal-graph infrastructure (vector-index schema migration v8, `causal_edges` table, four MCP tools `memory_causal_link` / `memory_causal_unlink` / `memory_causal_stats` / `memory_drift_why`, six-relation taxonomy, ownership boundary between Memory, Code Graph, and Skill Graph) shipped to production multiple release cycles ago. It is referenced from `010-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/` (display-only consumer) and `005-memory-indexer-invariants/` (in passing for indexer correctness), but the 026 packet tree did not contain a single canonical documentation home for the infrastructure itself.
 
 ### Constraints
 
@@ -266,7 +266,7 @@ The causal-graph infrastructure (vector-index schema migration v8, `causal_edges
 |--------|------|------|-------|
 | **Level-2 post-hoc documentation packet** | Single canonical home; code-grounded claims; no risk of code drift | Adds a wrapper for documentation only | 9/10 |
 | Inline a section in `005-memory-indexer-invariants/` | No new wrapper needed | Conflates indexer correctness with causal-graph surface area; harder to find | 4/10 |
-| Inline a section in `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/` | Co-located with display consumer | Display-only packet is out-of-scope for documenting underlying graph; mixes ownership | 3/10 |
+| Inline a section in `010-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/` | Co-located with display consumer | Display-only packet is out-of-scope for documenting underlying graph; mixes ownership | 3/10 |
 
 **Why this one**: Documentation gaps for live infrastructure should have their own canonical home so that consumers (display, indexer, advisor) can link to one authoritative spec.
 <!-- /ANCHOR:adr-003-alternatives -->
@@ -396,7 +396,7 @@ After ADR-002 moved five advisor-themed children to `008-skill-advisor/` and ADR
 
 After the second consolidation pass landed (ADR-002, ADR-003, ADR-004) and the changes were pushed, two issues surfaced on review:
 
-1. The Level-2 post-hoc documentation packet `009-memory-causal-graph/` (created by ADR-003 to provide a canonical documentation home for live causal-graph infrastructure: four MCP tools, the `causal_edges` schema, six-relation taxonomy, ownership boundary) was redundant. Display-layer coverage already existed under `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`, and the post-hoc wrapper added one numeric slot to scan in the active phase map without owning any executable scope.
+1. The Level-2 post-hoc documentation packet `009-memory-causal-graph/` (created by ADR-003 to provide a canonical documentation home for live causal-graph infrastructure: four MCP tools, the `causal_edges` schema, six-relation taxonomy, ownership boundary) was redundant. Display-layer coverage already existed under `010-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`, and the post-hoc wrapper added one numeric slot to scan in the active phase map without owning any executable scope.
 2. The runtime hook-parity wrapper sat in `010-hook-parity/` (per ADR-004) only because the post-hoc documentation packet had occupied `009/`. With that packet removed, leaving hook-parity in `010/` would create a deliberate gap at `009/` for no narrative reason, while the topical surface had room to compact.
 
 ### Constraints
@@ -417,7 +417,7 @@ After the second consolidation pass landed (ADR-002, ADR-003, ADR-004) and the c
 **How it works**:
 
 - Rename: the wrapper folder moves from `010-hook-parity/` to `009-hook-parity/`. All eight children (`001-hook-parity-remediation/` through `008-docs-impact-remediation/`) retain their internal numbering and content. `009-hook-parity/spec.md` carries `migration_aliases` for three prior slugs: `system-spec-kit/026-graph-and-context-optimization/009-hook-package`, `system-spec-kit/026-graph-and-context-optimization/010-hook-package`, and `system-spec-kit/026-graph-and-context-optimization/010-hook-parity`.
-- Removal: `009-memory-causal-graph/` is deleted entirely. Its prior content (which was descriptive-only, no code, no children) is retired. Display-layer documentation of the causal-graph surface area continues to live in `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`. The four MCP tools, `causal_edges` schema, six-relation taxonomy, and ownership boundary remain in production code unchanged.
+- Removal: `009-memory-causal-graph/` is deleted entirely. Its prior content (which was descriptive-only, no code, no children) is retired. Display-layer documentation of the causal-graph surface area continues to live in `010-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`. The four MCP tools, `causal_edges` schema, six-relation taxonomy, and ownership boundary remain in production code unchanged.
 
 The post-push adjustment is recorded as a sub-section of the second-pass section in `merged-phase-map.md`; the second-pass move/rename table itself is preserved verbatim.
 <!-- /ANCHOR:adr-005-decision -->
@@ -431,7 +431,7 @@ The post-push adjustment is recorded as a sub-section of the second-pass section
 |--------|------|------|-------|
 | **Rename + remove (this ADR)** | Compact 10-wrapper surface; no orphaned `009/` gap; documentation is owned by the right consumer-facing wrapper; production code untouched | Requires migration alias for one extra prior slug; one more entry in `merged-phase-map.md` | 9/10 |
 | Keep `010-hook-parity/` and leave `009/` permanently empty | No further rename needed | Permanent narrative gap with no audit reason after the documentation packet was removed; ongoing visual confusion | 4/10 |
-| Keep `009-memory-causal-graph/` as-is | Single canonical home for causal-graph documentation as proposed in ADR-003 | Redundant with `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`; adds a wrapper for documentation only and inflates the active phase count | 3/10 |
+| Keep `009-memory-causal-graph/` as-is | Single canonical home for causal-graph documentation as proposed in ADR-003 | Redundant with `010-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`; adds a wrapper for documentation only and inflates the active phase count | 3/10 |
 | Keep `009-memory-causal-graph/` and rename hook-parity into a different slot (`011/` or higher) | Preserves ADR-003 | Worsens the numbering-gap problem; does not solve redundancy | 2/10 |
 
 **Why this one**: Once the post-hoc documentation wrapper was identified as redundant, removing it cleanly and reclaiming `009/` for the hook-parity wrapper reverses the layout pressure that ADR-004 had to navigate around in the first place. The result is a smaller, more topical surface with the same underlying scope.

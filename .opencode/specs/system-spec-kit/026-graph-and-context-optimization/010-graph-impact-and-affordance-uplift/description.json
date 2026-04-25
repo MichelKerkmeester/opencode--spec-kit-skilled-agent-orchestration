@@ -1,0 +1,40 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift",
+  "description": "Implement the converged pt-01 + pt-02 GitNexus research recommendations across Code Graph, Memory causal graph, and Skill Advisor — selective adaptati",
+  "keywords": [
+    "implement",
+    "converged",
+    "pt-01",
+    "pt-02",
+    "gitnexus",
+    "research",
+    "recommendations",
+    "across",
+    "code",
+    "graph",
+    "memory",
+    "causal",
+    "skill",
+    "advisor",
+    "selective",
+    "adaptation",
+    "only",
+    "clean-room",
+    "strict",
+    "ownership",
+    "boundaries"
+  ],
+  "lastUpdated": "2026-04-25T10:47:55.572Z",
+  "specId": "012",
+  "folderSlug": "graph-impact-and-affordance-uplift",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "25-04-26_11-47__scaffold-initialization-for-012-sub-phase-012.md"
+  ]
+}

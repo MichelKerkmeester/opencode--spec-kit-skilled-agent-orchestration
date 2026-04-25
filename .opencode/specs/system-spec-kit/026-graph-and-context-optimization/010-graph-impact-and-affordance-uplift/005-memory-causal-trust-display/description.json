@@ -1,0 +1,35 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/005-memory-causal-trust-display",
+  "description": "Display-only trust badges (confidence, extraction_age, last_access_age, orphan, weight_history) on MemoryResultEnvelope. NO schema change. NO new rela",
+  "keywords": [
+    "display-only",
+    "trust",
+    "badges",
+    "confidence",
+    "orphan",
+    "memoryresultenvelope",
+    "schema",
+    "change",
+    "new",
+    "relations",
+    "storage",
+    "code",
+    "process",
+    "tool",
+    "facts"
+  ],
+  "lastUpdated": "2026-04-25T10:48:09.300Z",
+  "specId": "005",
+  "folderSlug": "memory-causal-trust-display",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-graph-impact-and-affordance-uplift"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "25-04-26_11-48__scaffold-initialization-for-012-sub-phase-005.md"
+  ]
+}

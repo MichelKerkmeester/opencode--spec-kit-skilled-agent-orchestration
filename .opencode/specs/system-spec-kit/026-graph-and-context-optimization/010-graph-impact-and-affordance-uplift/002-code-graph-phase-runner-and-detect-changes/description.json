@@ -1,0 +1,39 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/002-code-graph-phase-runner-and-detect-changes",
+  "description": "Adopt typed phase-DAG runner around code-graph scan; build read-only detect_changes handler that maps git diff hunks to symbols and refuses to answer ",
+  "keywords": [
+    "adopt",
+    "typed",
+    "phase-dag",
+    "runner",
+    "around",
+    "code-graph",
+    "scan",
+    "build",
+    "read-only",
+    "handler",
+    "maps",
+    "git",
+    "diff",
+    "hunks",
+    "symbols",
+    "refuses",
+    "answer",
+    "graph",
+    "stale"
+  ],
+  "lastUpdated": "2026-04-25T10:48:07.133Z",
+  "specId": "002",
+  "folderSlug": "code-graph-phase-runner-and-detect-changes",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-graph-impact-and-affordance-uplift"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "25-04-26_11-48__scaffold-initialization-for-012-sub-phase-002.md"
+  ]
+}

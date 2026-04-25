@@ -13,7 +13,7 @@
     "system-spec-kit/026-graph-and-context-optimization/007-code-graph",
     "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-parity",
-    "system-spec-kit/026-graph-and-context-optimization/012-graph-impact-and-affordance-uplift"
+    "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift"
   ],
   "migrated": true,
   "migration_source": "legacy",

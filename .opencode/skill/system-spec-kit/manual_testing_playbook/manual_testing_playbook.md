@@ -65,7 +65,7 @@ Canonical source artifacts:
 
 Audit date: `2026-04-25`
 
-Phase 012 (`026-graph-and-context-optimization/012-graph-impact-and-affordance-uplift/`) shipped the converged GitNexus pt-01 + pt-02 recommendations across Code Graph, Memory, and Skill Advisor. Code sub-phases 002-005 each authored their own per-packet manual-testing-playbook entries inline as part of their work. Sub-phase 006 (this rollup, ADR-012-007) syncs the umbrella docs and the top-level indexes — sync, not aspiration. The five new per-packet scenarios are listed below with their relative paths.
+Phase 012 (`026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/`) shipped the converged GitNexus pt-01 + pt-02 recommendations across Code Graph, Memory, and Skill Advisor. Code sub-phases 002-005 each authored their own per-packet manual-testing-playbook entries inline as part of their work. Sub-phase 006 (this rollup, ADR-012-007) syncs the umbrella docs and the top-level indexes — sync, not aspiration. The five new per-packet scenarios are listed below with their relative paths.
 
 | Sub-phase | Category | Playbook ID | Entry |
 |-----------|----------|-------------|-------|

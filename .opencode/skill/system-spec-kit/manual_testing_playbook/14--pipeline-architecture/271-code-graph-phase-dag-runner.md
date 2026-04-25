@@ -66,5 +66,5 @@ Inspect `mcp_server/code_graph/lib/phase-runner.ts` (Kahn-sort + rejection paths
 - Playbook ID: 271
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `14--pipeline-architecture/271-code-graph-phase-dag-runner.md`
-- Phase / sub-phase: `026-graph-and-context-optimization/012-graph-impact-and-affordance-uplift/002-code-graph-phase-runner-and-detect-changes`
+- Phase / sub-phase: `026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/002-code-graph-phase-runner-and-detect-changes`
 - Research basis: pt-02 §11 Packet 1

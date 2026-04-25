@@ -91,7 +91,7 @@ Phases that ship recommendations from research packets in `001-research-and-base
 
 | Active Phase | Derived From | Owner Wrapper | Local Path |
 |--------------|--------------|---------------|------------|
-| `012-graph-impact-and-affordance-uplift/` | `001-research-and-baseline/007-git-nexus/` pt-01 + pt-02 syntheses | `026-graph-and-context-optimization/` | `026-graph-and-context-optimization/012-graph-impact-and-affordance-uplift/` |
+| `010-graph-impact-and-affordance-uplift/` | `001-research-and-baseline/007-git-nexus/` pt-01 + pt-02 syntheses | `026-graph-and-context-optimization/` | `026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/` |
 
 Phase 012 is the converged GitNexus implementation packet. It ships in six sub-phases (001 license audit, 002 phase runner + `detect_changes` preflight, 003 edge explanation + `blast_radius` uplift, 004 Skill Advisor affordance evidence, 005 Memory causal trust display, 006 docs and catalogs rollup). Code Graph, Memory, and Skill Advisor stay separately owned under the ownership-boundary contract from pt-02 §13.
 
@@ -148,7 +148,7 @@ A second topical consolidation pass refined the nine-wrapper output of the first
 | `008-skill-advisor/` | Unified skill-advisor system: search/routing, advisor graph, phrase boosters, smart-router, advisor docs/standards, hook surface, daemon unification, plugin hardening, hook improvements | 11 |
 | `009-memory-causal-graph/` | Post-hoc canonical documentation home for live causal-graph infrastructure | 0 (no children) |
 | `010-hook-parity/` | Runtime hook parity: schema fixes, wrapper wiring, parity remediations across Claude / Codex / Copilot / OpenCode plugin | 8 |
-| `012-graph-impact-and-affordance-uplift/` | GitNexus pt-01 + pt-02 adoption: phase-DAG runner, edge explanation/impact uplift, advisor affordance evidence, memory causal trust display, docs/catalogs rollup | 6 |
+| `010-graph-impact-and-affordance-uplift/` | GitNexus pt-01 + pt-02 adoption: phase-DAG runner, edge explanation/impact uplift, advisor affordance evidence, memory causal trust display, docs/catalogs rollup | 6 |
 
 ### Numbering Gaps
 
@@ -173,7 +173,7 @@ A post-push topology adjustment narrowed the active surface from 11 wrappers to 
 | Action | Pre-Adjustment Path | Post-Adjustment Path | Reason |
 |--------|---------------------|----------------------|--------|
 | rename | `010-hook-parity/` | `009-hook-parity/` | After the documentation packet at `009/` was removed, the runtime hook-parity wrapper occupies `009/` to avoid an unmotivated numbering gap. All eight children retain their `001-008` compact numbering and internal narratives. |
-| remove | `009-memory-causal-graph/` | (deleted) | Post-hoc Level-2 documentation packet retracted by user. The causal-graph infrastructure (four MCP tools, `causal_edges` schema, six-relation taxonomy, ownership boundary) remains in production code unchanged. Display-layer documentation is owned by `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`. |
+| remove | `009-memory-causal-graph/` | (deleted) | Post-hoc Level-2 documentation packet retracted by user. The causal-graph infrastructure (four MCP tools, `causal_edges` schema, six-relation taxonomy, ownership boundary) remains in production code unchanged. Display-layer documentation is owned by `010-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`. |
 
 ### Updated Active Wrapper Themes (10 wrappers)
 
@@ -188,7 +188,7 @@ A post-push topology adjustment narrowed the active surface from 11 wrappers to 
 | `007-code-graph/` | Code-graph upgrades, self-contained package migration, context/scan scope, code-graph hook + advisor refinement | 5 |
 | `008-skill-advisor/` | Unified skill-advisor system: search/routing, advisor graph, phrase boosters, smart-router, advisor docs/standards, hook surface, daemon unification, plugin hardening, hook improvements | 11 |
 | `009-hook-parity/` | Runtime hook parity: schema fixes, wrapper wiring, parity remediations across Claude / Codex / Copilot / OpenCode plugin (renamed from `010-hook-parity/`) | 8 |
-| `012-graph-impact-and-affordance-uplift/` | GitNexus pt-01 + pt-02 adoption: phase-DAG runner, edge explanation/impact uplift, advisor affordance evidence, memory causal trust display (owns the causal-graph display documentation), docs/catalogs rollup | 6 |
+| `010-graph-impact-and-affordance-uplift/` | GitNexus pt-01 + pt-02 adoption: phase-DAG runner, edge explanation/impact uplift, advisor affordance evidence, memory causal trust display (owns the causal-graph display documentation), docs/catalogs rollup | 6 |
 
 ### Updated Numbering Gaps (after post-push adjustment)
 
