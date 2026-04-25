@@ -418,7 +418,7 @@ describe('capturesToNodes dedupe (Bug #2 regression)', () => {
     }));
 
     const { parseFile } = await import('../code_graph/lib/structural-indexer.js');
-    const filePath = 'code-graph/lib/structural-indexer.ts';
+    const filePath = 'code_graph/lib/structural-indexer.ts';
     const content = readFileSync(filePath, 'utf-8');
     const result = await parseFile(filePath, content, 'typescript');
     const ids = new Set<string>();
