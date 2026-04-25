@@ -156,7 +156,7 @@ describe('Context Server', () => {
   // =================================================================
   // GROUP 2: Tool Definition Completeness
   // =================================================================
-  describe('Group 2: Tool Definitions (47 tools)', () => {
+  describe('Group 2: Tool Definitions (49 tools)', () => {
     const EXPECTED_TOOLS = [
       'memory_context',
       'memory_search',
@@ -191,6 +191,8 @@ describe('Context Server', () => {
       'code_graph_query',
       'code_graph_status',
       'code_graph_context',
+      'code_graph_verify',
+      'detect_changes',
       'skill_graph_scan',
       'skill_graph_query',
       'skill_graph_status',

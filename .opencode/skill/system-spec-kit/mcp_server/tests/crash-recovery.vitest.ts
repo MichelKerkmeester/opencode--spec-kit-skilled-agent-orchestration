@@ -43,6 +43,7 @@ import {
   replaceNodes,
 } from '../code_graph/lib/code-graph-db.js';
 import type { CodeNode } from '../code_graph/lib/indexer-types.js';
+import { generateContentHash } from '../code_graph/lib/indexer-types.js';
 
 interface MockSessionStateRow {
   session_id: string;
@@ -906,12 +907,19 @@ describe('code-graph SQLite recovery', () => {
     initDb(tempDir);
 
     const trackedFile = path.join(tempDir, 'tracked.ts');
-    fs.writeFileSync(trackedFile, 'export const value = 1;\n');
+    const fileContent = 'export const value = 1;\n';
+    fs.writeFileSync(trackedFile, fileContent);
+
+    // isFileStale is hash-aware on the mtime-match path: when stored mtime
+    // matches current mtime, it falls back to hashing the file and comparing
+    // against stored content_hash. Persist the real hash so the freshness
+    // path returns false here.
+    const realHash = generateContentHash(fileContent);
 
     upsertFile(
       trackedFile,
       'typescript',
-      'hash-abc',
+      realHash,
       0,
       0,
       'clean',
