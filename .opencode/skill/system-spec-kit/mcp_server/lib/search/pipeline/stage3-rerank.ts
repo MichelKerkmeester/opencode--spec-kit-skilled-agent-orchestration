@@ -46,8 +46,8 @@ import { compareDeterministicRows, sortDeterministicRows } from './ranking-contr
 
 // -- Constants --------------------------------------------------
 
-/** Minimum number of results required before reranking can change ordering. 0-1 row sets are already equivalent without a reranker. */
-const MIN_RESULTS_FOR_RERANK = 2;
+/** Minimum number of results required before reranking can change ordering. Below 4 rows the reranker cost (cross-encoder forward pass) is not justified by the marginal ordering change available. F-16 regression guard: keep this at 4 to match `tests/stage3-rerank-regression.vitest.ts`. */
+const MIN_RESULTS_FOR_RERANK = 4;
 
 /** Minimum number of candidates required before MMR diversity pruning is worthwhile. */
 const MMR_MIN_CANDIDATES = 2;
