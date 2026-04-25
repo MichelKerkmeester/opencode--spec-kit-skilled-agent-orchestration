@@ -9,12 +9,17 @@ const mocks = vi.hoisted(() => ({
   existsSyncMock: vi.fn(),
   realpathSyncMock: vi.fn(),
   indexFilesMock: vi.fn(),
+  executeBatteryMock: vi.fn(),
+  loadGoldBatteryMock: vi.fn(),
+  getCodeGraphMetadataMock: vi.fn(),
   getLastGitHeadMock: vi.fn(),
+  setCodeGraphMetadataMock: vi.fn(),
   setLastDetectorProvenanceMock: vi.fn(),
   setLastDetectorProvenanceSummaryMock: vi.fn(),
   setLastGraphEdgeEnrichmentSummaryMock: vi.fn(),
   clearLastGraphEdgeEnrichmentSummaryMock: vi.fn(),
   setLastGitHeadMock: vi.fn(),
+  setLastGoldVerificationMock: vi.fn(),
   isFileStaleMock: vi.fn(),
   upsertFileMock: vi.fn(),
   replaceNodesMock: vi.fn(),
@@ -44,13 +49,21 @@ vi.mock('../lib/structural-indexer.js', () => ({
   indexFiles: mocks.indexFilesMock,
 }));
 
+vi.mock('../lib/gold-query-verifier.js', () => ({
+  executeBattery: mocks.executeBatteryMock,
+  loadGoldBattery: mocks.loadGoldBatteryMock,
+}));
+
 vi.mock('../lib/code-graph-db.js', () => ({
   getLastGitHead: mocks.getLastGitHeadMock,
+  getCodeGraphMetadata: mocks.getCodeGraphMetadataMock,
+  setCodeGraphMetadata: mocks.setCodeGraphMetadataMock,
   setLastDetectorProvenance: mocks.setLastDetectorProvenanceMock,
   setLastDetectorProvenanceSummary: mocks.setLastDetectorProvenanceSummaryMock,
   setLastGraphEdgeEnrichmentSummary: mocks.setLastGraphEdgeEnrichmentSummaryMock,
   clearLastGraphEdgeEnrichmentSummary: mocks.clearLastGraphEdgeEnrichmentSummaryMock,
   setLastGitHead: mocks.setLastGitHeadMock,
+  setLastGoldVerification: mocks.setLastGoldVerificationMock,
   isFileStale: mocks.isFileStaleMock,
   upsertFile: mocks.upsertFileMock,
   replaceNodes: mocks.replaceNodesMock,
@@ -67,6 +80,33 @@ describe('handleCodeGraphScan', () => {
     vi.clearAllMocks();
 
     mocks.execSyncMock.mockReturnValue('new-head\n');
+    mocks.executeBatteryMock.mockResolvedValue({
+      batteryPath: '<in-memory>',
+      queryCount: 1,
+      pass_policy: {
+        overall_pass_rate: 0.9,
+        edge_focus_pass_rate: 0.8,
+      },
+      overall_pass_rate: 1,
+      edge_focus_pass_rate: 1,
+      overallPassRate: 1,
+      categoryPassRates: {
+        'mcp-tool': 1,
+      },
+      missingSymbols: [],
+      unexpectedErrors: [],
+      passed: true,
+      probes: [],
+    });
+    mocks.loadGoldBatteryMock.mockReturnValue({
+      schema_version: 1,
+      pass_policy: {
+        overall_pass_rate: 0.9,
+        edge_focus_pass_rate: 0.8,
+      },
+      queries: [],
+    });
+    mocks.getCodeGraphMetadataMock.mockReturnValue(null);
     mocks.getLastGitHeadMock.mockReturnValue('old-head');
     mocks.isFileStaleMock.mockReturnValue(false);
     mocks.existsSyncMock.mockReturnValue(true);
@@ -149,6 +189,54 @@ describe('handleCodeGraphScan', () => {
       },
     });
     expect(mocks.setLastGitHeadMock).toHaveBeenCalledWith('new-head');
+  });
+
+  it('optionally runs verification for explicit full scans and attaches the result', async () => {
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+
+    const response = await handleCodeGraphScan({
+      rootDir: process.cwd(),
+      incremental: false,
+      verify: true,
+    });
+
+    const payload = JSON.parse(response.content[0].text) as {
+      status: string;
+      data: {
+        verification: {
+          batteryPath: string;
+          passed: boolean;
+        };
+      };
+    };
+
+    expect(payload.status).toBe('ok');
+    expect(payload.data.verification).toEqual(expect.objectContaining({
+      passed: true,
+      batteryPath: expect.stringContaining('code-graph-gold-queries.json'),
+    }));
+    expect(mocks.loadGoldBatteryMock).toHaveBeenCalledWith(expect.stringContaining('code-graph-gold-queries.json'));
+    expect(mocks.executeBatteryMock).toHaveBeenCalledWith(
+      mocks.loadGoldBatteryMock.mock.results[0]?.value,
+      expect.any(Function),
+    );
+    expect(mocks.setLastGoldVerificationMock).toHaveBeenCalledWith(payload.data.verification);
+  });
+
+  it('does not run verification for incremental scans even when verify is requested', async () => {
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+
+    await handleCodeGraphScan({
+      rootDir: process.cwd(),
+      incremental: true,
+      verify: true,
+    });
+
+    expect(mocks.loadGoldBatteryMock).not.toHaveBeenCalled();
+    expect(mocks.executeBatteryMock).not.toHaveBeenCalled();
+    expect(mocks.setLastGoldVerificationMock).not.toHaveBeenCalled();
   });
 
   it('clears the persisted edge-enrichment summary when a later scan reports no summary', async () => {

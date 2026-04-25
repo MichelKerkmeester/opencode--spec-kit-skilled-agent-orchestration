@@ -6,8 +6,8 @@
 
 import Database from 'better-sqlite3';
 import { join, isAbsolute, resolve as resolvePath } from 'node:path';
-import { statSync } from 'node:fs';
-import type { CodeNode, CodeEdge, DetectorProvenance } from './indexer-types.js';
+import { readFileSync, statSync } from 'node:fs';
+import { generateContentHash, type CodeNode, type CodeEdge, type DetectorProvenance } from './indexer-types.js';
 import { DATABASE_DIR } from '../../core/config.js';
 
 let db: Database.Database | null = null;
@@ -117,6 +117,14 @@ const SCHEMA_SQL = `
 function getCurrentFileMtimeMs(filePath: string): number | null {
   try {
     return Math.trunc(statSync(filePath).mtimeMs);
+  } catch {
+    return null;
+  }
+}
+
+function getCurrentFileContentHash(filePath: string): string | null {
+  try {
+    return generateContentHash(readFileSync(filePath, 'utf-8'));
   } catch {
     return null;
   }
@@ -402,14 +410,22 @@ export function replaceEdges(sourceIds: string[], edges: CodeEdge[]): void {
   tx();
 }
 
-/** Check if a file needs re-indexing based on stored mtime */
-export function isFileStale(filePath: string): boolean {
+/** Check if a file needs re-indexing based on stored mtime and content hash */
+export function isFileStale(filePath: string, options?: { currentContentHash?: string }): boolean {
   const d = getDb();
-  const row = d.prepare('SELECT file_mtime_ms FROM code_files WHERE file_path = ?').get(filePath) as { file_mtime_ms: number } | undefined;
+  const row = d.prepare('SELECT file_mtime_ms, content_hash FROM code_files WHERE file_path = ?').get(filePath) as {
+    file_mtime_ms: number;
+    content_hash: string | null;
+  } | undefined;
   if (!row) return true;
   const currentMtimeMs = getCurrentFileMtimeMs(filePath);
   if (currentMtimeMs === null) return true;
-  return row.file_mtime_ms !== currentMtimeMs;
+  if (row.file_mtime_ms !== currentMtimeMs) return true;
+  if (!row.content_hash) return true;
+
+  const currentContentHash = options?.currentContentHash ?? getCurrentFileContentHash(filePath);
+  if (currentContentHash === null) return true;
+  return row.content_hash !== currentContentHash;
 }
 
 /** Batch stale check for a set of file paths */
@@ -427,19 +443,28 @@ export function ensureFreshFiles(filePaths: string[]): FreshFilesResult {
   const d = getDb();
   const placeholders = uniquePaths.map(() => '?').join(',');
   const rows = d.prepare(`
-    SELECT file_path, file_mtime_ms
+    SELECT file_path, file_mtime_ms, content_hash
     FROM code_files
     WHERE file_path IN (${placeholders})
-  `).all(...uniquePaths) as Array<{ file_path: string; file_mtime_ms: number }>;
-  const storedMtimes = new Map(rows.map((row) => [row.file_path, row.file_mtime_ms]));
+  `).all(...uniquePaths) as Array<{ file_path: string; file_mtime_ms: number; content_hash: string | null }>;
+  const storedFiles = new Map(rows.map((row) => [row.file_path, row]));
 
   const stale: string[] = [];
   const fresh: string[] = [];
 
   for (const filePath of uniquePaths) {
-    const storedMtimeMs = storedMtimes.get(filePath);
+    const storedFile = storedFiles.get(filePath);
     const currentMtimeMs = getCurrentFileMtimeMs(filePath);
-    if (storedMtimeMs === undefined || currentMtimeMs === null || storedMtimeMs !== currentMtimeMs) {
+    if (storedFile === undefined || currentMtimeMs === null || storedFile.file_mtime_ms !== currentMtimeMs) {
+      stale.push(filePath);
+      continue;
+    }
+    if (!storedFile.content_hash) {
+      stale.push(filePath);
+      continue;
+    }
+    const currentContentHash = getCurrentFileContentHash(filePath);
+    if (currentContentHash === null || storedFile.content_hash !== currentContentHash) {
       stale.push(filePath);
       continue;
     }

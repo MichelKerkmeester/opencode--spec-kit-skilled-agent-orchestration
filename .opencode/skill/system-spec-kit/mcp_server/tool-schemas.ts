@@ -562,6 +562,8 @@ const codeGraphScan: ToolDefinition = {
       includeGlobs: { type: 'array', items: { type: 'string' }, description: 'Glob patterns for files to include' },
       excludeGlobs: { type: 'array', items: { type: 'string' }, description: 'Additional glob patterns to exclude' },
       incremental: { type: 'boolean', default: true, description: 'Skip unchanged files (default: true)' },
+      verify: { type: 'boolean', default: false, description: 'Run the gold-query verification battery after an explicit full scan (default: false)' },
+      persistBaseline: { type: 'boolean', default: false, description: 'Persist the current edge-distribution baseline after a full scan even when one already exists' },
     },
     required: [],
   },
@@ -628,6 +630,28 @@ const codeGraphContext: ToolDefinition = {
       budgetTokens: { type: 'number', minimum: 100, maximum: 4000, default: 1200, description: 'Token budget for response' },
       profile: { type: 'string', enum: ['quick', 'research', 'debug'], description: 'Output density profile' },
       includeTrace: { type: 'boolean', description: 'Include trace metadata in response for debugging' },
+    },
+    required: [],
+  },
+};
+
+const codeGraphVerify: ToolDefinition = {
+  name: 'code_graph_verify',
+  description: '[L7:Maintenance] Execute the persisted code-graph gold-query battery against the current index. Returns blocked when readiness is not fresh, supports category filtering, optional per-query details, fail-fast mode, and optional baseline persistence. Token Budget: 1000.',
+  inputSchema: {
+    type: 'object', additionalProperties: false,
+    properties: {
+      rootDir: { type: 'string', description: 'Root directory for readiness checks (default: workspace root)' },
+      batteryPath: { type: 'string', description: 'Optional path to a gold-query battery JSON file' },
+      category: {
+        type: 'string',
+        enum: ['mcp-tool', 'cross-module', 'exported-type', 'regression-detection'],
+        description: 'Optional category filter for the verification battery',
+      },
+      failFast: { type: 'boolean', description: 'Stop on first failing verification query' },
+      includeDetails: { type: 'boolean', description: 'Include per-query verification details in the result payload' },
+      persistBaseline: { type: 'boolean', description: 'Persist the verification result as the latest stored baseline' },
+      allowInlineIndex: { type: 'boolean', description: 'Allow readiness checks to perform inline indexing before verification' },
     },
     required: [],
   },
@@ -917,6 +941,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   codeGraphQuery,
   codeGraphStatus,
   codeGraphContext,
+  codeGraphVerify,
   detectChanges,
   // L8: Skill Graph
   skillGraphScan,

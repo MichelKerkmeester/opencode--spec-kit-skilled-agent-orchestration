@@ -9,11 +9,16 @@
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type {
-  ParseResult, SupportedLanguage, SymbolKind,
+  ParseResult, SupportedLanguage, SymbolKind, EdgeType,
 } from './indexer-types.js';
 import { generateContentHash } from './indexer-types.js';
 import { detectorProvenanceFromParserBackend } from './structural-indexer.js';
-import { extractEdges, capturesToNodes, type RawCapture } from './structural-indexer.js';
+import {
+  extractEdges,
+  capturesToNodes,
+  rememberParseResultCaptures,
+  type RawCapture,
+} from './structural-indexer.js';
 import { isSpeckitMetricsEnabled, speckitMetrics } from '../../skill_advisor/lib/metrics.js';
 
 // ── Types ──────────────────────────────────────────────────────
@@ -21,7 +26,11 @@ import { isSpeckitMetricsEnabled, speckitMetrics } from '../../skill_advisor/lib
 
 /** ParserAdapter interface — mirrors structural-indexer.ts:16-18 */
 interface ParserAdapter {
-  parse(content: string, language: SupportedLanguage): ParseResult;
+  parse(
+    content: string,
+    language: SupportedLanguage,
+    edgeWeights?: Partial<Record<EdgeType, number>>,
+  ): ParseResult;
 }
 
 // ── Lazy initialization state ──────────────────────────────────
@@ -292,6 +301,15 @@ function extractTypeRefs(node: TSNode): string[] | undefined {
   return refs.size > 0 ? [...refs] : undefined;
 }
 
+function extractModuleSpecifier(node: TSNode): string | undefined {
+  const sourceNode = node.childForFieldName('source');
+  if (!sourceNode) return undefined;
+
+  const sourceText = sourceNode.text.trim();
+  const quotedMatch = sourceText.match(/^(['"`])(.*)\1$/s);
+  return quotedMatch ? quotedMatch[2] : sourceText;
+}
+
 function resolveKind(node: TSNode, language: SupportedLanguage): SymbolKind | null {
   const kindMap = getKindMap(language);
 
@@ -346,6 +364,8 @@ function emitImportCaptures(
   const sig = extractSignature(node, lines);
   const startLine = node.startPosition.row + 1;
   const endLine = node.endPosition.row + 1;
+  const moduleSpecifier = extractModuleSpecifier(node);
+  const importKind: RawCapture['importKind'] = /^\s*import\s+type\b/.test(sig) ? 'type' : 'value';
 
   function pushImport(name: string): void {
     captures.push({
@@ -355,6 +375,8 @@ function emitImportCaptures(
       startColumn: node.startPosition.column,
       endColumn: node.endPosition.column,
       signature: sig,
+      moduleSpecifier,
+      importKind,
     });
   }
 
@@ -406,6 +428,26 @@ function emitExportCaptures(
   const sig = extractSignature(node, lines);
   const startLine = node.startPosition.row + 1;
   const endLine = node.endPosition.row + 1;
+  const moduleSpecifier = extractModuleSpecifier(node);
+
+  function pushExport(name: string, exportKind: RawCapture['exportKind']): void {
+    captures.push({
+      name,
+      kind: 'export',
+      startLine,
+      endLine,
+      startColumn: node.startPosition.column,
+      endColumn: node.endPosition.column,
+      signature: sig,
+      moduleSpecifier,
+      exportKind,
+    });
+  }
+
+  if (/^\s*export\s+\*/.test(sig) && moduleSpecifier) {
+    pushExport('*', 'star');
+    return;
+  }
 
   // Check for named_exports (export { x, y }) — emit per specifier
   for (const child of node.namedChildren) {
@@ -414,14 +456,7 @@ function emitExportCaptures(
         if (spec.type === 'export_specifier') {
           const n = spec.childForFieldName('name') ?? spec.namedChildren[0];
           if (n) {
-            captures.push({
-              name: n.text,
-              kind: 'export',
-              startLine, endLine,
-              startColumn: node.startPosition.column,
-              endColumn: node.endPosition.column,
-              signature: sig,
-            });
+            pushExport(n.text, moduleSpecifier ? 'named' : 'declaration');
           }
         }
       }
@@ -434,14 +469,7 @@ function emitExportCaptures(
   if (decl) {
     const name = extractName(decl, language);
     if (name) {
-      captures.push({
-        name,
-        kind: 'export',
-        startLine, endLine,
-        startColumn: node.startPosition.column,
-        endColumn: node.endPosition.column,
-        signature: sig,
-      });
+      pushExport(name, 'declaration');
     }
     // visit is not accessible here — caller handles inner declaration visit
     return;
@@ -450,14 +478,7 @@ function emitExportCaptures(
   // Fallback: try extracting name from the node itself
   const name = extractName(node, language);
   if (name) {
-    captures.push({
-      name,
-      kind: 'export',
-      startLine, endLine,
-      startColumn: node.startPosition.column,
-      endColumn: node.endPosition.column,
-      signature: sig,
-    });
+    pushExport(name, moduleSpecifier ? 'named' : 'declaration');
   }
 
   // Suppress unused variable warning
@@ -605,7 +626,11 @@ function walkAST(
 // ── TreeSitterParser class ─────────────────────────────────────
 
 export class TreeSitterParser implements ParserAdapter {
-  parse(content: string, language: SupportedLanguage): ParseResult {
+  parse(
+    content: string,
+    language: SupportedLanguage,
+    edgeWeights?: Partial<Record<EdgeType, number>>,
+  ): ParseResult {
     if (!parserInstance) {
       if (isSpeckitMetricsEnabled()) {
         speckitMetrics.recordHistogram('spec_kit.graph.parse_duration_ms', 0, { language, outcome: 'error' });
@@ -650,7 +675,7 @@ export class TreeSitterParser implements ParserAdapter {
       const captures = walkAST(tree.rootNode as TSNode, language, lines);
       const nodes = capturesToNodes(captures, '', language, content);
       const detectorProvenance = detectorProvenanceFromParserBackend('treesitter');
-      const edges = extractEdges(nodes, lines, captures, detectorProvenance);
+      const edges = extractEdges(nodes, lines, captures, detectorProvenance, edgeWeights);
 
       const hasError = (tree.rootNode as TSNode).hasError;
       const parseHealth: ParseResult['parseHealth'] = hasError
@@ -660,7 +685,7 @@ export class TreeSitterParser implements ParserAdapter {
       if (isSpeckitMetricsEnabled()) {
         speckitMetrics.recordHistogram('spec_kit.graph.parse_duration_ms', Date.now() - speckitParseStart, { language, outcome: parseHealth === 'error' ? 'error' : 'success' });
       }
-      return {
+      return rememberParseResultCaptures({
         filePath: '',
         language,
         nodes,
@@ -670,7 +695,7 @@ export class TreeSitterParser implements ParserAdapter {
         parseHealth,
         parseErrors: hasError ? ['Tree contains syntax errors (partial parse)'] : [],
         parseDurationMs: Date.now() - startTime,
-      };
+      }, captures);
     } catch (err: unknown) {
       if (isSpeckitMetricsEnabled()) {
         speckitMetrics.recordHistogram('spec_kit.graph.parse_duration_ms', Date.now() - speckitParseStart, { language, outcome: 'error' });

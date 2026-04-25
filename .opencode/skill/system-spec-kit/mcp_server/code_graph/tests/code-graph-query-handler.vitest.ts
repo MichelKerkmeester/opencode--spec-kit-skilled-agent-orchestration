@@ -682,6 +682,39 @@ describe('code-graph-query handler', () => {
     expect(parsed.data.numericConfidence).toBe(0.2);
   });
 
+  it('keeps outline payloads parseable for the gold-query verifier adapter', async () => {
+    mocks.queryOutline.mockReturnValue([
+      {
+        name: 'handleVerify',
+        kind: 'function',
+        fqName: 'verify.handleVerify',
+        startLine: 14,
+        signature: 'export function handleVerify()',
+        symbolId: 'verify::handleVerify',
+      },
+    ]);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'outline',
+      subject: 'src/verify.ts',
+      limit: 10,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.status).toBe('ok');
+    expect(parsed.data.filePath).toBe('src/verify.ts');
+    expect(parsed.data.nodes).toEqual([
+      {
+        name: 'handleVerify',
+        kind: 'function',
+        fqName: 'verify.handleVerify',
+        line: 14,
+        signature: 'export function handleVerify()',
+        symbolId: 'verify::handleVerify',
+      },
+    ]);
+  });
+
   it('excludes dangling edges and reports corruption warnings instead of returning raw symbol IDs', async () => {
     mocks.queryEdgesFrom.mockReturnValue([
       {

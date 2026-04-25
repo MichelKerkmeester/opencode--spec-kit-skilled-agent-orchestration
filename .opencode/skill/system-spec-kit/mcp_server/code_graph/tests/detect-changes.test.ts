@@ -54,7 +54,7 @@ afterEach(() => {
 });
 
 describe('detect_changes handler — P1 safety invariant', () => {
-  it('returns status="blocked" on stale graph (NEVER empty affectedSymbols)', async () => {
+  it('returns status="blocked" on stale graph and never requests inline scan', async () => {
     mocks.ensureCodeGraphReady.mockResolvedValue({
       freshness: 'stale',
       action: 'full_scan',
@@ -76,6 +76,38 @@ describe('detect_changes handler — P1 safety invariant', () => {
 
     // R-002-4: NEVER queryOutline against a stale graph
     expect(mocks.queryOutline).not.toHaveBeenCalled();
+    expect(mocks.ensureCodeGraphReady).toHaveBeenCalledWith(
+      workspaceRoot,
+      { allowInlineIndex: false, allowInlineFullScan: false },
+    );
+  });
+
+  it('returns status="blocked" when the last gold verification failed', async () => {
+    mocks.ensureCodeGraphReady.mockResolvedValue({
+      freshness: 'fresh',
+      action: 'none',
+      inlineIndexPerformed: false,
+      verificationGate: 'fail',
+      selfHealAttempted: false,
+      reason: 'last gold verification failed',
+    });
+
+    const result = await handleDetectChanges({
+      diff: 'diff --git a/x.ts b/x.ts\n--- a/x.ts\n+++ b/x.ts\n@@ -1,1 +1,1 @@\n-old\n+new\n',
+      rootDir: workspaceRoot,
+    });
+
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.status).toBe('blocked');
+    expect(parsed.affectedSymbols).toEqual([]);
+    expect(parsed.readiness.freshness).toBe('fresh');
+    expect(parsed.readiness.verificationGate).toBe('fail');
+    expect(parsed.blockedReason).toMatch(/failed verification|gold verification failed/i);
+    expect(mocks.queryOutline).not.toHaveBeenCalled();
+    expect(mocks.ensureCodeGraphReady).toHaveBeenCalledWith(
+      workspaceRoot,
+      { allowInlineIndex: false, allowInlineFullScan: false },
+    );
   });
 
   it('returns status="blocked" on empty graph (NEVER empty affectedSymbols)', async () => {
@@ -129,6 +161,25 @@ describe('detect_changes handler — P1 safety invariant', () => {
       workspaceRoot,
       { allowInlineIndex: false, allowInlineFullScan: false },
     );
+  });
+
+  it('returns normal output on a fresh graph when verification gate did not fail', async () => {
+    mocks.ensureCodeGraphReady.mockResolvedValue({
+      freshness: 'fresh',
+      action: 'none',
+      inlineIndexPerformed: false,
+      verificationGate: 'pass',
+      reason: 'all tracked files are up-to-date',
+    });
+
+    const result = await handleDetectChanges({ diff: '', rootDir: workspaceRoot });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.status).toBe('ok');
+    expect(parsed.affectedSymbols).toEqual([]);
+    expect(parsed.affectedFiles).toEqual([]);
+    expect(parsed.readiness.freshness).toBe('fresh');
+    expect(parsed.readiness.verificationGate).toBe('pass');
   });
 });
 

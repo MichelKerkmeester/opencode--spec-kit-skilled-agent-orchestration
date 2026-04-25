@@ -18,10 +18,12 @@ const mocks = vi.hoisted(() => ({
   execFileSync: vi.fn(),
   execSync: vi.fn(),
   existsSync: vi.fn(),
+  getCodeGraphMetadata: vi.fn(),
   getDb: vi.fn(),
   getGraphFreshness: vi.fn(),
   getLastDetectorProvenance: vi.fn(),
   getLastGitHead: vi.fn(),
+  getLastGoldVerification: vi.fn(),
   getStats: vi.fn(),
   getTrackedFiles: vi.fn(),
   indexFiles: vi.fn(),
@@ -73,8 +75,10 @@ vi.mock('../lib/ensure-ready.js', () => ({
 
 vi.mock('../lib/code-graph-db.js', () => ({
   getDb: mocks.getDb,
+  getCodeGraphMetadata: mocks.getCodeGraphMetadata,
   getLastDetectorProvenance: mocks.getLastDetectorProvenance,
   getLastGitHead: mocks.getLastGitHead,
+  getLastGoldVerification: mocks.getLastGoldVerification,
   getStats: mocks.getStats,
   getTrackedFiles: mocks.getTrackedFiles,
   isFileStale: mocks.isFileStale,
@@ -190,10 +194,12 @@ describe('code-graph sibling readiness emission', () => {
     mocks.execFileSync.mockReturnValue('reindex ok');
     mocks.execSync.mockReturnValue('head\n');
     mocks.existsSync.mockReturnValue(true);
+    mocks.getCodeGraphMetadata.mockReturnValue(null);
     mocks.getDb.mockReturnValue(createDb());
     mocks.getGraphFreshness.mockReturnValue('fresh');
     mocks.getLastDetectorProvenance.mockReturnValue('structured');
     mocks.getLastGitHead.mockReturnValue('head');
+    mocks.getLastGoldVerification.mockReturnValue(null);
     mocks.getStats.mockReturnValue(createStats());
     mocks.getTrackedFiles.mockReturnValue([]);
     mocks.indexFiles.mockResolvedValue([{
@@ -291,5 +297,34 @@ describe('code-graph sibling readiness emission', () => {
     expect(parsed.data.trustState).toBe(expectedTrustState);
     expect(['live', 'stale', 'absent', 'unavailable']).toContain(parsed.data.trustState);
     expect(parsed.data.lastPersistedAt).toBe(LAST_PERSISTED_AT);
+  });
+
+  it('surfaces persisted gold verification metadata in status responses', async () => {
+    const verification = {
+      pass_policy: {
+        overall_pass_rate: 0.9,
+        edge_focus_pass_rate: 0.8,
+      },
+      passed: true,
+    };
+    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(
+      Date.parse('2026-04-17T12:00:00.000Z'),
+    );
+    mocks.getLastGoldVerification.mockReturnValue(verification);
+
+    try {
+      const result = await handleCodeGraphStatus();
+      const parsed = JSON.parse(result.content[0].text);
+
+      expect(parsed.status).toBe('ok');
+      expect(parsed.data.lastGoldVerification).toEqual(verification);
+      expect(parsed.data.goldVerificationTrust).toBe('live');
+      expect(parsed.data.verificationPassPolicy).toEqual({
+        overall_pass_rate: 0.9,
+        edge_focus_pass_rate: 0.8,
+      });
+    } finally {
+      nowSpy.mockRestore();
+    }
   });
 });

@@ -6,17 +6,27 @@
 import { execSync } from 'node:child_process';
 import { existsSync, realpathSync } from 'node:fs';
 import { resolve, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { buildEdgeDistribution, computeEdgeShare } from '../lib/edge-drift.js';
 import { getDefaultConfig, type DetectorProvenance, type CodeEdge } from '../lib/indexer-types.js';
 import { indexFiles } from '../lib/structural-indexer.js';
 import * as graphDb from '../lib/code-graph-db.js';
 import { persistIndexedFileResult } from '../lib/ensure-ready.js';
+import {
+  executeBattery,
+  loadGoldBattery,
+  type VerifyResult,
+} from '../lib/gold-query-verifier.js';
 import { buildReadinessBlock } from '../lib/readiness-contract.js';
+import { handleCodeGraphQuery } from './query.js';
 
 export interface ScanArgs {
   rootDir?: string;
   includeGlobs?: string[];
   excludeGlobs?: string[];
   incremental?: boolean;
+  verify?: boolean;
+  persistBaseline?: boolean;
 }
 
 export interface ScanResult {
@@ -34,7 +44,13 @@ export interface ScanResult {
   previousGitHead?: string | null;
   detectorProvenanceSummary?: graphDb.DetectorProvenanceSummary;
   graphEdgeEnrichmentSummary?: graphDb.GraphEdgeEnrichmentSummary | null;
+  verification?: VerifyResult;
 }
+
+const DEFAULT_GOLD_BATTERY_PATH = fileURLToPath(new URL(
+  '../../../../../specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/code-graph-gold-queries.json',
+  import.meta.url,
+));
 
 function summarizeDetectorProvenance(
   results: Array<{ detectorProvenance?: DetectorProvenance }>,
@@ -124,6 +140,18 @@ function cleanupMissingTrackedFiles(filePaths: string[]): void {
   }
 }
 
+function summarizeEdgeDistribution(results: Array<{ edges: CodeEdge[] }>) {
+  const edgeCounts = buildEdgeDistribution();
+
+  for (const result of results) {
+    for (const edge of result.edges) {
+      edgeCounts[edge.edgeType] += 1;
+    }
+  }
+
+  return computeEdgeShare(edgeCounts);
+}
+
 /** Handle code_graph_scan tool call */
 export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Array<{ type: string; text: string }> }> {
   const startTime = Date.now();
@@ -207,7 +235,13 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
 
   for (const result of results) {
     // Skip unchanged files in incremental mode
-    if (effectiveIncremental && !graphDb.isFileStale(result.filePath)) {
+    if (
+      effectiveIncremental
+      && !graphDb.isFileStale(
+        result.filePath,
+        result.contentHash ? { currentContentHash: result.contentHash } : undefined,
+      )
+    ) {
       filesSkipped++;
       continue;
     }
@@ -244,6 +278,16 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     graphDb.clearLastGraphEdgeEnrichmentSummary();
   }
 
+  const hasPersistedBaseline = graphDb.getCodeGraphMetadata('edge_distribution_baseline') !== null;
+  if (
+    !effectiveIncremental
+    && errors.length === 0
+    && (!hasPersistedBaseline || args.persistBaseline === true)
+  ) {
+    const distribution = summarizeEdgeDistribution(results);
+    graphDb.setCodeGraphMetadata('edge_distribution_baseline', JSON.stringify(distribution));
+  }
+
   const scanResult: ScanResult = {
     filesScanned: results.length,
     filesIndexed,
@@ -261,6 +305,17 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     graphEdgeEnrichmentSummary,
   };
   const lastPersistedAt = graphDb.getStats().lastScanTimestamp;
+  const shouldVerify = args.verify === true && incremental === false;
+
+  if (shouldVerify) {
+    const verification = {
+      ...(await executeBattery(loadGoldBattery(DEFAULT_GOLD_BATTERY_PATH), handleCodeGraphQuery)),
+      batteryPath: DEFAULT_GOLD_BATTERY_PATH,
+    };
+    graphDb.setLastGoldVerification(verification);
+    scanResult.verification = verification;
+  }
+
   const readinessBlock = buildReadinessBlock({
     freshness: lastPersistedAt ? 'fresh' : 'empty',
     action: fullReindexTriggered || !effectiveIncremental ? 'full_scan' : 'selective_reindex',

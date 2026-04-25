@@ -33,6 +33,10 @@ export interface ReadyResult {
   files?: string[];
   inlineIndexPerformed: boolean;
   reason: string;
+  selfHealAttempted?: boolean;
+  selfHealResult?: 'ok' | 'failed' | 'skipped';
+  verificationGate?: 'pass' | 'fail' | 'absent';
+  lastSelfHealAt?: string;
 }
 
 export interface EnsureReadyOptions {
@@ -97,6 +101,44 @@ function appendCleanupReason(reason: string, removedDeletedCount: number): strin
   }
 
   return `${reason}; removed ${removedDeletedCount} deleted tracked file(s)`;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function getVerificationGate(
+  verification: object | null,
+): ReadyResult['verificationGate'] {
+  if (!isRecord(verification)) {
+    return 'absent';
+  }
+
+  if (verification.passed === false) {
+    return 'fail';
+  }
+
+  if (!isRecord(verification.pass_policy)) {
+    return verification.passed === true ? 'pass' : 'absent';
+  }
+
+  const overallThreshold = verification.pass_policy.overall_pass_rate;
+  const edgeThreshold = verification.pass_policy.edge_focus_pass_rate;
+  const overallPassRate = verification.overall_pass_rate ?? verification.overallPassRate;
+  const edgeFocusPassRate = verification.edge_focus_pass_rate;
+
+  if (
+    typeof overallThreshold !== 'number'
+    || typeof edgeThreshold !== 'number'
+    || typeof overallPassRate !== 'number'
+    || typeof edgeFocusPassRate !== 'number'
+  ) {
+    return verification.passed === true ? 'pass' : 'absent';
+  }
+
+  return overallPassRate >= overallThreshold && edgeFocusPassRate >= edgeThreshold
+    ? 'pass'
+    : 'fail';
 }
 
 /** Detect graph state without triggering any reindex */
@@ -301,6 +343,12 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
 
   const state = detectState(rootDir);
   const removedDeletedCount = cleanupDeletedTrackedFiles(state.deletedFiles);
+  const verificationGate = state.action === 'selective_reindex'
+    ? getVerificationGate(graphDb.getLastGoldVerification())
+    : undefined;
+  const lastSelfHealAt = state.action === 'selective_reindex'
+    ? new Date().toISOString()
+    : undefined;
 
   if (state.action === 'none') {
     return cacheReadyResult(cacheKey, {
@@ -318,6 +366,10 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       ...(state.action === 'selective_reindex' ? { files: state.staleFiles } : {}),
       inlineIndexPerformed: false,
       reason: appendCleanupReason(`${state.reason}; inline auto-index skipped for read path`, removedDeletedCount),
+      selfHealAttempted: true,
+      selfHealResult: 'skipped',
+      verificationGate,
+      lastSelfHealAt,
     });
   }
 
@@ -358,12 +410,19 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       if (head) setLastGitHead(head);
 
       const refreshedState = detectState(rootDir);
+      const selfHealResult = refreshedState.freshness === 'fresh' && refreshedState.action === 'none'
+        ? 'ok'
+        : 'failed';
       return cacheReadyResult(cacheKey, {
         freshness: refreshedState.freshness,
         action: refreshedState.action,
         ...(refreshedState.action === 'selective_reindex' ? { files: refreshedState.staleFiles } : {}),
         inlineIndexPerformed: true,
         reason: appendCleanupReason(refreshedState.reason, removedDeletedCount),
+        selfHealAttempted: true,
+        selfHealResult,
+        verificationGate,
+        lastSelfHealAt,
       });
     }
   } catch (err: unknown) {
@@ -375,6 +434,14 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       files: state.staleFiles,
       inlineIndexPerformed: false,
       reason: appendCleanupReason(`${state.reason} (auto-index failed: ${msg})`, removedDeletedCount),
+      ...(state.action === 'selective_reindex'
+        ? {
+            selfHealAttempted: true,
+            selfHealResult: 'failed' as const,
+            verificationGate,
+            lastSelfHealAt,
+          }
+        : {}),
     });
   }
 

@@ -42,7 +42,7 @@ This folder contains the structural code graph subsystem. It walks a workspace, 
 | Node kinds | class, enum, export, function, import, interface, method, module, parameter, type_alias, variable | 11 kinds |
 | Edge types | CALLS, CONTAINS, DECORATES, EXPORTS, EXTENDS, IMPLEMENTS, IMPORTS, OVERRIDES, TESTED_BY, TYPE_OF | 10 edge types |
 | Default scan extensions | `.ts`, `.tsx`, `.js`, `.jsx`, `.py`, `.sh` | See `lib/indexer-types.ts` |
-| Default scan excludes | `node_modules`, `dist`, `.git`, `vendor`, `z_future`, `z_archive`, `mcp-coco-index/mcp_server` | Plus `.gitignore` awareness (packet 012) |
+| Default scan excludes | `node_modules`, `dist`, `.git`, `vendor`, `z_future`, `z_archive`, `mcp-coco-index/mcp_server` | Plus `.gitignore` awareness |
 | Database file | `database/code-graph.sqlite` (sibling to MCP server) | Backed by better-sqlite3 |
 
 ### Key Capabilities
@@ -51,8 +51,8 @@ This folder contains the structural code graph subsystem. It walks a workspace, 
 |---|---|
 | **Dual parser backends** | Tree-sitter by default plus `SPECKIT_PARSER=regex` fallback via `lib/tree-sitter-parser.ts` and `lib/structural-indexer.ts` |
 | **Incremental scan** | Skip unchanged files via mtime + content-hash check (`lib/structural-indexer.ts`); explicit full scans pass `IndexFilesOptions { skipFreshFiles: false }` |
-| **`.gitignore` awareness** | Walks honor `.gitignore` patterns via the `ignore` package, with per-directory caching (packet 012) |
-| **Stale-graph highlights** | Structural snapshots compute top-called function highlights even when graph status is `stale` (packet 012) |
+| **`.gitignore` awareness** | Walks honor `.gitignore` patterns via the `ignore` package, with per-directory caching |
+| **Stale-graph highlights** | Structural snapshots compute top-called function highlights even when graph status is `stale` |
 | **Working set tracking** | Recently-touched file tracking for fresh-context retrieval (`lib/working-set-tracker.ts`) |
 | **Budget allocation** | Token budget enforcement on context payloads (`lib/budget-allocator.ts`) |
 | **Readiness contract** | Trust state probing (`live` / `stale` / `missing`) via `lib/readiness-contract.ts` |
@@ -134,7 +134,7 @@ Shared regression coverage for the migrated runtime also lives in the parent `mc
 <!-- ANCHOR:context-surfaces -->
 ## 3. CONTEXT SURFACES
 
-The subsystem now exposes four operator-visible contract families: `code_graph_status`, `code_graph_context`, `code_graph_query`, and startup/compaction payloads. They share the readiness vocabulary (`readiness`, `canonicalReadiness`, `trustState`) but now also surface graph-quality and structured transport metadata that were not present in the older counts-only/readiness overview. Both `code_graph_context` and `code_graph_query` enforce the same explicit blocked/degraded contract when readiness requires a suppressed `full_scan`, and `code_graph_query` additionally carries CALLS ambiguity resolution metadata.
+The subsystem exposes four operator-visible contract families: `code_graph_status`, `code_graph_context`, `code_graph_query`, and startup/compaction payloads. They share the readiness vocabulary (`readiness`, `canonicalReadiness`, `trustState`) and surface graph-quality and structured transport metadata. Both `code_graph_context` and `code_graph_query` enforce the same explicit blocked/degraded contract when readiness requires a suppressed `full_scan`, and `code_graph_query` additionally carries CALLS ambiguity resolution metadata.
 
 ### Status and Readiness Surfaces
 
@@ -143,12 +143,12 @@ The subsystem now exposes four operator-visible contract families: `code_graph_s
 | **`code_graph_status`** | `status: "ok"` | `freshness`, `readiness`, `canonicalReadiness`, `trustState`, `parseHealth`, `graphQualitySummary` | Primary operator health probe; keeps counts plus parser/enrichment quality in one response |
 | **`code_graph_context` (success path)** | `status: "ok"` | `readiness`, `canonicalReadiness`, `trustState`, `lastPersistedAt`, `anchors`, `graphContext`, `textBrief`, `metadata`, `graphMetadata` | Context reads always echo readiness so callers can judge freshness and detector provenance alongside the returned neighborhood |
 | **`code_graph_context` (blocked path)** | `status: "blocked"` | `blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, `blockReason`, `readiness`, `canonicalReadiness`, `trustState`, `lastPersistedAt` | Returned when readiness requires a full scan and inline full scans are disallowed; callers should run `code_graph_scan` before retrying |
-| **`code_graph_query` (success path)** | `status: "ok"` | `readiness`, `canonicalReadiness`, `trustState`, operation results, ambiguity / selected-candidate metadata | CALLS queries on ambiguous `handle*` subjects now prefer callable implementation nodes over wrapper-shadow candidates; metadata records the chosen candidate and other candidates considered |
-| **`code_graph_query` (blocked path)** | `status: "blocked"` | Same shape as the `code_graph_context` blocked payload (`blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, `blockReason`, readiness + trust) | Query reads now mirror the context read contract instead of silently returning empty results when readiness requires a suppressed `full_scan` |
+| **`code_graph_query` (success path)** | `status: "ok"` | `readiness`, `canonicalReadiness`, `trustState`, operation results, ambiguity / selected-candidate metadata | CALLS queries on ambiguous `handle*` subjects prefer callable implementation nodes over wrapper-shadow candidates; metadata records the chosen candidate and other candidates considered |
+| **`code_graph_query` (blocked path)** | `status: "blocked"` | Same shape as the `code_graph_context` blocked payload (`blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, `blockReason`, readiness + trust) | Query reads mirror the context read contract instead of silently returning empty results when readiness requires a suppressed `full_scan` |
 
 ### Structured Context Metadata
 
-`code_graph_context` success payloads now carry structured metadata instead of a text-only readiness hint.
+`code_graph_context` success payloads carry structured metadata instead of a text-only readiness hint.
 
 | Field group | Contents | Why it matters |
 |---|---|---|
@@ -165,8 +165,8 @@ The structural snapshot reaches startup and compaction consumers through shared 
 | Surface | Includes summary | Includes highlights | Structured metadata | Typical caller |
 |---|---|---|---|---|
 | **MCP `session_bootstrap` / `startup-brief`** | Yes | Yes | `graphSummary`, `graphQualitySummary`, `graphState`, `sharedPayload`, `sharedPayloadTransport` | MCP clients calling the startup or bootstrap surface directly |
-| **Runtime startup hooks** (Claude/Gemini/Copilot `session-prime.ts`, Codex `session-start.ts`) | Yes | Yes | Same `graphQualitySummary` + `sharedPayloadTransport` envelope delivered through the hook-specific transport for each runtime | All four supported runtimes now transport the same compact startup payload; there is no longer a Codex-only `session_bootstrap()` fallback path at startup |
-| **OpenCode plugin compact-code-graph `--minimal` resume** | Yes | Yes (including stale graphs after packet 012) | Reuses the shared snapshot payload while keeping `RESUME_MODE = 'minimal'` for token economy | OpenCode TUI session compaction |
+| **Runtime startup hooks** (Claude/Gemini/Copilot `session-prime.ts`, Codex `session-start.ts`) | Yes | Yes | Same `graphQualitySummary` + `sharedPayloadTransport` envelope delivered through the hook-specific transport for each runtime | All four supported runtimes transport the same compact startup payload; `session_bootstrap()` remains available as a manual recovery path rather than a Codex-only substitute |
+| **OpenCode plugin compact-code-graph `--minimal` resume** | Yes | Yes (including stale graphs) | Reuses the shared snapshot payload while keeping `RESUME_MODE = 'minimal'` for token economy | OpenCode TUI session compaction |
 
 `buildStartupBrief()` returns both human-readable and transport-friendly shapes:
 
@@ -191,7 +191,7 @@ The structural snapshot reaches startup and compaction consumers through shared 
 | `.gitignore` filtering | `lib/structural-indexer.ts` | `ignore` package, per-directory cache |
 | Compact plugin resume mode | `.opencode/plugins/spec-kit-compact-code-graph.js` | `RESUME_MODE = 'minimal'` is intentional, kept for token economy |
 
-The OpenCode plugin keeps `RESUME_MODE = 'minimal'` deliberately. Packet 012 enriches the shared snapshot payload itself rather than expanding the plugin's mode.
+The OpenCode plugin keeps `RESUME_MODE = 'minimal'` deliberately. Enrichment lives in the shared snapshot payload itself rather than in the plugin's mode.
 
 <!-- /ANCHOR:context-surfaces -->
 
@@ -254,7 +254,6 @@ The DB file size does not shrink automatically. Run `VACUUM` on the SQLite file 
 | [lib/README.md](./lib/README.md) | Core library overview |
 | [handlers/README.md](./handlers/README.md) | MCP tool handler overview |
 | [Spec Kit Memory MCP Server README](../README.md) | Parent MCP server documentation |
-| Packet 012 spec folder (`specs/.../012-code-graph-context-and-scan-scope/`) | Origin of the stale-highlights, scan-excludes, and `.gitignore` changes |
 
 ### External Resources
 

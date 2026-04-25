@@ -8,12 +8,17 @@
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { dirname, join, relative, resolve } from 'node:path';
+import { dirname, extname, join, relative, resolve } from 'node:path';
 import type {
   CodeNode, CodeEdge, ParseResult, SupportedLanguage,
-  IndexerConfig, SymbolKind, DetectorProvenance,
+  IndexerConfig, SymbolKind, DetectorProvenance, EdgeType,
 } from './indexer-types.js';
-import { generateSymbolId, generateContentHash, detectLanguage } from './indexer-types.js';
+import {
+  DEFAULT_EDGE_WEIGHTS,
+  generateSymbolId,
+  generateContentHash,
+  detectLanguage,
+} from './indexer-types.js';
 import { isFileStale } from './code-graph-db.js';
 import { shouldIndexForCodeGraph } from '../../lib/utils/index-scope.js';
 import { resolveCanonicalPath } from '../../lib/utils/canonical-path.js';
@@ -38,6 +43,22 @@ interface FileFindResult {
   excludedByGitignore: number;
 }
 
+type PathAlias = NonNullable<IndexerConfig['pathAliases']>[number];
+
+export interface ModuleResolver {
+  resolve(fromFile: string, specifier: string): string | undefined;
+}
+
+interface TsconfigCompilerOptions {
+  baseUrl?: string;
+  paths?: Record<string, string[] | string>;
+}
+
+interface TsconfigShape {
+  extends?: string;
+  compilerOptions?: TsconfigCompilerOptions;
+}
+
 export interface IndexFilesOptions {
   skipFreshFiles?: boolean;
   specificFiles?: string[];
@@ -52,6 +73,14 @@ let ignoreFactory: IgnoreFactory | null = null;
 const MAX_GITIGNORE_BYTES = 1024 * 1024;
 const FIND_FILES_MAX_DEPTH = 20;
 const FIND_FILES_MAX_NODES = 50_000;
+const parseResultCaptures = new WeakMap<ParseResult, RawCapture[]>();
+const MODULE_RESOLUTION_EXTENSIONS = ['.ts', '.tsx', '.mts', '.cts', '.js', '.jsx', '.mjs', '.cjs', '.d.ts'];
+const MODULE_EXTENSION_FALLBACKS: Record<string, string[]> = {
+  '.js': ['.ts', '.tsx', '.mts', '.cts', '.jsx', '.js'],
+  '.jsx': ['.tsx', '.jsx', '.js'],
+  '.mjs': ['.mts', '.mjs'],
+  '.cjs': ['.cts', '.cjs'],
+};
 
 function resolveIgnoreFactory(ignoreModule: unknown): IgnoreFactory | null {
   let candidate = ignoreModule;
@@ -74,7 +103,11 @@ function resolveIgnoreFactory(ignoreModule: unknown): IgnoreFactory | null {
 }
 
 interface ParserAdapter {
-  parse(content: string, language: SupportedLanguage): ParseResult;
+  parse(
+    content: string,
+    language: SupportedLanguage,
+    edgeWeights?: Partial<Record<EdgeType, number>>,
+  ): ParseResult;
 }
 
 export type ParserBackend = 'treesitter' | 'regex';
@@ -123,6 +156,18 @@ export interface RawCapture {
   implementsNames?: string[];
   decoratorNames?: string[];
   typeRefs?: string[];
+  moduleSpecifier?: string;
+  importKind?: 'value' | 'type';
+  exportKind?: 'named' | 'star' | 'declaration';
+}
+
+export function rememberParseResultCaptures<T extends ParseResult>(result: T, captures: RawCapture[]): T {
+  parseResultCaptures.set(result, captures);
+  return result;
+}
+
+function getParseResultCaptures(result: ParseResult): RawCapture[] | undefined {
+  return parseResultCaptures.get(result);
 }
 
 function findBraceBlockEndLine(lines: string[], startIndex: number): number {
@@ -490,12 +535,14 @@ function parseJsTs(content: string): RawCapture[] {
       const names = importMatch[1]
         ? importMatch[1].split(',').map(s => s.trim().split(/\s+as\s+/)[0].trim())
         : [importMatch[2]];
+      const moduleSpecifier = importMatch[3];
       for (const name of names) {
         if (name) {
           captures.push({
             name, kind: 'import', startLine: lineNum,
             endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
             endColumn: line.length,
+            moduleSpecifier,
           });
         }
       }
@@ -688,7 +735,11 @@ function parseBash(content: string): RawCapture[] {
 }
 
 class RegexParser implements ParserAdapter {
-  parse(content: string, language: SupportedLanguage): ParseResult {
+  parse(
+    content: string,
+    language: SupportedLanguage,
+    edgeWeights?: Partial<Record<EdgeType, number>>,
+  ): ParseResult {
     const startTime = Date.now();
     const contentHash = generateContentHash(content);
 
@@ -712,9 +763,9 @@ class RegexParser implements ParserAdapter {
       const nodes = capturesToNodes(captures, '', language, content);
       const contentLines = content.split('\n');
       const detectorProvenance = detectorProvenanceFromParserBackend('regex');
-      const edges = extractEdges(nodes, contentLines, captures, detectorProvenance);
+      const edges = extractEdges(nodes, contentLines, captures, detectorProvenance, edgeWeights);
 
-      return {
+      return rememberParseResultCaptures({
         filePath: '',
         language,
         nodes,
@@ -724,7 +775,7 @@ class RegexParser implements ParserAdapter {
         parseHealth: captures.length > 0 ? 'clean' : 'recovered',
         parseErrors: [],
         parseDurationMs: Date.now() - startTime,
-      };
+      }, captures);
     } catch (err: unknown) {
       return {
         filePath: '',
@@ -799,7 +850,12 @@ function attachFilePath(result: ParseResult, filePath: string): ParseResult {
     targetId: symbolIdMap.get(edge.targetId) ?? edge.targetId,
   }));
 
-  return { ...result, filePath, nodes, edges };
+  const attachedResult = { ...result, filePath, nodes, edges };
+  const captures = getParseResultCaptures(result);
+  if (captures) {
+    parseResultCaptures.set(attachedResult, captures);
+  }
+  return attachedResult;
 }
 
 /** Convert raw captures to CodeNode[] */
@@ -860,8 +916,13 @@ export function extractEdges(
   contentLines?: string[],
   captures?: RawCapture[],
   baseDetectorProvenance: DetectorProvenance = 'structured',
+  edgeWeights: Partial<Record<EdgeType, number>> = {},
 ): CodeEdge[] {
   const edges: CodeEdge[] = [];
+  const resolvedWeights: Record<EdgeType, number> = {
+    ...DEFAULT_EDGE_WEIGHTS,
+    ...edgeWeights,
+  };
   const nodesByName = new Map<string, CodeNode[]>();
   const nodesByFqName = new Map<string, CodeNode>();
   for (const node of nodes) {
@@ -900,8 +961,8 @@ export function extractEdges(
     if (parent) {
       edges.push({
         sourceId: parent.symbolId, targetId: method.symbolId,
-        edgeType: 'CONTAINS', weight: 1.0,
-        metadata: buildEdgeMetadata(1.0, baseDetectorProvenance, 'EXTRACTED'),
+        edgeType: 'CONTAINS', weight: resolvedWeights.CONTAINS,
+        metadata: buildEdgeMetadata(resolvedWeights.CONTAINS, baseDetectorProvenance, 'EXTRACTED'),
       });
     }
   }
@@ -909,12 +970,16 @@ export function extractEdges(
   // IMPORTS (confidence 1.0)
   const imports = nodes.filter(n => n.kind === 'import');
   for (const imp of imports) {
+    const capture = captureByFqName.get(imp.fqName);
+    if (capture?.moduleSpecifier) {
+      continue;
+    }
     const target = preferredKinds(imp.name, ['function', 'class', 'interface', 'type_alias', 'enum', 'variable', 'module'], imp.symbolId);
     if (target && target.symbolId !== imp.symbolId) {
       edges.push({
         sourceId: imp.symbolId, targetId: target.symbolId,
-        edgeType: 'IMPORTS', weight: 1.0,
-        metadata: buildEdgeMetadata(1.0, baseDetectorProvenance, 'EXTRACTED'),
+        edgeType: 'IMPORTS', weight: resolvedWeights.IMPORTS,
+        metadata: buildEdgeMetadata(resolvedWeights.IMPORTS, baseDetectorProvenance, 'EXTRACTED'),
       });
     }
   }
@@ -926,8 +991,8 @@ export function extractEdges(
     if (target && target.symbolId !== exp.symbolId) {
       edges.push({
         sourceId: target.symbolId, targetId: exp.symbolId,
-        edgeType: 'EXPORTS', weight: 1.0,
-        metadata: buildEdgeMetadata(1.0, baseDetectorProvenance, 'EXTRACTED'),
+        edgeType: 'EXPORTS', weight: resolvedWeights.EXPORTS,
+        metadata: buildEdgeMetadata(resolvedWeights.EXPORTS, baseDetectorProvenance, 'EXTRACTED'),
       });
     }
   }
@@ -940,8 +1005,8 @@ export function extractEdges(
       if (parent) {
         edges.push({
           sourceId: cls.symbolId, targetId: parent.symbolId,
-          edgeType: 'EXTENDS', weight: 0.95,
-          metadata: buildEdgeMetadata(0.95, baseDetectorProvenance, 'EXTRACTED'),
+          edgeType: 'EXTENDS', weight: resolvedWeights.EXTENDS,
+          metadata: buildEdgeMetadata(resolvedWeights.EXTENDS, baseDetectorProvenance, 'EXTRACTED'),
         });
       }
     }
@@ -956,8 +1021,8 @@ export function extractEdges(
         if (iface) {
           edges.push({
             sourceId: cls.symbolId, targetId: iface.symbolId,
-            edgeType: 'IMPLEMENTS', weight: 0.95,
-            metadata: buildEdgeMetadata(0.95, baseDetectorProvenance, 'EXTRACTED'),
+            edgeType: 'IMPLEMENTS', weight: resolvedWeights.IMPLEMENTS,
+            metadata: buildEdgeMetadata(resolvedWeights.IMPLEMENTS, baseDetectorProvenance, 'EXTRACTED'),
           });
         }
       }
@@ -989,8 +1054,8 @@ export function extractEdges(
         if (target && target.symbolId !== caller.symbolId) {
           edges.push({
             sourceId: caller.symbolId, targetId: target.symbolId,
-            edgeType: 'CALLS', weight: 0.8,
-            metadata: buildEdgeMetadata(0.8, 'heuristic', 'INFERRED'),
+            edgeType: 'CALLS', weight: resolvedWeights.CALLS,
+            metadata: buildEdgeMetadata(resolvedWeights.CALLS, 'heuristic', 'INFERRED'),
           });
         }
       }
@@ -1012,8 +1077,8 @@ export function extractEdges(
           sourceId: decoratorNode.symbolId,
           targetId: decoratedNode.symbolId,
           edgeType: 'DECORATES',
-          weight: 0.9,
-          metadata: buildEdgeMetadata(0.9, baseDetectorProvenance, 'EXTRACTED'),
+          weight: resolvedWeights.DECORATES,
+          metadata: buildEdgeMetadata(resolvedWeights.DECORATES, baseDetectorProvenance, 'EXTRACTED'),
         });
       }
     }
@@ -1034,8 +1099,8 @@ export function extractEdges(
           sourceId: method.symbolId,
           targetId: parentMethod.symbolId,
           edgeType: 'OVERRIDES',
-          weight: 0.9,
-          metadata: buildEdgeMetadata(0.9, baseDetectorProvenance, 'INFERRED'),
+          weight: resolvedWeights.OVERRIDES,
+          metadata: buildEdgeMetadata(resolvedWeights.OVERRIDES, baseDetectorProvenance, 'INFERRED'),
         });
         break;
       }
@@ -1061,8 +1126,8 @@ export function extractEdges(
           sourceId: sourceNode.symbolId,
           targetId: typeNode.symbolId,
           edgeType: 'TYPE_OF',
-          weight: 0.85,
-          metadata: buildEdgeMetadata(0.85, baseDetectorProvenance, 'EXTRACTED'),
+          weight: resolvedWeights.TYPE_OF,
+          metadata: buildEdgeMetadata(resolvedWeights.TYPE_OF, baseDetectorProvenance, 'EXTRACTED'),
         });
       }
     }
@@ -1076,13 +1141,14 @@ export async function parseFile(
   filePath: string,
   content: string,
   language: SupportedLanguage,
+  edgeWeights?: Partial<Record<EdgeType, number>>,
 ): Promise<ParseResult> {
   const startTime = Date.now();
   const contentHash = generateContentHash(content);
 
   try {
     const parser = await getParser();
-    const parserResult = parser.parse(content, language);
+    const parserResult = parser.parse(content, language, edgeWeights);
     return attachFilePath(parserResult, filePath);
   } catch (err: unknown) {
     return {
@@ -1325,7 +1391,279 @@ function collectSpecificFiles(rootDir: string, specificFiles: string[], maxSize:
   return dedupedFiles;
 }
 
-export function finalizeIndexResults(results: ParseResult[]): ParseResult[] {
+function clonePathAlias(alias: PathAlias): PathAlias {
+  return {
+    prefix: alias.prefix,
+    suffixWildcard: alias.suffixWildcard,
+    targets: [...alias.targets],
+  };
+}
+
+function getPathAliasKey(prefix: string, suffixWildcard: boolean): string {
+  return `${prefix}::${suffixWildcard ? 'wildcard' : 'exact'}`;
+}
+
+function stripJsonComments(text: string): string {
+  let result = '';
+  let inString = false;
+  let escaped = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const next = text[i + 1];
+
+    if (inString) {
+      result += char;
+      if (escaped) {
+        escaped = false;
+      } else if (char === '\\') {
+        escaped = true;
+      } else if (char === '"') {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (char === '"') {
+      inString = true;
+      result += char;
+      continue;
+    }
+
+    if (char === '/' && next === '/') {
+      while (i < text.length && text[i] !== '\n') {
+        i++;
+      }
+      if (i < text.length) {
+        result += '\n';
+      }
+      continue;
+    }
+
+    if (char === '/' && next === '*') {
+      i += 2;
+      while (i < text.length && !(text[i] === '*' && text[i + 1] === '/')) {
+        i++;
+      }
+      i += 1;
+      continue;
+    }
+
+    result += char;
+  }
+
+  return result.replace(/,\s*([}\]])/g, '$1');
+}
+
+function parseTsconfigFile(tsconfigPath: string): TsconfigShape {
+  const rawText = readFileSync(tsconfigPath, 'utf-8');
+  return JSON.parse(stripJsonComments(rawText)) as TsconfigShape;
+}
+
+function resolveTsconfigExtendsPath(tsconfigPath: string, extendsValue: string): string {
+  if (extendsValue.startsWith('.') || extendsValue.startsWith('/')) {
+    const normalized = extendsValue.endsWith('.json') ? extendsValue : `${extendsValue}.json`;
+    return resolve(dirname(tsconfigPath), normalized);
+  }
+
+  try {
+    return require.resolve(extendsValue, { paths: [dirname(tsconfigPath)] });
+  } catch {
+    const normalized = extendsValue.endsWith('.json') ? extendsValue : `${extendsValue}.json`;
+    return require.resolve(normalized, { paths: [dirname(tsconfigPath)] });
+  }
+}
+
+function normalizePathAliases(
+  paths: TsconfigCompilerOptions['paths'],
+  targetBaseDir: string,
+): Map<string, PathAlias> {
+  const normalized = new Map<string, PathAlias>();
+  if (!paths) {
+    return normalized;
+  }
+
+  for (const [pattern, rawTargets] of Object.entries(paths)) {
+    const targets = Array.isArray(rawTargets) ? rawTargets : [rawTargets];
+    const suffixWildcard = pattern.endsWith('*');
+    const prefix = suffixWildcard ? pattern.slice(0, -1) : pattern;
+    normalized.set(pattern, {
+      prefix,
+      suffixWildcard,
+      targets: targets.map((target) => resolve(targetBaseDir, target)),
+    });
+  }
+
+  return normalized;
+}
+
+function loadTsconfigSettings(
+  tsconfigPath: string,
+  depth = 0,
+): { tsconfigPath: string; baseUrl: string; pathAliases: PathAlias[] } {
+  const parsed = parseTsconfigFile(tsconfigPath);
+  const inherited = depth === 0 && typeof parsed.extends === 'string' && parsed.extends.trim().length > 0
+    ? loadTsconfigSettings(resolveTsconfigExtendsPath(tsconfigPath, parsed.extends.trim()), depth + 1)
+    : null;
+  const compilerOptions = parsed.compilerOptions ?? {};
+  const localBaseUrl = typeof compilerOptions.baseUrl === 'string'
+    ? resolve(dirname(tsconfigPath), compilerOptions.baseUrl)
+    : undefined;
+  const aliasBaseDir = localBaseUrl ?? dirname(tsconfigPath);
+  const mergedAliases = new Map<string, PathAlias>();
+
+  for (const alias of inherited?.pathAliases ?? []) {
+    mergedAliases.set(getPathAliasKey(alias.prefix, alias.suffixWildcard), clonePathAlias(alias));
+  }
+  for (const [pattern, alias] of normalizePathAliases(compilerOptions.paths, aliasBaseDir)) {
+    const suffixWildcard = pattern.endsWith('*');
+    const prefix = suffixWildcard ? pattern.slice(0, -1) : pattern;
+    mergedAliases.set(getPathAliasKey(prefix, suffixWildcard), alias);
+  }
+
+  return {
+    tsconfigPath,
+    baseUrl: localBaseUrl ?? inherited?.baseUrl ?? dirname(tsconfigPath),
+    pathAliases: [...mergedAliases.values()],
+  };
+}
+
+function buildModuleResolutionCandidates(basePath: string): string[] {
+  const candidates = new Set<string>([basePath]);
+  const extension = extname(basePath);
+
+  if (extension.length === 0) {
+    for (const candidateExtension of MODULE_RESOLUTION_EXTENSIONS) {
+      candidates.add(`${basePath}${candidateExtension}`);
+      candidates.add(resolve(basePath, `index${candidateExtension}`));
+    }
+    return [...candidates];
+  }
+
+  for (const fallbackExtension of MODULE_EXTENSION_FALLBACKS[extension] ?? []) {
+    candidates.add(`${basePath.slice(0, -extension.length)}${fallbackExtension}`);
+  }
+
+  return [...candidates];
+}
+
+function resolveModuleFile(basePath: string): string | undefined {
+  for (const candidate of buildModuleResolutionCandidates(basePath)) {
+    try {
+      const stats = statSync(candidate);
+      if (stats.isFile()) {
+        return resolveCanonicalPath(candidate);
+      }
+    } catch {
+      continue;
+    }
+  }
+  return undefined;
+}
+
+function createModuleResolver(baseUrl: string, pathAliases: PathAlias[]): ModuleResolver {
+  const normalizedBaseUrl = resolve(baseUrl);
+  const normalizedAliases = pathAliases.map((alias) => ({
+    ...alias,
+    targets: alias.targets.map((target) => resolve(normalizedBaseUrl, target)),
+  }));
+
+  return {
+    resolve(fromFile: string, specifier: string): string | undefined {
+      if (specifier.startsWith('.') || specifier.startsWith('/')) {
+        return resolveModuleFile(resolve(dirname(fromFile), specifier));
+      }
+
+      for (const alias of normalizedAliases) {
+        const aliasRemainder = alias.suffixWildcard
+          ? (specifier.startsWith(alias.prefix) ? specifier.slice(alias.prefix.length) : null)
+          : (specifier === alias.prefix ? '' : null);
+        if (aliasRemainder === null) {
+          continue;
+        }
+
+        for (const target of alias.targets) {
+          const candidate = alias.suffixWildcard
+            ? target.replace(/\*$/, aliasRemainder)
+            : target;
+          const resolvedTarget = resolveModuleFile(candidate);
+          if (resolvedTarget) {
+            return resolvedTarget;
+          }
+        }
+      }
+
+      return undefined;
+    },
+  };
+}
+
+function findNearestTsconfig(rootDir: string): string | undefined {
+  let currentDir = resolve(rootDir);
+
+  while (true) {
+    const candidate = resolve(currentDir, 'tsconfig.json');
+    try {
+      const stats = statSync(candidate);
+      if (stats.isFile()) {
+        return candidate;
+      }
+    } catch {
+      // Keep walking upward.
+    }
+
+    const parentDir = dirname(currentDir);
+    if (parentDir === currentDir) {
+      return undefined;
+    }
+    currentDir = parentDir;
+  }
+}
+
+function loadTsconfigResolverFromPath(tsconfigPath: string): ModuleResolver {
+  const { baseUrl, pathAliases } = loadTsconfigSettings(tsconfigPath);
+  return createModuleResolver(baseUrl, pathAliases);
+}
+
+export function loadTsconfigResolver(rootDir: string): ModuleResolver {
+  try {
+    const tsconfigPath = findNearestTsconfig(rootDir);
+    if (!tsconfigPath) {
+      return createModuleResolver(rootDir, []);
+    }
+    return loadTsconfigResolverFromPath(tsconfigPath);
+  } catch (error: unknown) {
+    console.warn(
+      `[structural-indexer] Failed to load tsconfig resolver from ${rootDir}: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    return createModuleResolver(rootDir, []);
+  }
+}
+
+function getConfiguredModuleResolver(config: IndexerConfig): ModuleResolver {
+  if (config.tsconfigPath && !config.baseUrl && !config.pathAliases) {
+    return loadTsconfigResolverFromPath(resolve(config.rootDir, config.tsconfigPath));
+  }
+
+  if (config.baseUrl || config.pathAliases) {
+    return createModuleResolver(
+      config.baseUrl ? resolve(config.rootDir, config.baseUrl) : config.rootDir,
+      config.pathAliases ?? [],
+    );
+  }
+
+  return loadTsconfigResolver(config.rootDir);
+}
+
+export function finalizeIndexResults(
+  results: ParseResult[],
+  moduleResolver: ModuleResolver = createModuleResolver('.', []),
+  edgeWeights: Partial<Record<EdgeType, number>> = {},
+): ParseResult[] {
+  const resolvedWeights: Record<EdgeType, number> = {
+    ...DEFAULT_EDGE_WEIGHTS,
+    ...edgeWeights,
+  };
   const globalSeenIds = new Set<string>();
   let droppedDuplicateNodes = 0;
   let droppedReconciledEdges = 0;
@@ -1354,13 +1692,127 @@ export function finalizeIndexResults(results: ParseResult[]): ParseResult[] {
     console.info(`[structural-indexer] dropped ${droppedReconciledEdges} edge(s) whose source nodes were removed by dedup`);
   }
 
-  // Cross-file TESTED_BY edges (heuristic, confidence 0.6)
-  const testPattern = /[./](?:test|spec|vitest)\./;
   const nodesByFile = new Map<string, CodeNode[]>();
-  for (const r of results) {
-    nodesByFile.set(r.filePath, r.nodes);
+  const nodesByFileAndName = new Map<string, Map<string, CodeNode[]>>();
+  const capturesByFile = new Map<string, RawCapture[]>();
+  for (const result of results) {
+    nodesByFile.set(result.filePath, result.nodes);
+    capturesByFile.set(result.filePath, getParseResultCaptures(result) ?? []);
+    const nodesByName = new Map<string, CodeNode[]>();
+    for (const node of result.nodes) {
+      const bucket = nodesByName.get(node.name) ?? [];
+      bucket.push(node);
+      nodesByName.set(node.name, bucket);
+    }
+    nodesByFileAndName.set(result.filePath, nodesByName);
   }
 
+  const preferredKinds = (
+    filePath: string,
+    name: string,
+    excludeId?: string,
+  ): CodeNode | undefined => {
+    const candidates = nodesByFileAndName.get(filePath)?.get(name) ?? [];
+    for (const kind of ['function', 'class', 'interface', 'type_alias', 'enum', 'variable', 'module'] satisfies SymbolKind[]) {
+      const match = candidates.find((candidate) => candidate.kind === kind && candidate.symbolId !== excludeId);
+      if (match) {
+        return match;
+      }
+    }
+    return candidates.find((candidate) => candidate.symbolId !== excludeId);
+  };
+
+  const resolveExportedNode = (
+    filePath: string,
+    name: string,
+    visited = new Set<string>(),
+  ): CodeNode | undefined => {
+    const visitKey = `${filePath}::${name}`;
+    if (visited.has(visitKey)) {
+      return undefined;
+    }
+    visited.add(visitKey);
+
+    const directNode = preferredKinds(filePath, name);
+    if (directNode && directNode.kind !== 'export' && directNode.kind !== 'import') {
+      return directNode;
+    }
+
+    const exportCaptures = capturesByFile.get(filePath) ?? [];
+    for (const capture of exportCaptures) {
+      if (capture.kind !== 'export' || !capture.moduleSpecifier) {
+        continue;
+      }
+      if (capture.exportKind === 'named' && capture.name !== name) {
+        continue;
+      }
+
+      const resolvedTargetFile = moduleResolver.resolve(filePath, capture.moduleSpecifier);
+      if (!resolvedTargetFile) {
+        continue;
+      }
+
+      const resolvedTarget = resolveExportedNode(resolvedTargetFile, name, visited);
+      if (resolvedTarget) {
+        return resolvedTarget;
+      }
+    }
+
+    return undefined;
+  };
+
+  for (const result of results) {
+    const captures = capturesByFile.get(result.filePath) ?? [];
+    if (captures.length === 0) {
+      continue;
+    }
+
+    const retainedSourceIds = new Set(result.nodes.map((node) => node.symbolId));
+    const existingEdgeKeys = new Set(result.edges.map((edge) => `${edge.sourceId}|${edge.targetId}|${edge.edgeType}`));
+    for (const capture of captures) {
+      if (capture.kind !== 'import' || !capture.moduleSpecifier) {
+        continue;
+      }
+
+      const sourceId = generateSymbolId(result.filePath, getCaptureFqName(capture), capture.kind);
+      if (!retainedSourceIds.has(sourceId)) {
+        continue;
+      }
+
+      const resolvedTargetFile = moduleResolver.resolve(result.filePath, capture.moduleSpecifier);
+      if (!resolvedTargetFile) {
+        continue;
+      }
+
+      const targetNode = resolveExportedNode(resolvedTargetFile, capture.name);
+      if (!targetNode) {
+        continue;
+      }
+
+      const edgeKey = `${sourceId}|${targetNode.symbolId}|IMPORTS`;
+      if (existingEdgeKeys.has(edgeKey)) {
+        continue;
+      }
+
+      result.edges.push({
+        sourceId,
+        targetId: targetNode.symbolId,
+        edgeType: 'IMPORTS',
+        weight: resolvedWeights.IMPORTS,
+        metadata: {
+          ...buildEdgeMetadata(resolvedWeights.IMPORTS, result.detectorProvenance, 'EXTRACTED'),
+          moduleSpecifier: capture.moduleSpecifier,
+          ...(capture.importKind ? { importKind: capture.importKind } : {}),
+          resolvedFilePath: resolvedTargetFile,
+          ...(targetNode.filePath !== resolvedTargetFile ? { resolvedSymbolFilePath: targetNode.filePath } : {}),
+        },
+      });
+      existingEdgeKeys.add(edgeKey);
+    }
+  }
+
+  // Cross-file TESTED_BY edges (heuristic, confidence 0.6)
+  const testPattern = /[./](?:test|spec|vitest)\./;
   for (const result of results) {
     if (!testPattern.test(result.filePath)) continue;
     const testedPath = result.filePath.replace(/\.(test|spec|vitest)\./, '.');
@@ -1371,8 +1823,8 @@ export function finalizeIndexResults(results: ParseResult[]): ParseResult[] {
       for (const testedNode of testedNodes) {
         result.edges.push({
           sourceId: testNode.symbolId, targetId: testedNode.symbolId,
-          edgeType: 'TESTED_BY', weight: 0.6,
-          metadata: buildEdgeMetadata(0.6, 'heuristic', 'AMBIGUOUS'),
+          edgeType: 'TESTED_BY', weight: resolvedWeights.TESTED_BY,
+          metadata: buildEdgeMetadata(resolvedWeights.TESTED_BY, 'heuristic', 'AMBIGUOUS'),
         });
       }
     }
@@ -1407,6 +1859,7 @@ function buildIndexPhases(
   scanOutcomeRef: { value: 'success' | 'error' },
 ): Phase[] {
   const skipFreshFiles = options.skipFreshFiles ?? true;
+  const moduleResolver = getConfiguredModuleResolver(config);
 
   const findCandidates: Phase<Record<string, unknown>, FindCandidatesOutput> = {
     name: 'find-candidates',
@@ -1460,7 +1913,7 @@ function buildIndexPhases(
 
         try {
           const content = readFileSync(file, 'utf-8');
-          const result = await parseFile(file, content, language);
+          const result = await parseFile(file, content, language, config.edgeWeights);
           results.push(result);
         } catch { /* skip unreadable */ }
       }
@@ -1474,7 +1927,7 @@ function buildIndexPhases(
     inputs: ['parse-candidates'],
     run(deps) {
       const { results, preParseSkippedCount } = deps['parse-candidates'];
-      const finalizedResults = finalizeIndexResults(results);
+      const finalizedResults = finalizeIndexResults(results, moduleResolver, config.edgeWeights);
       return { finalizedResults, preParseSkippedCount };
     },
   };

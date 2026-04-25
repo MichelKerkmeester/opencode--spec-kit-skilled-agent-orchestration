@@ -15,6 +15,19 @@ export type EdgeType =
   | 'EXTENDS' | 'IMPLEMENTS' | 'TESTED_BY'
   | 'DECORATES' | 'OVERRIDES' | 'TYPE_OF';
 
+export const DEFAULT_EDGE_WEIGHTS: Readonly<Record<EdgeType, number>> = {
+  CONTAINS: 1.0,
+  IMPORTS: 1.0,
+  EXPORTS: 1.0,
+  EXTENDS: 0.95,
+  IMPLEMENTS: 0.95,
+  DECORATES: 0.9,
+  OVERRIDES: 0.9,
+  TYPE_OF: 0.85,
+  CALLS: 0.8,
+  TESTED_BY: 0.6,
+};
+
 /** Honest graph-local detector provenance classes for structural indexing lanes. */
 export type DetectorProvenance = 'ast' | 'structured' | 'regex' | 'heuristic';
 
@@ -77,6 +90,14 @@ export interface IndexerConfig {
   excludeGlobs: string[];
   maxFileSizeBytes: number;
   languages: SupportedLanguage[];
+  edgeWeights?: Partial<Record<EdgeType, number>>;
+  tsconfigPath?: string;
+  baseUrl?: string;
+  pathAliases?: {
+    prefix: string;
+    suffixWildcard: boolean;
+    targets: string[];
+  }[];
 }
 
 /** Generate a deterministic symbol ID from file path, qualified name, and kind */

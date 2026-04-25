@@ -102,7 +102,7 @@ function errorResponse(reason: string, readiness: CodeGraphReadinessBlock): MCPR
  *   - 'error'  → block (probe crashed / scope unreachable)
  */
 function readinessRequiresBlock(readiness: ReadyResult): boolean {
-  return readiness.freshness !== 'fresh';
+  return readiness.freshness !== 'fresh' || readiness.verificationGate === 'fail';
 }
 
 /**
@@ -257,8 +257,11 @@ export async function handleDetectChanges(args: DetectChangesArgs): Promise<MCPR
   const readinessBlock = buildReadinessBlock(readiness);
 
   if (readinessRequiresBlock(readiness)) {
+    const blockedFreshness = readiness.verificationGate === 'fail'
+      ? 'fresh-with-failed-verification'
+      : readiness.freshness;
     return blockedResponse(
-      `graph readiness is "${readiness.freshness}" (action: ${readiness.action}); run code_graph_scan before detect_changes. Reason: ${readiness.reason}`,
+      `graph readiness is "${blockedFreshness}" (action: ${readiness.action}); run code_graph_scan before detect_changes. Reason: ${readiness.reason}`,
       readinessBlock,
     );
   }

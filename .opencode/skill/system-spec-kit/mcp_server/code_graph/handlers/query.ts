@@ -1142,6 +1142,18 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
     const minConfidence = clampNumericConfidence(args.minConfidence ?? 0);
 
     for (const candidate of rawSubjects) {
+      const candidateLooksLikeFilePath = /[\\/]/.test(candidate)
+        || /\.(?:[cm]?[jt]sx?|py|bash|zsh|sh|json|md)$/i.test(candidate);
+      let resolvedPathCandidate: string | null = null;
+      if (candidateLooksLikeFilePath) {
+        const resolvedFileCandidate = graphDb.resolveSubjectFilePath(candidate);
+        if (typeof resolvedFileCandidate === 'string' && resolvedFileCandidate.length > 0) {
+          sourceFiles.push(resolvedFileCandidate);
+          continue;
+        }
+        resolvedPathCandidate = resolvedFileCandidate;
+      }
+
       const byFqName = querySubjectMatches('fq_name', candidate);
       if (byFqName.count > 1) {
         ambiguityCandidates.push(...byFqName.candidates.slice(0, AMBIGUOUS_SUBJECT_WARNING_CANDIDATE_LIMIT));
@@ -1155,7 +1167,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
         }
       }
 
-      const resolvedSubject = graphDb.resolveSubjectFilePath(candidate);
+      const resolvedSubject = resolvedPathCandidate ?? graphDb.resolveSubjectFilePath(candidate);
       if (typeof resolvedSubject !== 'string' || resolvedSubject.length === 0) {
         // R-007-P2-5: Preserve any sibling seeds we have already resolved
         // ahead of this failed candidate. Returning `nodes: []` here would
