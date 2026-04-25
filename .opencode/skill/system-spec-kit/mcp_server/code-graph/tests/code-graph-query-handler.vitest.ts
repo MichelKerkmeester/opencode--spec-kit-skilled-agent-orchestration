@@ -149,9 +149,25 @@ describe('code-graph-query handler', () => {
     });
     const parsed = JSON.parse(result.content[0].text);
 
+    // PR 4 / F71 step 6: readiness-crash now emits a canonical readiness
+    // block with V2 freshness='error', V3 canonicalReadiness='missing', and
+    // V5-widened trustState='unavailable' so query consumers see the same
+    // canonical vocabulary as code_graph_context (S2-matching).
     expect(parsed).toEqual({
       status: 'error',
       message: 'code_graph_not_ready: graph database unavailable',
+      data: {
+        readiness: {
+          freshness: 'error',
+          action: 'none',
+          inlineIndexPerformed: false,
+          reason: 'readiness_check_crashed',
+          canonicalReadiness: 'missing',
+          trustState: 'unavailable',
+        },
+        canonicalReadiness: 'missing',
+        trustState: 'unavailable',
+      },
     });
     expect(mocks.ensureCodeGraphReady).toHaveBeenCalledTimes(1);
     expect(mocks.queryOutline).not.toHaveBeenCalled();

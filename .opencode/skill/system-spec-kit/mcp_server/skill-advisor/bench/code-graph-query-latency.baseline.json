@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-04-24T00:00:00Z",
+  "corpusSha": "fixture:5files-50symbols-CALLS+IMPORTS",
+  "samples": 20,
+  "metrics": {
+    "outline": { "p50_ms": 50, "p95_ms": 200, "p99_ms": 500 },
+    "blast_radius": { "p50_ms": 50, "p95_ms": 200, "p99_ms": 500 },
+    "relationship": { "p50_ms": 50, "p95_ms": 200, "p99_ms": 500 }
+  },
+  "tolerance": { "p50_pct": 50, "p95_pct": 100, "p99_pct": 200 }
+}

@@ -19,24 +19,13 @@
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-memory-indexer-invariants",
   "description": "Feature Specification: Memory Indexer Invariants",
   "keywords": [
+    "feature",
+    "specification",
     "memory",
     "indexer",
-    "invariants",
-    "lineage",
-    "concurrency",
-    "fromScan",
-    "constitutional",
-    "tier",
-    "pollution",
-    "index",
-    "scope",
-    "z_future",
-    "external",
-    "cleanup",
-    "governance",
-    "audit"
+    "invariants"
   ],
-  "lastUpdated": "2026-04-24T19:25:00.000Z",
+  "lastUpdated": "2026-04-25T06:16:27.812Z",
   "specId": "010",
   "folderSlug": "memory-indexer-invariants",
   "parentChain": [

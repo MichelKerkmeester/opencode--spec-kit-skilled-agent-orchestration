@@ -1,6 +1,6 @@
 ---
 title: "Skill Advisor"
-description: "Self-contained native-first skill routing package with MCP tools, runtime hooks, Python compatibility scripts, validation bundle, auto-update daemon, 5-lane scorer fusion, and promotion gates."
+description: "Self-contained native-first skill routing package with MCP tools, runtime hooks, Python compatibility scripts, validation bundle, auto-update daemon, and 5-lane scorer fusion."
 trigger_phrases:
   - "skill advisor"
   - "gate 2 routing"
@@ -136,7 +136,7 @@ The native package is self-contained:
 
 ### 5-Lane Fusion
 
-Scoring uses 5-lane analytical fusion. The semantic lane is shadow-only and locked at weight `0.00`; it can be measured but cannot affect live routing until the semantic lock is explicitly lifted by a promotion.
+Scoring uses 5-lane analytical fusion. The semantic lane is shadow-only and hardcoded at weight `0.00`; it can be measured but does not affect live routing.
 
 | Lane | Weight | Role |
 | --- | --- | --- |
@@ -144,19 +144,7 @@ Scoring uses 5-lane analytical fusion. The semantic lane is shadow-only and lock
 | `lexical` | 0.30 | IDF-weighted token overlap on the active corpus. |
 | `graph_causal` | 0.15 | Graph-edge evidence via projected skill_nodes/skill_edges. |
 | `derived_generated` | 0.10 | Auto-extracted derived entries under trust-lane control. |
-| `semantic_shadow` | 0.00 | Semantic similarity (shadow-only; locked at 0 for live). |
-
-### Promotion Gates
-
-Any lane weight change must clear the 7-gate bundle across two consecutive passing shadow cycles, with a per-lane per-promotion delta cap of 0.05. Post-promotion regression fires atomic rollback. The gates are:
-
-1. Full-corpus top-1 >= 75%.
-2. Holdout top-1 >= 72.5%.
-3. Gold-none UNKNOWN count must not increase.
-4. Safety slice (adversarial + sanitization).
-5. Latency slice (cache-hit p95 <= 50 ms, uncached p95 <= 60 ms).
-6. Exact parity with Python-correct prompts.
-7. Python regression suite passes 52/52.
+| `semantic_shadow` | 0.00 | Semantic similarity (shadow-only; hardcoded at 0). |
 
 Prompt safety is enforced at every public boundary. `sanitizeSkillLabel` runs before SQLite writes, `graph-metadata.json.derived` writes, response envelopes, lifecycle diagnostics, and plugin bridge output. `includeAttribution` returns lane contribution numbers only; it does not return prompt-derived evidence snippets.
 
@@ -188,7 +176,7 @@ It should not pin to private handler files in `dist/`.
 
 ## 5. FEATURE SUMMARY
 
-The [feature catalog](./feature_catalog/feature_catalog.md) lists 42 features across 8 groups:
+The [feature catalog](./feature_catalog/feature_catalog.md) lists 36 features across 7 groups:
 
 | Group | Scope |
 | --- | --- |
@@ -196,7 +184,6 @@ The [feature catalog](./feature_catalog/feature_catalog.md) lists 42 features ac
 | [02--auto-indexing](./feature_catalog/02--auto-indexing/) | Derived extraction, sanitizer, provenance, sync, anti-stuffing, DF/IDF corpus. |
 | [03--lifecycle-routing](./feature_catalog/03--lifecycle-routing/) | Age haircut, supersession, archive handling, schema migration, rollback. |
 | [04--scorer-fusion](./feature_catalog/04--scorer-fusion/) | 5-lane fusion, projection, ambiguity, attribution, ablation, weights config. |
-| [05--promotion-gates](./feature_catalog/05--promotion-gates/) | Shadow cycle, weight delta cap, 7-gate bundle, two-cycle, semantic lock, rollback. |
 | [06--mcp-surface](./feature_catalog/06--mcp-surface/) | `advisor_recommend`, `advisor_status`, `advisor_validate`, compat entrypoint. |
 | [07--hooks-and-plugin](./feature_catalog/07--hooks-and-plugin/) | Claude, Copilot, Gemini, Codex hooks plus OpenCode plugin bridge. |
 | [08--python-compat](./feature_catalog/08--python-compat/) | Python CLI shim, regression suite, bench runner. |
@@ -252,10 +239,10 @@ Directory ownership:
 
 | Directory | Purpose |
 | --- | --- |
-| `bench/` | Corpus, holdout, latency, safety, scorer, and watcher measurements. |
+| `bench/` | Latency, scorer, and watcher measurements. |
 | `compat/` | Stable package entrypoint for plugin bridge and Python shim consumers. |
 | `docs/` | Alignment notes and operational blockers. |
-| `feature_catalog/` | Operator-facing feature inventory for daemon freshness, auto-indexing, lifecycle, scorer, promotion, MCP surface, hooks/plugin, and Python compat. |
+| `feature_catalog/` | Operator-facing feature inventory for daemon freshness, auto-indexing, lifecycle, scorer, MCP surface, hooks/plugin, and Python compat. |
 | `handlers/` | MCP handler implementations (`advisor-recommend.ts`, `advisor-status.ts`, `advisor-validate.ts`). |
 | `lib/corpus/` | DF/IDF corpus statistics. |
 | `lib/compat/` | Daemon probe and redirect metadata adapters. |
@@ -263,12 +250,11 @@ Directory ownership:
 | `lib/derived/` | Deterministic derived extraction, sanitizer, provenance, trust lanes, anti-stuffing, sync. |
 | `lib/freshness/` | Generation, trust state, rebuild-from-source, cache invalidation. |
 | `lib/lifecycle/` | Age haircut, supersession, archive handling, schema migration, rollback. |
-| `lib/promotion/` | Shadow cycle, weight delta cap, gate bundle, two-cycle, semantic lock, rollback. |
 | `lib/scorer/` | 5-lane fusion, per-lane scorers under `lanes/`, projection, ambiguity, attribution, ablation, weights config. |
-| `manual_testing_playbook/` | Native tools, hooks, compatibility, H5 recovery, auto-update daemon, auto-indexing, lifecycle, scorer, promotion, Python compat scenarios (10 groups / 47 scenarios). |
+| `manual_testing_playbook/` | Native tools, hooks, compatibility, H5 recovery, auto-update daemon, auto-indexing, lifecycle, scorer, Python compat scenarios (9 groups / 42 scenarios). |
 | `schemas/` | Zod contracts for tool IO and daemon metadata. |
 | `scripts/` | Python shim, runtime, regression, bench, graph compiler, fixtures, routing accuracy tools, and shell helpers. |
-| `tests/` | Handler, parity, compat, promotion, scorer, legacy compatibility, and Python script tests. |
+| `tests/` | Handler, parity, compat, scorer, legacy compatibility, and Python script tests. |
 | `tools/` | MCP tool descriptors registered by the parent server. |
 
 Public API entrypoints for external consumers:

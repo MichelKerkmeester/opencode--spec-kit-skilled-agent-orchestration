@@ -1,6 +1,6 @@
 ---
 title: "Skill Advisor Native-First Manual Testing Playbook"
-description: "Operator-facing validation package for the Phase 027 native skill advisor, covering native MCP tools, runtime hooks, compatibility shim, operator recovery, daemon auto-update, auto-indexing, lifecycle routing, 5-lane scorer fusion, promotion gates, and Python compatibility."
+description: "Operator-facing validation package for the Phase 027 native skill advisor, covering native MCP tools, runtime hooks, compatibility shim, operator recovery, daemon auto-update, auto-indexing, lifecycle routing, 5-lane scorer fusion, and Python compatibility."
 trigger_phrases:
   - "skill advisor playbook"
   - "native first manual testing"
@@ -29,17 +29,16 @@ This playbook validates the post-Phase-027 Skill Advisor surface as shipped at r
 - [11. AUTO-INDEXING SCENARIOS (`AI-001..AI-005`)](#11--auto-indexing-scenarios-ai-001ai-005)
 - [12. LIFECYCLE ROUTING SCENARIOS (`LC-001..LC-005`)](#12--lifecycle-routing-scenarios-lc-001lc-005)
 - [13. SCORER FUSION SCENARIOS (`SC-001..SC-005`)](#13--scorer-fusion-scenarios-sc-001sc-005)
-- [14. PROMOTION GATE SCENARIOS (`PG-001..PG-005`)](#14--promotion-gate-scenarios-pg-001pg-005)
-- [15. PYTHON COMPAT SCENARIOS (`PC-001..PC-005`)](#15--python-compat-scenarios-pc-001pc-005)
-- [16. AUTOMATED TEST CROSS-REFERENCE](#16--automated-test-cross-reference)
-- [17. SOURCE CROSS-REFERENCE](#17--source-cross-reference)
-- [18. SCENARIO RUN HISTORY](#18--scenario-run-history)
+- [14. PYTHON COMPAT SCENARIOS (`PC-001..PC-005`)](#14--python-compat-scenarios-pc-001pc-005)
+- [15. AUTOMATED TEST CROSS-REFERENCE](#15--automated-test-cross-reference)
+- [16. SOURCE CROSS-REFERENCE](#16--source-cross-reference)
+- [17. SCENARIO RUN HISTORY](#17--scenario-run-history)
 
 ---
 
 ## 1. OVERVIEW
 
-The playbook contains 47 deterministic manual scenarios across ten groups. The first four groups carry the original Phase 027 release-gate surface; the six new groups extend coverage to every shipped sub-feature.
+The playbook contains 42 deterministic manual scenarios across nine groups. The first four groups carry the original Phase 027 release-gate surface; the five remaining groups extend coverage to every shipped sub-feature.
 
 | Group | Scope | Scenario Files |
 | --- | --- | --- |
@@ -51,10 +50,9 @@ The playbook contains 47 deterministic manual scenarios across ten groups. The f
 | Auto-indexing | derived extraction, sanitizer, provenance, DF/IDF, anti-stuffing | [06--auto-indexing](06--auto-indexing/) |
 | Lifecycle routing | age haircut, supersession, archive, schema migration, rollback | [07--lifecycle-routing](07--lifecycle-routing/) |
 | Scorer fusion | 5-lane fusion, projection, ambiguity, attribution, ablation | [08--scorer-fusion](08--scorer-fusion/) |
-| Promotion gates | shadow cycle, delta cap, 7-gate bundle, two-cycle, semantic lock and rollback | [09--promotion-gates](09--promotion-gates/) |
 | Python compat | stdin mode, force toggles, threshold flag, regression suite, bench | [10--python-compat](10--python-compat/) |
 
-Coverage note (2026-04-20): scenarios target the current native-first runtime with 5-lane fusion, prompt-safe attribution, fail-open freshness states, the stable `compat/index.ts` entrypoint, the OpenCode plugin bridge, the auto-update daemon, the lifecycle routing surface, and the promotion gate bundle. They intentionally do not test the separate Phase 028 `mcp_server/code-graph/` package.
+Coverage note (2026-04-20): scenarios target the current native-first runtime with 5-lane fusion, prompt-safe attribution, fail-open freshness states, the stable `compat/index.ts` entrypoint, the OpenCode plugin bridge, the auto-update daemon, and the lifecycle routing surface. They intentionally do not test the separate Phase 028 `mcp_server/code-graph/` package.
 
 ---
 
@@ -100,7 +98,7 @@ Capture the following for every scenario:
 
 ## 5. REVIEW AND RELEASE RULES
 
-Release readiness is `READY` only when all 47 scenarios are `PASS` or have an approved `SKIP` with a real sandbox or runtime blocker. A failed native MCP tool scenario, disable-control scenario, operator recovery scenario, or any promotion-gate scenario makes the package `NOT READY`.
+Release readiness is `READY` only when all 42 scenarios are `PASS` or have an approved `SKIP` with a real sandbox or runtime blocker. A failed native MCP tool scenario, disable-control scenario, or operator recovery scenario makes the package `NOT READY`.
 
 Scenario acceptance:
 
@@ -207,19 +205,7 @@ For cost-sensitive Claude hook regression runs, use the §9 multi-turn fixture i
 
 ---
 
-## 14. PROMOTION GATE SCENARIOS (`PG-001..PG-005`)
-
-| ID | Scenario | File |
-| --- | --- | --- |
-| PG-001 | Shadow cycle no-mutation | [001-shadow-cycle-no-mutation.md](09--promotion-gates/001-shadow-cycle-no-mutation.md) |
-| PG-002 | Weight delta cap (max 0.05 per promotion) | [002-weight-delta-cap.md](09--promotion-gates/002-weight-delta-cap.md) |
-| PG-003 | Seven-gate bundle | [003-gate-bundle-safety.md](09--promotion-gates/003-gate-bundle-safety.md) |
-| PG-004 | Two consecutive passing cycles | [004-two-cycle-requirement.md](09--promotion-gates/004-two-cycle-requirement.md) |
-| PG-005 | Semantic lock and atomic rollback | [005-semantic-lock-and-rollback.md](09--promotion-gates/005-semantic-lock-and-rollback.md) |
-
----
-
-## 15. PYTHON COMPAT SCENARIOS (`PC-001..PC-005`)
+## 14. PYTHON COMPAT SCENARIOS (`PC-001..PC-005`)
 
 | ID | Scenario | File |
 | --- | --- | --- |
@@ -231,7 +217,7 @@ For cost-sensitive Claude hook regression runs, use the §9 multi-turn fixture i
 
 ---
 
-## 16. AUTOMATED TEST CROSS-REFERENCE
+## 15. AUTOMATED TEST CROSS-REFERENCE
 
 | Surface | Automated Anchor |
 | --- | --- |
@@ -241,12 +227,11 @@ For cost-sensitive Claude hook regression runs, use the §9 multi-turn fixture i
 | Lifecycle redirect metadata | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/lifecycle-derived-metadata.vitest.ts` |
 | Daemon freshness foundation | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/daemon-freshness-foundation.vitest.ts` |
 | Scorer (native) | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/scorer/native-scorer.vitest.ts` |
-| Promotion gates | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/promotion/promotion-gates.vitest.ts` |
 | Legacy advisor suites | `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/tests/legacy/` |
 
 ---
 
-## 17. SOURCE CROSS-REFERENCE
+## 16. SOURCE CROSS-REFERENCE
 
 Primary sources:
 
@@ -264,7 +249,6 @@ Primary sources:
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness/`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/lifecycle/`
 - `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/`
-- `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/promotion/`
 - `.opencode/plugins/spec-kit-skill-advisor.js`
 - `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs`
 - `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md`
@@ -272,13 +256,13 @@ Primary sources:
 ---
 
 <!-- ANCHOR:scenario-run-history -->
-## 18. SCENARIO RUN HISTORY
+## 17. SCENARIO RUN HISTORY
 
-Archived scenario-execution reports. Each report captures a dated end-to-end pass across all 47 scenarios with PASS/FAIL evidence, test counts, and known gaps.
+Archived scenario-execution reports. Each report captures a dated end-to-end pass across all 42 scenarios with PASS/FAIL evidence, test counts, and known gaps.
 
 | Date | Report | Result |
 | --- | --- | --- |
-| 2026-04-21 | [SCENARIO_RUN_2026-04-21.md](./SCENARIO_RUN_2026-04-21.md) | 47/47 PASS; 167 advisor vitest + 52/52 Python regression + 52 code-graph vitest green |
+| 2026-04-21 | [SCENARIO_RUN_2026-04-21.md](./SCENARIO_RUN_2026-04-21.md) | 47/47 PASS; 167 advisor vitest + 52/52 Python regression + 52 code-graph vitest green (run pre-PR-3 promotion-subsystem delete) |
 
 Add a new row whenever a full scenario-execution pass is archived.
 

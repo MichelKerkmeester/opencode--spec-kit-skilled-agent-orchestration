@@ -1,21 +1,6 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks",
-  "description": "Feature Specification: Release Cleanup Playbooks (consolidated, root-only)",
   "title": "Release Cleanup Playbooks",
   "type": "release-lane-closeout",
-  "keywords": [
-    "release",
-    "cleanup",
-    "playbooks",
-    "documentation parity",
-    "phase 018 continuity",
-    "shared memory removal",
-    "graph-metadata rollout",
-    "mcp config alignment",
-    "dead code audit",
-    "manual testing playbook",
-    "deep review remediation"
-  ],
   "trigger_phrases": [
     "005-release-cleanup-playbooks",
     "release cleanup playbooks",
@@ -42,7 +27,16 @@
     "preserved_review_archive": "review/008-cleanup-and-audit-pt-01",
     "layout": "root-only"
   },
-  "lastUpdated": "2026-04-24T00:00:00Z",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks",
+  "description": "Feature Specification: Release Cleanup Playbooks",
+  "keywords": [
+    "feature",
+    "specification",
+    "release",
+    "cleanup",
+    "playbooks"
+  ],
+  "lastUpdated": "2026-04-25T06:16:27.662Z",
   "specId": "005",
   "folderSlug": "release-cleanup-playbooks",
   "parentChain": [

@@ -112,7 +112,6 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
     inlineIndexPerformed: false,
     reason: 'readiness check not run',
   };
-  let readinessCheckCrashed = false;
 
   try {
     // Auto-trigger: ensure graph is fresh before querying
@@ -122,9 +121,12 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
         allowInlineFullScan: false,
       });
     } catch (err: unknown) {
-      readinessCheckCrashed = true;
+      // PR 4 / F71 step 5: surface as canonical 'error' freshness so
+      // buildReadinessBlock() maps it to canonicalReadiness='missing' +
+      // trustState='unavailable' automatically. Removes the manual
+      // trustState injection that previously lived at the response site.
       readiness = {
-        freshness: 'empty' as const,
+        freshness: 'error' as const,
         action: 'none' as const,
         inlineIndexPerformed: false,
         reason: 'readiness_check_crashed',
@@ -221,13 +223,10 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
     };
 
     const result = buildContext(contextArgs);
-    const readinessBlock = readinessCheckCrashed
-      ? {
-        ...buildReadinessBlock(readiness),
-        reason: 'readiness_check_crashed',
-        trustState: 'unavailable' as const,
-      }
-      : buildReadinessBlock(readiness);
+    // PR 4 / F71 step 5: trustState is now derived canonically by
+    // buildReadinessBlock() through the V2-widened freshness union
+    // ('error' → trustState 'unavailable'). No manual injection needed.
+    const readinessBlock = buildReadinessBlock(readiness);
     const lastPersistedAt = graphDb.getStats().lastScanTimestamp;
 
     return {

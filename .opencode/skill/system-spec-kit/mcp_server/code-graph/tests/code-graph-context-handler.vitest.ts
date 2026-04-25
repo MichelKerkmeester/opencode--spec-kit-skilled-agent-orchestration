@@ -156,8 +156,12 @@ describe('code-graph-context handler', () => {
     });
     const parsed = JSON.parse(result.content[0].text);
 
+    // PR 4 / F71 step 5: readiness-crash now surfaces canonical V2
+    // freshness='error' (instead of collapsing to 'empty') so V3
+    // canonicalReadiness='missing' and V5-widened trustState='unavailable'
+    // flow naturally through buildReadinessBlock — no manual injection.
     expect(parsed.data.readiness).toEqual({
-      freshness: 'empty',
+      freshness: 'error',
       action: 'none',
       inlineIndexPerformed: false,
       reason: 'readiness_check_crashed',

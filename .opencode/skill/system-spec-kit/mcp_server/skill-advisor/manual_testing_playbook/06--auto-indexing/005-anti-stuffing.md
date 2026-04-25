@@ -72,6 +72,5 @@ touch /tmp/path-to-copy/.opencode/skill/adversarial-fixture/SKILL.md
 ## 6. RELATED
 
 - Scenario [AI-002](./002-sanitizer-boundaries.md) — sanitizer at write boundaries.
-- Scenario [PG-003](../09--promotion-gates/003-gate-bundle-safety.md) — safety slice in the 7-gate bundle.
 - Feature [`02--auto-indexing/05-anti-stuffing.md`](../../feature_catalog/02--auto-indexing/05-anti-stuffing.md).
 - Source: `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/derived/anti-stuffing.ts`.

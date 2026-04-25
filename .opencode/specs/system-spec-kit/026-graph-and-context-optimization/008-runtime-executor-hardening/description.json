@@ -17,7 +17,7 @@
     "executor",
     "hardening"
   ],
-  "lastUpdated": "2026-04-24T15:56:56.535Z",
+  "lastUpdated": "2026-04-25T06:16:27.716Z",
   "specId": "008",
   "folderSlug": "runtime-executor-hardening",
   "parentChain": [

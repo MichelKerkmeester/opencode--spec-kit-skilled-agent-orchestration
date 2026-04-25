@@ -14,6 +14,7 @@ import type {
 import { generateContentHash } from './indexer-types.js';
 import { detectorProvenanceFromParserBackend } from './structural-indexer.js';
 import { extractEdges, capturesToNodes, type RawCapture } from './structural-indexer.js';
+import { isSpeckitMetricsEnabled, speckitMetrics } from '../../skill-advisor/lib/metrics.js';
 
 // ── Types ──────────────────────────────────────────────────────
 // F043: RawCapture is now imported from structural-indexer.ts (single source of truth)
@@ -606,6 +607,9 @@ function walkAST(
 export class TreeSitterParser implements ParserAdapter {
   parse(content: string, language: SupportedLanguage): ParseResult {
     if (!parserInstance) {
+      if (isSpeckitMetricsEnabled()) {
+        speckitMetrics.recordHistogram('spec_kit.graph.parse_duration_ms', 0, { language, outcome: 'error' });
+      }
       return {
         filePath: '',
         language,
@@ -621,6 +625,7 @@ export class TreeSitterParser implements ParserAdapter {
 
     const startTime = Date.now();
     const contentHash = generateContentHash(content);
+    const speckitParseStart = isSpeckitMetricsEnabled() ? Date.now() : 0;
 
     try {
       const lang = grammarCache.get(language);
@@ -652,6 +657,9 @@ export class TreeSitterParser implements ParserAdapter {
         ? (captures.length > 0 ? 'recovered' : 'error')
         : (captures.length > 0 ? 'clean' : 'recovered');
 
+      if (isSpeckitMetricsEnabled()) {
+        speckitMetrics.recordHistogram('spec_kit.graph.parse_duration_ms', Date.now() - speckitParseStart, { language, outcome: parseHealth === 'error' ? 'error' : 'success' });
+      }
       return {
         filePath: '',
         language,
@@ -664,6 +672,9 @@ export class TreeSitterParser implements ParserAdapter {
         parseDurationMs: Date.now() - startTime,
       };
     } catch (err: unknown) {
+      if (isSpeckitMetricsEnabled()) {
+        speckitMetrics.recordHistogram('spec_kit.graph.parse_duration_ms', Date.now() - speckitParseStart, { language, outcome: 'error' });
+      }
       return {
         filePath: '',
         language,

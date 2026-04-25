@@ -49,5 +49,4 @@ Quantify each lane's contribution to accuracy so lane weights can be reasoned ab
 ## 5. RELATED
 
 - [01-five-lane-fusion.md](./01-five-lane-fusion.md).
-- [`05--promotion-gates/01-shadow-cycle.md`](../05--promotion-gates/01-shadow-cycle.md).
 - [`06--mcp-surface/03-advisor-validate.md`](../06--mcp-surface/03-advisor-validate.md).

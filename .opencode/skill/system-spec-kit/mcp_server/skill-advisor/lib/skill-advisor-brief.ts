@@ -21,6 +21,7 @@ import {
   type AdvisorPromptCache,
   type AdvisorThresholds,
 } from './prompt-cache.js';
+import { onCacheInvalidation } from './freshness/cache-invalidation.js';
 import { shouldFireAdvisor } from './prompt-policy.js';
 import {
   runAdvisorSubprocess,
@@ -36,6 +37,12 @@ import {
   renderAdvisorBrief,
   type AdvisorBriefRenderableResult,
 } from './render.js';
+
+// Wire prompt-cache invalidation to graph generation bumps (F81/F77/F78).
+// Module-init scope: registers exactly once per host process at first import.
+onCacheInvalidation(() => {
+  advisorPromptCache.clear();
+});
 
 export type AdvisorRuntime = 'claude' | 'gemini' | 'copilot' | 'codex';
 export type AdvisorHookStatus = AdvisorEnvelopeStatus;

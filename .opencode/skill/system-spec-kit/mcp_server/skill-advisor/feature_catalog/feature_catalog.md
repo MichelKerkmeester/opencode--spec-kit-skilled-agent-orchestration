@@ -1,6 +1,6 @@
 ---
 title: "Skill Advisor: Feature Catalog"
-description: "Post-Phase-027 feature inventory for the native-first skill advisor, covering daemon freshness, auto-indexing, lifecycle routing, 5-lane scorer fusion, promotion gates, MCP surface, runtime hooks, plugin bridge, and Python compatibility."
+description: "Post-Phase-027 feature inventory for the native-first skill advisor, covering daemon freshness, auto-indexing, lifecycle routing, 5-lane scorer fusion, MCP surface, runtime hooks, plugin bridge, and Python compatibility."
 trigger_phrases:
   - "skill advisor catalog"
   - "advisor feature catalog"
@@ -21,16 +21,15 @@ This catalog is the post-Phase-027 inventory for the skill advisor. The package 
 - [3. AUTO-INDEXING](#3--auto-indexing)
 - [4. LIFECYCLE ROUTING](#4--lifecycle-routing)
 - [5. SCORER FUSION](#5--scorer-fusion)
-- [6. PROMOTION GATES](#6--promotion-gates)
-- [7. MCP SURFACE](#7--mcp-surface)
-- [8. HOOKS AND PLUGIN](#8--hooks-and-plugin)
-- [9. PYTHON COMPAT](#9--python-compat)
+- [6. MCP SURFACE](#6--mcp-surface)
+- [7. HOOKS AND PLUGIN](#7--hooks-and-plugin)
+- [8. PYTHON COMPAT](#8--python-compat)
 
 ---
 
 ## 1. OVERVIEW
 
-The catalog covers 42 features across 8 groups. Group 1 owns daemon correctness; groups 2-3 own the index and lifecycle surface that feeds the scorer; groups 4-5 own the scoring and promotion pipeline; group 6 exposes the MCP tools; groups 7-8 cover runtime integrations and Python compatibility.
+The catalog covers 36 features across 7 groups. Group 1 owns daemon correctness; groups 2-3 own the index and lifecycle surface that feeds the scorer; group 4 owns scoring; group 5 exposes the MCP tools; groups 6-7 cover runtime integrations and Python compatibility.
 
 | Group | Count | Scope |
 | --- | --- | --- |
@@ -38,7 +37,6 @@ The catalog covers 42 features across 8 groups. Group 1 owns daemon correctness;
 | [02--auto-indexing](./02--auto-indexing/) | 6 | Derived extraction, sanitizer, provenance, sync, anti-stuffing, DF/IDF corpus |
 | [03--lifecycle-routing](./03--lifecycle-routing/) | 5 | Age haircut, supersession, archive handling, schema migration, rollback |
 | [04--scorer-fusion](./04--scorer-fusion/) | 6 | 5-lane fusion, projection, ambiguity, attribution, ablation, weights config |
-| [05--promotion-gates](./05--promotion-gates/) | 6 | Shadow cycle, weight delta cap, 7-gate bundle, two-cycle, semantic lock, rollback |
 | [06--mcp-surface](./06--mcp-surface/) | 4 | `advisor_recommend`, `advisor_status`, `advisor_validate`, stable compat entrypoint |
 | [07--hooks-and-plugin](./07--hooks-and-plugin/) | 5 | Claude, Copilot, Gemini, Codex hooks plus OpenCode plugin bridge |
 | [08--python-compat](./08--python-compat/) | 3 | Python CLI shim, regression suite, bench runner |
@@ -110,20 +108,7 @@ Baseline numbers (Phase 027 remediation SHA `97a318d83`):
 
 ---
 
-## 6. PROMOTION GATES
-
-| Feature | File |
-| --- | --- |
-| Shadow cycle (no-mutation corpus replay) | [05--promotion-gates/01-shadow-cycle.md](./05--promotion-gates/01-shadow-cycle.md) |
-| Weight delta cap (0.05 max per promotion) | [05--promotion-gates/02-weight-delta-cap.md](./05--promotion-gates/02-weight-delta-cap.md) |
-| Seven-gate promotion bundle | [05--promotion-gates/03-gate-bundle.md](./05--promotion-gates/03-gate-bundle.md) |
-| Two consecutive passing cycles | [05--promotion-gates/04-two-cycle.md](./05--promotion-gates/04-two-cycle.md) |
-| Semantic shadow weight lock | [05--promotion-gates/05-semantic-lock.md](./05--promotion-gates/05-semantic-lock.md) |
-| Atomic promotion rollback | [05--promotion-gates/06-rollback.md](./05--promotion-gates/06-rollback.md) |
-
----
-
-## 7. MCP SURFACE
+## 6. MCP SURFACE
 
 | Feature | File |
 | --- | --- |
@@ -134,7 +119,7 @@ Baseline numbers (Phase 027 remediation SHA `97a318d83`):
 
 ---
 
-## 8. HOOKS AND PLUGIN
+## 7. HOOKS AND PLUGIN
 
 | Feature | File |
 | --- | --- |
@@ -146,7 +131,7 @@ Baseline numbers (Phase 027 remediation SHA `97a318d83`):
 
 ---
 
-## 9. PYTHON COMPAT
+## 8. PYTHON COMPAT
 
 | Feature | File |
 | --- | --- |

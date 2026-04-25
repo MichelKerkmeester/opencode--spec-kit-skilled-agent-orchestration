@@ -28,7 +28,7 @@ Avoid silently picking a single winner when two candidates are tied or near-tied
 
 ## 2. CURRENT REALITY
 
-`lib/scorer/ambiguity.ts` measures the gap between the top-1 and top-2 aggregate scores. When the delta is <= 0.05, the response carries an ambiguity signal that the render path surfaces as an ambiguous brief. When the delta exceeds the window, top-1 is returned unambiguously. The 0.05 threshold matches the `weight-delta-cap` for promotion (see `lib/promotion/weight-delta-cap.ts`).
+`lib/scorer/ambiguity.ts` measures the gap between the top-1 and top-2 aggregate scores. When the delta is <= 0.05, the response carries an ambiguity signal that the render path surfaces as an ambiguous brief. When the delta exceeds the window, top-1 is returned unambiguously.
 
 ---
 

@@ -770,13 +770,29 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       allowInlineFullScan: false,
     });
   } catch (error) {
+    // PR 4 / F71 step 6: emit S2-matching 'unavailable' trust-state on
+    // readiness-crash so query consumers see the same canonical vocabulary
+    // as code_graph_context. Previously this path dropped the readiness
+    // block entirely and only returned a status:'error' string.
     const reason = error instanceof Error ? error.message : String(error);
+    const crashReadiness: ReadyResult = {
+      freshness: 'error' as const,
+      action: 'none' as const,
+      inlineIndexPerformed: false,
+      reason: 'readiness_check_crashed',
+    };
+    const crashBlock = buildReadinessBlock(crashReadiness);
     return {
       content: [{
         type: 'text',
         text: JSON.stringify({
           status: 'error',
           message: `code_graph_not_ready: ${reason}`,
+          data: {
+            readiness: crashBlock,
+            canonicalReadiness: crashBlock.canonicalReadiness,
+            trustState: crashBlock.trustState,
+          },
         }),
       }],
     };

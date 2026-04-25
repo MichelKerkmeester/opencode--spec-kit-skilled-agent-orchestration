@@ -1,0 +1,37 @@
+{
+  "target": "Implementation review of 015-code-graph-advisor-refinement (10 PRs landed in Phase 5)",
+  "targetType": "spec-folder",
+  "dimensions": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
+  "maxIterations": 7,
+  "convergenceThreshold": 0.1,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/015-code-graph-advisor-refinement",
+  "createdAt": "2026-04-25T06:47:51.476Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.5",
+    "reasoningEffort": "high",
+    "serviceTier": null,
+    "sandboxMode": "workspace-write",
+    "timeoutSeconds": 900,
+    "_serviceTierNote": "gpt-5.5 only supports fast or default; flex rejected by API; omitting flag for normal speed"
+  },
+  "resource_map": {
+    "emit": true
+  },
+  "lineage": {
+    "sessionId": "dr-rev-20260425T064751Z-16c6c9e1",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "generation": 1,
+    "continuedFromRun": null
+  }
+}

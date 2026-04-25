@@ -17,6 +17,7 @@ import { generateSymbolId, generateContentHash, detectLanguage } from './indexer
 import { isFileStale } from './code-graph-db.js';
 import { shouldIndexForCodeGraph } from '../../lib/utils/index-scope.js';
 import { resolveCanonicalPath } from '../../lib/utils/canonical-path.js';
+import { isSpeckitMetricsEnabled, speckitMetrics } from '../../skill-advisor/lib/metrics.js';
 
 interface IgnoreInstance {
   add(patterns: string | string[]): IgnoreInstance;
@@ -1370,6 +1371,8 @@ export async function indexFiles(config: IndexerConfig, options: IndexFilesOptio
   results.preParseSkippedCount = 0;
   const skipFreshFiles = options.skipFreshFiles ?? true;
   let candidateFiles: string[];
+  const speckitScanStart = isSpeckitMetricsEnabled() ? Date.now() : 0;
+  let speckitScanOutcome: 'success' | 'error' = 'success';
 
   if (options.specificFiles && options.specificFiles.length > 0) {
     candidateFiles = collectSpecificFiles(config.rootDir, options.specificFiles, config.maxFileSizeBytes);
@@ -1411,5 +1414,14 @@ export async function indexFiles(config: IndexerConfig, options: IndexFilesOptio
 
   const finalizedResults = finalizeIndexResults(results) as IndexFilesResult;
   finalizedResults.preParseSkippedCount = results.preParseSkippedCount;
+  if (isSpeckitMetricsEnabled()) {
+    speckitMetrics.recordHistogram('spec_kit.graph.scan_duration_ms', Date.now() - speckitScanStart, { outcome: speckitScanOutcome });
+    const runtimeLabel = process.env.SPECKIT_RUNTIME ?? 'unknown';
+    for (const r of finalizedResults) {
+      for (const edge of r.edges) {
+        speckitMetrics.incrementCounter('spec_kit.graph.edge_detection_total', { edge_type: edge.edgeType, runtime: runtimeLabel });
+      }
+    }
+  }
   return finalizedResults;
 }

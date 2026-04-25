@@ -7,6 +7,8 @@ contextType: "implementation"
 
 # Skill Advisor — All 47 Scenarios Executed
 
+> Historical baseline: this run predates the PR-3 promotion subsystem delete sweep. The `promotion-gates.vitest.ts` evidence below records the 2026-04-21 state only and must not be used as current validation for the deleted promotion-gates suite.
+
 Executed: 2026-04-21T06:12:00Z
 Environment: Node 25 + Python 3.11 + macOS darwin
 Build state: typecheck exit 0, build exit 0, vitest 167/167, Python regression 52/52
@@ -27,7 +29,7 @@ All 47 scenarios across 10 groups executed end-to-end. Group-by-group results:
 | 06 Auto-Indexing (AI-001..005) | 5 | 5 | 0 | lifecycle-derived-metadata.vitest.ts — 13/13 tests pass |
 | 07 Lifecycle Routing (LC-001..005) | 5 | 5 | 0 | Covered by group 06 suite |
 | 08 Scorer Fusion (SC-001..005) | 5 | 5 | 0 | native-scorer + python-ts-parity — 9/9 tests pass |
-| 09 Promotion Gates (PG-001..005) | 5 | 5 | 0 | promotion-gates.vitest.ts — 22/22 tests pass |
+| 09 Promotion Gates (PG-001..005) | 5 | 5 | 0 | Historical only: promotion-gates.vitest.ts - 22/22 tests passed on 2026-04-21 before PR-3 deletion |
 | 10 Python Compat (PC-001..005) | 5 | 5 | 0 | shim + regression + bench CLI invocations |
 | **Total** | **47** | **47** | **0** | All scenarios validated |
 
@@ -81,7 +83,7 @@ OP-003 unavailable — covered by daemon-freshness rebuild-from-source tests. PA
 | 06 AI-001..005 (auto-indexing) | lifecycle-derived-metadata.vitest.ts | 13 | PASS |
 | 07 LC-001..005 (lifecycle) | covered by 06 | — | PASS |
 | 08 SC-001..005 (scorer) | native-scorer + python-ts-parity | 9 | PASS |
-| 09 PG-001..005 (promotion) | promotion-gates.vitest.ts | 22 | PASS |
+| 09 PG-001..005 (promotion) | Historical only: promotion-gates.vitest.ts before PR-3 deletion | 22 | PASS on 2026-04-21 baseline |
 
 ## 7. GROUP 10 — PYTHON COMPAT
 
@@ -102,4 +104,3 @@ PC-005 bench runner: Ran with `--dataset` arg. PASS.
 - **Live MCP tools (advisor_recommend/status/validate) not exposed in current session** — the Claude Code MCP connection uses the system-spec-kit MCP server image from before Phase 027/004 registered the advisor tools. Restart MCP connection to pick up the new tools. Workaround: direct `node` dispatch of the compiled handlers at `dist/skill-advisor/handlers/*.js` produces identical output.
 - **Graph state reports stale** (`errorDetails: SOURCE_NEWER_THAN_SKILL_GRAPH`) — expected until `code_graph_scan`/rebuild bumps the generation. Hooks fail-open as designed.
 - **All 47 scenarios pass** with direct validation (hooks + shim + handlers) plus vitest backing for daemon/indexing/scorer/promotion layers.
-

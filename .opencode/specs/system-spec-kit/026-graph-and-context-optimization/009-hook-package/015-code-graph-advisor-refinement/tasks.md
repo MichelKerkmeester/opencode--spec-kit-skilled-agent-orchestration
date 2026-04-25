@@ -1,7 +1,7 @@
 ---
 # SPECKIT_TEMPLATE_SOURCE: tasks-core + level_3/tasks.md | v2.2
 title: "Tasks: Code Graph and Skill Advisor Refinement — 10-PR Remediation"
-description: "Task Format: T### [P?] Description (file path). 54 concrete tasks across 10 PRs and 3 parallel batches. Each task traces to a finding F-id and a closing benchmark or acceptance criterion."
+description: "Task Format: T### [P?] Description (file path). 54 concrete tasks across 10 PRs and 3 parallel batches. Each task traces to a finding F-id and a closing benchmark or acceptance criterion. B3 reconciles PR-3 deletion inventory by retaining the memory auto-promotion semantics test outside the deleted promotion subsystem."
 trigger_phrases:
   - "code graph advisor refinement tasks"
   - "026/009/015 tasks"
@@ -65,7 +65,7 @@ _memory:
 | T-009 | PR-3 | Read each promotion source file to confirm zero production callers before delete | `skill-advisor/lib/promotion/*.ts` (6 files) | 0 | F52, F60 | Grep `handlers/index.ts` for promotion imports → 0 |
 | T-010 | PR-3 | Delete 6 promotion code files | `skill-advisor/lib/promotion/gate-bundle.ts`, `rollback.ts`, `semantic-lock.ts`, `shadow-cycle.ts`, `two-cycle-requirement.ts`, `weight-delta-cap.ts` | -~742 | F70, F52, F62 | Files absent from filesystem |
 | T-011 | PR-3 | Delete promotion schema file | `skill-advisor/schemas/promotion-cycle.ts` | -82 | F70 | File absent from filesystem |
-| T-012 | PR-3 | Delete 2 promotion test files | `skill-advisor/tests/promotion/promotion-gates.vitest.ts`, `tests/promotion-positive-validation-semantics.vitest.ts` | -443 | F70, F60 | Files absent; `vitest run` still green |
+| T-012 | PR-3 | Delete 1 promotion subsystem test file; retain the memory auto-promotion semantics test outside delete scope | `skill-advisor/tests/promotion/promotion-gates.vitest.ts` deleted; `tests/promotion-positive-validation-semantics.vitest.ts` retained because it imports `lib/search/auto-promotion` and `lib/scoring/confidence-tracker`, not `lib/promotion/*` | -~220 | F70, F60, R1-P1-002 | Promotion-gates file absent; retained memory auto-promotion test remains; `vitest run` still green |
 | T-013 | PR-3 | Delete 3 promotion bench files | `skill-advisor/bench/corpus-bench.ts`, `skill-advisor/bench/safety-bench.ts`, `skill-advisor/bench/holdout-bench.ts` | -150 | F70, F68 | Files absent from filesystem |
 | T-014 | PR-3 | Update package.json — remove `corpus-bench`, `safety-bench`, `holdout-bench` script rows | `package.json` | -6 | F68 | `jq '.scripts["corpus-bench"]' package.json` → null |
 | T-015 | PR-3 | Doc scrub — remove 12 doc file references to promotion subsystem (iter-14 list) | `*.md` doc files (12 files per iter-14 scrub list) | -195 | F37 #5, F37 #6 | `git grep -l 'lib/promotion\|promotion-cycle'` → 0 matches |
@@ -147,7 +147,7 @@ _memory:
 - [ ] T-009 Read each promotion source file to confirm zero production callers (0 LOC, F52)
 - [ ] T-010 Delete 6 promotion code files from `lib/promotion/` (-~742 LOC, F70)
 - [ ] T-011 Delete `schemas/promotion-cycle.ts` (-82 LOC, F70)
-- [ ] T-012 Delete 2 promotion test files (-443 LOC, F70)
+- [ ] T-012 Delete 1 promotion subsystem test file; retain memory auto-promotion semantics test (-~220 LOC, F70, R1-P1-002)
 - [ ] T-013 Delete 3 promotion bench files (corpus-bench, safety-bench, holdout-bench) (-150 LOC, F68)
 - [ ] T-014 Update `package.json` — remove 3 bench script rows (-6 LOC, F68)
 - [ ] T-015 Doc scrub — remove 12 doc file references per iter-14 scrub list (-195 LOC, F37)

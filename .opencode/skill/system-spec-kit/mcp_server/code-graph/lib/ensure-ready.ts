@@ -19,7 +19,13 @@ import * as graphDb from './code-graph-db.js';
 // ───────────────────────────────────────────────────────────────
 
 export type ReadyAction = 'none' | 'full_scan' | 'selective_reindex';
-export type GraphFreshness = 'fresh' | 'stale' | 'empty';
+// PR 4 / F71 / F17 / F18: Re-export the canonical GraphFreshness union from
+// ops-hardening (V2 superset: includes 'error' for unreachable/crashed scopes).
+// The local 3-value alias is gone; ensure-ready callers pick up the widened
+// union automatically via this re-export so the codebase stays on a single
+// vocabulary (see plan §6 PR 4 step 1).
+export type { GraphFreshness } from './ops-hardening.js';
+import type { GraphFreshness } from './ops-hardening.js';
 
 export interface ReadyResult {
   freshness: GraphFreshness;
@@ -383,12 +389,17 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
 /**
  * Non-mutating freshness check for status display.
  * Does NOT trigger reindexing.
+ *
+ * PR 4 / F71 / F17 / F18: returns 'error' on probe crash so callers can
+ * canonically distinguish "scope is unreachable" from "scope is empty".
+ * The widened union flows through readiness-contract → trustStateFromGraphState
+ * to emit `trustState: 'unavailable'` per the V5-widened contract.
  */
 export function getGraphFreshness(rootDir: string): GraphFreshness {
   try {
     const state = detectState(rootDir);
     return state.freshness;
   } catch {
-    return 'empty';
+    return 'error';
   }
 }

@@ -1,0 +1,3 @@
+{"type":"iteration","run":9,"iteration":9,"status":"complete","focus":"Adopt, adapt, reject, defer matrix","findingsCount":6,"newInfoRatio":0.35}
+{"type":"finding","id":"f-iter009-matrix","label":"Adopt/adapt/reject/defer matrix favors adapting patterns over copying source or migrating storage.","iteration":9}
+{"type":"edge","id":"e-iter009-matrix-followup","relation":"GUIDES","source":"adopt-adapt-reject-matrix","target":"public-code-graph","iteration":9}

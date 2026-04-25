@@ -55,4 +55,3 @@ Demoted or rejected entries never reach the scorer, so stuffed fixtures cannot o
 
 - [01-derived-extraction.md](./01-derived-extraction.md).
 - [02-sanitizer.md](./02-sanitizer.md).
-- [`05--promotion-gates/03-gate-bundle.md`](../05--promotion-gates/03-gate-bundle.md) — safety slice.

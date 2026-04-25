@@ -7,6 +7,14 @@
 import { performance } from 'node:perf_hooks';
 import * as graphDb from './code-graph-db.js';
 import { resolveSeeds, type AnySeed, type ArtifactRef } from './seed-resolver.js';
+import { isSpeckitMetricsEnabled, speckitMetrics } from '../../skill-advisor/lib/metrics.js';
+
+/** Map internal QueryMode → canonical spec_kit metric `mode` label value. */
+function speckitQueryModeLabel(mode: QueryMode): 'outline' | 'blast_radius' | 'relationship' {
+  if (mode === 'outline') return 'outline';
+  if (mode === 'impact') return 'blast_radius';
+  return 'relationship';
+}
 
 export type QueryMode = 'neighborhood' | 'outline' | 'impact';
 
@@ -88,6 +96,8 @@ export function buildContext(args: ContextArgs): ContextResult {
   const budgetTokens = args.budgetTokens ?? 1200;
   const seeds = args.seeds ?? [];
   const deadlineMs = args.deadlineMs ?? defaultDeadlineMsForProfile(args.profile);
+  const speckitQueryStart = isSpeckitMetricsEnabled() ? performance.now() : 0;
+  const speckitModeLabel = speckitQueryModeLabel(queryMode);
   const resolvedAnchors = resolveSeeds(seeds);
 
   // If no seeds but subject given, create seed from subject
@@ -98,7 +108,13 @@ export function buildContext(args: ContextArgs): ContextResult {
 
   // Empty seeds + no subject → outline mode fallback
   if (resolvedAnchors.length === 0) {
+    if (isSpeckitMetricsEnabled()) {
+      speckitMetrics.incrementCounter('spec_kit.graph.query_cache_misses_total', { mode: speckitModeLabel });
+    }
     return buildEmptyFallback(queryMode, budgetTokens);
+  }
+  if (isSpeckitMetricsEnabled()) {
+    speckitMetrics.incrementCounter('spec_kit.graph.query_cache_hits_total', { mode: speckitModeLabel });
   }
 
   const sections: GraphContextSection[] = [];
@@ -156,6 +172,10 @@ export function buildContext(args: ContextArgs): ContextResult {
   const combinedSummary = buildCombinedSummary(resolvedAnchors, sections);
   const nextActions = suggestNextActions(resolvedAnchors, sections, queryMode);
   const freshness = computeFreshness();
+  if (isSpeckitMetricsEnabled()) {
+    const freshnessLabel = freshness.staleness === 'fresh' || freshness.staleness === 'recent' ? 'live' : freshness.staleness === 'stale' ? 'stale' : 'unavailable';
+    speckitMetrics.recordHistogram('spec_kit.graph.query_latency_ms', performance.now() - speckitQueryStart, { mode: speckitModeLabel, freshness_state: freshnessLabel });
+  }
 
   return {
     queryMode,

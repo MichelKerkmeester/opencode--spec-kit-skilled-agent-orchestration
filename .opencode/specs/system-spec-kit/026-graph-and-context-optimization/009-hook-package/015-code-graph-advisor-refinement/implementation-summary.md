@@ -1,40 +1,44 @@
 ---
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
-title: "Implementation Summary: Code Graph and Skill Advisor Refinement Research"
-description: "Research initiative to surface algorithmic gaps, performance ceilings, UX rough edges, and observability blind spots across the Code Graph and Skill Advisor systems. Status: planned — research not yet started."
+title: "Implementation Summary: Code Graph and Skill Advisor Refinement"
+description: "Phase 5 implementation is complete and under conditional deep-review close-out. B1, B3, B4, and B5 remediation reports are recorded in applied/; B3 reconciles PR-3 deletion inventory and summary traceability."
 trigger_phrases:
   - "code graph advisor refinement summary"
   - "026/009/015 summary"
   - "015 implementation summary"
+  - "015 remediation summary"
 importance_tier: "important"
-contextType: "research"
+contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-package/015-code-graph-advisor-refinement"
-    last_updated_at: "2026-04-24T00:00:00Z"
-    last_updated_by: "scaffold-pass"
-    recent_action: "Scaffold pass complete — all 9 spec files created, validate.sh clean"
-    next_safe_action: "Run /spec_kit:deep-research:auto for 20 iterations targeting this spec folder"
+    last_updated_at: "2026-04-25T06:46:12.369Z"
+    last_updated_by: "fix-up-batch-b3"
+    recent_action: "Applied docs-only Batch B3 traceability fix"
+    next_safe_action: "Run B2, then final validation/context save"
     blockers: []
     key_files:
-      - "spec.md"
+      - "implementation-summary.md"
       - "plan.md"
       - "tasks.md"
       - "checklist.md"
-      - "decision-record.md"
-      - "description.json"
-      - "graph-metadata.json"
+      - "review/015-code-graph-advisor-refinement-pt-01/review-report.md"
+      - "applied/B1.md"
+      - "applied/B3.md"
+      - "applied/B4.md"
+      - "applied/B5.md"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
-      session_id: "scaffold-session-015"
+      session_id: "fix-up-batch-b3"
       parent_session_id: null
-    completion_pct: 5
+    completion_pct: 75
     open_questions:
-      - "Which RQs converge fastest in the deep-research loop?"
-      - "Are there cross-system coupling failures between code-graph freshness and advisor trust state?"
-    answered_questions: []
+      - "B2 remains for metrics label policy and benchmark harness reliability."
+    answered_questions:
+      - "R1-P1-002: PR-3 inventory excludes retained memory auto-promotion semantics test."
+      - "R3-P1-003: implementation summary now reflects Phase 5 implementation, review verdict, applied reports, and next remediation step."
 ---
-# Implementation Summary: Code Graph and Skill Advisor Refinement Research
+# Implementation Summary: Code Graph and Skill Advisor Refinement
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
@@ -48,7 +52,9 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 015-code-graph-advisor-refinement |
-| **Completed** | Not yet — research phase not started |
+| **Phase 5 Status** | Complete - 10 implementation PRs landed and reviewed |
+| **Review Verdict** | CONDITIONAL - no P0 blockers; P1 remediation in progress |
+| **Remediation State** | B1, B3, B4, and B5 applied; B2 remains |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
@@ -57,11 +63,20 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This packet is in the **planned** state. The scaffold pass has created the full Level 3 spec folder structure to give the deep-research loop a clear target. No source code has been modified.
+The packet completed its 20-iteration deep-research loop and then executed the Phase 5 implementation roadmap across PR-1 through PR-10. The implementation covered corpus-path repair, Claude settings rewrite, the PR-3 promotion-subsystem delete sweep, readiness/trust-state vocabulary unification, metrics instrumentation, cache invalidation wiring, settings parity coverage, and the parse/query/hook-brief benchmark surfaces.
 
-The scaffold delivers ten concrete research questions (RQ-01 through RQ-10) organized across five dimensions: algorithm/correctness, performance, UX/integration, observability, and evolution. These questions emerged from a direct recon of both systems — reading README files, MCP handler entry points, key library files, and benchmark harnesses — so the research loop starts from an informed position rather than a blank slate.
+The deep-review report at `review/015-code-graph-advisor-refinement-pt-01/review-report.md` reviewed the complete Phase 5 implementation across correctness, security, traceability, and maintainability. Its final verdict was **CONDITIONAL**: no P0 blockers, with 11 P1 findings and 3 P2 advisories before remediation.
 
-The 20-iteration deep-research loop is organized into three bands: Phase 1 Discovery (iters 1-6, factual baseline on both systems), Phase 2 Deep-Dive (iters 7-14, targeted investigation per RQ), and Phase 3 Synthesis (iters 15-20, cross-system coupling analysis and follow-up phase seeding). The entry point is `/spec_kit:deep-research:auto` targeting this spec folder. The research loop auto-creates a `research/` subfolder with state machine files, iteration markdown, and a final synthesis document.
+Applied remediation reports now live in `applied/`:
+
+| Report | Findings Closed | Scope |
+|--------|-----------------|-------|
+| `applied/B1.md` | `R1-P1-001`, `R2-P1-003`, `R3-P1-001` | Trust-state and freshness semantics |
+| `applied/B3.md` | `R1-P1-002`, `R3-P1-003` | PR-3 deletion inventory and packet traceability |
+| `applied/B4.md` | `R3-P1-002`, `R4-P1-002`, `R3-P2-001` | Hook settings execution and parity coverage |
+| `applied/B5.md` | `R2-P1-001` | Legacy corpus parity repair |
+
+B3 specifically resolves the PR-3 traceability mismatch by excluding `mcp_server/tests/promotion-positive-validation-semantics.vitest.ts` from the delete inventory. That file remains a memory auto-promotion semantics test, while the deleted promotion subsystem remains scoped to `skill-advisor/lib/promotion/`, `skill-advisor/schemas/promotion-cycle.ts`, `skill-advisor/tests/promotion/promotion-gates.vitest.ts`, and the removed promotion bench scripts/files.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -69,7 +84,10 @@ The 20-iteration deep-research loop is organized into three bands: Phase 1 Disco
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Not yet delivered. This section will be updated after the deep-research loop completes and the synthesis is reviewed.
+1. The research loop reached `SHIP_READY_CONFIRMED` after 20 iterations and produced the 10-PR implementation roadmap.
+2. Phase 5 implemented PR-1 through PR-10 and produced a conditional deep-review report.
+3. Remediation batches are being applied as narrow follow-up reports in `applied/`.
+4. B3 was documentation-only: it updated `plan.md`, `tasks.md`, and this summary, then recorded `applied/B3.md`.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -79,9 +97,9 @@ Not yet delivered. This section will be updated after the deep-research loop com
 
 | Decision | Why |
 |----------|-----|
-| Use `/spec_kit:deep-research:auto` for all iterations | Gate 4 policy mandates skill-owned workflow for any loop of this scale; manually managing state would lose convergence detection and auditability |
-| Research-only phase before implementation | Both systems have interacting components; implementing fixes before understanding the full gap surface risks fixing symptoms instead of causes |
-| 10 research questions across 5 dimensions | Ensures coverage breadth without diluting focus; each dimension maps to a distinct class of potential improvements |
+| Keep `mcp_server/tests/promotion-positive-validation-semantics.vitest.ts` | B3 classifies it as memory auto-promotion semantics coverage, not as part of the deleted `skill-advisor/lib/promotion/` subsystem |
+| Continue tracking applied remediation under `applied/` | The review is conditional and needs per-batch evidence without rewriting historical review records |
+| Leave code validation to code batches | B3 is docs-only; running `tsc` would not add signal for this batch |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -91,9 +109,11 @@ Not yet delivered. This section will be updated after the deep-research loop com
 
 | Check | Result |
 |-------|--------|
-| Scaffold validate.sh --strict | TBD — run after file creation |
-| Research questions framed | PASS — 10 RQs in spec.md §5 |
-| Level 3 template structure followed | PASS — all required files present |
+| Finding source lookup | PASS - `R1-P1-002` and `R3-P1-003` records found in review delta JSONL |
+| Retained memory semantics test | PASS - `find .opencode/skill/system-spec-kit/mcp_server/tests/promotion-positive-validation-semantics.vitest.ts -maxdepth 1 -print` returns the retained file |
+| Removed promotion subsystem paths | PASS - `find` over deleted promotion module, schema, promotion test, and bench paths returns no surviving deleted paths |
+| Summary stale-state scrub | PASS - this file now describes Phase 5 completion instead of the old scaffold state |
+| B3 validation scope | PASS - documentation-only; no `tsc` run for B3 |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -101,7 +121,7 @@ Not yet delivered. This section will be updated after the deep-research loop com
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Research phase only.** No source code improvements are made here. This packet's value is entirely in the research synthesis it seeds for the follow-up implementation phase.
-2. **Static analysis constraint.** The deep-research loop reads source code and tests but cannot execute them. Any findings about dynamic behavior (race conditions, runtime cache hit rates) will be flagged as requiring runtime observation.
-3. **Cross-system coupling questions may be inconclusive.** RQ-03 and RQ-08 involve runtime interactions between the code-graph freshness state and the advisor's trust-state machine; static analysis alone may not be sufficient to fully answer them.
+1. **Review verdict remains conditional.** B3 closes two traceability P1s, but B2 remains before a PASS verdict can be claimed.
+2. **Historical research and review files still mention promotion modules.** Those records are preserved as evidence history. The active plan/tasks inventory now excludes the retained memory semantics test from PR-3 deletion scope.
+3. **No code validation was run for B3.** This batch modified documentation only.
 <!-- /ANCHOR:limitations -->

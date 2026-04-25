@@ -4,6 +4,12 @@
 
 import { applyAmbiguity, isAmbiguousTopTwo } from './ambiguity.js';
 import { attributionReason, dominantLane, isDerivedDominant } from './attribution.js';
+import {
+  ADVISOR_HOOK_FRESHNESS_VALUES,
+  ADVISOR_RUNTIME_VALUES,
+  isSpeckitMetricsEnabled,
+  speckitMetrics,
+} from '../metrics.js';
 import { scoreDerivedLane } from './lanes/derived.js';
 import { scoreExplicitLane } from './lanes/explicit.js';
 import { scoreGraphCausalLane } from './lanes/graph-causal.js';
@@ -38,6 +44,9 @@ type MutableLaneScores = {
   -readonly [K in keyof LaneScores]: LaneMatch[];
 };
 
+type AdvisorRuntimeLabel = (typeof ADVISOR_RUNTIME_VALUES)[number];
+type AdvisorFreshnessLabel = (typeof ADVISOR_HOOK_FRESHNESS_VALUES)[number];
+
 function emptyLaneScores(): MutableLaneScores {
   return {
     explicit_author: [],
@@ -46,6 +55,20 @@ function emptyLaneScores(): MutableLaneScores {
     derived_generated: [],
     semantic_shadow: [],
   };
+}
+
+function normalizeRuntimeLabel(value: string | undefined): AdvisorRuntimeLabel | null {
+  if (value === undefined) {
+    return null;
+  }
+  return ADVISOR_RUNTIME_VALUES.includes(value as AdvisorRuntimeLabel) ? value as AdvisorRuntimeLabel : null;
+}
+
+function normalizeFreshnessLabel(value: string | undefined): AdvisorFreshnessLabel | null {
+  if (value === undefined) {
+    return 'unavailable';
+  }
+  return ADVISOR_HOOK_FRESHNESS_VALUES.includes(value as AdvisorFreshnessLabel) ? value as AdvisorFreshnessLabel : null;
 }
 
 function laneRawScore(matches: readonly LaneMatch[], skillId: string): number {
@@ -212,6 +235,12 @@ export function scoreAdvisorPrompt(prompt: string, options: AdvisorScoringOption
   const liveTotal = SCORER_LANES
     .filter((lane) => !disabled.has(lane))
     .reduce((total, lane) => lane === 'semantic_shadow' ? total : total + weights[lane], 0) || liveWeightTotal(weights);
+  if (isSpeckitMetricsEnabled() && liveTotal > 0) {
+    for (const lane of SCORER_LANES) {
+      if (lane === 'semantic_shadow' || disabled.has(lane)) continue;
+      speckitMetrics.setGauge('spec_kit.scorer.fusion_live_weight_share', weights[lane] / liveTotal, { lane });
+    }
+  }
   const promptLower = prompt.toLowerCase();
   const readOnlyExplainer = isReadOnlyExplainer(promptLower);
   const hasTaskIntent = TASK_INTENT.test(promptLower);
@@ -234,6 +263,13 @@ export function scoreAdvisorPrompt(prompt: string, options: AdvisorScoringOption
     });
     const score = contributions.reduce((total, contribution) => total + contribution.weightedScore, 0);
     if (score <= 0 && contributions.every((contribution) => contribution.rawScore <= 0)) continue;
+    if (isSpeckitMetricsEnabled()) {
+      for (const contribution of contributions) {
+        if (contribution.weightedScore !== 0) {
+          speckitMetrics.setGauge('spec_kit.scorer.lane_contribution', contribution.weightedScore, { lane: contribution.lane, skill_id: skill.id });
+        }
+      }
+    }
 
     const directScore = Math.max(
       contributions.find((contribution) => contribution.lane === 'explicit_author')?.rawScore ?? 0,
@@ -269,6 +305,13 @@ export function scoreAdvisorPrompt(prompt: string, options: AdvisorScoringOption
     });
   }
 
+  if (isSpeckitMetricsEnabled()) {
+    for (const recommendation of recommendations) {
+      if (primaryIntentBonus(promptLower, recommendation) !== 0) {
+        speckitMetrics.incrementCounter('spec_kit.scorer.primary_intent_bonus_applied_total', { skill_id: recommendation.skill });
+      }
+    }
+  }
   let ranked = recommendations.sort((left, right) => {
     const leftCommandBonus = left.kind === 'command' && !promptLower.includes('/') ? -0.08 : 0;
     const rightCommandBonus = right.kind === 'command' && !promptLower.includes('/') ? -0.08 : 0;
@@ -295,6 +338,14 @@ export function scoreAdvisorPrompt(prompt: string, options: AdvisorScoringOption
   const passing = ranked.filter((recommendation) => recommendation.passes_threshold);
   const visible = options.includeAllCandidates ? ranked : passing;
   const top = passing[0] ?? null;
+  if (isSpeckitMetricsEnabled() && top) {
+    const runtimeLabel = normalizeRuntimeLabel(process.env.SPECKIT_RUNTIME);
+    const freshnessLabel = normalizeFreshnessLabel(process.env.SPECKIT_ADVISOR_FRESHNESS);
+    if (runtimeLabel && freshnessLabel) {
+      speckitMetrics.incrementCounter('spec_kit.advisor.recommendation_emitted_total', { runtime: runtimeLabel, freshness_state: freshnessLabel });
+    }
+    speckitMetrics.recordConfidenceBracket(top.confidence);
+  }
   return {
     recommendations: visible,
     topSkill: top?.skill ?? null,

@@ -71,6 +71,5 @@ advisor_validate({"skillSlug":null})
 ## 6. RELATED
 
 - Scenario [SC-001](./001-five-lane-fusion.md) — fusion baseline.
-- Scenario [PG-001](../09--promotion-gates/001-shadow-cycle-no-mutation.md) — shadow-cycle no-mutation.
 - Feature [`04--scorer-fusion/05-ablation.md`](../../feature_catalog/04--scorer-fusion/05-ablation.md).
 - Source: `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/ablation.ts`.

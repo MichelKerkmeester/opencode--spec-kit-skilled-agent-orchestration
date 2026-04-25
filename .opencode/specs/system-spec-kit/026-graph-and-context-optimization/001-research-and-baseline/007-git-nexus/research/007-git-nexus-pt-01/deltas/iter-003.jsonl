@@ -1,0 +1,3 @@
+{"type":"iteration","run":3,"iteration":3,"status":"complete","focus":"Query, context, and impact surfaces","findingsCount":6,"newInfoRatio":0.78}
+{"type":"finding","id":"f-iter003-process-query","label":"Process-grouped query and impact are valuable but require process/workflow derived nodes.","iteration":3}
+{"type":"edge","id":"e-iter003-query-code-graph","relation":"INFORMS","source":"process-grouped-query","target":"public-code-graph","iteration":3}

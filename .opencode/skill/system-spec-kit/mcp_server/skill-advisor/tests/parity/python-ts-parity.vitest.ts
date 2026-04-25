@@ -37,10 +37,8 @@ function findWorkspaceRoot(): string {
 }
 
 const WORKSPACE_ROOT = findWorkspaceRoot();
-const CORPUS_PATH = resolve(
-  WORKSPACE_ROOT,
-  '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl',
-);
+const SPECKIT_BENCH_CORPUS_PATH = '.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/routing-accuracy/labeled-prompts.jsonl';
+const CORPUS_PATH = resolve(WORKSPACE_ROOT, SPECKIT_BENCH_CORPUS_PATH);
 
 function loadCorpus(): CorpusRow[] {
   return readFileSync(CORPUS_PATH, 'utf8')

@@ -36,7 +36,7 @@ Combine evidence from five independent lanes into a single routing score with do
 | `lexical` | 0.30 | Token overlap weighted by IDF from the active corpus. |
 | `graph_causal` | 0.15 | Graph-edge evidence projected through skill_nodes and skill_edges. |
 | `derived_generated` | 0.10 | Auto-extracted derived entries under trust-lane control. |
-| `semantic_shadow` | 0.00 | Semantic similarity (shadow-only; live weight is locked at 0 until the first promotion wave). |
+| `semantic_shadow` | 0.00 | Semantic similarity (shadow-only; live weight is hardcoded at 0). |
 
 Weight configuration is exposed via `advisor_status.laneWeights`.
 
@@ -66,4 +66,3 @@ Weight configuration is exposed via `advisor_status.laneWeights`.
 
 - [02-projection.md](./02-projection.md).
 - [04-attribution.md](./04-attribution.md).
-- [`05--promotion-gates/05-semantic-lock.md`](../05--promotion-gates/05-semantic-lock.md).

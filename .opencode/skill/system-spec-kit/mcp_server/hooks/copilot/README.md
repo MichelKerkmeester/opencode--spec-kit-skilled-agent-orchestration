@@ -24,44 +24,14 @@ The managed block is bounded by `SPEC-KIT-COPILOT-CONTEXT` markers so human inst
 
 ## 2. HOOK REGISTRATION
 
-Use the shared `.claude/settings.local.json` matcher wrappers so Copilot can execute the top-level writer command while Claude keeps the nested `hooks` commands in the same matcher group:
+Copilot does not use the Claude Code `.claude/settings.local.json` nested hook block. Keep that file Claude-only, and wire Copilot through a Copilot-supported command surface that executes the compiled writer scripts from the project root:
 
-```json
-{
-  "hooks": {
-    "UserPromptSubmit": [
-      {
-        "type": "command",
-        "bash": "cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/user-prompt-submit.js",
-        "timeoutSec": 5,
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/user-prompt-submit.js'",
-            "timeout": 3
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "type": "command",
-        "bash": "cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/session-prime.js",
-        "timeoutSec": 5,
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/session-prime.js'",
-            "timeout": 3
-          }
-        ]
-      }
-    ]
-  }
-}
+```bash
+node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/session-prime.js
+printf '%s' '{"prompt":"<prompt>","cwd":"'"$PWD"'"}' | node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/user-prompt-submit.js
 ```
 
-For Copilot, the effective writer path is the outer `.claude/settings.local.json` wrapper. Claude continues to use the nested `hooks` entries in the same matcher groups.
+Do not add top-level `type`, `bash`, or `timeoutSec` wrapper fields to `.claude/settings.local.json` for Copilot. That mixed wrapper shape is stale; Claude uses nested `hooks[]` command entries, while Copilot refreshes the managed custom-instructions file through its own writer scripts.
 
 Set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` to skip advisor generation for the current process. Set `SPECKIT_COPILOT_INSTRUCTIONS_DISABLED=1` to skip the custom-instructions writer. Set `SPECKIT_COPILOT_INSTRUCTIONS_PATH` when tests need an isolated target file.
 

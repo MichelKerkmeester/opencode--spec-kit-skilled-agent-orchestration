@@ -4,6 +4,7 @@
 
 import { createHmac, createHash } from 'node:crypto';
 import { performance } from 'node:perf_hooks';
+import { isSpeckitMetricsEnabled, speckitMetrics } from './metrics.js';
 
 export const ADVISOR_PROMPT_CACHE_TTL_MS = 5 * 60 * 1000;
 export const ADVISOR_PROMPT_CACHE_DEFAULT_MAX_TOKENS = 80;
@@ -97,11 +98,22 @@ export class AdvisorPromptCache<T> {
   get(key: string, nowMs: number = performance.now()): AdvisorPromptCacheEntry<T> | null {
     const entry = this.entries.get(key);
     if (!entry) {
+      if (isSpeckitMetricsEnabled()) {
+        speckitMetrics.incrementCounter('spec_kit.scorer.near_dup_cache_miss_total', { cache_layer: 'exact' });
+        speckitMetrics.recordPromptCacheOutcome('miss');
+      }
       return null;
     }
     if (entry.expiresAtMs <= nowMs) {
       this.entries.delete(key);
+      if (isSpeckitMetricsEnabled()) {
+        speckitMetrics.incrementCounter('spec_kit.scorer.near_dup_cache_miss_total', { cache_layer: 'exact' });
+        speckitMetrics.recordPromptCacheOutcome('miss');
+      }
       return null;
+    }
+    if (isSpeckitMetricsEnabled()) {
+      speckitMetrics.recordPromptCacheOutcome('hit');
     }
     return entry;
   }

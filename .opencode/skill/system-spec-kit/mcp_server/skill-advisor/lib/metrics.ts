@@ -471,3 +471,199 @@ export class AdvisorHookMetricsCollector {
     this.records.length = 0;
   }
 }
+
+// ───────────────────────────────────────────────────────────────
+// 5. SPEC_KIT.* INSTRUMENTATION NAMESPACE (PR 5)
+// ───────────────────────────────────────────────────────────────
+// Adds 16 canonical `spec_kit.<group>.<metric_name>` metrics for code-graph,
+// scorer, freshness, and cross-cutting advisor surfaces. All emission paths
+// MUST be guarded by the SPECKIT_METRICS_ENABLED env var (default OFF).
+// Persistence is additive: definitions live alongside the existing
+// AdvisorHookMetricSnapshot, no rename or removal of existing fields.
+//
+// Closes findings: F43, F28, F35, F36 #4/#7/#8, F50, F72, F73, F74, F75,
+// F76, F77. Lifecycle-promotion metrics are intentionally omitted per PR 3
+// (lifecycle-promotion fields were removed upstream).
+
+export const SPECKIT_GRAPH_QUERY_MODES = ['outline', 'blast_radius', 'relationship'] as const;
+export const SPECKIT_GRAPH_OUTCOMES = ['success', 'error'] as const;
+export const SPECKIT_GRAPH_LANGUAGES = ['javascript', 'typescript', 'python', 'bash'] as const;
+export const SPECKIT_GRAPH_EDGE_TYPES = [
+  'CONTAINS', 'CALLS', 'IMPORTS', 'EXPORTS',
+  'EXTENDS', 'IMPLEMENTS', 'TESTED_BY',
+  'DECORATES', 'OVERRIDES', 'TYPE_OF',
+] as const;
+export const SPECKIT_SCORER_LANES = [
+  'explicit_author', 'lexical', 'graph_causal', 'derived_generated', 'semantic_shadow',
+] as const;
+export const SPECKIT_PROMPT_CACHE_LAYERS = ['exact', 'near_dup'] as const;
+export const SPECKIT_CONFIDENCE_BUCKETS = [0, 0.5, 0.7, 0.8, 0.9, 1.0] as const;
+
+export type SpeckitMetricName =
+  | 'spec_kit.graph.scan_duration_ms'
+  | 'spec_kit.graph.parse_duration_ms'
+  | 'spec_kit.graph.query_latency_ms'
+  | 'spec_kit.graph.query_cache_hits_total'
+  | 'spec_kit.graph.query_cache_misses_total'
+  | 'spec_kit.graph.edge_detection_total'
+  | 'spec_kit.graph.partial_persist_retries_total'
+  | 'spec_kit.scorer.lane_contribution'
+  | 'spec_kit.scorer.fusion_live_weight_share'
+  | 'spec_kit.scorer.primary_intent_bonus_applied_total'
+  | 'spec_kit.scorer.confidence_brier_score'
+  | 'spec_kit.scorer.near_dup_cache_miss_total'
+  | 'spec_kit.freshness.state_transitions_total'
+  | 'spec_kit.freshness.source_signature_bumps_total'
+  | 'spec_kit.freshness.prompt_cache_hit_ratio'
+  | 'spec_kit.advisor.recommendation_emitted_total'
+  | 'spec_kit.advisor.recommendation_confidence_brackets';
+
+export const SPECKIT_METRIC_DEFINITIONS = [
+  // 6 code-graph metrics (#1-6)
+  { name: 'spec_kit.graph.scan_duration_ms', type: 'histogram', labels: ['outcome'] },
+  { name: 'spec_kit.graph.parse_duration_ms', type: 'histogram', labels: ['language', 'outcome'] },
+  { name: 'spec_kit.graph.query_latency_ms', type: 'histogram', labels: ['mode', 'freshness_state'] },
+  { name: 'spec_kit.graph.query_cache_hits_total', type: 'counter', labels: ['mode'] },
+  { name: 'spec_kit.graph.query_cache_misses_total', type: 'counter', labels: ['mode'] },
+  { name: 'spec_kit.graph.edge_detection_total', type: 'counter', labels: ['edge_type', 'runtime'] },
+  { name: 'spec_kit.graph.partial_persist_retries_total', type: 'counter', labels: [] },
+  // 5 scorer metrics (#7-11)
+  { name: 'spec_kit.scorer.lane_contribution', type: 'gauge', labels: ['lane', 'skill_id'] },
+  { name: 'spec_kit.scorer.fusion_live_weight_share', type: 'gauge', labels: ['lane'] },
+  { name: 'spec_kit.scorer.primary_intent_bonus_applied_total', type: 'counter', labels: ['skill_id'] },
+  { name: 'spec_kit.scorer.confidence_brier_score', type: 'histogram', labels: [] },
+  { name: 'spec_kit.scorer.near_dup_cache_miss_total', type: 'counter', labels: ['cache_layer'] },
+  // 3 freshness metrics (#12-14)
+  { name: 'spec_kit.freshness.state_transitions_total', type: 'counter', labels: ['from_state', 'to_state'] },
+  { name: 'spec_kit.freshness.source_signature_bumps_total', type: 'counter', labels: [] },
+  { name: 'spec_kit.freshness.prompt_cache_hit_ratio', type: 'gauge', labels: [] },
+  // 2 cross-cutting metrics (#15-16)
+  { name: 'spec_kit.advisor.recommendation_emitted_total', type: 'counter', labels: ['runtime', 'freshness_state'] },
+  { name: 'spec_kit.advisor.recommendation_confidence_brackets', type: 'histogram', labels: [] },
+] as const satisfies readonly AdvisorMetricDefinition[];
+
+export interface SpeckitMetricSample {
+  readonly name: SpeckitMetricName;
+  readonly value: number;
+  readonly labels: Readonly<Record<string, string>>;
+  readonly timestamp: number;
+}
+
+/** Returns true iff SPECKIT_METRICS_ENABLED env var is set to 'true'. */
+export function isSpeckitMetricsEnabled(): boolean {
+  return process.env.SPECKIT_METRICS_ENABLED === 'true';
+}
+
+/** Stable ordered key for cardinality counting and gauge upserts. */
+function speckitSeriesKey(name: string, labels: Record<string, string>): string {
+  const ordered = Object.keys(labels).sort().map((key) => `${key}=${labels[key]}`).join(',');
+  return `${name}{${ordered}}`;
+}
+
+/**
+ * In-memory collector for the spec_kit.* metric namespace. Counters and
+ * gauges are keyed by stable label-set; histograms retain raw samples.
+ * Emission MUST be gated by isSpeckitMetricsEnabled() at the call site.
+ */
+export class SpeckitMetricsCollector {
+  private readonly counters = new Map<string, number>();
+  private readonly gauges = new Map<string, number>();
+  private readonly histograms = new Map<string, number[]>();
+  // Brier score accumulator: {sum, count} per series for the summary metric
+  private readonly brier = new Map<string, { sum: number; count: number }>();
+  // Prompt-cache hit-ratio accumulator (metric #14 derived from hits/misses)
+  private promptCacheHits = 0;
+  private promptCacheMisses = 0;
+
+  incrementCounter(name: SpeckitMetricName, labels: Record<string, string> = {}, by = 1): void {
+    const key = speckitSeriesKey(name, labels);
+    this.counters.set(key, (this.counters.get(key) ?? 0) + by);
+  }
+
+  setGauge(name: SpeckitMetricName, value: number, labels: Record<string, string> = {}): void {
+    const key = speckitSeriesKey(name, labels);
+    this.gauges.set(key, value);
+  }
+
+  recordHistogram(name: SpeckitMetricName, value: number, labels: Record<string, string> = {}): void {
+    const key = speckitSeriesKey(name, labels);
+    const bucket = this.histograms.get(key);
+    if (bucket) {
+      bucket.push(value);
+    } else {
+      this.histograms.set(key, [value]);
+    }
+  }
+
+  /** Record a single Brier-score observation; mean is exposed via snapshot. */
+  recordBrierScore(observation: number, labels: Record<string, string> = {}): void {
+    const key = speckitSeriesKey('spec_kit.scorer.confidence_brier_score', labels);
+    const acc = this.brier.get(key) ?? { sum: 0, count: 0 };
+    acc.sum += observation;
+    acc.count += 1;
+    this.brier.set(key, acc);
+    this.recordHistogram('spec_kit.scorer.confidence_brier_score', observation, labels);
+  }
+
+  /** Bump prompt-cache hit/miss tallies feeding metric #14. */
+  recordPromptCacheOutcome(outcome: 'hit' | 'miss'): void {
+    if (outcome === 'hit') {
+      this.promptCacheHits += 1;
+    } else {
+      this.promptCacheMisses += 1;
+    }
+    const total = this.promptCacheHits + this.promptCacheMisses;
+    const ratio = total > 0 ? this.promptCacheHits / total : 0;
+    this.setGauge('spec_kit.freshness.prompt_cache_hit_ratio', ratio);
+  }
+
+  /** Place a recommendation confidence in the closest fixed bucket boundary. */
+  recordConfidenceBracket(confidence: number): void {
+    const clamped = Math.max(0, Math.min(1, confidence));
+    this.recordHistogram('spec_kit.advisor.recommendation_confidence_brackets', clamped);
+  }
+
+  /** Returns the live unique-series count (cardinality meta-gauge). */
+  uniqueSeriesCount(): number {
+    return this.counters.size + this.gauges.size + this.histograms.size;
+  }
+
+  snapshot(): {
+    readonly definitions: readonly AdvisorMetricDefinition[];
+    readonly counters: ReadonlyMap<string, number>;
+    readonly gauges: ReadonlyMap<string, number>;
+    readonly histograms: ReadonlyMap<string, readonly number[]>;
+    readonly brierMean: ReadonlyMap<string, number>;
+    readonly metricsUniqueSeriesCount: number;
+  } {
+    const brierMean = new Map<string, number>();
+    for (const [key, acc] of this.brier) {
+      brierMean.set(key, acc.count > 0 ? acc.sum / acc.count : 0);
+    }
+    return {
+      definitions: SPECKIT_METRIC_DEFINITIONS,
+      counters: this.counters,
+      gauges: this.gauges,
+      histograms: this.histograms,
+      brierMean,
+      metricsUniqueSeriesCount: this.uniqueSeriesCount(),
+    };
+  }
+
+  reset(): void {
+    this.counters.clear();
+    this.gauges.clear();
+    this.histograms.clear();
+    this.brier.clear();
+    this.promptCacheHits = 0;
+    this.promptCacheMisses = 0;
+  }
+}
+
+/** Process-wide collector. Callers MUST gate emission with isSpeckitMetricsEnabled(). */
+export const speckitMetrics = new SpeckitMetricsCollector();
+
+/** Returns the static metric definitions for the spec_kit.* namespace. */
+export function getSpeckitMetricDefinitions(): readonly AdvisorMetricDefinition[] {
+  return SPECKIT_METRIC_DEFINITIONS;
+}

@@ -1,0 +1,3 @@
+{"type":"iteration","run":8,"iteration":8,"status":"complete","focus":"Skill Graph and Skill Advisor fit","findingsCount":5,"newInfoRatio":0.46}
+{"type":"finding","id":"f-iter008-skill-contracts","label":"Skill Graph should model skills, commands, hooks, and tools as capability contracts feeding existing graph_causal scoring.","iteration":8}
+{"type":"edge","id":"e-iter008-contract-advisor","relation":"INFORMS","source":"gitnexus-contract-registry","target":"skill-advisor-graph-causal-lane","iteration":8}

@@ -77,6 +77,5 @@ advisor_recommend({"prompt":"save this conversation context to memory","options"
 ## 6. RELATED
 
 - Scenario [SC-004](./004-lane-attribution.md) — lane attribution metadata.
-- Scenario [PG-005](../09--promotion-gates/005-semantic-lock-and-rollback.md) — semantic lock.
 - Feature [`04--scorer-fusion/01-five-lane-fusion.md`](../../feature_catalog/04--scorer-fusion/01-five-lane-fusion.md).
 - Source: `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/fusion.ts` and `lib/scorer/weights-config.ts`.

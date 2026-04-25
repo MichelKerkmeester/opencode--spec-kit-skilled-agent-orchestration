@@ -86,5 +86,4 @@ Telemetry is published as prompt-safe rollups rather than raw prompt content:
 ## 5. RELATED
 
 - [01-advisor-recommend.md](./01-advisor-recommend.md).
-- [`05--promotion-gates/03-gate-bundle.md`](../05--promotion-gates/03-gate-bundle.md).
 - [`04--scorer-fusion/05-ablation.md`](../04--scorer-fusion/05-ablation.md).

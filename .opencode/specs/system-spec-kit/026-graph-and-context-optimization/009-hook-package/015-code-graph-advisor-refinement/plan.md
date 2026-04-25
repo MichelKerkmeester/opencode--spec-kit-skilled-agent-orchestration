@@ -1,7 +1,7 @@
 ---
 # SPECKIT_TEMPLATE_SOURCE: plan-core + level_3/plan.md | v2.2
 title: "Implementation Plan: Code Graph and Skill Advisor Refinement — 10-PR Remediation"
-description: "Executor-ready remediation plan for 10 PRs across three parallel batches (A: P0 quick wins, B: scaffolds + DELETE, C: bench fan-out). Net LOC delta ~−744. Critical path ~22h with parallelism. Sourced from 20-iteration deep-research synthesis (iter-18 F83 master roadmap + iter-19 F86 rollback cards)."
+description: "Executor-ready remediation plan for 10 PRs across three parallel batches (A: P0 quick wins, B: scaffolds + DELETE, C: bench fan-out). PR-3 deletion inventory reconciled by B3 to retain the memory auto-promotion semantics test. Critical path ~22h with parallelism. Sourced from 20-iteration deep-research synthesis (iter-18 F83 master roadmap + iter-19 F86 rollback cards)."
 trigger_phrases:
   - "code graph advisor refinement plan"
   - "026/009/015 remediation plan"
@@ -54,7 +54,7 @@ _memory:
 
 ### Overview
 
-This plan executes the 10-PR remediation roadmap produced by the 20-iteration deep-research loop (`iter-18 F83`). The work is organized into three sequenced parallel batches: Batch A (P0 quick wins — 2 PRs, parallelizable), Batch B (scaffolds + DELETE — 5 PRs, partially parallelizable after Batch A lands), and Batch C (bench fan-out — 3 PRs, all parallel after PR 5). Net LOC delta is approximately −744 (deletion-heavy: PR 3 removes 1311 LOC; PRs 5/7/8/9/10 add ~567 LOC). Critical path with parallelism is ~22 hours; sequential is ~30 hours.
+This plan executes the 10-PR remediation roadmap produced by the 20-iteration deep-research loop (`iter-18 F83`). The work is organized into three sequenced parallel batches: Batch A (P0 quick wins — 2 PRs, parallelizable), Batch B (scaffolds + DELETE — 5 PRs, partially parallelizable after Batch A lands), and Batch C (bench fan-out — 3 PRs, all parallel after PR 5). B3 reconciles PR 3 so the delete sweep removes the orphaned promotion subsystem while retaining `mcp_server/tests/promotion-positive-validation-semantics.vitest.ts` as memory auto-promotion semantics coverage. Critical path with parallelism is ~22 hours; sequential is ~30 hours.
 
 **Research basis**: `research/015-code-graph-advisor-refinement-pt-01/research.md` §11 (roadmap), §12 (rollback), §13 (metrics namespace). All citations in this plan are recoverable from that synthesis and the per-iteration delta JSONL records.
 <!-- /ANCHOR:summary -->
@@ -97,7 +97,7 @@ Surgical edit + targeted deletion + instrumentation scaffolding. No new services
 - **`mcp_server/skill-advisor/tests/hooks/settings-driven-invocation-parity.vitest.ts`**: New file created by PR 7
 - **`mcp_server/skill-advisor/bench/`**: Three new bench files created by PRs 8, 9, 10
 - **`.claude/settings.local.json`**: Rewritten by PR 2 (−31 LOC)
-- **`mcp_server/skill-advisor/lib/promotion/`**: Entirely deleted by PR 3 (6 code files, 1 schema, 2 test files, 3 bench files)
+- **`mcp_server/skill-advisor/lib/promotion/`**: Entirely deleted by PR 3 (6 code files, 1 schema, 1 promotion-subsystem test file, 3 bench files); `mcp_server/tests/promotion-positive-validation-semantics.vitest.ts` is retained outside delete scope as memory auto-promotion semantics coverage
 
 ### Data Flow
 
@@ -172,7 +172,7 @@ Critical path (with parallelism): ~22h (Batch A + Batch B max + Batch C max)
 
 **PRs 3 and 4 must run sequentially (PR 3 first). PRs 5 and 6 can run in parallel after PR 3+4 land. PR 7 can start in parallel with PR 5+6 once PR 2 has landed. Estimated combined wall-clock (critical path through PR 5): ~21h.**
 
-### PR 3 — Promotion Subsystem DELETE Sweep (P1, −1311 LOC, M ~4-6h) — HIGHEST REVERT COST
+### PR 3 — Promotion Subsystem DELETE Sweep (P1, −868 LOC, M ~4-6h) — HIGHEST REVERT COST
 
 **Closes:** F37 #5/#6/#7 closure, F60, F61, F62, F70, F68, F47, F52, F57
 **Depends on:** PR 1 (history hygiene — so corpus-path fix is captured in git blame before bench files are deleted)
@@ -185,23 +185,24 @@ Critical path (with parallelism): ~22h (Batch A + Batch B max + Batch C max)
 - `mcp_server/skill-advisor/lib/promotion/weight-delta-cap.ts`
 - `mcp_server/skill-advisor/schemas/promotion-cycle.ts`
 - `mcp_server/skill-advisor/tests/promotion/promotion-gates.vitest.ts`
-- `mcp_server/tests/promotion-positive-validation-semantics.vitest.ts`
 - `mcp_server/skill-advisor/bench/corpus-bench.ts`
 - `mcp_server/skill-advisor/bench/safety-bench.ts`
 - `mcp_server/skill-advisor/bench/holdout-bench.ts`
 - 12 doc files (ref: iter-14 doc scrub list)
 **Target files (update):** `mcp_server/package.json` (remove `corpus-bench`/`safety-bench`/`holdout-bench` script rows)
+**Retained outside delete scope:** `mcp_server/tests/promotion-positive-validation-semantics.vitest.ts` covers memory auto-promotion threshold semantics through `lib/search/auto-promotion` and `lib/scoring/confidence-tracker`; it is not part of the removed `skill-advisor/lib/promotion/` gate subsystem.
 
 **Pre-merge sanity (rigor matches blast radius):**
 - `tsc --noEmit` clean across full repo (re-run iter-14 preflight)
 - `vitest run` full suite passes (deleted tests should not orphan any helper imports)
 - `git grep -l 'lib/promotion\|promotion-cycle\|promotion-orchestrate' -- '*.md' '*.ts' '*.json'` → ZERO matches
 - `git grep -l 'corpus-bench\|safety-bench\|holdout-bench' -- '*.json' '*.md'` → ZERO matches
+- `find .opencode/skill/system-spec-kit/mcp_server/tests/promotion-positive-validation-semantics.vitest.ts -maxdepth 1 -print` returns the retained memory auto-promotion semantics test
 - Sibling-spec doc grep: no stale references in `002-skill-graph-daemon-and-advisor-unification` or `042-sk-deep-research-review-improvement-2`
 
 **Post-merge monitoring:** 48h watch on CI test/bench job failures + operator reports of "feature missing".
-**Revert SLO:** **1hr**. Invasive but reversible via `git revert -m 1 <merge-sha>` (restores full 1311 LOC). Plan single-commit PR so revert is clean.
-**Rollback blocker:** Size of the revert PR itself (1311 LOC) — reviewers validate by file count + diff symmetry, not line-by-line. Tag all doc-scrub commits with `delete-sweep-doc-scrub` git trailer. Reverting PR 3 requires re-opening `decision-record.md` entry.
+**Revert SLO:** **1hr**. Invasive but reversible via `git revert -m 1 <merge-sha>` (restores deleted PR-3 promotion subsystem files). Plan single-commit PR so revert is clean.
+**Rollback blocker:** Size of the revert PR itself — reviewers validate by file count + diff symmetry, not line-by-line. Tag all doc-scrub commits with `delete-sweep-doc-scrub` git trailer. Reverting PR 3 requires re-opening `decision-record.md` entry.
 
 ---
 
@@ -458,7 +459,7 @@ Full per-PR rollback cards are in §§5-7 above. **Cross-PR rollback-ordering in
 |------|----------|------------|--------|--------------|
 | 1 | P0 | next-business-day | none | bench-job failure |
 | 2 | P0 | **15min** | none | advisor brief absent/duplicate |
-| 3 | P1 | **1hr** | NOT APPLICABLE | hidden importer + 1311-LOC revert burden |
+| 3 | P1 | **1hr** | NOT APPLICABLE | hidden importer + large delete-sweep revert burden |
 | 4 | P1 | **1hr** | shadow-only recommended | consumer reading deprecated field |
 | 5 | P1 | **1hr** | **percentage rollout** | cardinality blowup + schema version bump |
 | 6 | P1 | 1hr | none | duplicate-clear log spam |
@@ -616,10 +617,10 @@ With parallelism: ~22h
 
 **Context**: The 6-module promotion subsystem (`lib/promotion/`) has zero production callers, full unit test coverage, and no documented wiring intent. Two options: A) DELETE, B) KEEP and land 13-gate enhancements (F15 matrix).
 
-**Decision**: Option A — DELETE (~1311 LOC removal). Cross-packet preflight confirmed zero importers. The test coverage is comprehensive but the handler endpoint and wiring path are absent, indicating a "build-then-wire" pattern that was never completed.
+**Decision**: Option A — DELETE the orphaned promotion subsystem. Cross-packet preflight confirmed zero importers. The subsystem test coverage is comprehensive but the handler endpoint and wiring path are absent, indicating a "build-then-wire" pattern that was never completed. B3 clarifies that `mcp_server/tests/promotion-positive-validation-semantics.vitest.ts` is retained because it validates memory auto-promotion threshold semantics outside `skill-advisor/lib/promotion/`.
 
 **Consequences:**
-- Net LOC delta for PR 3: −1311 (code + docs)
+- Net LOC delta for PR 3: approximately -868 after retaining the memory auto-promotion semantics test outside delete scope
 - F15 13-gate enhancement matrix becomes contingent on Option B (moot under Option A)
 - If a downstream consumer of the promotion subsystem materializes, PR 11 (contingent) must be landed; this requires re-opening `decision-record.md`
 

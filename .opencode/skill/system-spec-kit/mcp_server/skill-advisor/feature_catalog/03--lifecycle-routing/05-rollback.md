@@ -51,4 +51,3 @@ Keep lifecycle mutations reversible so operators can experiment with supersessio
 
 - [04-schema-migration.md](./04-schema-migration.md).
 - [02-supersession.md](./02-supersession.md).
-- [`05--promotion-gates/06-rollback.md`](../05--promotion-gates/06-rollback.md).

@@ -2,6 +2,8 @@
 // MODULE: Advisor Freshness Cache Invalidation
 // ───────────────────────────────────────────────────────────────
 
+import { isSpeckitMetricsEnabled, speckitMetrics } from '../metrics.js';
+
 export interface CacheInvalidationEvent {
   readonly generation: number;
   readonly changedPaths: readonly string[];
@@ -27,6 +29,9 @@ export function invalidateSkillGraphCaches(event: Omit<CacheInvalidationEvent, '
     invalidatedAt: new Date().toISOString(),
   };
   lastInvalidation = published;
+  if (isSpeckitMetricsEnabled()) {
+    speckitMetrics.incrementCounter('spec_kit.freshness.source_signature_bumps_total');
+  }
   for (const listener of listeners) {
     try {
       listener(published);

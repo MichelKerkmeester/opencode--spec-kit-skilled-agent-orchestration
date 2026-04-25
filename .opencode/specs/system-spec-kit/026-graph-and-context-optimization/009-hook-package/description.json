@@ -17,19 +17,15 @@
     "layout": "phase-root-children"
   },
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package",
-  "description": "Feature Specification: Hook Package",
+  "description": "Feature Specification: Hook Daemon Parity",
   "keywords": [
     "feature",
     "specification",
     "hook",
-    "package",
     "daemon",
-    "parity",
-    "skill-advisor",
-    "skill-graph",
-    "plugin-loader"
+    "parity"
   ],
-  "lastUpdated": "2026-04-24T17:30:00Z",
+  "lastUpdated": "2026-04-25T06:16:27.739Z",
   "specId": "009",
   "folderSlug": "hook-package",
   "parentChain": [

@@ -12,15 +12,29 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
   try {
     const stats = graphDb.getStats();
     const freshness = getGraphFreshness(process.cwd());
+    // PR 4 / F71 step 7: switch on the unified V2 freshness enum so each
+    // canonical state has its own status reason (no more V4 string-mapping
+    // that swallowed 'error' as 'missing').
+    let statusReason: string;
+    switch (freshness) {
+      case 'fresh':
+        statusReason = 'status probe reports graph is ready';
+        break;
+      case 'stale':
+        statusReason = 'status probe reports graph is stale';
+        break;
+      case 'empty':
+        statusReason = 'status probe reports graph is missing';
+        break;
+      case 'error':
+        statusReason = 'status probe crashed; graph is unavailable';
+        break;
+    }
     const readinessBlock = buildReadinessBlock({
       freshness,
       action: 'none',
       inlineIndexPerformed: false,
-      reason: freshness === 'fresh'
-        ? 'status probe reports graph is ready'
-        : freshness === 'stale'
-          ? 'status probe reports graph is stale'
-          : 'status probe reports graph is missing',
+      reason: statusReason,
     });
 
     return {

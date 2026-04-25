@@ -1,6 +1,6 @@
 ---
 title: "Lane Weights Configuration"
-description: "Centralized weight configuration that exposes canonical lane weights and gates any proposed mutation through the promotion pipeline."
+description: "Centralized weight configuration that exposes canonical lane weights as a single source of truth for fusion."
 trigger_phrases:
   - "lane weights config"
   - "weights-config.ts"
@@ -22,13 +22,13 @@ trigger_phrases:
 
 ## 1. PURPOSE
 
-Keep the canonical lane weights in exactly one place and expose them to callers so routing behavior remains auditable and tunable only through the promotion pipeline.
+Keep the canonical lane weights in exactly one place and expose them to callers so routing behavior remains auditable.
 
 ---
 
 ## 2. CURRENT REALITY
 
-`lib/scorer/weights-config.ts` defines the canonical weights: `explicit_author: 0.45`, `lexical: 0.30`, `graph_causal: 0.15`, `derived_generated: 0.10`, `semantic_shadow: 0.00`. These values are surfaced through `advisor_status.laneWeights` and consumed by `lib/scorer/fusion.ts`. Any proposed weight change must go through `lib/promotion/weight-delta-cap.ts` and the 7-gate bundle before it can modify the live configuration.
+`lib/scorer/weights-config.ts` defines the canonical weights: `explicit_author: 0.45`, `lexical: 0.30`, `graph_causal: 0.15`, `derived_generated: 0.10`, `semantic_shadow: 0.00`. These values are surfaced through `advisor_status.laneWeights` and consumed by `lib/scorer/fusion.ts`.
 
 ---
 
@@ -51,5 +51,3 @@ Keep the canonical lane weights in exactly one place and expose them to callers 
 ## 5. RELATED
 
 - [01-five-lane-fusion.md](./01-five-lane-fusion.md).
-- [`05--promotion-gates/02-weight-delta-cap.md`](../05--promotion-gates/02-weight-delta-cap.md).
-- [`05--promotion-gates/05-semantic-lock.md`](../05--promotion-gates/05-semantic-lock.md).

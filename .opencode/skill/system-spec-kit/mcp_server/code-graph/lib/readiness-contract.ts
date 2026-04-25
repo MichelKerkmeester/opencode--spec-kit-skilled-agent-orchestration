@@ -66,8 +66,9 @@ export interface CodeGraphReadinessBlock extends ReadyResult {
  *   'fresh' → 'ready'
  *   'stale' → 'stale'
  *   'empty' → 'missing'
+ *   'error' → 'missing'  (PR 4 / F71: unreachable scope is structurally missing)
  *
- * Origin: M8 / T-CGQ-11 (R22-001, R23-001).
+ * Origin: M8 / T-CGQ-11 (R22-001, R23-001); PR 4 step 2 widens the union.
  */
 export function canonicalReadinessFromFreshness(
   freshness: ReadyResult['freshness'],
@@ -78,6 +79,8 @@ export function canonicalReadinessFromFreshness(
     case 'stale':
       return 'stale';
     case 'empty':
+      return 'missing';
+    case 'error':
       return 'missing';
     default:
       return assertNever(freshness, 'graph-freshness');
@@ -94,11 +97,14 @@ export function canonicalReadinessFromFreshness(
  *   'fresh' → 'live'
  *   'stale' → 'stale'
  *   'empty' → 'absent'
+ *   'error' → 'unavailable'  (PR 4 / F71: scope unreachable, not absent)
  *
  * The return type is the full canonical 8-state union
- * (`SharedPayloadTrustState`); the projection is a 3-value
- * subset. Callers must NOT narrow this to a custom 4-state enum —
- * see M8 / T-SHP-01 (R9-001).
+ * (`SharedPayloadTrustState`); the projection is a 4-value
+ * subset (live | stale | absent | unavailable) matching the V5-widened
+ * `SkillGraphTrustState` axis at skill-advisor/lib/freshness/trust-state.ts.
+ * Callers must NOT narrow this to a custom 4-state enum —
+ * see M8 / T-SHP-01 (R9-001); PR 4 step 2 adds the `error` arm.
  */
 export function queryTrustStateFromFreshness(
   freshness: ReadyResult['freshness'],
@@ -110,6 +116,8 @@ export function queryTrustStateFromFreshness(
       return 'stale';
     case 'empty':
       return 'absent';
+    case 'error':
+      return 'unavailable';
     default:
       return assertNever(freshness, 'graph-freshness');
   }
@@ -129,7 +137,10 @@ export function queryTrustStateFromFreshness(
 function getPersistedDetectorProvenance(
   readiness: ReadyResult,
 ): DetectorProvenance | null {
-  if (readiness.freshness === 'empty') {
+  // PR 4 / F71: 'empty' = scope has no rows yet; 'error' = scope unreachable
+  // (probe crashed). Both cases must skip db lookup so we don't surface
+  // stale or partial provenance from an unreachable store.
+  if (readiness.freshness === 'empty' || readiness.freshness === 'error') {
     return null;
   }
 
@@ -169,6 +180,20 @@ function buildQueryTrustArtifacts(
         }),
       };
     case 'empty':
+      return {
+        graphMetadata,
+        structuralTrust: buildStructuralTrustFromProvenance({
+          fallbackParserProvenance: 'unknown',
+          evidenceStatus: 'unverified',
+          freshnessAuthority: 'unknown',
+        }),
+      };
+    case 'error':
+      // PR 4 / F71: unreachable scope. graphMetadata is omitted (provenance
+      // probe is suppressed in getPersistedDetectorProvenance), and trust
+      // collapses to 'unverified' / 'unknown'. Downstream consumers should
+      // use the readiness-block trustState='unavailable' to differentiate
+      // crash-on-probe from genuinely empty scopes.
       return {
         graphMetadata,
         structuralTrust: buildStructuralTrustFromProvenance({

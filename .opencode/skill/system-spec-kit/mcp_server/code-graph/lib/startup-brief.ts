@@ -13,6 +13,7 @@ import {
   trustStateFromGraphState,
   type SharedPayloadEnvelope,
   type SharedPayloadSection,
+  type SharedPayloadTrustState,
 } from '../../lib/context/shared-payload.js';
 
 /** Compact startup summary for the locally indexed code graph. */
@@ -41,6 +42,7 @@ export interface StartupBriefResult {
   graphSummary: StartupGraphSummary | null;
   graphQualitySummary: StartupGraphQualitySummary | null;
   graphState: 'ready' | 'stale' | 'empty' | 'missing';
+  graphTrustState: SharedPayloadTrustState;
   cocoIndexAvailable: boolean;
   startupSurface: string;
   sharedPayload: SharedPayloadEnvelope | null;
@@ -180,7 +182,7 @@ export function buildStartupSharedPayloadTransport(
   }, null, 2);
 }
 
-function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult, 'graphOutline' | 'graphSummary' | 'graphQualitySummary' | 'graphState'> {
+function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult, 'graphOutline' | 'graphSummary' | 'graphQualitySummary' | 'graphState' | 'graphTrustState'> {
   try {
     const stats = getStats();
     const freshness = getGraphFreshness(process.cwd());
@@ -211,6 +213,7 @@ function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult,
         graphSummary,
         graphQualitySummary,
         graphState: 'empty',
+        graphTrustState: trustStateFromGraphState('empty'),
       };
     }
 
@@ -222,6 +225,11 @@ function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult,
     ];
     if (freshness === 'stale') {
       lines.push('Freshness: stale — first structural read may trigger bounded inline refresh or recommend code_graph_scan.');
+    } else if (freshness === 'error') {
+      // PR 4 / F71: ensure-ready probe crashed (DB unreachable, lock held,
+      // etc). Surface as 'missing' graphState (V4 vocabulary) rather than
+      // pretending the index is ready.
+      lines.push('Freshness: probe crashed — code_graph_status will report the failure; treat structural context as unavailable until repair.');
     }
     const qualityLine = formatGraphQualitySummary(graphQualitySummary);
     if (qualityLine) {
@@ -233,11 +241,27 @@ function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult,
       lines.push(...highlights.map(formatHighlight));
     }
 
+    // PR 4 / F71: keep the public V4 graphState vocabulary stable while
+    // preserving the V2 error axis for startup provenance trust-state.
+    let graphState: StartupBriefResult['graphState'];
+    let graphTrustState: SharedPayloadTrustState;
+    if (freshness === 'error') {
+      graphState = 'missing';
+      graphTrustState = trustStateFromGraphState('error');
+    } else if (freshness === 'stale') {
+      graphState = 'stale';
+      graphTrustState = trustStateFromGraphState('stale');
+    } else {
+      graphState = 'ready';
+      graphTrustState = trustStateFromGraphState('ready');
+    }
+
     return {
       graphOutline: lines.join('\n'),
       graphSummary,
       graphQualitySummary,
-      graphState: freshness === 'stale' ? 'stale' : 'ready',
+      graphState,
+      graphTrustState,
     };
   } catch {
     return {
@@ -245,6 +269,7 @@ function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult,
       graphSummary: null,
       graphQualitySummary: null,
       graphState: 'missing',
+      graphTrustState: trustStateFromGraphState('error'),
     };
   }
 }
@@ -310,7 +335,7 @@ export function buildStartupBrief(highlightCount?: number, stateScope?: HookStat
       provenance: {
         producer: 'startup_brief',
         sourceSurface: 'session_start',
-        trustState: trustStateFromGraphState(graph.graphState),
+        trustState: graph.graphTrustState,
         generatedAt: new Date().toISOString(),
         lastUpdated: graph.graphSummary?.lastScan ?? null,
         sourceRefs: ['code-graph-db', 'hook-state'],
@@ -325,6 +350,7 @@ export function buildStartupBrief(highlightCount?: number, stateScope?: HookStat
     graphSummary: graph.graphSummary,
     graphQualitySummary: graph.graphQualitySummary,
     graphState: graph.graphState,
+    graphTrustState: graph.graphTrustState,
     cocoIndexAvailable,
     startupSurface,
     sharedPayload,
