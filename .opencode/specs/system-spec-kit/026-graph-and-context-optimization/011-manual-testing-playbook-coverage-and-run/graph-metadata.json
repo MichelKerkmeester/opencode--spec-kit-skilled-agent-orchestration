@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift",
+      "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/006-docs-and-catalogs-rollup"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "011 playbook coverage and run",
+      "phase 011 manual testing",
+      "playbook scorecard",
+      "manual testing playbook coverage",
+      "playbook revalidation 010"
+    ],
+    "key_topics": [
+      "011",
+      "playbook",
+      "coverage",
+      "scorecard",
+      "manual",
+      "testing",
+      "010",
+      "remediation",
+      "scenario",
+      "runner",
+      "surrogate",
+      "010/007"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "../../../../skill/system-spec-kit/manual_testing_playbook/03--discovery/014-detect-changes-preflight.md",
+      "../../../../skill/system-spec-kit/manual_testing_playbook/06--analysis/026-code-graph-edge-explanation-blast-radius-uplift.md",
+      "../../../../skill/system-spec-kit/manual_testing_playbook/11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md",
+      "../../../../skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/203-memory-causal-trust-display.md",
+      "../../../../skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts"
+    ],
+    "entities": [
+      { "name": "spec.md", "kind": "doc", "path": "spec.md", "source": "derived" },
+      { "name": "plan.md", "kind": "doc", "path": "plan.md", "source": "derived" },
+      { "name": "tasks.md", "kind": "doc", "path": "tasks.md", "source": "derived" },
+      { "name": "checklist.md", "kind": "doc", "path": "checklist.md", "source": "derived" },
+      { "name": "implementation-summary.md", "kind": "doc", "path": "implementation-summary.md", "source": "derived" },
+      { "name": "014-detect-changes-preflight.md", "kind": "doc", "path": "../../../../skill/system-spec-kit/manual_testing_playbook/03--discovery/014-detect-changes-preflight.md", "source": "derived" },
+      { "name": "026-code-graph-edge-explanation-blast-radius-uplift.md", "kind": "doc", "path": "../../../../skill/system-spec-kit/manual_testing_playbook/06--analysis/026-code-graph-edge-explanation-blast-radius-uplift.md", "source": "derived" },
+      { "name": "199-skill-advisor-affordance-evidence.md", "kind": "doc", "path": "../../../../skill/system-spec-kit/manual_testing_playbook/11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md", "source": "derived" },
+      { "name": "203-memory-causal-trust-display.md", "kind": "doc", "path": "../../../../skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/203-memory-causal-trust-display.md", "source": "derived" },
+      { "name": "manual-playbook-runner.ts", "kind": "code", "path": "../../../../skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts", "source": "derived" }
+    ],
+    "causal_summary": "Phase 010 (graph impact + affordance uplift) and 010/007 (review remediation) shipped 33 closed findings across 5 systems. 010/006 wrote 5 baseline manual-testing-playbook scenarios; two (014, 026) became stale relative to 010/007 hardening, and one new scenario (203 cache invalidation) was missing. Phase 011 syncs the four affected scenarios with 11 new step-blocks total, and produces a scorecard derived from automated-test surrogate coverage (175 vitest + 57 pytest passing). Runner pass blocked on pre-existing fixture-seeding bug — recorded as P2 follow-up.",
+    "created_at": "2026-04-25T19:55:00.000Z",
+    "last_save_at": "2026-04-25T19:55:00.000Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

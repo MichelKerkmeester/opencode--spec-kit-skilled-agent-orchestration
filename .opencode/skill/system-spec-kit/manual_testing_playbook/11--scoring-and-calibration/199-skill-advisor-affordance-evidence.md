@@ -41,26 +41,36 @@ Operators run the exact prompt and command sequence for `199` and confirm the ex
 
 ### Commands
 
+**Block A — Affordance routing + privacy (010/004 baseline + 010/007/T-D denylist):**
+
 1. `cd .opencode/skill/system-spec-kit/mcp_server && ./node_modules/.bin/vitest run skill_advisor/tests/affordance-normalizer.test.ts skill_advisor/tests/lane-attribution.test.ts skill_advisor/tests/routing-fixtures.affordance.test.ts --reporter=dot`
 2. `python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/python/test_skill_advisor.py`
 3. `cd .opencode/skill/system-spec-kit/mcp_server && npm run typecheck`
 
+**Block B — Debug counter parity (R-007-P2-9, 010/007/T-F):**
+
+4. **TS counters surface:** `rg -n "affordanceNormalizerCounters|getAffordanceNormalizerCounters|resetAffordanceNormalizerCounters" .opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/affordance-normalizer.ts` — confirm 5 counters declared (`received`, `accepted`, `dropped_unsafe`, `dropped_empty`, `dropped_unknown_skill`), exported getter, exported reset.
+5. **Python counters surface:** `rg -n "AFFORDANCE_NORMALIZER_COUNTERS|get_affordance_normalizer_counters|reset_affordance_normalizer_counters" .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_graph_compiler.py` — confirm matching 5-key dict, getter, reset.
+6. **Counter parity assertion:** call `resetAffordanceNormalizerCounters()`, run normalizer over the shared fixture (`skill_advisor/tests/__shared__/affordance-injection-fixtures.json`, 28 injection + 11 benign + 4 privacy), then call `getAffordanceNormalizerCounters()`. Assert: `received === 43` (28 + 11 + 4), `accepted >= 11` (benign survive), `dropped_unsafe >= 28` (injection phrases drop), `dropped_empty + dropped_unknown_skill` accounts for the rest. Repeat in Python via `test_skill_advisor.py` shared-fixture parity tests (already covers PY counters).
+
 ### Expected
 
-The focused Vitest run passes. The Python suite reports the affordance compiler checks passing. TypeScript typecheck passes. Public recommendation output contains lane names and scores, not raw matched affordance phrases.
+- Block A: focused Vitest run passes (37+ tests). Python suite reports affordance compiler checks passing (57 tests). TypeScript typecheck passes. Public recommendation output contains lane names + scores, not raw matched affordance phrases.
+- Block B: TS + Python both expose 5 named counters (`received` / `accepted` / `dropped_unsafe` / `dropped_empty` / `dropped_unknown_skill`); shared-fixture run produces consistent counter values across TS and Python implementations.
 
 ### Evidence
 
-Capture the command output, plus a JSON excerpt showing `laneBreakdown` uses existing lane names only.
+Captured command output for steps 1–3, `rg` output for steps 4–5, the counter object snapshots for step 6. JSON excerpt showing `laneBreakdown` uses existing lane names only (no new lane introduced).
 
 ### Pass / Fail
 
-- **Pass**: Normalized affordance evidence routes through `derived_generated` and `graph_causal`, privacy assertions pass, and explicit author triggers retain precedence.
-- **Fail**: A raw affordance phrase leaks, a new lane appears, a new relation type is required, or affordance-only evidence outranks explicit author evidence.
+- **Pass**: Block A — normalized affordance evidence routes through `derived_generated` and `graph_causal`, privacy assertions pass, explicit author triggers retain precedence. Block B — both TS and Python expose the 5 counters; shared-fixture parity holds.
+- **Fail**: Block A — raw affordance phrase leaks, new lane appears, new relation type required, or affordance-only outranks explicit. Block B — counters absent from one implementation, OR TS/Python counter values diverge by >0 on the shared fixture.
 
 ### Failure Triage
 
-Check `affordance-normalizer.ts` allowlist first. Then inspect `fusion.ts` to confirm raw affordance inputs call `normalize()` before lane execution. Finally inspect `derived.ts` and `graph-causal.ts` for raw phrase evidence or non-`EDGE_MULTIPLIER` relation usage.
+- **Block A**: Check `affordance-normalizer.ts` allowlist first. Then inspect `fusion.ts` to confirm raw affordance inputs call `normalize()` before lane execution. Finally inspect `derived.ts` and `graph-causal.ts` for raw phrase evidence or non-`EDGE_MULTIPLIER` relation usage.
+- **Block B**: If counters absent, inspect `mcp_server/skill_advisor/lib/affordance-normalizer.ts:153-157` for `affordanceNormalizerCounters` declaration + bumps inside `normalize()`, and `mcp_server/skill_advisor/scripts/skill_graph_compiler.py:407` for the matching Python dict + bumps inside `normalize_affordance_input()` (010/007/T-F R-007-P2-9). If parity diverges, run the Python R-007-P2-8 shared-fixture test trio to isolate which sanitizer (TS or PY) is out of sync.
 
 ---
 
@@ -90,3 +100,5 @@ Check `affordance-normalizer.ts` allowlist first. Then inspect `fusion.ts` to co
 - Playbook ID: 199
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
 - Feature file path: `11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md`
+- Phase / sub-phase: `026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/004-skill-advisor-affordance-evidence` (baseline) + `026/010/007-review-remediation` T-D (denylist broadened R-007-9, conflicts_with reject R-007-8) + T-F (debug counters R-007-P2-9)
+- Coverage extension: 010/011-manual-testing-playbook-coverage-and-run (Block B added)

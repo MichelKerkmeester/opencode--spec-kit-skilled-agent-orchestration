@@ -1,0 +1,22 @@
+{
+  "specFolder": "026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run",
+  "description": "Feature Specification: Manual Testing Playbook Coverage and Run (011)",
+  "keywords": [
+    "feature",
+    "specification",
+    "manual",
+    "testing",
+    "playbook",
+    "coverage",
+    "run",
+    "011"
+  ],
+  "lastUpdated": "2026-04-25T15:50:20.909Z",
+  "specId": "011",
+  "folderSlug": "manual-testing-playbook-coverage-and-run",
+  "parentChain": [
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}
