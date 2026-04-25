@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: Skill Advisor Setup Command [system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/plan]"
 description: "Creates the /spec_kit:skill-advisor command with auto/confirm YAML workflows, updates README.txt, and delivers a user-facing setup guide. Follows existing spec_kit command conventions (resume.md, plan.md patterns)."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 trigger_phrases:
   - "skill advisor setup command plan"
   - "012-skill-advisor-setup-command"
@@ -26,11 +27,11 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Skill Advisor Setup Command
 
 <!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
@@ -78,7 +79,7 @@ Deliver a `/spec_kit:skill-advisor` slash command that follows the existing spec
 OpenCode Slash Command + YAML Workflow Orchestration (same pattern as `/spec_kit:resume`, `/spec_kit:plan`)
 
 ### Key Components
-- **Command Markdown** (`skill-advisor.md`): Frontmatter with `allowed-tools`, execution protocol header, consolidated prompt phase, MCP tool usage reference
+- **Command Markdown** (`.opencode/command/spec_kit/skill-advisor.md`): Frontmatter with `allowed-tools`, execution protocol header, consolidated prompt phase, MCP tool usage reference
 - **Auto YAML** (`spec_kit_skill-advisor_auto.yaml`): Autonomous workflow — reads skills, detects gaps, proposes optimizations, applies them, runs tests
 - **Confirm YAML** (`spec_kit_skill-advisor_confirm.yaml`): Interactive workflow — same as auto but pauses at approval gates before each mutation
 - **Install Guide** (`SET-UP - Skill Advisor.md`): AI-first prompt for users to invoke the command, with prerequisite checks and step-by-step flows
@@ -103,7 +104,7 @@ User invokes /spec_kit:skill-advisor [:auto|:confirm]
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Command Scaffolding
-- [ ] Create `skill-advisor.md` with frontmatter, argument hint, allowed-tools
+- [ ] Create `.opencode/command/spec_kit/skill-advisor.md` with frontmatter, argument hint, allowed-tools
 - [ ] Create `spec_kit_skill-advisor_auto.yaml` workflow definition
 - [ ] Create `spec_kit_skill-advisor_confirm.yaml` workflow definition
 - [ ] Follow existing command patterns (resume.md structure, YAML format)
@@ -118,7 +119,7 @@ User invokes /spec_kit:skill-advisor [:auto|:confirm]
 ### Phase 3: Documentation & Integration
 - [ ] Update `README.txt` with new command entry
 - [ ] Create `SET-UP - Skill Advisor.md` install guide
-- [ ] Update parent `context-index.md` with new child phase
+- [ ] Update parent `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/context-index.md` with new child phase
 - [ ] Run strict validation
 <!-- /ANCHOR:phases -->
 

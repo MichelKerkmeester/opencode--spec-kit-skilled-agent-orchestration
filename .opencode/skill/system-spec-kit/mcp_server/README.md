@@ -589,6 +589,8 @@ The Skill Advisor is the native Gate 2 routing surface for matching prompts to s
 
 For package-local details, see [Skill Advisor Native Package README](skill-advisor/README.md) and [Skill Advisor Native Bootstrap](skill-advisor/INSTALL_GUIDE.md).
 
+**Tuning the scoring tables:** `/spec_kit:skill-advisor` is the user-facing surface for proposing and applying optimizations to `TOKEN_BOOSTS`, `PHRASE_BOOSTS`, `CATEGORY_HINTS`, and per-skill `graph-metadata.json` derived fields (`derived.trigger_phrases`, `derived.key_topics`). The command runs a 5-phase pipeline (Discovery → Analysis → Proposal → Apply → Verify) with auto and confirm modes; mutation boundaries are validated by a Phase 3 canonical-path validator (realpath + repo-relative + allowlist exact-match) before any write, and a per-run rollback script is generated under packet-local scratch for safe recovery. End-user setup guide: [`.opencode/install_guides/SET-UP - Skill Advisor.md`](../../../install_guides/SET-UP%20-%20Skill%20Advisor.md).
+
 **Runtime hook surface:** prompt-time Skill Advisor adapters now ship for Claude, Gemini, Copilot, and Codex. Claude, Gemini, and Codex inject the brief through runtime hook output; Copilot refreshes its managed local custom-instructions block and keeps hook stdout as `{}`. When native routing is unavailable, use the documented runtime fallback paths rather than treating the Python shim as the primary operator surface.
 
 - [hooks/README.md](./hooks/README.md) - runtime hook overview for the MCP server package

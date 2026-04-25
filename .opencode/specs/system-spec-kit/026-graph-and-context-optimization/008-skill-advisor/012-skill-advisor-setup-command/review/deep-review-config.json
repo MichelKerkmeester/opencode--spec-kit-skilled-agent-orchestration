@@ -1,0 +1,18 @@
+{
+  "review_topic": "Deep review of /spec_kit:skill-advisor command + YAML workflows + install guide + README updates",
+  "spec_folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command",
+  "max_iterations": 7,
+  "convergence_threshold": 0.10,
+  "stuck_threshold": 3,
+  "review_dimensions": ["correctness", "security", "traceability", "maintainability"],
+  "executor": {
+    "kind": "cli-copilot",
+    "model": "gpt-5.5",
+    "reasoningEffort": "high",
+    "serviceTier": null,
+    "timeoutSeconds": 900
+  },
+  "concurrency_cap": 3,
+  "concurrency_strategy": "sequential_iterations_within_packet",
+  "created_at": "2026-04-25T16:25:00Z"
+}

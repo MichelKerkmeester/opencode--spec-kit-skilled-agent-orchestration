@@ -1,6 +1,7 @@
 ---
 title: "Tasks: Skill Advisor Setup Command [system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/tasks]"
 description: "Task record for creating the /spec_kit:skill-advisor command, YAML workflows, README update, and install guide."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 trigger_phrases:
   - "skill advisor setup command tasks"
   - "012-skill-advisor-setup-command tasks"
@@ -25,11 +26,11 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Skill Advisor Setup Command
 
 <!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
@@ -51,9 +52,9 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 [P] Create `skill-advisor.md` — command markdown with frontmatter, argument-hint, allowed-tools, execution protocol header, consolidated prompt phase (`.opencode/command/spec_kit/skill-advisor.md`)
-- [ ] T002 [P] Create `spec_kit_skill-advisor_auto.yaml` — autonomous workflow definition with discovery, analysis, proposal, apply, verify phases (`.opencode/command/spec_kit/assets/spec_kit_skill-advisor_auto.yaml`)
-- [ ] T003 [P] Create `spec_kit_skill-advisor_confirm.yaml` — interactive workflow with approval gates between phases (`.opencode/command/spec_kit/assets/spec_kit_skill-advisor_confirm.yaml`)
+- [x] T001 [P] Create `.opencode/command/spec_kit/skill-advisor.md` — command markdown with frontmatter, argument-hint, allowed-tools, execution protocol header, consolidated prompt phase
+- [x] T002 [P] Create `spec_kit_skill-advisor_auto.yaml` — autonomous workflow definition with discovery, analysis, proposal, apply, verify phases (`.opencode/command/spec_kit/assets/spec_kit_skill-advisor_auto.yaml`)
+- [x] T003 [P] Create `spec_kit_skill-advisor_confirm.yaml` — interactive workflow with approval gates between phases (`.opencode/command/spec_kit/assets/spec_kit_skill-advisor_confirm.yaml`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -61,11 +62,11 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T004 Update `README.txt` — add skill-advisor row to command table, update structure tree, add usage example (`.opencode/command/spec_kit/README.txt`)
-- [ ] T005 Create `SET-UP - Skill Advisor.md` — user-facing install guide with AI-first prompt, prerequisite check, interactive flow, troubleshooting (`.opencode/install_guides/SET-UP - Skill Advisor.md`)
-- [ ] T006 Update parent `context-index.md` — add 012 row to child phase map and key implementation summary (`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/context-index.md`)
-- [ ] T007 Update parent `spec.md` — add 012 row to phase documentation map (`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/spec.md`)
-- [ ] T008 Update parent `tasks.md` — add T013 entry for new phase (`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/tasks.md`)
+- [x] T004 Update `README.txt` — add skill-advisor row to command table, update structure tree, add usage example (`.opencode/command/spec_kit/README.txt`)
+- [x] T005 Create `SET-UP - Skill Advisor.md` — user-facing install guide with AI-first prompt, prerequisite check, interactive flow, troubleshooting (`.opencode/install_guides/SET-UP - Skill Advisor.md`)
+- [x] T006 Update parent `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/context-index.md` — add 012 row to child phase map and key implementation summary
+- [x] T007 Update parent `spec.md` — add 012 row to phase documentation map (`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/spec.md`)
+- [x] T008 Update parent `tasks.md` — add T013 entry for new phase (`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/tasks.md`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -73,10 +74,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T009 Validate command markdown loads correctly — check frontmatter parsing, argument-hint, allowed-tools format
-- [ ] T010 Validate YAML workflow syntax — parse both YAML files, check for required keys (operating_mode, workflow steps)
-- [ ] T011 Run parent strict validation (`bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh`)
-- [ ] T012 Verify new command appears in `/spec_kit:skill-advisor` invocation surface
+- [x] T009 Validate command markdown loads correctly — check frontmatter parsing, argument-hint, allowed-tools format
+- [x] T010 Validate YAML workflow syntax — parse both YAML files, check for required keys (operating_mode, workflow steps)
+- [x] T011 Run parent strict validation (`bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh`)
+- [x] T012 Verify new command appears in `/spec_kit:skill-advisor` invocation surface
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -84,14 +85,14 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Command file exists at `.opencode/command/spec_kit/skill-advisor.md`
-- [ ] Both YAML assets exist in `assets/`
-- [ ] README.txt updated
-- [ ] Install guide exists at `.opencode/install_guides/SET-UP - Skill Advisor.md`
-- [ ] Parent context-index.md and spec.md updated with new phase entry
-- [ ] Strict validation passes
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Command file exists at `.opencode/command/spec_kit/skill-advisor.md`
+- [x] Both YAML assets exist in `assets/`
+- [x] README.txt updated
+- [x] Install guide exists at `.opencode/install_guides/SET-UP - Skill Advisor.md`
+- [x] Parent context-index.md and spec.md updated with new phase entry
+- [x] Strict validation passes
 <!-- /ANCHOR:completion -->
 
 ---
@@ -99,8 +100,8 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
 
-- **Specification**: See `spec.md`
-- **Plan**: See `plan.md`
-- **Parent Spec**: `../spec.md`
-- **Parent Context Index**: `../context-index.md`
+- **Specification**: See `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/spec.md`
+- **Plan**: See `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/plan.md`
+- **Parent Spec**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/spec.md`
+- **Parent Context Index**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/context-index.md`
 <!-- /ANCHOR:cross-refs -->

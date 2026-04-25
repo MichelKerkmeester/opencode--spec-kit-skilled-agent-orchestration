@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Skill Advisor [system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/spec]"
-description: "Skill advisor system: search/routing tuning, skill graph + advisor unification, advisor docs and standards, smart-router, hook surface, plugin hardening, and hook improvements. Consolidated active parent for 11 direct child phase packet(s)."
+description: "Skill advisor system: search/routing tuning, skill graph + advisor unification, advisor docs and standards, smart-router, hook surface, plugin hardening, hook improvements, and the /spec_kit:skill-advisor setup command. Consolidated active parent for 12 direct child phase packet(s)."
 trigger_phrases:
   - "008-skill-advisor"
   - "skill advisor"
@@ -18,6 +18,8 @@ trigger_phrases:
   - "009-skill-advisor-plugin-hardening"
   - "010-skill-advisor-standards-alignment"
   - "011-skill-advisor-hook-improvements"
+  - "012-skill-advisor-setup-command"
+  - "/spec_kit:skill-advisor"
 importance_tier: "important"
 contextType: "implementation"
 _memory:
@@ -118,6 +120,7 @@ Keep this theme as the single active parent for the full skill advisor system. E
 | 9 | `009-skill-advisor-plugin-hardening/` | Complete | Feature Specification: Skill-Advisor Plugin Hardening |
 | 10 | `010-skill-advisor-standards-alignment/` | Complete | Feature Specification: Skill-Advisor Standards Alignment |
 | 11 | `011-skill-advisor-hook-improvements/` | Research Queued | Feature Specification: Skill-Advisor Hook Improvements |
+| 12 | `012-skill-advisor-setup-command/` | Implemented | Feature Specification: Skill Advisor Setup Command |
 <!-- /ANCHOR:phase-map -->
 
 ---

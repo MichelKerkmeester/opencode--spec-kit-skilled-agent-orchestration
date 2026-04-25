@@ -1,0 +1,20 @@
+{
+  "review_topic": "Closure re-review: verify the 30 findings closed by 12-step in-place remediation",
+  "spec_folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command",
+  "review_packet_dir": "review-pt-02",
+  "prior_review_packet_dir": "review",
+  "max_iterations": 5,
+  "convergence_threshold": 0.10,
+  "stuck_threshold": 2,
+  "review_dimensions": ["correctness", "security", "traceability", "maintainability", "convergence"],
+  "executor": {
+    "kind": "cli-copilot",
+    "model": "gpt-5.5",
+    "reasoningEffort": "high",
+    "serviceTier": null,
+    "timeoutSeconds": 900
+  },
+  "concurrency_strategy": "sequential_iterations_within_packet",
+  "created_at": "2026-04-25T19:50:00Z",
+  "purpose": "verify closure of all 30 findings (F-CORR-001..014, F-SEC-001..006, F-TRACE-001..006, F-MAINT-001..003, F-CONV-001) from review-pt-01"
+}

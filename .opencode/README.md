@@ -55,11 +55,11 @@ Together, these systems enable context-aware development with traceability, hard
 | MCP Tools | 56 | 47 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking |
 | Agents | 12 | Base agent definitions in `.opencode/agent/*.md` |
 | Skills | 20 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
-| Commands | 22 | Markdown command entry points in `.opencode/command/` (9 spec_kit + 4 memory + 6 create + 2 improve + 1 utility) |
+| Commands | 22 | Markdown command entry points in `.opencode/command/` (7 spec_kit + 4 memory + 6 create + 2 improve + 2 doctor + 1 utility); spec_kit list shows `--intake-only` as a separate row even though it shares `plan.md` |
 | Templates | 83 | Spec Kit CORE + ADDENDUM templates |
-| YAML assets | 29 | Command execution YAML files |
+| YAML assets | 30 | Command execution YAML files |
 | Validation rules | 13 | Spec folder validation scripts |
-| Last Verified | 2026-04-04 | Counts refreshed against live repository state |
+| Last Verified | 2026-04-25 | Counts refreshed against live repository state |
 
 <!-- /ANCHOR:overview -->
 
@@ -71,7 +71,7 @@ Together, these systems enable context-aware development with traceability, hard
 ```
 .opencode/
 ├── agent/           — 12 specialized AI agent definitions for task delegation
-├── command/         — 21 slash command entry points for workflow automation (spec_kit, memory, create, improve, agent_router)
+├── command/         — 22 slash command entry points for workflow automation (spec_kit, memory, create, improve, doctor, agent_router)
 ├── install_guides/  — Setup and configuration guides for framework installation
 ├── skill/system-spec-kit/mcp_server/skill_advisor/ — Native Skill Advisor package, runtime adapters and MCP tools
 ├── skill/           — 20 domain expertise skill modules with bundled resources
@@ -155,7 +155,9 @@ Skills are specialized, on-demand capabilities invoked for complex workflows:
 
 Commands are invoked with `/command_name` syntax in the chat interface.
 
-### Spec Kit Commands (`/spec_kit:*`) — 9 commands
+### Spec Kit Commands (`/spec_kit:*`) — 7 markdown files, 8 user-facing entry points
+
+> Note: `/spec_kit:plan --intake-only` shares the same `plan.md` markdown as `/spec_kit:plan`; it appears as a separate row below for visibility but counts as one file.
 
 - `/spec_kit:plan --intake-only`: Standalone intake interview that publishes `spec.md`, `description.json`, and `graph-metadata.json`
 - `/spec_kit:plan`: 7-step planning workflow from research to task breakdown (supports `:with-phases` mode) and reuses the shared intake contract in `.opencode/skill/system-spec-kit/references/intake-contract.md` when the target packet is missing or in `partial-folder`, `repair-mode`, or `placeholder-upgrade`
@@ -164,6 +166,7 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/spec_kit:deep-research`: Autonomous iterative research workflow with convergence tracking plus bounded `spec.md` anchoring via `spec_check_protocol.md`
 - `/spec_kit:deep-review`: Autonomous iterative code review workflow with convergence tracking
 - `/spec_kit:resume`: Resume existing spec folder work with context loading
+- `/spec_kit:skill-advisor`: Analyze all skills, optimize advisor scoring tables (TOKEN_BOOSTS, PHRASE_BOOSTS, derived triggers, CATEGORY_HINTS), re-index the skill graph, and validate via the advisor test suite. Auto + confirm modes with `--scope`, `--dry-run`, and `--skip-tests` flags
 
 ### Memory Commands (`/memory:*`)
 

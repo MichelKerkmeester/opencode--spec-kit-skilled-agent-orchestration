@@ -1,0 +1,26 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command",
+  "description": "Feature Specification: Skill Advisor Setup Command",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill",
+    "advisor",
+    "setup",
+    "command"
+  ],
+  "lastUpdated": "2026-04-25T17:57:05.184Z",
+  "specId": "012",
+  "folderSlug": "skill-advisor-setup-command",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-skill-advisor"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "25-04-26_17-20__implemented-spec-kit-skill-advisor-command-with.md",
+    "25-04-26_18-37__closed-all-30-deep-review-findings-25-p1-5-p2-via.md",
+    "25-04-26_18-57__closure-re-review-pt-02-complete-5-iteration-cli.md"
+  ]
+}

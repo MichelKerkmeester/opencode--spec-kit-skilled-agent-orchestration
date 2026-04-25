@@ -1,6 +1,6 @@
 ---
 title: "Context Index: Skill Advisor"
-description: "Bridge index for the skill advisor system — search/routing tuning, skill graph + advisor unification, advisor docs and standards, smart-router, hook surface, plugin hardening, and hook improvements — after consolidating original phases inside the phase root."
+description: "Bridge index for the skill advisor system — search/routing tuning, skill graph + advisor unification, advisor docs and standards, smart-router, hook surface, plugin hardening, hook improvements, and the /spec_kit:skill-advisor setup command — after consolidating original phases inside the phase root. Active parent for 12 direct child phase packets."
 trigger_phrases:
   - "008-skill-advisor"
   - "skill advisor"
@@ -18,6 +18,8 @@ trigger_phrases:
   - "009-skill-advisor-plugin-hardening"
   - "010-skill-advisor-standards-alignment"
   - "011-skill-advisor-hook-improvements"
+  - "012-skill-advisor-setup-command"
+  - "/spec_kit:skill-advisor"
 importance_tier: "important"
 contextType: "implementation"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
@@ -50,7 +52,7 @@ _memory:
 
 ## Theme
 
-The skill advisor system: search/routing tuning, skill graph + advisor unification, advisor docs and standards, smart-router, hook surface, plugin hardening, and hook improvements. The original phase packets — six from `008-skill-advisor/` and five advisor packets from `009-hook-parity/` — are direct child folders of this phase root.
+The skill advisor system: search/routing tuning, skill graph + advisor unification, advisor docs and standards, smart-router, hook surface, plugin hardening, hook improvements, and the `/spec_kit:skill-advisor` setup command. The original phase packets — six from `008-skill-advisor/` and five advisor packets from `009-hook-parity/` — are direct child folders of this phase root, joined by the new 012-skill-advisor-setup-command packet.
 
 ## Child Phase Map
 
@@ -67,6 +69,7 @@ The skill advisor system: search/routing tuning, skill graph + advisor unificati
 | `009-skill-advisor-plugin-hardening/` | Feature Specification: Skill-Advisor Plugin Hardening | 010/008 | Complete | `008-skill-advisor/009-skill-advisor-plugin-hardening/` |
 | `010-skill-advisor-standards-alignment/` | Feature Specification: Skill-Advisor Standards Alignment | 010/009 | Complete | `008-skill-advisor/010-skill-advisor-standards-alignment/` |
 | `011-skill-advisor-hook-improvements/` | Feature Specification: Skill-Advisor Hook Improvements | 010/014 | Research Queued | `008-skill-advisor/011-skill-advisor-hook-improvements/` |
+| `012-skill-advisor-setup-command/` | Feature Specification: Skill Advisor Setup Command | 026/008/012 | Implemented | `008-skill-advisor/012-skill-advisor-setup-command/` |
 
 ## Key Implementation Summaries
 
@@ -81,6 +84,7 @@ The skill advisor system: search/routing tuning, skill graph + advisor unificati
 - **`009-skill-advisor-plugin-hardening/`**: `.opencode/plugins/spec-kit-skill-advisor.js` now keeps all plugin runtime state inside a `SpecKitSkillAdvisorPlugin(ctx, opts)` closure with concurrent-cache-miss dedup, configurable prompt/brief/cache caps, eviction, and 30 focused Vitest cases.
 - **`010-skill-advisor-standards-alignment/`**: Added the `opencode-plugin-exemption-tier` section to the JavaScript quality standards reference, scoped the plugin-loader ESM exemption to `.opencode/plugins/*` and `.opencode/plugin-helpers/*`, and updated `spec-kit-skill-advisor.js` with the structured header + JSDoc layout.
 - **`011-skill-advisor-hook-improvements/`**: One explicit threshold contract across plugin defaults, native bridge routing, fallback routing, and operator-facing bridge metadata. OpenCode native bridge rendering flows through shared `renderAdvisorBrief(...)` invariants, Codex paths share the same builder, and `advisor_recommend`/`advisor_validate` accept explicit `workspaceRoot` with durable JSONL diagnostics.
+- **`012-skill-advisor-setup-command/`**: New `/spec_kit:skill-advisor` slash command (auto + confirm YAML workflows) that interactively walks the AI through analyzing all skills, proposing optimized scoring tables (TOKEN_BOOSTS, PHRASE_BOOSTS, graph-metadata triggers, CATEGORY_HINTS), applying changes, re-indexing the skill graph, and validating with the advisor test suite. Paired with a user-facing install guide at `.opencode/install_guides/SET-UP - Skill Advisor.md`.
 
 ## Open Or Deferred Items
 
@@ -95,6 +99,7 @@ The skill advisor system: search/routing tuning, skill graph + advisor unificati
 - **`009-skill-advisor-plugin-hardening/`**: status before consolidation was Complete; refer to the child packet for any unchecked items.
 - **`010-skill-advisor-standards-alignment/`**: status before consolidation was Complete; refer to the child packet for any unchecked items.
 - **`011-skill-advisor-hook-improvements/`**: status before consolidation was Research Queued; refer to the child packet for any unchecked items.
+- **`012-skill-advisor-setup-command/`**: created 2026-04-25; level 2; status Implemented; refer to the child packet for any unchecked items.
 
 ## Root Support References
 

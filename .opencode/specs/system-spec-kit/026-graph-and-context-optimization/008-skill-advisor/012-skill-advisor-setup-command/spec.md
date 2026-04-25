@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: Skill Advisor Setup Command [system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/spec]"
 description: "New spec_kit:skill-advisor slash command that interactively guides the AI to analyze all skills in a user's repo, optimize the skill advisor scoring tables (TOKEN_BOOSTS, PHRASE_BOOSTS, graph-metadata.json), and index the skill graph. Includes a user-facing setup guide."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 trigger_phrases:
   - "skill advisor setup command"
   - "/spec_kit:skill-advisor"
@@ -28,11 +29,11 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Skill Advisor Setup Command
 
 <!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
@@ -46,8 +47,8 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 | **Status** | Draft |
 | **Created** | 2026-04-25 |
 | **Parent** | `026-graph-and-context-optimization/008-skill-advisor/` |
-| **Parent Spec** | `../spec.md` |
-| **Related** | `../003-advisor-phrase-booster-tailoring/`, `../004-skill-advisor-docs-and-code-alignment/`, `../008-skill-graph-daemon-and-advisor-unification/` |
+| **Parent Spec** | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/spec.md` |
+| **Related** | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/003-advisor-phrase-booster-tailoring/`, `004-skill-advisor-docs-and-code-alignment/`, `008-skill-graph-daemon-and-advisor-unification/` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -109,7 +110,7 @@ Deliver a `/spec_kit:skill-advisor` slash command that interactively walks the A
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Command file exists and follows existing spec_kit command conventions | `skill-advisor.md` loads on `/spec_kit:skill-advisor` with same header/metadata pattern as `resume.md`, `plan.md` |
+| REQ-001 | Command file exists and follows existing spec_kit command conventions | `.opencode/command/spec_kit/skill-advisor.md` loads on `/spec_kit:skill-advisor` with same header/metadata pattern as `.opencode/command/spec_kit/resume.md`, `plan.md` |
 | REQ-002 | Auto and confirm YAML workflows exist in assets/ | Both YAML files follow existing workflow structure (operating_mode, workflow steps, error_recovery) |
 | REQ-003 | Command reads all skill SKILL.md files and graph-metadata.json files | Parses skill name, description, domains, intent_signals, derived triggers/keywords |
 | REQ-004 | Command reads current explicit.ts TOKEN_BOOSTS and PHRASE_BOOSTS | Parses the TSTypeScript object literals and detects which skills are already covered |
@@ -189,7 +190,7 @@ Deliver a `/spec_kit:skill-advisor` slash command that interactively walks the A
 ### Data Boundaries
 - Empty `.opencode/skill/` directory: Command reports "no skills found" and exits
 - Corrupt `graph-metadata.json`: Command skips skill with warning
-- Missing `SKILL.md`: Command infers skill name from folder name
+- Missing SKILL.md: Command infers skill name from folder name
 
 ### Error Scenarios
 - `skill_graph_scan` unavailable: Command warns but continues with remaining phases
@@ -200,11 +201,25 @@ Deliver a `/spec_kit:skill-advisor` slash command that interactively walks the A
 - Partial change application (some skills updated, some not): Command offers retry or revert
 
 ### Acceptance Scenarios
-- **Scenario 1 — New user discovers gap**: Given a repo with skills but no optimized scoring tables, when the user runs `/spec_kit:skill-advisor:auto`, then the command reads all skills, detects which lack explicit lane tokens and derived triggers, and proposes a complete set of optimized keywords.
-- **Scenario 2 — Interactive approval**: Given the confirm workflow, when the command proposes a new token for explicit.ts, then the user sees the before/after diff and can approve or reject each change individually.
-- **Scenario 3 — Skill graph re-indexed**: Given optimized graph-metadata.json files have been written, when the command runs `skill_graph_scan`, then the SQLite skill graph is refreshed with updated trigger phrases and the scan report shows updated node/edge counts.
-- **Scenario 4 — Validation succeeds**: Given all scoring table changes have been applied, when the command runs `vitest run skill_advisor/tests/`, then all 220 tests pass without regression.
-- **Scenario 5 — Setup guide works**: Given a new user follows `SET-UP - Skill Advisor.md` from scratch, when they paste the AI-first prompt, then the AI guides them through skill analysis and optimization without requiring knowledge of internal scoring architecture.
+**Scenario 1 — New user discovers gap**
+
+**Given** a repo with skills but no optimized scoring tables, **When** the user runs `/spec_kit:skill-advisor:auto`, **Then** the command reads all skills, detects which lack explicit lane tokens and derived triggers, and proposes a complete set of optimized keywords.
+
+**Scenario 2 — Interactive approval**
+
+**Given** the confirm workflow, **When** the command proposes a new token for explicit.ts, **Then** the user sees the before/after diff and can approve or reject each change individually.
+
+**Scenario 3 — Skill graph re-indexed**
+
+**Given** optimized graph-metadata.json files have been written, **When** the command runs `skill_graph_scan`, **Then** the SQLite skill graph is refreshed with updated trigger phrases and the scan report shows updated node/edge counts.
+
+**Scenario 4 — Validation succeeds**
+
+**Given** all scoring table changes have been applied, **When** the command runs the advisor test suite via vitest, **Then** all 220 tests pass without regression.
+
+**Scenario 5 — Setup guide works**
+
+**Given** a new user follows the SET-UP - Skill Advisor install guide from scratch, **When** they paste the AI-first prompt, **Then** the AI guides them through skill analysis and optimization without requiring knowledge of internal scoring architecture.
 <!-- /ANCHOR:edge-cases -->
 
 ---

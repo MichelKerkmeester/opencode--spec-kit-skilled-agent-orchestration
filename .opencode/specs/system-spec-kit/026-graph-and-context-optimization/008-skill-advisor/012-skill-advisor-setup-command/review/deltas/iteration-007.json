@@ -1,0 +1,108 @@
+{
+  "iteration": 7,
+  "dimensions": ["convergence"],
+  "filesReviewed": [
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/deep-review-strategy.md",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/deep-review-state.jsonl",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/iterations/iteration-001.md",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/iterations/iteration-002.md",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/logs/iteration-003.log",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/iterations/iteration-004.md",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/iterations/iteration-005.md",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/logs/iteration-006.log",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/deltas/iteration-001.json",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/deltas/iteration-002.json",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/deltas/iteration-004.json",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/deltas/iteration-005.json",
+    ".opencode/command/spec_kit/skill-advisor.md",
+    ".opencode/command/spec_kit/assets/spec_kit_skill-advisor_auto.yaml",
+    ".opencode/command/spec_kit/assets/spec_kit_skill-advisor_confirm.yaml",
+    ".opencode/install_guides/SET-UP - Skill Advisor.md",
+    ".opencode/skill/system-spec-kit/mcp_server/README.md"
+  ],
+  "findings": {
+    "p0": [],
+    "p1": [
+      {
+        "id": "F-CONV-001",
+        "title": "Iterations 003 and 006 are missing canonical markdown and delta JSON files even though their logs contain three-artifact payloads",
+        "origin": "iteration-007",
+        "evidence": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/deep-review-state.jsonl:3-6; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/logs/iteration-003.log:170-316; .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/review/logs/iteration-006.log:201-373",
+        "impact": "Synthesis can recover findings from logs, but reducer-style replay over canonical iteration and delta paths can miss iterations 003 and 006.",
+        "remediation": "Materialize the log-embedded artifacts into canonical paths and append their missing state records, or make synthesis parse and label the log-embedded artifacts as recovered lineage."
+      }
+    ],
+    "p2": []
+  },
+  "p0Closure": {
+    "p0OpenedIterations1To6": 0,
+    "p0Resolved": 0,
+    "p0Outstanding": 0,
+    "notes": "Iterations 001, 002, 003, 004, 005, and 006 all recorded no P0 findings."
+  },
+  "carriedForward": {
+    "p1": [
+      {"id": "F-CORR-001", "origin": "iteration-001", "status": "outstanding"},
+      {"id": "F-CORR-002", "origin": "iteration-001", "status": "outstanding"},
+      {"id": "F-CORR-003", "origin": "iteration-001", "status": "outstanding"},
+      {"id": "F-CORR-005", "origin": "iteration-002", "status": "outstanding"},
+      {"id": "F-CORR-006", "origin": "iteration-002", "status": "outstanding"},
+      {"id": "F-CORR-007", "origin": "iteration-002", "status": "outstanding"},
+      {"id": "F-CORR-008", "origin": "iteration-002", "status": "outstanding"},
+      {"id": "F-CORR-010", "origin": "iteration-003", "status": "outstanding"},
+      {"id": "F-CORR-011", "origin": "iteration-003", "status": "outstanding"},
+      {"id": "F-CORR-012", "origin": "iteration-003", "status": "outstanding"},
+      {"id": "F-CORR-013", "origin": "iteration-003", "status": "outstanding"},
+      {"id": "F-SEC-001", "origin": "iteration-004", "status": "outstanding"},
+      {"id": "F-SEC-002", "origin": "iteration-004", "status": "outstanding"},
+      {"id": "F-SEC-003", "origin": "iteration-004", "status": "outstanding"},
+      {"id": "F-SEC-004", "origin": "iteration-004", "status": "outstanding"},
+      {"id": "F-SEC-005", "origin": "iteration-004", "status": "outstanding"},
+      {"id": "F-TRACE-001", "origin": "iteration-005", "status": "outstanding"},
+      {"id": "F-TRACE-002", "origin": "iteration-005", "status": "outstanding"},
+      {"id": "F-TRACE-003", "origin": "iteration-005", "status": "outstanding"},
+      {"id": "F-TRACE-004", "origin": "iteration-005", "status": "outstanding"},
+      {"id": "F-TRACE-005", "origin": "iteration-005", "status": "outstanding"},
+      {"id": "F-TRACE-006", "origin": "iteration-005", "status": "outstanding"},
+      {"id": "F-MAINT-001", "origin": "iteration-006", "status": "outstanding"},
+      {"id": "F-MAINT-002", "origin": "iteration-006", "status": "outstanding"},
+      {"id": "F-CONV-001", "origin": "iteration-007", "status": "outstanding"}
+    ],
+    "p2": [
+      {"id": "F-CORR-004", "origin": "iteration-001", "status": "advisory"},
+      {"id": "F-CORR-009", "origin": "iteration-002", "status": "advisory"},
+      {"id": "F-CORR-014", "origin": "iteration-003", "status": "advisory"},
+      {"id": "F-SEC-006", "origin": "iteration-004", "status": "advisory"},
+      {"id": "F-MAINT-003", "origin": "iteration-006", "status": "advisory"}
+    ]
+  },
+  "crossDimensionPatterns": [
+    "Mutation-boundary assertions recur across F-CORR-006, F-SEC-002, and F-MAINT-002.",
+    "Rollback safety recurs across F-CORR-004, F-CORR-012, F-CORR-013, and F-SEC-003.",
+    "Dry-run/proposal artifact handling spans F-CORR-003 and F-SEC-005.",
+    "Metadata schema/path drift spans F-CORR-005, F-CORR-010, F-TRACE-001, and F-TRACE-002.",
+    "Approval/scope ambiguity spans F-CORR-008, F-CORR-009, F-CORR-011, and F-CORR-014."
+  ],
+  "qualityGates": {
+    "evidence": "PASS",
+    "scope": "PASS",
+    "coverage": "PASS",
+    "p0Closure": "PASS",
+    "artifactContinuity": "CONDITIONAL"
+  },
+  "convergenceVerdict": {
+    "newFindingsRatio": 0.0333,
+    "dimensionsCovered": ["correctness", "security", "traceability", "maintainability"],
+    "p0_resolved": 0,
+    "p0_outstanding": 0,
+    "p1_outstanding": 25,
+    "p2_outstanding": 5,
+    "verdict": "CONDITIONAL",
+    "hasAdvisories": true,
+    "stop_reason": "max_iterations"
+  },
+  "newFindingsCount": 1,
+  "totalFindingsToDate": 30,
+  "newFindingsRatio": 0.0333,
+  "timestamp": "2026-04-25T19:24:00+02:00"
+}
