@@ -77,7 +77,15 @@
     { "old": "026-graph-and-context-optimization/009-hook-package", "new": "026-graph-and-context-optimization/010-hook-parity" },
     { "old": "006-search-routing-advisor", "new": "008-skill-advisor" },
     { "old": "010-hook-package", "new": "010-hook-parity" },
-    { "old": "009-hook-package", "new": "010-hook-parity" }
+    { "old": "009-hook-package", "new": "010-hook-parity" },
+    { "old": "026-graph-and-context-optimization/008-runtime-executor-hardening", "new": "026-graph-and-context-optimization/004-runtime-executor-hardening" },
+    { "old": "026-graph-and-context-optimization/003-code-graph-package", "new": "026-graph-and-context-optimization/007-code-graph" },
+    { "old": "026-graph-and-context-optimization/002-continuity-memory-runtime", "new": "026-graph-and-context-optimization/003-continuity-memory-runtime" },
+    { "old": "026-graph-and-context-optimization/010-memory-indexer-invariants", "new": "026-graph-and-context-optimization/005-memory-indexer-invariants" },
+    { "old": "026-graph-and-context-optimization/010-memory-indexer-lineage-and-concurrency-fix", "new": "026-graph-and-context-optimization/005-memory-indexer-invariants" },
+    { "old": "026-graph-and-context-optimization/011-resource-map-template", "new": "026-graph-and-context-optimization/002-resource-map-template" },
+    { "old": "026-graph-and-context-optimization/011-index-scope-and-constitutional-tier-invariants", "new": "026-graph-and-context-optimization/005-memory-indexer-invariants" },
+    { "old": "026-graph-and-context-optimization/005-release-cleanup-playbooks", "new": "026-graph-and-context-optimization/000-release-cleanup-playbooks" }
   ],
   "skip_paths": [
     "**/research/iterations/**",

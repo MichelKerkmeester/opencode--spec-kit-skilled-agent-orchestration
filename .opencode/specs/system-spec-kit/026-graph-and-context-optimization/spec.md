@@ -40,7 +40,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 
 ## EXECUTIVE SUMMARY
 
-Packet `026-graph-and-context-optimization` presents an 11-wrapper active navigation surface after two topical consolidation passes. The first pass (2026-04-21) collapsed 29 chronological phase folders into nine thematic wrappers with originals preserved as child packets. The second pass (2026-04-25) merged `006-search-routing-advisor/` into `008-skill-advisor/`, redistributed children of the former `010-hook-package/` across `007-code-graph/`, `008-skill-advisor/`, and the renamed `010-hook-parity/`, and added `009-memory-causal-graph/` as a post-hoc Level-2 documentation packet for live infrastructure.
+Packet `026-graph-and-context-optimization` presents an 11-wrapper active navigation surface after two topical consolidation passes. The first pass (2026-04-21) collapsed 29 chronological phase folders into nine thematic wrappers with originals preserved as child packets. The second pass (2026-04-25) merged `008-skill-advisor/` into `008-skill-advisor/`, redistributed children of the former `010-hook-parity/` across `007-code-graph/`, `008-skill-advisor/`, and the renamed `010-hook-parity/`, and added `009-memory-causal-graph/` as a post-hoc Level-2 documentation packet for live infrastructure.
 
 **Key Decisions**: Consolidate by theme rather than chronology, keep root `research/`, `review/`, and `scratch/` folders in place, and use `merged-phase-map.md` plus per-phase context index files as the bridge from old paths to active homes.
 
@@ -67,7 +67,7 @@ Packet `026-graph-and-context-optimization` presents an 11-wrapper active naviga
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The root packet originally described a 19-phase map while the filesystem exposed 29 direct top-level phases, and follow-up work continued to be added as new siblings even when it belonged to existing thematic tracks. The first consolidation reduced this to nine thematic wrappers, but a subsequent topical pass found that advisor work was split across two wrappers (`006-search-routing-advisor/` and parts of `010-hook-package/`), code-graph hook work was hidden inside the hook package, and the live memory-causal-graph infrastructure had no canonical documentation home.
+The root packet originally described a 19-phase map while the filesystem exposed 29 direct top-level phases, and follow-up work continued to be added as new siblings even when it belonged to existing thematic tracks. The first consolidation reduced this to nine thematic wrappers, but a subsequent topical pass found that advisor work was split across two wrappers (`008-skill-advisor/` and parts of `010-hook-parity/`), code-graph hook work was hidden inside the hook package, and the live memory-causal-graph infrastructure had no canonical documentation home.
 
 ### Purpose
 Provide one canonical 11-wrapper active map after two topical consolidation passes while preserving every original packet as a child phase folder with clear old-to-new bridges in `merged-phase-map.md`.
@@ -82,7 +82,7 @@ Provide one canonical 11-wrapper active map after two topical consolidation pass
 - Maintain the 11-wrapper active surface produced by both consolidation passes.
 - Keep original phase packets as direct child folders under their thematic wrapper.
 - Update root docs, metadata, `merged-phase-map.md`, and per-wrapper context indexes bridge docs as further moves happen.
-- Refresh moved packet metadata with new paths plus migration aliases for old packet IDs (including second-pass aliases from `006-search-routing-advisor/` and `010-hook-package/`).
+- Refresh moved packet metadata with new paths plus migration aliases for old packet IDs (including second-pass aliases from `008-skill-advisor/` and `010-hook-parity/`).
 
 ### Out of Scope
 - Changing runtime code.
@@ -114,8 +114,8 @@ Provide one canonical 11-wrapper active map after two topical consolidation pass
 | `003-continuity-memory-runtime/` | Cache hooks, memory quality, continuity refactor, and memory-save rewrite | Four child phases preserved intact. |
 | `004-runtime-executor-hardening/` | Foundational runtime, CLI executor matrix, and system hardening | Three child phases preserved intact. |
 | `005-memory-indexer-invariants/` | Memory indexer lineage fix and constitutional-tier index-scope invariants (root-only merge) | No child phases — both tracks merged into root docs. |
-| `007-code-graph/` | Code graph upgrades, self-contained package migration, context/scan scope, and code-graph hook/advisor refinement | Five child phases (last two added in second pass from former `010-hook-package/013` and `010-hook-package/015`). |
-| `008-skill-advisor/` | Skill advisor system: search/routing tuning, advisor graph, phrase boosters, smart-router, advisor docs/standards, hook surface, daemon unification, plugin hardening, and hook improvements | 11 child phases (six absorbed from `006-search-routing-advisor/` plus five from former `010-hook-package/{001,002,008,009,014}`). |
+| `007-code-graph/` | Code graph upgrades, self-contained package migration, context/scan scope, and code-graph hook/advisor refinement | Five child phases (last two added in second pass from former `010-hook-parity/013` and `010-hook-parity/015`). |
+| `008-skill-advisor/` | Skill advisor system: search/routing tuning, advisor graph, phrase boosters, smart-router, advisor docs/standards, hook surface, daemon unification, plugin hardening, and hook improvements | 11 child phases (six absorbed from `008-skill-advisor/` plus five from former `010-hook-parity/{001,002,008,009,014}`). |
 | `009-memory-causal-graph/` | Post-hoc canonical documentation home for the live causal-graph infrastructure (four MCP tools, `causal_edges` schema, six-relation taxonomy, ownership boundary) | Level-2 documentation packet, no children, no code changes. |
 | `010-hook-parity/` | Runtime hook parity across Claude / Codex / Copilot / OpenCode plugin: schema fixes, wrapper wiring fixes, parity remediations | Eight child phases renumbered 001-008 after second-pass migrations out. |
 | `012-graph-impact-and-affordance-uplift/` | GitNexus pt-01 + pt-02 adoption: phase-DAG runner, edge explanation/impact uplift, advisor affordance evidence, memory causal trust display, docs/catalogs rollup | Six child phases. |
@@ -145,9 +145,9 @@ Research convergence in the archived `001-research-and-baseline` corpus means sy
 |------|----|----------|--------------|
 | `001-research-and-baseline` | `003-continuity-memory-runtime` | Research and baseline findings remain available before runtime/memory consolidation. | Both wrappers validate and expose context indexes. |
 | `003-continuity-memory-runtime` | `007-code-graph` | Continuity and memory surfaces are stable enough for graph-package and graph-context work. | Child packets covering memory/runtime are preserved with metadata aliases. |
-| `007-code-graph` | `008-skill-advisor` | Code-graph upgrades and hook/advisor refinement land before advisor system unification. | Second-pass code-graph children (`004`, `005`) carry migration aliases from `010-hook-package/{013,015}`. |
+| `007-code-graph` | `008-skill-advisor` | Code-graph upgrades and hook/advisor refinement land before advisor system unification. | Second-pass code-graph children (`004`, `005`) carry migration aliases from `010-hook-parity/{013,015}`. |
 | `008-skill-advisor` | `009-memory-causal-graph` | Advisor consolidation precedes documenting the causal-graph infrastructure that informs trust display. | `008-skill-advisor` has 11 children; `009-memory-causal-graph` is post-hoc documentation only. |
-| `009-memory-causal-graph` | `010-hook-parity` | Causal-graph documentation precedes runtime hook parity work that touches advisor + memory hooks. | `010-hook-parity` retains migration aliases for `010-hook-package/` and `009-hook-package/`. |
+| `009-memory-causal-graph` | `010-hook-parity` | Causal-graph documentation precedes runtime hook parity work that touches advisor + memory hooks. | `010-hook-parity` retains migration aliases for `010-hook-parity/` and `010-hook-parity/`. |
 | `010-hook-parity` | `012-graph-impact-and-affordance-uplift` | Runtime hook parity precedes the GitNexus adoption uplift program. | `012-graph-impact-and-affordance-uplift` consumes graph and advisor surfaces in display-only mode. |
 <!-- /ANCHOR:phase-map -->
 
@@ -162,7 +162,7 @@ Research convergence in the archived `001-research-and-baseline` corpus means sy
 |----|-------------|---------------------|
 | REQ-001 | Maintain a topical-thematic active phase surface. | Root direct phase folders are exactly the 11 approved wrappers; numbering gaps at `006` and `011` are intentional and documented. |
 | REQ-002 | Preserve every original phase packet across both consolidation passes. | Every old phase `001` through `029` appears exactly once in the first-pass section of `merged-phase-map.md`, and every second-pass move/rename appears exactly once in the appended second-pass section. |
-| REQ-003 | Keep metadata resolvable after moves. | All migrated `description.json` and `graph-metadata.json` files parse and record migration aliases or source fields, including second-pass aliases for `006-search-routing-advisor/` and `010-hook-package/`. |
+| REQ-003 | Keep metadata resolvable after moves. | All migrated `description.json` and `graph-metadata.json` files parse and record migration aliases or source fields, including second-pass aliases for `008-skill-advisor/` and `010-hook-parity/`. |
 
 ### P1 - Required (complete OR user-approved deferral)
 

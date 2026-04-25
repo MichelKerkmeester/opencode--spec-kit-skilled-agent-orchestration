@@ -1,5 +1,5 @@
 ---
-title: "...ystem-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package/tasks]"
+title: "...ystem-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package/tasks]"
 description: "Ordered task ladder for code-graph self-contained package migration."
 trigger_phrases:
   - "ystem"
@@ -14,7 +14,7 @@ importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package"
     last_updated_at: "2026-04-24T15:25:01Z"
     last_updated_by: "backfill-memory-block"
     recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
@@ -57,7 +57,7 @@ _memory:
 ## Dispatch prompt for cli-codex
 
 ```
-Implement Phase 028 per spec + tasks at .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package/
+Implement Phase 028 per spec + tasks at .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package/
 
 Scope: pure behavior-preserving migration of code-graph into self-contained mcp_server/code-graph/ package.
 - 17 files from mcp_server/lib/code-graph/ → mcp_server/code-graph/lib/ (git mv)

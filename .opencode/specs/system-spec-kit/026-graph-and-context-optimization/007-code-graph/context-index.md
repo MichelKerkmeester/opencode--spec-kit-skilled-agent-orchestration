@@ -12,7 +12,7 @@ contextType: "implementation"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph"
     last_updated_at: "2026-04-23T14:51:15Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Renumbered nested phases"

@@ -2,7 +2,7 @@
 title: Deep Research Strategy — Code Graph Scan Scope Anomaly (pt-04)
 description: Iterative investigation into why code_graph_scan returned 33 files after packet 012 instead of the expected 1000-3000.
 sessionId: dr-2026-04-23-130100-pt04
-specFolder: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope
+specFolder: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope
 ---
 
 # Deep Research Strategy — Code Graph Scan Scope Anomaly
@@ -140,7 +140,7 @@ Iteration 1 should: (a) read `.opencode/skill/system-spec-kit/mcp_server/code-gr
 - DB: `mcp_server/database/code-graph.sqlite`
 - Repo root .gitignore + nested `.gitignore` files (need enumeration)
 - Surface matrix doc: `code-graph/README.md` (or `SURFACES.md` — packet 012 created/folded)
-- Packet 012 implementation summary: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/implementation-summary.md`
+- Packet 012 implementation summary: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/implementation-summary.md`
 - Handover: `007-deep-review-remediation/session-handover-2026-04-23.md`
 
 ---

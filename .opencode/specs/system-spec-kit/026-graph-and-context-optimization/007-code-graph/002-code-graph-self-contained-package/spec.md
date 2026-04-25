@@ -1,5 +1,5 @@
 ---
-title: "F [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package/spec]"
+title: "F [system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package/spec]"
 description: "Migrate mcp_server/lib/code-graph/ + handlers/code-graph/ + tools/code-graph-tools.ts + tests/code-graph-*.vitest.ts into a self-contained mcp_server/code-graph/ package mirroring the skill-advisor architecture shipped in Phase 027. Pure behavior-preserving move + import-path update + dispatcher rewiring."
 trigger_phrases:
   - "028"
@@ -10,7 +10,7 @@ importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package"
     last_updated_at: "2026-04-20T20:00:00Z"
     last_updated_by: "orchestrator"
     recent_action: "Scaffolded Phase 028 code-graph self-contained package migration"

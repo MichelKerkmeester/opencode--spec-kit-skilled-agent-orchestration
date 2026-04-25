@@ -25,13 +25,13 @@
 
 ## Evidence
 - `.opencode/skill/system-spec-kit/SKILL.md`
-  - Source spec evidence: [spec.md §3](../006-claude-hook-findings-remediation/spec.md) defines normalization across `UserPromptSubmit`, `SessionStart`, `PreCompact`, and `Stop` plus playbook updates; see especially lines 83-85 and 99-101.
-  - Source implementation evidence: [tasks.md](../006-claude-hook-findings-remediation/tasks.md) marks the settings normalization and doc additions complete at lines 62-65.
-  - Source verification evidence: [implementation-summary.md](../006-claude-hook-findings-remediation/implementation-summary.md) says the project-local Claude settings were normalized across the four event blocks at lines 76-90.
+  - Source spec evidence: [spec.md §3](../004-claude-hook-findings-remediation/spec.md) defines normalization across `UserPromptSubmit`, `SessionStart`, `PreCompact`, and `Stop` plus playbook updates; see especially lines 83-85 and 99-101.
+  - Source implementation evidence: [tasks.md](../004-claude-hook-findings-remediation/tasks.md) marks the settings normalization and doc additions complete at lines 62-65.
+  - Source verification evidence: [implementation-summary.md](../004-claude-hook-findings-remediation/implementation-summary.md) says the project-local Claude settings were normalized across the four event blocks at lines 76-90.
   - Target file currently stale: [SKILL.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/SKILL.md:735) lists only `PreCompact`, `SessionStart`, and `Stop`, with no `UserPromptSubmit` row through line 745.
 - `.opencode/skill/system-spec-kit/references/config/hook_system.md`
-  - Source spec evidence: [spec.md §4-5](../006-claude-hook-findings-remediation/spec.md) makes `UserPromptSubmit` hook-count verification and Claude-schema normalization explicit; see lines 115-116, 132-135, and 148-156.
-  - Source implementation evidence: [implementation-summary.md](../006-claude-hook-findings-remediation/implementation-summary.md) records the normalized `.claude/settings.local.json` shape and the new multi-turn hook harness at lines 76-90.
+  - Source spec evidence: [spec.md §4-5](../004-claude-hook-findings-remediation/spec.md) makes `UserPromptSubmit` hook-count verification and Claude-schema normalization explicit; see lines 115-116, 132-135, and 148-156.
+  - Source implementation evidence: [implementation-summary.md](../004-claude-hook-findings-remediation/implementation-summary.md) records the normalized `.claude/settings.local.json` shape and the new multi-turn hook harness at lines 76-90.
   - Target file currently stale: [hook_system.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/references/config/hook_system.md:7) shows a three-hook registration example at lines 7-19 and lifecycle text at lines 21-29 that omits `UserPromptSubmit`.
 
 ## Uncertainty

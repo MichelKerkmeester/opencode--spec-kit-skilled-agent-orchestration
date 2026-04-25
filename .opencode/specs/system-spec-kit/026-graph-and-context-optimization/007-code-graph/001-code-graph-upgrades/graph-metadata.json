@@ -52,7 +52,7 @@
       ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-query-handler.vitest.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/graph-upgrades-regression-floor.vitest.ts.test.ts",
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/implementation-summary.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades/implementation-summary.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
@@ -137,7 +137,7 @@
       {
         "name": "implementation-summary.md",
         "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/implementation-summary.md",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades/implementation-summary.md",
         "source": "derived"
       },
       {
@@ -223,20 +223,20 @@
   },
   "aliases": [
     "system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades",
-    "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/005-code-graph-upgrades",
-    "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades"
+    "system-spec-kit/026-graph-and-context-optimization/007-code-graph/005-code-graph-upgrades",
+    "system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades"
   ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades",
-    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades",
     "consolidation": "026-phase-surface-29-to-9",
     "flattened_at": "2026-04-21T13:00:00Z",
     "layout": "phase-root-local-sequence",
-    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/005-code-graph-upgrades",
-    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/005-code-graph-upgrades",
-    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/005-code-graph-upgrades",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/005-code-graph-upgrades",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades",
     "local_phase_slug": "001-code-graph-upgrades",
     "original_phase_slug": "005-code-graph-upgrades",
     "renumbered_at": "2026-04-21T14:00:00Z"

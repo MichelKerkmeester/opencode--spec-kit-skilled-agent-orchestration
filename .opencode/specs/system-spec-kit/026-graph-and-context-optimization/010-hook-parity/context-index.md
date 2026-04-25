@@ -22,7 +22,7 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
     last_updated_at: "2026-04-25T11:50:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "2026-04-25 second consolidation: 7 children moved out (5 to 008-skill-advisor, 2 to 007-code-graph); renamed from 010-hook-package; 8 hook-parity children renumbered 001-008"
+    recent_action: "2026-04-25 second consolidation: 7 children moved out (5 to 008-skill-advisor, 2 to 007-code-graph); renamed from 010-hook-parity; 8 hook-parity children renumbered 001-008"
     next_safe_action: "Use this index for navigation, then reapply 006 and 007"
     blockers: []
     key_files:
@@ -38,8 +38,8 @@ _memory:
     open_questions: []
     answered_questions: []
     migration_aliases:
-      - "system-spec-kit/026-graph-and-context-optimization/009-hook-package"
-      - "system-spec-kit/026-graph-and-context-optimization/010-hook-package"
+      - "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
+      - "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
 ---
 # Context Index: Hook Parity
 

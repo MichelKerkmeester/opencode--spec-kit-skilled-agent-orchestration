@@ -21,7 +21,7 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
     last_updated_at: "2026-04-25T11:50:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "2026-04-25 second consolidation: 7 children moved out (5 to 008-skill-advisor, 2 to 007-code-graph); renamed from 010-hook-package; 8 hook-parity children renumbered 001-008"
+    recent_action: "2026-04-25 second consolidation: 7 children moved out (5 to 008-skill-advisor, 2 to 007-code-graph); renamed from 010-hook-parity; 8 hook-parity children renumbered 001-008"
     next_safe_action: "Run validate.sh --strict on the packet, then refresh DB via generate-context.js to re-index under the new slug"
     blockers: []
     key_files:
@@ -37,8 +37,8 @@ _memory:
     open_questions: []
     answered_questions: []
     migration_aliases:
-      - "system-spec-kit/026-graph-and-context-optimization/009-hook-package"
-      - "system-spec-kit/026-graph-and-context-optimization/010-hook-package"
+      - "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
+      - "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Hook Parity
@@ -59,7 +59,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 | **Created** | 2026-04-21 |
 | **Branch** | `026-graph-and-context-optimization` |
 | **Parent Spec** | ../spec.md |
-| **Predecessor** | ../008-runtime-executor-hardening/spec.md |
+| **Predecessor** | ../004-runtime-executor-hardening/spec.md |
 | **Successor** | None |
 <!-- /ANCHOR:metadata -->
 

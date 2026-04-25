@@ -82,5 +82,5 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 - Plan: `plan.md`
 - Checklist: `checklist.md`
 - Impl summary: `implementation-summary.md`
-- Source of deferrals: `../007-opencode-plugin-loader-remediation/decision-record.md` ADR-005
+- Source of deferrals: `../../010-hook-parity/005-opencode-plugin-loader-remediation/decision-record.md` ADR-005
 <!-- /ANCHOR:cross-refs -->

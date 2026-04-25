@@ -21,7 +21,7 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
     last_updated_at: "2026-04-25T11:50:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "2026-04-25 second consolidation: 7 children moved out (5 to 008-skill-advisor, 2 to 007-code-graph); renamed from 010-hook-package; 8 hook-parity children renumbered 001-008"
+    recent_action: "2026-04-25 second consolidation: 7 children moved out (5 to 008-skill-advisor, 2 to 007-code-graph); renamed from 010-hook-parity; 8 hook-parity children renumbered 001-008"
     next_safe_action: "Run validate.sh --strict on the packet, then refresh DB via generate-context.js to re-index under the new slug"
     blockers: []
     key_files:
@@ -37,8 +37,8 @@ _memory:
     open_questions: []
     answered_questions: []
     migration_aliases:
-      - "system-spec-kit/026-graph-and-context-optimization/009-hook-package"
-      - "system-spec-kit/026-graph-and-context-optimization/010-hook-package"
+      - "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
+      - "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 ---
 # Implementation Plan: Hook Parity
@@ -94,7 +94,7 @@ Active thematic parent over direct child phase packets, scoped to runtime hook p
 - **Migration metadata**: aliases and migration fields in moved metadata JSON.
 
 ### Data Flow
-Root navigation points to this parent. The parent points to the 8 hook-parity child folders directly. Metadata aliases preserve old packet IDs (including prior `009-hook-package` and `010-hook-package` slugs) for graph and memory traversal.
+Root navigation points to this parent. The parent points to the 8 hook-parity child folders directly. Metadata aliases preserve old packet IDs (including prior `010-hook-parity` and `010-hook-parity` slugs) for graph and memory traversal.
 <!-- /ANCHOR:architecture -->
 
 ---

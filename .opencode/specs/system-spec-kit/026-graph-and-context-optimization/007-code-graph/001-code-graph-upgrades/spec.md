@@ -1,5 +1,5 @@
 ---
-title: "Feature Specifi [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/spec]"
+title: "Feature Specifi [system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades/spec]"
 description: "Plan the bounded post-R5/R6 code-graph upgrade packet that adds detector provenance, graph payload richness, and code-graph-local query ergonomics without overlapping packet 008."
 trigger_phrases:
   - "005-code-graph-upgrades"
@@ -9,7 +9,7 @@ importance_tier: "important"
 contextType: "planning"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades"
     last_updated_at: "2026-04-12T16:16:10Z"
     last_updated_by: "copilot-gpt-5-4"
     recent_action: "Reviewed packet docs"
@@ -100,7 +100,7 @@ Ship the bounded code-graph upgrade lane that improves detector fidelity, graph 
 | `.opencode/skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts` | Read-only verification | Confirm packet `011` trust surfaces remain unchanged while 014 stays graph-local. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts` | Modify | Verify numeric confidence validation on additive graph payload fields without claiming resume/bootstrap carriage. |
 | `.opencode/skill/system-spec-kit/scripts/tests/graph-upgrades-regression-floor.vitest.ts.test.ts` | Create | Add the packet-014 frozen regression floor for detector provenance and blast-radius depth behavior. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/implementation-summary.md` | Modify | Replace the planning placeholder with the shipped runtime closeout and verification record. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades/implementation-summary.md` | Modify | Replace the planning placeholder with the shipped runtime closeout and verification record. |
 <!-- /ANCHOR:scope -->
 
 ---

@@ -42,7 +42,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Predecessor** | ../004-smart-router-context-efficacy/spec.md |
-| **Successor** | ../006-smart-router-remediation-and-opencode-plugin/spec.md |
+| **Successor** | ../005-smart-router-remediation-and-opencode-plugin/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -180,7 +180,7 @@ No open questions remain for Phase 022 execution.
 
 ### Related Documents
 
-- Parent: `../../010-hook-parity/001-skill-advisor-hook-surface/` (shipped)
+- Parent: `../../008-skill-advisor/007-skill-advisor-hook-surface/` (shipped)
 - Sibling: `../004-smart-router-context-efficacy/` (research in progress)
 - sk-code-opencode skill: `../../../../skill/sk-code-opencode/SKILL.md`
 - skill-advisor: `.opencode/skill/skill-advisor/`

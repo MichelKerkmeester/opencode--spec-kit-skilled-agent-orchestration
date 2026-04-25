@@ -1,5 +1,5 @@
 ---
-title: "...ystem-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/tasks]"
+title: "...ystem-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/tasks]"
 description: "Tasks T-01..T-24 across stale highlights, scan excludes + gitignore, incremental full-scan recovery (IndexFilesOptions + seenSymbolIds), cross-file dedup defense (globalSeenIds + INSERT OR IGNORE), surface doc, and verification."
 trigger_phrases:
   - "026/003/003 tasks"
@@ -9,7 +9,7 @@ contextType: "implementation"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope"
     last_updated_at: "2026-04-23T11:55:00Z"
     last_updated_by: "claude-opus-4-7"
     recent_action: "Implementation complete; verification evidence captured"

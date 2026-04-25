@@ -11,10 +11,10 @@
     "supersedes": [],
     "related_to": [
       {
-        "packet_id": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades",
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades",
         "reason": "Legacy manual related_to entry normalized for schema-valid backfill.",
         "source": "manual",
-        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades"
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades"
       }
     ]
   },

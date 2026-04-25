@@ -49,8 +49,8 @@ Packet 008 audit surfaced one standards gap and three plugin alignment items. Th
 | **Created** | 2026-04-23 |
 | **Parent** | `026-graph-and-context-optimization/010-hook-parity/` |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `../008-skill-advisor-plugin-hardening/spec.md` |
-| **Successor** | `../010-copilot-wrapper-schema-fix/spec.md` |
+| **Predecessor** | `../009-skill-advisor-plugin-hardening/spec.md` |
+| **Successor** | `../../010-hook-parity/006-copilot-wrapper-schema-fix/spec.md` |
 | **Related** | `008-skill-advisor-plugin-hardening/` (audit source) |
 <!-- /ANCHOR:metadata -->
 
@@ -173,4 +173,4 @@ None. The exemption pattern is established (§9 Test File Exemption Tier), the p
 - Audit source: in-conversation analysis 2026-04-23 against the quality standards reference and the JavaScript checklist
 - Sibling reference: `.opencode/plugins/spec-kit-compact-code-graph.js` (already follows section-divider pattern)
 - OpenCode contract: `.opencode/node_modules/@opencode-ai/plugin/dist/index.d.ts:23`
-- Source packet (audit): `../008-skill-advisor-plugin-hardening/`
+- Source packet (audit): `../009-skill-advisor-plugin-hardening/`

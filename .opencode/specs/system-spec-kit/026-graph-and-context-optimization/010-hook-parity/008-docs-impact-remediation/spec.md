@@ -34,7 +34,7 @@ _memory:
 | **Created** | 2026-04-23 |
 | **Parent** | `026-graph-and-context-optimization/010-hook-parity/` |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `../011-copilot-writer-wiring/spec.md` |
+| **Predecessor** | `../007-copilot-writer-wiring/spec.md` |
 | **Source Analysis** | `../impact-analysis/merged-impact-report.md` |
 | **Underlying Reports** | `../impact-analysis/01-impact.md` through `10-impact.md` |
 

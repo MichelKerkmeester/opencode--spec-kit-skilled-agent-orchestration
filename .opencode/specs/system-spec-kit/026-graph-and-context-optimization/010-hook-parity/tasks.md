@@ -21,7 +21,7 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
     last_updated_at: "2026-04-25T11:50:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "2026-04-25 second consolidation: 7 children moved out (5 to 008-skill-advisor, 2 to 007-code-graph); renamed from 010-hook-package; 8 hook-parity children renumbered 001-008"
+    recent_action: "2026-04-25 second consolidation: 7 children moved out (5 to 008-skill-advisor, 2 to 007-code-graph); renamed from 010-hook-parity; 8 hook-parity children renumbered 001-008"
     next_safe_action: "Run validate.sh --strict on the packet, then refresh DB via generate-context.js to re-index under the new slug"
     blockers: []
     key_files:
@@ -37,8 +37,8 @@ _memory:
     open_questions: []
     answered_questions: []
     migration_aliases:
-      - "system-spec-kit/026-graph-and-context-optimization/009-hook-package"
-      - "system-spec-kit/026-graph-and-context-optimization/010-hook-package"
+      - "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
+      - "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 ---
 # Tasks: Hook Parity
@@ -99,7 +99,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 
 - [x] All 8 hook-parity child packets are represented in `context-index.md`.
 - [x] Original folders are direct children numbered 001-008.
-- [x] Metadata contains migration aliases for prior `009-hook-package` and `010-hook-package` slugs.
+- [x] Metadata contains migration aliases for prior `010-hook-parity` and `010-hook-parity` slugs.
 - [x] Per-runtime hook remediation packets 001-005 are represented as direct children.
 - [x] Copilot wrapper schema and writer-wiring packets 006-007 are represented as direct children.
 - [x] Documentation impact remediation packet 008 is represented as a direct child.

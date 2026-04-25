@@ -59,8 +59,8 @@ End-to-end hook testing on 2026-04-23 (two real `claude -p` sessions + five dire
 | **Created** | 2026-04-23 |
 | **Branch** | `006-claude-hook-findings-remediation` |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `../005-codex-hook-parity-remediation/spec.md` |
-| **Successor** | `../007-opencode-plugin-loader-remediation/spec.md` |
+| **Predecessor** | `../003-codex-hook-parity-remediation/spec.md` |
+| **Successor** | `../005-opencode-plugin-loader-remediation/spec.md` |
 <!-- /ANCHOR:metadata -->
 
 ---

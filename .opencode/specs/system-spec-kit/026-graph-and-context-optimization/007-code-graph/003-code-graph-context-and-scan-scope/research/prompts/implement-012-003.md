@@ -5,12 +5,12 @@ You are implementing the follow-up to packet 012/002, which fixed the stale-gate
 ## CONTEXT (read first)
 
 - **Research:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/007-deep-review-remediation-pt-04/research.md`
-- **Prior packet:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`
+- **Prior packet:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`
 - **Diagnostic finding:** Standalone parsing of all 1,858 candidate files via `parseFile()` produces ZERO cross-file symbol_id collisions (verified at `/tmp/collision-repro/simulate-db.mjs`). Yet the live MCP scan reproducibly fails on ~518 files with `UNIQUE constraint failed: code_nodes.symbol_id`. The discrepancy is unexplained but the fix is RUNTIME-INDEPENDENT defense-in-depth.
 
 ## SCOPE (Level 2 packet)
 
-Path: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/003-cross-file-dedup-defense/`
+Path: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/003-cross-file-dedup-defense/`
 
 Two layers of defense-in-depth (both required):
 

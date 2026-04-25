@@ -9,7 +9,7 @@ contextType: "implementation"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope"
     last_updated_at: "2026-04-23T14:30:00Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Full-scan readiness reopened pending recovery rerun"

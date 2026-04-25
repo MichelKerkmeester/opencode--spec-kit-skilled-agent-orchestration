@@ -62,7 +62,7 @@ Because `graphQualitySummary`, `selectedCandidate`, blocked read payloads, start
 
 ## Recommended Resource Map Updates
 
-Add the following as `Cited` or `Analyzed` entries to packet `013`’s [`resource-map.md`](../../010-hook-parity/013-code-graph-hook-improvements/resource-map.md):
+Add the following as `Cited` or `Analyzed` entries to packet `013`’s [`resource-map.md`](../../007-code-graph/004-code-graph-hook-improvements/resource-map.md):
 
 - `.opencode/skill/system-spec-kit/mcp_server/README.md`
 - `.opencode/skill/system-spec-kit/mcp_server/code-graph/README.md`

@@ -21,7 +21,7 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
     last_updated_at: "2026-04-25T11:50:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "2026-04-25 second consolidation: 7 children moved out (5 to 008-skill-advisor, 2 to 007-code-graph); renamed from 010-hook-package; 8 hook-parity children renumbered 001-008"
+    recent_action: "2026-04-25 second consolidation: 7 children moved out (5 to 008-skill-advisor, 2 to 007-code-graph); renamed from 010-hook-parity; 8 hook-parity children renumbered 001-008"
     next_safe_action: "Run validate.sh --strict on the packet, then refresh DB via generate-context.js to re-index under the new slug"
     blockers: []
     key_files:
@@ -37,8 +37,8 @@ _memory:
     open_questions: []
     answered_questions: []
     migration_aliases:
-      - "system-spec-kit/026-graph-and-context-optimization/009-hook-package"
-      - "system-spec-kit/026-graph-and-context-optimization/010-hook-package"
+      - "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
+      - "system-spec-kit/026-graph-and-context-optimization/010-hook-parity"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 ---
 # Implementation Summary
@@ -94,7 +94,7 @@ This parent now holds 8 active hook-parity phase packet(s) directly in its root.
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The hook-parity child folders were placed under the phase root, then metadata was updated with migration aliases (`009-hook-package` and `010-hook-package`) so old packet IDs remain discoverable. The Copilot, Codex, Claude, and OpenCode plugin loader remediation packets, alongside the Copilot wrapper schema and writer-wiring packets, live here because their scope is runtime hook parity. Skill-advisor work moved to `008-skill-advisor/`; code-graph hook work moved to `007-code-graph/`. Root research, review, and scratch folders stayed at the 026 packet root.
+The hook-parity child folders were placed under the phase root, then metadata was updated with migration aliases (`010-hook-parity` and `010-hook-parity`) so old packet IDs remain discoverable. The Copilot, Codex, Claude, and OpenCode plugin loader remediation packets, alongside the Copilot wrapper schema and writer-wiring packets, live here because their scope is runtime hook parity. Skill-advisor work moved to `008-skill-advisor/`; code-graph hook work moved to `007-code-graph/`. Root research, review, and scratch folders stayed at the 026 packet root.
 <!-- /ANCHOR:how-delivered -->
 
 ---

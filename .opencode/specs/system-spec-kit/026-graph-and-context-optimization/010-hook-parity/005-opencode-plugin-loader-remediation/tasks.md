@@ -131,5 +131,5 @@ Live finding 2026-04-23 from real OpenCode TUI session: hook remap works (briefs
 - Checklist: `checklist.md` in this folder.
 - Decision record: `decision-record.md` in this folder (ADR-001, ADR-002).
 - Implementation summary: `implementation-summary.md` (created post-implementation).
-- Sibling phases: `../004-copilot-hook-parity-remediation/`, `../005-codex-hook-parity-remediation/`.
+- Sibling phases: `../002-copilot-hook-parity-remediation/`, `../003-codex-hook-parity-remediation/`.
 <!-- /ANCHOR:cross-refs -->

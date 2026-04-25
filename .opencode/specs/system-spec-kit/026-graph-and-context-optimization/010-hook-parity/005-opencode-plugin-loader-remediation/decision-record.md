@@ -115,7 +115,7 @@ Choose **Outcome A: move helpers out of `.opencode/plugins/`**, with one compati
 - Installed package: `.opencode/node_modules/@opencode-ai/plugin/` (inspected during Phase 1).
 - Installed binary: `/Users/michelkerkmeester/.opencode/bin/opencode` and wrapper `/Users/michelkerkmeester/.superset/bin/opencode`.
 - Bundled worker: `/$bunfs/root/src/cli/cmd/tui/worker.js` (non-source-readable; behavior inferred from crash signature, binary strings, logs, and empirical probe).
-- Sibling phases: `../004-copilot-hook-parity-remediation/`, `../005-codex-hook-parity-remediation/` (different runtime, different gap).
+- Sibling phases: `../002-copilot-hook-parity-remediation/`, `../003-codex-hook-parity-remediation/` (different runtime, different gap).
 
 ---
 
@@ -296,4 +296,4 @@ Address four scoped fixes in Phase 5 and explicitly defer the larger architectur
 - **Spec**: `spec.md` §2 (problem), §4 (requirements REQ-001..REQ-013)
 - **Plan**: `plan.md` §2 quality gates, §4 phases (now 5 phases)
 - **Tasks**: `tasks.md` T-01..T-09 (Phase 1), T-10..T-19 (Phase 2), T-20..T-29 (Phase 3), T-30..T-35 (Phase 4 — hook remap), T-36..T-41 (Phase 5 — status accuracy + defensive guards)
-- **Sibling phases**: `../004-copilot-hook-parity-remediation/`, `../005-codex-hook-parity-remediation/`
+- **Sibling phases**: `../002-copilot-hook-parity-remediation/`, `../003-codex-hook-parity-remediation/`

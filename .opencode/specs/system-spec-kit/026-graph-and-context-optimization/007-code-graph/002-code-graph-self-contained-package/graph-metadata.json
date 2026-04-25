@@ -213,20 +213,20 @@
   },
   "aliases": [
     "system-spec-kit/026-graph-and-context-optimization/028-code-graph-self-contained-package",
-    "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/028-code-graph-self-contained-package",
-    "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package"
+    "system-spec-kit/026-graph-and-context-optimization/007-code-graph/028-code-graph-self-contained-package",
+    "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package"
   ],
   "migration": {
     "moved_at": "2026-04-21T12:00:00Z",
     "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/028-code-graph-self-contained-package",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/028-code-graph-self-contained-package",
-    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package",
     "consolidation": "026-phase-surface-29-to-9",
     "flattened_at": "2026-04-21T13:00:00Z",
     "layout": "phase-root-local-sequence",
-    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/028-code-graph-self-contained-package",
-    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/028-code-graph-self-contained-package",
-    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/028-code-graph-self-contained-package",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/028-code-graph-self-contained-package",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package",
     "local_phase_slug": "002-code-graph-self-contained-package",
     "original_phase_slug": "028-code-graph-self-contained-package",
     "renumbered_at": "2026-04-21T14:00:00Z"

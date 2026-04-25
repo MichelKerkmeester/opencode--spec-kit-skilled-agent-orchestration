@@ -142,7 +142,7 @@ The root packet described a 19-phase train while the filesystem exposed 29 direc
 ---
 
 <!-- ANCHOR:adr-002 -->
-## ADR-002: Merge `006-search-routing-advisor/` and advisor-themed `010-hook-package/` children into a single `008-skill-advisor/` wrapper
+## ADR-002: Merge `008-skill-advisor/` and advisor-themed `010-hook-parity/` children into a single `008-skill-advisor/` wrapper
 
 ### Metadata
 
@@ -157,12 +157,12 @@ The root packet described a 19-phase train while the filesystem exposed 29 direc
 <!-- ANCHOR:adr-002-context -->
 ### Context
 
-After the first consolidation pass (ADR-001) the skill-advisor system was browsable from two wrappers: `006-search-routing-advisor/` (search/routing tuning, advisor graph, phrase boosters, smart-router, docs/standards alignment, deferred remediation) and parts of `010-hook-package/` (hook surface, daemon-and-advisor unification, plugin hardening, standards alignment, hook improvements). The split forced cross-wrapper navigation when reasoning about advisor changes and made advisor-themed migration aliases hard to keep coherent.
+After the first consolidation pass (ADR-001) the skill-advisor system was browsable from two wrappers: `008-skill-advisor/` (search/routing tuning, advisor graph, phrase boosters, smart-router, docs/standards alignment, deferred remediation) and parts of `010-hook-parity/` (hook surface, daemon-and-advisor unification, plugin hardening, standards alignment, hook improvements). The split forced cross-wrapper navigation when reasoning about advisor changes and made advisor-themed migration aliases hard to keep coherent.
 
 ### Constraints
 
 - Every original phase packet must remain intact under the new home.
-- Migration aliases for the old `006-search-routing-advisor/` slug must be preserved for memory/graph continuity.
+- Migration aliases for the old `008-skill-advisor/` slug must be preserved for memory/graph continuity.
 - No code changes; no rewriting of historical child narratives.
 <!-- /ANCHOR:adr-002-context -->
 
@@ -171,9 +171,9 @@ After the first consolidation pass (ADR-001) the skill-advisor system was browsa
 <!-- ANCHOR:adr-002-decision -->
 ### Decision
 
-**We chose**: merge `006-search-routing-advisor/` and the five advisor-themed children of `010-hook-package/` into a single `008-skill-advisor/` wrapper.
+**We chose**: merge `008-skill-advisor/` and the five advisor-themed children of `010-hook-parity/` into a single `008-skill-advisor/` wrapper.
 
-**How it works**: All six children of `006-search-routing-advisor/` move under `008-skill-advisor/` (`001-search-and-routing-tuning/` through `006-deferred-remediation-and-telemetry-run/`; the never-existing `004-smart-router-context-efficacy/` slot was used to compact numbering). Five advisor-themed children move from `010-hook-package/` and renumber to `007`-`011` under `008-skill-advisor/`. The `006-search-routing-advisor/` folder is then deleted; its slug remains as a `migration_aliases` entry on `008-skill-advisor/spec.md`. The `006/` numeric slot at the root level remains intentionally empty (do not renumber).
+**How it works**: All six children of `008-skill-advisor/` move under `008-skill-advisor/` (`001-search-and-routing-tuning/` through `006-deferred-remediation-and-telemetry-run/`; the never-existing `004-smart-router-context-efficacy/` slot was used to compact numbering). Five advisor-themed children move from `010-hook-parity/` and renumber to `007`-`011` under `008-skill-advisor/`. The `008-skill-advisor/` folder is then deleted; its slug remains as a `migration_aliases` entry on `008-skill-advisor/spec.md`. The `006/` numeric slot at the root level remains intentionally empty (do not renumber).
 <!-- /ANCHOR:adr-002-decision -->
 
 ---
@@ -185,7 +185,7 @@ After the first consolidation pass (ADR-001) the skill-advisor system was browsa
 |--------|------|------|-------|
 | **Merge into `008-skill-advisor/`** | Single advisor home; coherent navigation; preserves all original packets as children | Requires renumbering and migration aliases | 9/10 |
 | Keep advisor work split across two wrappers | No move needed | Cross-wrapper navigation persists; advisor changes touch two top-level folders | 3/10 |
-| Move advisor work into `010-hook-package/` instead | Advisor + hook in one place | Mixes search/routing tuning with runtime hook-parity remediation; breaks topical coherence | 4/10 |
+| Move advisor work into `010-hook-parity/` instead | Advisor + hook in one place | Mixes search/routing tuning with runtime hook-parity remediation; breaks topical coherence | 4/10 |
 
 **Why this one**: The advisor system is a coherent topical surface; the search/routing thread and the hook/plugin/standards thread are both advisor work, and unifying them under `008-skill-advisor/` matches the natural mental model.
 <!-- /ANCHOR:adr-002-alternatives -->
@@ -198,7 +198,7 @@ After the first consolidation pass (ADR-001) the skill-advisor system was browsa
 **What improves**:
 - Advisor reasoning happens inside one wrapper.
 - 11 advisor-themed children share a single context index and continuity surface.
-- Migration aliases on `008-skill-advisor/spec.md` keep the `006-search-routing-advisor/` slug discoverable.
+- Migration aliases on `008-skill-advisor/spec.md` keep the `008-skill-advisor/` slug discoverable.
 
 **What it costs**:
 - The `006/` numeric slot at the root level becomes a deliberate gap (audit marker).
@@ -211,10 +211,10 @@ After the first consolidation pass (ADR-001) the skill-advisor system was browsa
 ### Implementation
 
 **What changes**:
-- Six children move from `006-search-routing-advisor/` to `008-skill-advisor/`.
-- Five children move from `010-hook-package/` to `008-skill-advisor/` and renumber to `007`-`011`.
-- `006-search-routing-advisor/` is deleted.
-- `008-skill-advisor/spec.md` records `migration_aliases: [system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor]`.
+- Six children move from `008-skill-advisor/` to `008-skill-advisor/`.
+- Five children move from `010-hook-parity/` to `008-skill-advisor/` and renumber to `007`-`011`.
+- `008-skill-advisor/` is deleted.
+- `008-skill-advisor/spec.md` records `migration_aliases: [system-spec-kit/026-graph-and-context-optimization/008-skill-advisor]`.
 
 **How to roll back**: Reverse the moves and restore root docs/metadata from version control. The mapping in `scratch/reorg-2026-04-25/mapping.json` is the authoritative source for each move.
 <!-- /ANCHOR:adr-002-impl -->
@@ -254,7 +254,7 @@ The causal-graph infrastructure (vector-index schema migration v8, `causal_edges
 
 **We chose**: create `009-memory-causal-graph/` as a Level-2 post-hoc documentation packet.
 
-**How it works**: The packet records the existing surface area, schema, traversal rules, MCP tool contracts, and ownership boundaries. Status is `Complete (post-hoc documentation only)`. No children, no implementation backlog. The numeric slot `009` is appropriate because earlier `009-hook-package/` was already renamed and migrated during the first consolidation pass.
+**How it works**: The packet records the existing surface area, schema, traversal rules, MCP tool contracts, and ownership boundaries. Status is `Complete (post-hoc documentation only)`. No children, no implementation backlog. The numeric slot `009` is appropriate because earlier `010-hook-parity/` was already renamed and migrated during the first consolidation pass.
 <!-- /ANCHOR:adr-003-decision -->
 
 ---
@@ -300,7 +300,7 @@ The causal-graph infrastructure (vector-index schema migration v8, `causal_edges
 ---
 
 <!-- ANCHOR:adr-004 -->
-## ADR-004: Rename `010-hook-package/` to `010-hook-parity/` after stripping advisor and code-graph scope
+## ADR-004: Rename `010-hook-parity/` to `010-hook-parity/` after stripping advisor and code-graph scope
 
 ### Metadata
 
@@ -315,11 +315,11 @@ The causal-graph infrastructure (vector-index schema migration v8, `causal_edges
 <!-- ANCHOR:adr-004-context -->
 ### Context
 
-After ADR-002 moved five advisor-themed children to `008-skill-advisor/` and ADR-002's companion code-graph moves shifted two children (`013-code-graph-hook-improvements/` and `015-code-graph-advisor-refinement/`) to `007-code-graph/`, the surviving children of `010-hook-package/` were exclusively runtime hook-parity remediations (Claude / Codex / Copilot / OpenCode plugin, schema fixes, wrapper wiring fixes). The wrapper name `hook-package` no longer matched the narrowed scope.
+After ADR-002 moved five advisor-themed children to `008-skill-advisor/` and ADR-002's companion code-graph moves shifted two children (`013-code-graph-hook-improvements/` and `015-code-graph-advisor-refinement/`) to `007-code-graph/`, the surviving children of `010-hook-parity/` were exclusively runtime hook-parity remediations (Claude / Codex / Copilot / OpenCode plugin, schema fixes, wrapper wiring fixes). The wrapper name `hook-package` no longer matched the narrowed scope.
 
 ### Constraints
 
-- Migration aliases for both `010-hook-package/` and the earlier `009-hook-package/` slug must be preserved.
+- Migration aliases for both `010-hook-parity/` and the earlier `010-hook-parity/` slug must be preserved.
 - Surviving eight children must be renumbered to compact `001-008`.
 - No code changes.
 <!-- /ANCHOR:adr-004-context -->
@@ -329,9 +329,9 @@ After ADR-002 moved five advisor-themed children to `008-skill-advisor/` and ADR
 <!-- ANCHOR:adr-004-decision -->
 ### Decision
 
-**We chose**: rename `010-hook-package/` to `010-hook-parity/` and renumber its eight surviving children to compact 001-008.
+**We chose**: rename `010-hook-parity/` to `010-hook-parity/` and renumber its eight surviving children to compact 001-008.
 
-**How it works**: The wrapper is renamed in place after the seven non-hook-parity children have moved out. Surviving children renumber: `003-hook-parity-remediation/`→`001`, `004-copilot-hook-parity-remediation/`→`002`, `005-codex-hook-parity-remediation/`→`003`, `006-claude-hook-findings-remediation/`→`004`, `007-opencode-plugin-loader-remediation/`→`005`, `010-copilot-wrapper-schema-fix/`→`006`, `011-copilot-writer-wiring/`→`007`, `012-docs-impact-remediation/`→`008`. `010-hook-parity/spec.md` records `migration_aliases: [system-spec-kit/026-graph-and-context-optimization/009-hook-package, system-spec-kit/026-graph-and-context-optimization/010-hook-package]`.
+**How it works**: The wrapper is renamed in place after the seven non-hook-parity children have moved out. Surviving children renumber: `003-hook-parity-remediation/`→`001`, `004-copilot-hook-parity-remediation/`→`002`, `005-codex-hook-parity-remediation/`→`003`, `006-claude-hook-findings-remediation/`→`004`, `007-opencode-plugin-loader-remediation/`→`005`, `010-copilot-wrapper-schema-fix/`→`006`, `011-copilot-writer-wiring/`→`007`, `012-docs-impact-remediation/`→`008`. `010-hook-parity/spec.md` records `migration_aliases: [system-spec-kit/026-graph-and-context-optimization/010-hook-parity, system-spec-kit/026-graph-and-context-optimization/010-hook-parity]`.
 <!-- /ANCHOR:adr-004-decision -->
 
 ---
@@ -359,7 +359,7 @@ After ADR-002 moved five advisor-themed children to `008-skill-advisor/` and ADR
 - Migration aliases preserve discoverability for both prior slugs.
 
 **What it costs**:
-- Memory/graph consumers must follow aliases to resolve `009-hook-package` and `010-hook-package` references in older docs.
+- Memory/graph consumers must follow aliases to resolve `010-hook-parity` and `010-hook-parity` references in older docs.
 <!-- /ANCHOR:adr-004-consequences -->
 
 ---
@@ -368,10 +368,10 @@ After ADR-002 moved five advisor-themed children to `008-skill-advisor/` and ADR
 ### Implementation
 
 **What changes**:
-- Folder rename: `010-hook-package/` → `010-hook-parity/`.
+- Folder rename: `010-hook-parity/` → `010-hook-parity/`.
 - Child renumbering across eight surviving packets.
 - `010-hook-parity/spec.md` records both prior slugs in `migration_aliases`.
 
-**How to roll back**: Reverse the rename and renumbering; restore `010-hook-package/` and its prior child numbering from version control.
+**How to roll back**: Reverse the rename and renumbering; restore `010-hook-parity/` and its prior child numbering from version control.
 <!-- /ANCHOR:adr-004-impl -->
 <!-- /ANCHOR:adr-004 -->

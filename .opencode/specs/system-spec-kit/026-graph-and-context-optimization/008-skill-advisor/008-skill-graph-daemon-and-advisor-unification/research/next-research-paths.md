@@ -198,4 +198,4 @@ Decision point is the user's — this doc is the evidence.
 - r01 synthesis: [`research.md`](./research.md)
 - r01 registry: [`findings-registry.json`](./findings-registry.json)
 - r01 strategy (battle plan): [`deep-research-strategy.md`](./deep-research-strategy.md)
-- Phase 027 spec: [`../../002-skill-graph-daemon-and-advisor-unification/spec.md`](../../002-skill-graph-daemon-and-advisor-unification/spec.md)
+- Phase 027 spec: [`../../008-skill-graph-daemon-and-advisor-unification/spec.md`](../../008-skill-graph-daemon-and-advisor-unification/spec.md)

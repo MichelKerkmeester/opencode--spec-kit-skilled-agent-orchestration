@@ -34,8 +34,8 @@ _memory:
 | **Created** | 2026-04-22 |
 | **Parent** | `026-graph-and-context-optimization/010-hook-parity/` |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `../009-skill-advisor-standards-alignment/spec.md` |
-| **Successor** | `../011-copilot-writer-wiring/spec.md` |
+| **Predecessor** | `../../008-skill-advisor/010-skill-advisor-standards-alignment/spec.md` |
+| **Successor** | `../007-copilot-writer-wiring/spec.md` |
 | **Research** | `../../research/007-deep-review-remediation-pt-03/research.md` |
 
 ---
@@ -97,7 +97,7 @@ This blocks per-prompt refresh of `$HOME/.copilot/copilot-instructions.md` (the 
 
 | ID | Requirement | Acceptance |
 |---|---|---|
-| REQ-004 | Update `../../010-hook-parity/004-copilot-hook-parity-remediation/implementation-summary.md` §Known Limitations to reflect the resolved schema collision | File edited with a note referencing this packet + research pt-03 |
+| REQ-004 | Update `../../010-hook-parity/002-copilot-hook-parity-remediation/implementation-summary.md` §Known Limitations to reflect the resolved schema collision | File edited with a note referencing this packet + research pt-03 |
 
 ---
 

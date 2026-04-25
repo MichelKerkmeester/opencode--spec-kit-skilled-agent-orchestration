@@ -151,7 +151,7 @@ The only operational constraint: hooks require `[features] codex_hooks = true` i
 - **Plan**: `plan.md` §2 Phase 1 exit criteria
 - **Tasks**: `tasks.md` T-01..T-08 (investigation to contract), T-11..T-16 (port plus register), T-19 (hook contract reference)
 - **Research artifact**: parent research synthesis
-- **Sibling phase**: `../004-copilot-hook-parity-remediation/` — contrast: Copilot's phase is investigation-heavy, no confirmed hook transport
+- **Sibling phase**: `../002-copilot-hook-parity-remediation/` — contrast: Copilot's phase is investigation-heavy, no confirmed hook transport
 - **Referenced hook-daemon parity packet**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface/` — active hook surface lineage
 - **External evidence**: `~/.codex/hooks.json` (inspected 2026-04-22)
 <!-- /ANCHOR:adr-001 -->

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Graph Package [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/plan]"
+title: "Implementation Plan: Code Graph Package [system-spec-kit/026-graph-and-context-optimization/007-code-graph/plan]"
 description: "Plan for keeping code graph upgrades and self-contained package migration as a parent with direct child phase packets."
 trigger_phrases:
   - "003-code-graph-package"
@@ -11,7 +11,7 @@ importance_tier: "important"
 contextType: "planning"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph"
     last_updated_at: "2026-04-23T14:51:15Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Renumbered nested phases"

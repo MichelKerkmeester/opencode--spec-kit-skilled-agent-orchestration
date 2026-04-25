@@ -14,7 +14,7 @@ importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package"
     last_updated_at: "2026-04-20T20:50:00Z"
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Moved code-graph package; verified 52/52 tests"

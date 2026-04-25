@@ -11,7 +11,7 @@ importance_tier: "normal"
 contextType: "research"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/research/007-deep-review-remediation-pt-04"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/research/007-deep-review-remediation-pt-04"
     last_updated_at: "2026-04-24T15:25:01Z"
     last_updated_by: "backfill-memory-block"
     recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
@@ -19,7 +19,7 @@ _memory:
     key_files: ["research.md"]
 iterations: 5
 sessionId: dr-2026-04-23-130100-pt04
-specFolder: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope
+specFolder: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope
 stop_reason: maxIterationsReached
 ---
 # Deep Research — Code Graph Scan Scope Anomaly After Packet 012
@@ -252,7 +252,7 @@ Iteration 3 verdict: Option A's dedup is the right minimal-crash-guard; richer p
 
 ### 7.1 Spec folder topology
 
-**Recommended host:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`
+**Recommended host:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`
 
 **Why nested under packet 012:** This is a direct remediation of packet 012's behavior interaction. A sibling `013-...` slot is taken (`006-claude-hook-findings-remediation` exists). Nesting under 012 also keeps the lineage explicit for future readers.
 
@@ -456,7 +456,7 @@ describe('capturesToNodes dedupe (Bug #2 regression)', () => {
 - `.opencode/skill/system-spec-kit/mcp_server/dist/code-graph/handlers/scan.js:133-137,141,203`
 
 ### Packet 012 source
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/implementation-summary.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/session-handover-2026-04-23.md`
 
 ---

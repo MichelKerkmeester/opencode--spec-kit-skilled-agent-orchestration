@@ -51,7 +51,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 | **Testing** | Strict spec validation, JSON parse scan, folder/map consistency checks |
 
 ### Overview
-This plan documents the active 026 phase surface produced by two topical consolidation passes. The first pass (2026-04-21) collapsed 29 chronological phase folders into nine thematic wrappers; the second pass (2026-04-25) merged `006-search-routing-advisor/` into `008-skill-advisor/`, redistributed children of the former `010-hook-package/` across `007-code-graph/`, `008-skill-advisor/`, and `010-hook-parity/`, and added `009-memory-causal-graph/` as a post-hoc Level-2 documentation packet for live infrastructure. The current active surface is 11 thematic wrappers with intentional gaps at `006` and `011`. Original packets remain intact under their thematic wrapper; root support folders stay in place; docs and metadata bridge old paths to active homes through `merged-phase-map.md`.
+This plan documents the active 026 phase surface produced by two topical consolidation passes. The first pass (2026-04-21) collapsed 29 chronological phase folders into nine thematic wrappers; the second pass (2026-04-25) merged `008-skill-advisor/` into `008-skill-advisor/`, redistributed children of the former `010-hook-parity/` across `007-code-graph/`, `008-skill-advisor/`, and `010-hook-parity/`, and added `009-memory-causal-graph/` as a post-hoc Level-2 documentation packet for live infrastructure. The current active surface is 11 thematic wrappers with intentional gaps at `006` and `011`. Original packets remain intact under their thematic wrapper; root support folders stay in place; docs and metadata bridge old paths to active homes through `merged-phase-map.md`.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -117,7 +117,7 @@ Eleven active thematic wrapper packets (with intentional gaps at `006` and `011`
 - **Root map**: `spec.md` and `merged-phase-map.md` (first-pass + second-pass tables).
 - **Wrapper packets**: 11 wrappers (`000`, `001`, `002`, `003`, `004`, `005`, `007`, `008`, `009`, `010-hook-parity`, `012`), each with Level 1 docs and context indexes (or root-only docs where children are merged).
 - **Child phase folders**: original phase roots nested under thematic wrappers.
-- **Metadata continuity**: moved JSON files record current paths plus migration aliases (`006-search-routing-advisor/`, `010-hook-package/`, and earlier first-pass aliases).
+- **Metadata continuity**: moved JSON files record current paths plus migration aliases (`008-skill-advisor/`, `010-hook-parity/`, and earlier first-pass aliases).
 
 ### Data Flow
 Root phase map points to wrapper docs. Wrapper context indexes point to preserved original phase folders. Metadata aliases preserve old packet IDs for memory and graph traversal.
@@ -155,7 +155,7 @@ Root phase map points to wrapper docs. Wrapper context indexes point to preserve
 | Map coverage | Old phases `001` through `029` (first pass) and second-pass moves | Node/regex scan over `merged-phase-map.md` |
 | Metadata | All moved and active JSON files | Node `JSON.parse` scan |
 | Spec validation | Root and 11 wrappers | `validate.sh --strict` |
-| Trigger continuity | Old phase phrases plus `006-search-routing-advisor` and `010-hook-package` aliases | `rg` over context indexes and metadata |
+| Trigger continuity | Old phase phrases plus `008-skill-advisor` and `010-hook-parity` aliases | `rg` over context indexes and metadata |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -316,6 +316,6 @@ validation and continuity checks
 
 **Alternatives Rejected**:
 - Keep 29 active top-level folders: rejected because it preserves the navigation problem.
-- Keep nine wrappers with advisor work split across `006-search-routing-advisor/` and `010-hook-package/`: rejected because it forced cross-wrapper navigation when reasoning about the advisor system.
+- Keep nine wrappers with advisor work split across `008-skill-advisor/` and `010-hook-parity/`: rejected because it forced cross-wrapper navigation when reasoning about the advisor system.
 
 > Detailed second-pass ADRs (008-skill-advisor merge, 009-memory-causal-graph creation, 010 rename to hook-parity) live in `decision-record.md`.

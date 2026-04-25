@@ -55,8 +55,8 @@ This packet addresses all three in a single focused pass. The change is single-f
 | **Created**  | 2026-04-23                              |
 | **Parent**   | `026-graph-and-context-optimization/010-hook-parity/` |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `../007-opencode-plugin-loader-remediation/spec.md` |
-| **Successor** | `../009-skill-advisor-standards-alignment/spec.md` |
+| **Predecessor** | `../../010-hook-parity/005-opencode-plugin-loader-remediation/spec.md` |
+| **Successor** | `../010-skill-advisor-standards-alignment/spec.md` |
 | **Sibling**  | `007-opencode-plugin-loader-remediation/` (deferred these items in ADR-005) |
 <!-- /ANCHOR:metadata -->
 
@@ -200,7 +200,7 @@ None remaining at spec time. ADR-005 in packet 007 enumerated the three deferral
 
 **Related documents**:
 
-- Sibling packet (source of deferrals): `../007-opencode-plugin-loader-remediation/decision-record.md` ADR-005
+- Sibling packet (source of deferrals): `../../010-hook-parity/005-opencode-plugin-loader-remediation/decision-record.md` ADR-005
 - Plugin file: `.opencode/plugins/spec-kit-skill-advisor.js` lines 28-36 (module-global state), 298-322 (`getAdvisorContext`), 348-405 (`appendAdvisorBrief`)
 - Existing test file: `.opencode/skill/system-spec-kit/mcp_server/tests/spec-kit-skill-advisor-plugin.vitest.ts`
 - Compact plugin reference: `.opencode/plugins/spec-kit-compact-code-graph.js` (similar plugin, can be consulted for closure-state pattern if needed)

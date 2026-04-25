@@ -11,17 +11,17 @@
     "system-spec-kit/026-graph-and-context-optimization/007-code-graph/005-code-graph-advisor-refinement"
   ],
   "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades",
-    "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package",
-    "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
+    "system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades",
+    "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package",
+    "system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope"
   ],
   "migration": {
     "flattened_at": "2026-04-21T13:00:00Z",
     "active_phase": "003-code-graph-package",
     "child_phase_folders": [
-      "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades",
-      "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package",
-      "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
+      "system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades",
+      "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package",
+      "system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope"
     ],
     "layout": "phase-root-children"
   },
@@ -29,22 +29,22 @@
     "depends_on": [],
     "supersedes": [
       {
-        "packet_id": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades",
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades",
         "reason": "supersedes relationship preserved during phase consolidation",
         "source": "026-phase-consolidation",
-        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades"
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades"
       },
       {
-        "packet_id": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package",
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package",
         "reason": "supersedes relationship preserved during phase consolidation",
         "source": "026-phase-consolidation",
-        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/002-code-graph-self-contained-package"
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package"
       },
       {
-        "packet_id": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope",
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope",
         "reason": "supersedes relationship preserved during phase consolidation",
         "source": "026-phase-consolidation",
-        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope"
       }
     ],
     "related_to": []

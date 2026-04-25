@@ -67,8 +67,8 @@ Under Copilot CLI, neither payload appears. Empirical test: user asked Copilot "
 | **Created**  | 2026-04-19                              |
 | **Parent**   | `026-graph-and-context-optimization/010-hook-parity/` |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `../003-hook-parity-remediation/spec.md` |
-| **Successor** | `../005-codex-hook-parity-remediation/spec.md` |
+| **Predecessor** | `../001-hook-parity-remediation/spec.md` |
+| **Successor** | `../003-codex-hook-parity-remediation/spec.md` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -197,8 +197,8 @@ Close the parity gap — either by wiring equivalent hooks for Copilot CLI (if i
 ## 8. RELATED DOCUMENTS
 
 - **Parent packet**: `../spec.md`, `../plan.md`, `../implementation-summary.md`
-- **Predecessor phase**: `../003-hook-parity-remediation/`
-- **Successor phase**: `../005-codex-hook-parity-remediation/`
+- **Predecessor phase**: `../001-hook-parity-remediation/`
+- **Successor phase**: `../003-codex-hook-parity-remediation/`
 - **Referenced spec**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface/` — established the Claude hook wiring this phase aims to parity-match
 - **Referenced skill**: `.opencode/skill/cli-copilot/` — target of the documentation updates
 - **Reference implementation**: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts`

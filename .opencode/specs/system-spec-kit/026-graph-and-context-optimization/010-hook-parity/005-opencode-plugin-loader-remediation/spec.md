@@ -80,9 +80,9 @@ The direct crash fix is the `parseTransportPlan` hardening: non-string input now
 | **Created**  | 2026-04-22                              |
 | **Parent**   | `026-graph-and-context-optimization/010-hook-parity/` |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `../006-claude-hook-findings-remediation/spec.md` |
-| **Successor** | `../008-skill-advisor-plugin-hardening/spec.md` |
-| **Related hook packets** | `../004-copilot-hook-parity-remediation/`, `../005-codex-hook-parity-remediation/` (migrated to hook-daemon parity; different runtimes) |
+| **Predecessor** | `../004-claude-hook-findings-remediation/spec.md` |
+| **Successor** | `../../008-skill-advisor/009-skill-advisor-plugin-hardening/spec.md` |
+| **Related hook packets** | `../002-copilot-hook-parity-remediation/`, `../003-codex-hook-parity-remediation/` (migrated to hook-daemon parity; different runtimes) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -305,8 +305,8 @@ This is Level 3 because the change spans:
 ## 8. RELATED DOCUMENTS
 
 - **Parent packet**: `../spec.md`, `../plan.md`, `../implementation-summary.md`
-- **Sibling phase 004**: `../004-copilot-hook-parity-remediation/` — Copilot CLI hook gap (different runtime, missing transport)
-- **Sibling phase 005**: `../005-codex-hook-parity-remediation/` — Codex CLI hook parity (different runtime, ship complete)
+- **Sibling phase 004**: `../002-copilot-hook-parity-remediation/` — Copilot CLI hook gap (different runtime, missing transport)
+- **Sibling phase 005**: `../003-codex-hook-parity-remediation/` — Codex CLI hook parity (different runtime, ship complete)
 - **Affected plugins**: `.opencode/plugins/spec-kit-skill-advisor.js`, `.opencode/plugins/spec-kit-compact-code-graph.js`
 - **Affected helpers**: `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs`, `.opencode/plugins/spec-kit-compact-code-graph-bridge.mjs`, `.opencode/plugins/spec-kit-opencode-message-schema.mjs`
 - **Reproduction evidence**: User screenshot + reproduction in this packet's drafting session (2026-04-22T13:30Z) showed the same crash in Public root and Barter

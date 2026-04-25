@@ -337,10 +337,10 @@ Key trick for this research: the codex agent itself running with `--sandbox work
 
 ## 11. RELATED DOCUMENTS
 
-- **Spec**: `../../010-hook-parity/005-codex-hook-parity-remediation/spec.md`
-- **Plan**: `../../010-hook-parity/005-codex-hook-parity-remediation/plan.md`
-- **Tasks**: `../../010-hook-parity/005-codex-hook-parity-remediation/tasks.md`
-- **Decisions**: `../../010-hook-parity/005-codex-hook-parity-remediation/decision-record.md` — ADR-003 populated from §5 above
-- **Sibling phase**: `../../010-hook-parity/004-copilot-hook-parity-remediation/` — Copilot has NO dynamic hook-based injection (outcome B); this is the contrast case
+- **Spec**: `../../010-hook-parity/003-codex-hook-parity-remediation/spec.md`
+- **Plan**: `../../010-hook-parity/003-codex-hook-parity-remediation/plan.md`
+- **Tasks**: `../../010-hook-parity/003-codex-hook-parity-remediation/tasks.md`
+- **Decisions**: `../../010-hook-parity/003-codex-hook-parity-remediation/decision-record.md` — ADR-003 populated from §5 above
+- **Sibling phase**: `../../010-hook-parity/002-copilot-hook-parity-remediation/` — Copilot has NO dynamic hook-based injection (outcome B); this is the contrast case
 - **Reference implementation (Claude-side)**: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts` — the implementation Phase 2 ports to `hooks/codex/`
 - **User's existing config**: `~/.codex/hooks.json` (notify.sh registered), `~/.codex/config.toml` (feature flag ABSENT — must be added in Phase 2)

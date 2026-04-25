@@ -69,7 +69,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 - [x] T010 Move every old phase folder into its active wrapper direct-child path. [SOURCE: merged-phase-map.md]
 - [x] T011 Create active wrapper docs for the active phase wrappers (first pass: nine wrappers; second pass: refined to 11 wrappers). [SOURCE: 001-research-and-baseline/spec.md; 010-hook-parity/spec.md; 008-skill-advisor/spec.md; 009-memory-causal-graph/spec.md]
 - [x] T012 Create per-wrapper context indexes bridge docs. [SOURCE: 001-research-and-baseline/context-index.md; 010-hook-parity/context-index.md; 008-skill-advisor/context-index.md; 007-code-graph/context-index.md]
-- [x] T013 Refresh moved `description.json` and `graph-metadata.json` files with new paths and migration aliases (including second-pass aliases for `006-search-routing-advisor/` and `010-hook-package/`). [SOURCE: graph-metadata.json]
+- [x] T013 Refresh moved `description.json` and `graph-metadata.json` files with new paths and migration aliases (including second-pass aliases for `008-skill-advisor/` and `010-hook-parity/`). [SOURCE: graph-metadata.json]
 - [x] T014 Update root docs to reflect the active map after both consolidation passes. [SOURCE: spec.md]
 - [x] T015 Append the second-pass move/rename table to `merged-phase-map.md` while preserving the first-pass 29→9 history verbatim. [SOURCE: merged-phase-map.md]
 <!-- /ANCHOR:phase-2 -->
@@ -82,7 +82,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 - [x] T020 Confirm all old phases `001` through `029` are represented exactly once in the first-pass section of `merged-phase-map.md`, and every second-pass move/rename appears exactly once in the appended second-pass section. [SOURCE: verification command]
 - [x] T021 Parse all `description.json` and `graph-metadata.json` files under the packet. [SOURCE: verification command]
 - [x] T022 Run strict validation on the root packet and each active wrapper. [SOURCE: implementation-summary.md]
-- [x] T023 Check old trigger phrases (including `006-search-routing-advisor` and `010-hook-package` aliases) remain visible in source metadata or wrapper context indexes. [SOURCE: verification command]
+- [x] T023 Check old trigger phrases (including `008-skill-advisor` and `010-hook-parity` aliases) remain visible in source metadata or wrapper context indexes. [SOURCE: verification command]
 <!-- /ANCHOR:phase-3 -->
 
 ---

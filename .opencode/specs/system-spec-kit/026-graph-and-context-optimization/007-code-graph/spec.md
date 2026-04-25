@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Code Graph [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/spec]"
+title: "Feature Specification: Code Graph [system-spec-kit/026-graph-and-context-optimization/007-code-graph/spec]"
 description: "Code graph upgrades and self-contained package migration. Consolidated active parent for 3 direct child phase packet(s)."
 trigger_phrases:
   - "003-code-graph-package"
@@ -11,7 +11,7 @@ importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph"
     last_updated_at: "2026-04-23T14:51:15Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Renumbered nested phases"
@@ -49,8 +49,8 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 | **Created** | 2026-04-21 |
 | **Branch** | `026-graph-and-context-optimization` |
 | **Parent Spec** | ../spec.md |
-| **Predecessor** | ../002-continuity-memory-runtime/spec.md |
-| **Successor** | ../004-agent-governance-and-commands/spec.md |
+| **Predecessor** | ../003-continuity-memory-runtime/spec.md |
+| **Successor** | ../004-runtime-executor-hardening/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

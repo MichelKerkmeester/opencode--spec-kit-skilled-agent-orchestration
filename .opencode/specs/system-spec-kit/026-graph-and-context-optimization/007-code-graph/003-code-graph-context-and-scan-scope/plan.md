@@ -1,5 +1,5 @@
 ---
-title: "I [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/plan]"
+title: "I [system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/plan]"
 description: "Three scoped fixes: stale-graph highlights computation, scan exclude expansion + .gitignore awareness, and surface matrix doc."
 trigger_phrases:
   - "026/003/003 plan"
@@ -9,7 +9,7 @@ contextType: "planning"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope"
     last_updated_at: "2026-04-23T11:55:00Z"
     last_updated_by: "claude-opus-4-7"
     recent_action: "Plan drafted"

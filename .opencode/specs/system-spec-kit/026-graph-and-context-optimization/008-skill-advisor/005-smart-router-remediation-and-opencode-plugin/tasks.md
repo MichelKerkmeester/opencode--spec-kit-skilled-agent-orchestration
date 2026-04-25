@@ -16,7 +16,7 @@ _memory:
     blockers: []
     key_files:
       - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/005-smart-router-remediation-and-opencode-plugin/spec.md"
-      - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl"
+      - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/003-system-hardening/001-initial-research/005-routing-accuracy/research/019-system-hardening-pt-03/corpus/labeled-prompts.jsonl"
     completion_pct: 100
     open_questions: []
     answered_questions:

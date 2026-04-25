@@ -1,5 +1,5 @@
 ---
-title: "Implementation [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/plan]"
+title: "Implementation [system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades/plan]"
 description: "Plan the bounded post-R5/R6 code-graph upgrade packet using the §20 roadmap as the direct source of truth."
 trigger_phrases:
   - "005-code-graph-upgrades"
@@ -9,7 +9,7 @@ importance_tier: "important"
 contextType: "planning"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades"
     last_updated_at: "2026-04-12T16:16:10Z"
     last_updated_by: "copilot-gpt-5-4"
     recent_action: "Reviewed packet docs"

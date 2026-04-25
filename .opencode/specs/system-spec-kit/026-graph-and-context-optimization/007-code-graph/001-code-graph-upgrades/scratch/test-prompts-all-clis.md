@@ -288,7 +288,7 @@ gemini -p "Run: cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run 
 for t in 1 2 3 4 5 6 7; do
   codex exec --dangerously-bypass-approvals-and-sandbox -m gpt-5.4 \
     -c model_reasoning_effort=high -c service_tier="fast" \
-    "$(sed -n "/^### T${t}-CX/,/^### T/p" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/scratch/test-prompts-all-clis.md | head -n -1 | tail -n +3 | tr -d '`')" \
+    "$(sed -n "/^### T${t}-CX/,/^### T/p" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades/scratch/test-prompts-all-clis.md | head -n -1 | tail -n +3 | tr -d '`')" \
     > /tmp/014-test-T${t}-codex.log 2>&1 &
 done
 wait

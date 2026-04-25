@@ -40,8 +40,8 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify |
 | **Created** | 2026-04-19 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Predecessor** | ../005-skill-advisor-docs-and-code-alignment/spec.md |
-| **Successor** | ../007-deferred-remediation-and-telemetry-run/spec.md |
+| **Predecessor** | ../004-skill-advisor-docs-and-code-alignment/spec.md |
+| **Successor** | ../006-deferred-remediation-and-telemetry-run/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -241,7 +241,7 @@ Ship all 6 recommendations + the OpenCode plugin in a single remediation packet.
 
 ### Related Documents
 
-- Parent: `../../010-hook-parity/001-skill-advisor-hook-surface/` (shipped)
+- Parent: `../../008-skill-advisor/007-skill-advisor-hook-surface/` (shipped)
 - Research inputs:
   - `../004-smart-router-context-efficacy/001-initial-research/research/research.md` (V8+V9 plugin recommendations)
   - `../004-smart-router-context-efficacy/002-skill-md-intent-router-efficacy/research/research.md` (6 smart-router recommendations)

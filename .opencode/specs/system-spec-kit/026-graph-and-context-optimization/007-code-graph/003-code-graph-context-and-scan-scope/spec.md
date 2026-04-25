@@ -1,5 +1,5 @@
 ---
-title: "F [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/spec]"
+title: "F [system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/spec]"
 description: "Three-part fix from the code-graph scale investigation: (A) surface code-graph highlights in OpenCode session context (currently only minimal-mode payload reaches plugin path); (B) tighten scan scope to exclude z_future/z_archive/coco-index and respect .gitignore (currently 26K files indexed where only ~1-3K are active code); (C) document the difference between OpenCode plugin's minimal payload and MCP startup-brief's full payload."
 trigger_phrases:
   - "code graph context surface"
@@ -14,7 +14,7 @@ contextType: "implementation"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope"
     last_updated_at: "2026-04-23T11:55:00Z"
     last_updated_by: "claude-opus-4-7"
     recent_action: "Spec drafted from code-graph investigation"
@@ -48,10 +48,10 @@ Code-graph scale investigation surfaced three concerns. This packet addresses al
 | **Priority** | P1 (user-visible: highlights missing from OpenCode context; perf: 26K files indexed) |
 | **Status** | Draft |
 | **Created** | 2026-04-23 |
-| **Parent** | `026-graph-and-context-optimization/003-code-graph-package/` |
+| **Parent** | `026-graph-and-context-optimization/007-code-graph/` |
 | **Parent Spec** | `../spec.md` |
 | **Predecessor** | `../002-code-graph-self-contained-package/spec.md` |
-| **Related** | `../../010-hook-parity/008-skill-advisor-plugin-hardening/`, `../../010-hook-parity/009-skill-advisor-standards-alignment/` |
+| **Related** | `../../008-skill-advisor/009-skill-advisor-plugin-hardening/`, `../../008-skill-advisor/010-skill-advisor-standards-alignment/` |
 <!-- /ANCHOR:metadata -->
 
 ---

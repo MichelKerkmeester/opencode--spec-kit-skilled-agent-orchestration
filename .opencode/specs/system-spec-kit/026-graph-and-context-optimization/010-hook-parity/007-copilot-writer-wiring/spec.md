@@ -31,7 +31,7 @@ _memory:
 | **Status** | Reverted - Needs Reapply |
 | **Parent** | `026-graph-and-context-optimization/010-hook-parity/` |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `../010-copilot-wrapper-schema-fix/spec.md` |
+| **Predecessor** | `../006-copilot-wrapper-schema-fix/spec.md` |
 | **Depends on** | `010-copilot-wrapper-schema-fix/` (schema crash must already be resolved) |
 | **Research** | `../../research/007-deep-review-remediation-pt-03/research.md` §7 |
 

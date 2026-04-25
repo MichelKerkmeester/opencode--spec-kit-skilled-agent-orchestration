@@ -58,7 +58,7 @@ _memory:
 - [x] T007 Add OpenCode plugin diagnostic for absent or unparsable transport plan (`.opencode/plugins/spec-kit-compact-code-graph.js:145`, `.opencode/plugins/spec-kit-compact-code-graph.js:170`, `.opencode/plugins/spec-kit-compact-code-graph.js:237`).
 - [x] T008 Confirm bridge stderr diagnostic for missing `opencodeTransport` remains active (`.opencode/plugins/spec-kit-compact-code-graph-bridge.mjs:89`, `.opencode/plugins/spec-kit-compact-code-graph-bridge.mjs:93`, `.opencode/plugins/spec-kit-compact-code-graph-bridge.mjs:96`).
 - [x] T009 Add vitest coverage for the diagnostic path (`.opencode/skill/system-spec-kit/mcp_server/tests/opencode-plugin.vitest.ts:254`, `.opencode/skill/system-spec-kit/mcp_server/tests/opencode-plugin.vitest.ts:267`, `.opencode/skill/system-spec-kit/mcp_server/tests/opencode-plugin.vitest.ts:271`).
-- [x] T010 Refresh continuity and graph metadata for parent 009 and children 001, 002, 003 (`../implementation-summary.md:12`, `../001-skill-advisor-hook-surface/implementation-summary.md:13`, `../002-skill-graph-daemon-and-advisor-unification/implementation-summary.md:12`, `implementation-summary.md:12`, `../graph-metadata.json:71`).
+- [x] T010 Refresh continuity and graph metadata for parent 009 and children 001, 002, 003 (`../implementation-summary.md:12`, `../../008-skill-advisor/007-skill-advisor-hook-surface/implementation-summary.md:13`, `../../008-skill-advisor/008-skill-graph-daemon-and-advisor-unification/implementation-summary.md:12`, `implementation-summary.md:12`, `../graph-metadata.json:71`).
 <!-- /ANCHOR:phase-2 -->
 
 ---

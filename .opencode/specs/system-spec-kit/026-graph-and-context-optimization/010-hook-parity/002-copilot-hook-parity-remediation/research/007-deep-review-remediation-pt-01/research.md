@@ -285,9 +285,9 @@ The research methodology that worked for this packet — reusable for Gemini CLI
 
 ## 11. RELATED DOCUMENTS
 
-- **Spec**: `../../010-hook-parity/004-copilot-hook-parity-remediation/spec.md`
-- **Plan**: `../../010-hook-parity/004-copilot-hook-parity-remediation/plan.md`
-- **Tasks**: `../../010-hook-parity/004-copilot-hook-parity-remediation/tasks.md`
-- **Decisions**: `../../010-hook-parity/004-copilot-hook-parity-remediation/decision-record.md` — ADR-003 populated from §5 above
-- **Sibling phase**: `../../010-hook-parity/005-codex-hook-parity-remediation/` — Codex has native hooks with DIFFERENT semantics; separate synthesis
+- **Spec**: `../../010-hook-parity/002-copilot-hook-parity-remediation/spec.md`
+- **Plan**: `../../010-hook-parity/002-copilot-hook-parity-remediation/plan.md`
+- **Tasks**: `../../010-hook-parity/002-copilot-hook-parity-remediation/tasks.md`
+- **Decisions**: `../../010-hook-parity/002-copilot-hook-parity-remediation/decision-record.md` — ADR-003 populated from §5 above
+- **Sibling phase**: `../../010-hook-parity/003-codex-hook-parity-remediation/` — Codex has native hooks with DIFFERENT semantics; separate synthesis
 - **Reference implementation**: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts` — the Claude-side hook this phase parity-matches (implementation tracked against outcome B path)

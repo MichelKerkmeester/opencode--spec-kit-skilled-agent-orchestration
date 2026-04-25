@@ -37,7 +37,7 @@ _memory:
 | **Created** | 2026-04-24 |
 | **Parent** | `026-graph-and-context-optimization/010-hook-parity/` |
 | **Parent Spec** | `../spec.md` |
-| **Related** | `../001-skill-advisor-hook-surface/`, `../008-skill-advisor-plugin-hardening/`, `../009-skill-advisor-standards-alignment/`, `../../007-deep-review-remediation/006-integrity-parity-closure/applied/CF-019.md` |
+| **Related** | `../007-skill-advisor-hook-surface/`, `../009-skill-advisor-plugin-hardening/`, `../010-skill-advisor-standards-alignment/`, `../../007-deep-review-remediation/006-integrity-parity-closure/applied/CF-019.md` |
 
 ---
 

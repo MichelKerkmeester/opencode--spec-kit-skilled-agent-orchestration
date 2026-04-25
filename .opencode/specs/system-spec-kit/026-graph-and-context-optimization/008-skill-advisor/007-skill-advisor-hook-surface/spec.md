@@ -68,7 +68,7 @@ The 019/004 routing-accuracy hardening that just landed (Gate 3 F1 68.6%→97.66
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Predecessor** | None |
-| **Successor** | ../002-skill-graph-daemon-and-advisor-unification/spec.md |
+| **Successor** | ../008-skill-graph-daemon-and-advisor-unification/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

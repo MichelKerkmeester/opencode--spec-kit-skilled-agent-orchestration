@@ -13,7 +13,7 @@ Two P0 bugs in the code-graph indexer (introduced/exposed by packet 012):
 
 ### A. NEW SPEC FOLDER (Level 3, nested under packet 012)
 
-Path: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`
+Path: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/002-incremental-fullscan-recovery/`
 
 Create canonical Level 3 docs (use templates from `.opencode/skill/system-spec-kit/templates/level_3/` — pick from `level_3/` if it exists, else `level_2/` and add a decision-record.md):
 - `spec.md` — problem, scope, requirements, non-goals

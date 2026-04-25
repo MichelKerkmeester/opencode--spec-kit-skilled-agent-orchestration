@@ -5,7 +5,7 @@ Use this prompt to launch the research via the sk-deep-research workflow.
 ## Invocation
 
 ```
-/spec_kit:deep-research:auto "Graph metadata relationship validation and entity quality analysis across 515+ spec folders" --max-iterations=15 --spec-folder=.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-continuity-memory-runtime/003-continuity-refactor-gates/003-graph-metadata-validation
+/spec_kit:deep-research:auto "Graph metadata relationship validation and entity quality analysis across 515+ spec folders" --max-iterations=15 --spec-folder=.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/003-continuity-refactor-gates/003-graph-metadata-validation
 ```
 
 ## Research Charter (for strategy.md initialization)

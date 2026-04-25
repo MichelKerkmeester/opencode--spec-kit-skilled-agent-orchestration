@@ -77,7 +77,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 - [x] CHK-020 [P0] All old phases `001` through `029` are represented exactly once in the first-pass section of `merged-phase-map.md`, and every second-pass move/rename appears exactly once in the appended second-pass section. [EVIDENCE: implementation-summary.md]
 - [x] CHK-021 [P0] All `description.json` and `graph-metadata.json` files parse after both consolidation passes. [EVIDENCE: implementation-summary.md]
 - [x] CHK-022 [P0] Strict validation was run on root and active wrappers. [EVIDENCE: implementation-summary.md]
-- [x] CHK-023 [P1] Old trigger phrases (including `006-search-routing-advisor` and `010-hook-package` aliases) remain available through context indexes or source metadata. [EVIDENCE: implementation-summary.md]
+- [x] CHK-023 [P1] Old trigger phrases (including `008-skill-advisor` and `010-hook-parity` aliases) remain available through context indexes or source metadata. [EVIDENCE: implementation-summary.md]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -109,8 +109,8 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 - [x] CHK-051 [P1] Child phase folders live under their active wrapper roots after both consolidation passes. [EVIDENCE: merged-phase-map.md]
 - [x] CHK-052 [P2] Findings saved to wrapper context indexes instead of a new root memory folder. [EVIDENCE: 001-research-and-baseline/context-index.md]
 - [x] CHK-053 [P0] Second-pass moves match `scratch/reorg-2026-04-25/mapping.json` exactly. [EVIDENCE: merged-phase-map.md] - VERIFIED 2026-04-25
-- [x] CHK-054 [P1] `008-skill-advisor/spec.md` records `migration_aliases` for `006-search-routing-advisor`. [EVIDENCE: 008-skill-advisor/spec.md] - VERIFIED 2026-04-25
-- [x] CHK-055 [P1] `010-hook-parity/spec.md` records `migration_aliases` for both `009-hook-package` and `010-hook-package`. [EVIDENCE: 010-hook-parity/spec.md] - VERIFIED 2026-04-25
+- [x] CHK-054 [P1] `008-skill-advisor/spec.md` records `migration_aliases` for `008-skill-advisor`. [EVIDENCE: 008-skill-advisor/spec.md] - VERIFIED 2026-04-25
+- [x] CHK-055 [P1] `010-hook-parity/spec.md` records `migration_aliases` for both `010-hook-parity` and `010-hook-parity`. [EVIDENCE: 010-hook-parity/spec.md] - VERIFIED 2026-04-25
 - [x] CHK-056 [P1] `009-memory-causal-graph/` exists as a Level-2 documentation packet with no children and no code changes. [EVIDENCE: 009-memory-causal-graph/spec.md] - VERIFIED 2026-04-25
 - [x] CHK-057 [P1] `007-code-graph/` has five children including the second-pass additions `004-code-graph-hook-improvements/` and `005-code-graph-advisor-refinement/`. [EVIDENCE: 007-code-graph/] - VERIFIED 2026-04-25
 <!-- /ANCHOR:file-org -->

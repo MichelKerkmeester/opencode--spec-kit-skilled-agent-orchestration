@@ -1,5 +1,5 @@
 ---
-title: "Deci [system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/decision-record]"
+title: "Deci [system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades/decision-record]"
 description: "Decision record for 005-code-graph-upgrades."
 trigger_phrases:
   - "005-code-graph-upgrades"
@@ -9,7 +9,7 @@ importance_tier: "important"
 contextType: "planning"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades"
     last_updated_at: "2026-04-12T16:16:10Z"
     last_updated_by: "copilot-gpt-5-4"
     recent_action: "Reviewed packet docs"

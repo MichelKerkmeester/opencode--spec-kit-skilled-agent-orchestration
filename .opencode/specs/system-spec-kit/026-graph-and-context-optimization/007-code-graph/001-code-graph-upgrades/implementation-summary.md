@@ -1,5 +1,5 @@
 ---
-title: "...em-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/implementation-summary]"
+title: "...em-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades/implementation-summary]"
 description: "Implementation closeout for 005-code-graph-upgrades."
 trigger_phrases:
   - "005-code-graph-upgrades"
@@ -9,7 +9,7 @@ importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades"
     last_updated_at: "2026-04-12T16:16:10Z"
     last_updated_by: "copilot-gpt-5-4"
     recent_action: "Reviewed packet docs"
@@ -95,7 +95,7 @@ After the runtime work was stable, the packet docs were rewritten to match what 
 | `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/tsc-tmp npm run typecheck` | PASS |
 | `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/shared-payload-certainty.vitest.ts tests/structural-trust-axis.vitest.ts tests/graph-payload-validator.vitest.ts tests/graph-first-routing-nudge.vitest.ts tests/sqlite-fts.vitest.ts tests/hook-state.vitest.ts tests/hook-session-start.vitest.ts tests/handler-memory-search.vitest.ts tests/publication-gate.vitest.ts tests/code-graph-query-handler.vitest.ts tests/code-graph-context-handler.vitest.ts tests/code-graph-scan.vitest.ts` | PASS |
 | `cd .opencode/skill/system-spec-kit/scripts && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/detector-regression-floor.vitest.ts.test.ts tests/session-cached-consumer.vitest.ts.test.ts tests/warm-start-bundle-benchmark.vitest.ts.test.ts tests/graph-upgrades-regression-floor.vitest.ts.test.ts` | PASS |
-| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades` | PASS |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades` | PASS |
 <!-- /ANCHOR:verification -->
 
 ---

@@ -68,8 +68,8 @@ The reference implementation in `.opencode/skill/system-spec-kit/mcp_server/hook
 | **Parent**   | `026-graph-and-context-optimization/010-hook-parity/` |
 | **Sibling**  | `004-copilot-hook-parity-remediation/` (same user-visible symptom, different root cause) |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `../004-copilot-hook-parity-remediation/spec.md` |
-| **Successor** | `../006-claude-hook-findings-remediation/spec.md` |
+| **Predecessor** | `../002-copilot-hook-parity-remediation/spec.md` |
+| **Successor** | `../004-claude-hook-findings-remediation/spec.md` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -270,7 +270,7 @@ This is Level 3 because the change spans runtime hooks, live user configuration,
 ## 8. RELATED DOCUMENTS
 
 - **Parent packet**: `../spec.md`, `../plan.md`, `../implementation-summary.md`
-- **Sibling phase**: `../004-copilot-hook-parity-remediation/` — same user-visible symptom, different root cause, investigation-heavy
+- **Sibling phase**: `../002-copilot-hook-parity-remediation/` — same user-visible symptom, different root cause, investigation-heavy
 - **Referenced spec**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface/` — Claude reference implementation this phase parity-matches
 - **Referenced skill**: `.opencode/skill/cli-codex/` — target of documentation updates
 - **Reference implementation**: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts`
