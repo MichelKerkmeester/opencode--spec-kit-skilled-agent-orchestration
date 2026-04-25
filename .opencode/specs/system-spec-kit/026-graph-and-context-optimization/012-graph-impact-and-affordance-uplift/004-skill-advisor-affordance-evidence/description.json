@@ -1,0 +1,38 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-graph-impact-and-affordance-uplift/004-skill-advisor-affordance-evidence",
+  "description": "Wire tool/resource/MCP-resource affordances into existing derived + graph-causal lanes via affordance-normalizer (allowlist sanitizer + privacy preser",
+  "keywords": [
+    "wire",
+    "tool",
+    "resource",
+    "mcp-resource",
+    "affordances",
+    "existing",
+    "derived",
+    "graph-causal",
+    "lanes",
+    "via",
+    "affordance-normalizer",
+    "allowlist",
+    "sanitizer",
+    "privacy",
+    "preservation",
+    "new",
+    "scoring",
+    "lane"
+  ],
+  "lastUpdated": "2026-04-25T10:48:08.547Z",
+  "specId": "004",
+  "folderSlug": "skill-advisor-affordance-evidence",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "012-graph-impact-and-affordance-uplift"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "25-04-26_11-48__scaffold-initialization-for-012-sub-phase-004.md"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-graph-impact-and-affordance-uplift/006-docs-and-catalogs-rollup",
+  "description": "Update umbrella docs (root README, skill SKILL.md/README, mcp_server README/INSTALL_GUIDE) reflecting capabilities shipped by 012/002-005. Per-packet ",
+  "keywords": [
+    "update",
+    "umbrella",
+    "docs",
+    "root",
+    "readme",
+    "skill",
+    "reflecting",
+    "capabilities",
+    "shipped",
+    "012",
+    "002-005",
+    "per-packet",
+    "entries",
+    "written",
+    "inline",
+    "sub-phase",
+    "rolls",
+    "indexes"
+  ],
+  "lastUpdated": "2026-04-25T10:48:09.975Z",
+  "specId": "006",
+  "folderSlug": "docs-and-catalogs-rollup",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "012-graph-impact-and-affordance-uplift"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "25-04-26_11-48__scaffold-initialization-for-012-sub-phase-006.md"
+  ]
+}

@@ -9,8 +9,11 @@
     "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/003-contextador",
     "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/004-graphify",
     "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest",
-    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy"
+    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/006-research-memory-redundancy",
+    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-git-nexus"
   ],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [],
@@ -48,6 +51,8 @@
     "importance_tier": "critical",
     "status": "complete",
     "key_files": [
+      "research/research.md",
+      "research/findings-registry.json",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -63,12 +68,23 @@
       "004-graphify/spec.md",
       "005-claudest/spec.md",
       "006-research-memory-redundancy/spec.md",
+      "research/deep-research-dashboard.md",
       "scratch/spec-doc-audit.md",
-      "002-codesight/plan.md",
-      "005-claudest/plan.md",
-      "003-contextador/implementation-summary.md"
+      "002-codesight/plan.md"
     ],
     "entities": [
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "findings-registry.json",
+        "kind": "config",
+        "path": "research/findings-registry.json",
+        "source": "derived"
+      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -121,6 +137,12 @@
         "name": "CONTEXT.md",
         "kind": "doc",
         "path": "003-contextador/CONTEXT.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-dashboard.md",
+        "kind": "doc",
+        "path": "research/deep-research-dashboard.md",
         "source": "derived"
       },
       {
@@ -194,29 +216,12 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
-      },
-      {
-        "name": "Task Checklist",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Status Reporting Format",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Blocked Task Protocol",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "This packet turns the v2 master synthesis into a Level 3 coordination root for `Public`. The research now says Public should preserve its split semantic, structural, and continuity topology, prioritize seam-hardening contracts ahead of packaging work, and translate the strongest surviving recommendations into follow-on packets instead of treating any external system as a replacement architecture. A later derivative child packet, `006-research-memory-redundancy`, now tightens one local continuity rule for those follow-ons: persisted or cached summary artifacts should act as compact wrappers pointing at canonical packet docs rather than second narrative owners. [SOURCE: research/research.md:20-28] [SOURCE: research/research.md:274-306] [SOURCE: research/recommendations.md:3-101]",
     "created_at": "2026-04-12T09:02:53.443Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-25T10:29:27.376Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
@@ -224,23 +229,8 @@
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "implementation-summary.md"
-    ],
-    "save_lineage": "same_pass"
-  },
-  "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
-    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline"
-  ],
-  "migration": {
-    "moved_at": "2026-04-21T12:00:00Z",
-    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
-    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
-    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
-    "consolidation": "026-phase-surface-29-to-9",
-    "flattened_at": "2026-04-21T13:00:00Z",
-    "layout": "phase-root-children"
-  },
-  "migrated": true,
-  "migration_source": "legacy"
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
 }
