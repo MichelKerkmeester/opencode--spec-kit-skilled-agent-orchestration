@@ -1,0 +1,204 @@
+# ─────────────────────────────────────────────────────────────────
+# DOCTOR: CODE-GRAPH WORKFLOW (INTERACTIVE MODE)
+# ─────────────────────────────────────────────────────────────────
+role: Diagnostic Operator running code-graph health audit in confirm mode
+purpose: Audit index health, pause at proposal gate for operator review, produce report
+action: Execute discovery → analysis → [pre_phase_2 approval gate] → proposal-as-report
+
+# ─────────────────────────────────────────────────────────────────
+# OPERATING MODE
+# ─────────────────────────────────────────────────────────────────
+operating_mode:
+  workflow: sequential
+  compliance: MANDATORY
+  execution: interactive
+  approvals: one_pre_phase_2_gate
+  tracking: phase_by_phase
+  validation: read_only_assertion
+
+phase_a_invariant: |
+  Phase A is diagnostic-only. NO mutations to any file outside packet-local scratch.
+  Phase 3 + Phase 4 will land in a future Phase B release after research packet 007 stabilizes.
+
+# ─────────────────────────────────────────────────────────────────
+# USER INPUTS
+# ─────────────────────────────────────────────────────────────────
+user_inputs:
+  scope: "[SCOPE] - all|stale|missed|bloat (default all)"
+
+field_handling:
+  defaults:
+    scope_empty: "all"
+  scope_policy:
+    all: "stale + missed + bloat detection"
+    stale: "only stale-file detection"
+    missed: "only files-on-disk-not-in-index detection"
+    bloat: "only bloat-dir detection"
+
+# ─────────────────────────────────────────────────────────────────
+# MUTATION BOUNDARIES (PHASE A INVARIANT)
+# ─────────────────────────────────────────────────────────────────
+mutation_boundaries:
+  allowed_targets: []
+  forbidden_targets:
+    - "Any file outside <packet_scratch>/"
+    - "code-graph SQLite database"
+    - "Any code under .opencode/skill/system-spec-kit/mcp_server/"
+    - "Any source file in the workspace"
+  enforcement: "Phase A has no Phase 3; the activities below produce a markdown report only and never invoke code_graph_scan or write to source files"
+  phase_b_promotion:
+    gated_on: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research"
+    notes: "When promoted, the confirm workflow will gain pre_phase_3 + pre_phase_4 + post_phase_4 gates mirroring doctor_skill-advisor_confirm.yaml"
+
+# ─────────────────────────────────────────────────────────────────
+# APPROVAL GATES (Phase A has only one)
+# ─────────────────────────────────────────────────────────────────
+approval_gates:
+  pre_phase_2:
+    trigger: "After Phase 1 Analysis completes"
+    prompt: |
+      ANALYSIS COMPLETE
+      Files indexed: [N] | Files on disk: [M]
+      Stale: [P] files | Missed: [Q] files | Bloat dirs: [R] candidates
+      Coverage breakdown:
+        - Stale list (top 5): [paths]
+        - Missed list (top 5): [paths]
+        - Bloat candidates: [paths with tier]
+      Continue to proposal report?
+        A) Generate full report (all findings)
+        B) Filter to specific findings (provide list of categories)
+        C) Abort without report
+    accepted_responses: ["A", "B <categories>", "C"]
+    on_abort_action: "Exit STATUS=CANCELLED with no report written"
+
+# ─────────────────────────────────────────────────────────────────
+# DEFAULT BLOAT-DIR PATTERNS (placeholder; authoritative from 007)
+# ─────────────────────────────────────────────────────────────────
+bloat_patterns:
+  high_confidence:
+    - "node_modules/"
+    - "__pycache__/"
+    - ".git/"
+    - ".venv/"
+    - ".DS_Store"
+    - "tmp/"
+  medium_confidence:
+    - "dist/"
+    - "build/"
+    - ".opencode/skill/system-spec-kit/mcp_server/dist/"
+    - ".opencode/scripts/dist/"
+  notes: "Authoritative tier definitions land in research-packet 007's assets/exclude-rule-confidence.json"
+
+# ─────────────────────────────────────────────────────────────────
+# WORKFLOW
+# ─────────────────────────────────────────────────────────────────
+workflow:
+  phase_0_discovery:
+    purpose: Gather index status + filesystem snapshot + bloat-dir candidates
+    activities:
+      - "Invoke code_graph_status({}) → capture indexed_count, last_scan_at, edge_count, freshness flags"
+      - "Filesystem walk: count source files by language"
+      - "Detect bloat-dir candidates"
+      - "Build initial inventory"
+      - "Display summary to user before proceeding"
+    outputs:
+      - indexed_count: N
+      - file_count: M
+      - last_scan_at: timestamp
+      - lang_histogram: { ts: N, js: N, py: N, sh: N, json: N, md: N }
+      - bloat_candidates: [{ path, tier, present_in_index }]
+    validation: discovery_complete
+    user_visible: "Show indexed_count, file_count, last_scan_at, lang_histogram"
+
+  phase_1_analysis:
+    purpose: Compute stale + missed + bloat sets via detect_changes + glob
+    activities:
+      - "If detect_changes available: invoke detect_changes({}) to obtain stale set"
+      - "Compute missed set: files-on-disk minus files-in-index"
+      - "Compute bloat set: bloat_candidates intersected with files-in-index"
+      - "If scope filter active: filter to scope's subset"
+      - "Display analysis summary, then trigger pre_phase_2 approval gate"
+    outputs:
+      - stale_set: [paths]
+      - missed_set: [paths]
+      - bloat_set: [paths]
+      - overlap_set: [paths]
+      - analysis_report: structured map per category
+    validation: analysis_complete
+    gate_after: "pre_phase_2 (Proposal)"
+
+  phase_2_proposal:
+    purpose: Generate exclude-rule + language-filter recommendations and write report to packet scratch
+    activities:
+      - "If user chose 'C abort': skip report generation, exit STATUS=CANCELLED"
+      - "If user chose 'B filter': filter findings to user-specified categories"
+      - "Resolve packet_scratch path"
+      - "Generate exclude-rule recommendations"
+      - "Generate language-filter recommendations"
+      - "Build diagnostic report markdown"
+      - "Write report to {packet_scratch}/code-graph-diagnostic-{timestamp}.md (umask 077)"
+      - "Display report path and summary"
+    outputs:
+      - report_path: "{packet_scratch}/code-graph-diagnostic-{timestamp}.md"
+      - exclude_rule_recommendations: [{ pattern, tier, rationale }]
+      - language_filter_recommendations: [{ lang, action, rationale }]
+      - operator_choice_at_gate: A | B | C
+    validation: proposal_complete
+
+# ─────────────────────────────────────────────────────────────────
+# QUALITY GATES
+# ─────────────────────────────────────────────────────────────────
+quality_gates:
+  pre_phase_2:
+    location: "Before Phase 2 Proposal"
+    blocking: hard
+    checks:
+      - "User approved at pre_phase_2 gate (A or B)"
+      - "stale_set + missed_set + bloat_set computed"
+    on_fail: "STOP - approval not granted; honor C abort with STATUS=CANCELLED"
+  post_phase_2:
+    location: "After Phase 2 Proposal"
+    blocking: hard
+    checks:
+      - "report_path exists and non-empty (unless C aborted)"
+      - "no files outside packet_scratch were modified (read-only invariant)"
+    on_fail: "STATUS=FAIL with diagnostic"
+
+# ─────────────────────────────────────────────────────────────────
+# CONFIDENCE FRAMEWORK
+# ─────────────────────────────────────────────────────────────────
+confidence_framework:
+  thresholds:
+    high: { range: "80-100%", action: "Recommend exclusion" }
+    medium: { range: "40-79%", action: "Surface for operator review" }
+    low: { range: "0-39%", action: "Flag as needs-decision" }
+
+# ─────────────────────────────────────────────────────────────────
+# ERROR RECOVERY
+# ─────────────────────────────────────────────────────────────────
+error_recovery:
+  empty_repo: "Report 'no source files to analyze', exit STATUS=OK"
+  code_graph_unavailable: "Continue with filesystem-only diagnosis, ask user to confirm continuation"
+  detect_changes_unavailable: "Fallback to git status + index-timestamp comparison"
+  user_aborts_at_gate: "Honor abort, exit STATUS=CANCELLED, no report written"
+  packet_scratch_full: "Surface diagnostic, ask user where to write report"
+
+# ─────────────────────────────────────────────────────────────────
+# RULES
+# ─────────────────────────────────────────────────────────────────
+rules:
+  ALWAYS:
+    - read_code_graph_status_first
+    - present_analysis_summary_before_proposal_gate
+    - wait_for_user_approval_at_pre_phase_2_gate
+    - apply_scope_filter_consistently
+    - write_report_to_packet_scratch_with_umask_077
+    - assert_read_only_invariant_on_completion
+  NEVER:
+    - mutate_any_source_file
+    - invoke_code_graph_scan_in_phase_a
+    - write_outside_packet_scratch
+    - skip_pre_phase_2_approval_gate
+    - dispatch_agents_during_execution
+    - apply_recommendations_in_phase_a
+    - promote_to_phase_b_without_research_packet_007_outputs

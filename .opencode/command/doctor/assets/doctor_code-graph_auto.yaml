@@ -1,0 +1,204 @@
+# ─────────────────────────────────────────────────────────────────
+# DOCTOR: CODE-GRAPH WORKFLOW (AUTONOMOUS MODE)
+# ─────────────────────────────────────────────────────────────────
+role: Diagnostic Operator running code-graph health audit in autonomous mode
+purpose: Audit index health and surface stale + missed + bloat findings without any mutations
+action: Execute discovery → analysis → proposal-as-report with self-validation
+
+# ─────────────────────────────────────────────────────────────────
+# OPERATING MODE
+# ─────────────────────────────────────────────────────────────────
+operating_mode:
+  workflow: sequential
+  compliance: MANDATORY
+  execution: autonomous
+  approvals: none
+  tracking: phase_by_phase
+  validation: read_only_assertion
+
+phase_a_invariant: |
+  Phase A is diagnostic-only. NO mutations to any file outside packet-local scratch.
+  Phase 3 (Apply) and Phase 4 (Verify) are NOT defined in this YAML — they will appear
+  in a future Phase B release after the resilience-research packet 007 produces the
+  verification battery, staleness model, recovery playbook, and exclude-rule confidence
+  tiers.
+
+# ─────────────────────────────────────────────────────────────────
+# USER INPUTS
+# ─────────────────────────────────────────────────────────────────
+user_inputs:
+  scope: "[SCOPE] - all|stale|missed|bloat (default all)"
+
+field_handling:
+  defaults:
+    scope_empty: "all"
+  scope_policy:
+    all: "stale + missed + bloat detection"
+    stale: "only stale-file detection"
+    missed: "only files-on-disk-not-in-index detection"
+    bloat: "only bloat-dir detection"
+
+# ─────────────────────────────────────────────────────────────────
+# MUTATION BOUNDARIES (PHASE A INVARIANT)
+# ─────────────────────────────────────────────────────────────────
+mutation_boundaries:
+  allowed_targets: []
+  forbidden_targets:
+    - "Any file outside <packet_scratch>/"
+    - "code-graph SQLite database"
+    - "Any code under .opencode/skill/system-spec-kit/mcp_server/"
+    - "Any source file in the workspace"
+  enforcement: "Phase A has no Phase 3; the activities below produce a markdown report only and never invoke code_graph_scan or write to source files"
+  phase_b_promotion:
+    gated_on: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research"
+    notes: "When promoted, Phase 3 will follow the doctor_skill-advisor.yaml mutation pattern: validate_targets + capture_baseline + generate_rollback_script + apply + Phase 4 verification battery"
+
+# ─────────────────────────────────────────────────────────────────
+# DEFAULT BLOAT-DIR PATTERNS (Phase A heuristic; tier definitions
+# will be authoritative from research packet 007)
+# ─────────────────────────────────────────────────────────────────
+bloat_patterns:
+  high_confidence:
+    - "node_modules/"
+    - "__pycache__/"
+    - ".git/"
+    - ".venv/"
+    - ".DS_Store"
+    - "tmp/"
+  medium_confidence:
+    - "dist/"
+    - "build/"
+    - ".opencode/skill/system-spec-kit/mcp_server/dist/"
+    - ".opencode/scripts/dist/"
+  low_confidence_examples:
+    - "vendor/"
+    - "third_party/"
+  notes: "These are placeholder defaults. Authoritative tier definitions land in research-packet 007's assets/exclude-rule-confidence.json once that loop completes."
+
+# ─────────────────────────────────────────────────────────────────
+# WORKFLOW
+# ─────────────────────────────────────────────────────────────────
+workflow:
+  phase_0_discovery:
+    purpose: Gather index status + filesystem snapshot + bloat-dir candidates
+    activities:
+      - "Invoke code_graph_status({}) → capture indexed_count, last_scan_at, edge_count, freshness flags"
+      - "Filesystem walk: count source files by language using find/glob (ts, js, py, sh, json, md)"
+      - "Detect bloat-dir candidates: scan top-level directories for matches against bloat_patterns"
+      - "Build initial inventory: { indexed_count, file_count, lang_histogram, bloat_candidates }"
+    outputs:
+      - indexed_count: N
+      - file_count: M
+      - last_scan_at: timestamp
+      - lang_histogram: { ts: N, js: N, py: N, sh: N, json: N, md: N }
+      - bloat_candidates: [{ path, tier, present_in_index }]
+    validation: discovery_complete
+    fail_fast:
+      - "code_graph_status fails → degrade to filesystem-only diagnosis with warning"
+      - "Empty repo → STATUS=OK with message 'no source files to analyze'"
+
+  phase_1_analysis:
+    purpose: Compute stale + missed + bloat sets via detect_changes + glob comparison
+    activities:
+      - "If detect_changes available: invoke detect_changes({}) to obtain stale set"
+      - "Fallback: derive stale set from `git status --porcelain` + index timestamps"
+      - "Compute missed set: files-on-disk minus files-in-index (filter by language scope)"
+      - "Compute bloat set: bloat_candidates intersected with files-in-index (i.e., currently indexed bloat)"
+      - "If scope filter active: filter to scope's specific subset"
+      - "Cross-reference: stale ∪ missed ∪ bloat may overlap (a stale file in node_modules is both bloat + stale)"
+    outputs:
+      - stale_set: [paths]
+      - missed_set: [paths]
+      - bloat_set: [paths]
+      - overlap_set: [paths]
+      - analysis_report: structured map of findings per category
+    validation: analysis_complete
+    fail_fast:
+      - "Both detect_changes and git unavailable → STATUS=FAIL (cannot compute stale set)"
+      - "Filesystem walk error → STATUS=FAIL with diagnostic"
+
+  phase_2_proposal:
+    purpose: Generate exclude-rule + language-filter recommendations and write report to packet scratch
+    activities:
+      - "Resolve packet_scratch: if invoked inside a spec folder, use <spec-folder>/scratch/; else use .opencode/scratch/"
+      - "Ensure packet_scratch directory exists; apply umask 077 for the report file"
+      - "Generate exclude-rule recommendations: for each bloat_candidate currently in index, propose an exclude rule with confidence tier"
+      - "Generate language-filter recommendations: if a language has zero indexed files but >0 on disk, flag potential filter misconfig"
+      - "Build the diagnostic report markdown with sections: Discovery, Analysis, Proposed Recommendations, Limitations"
+      - "Write report to {packet_scratch}/code-graph-diagnostic-{timestamp}.md"
+    outputs:
+      - report_path: "{packet_scratch}/code-graph-diagnostic-{timestamp}.md"
+      - exclude_rule_recommendations: [{ pattern, tier, rationale }]
+      - language_filter_recommendations: [{ lang, action, rationale }]
+    validation: proposal_complete
+
+# ─────────────────────────────────────────────────────────────────
+# QUALITY GATES
+# ─────────────────────────────────────────────────────────────────
+quality_gates:
+  pre_phase_2:
+    location: "Before Phase 2 Proposal"
+    blocking: hard
+    checks:
+      - "stale_set + missed_set + bloat_set computed (or scope filter applied)"
+      - "no errors in analysis_report"
+    on_fail: "STOP - analysis incomplete"
+  post_phase_2:
+    location: "After Phase 2 Proposal"
+    blocking: hard
+    checks:
+      - "report_path exists and is non-empty"
+      - "no files outside packet_scratch were modified (read-only invariant)"
+    on_fail: "STATUS=FAIL with rollback hint (delete report file if partial)"
+
+# ─────────────────────────────────────────────────────────────────
+# CONFIDENCE FRAMEWORK
+# ─────────────────────────────────────────────────────────────────
+confidence_framework:
+  thresholds:
+    high: { range: "80-100%", action: "Recommend exclusion (high-tier bloat)" }
+    medium: { range: "40-79%", action: "Surface for operator review (medium-tier)" }
+    low: { range: "0-39%", action: "Flag as needs-decision (low-tier)" }
+  scoring_weights:
+    pattern_match: 0.40
+    presence_in_index: 0.30
+    presence_in_gitignore: 0.20
+    standard_pattern: 0.10
+
+# ─────────────────────────────────────────────────────────────────
+# ERROR RECOVERY
+# ─────────────────────────────────────────────────────────────────
+error_recovery:
+  empty_repo: "Report 'no source files to analyze', exit STATUS=OK"
+  code_graph_unavailable: "Continue with filesystem-only diagnosis, mark report as partial"
+  detect_changes_unavailable: "Fallback to git status + index-timestamp comparison"
+  packet_scratch_full: "Surface diagnostic, suggest cleanup, exit STATUS=FAIL"
+  permission_denied_on_report_path: "Try alternate path, surface to operator"
+
+# ─────────────────────────────────────────────────────────────────
+# AUTONOMOUS EXECUTION GUIDANCE
+# ─────────────────────────────────────────────────────────────────
+autonomous_execution:
+  principle: "Execute autonomously with self-validation at each phase boundary; never mutate"
+  validation_approach:
+    - "After Phase 0: assert indexed_count + file_count are numbers"
+    - "After Phase 1: assert stale_set + missed_set + bloat_set arrays exist"
+    - "After Phase 2: assert report file written and within packet_scratch"
+
+# ─────────────────────────────────────────────────────────────────
+# RULES
+# ─────────────────────────────────────────────────────────────────
+rules:
+  ALWAYS:
+    - read_code_graph_status_first
+    - apply_scope_filter_consistently
+    - write_report_to_packet_scratch_with_umask_077
+    - cite_bloat_candidates_with_pattern_match_evidence
+    - assert_read_only_invariant_on_completion
+  NEVER:
+    - mutate_any_source_file
+    - invoke_code_graph_scan_in_phase_a
+    - write_outside_packet_scratch
+    - dispatch_agents_during_execution
+    - apply_recommendations_in_phase_a
+    - promote_to_phase_b_without_research_packet_007_outputs

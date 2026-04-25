@@ -52,9 +52,9 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 [P] Create the planned .opencode/command/doctor/code-graph.md (created by T001) — command markdown with frontmatter, argument-hint, allowed-tools (Read + Bash + code_graph_* MCP tools), execution protocol, consolidated setup prompt
-- [ ] T002 [P] Create `.opencode/command/doctor/assets/doctor_code-graph_auto.yaml` — autonomous workflow with 3 phases (Discovery, Analysis, Proposal-as-report)
-- [ ] T003 [P] Create `.opencode/command/doctor/assets/doctor_code-graph_confirm.yaml` — interactive workflow with one `pre_phase_2` approval gate
+- [x] T001 [P] Create the planned .opencode/command/doctor/code-graph.md (created by T001) — command markdown with frontmatter, argument-hint, allowed-tools (Read + Bash + code_graph_* MCP tools), execution protocol, consolidated setup prompt
+- [x] T002 [P] Create `.opencode/command/doctor/assets/doctor_code-graph_auto.yaml` — autonomous workflow with 3 phases (Discovery, Analysis, Proposal-as-report)
+- [x] T003 [P] Create `.opencode/command/doctor/assets/doctor_code-graph_confirm.yaml` — interactive workflow with one `pre_phase_2` approval gate
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -62,12 +62,12 @@ _memory:
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T004 Create `.opencode/install_guides/SET-UP - Code Graph.md` — AI-first prompt + prerequisite check + report-reading guide
-- [ ] T005 Update `.opencode/README.md` Doctor Commands section — add 4th doctor command entry, bump command count from 22 to 23
-- [ ] T006 Update parent `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/context-index.md` — add 006 row to child phase map
-- [ ] T007 Update parent `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/spec.md` — add 006 entry to phase documentation map
-- [ ] T008 Update parent `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/tasks.md` — add T-NNN entry tracking the 006 child packet
-- [ ] T009 Cross-reference 007-code-graph-resilience-research packet in spec.md + plan.md (Phase B dependency)
+- [x] T004 Create `.opencode/install_guides/SET-UP - Code Graph.md` — AI-first prompt + prerequisite check + report-reading guide
+- [x] T005 Update `.opencode/README.md` Doctor Commands section — add 4th doctor command entry, bump command count from 22 to 23
+- [x] T006 Update parent `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/context-index.md` — add 006 row to child phase map
+- [x] T007 Update parent `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/spec.md` — add 006 entry to phase documentation map
+- [x] T008 Update parent `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/tasks.md` — add T-NNN entry tracking the 006 child packet
+- [x] T009 Cross-reference 007-code-graph-resilience-research packet in spec.md + plan.md (Phase B dependency)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -75,12 +75,12 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T010 Validate command markdown loads correctly — frontmatter parse, argument-hint format, allowed-tools list
-- [ ] T011 Validate both YAML workflows parse via `python3 yaml.safe_load`
-- [ ] T012 Verify mutation_boundaries.allowed_targets is empty in both YAMLs (Phase A read-only invariant)
-- [ ] T013 Run strict spec-folder validation (`bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh`)
-- [ ] T014 Verify `/doctor:code-graph` appears in runtime skill list after creation
-- [ ] T015 Smoke-test: invoke `/doctor:code-graph:auto` against this repo and confirm report at packet scratch with no other file changes
+- [x] T010 Validate command markdown loads correctly — frontmatter parse, argument-hint format, allowed-tools list
+- [x] T011 Validate both YAML workflows parse via `python3 yaml.safe_load`
+- [x] T012 Verify mutation_boundaries.allowed_targets is empty in both YAMLs (Phase A read-only invariant)
+- [x] T013 Run strict spec-folder validation (`bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh`)
+- [x] T014 Verify `/doctor:code-graph` appears in runtime skill list after creation
+- [x] T015 Smoke-test: invoke `/doctor:code-graph:auto` against this repo and confirm report at packet scratch with no other file changes
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -88,14 +88,14 @@ _memory:
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All Phase 1-3 tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Command file exists at the planned .opencode/command/doctor/code-graph.md (created by T001)
-- [ ] Both YAML assets exist in `.opencode/command/doctor/assets/`
-- [ ] Install guide exists at `.opencode/install_guides/SET-UP - Code Graph.md`
-- [ ] Parent context-index, spec, tasks updated with 006 child entry
-- [ ] Strict validation passes 0/0
-- [ ] Phase B explicitly documented as deferred and gated on 007 research packet
+- [x] All Phase 1-3 tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Command file exists at the planned .opencode/command/doctor/code-graph.md (created by T001)
+- [x] Both YAML assets exist in `.opencode/command/doctor/assets/`
+- [x] Install guide exists at `.opencode/install_guides/SET-UP - Code Graph.md`
+- [x] Parent context-index, spec, tasks updated with 006 child entry
+- [x] Strict validation passes 0/0
+- [x] Phase B explicitly documented as deferred and gated on 007 research packet
 <!-- /ANCHOR:completion -->
 
 ---

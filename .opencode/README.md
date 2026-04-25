@@ -55,9 +55,9 @@ Together, these systems enable context-aware development with traceability, hard
 | MCP Tools | 56 | 47 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking |
 | Agents | 12 | Base agent definitions in `.opencode/agent/*.md` |
 | Skills | 20 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
-| Commands | 22 | Markdown command entry points in `.opencode/command/` (7 spec_kit + 4 memory + 6 create + 2 improve + 2 doctor + 1 utility); spec_kit list shows `--intake-only` as a separate row even though it shares `plan.md` |
+| Commands | 23 | Markdown command entry points in `.opencode/command/` (6 spec_kit + 4 memory + 6 create + 2 improve + 3 doctor + 1 utility + 1 standalone); spec_kit list shows `--intake-only` as a separate row even though it shares `plan.md` |
 | Templates | 83 | Spec Kit CORE + ADDENDUM templates |
-| YAML assets | 30 | Command execution YAML files |
+| YAML assets | 32 | Command execution YAML files |
 | Validation rules | 13 | Spec folder validation scripts |
 | Last Verified | 2026-04-25 | Counts refreshed against live repository state |
 
@@ -188,11 +188,12 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/improve:agent`: Evaluate and improve any agent across 5 dimensions with deterministic scoring and bounded loop
 - `/improve:prompt`: Create or improve prompts with 7 frameworks, DEPTH thinking and CLEAR scoring
 
-### Doctor Commands (`/doctor:*`) — 3 commands
+### Doctor Commands (`/doctor:*`) — 4 commands
 
 - `/doctor:mcp_install`: Install or reinstall all 4 MCP servers from scratch (6 steps); reads install guides, checks system reality, installs dependencies, builds, configures, and verifies
 - `/doctor:mcp_debug`: Diagnose and fix MCP server connection issues (5 steps); runs health checks, investigates failures with install guide knowledge, offers guided repair
 - `/doctor:skill-advisor`: Analyze all skills, optimize advisor scoring tables (TOKEN_BOOSTS, PHRASE_BOOSTS, derived triggers, CATEGORY_HINTS), re-index the skill graph, and validate via the advisor test suite; auto + confirm modes with `--scope`, `--dry-run`, and `--skip-tests` flags
+- `/doctor:code-graph`: Diagnostic-first audit of the code-graph index (stale + missed + bloat); produces a markdown report under packet scratch with no mutations to source files; auto + confirm modes with `--scope=stale|missed|bloat|all` flag (Phase A; Phase B apply mode gated on research packet 007)
 
 ### Utility Commands — 1 command
 
