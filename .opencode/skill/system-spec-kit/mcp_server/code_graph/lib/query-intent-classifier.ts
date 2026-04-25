@@ -22,14 +22,17 @@ export interface ClassificationResult {
 
 const STRUCTURAL_KEYWORDS = new Set([
   // Relationship queries
-  'calls', 'imports', 'exports', 'extends', 'implements',
+  'calls', 'call', 'imports', 'exports', 'extends', 'implements',
   'contains', 'overrides', 'decorates', 'inherits',
-  // Symbol queries
-  'function', 'class', 'method', 'interface', 'type',
-  'enum', 'variable', 'parameter', 'module',
+  'invoke', 'invokes', 'invoked',
+  // Symbol queries (singular + plural)
+  'function', 'functions', 'class', 'classes', 'method', 'methods',
+  'interface', 'interfaces', 'type', 'types',
+  'enum', 'enums', 'variable', 'variables', 'parameter', 'parameters',
+  'module', 'modules',
   // Navigation
   'callers', 'callees', 'dependencies', 'dependents',
-  'references', 'definition', 'declaration', 'signature',
+  'references', 'definition', 'declaration', 'signature', 'signatures',
   // Graph operations
   'neighborhood', 'outline', 'impact', 'graph',
   'edges', 'nodes', 'symbols', 'hierarchy',
@@ -60,6 +63,8 @@ const SEMANTIC_KEYWORDS = new Set([
 const STRUCTURAL_PATTERNS = [
   /who\s+calls/i,
   /what\s+(?:calls|imports|exports|extends|implements)/i,
+  // F052: "what {functions|classes|...} {call|import|...} X" — allow a noun between "what" and the verb
+  /what\s+(?:functions?|classes|methods?|modules?|interfaces?|types?)\s+(?:call|calls|import|imports|extend|extends|implement|implements|override|overrides|reference|references|use|uses|invoke|invokes)/i,
   /(?:show|list|get)\s+(?:callers|callees|dependencies|imports|exports)/i,
   /(?:class|function|method)\s+(?:hierarchy|tree)/i,
   /(?:impact|blast\s+radius)\s+of/i,
