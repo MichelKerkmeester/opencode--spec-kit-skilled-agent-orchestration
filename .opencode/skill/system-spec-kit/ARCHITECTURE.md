@@ -84,13 +84,13 @@ system-spec-kit/
 │   ├── tests/                      # Runtime Vitest suites and fixtures
 │   ├── scripts/                    # Compatibility wrappers only
 │   ├── skill-advisor/              # Self-contained advisor package (see §5)
-│   │   ├── lib/                    # scorer (fusion + lanes), daemon, freshness, promotion, compat, ...
+│   │   ├── lib/                    # scorer (fusion + lanes), daemon, freshness, lifecycle, compat, ...
 │   │   ├── handlers/               # advisor-recommend | advisor-status | advisor-validate
 │   │   ├── tools/                  # MCP tool registrations
-│   │   ├── schemas/                # Zod schemas for tools, metadata, promotion
+│   │   ├── schemas/                # Zod schemas for tools and derived metadata
 │   │   ├── compat/                 # Stable public API entrypoint for plugin bridge
-│   │   ├── tests/                  # 23 files / 167 tests (scorer, parity, promotion, legacy, python)
-│   │   ├── bench/                  # Corpus / holdout / latency / safety / scorer / watcher benches
+│   │   ├── tests/                  # Vitest suites (scorer, parity, handlers, compat, legacy, python)
+│   │   ├── bench/                  # latency / scorer / watcher benches
 │   │   ├── scripts/                # Python compat shim, runtime, regression, bench, compiler
 │   │   ├── feature_catalog/        # Feature catalog package
 │   │   ├── manual_testing_playbook/ # Manual testing playbook package
@@ -223,7 +223,6 @@ Introduced in its current self-contained form by Phase 027. Produces the compact
 | `lib/freshness/` | `trust-state.ts`, `cache-invalidation.ts`, `generation.ts`, `rebuild-from-source.ts` |
 | `lib/derived/` | Auto-derived keyword + trigger generation |
 | `lib/lifecycle/` | Lifecycle state machine |
-| `lib/promotion/` | Promotion gate bundle: `gate-bundle.ts`, `rollback.ts`, `semantic-lock.ts`, `shadow-cycle.ts`, `two-cycle-requirement.ts`, `weight-delta-cap.ts` |
 | `lib/compat/` | Python parity shims |
 | `lib/corpus/` | Golden corpus + holdout fixtures |
 
@@ -239,7 +238,7 @@ Defined in `mcp_server/skill-advisor/lib/scorer/weights-config.ts:8-19` and exer
 | `derived_generated` | `0.10` | Auto-derived keyword lane (bounded) |
 | `semantic_shadow` | `0.00` | Shadow-only channel; scored but inert |
 
-`semantic_shadow` is locked at `0.00` live weight through the first promotion wave (ADR-006). Promotion gates are defined under `lib/promotion/` and enforced by the two-cycle-requirement + weight-delta-cap modules.
+`semantic_shadow` is locked at `0.00` live weight (ADR-006). The semantic lane is scored shadow-only and inert until a future weight rebalance is justified by measured live-corpus evidence; no automated promotion subsystem is wired today.
 
 ### Daemon + freshness + trust states
 
@@ -276,7 +275,7 @@ Regression suite: `mcp_server/skill-advisor/scripts/skill_advisor_regression.py`
 
 ### Test surfaces
 
-`mcp_server/skill-advisor/tests/` — 23 files / 167 tests across `scorer/`, `handlers/`, `parity/`, `promotion/`, `compat/`, `legacy/` (11 advisor-*.vitest.ts files relocated from `mcp_server/tests/`), and `python/`.
+`mcp_server/skill-advisor/tests/` — Vitest suites across `scorer/`, `handlers/`, `parity/`, `compat/`, `legacy/` (11 advisor-*.vitest.ts files relocated from `mcp_server/tests/`), and `python/`.
 
 <!-- /ANCHOR:skill-advisor -->
 
