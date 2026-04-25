@@ -35,7 +35,7 @@ _memory:
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-04-24 |
-| **Parent** | `026-graph-and-context-optimization/010-hook-parity/` |
+| **Parent** | `026-graph-and-context-optimization/009-hook-parity/` |
 | **Parent Spec** | `../spec.md` |
 | **Related** | `../007-skill-advisor-hook-surface/`, `../009-skill-advisor-plugin-hardening/`, `../010-skill-advisor-standards-alignment/`, `../../007-deep-review-remediation/006-integrity-parity-closure/applied/CF-019.md` |
 

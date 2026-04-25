@@ -1,0 +1,19 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-parity",
+  "description": "Feature Specification: Hook Parity",
+  "keywords": [
+    "feature",
+    "specification",
+    "hook",
+    "parity"
+  ],
+  "lastUpdated": "2026-04-25T12:42:51.115Z",
+  "specId": "009",
+  "folderSlug": "hook-parity",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

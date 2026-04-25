@@ -1,6 +1,6 @@
 ---
 title: "Featur [system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/spec]"
-description: "Deep-research investigation into how the code-graph package and its hook wiring can be improved beyond the state delivered by 010-hook-parity and 012-docs-impact-remediation. Research-only packet — output is findings + recommendations, no implementation in this sub-phase."
+description: "Deep-research investigation into how the code-graph package and its hook wiring can be improved beyond the state delivered by 009-hook-parity and 012-docs-impact-remediation. Research-only packet — output is findings + recommendations, no implementation in this sub-phase."
 trigger_phrases:
   - "code-graph hook improvements"
   - "code-graph system research"
@@ -35,7 +35,7 @@ _memory:
 | **Priority** | P1 |
 | **Status** | Research queued |
 | **Created** | 2026-04-24 |
-| **Parent** | `026-graph-and-context-optimization/010-hook-parity/` |
+| **Parent** | `026-graph-and-context-optimization/009-hook-parity/` |
 | **Parent Spec** | `../spec.md` |
 | **Related** | `../impact-analysis/merged-impact-report.md`, `../006-integrity-parity-closure/`, 026 phase 003 (code-graph-package) research |
 

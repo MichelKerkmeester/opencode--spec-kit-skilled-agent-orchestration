@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Graph and Context Optimization [system-spec-kit/026-graph-and-context-optimization/plan]"
-description: "Plan for consolidating the 026 packet from 29 active top-level phase folders to 9 thematic wrappers."
+description: "Plan for consolidating the 026 packet from 29 active top-level phase folders to 10 thematic wrappers across two topical passes plus the post-push topology adjustment."
 trigger_phrases:
   - "026 graph and context optimization"
   - "026 phase consolidation"
@@ -12,9 +12,9 @@ contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
-    last_updated_at: "2026-04-25T12:10:00Z"
+    last_updated_at: "2026-04-25T14:45:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "Second topical consolidation: 008-skill-advisor + 009-memory-causal-graph created; 010 renamed to 010-hook-parity; 007-code-graph expanded to 5 children"
+    recent_action: "Post-push topology adjustment: 010-hook-parity renamed to 009-hook-parity; 009-memory-causal-graph removed; active surface narrowed to 10 wrappers"
     next_safe_action: "Use merged-phase-map.md and context indexes for navigation"
     blockers: []
     key_files:
@@ -51,7 +51,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 | **Testing** | Strict spec validation, JSON parse scan, folder/map consistency checks |
 
 ### Overview
-This plan documents the active 026 phase surface produced by two topical consolidation passes. The first pass (2026-04-21) collapsed 29 chronological phase folders into nine thematic wrappers; the second pass (2026-04-25) merged `008-skill-advisor/` into `008-skill-advisor/`, redistributed children of the former `010-hook-parity/` across `007-code-graph/`, `008-skill-advisor/`, and `010-hook-parity/`, and added `009-memory-causal-graph/` as a post-hoc Level-2 documentation packet for live infrastructure. The current active surface is 11 thematic wrappers with intentional gaps at `006` and `011`. Original packets remain intact under their thematic wrapper; root support folders stay in place; docs and metadata bridge old paths to active homes through `merged-phase-map.md`.
+This plan documents the active 026 phase surface produced by two topical consolidation passes plus a post-push topology adjustment. The first pass (2026-04-21) collapsed 29 chronological phase folders into nine thematic wrappers; the second pass (2026-04-25 12:10) merged `006-search-routing-advisor/` into `008-skill-advisor/`, redistributed children of the former `009-hook-package/` across `007-code-graph/`, `008-skill-advisor/`, and the renamed `010-hook-parity/`. A subsequent post-push adjustment (2026-04-25 14:45) renamed `010-hook-parity/` to `009-hook-parity/` and removed the post-hoc `009-memory-causal-graph/` documentation packet (the causal-graph infrastructure remains in production code; its documentation is owned by `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/` from a display-layer perspective). The current active surface is 10 thematic wrappers with intentional gaps at `006`, `010`, and `011`. Original packets remain intact under their thematic wrapper; root support folders stay in place; docs and metadata bridge old paths to active homes through `merged-phase-map.md`.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -65,9 +65,10 @@ This plan documents the active 026 phase surface produced by two topical consoli
 - [x] Existing uncommitted changes noted and preserved.
 
 ### Definition of Done
-- [x] Root direct phase folders are the 11 approved wrappers (intentional gaps at `006` and `011`).
+- [x] Root direct phase folders are the 10 approved wrappers (intentional gaps at `006`, `010`, and `011`).
 - [x] Every old phase appears exactly once in the first-pass section of `merged-phase-map.md`.
 - [x] Every second-pass move/rename appears exactly once in the appended second-pass section of `merged-phase-map.md`.
+- [x] Post-push topology adjustment (rename + removal) is appended as its own sub-section of `merged-phase-map.md`.
 - [x] Every wrapper has context indexes (or root-only docs where the wrapper merged its children into the root).
 - [x] JSON metadata parse checks pass.
 - [x] Strict validation has been run on root and wrappers.
@@ -110,14 +111,14 @@ This plan documents the active 026 phase surface produced by two topical consoli
 ## 3. ARCHITECTURE
 
 ### Pattern
-Eleven active thematic wrapper packets (with intentional gaps at `006` and `011`) over preserved historical child packets, produced by two topical consolidation passes.
+Ten active thematic wrapper packets (with intentional gaps at `006`, `010`, and `011`) over preserved historical child packets, produced by two topical consolidation passes plus the post-push topology adjustment.
 
 ### Key Components
 
-- **Root map**: `spec.md` and `merged-phase-map.md` (first-pass + second-pass tables).
-- **Wrapper packets**: 11 wrappers (`000`, `001`, `002`, `003`, `004`, `005`, `007`, `008`, `009`, `010-hook-parity`, `012`), each with Level 1 docs and context indexes (or root-only docs where children are merged).
+- **Root map**: `spec.md` and `merged-phase-map.md` (first-pass + second-pass tables plus the post-push adjustment sub-section).
+- **Wrapper packets**: 10 wrappers (`000`, `001`, `002`, `003`, `004`, `005`, `007`, `008`, `009-hook-parity`, `012`), each with Level 1 docs and context indexes (or root-only docs where children are merged).
 - **Child phase folders**: original phase roots nested under thematic wrappers.
-- **Metadata continuity**: moved JSON files record current paths plus migration aliases (`008-skill-advisor/`, `010-hook-parity/`, and earlier first-pass aliases).
+- **Metadata continuity**: moved JSON files record current paths plus migration aliases (`008-skill-advisor/`, `009-hook-parity/`, and earlier first-pass aliases including the rename chain `009-hook-package` → `010-hook-parity` → `009-hook-parity`).
 
 ### Data Flow
 Root phase map points to wrapper docs. Wrapper context indexes point to preserved original phase folders. Metadata aliases preserve old packet IDs for memory and graph traversal.
@@ -152,10 +153,10 @@ Root phase map points to wrapper docs. Wrapper context indexes point to preserve
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Folder shape | Root direct phase folders | `find` |
-| Map coverage | Old phases `001` through `029` (first pass) and second-pass moves | Node/regex scan over `merged-phase-map.md` |
+| Map coverage | Old phases `001` through `029` (first pass), second-pass moves, and post-push adjustment | Node/regex scan over `merged-phase-map.md` |
 | Metadata | All moved and active JSON files | Node `JSON.parse` scan |
-| Spec validation | Root and 11 wrappers | `validate.sh --strict` |
-| Trigger continuity | Old phase phrases plus `008-skill-advisor` and `010-hook-parity` aliases | `rg` over context indexes and metadata |
+| Spec validation | Root and 10 wrappers | `validate.sh --strict` |
+| Trigger continuity | Old phase phrases plus `006-search-routing-advisor`, `009-hook-package`, and `010-hook-parity` aliases | `rg` over context indexes and metadata |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -253,7 +254,7 @@ direct child folders
 context-index bridge docs
        |
        v
-root nine-phase map
+root 10-wrapper map
        |
        v
 validation and continuity checks
@@ -307,15 +308,15 @@ validation and continuity checks
 
 **Context**: Follow-up phases were added chronologically even when they continued older themes.
 
-**Decision**: Use thematic wrappers (originally nine, now 11 after a second topical pass) and preserve chronological folders as child phase folders.
+**Decision**: Use thematic wrappers (originally nine, expanded to 11 after a second topical pass, then narrowed to 10 after the post-push topology adjustment) and preserve chronological folders as child phase folders.
 
 **Consequences**:
 - Active navigation becomes smaller and clearer.
 - Historical folder names remain available under thematic wrappers.
-- Second-pass refinements (advisor unification, code-graph hook expansion, hook-parity narrowing, causal-graph documentation) are recorded in `merged-phase-map.md`.
+- Second-pass refinements (advisor unification, code-graph hook expansion, hook-parity narrowing) and the post-push adjustment (hook-parity rename to `009/`, removal of the post-hoc memory-causal-graph documentation packet) are recorded in `merged-phase-map.md`.
 
 **Alternatives Rejected**:
 - Keep 29 active top-level folders: rejected because it preserves the navigation problem.
-- Keep nine wrappers with advisor work split across `008-skill-advisor/` and `010-hook-parity/`: rejected because it forced cross-wrapper navigation when reasoning about the advisor system.
+- Keep nine wrappers with advisor work split across `006-search-routing-advisor/` and `009-hook-package/`: rejected because it forced cross-wrapper navigation when reasoning about the advisor system.
 
-> Detailed second-pass ADRs (008-skill-advisor merge, 009-memory-causal-graph creation, 010 rename to hook-parity) live in `decision-record.md`.
+> Detailed second-pass ADRs (008-skill-advisor merge, 010 rename to hook-parity) and the post-push adjustment ADR (rename to `009-hook-parity` plus removal of `009-memory-causal-graph`) live in `decision-record.md`.

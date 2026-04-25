@@ -1,5 +1,5 @@
 ---
-title: "...graph-and-context-optimization/010-hook-parity/002-skill-graph-daemon-and-advisor-unification/decision-record]"
+title: "...graph-and-context-optimization/009-hook-parity/002-skill-graph-daemon-and-advisor-unification/decision-record]"
 description: "Architectural decisions for the shipped Phase 027 skill-advisor unification work."
 trigger_phrases:
   - "027 decisions"

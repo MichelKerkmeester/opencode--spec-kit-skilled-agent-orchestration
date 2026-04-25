@@ -1,0 +1,26 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/006-copilot-wrapper-schema-fix",
+  "description": "Feature Specification: Copilot Wrapper Schema Fix for .claude/settings.local.json",
+  "keywords": [
+    "feature",
+    "specification",
+    "copilot",
+    "wrapper",
+    "schema",
+    "fix",
+    "claude",
+    "settings",
+    "local",
+    "json"
+  ],
+  "lastUpdated": "2026-04-25T12:42:54.016Z",
+  "specId": "006",
+  "folderSlug": "copilot-wrapper-schema-fix",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-parity"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

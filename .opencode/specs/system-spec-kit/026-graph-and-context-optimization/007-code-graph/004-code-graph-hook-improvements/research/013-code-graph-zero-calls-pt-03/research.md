@@ -1,5 +1,5 @@
 ---
-title: "...timization/010-hook-parity/013-code-graph-hook-improvements/research/013-code-graph-zero-calls-pt-03/research]"
+title: "...timization/009-hook-parity/013-code-graph-hook-improvements/research/013-code-graph-zero-calls-pt-03/research]"
 description: "This packet started from a prior report that calls_from and calls_to returned zero CALLS edges for handleMemoryContext, even though the function body clearly invokes many helper..."
 trigger_phrases:
   - "timization"

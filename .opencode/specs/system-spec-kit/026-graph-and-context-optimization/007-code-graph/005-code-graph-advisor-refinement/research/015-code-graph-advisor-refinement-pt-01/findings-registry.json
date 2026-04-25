@@ -8461,8 +8461,8 @@
       ]
     },
     {
-      "id": "finding-20-7-010-hook-parity-001-skill-advisor-hook-surface-review-archive-r01-copilot-is-an",
-      "text": "**`010-hook-parity/001-skill-advisor-hook-surface/review-archive-r01-copilot/`** is an archived review packet referencing local advisor-brief work; informational only.",
+      "id": "finding-20-7-009-hook-parity-001-skill-advisor-hook-surface-review-archive-r01-copilot-is-an",
+      "text": "**`009-hook-parity/001-skill-advisor-hook-surface/review-archive-r01-copilot/`** is an archived review packet referencing local advisor-brief work; informational only.",
       "addedAtIteration": 20,
       "sources": [
         "`/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/AGENTS.md`",
@@ -8474,8 +8474,8 @@
       ]
     },
     {
-      "id": "finding-20-4-010-hook-parity-002-skill-graph-daemon-and-advisor-unification-uses-shadow-cycl",
-      "text": "**`010-hook-parity/002-skill-graph-daemon-and-advisor-unification`** uses \"shadow-cycle\" as ITS OWN local machinery for rag-fusion semantic-weight promotion — a DIFFERENT subsystem from the 015 advisor-brief promotion. Different domain, no name collision risk. [SOURCE: 002/research/research.md:162,297,305]",
+      "id": "finding-20-4-009-hook-parity-002-skill-graph-daemon-and-advisor-unification-uses-shadow-cycl",
+      "text": "**`009-hook-parity/002-skill-graph-daemon-and-advisor-unification`** uses \"shadow-cycle\" as ITS OWN local machinery for rag-fusion semantic-weight promotion — a DIFFERENT subsystem from the 015 advisor-brief promotion. Different domain, no name collision risk. [SOURCE: 002/research/research.md:162,297,305]",
       "addedAtIteration": 20,
       "sources": [
         "`/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/AGENTS.md`",

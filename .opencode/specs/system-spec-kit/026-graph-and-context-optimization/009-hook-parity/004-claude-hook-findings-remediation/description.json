@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/004-claude-hook-findings-remediation",
+  "description": "Feature Specification: Claude Hook Findings Remediation",
+  "keywords": [
+    "feature",
+    "specification",
+    "claude",
+    "hook",
+    "findings",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-25T12:42:53.746Z",
+  "specId": "004",
+  "folderSlug": "claude-hook-findings-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-parity"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

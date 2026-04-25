@@ -27,7 +27,7 @@ _memory:
       - "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor"
     last_updated_at: "2026-04-25T11:50:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "2026-04-25 second consolidation: merged 008-skill-advisor root + 5 advisor children from 010-hook-parity into 008-skill-advisor"
+    recent_action: "2026-04-25 second consolidation: merged 008-skill-advisor root + 5 advisor children from 009-hook-parity into 008-skill-advisor"
     next_safe_action: "Use context-index.md for local phase navigation"
     blockers: []
     key_files:

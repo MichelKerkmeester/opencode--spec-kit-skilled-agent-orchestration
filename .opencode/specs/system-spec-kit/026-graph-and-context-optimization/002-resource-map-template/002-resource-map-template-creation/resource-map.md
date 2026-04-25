@@ -56,7 +56,7 @@ _memory:
 | Path | Action | Status | Note |
 |------|--------|--------|------|
 | `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` | Updated | OK | Cross-cutting row + per-level Optional Files mentions. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-hook-parity/path-references-audit` (md) | Analyzed | OK | Reference shape (categories + table columns) inspiration. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/path-references-audit` (md) | Analyzed | OK | Reference shape (categories + table columns) inspiration. |
 | `.opencode/skill/system-spec-kit/templates/addendum/phase/phase-child-header.md` | Analyzed | OK | Consulted for the phase-child metadata rows. |
 
 ---
@@ -99,7 +99,7 @@ _memory:
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants/spec.md` | Analyzed | OK | Prior-phase format reference (Level 3 packet). |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants/graph-metadata.json` | Analyzed | OK | Schema template for graph-metadata shape. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants/plan.md` | Analyzed | OK | `_memory` frontmatter pattern. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-hook-parity/` | Analyzed | OK | Source of the path-references-audit artifact used as reference shape. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/` | Analyzed | OK | Source of the path-references-audit artifact used as reference shape. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/` (parent spec folder) | Analyzed | OK | Confirmed existing phase inventory (001–011) and claimed number 012. |
 
 ---

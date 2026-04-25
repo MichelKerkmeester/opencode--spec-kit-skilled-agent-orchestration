@@ -14,7 +14,8 @@
     "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/008-skill-graph-daemon-and-advisor-unification",
     "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/009-skill-advisor-plugin-hardening",
     "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/010-skill-advisor-standards-alignment",
-    "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/011-skill-advisor-hook-improvements"
+    "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/011-skill-advisor-hook-improvements",
+    "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command"
   ],
   "migrated": true,
   "migration_source": "legacy",
@@ -207,7 +208,7 @@
         "source": "derived"
       }
     ],
-    "causal_summary": "Skill advisor work was scattered across two phase wrappers (`008-skill-advisor/` for search/routing/graph/smart-router, and parts of `010-hook-parity/` for hook surface, daemon unification, plugin hardening, standards alignment, and hook improvements). The split made it hard to see the advisor system as one coherent surface and forced cross-wrapper navigation when reasoning about advisor changes.",
+    "causal_summary": "Skill advisor work was scattered across two phase wrappers (`008-skill-advisor/` for search/routing/graph/smart-router, and parts of `009-hook-parity/` for hook surface, daemon unification, plugin hardening, standards alignment, and hook improvements). The split made it hard to see the advisor system as one coherent surface and forced cross-wrapper navigation when reasoning about advisor changes.",
     "created_at": "2026-04-21T13:00:00Z",
     "last_save_at": "2026-04-25T11:59:33.781Z",
     "save_lineage": "same_pass",

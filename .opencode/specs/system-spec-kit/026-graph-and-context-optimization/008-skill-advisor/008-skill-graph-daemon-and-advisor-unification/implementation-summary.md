@@ -1,5 +1,5 @@
 ---
-title: "...nd-context-optimization/010-hook-parity/002-skill-graph-daemon-and-advisor-unification/implementation-summary]"
+title: "...nd-context-optimization/009-hook-parity/002-skill-graph-daemon-and-advisor-unification/implementation-summary]"
 description: "Phase 027 shipped the skill-graph daemon, derived metadata, native advisor, MCP tools, compatibility shims, and promotion gates."
 trigger_phrases:
   - "026/009/002 implementation summary"

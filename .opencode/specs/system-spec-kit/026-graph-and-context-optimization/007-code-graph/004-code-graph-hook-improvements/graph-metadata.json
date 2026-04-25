@@ -6,8 +6,8 @@
   "children_ids": [],
   "manual": {
     "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/006-integrity-parity-closure",
-      "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/008-docs-impact-remediation"
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/006-integrity-parity-closure",
+      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/008-docs-impact-remediation"
     ],
     "supersedes": [],
     "related_to": []

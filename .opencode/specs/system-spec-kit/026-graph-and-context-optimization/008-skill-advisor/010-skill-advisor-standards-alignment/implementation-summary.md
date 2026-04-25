@@ -1,5 +1,5 @@
 ---
-title: "...6-graph-and-context-optimization/010-hook-parity/009-skill-advisor-standards-alignment/implementation-summary]"
+title: "...6-graph-and-context-optimization/009-hook-parity/009-skill-advisor-standards-alignment/implementation-summary]"
 description: "Completed Level 1 standards-alignment packet: added the OpenCode Plugin Exemption Tier, annotated the JavaScript CommonJS checklist item, and aligned the skill-advisor plugin header/JSDoc/section dividers without behavior changes."
 trigger_phrases:
   - "skill advisor standards alignment complete"

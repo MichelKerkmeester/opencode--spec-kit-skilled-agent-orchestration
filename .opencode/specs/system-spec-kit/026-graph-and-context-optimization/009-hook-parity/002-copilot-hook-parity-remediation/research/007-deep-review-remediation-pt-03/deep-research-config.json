@@ -1,0 +1,32 @@
+{
+  "topic": "Copilot CLI 1.0.34 hook-config JSON schema: resolve the \"Neither 'bash' nor 'powershell' specified in hook command configuration\" execution failure blocking 026/009/004 copilot-hook-parity-remediation. Identify the current schema Copilot CLI accepts for sessionStart / userPromptSubmitted / sessionEnd / postToolUse / preToolUse hooks, confirm the config-file path and discovery rules, and produce a concrete JSON patch to .github/hooks/superset-notify.json with an empirical reproducer.",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 15,
+  "progressiveSynthesis": true,
+  "specFolder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/002-copilot-hook-parity-remediation",
+  "createdAt": "2026-04-22T13:53:00Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.4",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "sandboxMode": "workspace-write",
+    "timeoutSeconds": 900
+  },
+  "lineage": {
+    "sessionId": "026-007-007-copilot-schema-pt-03-1776865953",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "completedAt": "2026-04-22T15:10:00Z",
+  "finalIterations": 8,
+  "stopReason": "composite_converged"
+}

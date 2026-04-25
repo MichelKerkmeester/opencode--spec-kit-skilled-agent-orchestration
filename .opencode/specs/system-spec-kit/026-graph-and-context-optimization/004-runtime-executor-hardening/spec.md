@@ -50,7 +50,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 | **Branch** | `026-graph-and-context-optimization` |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../007-deep-review-remediation/spec.md |
-| **Successor** | ../010-hook-parity/spec.md |
+| **Successor** | ../009-hook-parity/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

@@ -2,14 +2,14 @@
   "migration": {
     "consolidated_at": "2026-04-21T12:00:00Z",
     "old_top_level_phase_count": 29,
-    "active_top_level_phase_count": 11,
+    "active_top_level_phase_count": 10,
     "map_doc": "system-spec-kit/026-graph-and-context-optimization/merged-phase-map.md",
     "flattened_at": "2026-04-21T13:00:00Z",
     "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization",
     "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/",
     "layout": "phase-root-children",
-    "second_consolidation_at": "2026-04-25T12:10:00.000Z",
-    "second_consolidation_pass": "topical wrappers: 007-code-graph, 008-skill-advisor, 009-memory-causal-graph, 010-hook-parity"
+    "second_consolidation_at": "2026-04-25T14:45:00.000Z",
+    "second_consolidation_pass": "topical wrappers: 007-code-graph, 008-skill-advisor, 009-hook-parity (010-hook-parity renamed; 009-memory-causal-graph removed by user)"
   },
   "childTopology": [
     "000-release-cleanup-playbooks",
@@ -20,8 +20,7 @@
     "005-memory-indexer-invariants",
     "007-code-graph",
     "008-skill-advisor",
-    "009-memory-causal-graph",
-    "010-hook-parity",
+    "009-hook-parity",
     "012-graph-impact-and-affordance-uplift"
   ],
   "specFolder": "system-spec-kit/026-graph-and-context-optimization",
@@ -33,7 +32,7 @@
     "context",
     "optimization"
   ],
-  "lastUpdated": "2026-04-25T12:10:00.000Z",
+  "lastUpdated": "2026-04-25T14:45:00.000Z",
   "specId": "026",
   "folderSlug": "graph-and-context-optimization",
   "parentChain": [

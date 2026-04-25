@@ -31,7 +31,6 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 # Verification Checklist: Skill Advisor Setup Command
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 

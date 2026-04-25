@@ -47,10 +47,10 @@ Packet 008 audit surfaced one standards gap and three plugin alignment items. Th
 | **Priority** | P2 (standards alignment, no behavior change) |
 | **Status** | Complete |
 | **Created** | 2026-04-23 |
-| **Parent** | `026-graph-and-context-optimization/010-hook-parity/` |
+| **Parent** | `026-graph-and-context-optimization/009-hook-parity/` |
 | **Parent Spec** | `../spec.md` |
 | **Predecessor** | `../009-skill-advisor-plugin-hardening/spec.md` |
-| **Successor** | `../../010-hook-parity/006-copilot-wrapper-schema-fix/spec.md` |
+| **Successor** | `../../009-hook-parity/006-copilot-wrapper-schema-fix/spec.md` |
 | **Related** | `008-skill-advisor-plugin-hardening/` (audit source) |
 <!-- /ANCHOR:metadata -->
 

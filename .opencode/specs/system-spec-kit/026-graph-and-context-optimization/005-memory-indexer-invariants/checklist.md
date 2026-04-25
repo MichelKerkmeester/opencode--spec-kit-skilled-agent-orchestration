@@ -110,7 +110,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 - [x] **CHK-T12** [P1] `npm run typecheck` exits `0` for `mcp_server` and `scripts`. [EVIDENCE: both exit `0`.]
 - [x] **CHK-T13** [P1] `npm run build` exits `0` for `mcp_server` and `scripts`. [EVIDENCE: both exit `0`.]
 - [x] **CHK-T14** [P1] Strict packet validation. [EVIDENCE: `validate.sh --strict --no-recursive` exit `0`.]
-- [ ] **CHK-T15** [P0] Live-capable packet acceptance rerun recorded. (BLOCKED: requires user MCP restart + fresh `memory_index_scan` on `026/010-hook-parity` in an embedding-capable runtime.)
+- [ ] **CHK-T15** [P0] Live-capable packet acceptance rerun recorded. (BLOCKED: requires user MCP restart + fresh `memory_index_scan` on `026/009-hook-parity` in an embedding-capable runtime.)
 <!-- /ANCHOR:testing -->
 
 ---
@@ -172,7 +172,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 - 2026-04-24: Wave-2 hardening landed — cleanup audit durability, SSOT unification, realpath canonicalization, cleanup TOCTOU closure, walker DoS caps, shared governance-audit helpers.
 - 2026-04-24: Live cleanup against Voyage-4 DB — `--apply` and `--verify` both exit `0`; final counts `constitutional_total=2`, `z_future_rows=0`, `external_rows=0`, `invalid_constitutional_rows=0`, `gate_enforcement_rows=1`.
 - 2026-04-24: Phase 001 + Phase 002 tracks merged into root docs; phase folders removed; aliases preserved in `graph-metadata.json` for legacy cross-references.
-- 2026-04-24 (pending): Track A live packet acceptance still requires a user MCP restart plus a fresh `memory_index_scan` on `026/010-hook-parity`.
+- 2026-04-24 (pending): Track A live packet acceptance still requires a user MCP restart plus a fresh `memory_index_scan` on `026/009-hook-parity`.
 <!-- /ANCHOR:summary -->
 
 ---

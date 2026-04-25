@@ -536,7 +536,7 @@ N/A — this is iter 20/20. Loop transitions to Phase 3 synthesis.
 
 - Code graph currently indexes 1,428 files, 52,431 nodes, 30,451 edges across the repo. Detector: AST (tree-sitter + regex fallback). Edge-enrichment: direct_call (1.00 coverage).
 - Highlighted high-call-count nodes from startup brief: `isString` (21 calls across nodejs/react/react-native validation_patterns), `getDb` (18 calls in code-graph-db, 17 in coverage-graph-db).
-- Spec packet `026-graph-and-context-optimization/` contains sibling packets `003-code-graph-package/`, `008-skill-advisor/`, `010-hook-parity/` with prior findings on code-graph scan-scope, search-routing tuning, skill-advisor hook surface — review these for lessons learned.
+- Spec packet `026-graph-and-context-optimization/` contains sibling packets `003-code-graph-package/`, `008-skill-advisor/`, `009-hook-parity/` with prior findings on code-graph scan-scope, search-routing tuning, skill-advisor hook surface — review these for lessons learned.
 - Skill-advisor scorer has a shadow-only semantic lane (weight 0.00) per recon; full-corpus accuracy 80.5%, holdout 77.5%, 7-gate promotion bundle with two consecutive shadow cycle requirement.
 - Freshness state machine in `lib/freshness.ts` has four states (live/stale/absent/fallback) plus prompt-cache keyed on workspaceRoot + sourceSignature.
 

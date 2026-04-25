@@ -158,7 +158,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch 
 
 ### Pending Live Acceptance
 
-- [ ] **T-90** Restart MCP, rerun `memory_index_scan` on `026/010-hook-parity`, and confirm zero `E_LINEAGE` plus zero `candidate_changed`. (BLOCKED: requires user restart + live embedding-capable runtime.)
+- [ ] **T-90** Restart MCP, rerun `memory_index_scan` on `026/009-hook-parity`, and confirm zero `E_LINEAGE` plus zero `candidate_changed`. (BLOCKED: requires user restart + live embedding-capable runtime.)
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -172,7 +172,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch 
 - [x] Cleanup CLI dry-run / apply / verify exited `0` against the live DB
 - [x] Operator README + spec docs reflect the final invariant set
 - [x] Phase folders merged into root docs
-- [ ] Track A live MCP rescan on `026/010-hook-parity` — pending user restart + embedding-capable runtime
+- [ ] Track A live MCP rescan on `026/009-hook-parity` — pending user restart + embedding-capable runtime
 <!-- /ANCHOR:completion -->
 
 ---

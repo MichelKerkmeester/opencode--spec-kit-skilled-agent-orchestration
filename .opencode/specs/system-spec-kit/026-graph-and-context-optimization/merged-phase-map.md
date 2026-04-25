@@ -12,9 +12,9 @@ contextType: "map"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
-    last_updated_at: "2026-04-25T12:10:00Z"
+    last_updated_at: "2026-04-25T14:45:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "Appended second consolidation section"
+    recent_action: "Appended post-push topology adjustment sub-section under second consolidation section (rename 010-hook-parity → 009-hook-parity; remove 009-memory-causal-graph)"
     next_safe_action: "Use merged-phase-map.md and context indexes for navigation"
     blockers: []
     key_files:
@@ -161,3 +161,44 @@ A second topical consolidation pass refined the nine-wrapper output of the first
 |---------|-------------------------------|
 | `008-skill-advisor/` | `system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor` |
 | `010-hook-parity/` | `system-spec-kit/026-graph-and-context-optimization/009-hook-package`, `system-spec-kit/026-graph-and-context-optimization/010-hook-package` |
+
+---
+
+## 2026-04-25 14:45 — Post-Push Adjustment
+
+A post-push topology adjustment narrowed the active surface from 11 wrappers to 10 after the second consolidation pass had been pushed and reviewed. The first-pass and second-pass tables above are preserved verbatim as the historical audit trail; only this sub-section reflects the post-push changes. The motivating ADR is `decision-record.md` ADR-005.
+
+### Post-Push Changes
+
+| Action | Pre-Adjustment Path | Post-Adjustment Path | Reason |
+|--------|---------------------|----------------------|--------|
+| rename | `010-hook-parity/` | `009-hook-parity/` | After the documentation packet at `009/` was removed, the runtime hook-parity wrapper occupies `009/` to avoid an unmotivated numbering gap. All eight children retain their `001-008` compact numbering and internal narratives. |
+| remove | `009-memory-causal-graph/` | (deleted) | Post-hoc Level-2 documentation packet retracted by user. The causal-graph infrastructure (four MCP tools, `causal_edges` schema, six-relation taxonomy, ownership boundary) remains in production code unchanged. Display-layer documentation is owned by `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`. |
+
+### Updated Active Wrapper Themes (10 wrappers)
+
+| Active Wrapper | Theme | Child Phase Count |
+|----------------|-------|----------------------|
+| `000-release-cleanup-playbooks/` | Release alignment, cleanup/audit, and playbook repair/remediation (root-only merge) | 0 |
+| `001-research-and-baseline/` | External research, adoption decisions, and initial graph/context baselines | 0 (merged into root) |
+| `002-resource-map-template/` | Resource-map template introduction, deep-loop integration, reverse parent restoration | 3 |
+| `003-continuity-memory-runtime/` | Cache hooks, memory quality, continuity refactor, and memory-save rewrite | 4 |
+| `004-runtime-executor-hardening/` | Foundational runtime, CLI executor matrix, system hardening | 3 |
+| `005-memory-indexer-invariants/` | Memory indexer lineage fix and constitutional-tier index-scope invariants (root-only merge) | 0 |
+| `007-code-graph/` | Code-graph upgrades, self-contained package migration, context/scan scope, code-graph hook + advisor refinement | 5 |
+| `008-skill-advisor/` | Unified skill-advisor system: search/routing, advisor graph, phrase boosters, smart-router, advisor docs/standards, hook surface, daemon unification, plugin hardening, hook improvements | 11 |
+| `009-hook-parity/` | Runtime hook parity: schema fixes, wrapper wiring, parity remediations across Claude / Codex / Copilot / OpenCode plugin (renamed from `010-hook-parity/`) | 8 |
+| `012-graph-impact-and-affordance-uplift/` | GitNexus pt-01 + pt-02 adoption: phase-DAG runner, edge explanation/impact uplift, advisor affordance evidence, memory causal trust display (owns the causal-graph display documentation), docs/catalogs rollup | 6 |
+
+### Updated Numbering Gaps (after post-push adjustment)
+
+- `006/` is intentionally absent. The former `006-search-routing-advisor/` merged into `008-skill-advisor/` during the second pass; `008-skill-advisor/spec.md` carries `migration_aliases: [system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor]`. Do not renumber to fill.
+- `010/` is intentionally absent. It was the transient slot for `010-hook-parity/` between the second pass (12:10) and the post-push adjustment (14:45); preserved as an audit marker for the rename. Do not renumber to fill.
+- `011/` is intentionally absent. It was a transient slot during first-pass restructuring; preserved as an audit marker. Do not renumber to fill.
+
+### Updated Migration Aliases (Post-Push Adjustment)
+
+| Wrapper | Aliases (records prior slugs) |
+|---------|-------------------------------|
+| `008-skill-advisor/` | `system-spec-kit/026-graph-and-context-optimization/006-search-routing-advisor` |
+| `009-hook-parity/` | `system-spec-kit/026-graph-and-context-optimization/009-hook-package`, `system-spec-kit/026-graph-and-context-optimization/010-hook-package`, `system-spec-kit/026-graph-and-context-optimization/010-hook-parity` |

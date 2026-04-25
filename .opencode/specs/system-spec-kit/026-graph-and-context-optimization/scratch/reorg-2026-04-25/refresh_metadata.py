@@ -34,8 +34,7 @@ PACKETS = [
     # Root parents (children_ids changed)
     "007-code-graph",
     "008-skill-advisor",
-    "009-memory-causal-graph",
-    "010-hook-parity",
+    "009-hook-parity",
 
     # 008 children (from 006 — keep numbering)
     "008-skill-advisor/001-search-and-routing-tuning",
@@ -59,15 +58,15 @@ PACKETS = [
     "007-code-graph/004-code-graph-hook-improvements",
     "007-code-graph/005-code-graph-advisor-refinement",
 
-    # 010-hook-parity surviving children (parent_id same, packet_id renumbered)
-    "010-hook-parity/001-hook-parity-remediation",
-    "010-hook-parity/002-copilot-hook-parity-remediation",
-    "010-hook-parity/003-codex-hook-parity-remediation",
-    "010-hook-parity/004-claude-hook-findings-remediation",
-    "010-hook-parity/005-opencode-plugin-loader-remediation",
-    "010-hook-parity/006-copilot-wrapper-schema-fix",
-    "010-hook-parity/007-copilot-writer-wiring",
-    "010-hook-parity/008-docs-impact-remediation",
+    # 009-hook-parity surviving children (parent_id same, packet_id renumbered)
+    "009-hook-parity/001-hook-parity-remediation",
+    "009-hook-parity/002-copilot-hook-parity-remediation",
+    "009-hook-parity/003-codex-hook-parity-remediation",
+    "009-hook-parity/004-claude-hook-findings-remediation",
+    "009-hook-parity/005-opencode-plugin-loader-remediation",
+    "009-hook-parity/006-copilot-wrapper-schema-fix",
+    "009-hook-parity/007-copilot-writer-wiring",
+    "009-hook-parity/008-docs-impact-remediation",
 ]
 
 

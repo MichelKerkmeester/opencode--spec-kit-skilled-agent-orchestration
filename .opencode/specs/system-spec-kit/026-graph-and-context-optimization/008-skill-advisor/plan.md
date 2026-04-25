@@ -27,7 +27,7 @@ _memory:
       - "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor"
     last_updated_at: "2026-04-25T11:50:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "2026-04-25 second consolidation: merged 008-skill-advisor root + 5 advisor children from 010-hook-parity into 008-skill-advisor"
+    recent_action: "2026-04-25 second consolidation: merged 008-skill-advisor root + 5 advisor children from 009-hook-parity into 008-skill-advisor"
     next_safe_action: "Use context-index.md for local phase navigation"
     blockers: []
     key_files:
@@ -64,7 +64,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 | **Testing** | Strict parent validation and JSON parse checks |
 
 ### Overview
-This parent groups the full skill advisor system as direct child folders: `001-search-and-routing-tuning/`, `002-skill-advisor-graph/`, `003-advisor-phrase-booster-tailoring/`, `004-skill-advisor-docs-and-code-alignment/`, `005-smart-router-remediation-and-opencode-plugin/`, `006-deferred-remediation-and-telemetry-run/`, `007-skill-advisor-hook-surface/`, `008-skill-graph-daemon-and-advisor-unification/`, `009-skill-advisor-plugin-hardening/`, `010-skill-advisor-standards-alignment/`, and `011-skill-advisor-hook-improvements/`. It keeps the active theme concise while avoiding an extra archive layer and consolidates advisor work that previously lived under both `008-skill-advisor/` and `010-hook-parity/`.
+This parent groups the full skill advisor system as direct child folders: `001-search-and-routing-tuning/`, `002-skill-advisor-graph/`, `003-advisor-phrase-booster-tailoring/`, `004-skill-advisor-docs-and-code-alignment/`, `005-smart-router-remediation-and-opencode-plugin/`, `006-deferred-remediation-and-telemetry-run/`, `007-skill-advisor-hook-surface/`, `008-skill-graph-daemon-and-advisor-unification/`, `009-skill-advisor-plugin-hardening/`, `010-skill-advisor-standards-alignment/`, and `011-skill-advisor-hook-improvements/`. It keeps the active theme concise while avoiding an extra archive layer and consolidates advisor work that previously lived under both `008-skill-advisor/` and `009-hook-parity/`.
 <!-- /ANCHOR:summary -->
 
 ---

@@ -1,5 +1,5 @@
 ---
-title: "...ion/010-hook-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/research]"
+title: "...ion/009-hook-parity/013-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/research]"
 description: "This pass found 13 deduplicated missed files tied to packet 013’s code-graph + hook contract changes. Severity split: P1=9, P2=4. The missed surfaces are overwhelmingly docs, to..."
 trigger_phrases:
   - "ion"

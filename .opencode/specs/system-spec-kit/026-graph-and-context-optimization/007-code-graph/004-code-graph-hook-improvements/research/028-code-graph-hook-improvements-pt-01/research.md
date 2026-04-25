@@ -1,5 +1,5 @@
 ---
-title: "...ion/010-hook-parity/013-code-graph-hook-improvements/research/028-code-graph-hook-improvements-pt-01/research]"
+title: "...ion/009-hook-parity/013-code-graph-hook-improvements/research/028-code-graph-hook-improvements-pt-01/research]"
 description: "Ten focused iterations found one high-severity correctness gap and five follow-on P1/P2 gaps that sit outside the already-closed CF-002/CF-009/CF-010/CF-014 lanes [.opencode/spe..."
 trigger_phrases:
   - "ion"
@@ -92,7 +92,7 @@ The packet did not hit the early-stop threshold: the last two `newInfoRatio` val
 ## References
 - Packet spec: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/spec.md`
 - Prior closure notes: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-009.md`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-010.md`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/006-integrity-parity-closure/applied/CF-014.md`
-- Sibling impact baseline: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-hook-parity/impact-analysis/merged-impact-report.md`
+- Sibling impact baseline: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/impact-analysis/merged-impact-report.md`
 - Core code: `.opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts`, `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ensure-ready.ts`, `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts`, `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/readiness-contract.ts`, `.opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts`
 - Hook/runtime surfaces: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts`, `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts`, `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts`, `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts`
 - Packet-local evidence: `research/iterations/iteration-01.md` through `research/iterations/iteration-10.md`

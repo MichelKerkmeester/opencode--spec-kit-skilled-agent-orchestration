@@ -189,7 +189,7 @@ Mutation (INSERT/UPDATE/RESTORE) — only runs when all guards pass
 - [x] Run cleanup dry-run / apply / verify against the live Voyage-4 DB; capture before/after counts
 - [x] Update operator README with invariants + helper location + audit action strings
 - [x] Merge phase tracks into root docs
-- [ ] Track A live MCP rescan on `026/010-hook-parity` — requires user restart + embedding-capable runtime
+- [ ] Track A live MCP rescan on `026/009-hook-parity` — requires user restart + embedding-capable runtime
 <!-- /ANCHOR:phases -->
 
 ---
@@ -215,7 +215,7 @@ Mutation (INSERT/UPDATE/RESTORE) — only runs when all guards pass
 | Suite | `npm run test:core` | Outcome recorded with explicit carryover failure isolation |
 | Packet | `validate.sh --strict --no-recursive` | Exits `0` |
 | Manual | `scripts/dist/memory/cleanup-index-scope-violations.js` dry-run / apply / verify | Live Voyage-4 before/after counts |
-| Live Acceptance (pending) | `memory_index_scan` on `026/010-hook-parity` | Zero `E_LINEAGE`, zero `candidate_changed` |
+| Live Acceptance (pending) | `memory_index_scan` on `026/009-hook-parity` | Zero `E_LINEAGE`, zero `candidate_changed` |
 <!-- /ANCHOR:testing -->
 
 ---

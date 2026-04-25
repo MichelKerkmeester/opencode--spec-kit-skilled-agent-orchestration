@@ -71,7 +71,7 @@ This packet lands two invariant tracks:
 | **Merged to root** | 2026-04-24 |
 | **Parent** | `026-graph-and-context-optimization/` |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `../010-hook-parity/` |
+| **Predecessor** | `../009-hook-parity/` |
 | **Successor** | None |
 <!-- /ANCHOR:metadata -->
 
@@ -196,7 +196,7 @@ Enforce four permanent invariants in code, clean the existing pollution transact
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-015 | Track A live packet acceptance is recorded honestly. | In a runtime with embedding access, `memory_index_scan` on `026/010-hook-parity` completes with zero `E_LINEAGE` and zero `candidate_changed`, and the exact counts are written to `implementation-summary.md`. |
+| REQ-015 | Track A live packet acceptance is recorded honestly. | In a runtime with embedding access, `memory_index_scan` on `026/009-hook-parity` completes with zero `E_LINEAGE` and zero `candidate_changed`, and the exact counts are written to `implementation-summary.md`. |
 | REQ-016 | Operator README documents the invariants and stable audit action strings. | `.opencode/skill/system-spec-kit/mcp_server/README.md` describes the three index-scope invariants, the helper location, and the `GOVERNANCE_AUDIT_ACTIONS` set. |
 <!-- /ANCHOR:requirements -->
 
@@ -224,7 +224,7 @@ Enforce four permanent invariants in code, clean the existing pollution transact
 - **SC-004**: Code-graph scans exclude `/external/` in both recursive scans and `specificFiles` refresh paths while preserving existing default excludes.
 - **SC-005**: After cleanup, the database reports zero `z_future` rows, zero `external` rows, and exactly `2` constitutional rows — both under `/constitutional/`.
 - **SC-006**: `npm run typecheck` and `npm run build` exit `0` for both `mcp_server` and `scripts`; every focused Vitest file listed in REQ-008 passes; the `test:core` carryover failures (`copilot-hook-wiring`, `stage3-rerank-regression`) are documented and isolated from this packet.
-- **SC-007**: The packet records operational acceptance honestly — including the remaining Track A live MCP rescan on `026/010-hook-parity` — instead of guessing.
+- **SC-007**: The packet records operational acceptance honestly — including the remaining Track A live MCP rescan on `026/009-hook-parity` — instead of guessing.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -380,7 +380,7 @@ Enforce four permanent invariants in code, clean the existing pollution transact
 
 None blocking. Two operational items remain open and are tracked in `implementation-summary.md`:
 
-1. Track A live MCP rescan on `026/010-hook-parity` — requires an MCP restart plus embedding access.
+1. Track A live MCP rescan on `026/009-hook-parity` — requires an MCP restart plus embedding access.
 2. `npm run test:core` carryover failures in `copilot-hook-wiring.vitest.ts` and `stage3-rerank-regression.vitest.ts` — outside this packet's touched files; isolated repros confirmed.
 <!-- /ANCHOR:questions -->
 

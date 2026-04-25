@@ -12,9 +12,9 @@ contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
-    last_updated_at: "2026-04-25T12:10:00Z"
+    last_updated_at: "2026-04-25T14:45:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "Appended ADR-002 (008-skill-advisor merge), ADR-003 (009-memory-causal-graph creation), ADR-004 (010 rename to hook-parity)"
+    recent_action: "Appended ADR-005 (post-push topology adjustment: rename 010-hook-parity to 009-hook-parity + remove post-hoc 009-memory-causal-graph documentation packet)"
     next_safe_action: "Use merged-phase-map.md and context indexes for navigation"
     blockers: []
     key_files:
@@ -142,7 +142,7 @@ The root packet described a 19-phase train while the filesystem exposed 29 direc
 ---
 
 <!-- ANCHOR:adr-002 -->
-## ADR-002: Merge `008-skill-advisor/` and advisor-themed `010-hook-parity/` children into a single `008-skill-advisor/` wrapper
+## ADR-002: Merge `008-skill-advisor/` and advisor-themed `009-hook-parity/` children into a single `008-skill-advisor/` wrapper
 
 ### Metadata
 
@@ -157,7 +157,7 @@ The root packet described a 19-phase train while the filesystem exposed 29 direc
 <!-- ANCHOR:adr-002-context -->
 ### Context
 
-After the first consolidation pass (ADR-001) the skill-advisor system was browsable from two wrappers: `008-skill-advisor/` (search/routing tuning, advisor graph, phrase boosters, smart-router, docs/standards alignment, deferred remediation) and parts of `010-hook-parity/` (hook surface, daemon-and-advisor unification, plugin hardening, standards alignment, hook improvements). The split forced cross-wrapper navigation when reasoning about advisor changes and made advisor-themed migration aliases hard to keep coherent.
+After the first consolidation pass (ADR-001) the skill-advisor system was browsable from two wrappers: `008-skill-advisor/` (search/routing tuning, advisor graph, phrase boosters, smart-router, docs/standards alignment, deferred remediation) and parts of `009-hook-parity/` (hook surface, daemon-and-advisor unification, plugin hardening, standards alignment, hook improvements). The split forced cross-wrapper navigation when reasoning about advisor changes and made advisor-themed migration aliases hard to keep coherent.
 
 ### Constraints
 
@@ -171,9 +171,9 @@ After the first consolidation pass (ADR-001) the skill-advisor system was browsa
 <!-- ANCHOR:adr-002-decision -->
 ### Decision
 
-**We chose**: merge `008-skill-advisor/` and the five advisor-themed children of `010-hook-parity/` into a single `008-skill-advisor/` wrapper.
+**We chose**: merge `008-skill-advisor/` and the five advisor-themed children of `009-hook-parity/` into a single `008-skill-advisor/` wrapper.
 
-**How it works**: All six children of `008-skill-advisor/` move under `008-skill-advisor/` (`001-search-and-routing-tuning/` through `006-deferred-remediation-and-telemetry-run/`; the never-existing `004-smart-router-context-efficacy/` slot was used to compact numbering). Five advisor-themed children move from `010-hook-parity/` and renumber to `007`-`011` under `008-skill-advisor/`. The `008-skill-advisor/` folder is then deleted; its slug remains as a `migration_aliases` entry on `008-skill-advisor/spec.md`. The `006/` numeric slot at the root level remains intentionally empty (do not renumber).
+**How it works**: All six children of `008-skill-advisor/` move under `008-skill-advisor/` (`001-search-and-routing-tuning/` through `006-deferred-remediation-and-telemetry-run/`; the never-existing `004-smart-router-context-efficacy/` slot was used to compact numbering). Five advisor-themed children move from `009-hook-parity/` and renumber to `007`-`011` under `008-skill-advisor/`. The `008-skill-advisor/` folder is then deleted; its slug remains as a `migration_aliases` entry on `008-skill-advisor/spec.md`. The `006/` numeric slot at the root level remains intentionally empty (do not renumber).
 <!-- /ANCHOR:adr-002-decision -->
 
 ---
@@ -185,7 +185,7 @@ After the first consolidation pass (ADR-001) the skill-advisor system was browsa
 |--------|------|------|-------|
 | **Merge into `008-skill-advisor/`** | Single advisor home; coherent navigation; preserves all original packets as children | Requires renumbering and migration aliases | 9/10 |
 | Keep advisor work split across two wrappers | No move needed | Cross-wrapper navigation persists; advisor changes touch two top-level folders | 3/10 |
-| Move advisor work into `010-hook-parity/` instead | Advisor + hook in one place | Mixes search/routing tuning with runtime hook-parity remediation; breaks topical coherence | 4/10 |
+| Move advisor work into `009-hook-parity/` instead | Advisor + hook in one place | Mixes search/routing tuning with runtime hook-parity remediation; breaks topical coherence | 4/10 |
 
 **Why this one**: The advisor system is a coherent topical surface; the search/routing thread and the hook/plugin/standards thread are both advisor work, and unifying them under `008-skill-advisor/` matches the natural mental model.
 <!-- /ANCHOR:adr-002-alternatives -->
@@ -212,7 +212,7 @@ After the first consolidation pass (ADR-001) the skill-advisor system was browsa
 
 **What changes**:
 - Six children move from `008-skill-advisor/` to `008-skill-advisor/`.
-- Five children move from `010-hook-parity/` to `008-skill-advisor/` and renumber to `007`-`011`.
+- Five children move from `009-hook-parity/` to `008-skill-advisor/` and renumber to `007`-`011`.
 - `008-skill-advisor/` is deleted.
 - `008-skill-advisor/spec.md` records `migration_aliases: [system-spec-kit/026-graph-and-context-optimization/008-skill-advisor]`.
 
@@ -254,7 +254,7 @@ The causal-graph infrastructure (vector-index schema migration v8, `causal_edges
 
 **We chose**: create `009-memory-causal-graph/` as a Level-2 post-hoc documentation packet.
 
-**How it works**: The packet records the existing surface area, schema, traversal rules, MCP tool contracts, and ownership boundaries. Status is `Complete (post-hoc documentation only)`. No children, no implementation backlog. The numeric slot `009` is appropriate because earlier `010-hook-parity/` was already renamed and migrated during the first consolidation pass.
+**How it works**: The packet records the existing surface area, schema, traversal rules, MCP tool contracts, and ownership boundaries. Status is `Complete (post-hoc documentation only)`. No children, no implementation backlog. The numeric slot `009` is appropriate because earlier `009-hook-parity/` was already renamed and migrated during the first consolidation pass.
 <!-- /ANCHOR:adr-003-decision -->
 
 ---
@@ -300,7 +300,7 @@ The causal-graph infrastructure (vector-index schema migration v8, `causal_edges
 ---
 
 <!-- ANCHOR:adr-004 -->
-## ADR-004: Rename `010-hook-parity/` to `010-hook-parity/` after stripping advisor and code-graph scope
+## ADR-004: Rename `009-hook-parity/` to `009-hook-parity/` after stripping advisor and code-graph scope
 
 ### Metadata
 
@@ -315,11 +315,11 @@ The causal-graph infrastructure (vector-index schema migration v8, `causal_edges
 <!-- ANCHOR:adr-004-context -->
 ### Context
 
-After ADR-002 moved five advisor-themed children to `008-skill-advisor/` and ADR-002's companion code-graph moves shifted two children (`013-code-graph-hook-improvements/` and `015-code-graph-advisor-refinement/`) to `007-code-graph/`, the surviving children of `010-hook-parity/` were exclusively runtime hook-parity remediations (Claude / Codex / Copilot / OpenCode plugin, schema fixes, wrapper wiring fixes). The wrapper name `hook-package` no longer matched the narrowed scope.
+After ADR-002 moved five advisor-themed children to `008-skill-advisor/` and ADR-002's companion code-graph moves shifted two children (`013-code-graph-hook-improvements/` and `015-code-graph-advisor-refinement/`) to `007-code-graph/`, the surviving children of `009-hook-parity/` were exclusively runtime hook-parity remediations (Claude / Codex / Copilot / OpenCode plugin, schema fixes, wrapper wiring fixes). The wrapper name `hook-package` no longer matched the narrowed scope.
 
 ### Constraints
 
-- Migration aliases for both `010-hook-parity/` and the earlier `010-hook-parity/` slug must be preserved.
+- Migration aliases for both `009-hook-parity/` and the earlier `009-hook-parity/` slug must be preserved.
 - Surviving eight children must be renumbered to compact `001-008`.
 - No code changes.
 <!-- /ANCHOR:adr-004-context -->
@@ -329,9 +329,9 @@ After ADR-002 moved five advisor-themed children to `008-skill-advisor/` and ADR
 <!-- ANCHOR:adr-004-decision -->
 ### Decision
 
-**We chose**: rename `010-hook-parity/` to `010-hook-parity/` and renumber its eight surviving children to compact 001-008.
+**We chose**: rename `009-hook-parity/` to `009-hook-parity/` and renumber its eight surviving children to compact 001-008.
 
-**How it works**: The wrapper is renamed in place after the seven non-hook-parity children have moved out. Surviving children renumber: `003-hook-parity-remediation/`→`001`, `004-copilot-hook-parity-remediation/`→`002`, `005-codex-hook-parity-remediation/`→`003`, `006-claude-hook-findings-remediation/`→`004`, `007-opencode-plugin-loader-remediation/`→`005`, `010-copilot-wrapper-schema-fix/`→`006`, `011-copilot-writer-wiring/`→`007`, `012-docs-impact-remediation/`→`008`. `010-hook-parity/spec.md` records `migration_aliases: [system-spec-kit/026-graph-and-context-optimization/010-hook-parity, system-spec-kit/026-graph-and-context-optimization/010-hook-parity]`.
+**How it works**: The wrapper is renamed in place after the seven non-hook-parity children have moved out. Surviving children renumber: `003-hook-parity-remediation/`→`001`, `004-copilot-hook-parity-remediation/`→`002`, `005-codex-hook-parity-remediation/`→`003`, `006-claude-hook-findings-remediation/`→`004`, `007-opencode-plugin-loader-remediation/`→`005`, `010-copilot-wrapper-schema-fix/`→`006`, `011-copilot-writer-wiring/`→`007`, `012-docs-impact-remediation/`→`008`. `009-hook-parity/spec.md` records `migration_aliases: [system-spec-kit/026-graph-and-context-optimization/009-hook-parity, system-spec-kit/026-graph-and-context-optimization/009-hook-parity]`.
 <!-- /ANCHOR:adr-004-decision -->
 
 ---
@@ -359,7 +359,7 @@ After ADR-002 moved five advisor-themed children to `008-skill-advisor/` and ADR
 - Migration aliases preserve discoverability for both prior slugs.
 
 **What it costs**:
-- Memory/graph consumers must follow aliases to resolve `010-hook-parity` and `010-hook-parity` references in older docs.
+- Memory/graph consumers must follow aliases to resolve `009-hook-parity` and `009-hook-parity` references in older docs.
 <!-- /ANCHOR:adr-004-consequences -->
 
 ---
@@ -368,10 +368,127 @@ After ADR-002 moved five advisor-themed children to `008-skill-advisor/` and ADR
 ### Implementation
 
 **What changes**:
-- Folder rename: `010-hook-parity/` → `010-hook-parity/`.
+- Folder rename: `009-hook-parity/` → `009-hook-parity/`.
 - Child renumbering across eight surviving packets.
-- `010-hook-parity/spec.md` records both prior slugs in `migration_aliases`.
+- `009-hook-parity/spec.md` records both prior slugs in `migration_aliases`.
 
-**How to roll back**: Reverse the rename and renumbering; restore `010-hook-parity/` and its prior child numbering from version control.
+**How to roll back**: Reverse the rename and renumbering; restore `009-hook-parity/` and its prior child numbering from version control.
 <!-- /ANCHOR:adr-004-impl -->
 <!-- /ANCHOR:adr-004 -->
+
+---
+
+<!-- ANCHOR:adr-005 -->
+## ADR-005: Post-push topology adjustment — rename `010-hook-parity/` to `009-hook-parity/` and remove the post-hoc `009-memory-causal-graph/` documentation packet
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-25 (14:45) |
+| **Deciders** | User-driven retraction; root-doc narrative sync follow-up |
+
+---
+
+<!-- ANCHOR:adr-005-context -->
+### Context
+
+After the second consolidation pass landed (ADR-002, ADR-003, ADR-004) and the changes were pushed, two issues surfaced on review:
+
+1. The Level-2 post-hoc documentation packet `009-memory-causal-graph/` (created by ADR-003 to provide a canonical documentation home for live causal-graph infrastructure: four MCP tools, the `causal_edges` schema, six-relation taxonomy, ownership boundary) was redundant. Display-layer coverage already existed under `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`, and the post-hoc wrapper added one numeric slot to scan in the active phase map without owning any executable scope.
+2. The runtime hook-parity wrapper sat in `010-hook-parity/` (per ADR-004) only because the post-hoc documentation packet had occupied `009/`. With that packet removed, leaving hook-parity in `010/` would create a deliberate gap at `009/` for no narrative reason, while the topical surface had room to compact.
+
+### Constraints
+
+- The causal-graph infrastructure must remain in production code unchanged; only the post-hoc documentation wrapper is retracted.
+- Migration aliases must capture the full rename chain (`009-hook-package` → `010-hook-package` → `010-hook-parity` → `009-hook-parity`) for memory/graph continuity.
+- Eight surviving children of the renamed wrapper keep their `001-008` compact numbering and internal narratives intact.
+- No code changes; no rewriting of historical child narratives.
+<!-- /ANCHOR:adr-005-context -->
+
+---
+
+<!-- ANCHOR:adr-005-decision -->
+### Decision
+
+**We chose**: rename `010-hook-parity/` to `009-hook-parity/` (occupying the `009/` slot vacated by the removed documentation packet) and remove the post-hoc `009-memory-causal-graph/` documentation packet.
+
+**How it works**:
+
+- Rename: the wrapper folder moves from `010-hook-parity/` to `009-hook-parity/`. All eight children (`001-hook-parity-remediation/` through `008-docs-impact-remediation/`) retain their internal numbering and content. `009-hook-parity/spec.md` carries `migration_aliases` for three prior slugs: `system-spec-kit/026-graph-and-context-optimization/009-hook-package`, `system-spec-kit/026-graph-and-context-optimization/010-hook-package`, and `system-spec-kit/026-graph-and-context-optimization/010-hook-parity`.
+- Removal: `009-memory-causal-graph/` is deleted entirely. Its prior content (which was descriptive-only, no code, no children) is retired. Display-layer documentation of the causal-graph surface area continues to live in `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`. The four MCP tools, `causal_edges` schema, six-relation taxonomy, and ownership boundary remain in production code unchanged.
+
+The post-push adjustment is recorded as a sub-section of the second-pass section in `merged-phase-map.md`; the second-pass move/rename table itself is preserved verbatim.
+<!-- /ANCHOR:adr-005-decision -->
+
+---
+
+<!-- ANCHOR:adr-005-alternatives -->
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Rename + remove (this ADR)** | Compact 10-wrapper surface; no orphaned `009/` gap; documentation is owned by the right consumer-facing wrapper; production code untouched | Requires migration alias for one extra prior slug; one more entry in `merged-phase-map.md` | 9/10 |
+| Keep `010-hook-parity/` and leave `009/` permanently empty | No further rename needed | Permanent narrative gap with no audit reason after the documentation packet was removed; ongoing visual confusion | 4/10 |
+| Keep `009-memory-causal-graph/` as-is | Single canonical home for causal-graph documentation as proposed in ADR-003 | Redundant with `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`; adds a wrapper for documentation only and inflates the active phase count | 3/10 |
+| Keep `009-memory-causal-graph/` and rename hook-parity into a different slot (`011/` or higher) | Preserves ADR-003 | Worsens the numbering-gap problem; does not solve redundancy | 2/10 |
+
+**Why this one**: Once the post-hoc documentation wrapper was identified as redundant, removing it cleanly and reclaiming `009/` for the hook-parity wrapper reverses the layout pressure that ADR-004 had to navigate around in the first place. The result is a smaller, more topical surface with the same underlying scope.
+<!-- /ANCHOR:adr-005-alternatives -->
+
+---
+
+<!-- ANCHOR:adr-005-consequences -->
+### Consequences
+
+**What improves**:
+- Active wrapper count drops from 11 to 10.
+- The `009/` slot houses the runtime hook-parity wrapper without an intervening documentation gap.
+- Causal-graph documentation has a single ownership home (display-layer, under `012/005-memory-causal-trust-display/`) instead of two overlapping ones.
+- Production code, schema, MCP tools, and ownership boundaries remain in place — only the redundant documentation wrapper is retracted.
+
+**What it costs**:
+- An additional intentional numbering gap at `010/` (transient slot for the rename, preserved as an audit marker).
+- Migration aliases on `009-hook-parity/spec.md` now record three prior slugs (`009-hook-package`, `010-hook-package`, `010-hook-parity`); memory/graph consumers must follow the chain to resolve old references.
+- ADR-003 (which created the documentation packet) is now superseded by this ADR; readers should treat ADR-003 as historical context for the second-pass rationale that motivated its short-lived creation.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Old references to `009-memory-causal-graph` in citations or memory traces fail to resolve | M | The display-layer wrapper at `012/005-memory-causal-trust-display/` remains; production code and MCP tools are unaffected; readers can search by `causal_edges`, `memory_causal_link`, etc., to land on production sources. |
+| Migration alias chain becomes unwieldy | L | Three aliases is still bounded; the chain is recorded once on `009-hook-parity/spec.md` and in `merged-phase-map.md`. |
+<!-- /ANCHOR:adr-005-consequences -->
+
+---
+
+<!-- ANCHOR:adr-005-five-checks -->
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Post-hoc documentation wrapper was redundant; hook-parity in `010/` left an unmotivated `009/` gap. |
+| 2 | **Beyond Local Maxima?** | PASS | Considered keeping the documentation packet, leaving the rename in `010/`, and renaming into a higher slot. |
+| 3 | **Sufficient?** | PASS | Rename + remove fully reconciles the two surfaced issues; no further moves needed. |
+| 4 | **Fits Goal?** | PASS | Goal is a compact, navigation-clean active surface with single-owner documentation. |
+| 5 | **Open Horizons?** | PASS | Future causal-graph documentation expansion can extend the display-layer wrapper or open a new packet under appropriate ownership. |
+
+**Checks Summary**: 5/5 PASS
+<!-- /ANCHOR:adr-005-five-checks -->
+
+---
+
+<!-- ANCHOR:adr-005-impl -->
+### Implementation
+
+**What changes**:
+- Folder rename: `010-hook-parity/` → `009-hook-parity/`. Children unchanged.
+- Folder deletion: `009-memory-causal-graph/` removed entirely.
+- `009-hook-parity/spec.md` records `migration_aliases: [system-spec-kit/026-graph-and-context-optimization/009-hook-package, system-spec-kit/026-graph-and-context-optimization/010-hook-package, system-spec-kit/026-graph-and-context-optimization/010-hook-parity]`.
+- `merged-phase-map.md` gains a `2026-04-25 14:45 — Post-Push Adjustment` sub-section under the existing Second Consolidation section; prior tables are preserved verbatim.
+- Root-level `description.json` and `graph-metadata.json` regenerated by `generate-context.js` (outside this narrative-update pass).
+
+**How to roll back**: Restore `010-hook-parity/` and `009-memory-causal-graph/` from version control, revert the alias chain on the wrapper spec, and remove the post-push adjustment sub-section from `merged-phase-map.md`.
+<!-- /ANCHOR:adr-005-impl -->
+<!-- /ANCHOR:adr-005 -->

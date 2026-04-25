@@ -12,9 +12,9 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
-    last_updated_at: "2026-04-25T12:10:00Z"
+    last_updated_at: "2026-04-25T14:45:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "Verified second-pass consolidation: 008-skill-advisor merge, 009-memory-causal-graph creation, 010-hook-parity rename"
+    recent_action: "Verified post-push topology adjustment: 010-hook-parity renamed to 009-hook-parity; 009-memory-causal-graph removed; 10-wrapper active surface holds"
     next_safe_action: "Use merged-phase-map.md and context indexes for navigation"
     blockers: []
     key_files:
@@ -63,9 +63,9 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Active phase map lists 11 thematic wrappers (intentional gaps at `006` and `011`). [EVIDENCE: spec.md]
-- [x] CHK-011 [P0] Original phase packet folders are preserved as direct children under their active wrapper across both consolidation passes, with phase `001` merged into its phase root. [EVIDENCE: merged-phase-map.md]
-- [x] CHK-012 [P1] Wrapper docs stay navigation-only and do not rewrite child packet narratives. [EVIDENCE: 001-research-and-baseline/spec.md; 008-skill-advisor/spec.md; 010-hook-parity/spec.md]
+- [x] CHK-010 [P0] Active phase map lists 10 thematic wrappers (intentional gaps at `006`, `010`, and `011`). [EVIDENCE: spec.md]
+- [x] CHK-011 [P0] Original phase packet folders are preserved as direct children under their active wrapper across both consolidation passes plus the post-push topology adjustment, with phase `001` merged into its phase root. [EVIDENCE: merged-phase-map.md]
+- [x] CHK-012 [P1] Wrapper docs stay navigation-only and do not rewrite child packet narratives. [EVIDENCE: 001-research-and-baseline/spec.md; 008-skill-advisor/spec.md; 009-hook-parity/spec.md]
 - [x] CHK-013 [P1] Root support folders remain in place. [EVIDENCE: spec.md]
 <!-- /ANCHOR:code-quality -->
 
@@ -74,10 +74,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All old phases `001` through `029` are represented exactly once in the first-pass section of `merged-phase-map.md`, and every second-pass move/rename appears exactly once in the appended second-pass section. [EVIDENCE: implementation-summary.md]
-- [x] CHK-021 [P0] All `description.json` and `graph-metadata.json` files parse after both consolidation passes. [EVIDENCE: implementation-summary.md]
+- [x] CHK-020 [P0] All old phases `001` through `029` are represented exactly once in the first-pass section of `merged-phase-map.md`, every second-pass move/rename appears exactly once in the appended second-pass section, and the post-push adjustment is recorded in its own sub-section. [EVIDENCE: implementation-summary.md]
+- [x] CHK-021 [P0] All `description.json` and `graph-metadata.json` files parse after both consolidation passes plus the post-push topology adjustment. [EVIDENCE: implementation-summary.md]
 - [x] CHK-022 [P0] Strict validation was run on root and active wrappers. [EVIDENCE: implementation-summary.md]
-- [x] CHK-023 [P1] Old trigger phrases (including `008-skill-advisor` and `010-hook-parity` aliases) remain available through context indexes or source metadata. [EVIDENCE: implementation-summary.md]
+- [x] CHK-023 [P1] Old trigger phrases (including `006-search-routing-advisor`, `009-hook-package`, and `010-hook-parity` aliases) remain available through context indexes or source metadata. [EVIDENCE: implementation-summary.md]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -95,8 +95,8 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Root `spec.md`, `plan.md`, and `tasks.md` describe the same nine-phase map. [EVIDENCE: spec.md; plan.md; tasks.md]
-- [x] CHK-041 [P1] `decision-record.md` records the consolidation decision. [EVIDENCE: decision-record.md]
+- [x] CHK-040 [P1] Root `spec.md`, `plan.md`, and `tasks.md` describe the same 10-wrapper active surface. [EVIDENCE: spec.md; plan.md; tasks.md]
+- [x] CHK-041 [P1] `decision-record.md` records the consolidation decisions plus the post-push topology adjustment (ADR-005). [EVIDENCE: decision-record.md]
 - [x] CHK-042 [P1] Each active wrapper has context indexes. [EVIDENCE: merged-phase-map.md]
 <!-- /ANCHOR:docs -->
 
@@ -105,14 +105,14 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P0] Root direct phase folders are exactly the 11 approved wrappers (`000`, `001`, `002`, `003`, `004`, `005`, `007`, `008`, `009`, `010-hook-parity`, `012`); intentional gaps at `006` and `011`. [EVIDENCE: implementation-summary.md]
-- [x] CHK-051 [P1] Child phase folders live under their active wrapper roots after both consolidation passes. [EVIDENCE: merged-phase-map.md]
+- [x] CHK-050 [P0] Root direct phase folders are exactly the 10 approved wrappers (`000`, `001`, `002`, `003`, `004`, `005`, `007`, `008`, `009-hook-parity`, `012`); intentional gaps at `006`, `010`, and `011`. [EVIDENCE: implementation-summary.md]
+- [x] CHK-051 [P1] Child phase folders live under their active wrapper roots after both consolidation passes plus the post-push topology adjustment. [EVIDENCE: merged-phase-map.md]
 - [x] CHK-052 [P2] Findings saved to wrapper context indexes instead of a new root memory folder. [EVIDENCE: 001-research-and-baseline/context-index.md]
 - [x] CHK-053 [P0] Second-pass moves match `scratch/reorg-2026-04-25/mapping.json` exactly. [EVIDENCE: merged-phase-map.md] - VERIFIED 2026-04-25
-- [x] CHK-054 [P1] `008-skill-advisor/spec.md` records `migration_aliases` for `008-skill-advisor`. [EVIDENCE: 008-skill-advisor/spec.md] - VERIFIED 2026-04-25
-- [x] CHK-055 [P1] `010-hook-parity/spec.md` records `migration_aliases` for both `010-hook-parity` and `010-hook-parity`. [EVIDENCE: 010-hook-parity/spec.md] - VERIFIED 2026-04-25
-- [x] CHK-056 [P1] `009-memory-causal-graph/` exists as a Level-2 documentation packet with no children and no code changes. [EVIDENCE: 009-memory-causal-graph/spec.md] - VERIFIED 2026-04-25
-- [x] CHK-057 [P1] `007-code-graph/` has five children including the second-pass additions `004-code-graph-hook-improvements/` and `005-code-graph-advisor-refinement/`. [EVIDENCE: 007-code-graph/] - VERIFIED 2026-04-25
+- [x] CHK-054 [P1] `008-skill-advisor/spec.md` records `migration_aliases` for `006-search-routing-advisor`. [EVIDENCE: 008-skill-advisor/spec.md] - VERIFIED 2026-04-25
+- [x] CHK-055 [P1] `009-hook-parity/spec.md` records `migration_aliases` for `009-hook-package`, `010-hook-package`, and `010-hook-parity`. [EVIDENCE: 009-hook-parity/spec.md] - VERIFIED 2026-04-25 14:45 (post-push adjustment)
+- [x] CHK-056 [P1] `007-code-graph/` has five children including the second-pass additions `004-code-graph-hook-improvements/` and `005-code-graph-advisor-refinement/`. [EVIDENCE: 007-code-graph/] - VERIFIED 2026-04-25
+- [x] CHK-057 [P1] Post-push topology adjustment applied: `010-hook-parity/` renamed to `009-hook-parity/`; post-hoc `009-memory-causal-graph/` documentation packet removed; causal-graph infrastructure remains in production code with display-layer documentation owned by `012-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`. [EVIDENCE: implementation-summary.md; decision-record.md ADR-005] - VERIFIED 2026-04-25 14:45
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -126,7 +126,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 | P1 Items | 13 | 13/13 |
 | P2 Items | 1 | 1/1 |
 
-**Verification Date**: 2026-04-25 (second pass; first-pass items remain valid as recorded 2026-04-21)
+**Verification Date**: 2026-04-25 14:45 (post-push topology adjustment; second-pass items verified at 2026-04-25 12:10; first-pass items remain valid as recorded 2026-04-21)
 <!-- /ANCHOR:summary -->
 
 ---
@@ -145,7 +145,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 <!-- ANCHOR:perf-verify -->
 ## L3+: PERFORMANCE VERIFICATION
 
-- [x] CHK-110 [P1] Navigation surface reduced from 29 chronological siblings to 11 thematic wrappers across two topical consolidation passes. [EVIDENCE: implementation-summary.md]
+- [x] CHK-110 [P1] Navigation surface reduced from 29 chronological siblings to 10 thematic wrappers across two topical consolidation passes plus the post-push topology adjustment. [EVIDENCE: implementation-summary.md]
 - [x] CHK-111 [P1] Throughput targets not applicable for docs-only work. [EVIDENCE: spec.md]
 - [x] CHK-112 [P2] Load testing not applicable for docs-only work. [EVIDENCE: spec.md]
 - [x] CHK-113 [P2] Performance benchmark documented as folder-count reduction. [EVIDENCE: implementation-summary.md]
@@ -195,6 +195,8 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 | Codex consolidation pass | Documentation migration (first pass 29→9) | [x] Approved | 2026-04-21 |
 | Strict validation pass | Verification (first pass) | [x] Approved | 2026-04-21 |
 | Map coverage check | Continuity (first pass) | [x] Approved | 2026-04-21 |
-| Claude second consolidation pass | Documentation migration (second pass: advisor unification, code-graph expansion, hook-parity rename, causal-graph creation) | [x] Approved | 2026-04-25 |
-| Map coverage check | Continuity (second pass) | [x] Approved | 2026-04-25 |
+| Claude second consolidation pass | Documentation migration (second pass: advisor unification, code-graph expansion, hook-parity rename, causal-graph creation) | [x] Approved | 2026-04-25 12:10 |
+| Map coverage check | Continuity (second pass) | [x] Approved | 2026-04-25 12:10 |
+| Claude post-push topology adjustment | Rename `010-hook-parity/` → `009-hook-parity/`; remove post-hoc `009-memory-causal-graph/` documentation packet (causal-graph infra remains in production) | [x] Approved | 2026-04-25 14:45 |
+| Map coverage check | Continuity (post-push adjustment) | [x] Approved | 2026-04-25 14:45 |
 <!-- /ANCHOR:sign-off -->

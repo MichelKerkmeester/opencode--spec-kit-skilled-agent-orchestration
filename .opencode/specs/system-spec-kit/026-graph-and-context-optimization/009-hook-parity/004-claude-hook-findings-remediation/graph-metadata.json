@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/004-claude-hook-findings-remediation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/004-claude-hook-findings-remediation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-parity",
+  "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "claude hook findings",
+      "advisor freshness stuck stale",
+      "sourceSignature null",
+      "settings.local.json schema mismatch",
+      "copilot bash field in claude hooks",
+      "hook regression harness",
+      "multi-turn stream-json testing",
+      "026/009/006",
+      "claude hook findings plan",
+      "freshness sourceSignature fix",
+      "settings.local.json normalization plan",
+      "multi-turn stream-json harness plan"
+    ],
+    "key_topics": [
+      "claude",
+      "hook",
+      "findings",
+      "advisor",
+      "freshness",
+      "stuck",
+      "stale",
+      "sourcesignature",
+      "null",
+      "settings",
+      "local",
+      "json"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      ".claude/settings.local.json",
+      ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook-validation.md",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/generation.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/scan.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/daemon/watcher.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-status.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md",
+      "plan.md",
+      ".opencode/skill/.advisor-state/skill-graph-generation.json",
+      "implementation-summary.md",
+      "handlers/skill-graph/scan.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/user-prompt-submit.js",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/004-claude-hook-findings-remediation/implementation-summary.md",
+      "checklist.md",
+      "spec.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "settings.local.json",
+        "kind": "config",
+        "path": ".claude/settings.local.json",
+        "source": "derived"
+      },
+      {
+        "name": "skill-advisor-hook-validation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook-validation.md",
+        "source": "derived"
+      },
+      {
+        "name": "freshness.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/freshness.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generation.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/generation.ts",
+        "source": "derived"
+      },
+      {
+        "name": "scan.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/scan.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "watcher.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/daemon/watcher.ts",
+        "source": "derived"
+      },
+      {
+        "name": "advisor-status.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-status.ts",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill-graph-generation.json",
+        "kind": "config",
+        "path": ".opencode/skill/.advisor-state/skill-graph-generation.json",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/004-claude-hook-findings-remediation/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "user-prompt-submit.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/user-prompt-submit.js",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Claude Hook Findings Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Claude Code",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Hook",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Restore",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "End-to-end hook testing on 2026-04-23 (two real `claude -p` sessions + five direct hook-script smokes) surfaced three concrete findings. This packet remediates all three in a single focused pass.",
+    "created_at": "2026-04-23T10:15:00.000Z",
+    "last_save_at": "2026-04-23T13:55:57.304Z",
+    "save_lineage": "graph_only",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

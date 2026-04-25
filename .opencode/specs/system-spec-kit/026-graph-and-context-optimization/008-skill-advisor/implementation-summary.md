@@ -27,7 +27,7 @@ _memory:
       - "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor"
     last_updated_at: "2026-04-25T11:50:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "2026-04-25 second consolidation: merged 008-skill-advisor root + 5 advisor children from 010-hook-parity into 008-skill-advisor"
+    recent_action: "2026-04-25 second consolidation: merged 008-skill-advisor root + 5 advisor children from 009-hook-parity into 008-skill-advisor"
     next_safe_action: "Use context-index.md for local phase navigation"
     blockers: []
     key_files:
@@ -91,7 +91,7 @@ This parent now holds 11 original phase packet(s) directly in its root, covering
 | `plan.md` | Modified | Plan overview updated for 11 children spanning the full advisor surface. |
 | `tasks.md` | Modified | Task list refreshed to reference the consolidated child set. |
 | `context-index.md` | Modified | Bridge from old phase identity to direct child folders, rebuilt for 11 children. |
-| `00N-*/` | Moved | Preserved original packet folders as direct children (six from `008-skill-advisor/`, five from `010-hook-parity/`). |
+| `00N-*/` | Moved | Preserved original packet folders as direct children (six from `008-skill-advisor/`, five from `009-hook-parity/`). |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -99,7 +99,7 @@ This parent now holds 11 original phase packet(s) directly in its root, covering
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The first consolidation moved the original `008-skill-advisor/` children into this phase root. The second consolidation (2026-04-25) moved the remaining advisor children — hook surface, daemon + advisor unification, plugin hardening, standards alignment, hook improvements — out of `010-hook-parity/` and into this phase root. After each move, metadata was updated with migration aliases so old packet IDs remain discoverable. Root research, review, and scratch folders stayed at the 026 packet root.
+The first consolidation moved the original `008-skill-advisor/` children into this phase root. The second consolidation (2026-04-25) moved the remaining advisor children — hook surface, daemon + advisor unification, plugin hardening, standards alignment, hook improvements — out of `009-hook-parity/` and into this phase root. After each move, metadata was updated with migration aliases so old packet IDs remain discoverable. Root research, review, and scratch folders stayed at the 026 packet root.
 <!-- /ANCHOR:how-delivered -->
 
 ---

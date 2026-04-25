@@ -1,5 +1,5 @@
 ---
-title: "...ion/010-hook-parity/013-code-graph-hook-improvements/research/013-code-graph-hook-improvements-pt-02/research]"
+title: "...ion/009-hook-parity/013-code-graph-hook-improvements/research/013-code-graph-hook-improvements-pt-02/research]"
 description: "This packet deepened the code-graph and hook investigation beyond pt-01 by focusing on residual contract gaps that survived the earlier remediation wave. The strongest new issue..."
 trigger_phrases:
   - "ion"

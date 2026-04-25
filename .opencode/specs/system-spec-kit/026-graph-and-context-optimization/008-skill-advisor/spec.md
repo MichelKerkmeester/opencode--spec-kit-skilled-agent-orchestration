@@ -27,7 +27,7 @@ _memory:
       - "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor"
     last_updated_at: "2026-04-25T11:50:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "2026-04-25 second consolidation: merged 008-skill-advisor root + 5 advisor children from 010-hook-parity into 008-skill-advisor"
+    recent_action: "2026-04-25 second consolidation: merged 008-skill-advisor root + 5 advisor children from 009-hook-parity into 008-skill-advisor"
     next_safe_action: "Use context-index.md for local phase navigation"
     blockers: []
     key_files:
@@ -72,7 +72,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Skill advisor work was scattered across two phase wrappers (`008-skill-advisor/` for search/routing/graph/smart-router, and parts of `010-hook-parity/` for hook surface, daemon unification, plugin hardening, standards alignment, and hook improvements). The split made it hard to see the advisor system as one coherent surface and forced cross-wrapper navigation when reasoning about advisor changes.
+Skill advisor work was scattered across two phase wrappers (`008-skill-advisor/` for search/routing/graph/smart-router, and parts of `009-hook-parity/` for hook surface, daemon unification, plugin hardening, standards alignment, and hook improvements). The split made it hard to see the advisor system as one coherent surface and forced cross-wrapper navigation when reasoning about advisor changes.
 
 ### Purpose
 Keep this theme as the single active parent for the full skill advisor system. Every original phase packet — whether it came from the search/routing thread or the hook/plugin/standards thread — is a direct child folder under this phase root, so the advisor surface is browsable in one place.
