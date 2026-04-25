@@ -400,6 +400,8 @@ The system tracks how decisions relate to each other. Think of it like a corkboa
 
 **Unified graph retrieval** -- all graph features run through one consistent path with reproducible results and full explainability. A single switch turns off all graph features if anything goes wrong.
 
+**Causal trust display badges (012/005)** -- `memory_search` results now carry an additive `trustBadges` payload per `MemoryResultEnvelope`, derived at response time from existing causal-edge columns. The `formatSearchResults()` formatter at `mcp_server/formatters/search-results.ts` batch-reads connected causal-edge data and attaches the following display-only fields to each result envelope: `confidence` (clamped from the strongest connected edge `strength`), `extractionAge` (human-readable age from the newest connected `extracted_at`), `lastAccessAge` (human-readable age from the newest connected `last_accessed`), `orphan` (`true` when the result has no incoming causal edges), and `weightHistoryChanged` (`true` when any connected edge has a `weight_history` row). The formatter fails open when the DB handle or `weight_history` table is unavailable, and preserves any precomputed `trustBadges` payload a caller already supplied. `mcp_server/lib/response/profile-formatters.ts` extends response-profile result typing so the `quick`, `research`, and `resume` profiles preserve the badge payload on `results[]` and `topResult` rather than dropping it during shaping. The placement decision is per-result, not top-level — the trust signal belongs beside the specific Memory claim the user is judging. No schema change, no new relation types, no new storage of code/process/tool facts (ADR-012-005).
+
 ---
 
 #### 3.1.6 SAVE INTELLIGENCE
@@ -537,11 +539,17 @@ The code graph system provides structural code analysis via tree-sitter AST pars
 
 **Architecture:** CocoIndex (semantic, external MCP) finds code by concept. Code Graph (structural, this server) maps imports, calls and hierarchy. Memory (session, this server) preserves decisions. The compact-merger combines all three under a 4000-token budget for compaction injection. After Phase 028, code-graph source is self-contained under `code-graph/` with `handlers/`, `lib/`, `tools/`, and `tests/`.
 
+**Phase-DAG runner (012/002):** `indexFiles()` now runs through a typed phase-DAG runner at `code_graph/lib/phase-runner.ts`. The scan flow decomposes into four declared phases: `find-candidates` -> `parse-candidates` -> `finalize` -> `emit-metrics`. The runner validates duplicate names, missing dependencies, and cycles before any phase body runs and attaches `phaseName` to any `PhaseRunnerError`. `IndexFilesResult` shape, public exports, and the SQLite schema are unchanged — the runner is purely orchestrational.
+
 **Parser:** Tree-sitter WASM is the default parser (JS/TS/Python/Shell). Set `SPECKIT_PARSER=regex` for regex fallback.
 
 **Storage:** `database/code-graph.sqlite` (separate from `database/context-index.sqlite`), with tables: `code_files`, `code_nodes`, `code_edges`, and `code_graph_metadata`.
 
 **Edge types:** `CONTAINS`, `CALLS`, `IMPORTS`, `EXPORTS`, `EXTENDS`, `IMPLEMENTS`, `DECORATES`, `OVERRIDES`, `TYPE_OF`.
+
+**Edge explanation and blast-radius uplift (012/003):** Edge metadata writes now include graph-local `reason` and `step` JSON fields next to the existing `confidence`, `detectorProvenance`, and `evidenceClass` payload. `code_graph_query` relationship rows surface those fields for each edge, and `code_graph_context` propagates them through both structured edges and compact text briefs. `blast_radius` keeps the prior file-oriented payload while adding `depthGroups`, `riskLevel` (graph-local: `high` on ambiguity or depth-one fanout >10, `medium` on 4-10, `low` otherwise), an optional `minConfidence` traversal filter, `ambiguityCandidates`, and a structured `failureFallback` so callers never receive a bare error string when resolution cannot continue. The `code_edges` schema stays at `metadata TEXT` — the new fields ride inside the existing JSON blob.
+
+**`detect_changes` preflight handler (012/002):** A read-only handler at `code_graph/handlers/detect-changes.ts` is registered alongside the existing seven Code Graph handlers in `code_graph/handlers/index.ts`. It accepts `{ diff: string, rootDir?: string }` and returns `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`. The P1 safety invariant is hard: `ensureCodeGraphReady` runs first with `allowInlineIndex: false` and `allowInlineFullScan: false`, so any non-`fresh` readiness state returns `status: 'blocked'` before the diff is parsed and `affectedSymbols[]` is empty (false-safe RISK-03 mitigation per ADR-012-001 / ADR-012-002). A clean-room minimal unified-diff parser at `code_graph/lib/diff-parser.ts` handles `diff --git`, `--- a/<path>`, `+++ b/<path>`, and `@@ -oldStart[,oldLines] +newStart[,newLines] @@` headers, returning `parse_error` on malformed input — no new npm dependency was added. Symbol attribution uses pure line-range overlap against `queryOutline(filePath)` rows; synthetic per-file `module` nodes are excluded so they don't drown per-symbol signal. Tool-schema registration in `tool-schemas.ts` is intentionally **deferred** under ADR-012-003, so external clients reach `detect_changes` through the shared MCP router rather than as a top-level tool. A future packet can add the schema row without touching `detect-changes.ts`.
 
 **Read-path readiness:** `ensureCodeGraphReady()` runs automatically inside `code_graph_query` and `code_graph_context`. It checks graph freshness, returns a `readiness` block, and performs bounded inline selective reindex only when the stale set is small enough to repair safely on the read path. Empty graphs, large stale sets, and other full-scan cases remain explicit `code_graph_scan` work.
 
@@ -572,6 +580,8 @@ The Skill Advisor is the native Gate 2 routing surface for matching prompts to s
 **Architecture:** the native package owns scorer fusion, daemon freshness, lifecycle redirects, compatibility entrypoints, Zod schemas, and package-local tests. The Python script at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py` is a compatibility shim: it probes the native path first, translates native output to the legacy JSON-array shape, and falls back to local Python scoring when native routing is unavailable.
 
 **Fusion lanes:** explicit_author 0.45, lexical 0.30, graph_causal 0.15, derived_generated 0.10, semantic_shadow 0.00. The semantic lane is shadow-only and hardcoded at 0.
+
+**Affordance evidence (012/004):** `advisor_recommend` accepts structured tool/resource hints as a sanitized affordance lane wired into the existing `derived_generated` and `graph_causal` lanes — no new scoring lane, no new `entity_kind`, no new relation type (ADR-012-006). The allowlist normalizer at `skill_advisor/lib/affordance-normalizer.ts` accepts only `skillId`/`skill_id`, `name`, `triggers[]`, `category`, and the existing relation fields (`dependsOn[]`/`depends_on[]`, `enhances[]`, `siblings[]`, `prerequisiteFor[]`/`prerequisite_for[]`, `conflictsWith[]`/`conflicts_with[]`). Free-form `description` text is intentionally ignored as a trigger source. URLs, email addresses, token-shaped fragments, control characters, and instruction-shaped strings are stripped or dropped before scoring. Sanitized triggers contribute through the existing `derived_generated` lane (`scorer/lanes/derived.ts`) with reduced weight, and normalized relations become temporary edges in the existing `graph_causal` lane (`scorer/lanes/graph-causal.ts`) reusing the existing `enhances` / `siblings` / `depends_on` / `prerequisite_for` / `conflicts_with` `EDGE_MULTIPLIER` values. Recommendation payloads cite stable `affordance:<skillId>:<index>` identifiers — never raw matched phrases. The Python graph compiler (`skill_advisor/scripts/skill_graph_compiler.py`) compiles `derived.affordances[]` into existing `signals` and sparse adjacency without changing `ALLOWED_ENTITY_KINDS` (`{"skill", "agent", "script", "config", "reference"}`).
 
 **Current baseline:** 80.5% full corpus, 77.5% holdout, UNKNOWN <= 10, and zero regressions on Python-correct prompts.
 
@@ -1155,6 +1165,19 @@ Report code graph index health: file count, node and edge counts by type, parse 
 | Parameter | Type | Notes |
 |-----------|------|-------|
 | _(none required)_ |  | Returns health report |
+
+---
+
+##### `detect_changes` (handler — tool-schema deferred)
+
+Read-only preflight handler at `code_graph/handlers/detect-changes.ts`. Maps a unified-diff input to the structural symbols it touches via line-range overlap, refusing to answer when the graph is stale. Registered alongside the existing seven Code Graph handlers in `code_graph/handlers/index.ts`; tool-schema registration in `tool-schemas.ts` is intentionally deferred (ADR-012-003), so external clients reach this handler through the shared MCP router rather than as a top-level tool.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `diff` | string | **Required.** Unified diff in the subset `git diff` emits (`diff --git`, `--- a/<path>`, `+++ b/<path>`, `@@ -oldStart[,oldLines] +newStart[,newLines] @@`) |
+| `rootDir` | string | Workspace root override; canonicalized via `realpathSync` and rejected if it escapes the workspace via symlink |
+
+Response shape: `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`. The handler probes readiness via `ensureCodeGraphReady(rootDir, { allowInlineIndex: false, allowInlineFullScan: false })` BEFORE any diff parsing or graph lookup. Any `freshness !== 'fresh'` returns `status: 'blocked'` immediately with `affectedSymbols[]` empty (false-safe RISK-03 mitigation per ADR-012-001 / ADR-012-002). Symbol attribution uses pure line-range overlap against `queryOutline(filePath)` rows; synthetic per-file `module` nodes are excluded so they don't drown per-symbol signal. Diff parsing returns `parse_error` on malformed input — see `code_graph/lib/diff-parser.ts` for the clean-room minimal parser and `rangesOverlap` helper.
 
 ---
 

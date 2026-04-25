@@ -1,7 +1,7 @@
 ---
 title: "Spec Kit Memory: Manual Testing Playbook"
 description: "Operator-facing reference combining the manual testing directory, integrated review/orchestration guidance, execution expectations, and per-feature validation files for the Spec Kit Memory MCP server."
-last_updated: "2026-04-17"
+last_updated: "2026-04-25"
 ---
 
 # Spec Kit Memory: Manual Testing Playbook
@@ -43,6 +43,7 @@ Canonical source artifacts:
 
 ## TABLE OF CONTENTS
 
+- [PHASE 012 AUDIT](#phase-012-audit)
 - [PHASE 017 AUDIT](#phase-017-audit)
 - [PHASE 018 AUDIT](#phase-018-audit)
 - [1. OVERVIEW](#1--overview)
@@ -57,6 +58,24 @@ Canonical source artifacts:
 - [10. DEDICATED MEMORY/SPEC-KIT SCENARIOS](#10--dedicated-memoryspec-kit-scenarios-required)
 - [11. AUTOMATED TEST CROSS-REFERENCE](#11--automated-test-cross-reference)
 - [12. FEATURE CATALOG CROSS-REFERENCE INDEX](#12--feature-catalog-cross-reference-index)
+
+---
+
+## Phase 012 audit
+
+Audit date: `2026-04-25`
+
+Phase 012 (`026-graph-and-context-optimization/012-graph-impact-and-affordance-uplift/`) shipped the converged GitNexus pt-01 + pt-02 recommendations across Code Graph, Memory, and Skill Advisor. Code sub-phases 002-005 each authored their own per-packet manual-testing-playbook entries inline as part of their work. Sub-phase 006 (this rollup, ADR-012-007) syncs the umbrella docs and the top-level indexes — sync, not aspiration. The five new per-packet scenarios are listed below with their relative paths.
+
+| Sub-phase | Category | Playbook ID | Entry |
+|-----------|----------|-------------|-------|
+| 012/002 | `03--discovery` | EX-014 | [`03--discovery/014-detect-changes-preflight.md`](03--discovery/014-detect-changes-preflight.md) — stale vs fresh `detect_changes` walkthrough with explicit pass/fail (false-safe RISK-03 mitigation) |
+| 012/002 | `14--pipeline-architecture` | 271 | [`14--pipeline-architecture/271-code-graph-phase-dag-runner.md`](14--pipeline-architecture/271-code-graph-phase-dag-runner.md) — runner rejection paths plus regression check that scan output matches the pre-wrap baseline |
+| 012/003 | `06--analysis` | EX-026 | [`06--analysis/026-code-graph-edge-explanation-blast-radius-uplift.md`](06--analysis/026-code-graph-edge-explanation-blast-radius-uplift.md) — relationship `reason`/`step` display + `blast_radius` enrichment (depthGroups, riskLevel, minConfidence, ambiguityCandidates, failureFallback) |
+| 012/004 | `11--scoring-and-calibration` | 199 | [`11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md`](11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md) — affordance routing through existing `derived_generated`/`graph_causal` lanes with privacy assertions |
+| 012/005 | `13--memory-quality-and-indexing` | 203 | [`13--memory-quality-and-indexing/203-memory-causal-trust-display.md`](13--memory-quality-and-indexing/203-memory-causal-trust-display.md) — additive `trustBadges` per result envelope + response-profile preservation, with protected-file diff guard |
+
+Phase 012 ships zero schema changes. The `detect_changes` handler is registered alongside the existing seven Code Graph handlers; tool-schema wiring in `tool-schemas.ts` is intentionally deferred (ADR-012-003), so the playbook scenario reaches the handler through the shared MCP router rather than as a top-level tool. License posture stays clean-room per ADR-012-001 (012/001 sign-off).
 
 ---
 

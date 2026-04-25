@@ -1,6 +1,6 @@
 # Spec Kit Memory MCP Server: Installation Guide
 
-> MCP Server v1.7.2 | 2026-03-15
+> MCP Server v1.7.2 | 2026-03-15 (verification steps refreshed for Phase 012 on 2026-04-25)
 
 Complete installation and configuration guide for the Spec Kit Memory MCP server. This guide enables AI-powered context retrieval and conversation memory across your project. The system indexes markdown documentation from spec folders and constitutional rules to surface relevant information during AI interactions. It provides 43 tools covering semantic search, trigger-based memory surfacing, intent-aware context loading, causal relationship tracking, session learning, evaluation, validation, and bounded structural code-graph indexing.
 
@@ -470,6 +470,82 @@ Search memory for documentation about Gate 3
 ```
 
 You should get relevant memories about Gate 3 (the spec folder question) from AGENTS.md or related documentation.
+
+### Step 4: Phase 012 Smoke Tests (one per shipped capability)
+
+Run one smoke test per capability shipped in Phase 012 to confirm the new behaviors are wired correctly. Each test is short and end-to-end runnable; they expand the regular structural-query verification above with new-feature-specific signals.
+
+#### 4a. `detect_changes` preflight (012/002)
+
+```bash
+# 1. Stale path: leave the graph stale OR scan once and then modify a tracked source file
+#    (do NOT rerun code_graph_scan).
+# 2. Generate a unified diff that touches a known indexed function:
+git diff -- .opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts > /tmp/diff.txt
+
+# 3. Call detect_changes with the stale graph. Expected:
+#    { status: "blocked", affectedSymbols: [], blockedReason: "graph readiness is \"stale\" ...",
+#      readiness.freshness: "stale" }
+#    PASS criterion: status MUST be "blocked", affectedSymbols MUST be empty.
+#    FAIL criterion: status: "ok" with empty affectedSymbols (false-safe RISK-03 violation).
+
+# 4. Refresh the graph and retry. Expected:
+#    { status: "ok", affectedSymbols: [...], affectedFiles: [...], readiness.freshness: "fresh" }
+```
+
+#### 4b. `blast_radius` enrichment (012/003)
+
+```text
+Ask your AI assistant:
+
+  Run `code_graph_query({ operation: "blast_radius", subject: "<known-symbol-or-file>",
+    maxDepth: 2, minConfidence: 0.75 })` and confirm the response includes `depthGroups`,
+  `riskLevel`, `minConfidence`, and (when the subject is ambiguous) `ambiguityCandidates`
+  plus a structured `failureFallback`. Then run a relationship query and confirm each
+  edge row carries `reason` and `step` next to the existing `confidence` /
+  `detectorProvenance` / `evidenceClass` fields.
+```
+
+PASS criterion: required fields present; risk follows the documented depth-one fanout rule (`high` on ambiguity or fanout >10, `medium` on 4-10, `low` otherwise); ambiguous subjects return candidates instead of silently picking a default.
+FAIL criterion: any expected field is absent, ambiguous subjects are silently resolved, or a blast-radius failure returns only a bare error string.
+
+#### 4c. Skill Advisor affordance evidence (012/004)
+
+```bash
+cd .opencode/skill/system-spec-kit/mcp_server
+./node_modules/.bin/vitest run \
+  skill_advisor/tests/affordance-normalizer.test.ts \
+  skill_advisor/tests/lane-attribution.test.ts \
+  skill_advisor/tests/routing-fixtures.affordance.test.ts \
+  --reporter=dot
+python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/python/test_skill_advisor.py
+```
+
+PASS criterion: affordance-normalizer privacy assertions pass; `lane-attribution.test.ts` confirms affordance evidence appears through `derived_generated` and `graph_causal` only; `routing-fixtures.affordance.test.ts` shows recall lift with explicit author triggers retaining precedence; Python compiler tests keep `ALLOWED_ENTITY_KINDS` unchanged.
+FAIL criterion: a raw affordance phrase leaks into recommendation payloads, a new lane appears, a new relation type is required, or affordance-only evidence outranks explicit author triggers.
+
+#### 4d. Memory causal trust display badges (012/005)
+
+```bash
+# Source-anchor sanity check (formatter wires the additive badges):
+rg -n "trustBadges|MemoryTrustBadges|weightHistoryChanged|extractionAge|lastAccessAge|orphan" \
+  .opencode/skill/system-spec-kit/mcp_server/formatters/search-results.ts \
+  .opencode/skill/system-spec-kit/mcp_server/lib/response/profile-formatters.ts
+
+# Protected-file static diff (storage MUST NOT change):
+git diff --stat main -- \
+  .opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts \
+  .opencode/skill/system-spec-kit/mcp_server/lib/search/causal-boost.ts
+
+# Targeted Vitest:
+cd .opencode/skill/system-spec-kit/mcp_server
+npm exec -- vitest run \
+  tests/memory/trust-badges.test.ts \
+  tests/response-profile-formatters.vitest.ts
+```
+
+PASS criterion: source grep finds the additive badge interface and formatter wiring; static diff shows no schema or decay-logic changes in the protected files; targeted Vitest exits 0; `memory_search` results carry `confidence`, `extractionAge`, `lastAccessAge`, `orphan`, `weightHistoryChanged` on each `MemoryResultEnvelope`, preserved through `quick`/`research`/`resume` profiles.
+FAIL criterion: any badge field is missing, top-level only, dependent on new schema, stripped by profile formatting, or protected files changed in forbidden ways.
 
 ### Validation: `phase_5_complete`
 

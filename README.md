@@ -415,6 +415,21 @@ Six relationship types: `caused`, `enabled`, `supersedes`, `contradicts`, `deriv
 - **LLM backfill** - Background discovery of missed causal links
 
 &nbsp;
+#### Causal Trust Display Badges (012/005)
+
+Each `MemoryResultEnvelope` result on `memory_search` now carries an additive `trustBadges` payload derived at response time from existing causal-edge columns. The badges are display-only — no schema change, no new relation types, no new storage of code/process/tool facts (ADR-012-005):
+
+| Badge | Source |
+|-------|--------|
+| `confidence` | clamped from the strongest connected edge `strength` |
+| `extractionAge` | human-readable age from the newest connected `extracted_at` |
+| `lastAccessAge` | human-readable age from the newest connected `last_accessed` |
+| `orphan` | `true` when the result has no incoming causal edges |
+| `weightHistoryChanged` | `true` when any connected edge has a `weight_history` row |
+
+The formatter fails open when the DB handle or `weight_history` table is unavailable, preserves any precomputed `trustBadges` payload a caller already supplied, and the response-profile layer (`quick`, `research`, `resume`) preserves the badge payload on `results[]` and `topResult` rather than dropping it during shaping.
+
+&nbsp;
 #### Save Intelligence
 
 When you save new knowledge, **Prediction Error gating** compares it against existing memories and picks one of four outcomes:
@@ -513,6 +528,16 @@ The indexer uses tree-sitter to parse source files and extract functions, classe
 `code_graph_query` and `code_graph_context` share a readiness-aware response contract. When the graph is fresh enough, both return `status: "ok"` with resolved results plus a `readiness` / `canonicalReadiness` / `trustState` block. When readiness requires a full scan that cannot run inline, both return an explicit **`status: "blocked"`** payload naming `requiredAction: "code_graph_scan"`, `blockReason: "full_scan_required"`, `degraded`, and `graphAnswersOmitted` instead of silently returning empty results. Callers should run `code_graph_scan` before retrying.
 
 Success payloads of `code_graph_context` carry structured `data.metadata.partialOutput` (`isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, `truncatedText`) and an explicit `deadlineMs` field so callers can distinguish a complete answer from one trimmed by deadline or budget pressure. `code_graph_status` exposes `graphQualitySummary` (detector provenance + edge-enrichment confidence). CALLS queries on ambiguous subjects (e.g. `handle*`) now prefer callable implementation nodes over wrapper-shadow candidates, and return ambiguity / selected-candidate metadata so callers can audit the choice.
+
+&nbsp;
+#### Edge Explanation and Blast-Radius Uplift (012/003)
+
+Relationship rows on `code_graph_query` now surface graph-local `reason` and `step` fields next to the existing `confidence`, `detectorProvenance`, and `evidenceClass` metadata, and `code_graph_context` propagates the same fields through structured edges and compact text briefs. `blast_radius` keeps the prior file-oriented payload (`nodes`, `affectedFiles`, `sourceFiles`, `hotFileBreadcrumbs`, `multiFileUnion`, `unionMode`, `maxDepth`) while adding `depthGroups`, `riskLevel` (graph-local: `high` on ambiguity or depth-one fanout >10, `medium` on 4-10, `low` otherwise), an optional `minConfidence` traversal filter, `ambiguityCandidates` for unresolved subjects, and a structured `failureFallback` so callers never get a bare error string when resolution cannot continue. The SQLite schema is unchanged; the new fields ride inside the existing `code_edges.metadata` JSON blob.
+
+&nbsp;
+#### `detect_changes` Preflight (012/002)
+
+A read-only `detect_changes` handler is registered alongside the existing seven Code Graph handlers under `mcp_server/code_graph/handlers/`. It accepts `{ diff: string, rootDir?: string }`, walks each unified-diff hunk against persisted `code_nodes` via line-range overlap, and returns `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`. The P1 safety invariant is hard: `ensureCodeGraphReady` runs first with `allowInlineIndex: false` and `allowInlineFullScan: false`, so any non-`fresh` readiness state returns `status: 'blocked'` before the diff is parsed — callers never receive a false-safe "no impact" answer on a stale graph. The handler is wired into `handlers/index.ts`; tool-schema registration in `tool-schemas.ts` is deferred to a follow-up packet (ADR-012-003), so external clients reach `detect_changes` through the shared MCP router rather than as a top-level tool. The accompanying phase-DAG runner wraps `indexFiles()` in four declared phases (`find-candidates` -> `parse-candidates` -> `finalize` -> `emit-metrics`) without changing the public scan tool count or the SQLite schema.
 
 &nbsp;
 #### What Each System Does
@@ -630,6 +655,11 @@ Claude Code, Copilot CLI, Gemini CLI, and Codex CLI call prompt-time hook adapte
 - Hook diagnostics persist to bounded JSONL sinks under the temp metrics root; validator analysis reads those sinks back across processes
 - OpenCode runs the advisor via `.opencode/plugins/spec-kit-skill-advisor.js` + `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs` against the native compat entrypoint, with the default prompt-time threshold contract of `0.8 / 0.35`
 - `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` disables all prompt-time advisor surfaces
+
+&nbsp;
+#### Affordance Evidence (012/004)
+
+Callers can now provide structured tool/resource hints (`skillId`, `name`, `triggers[]`, `category`, `dependsOn[]`, `enhances[]`, `siblings[]`, `prerequisiteFor[]`, `conflictsWith[]`) as affordance evidence. An allowlist normalizer in `affordance-normalizer.ts` strips URLs, email addresses, token-shaped fragments, control characters, and instruction-shaped strings before the scorer ever sees them; free-form `description` text is intentionally ignored. Sanitized affordance triggers contribute through the existing **`derived_generated`** lane with reduced weight, and normalized affordance relations become temporary edges in the existing **`graph_causal`** lane reusing the existing `depends_on` / `enhances` / `siblings` / `prerequisite_for` / `conflicts_with` multipliers. No new scoring lane, no new `entity_kind`, no raw matched phrases in recommendation payloads — evidence labels stay as stable `affordance:<skillId>:<index>` identifiers (ADR-012-006).
 
 For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_server/skill_advisor/README.md).
 
@@ -1268,4 +1298,4 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.2 | Last updated: 2026-04-17 | Framework: 12 agents, 21 skills, 23 commands, 60 MCP tools (51 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*
+*Documentation version: 4.3 | Last updated: 2026-04-25 | Framework: 12 agents, 21 skills, 23 commands, 60 MCP tools (51 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking). Phase 012 adds the read-only `detect_changes` handler (registered, tool-schema deferred), `blast_radius` enrichment, Skill Advisor affordance evidence, and Memory causal trust display badges.*

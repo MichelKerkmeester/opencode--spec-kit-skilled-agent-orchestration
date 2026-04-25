@@ -1,7 +1,7 @@
 ---
 title: "Spec Kit Memory: Feature Catalog"
 description: "Unified reference combining the complete system feature inventory and the refinement program changelog for the Spec Kit Memory MCP server."
-last_updated: "2026-04-17"
+last_updated: "2026-04-25"
 ---
 
 # Spec Kit Memory: Feature Catalog
@@ -12,6 +12,7 @@ This document combines two complementary views of the Spec Kit Memory system int
 
 ## TABLE OF CONTENTS
 
+- [PHASE 012 AUDIT](#phase-012-audit)
 - [PHASE 017 AUDIT](#phase-017-audit)
 - [PHASE 018 AUDIT](#phase-018-audit)
 - [1. OVERVIEW](#1--overview)
@@ -36,6 +37,24 @@ This document combines two complementary views of the Spec Kit Memory system int
 - [20. REMEDIATION REVALIDATION](#20--remediation-revalidation)
 - [21. IMPLEMENT AND REMOVE DEPRECATED FEATURES](#21--implement-and-remove-deprecated-features)
 - [22. CONTEXT PRESERVATION AND CODE GRAPH](#22--context-preservation-and-code-graph)
+
+---
+
+## Phase 012 audit
+
+Audit date: `2026-04-25`
+
+Phase 012 (`026-graph-and-context-optimization/012-graph-impact-and-affordance-uplift/`) shipped the converged GitNexus pt-01 + pt-02 recommendations across Code Graph, Memory, and Skill Advisor under strict ownership boundaries (pt-02 §13). Code sub-phases 002-005 each authored their own per-packet feature-catalog entries inline as part of their work. Sub-phase 006 (this rollup, ADR-012-007) syncs the umbrella docs and the top-level indexes — sync, not aspiration. The five new per-packet entries are listed below with their relative paths.
+
+| Sub-phase | Category | Entry |
+|-----------|----------|-------|
+| 012/002 | `03--discovery` | [`03--discovery/04-detect-changes-preflight.md`](03--discovery/04-detect-changes-preflight.md) — read-only `detect_changes` preflight handler with hard refuse on stale graph |
+| 012/002 | `14--pipeline-architecture` | [`14--pipeline-architecture/25-code-graph-phase-dag-runner.md`](14--pipeline-architecture/25-code-graph-phase-dag-runner.md) — typed phase-DAG runner wrapping `indexFiles()` |
+| 012/003 | `06--analysis` | [`06--analysis/08-code-graph-edge-explanation-blast-radius-uplift.md`](06--analysis/08-code-graph-edge-explanation-blast-radius-uplift.md) — edge `reason`/`step` display + enriched `blast_radius` (depthGroups, riskLevel, minConfidence, ambiguityCandidates, failureFallback) |
+| 012/004 | `11--scoring-and-calibration` | [`11--scoring-and-calibration/24-skill-advisor-affordance-evidence.md`](11--scoring-and-calibration/24-skill-advisor-affordance-evidence.md) — sanitized affordance evidence routing through existing `derived_generated` and `graph_causal` lanes |
+| 012/005 | `13--memory-quality-and-indexing` | [`13--memory-quality-and-indexing/28-memory-causal-trust-display.md`](13--memory-quality-and-indexing/28-memory-causal-trust-display.md) — display-only `trustBadges` derived from existing causal-edge columns |
+
+Phase 012 ships zero schema changes. Code Graph adds a registered `detect_changes` handler whose tool-schema wiring in `tool-schemas.ts` is intentionally deferred (ADR-012-003); external clients reach it through the shared MCP router rather than as a top-level tool. License posture stays clean-room per ADR-012-001 (012/001 sign-off).
 
 ---
 

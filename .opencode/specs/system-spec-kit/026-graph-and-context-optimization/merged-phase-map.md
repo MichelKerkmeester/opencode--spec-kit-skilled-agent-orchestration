@@ -85,6 +85,16 @@ This map is the canonical bridge from the former 29 top-level phase folders to t
 
 Full child context is listed in each active phase context index; phase 001 is merged into its root.
 
+## Derived Implementation Phases
+
+Phases that ship recommendations from research packets in `001-research-and-baseline/` are listed here. They were not part of the original 29-to-9 consolidation; they live as new sub-phases under the consolidated wrapper that owns the implementation surface.
+
+| Active Phase | Derived From | Owner Wrapper | Local Path |
+|--------------|--------------|---------------|------------|
+| `012-graph-impact-and-affordance-uplift/` | `001-research-and-baseline/007-git-nexus/` pt-01 + pt-02 syntheses | `026-graph-and-context-optimization/` | `026-graph-and-context-optimization/012-graph-impact-and-affordance-uplift/` |
+
+Phase 012 is the converged GitNexus implementation packet. It ships in six sub-phases (001 license audit, 002 phase runner + `detect_changes` preflight, 003 edge explanation + `blast_radius` uplift, 004 Skill Advisor affordance evidence, 005 Memory causal trust display, 006 docs and catalogs rollup). Code Graph, Memory, and Skill Advisor stay separately owned under the ownership-boundary contract from pt-02 §13.
+
 ## Support Folders
 
 Root `research/`, `review/`, and `scratch/` stay at `system-spec-kit/026-graph-and-context-optimization/` and are referenced by phase context indexes when needed.

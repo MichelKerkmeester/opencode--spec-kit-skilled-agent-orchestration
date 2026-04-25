@@ -644,6 +644,8 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 - **JSON-mode conversation synthesis** - When conversation prompts are sparse (e.g., JSON-mode captures with minimal exchange data), conversation content is synthesized from `sessionSummary` field
 - **Decision deduplication** - String-form decisions produce deduplicated CONTEXT/RATIONALE/CHOSEN values in memory output
 - **Structural blocker detection** - Structural pattern detection identifies blockers (avoiding false positives from broad keyword matching)
+- **Memory causal trust display badges (012/005)** - `memory_search` results now carry an additive `trustBadges` payload per `MemoryResultEnvelope`: `confidence` from edge `strength`, `extractionAge`, `lastAccessAge`, `orphan` (no incoming edges), `weightHistoryChanged` (any connected edge has a `weight_history` row). Display-only — derived at response time from existing causal-edge columns; no schema change, no new relation types, no new storage of code/process/tool facts. Response profiles (`quick`, `research`, `resume`) preserve the badge payload on `results[]` and `topResult` (ADR-012-005)
+- **Skill Advisor affordance evidence (012/004)** - `advisor_recommend` accepts structured tool/resource hints (`skillId`, `name`, `triggers[]`, `category`, plus existing relation fields). An allowlist normalizer sanitizes URLs, emails, token-shaped fragments, and instruction-shaped strings; free-form `description` is ignored. Sanitized affordance evidence routes through the existing `derived_generated` lane (low-weight derived triggers) and the existing `graph_causal` lane (temporary edges reusing `depends_on` / `enhances` / `siblings` / `prerequisite_for` / `conflicts_with` multipliers). No new scoring lane, no new `entity_kind`, no raw matched phrases in recommendation payloads — evidence labels stay as stable `affordance:<skillId>:<index>` identifiers (ADR-012-006)
 
 **Feature Flags:**
 
@@ -760,14 +762,15 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 
 ### Code Graph (Structural Code Analysis)
 
-4 MCP tools for structural code analysis via tree-sitter WASM indexing (default, with regex fallback) and SQLite storage:
+4 MCP tools plus one registered preflight handler for structural code analysis via tree-sitter WASM indexing (default, with regex fallback) and SQLite storage:
 
-| Tool | Purpose |
-|------|---------|
-| `code_graph_scan` | Index workspace files, build structural graph |
-| `code_graph_query` | Query relationships: outline, calls_from/to, imports_from/to |
+| Tool / Handler | Purpose |
+|----------------|---------|
+| `code_graph_scan` | Index workspace files, build structural graph. Internally orchestrated by a typed phase-DAG runner (`find-candidates` → `parse-candidates` → `finalize` → `emit-metrics`) since 012/002 |
+| `code_graph_query` | Query relationships: outline, calls_from/to, imports_from/to, blast_radius. Edge rows now carry `reason` and `step` next to `confidence`/`detectorProvenance`/`evidenceClass`; `blast_radius` adds `depthGroups`, `riskLevel`, `minConfidence`, `ambiguityCandidates`, `failureFallback` (012/003) |
 | `code_graph_status` | Report graph health and statistics |
-| `code_graph_context` | LLM-oriented compact graph neighborhoods (neighborhood/outline/impact modes) |
+| `code_graph_context` | LLM-oriented compact graph neighborhoods (neighborhood/outline/impact modes); now propagates edge `reason`/`step` through structured edges and compact text (012/003) |
+| `detect_changes` (handler) | Read-only preflight: maps unified-diff hunks to indexed symbols via line-range overlap. Returns `status: 'blocked'` on any non-`fresh` readiness state — no false-safe answers on stale graphs (012/002, ADR-012-001 clean-room). Registered in `handlers/index.ts`; tool-schema wiring in `tool-schemas.ts` deferred per ADR-012-003 |
 
 **Architecture:** CocoIndex (semantic, external MCP) finds code by concept. Code Graph (structural, this system) maps imports, calls, hierarchy. Memory (session, existing MCP) preserves decisions. The compact-merger combines all three under a 4000-token budget for compaction injection.
 
