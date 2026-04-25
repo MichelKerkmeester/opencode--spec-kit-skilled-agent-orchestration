@@ -64,6 +64,15 @@ describe('runtime detection', () => {
     it('detects copilot-cli with enabled hooks when repo hook config is present', () => {
       clearRuntimeEnv();
       process.env.COPILOT_CLI = '1';
+      tempDir = mkdtempSync(join(tmpdir(), 'copilot-runtime-enabled-'));
+      mkdirSync(join(tempDir, '.claude'), { recursive: true });
+      writeFileSync(join(tempDir, '.claude', 'settings.local.json'), JSON.stringify({
+        hooks: {
+          UserPromptSubmit: [{ matcher: '', hooks: [{ type: 'command', command: 'node /hooks/copilot/user-prompt-submit.js', timeout: 3 }] }],
+          SessionStart:     [{ matcher: '', hooks: [{ type: 'command', command: 'node /hooks/copilot/session-prime.js',        timeout: 3 }] }],
+        },
+      }));
+      process.chdir(tempDir);
       const result = detectRuntime();
       expect(result.runtime).toBe('copilot-cli');
       expect(result.hookPolicy).toBe('enabled');

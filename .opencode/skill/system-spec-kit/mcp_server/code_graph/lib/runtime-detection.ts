@@ -118,7 +118,7 @@ function hasNamedHookEntries(hooks: unknown, eventName: string): boolean {
   return Array.isArray(entries) && entries.length > 0;
 }
 
-function hasCopilotWrapper(hooks: unknown, eventName: string, bashNeedle: string): boolean {
+function hasCopilotWrapper(hooks: unknown, eventName: string, commandNeedle: string): boolean {
   if (typeof hooks !== 'object' || hooks === null) {
     return false;
   }
@@ -131,9 +131,24 @@ function hasCopilotWrapper(hooks: unknown, eventName: string, bashNeedle: string
       return false;
     }
     const record = entry as Record<string, unknown>;
+    // Claude-native nested schema: { matcher, hooks: [{ type: 'command', command: string, timeout: number }] }
+    const nested = record.hooks;
+    if (Array.isArray(nested)) {
+      return nested.some((h) => {
+        if (typeof h !== 'object' || h === null) return false;
+        const cmd = h as Record<string, unknown>;
+        return cmd.type === 'command'
+          && typeof cmd.command === 'string'
+          && cmd.command.includes(commandNeedle)
+          && typeof cmd.timeout === 'number'
+          && Number.isFinite(cmd.timeout)
+          && cmd.timeout > 0;
+      });
+    }
+    // Legacy/OpenCode flat schema: { type: 'command', bash: string, timeoutSec: number }
     return record.type === 'command'
       && typeof record.bash === 'string'
-      && record.bash.includes(bashNeedle)
+      && record.bash.includes(commandNeedle)
       && typeof record.timeoutSec === 'number'
       && Number.isFinite(record.timeoutSec)
       && record.timeoutSec > 0;

@@ -1,10 +1,36 @@
 // ───────────────────────────────────────────────────────────────
 // TEST: Cross-Runtime Fallback
 // ───────────────────────────────────────────────────────────────
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { describe, it, expect, afterEach } from 'vitest';
 import { createRuntimeFixture, setRuntimeEnv, clearRuntimeEnv } from './fixtures/runtime-fixtures.js';
 import { clearCodexHookPolicyCacheForTests } from '../lib/codex-hook-policy.js';
 import { detectRuntime, areHooksAvailable, getRecoveryApproach } from '../code_graph/lib/runtime-detection.js';
+
+const ORIGINAL_CWD = process.cwd();
+let copilotFixtureDir: string | null = null;
+
+function seedCopilotCliFixture(): void {
+  copilotFixtureDir = mkdtempSync(join(tmpdir(), 'copilot-cli-fixture-'));
+  mkdirSync(join(copilotFixtureDir, '.claude'), { recursive: true });
+  writeFileSync(join(copilotFixtureDir, '.claude', 'settings.local.json'), JSON.stringify({
+    hooks: {
+      UserPromptSubmit: [{ matcher: '', hooks: [{ type: 'command', command: 'node /hooks/copilot/user-prompt-submit.js', timeout: 3 }] }],
+      SessionStart:     [{ matcher: '', hooks: [{ type: 'command', command: 'node /hooks/copilot/session-prime.js',        timeout: 3 }] }],
+    },
+  }));
+  process.chdir(copilotFixtureDir);
+}
+
+function clearCopilotCliFixture(): void {
+  if (copilotFixtureDir) {
+    process.chdir(ORIGINAL_CWD);
+    rmSync(copilotFixtureDir, { recursive: true, force: true });
+    copilotFixtureDir = null;
+  }
+}
 
 const CANONICAL_RUNTIME_HOOK_VOCABULARY = {
   'claude-code': {
@@ -35,6 +61,7 @@ const CANONICAL_RUNTIME_HOOK_VOCABULARY = {
 
 describe('cross-runtime fallback', () => {
   afterEach(() => {
+    clearCopilotCliFixture();
     clearRuntimeEnv();
     clearCodexHookPolicyCacheForTests();
   });
@@ -49,6 +76,9 @@ describe('cross-runtime fallback', () => {
       });
 
       it(`${runtime} detection matches fixture`, () => {
+        if (runtime === 'copilot-cli') {
+          seedCopilotCliFixture();
+        }
         setRuntimeEnv(runtime);
         const detected = detectRuntime();
         const fixture = createRuntimeFixture(runtime);
@@ -84,6 +114,7 @@ describe('cross-runtime fallback', () => {
       );
     });
     it('copilot-cli uses hooks when repo hook config is present', () => {
+      seedCopilotCliFixture();
       setRuntimeEnv('copilot-cli');
       expect(getRecoveryApproach()).toBe('hooks');
     });
@@ -124,6 +155,7 @@ describe('cross-runtime fallback', () => {
 
     // Scenario 4: Copilot CLI
     it('copilot-cli: runtime is copilot-cli, hookPolicy is enabled, recovery is hooks when repo hook config exists', () => {
+      seedCopilotCliFixture();
       setRuntimeEnv('copilot-cli');
       const detected = detectRuntime();
       expect(detected.runtime).toBe('copilot-cli');
