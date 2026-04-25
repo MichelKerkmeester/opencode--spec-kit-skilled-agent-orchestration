@@ -50,7 +50,7 @@ Handler outputs for the six siblings plus the shared readiness test output
 
 ### Failure Triage
 
-Inspect `mcp_server/code-graph/lib/readiness-contract.ts`, the sibling handler files, and the readiness-contract test suites
+Inspect `mcp_server/code_graph/lib/readiness-contract.ts`, the sibling handler files, and the readiness-contract test suites
 
 ## 4. REFERENCES
 

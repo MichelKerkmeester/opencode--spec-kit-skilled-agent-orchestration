@@ -7,8 +7,8 @@
 
 import { getSessionMetrics, computeQualityScore, getLastToolCallAt } from './context-metrics.js';
 import { isSessionPrimed, getLastActiveSessionId } from '../../hooks/memory-surface.js';
-import { getStats as getGraphStats } from '../../code-graph/lib/code-graph-db.js';
-import { getGraphFreshness } from '../../code-graph/lib/ensure-ready.js';
+import { getStats as getGraphStats } from '../../code_graph/lib/code-graph-db.js';
+import { getGraphFreshness } from '../../code_graph/lib/ensure-ready.js';
 import { isCocoIndexAvailable } from '../utils/cocoindex-path.js';
 import {
   trustStateFromStructuralStatus,

@@ -546,7 +546,7 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 ### 🎯 Skill Advisor
 
-The Skill Advisor is the native Gate 2 routing system that matches user requests to the right skill. Phase 027 moved routing into the TypeScript MCP package at `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/`, with three tools: `advisor_recommend`, `advisor_status`, and `advisor_validate`. The Python script remains as a compatibility shim with native-first routing and local fallback.
+The Skill Advisor is the native Gate 2 routing system that matches user requests to the right skill. Phase 027 moved routing into the TypeScript MCP package at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`, with three tools: `advisor_recommend`, `advisor_status`, and `advisor_validate`. The Python script remains as a compatibility shim with native-first routing and local fallback.
 
 Current shipped baseline: **80.5% full-corpus accuracy**, **77.5% holdout accuracy**, **UNKNOWN <= 10**, and **0 regressions on Python-correct prompts**.
 
@@ -599,7 +599,7 @@ Current shipped baseline: **80.5% full-corpus accuracy**, **77.5% holdout accura
 The native package is self-contained:
 
 ```text
-.opencode/skill/system-spec-kit/mcp_server/skill-advisor/
+.opencode/skill/system-spec-kit/mcp_server/skill_advisor/
 ├── bench/
 ├── compat/
 ├── handlers/
@@ -631,7 +631,7 @@ Claude Code, Copilot CLI, Gemini CLI, and Codex CLI call prompt-time hook adapte
 - OpenCode runs the advisor via `.opencode/plugins/spec-kit-skill-advisor.js` + `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs` against the native compat entrypoint, with the default prompt-time threshold contract of `0.8 / 0.35`
 - `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` disables all prompt-time advisor surfaces
 
-For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_server/skill-advisor/README.md).
+For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_server/skill_advisor/README.md).
 
 ---
 

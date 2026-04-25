@@ -5,9 +5,9 @@ import {
   createCodexWrappedPrompt,
   handleCodexPromptWrapper,
 } from '../hooks/codex/prompt-wrapper.js';
-import { normalizeRuntimeOutput } from '../skill-advisor/lib/normalize-adapter-output.js';
-import { renderAdvisorBrief } from '../skill-advisor/lib/render.js';
-import type { AdvisorHookResult } from '../skill-advisor/lib/skill-advisor-brief.js';
+import { normalizeRuntimeOutput } from '../skill_advisor/lib/normalize-adapter-output.js';
+import { renderAdvisorBrief } from '../skill_advisor/lib/render.js';
+import type { AdvisorHookResult } from '../skill_advisor/lib/skill-advisor-brief.js';
 
 const fixturesDir = join(import.meta.dirname, 'advisor-fixtures');
 

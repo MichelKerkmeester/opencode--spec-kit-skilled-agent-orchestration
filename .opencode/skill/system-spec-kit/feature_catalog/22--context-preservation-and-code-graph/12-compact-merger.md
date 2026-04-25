@@ -16,7 +16,7 @@ Accepts shaped results from 3 sources. Renders sections: Constitutional Rules, A
 
 ## 2. CURRENT REALITY
 
-mcp_server/code-graph/lib/compact-merger.ts
+mcp_server/code_graph/lib/compact-merger.ts
 
 ---
 

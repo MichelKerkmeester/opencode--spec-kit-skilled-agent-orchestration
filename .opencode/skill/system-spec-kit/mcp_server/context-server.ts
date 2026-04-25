@@ -82,15 +82,15 @@ import { runLineageBackfill } from './lib/storage/lineage-state.js';
 import * as hybridSearch from './lib/search/hybrid-search.js';
 import { createUnifiedGraphSearchFn } from './lib/search/graph-search-fn.js';
 import { isGraphUnifiedEnabled } from './lib/search/graph-flags.js';
-import * as graphDb from './code-graph/lib/code-graph-db.js';
-import { detectRuntime, type RuntimeInfo } from './code-graph/lib/runtime-detection.js';
+import * as graphDb from './code_graph/lib/code-graph-db.js';
+import { detectRuntime, type RuntimeInfo } from './code_graph/lib/runtime-detection.js';
 import {
   closeDb as closeSkillGraphDb,
   indexSkillMetadata,
   initDb as initSkillGraphDb,
 } from './lib/skill-graph/skill-graph-db.js';
-import { computeAdvisorSourceSignature } from './skill-advisor/lib/freshness.js';
-import { publishSkillGraphGeneration } from './skill-advisor/lib/freshness/generation.js';
+import { computeAdvisorSourceSignature } from './skill_advisor/lib/freshness.js';
+import { publishSkillGraphGeneration } from './skill_advisor/lib/freshness/generation.js';
 import * as sessionBoost from './lib/search/session-boost.js';
 import * as causalBoost from './lib/search/causal-boost.js';
 import * as bm25Index from './lib/search/bm25-index.js';

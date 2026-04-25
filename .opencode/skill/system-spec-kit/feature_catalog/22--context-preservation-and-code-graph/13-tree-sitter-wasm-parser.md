@@ -16,7 +16,7 @@ The tree-sitter parser implements the ParserAdapter interface, lazily initializi
 
 ## 2. CURRENT REALITY
 
-mcp_server/code-graph/lib/tree-sitter-parser.ts
+mcp_server/code_graph/lib/tree-sitter-parser.ts
 
 ---
 
@@ -26,10 +26,10 @@ mcp_server/code-graph/lib/tree-sitter-parser.ts
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/code-graph/lib/tree-sitter-parser.ts` | Lib | WASM-based AST parser with lazy init and grammar caching |
-| `mcp_server/code-graph/lib/grammars/` | Assets | Tree-sitter query files per language |
-| `mcp_server/code-graph/lib/queries/` | Assets | S-expression query patterns for symbol extraction |
-| `mcp_server/code-graph/lib/indexer-types.ts` | Lib | Shared types (ParseResult, SupportedLanguage, SymbolKind) |
+| `mcp_server/code_graph/lib/tree-sitter-parser.ts` | Lib | WASM-based AST parser with lazy init and grammar caching |
+| `mcp_server/code_graph/lib/grammars/` | Assets | Tree-sitter query files per language |
+| `mcp_server/code_graph/lib/queries/` | Assets | S-expression query patterns for symbol extraction |
+| `mcp_server/code_graph/lib/indexer-types.ts` | Lib | Shared types (ParseResult, SupportedLanguage, SymbolKind) |
 
 ---
 

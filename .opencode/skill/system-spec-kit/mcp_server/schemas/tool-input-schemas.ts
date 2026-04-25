@@ -9,7 +9,7 @@
 ──────────────────────────────────────────────────────────────── */
 
 import { z, ZodError, type ZodType } from 'zod';
-import { AdvisorToolInputSchemas } from '../skill-advisor/schemas/advisor-tool-schemas.js';
+import { AdvisorToolInputSchemas } from '../skill_advisor/schemas/advisor-tool-schemas.js';
 
 // Feature catalog: Strict Zod schema validation
 

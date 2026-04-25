@@ -5,8 +5,8 @@
 
 import { resolve } from 'node:path';
 import { indexSkillMetadata } from '../../lib/skill-graph/skill-graph-db.js';
-import { computeAdvisorSourceSignature } from '../../skill-advisor/lib/freshness.js';
-import { publishSkillGraphGeneration } from '../../skill-advisor/lib/freshness/generation.js';
+import { computeAdvisorSourceSignature } from '../../skill_advisor/lib/freshness.js';
+import { publishSkillGraphGeneration } from '../../skill_advisor/lib/freshness/generation.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES

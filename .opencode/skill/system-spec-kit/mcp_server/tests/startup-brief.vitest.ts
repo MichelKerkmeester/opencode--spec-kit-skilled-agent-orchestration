@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-vi.mock('../code-graph/lib/code-graph-db.js', () => ({
+vi.mock('../code_graph/lib/code-graph-db.js', () => ({
   getStats: vi.fn(() => ({
     totalFiles: 12,
     totalNodes: 64,
@@ -21,7 +21,7 @@ vi.mock('../code-graph/lib/code-graph-db.js', () => ({
   ])),
 }));
 
-vi.mock('../code-graph/lib/ensure-ready.js', () => ({
+vi.mock('../code_graph/lib/ensure-ready.js', () => ({
   getGraphFreshness: vi.fn(() => 'fresh'),
 }));
 
@@ -50,9 +50,9 @@ vi.mock('../lib/utils/cocoindex-path.js', () => ({
   isCocoIndexAvailable: vi.fn(() => false),
 }));
 
-import { buildStartupBrief } from '../code-graph/lib/startup-brief.js';
-import * as graphDb from '../code-graph/lib/code-graph-db.js';
-import { getGraphFreshness } from '../code-graph/lib/ensure-ready.js';
+import { buildStartupBrief } from '../code_graph/lib/startup-brief.js';
+import * as graphDb from '../code_graph/lib/code-graph-db.js';
+import { getGraphFreshness } from '../code_graph/lib/ensure-ready.js';
 import * as hookState from '../hooks/claude/hook-state.js';
 import * as cocoIndexPath from '../lib/utils/cocoindex-path.js';
 

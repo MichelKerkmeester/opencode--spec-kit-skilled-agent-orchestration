@@ -23,7 +23,7 @@ function writeFixture(root: string, relativePath: string, content = '# fixture\n
 
 function setupIndexerMocks(): void {
   vi.resetModules();
-  vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+  vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
     isFileStale: vi.fn(() => true),
   }));
   process.env.SPECKIT_PARSER = 'regex';
@@ -47,8 +47,8 @@ describe('walker DoS caps', () => {
     writeFixture(tempRoot, '.gitignore', `${'ignored.ts\n'.repeat(150_000)}\n`);
     writeFixture(tempRoot, 'kept.ts', 'export const kept = true;\n');
 
-    const { getDefaultConfig } = await import('../code-graph/lib/indexer-types.js');
-    const { indexFiles } = await import('../code-graph/lib/structural-indexer.js');
+    const { getDefaultConfig } = await import('../code_graph/lib/indexer-types.js');
+    const { indexFiles } = await import('../code_graph/lib/structural-indexer.js');
 
     const results = await indexFiles({
       ...getDefaultConfig(tempRoot),

@@ -88,7 +88,8 @@ code-graph.sqlite
 
 # Not part of framework
 # ───────────────────────────────────────────
-/anobel.com
+/a_nobel_en_zn
+/ai_systems
 
 .opencode/specs/00--ai-systems
 .claude/specs/00--ai-systems
@@ -108,7 +109,7 @@ code-graph.sqlite
 .claude/scheduled_tasks.lock
 
 # Skill-advisor runtime output artifacts
-.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/out/*.json
+.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/out/*.json
 
 # system-spec-kit runtime artifacts (from 2026-04-21 audit)
 .opencode/skill/system-spec-kit/shared/mcp_server/database/*.sqlite

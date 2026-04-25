@@ -31,7 +31,7 @@ function writeFixture(root: string, relativePath: string, content = '# fixture\n
 
 function setupIndexerMocks(): void {
   vi.resetModules();
-  vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+  vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
     isFileStale: vi.fn(() => true),
   }));
   process.env.SPECKIT_PARSER = 'regex';
@@ -98,8 +98,8 @@ describe('code-graph specificFiles respects index scope invariants', () => {
     const externalFile = writeFixture(tempRoot, 'external/vendor.ts', 'export const external = true;\n');
     const futureFile = writeFixture(tempRoot, 'z_future/future.ts', 'export const future = true;\n');
 
-    const { getDefaultConfig } = await import('../code-graph/lib/indexer-types.js');
-    const { indexFiles } = await import('../code-graph/lib/structural-indexer.js');
+    const { getDefaultConfig } = await import('../code_graph/lib/indexer-types.js');
+    const { indexFiles } = await import('../code_graph/lib/structural-indexer.js');
 
     const results = await indexFiles({
       ...getDefaultConfig(tempRoot),

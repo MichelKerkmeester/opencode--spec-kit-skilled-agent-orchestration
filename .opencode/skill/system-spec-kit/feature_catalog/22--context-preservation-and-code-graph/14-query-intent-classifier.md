@@ -16,7 +16,7 @@ Keyword-dictionary scoring classifies queries into three intents: structural (sy
 
 ## 2. CURRENT REALITY
 
-mcp_server/code-graph/lib/query-intent-classifier.ts
+mcp_server/code_graph/lib/query-intent-classifier.ts
 
 ---
 
@@ -26,7 +26,7 @@ mcp_server/code-graph/lib/query-intent-classifier.ts
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/code-graph/lib/query-intent-classifier.ts` | Lib | Keyword-based intent classification with confidence scoring |
+| `mcp_server/code_graph/lib/query-intent-classifier.ts` | Lib | Keyword-based intent classification with confidence scoring |
 | `mcp_server/handlers/memory-context.ts` | Handler | Consumer: routes queries based on classified intent |
 
 ---

@@ -11,7 +11,7 @@ import {
   advisorRecommendTool,
   advisorStatusTool,
   advisorValidateTool,
-} from './skill-advisor/tools/index.js';
+} from './skill_advisor/tools/index.js';
 
 /**
  * Re-export schema validation helpers used by the MCP tool entry points.

@@ -59,9 +59,9 @@ afterEach(() => {
   delete process.env.SPECKIT_PARSER;
   vi.doUnmock('node:child_process');
   vi.doUnmock('node:fs');
-  vi.doUnmock('../code-graph/lib/indexer-types.js');
-  vi.doUnmock('../code-graph/lib/code-graph-db.js');
-  vi.doUnmock('../code-graph/lib/structural-indexer.js');
+  vi.doUnmock('../code_graph/lib/indexer-types.js');
+  vi.doUnmock('../code_graph/lib/code-graph-db.js');
+  vi.doUnmock('../code_graph/lib/structural-indexer.js');
   vi.resetModules();
   vi.restoreAllMocks();
 });
@@ -73,10 +73,10 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('returns ready status with highlights when graph is fresh', async () => {
-    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => freshGraphMock()),
     }));
-    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
+    vi.doMock('../code_graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => 'fresh'),
     }));
     setupSharedMocks();
@@ -98,12 +98,12 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('returns stale status when graph scan is old', async () => {
-    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => freshGraphMock({
         lastScanTimestamp: new Date(Date.now() - 25 * 60 * 60 * 1000).toISOString(),
       })),
     }));
-    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
+    vi.doMock('../code_graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => 'stale'),
     }));
     setupSharedMocks();
@@ -119,12 +119,12 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('returns stale highlights and freshness marker for populated stale graphs', async () => {
-    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => freshGraphMock({
         nodesByKind: { function: 9, class: 4, interface: 2 },
       })),
     }));
-    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
+    vi.doMock('../code_graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => 'stale'),
     }));
     setupSharedMocks();
@@ -140,13 +140,13 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('returns missing status when graph is empty', async () => {
-    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => freshGraphMock({
         totalFiles: 0, totalNodes: 0, totalEdges: 0,
         lastScanTimestamp: null,
       })),
     }));
-    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
+    vi.doMock('../code_graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => 'empty'),
     }));
     setupSharedMocks();
@@ -165,13 +165,13 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('avoids self-referential guidance when session_bootstrap is already the current surface', async () => {
-    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => freshGraphMock({
         totalFiles: 0, totalNodes: 0, totalEdges: 0,
         lastScanTimestamp: null,
       })),
     }));
-    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
+    vi.doMock('../code_graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => 'empty'),
     }));
     setupSharedMocks();
@@ -185,10 +185,10 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('returns missing status when graph DB throws', async () => {
-    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => { throw new Error('DB not initialized'); }),
     }));
-    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
+    vi.doMock('../code_graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => { throw new Error('DB not initialized'); }),
     }));
     setupSharedMocks();
@@ -201,10 +201,10 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('preserves sourceSurface parameter for each surface', async () => {
-    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => freshGraphMock()),
     }));
-    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
+    vi.doMock('../code_graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => 'fresh'),
     }));
     setupSharedMocks();
@@ -219,7 +219,7 @@ describe('buildStructuralBootstrapContract', () => {
   });
 
   it('keeps the structural contract within the documented hard ceiling', async () => {
-    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => freshGraphMock({
         nodesByKind: Object.fromEntries(
           Array.from({ length: 12 }, (_, index) => [
@@ -229,7 +229,7 @@ describe('buildStructuralBootstrapContract', () => {
         ),
       })),
     }));
-    vi.doMock('../code-graph/lib/ensure-ready.js', () => ({
+    vi.doMock('../code_graph/lib/ensure-ready.js', () => ({
       getGraphFreshness: vi.fn(() => 'fresh'),
     }));
     setupSharedMocks();
@@ -259,12 +259,12 @@ describe('indexFiles options', () => {
     writeFixture(tempRoot, 'two.ts');
     writeFixture(tempRoot, 'three.ts');
 
-    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
       isFileStale: vi.fn(() => false),
     }));
 
-    const { getDefaultConfig } = await import('../code-graph/lib/indexer-types.js');
-    const { indexFiles } = await import('../code-graph/lib/structural-indexer.js');
+    const { getDefaultConfig } = await import('../code_graph/lib/indexer-types.js');
+    const { indexFiles } = await import('../code_graph/lib/structural-indexer.js');
     const results = await indexFiles({
       ...getDefaultConfig(tempRoot),
       includeGlobs: ['**/*.ts'],
@@ -281,12 +281,12 @@ describe('indexFiles options', () => {
     writeFixture(tempRoot, 'fresh-a.ts');
     writeFixture(tempRoot, 'fresh-b.ts');
 
-    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
       isFileStale: vi.fn((filePath: string) => filePath === staleFile),
     }));
 
-    const { getDefaultConfig } = await import('../code-graph/lib/indexer-types.js');
-    const { indexFiles } = await import('../code-graph/lib/structural-indexer.js');
+    const { getDefaultConfig } = await import('../code_graph/lib/indexer-types.js');
+    const { indexFiles } = await import('../code_graph/lib/structural-indexer.js');
     const results = await indexFiles({
       ...getDefaultConfig(tempRoot),
       includeGlobs: ['**/*.ts'],
@@ -301,12 +301,12 @@ describe('indexFiles options', () => {
     const staleFile = writeFixture(tempRoot, 'stale.ts');
     writeFixture(tempRoot, 'fresh.ts');
 
-    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
       isFileStale: vi.fn((filePath: string) => filePath === staleFile),
     }));
 
-    const { getDefaultConfig } = await import('../code-graph/lib/indexer-types.js');
-    const { indexFiles } = await import('../code-graph/lib/structural-indexer.js');
+    const { getDefaultConfig } = await import('../code_graph/lib/indexer-types.js');
+    const { indexFiles } = await import('../code_graph/lib/structural-indexer.js');
     const results = await indexFiles({
       ...getDefaultConfig(tempRoot),
       includeGlobs: ['**/*.ts'],
@@ -325,14 +325,14 @@ describe('indexFiles cross-file dedup (Layer 1)', () => {
   });
 
   function mockSymbolCollisionForSharedFunction() {
-    vi.doMock('../code-graph/lib/indexer-types.js', async (importOriginal) => {
-      const actual = await importOriginal<typeof import('../code-graph/lib/indexer-types.js')>();
+    vi.doMock('../code_graph/lib/indexer-types.js', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('../code_graph/lib/indexer-types.js')>();
       return {
         ...actual,
         generateSymbolId: vi.fn((
           filePath: string,
           fqName: string,
-          kind: import('../code-graph/lib/indexer-types.js').SymbolKind,
+          kind: import('../code_graph/lib/indexer-types.js').SymbolKind,
         ) => {
           if (kind === 'function' && fqName.endsWith('shared')) {
             return 'shared-symbol-id';
@@ -344,8 +344,8 @@ describe('indexFiles cross-file dedup (Layer 1)', () => {
   }
 
   async function indexTempTypescriptFiles(tempRoot: string) {
-    const { getDefaultConfig } = await import('../code-graph/lib/indexer-types.js');
-    const { indexFiles } = await import('../code-graph/lib/structural-indexer.js');
+    const { getDefaultConfig } = await import('../code_graph/lib/indexer-types.js');
+    const { indexFiles } = await import('../code_graph/lib/structural-indexer.js');
     return indexFiles({
       ...getDefaultConfig(tempRoot),
       includeGlobs: ['**/*.ts'],
@@ -423,10 +423,10 @@ describe('scan handler integration - incremental:false', () => {
       existsSync: vi.fn(() => true),
       realpathSync: vi.fn((pathValue: string) => pathValue),
     }));
-    vi.doMock('../code-graph/lib/structural-indexer.js', () => ({
+    vi.doMock('../code_graph/lib/structural-indexer.js', () => ({
       indexFiles: indexFilesMock,
     }));
-    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
       getLastGitHead: vi.fn(() => 'same-head'),
       setLastDetectorProvenance: vi.fn(),
       setLastDetectorProvenanceSummary: vi.fn(),
@@ -470,7 +470,7 @@ describe('scan handler integration - incremental:false', () => {
     }));
     const { indexFilesMock } = setupScanMocks(scanResults);
 
-    const { handleCodeGraphScan } = await import('../code-graph/handlers/scan.js');
+    const { handleCodeGraphScan } = await import('../code_graph/handlers/scan.js');
     const response = await handleCodeGraphScan({ rootDir: process.cwd(), incremental: false });
     const payload = parseScanPayload(response);
 
@@ -498,7 +498,7 @@ describe('scan handler integration - incremental:false', () => {
     ];
     const { indexFilesMock } = setupScanMocks(scanResults);
 
-    const { handleCodeGraphScan } = await import('../code-graph/handlers/scan.js');
+    const { handleCodeGraphScan } = await import('../code_graph/handlers/scan.js');
     const first = parseScanPayload(await handleCodeGraphScan({ rootDir: process.cwd(), incremental: false }));
     const second = parseScanPayload(await handleCodeGraphScan({ rootDir: process.cwd(), incremental: false }));
 

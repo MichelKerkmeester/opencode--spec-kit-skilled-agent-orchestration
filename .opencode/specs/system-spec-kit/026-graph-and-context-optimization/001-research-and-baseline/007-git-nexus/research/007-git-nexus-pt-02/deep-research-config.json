@@ -9,9 +9,11 @@
   "progressiveSynthesis": true,
   "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-git-nexus",
   "resource_map_present": false,
-  "resource_map": { "emit": true },
+  "resource_map": {
+    "emit": true
+  },
   "createdAt": "2026-04-25T08:56:40Z",
-  "status": "initialized",
+  "status": "complete",
   "executionMode": "auto",
   "executor": {
     "kind": "cli-codex",
@@ -25,8 +27,15 @@
     "sessionId": "dr-2026-04-25T08-56-40Z-44122292",
     "parentSessionId": null,
     "lineageMode": "new",
-    "allowedModes": ["new", "resume", "restart"],
-    "deferredModes": ["fork", "completed-continue"],
+    "allowedModes": [
+      "new",
+      "resume",
+      "restart"
+    ],
+    "deferredModes": [
+      "fork",
+      "completed-continue"
+    ],
     "generation": 1,
     "continuedFromRun": null
   },
@@ -65,9 +74,20 @@
   "_optimizerManaged": {
     "description": "Fields managed by the offline loop optimizer (042.004). See optimizer-manifest.json for the canonical tunable/locked field registry.",
     "manifestPath": ".opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json",
-    "tunableFields": ["convergenceThreshold", "stuckThreshold", "maxIterations"],
-    "lockedFields": ["lineage", "reducer", "fileProtection", "sessionId", "status"],
+    "tunableFields": [
+      "convergenceThreshold",
+      "stuckThreshold",
+      "maxIterations"
+    ],
+    "lockedFields": [
+      "lineage",
+      "reducer",
+      "fileProtection",
+      "sessionId",
+      "status"
+    ],
     "promotionMode": "advisory-only"
   },
-  "_orchestrator_notes": "pt-02 sibling cross-check to pt-01. Independent run intended to test whether different executor (cli-codex gpt-5.5 high fast) reaches similar Adopt/Adapt/Reject/Defer conclusions vs pt-01's mixed Opus + cli-codex run. pt-01 status:complete preserved at sibling path."
+  "_orchestrator_notes": "pt-02 sibling cross-check to pt-01. Independent run intended to test whether different executor (cli-codex gpt-5.5 high fast) reaches similar Adopt/Adapt/Reject/Defer conclusions vs pt-01's mixed Opus + cli-codex run. pt-01 status:complete preserved at sibling path.",
+  "completedAt": "2026-04-25T09:48:14.470Z"
 }

@@ -41,8 +41,8 @@ import {
   setLastGitHead,
   upsertFile,
   replaceNodes,
-} from '../code-graph/lib/code-graph-db.js';
-import type { CodeNode } from '../code-graph/lib/indexer-types.js';
+} from '../code_graph/lib/code-graph-db.js';
+import type { CodeNode } from '../code_graph/lib/indexer-types.js';
 
 interface MockSessionStateRow {
   session_id: string;

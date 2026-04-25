@@ -9,19 +9,19 @@
 import { performance } from 'node:perf_hooks';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildStartupBrief } from '../../code-graph/lib/startup-brief.js';
+import { buildStartupBrief } from '../../code_graph/lib/startup-brief.js';
 import {
   buildSkillAdvisorBrief,
   type AdvisorHookFreshness,
   type AdvisorHookResult,
   type AdvisorHookStatus,
-} from '../../skill-advisor/lib/skill-advisor-brief.js';
-import { renderAdvisorBrief } from '../../skill-advisor/lib/render.js';
+} from '../../skill_advisor/lib/skill-advisor-brief.js';
+import { renderAdvisorBrief } from '../../skill_advisor/lib/render.js';
 import {
   createAdvisorHookDiagnosticRecord,
   persistAdvisorHookDiagnosticRecord,
   serializeAdvisorHookDiagnosticRecord,
-} from '../../skill-advisor/lib/metrics.js';
+} from '../../skill_advisor/lib/metrics.js';
 import {
   writeCopilotCustomInstructions,
   type CopilotCustomInstructionsWriteResult,

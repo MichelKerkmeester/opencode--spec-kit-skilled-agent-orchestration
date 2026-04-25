@@ -7,14 +7,14 @@ import * as memoryTools from './memory-tools.js';
 import * as causalTools from './causal-tools.js';
 import * as checkpointTools from './checkpoint-tools.js';
 import * as lifecycleTools from './lifecycle-tools.js';
-import * as codeGraphTools from '../code-graph/tools/index.js';
+import * as codeGraphTools from '../code_graph/tools/index.js';
 import * as skillGraphTools from './skill-graph-tools.js';
 import { validateToolArgs } from '../schemas/tool-input-schemas.js';
 import {
   handleAdvisorRecommend,
   handleAdvisorStatus,
   handleAdvisorValidate,
-} from '../skill-advisor/handlers/index.js';
+} from '../skill_advisor/handlers/index.js';
 import { handleCoverageGraphConvergence } from '../handlers/coverage-graph/convergence.js';
 import { handleCoverageGraphQuery } from '../handlers/coverage-graph/query.js';
 import { handleCoverageGraphStatus } from '../handlers/coverage-graph/status.js';

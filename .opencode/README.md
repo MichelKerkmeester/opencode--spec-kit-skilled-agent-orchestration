@@ -73,7 +73,7 @@ Together, these systems enable context-aware development with traceability, hard
 ├── agent/           — 12 specialized AI agent definitions for task delegation
 ├── command/         — 21 slash command entry points for workflow automation (spec_kit, memory, create, improve, agent_router)
 ├── install_guides/  — Setup and configuration guides for framework installation
-├── skill/system-spec-kit/mcp_server/skill-advisor/ — Native Skill Advisor package, runtime adapters and MCP tools
+├── skill/system-spec-kit/mcp_server/skill_advisor/ — Native Skill Advisor package, runtime adapters and MCP tools
 ├── skill/           — 20 domain expertise skill modules with bundled resources
 └── specs/           — Spec folder storage for canonical packet docs and supporting generated context artifacts
 ```
@@ -83,7 +83,7 @@ Together, these systems enable context-aware development with traceability, hard
 - **`agent/`**: Agent definition files (`.md`) that provide specialized capabilities for orchestration, research, debugging, code review, documentation and session handover.
 - **`command/`**: Slash command definitions organized by domain (spec_kit, memory, create) that provide workflow shortcuts and automation.
 - **`install_guides/`**: Comprehensive setup documentation including `SET-UP - AGENTS.md`, skill installation guides and configuration examples.
-- **`skill/system-spec-kit/mcp_server/skill-advisor/`**: Native Skill Advisor package with hook-first/runtime-adapter delivery and MCP tools such as `advisor_recommend`; compatibility callers still include `skill_advisor.py`. Agent provider scripts are in `agent/scripts/`.
+- **`skill/system-spec-kit/mcp_server/skill_advisor/`**: Native Skill Advisor package with hook-first/runtime-adapter delivery and MCP tools such as `advisor_recommend`; compatibility callers still include `skill_advisor.py`. Agent provider scripts are in `agent/scripts/`.
 - **`skill/`**: Self-contained skill modules with `SKILL.md` entry points, bundled references, scripts and assets for domain-specific workflows.
 - **`specs/`**: Repository-owned or system-level spec folders. User spec folders typically live in project root `/specs/`.
 

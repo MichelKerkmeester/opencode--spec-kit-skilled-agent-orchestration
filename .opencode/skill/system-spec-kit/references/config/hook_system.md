@@ -96,7 +96,7 @@ OpenCode delivers prompt-time advisor context through a plugin-helper bridge rat
 
 - Plugin: `.opencode/plugins/spec-kit-skill-advisor.js`
 - Bridge entrypoint: `.opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs`
-- Target: native compat entrypoint under `mcp_server/skill-advisor/compat/`
+- Target: native compat entrypoint under `mcp_server/skill_advisor/compat/`
 
 The bridge routes through the shared `renderAdvisorBrief(...)` invariants used by the Codex prompt-submit hook and prompt-wrapper fallback. The default OpenCode prompt-time threshold contract is **`0.8` confidence / `0.35` uncertainty**.
 

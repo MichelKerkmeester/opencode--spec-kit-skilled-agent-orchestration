@@ -569,13 +569,13 @@ The Skill Advisor is the native Gate 2 routing surface for matching prompts to s
 | `advisor_status` | Report freshness, generation, trust state, `skillCount`, `lastScanAt`, lane weights, and daemon availability. |
 | `advisor_validate` | Return measured corpus, holdout, parity, safety, and latency slices. |
 
-**Architecture:** the native package owns scorer fusion, daemon freshness, lifecycle redirects, compatibility entrypoints, Zod schemas, and package-local tests. The Python script at `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py` is a compatibility shim: it probes the native path first, translates native output to the legacy JSON-array shape, and falls back to local Python scoring when native routing is unavailable.
+**Architecture:** the native package owns scorer fusion, daemon freshness, lifecycle redirects, compatibility entrypoints, Zod schemas, and package-local tests. The Python script at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py` is a compatibility shim: it probes the native path first, translates native output to the legacy JSON-array shape, and falls back to local Python scoring when native routing is unavailable.
 
 **Fusion lanes:** explicit_author 0.45, lexical 0.30, graph_causal 0.15, derived_generated 0.10, semantic_shadow 0.00. The semantic lane is shadow-only and hardcoded at 0.
 
 **Current baseline:** 80.5% full corpus, 77.5% holdout, UNKNOWN <= 10, and zero regressions on Python-correct prompts.
 
-**Public API:** plugin and shim consumers should use `skill-advisor/compat/index.ts` or its compiled `dist/skill-advisor/compat/index.js` equivalent. Do not pin external consumers to private compiled handler paths.
+**Public API:** plugin and shim consumers should use `skill-advisor/compat/index.ts` or its compiled `dist/skill_advisor/compat/index.js` equivalent. Do not pin external consumers to private compiled handler paths.
 
 For package-local details, see [Skill Advisor Native Package README](skill-advisor/README.md) and [Skill Advisor Native Bootstrap](skill-advisor/INSTALL_GUIDE.md).
 

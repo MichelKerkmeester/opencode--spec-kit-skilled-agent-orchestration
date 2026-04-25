@@ -17,15 +17,15 @@ export default defineConfig({
   test: {
     include: [
       'mcp_server/tests/**/*.{vitest,test}.ts',
-      'mcp_server/code-graph/tests/**/*.{vitest,test}.ts',
-      'mcp_server/skill-advisor/tests/**/*.{vitest,test}.ts',
+      'mcp_server/code_graph/tests/**/*.{vitest,test}.ts',
+      'mcp_server/skill_advisor/tests/**/*.{vitest,test}.ts',
       'scripts/tests/**/*.{vitest,test}.ts',
-      ...(INCLUDE_BENCHES ? ['mcp_server/skill-advisor/bench/**/*.bench.ts'] : []),
+      ...(INCLUDE_BENCHES ? ['mcp_server/skill_advisor/bench/**/*.bench.ts'] : []),
     ],
     exclude: [
       'mcp_server/tests/memory-save.vitest.ts',
       'mcp_server/tests/archive/**',
-      ...(INCLUDE_BENCHES ? [] : ['mcp_server/skill-advisor/bench/**/*.bench.ts']),
+      ...(INCLUDE_BENCHES ? [] : ['mcp_server/skill_advisor/bench/**/*.bench.ts']),
     ],
     setupFiles: [
       path.resolve(import.meta.dirname, 'tests', '_support', 'vitest-setup.ts'),

@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Skill Advisor Hook Reference
 
-This reference describes the current prompt-time Skill Advisor integrations after Phase 027. The primary routing implementation is the native TypeScript package at `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/`; Python remains as a compatibility fallback through `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`.
+This reference describes the current prompt-time Skill Advisor integrations after Phase 027. The primary routing implementation is the native TypeScript package at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`; Python remains as a compatibility fallback through `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py`.
 
 ---
 
@@ -159,9 +159,9 @@ Expected: `status: "ok"` with `metadata.route: "native"` when native is availabl
 Examples:
 
 ```bash
-python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-native "save this context"
-python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local "save this context"
-printf '%s' "save this context" | python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --stdin
+python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py --force-native "save this context"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py --force-local "save this context"
+printf '%s' "save this context" | python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py --stdin
 ```
 
 ---
@@ -189,7 +189,7 @@ H5 operator scenarios:
 - OP-002 quarantined daemon malformed SKILL.md identify, fix, revert
 - OP-003 unavailable daemon corrupted SQLite rebuild-from-source trigger
 
-See `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md`.
+See `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/manual_testing_playbook/manual_testing_playbook.md`.
 
 ---
 
@@ -232,8 +232,8 @@ npm --prefix .opencode/skill/system-spec-kit/mcp_server exec -- vitest run skill
 Python compatibility:
 
 ```bash
-python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor_regression.py \
-  --dataset .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl
+python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor_regression.py \
+  --dataset .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl
 ```
 
 Current baseline:
@@ -247,5 +247,5 @@ Current baseline:
 Manual scenarios live in the Skill Advisor playbook:
 
 ```text
-.opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/manual_testing_playbook.md
+.opencode/skill/system-spec-kit/mcp_server/skill_advisor/manual_testing_playbook/manual_testing_playbook.md
 ```

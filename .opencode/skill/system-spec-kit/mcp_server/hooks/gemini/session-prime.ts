@@ -48,7 +48,7 @@ type StartupBrief = {
 
 let buildStartupBrief: ((highlightCount?: number, stateScope?: { specFolder?: string; claudeSessionId?: string }) => StartupBrief) | null = null;
 try {
-  const mod = await import('../../code-graph/lib/startup-brief.js');
+  const mod = await import('../../code_graph/lib/startup-brief.js');
   buildStartupBrief = mod.buildStartupBrief;
 } catch {
   // Startup brief module not available — keep static startup output

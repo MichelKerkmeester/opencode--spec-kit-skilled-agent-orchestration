@@ -11,8 +11,8 @@
 import { createHash } from 'node:crypto';
 import { statSync } from 'node:fs';
 import { isCocoIndexAvailable } from '../lib/utils/cocoindex-path.js';
-import * as graphDb from '../code-graph/lib/code-graph-db.js';
-import { getGraphFreshness, type GraphFreshness } from '../code-graph/lib/ensure-ready.js';
+import * as graphDb from '../code_graph/lib/code-graph-db.js';
+import { getGraphFreshness, type GraphFreshness } from '../code_graph/lib/ensure-ready.js';
 import { computeQualityScore, recordMetricEvent, recordBootstrapEvent } from '../lib/session/context-metrics.js';
 import { buildStructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
@@ -33,7 +33,7 @@ import {
 import {
   buildCodeGraphOpsContract,
   type CodeGraphOpsContract,
-} from '../code-graph/lib/ops-hardening.js';
+} from '../code_graph/lib/ops-hardening.js';
 import { getCallerContext } from '../lib/context/caller-context.js';
 import { loadMatchingStates, type HookProducerMetadata, type HookState } from '../hooks/claude/hook-state.js';
 import { buildResumeLadder } from '../lib/resume/resume-ladder.js';

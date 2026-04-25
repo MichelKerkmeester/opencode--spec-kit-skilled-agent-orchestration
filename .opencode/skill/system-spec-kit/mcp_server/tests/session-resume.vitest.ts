@@ -36,7 +36,7 @@ const { loadMostRecentStateMock, loadMatchingStatesMock } = vi.hoisted(() => {
   return { loadMostRecentStateMock, loadMatchingStatesMock };
 });
 
-vi.mock('../code-graph/lib/code-graph-db.js', () => ({
+vi.mock('../code_graph/lib/code-graph-db.js', () => ({
   getStats: vi.fn(() => ({
     totalFiles: 10,
     totalNodes: 50,
@@ -50,7 +50,7 @@ vi.mock('../code-graph/lib/code-graph-db.js', () => ({
   })),
 }));
 
-vi.mock('../code-graph/lib/ensure-ready.js', () => ({
+vi.mock('../code_graph/lib/ensure-ready.js', () => ({
   getGraphFreshness: vi.fn(() => 'fresh'),
 }));
 
@@ -70,8 +70,8 @@ vi.mock('../hooks/claude/hook-state.js', () => ({
 }));
 
 import { getCachedSessionSummaryDecision, handleSessionResume } from '../handlers/session-resume.js';
-import * as graphDb from '../code-graph/lib/code-graph-db.js';
-import { getGraphFreshness } from '../code-graph/lib/ensure-ready.js';
+import * as graphDb from '../code_graph/lib/code-graph-db.js';
+import { getGraphFreshness } from '../code_graph/lib/ensure-ready.js';
 import { computeQualityScore, recordBootstrapEvent } from '../lib/session/context-metrics.js';
 
 function createWorkspace(): string {

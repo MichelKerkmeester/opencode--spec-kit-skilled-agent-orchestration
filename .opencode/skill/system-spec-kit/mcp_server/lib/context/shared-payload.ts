@@ -6,7 +6,7 @@
 
 import { assertNever } from '../utils/exhaustiveness.js';
 import type { UnicodeRuntimeFingerprint } from '@spec-kit/shared/unicode-normalization';
-import { sanitizeSkillLabel } from '../../skill-advisor/lib/render.js';
+import { sanitizeSkillLabel } from '../../skill_advisor/lib/render.js';
 
 export const SHARED_PAYLOAD_KIND_VALUES = [
   'startup',

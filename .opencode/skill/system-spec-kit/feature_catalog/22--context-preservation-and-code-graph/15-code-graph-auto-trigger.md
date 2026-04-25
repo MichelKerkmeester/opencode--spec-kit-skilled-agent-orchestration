@@ -25,7 +25,7 @@ Packet 013 made this visible to callers instead of leaving it as an internal hel
 
 ## 2. CURRENT REALITY
 
-mcp_server/code-graph/lib/ensure-ready.ts
+mcp_server/code_graph/lib/ensure-ready.ts
 
 ---
 
@@ -35,13 +35,13 @@ mcp_server/code-graph/lib/ensure-ready.ts
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/code-graph/lib/ensure-ready.ts` | Lib | Auto-trigger with git HEAD comparison and staleness detection |
-| `mcp_server/code-graph/lib/code-graph-db.ts` | Lib | DB helpers: getLastGitHead, setLastGitHead, ensureFreshFiles, isFileStale |
-| `mcp_server/code-graph/handlers/query.ts` | Handler | Returns the caller-visible blocked `code_graph_query` payload when readiness requires a full scan |
-| `mcp_server/code-graph/handlers/context.ts` | Handler | Returns the caller-visible blocked `code_graph_context` payload when readiness requires a full scan |
-| `mcp_server/code-graph/handlers/status.ts` | Handler | Reports freshness plus `graphQualitySummary` without using the blocked read contract |
-| `mcp_server/code-graph/tests/code-graph-query-handler.vitest.ts` | Test | Verifies the explicit blocked query payload for `full_scan` readiness |
-| `mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts` | Test | Verifies the explicit blocked context payload for `full_scan` readiness |
+| `mcp_server/code_graph/lib/ensure-ready.ts` | Lib | Auto-trigger with git HEAD comparison and staleness detection |
+| `mcp_server/code_graph/lib/code-graph-db.ts` | Lib | DB helpers: getLastGitHead, setLastGitHead, ensureFreshFiles, isFileStale |
+| `mcp_server/code_graph/handlers/query.ts` | Handler | Returns the caller-visible blocked `code_graph_query` payload when readiness requires a full scan |
+| `mcp_server/code_graph/handlers/context.ts` | Handler | Returns the caller-visible blocked `code_graph_context` payload when readiness requires a full scan |
+| `mcp_server/code_graph/handlers/status.ts` | Handler | Reports freshness plus `graphQualitySummary` without using the blocked read contract |
+| `mcp_server/code_graph/tests/code-graph-query-handler.vitest.ts` | Test | Verifies the explicit blocked query payload for `full_scan` readiness |
+| `mcp_server/code_graph/tests/code-graph-context-handler.vitest.ts` | Test | Verifies the explicit blocked context payload for `full_scan` readiness |
 
 ---
 

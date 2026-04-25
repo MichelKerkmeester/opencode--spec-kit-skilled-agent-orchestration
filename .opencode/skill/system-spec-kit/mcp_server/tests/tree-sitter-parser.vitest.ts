@@ -5,8 +5,8 @@ import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os';
 import { dirname, join, relative } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { TreeSitterParser } from '../code-graph/lib/tree-sitter-parser.js';
-import type { CodeEdge, CodeNode, ParseResult } from '../code-graph/lib/indexer-types.js';
+import { TreeSitterParser } from '../code_graph/lib/tree-sitter-parser.js';
+import type { CodeEdge, CodeNode, ParseResult } from '../code_graph/lib/indexer-types.js';
 
 const tempDirs: string[] = [];
 
@@ -24,7 +24,7 @@ function writeFixture(root: string, relativePath: string, content = 'export func
 
 function setupIndexerMocks(): void {
   vi.resetModules();
-  vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+  vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
     isFileStale: vi.fn(() => true),
   }));
   process.env.SPECKIT_PARSER = 'regex';
@@ -126,7 +126,7 @@ describe('structural-indexer tree-sitter readiness integration', () => {
     };
 
     vi.resetModules();
-    vi.doMock('../code-graph/lib/tree-sitter-parser.js', () => ({
+    vi.doMock('../code_graph/lib/tree-sitter-parser.js', () => ({
       TreeSitterParser: class MockTreeSitterParser {
         static init = treeSitterMocks.init;
         static loadAllLanguages = treeSitterMocks.loadAllLanguages;
@@ -134,7 +134,7 @@ describe('structural-indexer tree-sitter readiness integration', () => {
       },
     }));
 
-    const { getParser } = await import('../code-graph/lib/structural-indexer.js');
+    const { getParser } = await import('../code_graph/lib/structural-indexer.js');
 
     const firstParser = await getParser();
     expect(treeSitterMocks.init).toHaveBeenCalledTimes(1);
@@ -159,8 +159,8 @@ describe('structural-indexer scan scope', () => {
     writeFixture(tempRoot, 'external/vendor.ts');
     writeFixture(tempRoot, 'mcp-coco-index/mcp_server/server.ts');
 
-    const { getDefaultConfig } = await import('../code-graph/lib/indexer-types.js');
-    const { indexFiles } = await import('../code-graph/lib/structural-indexer.js');
+    const { getDefaultConfig } = await import('../code_graph/lib/indexer-types.js');
+    const { indexFiles } = await import('../code_graph/lib/structural-indexer.js');
     const results = await indexFiles({
       ...getDefaultConfig(tempRoot),
       includeGlobs: ['**/*.ts'],
@@ -182,8 +182,8 @@ describe('structural-indexer scan scope', () => {
     writeFixture(tempRoot, 'active.ts');
     writeFixture(tempRoot, 'ignored.test-bak.ts');
 
-    const { getDefaultConfig } = await import('../code-graph/lib/indexer-types.js');
-    const { indexFiles } = await import('../code-graph/lib/structural-indexer.js');
+    const { getDefaultConfig } = await import('../code_graph/lib/indexer-types.js');
+    const { indexFiles } = await import('../code_graph/lib/structural-indexer.js');
     const results = await indexFiles({
       ...getDefaultConfig(tempRoot),
       includeGlobs: ['**/*.ts'],
@@ -240,7 +240,7 @@ function buildParseResult(filePath: string, nodes: CodeNode[], edges: CodeEdge[]
 
 describe('finalizeIndexResults dedupe reconciliation', () => {
   it('drops edges whose source nodes were removed by cross-result dedup', async () => {
-    const { finalizeIndexResults } = await import('../code-graph/lib/structural-indexer.js');
+    const { finalizeIndexResults } = await import('../code_graph/lib/structural-indexer.js');
 
     const retainedOwner = buildNode({
       symbolId: 'shared::owner',
@@ -298,7 +298,7 @@ describe('finalizeIndexResults dedupe reconciliation', () => {
   });
 
   it('builds TESTED_BY edges only from retained test nodes after dedup', async () => {
-    const { finalizeIndexResults } = await import('../code-graph/lib/structural-indexer.js');
+    const { finalizeIndexResults } = await import('../code_graph/lib/structural-indexer.js');
 
     const collisionOwner = buildNode({
       symbolId: 'shared::test-node',
@@ -348,7 +348,7 @@ describe('finalizeIndexResults dedupe reconciliation', () => {
 
 describe('capturesToNodes dedupe (Bug #2 regression)', () => {
   it('drops duplicate (filePath, fqName, kind) captures, preserving first and module node', async () => {
-    const { capturesToNodes } = await import('../code-graph/lib/structural-indexer.js');
+    const { capturesToNodes } = await import('../code_graph/lib/structural-indexer.js');
     const filePath = '/workspace/example.ts';
     const content = [
       'class Foo {',
@@ -386,7 +386,7 @@ describe('capturesToNodes dedupe (Bug #2 regression)', () => {
   });
 
   it('does not dedupe across kinds', async () => {
-    const { capturesToNodes } = await import('../code-graph/lib/structural-indexer.js');
+    const { capturesToNodes } = await import('../code_graph/lib/structural-indexer.js');
     const nodes = capturesToNodes([
       {
         name: 'foo',
@@ -413,11 +413,11 @@ describe('capturesToNodes dedupe (Bug #2 regression)', () => {
   it('regression: parsing structural-indexer.ts produces no duplicate symbolIds', async () => {
     vi.resetModules();
     process.env.SPECKIT_PARSER = 'regex';
-    vi.doMock('../code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../code_graph/lib/code-graph-db.js', () => ({
       isFileStale: vi.fn(() => true),
     }));
 
-    const { parseFile } = await import('../code-graph/lib/structural-indexer.js');
+    const { parseFile } = await import('../code_graph/lib/structural-indexer.js');
     const filePath = 'code-graph/lib/structural-indexer.ts';
     const content = readFileSync(filePath, 'utf-8');
     const result = await parseFile(filePath, content, 'typescript');

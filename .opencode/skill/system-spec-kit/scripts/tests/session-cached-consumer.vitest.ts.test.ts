@@ -288,7 +288,7 @@ describe('cached SessionStart consumer corpus', () => {
       })),
     }));
 
-    vi.doMock('../../mcp_server/code-graph/lib/code-graph-db.js', () => ({
+    vi.doMock('../../mcp_server/code_graph/lib/code-graph-db.js', () => ({
       getStats: vi.fn(() => ({
         lastScanTimestamp: '2026-04-08T12:00:00.000Z',
         totalNodes: 42,
@@ -326,7 +326,7 @@ describe('cached SessionStart consumer corpus', () => {
       })),
     }));
 
-    vi.doMock('../../mcp_server/code-graph/lib/startup-brief.js', () => ({
+    vi.doMock('../../mcp_server/code_graph/lib/startup-brief.js', () => ({
       buildStartupBrief: vi.fn(() => ({
         graphOutline: null,
         sessionContinuity: null,

@@ -14,13 +14,13 @@ import {
   type AdvisorHookFreshness,
   type AdvisorHookResult,
   type AdvisorHookStatus,
-} from '../../skill-advisor/lib/skill-advisor-brief.js';
-import { renderAdvisorBrief } from '../../skill-advisor/lib/render.js';
+} from '../../skill_advisor/lib/skill-advisor-brief.js';
+import { renderAdvisorBrief } from '../../skill_advisor/lib/render.js';
 import {
   createAdvisorHookDiagnosticRecord,
   persistAdvisorHookDiagnosticRecord,
   serializeAdvisorHookDiagnosticRecord,
-} from '../../skill-advisor/lib/metrics.js';
+} from '../../skill_advisor/lib/metrics.js';
 
 const IS_CLI_ENTRY = process.argv[1]
   ? resolve(process.argv[1]) === fileURLToPath(import.meta.url)

@@ -17,7 +17,7 @@ That shared block now sits underneath richer operator-facing payloads. In partic
 
 ## 2. CURRENT REALITY
 
-Commit `4a154c555` introduced `mcp_server/code-graph/lib/readiness-contract.ts` with four shared helpers:
+Commit `4a154c555` introduced `mcp_server/code_graph/lib/readiness-contract.ts` with four shared helpers:
 
 - `canonicalReadinessFromFreshness()`
 - `queryTrustStateFromFreshness()`
@@ -38,22 +38,22 @@ The result is a single readiness surface across the code-graph family: callers c
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/code-graph/lib/readiness-contract.ts` | Lib | Canonical readiness helper surface for code-graph handlers |
-| `mcp_server/code-graph/handlers/query.ts` | Handler | Query-time readiness projection and graph metadata envelope |
-| `mcp_server/code-graph/handlers/scan.ts` | Handler | Scan result readiness block |
-| `mcp_server/code-graph/handlers/status.ts` | Handler | Status result readiness block |
-| `mcp_server/code-graph/handlers/context.ts` | Handler | Context success and blocked-read payloads built on top of the shared readiness block |
-| `mcp_server/code-graph/handlers/ccc-status.ts` | Handler | CCC status stub readiness block |
-| `mcp_server/code-graph/handlers/ccc-reindex.ts` | Handler | CCC reindex stub readiness block |
-| `mcp_server/code-graph/handlers/ccc-feedback.ts` | Handler | CCC feedback stub readiness block |
+| `mcp_server/code_graph/lib/readiness-contract.ts` | Lib | Canonical readiness helper surface for code-graph handlers |
+| `mcp_server/code_graph/handlers/query.ts` | Handler | Query-time readiness projection and graph metadata envelope |
+| `mcp_server/code_graph/handlers/scan.ts` | Handler | Scan result readiness block |
+| `mcp_server/code_graph/handlers/status.ts` | Handler | Status result readiness block |
+| `mcp_server/code_graph/handlers/context.ts` | Handler | Context success and blocked-read payloads built on top of the shared readiness block |
+| `mcp_server/code_graph/handlers/ccc-status.ts` | Handler | CCC status stub readiness block |
+| `mcp_server/code_graph/handlers/ccc-reindex.ts` | Handler | CCC reindex stub readiness block |
+| `mcp_server/code_graph/handlers/ccc-feedback.ts` | Handler | CCC feedback stub readiness block |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/readiness-contract.vitest.ts` | Shared readiness helper behavior and trust-state projection |
-| `mcp_server/code-graph/tests/code-graph-siblings-readiness.vitest.ts` | Sibling-handler readiness propagation and top-level readiness field parity |
-| `mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts` | Blocked full-scan payload fields, readiness crash fallback, and structured context metadata |
+| `mcp_server/code_graph/tests/code-graph-siblings-readiness.vitest.ts` | Sibling-handler readiness propagation and top-level readiness field parity |
+| `mcp_server/code_graph/tests/code-graph-context-handler.vitest.ts` | Blocked full-scan payload fields, readiness crash fallback, and structured context metadata |
 | `mcp_server/tests/m8-trust-state-vocabulary.vitest.ts` | Shared payload trust-state vocabulary alignment |
 
 ---

@@ -773,7 +773,7 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 
 **Budget allocator floors:** constitutional 700, codeGraph 1200, cocoIndex 900, triggered 400, overflow pool 800.
 
-**Source:** `mcp_server/code-graph/lib/` | `mcp_server/code-graph/handlers/`
+**Source:** `mcp_server/code_graph/lib/` | `mcp_server/code_graph/handlers/`
 
 **Parser:** Tree-sitter WASM is the default structural parser for JS/TS/Python/Shell. Set `SPECKIT_PARSER=regex` for regex fallback. Parser adapter pattern allows future language additions.
 

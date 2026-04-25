@@ -46,8 +46,8 @@ trigger_phrases:
 
 Two consumed subsystems live as first-class self-contained packages under `mcp_server/`:
 
-- `mcp_server/skill-advisor/` — Native skill routing advisor (Phase 027). Houses its own `lib/`, `handlers/`, `tools/`, `tests/`, `scripts/`, `bench/`, `compat/`, `schemas/`, operator docs (`README.md`, `INSTALL_GUIDE.md`, `SET-UP_GUIDE.md`), plus `feature_catalog/` and `manual_testing_playbook/` packages.
-- `mcp_server/code-graph/` — Structural code graph + coco-index facade (Phase 028). Houses its own `lib/`, `handlers/`, `tools/`, `tests/`.
+- `mcp_server/skill_advisor/` — Native skill routing advisor (Phase 027). Houses its own `lib/`, `handlers/`, `tools/`, `tests/`, `scripts/`, `bench/`, `compat/`, `schemas/`, operator docs (`README.md`, `INSTALL_GUIDE.md`, `SET-UP_GUIDE.md`), plus `feature_catalog/` and `manual_testing_playbook/` packages.
+- `mcp_server/code_graph/` — Structural code graph + coco-index facade (Phase 028). Houses its own `lib/`, `handlers/`, `tools/`, `tests/`.
 
 Neither subsystem ships a `SKILL.md`. They are consumed subsystems of `system-spec-kit`, not standalone skills. All operator-facing routing goes through `system-spec-kit` entry points.
 
@@ -114,8 +114,8 @@ system-spec-kit/
 | `scripts/` | `mcp_server/lib/*` | Disallowed unless explicitly allowlisted |
 | `mcp_server/` | `shared/` | Allowed |
 | `mcp_server/lib/*` | `mcp_server/api/*` | Disallowed |
-| External plugin | `mcp_server/skill-advisor/compat/index.ts` | Allowed (stable public API) |
-| External plugin | `mcp_server/skill-advisor/lib/*` | Disallowed (private internals) |
+| External plugin | `mcp_server/skill_advisor/compat/index.ts` | Allowed (stable public API) |
+| External plugin | `mcp_server/skill_advisor/lib/*` | Disallowed (private internals) |
 
 This keeps the runtime internals private while still exposing a stable boundary for tooling and external plugins.
 
@@ -194,7 +194,7 @@ Three graph systems now coexist:
 |---|---|---|
 | Causal memory graph | Search boosts, causal lineage, community signals | `lib/graph/`, `lib/search/graph-search-fn.ts` |
 | Coverage graph | Deep research/review convergence and gap tracking | `lib/coverage-graph/`, `handlers/coverage-graph/` |
-| Code graph | Structural code parsing + coco-index facade | `mcp_server/code-graph/` (see §6) |
+| Code graph | Structural code parsing + coco-index facade | `mcp_server/code_graph/` (see §6) |
 
 ### Feedback and evaluation
 
@@ -202,7 +202,7 @@ Three graph systems now coexist:
 
 ### Skill advisor
 
-The skill advisor is a self-contained subsystem at `mcp_server/skill-advisor/`; see §5 for package internals, §7 for hook integration.
+The skill advisor is a self-contained subsystem at `mcp_server/skill_advisor/`; see §5 for package internals, §7 for hook integration.
 
 <!-- /ANCHOR:runtime-subsystems -->
 
@@ -213,7 +213,7 @@ Introduced in its current self-contained form by Phase 027. Produces the compact
 
 ### Package layout
 
-`mcp_server/skill-advisor/` is a first-class self-contained package. Its `lib/` tree contains:
+`mcp_server/skill_advisor/` is a first-class self-contained package. Its `lib/` tree contains:
 
 | Subfolder | Purpose |
 |---|---|
@@ -228,7 +228,7 @@ Introduced in its current self-contained form by Phase 027. Produces the compact
 
 ### 5-lane analytical fusion
 
-Defined in `mcp_server/skill-advisor/lib/scorer/weights-config.ts:8-19` and exercised through `mcp_server/skill-advisor/lib/scorer/fusion.ts`:
+Defined in `mcp_server/skill_advisor/lib/scorer/weights-config.ts:8-19` and exercised through `mcp_server/skill_advisor/lib/scorer/fusion.ts`:
 
 | Lane | Weight | Role |
 |---|---|---|
@@ -248,7 +248,7 @@ Defined in `mcp_server/skill-advisor/lib/scorer/weights-config.ts:8-19` and exer
 
 ### MCP tools
 
-Three tools, registered under `mcp_server/skill-advisor/tools/`:
+Three tools, registered under `mcp_server/skill_advisor/tools/`:
 
 | Tool | Handler | Purpose |
 |---|---|---|
@@ -258,9 +258,9 @@ Three tools, registered under `mcp_server/skill-advisor/tools/`:
 
 ### Compatibility surfaces
 
-- **Python compat shim**: `mcp_server/skill-advisor/scripts/skill_advisor.py` with daemon-probe → native fallback → local fallback.
-- **Stable public API**: `mcp_server/skill-advisor/compat/index.ts`. Plugin bridges import from here, never from `lib/*`.
-- **Gate 2 fallback path**: `python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`.
+- **Python compat shim**: `mcp_server/skill_advisor/scripts/skill_advisor.py` with daemon-probe → native fallback → local fallback.
+- **Stable public API**: `mcp_server/skill_advisor/compat/index.ts`. Plugin bridges import from here, never from `lib/*`.
+- **Gate 2 fallback path**: `python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py`.
 
 ### Accuracy benchmarks
 
@@ -271,18 +271,18 @@ Three tools, registered under `mcp_server/skill-advisor/tools/`:
 | UNKNOWN rate (abstentions) | ≤10 |
 | Python-correct regressions | 0 (ADR-007 regression-protection parity) |
 
-Regression suite: `mcp_server/skill-advisor/scripts/skill_advisor_regression.py` — 52/52 P0 cases pass.
+Regression suite: `mcp_server/skill_advisor/scripts/skill_advisor_regression.py` — 52/52 P0 cases pass.
 
 ### Test surfaces
 
-`mcp_server/skill-advisor/tests/` — Vitest suites across `scorer/`, `handlers/`, `parity/`, `compat/`, `legacy/` (11 advisor-*.vitest.ts files relocated from `mcp_server/tests/`), and `python/`.
+`mcp_server/skill_advisor/tests/` — Vitest suites across `scorer/`, `handlers/`, `parity/`, `compat/`, `legacy/` (11 advisor-*.vitest.ts files relocated from `mcp_server/tests/`), and `python/`.
 
 <!-- /ANCHOR:skill-advisor -->
 
 <!-- ANCHOR:code-graph -->
 ## 6. CODE-GRAPH SUBSYSTEM
 
-Migrated into a self-contained package by Phase 028 — previously scattered across four separate locations in the runtime tree (lib, handlers, tools, and test suites), now consolidated under `mcp_server/code-graph/`.
+Migrated into a self-contained package by Phase 028 — previously scattered across four separate locations in the runtime tree (lib, handlers, tools, and test suites), now consolidated under `mcp_server/code_graph/`.
 
 ### Package layout
 
@@ -313,7 +313,7 @@ The `ccc_*` handlers are TypeScript facades that spawn the coco-index CLI binary
 
 ### Readiness contract
 
-Defined in `mcp_server/code-graph/lib/readiness-contract.ts`. Trust values align with the skill-advisor trust vocabulary (§5):
+Defined in `mcp_server/code_graph/lib/readiness-contract.ts`. Trust values align with the skill-advisor trust vocabulary (§5):
 
 - `live` — fresh index, queryable
 - `stale` — indexed but needs rebuild
@@ -348,13 +348,13 @@ For runtimes without native hook support, the plugin bridge provides native-firs
 
 - **Bridge entry**: `.opencode/plugins/spec-kit-skill-advisor.js` (OpenCode plugin ESM entrypoint with a default-export factory)
 - **Bridge runtime**: `.opencode/plugins/spec-kit-skill-advisor-bridge.mjs` (delegation logic)
-- **Import target**: `mcp_server/skill-advisor/compat/index.ts` (stable public API — never `lib/*`)
+- **Import target**: `mcp_server/skill_advisor/compat/index.ts` (stable public API — never `lib/*`)
 
 Delegation order:
 
 1. Daemon probe → if live, return brief from daemon state.
 2. Native fallback → invoke `compat/index.ts` inline.
-3. Python shim fallback → spawn `mcp_server/skill-advisor/scripts/skill_advisor.py`.
+3. Python shim fallback → spawn `mcp_server/skill_advisor/scripts/skill_advisor.py`.
 
 The bridge keeps runtime state inside each plugin instance, dedups concurrent identical in-flight requests before spawning a second bridge call, caps prompt stdin / rendered brief / cache entry sizes, and evicts the oldest cached entry when the configured cache cap is exceeded.
 
@@ -375,15 +375,15 @@ Key checks:
 - `scripts/evals/check-architecture-boundaries.ts`
 - workspace typechecks for `@spec-kit/mcp-server` and `@spec-kit/scripts`
 - targeted Vitest suites for save, resume, routing, public API, and docs parity
-- skill-advisor test surface: `mcp_server/skill-advisor/tests/` — 23 files / 167 tests
-- code-graph test surface: `mcp_server/code-graph/tests/` — 7 files / 52 tests
-- Python regression: `mcp_server/skill-advisor/scripts/skill_advisor_regression.py` — 52/52 P0 cases
+- skill-advisor test surface: `mcp_server/skill_advisor/tests/` — 23 files / 167 tests
+- code-graph test surface: `mcp_server/code_graph/tests/` — 7 files / 52 tests
+- Python regression: `mcp_server/skill_advisor/scripts/skill_advisor_regression.py` — 52/52 P0 cases
 
 ### Practical rule set
 
 - Edit authored `.ts`, `.md`, and shell sources, not `dist/`.
 - Use `mcp_server/api/` as the import boundary from `scripts/`.
-- External plugins import only from `mcp_server/skill-advisor/compat/index.ts`, never from `lib/*`.
+- External plugins import only from `mcp_server/skill_advisor/compat/index.ts`, never from `lib/*`.
 - Keep packet recovery anchored on `/spec_kit:resume`.
 - Treat `handover.md`, `_memory.continuity`, and spec docs as the continuity backbone.
 - Skill-advisor and code-graph are consumed subsystems of `system-spec-kit`; neither ships a `SKILL.md`.
@@ -400,7 +400,7 @@ Architectural decisions for the skill-advisor + code-graph subsystems are captur
 | ADR | Subject |
 |---|---|
 | ADR-001 | Chokidar + hash-aware SQLite indexer as daemon substrate |
-| ADR-002 | Self-contained `mcp_server/skill-advisor/` package layout |
+| ADR-002 | Self-contained `mcp_server/skill_advisor/` package layout |
 | ADR-003 | 5-lane analytical fusion weights (`0.45 / 0.30 / 0.15 / 0.10 / 0.00`) |
 | ADR-004 | Daemon lease model (long-running writer) |
 | ADR-005 | Migration from split `lib/` + `scripts/` layout to self-contained package |
@@ -418,11 +418,11 @@ Cross-ADR flow: ADR-001 → ADR-004 (lease needs a long-running writer); ADR-002
 - `mcp_server/lib/README.md`
 - `mcp_server/handlers/README.md`
 - `mcp_server/hooks/README.md`
-- `mcp_server/skill-advisor/README.md`
-- `mcp_server/skill-advisor/INSTALL_GUIDE.md`
-- `mcp_server/skill-advisor/SET-UP_GUIDE.md`
-- `mcp_server/code-graph/lib/README.md`
-- `mcp_server/code-graph/handlers/README.md`
+- `mcp_server/skill_advisor/README.md`
+- `mcp_server/skill_advisor/INSTALL_GUIDE.md`
+- `mcp_server/skill_advisor/SET-UP_GUIDE.md`
+- `mcp_server/code_graph/lib/README.md`
+- `mcp_server/code_graph/handlers/README.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/decision-record.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/028-code-graph-self-contained-package/implementation-summary.md`
 

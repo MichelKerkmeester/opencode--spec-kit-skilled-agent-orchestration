@@ -16,7 +16,7 @@ Capability-based detection reads environment variables to identify claude-code, 
 
 ## 2. CURRENT REALITY
 
-mcp_server/code-graph/lib/runtime-detection.ts
+mcp_server/code_graph/lib/runtime-detection.ts
 
 ---
 

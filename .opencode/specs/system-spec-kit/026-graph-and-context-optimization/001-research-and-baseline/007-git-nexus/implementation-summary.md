@@ -10,16 +10,20 @@ contextType: "research"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/007-git-nexus"
-    last_updated_at: "2026-04-25T07:10:00Z"
-    last_updated_by: "codex"
-    recent_action: "Completed 10-iteration GitNexus deep research and packet closeout docs"
-    next_safe_action: "Pick one follow-up packet proposal from the final synthesis and create a new implementation spec"
+    last_updated_at: "2026-04-25T09:48:14Z"
+    last_updated_by: "claude-orchestrator"
+    recent_action: "Completed pt-02 sibling cross-check (10 iters via cli-codex gpt-5.5 high fast); pt-02 confirms pt-01, extends with clean-room license risk, narrows route/tool packet ambition"
+    next_safe_action: "Compare pt-01 and pt-02 follow-up packet recommendations and pick the highest-leverage shared packet (likely 008-code-graph-phase-dag-and-edge-provenance) to create as new implementation spec"
     blockers: []
     key_files:
       - "research/007-git-nexus-pt-01/research.md"
       - "research/007-git-nexus-pt-01/deep-research-dashboard.md"
       - "research/007-git-nexus-pt-01/findings-registry.json"
       - "research/007-git-nexus-pt-01/resource-map.md"
+      - "research/007-git-nexus-pt-02/research.md"
+      - "research/007-git-nexus-pt-02/deep-research-dashboard.md"
+      - "research/007-git-nexus-pt-02/findings-registry.json"
+      - "research/007-git-nexus-pt-02/resource-map.md"
       - "spec.md"
       - "plan.md"
       - "tasks.md"
@@ -27,8 +31,11 @@ _memory:
       - "decision-record.md"
     session_dedup:
       fingerprint: "sha256:gitnexus-deep-research-2026-04-25"
-      session_id: "dr-2026-04-25T06-21-07Z"
-      parent_session_id: null
+      session_id: "dr-2026-04-25T08-56-40Z-44122292"
+      parent_session_id: "dr-2026-04-25T06-21-07Z"
+      sibling_packets:
+        - "research/007-git-nexus-pt-01 (Opus + cli-codex mix, status:complete, ratios 0.46→0.35→0.22)"
+        - "research/007-git-nexus-pt-02 (cli-codex gpt-5.5 high fast, status:complete, ratios 0.84→...→0.34, 99 graph events, 267 SOURCE citations)"
     completion_pct: 95
     open_questions: []
     answered_questions:

@@ -16,7 +16,7 @@ Seed resolver normalizes CocoIndex file:line results to `ArtifactRef` via resolu
 
 ## 2. CURRENT REALITY
 
-mcp_server/code-graph/lib/seed-resolver.ts
+mcp_server/code_graph/lib/seed-resolver.ts
 
 ---
 
@@ -26,16 +26,16 @@ mcp_server/code-graph/lib/seed-resolver.ts
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/code-graph/lib/seed-resolver.ts` | Lib | Resolves CocoIndex file-range hits to graph anchors or file-level fallbacks |
-| `mcp_server/code-graph/lib/code-graph-context.ts` | Lib | Expands resolved seeds into structural neighborhoods and reports structured partial-output metadata |
-| `mcp_server/code-graph/handlers/context.ts` | Handler | Exposes `code_graph_context`, preserves CocoIndex seed fidelity, and returns blocked-read payloads when full scans are required |
+| `mcp_server/code_graph/lib/seed-resolver.ts` | Lib | Resolves CocoIndex file-range hits to graph anchors or file-level fallbacks |
+| `mcp_server/code_graph/lib/code-graph-context.ts` | Lib | Expands resolved seeds into structural neighborhoods and reports structured partial-output metadata |
+| `mcp_server/code_graph/handlers/context.ts` | Handler | Exposes `code_graph_context`, preserves CocoIndex seed fidelity, and returns blocked-read payloads when full scans are required |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/code-graph/tests/code-graph-seed-resolver.vitest.ts` | Seed resolution across exact-symbol, enclosing-symbol, and file-anchor fallbacks |
-| `mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts` | CocoIndex seed fidelity, blocked full-scan responses, and structured `partialOutput` metadata |
+| `mcp_server/code_graph/tests/code-graph-seed-resolver.vitest.ts` | Seed resolution across exact-symbol, enclosing-symbol, and file-anchor fallbacks |
+| `mcp_server/code_graph/tests/code-graph-context-handler.vitest.ts` | CocoIndex seed fidelity, blocked full-scan responses, and structured `partialOutput` metadata |
 
 ---
 

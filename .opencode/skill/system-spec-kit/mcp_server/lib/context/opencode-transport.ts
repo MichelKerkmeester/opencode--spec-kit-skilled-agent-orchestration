@@ -13,7 +13,7 @@ import {
   SHARED_PAYLOAD_TRUST_STATE_VALUES,
 } from './shared-payload.js';
 import type { SharedPayloadEnvelope, SharedPayloadSection } from './shared-payload.js';
-import type { CodeGraphOpsContract } from '../../code-graph/lib/ops-hardening.js';
+import type { CodeGraphOpsContract } from '../../code_graph/lib/ops-hardening.js';
 
 /** Hook names emitted by the OpenCode transport adapter. */
 export type OpenCodeTransportHook =

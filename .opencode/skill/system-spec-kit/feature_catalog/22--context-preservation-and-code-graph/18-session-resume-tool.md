@@ -35,7 +35,7 @@ The rest of the merged recovery payload is unchanged in shape: `memory` still co
 | `mcp_server/lib/context/caller-context.ts` | Lib | AsyncLocalStorage caller identity used to bind session_resume authorization to the transport caller |
 | `mcp_server/context-server.ts` | Transport | Wraps tool execution in the caller-context envelope |
 | `mcp_server/lib/resume/resume-ladder.ts` | Lib | Filesystem-first packet recovery ladder (`handover.md -> _memory.continuity -> spec docs`) |
-| `mcp_server/code-graph/lib/code-graph-db.ts` | Lib | Code graph status query |
+| `mcp_server/code_graph/lib/code-graph-db.ts` | Lib | Code graph status query |
 | `mcp_server/lib/session/session-snapshot.ts` | Lib | Shared structural context contract used for recovery hints |
 | `mcp_server/tools/lifecycle-tools.ts` | Dispatch | Tool dispatch registration for session_resume |
 

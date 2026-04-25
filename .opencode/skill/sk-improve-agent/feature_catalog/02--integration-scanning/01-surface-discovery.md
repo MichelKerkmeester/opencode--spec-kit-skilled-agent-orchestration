@@ -26,7 +26,7 @@ This feature covers the repository scan that feeds integration consistency scori
 
 `scan-integration.cjs` inventories the canonical `.opencode/agent/{name}.md` file, runtime mirrors, improve-command markdown, YAML workflow assets, skill references, global docs, and one skill-advisor lookup. Command markdown is scanned for `@{agent}` dispatch, while YAML is scanned for either `@{agent}` or bare agent-name references.
 
-The discovery map includes the consolidated advisor script at `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`, so the skill-advisor surface is registered from its self-contained package location.
+The discovery map includes the consolidated advisor script at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py`, so the skill-advisor surface is registered from its self-contained package location.
 
 ---
 

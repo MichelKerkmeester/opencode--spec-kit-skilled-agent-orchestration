@@ -784,9 +784,9 @@ Run these quick checks to confirm the configuration is sound:
 head -20 AGENTS.md
 
 # Verify CLI compatibility shim works
-python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py "help me debug CSS"
-python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-native "help me debug CSS"
-python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local "help me debug CSS"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py "help me debug CSS"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py --force-native "help me debug CSS"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py --force-local "help me debug CSS"
 
 # Verify MCP tools are configured
 cat opencode.json | jq '.mcp.servers | keys'
@@ -813,8 +813,8 @@ If your runtime supports prompt hooks, start a fresh session and confirm the Ski
 ```bash
 # All commands should succeed:
 head -5 AGENTS.md                                   # -> H1 title visible
-python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-native "save context"  # -> native advisor path
-python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local "save context"   # -> Python fallback path
+python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py --force-native "save context"  # -> native advisor path
+python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py --force-local "save context"   # -> Python fallback path
 cat opencode.json | python3 -m json.tool            # -> valid JSON
 ls .opencode/skill/                                 # -> skill directories listed
 ```
@@ -1082,13 +1082,13 @@ Remove any tool references from AGENTS.md that do not appear in the output above
 
 ```bash
 # Verify skill_advisor.py exists
-ls .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py
+ls .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py
 
 # Test native delegation through the compat shim
-python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-native "save my context"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py --force-native "save my context"
 
 # Test local fallback explicitly
-python3 .opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py --force-local "save my context"
+python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py --force-local "save my context"
 
 # If rollback testing disabled hook-first behavior, restore it
 unset SPECKIT_SKILL_ADVISOR_HOOK_DISABLED
@@ -1256,8 +1256,8 @@ Update AGENTS.md to reference only the commands that exist in your `.opencode/co
 | `.utcp_config.json`                           | Code Mode external tools configuration   |
 | `.opencode/skill/`                            | Installed skills directory               |
 | `.opencode/command/`                          | Available slash commands directory       |
-| `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/scripts/skill_advisor.py`    | Gate 2 compatibility shim and diagnostics |
-| `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/INSTALL_GUIDE.md`             | Native advisor bootstrap, verification, and rollback |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py`    | Gate 2 compatibility shim and diagnostics |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/INSTALL_GUIDE.md`             | Native advisor bootstrap, verification, and rollback |
 
 ### External Links
 

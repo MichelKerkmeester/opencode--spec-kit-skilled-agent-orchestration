@@ -10,7 +10,7 @@ import {
   runMeasurement,
   type CorpusRow,
 } from '../../scripts/observability/smart-router-measurement';
-import type { AdvisorHookResult } from '../skill-advisor/lib/skill-advisor-brief.js';
+import type { AdvisorHookResult } from '../skill_advisor/lib/skill-advisor-brief.js';
 
 const roots = new Set<string>();
 
