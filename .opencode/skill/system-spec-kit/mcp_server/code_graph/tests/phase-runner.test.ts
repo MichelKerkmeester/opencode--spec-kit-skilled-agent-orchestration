@@ -103,6 +103,42 @@ describe('phase-runner: topologicalSort', () => {
 
     expect(topologicalSort(phases)).toEqual(['producer', 'consumer']);
   });
+
+  // 008/D4 regression: duplicate-output rejection (R-007-P2-1).
+  // The implementation rejects (a) two phases publishing the same custom
+  // output key, and (b) an output key colliding with another phase's name.
+  // Pre-008 the only duplicate-shape test was duplicate phase NAMES.
+  it('rejects two phases publishing the same custom output key', () => {
+    const phases: Phase[] = [
+      phase('producer-a', [], () => 1, 'shared.key'),
+      phase('producer-b', [], () => 2, 'shared.key'),
+    ];
+
+    try {
+      topologicalSort(phases);
+      throw new Error('expected throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(PhaseRunnerError);
+      const e = err as PhaseRunnerError;
+      expect(e.kind).toBe('duplicate-output');
+    }
+  });
+
+  it('rejects an output key that collides with another phase name', () => {
+    const phases: Phase[] = [
+      phase('parse', [], () => 1),
+      phase('producer', [], () => 2, 'parse'), // output 'parse' collides with phase name
+    ];
+
+    try {
+      topologicalSort(phases);
+      throw new Error('expected throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(PhaseRunnerError);
+      const e = err as PhaseRunnerError;
+      expect(e.kind).toBe('duplicate-output');
+    }
+  });
 });
 
 describe('phase-runner: runPhases', () => {

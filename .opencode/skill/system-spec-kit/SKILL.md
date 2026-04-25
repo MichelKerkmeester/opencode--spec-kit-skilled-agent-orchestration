@@ -565,7 +565,7 @@ _memory:
 
 Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS5, BM25, graph, and degree) with Reciprocal Rank Fusion, intent-aware routing, and post-fusion reranking/filtering.
 
-**Server:** `@spec-kit/mcp-server` v1.7.2 - `context-server.ts` with 48 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
+**Server:** `@spec-kit/mcp-server` v1.7.2 - `context-server.ts` with 51 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
 
 **Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `spec_kit` surface now uses `/spec_kit:plan --intake-only` as the standalone intake workflow; `/spec_kit:plan` and `/spec_kit:complete` execute the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) inline when the Step 0 local `folder_state` shows repair or creation is needed, and downstream callers should consume the contract's canonical `start_state` rather than reusing the local classifier name. `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` for bounded `spec.md` anchoring. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/`, `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/complete.md`, `.opencode/skill/system-spec-kit/references/intake-contract.md`, and `.opencode/command/spec_kit/resume.md` for command documentation.
 
@@ -666,7 +666,7 @@ Flags below describe live runtime behavior. Several retrieval and scoring contro
 | `SPECKIT_ENTITY_LINKING`     | on      | Links memories sharing extracted entities during search |
 | `SPECKIT_QUALITY_LOOP`       | off     | Enables verify-fix-verify quality loop on save with up to 2 autofix retries |
 | `SPECKIT_RELATIONS`          | on      | Correction tracking with undo semantics (superseded/deprecated/refined/merged). Graduated to default ON |
-| `SPECKIT_STRICT_SCHEMAS`     | on      | Strict Zod validation for all 48 MCP tools; rejects hallucinated parameters |
+| `SPECKIT_STRICT_SCHEMAS`     | on      | Strict Zod validation for all 51 MCP tools; rejects hallucinated parameters |
 | `SPECKIT_DEGREE_BOOST`       | on      | Typed weighted-degree channel in graph signal scoring |
 | `SPECKIT_GRAPH_SIGNALS`      | on      | Graph momentum and causal depth scoring signals |
 | `SPECKIT_COMMUNITY_DETECTION` | on     | Community detection clustering for graph-aware retrieval |

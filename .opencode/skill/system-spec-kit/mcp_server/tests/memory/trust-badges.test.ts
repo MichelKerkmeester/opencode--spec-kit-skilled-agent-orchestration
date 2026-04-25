@@ -194,4 +194,65 @@ describe('memory trust badges', () => {
       weightHistoryChanged: true,
     });
   });
+
+  // 008/D14: age-label allowlist boundary cases (R-007-P2-10).
+  // The allowlist accepts: never | today | yesterday | N day(s)|week(s)|month(s) ago.
+  // Boundary cases pin the regex against drift.
+  it('008/D14: explicit caller age strings within allowlisted grammar pass through', async () => {
+    // Note: 'never' is a sentinel handled separately by merge-per-field
+    // logic (caller "never" means "I have no value, use derived"); test
+    // it through the rejection-fallback path instead. Here we exercise
+    // the allowlist's positive branch only.
+    const acceptedAges = ['today', 'yesterday', '1 day ago', '3 days ago', '1 week ago', '4 weeks ago', '6 months ago'];
+    for (const age of acceptedAges) {
+      const response = await formatSearchResults([
+        {
+          id: 90,
+          spec_folder: 'specs/age',
+          file_path: '/tmp/age.md',
+          title: 'Age Boundary',
+          trustBadges: {
+            confidence: 0.5,
+            extractionAge: age,
+            lastAccessAge: age,
+            orphan: false,
+            weightHistoryChanged: false,
+          },
+        },
+      ], 'semantic');
+      const result = parseEnvelope(response).data.results[0];
+      // Allowlist-passing strings preserve the caller value.
+      expect(result.trustBadges?.extractionAge, `age "${age}" should pass allowlist`).toBe(age);
+      expect(result.trustBadges?.lastAccessAge, `age "${age}" should pass allowlist`).toBe(age);
+    }
+  });
+
+  it('008/D14: explicit caller age strings outside allowlisted grammar fall through to derivation', async () => {
+    // These strings are not allowlisted → sanitizer rejects → fallback to
+    // formatAgeString from the timestamp (which is undefined here, so
+    // result is 'never').
+    const rejectedAges = ['tomorrow', '1 yr ago', '1day ago', '999 hours ago', 'recently', 'a long time ago'];
+    for (const age of rejectedAges) {
+      const response = await formatSearchResults([
+        {
+          id: 91,
+          spec_folder: 'specs/age',
+          file_path: '/tmp/age.md',
+          title: 'Age Rejection',
+          trustBadges: {
+            confidence: 0.5,
+            extractionAge: age,
+            lastAccessAge: age,
+            orphan: false,
+            weightHistoryChanged: false,
+          },
+        },
+      ], 'semantic');
+      const result = parseEnvelope(response).data.results[0];
+      // Rejected ages are dropped (replaced with derived value or 'never'
+      // when no timestamp is available).
+      expect(result.trustBadges?.extractionAge, `age "${age}" should be rejected`).not.toBe(age);
+      expect(result.trustBadges?.lastAccessAge, `age "${age}" should be rejected`).not.toBe(age);
+    }
+  });
 });

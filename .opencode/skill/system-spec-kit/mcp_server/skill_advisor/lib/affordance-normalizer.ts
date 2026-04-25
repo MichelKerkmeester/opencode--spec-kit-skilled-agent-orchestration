@@ -179,14 +179,36 @@ function normalizedEdge(
   return { edgeType, targetSkillId: target, weight };
 }
 
+// 008/D12 TS/PY parity: `conflicts_with` is a RESERVED field in affordance
+// derived inputs. Conflict edges require an authoritative reciprocal
+// declaration in `edges.conflicts_with` (validated by the compiler's
+// edge-symmetry check) and CANNOT be derived from a single-sided
+// affordance hint. The Python compiler rejects this at validate_derived_
+// affordances; the TS normalizer must enforce the same contract or
+// affordance edges of type `conflicts_with` will be silently produced
+// from one side only.
+const RESERVED_AFFORDANCE_RELATION_FIELDS: ReadonlyArray<keyof AffordanceInput> = [
+  'conflictsWith',
+  'conflicts_with',
+];
+
+function hasReservedRelationField(input: AffordanceInput): boolean {
+  for (const field of RESERVED_AFFORDANCE_RELATION_FIELDS) {
+    if (input[field] !== undefined) return true;
+  }
+  return false;
+}
+
 function relationEdges(input: AffordanceInput): NormalizedAffordanceEdge[] {
   const edges: NormalizedAffordanceEdge[] = [];
+  // Note: `conflicts_with` intentionally absent — see
+  // RESERVED_AFFORDANCE_RELATION_FIELDS above. Inputs that declare it are
+  // rejected wholesale at normalize() time before relationEdges runs.
   const relationFields: ReadonlyArray<readonly [AffordanceRelation, unknown]> = [
     ['depends_on', input.dependsOn ?? input.depends_on],
     ['enhances', input.enhances],
     ['siblings', input.siblings],
     ['prerequisite_for', input.prerequisiteFor ?? input.prerequisite_for],
-    ['conflicts_with', input.conflictsWith ?? input.conflicts_with],
   ];
   for (const [edgeType, rawEdges] of relationFields) {
     for (const rawEdge of edgeInputs(rawEdges)) {
@@ -215,6 +237,15 @@ export function normalize(toolDescriptions: readonly AffordanceInput[]): Normali
   return toolDescriptions
     .map((input, index): NormalizedAffordance | null => {
       affordanceNormalizerCounters.received++;
+      // 008/D12+D13: Reject affordances that declare reserved relation
+      // fields (`conflicts_with` / `conflictsWith`). Parity with Python
+      // compiler's validate_derived_affordances. dropped_unsafe was
+      // previously permanently zero by design (D13); this is the
+      // canonical event that increments it.
+      if (hasReservedRelationField(input)) {
+        affordanceNormalizerCounters.dropped_unsafe++;
+        return null;
+      }
       const skillId = cleanSkillId(input.skillId ?? input.skill_id);
       if (!skillId) {
         affordanceNormalizerCounters.dropped_unknown_skill++;

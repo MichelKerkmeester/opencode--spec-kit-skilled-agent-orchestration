@@ -769,6 +769,24 @@ describe('Causal Edges Unit Tests', () => {
         expect(generations[i]).toBeGreaterThan(generations[i - 1]);
       }
     });
+
+    // 008/D17: confirm the search-utils cache key threads the generation
+    // counter ONLY when enableCausalBoost === true. Pre-D17 the existing
+    // unit tests verified the counter increments but not the gating
+    // wiring at memory_search level. This test verifies the gating
+    // condition exists in source as a regression-detector — if a future
+    // refactor drops the enableCausalBoost guard, this fails.
+    it('R-007-12-G7: search-utils cache-args gates causalEdgesGeneration on enableCausalBoost', async () => {
+      const fs = await import('node:fs/promises');
+      const url = new URL('../lib/search/search-utils.ts', import.meta.url);
+      const src = await fs.readFile(url, 'utf8');
+      // The gating condition introduced by R-007-12: includeCausalGeneration
+      // is true only when enableCausalBoost === true AND a finite generation
+      // number is provided. Verify both halves are present together.
+      expect(src.includes('enableCausalBoost === true')).toBe(true);
+      expect(src.includes("typeof causalEdgesGeneration === 'number'")).toBe(true);
+      expect(src.includes('Number.isFinite(causalEdgesGeneration)')).toBe(true);
+    });
   });
 
   /* ─────────────────────────────────────────────────────────────

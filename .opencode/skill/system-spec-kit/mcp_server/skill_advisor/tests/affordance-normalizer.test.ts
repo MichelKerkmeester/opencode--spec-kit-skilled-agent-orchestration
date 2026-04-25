@@ -6,7 +6,11 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { normalize } from '../lib/affordance-normalizer.js';
+import {
+  normalize,
+  getAffordanceNormalizerCounters,
+  resetAffordanceNormalizerCounters,
+} from '../lib/affordance-normalizer.js';
 import { scoreAdvisorPrompt } from '../lib/scorer/fusion.js';
 import { createFixtureProjection } from '../lib/scorer/projection.js';
 import type { SkillProjection } from '../lib/scorer/types.js';
@@ -164,5 +168,66 @@ describe('010/007 affordance-normalizer — shared injection fixture (R-007-P2-8
         expect(serialized, `privacy phrase "${input}" must drop substring "${dropped}"`).not.toContain(dropped);
       }
     }
+  });
+});
+
+// 008/D12 + D13: TS/Python parity for `conflicts_with` rejection.
+// Python compiler rejects affordances declaring `conflicts_with` /
+// `conflictsWith` via validate_derived_affordances; TS normalizer must
+// enforce the same contract or one-sided affordance edges of type
+// `conflicts_with` would be silently produced. Also exercises the
+// `dropped_unsafe` counter, which was permanently zero before D13.
+describe('008/D12 — affordance-normalizer rejects reserved conflicts_with field (TS/PY parity)', () => {
+  it('drops affordances declaring conflicts_with (snake_case) and increments dropped_unsafe', () => {
+    resetAffordanceNormalizerCounters();
+    const result = normalize([{
+      skillId: 'tester',
+      conflicts_with: [{ target: 'other-skill' }],
+    }]);
+    expect(result).toEqual([]);
+    const counters = getAffordanceNormalizerCounters();
+    expect(counters.received).toBe(1);
+    expect(counters.dropped_unsafe).toBe(1);
+    expect(counters.accepted).toBe(0);
+  });
+
+  it('drops affordances declaring conflictsWith (camelCase) and increments dropped_unsafe', () => {
+    resetAffordanceNormalizerCounters();
+    const result = normalize([{
+      skillId: 'tester',
+      conflictsWith: [{ target: 'other-skill' }],
+    }]);
+    expect(result).toEqual([]);
+    const counters = getAffordanceNormalizerCounters();
+    expect(counters.dropped_unsafe).toBe(1);
+  });
+
+  it('does NOT increment dropped_unsafe for legitimate affordances', () => {
+    resetAffordanceNormalizerCounters();
+    const result = normalize([{
+      skillId: 'tester',
+      depends_on: [{ target: 'other-skill' }],
+      enhances: [{ target: 'enhanced-skill' }],
+    }]);
+    expect(result).toHaveLength(1);
+    const counters = getAffordanceNormalizerCounters();
+    expect(counters.accepted).toBe(1);
+    expect(counters.dropped_unsafe).toBe(0);
+    // Verify legitimate edges produce — but no `conflicts_with` ever does.
+    const edgeTypes = result[0].edges.map((e) => e.edgeType);
+    expect(edgeTypes).not.toContain('conflicts_with');
+  });
+
+  it('mixed legitimate + conflicts_with input rejects the entire affordance (no partial accept)', () => {
+    resetAffordanceNormalizerCounters();
+    const result = normalize([{
+      skillId: 'tester',
+      depends_on: [{ target: 'legit-skill' }],
+      conflicts_with: [{ target: 'rejected-skill' }],
+    }]);
+    expect(result).toEqual([]);
+    const counters = getAffordanceNormalizerCounters();
+    expect(counters.dropped_unsafe).toBe(1);
+    expect(counters.accepted).toBe(0);
   });
 });

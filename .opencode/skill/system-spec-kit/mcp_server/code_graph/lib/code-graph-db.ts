@@ -785,7 +785,17 @@ export function sanitizeEdgeMetadataString(value: unknown): string | null {
 
 /** Convert DB row to CodeEdge */
 function rowToEdge(r: Record<string, unknown>): CodeEdge {
-  const rawMetadata = r.metadata ? JSON.parse(r.metadata as string) : undefined;
+  // 008/D7 hardening: malformed JSON in code_edges.metadata must not throw
+  // out of the read path. Treat parse failures as "no metadata" rather than
+  // crashing relationship/blast_radius queries on a single bad row.
+  let rawMetadata: unknown = undefined;
+  if (r.metadata) {
+    try {
+      rawMetadata = JSON.parse(r.metadata as string);
+    } catch {
+      rawMetadata = undefined;
+    }
+  }
   if (rawMetadata && typeof rawMetadata === 'object') {
     // Sanitize the two free-form attribution strings on the read
     // path. Other metadata fields (`confidence`, `detectorProvenance`,
@@ -804,7 +814,7 @@ function rowToEdge(r: Record<string, unknown>): CodeEdge {
     targetId: r.target_id as string,
     edgeType: r.edge_type as CodeEdge['edgeType'],
     weight: r.weight as number,
-    metadata: rawMetadata,
+    metadata: rawMetadata as CodeEdge['metadata'],
   };
 }
 

@@ -228,6 +228,54 @@ describe('detect_changes handler — adversarial path containment (010/007/T-D R
     // because the path is legitimately inside the workspace).
     expect(parsed.status).toBe('ok');
   });
+
+  // 008/D1 P1 regression: mixed-header bypass.
+  // resolveCandidatePath previously validated only the chosen path.
+  // An adversarial diff with an escaping pre-image header paired with an
+  // in-root post-image (or vice versa) could smuggle an out-of-root path
+  // past containment because the unused side was never checked.
+  it('rejects escaping oldPath paired with in-root newPath (D1 mixed-header)', async () => {
+    mocks.queryOutline.mockReturnValue([]);
+    const result = await handleDetectChanges({
+      diff: '--- a/../../etc/passwd\n+++ b/src/safe.ts\n@@ -1,1 +1,1 @@\n+x\n',
+      rootDir: workspaceRoot,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.status).toBe('parse_error');
+    expect(parsed.affectedSymbols).toEqual([]);
+    expect(parsed.blockedReason).toMatch(/outside workspace root/);
+  });
+
+  it('rejects in-root oldPath paired with escaping newPath (D1 mixed-header)', async () => {
+    mocks.queryOutline.mockReturnValue([]);
+    const result = await handleDetectChanges({
+      diff: '--- a/src/safe.ts\n+++ b/../../etc/passwd\n@@ -1,1 +1,1 @@\n+x\n',
+      rootDir: workspaceRoot,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.status).toBe('parse_error');
+    expect(parsed.affectedSymbols).toEqual([]);
+    expect(parsed.blockedReason).toMatch(/outside workspace root/);
+  });
+
+  it('accepts /dev/null paired with in-root path (pure add/delete is legitimate)', async () => {
+    mocks.queryOutline.mockReturnValue([]);
+    // Pure-add: oldPath = /dev/null, newPath in-root.
+    const addResult = await handleDetectChanges({
+      diff: '--- /dev/null\n+++ b/src/new.ts\n@@ -0,0 +1,1 @@\n+x\n',
+      rootDir: workspaceRoot,
+    });
+    const addParsed = JSON.parse(addResult.content[0].text);
+    expect(addParsed.status).toBe('ok');
+
+    // Pure-delete: oldPath in-root, newPath = /dev/null.
+    const delResult = await handleDetectChanges({
+      diff: '--- a/src/gone.ts\n+++ /dev/null\n@@ -1,1 +0,0 @@\n-x\n',
+      rootDir: workspaceRoot,
+    });
+    const delParsed = JSON.parse(delResult.content[0].text);
+    expect(delParsed.status).toBe('ok');
+  });
 });
 
 describe('detect_changes handler — affected-symbol attribution', () => {

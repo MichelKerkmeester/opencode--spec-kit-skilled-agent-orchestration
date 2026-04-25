@@ -134,26 +134,45 @@ type CandidatePathResult =
   | { readonly kind: 'skip' }
   | { readonly kind: 'reject'; readonly reason: string };
 
-function resolveCandidatePath(
-  diffFile: DiffFile,
+function checkPathContainment(
+  candidate: string,
   canonicalRootDir: string,
-): CandidatePathResult {
-  const path = diffFile.newPath !== '/dev/null' ? diffFile.newPath : diffFile.oldPath;
-  if (!path || path === '/dev/null') return { kind: 'skip' };
-  const normalized = normalize(path);
+): { kind: 'ok'; path: string } | { kind: 'reject'; reason: string } {
+  const normalized = normalize(candidate);
   const resolved = isAbsolute(normalized) ? normalized : resolve(canonicalRootDir, normalized);
-
-  // Path-prefix containment. Append the platform separator before
-  // comparing so that `/foo/bar` does NOT match `/foo/barbaz`.
   const rootWithSep = canonicalRootDir.endsWith(sep) ? canonicalRootDir : `${canonicalRootDir}${sep}`;
   if (resolved !== canonicalRootDir && !resolved.startsWith(rootWithSep)) {
     return {
       kind: 'reject',
-      reason: `diff path resolved outside workspace root: ${path}`,
+      reason: `diff path resolved outside workspace root: ${candidate}`,
     };
   }
-
   return { kind: 'ok', path: resolved };
+}
+
+function resolveCandidatePath(
+  diffFile: DiffFile,
+  canonicalRootDir: string,
+): CandidatePathResult {
+  // R-007-3 mixed-header bypass fix (D1, P1):
+  // Validate BOTH oldPath and newPath independently against the canonical
+  // root, ignoring only `/dev/null`. Previously only the chosen path was
+  // validated, which let an adversarial diff smuggle an out-of-root pre-
+  // image header (`--- a/../../etc/passwd`) while attribution proceeded
+  // against an in-root post-image (`+++ b/src/safe.ts`).
+  for (const candidate of [diffFile.oldPath, diffFile.newPath]) {
+    if (!candidate || candidate === '/dev/null') continue;
+    const containment = checkPathContainment(candidate, canonicalRootDir);
+    if (containment.kind === 'reject') return containment;
+  }
+
+  const path = diffFile.newPath !== '/dev/null' ? diffFile.newPath : diffFile.oldPath;
+  if (!path || path === '/dev/null') return { kind: 'skip' };
+
+  // Re-resolve the chosen path now that both sides are confirmed in-root.
+  const containment = checkPathContainment(path, canonicalRootDir);
+  if (containment.kind === 'reject') return containment;
+  return containment;
 }
 
 /** Handle the `detect_changes` MCP tool call. */

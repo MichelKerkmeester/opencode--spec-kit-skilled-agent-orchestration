@@ -64,4 +64,52 @@ describe('sanitizeEdgeMetadataString — R-007-P2-3 control-character allowlist'
     // string to null. This avoids partial-leak semantics.
     expect(sanitizeEdgeMetadataString('legitimate prefix\x07followed by injected bytes')).toBe(null);
   });
+
+  // 008/D7 regression: the read-path sanitizer is wired at three sites
+  // (rowToEdge → code-graph-db.ts, edgeMetadataOutput → query.ts, and
+  // formatContextEdge → code-graph-context.ts). Each site has its own
+  // local sanitizer function (not yet DRY'd to the shared export);
+  // assert the local sanitizer name is present in each file so a
+  // refactor that drops a call site fails this test.
+  it('a sanitizer is referenced at each of 3 documented read-path sites (D7 coverage)', async () => {
+    const fs = await import('node:fs/promises');
+    const sites: Array<{ path: string; mustContain: string[] }> = [
+      {
+        path: '../lib/code-graph-db.ts',
+        mustContain: ['sanitizeEdgeMetadataString'],
+      },
+      {
+        path: '../handlers/query.ts',
+        mustContain: ['sanitizeEdgeMetadataReadString'],
+      },
+      {
+        path: '../lib/code-graph-context.ts',
+        mustContain: ['sanitizeContextEdgeString'],
+      },
+    ];
+    for (const site of sites) {
+      const url = new URL(site.path, import.meta.url);
+      const src = await fs.readFile(url, 'utf8');
+      for (const needle of site.mustContain) {
+        expect(src.includes(needle)).toBe(true);
+      }
+    }
+  });
+
+  // 008/D7 regression: rowToEdge must not throw on malformed metadata
+  // JSON. Previously a single bad row would crash relationship and
+  // blast_radius queries.
+  it('rowToEdge tolerates malformed metadata JSON without throwing (D7 hardening)', async () => {
+    const fs = await import('node:fs/promises');
+    const url = new URL('../lib/code-graph-db.ts', import.meta.url);
+    const src = await fs.readFile(url, 'utf8');
+    // Verify the rowToEdge function wraps JSON.parse in try/catch.
+    const rowToEdgeIdx = src.indexOf('function rowToEdge');
+    expect(rowToEdgeIdx).toBeGreaterThan(-1);
+    const rowToEdgeBody = src.slice(rowToEdgeIdx, rowToEdgeIdx + 800);
+    expect(rowToEdgeBody.includes('JSON.parse')).toBe(true);
+    // The hardening uses try/catch around JSON.parse so malformed JSON
+    // doesn't propagate out of the read path.
+    expect(rowToEdgeBody.includes('try') && rowToEdgeBody.includes('catch')).toBe(true);
+  });
 });

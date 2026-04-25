@@ -30,6 +30,18 @@ _memory:
 
 <!-- SPECKIT_LEVEL: 2 -->
 
+> **008/D5 status note (2026-04-25)**: This spec was authored when the
+> proposed mitigation was a verbatim quote of `external/LICENSE`. The
+> ACTUAL controlling mitigation that shipped is the upstream-project
+> name scrub (commit `bdd3c831d`, refactor 026): the external project
+> name was removed from all runtime paths so no external license needs
+> to be quoted. References below to "verbatim quote" / "canonical
+> license block" are historical; the post-scrub posture (no quote
+> required) is documented in `decision-record.md` and confirmed by the
+> `010/008-deep-research-review` audit (research/research.md §6 D5).
+> See `010/007-review-remediation/implementation-summary.md` R-007-1
+> for the closure record.
+
 ---
 
 <!-- ANCHOR:metadata -->

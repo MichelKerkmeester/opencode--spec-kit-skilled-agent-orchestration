@@ -168,7 +168,7 @@ Packets 013 (code-graph hook improvements) and 014 (skill-advisor hook improveme
 
 ### Command-Surface Contract
 
-The Spec Kit Memory MCP server exposes **43 tools** overall across the 7-layer MCP surface. The command layer wraps the memory-focused subset under **4 top-level memory slash commands**, with session recovery still owned by `/spec_kit:resume` as a spec-folder workflow using the memory/session recovery stack. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for primary tool ownership is the coverage matrix in `.opencode/command/memory/README.txt`, while each command file's `allowed-tools` frontmatter shows the full operational surface. Recovery behavior is documented in `.opencode/command/spec_kit/resume.md`.
+The Spec Kit Memory MCP server exposes **51 tools** overall across the 7-layer MCP surface (canonical source: `TOOL_DEFINITIONS.length` in `mcp_server/tool-schemas.ts`; deferred / internal-only handlers do NOT count). The command layer wraps the memory-focused subset under **4 top-level memory slash commands**, with session recovery still owned by `/spec_kit:resume` as a spec-folder workflow using the memory/session recovery stack. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for primary tool ownership is the coverage matrix in `.opencode/command/memory/README.txt`, while each command file's `allowed-tools` frontmatter shows the full operational surface. Recovery behavior is documented in `.opencode/command/spec_kit/resume.md`.
 
 | Command | Tools | Ownership | Tool Names |
 |---------|-------|-----------|------------|

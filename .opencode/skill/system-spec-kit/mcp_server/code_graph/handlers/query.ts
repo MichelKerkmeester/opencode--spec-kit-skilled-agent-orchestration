@@ -877,6 +877,17 @@ function buildDepthGroups(
   return depthGroups;
 }
 
+/**
+ * Classify a blast-radius response by depth-one fanout.
+ *
+ * Thresholds (008/D9 — documented):
+ *   - **high**: any of (a) ambiguityCandidates non-empty, (b) depth-one fanout > 10
+ *   - **medium**: depth-one fanout in [4, 10]
+ *   - **low**: depth-one fanout in [0, 3]
+ *
+ * Depth-one is used (not max depth) because the immediate consumers of
+ * the seed are the strongest blast-radius signal in practice.
+ */
 function classifyBlastRadiusRisk(
   depthGroups: Record<number, BlastRadiusAffectedFile[]>,
   ambiguityCandidates: SubjectCandidateMetadata[],
