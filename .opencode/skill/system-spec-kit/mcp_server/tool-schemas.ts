@@ -581,6 +581,7 @@ const codeGraphQuery: ToolDefinition = {
       limit: { type: 'number', minimum: 1, maximum: 200, default: 50, description: 'Max results' },
       includeTransitive: { type: 'boolean', default: false, description: 'Enable multi-hop BFS traversal (follows edges transitively)' },
       maxDepth: { type: 'number', minimum: 1, maximum: 10, default: 3, description: 'Max traversal depth when includeTransitive is true' },
+      minConfidence: { type: 'number', minimum: 0, maximum: 1, description: 'Minimum confidence threshold (0-1) for blast_radius dependency edges; defaults to 0 (include all). Filters import-edge confidences before blast-radius assembly.' },
     },
     required: ['operation', 'subject'],
   },

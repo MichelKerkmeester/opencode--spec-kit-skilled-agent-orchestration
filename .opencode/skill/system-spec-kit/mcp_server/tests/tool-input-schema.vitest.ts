@@ -513,6 +513,33 @@ describe('code_graph schema coverage', () => {
       },
     },
     {
+      name: 'code_graph_query accepts minConfidence within [0, 1] (R-007-6)',
+      toolName: 'code_graph_query',
+      args: {
+        operation: 'blast_radius',
+        subject: 'context-server.ts',
+        minConfidence: 0.5,
+      },
+    },
+    {
+      name: 'code_graph_query accepts minConfidence boundary value 0',
+      toolName: 'code_graph_query',
+      args: {
+        operation: 'blast_radius',
+        subject: 'context-server.ts',
+        minConfidence: 0,
+      },
+    },
+    {
+      name: 'code_graph_query accepts minConfidence boundary value 1',
+      toolName: 'code_graph_query',
+      args: {
+        operation: 'blast_radius',
+        subject: 'context-server.ts',
+        minConfidence: 1,
+      },
+    },
+    {
       name: 'code_graph_status accepts empty input',
       toolName: 'code_graph_status',
       args: {},
@@ -547,6 +574,33 @@ describe('code_graph schema coverage', () => {
       args: {
         operation: 'walk_everything',
         subject: 'context-server.ts',
+      },
+    },
+    {
+      name: 'code_graph_query rejects minConfidence above 1 (R-007-6)',
+      toolName: 'code_graph_query',
+      args: {
+        operation: 'blast_radius',
+        subject: 'context-server.ts',
+        minConfidence: 1.5,
+      },
+    },
+    {
+      name: 'code_graph_query rejects negative minConfidence (R-007-6)',
+      toolName: 'code_graph_query',
+      args: {
+        operation: 'blast_radius',
+        subject: 'context-server.ts',
+        minConfidence: -0.1,
+      },
+    },
+    {
+      name: 'code_graph_query rejects non-numeric minConfidence (R-007-6)',
+      toolName: 'code_graph_query',
+      args: {
+        operation: 'blast_radius',
+        subject: 'context-server.ts',
+        minConfidence: 'high',
       },
     },
     {

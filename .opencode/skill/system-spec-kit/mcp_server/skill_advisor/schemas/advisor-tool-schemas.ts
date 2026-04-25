@@ -21,6 +21,18 @@ const laneBreakdownSchema = z.object({
   shadowOnly: z.boolean(),
 }).strict();
 
+// NOTE (R-007-10, T-C / DEFER decision):
+// `AdvisorScoringOptions.affordances` (see `lib/scorer/types.ts:94`) is a
+// COMPILE-TIME-ONLY internal seam used by the scorer fusion path. Affordance
+// evidence is sourced from compiled skill graph metadata via
+// `skill_graph_compiler.py` (which emits sanitized `derived.affordances[]`
+// nodes), not from public MCP input. Exposing `affordances` through this
+// request schema would re-introduce the prompt-stuffing surface that
+// `affordance-normalizer.ts` specifically defends against (URLs, emails,
+// instruction-shaped strings, free-form `description` fields). The public
+// `advisor_recommend` tool intentionally does NOT accept `affordances`.
+// Internal callers that need request-local affordance scoring should invoke
+// `scoreAdvisorPrompt` directly with `AdvisorScoringOptions.affordances`.
 export const AdvisorRecommendInputSchema = z.object({
   workspaceRoot: z.string().min(1).optional(),
   prompt: z.string().min(1).max(10_000),

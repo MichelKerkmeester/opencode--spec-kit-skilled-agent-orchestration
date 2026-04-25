@@ -458,6 +458,7 @@ const codeGraphQuerySchema = getSchema({
   limit: positiveIntMax(200).optional(),
   includeTransitive: z.boolean().optional(),
   maxDepth: positiveIntMax(10).optional(),
+  minConfidence: z.number().min(0).max(1).optional(),
 });
 
 const codeGraphSeedSchema = z.object({
@@ -672,7 +673,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_ingest_status: ['jobId'],
   memory_ingest_cancel: ['jobId'],
   code_graph_scan: ['rootDir', 'includeGlobs', 'excludeGlobs', 'incremental'],
-  code_graph_query: ['operation', 'subject', 'subjects', 'unionMode', 'edgeType', 'limit', 'includeTransitive', 'maxDepth'],
+  code_graph_query: ['operation', 'subject', 'subjects', 'unionMode', 'edgeType', 'limit', 'includeTransitive', 'maxDepth', 'minConfidence'],
   code_graph_status: [],
   code_graph_context: ['input', 'queryMode', 'subject', 'seeds', 'budgetTokens', 'profile', 'includeTrace'],
   detect_changes: ['diff', 'rootDir'],

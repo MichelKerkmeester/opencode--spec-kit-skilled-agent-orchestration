@@ -9,27 +9,32 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation"
-    last_updated_at: "2026-04-25T18:30:00Z"
-    last_updated_by: "claude-opus-4-7-batch-T-B"
-    recent_action: "T-B verification evidence sync complete: synced canonical Wave-3 evidence across 5 sub-phase implementation-summary.md + 5 sub-phase checklist.md files; closed R-007-1, R-007-5, R-007-7, R-007-15, R-007-19, R-007-20, R-007-21"
-    next_safe_action: "Run T-C/T-D/T-E/T-F (parallel) and T-F doc cleanup — T-A and T-B complete"
-    completion_pct: 21
+    last_updated_at: "2026-04-25T18:35:00Z"
+    last_updated_by: "claude-opus-4-7-orchestrator-wave-1-integration"
+    recent_action: "T-B + T-C cherry-picked onto main; T-B doc evidence sync (R-007-1/5/7/15/19/20/21) + T-C minConfidence WIRED + affordances DEFER (R-007-6/10) integrated"
+    next_safe_action: "Cherry-pick T-D, T-E, T-F (in that order); resolve implementation-summary append conflicts; run final tsc + vitest"
+    completion_pct: 35
     blockers: []
     key_files:
       - "spec.md"
       - "plan.md"
       - "tasks.md"
       - "checklist.md"
+      - "../../mcp_server/schemas/tool-input-schemas.ts"
+      - "../../mcp_server/tool-schemas.ts"
+      - "../../mcp_server/skill_advisor/schemas/advisor-tool-schemas.ts"
+      - "../../mcp_server/tests/tool-input-schema.vitest.ts"
 ---
 # Implementation Summary: Review Remediation (010/007)
 
 <!-- SPECKIT_LEVEL: 2 -->
 
 ## Status
-T-A and T-B complete. T-C through T-F pending.
+T-A, T-B, T-C complete. T-D, T-E, T-F pending integration.
 
 - **T-A (detect_changes MCP wiring):** detect_changes registered as MCP tool across dispatcher, JSON schema, Zod validator, allowed-parameter ledger, and 6 umbrella docs. Closes R-007-2, R-007-14.
 - **T-B (verification evidence sync):** Wave-3 canonical evidence (`tsc --noEmit` exit 0; `vitest run` 9 passed | 1 skipped (10), 90 passed | 3 skipped (93), 1.34s; per-sub-phase `validate.sh --strict` results) synced across 010/001/002/003/005/006 sub-phase implementation-summary.md + checklist.md files. Premature `[x]` PASS marks unchecked and rewritten with the 3-state convention (`[x]` real evidence captured | `[ ] OPERATOR-PENDING` command can't run from this context | `[ ] BLOCKED` blocked with reason). Closes R-007-1, R-007-5, R-007-7, R-007-15, R-007-19, R-007-20, R-007-21.
+- **T-C (public API surface gaps):** `minConfidence` exposed end-to-end on `code_graph_query` (Zod schema, JSON schema, allowed-parameter ledger, accept/reject tests). `affordances` DEFER decision: stays compile-time-only scorer seam (prompt-injection surface concern). Closes R-007-6, R-007-10.
 
 ## Findings Closed
 
@@ -138,6 +143,46 @@ $ cd mcp_server && npx --no-install vitest run \
 
 **Total: 11 files modified (10 sub-phase docs + this implementation-summary).** Zero code files modified (T-B is doc-only; per brief Hard Rule 4). Sub-phase 004 docs untouched (already verified PASS per Wave-3 canonical; no T-B changes needed). Out-of-territory paths (010/007 prompts, other batch territories T-A/C/D/E/F) untouched.
 
+### R-007-6 — Expose `minConfidence` on `code_graph_query` MCP surface (T-C)
+
+**Decision:** WIRE — surface end-to-end (Zod schema, JSON schema, allowed-parameter ledger, vitest accept/reject coverage).
+
+**Rationale:**
+- Handler at `mcp_server/code_graph/handlers/query.ts:1024` already accepts `args.minConfidence` (clamped via `clampNumericConfidence`) and threads it through `computeBlastRadius` (line 1122) and `queryImportDependentsForBlastRadius` (line 731). The only public-API gap is schema rejection: requests with `minConfidence` were dropped at validation as an unknown property (`additionalProperties: false`).
+- 010/003 implementation summary already documents `minConfidence` as a published field of the `blast_radius` response (line 34) and as a tested code path (line 58, `code-graph-query-handler.vitest.ts` covers `minConfidence` cases). So callers are documented to expect the input lever; only the schema needed to catch up.
+- Mechanical wiring follows the existing `positiveIntMax` / `boundedNumber` pattern. Validation keeps the contract tight: `z.number().min(0).max(1).optional()` matches the handler's clamp and the spec's `[0, 1]` range.
+
+**Evidence — files modified:**
+
+| File | Change |
+|------|--------|
+| `mcp_server/schemas/tool-input-schemas.ts` (line 461) | Added `minConfidence: z.number().min(0).max(1).optional()` to `codeGraphQuerySchema` |
+| `mcp_server/schemas/tool-input-schemas.ts` (line 675) | Added `'minConfidence'` to `ALLOWED_PARAMETERS.code_graph_query` ledger |
+| `mcp_server/tool-schemas.ts` (line 584) | Added JSON-schema property `minConfidence: { type: 'number', minimum: 0, maximum: 1, description: 'Minimum confidence threshold (0-1) for blast_radius dependency edges …' }` |
+| `mcp_server/tests/tool-input-schema.vitest.ts` | Added 3 acceptance cases (0.5, boundary 0, boundary 1) and 3 rejection cases (1.5 above max, -0.1 below min, 'high' non-numeric) |
+
+### R-007-10 — Score-time `affordances` exposure (T-C)
+
+**Decision:** DEFER — keep `affordances` as a compile-time-only internal scorer seam; do NOT expose via the public `advisor_recommend` input schema.
+
+**Rationale:**
+- The 010/004 implementation specifically routes affordance evidence through compiled skill graph metadata (via `skill_graph_compiler.py` emitting sanitized `derived.affordances[]` from skill files), not through request input. This is the design intent of the packet, not an oversight.
+- `affordance-normalizer.ts` was hardened against prompt-stuffing (URL/email/token strip, instruction-pattern denylist, control-character strip, trigger length cap). Exposing `affordances` as a public request field would re-introduce exactly the surface the normalizer defends against — caller-supplied free-form strings flowing into the scorer.
+- The 004 implementation summary (Key Decisions) explicitly states: "Ignore free-form `description` as a trigger source — descriptions are the highest-risk prompt-stuffing input. Structured fields are safer and easier to test." A public `affordances` array would be a strict superset of that risk.
+- No existing public consumer passes `affordances` to `scoreAdvisorPrompt`. The TS callers (`advisor-validate.ts`, `advisor-recommend.ts`, the bench scripts) all rely on compile-time projections. The seam is reachable only by direct in-process calls (e.g., bench harnesses, alternate scorer wrappers), where the caller is trusted.
+- Backward compat is preserved: existing public callers without `affordances` already work and remain unaffected.
+
+**Evidence — files modified:**
+
+| File | Change |
+|------|--------|
+| `mcp_server/skill_advisor/schemas/advisor-tool-schemas.ts` (lines 24-34) | Added DEFER-decision doc comment above `AdvisorRecommendInputSchema` documenting `AdvisorScoringOptions.affordances` as a compile-time-only seam, the prompt-stuffing rationale, and the path for internal callers (direct `scoreAdvisorPrompt` invocation) |
+
+**Files intentionally NOT modified (DEFER path):**
+- `mcp_server/skill_advisor/handlers/advisor-recommend.ts` — handler does not read `options.affordances` and should not (would violate the boundary above).
+- `mcp_server/skill_advisor/lib/scorer/types.ts` — `AdvisorScoringOptions.affordances` remains the internal seam.
+- Public docs — no public surface to update; the option is internal.
+
 ## Findings Deferred (with Defer-To pointers)
 [TBD per task ID]
 
@@ -155,6 +200,13 @@ $ cd mcp_server && npx --no-install vitest run \
 - `validate.sh --strict` per sub-phase: 001/002/003/005/006 FAILED-COSMETIC (template-section conformance, NOT contract violations); 004 PASSED. Cosmetic debt tracked as deferred P2 in 010/007.
 
 **Sync, not aspiration (per brief Hard Rule 1):** Every Wave-3 canonical evidence block reproduced in the 10 sub-phase doc files is verbatim from the orchestrator's recorded session — no fabricated test counts, no estimated durations, no "operator-pending" placeholders standing in for real output. Operator-pending markers in the post-T-B docs reflect commands that *cannot* run from a doc-edit context (sk-doc DQI script invocations, live MCP smoke tests against running tools), NOT commands that are merely inconvenient.
+
+**T-C scope (R-007-6 + R-007-10):**
+
+- `cd .opencode/skill/system-spec-kit/mcp_server && tsc --noEmit --composite false -p tsconfig.json` — **PASS** (no output; clean). Verified 2026-04-25 in 010-007-C worktree.
+- `cd .opencode/skill/system-spec-kit/mcp_server && vitest run tests/tool-input-schema.vitest.ts` — **PASS** (`Test Files 1 passed (1) | Tests 79 passed (79) | Duration 233ms`). 6 new T-C cases included (3 accept + 3 reject for `minConfidence`).
+- Backward compat: existing `code_graph_query` callers without `minConfidence` continue to pass schema validation (covered by the pre-existing `'code_graph_query accepts structural traversal options'` case at lines 503-514 of the test file, which omits `minConfidence`).
+- Affordance DEFER: no behavioural change — `AdvisorRecommendInputSchema.strict()` continues to reject `affordances` at the public boundary, matching the design intent.
 
 ## References
 - spec.md, plan.md, tasks.md, checklist.md (this folder)
