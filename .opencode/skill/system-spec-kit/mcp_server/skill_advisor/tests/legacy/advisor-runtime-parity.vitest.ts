@@ -5,7 +5,6 @@
 import { EventEmitter } from 'node:events';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { pathToFileURL } from 'node:url';
 import { describe, expect, it, vi } from 'vitest';
 import { handleClaudeUserPromptSubmit } from '../../../hooks/claude/user-prompt-submit.js';
 import { handleGeminiUserPromptSubmit } from '../../../hooks/gemini/user-prompt-submit.js';
@@ -32,11 +31,12 @@ vi.mock('node:child_process', () => ({
 
 export const RUNTIMES = ['claude', 'gemini', 'copilot', 'codex'] as const;
 type RuntimeId = (typeof RUNTIMES)[number];
-type RuntimeVariant = RuntimeId | 'copilot-wrapper' | 'opencode-plugin';
-type SpecKitSkillAdvisorPluginFactory = (
-  context: { directory: string },
-  options: { sourceSignatureOverride: string },
-) => Promise<{ onUserPromptSubmitted: (input: unknown) => Promise<unknown> }>;
+// 'opencode-plugin' was removed from the parity matrix: the plugin uses
+// OpenCode's `experimental.chat.system.transform` hook (system-message
+// injection), not the Claude-style `additionalContext` shape this matrix
+// asserts. The OpenCode plugin path is covered by
+// `mcp_server/skill_advisor/tests/compat/plugin-bridge.vitest.ts`.
+type RuntimeVariant = RuntimeId | 'copilot-wrapper';
 
 const fixturesDir = join(import.meta.dirname, 'advisor-fixtures');
 const CANONICAL_FIXTURES = [
@@ -53,7 +53,7 @@ function fixture(name: string): AdvisorHookResult {
 }
 
 function runtimeForVariant(variant: RuntimeVariant): AdvisorRuntime {
-  if (variant === 'copilot-wrapper' || variant === 'opencode-plugin') {
+  if (variant === 'copilot-wrapper') {
     return 'copilot';
   }
   return variant;
@@ -93,35 +93,6 @@ function promptInput(runtime: RuntimeId) {
       return exhaustive;
     }
   }
-}
-
-function makePluginChild(result: AdvisorHookResult) {
-  const child = new EventEmitter() as EventEmitter & {
-    stdout: EventEmitter & { setEncoding: ReturnType<typeof vi.fn> };
-    stderr: EventEmitter & { setEncoding: ReturnType<typeof vi.fn> };
-    stdin: { end: ReturnType<typeof vi.fn> };
-  };
-  child.stdout = new EventEmitter() as EventEmitter & { setEncoding: ReturnType<typeof vi.fn> };
-  child.stderr = new EventEmitter() as EventEmitter & { setEncoding: ReturnType<typeof vi.fn> };
-  child.stdout.setEncoding = vi.fn();
-  child.stderr.setEncoding = vi.fn();
-  child.stdin = { end: vi.fn() };
-  queueMicrotask(() => {
-    child.stdout.emit('data', JSON.stringify({
-      brief: renderAdvisorBrief(result),
-      status: result.status,
-      metadata: {
-        freshness: result.freshness,
-        durationMs: result.metrics.durationMs,
-        cacheHit: result.metrics.cacheHit,
-        subprocessInvoked: result.metrics.subprocessInvoked,
-        recommendationCount: result.metrics.recommendationCount,
-        tokenCap: result.metrics.tokenCap,
-      },
-    }));
-    child.emit('close', 0);
-  });
-  return child;
 }
 
 function makeAdvisorSubprocessChild() {
@@ -194,29 +165,6 @@ async function runRuntimeVariant(
     return normalizeRuntimeOutput(runtime, output);
   }
 
-  if (variant === 'opencode-plugin') {
-    mockedBridge.spawn.mockImplementationOnce(() => makePluginChild(result) as never);
-    const pluginUrl = pathToFileURL(join(
-      import.meta.dirname,
-      '..',
-      '..',
-      '..',
-      '..',
-      '..',
-      '..',
-      'plugins',
-      'spec-kit-skill-advisor.js',
-    )).href;
-    const { default: SpecKitSkillAdvisorPlugin } = await import(pluginUrl) as {
-      default: SpecKitSkillAdvisorPluginFactory;
-    };
-    const hooks = await SpecKitSkillAdvisorPlugin({ directory: process.cwd() }, {
-      sourceSignatureOverride: `${result.generatedAt}:${result.brief ?? ''}`,
-    });
-    const output = await hooks.onUserPromptSubmitted(promptInput('copilot'));
-    return normalizeRuntimeOutput(runtime, output);
-  }
-
   const output = await handleCopilotUserPromptSubmit(promptInput('copilot'), {
     ...dependencies,
     writeInstructions: vi.fn(async () => ({
@@ -235,7 +183,7 @@ describe('advisor runtime parity', () => {
 
   it.each(CANONICAL_FIXTURES)('%s preserves visible brief parity where hooks can inject and keeps Copilot file-only', async (fixtureName) => {
     const result = fixture(fixtureName);
-    const variants: readonly RuntimeVariant[] = [...RUNTIMES, 'copilot-wrapper', 'opencode-plugin'];
+    const variants: readonly RuntimeVariant[] = [...RUNTIMES, 'copilot-wrapper'];
     const outputs = await Promise.all(
       variants.map(async (variant) => [variant, await runRuntimeVariant(variant, result)] as const),
     );
@@ -249,7 +197,6 @@ describe('advisor runtime parity', () => {
         copilot: { additionalContext: null },
         codex: { additionalContext: 'Advisor: stale (cold-start timeout)' },
         'copilot-wrapper': { additionalContext: null },
-        'opencode-plugin': { additionalContext: null },
       });
       return;
     }
@@ -261,7 +208,6 @@ describe('advisor runtime parity', () => {
       copilot: { additionalContext: null },
       codex: { additionalContext: visibleBriefs[0] },
       'copilot-wrapper': { additionalContext: null },
-      'opencode-plugin': { additionalContext: visibleBriefs[0] },
     });
   });
 
