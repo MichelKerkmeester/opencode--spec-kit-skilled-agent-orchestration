@@ -1,0 +1,74 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-04-25T08:09:44.753Z",
+  "corpusSha": "4b50b4ad7666d341fa43111ec05986430c855e4d0f5b8578a469f9a78e417e4d",
+  "corpusRows": 200,
+  "brierScore": 0.204829,
+  "expectedCalibrationError": 0.138314,
+  "reliability": [
+    {
+      "bucket": "0.0-0.1",
+      "n": 10,
+      "accuracy": 1,
+      "avgConfidence": 0
+    },
+    {
+      "bucket": "0.1-0.2",
+      "n": 0,
+      "accuracy": 0,
+      "avgConfidence": 0
+    },
+    {
+      "bucket": "0.2-0.3",
+      "n": 0,
+      "accuracy": 0,
+      "avgConfidence": 0
+    },
+    {
+      "bucket": "0.3-0.4",
+      "n": 0,
+      "accuracy": 0,
+      "avgConfidence": 0
+    },
+    {
+      "bucket": "0.4-0.5",
+      "n": 0,
+      "accuracy": 0,
+      "avgConfidence": 0
+    },
+    {
+      "bucket": "0.5-0.6",
+      "n": 0,
+      "accuracy": 0,
+      "avgConfidence": 0
+    },
+    {
+      "bucket": "0.6-0.7",
+      "n": 0,
+      "accuracy": 0,
+      "avgConfidence": 0
+    },
+    {
+      "bucket": "0.7-0.8",
+      "n": 0,
+      "accuracy": 0,
+      "avgConfidence": 0
+    },
+    {
+      "bucket": "0.8-0.9",
+      "n": 102,
+      "accuracy": 0.705882,
+      "avgConfidence": 0.845714
+    },
+    {
+      "bucket": "0.9-1.0",
+      "n": 88,
+      "accuracy": 0.897727,
+      "avgConfidence": 0.936363
+    }
+  ],
+  "tolerance": {
+    "brierDeltaPct": 50,
+    "eceDeltaPct": 50
+  }
+}
