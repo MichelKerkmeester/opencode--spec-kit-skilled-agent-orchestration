@@ -9,11 +9,11 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation"
-    last_updated_at: "2026-04-25T18:50:00Z"
+    last_updated_at: "2026-04-25T19:00:00Z"
     last_updated_by: "claude-opus-4-7-orchestrator-wave-1-integration"
-    recent_action: "T-B + T-C + T-D + T-E cherry-picked onto main. T-E unskips trust-badges SQL tests via DI; latent better-sqlite3 binding bug fixed (resultIds bound as TEXT). Formatter return type harmonized to T-D's TrustBadgeFetchResult shape; tests dereference fetchResult.snapshots.get(...)."
-    next_safe_action: "Cherry-pick T-F; final tsc + vitest; commit Wave 2 integration; push"
-    completion_pct: 50
+    recent_action: "Wave 1 fully integrated. All 6 batches (T-A through T-F) cherry-picked onto main. T-F closes 11 cleanup findings (R-007-12/16/17/18/P2-2/4/5/6/7/9/12) via cache-key generation counter, INSTALL_GUIDE Python path fix, tool-count canonicalization (51), query.ts micro-fixes (limit+1 overflow detection, multi-subject seed preservation, failureFallback.code, shared edge-mapper dedup), affordance debug counters, phase alias note."
+    next_safe_action: "Run final tsc + vitest sweep; commit Wave 2 integration meta if needed; push"
+    completion_pct: 95
     blockers: []
     key_files:
       - "spec.md"
@@ -38,13 +38,14 @@ _memory:
 <!-- SPECKIT_LEVEL: 2 -->
 
 ## Status
-T-A, T-B, T-C, T-D, T-E complete. T-F pending integration.
+**Wave 1 fully integrated.** T-A, T-B, T-C, T-D, T-E, T-F all complete and on main.
 
 - **T-A (detect_changes MCP wiring):** detect_changes registered as MCP tool across dispatcher, JSON schema, Zod validator, allowed-parameter ledger, and 6 umbrella docs. Closes R-007-2, R-007-14.
 - **T-B (verification evidence sync):** Wave-3 canonical evidence (`tsc --noEmit` exit 0; `vitest run` 9 passed | 1 skipped (10), 90 passed | 3 skipped (93), 1.34s; per-sub-phase `validate.sh --strict` results) synced across 010/001/002/003/005/006 sub-phase implementation-summary.md + checklist.md files. Premature `[x]` PASS marks unchecked and rewritten with the 3-state convention (`[x]` real evidence captured | `[ ] OPERATOR-PENDING` command can't run from this context | `[ ] BLOCKED` blocked with reason). Closes R-007-1, R-007-5, R-007-7, R-007-15, R-007-19, R-007-20, R-007-21.
 - **T-C (public API surface gaps):** `minConfidence` exposed end-to-end on `code_graph_query` (Zod schema, JSON schema, allowed-parameter ledger, accept/reject tests). `affordances` DEFER decision: stays compile-time-only scorer seam (prompt-injection surface concern). Closes R-007-6, R-007-10.
 - **T-D (sanitization hardening):** 7 files hardened (`detect-changes.ts` canonical-root path containment, `diff-parser.ts` per-side hunk counters, `skill_graph_compiler.py` validate-reject `conflicts_with` + broadened denylist, `affordance-normalizer.ts` broadened denylist, `formatters/search-results.ts` merge-per-field trustBadges + allowlisted age strings + trace flag, `phase-runner.ts` duplicate-output rejection, `code-graph-db.ts`/`query.ts:614-615`/`code-graph-context.ts` `reason`/`step` allowlist on read path). New shared adversarial fixture `affordance-injection-fixtures.json` consumed by both TS and Python tests. Closes R-007-3, 4, 8, 9, 11, P2-1, P2-3, P2-8, P2-10, P2-11. Verify: tsc clean; vitest 37/37 PASS; pytest 57/57 PASS.
 - **T-E (test rig fix — DI strategy):** `fetchTrustBadgeSnapshots` exposes optional `dbGetter` parameter (defaults to `requireDb`). Three previously-skipped trust-badges SQL tests unskipped (3/3 pass). Latent production bug fixed: `resultIds.map(String)` at bind time so `CAST(rid.memory_id AS TEXT)` matches TEXT-typed `causal_edges.{source_id,target_id}` columns (better-sqlite3 was binding JS numbers as REAL → `'11.0'` instead of `'11'`). Formatter return type harmonized to T-D's `TrustBadgeFetchResult` shape during integration; tests now dereference `fetchResult.snapshots.get(...)`. Closes R-007-13.
+- **T-F (doc cleanup + query.ts micro-fixes + cache invalidation):** memory_search cache key includes causal-edge generation counter (folded only when `enableCausalBoost=true`); INSTALL_GUIDE Python smoke-test path fixed; tool count canonicalized to 51 (`TOOL_DEFINITIONS.length`) across all umbrella docs with explicit deferred-handlers-do-not-count note; broken `FEATURE_CATALOG_IN_SIMPLE_TERMS` link removed; `structural-indexer.ts` `runPhases` wrapped in try/catch/finally so error outcome metric emits; `query.ts` requests `limit + 1` for true overflow detection, preserves seed nodes on multi-subject sibling failures, adds stable `failureFallback.code` + new `spec_kit.graph.blast_radius_failure_total` metric, and dedupes 4 switch branches via shared edge mapper; affordance debug counters (received/accepted/dropped_unsafe/dropped_empty/dropped_unknown_skill) added to TS + Python; 010/006 alias note for renumber. Closes R-007-12, 16, 17, 18, P2-2, P2-4, P2-5, P2-6, P2-7, P2-9, P2-12.
 
 ## Findings Closed
 
@@ -263,6 +264,93 @@ Created `mcp_server/skill_advisor/tests/__shared__/affordance-injection-fixtures
 - `cd mcp_server && npx --no-install vitest run tests/memory/trust-badges.test.ts` → 3 passed (3).
 - `cd mcp_server && npx --no-install vitest run tests/response-profile-formatters.vitest.ts` → 2 passed (2).
 - Sanity-check on causal suites → 9 passed (9), no regression.
+
+### T-F — Doc + Label Cleanup (closes R-007-12, 16, 17, 18, P2-2, P2-4, P2-5, P2-6, P2-7, P2-9, P2-12)
+
+#### R-007-12 — Memory_search cache invalidation on causal-edge mutations
+**Strategy:** include a causal-edges generation counter in the `memory_search` cache key. Mutations bump a module-level counter; readers fold the counter into the cache key only when `enableCausalBoost=true` so unrelated callers do not suffer needless cache misses.
+
+**Evidence — files modified:**
+
+| File | Change |
+|------|--------|
+| `mcp_server/lib/storage/causal-edges.ts` | New `causalEdgesGeneration` counter, bumped inside `invalidateDegreeCache()` (the universal call site for all mutators); exported `getCausalEdgesGeneration()` |
+| `mcp_server/lib/search/search-utils.ts` | New optional `causalEdgesGeneration?: number` on `CacheArgsInput`; gated by `enableCausalBoost === true` so the cache key stays stable for non-causal callers |
+| `mcp_server/handlers/memory-search.ts` | Imports `causal-edges`; reads generation when `enableCausalBoost` is true; threads through to `buildCacheArgs` |
+
+#### R-007-16 — INSTALL_GUIDE smoke-test cwd bug
+`mcp_server/INSTALL_GUIDE.md` §4c: after `cd mcp_server`, the Python invocation
+now uses the cwd-relative path `python3 skill_advisor/tests/python/test_skill_advisor.py`.
+
+#### R-007-17 — Tool-count canonicalization
+**Canonical source-of-truth:** `TOOL_DEFINITIONS.length` in
+`mcp_server/tool-schemas.ts` (currently 51). Internal helper handlers and
+deferred / not-yet-wired handlers do NOT count.
+
+**Synced:**
+- `/README.md` lines 7, 56, 1261, 1281, 1301 → "60 MCP tools" (51 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking) and "51 tools, 7 layers + L8 graph/advisor + L9 coverage"
+- `/README.md` line 677 → "51-tool memory and code-graph surface"
+- `.opencode/skill/system-spec-kit/README.md` line 62 → 51 (with explicit canonical-source note)
+- `.opencode/skill/system-spec-kit/mcp_server/README.md` lines ~1274-1283 → table updated to 51 with L8 + L9 rows added; "deferred handlers do NOT count" footnote
+
+#### R-007-18 — Broken FEATURE_CATALOG_IN_SIMPLE_TERMS.md link
+Removed the dangling Related-Documents link in `/README.md` line 1288 and
+softened the FAQ wording: the simple-terms companion is now described as a
+"future docs deliverable" rather than an existing artifact.
+
+#### R-007-P2-2 — `runPhases` try/catch/finally for error-outcome metrics
+`code_graph/lib/structural-indexer.ts::indexFiles` now wraps `runPhases` in a
+try/catch. The catch flips `scanOutcomeRef.value = 'error'` and emits the
+`spec_kit.graph.scan_duration_ms` histogram with `outcome: 'error'` so the
+metric fires even when a prior phase short-circuits the runner. Original
+error is rethrown unchanged.
+
+#### R-007-P2-4 — `computeBlastRadius` true-overflow detection
+`code_graph/handlers/query.ts::computeBlastRadius` now records
+`totalAffectedBeforeSlice = affectedByFile.size` BEFORE slicing, then sets
+`overflowed = totalAffectedBeforeSlice > limit`. Previously the
+`affectedFiles.length >= limit` check false-positived whenever the result
+set happened to equal `limit` exactly.
+
+#### R-007-P2-5 — Multi-subject blast-radius preserves resolved seeds
+Same handler: when one candidate fails to resolve in the multi-subject loop,
+the response now includes the already-resolved sibling seeds as
+`preservedSeedNodes` (instead of returning an empty `nodes: []`). The
+`partialResult` now also carries those seeds so the failure-fallback payload
+is genuinely useful for callers.
+
+#### R-007-P2-6 — Stable `failureFallback.code` + warning log + metric
+- Extended `BlastRadiusFailureFallback` with optional `code: BlastRadiusFailureCode`
+  (literal union: `limit_reached | unresolved_subject | ambiguous_subject | empty_source | compute_error`)
+- All five failure-fallback sites now set `code` deterministically.
+- The `compute_error` site additionally emits `console.warn` and increments
+  the new `spec_kit.graph.blast_radius_failure_total{code}` counter (added to
+  `SPECKIT_METRIC_DEFINITIONS` and `SpeckitMetricName`).
+
+#### R-007-P2-7 — Shared relationship-edge mapper
+4 near-duplicate switch branches (`calls_from`, `calls_to`, `imports_from`,
+`imports_to`) collapsed into 2 case groups using new helpers:
+`mapOutboundRelationshipEdge`, `mapInboundRelationshipEdge`,
+`extractOutboundFilePaths`, `extractInboundFilePaths`. The `includeLine` flag
+preserves the existing behavioural difference (calls_* include the line,
+imports_* omit it).
+
+#### R-007-P2-9 — Affordance debug counters (TS + Python parity)
+- `mcp_server/skill_advisor/lib/affordance-normalizer.ts`: new module-level
+  `affordanceNormalizerCounters` with 5 fields (`received`, `accepted`,
+  `dropped_unsafe`, `dropped_empty`, `dropped_unknown_skill`); `normalize()`
+  bumps them; exported `getAffordanceNormalizerCounters()` + reset helper.
+- `mcp_server/skill_advisor/scripts/skill_graph_compiler.py`: matching
+  `AFFORDANCE_NORMALIZER_COUNTERS` dict + `get_/reset_` helpers;
+  `normalize_affordance_input()` bumps them. `dropped_unsafe` is reserved
+  for future per-input prompt-injection rejections — current sanitizers
+  scrub at the phrase level rather than rejecting whole inputs.
+
+#### R-007-P2-12 — Phase-naming alias note (012 → 010)
+Added an explicit alias block at the top of `010/006-docs-and-catalogs-rollup/`
+`spec.md`, `checklist.md`, and `implementation-summary.md` documenting that
+phase 012 was renumbered to wrapper 010 and both labels refer to the same
+packet.
 
 ## Findings Deferred (with Defer-To pointers)
 [TBD per task ID]

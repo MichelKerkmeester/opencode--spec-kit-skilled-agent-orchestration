@@ -29,6 +29,15 @@ _memory:
 
 <!-- SPECKIT_LEVEL: 2 -->
 
+> **Phase-naming alias (R-007-P2-12):** This packet was authored under the
+> historical label `012/006`. During refactor `bdd3c831d`, the parent phase
+> was renumbered from `012-graph-impact-and-affordance-uplift` to the
+> wrapper `010-graph-impact-and-affordance-uplift`. Both labels refer to the
+> same packet; the canonical path is now
+> `026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/006-docs-and-catalogs-rollup/`.
+> Existing `012/006` references in body text are intentional — they point
+> to the same documents.
+
 ---
 
 ## 1. METADATA

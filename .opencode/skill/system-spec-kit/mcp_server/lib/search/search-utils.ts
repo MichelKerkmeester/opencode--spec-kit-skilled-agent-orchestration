@@ -55,6 +55,15 @@ interface CacheArgsInput {
   enableCausalBoost: boolean;
   includeTrace?: boolean;
   cacheVersion?: string;
+  /**
+   * R-007-12: Causal-edges generation counter snapshot. When `enableCausalBoost`
+   * is true, callers should pass the current generation from
+   * `causalEdges.getCausalEdgesGeneration()` so that any causal-edge mutation
+   * naturally invalidates this cache key on the next lookup.
+   * Optional and ignored when undefined to keep cache keys stable for callers
+   * that do not depend on the causal graph.
+   */
+  causalEdgesGeneration?: number;
 }
 
 function resolveFusionIntentContract(
@@ -159,12 +168,19 @@ function buildCacheArgs({
   enableCausalBoost,
   includeTrace = false,
   cacheVersion,
+  causalEdgesGeneration,
 }: CacheArgsInput): Record<string, unknown> {
   const resolvedFusionIntent = resolveFusionIntentContract({
     detectedIntent,
     adaptiveFusionIntent,
     query: normalizedQuery,
   });
+  // R-007-12: Only include causal-edges generation in the cache key when the
+  // caller has actually opted into causal boost; otherwise cache keys remain
+  // stable for callers that do not consume the causal graph.
+  const includeCausalGeneration = enableCausalBoost === true
+    && typeof causalEdgesGeneration === 'number'
+    && Number.isFinite(causalEdgesGeneration);
   return {
     query: normalizedQuery,
     concepts: hasValidConcepts ? concepts : undefined,
@@ -194,6 +210,7 @@ function buildCacheArgs({
     enableCausalBoost,
     includeTrace,
     cacheVersion,
+    causalEdgesGeneration: includeCausalGeneration ? causalEdgesGeneration : undefined,
   };
 }
 

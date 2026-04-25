@@ -520,7 +520,7 @@ cd .opencode/skill/system-spec-kit/mcp_server
   skill_advisor/tests/lane-attribution.test.ts \
   skill_advisor/tests/routing-fixtures.affordance.test.ts \
   --reporter=dot
-python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/python/test_skill_advisor.py
+python3 skill_advisor/tests/python/test_skill_advisor.py
 ```
 
 PASS criterion: affordance-normalizer privacy assertions pass; `lane-attribution.test.ts` confirms affordance evidence appears through `derived_generated` and `graph_causal` only; `routing-fixtures.affordance.test.ts` shows recall lift with explicit author triggers retaining precedence; Python compiler tests keep `ALLOWED_ENTITY_KINDS` unchanged.

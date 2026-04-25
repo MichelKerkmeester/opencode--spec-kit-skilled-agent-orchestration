@@ -27,6 +27,12 @@ _memory:
 
 <!-- SPECKIT_LEVEL: 2 -->
 
+> **Phase-naming alias (R-007-P2-12):** Authored under the historical label
+> `012/006`. The parent phase has since been renumbered to the wrapper
+> `010-graph-impact-and-affordance-uplift`; both labels refer to the same
+> packet. Canonical path:
+> `026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/006-docs-and-catalogs-rollup/`.
+
 ---
 
 ## Metadata

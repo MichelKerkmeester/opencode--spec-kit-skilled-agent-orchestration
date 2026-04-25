@@ -1278,9 +1278,11 @@ Tools are organized into layers based on what they do. Lower layers handle every
 | L3 | Discovery | 4 | 800 | Browse what is stored, check system health |
 | L4 | Mutation | 4 | 500 | Update, delete, validate and bulk cleanup |
 | L5 | Lifecycle | 4 | 600 | Checkpoints and lifecycle snapshot management |
-| L6 | Analysis | 10 | 1,200 | Trace decisions, measure learning, run evaluations |
-| L7 | Maintenance | 10 | 1,000 | Re-index files, review history, run bulk imports |
-| | **Total** | **47** | **7,600** | |
+| L6 | Analysis | 8 | 1,200 | Trace decisions, measure learning, run evaluations |
+| L7 | Maintenance | 5 | 1,000 | Re-index files, review history, run bulk imports |
+| L8 | Code Graph + Skill Graph + CocoIndex bridge + Skill Advisor | 15 | 1,400 | Code graph scan/query/status/context, `detect_changes`, skill graph + advisor (`advisor_recommend`/`advisor_status`/`advisor_validate`), CocoIndex bridge (`ccc_status`/`ccc_reindex`/`ccc_feedback`) |
+| L9 | Coverage / Deep Loop Graph | 4 | 600 | `deep_loop_graph_upsert` / `_query` / `_status` / `_convergence` |
+| | **Total** | **51** | **9,600** | Canonical: `TOOL_DEFINITIONS.length` in `tool-schemas.ts`; deferred / not-yet-wired handlers do NOT count |
 
 Token budgets control how much content each tool can return per call. The budget prevents any single tool from flooding the AI's context window. When a response exceeds its budget, results are truncated from the bottom up until they fit.
 

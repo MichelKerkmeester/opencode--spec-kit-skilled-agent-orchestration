@@ -8,6 +8,12 @@ contextType: "implementation"
 
 <!-- SPECKIT_LEVEL: 2 -->
 
+> **Phase-naming alias (R-007-P2-12):** This packet was authored under the
+> historical label `012/006`. The parent phase has since been renumbered to
+> the wrapper `010-graph-impact-and-affordance-uplift`; both labels refer to
+> the same packet (canonical path
+> `010-graph-impact-and-affordance-uplift/006-docs-and-catalogs-rollup/`).
+
 ## P2 — Doc Quality
 - [ ] sk-doc DQI ≥85 on `/README.md` — OPERATOR-PENDING. Pre-flight self-check estimates ~87 by structural template adherence (anchor pairs balanced, H2 emoji preserved, `####` heading + `&nbsp;` divider pattern preserved, footer version line bumped to 4.3 with Phase 012 mention). **Estimate is advisory only, NOT canonical sign-off** (R-007-15 — premature PASS). Operator must run `python3 .opencode/skill/sk-doc/scripts/validate_document.py README.md --json` to attest the numeric ≥85 score.
 - [ ] sk-doc DQI ≥85 on `system-spec-kit/SKILL.md` — OPERATOR-PENDING. Pre-flight self-check estimates ~86 (anchor pairs balanced 7+7, table-row additions preserve column count + pipe alignment, Key Concepts bullets follow existing `**Term** - description` pattern). **Estimate is advisory only, NOT canonical sign-off** (R-007-15). Operator must run `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/SKILL.md --json --type skill`.

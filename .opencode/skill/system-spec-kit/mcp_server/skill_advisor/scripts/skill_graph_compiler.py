@@ -113,6 +113,47 @@ AFFORDANCE_TOKEN_PATTERN = re.compile(r"\b(?:bearer|token|secret|apikey|api_key)
 
 
 # ───────────────────────────────────────────────────────────────
+# R-007-P2-9: Affordance normalization debug counters
+# ───────────────────────────────────────────────────────────────
+# Mirror of the TS-side counters in
+# `skill_advisor/lib/affordance-normalizer.ts`. Operators can read these via
+# `get_affordance_normalizer_counters()` to diagnose why affordance evidence
+# does or does not reach the compiled graph. Counters are monotonic across
+# the lifetime of the process; tests may call
+# `reset_affordance_normalizer_counters()` between cases.
+#
+# Drop category semantics:
+#   - `received`             : raw affordance inputs handed to
+#                              `normalize_affordance_input()`
+#   - `accepted`             : inputs that produced a normalized affordance
+#   - `dropped_unknown_skill`: skillId missing or scrubbed to empty
+#   - `dropped_unsafe`       : retained for future prompt-injection / sanitizer
+#                              drop tracking (currently unused because the
+#                              sanitizer scrubs at the phrase level rather
+#                              than rejecting whole inputs)
+#   - `dropped_empty`        : skillId resolved but no triggers + no edges
+
+AFFORDANCE_NORMALIZER_COUNTERS: Dict[str, int] = {
+    "received": 0,
+    "accepted": 0,
+    "dropped_unsafe": 0,
+    "dropped_empty": 0,
+    "dropped_unknown_skill": 0,
+}
+
+
+def get_affordance_normalizer_counters() -> Dict[str, int]:
+    """Return a copy of the affordance-normalizer drop counters."""
+    return dict(AFFORDANCE_NORMALIZER_COUNTERS)
+
+
+def reset_affordance_normalizer_counters() -> None:
+    """Reset the affordance-normalizer drop counters (test helper)."""
+    for key in AFFORDANCE_NORMALIZER_COUNTERS:
+        AFFORDANCE_NORMALIZER_COUNTERS[key] = 0
+
+
+# ───────────────────────────────────────────────────────────────
 # 2. DISCOVERY
 # ───────────────────────────────────────────────────────────────
 
@@ -415,14 +456,26 @@ def normalize_affordance_edges(raw_affordance: dict) -> List[dict]:
 
 
 def normalize_affordance_input(raw_affordance: Any) -> Optional[dict]:
-    """Normalize one allowlisted affordance object for derived inputs."""
+    """Normalize one allowlisted affordance object for derived inputs.
+
+    R-007-P2-9: Bumps `AFFORDANCE_NORMALIZER_COUNTERS` to give operators
+    visibility into how many affordance inputs are received, accepted, and
+    dropped (and why) when compiling the skill graph.
+    """
+    AFFORDANCE_NORMALIZER_COUNTERS["received"] += 1
+
     if not isinstance(raw_affordance, dict):
+        AFFORDANCE_NORMALIZER_COUNTERS["dropped_unknown_skill"] += 1
         return None
 
     skill_id = sanitize_affordance_skill_id(
         raw_affordance.get("skillId")
         or raw_affordance.get("skill_id")
     )
+    if not skill_id:
+        AFFORDANCE_NORMALIZER_COUNTERS["dropped_unknown_skill"] += 1
+        return None
+
     triggers: List[str] = []
     for raw_phrase in (
         raw_affordance.get("name"),
@@ -441,8 +494,10 @@ def normalize_affordance_input(raw_affordance: Any) -> Optional[dict]:
 
     deduped_triggers = list(dict.fromkeys(triggers))[:12]
     edges = normalize_affordance_edges(raw_affordance)
-    if not skill_id or (not deduped_triggers and not edges):
+    if not deduped_triggers and not edges:
+        AFFORDANCE_NORMALIZER_COUNTERS["dropped_empty"] += 1
         return None
+    AFFORDANCE_NORMALIZER_COUNTERS["accepted"] += 1
     return {
         "skill_id": skill_id,
         "derived_triggers": deduped_triggers,

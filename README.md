@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 21 skills, 21 command entry points, 59 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 21 skills, 21 command entry points, 60 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
 >
 > Don't buy me unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
@@ -53,7 +53,7 @@ The framework adds three layers on top of the base platform:
 | **🤖 10 Agents** | 10 custom specialists, multi-runtime |
 | **🎯 21 Skills** | Code, docs, git, prompts, MCP, research, review, improvement, cross-AI |
 | **⌨️ 21 Commands** | 6 spec_kit + 4 memory + 6 create + 2 improve + 2 doctor + 1 agent_router |
-| **🔧 59 MCP Tools** | spec_kit_memory, native Skill Advisor, code mode, semantic search, and sequential thinking |
+| **🔧 60 MCP Tools** | spec_kit_memory (51), code mode (7), CocoIndex (1), sequential thinking (1) — see canonical count in FAQ |
 | **🔍 CocoIndex Code** | Semantic code search via vector embeddings - natural-language discovery across 28+ languages |
 | **🏗️ Code Graph** | Structural indexer + SQLite - call graphs, imports, hierarchy, LLM-oriented neighborhoods, graph-first routing |
 | **⚡ Runtime Coverage** | OpenCode, Codex CLI, Claude Code, Gemini CLI, plus Copilot MCP/startup support |
@@ -674,7 +674,7 @@ For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_
 **system-spec-kit**
 - Mandatory orchestrator for all file modifications - activates automatically for any code file change
 - Creates numbered spec folders with CORE + ADDENDUM template architecture across 4 levels (1-3+)
-- Integrates the 47-tool memory and code-graph surface with constitutional-tier support, session bootstrap, and hybrid 5-channel retrieval
+- Integrates the 51-tool memory and code-graph surface with constitutional-tier support, session bootstrap, and hybrid 5-channel retrieval
 - Manages the CORE + ADDENDUM v2.2 template set, 20 validation rules, the spec-kit script suite, and the feature-catalog / testing-playbook documentation surfaces
 
 **sk-doc**
@@ -1258,12 +1258,12 @@ A: Define the agent in `.opencode/agent/` (the source of truth), then copy the a
 &nbsp;
 **Q: How many MCP tools are there and where are they defined?**
 
-A: 56 total across 4 native MCP servers: 47 `spec_kit_memory` tools (21 memory + 4 checkpoint + 2 task + 2 eval + 4 code_graph + 4 skill_graph + 3 ccc + 3 session + 4 deep_loop_graph), 7 code mode tools, 1 semantic code search tool (`cocoindex_code`), and 1 sequential thinking tool. All server bindings are defined in `opencode.json`. The 47 `spec_kit_memory` tool definitions live in `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`.
+A: 60 total across 4 native MCP servers, sourced from the registered MCP-dispatched tools only (internal helper handlers and any deferred / not-yet-wired handlers are intentionally excluded). The canonical count for the `spec_kit_memory` server is `TOOL_DEFINITIONS.length` in `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` (currently 51). Breakdown: 51 `spec_kit_memory` tools (3 L1 orchestration + 4 L2 core + 4 L3 discovery + 4 L4 mutation + 4 L5 lifecycle + 8 L6 analysis + 5 L7 maintenance + 5 code graph + 7 skill graph/advisor + 3 CocoIndex bridge + 4 deep loop graph), 7 code mode tools, 1 semantic code search tool (`cocoindex_code`), and 1 sequential thinking tool. All server bindings are defined in `opencode.json`.
 &nbsp;
 
 **Q: What is the feature catalog?**
 
-A: The feature catalog is a 291-entry reference across 22 categories documenting every capability of the memory system. It comes in two versions: a technical reference and a simple-terms companion with plain-language explanations. Both are in `.opencode/skill/system-spec-kit/feature_catalog/`.
+A: The feature catalog is a 291-entry reference across 22 categories documenting every capability of the memory system. The technical reference lives at `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md`. A plain-language companion (`FEATURE_CATALOG_IN_SIMPLE_TERMS.md`) is tracked as a future docs deliverable but has not been authored yet.
 
 <!-- /ANCHOR:faq -->
 
@@ -1278,14 +1278,13 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 
 - **[→ AGENTS.md](AGENTS.md)** - Agent routing, gate definitions, behavior rules
 - **[→ Spec Kit README](.opencode/skill/system-spec-kit/README.md)** - Spec folder workflow, CORE + ADDENDUM v2.2 template set, validation rules
-- **[→ MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md)** - Memory and code-graph API reference (47 tools, 7 layers)
+- **[→ MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md)** - Memory and code-graph API reference (51 tools, 7 layers + L8 graph/advisor + L9 coverage)
 - **[→ Install Guide](.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md)** - MCP server setup, embedding providers
 - **[→ Deployment Notes](DEPLOYMENT.md)** - Docker anti-patterns, Copilot notes, and session-resume auth flag
 - **[→ Architecture](.opencode/skill/system-spec-kit/ARCHITECTURE.md)** - API boundary contract
 - **[→ sk-doc Skill](.opencode/skill/sk-doc/SKILL.md)** - Documentation standards, DQI scoring
 - **[→ Skills Index](.opencode/skill/README.md)** - All 21 skills with invocation patterns
-- **[→ Feature Catalog](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** - 291-entry technical reference
-- **[→ Feature Catalog (Simple Terms)](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)** - Plain-language companion
+- **[→ Feature Catalog](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** - 291-entry technical reference (a plain-language companion is tracked as a future docs item)
 - **[→ Phase 017 Changelog](.opencode/changelog/01--system-spec-kit/v3.4.0.2.md)** - Release notes for H-56-1, session-resume auth binding, and Copilot parity
 - **[→ Enterprise Example](AGENTS_example_fs_enterprises.md)** - Example AGENTS.md for full-stack enterprise
 
@@ -1298,4 +1297,4 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.4 | Last updated: 2026-04-25 | Framework: 12 agents, 21 skills, 23 commands, 61 MCP tools (52 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking). Phase 012 adds the read-only `detect_changes` MCP tool, `blast_radius` enrichment, Skill Advisor affordance evidence, and Memory causal trust display badges. Phase 010/007 T-A wired `detect_changes` into the MCP catalog (dispatcher + JSON schema + Zod validator).*
+*Documentation version: 4.4 | Last updated: 2026-04-25 | Framework: 12 agents, 21 skills, 23 commands, 60 MCP tools (51 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking; canonical source `TOOL_DEFINITIONS` in `tool-schemas.ts`; deferred / internal-only handlers do NOT count). Phase 012 adds the read-only `detect_changes` MCP tool, `blast_radius` enrichment, Skill Advisor affordance evidence, and Memory causal trust display badges. Phase 010/007 T-A wired `detect_changes` into the MCP catalog (dispatcher + JSON schema + Zod validator).*

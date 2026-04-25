@@ -147,7 +147,35 @@ interface CausalChainNode {
 
 let db: Database.Database | null = null;
 
+/**
+ * Monotonically-increasing generation counter bumped on every causal-edge
+ * mutation (insert/update/delete/rollback). Read-only callers can include this
+ * value in cache keys (e.g. memory_search when `enableCausalBoost=true`) so
+ * cached responses derived from the causal graph become stale on the next
+ * lookup without requiring a wholesale tool-cache invalidation.
+ *
+ * R-007-12 — targeted memory_search cache invalidation.
+ */
+let causalEdgesGeneration = 0;
+
+function bumpCausalEdgesGeneration(): void {
+  // Wrap counter near MAX_SAFE_INTEGER to avoid overflow in ultra-long-lived
+  // Processes; consumers only compare for inequality, so wrapping is safe.
+  causalEdgesGeneration = causalEdgesGeneration >= Number.MAX_SAFE_INTEGER
+    ? 1
+    : causalEdgesGeneration + 1;
+}
+
+function getCausalEdgesGeneration(): number {
+  return causalEdgesGeneration;
+}
+
 function invalidateDegreeCache(): void {
+  // R-007-12: bump the causal-edges generation FIRST so any cache key that
+  // includes it (e.g. memory_search when enableCausalBoost=true) becomes
+  // stale on the next read without invalidating unrelated tool entries.
+  bumpCausalEdgesGeneration();
+
   try {
     // H1 FIX: Use db-specific cache invalidation instead of the no-op global version
     if (db) {
@@ -1007,6 +1035,9 @@ export {
   countEdgesForNode,
   touchEdgeAccess,
   getStaleEdges,
+
+  // R-007-12: Generation counter for memory_search cache invalidation
+  getCausalEdgesGeneration,
 };
 
 /**

@@ -6,6 +6,7 @@
 ──────────────────────────────────────────────────────────────── */
 
 import * as toolCache from '../lib/cache/tool-cache.js';
+import * as causalEdges from '../lib/storage/causal-edges.js';
 import * as sessionManager from '../lib/session/session-manager.js';
 import * as intentClassifier from '../lib/search/intent-classifier.js';
 // TierClassifier, crossEncoder imports removed — only used by legacy V1 pipeline.
@@ -843,6 +844,15 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     detectedIntent || undefined
   );
 
+  // R-007-12: When causal boost is enabled, fold the causal-edges generation
+  // counter into the cache key so causal-edge mutations naturally invalidate
+  // the affected memory_search entries on the next lookup. We deliberately
+  // keep the generation OFF the key when the caller has not opted into causal
+  // boost — otherwise unrelated callers would suffer needless cache misses.
+  const causalEdgesGenerationForCache = enableCausalBoost
+    ? causalEdges.getCausalEdgesGeneration()
+    : undefined;
+
   // Build cache key args
   const cacheArgs = buildCacheArgs({
     normalizedQuery,
@@ -874,6 +884,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     enableCausalBoost,
     includeTrace,
     cacheVersion: CANONICAL_READER_CACHE_VERSION,
+    causalEdgesGeneration: causalEdgesGenerationForCache,
   });
 
   let _evalChannelPayloads: EvalChannelPayload[] = [];

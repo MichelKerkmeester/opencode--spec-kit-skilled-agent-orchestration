@@ -16,6 +16,9 @@ import {
   buildQueryTrustMetadata,
   buildReadinessBlock,
 } from '../lib/readiness-contract.js';
+// R-007-P2-6: emit a stable failure-counter metric so operators can
+// distinguish DB / compute failures from legitimately empty blast radii.
+import { isSpeckitMetricsEnabled, speckitMetrics } from '../../skill_advisor/lib/metrics.js';
 
 export interface QueryArgs {
   operation: 'outline' | 'calls_from' | 'calls_to' | 'imports_from' | 'imports_to' | 'blast_radius';
@@ -143,6 +146,14 @@ interface BlastRadiusAffectedFile {
 
 interface BlastRadiusFailureFallback {
   reason: string;
+  /**
+   * R-007-P2-6: Stable machine-readable failure code so operators can
+   * distinguish failure modes (DB error vs ambiguous subject vs unresolved
+   * subject vs limit reached vs empty source) without parsing free-form
+   * `reason` strings. Optional for backward compatibility with older
+   * call sites.
+   */
+  code?: BlastRadiusFailureCode;
   partialResult?: {
     sourceFiles: string[];
     nodes: BlastRadiusAffectedFile[];
@@ -150,6 +161,18 @@ interface BlastRadiusFailureFallback {
     depthGroups: Record<number, BlastRadiusAffectedFile[]>;
   };
 }
+
+/**
+ * R-007-P2-6: Stable failure-fallback code values surfaced via
+ * `BlastRadiusFailureFallback.code`. Adding new values is non-breaking; do
+ * not rename existing literals once consumers depend on them.
+ */
+type BlastRadiusFailureCode =
+  | 'limit_reached'
+  | 'unresolved_subject'
+  | 'ambiguous_subject'
+  | 'empty_source'
+  | 'compute_error';
 
 function querySubjectMatches(
   field: 'fq_name' | 'name',
@@ -636,6 +659,65 @@ function edgeMetadataOutput(edge: OutboundEdgeEntry['edge'] | InboundEdgeEntry['
   };
 }
 
+/* ───────────────────────────────────────────────────────────────
+   R-007-P2-7: Shared relationship-edge mapper
+   --------------------------------------------------------------
+   Replaces near-duplicate switch branches for `calls_from`,
+   `calls_to`, `imports_from`, and `imports_to`. Two inputs control
+   the variant: (1) direction = outbound (target side) vs inbound
+   (source side); (2) whether to surface the start line.
+─────────────────────────────────────────────────────────────── */
+
+interface RelationshipMappedEdge {
+  source?: string;
+  target?: string;
+  file?: string;
+  line?: number;
+  confidence: number;
+  numericConfidence: number;
+  detectorProvenance: string | null;
+  evidenceClass: string | null;
+  reason: string | null;
+  step: string | null;
+  edgeEvidenceClass: EdgeEvidenceClass;
+}
+
+function mapOutboundRelationshipEdge(
+  entry: OutboundEdgeEntry,
+  options: { includeLine: boolean },
+): RelationshipMappedEdge {
+  return {
+    target: entry.targetNode?.fqName ?? entry.edge.targetId,
+    file: entry.targetNode?.filePath,
+    ...(options.includeLine ? { line: entry.targetNode?.startLine } : {}),
+    ...edgeMetadataOutput(entry.edge),
+  };
+}
+
+function mapInboundRelationshipEdge(
+  entry: InboundEdgeEntry,
+  options: { includeLine: boolean },
+): RelationshipMappedEdge {
+  return {
+    source: entry.sourceNode?.fqName ?? entry.edge.sourceId,
+    file: entry.sourceNode?.filePath,
+    ...(options.includeLine ? { line: entry.sourceNode?.startLine } : {}),
+    ...edgeMetadataOutput(entry.edge),
+  };
+}
+
+function extractOutboundFilePaths(entries: OutboundEdgeEntry[]): string[] {
+  return entries
+    .map((entry) => entry.targetNode?.filePath)
+    .filter((value): value is string => typeof value === 'string');
+}
+
+function extractInboundFilePaths(entries: InboundEdgeEntry[]): string[] {
+  return entries
+    .map((entry) => entry.sourceNode?.filePath)
+    .filter((value): value is string => typeof value === 'string');
+}
+
 const EDGE_EVIDENCE_CLASS_WEAKNESS: Record<EdgeEvidenceClass, number> = {
   inferred_heuristic: 0,
   test_coverage: 1,
@@ -872,10 +954,18 @@ function computeBlastRadius(
     }
   }
 
+  // R-007-P2-4: Detect true overflow by comparing the full traversal size
+  // against `limit` BEFORE slicing. Previously `affectedFiles.length >= limit`
+  // false-positived whenever the reachable set happened to equal `limit`
+  // exactly. We over-collect (`limit + 1` semantically — here the whole
+  // BFS frontier is already in `affectedByFile`) and slice down only after
+  // recording overflow.
+  const totalAffectedBeforeSlice = affectedByFile.size;
   let affectedFiles = [...affectedByFile.entries()]
     .map(([filePath, depth]) => ({ filePath, depth }))
     .sort((left, right) => left.depth - right.depth || left.filePath.localeCompare(right.filePath))
     .slice(0, limit);
+  const overflowed = totalAffectedBeforeSlice > limit;
   const breadcrumbByFile = new Map(
     buildHotFileBreadcrumbs([
       ...normalizedSources,
@@ -910,10 +1000,11 @@ function computeBlastRadius(
       filePath,
       hotFileBreadcrumb,
     })),
-    ...(affectedFiles.length >= limit
+    ...(overflowed
       ? {
         failureFallback: {
           reason: 'limit_reached',
+          code: 'limit_reached',
           partialResult: buildPartialBlastRadiusResult(
             normalizedSources,
             [...seedNodes, ...affectedFiles],
@@ -1055,6 +1146,17 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
 
       const resolvedSubject = graphDb.resolveSubjectFilePath(candidate);
       if (typeof resolvedSubject !== 'string' || resolvedSubject.length === 0) {
+        // R-007-P2-5: Preserve any sibling seeds we have already resolved
+        // ahead of this failed candidate. Returning `nodes: []` here would
+        // discard work the caller can still use; instead surface the
+        // already-resolved seeds so multi-subject blast-radius queries
+        // degrade gracefully when one subject fails to resolve.
+        const preservedDepthGroups = buildDepthGroups([], maxDepth);
+        const preservedSeedNodes = sourceFiles.map((filePath) => ({
+          filePath,
+          depth: 0,
+          isSeed: true,
+        }));
         return {
           content: [{
             type: 'text',
@@ -1063,15 +1165,21 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
               data: buildGraphQueryPayload({
                 operation,
                 sourceFiles,
-                nodes: [],
+                nodes: preservedSeedNodes,
                 affectedFiles: [],
-                depthGroups: buildDepthGroups([], maxDepth),
-                riskLevel: classifyBlastRadiusRisk(buildDepthGroups([], maxDepth), []),
+                depthGroups: preservedDepthGroups,
+                riskLevel: classifyBlastRadiusRisk(preservedDepthGroups, []),
                 minConfidence,
                 ambiguityCandidates: [],
                 failureFallback: {
                   reason: `unresolved_subject: ${candidate}`,
-                  partialResult: buildPartialBlastRadiusResult(sourceFiles, [], [], buildDepthGroups([], maxDepth)),
+                  code: 'unresolved_subject',
+                  partialResult: buildPartialBlastRadiusResult(
+                    sourceFiles,
+                    preservedSeedNodes,
+                    [],
+                    preservedDepthGroups,
+                  ),
                 } satisfies BlastRadiusFailureFallback,
               }, readiness, 'code_graph_query blast_radius fallback payload'),
             }, null, 2),
@@ -1099,6 +1207,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
               ambiguityCandidates,
               failureFallback: {
                 reason: 'ambiguous_subject',
+                code: 'ambiguous_subject',
                 partialResult: buildPartialBlastRadiusResult(sourceFiles, [], [], depthGroups),
               } satisfies BlastRadiusFailureFallback,
             }, readiness, 'code_graph_query blast_radius ambiguity payload'),
@@ -1125,6 +1234,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
               ambiguityCandidates: [],
               failureFallback: {
                 reason: `Could not resolve blast-radius sources: ${rawSubjects.join(', ')}`,
+                code: 'empty_source',
                 partialResult: buildPartialBlastRadiusResult(sourceFiles, [], [], depthGroups),
               } satisfies BlastRadiusFailureFallback,
             }, readiness, 'code_graph_query blast_radius empty-source payload'),
@@ -1139,6 +1249,23 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
     } catch (error) {
       const depthGroups = buildDepthGroups([], maxDepth);
       const reason = error instanceof Error ? error.message : String(error);
+      // R-007-P2-6: Surface a stable `code` and emit a warning log + metric
+      // so operators can distinguish a genuine compute / DB failure from a
+      // legitimately empty blast radius (which has no failureFallback).
+      console.warn(
+        `[code-graph-query] blast_radius compute failure: ${reason} (sources=${sourceFiles.length})`,
+      );
+      try {
+        if (isSpeckitMetricsEnabled()) {
+          speckitMetrics.incrementCounter(
+            'spec_kit.graph.blast_radius_failure_total',
+            { code: 'compute_error' },
+          );
+        }
+      } catch (_metricErr: unknown) {
+        // Best-effort: never let metric emission failures mask the original
+        // Compute error.
+      }
       blastRadius = {
         sourceFiles,
         nodes: sourceFiles.map((filePath) => ({ filePath, depth: 0, isSeed: true })),
@@ -1150,6 +1277,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
         hotFileBreadcrumbs: [],
         failureFallback: {
           reason,
+          code: 'compute_error',
           partialResult: buildPartialBlastRadiusResult(sourceFiles, [], [], depthGroups),
         } satisfies BlastRadiusFailureFallback,
       };
@@ -1228,65 +1356,13 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
 
   let result;
   switch (operation) {
-    case 'calls_from': {
-      const { resolvedEntries, warnings } = excludeDanglingEdges(
-        graphDb.queryEdgesFrom(symbolId, requestedEdgeType),
-        limit,
-        operation,
-        'target',
-        (entry: OutboundEdgeEntry) => entry.targetNode != null,
-        (entry: OutboundEdgeEntry) => entry.edge.targetId,
-      );
-      result = {
-        operation,
-        symbolId,
-        ...(resolvedSubject.selectedCandidate ? { selectedCandidate: resolvedSubject.selectedCandidate } : {}),
-        edgeType: requestedEdgeType,
-        edges: resolvedEntries.map((entry) => ({
-          target: entry.targetNode?.fqName ?? entry.edge.targetId,
-          file: entry.targetNode?.filePath,
-          line: entry.targetNode?.startLine,
-          ...edgeMetadataOutput(entry.edge),
-        })),
-        ...(warnings ? { warnings } : {}),
-        hotFileBreadcrumbs: buildHotFileBreadcrumbs(
-          resolvedEntries
-            .map((entry) => entry.targetNode?.filePath)
-            .filter((value): value is string => typeof value === 'string'),
-        ),
-      };
-      break;
-    }
-    case 'calls_to': {
-      const { resolvedEntries, warnings } = excludeDanglingEdges(
-        graphDb.queryEdgesTo(symbolId, requestedEdgeType),
-        limit,
-        operation,
-        'source',
-        (entry: InboundEdgeEntry) => entry.sourceNode != null,
-        (entry: InboundEdgeEntry) => entry.edge.sourceId,
-      );
-      result = {
-        operation,
-        symbolId,
-        ...(resolvedSubject.selectedCandidate ? { selectedCandidate: resolvedSubject.selectedCandidate } : {}),
-        edgeType: requestedEdgeType,
-        edges: resolvedEntries.map((entry) => ({
-          source: entry.sourceNode?.fqName ?? entry.edge.sourceId,
-          file: entry.sourceNode?.filePath,
-          line: entry.sourceNode?.startLine,
-          ...edgeMetadataOutput(entry.edge),
-        })),
-        ...(warnings ? { warnings } : {}),
-        hotFileBreadcrumbs: buildHotFileBreadcrumbs(
-          resolvedEntries
-            .map((entry) => entry.sourceNode?.filePath)
-            .filter((value): value is string => typeof value === 'string'),
-        ),
-      };
-      break;
-    }
+    // R-007-P2-7: 4 near-duplicate switch branches collapsed via the shared
+    // `mapOutboundRelationshipEdge` / `mapInboundRelationshipEdge` helpers.
+    // Variation surface: (1) direction (outbound / inbound), (2) whether the
+    // start line is included (calls_*) or omitted (imports_*).
+    case 'calls_from':
     case 'imports_from': {
+      const includeLine = operation === 'calls_from';
       const { resolvedEntries, warnings } = excludeDanglingEdges(
         graphDb.queryEdgesFrom(symbolId, requestedEdgeType),
         limit,
@@ -1300,21 +1376,15 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
         symbolId,
         ...(resolvedSubject.selectedCandidate ? { selectedCandidate: resolvedSubject.selectedCandidate } : {}),
         edgeType: requestedEdgeType,
-        edges: resolvedEntries.map((entry) => ({
-          target: entry.targetNode?.fqName ?? entry.edge.targetId,
-          file: entry.targetNode?.filePath,
-          ...edgeMetadataOutput(entry.edge),
-        })),
+        edges: resolvedEntries.map((entry) => mapOutboundRelationshipEdge(entry, { includeLine })),
         ...(warnings ? { warnings } : {}),
-        hotFileBreadcrumbs: buildHotFileBreadcrumbs(
-          resolvedEntries
-            .map((entry) => entry.targetNode?.filePath)
-            .filter((value): value is string => typeof value === 'string'),
-        ),
+        hotFileBreadcrumbs: buildHotFileBreadcrumbs(extractOutboundFilePaths(resolvedEntries)),
       };
       break;
     }
+    case 'calls_to':
     case 'imports_to': {
+      const includeLine = operation === 'calls_to';
       const { resolvedEntries, warnings } = excludeDanglingEdges(
         graphDb.queryEdgesTo(symbolId, requestedEdgeType),
         limit,
@@ -1328,17 +1398,9 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
         symbolId,
         ...(resolvedSubject.selectedCandidate ? { selectedCandidate: resolvedSubject.selectedCandidate } : {}),
         edgeType: requestedEdgeType,
-        edges: resolvedEntries.map((entry) => ({
-          source: entry.sourceNode?.fqName ?? entry.edge.sourceId,
-          file: entry.sourceNode?.filePath,
-          ...edgeMetadataOutput(entry.edge),
-        })),
+        edges: resolvedEntries.map((entry) => mapInboundRelationshipEdge(entry, { includeLine })),
         ...(warnings ? { warnings } : {}),
-        hotFileBreadcrumbs: buildHotFileBreadcrumbs(
-          resolvedEntries
-            .map((entry) => entry.sourceNode?.filePath)
-            .filter((value): value is string => typeof value === 'string'),
-        ),
+        hotFileBreadcrumbs: buildHotFileBreadcrumbs(extractInboundFilePaths(resolvedEntries)),
       };
       break;
     }

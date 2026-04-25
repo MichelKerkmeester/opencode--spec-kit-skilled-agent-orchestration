@@ -475,7 +475,7 @@ export class AdvisorHookMetricsCollector {
 // ───────────────────────────────────────────────────────────────
 // 5. SPEC_KIT.* INSTRUMENTATION NAMESPACE (PR 5)
 // ───────────────────────────────────────────────────────────────
-// Adds 16 canonical `spec_kit.<group>.<metric_name>` metrics for code-graph,
+// Adds 17 canonical `spec_kit.<group>.<metric_name>` metrics for code-graph,
 // scorer, freshness, and cross-cutting advisor surfaces. All emission paths
 // MUST be guarded by the SPECKIT_METRICS_ENABLED env var (default OFF).
 // Persistence is additive: definitions live alongside the existing
@@ -507,6 +507,10 @@ export type SpeckitMetricName =
   | 'spec_kit.graph.query_cache_misses_total'
   | 'spec_kit.graph.edge_detection_total'
   | 'spec_kit.graph.partial_persist_retries_total'
+  // R-007-P2-6: blast-radius compute / DB failure counter labelled with
+  // `code` (e.g. `compute_error`) so operators can distinguish failure
+  // modes in the failure-fallback path.
+  | 'spec_kit.graph.blast_radius_failure_total'
   | 'spec_kit.scorer.lane_contribution'
   | 'spec_kit.scorer.fusion_live_weight_share'
   | 'spec_kit.scorer.primary_intent_bonus_applied_total'
@@ -527,6 +531,10 @@ export const SPECKIT_METRIC_DEFINITIONS = [
   { name: 'spec_kit.graph.query_cache_misses_total', type: 'counter', labels: ['mode'] },
   { name: 'spec_kit.graph.edge_detection_total', type: 'counter', labels: ['edge_type', 'runtime'] },
   { name: 'spec_kit.graph.partial_persist_retries_total', type: 'counter', labels: [] },
+  // R-007-P2-6: blast-radius failure counter (compute_error / DB error /
+  // Etc.). Distinguishes a real compute failure from a legitimately empty
+  // Blast radius (which has no failureFallback at all).
+  { name: 'spec_kit.graph.blast_radius_failure_total', type: 'counter', labels: ['code'] },
   // 5 scorer metrics (#7-11)
   { name: 'spec_kit.scorer.lane_contribution', type: 'gauge', labels: ['lane', 'skill_id'] },
   { name: 'spec_kit.scorer.fusion_live_weight_share', type: 'gauge', labels: ['lane'] },

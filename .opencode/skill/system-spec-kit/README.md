@@ -59,7 +59,7 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 
 | Category                    | Count                | Details                                                                                         |
 | --------------------------- | -------------------- | ----------------------------------------------------------------------------------------------- |
-| **MCP Tools**               | 47                   | Across 7 layers (L1-L7), including code graph, CocoIndex lifecycle, and session bootstrap tools |
+| **MCP Tools**               | 51                   | Canonical count from `TOOL_DEFINITIONS` in `mcp_server/tool-schemas.ts`. Spans L1-L7 plus L8 (code graph + skill graph/advisor + CocoIndex bridge) and L9 (deep loop graph). Internal helper handlers and any deferred / not-yet-wired handlers are intentionally excluded. |
 | **Commands**                | 13                   | 9 spec_kit + 4 memory                                                                           |
 | **Documentation Levels**    | 4                    | Levels 1, 2, 3, 3+                                                                              |
 | **Feature Catalog Entries** | 291                  | Across 22 categories                                                                            |

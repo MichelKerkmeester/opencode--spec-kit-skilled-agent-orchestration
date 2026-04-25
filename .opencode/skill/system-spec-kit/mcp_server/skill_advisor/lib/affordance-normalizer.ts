@@ -53,6 +53,51 @@ export interface NormalizedAffordance {
 
 export const AFFORDANCE_TRIGGER_FIELDS = ['name', 'triggers', 'category'] as const;
 
+/**
+ * R-007-P2-9: Debug counters for affordance-input drop categories. Operators
+ * can read these via `getAffordanceNormalizerCounters()` to diagnose why
+ * affordance evidence does or does not reach the scorer. Counters are
+ * monotonically increasing across the lifetime of the process and may be
+ * reset for tests via `resetAffordanceNormalizerCounters()`.
+ *
+ * Drop category semantics:
+ *   - `received`              : raw affordance inputs handed to `normalize()`
+ *   - `accepted`              : inputs that produced a NormalizedAffordance
+ *   - `dropped_unknown_skill` : skillId missing or scrubbed to empty
+ *   - `dropped_unsafe`        : retained for future prompt-injection /
+ *                               sanitizer drop tracking (currently unused
+ *                               because the sanitizer scrubs at the cleanPhrase
+ *                               level rather than rejecting whole inputs)
+ *   - `dropped_empty`         : skillId resolved but no triggers + no edges
+ */
+export interface AffordanceNormalizerCounters {
+  received: number;
+  accepted: number;
+  dropped_unsafe: number;
+  dropped_empty: number;
+  dropped_unknown_skill: number;
+}
+
+const affordanceNormalizerCounters: AffordanceNormalizerCounters = {
+  received: 0,
+  accepted: 0,
+  dropped_unsafe: 0,
+  dropped_empty: 0,
+  dropped_unknown_skill: 0,
+};
+
+export function getAffordanceNormalizerCounters(): AffordanceNormalizerCounters {
+  return { ...affordanceNormalizerCounters };
+}
+
+export function resetAffordanceNormalizerCounters(): void {
+  affordanceNormalizerCounters.received = 0;
+  affordanceNormalizerCounters.accepted = 0;
+  affordanceNormalizerCounters.dropped_unsafe = 0;
+  affordanceNormalizerCounters.dropped_empty = 0;
+  affordanceNormalizerCounters.dropped_unknown_skill = 0;
+}
+
 const MAX_PHRASE_LENGTH = 80;
 const MAX_TRIGGERS_PER_AFFORDANCE = 12;
 const MAX_EDGES_PER_AFFORDANCE = 12;
@@ -169,11 +214,19 @@ function triggerPhrases(input: AffordanceInput): string[] {
 export function normalize(toolDescriptions: readonly AffordanceInput[]): NormalizedAffordance[] {
   return toolDescriptions
     .map((input, index): NormalizedAffordance | null => {
+      affordanceNormalizerCounters.received++;
       const skillId = cleanSkillId(input.skillId ?? input.skill_id);
-      if (!skillId) return null;
+      if (!skillId) {
+        affordanceNormalizerCounters.dropped_unknown_skill++;
+        return null;
+      }
       const derivedTriggers = triggerPhrases(input);
       const edges = relationEdges(input);
-      if (derivedTriggers.length === 0 && edges.length === 0) return null;
+      if (derivedTriggers.length === 0 && edges.length === 0) {
+        affordanceNormalizerCounters.dropped_empty++;
+        return null;
+      }
+      affordanceNormalizerCounters.accepted++;
       return {
         skillId,
         name: cleanPhrase(input.name),
