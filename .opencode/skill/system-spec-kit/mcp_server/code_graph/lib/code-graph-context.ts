@@ -308,7 +308,16 @@ function expandAnchor(anchor: ArtifactRef, mode: QueryMode, remainingMs?: number
   const startTime = performance.now();
   const budgetMs = remainingMs ?? 400; // 400ms default latency budget
   const nodes: { name: string; kind: string; file: string; line: number }[] = [];
-  const edges: { from: string; to: string; type: string }[] = [];
+  const edges: {
+    from: string;
+    to: string;
+    type: string;
+    confidence: number | null;
+    detectorProvenance: string | null;
+    evidenceClass: string | null;
+    reason: string | null;
+    step: string | null;
+  }[] = [];
   let deadlineExceeded = false;
   let omittedNodes = 0;
   let omittedEdges = 0;
