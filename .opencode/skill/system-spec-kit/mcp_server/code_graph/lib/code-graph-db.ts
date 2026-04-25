@@ -208,6 +208,14 @@ function clearMetadata(key: string): void {
   d.prepare('DELETE FROM code_graph_metadata WHERE key = ?').run(key);
 }
 
+export function getCodeGraphMetadata(key: string): string | null {
+  return getMetadata(key);
+}
+
+export function setCodeGraphMetadata(key: string, value: string): void {
+  setMetadata(key, value);
+}
+
 export function getLastGitHead(): string | null {
   return getMetadata('last_git_head');
 }
@@ -266,6 +274,23 @@ export function setLastGraphEdgeEnrichmentSummary(
 
 export function clearLastGraphEdgeEnrichmentSummary(): void {
   clearMetadata('last_graph_edge_enrichment_summary');
+}
+
+export function getLastGoldVerification(): object | null {
+  const value = getCodeGraphMetadata('last_gold_verification');
+  if (!value) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(value) as object;
+  } catch {
+    return null;
+  }
+}
+
+export function setLastGoldVerification(json: object): void {
+  setCodeGraphMetadata('last_gold_verification', JSON.stringify(json));
 }
 
 export function getGraphQualitySummary(): {
