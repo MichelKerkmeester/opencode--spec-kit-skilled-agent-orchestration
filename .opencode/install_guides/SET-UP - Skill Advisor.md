@@ -3,7 +3,7 @@
 Tune the OpenCode skill advisor scoring tables (TOKEN_BOOSTS, PHRASE_BOOSTS, derived triggers, CATEGORY_HINTS) so the advisor can route prompts to every skill in your repo.
 
 > **Part of OpenCode Installation.** See the [Master Installation Guide](./README.md) for complete setup.
-> **Command:** `/spec_kit:skill-advisor` (auto + confirm modes) — full reference in `.opencode/command/spec_kit/skill-advisor.md`.
+> **Command:** `/doctor:skill-advisor` (auto + confirm modes) — full reference in `.opencode/command/doctor/skill-advisor.md`.
 
 ---
 
@@ -23,7 +23,7 @@ PREREQUISITE CHECK (verify before proceeding):
 If any prerequisite fails: STOP and report which one. Do NOT proceed.
 
 Steps:
-1. Invoke /spec_kit:skill-advisor:confirm (interactive mode for first run).
+1. Invoke /doctor:skill-advisor:confirm (interactive mode for first run).
 2. At setup: scope=A (all), tests=A (run), apply=A (apply changes).
 3. Walk me through Phase 0 → 1 → 2 → 3 → 4 with approval at each gate.
 4. On success: summarize files modified and how to undo if needed.
@@ -57,11 +57,11 @@ npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 
 | Use case | Command |
 | --- | --- |
-| First-time tuning | `/spec_kit:skill-advisor:confirm` |
-| Re-tune after adding a skill | `/spec_kit:skill-advisor:auto` |
-| Preview without writing | `/spec_kit:skill-advisor:auto --dry-run` |
-| Tune one lane only | `/spec_kit:skill-advisor:auto --scope=explicit` (or `derived` / `lexical`) |
-| Skip post-apply tests | `/spec_kit:skill-advisor:auto --skip-tests` (not recommended) |
+| First-time tuning | `/doctor:skill-advisor:confirm` |
+| Re-tune after adding a skill | `/doctor:skill-advisor:auto` |
+| Preview without writing | `/doctor:skill-advisor:auto --dry-run` |
+| Tune one lane only | `/doctor:skill-advisor:auto --scope=explicit` (or `derived` / `lexical`) |
+| Skip post-apply tests | `/doctor:skill-advisor:auto --skip-tests` (not recommended) |
 
 **The five phases (see command markdown for full detail):**
 
@@ -142,7 +142,7 @@ npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 | `"graph health: missing"` | Run `skill_graph_scan({})` once, then re-run the command |
 | Build fails after apply | Rollback (see Section 5), inspect diff in `<spec-folder>/scratch/skill-advisor-proposal-*.md` (or `.opencode/scratch/...` outside a spec folder) |
 | Tests fail after apply | Rollback, then re-run with `--scope=derived` only |
-| Command not found | Verify `.opencode/command/spec_kit/skill-advisor.md` exists; restart your AI client |
+| Command not found | Verify `.opencode/command/doctor/skill-advisor.md` exists; restart your AI client |
 | Wrong skill in `advisor_recommend` | Stale graph index — run `skill_graph_scan({})` |
 | Cannot parse `explicit.ts` | `git restore --source=HEAD -- .opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts` (restores from HEAD without affecting unrelated WIP) |
 | MCP server missing | `npm --prefix .opencode/skill/system-spec-kit/mcp_server install && npm run build` |
@@ -151,8 +151,8 @@ npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 
 ## 7. RESOURCES
 
-- **Command reference:** `.opencode/command/spec_kit/skill-advisor.md`
-- **Workflow YAML:** `.opencode/command/spec_kit/assets/spec_kit_skill-advisor_{auto,confirm}.yaml`
+- **Command reference:** `.opencode/command/doctor/skill-advisor.md`
+- **Workflow YAML:** `.opencode/command/doctor/assets/doctor_skill-advisor_{auto,confirm}.yaml`
 - **Operator setup (advanced):** `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/SET-UP_GUIDE.md`
 - **Native MCP install:** `.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md`
 - **Related guides:** [SET-UP - Skill Creation](./SET-UP%20-%20Skill%20Creation.md) (run skill-advisor after creating a new skill)

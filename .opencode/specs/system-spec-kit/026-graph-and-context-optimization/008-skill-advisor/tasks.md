@@ -19,7 +19,7 @@ trigger_phrases:
   - "010-skill-advisor-standards-alignment"
   - "011-skill-advisor-hook-improvements"
   - "012-skill-advisor-setup-command"
-  - "/spec_kit:skill-advisor"
+  - "/doctor:skill-advisor"
 importance_tier: "important"
 contextType: "implementation"
 _memory:
@@ -83,7 +83,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 - [x] T010 Move original phase folders to direct child paths.
 - [x] T011 Regenerate `context-index.md` for this theme.
 - [x] T012 Refresh parent and child metadata paths.
-- [x] T013 Add `012-skill-advisor-setup-command/` child phase (created 2026-04-25): new `/spec_kit:skill-advisor` slash command with auto + confirm YAML workflows, README update, and user-facing install guide.
+- [x] T013 Add `012-skill-advisor-setup-command/` child phase (created 2026-04-25): new `/doctor:skill-advisor` slash command with auto + confirm YAML workflows, README update, and user-facing install guide.
 <!-- /ANCHOR:phase-2 -->
 
 ---

@@ -1,10 +1,10 @@
 ---
 title: "Feature Specification: Skill Advisor Setup Command [system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/spec]"
-description: "New spec_kit:skill-advisor slash command that interactively guides the AI to analyze all skills in a user's repo, optimize the skill advisor scoring tables (TOKEN_BOOSTS, PHRASE_BOOSTS, graph-metadata.json), and index the skill graph. Includes a user-facing setup guide."
+description: "New doctor:skill-advisor slash command that interactively guides the AI to analyze all skills in a user's repo, optimize the skill advisor scoring tables (TOKEN_BOOSTS, PHRASE_BOOSTS, graph-metadata.json), and index the skill graph. Includes a user-facing setup guide."
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 trigger_phrases:
   - "skill advisor setup command"
-  - "/spec_kit:skill-advisor"
+  - "/doctor:skill-advisor"
   - "skill advisor set-up"
   - "skill advisor setup"
   - "012-skill-advisor-setup-command"
@@ -60,7 +60,7 @@ _memory:
 The skill advisor scoring system (explicit lane TOKEN_BOOSTS, PHRASE_BOOSTS, lexical CATEGORY_HINTS, graph-metadata.json derived triggers/keywords) is manually maintained with no guided setup workflow. Users have no command to analyze their repo's skills, detect coverage gaps, and apply optimized keywords, weights, and triggers. The existing plan for a "SET-UP - Skill Advisor.md" install guide exists only as a reference path but has no command backing it.
 
 ### Purpose
-Deliver a `/spec_kit:skill-advisor` slash command that interactively walks the AI through analyzing all skills in the repo, proposing optimized trigger phrases, keywords, and token boosts, applying changes to the scoring system, and indexing the skill graph. Paired with a user-facing install guide.
+Deliver a `/doctor:skill-advisor` slash command that interactively walks the AI through analyzing all skills in the repo, proposing optimized trigger phrases, keywords, and token boosts, applying changes to the scoring system, and indexing the skill graph. Paired with a user-facing install guide.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -69,8 +69,8 @@ Deliver a `/spec_kit:skill-advisor` slash command that interactively walks the A
 ## 3. SCOPE
 
 ### In Scope
-- New slash command `.opencode/command/spec_kit/skill-advisor.md` with `:auto` and `:confirm` modes
-- Two YAML workflow assets: `spec_kit_skill-advisor_auto.yaml` and `spec_kit_skill-advisor_confirm.yaml`
+- New slash command `.opencode/command/doctor/skill-advisor.md` with `:auto` and `:confirm` modes
+- Two YAML workflow assets: `doctor_skill-advisor_auto.yaml` and `doctor_skill-advisor_confirm.yaml`
 - Update `.opencode/command/spec_kit/README.txt` to document the new command
 - Install guide `.opencode/install_guides/SET-UP - Skill Advisor.md`
 - Command reads all skills from `.opencode/skill/*/SKILL.md`
@@ -94,9 +94,9 @@ Deliver a `/spec_kit:skill-advisor` slash command that interactively walks the A
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/command/spec_kit/skill-advisor.md` | Create | Command markdown definition |
-| `.opencode/command/spec_kit/assets/spec_kit_skill-advisor_auto.yaml` | Create | Autonomous execution workflow |
-| `.opencode/command/spec_kit/assets/spec_kit_skill-advisor_confirm.yaml` | Create | Interactive execution workflow |
+| `.opencode/command/doctor/skill-advisor.md` | Create | Command markdown definition |
+| `.opencode/command/doctor/assets/doctor_skill-advisor_auto.yaml` | Create | Autonomous execution workflow |
+| `.opencode/command/doctor/assets/doctor_skill-advisor_confirm.yaml` | Create | Interactive execution workflow |
 | `.opencode/command/spec_kit/README.txt` | Modify | Add new command to index |
 | `.opencode/install_guides/SET-UP - Skill Advisor.md` | Create | User-facing setup guide |
 <!-- /ANCHOR:scope -->
@@ -110,7 +110,7 @@ Deliver a `/spec_kit:skill-advisor` slash command that interactively walks the A
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Command file exists and follows existing spec_kit command conventions | `.opencode/command/spec_kit/skill-advisor.md` loads on `/spec_kit:skill-advisor` with same header/metadata pattern as `.opencode/command/spec_kit/resume.md`, `plan.md` |
+| REQ-001 | Command file exists and follows existing spec_kit command conventions | `.opencode/command/doctor/skill-advisor.md` loads on `/doctor:skill-advisor` with same header/metadata pattern as `.opencode/command/spec_kit/resume.md`, `plan.md` |
 | REQ-002 | Auto and confirm YAML workflows exist in assets/ | Both YAML files follow existing workflow structure (operating_mode, workflow steps, error_recovery) |
 | REQ-003 | Command reads all skill SKILL.md files and graph-metadata.json files | Parses skill name, description, domains, intent_signals, derived triggers/keywords |
 | REQ-004 | Command reads current explicit.ts TOKEN_BOOSTS and PHRASE_BOOSTS | Parses the TSTypeScript object literals and detects which skills are already covered |
@@ -133,7 +133,7 @@ Deliver a `/spec_kit:skill-advisor` slash command that interactively walks the A
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Typing `/spec_kit:skill-advisor` triggers the command workflow that analyzes all skills
+- **SC-001**: Typing `/doctor:skill-advisor` triggers the command workflow that analyzes all skills
 - **SC-002**: In auto mode, the command produces a complete optimization proposal without interaction
 - **SC-003**: In confirm mode, the user can approve/reject each proposed change
 - **SC-004**: After running, `skill_graph_scan` shows updated trigger phrases for all skills
@@ -203,7 +203,7 @@ Deliver a `/spec_kit:skill-advisor` slash command that interactively walks the A
 ### Acceptance Scenarios
 **Scenario 1 — New user discovers gap**
 
-**Given** a repo with skills but no optimized scoring tables, **When** the user runs `/spec_kit:skill-advisor:auto`, **Then** the command reads all skills, detects which lack explicit lane tokens and derived triggers, and proposes a complete set of optimized keywords.
+**Given** a repo with skills but no optimized scoring tables, **When** the user runs `/doctor:skill-advisor:auto`, **Then** the command reads all skills, detects which lack explicit lane tokens and derived triggers, and proposes a complete set of optimized keywords.
 
 **Scenario 2 — Interactive approval**
 

@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Skill Advisor Setup Command [system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command/tasks]"
-description: "Task record for creating the /spec_kit:skill-advisor command, YAML workflows, README update, and install guide."
+description: "Task record for creating the /doctor:skill-advisor command, YAML workflows, README update, and install guide."
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 trigger_phrases:
   - "skill advisor setup command tasks"
@@ -52,9 +52,9 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 [P] Create `.opencode/command/spec_kit/skill-advisor.md` — command markdown with frontmatter, argument-hint, allowed-tools, execution protocol header, consolidated prompt phase
-- [x] T002 [P] Create `spec_kit_skill-advisor_auto.yaml` — autonomous workflow definition with discovery, analysis, proposal, apply, verify phases (`.opencode/command/spec_kit/assets/spec_kit_skill-advisor_auto.yaml`)
-- [x] T003 [P] Create `spec_kit_skill-advisor_confirm.yaml` — interactive workflow with approval gates between phases (`.opencode/command/spec_kit/assets/spec_kit_skill-advisor_confirm.yaml`)
+- [x] T001 [P] Create `.opencode/command/doctor/skill-advisor.md` — command markdown with frontmatter, argument-hint, allowed-tools, execution protocol header, consolidated prompt phase
+- [x] T002 [P] Create `doctor_skill-advisor_auto.yaml` — autonomous workflow definition with discovery, analysis, proposal, apply, verify phases (`.opencode/command/doctor/assets/doctor_skill-advisor_auto.yaml`)
+- [x] T003 [P] Create `doctor_skill-advisor_confirm.yaml` — interactive workflow with approval gates between phases (`.opencode/command/doctor/assets/doctor_skill-advisor_confirm.yaml`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -77,7 +77,7 @@ _memory:
 - [x] T009 Validate command markdown loads correctly — check frontmatter parsing, argument-hint, allowed-tools format
 - [x] T010 Validate YAML workflow syntax — parse both YAML files, check for required keys (operating_mode, workflow steps)
 - [x] T011 Run parent strict validation (`bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh`)
-- [x] T012 Verify new command appears in `/spec_kit:skill-advisor` invocation surface
+- [x] T012 Verify new command appears in `/doctor:skill-advisor` invocation surface
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -87,7 +87,7 @@ _memory:
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Command file exists at `.opencode/command/spec_kit/skill-advisor.md`
+- [x] Command file exists at `.opencode/command/doctor/skill-advisor.md`
 - [x] Both YAML assets exist in `assets/`
 - [x] README.txt updated
 - [x] Install guide exists at `.opencode/install_guides/SET-UP - Skill Advisor.md`

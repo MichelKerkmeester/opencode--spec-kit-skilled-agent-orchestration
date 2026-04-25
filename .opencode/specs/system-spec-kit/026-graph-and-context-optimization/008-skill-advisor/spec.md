@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Skill Advisor [system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/spec]"
-description: "Skill advisor system: search/routing tuning, skill graph + advisor unification, advisor docs and standards, smart-router, hook surface, plugin hardening, hook improvements, and the /spec_kit:skill-advisor setup command. Consolidated active parent for 12 direct child phase packet(s)."
+description: "Skill advisor system: search/routing tuning, skill graph + advisor unification, advisor docs and standards, smart-router, hook surface, plugin hardening, hook improvements, and the /doctor:skill-advisor setup command. Consolidated active parent for 12 direct child phase packet(s)."
 trigger_phrases:
   - "008-skill-advisor"
   - "skill advisor"
@@ -19,7 +19,7 @@ trigger_phrases:
   - "010-skill-advisor-standards-alignment"
   - "011-skill-advisor-hook-improvements"
   - "012-skill-advisor-setup-command"
-  - "/spec_kit:skill-advisor"
+  - "/doctor:skill-advisor"
 importance_tier: "important"
 contextType: "implementation"
 _memory:

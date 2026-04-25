@@ -58,7 +58,6 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 | **deep-research** | `/spec_kit:deep-research <topic> [:auto\|:confirm\|:review\|:review:auto\|:review:confirm]` | iterative | Autonomous deep research loop with convergence detection |
 | **deep-review** | `/spec_kit:deep-review <target> [:auto\|:confirm]` | iterative | Autonomous code review loop with severity-weighted findings |
 | **resume** | `/spec_kit:resume [spec-folder] [:auto\|:confirm]` | varies | Resume or recover work on an existing spec folder |
-| **skill-advisor** | `/spec_kit:skill-advisor [:auto\|:confirm] [--scope=...] [--dry-run] [--skip-tests]` | 5 | Analyze all skills, optimize advisor scoring tables (TOKEN_BOOSTS, PHRASE_BOOSTS, graph-metadata.json), re-index skill graph, validate with tests |
 | **plan --intake-only** | `/spec_kit:plan --intake-only [description] [:auto\|:confirm]` | intake-only | Standalone intake that publishes `spec.md`, `description.json`, and `graph-metadata.json` |
 | **complete** | `/spec_kit:complete <description> [:auto\|:confirm] [:with-research] [:with-phases]` | 14+ | Full end-to-end workflow combining all phases. `:with-phases` adds phase decomposition pre-workflow |
 
@@ -71,7 +70,6 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 | `deep-research` | Nothing (iterative research with convergence detection) |
 | `deep-review` | Target files or spec folder to review |
 | `resume` | Existing spec folder with saved state or recoverable session context |
-| `skill-advisor` | Existing `.opencode/skill/*/` skills and built advisor MCP package |
 | `complete` | Nothing (runs full lifecycle) |
 
 <!-- /ANCHOR:commands -->
@@ -90,7 +88,6 @@ spec_kit/
 ├── implement.md      # /spec_kit:implement - Execute planned work
 ├── plan.md           # /spec_kit:plan - Planning only (+ `--intake-only` standalone intake)
 ├── resume.md         # /spec_kit:resume - Resume existing work
-├── skill-advisor.md  # /spec_kit:skill-advisor - Optimize advisor scoring + re-index graph
 └── assets/           # YAML workflow definitions
     ├── spec_kit_complete_auto.yaml
     ├── spec_kit_complete_confirm.yaml
@@ -103,9 +100,9 @@ spec_kit/
     ├── spec_kit_plan_auto.yaml
     ├── spec_kit_plan_confirm.yaml
     ├── spec_kit_resume_auto.yaml
-    ├── spec_kit_resume_confirm.yaml
-    ├── spec_kit_skill-advisor_auto.yaml
-    └── spec_kit_skill-advisor_confirm.yaml
+    └── spec_kit_resume_confirm.yaml
+
+> Note: `/doctor:skill-advisor` previously lived under `spec_kit/`; it is now organized under `.opencode/command/doctor/` alongside `mcp_install` and `mcp_debug` since it tunes runtime configuration rather than driving the spec workflow.
 ```
 
 <!-- /ANCHOR:structure -->
@@ -195,11 +192,11 @@ Each mode maps to a YAML workflow file in `assets/`:
 # Resume work in a new or interrupted session
 /spec_kit:resume specs/012-rate-limiting :auto
 
-# Optimize skill advisor scoring after adding a new skill
-/spec_kit:skill-advisor :auto
-
 # Full end-to-end with research
 /spec_kit:complete "Add WebSocket support" :auto :with-research
+
+# Optimize skill advisor scoring (now under /doctor:* group, not spec_kit)
+/doctor:skill-advisor :auto
 ```
 
 <!-- /ANCHOR:usage-examples -->

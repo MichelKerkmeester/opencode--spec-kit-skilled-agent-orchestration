@@ -142,7 +142,7 @@ _memory:
 | CHK-040 [P1] | Install guide follows existing pattern (SET-UP - Skill Creation.md / SET-UP - AGENTS.md): AI-first prompt, prereq check, sections 1-10 |
 | CHK-041 [P1] | spec.md, plan.md, tasks.md, checklist.md all reference each other consistently; no contradictions |
 | CHK-042 [P2] | Parent context-index.md updated with 012 row, summary, open-items entry |
-| CHK-050 [P1] | `.opencode/command/spec_kit/skill-advisor.md` exists |
-| CHK-051 [P1] | `.opencode/command/spec_kit/assets/spec_kit_skill-advisor_{auto,confirm}.yaml` exist |
+| CHK-050 [P1] | `.opencode/command/doctor/skill-advisor.md` exists |
+| CHK-051 [P1] | `.opencode/command/doctor/assets/doctor_skill-advisor_{auto,confirm}.yaml` exist |
 | CHK-052 [P1] | `.opencode/install_guides/SET-UP - Skill Advisor.md` exists (replaced broken symlink) |
 <!-- /ANCHOR:summary -->

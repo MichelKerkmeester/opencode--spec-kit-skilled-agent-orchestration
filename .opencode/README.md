@@ -155,7 +155,7 @@ Skills are specialized, on-demand capabilities invoked for complex workflows:
 
 Commands are invoked with `/command_name` syntax in the chat interface.
 
-### Spec Kit Commands (`/spec_kit:*`) — 7 markdown files, 8 user-facing entry points
+### Spec Kit Commands (`/spec_kit:*`) — 6 markdown files, 7 user-facing entry points
 
 > Note: `/spec_kit:plan --intake-only` shares the same `plan.md` markdown as `/spec_kit:plan`; it appears as a separate row below for visibility but counts as one file.
 
@@ -166,7 +166,6 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/spec_kit:deep-research`: Autonomous iterative research workflow with convergence tracking plus bounded `spec.md` anchoring via `spec_check_protocol.md`
 - `/spec_kit:deep-review`: Autonomous iterative code review workflow with convergence tracking
 - `/spec_kit:resume`: Resume existing spec folder work with context loading
-- `/spec_kit:skill-advisor`: Analyze all skills, optimize advisor scoring tables (TOKEN_BOOSTS, PHRASE_BOOSTS, derived triggers, CATEGORY_HINTS), re-index the skill graph, and validate via the advisor test suite. Auto + confirm modes with `--scope`, `--dry-run`, and `--skip-tests` flags
 
 ### Memory Commands (`/memory:*`)
 
@@ -188,6 +187,12 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 
 - `/improve:agent`: Evaluate and improve any agent across 5 dimensions with deterministic scoring and bounded loop
 - `/improve:prompt`: Create or improve prompts with 7 frameworks, DEPTH thinking and CLEAR scoring
+
+### Doctor Commands (`/doctor:*`) — 3 commands
+
+- `/doctor:mcp_install`: Install or reinstall all 4 MCP servers from scratch (6 steps); reads install guides, checks system reality, installs dependencies, builds, configures, and verifies
+- `/doctor:mcp_debug`: Diagnose and fix MCP server connection issues (5 steps); runs health checks, investigates failures with install guide knowledge, offers guided repair
+- `/doctor:skill-advisor`: Analyze all skills, optimize advisor scoring tables (TOKEN_BOOSTS, PHRASE_BOOSTS, derived triggers, CATEGORY_HINTS), re-index the skill graph, and validate via the advisor test suite; auto + confirm modes with `--scope`, `--dry-run`, and `--skip-tests` flags
 
 ### Utility Commands — 1 command
 

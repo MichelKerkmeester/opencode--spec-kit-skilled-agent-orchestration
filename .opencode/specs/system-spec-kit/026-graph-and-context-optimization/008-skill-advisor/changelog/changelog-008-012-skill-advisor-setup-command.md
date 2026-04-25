@@ -19,13 +19,13 @@ contextType: "implementation"
 
 ### Summary
 
-You can now run /spec_kit:skill-advisor to interactively analyze every skill in your repo, propose optimized advisor scoring (TOKEN_BOOSTS, PHRASE_BOOSTS, derived triggers, CATEGORY_HINTS), apply approved changes, re-index the skill graph, and validate with the existing 220-test advisor suite. Before this packet, the only way to tune advisor routing was to hand-edit explicit.ts / lexical.ts / per-skill graph-metadata.json files and remember to rebuild dist plus run tests. Now the workflow is one command.
+You can now run /doctor:skill-advisor to interactively analyze every skill in your repo, propose optimized advisor scoring (TOKEN_BOOSTS, PHRASE_BOOSTS, derived triggers, CATEGORY_HINTS), apply approved changes, re-index the skill graph, and validate with the existing 220-test advisor suite. Before this packet, the only way to tune advisor routing was to hand-edit explicit.ts / lexical.ts / per-skill graph-metadata.json files and remember to rebuild dist plus run tests. Now the workflow is one command.
 
 ### Added
 
-- [P] Create .opencode/command/spec_kit/skill-advisor.md — command markdown with frontmatter, argument-hint, allowed-tools, execution protocol header, consolidated prompt phase
-- [P] Create spec_kit_skill-advisor_auto.yaml — autonomous workflow definition with discovery, analysis, proposal, apply, verify phases (.opencode/command/spec_kit/assets/spec_kit_skill-advisor_auto.yaml)
-- [P] Create spec_kit_skill-advisor_confirm.yaml — interactive workflow with approval gates between phases (.opencode/command/spec_kit/assets/spec_kit_skill-advisor_confirm.yaml)
+- [P] Create .opencode/command/doctor/skill-advisor.md — command markdown with frontmatter, argument-hint, allowed-tools, execution protocol header, consolidated prompt phase
+- [P] Create doctor_skill-advisor_auto.yaml — autonomous workflow definition with discovery, analysis, proposal, apply, verify phases (.opencode/command/doctor/assets/doctor_skill-advisor_auto.yaml)
+- [P] Create doctor_skill-advisor_confirm.yaml — interactive workflow with approval gates between phases (.opencode/command/doctor/assets/doctor_skill-advisor_confirm.yaml)
 - Update README.txt — add skill-advisor row to command table, update structure tree, add usage example (.opencode/command/spec_kit/README.txt)
 - Create SET-UP - Skill Advisor.md — user-facing install guide with AI-first prompt, prerequisite check, interactive flow, troubleshooting (.opencode/install_guides/SET-UP - Skill Advisor.md)
 - Update parent .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/context-index.md — add 012 row to child phase map and key implementation summary
@@ -36,7 +36,7 @@ You can now run /spec_kit:skill-advisor to interactively analyze every skill in 
 - Run parent strict validation (bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh)
 - All tasks marked [x]
 - No [B] blocked tasks remaining
-- Command file exists at .opencode/command/spec_kit/skill-advisor.md
+- Command file exists at .opencode/command/doctor/skill-advisor.md
 - Both YAML assets exist in assets/
 
 ### Fixed
@@ -49,7 +49,7 @@ You can now run /spec_kit:skill-advisor to interactively analyze every skill in 
 
 - Both YAML workflows parse with python3 -c "import yaml; yaml.safe_load(...)" - PASS
 - Command markdown frontmatter parses (description, argument-hint, allowed-tools) - PASS
-- Command appears in runtime skill list as spec_kit:skill-advisor - PASS — visible in <system-reminder> skills list after creation
+- Command appears in runtime skill list as doctor:skill-advisor - PASS — visible in <system-reminder> skills list after creation
 - Strict spec-folder validation on 012-skill-advisor-setup-command/ - PASS — 0 errors, 0 warnings
 - description.json generated via generate-description.js - PASS
 - graph-metadata.json written with parent_id, related_to, derived entities - PASS
@@ -60,9 +60,9 @@ You can now run /spec_kit:skill-advisor to interactively analyze every skill in 
 
 | File | Action | What changed |
 |---|---|---|
-| `.opencode/command/spec_kit/skill-advisor.md` | Created | Command markdown definition (frontmatter + protocol + reference) |
-| `.opencode/command/spec_kit/assets/spec_kit_skill-advisor_auto.yaml` | Created | Autonomous 5-phase workflow (no approval gates) |
-| `.opencode/command/spec_kit/assets/spec_kit_skill-advisor_confirm.yaml` | Created | Interactive 5-phase workflow with per-phase + per-skill approval |
+| `.opencode/command/doctor/skill-advisor.md` | Created | Command markdown definition (frontmatter + protocol + reference) |
+| `.opencode/command/doctor/assets/doctor_skill-advisor_auto.yaml` | Created | Autonomous 5-phase workflow (no approval gates) |
+| `.opencode/command/doctor/assets/doctor_skill-advisor_confirm.yaml` | Created | Interactive 5-phase workflow with per-phase + per-skill approval |
 | `.opencode/command/spec_kit/README.txt` | Modified | Added skill-advisor row to commands table, structure tree, and usage example |
 | `.opencode/install_guides/SET-UP - Skill Advisor.md` | Created (was broken symlink) | User-facing setup guide with AI-first prompt and rollback procedure |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/context-index.md` | Modified | Added 012 child phase row, summary, and open-items entry |
@@ -79,7 +79,7 @@ You can now run /spec_kit:skill-advisor to interactively analyze every skill in 
 ### Follow-Ups
 
 - Parent spec folder still fails strict TEMPLATE_SOURCE check. The parent 008-skill-advisor/ has 4 files (spec.md, plan.md, tasks.md, implementation-summary.md) with template_source_hint: past line 20 of frontmatter, invisible to the validator's head -n 20 sample. Same systemic bug as this child had before fixing. Out of scope for this packet; would require a repo-wide frontmatter normalization pass.
-- Test suite execution is deferred to first real run. This packet ships the command + YAML workflows + install guide but does not modify the live scoring tables (explicit.ts, lexical.ts, graph-metadata.json files). The 220-test advisor suite passes against the existing baseline; the first time a user runs /spec_kit:skill-advisor:auto the suite will run against actual proposed mutations.
+- Test suite execution is deferred to first real run. This packet ships the command + YAML workflows + install guide but does not modify the live scoring tables (explicit.ts, lexical.ts, graph-metadata.json files). The 220-test advisor suite passes against the existing baseline; the first time a user runs /doctor:skill-advisor:auto the suite will run against actual proposed mutations.
 - No automatic rollback on test failure. If the command applies mutations and the test suite fails, the user receives a STATUS=FAIL plus a git checkout HEAD -- rollback hint, but the rollback is manual. A future enhancement could auto-rollback on regression.
 - Token-collision detection is per-pair, not transitive. Phase 2 cross-checks each proposed token against existing TOKEN_BOOSTS for OTHER skills. It does not detect three-way collisions where two newly-proposed tokens for different skills would themselves collide. In practice this is rare because Phase 2 generates proposals one skill at a time.
 - Dry-run output writes to /tmp, not to a versioned scratch path. /tmp/skill-advisor-proposal-{timestamp}.md survives only until the next reboot. Users wanting to retain dry-run output should redirect or copy the file before exiting the session.
