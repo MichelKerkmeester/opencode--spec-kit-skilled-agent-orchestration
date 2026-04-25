@@ -205,9 +205,12 @@ specs/<###-feature-name>/
 ├── checklist.md                 # QA validation gates (Level 2+)
 ├── decision-record.md           # Architecture decisions (Level 3+)
 ├── implementation-summary.md    # Post-implementation summary (all levels)
+├── resource-map.md              # Optional path ledger of resources the packet touched
 ├── graph-metadata.json          # Packet-level graph metadata (auto-refreshed on save)
 └── scratch/                     # Temporary workspace files
 ```
+
+`resource-map.md` is optional at any level — copy it from the shared template under `.opencode/skill/system-spec-kit/templates/resource-map.md` when a packet wants a lean, central listing of the files, scripts, and external resources it interacts with. Deep-research and deep-review loops emit it automatically next to `review-report.md`.
 
 &nbsp;
 #### Checklist Priority System
@@ -332,9 +335,9 @@ For the full spec folder workflow, template architecture (CORE + ADDENDUM v2.2),
 
 The Memory Engine is a local-first cognitive memory system built as an MCP server. `generate-context.js` updates canonical packet continuity and may emit supporting generated context artifacts inside the spec folder. Canonical continuity lives in the spec packet itself: use `/spec_kit:resume` as the recovery surface, then rebuild context in this order: `handover.md` -> `_memory.continuity` -> canonical spec docs. The MCP server indexes those packet-local sources with vector embeddings, BM25 and FTS5 full-text search, and `memory_match_triggers()` can still surface relevant prior context automatically when deeper retrieval is needed.
 
-Phase 017 tightened that flow in two places: `/memory:save` now refreshes packet metadata on every invocation, and `session_resume` now binds `args.sessionId` to transport caller context by default, with `MCP_SESSION_RESUME_AUTH_MODE=permissive` available for rollout canaries. Copilot also now shares the same compact-cache provenance path as Claude and Gemini.
+`/memory:save` refreshes packet metadata on every invocation, and `session_resume` binds `args.sessionId` to transport caller context by default; set `MCP_SESSION_RESUME_AUTH_MODE=permissive` for rollout canaries. Copilot, Claude, and Gemini all share the same compact-cache provenance path.
 
-The memory engine now includes the packet-024 compact code graph and session lifecycle surfaces alongside hybrid retrieval. 
+The memory engine includes a compact code graph and session lifecycle surfaces alongside hybrid retrieval.
 
 The full MCP API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
@@ -376,7 +379,7 @@ Every search passes through 4 stages:
 
 - **Candidate generation** - Parallel retrieval from the active channels plus constitutional injection where applicable.
 - **Fusion** - RRF-based scoring with post-fusion signals such as co-activation, FSRS decay, interference control, intent weights, and graph/session boosts when enabled.
-- **Rerank** - Cross-encoder reranking with chunk reassembly, a minimum Stage 3 gate of 4 candidates, and compatibility-only length-penalty wiring that now resolves to a neutral `1.0` multiplier. `getRerankerStatus()` exposes latency plus cache hits, misses, stale hits, and evictions; if the reranker is unavailable, Stage 2 order is preserved with degraded metadata.
+- **Rerank** - Cross-encoder reranking with chunk reassembly, a minimum Stage 3 gate of 4 candidates, and compatibility-only length-penalty wiring that resolves to a neutral `1.0` multiplier. `getRerankerStatus()` exposes latency plus cache hits, misses, stale hits, and evictions; if the reranker is unavailable, Stage 2 order is preserved with degraded metadata.
 - **Filtering** - State/quality filtering, confidence annotation, token-budget enforcement, and final response shaping without mutating post-rerank scores.
 
 &nbsp;
@@ -417,7 +420,7 @@ Six relationship types: `caused`, `enabled`, `supersedes`, `contradicts`, `deriv
 &nbsp;
 #### Trust Badges on Search Results
 
-Every search result now ships with a small `trustBadges` block that tells you how reliable the hit is at a glance. The badges are display-only — they read existing causal links and don't add new storage:
+Every search result ships with a small `trustBadges` block that tells you how reliable the hit is at a glance. The badges are display-only — they read existing causal links and don't add new storage:
 
 | Badge | What it tells you |
 |-------|-------------------|
@@ -527,12 +530,12 @@ The indexer uses tree-sitter to parse source files and extract functions, classe
 
 `code_graph_query` and `code_graph_context` share a readiness-aware response contract. When the graph is fresh enough, both return `status: "ok"` with resolved results plus a `readiness` / `canonicalReadiness` / `trustState` block. When readiness requires a full scan that cannot run inline, both return an explicit **`status: "blocked"`** payload naming `requiredAction: "code_graph_scan"`, `blockReason: "full_scan_required"`, `degraded`, and `graphAnswersOmitted` instead of silently returning empty results. Callers should run `code_graph_scan` before retrying.
 
-Success payloads of `code_graph_context` carry structured `data.metadata.partialOutput` (`isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, `truncatedText`) and an explicit `deadlineMs` field so callers can distinguish a complete answer from one trimmed by deadline or budget pressure. `code_graph_status` exposes `graphQualitySummary` (detector provenance + edge-enrichment confidence). CALLS queries on ambiguous subjects (e.g. `handle*`) now prefer callable implementation nodes over wrapper-shadow candidates, and return ambiguity / selected-candidate metadata so callers can audit the choice.
+Success payloads of `code_graph_context` carry structured `data.metadata.partialOutput` (`isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, `truncatedText`) and an explicit `deadlineMs` field so callers can distinguish a complete answer from one trimmed by deadline or budget pressure. `code_graph_status` exposes `graphQualitySummary` (detector provenance + edge-enrichment confidence). CALLS queries on ambiguous subjects (e.g. `handle*`) prefer callable implementation nodes over wrapper-shadow candidates, and return ambiguity / selected-candidate metadata so callers can audit the choice.
 
 &nbsp;
 #### Edge Explanations and Better Blast Radius
 
-Relationship answers from `code_graph_query` now include short `reason` and `step` fields alongside the existing confidence and provenance, so you can see *why* an edge is there instead of just *that* it exists. `code_graph_context` carries those same fields through to structured edges and text briefs.
+Relationship answers from `code_graph_query` include short `reason` and `step` fields alongside confidence and provenance, so you can see *why* an edge is there instead of just *that* it exists. `code_graph_context` carries those same fields through to structured edges and text briefs.
 
 `blast_radius` keeps the prior payload (affected files, source files, hot files, multi-file union, depth) and adds:
 
@@ -674,7 +677,7 @@ Current shipped baseline: **80.5% full-corpus accuracy**, **77.5% holdout accura
 &nbsp;
 #### Affordance Evidence
 
-Callers can now pass structured tool and resource hints — `skillId`, `name`, `triggers[]`, `category`, `dependsOn[]`, `enhances[]`, `siblings[]`, `prerequisiteFor[]`, `conflictsWith[]` — as affordance evidence. A normalizer strips URLs, emails, token-shaped fragments, control characters, and instruction-shaped strings before the scorer sees anything; free-form `description` text is ignored on purpose. Sanitized triggers feed the existing derived-hints lane at reduced weight, and normalized relations become temporary edges in the existing causal-graph lane reusing the standard relation multipliers (`depends_on`, `enhances`, `siblings`, `prerequisite_for`, `conflicts_with`). No new scoring lane, no new entity kind, no raw matched phrases in recommendation payloads — evidence labels stay as stable `affordance:<skillId>:<index>` identifiers.
+Callers can pass structured tool and resource hints — `skillId`, `name`, `triggers[]`, `category`, `dependsOn[]`, `enhances[]`, `siblings[]`, `prerequisiteFor[]`, `conflictsWith[]` — as affordance evidence. A normalizer strips URLs, emails, token-shaped fragments, control characters, and instruction-shaped strings before the scorer sees anything; free-form `description` text is ignored on purpose. Sanitized triggers feed the existing derived-hints lane at reduced weight, and normalized relations become temporary edges in the existing causal-graph lane reusing the standard relation multipliers (`depends_on`, `enhances`, `siblings`, `prerequisite_for`, `conflicts_with`). No new scoring lane, no new entity kind, no raw matched phrases in recommendation payloads — evidence labels stay as stable `affordance:<skillId>:<index>` identifiers.
 
 For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_server/skill_advisor/README.md).
 
@@ -1300,7 +1303,7 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 - **[→ sk-doc Skill](.opencode/skill/sk-doc/SKILL.md)** - Documentation standards, DQI scoring
 - **[→ Skills Index](.opencode/skill/README.md)** - All 21 skills with invocation patterns
 - **[→ Feature Catalog](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** - 291-entry technical reference (a plain-language companion is tracked as a future docs item)
-- **[→ Phase 017 Changelog](.opencode/changelog/01--system-spec-kit/v3.4.0.2.md)** - Release notes for H-56-1, session-resume auth binding, and Copilot parity
+- **[→ Latest System Spec-Kit Release Notes](.opencode/changelog/01--system-spec-kit/v3.4.0.2.md)** - Most recent shipped release notes
 - **[→ Enterprise Example](AGENTS_example_fs_enterprises.md)** - Example AGENTS.md for full-stack enterprise
 
 **External Resources:**
@@ -1312,4 +1315,4 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.4 | Last updated: 2026-04-25 | Framework: 12 agents, 21 skills, 23 commands, 60 MCP tools (51 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking; canonical source `TOOL_DEFINITIONS` in `tool-schemas.ts`; deferred / internal-only handlers do NOT count). Phase 012 adds the read-only `detect_changes` MCP tool, `blast_radius` enrichment, Skill Advisor affordance evidence, and Memory causal trust display badges. Phase 010/007 T-A wired `detect_changes` into the MCP catalog (dispatcher + JSON schema + Zod validator).*
+*Documentation version: 4.4 | Last updated: 2026-04-25 | Framework: 12 agents, 21 skills, 23 commands, 60 MCP tools (51 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking; canonical source `TOOL_DEFINITIONS` in `tool-schemas.ts`; deferred / internal-only handlers do NOT count).*
