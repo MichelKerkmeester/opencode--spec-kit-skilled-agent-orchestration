@@ -31,24 +31,22 @@ trigger_phrases:
 
 ## 1. OVERVIEW
 
-The Skill Advisor routes through the native TypeScript package at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`. This package owns scoring, daemon freshness, lifecycle metadata, validation, MCP handlers, schemas, hook-compatible rendering, operator docs, manual playbooks, and Python compatibility scripts. The design is documented as native-first per ADR-007.
+The Skill Advisor routes through the native TypeScript package at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`. This package owns scoring, daemon freshness, lifecycle metadata, validation, MCP handlers, schemas, hook-compatible rendering, operator docs, manual playbooks, and Python compatibility scripts.
 
 Python remains available for runtimes or scripts that cannot call MCP tools directly. The shim at `scripts/skill_advisor.py` probes the native advisor first, translates native output back to the legacy JSON-array shape when possible, and falls back to the local Python scorer only when native routing is unavailable or explicitly bypassed.
 
-Current shipped baseline as of remediation SHA `97a318d83`:
+Current shipped baseline:
 
 | Area | Shipped Reality |
 | --- | --- |
 | Native MCP tools | `advisor_recommend`, `advisor_status`, `advisor_validate` |
 | Fusion lanes | explicit_author 0.45, lexical 0.30, graph_causal 0.15, derived_generated 0.10, semantic_shadow 0.00 |
 | Accuracy | 80.5% full corpus, 77.5% holdout, UNKNOWN <= 10 |
-| Regression parity | 0 regressions on Python-correct prompts under ADR-007 |
+| Regression parity | 0 regressions on Python-correct prompts |
 | Python compatibility | 52/52 Python regression suite passed |
 | Package tests | 23 advisor test files / 167 tests |
 | Watcher limits | Chokidar narrow scope, ≤ 1% idle CPU, < 20 MB RSS (measured 0.031% / 5.516 MB) |
 | Freshness states | `live`, `stale`, `absent`, `unavailable` fail open |
-
-ADR reference: ADR-007 (native-first + Python compatibility).
 
 ---
 
@@ -148,7 +146,7 @@ Scoring uses 5-lane analytical fusion. The semantic lane is shadow-only and hard
 
 Prompt safety is enforced at every public boundary. `sanitizeSkillLabel` runs before SQLite writes, `graph-metadata.json.derived` writes, response envelopes, lifecycle diagnostics, and plugin bridge output. `includeAttribution` returns lane contribution numbers only; it does not return prompt-derived evidence snippets.
 
-The Phase 028 code graph lives in its own package at `.opencode/skill/system-spec-kit/mcp_server/code_graph/`. Advisor docs should not point at retired shared `lib/code-graph` or handler paths.
+The code graph lives in its own package at `.opencode/skill/system-spec-kit/mcp_server/code_graph/`. Advisor docs should not point at retired shared `lib/code-graph` or handler paths.
 
 ---
 
@@ -198,7 +196,7 @@ Use the native validation tool for release checks:
 advisor_validate({"confirmHeavyRun":true,"workspaceRoot":"/absolute/path/to/repo","skillSlug":null})
 ```
 
-The current Phase 027 baseline:
+The current baseline:
 
 - Full corpus top-1 accuracy: 80.5%.
 - Holdout top-1 accuracy: 77.5%.
@@ -211,8 +209,8 @@ Aggregate validation thresholds are intentionally different from prompt-time rou
 
 - Prompt-time routing defaults: confidence `0.8`, uncertainty `0.35`.
 - Aggregate validation gates: full corpus `0.75`, holdout `0.725`, per-skill `0.7`, UNKNOWN `<= 10`.
-- `advisor_validate` now publishes both sets under `thresholdSemantics` so runtime routing and release-gate scoring stay explicit.
-- `advisor_validate` keeps diagnostics workspace-global, but subset validation now scopes telemetry outcome totals to the requested `skillSlug` and reports that scope explicitly.
+- `advisor_validate` publishes both sets under `thresholdSemantics` so runtime routing and release-gate scoring stay explicit.
+- `advisor_validate` keeps diagnostics workspace-global, but subset validation scopes telemetry outcome totals to the requested `skillSlug` and reports that scope explicitly.
 
 Python compatibility regression:
 
@@ -318,4 +316,3 @@ Follow the OP and AU scenarios in the [manual playbook](./manual_testing_playboo
 | [Feature catalog](./feature_catalog/feature_catalog.md) | 42-feature operator-facing inventory across 8 groups. |
 | [Manual testing playbook](./manual_testing_playbook/manual_testing_playbook.md) | 47 deterministic scenarios across 10 groups. |
 | [Hook reference](../../references/hooks/skill-advisor-hook.md) | Runtime hook contract for Claude, Copilot, Gemini, Codex, and OpenCode. |
-| ADR-007 | Native-first + Python compatibility ADR; referenced inline. No standalone file under `references/adrs/` exists at the current revision. |

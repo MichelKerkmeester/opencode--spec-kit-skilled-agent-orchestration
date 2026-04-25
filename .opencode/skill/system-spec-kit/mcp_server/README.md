@@ -48,7 +48,7 @@ Spec Kit Memory is a Model Context Protocol (MCP) server that gives AI assistant
 
 The server works across sessions, models and tools. Switch from Claude to GPT to Gemini and back. The memory stays the same because it lives in a database on your machine, not inside any AI's context window.
 
-Phase 017 also hardened the runtime edges: code-graph handlers now share one readiness contract, session-resume auth binds to transport caller context by default, and Copilot compact-cache uses the same provenance-wrapped recovery path as Claude and Gemini.
+Code-graph handlers share one readiness contract, session-resume auth binds to transport caller context by default, and Copilot compact-cache uses the same provenance-wrapped recovery path as Claude and Gemini.
 
 ### Key Numbers
 
@@ -110,7 +110,7 @@ Module/runtime profile in this package:
 
 ### Index Scope Invariants
 
-The memory and code-graph scanners now share one path-policy source at `lib/utils/index-scope.ts`.
+The memory and code-graph scanners share one path-policy source at `lib/utils/index-scope.ts`.
 
 - Memory indexing must never admit any path with a `z_future/`, `external/`, or `z_archive/` segment.
 - Code-graph scanning must never admit any path with an `external/` segment, and it preserves the existing `.git/`, `node_modules/`, `dist/`, `vendor/`, `z_future/`, `z_archive/`, and `mcp-coco-index/mcp_server/` exclusions.
@@ -400,7 +400,7 @@ The system tracks how decisions relate to each other. Think of it like a corkboa
 
 **Unified graph retrieval** -- all graph features run through one consistent path with reproducible results and full explainability. A single switch turns off all graph features if anything goes wrong.
 
-**Causal trust display badges (012/005)** -- `memory_search` results now carry an additive `trustBadges` payload per `MemoryResultEnvelope`, derived at response time from existing causal-edge columns. The `formatSearchResults()` formatter at `mcp_server/formatters/search-results.ts` batch-reads connected causal-edge data and attaches the following display-only fields to each result envelope: `confidence` (clamped from the strongest connected edge `strength`), `extractionAge` (human-readable age from the newest connected `extracted_at`), `lastAccessAge` (human-readable age from the newest connected `last_accessed`), `orphan` (`true` when the result has no incoming causal edges), and `weightHistoryChanged` (`true` when any connected edge has a `weight_history` row). The formatter fails open when the DB handle or `weight_history` table is unavailable, and preserves any precomputed `trustBadges` payload a caller already supplied. `mcp_server/lib/response/profile-formatters.ts` extends response-profile result typing so the `quick`, `research`, and `resume` profiles preserve the badge payload on `results[]` and `topResult` rather than dropping it during shaping. The placement decision is per-result, not top-level — the trust signal belongs beside the specific Memory claim the user is judging. No schema change, no new relation types, no new storage of code/process/tool facts (ADR-012-005).
+**Causal trust display badges** -- `memory_search` results carry an additive `trustBadges` payload per `MemoryResultEnvelope`, derived at response time from existing causal-edge columns. The `formatSearchResults()` formatter at `mcp_server/formatters/search-results.ts` batch-reads connected causal-edge data and attaches the following display-only fields to each result envelope: `confidence` (clamped from the strongest connected edge `strength`), `extractionAge` (human-readable age from the newest connected `extracted_at`), `lastAccessAge` (human-readable age from the newest connected `last_accessed`), `orphan` (`true` when the result has no incoming causal edges), and `weightHistoryChanged` (`true` when any connected edge has a `weight_history` row). The formatter fails open when the DB handle or `weight_history` table is unavailable, and preserves any precomputed `trustBadges` payload a caller already supplied. `mcp_server/lib/response/profile-formatters.ts` extends response-profile result typing so the `quick`, `research`, and `resume` profiles preserve the badge payload on `results[]` and `topResult` rather than dropping it during shaping. The placement decision is per-result, not top-level — the trust signal belongs beside the specific Memory claim the user is judging. No schema change, no new relation types, no new storage of code/process/tool facts.
 
 ---
 
@@ -505,11 +505,11 @@ The system keeps the index accurate and performant as your project evolves.
 
 **Embedding retry orchestrator** -- when the embedding service is temporarily unavailable, the memory is saved without a vector and queued for retry. A background worker retries until it succeeds. A temporary outage never permanently blocks full searchability.
 
-**Deferred lexical-only indexing** -- saves memories in a simpler text-searchable form when the embedding service is down. Keyword search still works. When the service returns, the system upgrades to full vector searchability automatically.
+**Lexical-only fallback indexing** -- saves memories in a simpler text-searchable form when the embedding service is down. Keyword search still works. When the service returns, the system upgrades to full vector searchability automatically.
 
 **Atomic write-then-index** -- writes files to a temporary location first and only moves them once confirmed. Crash-safe with pending-file recovery on startup.
 
-**Phase 13 chunked-save finalization hardening** -- chunked saves now track the created parent and child IDs so finalization can stay transactional. Prediction-error supersede finalization records cross-path `supersedes` edges and marks predecessors superseded inside one transaction. Safe-swap updates now null old-child `parent_id` values before bulk delete inside that same finalization step, and any finalize failure triggers compensating cleanup that removes the staged replacement chunk tree. Parent BM25 mutation is delayed until at least one chunk succeeds and, for safe-swap updates, until finalization completes, which preserves the old parent BM25 state when all chunks fail.
+**Chunked-save finalization** -- chunked saves track the created parent and child IDs so finalization stays transactional. Prediction-error supersede finalization records cross-path `supersedes` edges and marks predecessors superseded inside one transaction. Safe-swap updates null old-child `parent_id` values before bulk delete inside that same finalization step, and any finalize failure triggers compensating cleanup that removes the staged replacement chunk tree. Parent BM25 mutation is delayed until at least one chunk succeeds and, for safe-swap updates, until finalization completes, which preserves the old parent BM25 state when all chunks fail.
 
 **Dynamic server instructions** -- at startup, tells the calling AI how many memories are stored, how many folders exist and which search methods are available.
 
@@ -537,9 +537,9 @@ Research-grade infrastructure for measuring and improving search quality over ti
 
 The code graph system provides structural code analysis via tree-sitter AST parsing and SQLite storage. It maps what connects to what in the codebase: function calls, imports, class hierarchy and containment.
 
-**Architecture:** CocoIndex (semantic, external MCP) finds code by concept. Code Graph (structural, this server) maps imports, calls and hierarchy. Memory (session, this server) preserves decisions. The compact-merger combines all three under a 4000-token budget for compaction injection. After Phase 028, code-graph source is self-contained under `code-graph/` with `handlers/`, `lib/`, `tools/`, and `tests/`.
+**Architecture:** CocoIndex (semantic, external MCP) finds code by concept. Code Graph (structural, this server) maps imports, calls and hierarchy. Memory (session, this server) preserves decisions. The compact-merger combines all three under a 4000-token budget for compaction injection. Code-graph source is self-contained under `code-graph/` with `handlers/`, `lib/`, `tools/`, and `tests/`.
 
-**Phase-DAG runner (012/002):** `indexFiles()` now runs through a typed phase-DAG runner at `code_graph/lib/phase-runner.ts`. The scan flow decomposes into four declared phases: `find-candidates` -> `parse-candidates` -> `finalize` -> `emit-metrics`. The runner validates duplicate names, missing dependencies, and cycles before any phase body runs and attaches `phaseName` to any `PhaseRunnerError`. `IndexFilesResult` shape, public exports, and the SQLite schema are unchanged — the runner is purely orchestrational.
+**Phase-DAG runner:** `indexFiles()` runs through a typed phase-DAG runner at `code_graph/lib/phase-runner.ts`. The scan flow decomposes into four declared phases: `find-candidates` -> `parse-candidates` -> `finalize` -> `emit-metrics`. The runner validates duplicate names, missing dependencies, and cycles before any phase body runs and attaches `phaseName` to any `PhaseRunnerError`. `IndexFilesResult` shape, public exports, and the SQLite schema are unchanged — the runner is purely orchestrational.
 
 **Parser:** Tree-sitter WASM is the default parser (JS/TS/Python/Shell). Set `SPECKIT_PARSER=regex` for regex fallback.
 
@@ -547,17 +547,17 @@ The code graph system provides structural code analysis via tree-sitter AST pars
 
 **Edge types:** `CONTAINS`, `CALLS`, `IMPORTS`, `EXPORTS`, `EXTENDS`, `IMPLEMENTS`, `DECORATES`, `OVERRIDES`, `TYPE_OF`.
 
-**Edge explanation and blast-radius uplift (012/003):** Edge metadata writes now include graph-local `reason` and `step` JSON fields next to the existing `confidence`, `detectorProvenance`, and `evidenceClass` payload. `code_graph_query` relationship rows surface those fields for each edge, and `code_graph_context` propagates them through both structured edges and compact text briefs. `blast_radius` keeps the prior file-oriented payload while adding `depthGroups`, `riskLevel` (graph-local: `high` on ambiguity or depth-one fanout >10, `medium` on 4-10, `low` otherwise), an optional `minConfidence` traversal filter, `ambiguityCandidates`, and a structured `failureFallback` so callers never receive a bare error string when resolution cannot continue. The `code_edges` schema stays at `metadata TEXT` — the new fields ride inside the existing JSON blob.
+**Edge explanation and blast-radius uplift:** Edge metadata writes include graph-local `reason` and `step` JSON fields next to the existing `confidence`, `detectorProvenance`, and `evidenceClass` payload. `code_graph_query` relationship rows surface those fields for each edge, and `code_graph_context` propagates them through both structured edges and compact text briefs. `blast_radius` keeps the prior file-oriented payload while adding `depthGroups`, `riskLevel` (graph-local: `high` on ambiguity or depth-one fanout >10, `medium` on 4-10, `low` otherwise), an optional `minConfidence` traversal filter, `ambiguityCandidates`, and a structured `failureFallback` so callers never receive a bare error string when resolution cannot continue. The `code_edges` schema stays at `metadata TEXT` — the new fields ride inside the existing JSON blob.
 
-**`detect_changes` preflight MCP tool (012/002 handler; MCP wiring 010/007 T-A):** A read-only handler at `code_graph/handlers/detect-changes.ts` is registered alongside the other Code Graph handlers in `code_graph/handlers/index.ts` and exposed as a top-level MCP tool via the dispatcher (`code_graph/tools/code-graph-tools.ts`), JSON schema (`tool-schemas.ts`), and strict Zod validator (`schemas/tool-input-schemas.ts`). It accepts `{ diff: string, rootDir?: string }` and returns `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`. The P1 safety invariant is hard: `ensureCodeGraphReady` runs first with `allowInlineIndex: false` and `allowInlineFullScan: false`, so any non-`fresh` readiness state returns `status: 'blocked'` before the diff is parsed and `affectedSymbols[]` is empty (false-safe RISK-03 mitigation per ADR-012-001 / ADR-012-002). A clean-room minimal unified-diff parser at `code_graph/lib/diff-parser.ts` handles `diff --git`, `--- a/<path>`, `+++ b/<path>`, and `@@ -oldStart[,oldLines] +newStart[,newLines] @@` headers, returning `parse_error` on malformed input — no new npm dependency was added. Symbol attribution uses pure line-range overlap against `queryOutline(filePath)` rows; synthetic per-file `module` nodes are excluded so they don't drown per-symbol signal. ADR-012-003's deferral covers the new route/tool/shape graph entities (`route_map`, `tool_map`, `shape_check`, `api_impact`), not the routine MCP exposure of this read-only handler.
+**`detect_changes` preflight MCP tool:** A read-only handler at `code_graph/handlers/detect-changes.ts` is registered alongside the other Code Graph handlers in `code_graph/handlers/index.ts` and exposed as a top-level MCP tool via the dispatcher (`code_graph/tools/code-graph-tools.ts`), JSON schema (`tool-schemas.ts`), and strict Zod validator (`schemas/tool-input-schemas.ts`). It accepts `{ diff: string, rootDir?: string }` and returns `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`. The P1 safety invariant is hard: `ensureCodeGraphReady` runs first with `allowInlineIndex: false` and `allowInlineFullScan: false`, so any non-`fresh` readiness state returns `status: 'blocked'` before the diff is parsed and `affectedSymbols[]` is empty (false-safe RISK-03 mitigation). A clean-room minimal unified-diff parser at `code_graph/lib/diff-parser.ts` handles `diff --git`, `--- a/<path>`, `+++ b/<path>`, and `@@ -oldStart[,oldLines] +newStart[,newLines] @@` headers, returning `parse_error` on malformed input — no new npm dependency is required. Symbol attribution uses pure line-range overlap against `queryOutline(filePath)` rows; synthetic per-file `module` nodes are excluded so they don't drown per-symbol signal. New route/tool/shape graph entities (`route_map`, `tool_map`, `shape_check`, `api_impact`) remain deferred; the routine MCP exposure of this read-only handler is unaffected.
 
 **Read-path readiness:** `ensureCodeGraphReady()` runs automatically inside `code_graph_query` and `code_graph_context`. It checks graph freshness, returns a `readiness` block, and performs bounded inline selective reindex only when the stale set is small enough to repair safely on the read path. Empty graphs, large stale sets, and other full-scan cases remain explicit `code_graph_scan` work.
 
-**Shared readiness contract:** `lib/code-graph/readiness-contract.ts` now owns the shared readiness helpers used by query, scan, status, context, and CCC handlers. Read-path trust labels project onto the canonical `SharedPayloadTrustState` vocabulary instead of a new local enum.
+**Shared readiness contract:** `lib/code-graph/readiness-contract.ts` owns the shared readiness helpers used by query, scan, status, context, and CCC handlers. Read-path trust labels project onto the canonical `SharedPayloadTrustState` vocabulary instead of a new local enum.
 
-**Startup/recovery surfaces:** `session_resume`, `session_bootstrap`, and the startup brief now report freshness-aware graph status instead of count-only health. Startup surfaces are intentionally non-mutating snapshots, so later structural reads may still differ if repo state changes.
+**Startup/recovery surfaces:** `session_resume`, `session_bootstrap`, and the startup brief report freshness-aware graph status instead of count-only health. Startup surfaces are intentionally non-mutating snapshots, so later structural reads may still differ if repo state changes.
 
-**Cross-runtime startup payload parity:** all four supported runtimes transport the same compact startup shared-payload through their runtime-specific hooks — `hooks/claude/session-prime.ts`, `hooks/gemini/session-prime.ts`, `hooks/copilot/session-prime.ts`, and `hooks/codex/session-start.ts`. The transported payload includes `graphQualitySummary` (detector provenance + edge-enrichment summary) and the `sharedPayloadTransport` envelope produced by `buildStartupBrief()`. `session_bootstrap()` remains available as a manual recovery path when native startup hooks are disabled or unwired; it is no longer a Codex-only substitute.
+**Cross-runtime startup payload parity:** all four supported runtimes transport the same compact startup shared-payload through their runtime-specific hooks — `hooks/claude/session-prime.ts`, `hooks/gemini/session-prime.ts`, `hooks/copilot/session-prime.ts`, and `hooks/codex/session-start.ts`. The transported payload includes `graphQualitySummary` (detector provenance + edge-enrichment summary) and the `sharedPayloadTransport` envelope produced by `buildStartupBrief()`. `session_bootstrap()` remains available as a manual recovery path when native startup hooks are disabled or unwired.
 
 **CALLS disambiguation:** `code_graph_query` CALLS mode prefers callable implementation nodes over wrapper-shadow candidates for ambiguous subjects (e.g. `handle*`), and records ambiguity / selected-candidate metadata alongside the results so callers can audit the choice.
 
@@ -569,7 +569,7 @@ The code graph system provides structural code analysis via tree-sitter AST pars
 
 #### 3.1.14 SKILL ADVISOR
 
-The Skill Advisor is the native Gate 2 routing surface for matching prompts to skills. It now lives as a self-contained package under `skill-advisor/` inside this MCP server and exposes three MCP tools:
+The Skill Advisor is the native Gate 2 routing surface for matching prompts to skills. It lives as a self-contained package under `skill-advisor/` inside this MCP server and exposes three MCP tools:
 
 | Tool | Purpose |
 |------|---------|
@@ -581,7 +581,7 @@ The Skill Advisor is the native Gate 2 routing surface for matching prompts to s
 
 **Fusion lanes:** explicit_author 0.45, lexical 0.30, graph_causal 0.15, derived_generated 0.10, semantic_shadow 0.00. The semantic lane is shadow-only and hardcoded at 0.
 
-**Affordance evidence (012/004):** `advisor_recommend` accepts structured tool/resource hints as a sanitized affordance lane wired into the existing `derived_generated` and `graph_causal` lanes — no new scoring lane, no new `entity_kind`, no new relation type (ADR-012-006). The allowlist normalizer at `skill_advisor/lib/affordance-normalizer.ts` accepts only `skillId`/`skill_id`, `name`, `triggers[]`, `category`, and the existing relation fields (`dependsOn[]`/`depends_on[]`, `enhances[]`, `siblings[]`, `prerequisiteFor[]`/`prerequisite_for[]`, `conflictsWith[]`/`conflicts_with[]`). Free-form `description` text is intentionally ignored as a trigger source. URLs, email addresses, token-shaped fragments, control characters, and instruction-shaped strings are stripped or dropped before scoring. Sanitized triggers contribute through the existing `derived_generated` lane (`scorer/lanes/derived.ts`) with reduced weight, and normalized relations become temporary edges in the existing `graph_causal` lane (`scorer/lanes/graph-causal.ts`) reusing the existing `enhances` / `siblings` / `depends_on` / `prerequisite_for` / `conflicts_with` `EDGE_MULTIPLIER` values. Recommendation payloads cite stable `affordance:<skillId>:<index>` identifiers — never raw matched phrases. The Python graph compiler (`skill_advisor/scripts/skill_graph_compiler.py`) compiles `derived.affordances[]` into existing `signals` and sparse adjacency without changing `ALLOWED_ENTITY_KINDS` (`{"skill", "agent", "script", "config", "reference"}`).
+**Affordance evidence:** `advisor_recommend` accepts structured tool/resource hints as a sanitized affordance lane wired into the existing `derived_generated` and `graph_causal` lanes — no new scoring lane, no new `entity_kind`, no new relation type. The allowlist normalizer at `skill_advisor/lib/affordance-normalizer.ts` accepts only `skillId`/`skill_id`, `name`, `triggers[]`, `category`, and the existing relation fields (`dependsOn[]`/`depends_on[]`, `enhances[]`, `siblings[]`, `prerequisiteFor[]`/`prerequisite_for[]`, `conflictsWith[]`/`conflicts_with[]`). Free-form `description` text is intentionally ignored as a trigger source. URLs, email addresses, token-shaped fragments, control characters, and instruction-shaped strings are stripped or dropped before scoring. Sanitized triggers contribute through the existing `derived_generated` lane (`scorer/lanes/derived.ts`) with reduced weight, and normalized relations become temporary edges in the existing `graph_causal` lane (`scorer/lanes/graph-causal.ts`) reusing the existing `enhances` / `siblings` / `depends_on` / `prerequisite_for` / `conflicts_with` `EDGE_MULTIPLIER` values. Recommendation payloads cite stable `affordance:<skillId>:<index>` identifiers — never raw matched phrases. The Python graph compiler (`skill_advisor/scripts/skill_graph_compiler.py`) compiles `derived.affordances[]` into existing `signals` and sparse adjacency without changing `ALLOWED_ENTITY_KINDS` (`{"skill", "agent", "script", "config", "reference"}`).
 
 **Current baseline:** 80.5% full corpus, 77.5% holdout, UNKNOWN <= 10, and zero regressions on Python-correct prompts.
 
@@ -591,7 +591,7 @@ For package-local details, see [Skill Advisor Native Package README](skill-advis
 
 **Tuning the scoring tables:** `/doctor:skill-advisor` is the user-facing surface for proposing and applying optimizations to `TOKEN_BOOSTS`, `PHRASE_BOOSTS`, `CATEGORY_HINTS`, and per-skill `graph-metadata.json` derived fields (`derived.trigger_phrases`, `derived.key_topics`). The command runs a 5-phase pipeline (Discovery → Analysis → Proposal → Apply → Verify) with auto and confirm modes; mutation boundaries are validated by a Phase 3 canonical-path validator (realpath + repo-relative + allowlist exact-match) before any write, and a per-run rollback script is generated under packet-local scratch for safe recovery. End-user setup guide: [`.opencode/install_guides/SET-UP - Skill Advisor.md`](../../../install_guides/SET-UP%20-%20Skill%20Advisor.md).
 
-**Runtime hook surface:** prompt-time Skill Advisor adapters now ship for Claude, Gemini, Copilot, and Codex. Claude, Gemini, and Codex inject the brief through runtime hook output; Copilot refreshes its managed local custom-instructions block and keeps hook stdout as `{}`. When native routing is unavailable, use the documented runtime fallback paths rather than treating the Python shim as the primary operator surface.
+**Runtime hook surface:** prompt-time Skill Advisor adapters ship for Claude, Gemini, Copilot, and Codex. Claude, Gemini, and Codex inject the brief through runtime hook output; Copilot refreshes its managed local custom-instructions block and keeps hook stdout as `{}`. When native routing is unavailable, use the documented runtime fallback paths rather than treating the Python shim as the primary operator surface.
 
 - [hooks/README.md](./hooks/README.md) - runtime hook overview for the MCP server package
 - [hooks/claude/README.md](./hooks/claude/README.md) - Claude registration and `UserPromptSubmit` behavior
@@ -650,7 +650,7 @@ The smart entry point. You describe what you need and it figures out the best wa
 
 ##### `session_resume`
 
-Resume session with combined memory, code graph and CocoIndex status in a single call. Use when you want the detailed merged resume payload directly. The response carries freshness-aware code-graph status (`fresh`, `stale`, `empty`, `error`) instead of count-only health. Session-resume auth now binds `args.sessionId` to the transport caller context from `lib/context/caller-context.ts`; mismatches are rejected by default, with `MCP_SESSION_RESUME_AUTH_MODE=permissive` available for canary rollout. For the canonical first-call recovery path on session start or after `/clear`, prefer `session_bootstrap`, and for operator-facing packet recovery prefer `/spec_kit:resume`, which reconstructs context from `handover.md`, then `_memory.continuity`, then packet docs.
+Resume session with combined memory, code graph and CocoIndex status in a single call. Use when you want the detailed merged resume payload directly. The response carries freshness-aware code-graph status (`fresh`, `stale`, `empty`, `error`) instead of count-only health. Session-resume auth binds `args.sessionId` to the transport caller context from `lib/context/caller-context.ts`; mismatches are rejected by default, with `MCP_SESSION_RESUME_AUTH_MODE=permissive` available for canary rollout. For the canonical first-call recovery path on session start or after `/clear`, prefer `session_bootstrap`, and for operator-facing packet recovery prefer `/spec_kit:resume`, which reconstructs context from `handover.md`, then `_memory.continuity`, then packet docs.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1055,7 +1055,7 @@ Generate a report showing search performance trends over time. Aggregates metric
 
 Query structural code relationships: `outline` (file symbols), `calls_from` and `calls_to` (call graph), `imports_from` and `imports_to` (dependency graph). Use this instead of Grep for structural queries. Supports multi-hop BFS traversal. Responses include a `readiness` block, and the handler may perform bounded inline selective reindex before answering when the graph is only lightly stale.
 
-When readiness requires a full scan that cannot run inline, `code_graph_query` returns the same explicit `status: "blocked"` payload as `code_graph_context` (with `data.blocked`, `graphAnswersOmitted`, `requiredAction: "code_graph_scan"`, `blockReason: "full_scan_required"`, readiness, and `lastPersistedAt`) instead of silently returning empty results. CALLS mode on ambiguous subjects (e.g. `handle*`) prefers callable implementation nodes over wrapper-shadow candidates and returns ambiguity / selected-candidate metadata so callers can audit the choice.
+When readiness requires a full scan that cannot run inline, `code_graph_query` returns the same explicit `status: "blocked"` payload as `code_graph_context` (with `data.blocked`, `graphAnswersOmitted`, `requiredAction: "code_graph_scan"`, `blockReason: "full_scan_required"`, readiness, and `lastPersistedAt`) instead of empty results. CALLS mode on ambiguous subjects (e.g. `handle*`) prefers callable implementation nodes over wrapper-shadow candidates and returns ambiguity / selected-candidate metadata so callers can audit the choice.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1172,14 +1172,14 @@ Report code graph index health: file count, node and edge counts by type, parse 
 
 ##### `detect_changes`
 
-Read-only preflight MCP tool backed by the handler at `code_graph/handlers/detect-changes.ts`. Maps a unified-diff input to the structural symbols it touches via line-range overlap, refusing to answer when the graph is stale. Registered in `code_graph/handlers/index.ts`, the dispatcher `code_graph/tools/code-graph-tools.ts`, the JSON schema catalog `tool-schemas.ts`, and the strict Zod validator in `schemas/tool-input-schemas.ts` (010/007 T-A wiring). External clients call it as a top-level MCP tool alongside `code_graph_query` and `code_graph_context`.
+Read-only preflight MCP tool backed by the handler at `code_graph/handlers/detect-changes.ts`. Maps a unified-diff input to the structural symbols it touches via line-range overlap, refusing to answer when the graph is stale. Registered in `code_graph/handlers/index.ts`, the dispatcher `code_graph/tools/code-graph-tools.ts`, the JSON schema catalog `tool-schemas.ts`, and the strict Zod validator in `schemas/tool-input-schemas.ts`. External clients call it as a top-level MCP tool alongside `code_graph_query` and `code_graph_context`.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
 | `diff` | string | **Required.** Unified diff in the subset `git diff` emits (`diff --git`, `--- a/<path>`, `+++ b/<path>`, `@@ -oldStart[,oldLines] +newStart[,newLines] @@`) |
 | `rootDir` | string | Workspace root override; canonicalized via `realpathSync` and rejected if it escapes the workspace via symlink |
 
-Response shape: `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`. The handler probes readiness via `ensureCodeGraphReady(rootDir, { allowInlineIndex: false, allowInlineFullScan: false })` BEFORE any diff parsing or graph lookup. Any `freshness !== 'fresh'` returns `status: 'blocked'` immediately with `affectedSymbols[]` empty (false-safe RISK-03 mitigation per ADR-012-001 / ADR-012-002). Symbol attribution uses pure line-range overlap against `queryOutline(filePath)` rows; synthetic per-file `module` nodes are excluded so they don't drown per-symbol signal. Diff parsing returns `parse_error` on malformed input — see `code_graph/lib/diff-parser.ts` for the clean-room minimal parser and `rangesOverlap` helper.
+Response shape: `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`. The handler probes readiness via `ensureCodeGraphReady(rootDir, { allowInlineIndex: false, allowInlineFullScan: false })` BEFORE any diff parsing or graph lookup. Any `freshness !== 'fresh'` returns `status: 'blocked'` immediately with `affectedSymbols[]` empty (false-safe RISK-03 mitigation). Symbol attribution uses pure line-range overlap against `queryOutline(filePath)` rows; synthetic per-file `module` nodes are excluded so they don't drown per-symbol signal. Diff parsing returns `parse_error` on malformed input — see `code_graph/lib/diff-parser.ts` for the clean-room minimal parser and `rangesOverlap` helper.
 
 ---
 
@@ -1258,7 +1258,7 @@ mcp_server/
 | `api/index.ts` | Stable external import surface for eval, indexing, search, provider, and discovery helpers. |
 | `INSTALL_GUIDE.md` | Step-by-step installation with embedding providers and environment variables. |
 
-### Notable Phase 017 Modules
+### Notable Modules
 
 | Module | What It Does |
 |--------|--------------|
@@ -1729,7 +1729,7 @@ Set the flag to `false` or `0` in your environment, restart the server and the p
 | [../references/config/environment_variables.md](../references/config/environment_variables.md) | All environment variables with types, defaults and examples |
 | [../references/workflows/rollback_runbook.md](../references/workflows/rollback_runbook.md) | Feature flag rollback procedure |
 | [../../../DEPLOYMENT.md](../../../DEPLOYMENT.md) | Deployment notes, Docker anti-patterns, Copilot runtime notes, and session-resume auth rollout guidance |
-| [../../../changelog/01--system-spec-kit/v3.4.0.2.md](../../../changelog/01--system-spec-kit/v3.4.0.2.md) | Phase 017 release changelog covering H-56-1, caller-context auth binding, and Copilot parity |
+| [../../../changelog/01--system-spec-kit/v3.4.0.2.md](../../../changelog/01--system-spec-kit/v3.4.0.2.md) | Most recent shipped release notes |
 
 ### External Resources
 
