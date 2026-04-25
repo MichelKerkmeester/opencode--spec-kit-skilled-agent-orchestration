@@ -1,0 +1,28 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/015-code-graph-advisor-refinement/research/015-code-graph-advisor-refinement-pt-01/iterations",
+  "description": "Research iteration artifacts for 015-code-graph-advisor-refinement-pt-01.",
+  "keywords": [
+    "research",
+    "iteration",
+    "artifacts",
+    "015-code-graph-advisor-refinement-pt-01",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-package",
+    "015-code-graph-advisor-refinement",
+    "iterations"
+  ],
+  "lastUpdated": "2026-04-25T03:32:06.433Z",
+  "specId": "015",
+  "folderSlug": "code-graph-advisor-refinement-pt-01-iterations",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-package",
+    "015-code-graph-advisor-refinement",
+    "research",
+    "015-code-graph-advisor-refinement-pt-01"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

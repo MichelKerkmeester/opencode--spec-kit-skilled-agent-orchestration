@@ -1,0 +1,28 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-hook-package/015-code-graph-advisor-refinement",
+  "description": "Research initiative: 20-iteration deep-research loop investigating algorithmic gaps, performance ceilings, UX rough edges, and observability blind spots in the Code Graph and Skill Advisor systems.",
+  "keywords": [
+    "code-graph",
+    "skill-advisor",
+    "research",
+    "deep-research",
+    "refinement",
+    "026/009/015",
+    "ast-edge-detection",
+    "scorer-fusion",
+    "freshness",
+    "benchmark"
+  ],
+  "lastUpdated": "2026-04-25T03:32:06.422Z",
+  "specId": "015",
+  "folderSlug": "code-graph-advisor-refinement",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-hook-package"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "25-04-26_04-32__20-iter-deep-research-session-on-code-graph-skill.md"
+  ]
+}
