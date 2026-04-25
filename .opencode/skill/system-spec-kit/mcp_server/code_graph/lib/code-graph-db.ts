@@ -775,7 +775,7 @@ function rowToNode(r: Record<string, unknown>): CodeNode {
 const EDGE_METADATA_STRING_MAX_LENGTH = 200;
 const EDGE_METADATA_STRING_BLOCKED = /[\x00-\x1F\x7F]/;
 
-function sanitizeEdgeMetadataString(value: unknown): string | null {
+export function sanitizeEdgeMetadataString(value: unknown): string | null {
   if (typeof value !== 'string') return null;
   if (value.length === 0) return null;
   if (value.length > EDGE_METADATA_STRING_MAX_LENGTH) return null;

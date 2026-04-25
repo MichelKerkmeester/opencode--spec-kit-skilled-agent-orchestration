@@ -691,6 +691,87 @@ describe('Causal Edges Unit Tests', () => {
   });
 
   /* ─────────────────────────────────────────────────────────────
+     R-007-12: Generation counter for memory_search cache invalidation
+  ──────────────────────────────────────────────────────────────── */
+
+  describe('causal-edges generation counter (R-007-12)', () => {
+    beforeEach(() => {
+      resetEdges();
+    });
+
+    it('R-007-12-G1: insertEdge bumps the generation counter', () => {
+      const before = causalEdges.getCausalEdgesGeneration();
+      causalEdges.insertEdge('1', '2', 'caused', 0.5);
+      const after = causalEdges.getCausalEdgesGeneration();
+      expect(after).toBeGreaterThan(before);
+    });
+
+    it('R-007-12-G2: updateEdge bumps the generation counter', () => {
+      const edgeId = causalEdges.insertEdge('1', '2', 'caused', 0.5)!;
+      const before = causalEdges.getCausalEdgesGeneration();
+      causalEdges.updateEdge(edgeId, { strength: 0.9 });
+      const after = causalEdges.getCausalEdgesGeneration();
+      expect(after).toBeGreaterThan(before);
+    });
+
+    it('R-007-12-G3: deleteEdge bumps the generation counter', () => {
+      const edgeId = causalEdges.insertEdge('1', '2', 'caused', 0.5)!;
+      const before = causalEdges.getCausalEdgesGeneration();
+      causalEdges.deleteEdge(edgeId);
+      const after = causalEdges.getCausalEdgesGeneration();
+      expect(after).toBeGreaterThan(before);
+    });
+
+    it('R-007-12-G4: deleteEdgesForMemory bumps the generation counter', () => {
+      causalEdges.insertEdge('1', '2', 'caused', 1.0);
+      causalEdges.insertEdge('1', '3', 'enabled', 0.7);
+      const before = causalEdges.getCausalEdgesGeneration();
+      causalEdges.deleteEdgesForMemory('1');
+      const after = causalEdges.getCausalEdgesGeneration();
+      expect(after).toBeGreaterThan(before);
+    });
+
+    it('R-007-12-G5: read-only operations do NOT bump the generation counter', () => {
+      causalEdges.insertEdge('1', '2', 'caused', 0.5);
+      const before = causalEdges.getCausalEdgesGeneration();
+
+      // Pure reads — no bump expected
+      causalEdges.getEdgesFrom('1');
+      causalEdges.getEdgesTo('2');
+      causalEdges.getAllEdges();
+      causalEdges.getGraphStats();
+
+      const after = causalEdges.getCausalEdgesGeneration();
+      expect(after).toBe(before);
+    });
+
+    it('R-007-12-G6: each successive mutation produces a strictly increasing generation', () => {
+      const generations: number[] = [];
+      generations.push(causalEdges.getCausalEdgesGeneration());
+
+      causalEdges.insertEdge('1', '2', 'caused', 0.5);
+      generations.push(causalEdges.getCausalEdgesGeneration());
+
+      causalEdges.insertEdge('3', '4', 'enabled', 0.6);
+      generations.push(causalEdges.getCausalEdgesGeneration());
+
+      const edgeId = causalEdges.insertEdge('5', '6', 'supports', 0.7)!;
+      generations.push(causalEdges.getCausalEdgesGeneration());
+
+      causalEdges.updateEdge(edgeId, { strength: 0.9 });
+      generations.push(causalEdges.getCausalEdgesGeneration());
+
+      causalEdges.deleteEdge(edgeId);
+      generations.push(causalEdges.getCausalEdgesGeneration());
+
+      // Each step must produce a strictly greater generation than the prior
+      for (let i = 1; i < generations.length; i++) {
+        expect(generations[i]).toBeGreaterThan(generations[i - 1]);
+      }
+    });
+  });
+
+  /* ─────────────────────────────────────────────────────────────
      getGraphStats
   ──────────────────────────────────────────────────────────────── */
 

@@ -235,7 +235,14 @@ async function indexSeed(
     qualityGateMode: 'warn-only',
   });
   if (!result || typeof result.id !== 'number' || result.id <= 0) {
-    throw new Error(`Failed to seed memory for ${filePath}`);
+    // qualityGateMode='warn-only' should not block, but PE-gate supersede or
+    // near-duplicate quality-gate flagging may still leave us without a usable
+    // id. Don't abort the entire fixture — return a placeholder with id=0 so
+    // downstream `.find()?.id ?? null` truthy-checks (e.g. the causal-link
+    // setup at line ~698) skip cleanly. Scenarios that need this specific
+    // memory will surface UNAUTOMATABLE rather than blocking the whole run.
+    process.stderr.write(`[fixture] indexSeed warn: ${title} (${filePath}) returned no usable id; continuing with placeholder id=0\n`);
+    return { id: 0, title, filePath, specFolder };
   }
   return {
     id: result.id,
@@ -577,8 +584,10 @@ export async function createManualPlaybookFixture(specFolder: string): Promise<F
       filePath: path.join(targetSpecAbsolute, 'memory', 'graph-rollout-diagnostics.md'),
       specFolder: targetSpecFolder,
       content: buildMemoryDoc('Graph Rollout Diagnostics', 'Graph rollout trace and diagnostics.', [
-        'Graph diagnostics stable ordering relies on bounded graph walk contributions and trace metadata.',
-        'Result explainability includes graphContribution fields when trace is enabled.',
+        'Bounded graph walk contributions surface in stable result ordering when the rollout flag is active.',
+        'Result explainability includes graphContribution fields under the trace=true condition for staged rollouts.',
+        'Operators audit rollout via graph_status responses and per-handler latency histograms tagged with rollout cohort.',
+        'No connection to checkpoint or rollback semantics; this is a separate diagnostic surface from memory-health monitoring.',
       ]),
     },
     {

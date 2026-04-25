@@ -172,6 +172,64 @@ describe('detect_changes handler — parse_error contract (R-002-6)', () => {
   });
 });
 
+describe('detect_changes handler — adversarial path containment (010/007/T-D R-007-3)', () => {
+  beforeEach(() => {
+    mocks.ensureCodeGraphReady.mockResolvedValue({
+      freshness: 'fresh',
+      action: 'none',
+      inlineIndexPerformed: false,
+      reason: 'ok',
+    });
+  });
+
+  it('rejects diff path that escapes canonicalRootDir via ../../', async () => {
+    const result = await handleDetectChanges({
+      diff: '--- a/../../etc/passwd\n+++ b/../../etc/passwd\n@@ -1,1 +1,1 @@\n+pwned\n',
+      rootDir: workspaceRoot,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.status).toBe('parse_error');
+    expect(parsed.affectedSymbols).toEqual([]);
+    // blockedReason should name the offending escape; we don't pin the exact
+    // string but it should reference path containment / canonical-root.
+    expect(parsed.blockedReason).toMatch(/path|outside|canonical|root/i);
+  });
+
+  it('rejects absolute path that resolves outside the workspace', async () => {
+    mocks.queryOutline.mockReturnValue([]);
+    const result = await handleDetectChanges({
+      diff: '--- a/etc/passwd\n+++ b/etc/passwd\n@@ -1,1 +1,1 @@\n+pwned\n',
+      rootDir: workspaceRoot,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+    // Either parse_error (if absolute paths get explicitly rejected) OR ok with
+    // empty affectedSymbols (if the path is canonicalized and yields no
+    // overlap). The core invariant: the response NEVER claims to have
+    // affected `etc/passwd` or any path outside the workspace.
+    if (parsed.status === 'ok') {
+      expect(parsed.affectedSymbols).toEqual([]);
+      // affectedFiles should be empty OR contain only workspace-relative paths
+      for (const f of parsed.affectedFiles ?? []) {
+        expect(f.startsWith('/etc') || f.includes('../')).toBe(false);
+      }
+    } else {
+      expect(parsed.status).toBe('parse_error');
+    }
+  });
+
+  it('accepts a legitimate workspace-relative path (negative control)', async () => {
+    mocks.queryOutline.mockReturnValue([]);
+    const result = await handleDetectChanges({
+      diff: '--- a/src/legitimate.ts\n+++ b/src/legitimate.ts\n@@ -1,1 +1,1 @@\n+x\n',
+      rootDir: workspaceRoot,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+    // Empty outline → ok status with empty affected symbols (no parse_error
+    // because the path is legitimately inside the workspace).
+    expect(parsed.status).toBe('ok');
+  });
+});
+
 describe('detect_changes handler — affected-symbol attribution', () => {
   beforeEach(() => {
     mocks.ensureCodeGraphReady.mockResolvedValue({
