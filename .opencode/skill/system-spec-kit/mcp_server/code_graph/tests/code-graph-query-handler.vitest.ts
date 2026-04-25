@@ -600,6 +600,8 @@ describe('code-graph-query handler', () => {
             confidence: 0.8,
             detectorProvenance: 'heuristic',
             evidenceClass: 'INFERRED',
+            reason: 'heuristic-name-match',
+            step: 'resolve',
           },
         },
         targetNode: { fqName: 'TargetSymbol', filePath: 'src/target.ts', startLine: 12 },
@@ -625,6 +627,8 @@ describe('code-graph-query handler', () => {
       numericConfidence: 0.8,
       detectorProvenance: 'heuristic',
       evidenceClass: 'INFERRED',
+      reason: 'heuristic-name-match',
+      step: 'resolve',
       edgeEvidenceClass: 'inferred_heuristic',
     });
     expect(parsed.data).not.toHaveProperty('confidence');
@@ -763,6 +767,26 @@ describe('code-graph-query handler', () => {
 
     expect(parsed.data.multiFileUnion).toBe(true);
     expect(parsed.data.sourceFiles).toEqual(['src/a.ts', 'src/x.ts']);
+    expect(parsed.data.depthGroups).toEqual({
+      1: [
+        { filePath: 'src/b.ts', depth: 1 },
+        { filePath: 'src/e.ts', depth: 1 },
+      ],
+      2: [
+        {
+          filePath: 'src/c.ts',
+          depth: 2,
+          hotFileBreadcrumb: {
+            degree: 5,
+            changeCarefullyReason: 'High-degree node; change carefully because changes here ripple to 5 dependents.',
+          },
+        },
+        { filePath: 'src/f.ts', depth: 2 },
+      ],
+    });
+    expect(parsed.data.riskLevel).toBe('low');
+    expect(parsed.data.minConfidence).toBe(0);
+    expect(parsed.data.ambiguityCandidates).toEqual([]);
     expect(parsed.data.nodes).toEqual([
       { filePath: 'src/a.ts', depth: 0, isSeed: true },
       { filePath: 'src/x.ts', depth: 0, isSeed: true },
@@ -806,7 +830,7 @@ describe('code-graph-query handler', () => {
     ]);
   });
 
-  it('returns an error when blast-radius cannot resolve a subject', async () => {
+  it('returns structured failureFallback when blast-radius cannot resolve a subject', async () => {
     mocks.resolveSubjectFilePath.mockReturnValueOnce(null);
 
     const result = await handleCodeGraphQuery({
@@ -815,9 +839,24 @@ describe('code-graph-query handler', () => {
     });
     const parsed = JSON.parse(result.content[0].text);
 
-    expect(parsed).toEqual({
-      status: 'error',
-      error: 'unresolved_subject: MissingSymbol',
+    expect(parsed.status).toBe('ok');
+    expect(parsed.data).toMatchObject({
+      operation: 'blast_radius',
+      sourceFiles: [],
+      affectedFiles: [],
+      depthGroups: { 1: [], 2: [], 3: [] },
+      riskLevel: 'low',
+      minConfidence: 0,
+      ambiguityCandidates: [],
+      failureFallback: {
+        reason: 'unresolved_subject: MissingSymbol',
+        partialResult: {
+          sourceFiles: [],
+          nodes: [],
+          affectedFiles: [],
+          depthGroups: { 1: [], 2: [], 3: [] },
+        },
+      },
     });
     expect(mocks.queryFileImportDependents).not.toHaveBeenCalled();
   });
@@ -842,5 +881,134 @@ describe('code-graph-query handler', () => {
       { filePath: 'src/a.ts', depth: 0, isSeed: true },
     ]);
     expect(parsed.data.affectedFiles).toEqual([]);
+  });
+
+  it('classifies blast-radius medium and high risk from depth-one fanout', async () => {
+    mocks.queryFileImportDependents.mockReturnValue([
+      { importedFilePath: 'src/a.ts', importerFilePath: 'src/b1.ts' },
+      { importedFilePath: 'src/a.ts', importerFilePath: 'src/b2.ts' },
+      { importedFilePath: 'src/a.ts', importerFilePath: 'src/b3.ts' },
+      { importedFilePath: 'src/a.ts', importerFilePath: 'src/b4.ts' },
+    ]);
+
+    const mediumResult = await handleCodeGraphQuery({
+      operation: 'blast_radius',
+      subject: 'src/a.ts',
+      maxDepth: 1,
+    });
+    const mediumParsed = JSON.parse(mediumResult.content[0].text);
+
+    expect(mediumParsed.data.riskLevel).toBe('medium');
+    expect(mediumParsed.data.depthGroups[1]).toHaveLength(4);
+
+    mocks.queryFileImportDependents.mockReturnValue(
+      Array.from({ length: 11 }, (_, index) => ({
+        importedFilePath: 'src/a.ts',
+        importerFilePath: `src/fanout-${index + 1}.ts`,
+      })),
+    );
+
+    const highResult = await handleCodeGraphQuery({
+      operation: 'blast_radius',
+      subject: 'src/a.ts',
+      maxDepth: 1,
+    });
+    const highParsed = JSON.parse(highResult.content[0].text);
+
+    expect(highParsed.data.riskLevel).toBe('high');
+    expect(highParsed.data.depthGroups[1]).toHaveLength(11);
+  });
+
+  it('filters blast-radius traversal by minConfidence', async () => {
+    mocks.getDb.mockReturnValue({
+      prepare: vi.fn((sql: string) => ({
+        all: vi.fn(() => {
+          if (sql.includes('FROM code_edges edge')) {
+            return [
+              {
+                imported_file_path: 'src/a.ts',
+                importer_file_path: 'src/high.ts',
+                weight: 1,
+                metadata: JSON.stringify({ confidence: 0.95 }),
+              },
+              {
+                imported_file_path: 'src/a.ts',
+                importer_file_path: 'src/low.ts',
+                weight: 1,
+                metadata: JSON.stringify({ confidence: 0.4 }),
+              },
+              {
+                imported_file_path: 'src/high.ts',
+                importer_file_path: 'src/transitive.ts',
+                weight: 1,
+                metadata: JSON.stringify({ confidence: 0.8 }),
+              },
+            ];
+          }
+          return [];
+        }),
+        get: vi.fn(() => undefined),
+      })),
+    });
+
+    const result = await handleCodeGraphQuery({
+      operation: 'blast_radius',
+      subject: 'src/a.ts',
+      maxDepth: 2,
+      minConfidence: 0.75,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(mocks.queryFileImportDependents).not.toHaveBeenCalled();
+    expect(parsed.data.minConfidence).toBe(0.75);
+    expect(parsed.data.affectedFiles).toEqual([
+      { filePath: 'src/high.ts', depth: 1 },
+      { filePath: 'src/transitive.ts', depth: 2 },
+    ]);
+    expect(parsed.data.affectedFiles).not.toContainEqual({ filePath: 'src/low.ts', depth: 1 });
+  });
+
+  it('surfaces blast-radius ambiguity candidates without choosing a default node', async () => {
+    mocks.getDb.mockReturnValue(createDb({
+      byFq: [
+        {
+          symbolId: 'first-symbol',
+          fqName: 'Ambiguous.handle',
+          name: 'handle',
+          kind: 'function',
+          filePath: 'src/first.ts',
+          startLine: 10,
+        },
+        {
+          symbolId: 'second-symbol',
+          fqName: 'Ambiguous.handle',
+          name: 'handle',
+          kind: 'function',
+          filePath: 'src/second.ts',
+          startLine: 20,
+        },
+      ],
+    }));
+
+    const result = await handleCodeGraphQuery({
+      operation: 'blast_radius',
+      subject: 'Ambiguous.handle',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.data.riskLevel).toBe('high');
+    expect(parsed.data.ambiguityCandidates).toEqual([
+      expect.objectContaining({ symbolId: 'first-symbol', filePath: 'src/first.ts' }),
+      expect.objectContaining({ symbolId: 'second-symbol', filePath: 'src/second.ts' }),
+    ]);
+    expect(parsed.data.failureFallback).toMatchObject({
+      reason: 'ambiguous_subject',
+      partialResult: {
+        sourceFiles: [],
+        affectedFiles: [],
+      },
+    });
+    expect(mocks.resolveSubjectFilePath).not.toHaveBeenCalled();
+    expect(mocks.queryFileImportDependents).not.toHaveBeenCalled();
   });
 });

@@ -172,11 +172,43 @@ describe('structural-indexer', () => {
           detectorProvenance: 'structured',
           evidenceClass: 'EXTRACTED',
           confidence: 1,
+          reason: 'structured-structural-extraction',
+          step: 'extract',
         });
         expect(callEdge?.metadata).toMatchObject({
           detectorProvenance: 'heuristic',
           evidenceClass: 'INFERRED',
           confidence: 0.8,
+          reason: 'heuristic-name-match',
+          step: 'resolve',
+        });
+      } finally {
+        if (previousParser === undefined) {
+          delete process.env.SPECKIT_PARSER;
+        } else {
+          process.env.SPECKIT_PARSER = previousParser;
+        }
+      }
+    });
+
+    it('round-trips graph-local reason and step metadata on extracted edges', async () => {
+      const previousParser = process.env.SPECKIT_PARSER;
+      process.env.SPECKIT_PARSER = 'regex';
+
+      try {
+        const content = [
+          "import { dep } from './dep';",
+          'function dep() {}',
+        ].join('\n');
+        const result = await parseFile('/test.ts', content, 'typescript');
+        const importEdge = result.edges.find((edge) => edge.edgeType === 'IMPORTS');
+
+        expect(importEdge?.metadata).toMatchObject({
+          confidence: 1,
+          detectorProvenance: 'structured',
+          evidenceClass: 'EXTRACTED',
+          reason: 'structured-structural-extraction',
+          step: 'extract',
         });
       } finally {
         if (previousParser === undefined) {

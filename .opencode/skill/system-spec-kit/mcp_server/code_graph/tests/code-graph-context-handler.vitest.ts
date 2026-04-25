@@ -416,6 +416,62 @@ describe('code-graph-context handler', () => {
     }
   });
 
+  it('propagates edge reason and step through context payloads', async () => {
+    const { buildContext: actualBuildContext } = await vi.importActual<typeof import('../lib/code-graph-context.js')>(
+      '../lib/code-graph-context.js',
+    );
+
+    mocks.resolveSeeds.mockReturnValue([
+      {
+        filePath: 'src/alpha.ts',
+        startLine: 10,
+        endLine: 20,
+        symbolId: 'symbol-alpha',
+        fqName: 'Alpha.run',
+        kind: 'function',
+        confidence: 0.95,
+        resolution: 'exact',
+      },
+    ]);
+    mocks.queryEdgesFrom.mockReturnValue([
+      {
+        edge: {
+          sourceId: 'symbol-alpha',
+          targetId: 'callee-1',
+          edgeType: 'CALLS',
+          weight: 0.8,
+          metadata: {
+            confidence: 0.8,
+            detectorProvenance: 'heuristic',
+            evidenceClass: 'INFERRED',
+            reason: 'heuristic-name-match',
+            step: 'resolve',
+          },
+        },
+        targetNode: { fqName: 'callee.one', kind: 'function', filePath: 'src/dependency.ts', startLine: 5 },
+      },
+    ]);
+
+    const result = actualBuildContext({
+      queryMode: 'neighborhood',
+      seeds: [{ filePath: 'src/placeholder.ts', startLine: 1, endLine: 1 }],
+      deadlineMs: 400,
+    });
+
+    expect(result.graphContext[0].edges[0]).toMatchObject({
+      from: 'Alpha.run',
+      to: 'callee.one',
+      type: 'CALLS',
+      confidence: 0.8,
+      detectorProvenance: 'heuristic',
+      evidenceClass: 'INFERRED',
+      reason: 'heuristic-name-match',
+      step: 'resolve',
+    });
+    expect(result.textBrief).toContain('reason=heuristic-name-match');
+    expect(result.textBrief).toContain('step=resolve');
+  });
+
   it('surfaces omittedAnchors for multi-anchor deadline timeouts through the handler payload', async () => {
     const { buildContext: actualBuildContext } = await vi.importActual<typeof import('../lib/code-graph-context.js')>(
       '../lib/code-graph-context.js',

@@ -88,10 +88,25 @@ function buildEdgeMetadata(
   detectorProvenance: DetectorProvenance,
   evidenceClass: 'EXTRACTED' | 'INFERRED' | 'AMBIGUOUS',
 ): NonNullable<CodeEdge['metadata']> {
+  const reason = detectorProvenance === 'heuristic'
+    ? 'heuristic-name-match'
+    : evidenceClass === 'AMBIGUOUS'
+      ? 'ambiguous-test-association'
+      : evidenceClass === 'INFERRED'
+        ? 'inferred-structural-relation'
+        : `${detectorProvenance}-structural-extraction`;
+  const step = evidenceClass === 'EXTRACTED'
+    ? 'extract'
+    : evidenceClass === 'INFERRED'
+      ? 'resolve'
+      : 'link';
+
   return {
     confidence,
     detectorProvenance,
     evidenceClass,
+    reason,
+    step,
   };
 }
 

@@ -26,6 +26,7 @@ export interface QueryArgs {
   includeTransitive?: boolean;
   maxDepth?: number;
   unionMode?: 'single' | 'multi';
+  minConfidence?: number;
 }
 
 const SUPPORTED_EDGE_TYPES = [
@@ -124,6 +125,30 @@ interface SubjectCandidateMetadata {
 interface SubjectMatchResult {
   candidates: SubjectCandidateMetadata[];
   count: number;
+}
+
+type BlastRadiusRiskLevel = 'low' | 'medium' | 'high';
+
+interface BlastRadiusDependency {
+  importedFilePath: string;
+  importerFilePath: string;
+  confidence: number;
+}
+
+interface BlastRadiusAffectedFile {
+  filePath: string;
+  depth: number;
+  hotFileBreadcrumb?: HotFileBreadcrumb;
+}
+
+interface BlastRadiusFailureFallback {
+  reason: string;
+  partialResult?: {
+    sourceFiles: string[];
+    nodes: BlastRadiusAffectedFile[];
+    affectedFiles: BlastRadiusAffectedFile[];
+    depthGroups: Record<number, BlastRadiusAffectedFile[]>;
+  };
 }
 
 function querySubjectMatches(
@@ -580,6 +605,21 @@ function clampNumericConfidence(value: unknown): number {
   return Math.max(0, Math.min(1, value));
 }
 
+function edgeMetadataOutput(edge: OutboundEdgeEntry['edge'] | InboundEdgeEntry['edge']) {
+  return {
+    confidence: clampNumericConfidence(edge.metadata?.confidence ?? edge.weight),
+    numericConfidence: clampNumericConfidence(edge.metadata?.confidence ?? edge.weight),
+    detectorProvenance: edge.metadata?.detectorProvenance ?? null,
+    evidenceClass: edge.metadata?.evidenceClass ?? null,
+    reason: typeof edge.metadata?.reason === 'string' ? edge.metadata.reason : null,
+    step: typeof edge.metadata?.step === 'string' ? edge.metadata.step : null,
+    edgeEvidenceClass: classifyEdgeEvidenceClass(
+      edge.edgeType,
+      edge.metadata as Record<string, unknown> | undefined,
+    ),
+  };
+}
+
 const EDGE_EVIDENCE_CLASS_WEAKNESS: Record<EdgeEvidenceClass, number> = {
   inferred_heuristic: 0,
   test_coverage: 1,
@@ -676,9 +716,107 @@ function buildHotFileBreadcrumbs(filePaths: string[]): Array<{
     }));
 }
 
-function computeBlastRadius(sourceFiles: string[], maxDepth: number, limit: number) {
+function parseEdgeMetadataConfidence(metadataJson: unknown, weight: unknown): number {
+  if (typeof metadataJson === 'string' && metadataJson.length > 0) {
+    try {
+      const metadata = JSON.parse(metadataJson) as Record<string, unknown>;
+      return clampNumericConfidence(metadata.confidence ?? weight);
+    } catch {
+      return clampNumericConfidence(weight);
+    }
+  }
+  return clampNumericConfidence(weight);
+}
+
+function queryImportDependentsForBlastRadius(minConfidence: number): BlastRadiusDependency[] {
+  if (minConfidence <= 0) {
+    return graphDb.queryFileImportDependents().map((edge) => ({
+      ...edge,
+      confidence: 1,
+    }));
+  }
+
+  const d = graphDb.getDb();
+  const rows = d.prepare(`
+    SELECT
+      target.file_path AS imported_file_path,
+      source.file_path AS importer_file_path,
+      edge.weight AS weight,
+      edge.metadata AS metadata
+    FROM code_edges edge
+    INNER JOIN code_nodes source ON source.symbol_id = edge.source_id
+    INNER JOIN code_nodes target ON target.symbol_id = edge.target_id
+    WHERE UPPER(edge.edge_type) = 'IMPORTS'
+      AND source.file_path != target.file_path
+  `).all() as Array<{
+    imported_file_path: string;
+    importer_file_path: string;
+    weight: number | null;
+    metadata: string | null;
+  }>;
+
+  return rows
+    .map((row) => ({
+      importedFilePath: row.imported_file_path,
+      importerFilePath: row.importer_file_path,
+      confidence: parseEdgeMetadataConfidence(row.metadata, row.weight ?? 1),
+    }))
+    .filter((edge) => edge.confidence >= minConfidence);
+}
+
+function buildDepthGroups(
+  affectedFiles: BlastRadiusAffectedFile[],
+  maxDepth: number,
+): Record<number, BlastRadiusAffectedFile[]> {
+  const depthGroups: Record<number, BlastRadiusAffectedFile[]> = {};
+  for (let depth = 1; depth <= Math.max(0, maxDepth); depth++) {
+    depthGroups[depth] = [];
+  }
+  for (const affectedFile of affectedFiles) {
+    depthGroups[affectedFile.depth] ??= [];
+    depthGroups[affectedFile.depth].push(affectedFile);
+  }
+  return depthGroups;
+}
+
+function classifyBlastRadiusRisk(
+  depthGroups: Record<number, BlastRadiusAffectedFile[]>,
+  ambiguityCandidates: SubjectCandidateMetadata[],
+): BlastRadiusRiskLevel {
+  const depthOneCount = depthGroups[1]?.length ?? 0;
+  if (ambiguityCandidates.length > 0 || depthOneCount > 10) {
+    return 'high';
+  }
+  if (depthOneCount >= 4) {
+    return 'medium';
+  }
+  return 'low';
+}
+
+function buildPartialBlastRadiusResult(
+  sourceFiles: string[],
+  nodes: BlastRadiusAffectedFile[],
+  affectedFiles: BlastRadiusAffectedFile[],
+  depthGroups: Record<number, BlastRadiusAffectedFile[]>,
+): NonNullable<BlastRadiusFailureFallback['partialResult']> {
+  return {
+    sourceFiles,
+    nodes,
+    affectedFiles,
+    depthGroups,
+  };
+}
+
+function computeBlastRadius(
+  sourceFiles: string[],
+  maxDepth: number,
+  limit: number,
+  minConfidence = 0,
+  ambiguityCandidates: SubjectCandidateMetadata[] = [],
+) {
   const importedBy = new Map<string, Set<string>>();
-  for (const edge of graphDb.queryFileImportDependents()) {
+  const importEdges = queryImportDependentsForBlastRadius(minConfidence);
+  for (const edge of importEdges) {
     const importers = importedBy.get(edge.importedFilePath) ?? new Set<string>();
     importers.add(edge.importerFilePath);
     importedBy.set(edge.importedFilePath, importers);
@@ -718,7 +856,7 @@ function computeBlastRadius(sourceFiles: string[], maxDepth: number, limit: numb
     }
   }
 
-  const affectedFiles = [...affectedByFile.entries()]
+  let affectedFiles = [...affectedByFile.entries()]
     .map(([filePath, depth]) => ({ filePath, depth }))
     .sort((left, right) => left.depth - right.depth || left.filePath.localeCompare(right.filePath))
     .slice(0, limit);
@@ -728,29 +866,47 @@ function computeBlastRadius(sourceFiles: string[], maxDepth: number, limit: numb
       ...affectedFiles.map((entry) => entry.filePath),
     ]).map((entry) => [entry.filePath, entry.hotFileBreadcrumb]),
   );
+  affectedFiles = affectedFiles.map((entry) => ({
+    ...entry,
+    ...(breadcrumbByFile.get(entry.filePath) ? { hotFileBreadcrumb: breadcrumbByFile.get(entry.filePath) } : {}),
+  }));
+
+  const seedNodes = normalizedSources.map((filePath) => ({
+    filePath,
+    depth: 0,
+    isSeed: true,
+    ...(breadcrumbByFile.get(filePath) ? { hotFileBreadcrumb: breadcrumbByFile.get(filePath) } : {}),
+  }));
+  const depthGroups = buildDepthGroups(affectedFiles, maxDepth);
 
   return {
     sourceFiles: normalizedSources,
     nodes: [
-      ...normalizedSources.map((filePath) => ({
-        filePath,
-        depth: 0,
-        isSeed: true,
-        ...(breadcrumbByFile.get(filePath) ? { hotFileBreadcrumb: breadcrumbByFile.get(filePath) } : {}),
-      })),
-      ...affectedFiles.map((entry) => ({
-        ...entry,
-        ...(breadcrumbByFile.get(entry.filePath) ? { hotFileBreadcrumb: breadcrumbByFile.get(entry.filePath) } : {}),
-      })),
+      ...seedNodes,
+      ...affectedFiles,
     ],
-    affectedFiles: affectedFiles.map((entry) => ({
-      ...entry,
-      ...(breadcrumbByFile.get(entry.filePath) ? { hotFileBreadcrumb: breadcrumbByFile.get(entry.filePath) } : {}),
-    })),
+    affectedFiles,
+    depthGroups,
+    riskLevel: classifyBlastRadiusRisk(depthGroups, ambiguityCandidates),
+    minConfidence,
+    ambiguityCandidates,
     hotFileBreadcrumbs: [...breadcrumbByFile.entries()].map(([filePath, hotFileBreadcrumb]) => ({
       filePath,
       hotFileBreadcrumb,
     })),
+    ...(affectedFiles.length >= limit
+      ? {
+        failureFallback: {
+          reason: 'limit_reached',
+          partialResult: buildPartialBlastRadiusResult(
+            normalizedSources,
+            [...seedNodes, ...affectedFiles],
+            affectedFiles,
+            depthGroups,
+          ),
+        } satisfies BlastRadiusFailureFallback,
+      }
+      : {}),
   };
 }
 
@@ -864,30 +1020,124 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       ? [subject, ...(args.subjects ?? [])]
       : [subject];
     const sourceFiles: string[] = [];
+    const ambiguityCandidates: SubjectCandidateMetadata[] = [];
+    const minConfidence = clampNumericConfidence(args.minConfidence ?? 0);
 
     for (const candidate of rawSubjects) {
+      const byFqName = querySubjectMatches('fq_name', candidate);
+      if (byFqName.count > 1) {
+        ambiguityCandidates.push(...byFqName.candidates.slice(0, AMBIGUOUS_SUBJECT_WARNING_CANDIDATE_LIMIT));
+        continue;
+      }
+      if (byFqName.count === 0) {
+        const byName = querySubjectMatches('name', candidate);
+        if (byName.count > 1) {
+          ambiguityCandidates.push(...byName.candidates.slice(0, AMBIGUOUS_SUBJECT_WARNING_CANDIDATE_LIMIT));
+          continue;
+        }
+      }
+
       const resolvedSubject = graphDb.resolveSubjectFilePath(candidate);
       if (typeof resolvedSubject !== 'string' || resolvedSubject.length === 0) {
         return {
           content: [{
             type: 'text',
-            text: JSON.stringify({ status: 'error', error: `unresolved_subject: ${candidate}` }),
+            text: JSON.stringify({
+              status: 'ok',
+              data: buildGraphQueryPayload({
+                operation,
+                sourceFiles,
+                nodes: [],
+                affectedFiles: [],
+                depthGroups: buildDepthGroups([], maxDepth),
+                riskLevel: classifyBlastRadiusRisk(buildDepthGroups([], maxDepth), []),
+                minConfidence,
+                ambiguityCandidates: [],
+                failureFallback: {
+                  reason: `unresolved_subject: ${candidate}`,
+                  partialResult: buildPartialBlastRadiusResult(sourceFiles, [], [], buildDepthGroups([], maxDepth)),
+                } satisfies BlastRadiusFailureFallback,
+              }, readiness, 'code_graph_query blast_radius fallback payload'),
+            }, null, 2),
           }],
         };
       }
       sourceFiles.push(resolvedSubject);
     }
 
-    if (sourceFiles.length === 0) {
+    if (ambiguityCandidates.length > 0) {
+      const depthGroups = buildDepthGroups([], maxDepth);
       return {
         content: [{
           type: 'text',
-          text: JSON.stringify({ status: 'error', error: `Could not resolve blast-radius sources: ${rawSubjects.join(', ')}` }),
+          text: JSON.stringify({
+            status: 'ok',
+            data: buildGraphQueryPayload({
+              operation,
+              sourceFiles,
+              nodes: [],
+              affectedFiles: [],
+              depthGroups,
+              riskLevel: classifyBlastRadiusRisk(depthGroups, ambiguityCandidates),
+              minConfidence,
+              ambiguityCandidates,
+              failureFallback: {
+                reason: 'ambiguous_subject',
+                partialResult: buildPartialBlastRadiusResult(sourceFiles, [], [], depthGroups),
+              } satisfies BlastRadiusFailureFallback,
+            }, readiness, 'code_graph_query blast_radius ambiguity payload'),
+          }, null, 2),
         }],
       };
     }
 
-    const blastRadius = computeBlastRadius(sourceFiles, maxDepth, limit);
+    if (sourceFiles.length === 0) {
+      const depthGroups = buildDepthGroups([], maxDepth);
+      return {
+        content: [{
+          type: 'text',
+          text: JSON.stringify({
+            status: 'ok',
+            data: buildGraphQueryPayload({
+              operation,
+              sourceFiles,
+              nodes: [],
+              affectedFiles: [],
+              depthGroups,
+              riskLevel: classifyBlastRadiusRisk(depthGroups, []),
+              minConfidence,
+              ambiguityCandidates: [],
+              failureFallback: {
+                reason: `Could not resolve blast-radius sources: ${rawSubjects.join(', ')}`,
+                partialResult: buildPartialBlastRadiusResult(sourceFiles, [], [], depthGroups),
+              } satisfies BlastRadiusFailureFallback,
+            }, readiness, 'code_graph_query blast_radius empty-source payload'),
+          }, null, 2),
+        }],
+      };
+    }
+
+    let blastRadius;
+    try {
+      blastRadius = computeBlastRadius(sourceFiles, maxDepth, limit, minConfidence, ambiguityCandidates);
+    } catch (error) {
+      const depthGroups = buildDepthGroups([], maxDepth);
+      const reason = error instanceof Error ? error.message : String(error);
+      blastRadius = {
+        sourceFiles,
+        nodes: sourceFiles.map((filePath) => ({ filePath, depth: 0, isSeed: true })),
+        affectedFiles: [],
+        depthGroups,
+        riskLevel: classifyBlastRadiusRisk(depthGroups, ambiguityCandidates),
+        minConfidence,
+        ambiguityCandidates,
+        hotFileBreadcrumbs: [],
+        failureFallback: {
+          reason,
+          partialResult: buildPartialBlastRadiusResult(sourceFiles, [], [], depthGroups),
+        } satisfies BlastRadiusFailureFallback,
+      };
+    }
     return {
       content: [{
         type: 'text',
@@ -901,6 +1151,11 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
             unionMode: args.unionMode ?? 'single',
             maxDepth: Math.max(0, maxDepth),
             affectedFiles: blastRadius.affectedFiles,
+            depthGroups: blastRadius.depthGroups,
+            riskLevel: blastRadius.riskLevel,
+            minConfidence: blastRadius.minConfidence,
+            ambiguityCandidates: blastRadius.ambiguityCandidates,
+            ...(blastRadius.failureFallback ? { failureFallback: blastRadius.failureFallback } : {}),
             hotFileBreadcrumbs: blastRadius.hotFileBreadcrumbs,
           }, readiness, 'code_graph_query blast_radius payload'),
         }, null, 2),
@@ -975,14 +1230,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
           target: entry.targetNode?.fqName ?? entry.edge.targetId,
           file: entry.targetNode?.filePath,
           line: entry.targetNode?.startLine,
-          confidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
-          numericConfidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
-          detectorProvenance: entry.edge.metadata?.detectorProvenance ?? null,
-          evidenceClass: entry.edge.metadata?.evidenceClass ?? null,
-          edgeEvidenceClass: classifyEdgeEvidenceClass(
-            entry.edge.edgeType,
-            entry.edge.metadata as Record<string, unknown> | undefined,
-          ),
+          ...edgeMetadataOutput(entry.edge),
         })),
         ...(warnings ? { warnings } : {}),
         hotFileBreadcrumbs: buildHotFileBreadcrumbs(
@@ -1011,14 +1259,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
           source: entry.sourceNode?.fqName ?? entry.edge.sourceId,
           file: entry.sourceNode?.filePath,
           line: entry.sourceNode?.startLine,
-          confidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
-          numericConfidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
-          detectorProvenance: entry.edge.metadata?.detectorProvenance ?? null,
-          evidenceClass: entry.edge.metadata?.evidenceClass ?? null,
-          edgeEvidenceClass: classifyEdgeEvidenceClass(
-            entry.edge.edgeType,
-            entry.edge.metadata as Record<string, unknown> | undefined,
-          ),
+          ...edgeMetadataOutput(entry.edge),
         })),
         ...(warnings ? { warnings } : {}),
         hotFileBreadcrumbs: buildHotFileBreadcrumbs(
@@ -1046,14 +1287,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
         edges: resolvedEntries.map((entry) => ({
           target: entry.targetNode?.fqName ?? entry.edge.targetId,
           file: entry.targetNode?.filePath,
-          confidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
-          numericConfidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
-          detectorProvenance: entry.edge.metadata?.detectorProvenance ?? null,
-          evidenceClass: entry.edge.metadata?.evidenceClass ?? null,
-          edgeEvidenceClass: classifyEdgeEvidenceClass(
-            entry.edge.edgeType,
-            entry.edge.metadata as Record<string, unknown> | undefined,
-          ),
+          ...edgeMetadataOutput(entry.edge),
         })),
         ...(warnings ? { warnings } : {}),
         hotFileBreadcrumbs: buildHotFileBreadcrumbs(
@@ -1081,14 +1315,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
         edges: resolvedEntries.map((entry) => ({
           source: entry.sourceNode?.fqName ?? entry.edge.sourceId,
           file: entry.sourceNode?.filePath,
-          confidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
-          numericConfidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
-          detectorProvenance: entry.edge.metadata?.detectorProvenance ?? null,
-          evidenceClass: entry.edge.metadata?.evidenceClass ?? null,
-          edgeEvidenceClass: classifyEdgeEvidenceClass(
-            entry.edge.edgeType,
-            entry.edge.metadata as Record<string, unknown> | undefined,
-          ),
+          ...edgeMetadataOutput(entry.edge),
         })),
         ...(warnings ? { warnings } : {}),
         hotFileBreadcrumbs: buildHotFileBreadcrumbs(

@@ -56,7 +56,16 @@ export interface ContextResult {
 interface GraphContextSection {
   anchor: string;
   nodes: { name: string; kind: string; file: string; line: number }[];
-  edges: { from: string; to: string; type: string }[];
+  edges: {
+    from: string;
+    to: string;
+    type: string;
+    confidence: number | null;
+    detectorProvenance: string | null;
+    evidenceClass: string | null;
+    reason: string | null;
+    step: string | null;
+  }[];
   partial?: {
     reason: 'deadline';
     omittedNodes: number;
@@ -275,6 +284,25 @@ function computeFreshness(): { lastScanAt: string | null; staleness: 'fresh' | '
   }
 }
 
+function formatContextEdge(edge: graphDb.CodeEdgeTargetResult['edge'] | graphDb.CodeEdgeSourceResult['edge']): {
+  confidence: number | null;
+  detectorProvenance: string | null;
+  evidenceClass: string | null;
+  reason: string | null;
+  step: string | null;
+} {
+  const confidence = edge.metadata?.confidence ?? edge.weight;
+  return {
+    confidence: typeof confidence === 'number' && Number.isFinite(confidence) ? confidence : null,
+    detectorProvenance: typeof edge.metadata?.detectorProvenance === 'string'
+      ? edge.metadata.detectorProvenance
+      : null,
+    evidenceClass: typeof edge.metadata?.evidenceClass === 'string' ? edge.metadata.evidenceClass : null,
+    reason: typeof edge.metadata?.reason === 'string' ? edge.metadata.reason : null,
+    step: typeof edge.metadata?.step === 'string' ? edge.metadata.step : null,
+  };
+}
+
 /** Expand a single anchor into a context section */
 function expandAnchor(anchor: ArtifactRef, mode: QueryMode, remainingMs?: number): ExpansionResult {
   const startTime = performance.now();
@@ -333,7 +361,12 @@ function expandAnchor(anchor: ArtifactRef, mode: QueryMode, remainingMs?: number
             omittedEdges += outgoing.length - processedOutgoing;
             break;
           }
-          edges.push({ from: anchor.fqName ?? anchor.symbolId, to: targetNode?.fqName ?? edge.targetId, type: edge.edgeType });
+          edges.push({
+            from: anchor.fqName ?? anchor.symbolId,
+            to: targetNode?.fqName ?? edge.targetId,
+            type: edge.edgeType,
+            ...formatContextEdge(edge),
+          });
           if (targetNode) {
             nodes.push({ name: targetNode.fqName, kind: targetNode.kind, file: targetNode.filePath, line: targetNode.startLine });
           }
@@ -350,7 +383,12 @@ function expandAnchor(anchor: ArtifactRef, mode: QueryMode, remainingMs?: number
             omittedEdges += incoming.length - processedIncoming;
             break;
           }
-          edges.push({ from: sourceNode?.fqName ?? edge.sourceId, to: anchor.fqName ?? anchor.symbolId, type: edge.edgeType });
+          edges.push({
+            from: sourceNode?.fqName ?? edge.sourceId,
+            to: anchor.fqName ?? anchor.symbolId,
+            type: edge.edgeType,
+            ...formatContextEdge(edge),
+          });
           if (sourceNode) {
             nodes.push({ name: sourceNode.fqName, kind: sourceNode.kind, file: sourceNode.filePath, line: sourceNode.startLine });
           }
@@ -382,7 +420,12 @@ function expandAnchor(anchor: ArtifactRef, mode: QueryMode, remainingMs?: number
             omittedEdges += fileExports.length - processedExports;
             break;
           }
-          edges.push({ from: anchor.fqName ?? anchor.symbolId, to: targetNode?.fqName ?? edge.targetId, type: 'EXPORTS' });
+          edges.push({
+            from: anchor.fqName ?? anchor.symbolId,
+            to: targetNode?.fqName ?? edge.targetId,
+            type: 'EXPORTS',
+            ...formatContextEdge(edge),
+          });
           processedExports += 1;
         }
       }
@@ -407,7 +450,12 @@ function expandAnchor(anchor: ArtifactRef, mode: QueryMode, remainingMs?: number
             omittedEdges += incoming.length - processedIncoming;
             break;
           }
-          edges.push({ from: sourceNode?.fqName ?? edge.sourceId, to: anchor.fqName ?? anchor.symbolId, type: edge.edgeType });
+          edges.push({
+            from: sourceNode?.fqName ?? edge.sourceId,
+            to: anchor.fqName ?? anchor.symbolId,
+            type: edge.edgeType,
+            ...formatContextEdge(edge),
+          });
           if (sourceNode) {
             nodes.push({ name: sourceNode.fqName, kind: sourceNode.kind, file: sourceNode.filePath, line: sourceNode.startLine });
           }
@@ -486,7 +534,12 @@ function formatTextBrief(sections: GraphContextSection[], budgetTokens: number, 
     if (section.edges.length > 0) {
       lines.push('Relationships:');
       for (const e of section.edges.slice(0, edgeLimit)) {
-        lines.push(`  ${e.from} -[${e.type}]-> ${e.to}`);
+        const metadata = [
+          e.reason ? `reason=${e.reason}` : null,
+          e.step ? `step=${e.step}` : null,
+          typeof e.confidence === 'number' ? `confidence=${e.confidence}` : null,
+        ].filter(Boolean).join(' ');
+        lines.push(`  ${e.from} -[${e.type}${metadata ? ` ${metadata}` : ''}]-> ${e.to}`);
       }
       if (section.edges.length > edgeLimit) {
         lines.push(`  ... +${section.edges.length - edgeLimit} more`);
