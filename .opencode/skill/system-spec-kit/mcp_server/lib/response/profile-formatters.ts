@@ -51,6 +51,13 @@ export interface SearchResultEntry extends Record<string, unknown> {
     value?: number;
     drivers?: string[];
   };
+  trustBadges?: {
+    confidence?: number | null;
+    extractionAge?: string;
+    lastAccessAge?: string;
+    orphan?: boolean;
+    weightHistoryChanged?: boolean;
+  };
 }
 
 /** Input to the profile formatter: the parsed response envelope data. */

@@ -14,9 +14,11 @@ import {
   readSessionTransitionTrace,
   type SessionTransitionTrace,
 } from '../lib/search/session-transition.js';
+import { formatAgeString } from '../lib/utils/format-helpers.js';
 
 // Import memory parser for anchor extraction (SK-005)
 import * as memoryParser from '../lib/parsing/memory-parser.js';
+import { requireDb } from '../utils/index.js';
 
 // REQ-019: Standardized Response Structure
 import {
@@ -147,10 +149,19 @@ export interface MemoryResultTrace {
   sessionTransition?: SessionTransitionTrace;
 }
 
+export interface MemoryTrustBadges {
+  confidence: number | null;
+  extractionAge: string;
+  lastAccessAge: string;
+  orphan: boolean;
+  weightHistoryChanged: boolean;
+}
+
 export interface MemoryResultEnvelope extends FormattedSearchResult {
   scores?: MemoryResultScores;
   source?: MemoryResultSource;
   trace?: MemoryResultTrace;
+  trustBadges?: MemoryTrustBadges;
   /** Phase C T025: Graph evidence provenance — edges, communities, and boost factors. */
   graphEvidence?: {
     edges: Array<{ sourceId: number; targetId: number; relation: string; strength: number }>;
@@ -162,6 +173,14 @@ export interface MemoryResultEnvelope extends FormattedSearchResult {
 /** Memory parser interface (for optional override) */
 export interface MemoryParserLike {
   extractAnchors(content: string): Record<string, string>;
+}
+
+interface TrustBadgeSnapshot {
+  confidence: number | null;
+  extractedAt: string | null;
+  lastAccessed: string | null;
+  orphan: boolean;
+  weightHistoryChanged: boolean;
 }
 
 // MCPResponse type is imported from '../lib/response/envelope.js'
@@ -205,6 +224,131 @@ function toNullableNumber(value: unknown): number | null {
     if (Number.isFinite(parsed)) return parsed;
   }
   return null;
+}
+
+function clampConfidence(value: unknown): number | null {
+  const numeric = toNullableNumber(value);
+  if (numeric === null) return null;
+  return Math.max(0, Math.min(1, numeric));
+}
+
+function normalizeTrustBadges(value: unknown): MemoryTrustBadges | null {
+  if (!value || typeof value !== 'object') return null;
+  const candidate = value as Record<string, unknown>;
+  return {
+    confidence: clampConfidence(candidate.confidence),
+    extractionAge: typeof candidate.extractionAge === 'string'
+      ? candidate.extractionAge
+      : formatAgeString(typeof candidate.extractedAt === 'string' ? candidate.extractedAt : null),
+    lastAccessAge: typeof candidate.lastAccessAge === 'string'
+      ? candidate.lastAccessAge
+      : formatAgeString(typeof candidate.lastAccessed === 'string' ? candidate.lastAccessed : null),
+    orphan: candidate.orphan === true,
+    weightHistoryChanged: candidate.weightHistoryChanged === true,
+  };
+}
+
+function toTrustBadges(snapshot: TrustBadgeSnapshot | null): MemoryTrustBadges | undefined {
+  if (!snapshot) return undefined;
+  return {
+    confidence: snapshot.confidence,
+    extractionAge: formatAgeString(snapshot.extractedAt),
+    lastAccessAge: formatAgeString(snapshot.lastAccessed),
+    orphan: snapshot.orphan,
+    weightHistoryChanged: snapshot.weightHistoryChanged,
+  };
+}
+
+function fetchTrustBadgeSnapshots(results: RawSearchResult[]): Map<number, TrustBadgeSnapshot> {
+  const resultIds = results
+    .map((result) => toNullableNumber(result.id))
+    .filter((id): id is number => id !== null);
+
+  if (resultIds.length === 0) {
+    return new Map();
+  }
+
+  let database: ReturnType<typeof requireDb>;
+  try {
+    database = requireDb();
+  } catch {
+    return new Map();
+  }
+
+  try {
+    const hasWeightHistory = Boolean((database.prepare(`
+      SELECT name
+      FROM sqlite_master
+      WHERE type = 'table' AND name = 'weight_history'
+    `) as { get(): { name: string } | undefined }).get());
+
+    const placeholders = resultIds.map(() => '(?)').join(', ');
+    const historyJoin = hasWeightHistory
+      ? `
+      LEFT JOIN (
+        SELECT DISTINCT edge_id
+        FROM weight_history
+      ) wh ON wh.edge_id = ce.edge_id
+      `
+      : '';
+    const historySelect = hasWeightHistory
+      ? 'MAX(CASE WHEN wh.edge_id IS NOT NULL THEN 1 ELSE 0 END) AS weight_history_changed'
+      : '0 AS weight_history_changed';
+
+    const rows = (database.prepare(`
+      WITH result_ids(memory_id) AS (
+        VALUES ${placeholders}
+      ),
+      connected_edges AS (
+        SELECT
+          rid.memory_id AS memory_id,
+          ce.id AS edge_id,
+          CASE
+            WHEN ce.id IS NOT NULL THEN COALESCE(ce.strength, 1.0)
+            ELSE NULL
+          END AS strength,
+          ce.extracted_at AS extracted_at,
+          ce.last_accessed AS last_accessed,
+          CASE
+            WHEN ce.id IS NOT NULL AND ce.target_id = CAST(rid.memory_id AS TEXT) THEN 1
+            ELSE 0
+          END AS is_incoming
+        FROM result_ids rid
+        LEFT JOIN causal_edges ce
+          ON ce.source_id = CAST(rid.memory_id AS TEXT)
+          OR ce.target_id = CAST(rid.memory_id AS TEXT)
+      )
+      SELECT
+        ce.memory_id AS memory_id,
+        MAX(ce.strength) AS confidence,
+        MAX(ce.extracted_at) AS extracted_at,
+        MAX(ce.last_accessed) AS last_accessed,
+        SUM(ce.is_incoming) AS incoming_edges,
+        ${historySelect}
+      FROM connected_edges ce
+      ${historyJoin}
+      GROUP BY ce.memory_id
+    `) as {
+      all(...params: number[]): Array<Record<string, unknown>>;
+    }).all(...resultIds);
+
+    const snapshots = new Map<number, TrustBadgeSnapshot>();
+    for (const row of rows) {
+      const memoryId = toNullableNumber(row.memory_id);
+      if (memoryId === null) continue;
+      snapshots.set(memoryId, {
+        confidence: clampConfidence(row.confidence),
+        extractedAt: typeof row.extracted_at === 'string' ? row.extracted_at : null,
+        lastAccessed: typeof row.last_accessed === 'string' ? row.last_accessed : null,
+        orphan: (toNullableNumber(row.incoming_edges) ?? 0) === 0,
+        weightHistoryChanged: (toNullableNumber(row.weight_history_changed) ?? 0) > 0,
+      });
+    }
+
+    return snapshots;
+  } catch {
+    return new Map();
+  }
 }
 
 function resolveCompositeScore(rawResult: RawSearchResult): number | null {
@@ -435,8 +579,10 @@ export async function formatSearchResults(
 
   // Count constitutional results
   const constitutionalCount = results.filter(rawResult => rawResult.isConstitutional).length;
+  const trustBadgeSnapshots = fetchTrustBadgeSnapshots(results);
 
   const formatted: MemoryResultEnvelope[] = await Promise.all(results.map(async (rawResult: RawSearchResult) => {
+    const resultId = toNullableNumber(rawResult.id);
     const formattedResult: MemoryResultEnvelope = {
       id: typeof rawResult.id === 'number' ? rawResult.id : Number.parseInt(rawResult.id, 10),
       specFolder: rawResult.spec_folder ?? String(rawResult.specFolder ?? ''),
@@ -459,6 +605,12 @@ export async function formatSearchResults(
         ? rawResult.contentSource
         : undefined,
     };
+
+    const explicitTrustBadges = normalizeTrustBadges(rawResult.trustBadges);
+    const derivedTrustBadges = toTrustBadges(
+      resultId !== null ? (trustBadgeSnapshots.get(resultId) ?? null) : null
+    );
+    formattedResult.trustBadges = explicitTrustBadges ?? derivedTrustBadges;
 
     if (includeTrace) {
       const anchorsInfo = extractAnchorDetails(rawResult);

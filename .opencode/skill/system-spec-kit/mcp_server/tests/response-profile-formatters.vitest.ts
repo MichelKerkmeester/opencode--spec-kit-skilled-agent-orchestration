@@ -14,7 +14,18 @@ describe('response profile envelope preservation', () => {
         evidenceGap: true,
       },
       results: [
-        { id: 1, score: 0.9, title: 'Alpha' },
+        {
+          id: 1,
+          score: 0.9,
+          title: 'Alpha',
+          trustBadges: {
+            confidence: 0.88,
+            extractionAge: '2 days ago',
+            lastAccessAge: 'today',
+            orphan: false,
+            weightHistoryChanged: true,
+          },
+        },
         { id: 2, score: 0.8, title: 'Beta' },
       ],
     },
@@ -36,6 +47,13 @@ describe('response profile envelope preservation', () => {
       evidenceGap: true,
     });
     expect(profiled.data.topResult).toMatchObject({ id: 1, title: 'Alpha' });
+    expect(profiled.data.topResult.trustBadges).toEqual({
+      confidence: 0.88,
+      extractionAge: '2 days ago',
+      lastAccessAge: 'today',
+      orphan: false,
+      weightHistoryChanged: true,
+    });
     expect(profiled.data.results).toBeUndefined();
     expect(profiled.meta.responseProfile).toBe('quick');
   });
@@ -50,6 +68,13 @@ describe('response profile envelope preservation', () => {
       evidenceGap: true,
     });
     expect(profiled.data.results).toHaveLength(2);
+    expect(profiled.data.results[0].trustBadges).toEqual({
+      confidence: 0.88,
+      extractionAge: '2 days ago',
+      lastAccessAge: 'today',
+      orphan: false,
+      weightHistoryChanged: true,
+    });
     expect(profiled.data.count).toBe(2);
   });
 });
