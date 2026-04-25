@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/011-skill-advisor-hook-improvements",
+  "description": "Feature Specification: Skill-Advisor Hook Improvements",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill-advisor",
+    "hook",
+    "improvements"
+  ],
+  "lastUpdated": "2026-04-25T12:03:26.910Z",
+  "specId": "011",
+  "folderSlug": "skill-advisor-hook-improvements",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-skill-advisor"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

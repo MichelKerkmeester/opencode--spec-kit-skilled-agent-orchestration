@@ -1,0 +1,10 @@
+{"type":"iteration","iteration":1,"newInfoRatio":0.62,"status":"new-territory","focus":"Baseline scope calibration, closure guardrails, and packet breadcrumb accuracy","timestamp":"2026-04-24T08:15:00Z"}
+{"type":"iteration","iteration":2,"newInfoRatio":0.47,"status":"new-territory","focus":"Manual code_graph_scan(rootDir=...) scope safety and destructive cleanup behavior","timestamp":"2026-04-24T08:24:00Z"}
+{"type":"iteration","iteration":3,"newInfoRatio":0.39,"status":"new-territory","focus":"How partial-scope scans can still look healthy to status and startup consumers","timestamp":"2026-04-24T08:33:00Z"}
+{"type":"iteration","iteration":4,"newInfoRatio":0.31,"status":"new-territory","focus":"Freshness invalidation gaps in the bounded inline refresh path","timestamp":"2026-04-24T08:42:00Z"}
+{"type":"iteration","iteration":5,"newInfoRatio":0.24,"status":"new-territory","focus":"code_graph_context freshness semantics versus the shared readiness contract","timestamp":"2026-04-24T08:51:00Z"}
+{"type":"iteration","iteration":6,"newInfoRatio":0.18,"status":"converging","focus":"Context-surface provenance drift after CF-010","timestamp":"2026-04-24T09:00:00Z"}
+{"type":"iteration","iteration":7,"newInfoRatio":0.14,"status":"converging","focus":"Budget enforcement and latency controls in code_graph_context","timestamp":"2026-04-24T09:09:00Z"}
+{"type":"iteration","iteration":8,"newInfoRatio":0.10,"status":"converging","focus":"Operator-facing observability gaps after scan persistence","timestamp":"2026-04-24T09:18:00Z"}
+{"type":"iteration","iteration":9,"newInfoRatio":0.07,"status":"converging","focus":"Cross-runtime startup transport: structured graph payload exists but is mostly dropped","timestamp":"2026-04-24T09:27:00Z"}
+{"type":"iteration","iteration":10,"newInfoRatio":0.06,"status":"converging","focus":"Convergence pass: test coverage, residual docs drift, and implementation-ready buckets","timestamp":"2026-04-24T09:36:00Z"}

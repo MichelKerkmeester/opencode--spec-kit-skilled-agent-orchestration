@@ -1,0 +1,189 @@
+{
+  "sessionId": "rvw-2026-04-21T16-04-55Z",
+  "mode": "review",
+  "reviewTarget": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/001-search-fusion-tuning",
+  "dimensionsCovered": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
+  "dimensionCoverage": {
+    "correctness": {
+      "covered": true,
+      "iterations": [1, 5, 9],
+      "activeFindings": ["DRV-P1-001", "DRV-P1-007"]
+    },
+    "security": {
+      "covered": true,
+      "iterations": [2, 6, 10],
+      "activeFindings": []
+    },
+    "traceability": {
+      "covered": true,
+      "iterations": [3, 7],
+      "activeFindings": ["DRV-P1-002", "DRV-P1-003", "DRV-P1-005", "DRV-P1-006"]
+    },
+    "maintainability": {
+      "covered": true,
+      "iterations": [4, 8],
+      "activeFindings": ["DRV-P1-004"]
+    }
+  },
+  "openFindings": [
+    {
+      "id": "DRV-P1-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Root packet was closed without satisfying its own research charter",
+      "status": "open",
+      "firstIteration": 1,
+      "lastIteration": 9,
+      "summary": "The root packet is marked complete, but its closeout tasks only document sub-phase cleanup and status alignment rather than answering RQ-1..RQ-5 with evidence, threshold recommendations, and before/after measurements.",
+      "impact": "Readers cannot rely on the root packet as the authoritative synthesis for the tuning work it claims to have completed.",
+      "remediation": "Add a root closeout synthesis that answers each research question with measured evidence, or rewrite the root spec/checklist so the narrower administrative closeout is the declared goal.",
+      "evidence": [
+        "spec.md:28-60",
+        "tasks.md:11-16",
+        "checklist.md:13-21"
+      ]
+    },
+    {
+      "id": "DRV-P1-002",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "The complete Level 3 root packet is missing implementation-summary.md",
+      "status": "open",
+      "firstIteration": 3,
+      "lastIteration": 3,
+      "summary": "The packet declares `level: 3` and `status: complete`, but the root folder does not contain `implementation-summary.md` even though the repo contract requires it for every level.",
+      "impact": "The canonical continuity ladder for the root packet cannot recover a shipped implementation summary from the packet root.",
+      "remediation": "Create the missing root implementation summary and backfill it with the delivered packet-level outcome.",
+      "evidence": [
+        "spec.md:2-5",
+        "AGENTS.md:260-268",
+        "001-search-fusion-tuning(dir):1-13"
+      ]
+    },
+    {
+      "id": "DRV-P1-003",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "The complete Level 3 root packet is missing decision-record.md",
+      "status": "open",
+      "firstIteration": 3,
+      "lastIteration": 3,
+      "summary": "The root packet advertises a Level 3 closeout but does not ship the required root decision record.",
+      "impact": "Packet-level architectural decisions are not preserved at the same surface the packet uses to claim completion.",
+      "remediation": "Create the missing root decision record or downgrade the packet level if the root no longer needs Level 3 governance.",
+      "evidence": [
+        "spec.md:2-5",
+        "AGENTS.md:260-265",
+        "001-search-fusion-tuning(dir):1-13"
+      ]
+    },
+    {
+      "id": "DRV-P1-004",
+      "severity": "P1",
+      "dimension": "maintainability",
+      "title": "Completed child packets still carry planned decision-record metadata",
+      "status": "open",
+      "firstIteration": 4,
+      "lastIteration": 4,
+      "summary": "Child decision records in phases 001-004 still say `status: planned` even though the same child packets are marked complete and their implementation summaries report shipped work.",
+      "impact": "ADR consumers cannot trust child decision-record status fields when reviewing this packet lineage.",
+      "remediation": "Normalize the child decision-record frontmatter to `status: complete` (or archive them if no longer canonical).",
+      "evidence": [
+        "001-remove-length-penalty/decision-record.md:1-3",
+        "002-add-reranker-telemetry/decision-record.md:1-3",
+        "003-continuity-search-profile/decision-record.md:1-3",
+        "004-raise-rerank-minimum/decision-record.md:1-3",
+        "004-raise-rerank-minimum/implementation-summary.md:1-11"
+      ]
+    },
+    {
+      "id": "DRV-P1-005",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "description.json and graph-metadata.json disagree on the packet's parent lineage",
+      "status": "open",
+      "firstIteration": 7,
+      "lastIteration": 7,
+      "summary": "The packet description still ends its `parentChain` at `010-search-and-routing-tuning`, while graph metadata points to the current `001-search-and-routing-tuning` parent.",
+      "impact": "Lineage-aware tools can resolve the same packet through conflicting parent paths after the April 21 renumbering.",
+      "remediation": "Regenerate both metadata files from the same post-renumbering source so the parent chain and parent_id agree.",
+      "evidence": [
+        "description.json:15-19",
+        "graph-metadata.json:3-5",
+        "description.json:31-38"
+      ]
+    },
+    {
+      "id": "DRV-P1-006",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "graph-metadata.json still advertises a stale key-file path",
+      "status": "open",
+      "firstIteration": 7,
+      "lastIteration": 7,
+      "summary": "Derived key files and entities still include `configs/search-weights.json`, while the packet spec and the live tree use `mcp_server/configs/search-weights.json`.",
+      "impact": "Metadata-driven navigation can point reviewers to a dead path instead of the real search weights file.",
+      "remediation": "Regenerate graph metadata so the derived key-file/entity path matches the live `mcp_server/configs/search-weights.json` surface.",
+      "evidence": [
+        "graph-metadata.json:39-56",
+        "spec.md:38-42"
+      ]
+    },
+    {
+      "id": "DRV-P1-007",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "The packet-local deep-research prompt still points to a legacy packet path and open charter",
+      "status": "open",
+      "firstIteration": 9,
+      "lastIteration": 9,
+      "summary": "The packet's own prompt still invokes the pre-renumbering spec path and still describes an unresolved 15-iteration research agenda after the packet root was closed as complete.",
+      "impact": "Anyone replaying the packet-local prompt is directed at the wrong packet path and a stale execution plan.",
+      "remediation": "Retire or rewrite the prompt so it points at the current packet path and reflects the closed packet state.",
+      "evidence": [
+        "prompts/deep-research-prompt.md:7-9",
+        "prompts/deep-research-prompt.md:27-41",
+        "spec.md:52-60"
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 7,
+    "P2": 0
+  },
+  "findingsByDimension": {
+    "correctness": 2,
+    "security": 0,
+    "traceability": 4,
+    "maintainability": 1
+  },
+  "iterationLedger": [
+    { "iteration": 1, "dimension": "correctness", "newFindingIds": ["DRV-P1-001"], "newFindingsRatio": 1.0, "churn": 1.0, "status": "complete" },
+    { "iteration": 2, "dimension": "security", "newFindingIds": [], "newFindingsRatio": 0.0, "churn": 0.0, "status": "complete" },
+    { "iteration": 3, "dimension": "traceability", "newFindingIds": ["DRV-P1-002", "DRV-P1-003"], "newFindingsRatio": 0.67, "churn": 0.67, "status": "complete" },
+    { "iteration": 4, "dimension": "maintainability", "newFindingIds": ["DRV-P1-004"], "newFindingsRatio": 0.25, "churn": 0.25, "status": "complete" },
+    { "iteration": 5, "dimension": "correctness", "newFindingIds": [], "newFindingsRatio": 0.0, "churn": 0.0, "status": "complete" },
+    { "iteration": 6, "dimension": "security", "newFindingIds": [], "newFindingsRatio": 0.0, "churn": 0.0, "status": "complete" },
+    { "iteration": 7, "dimension": "traceability", "newFindingIds": ["DRV-P1-005", "DRV-P1-006"], "newFindingsRatio": 0.33, "churn": 0.33, "status": "complete" },
+    { "iteration": 8, "dimension": "maintainability", "newFindingIds": [], "newFindingsRatio": 0.0, "churn": 0.0, "status": "complete" },
+    { "iteration": 9, "dimension": "correctness", "newFindingIds": ["DRV-P1-007"], "newFindingsRatio": 0.14, "churn": 0.14, "status": "complete" },
+    { "iteration": 10, "dimension": "security", "newFindingIds": [], "newFindingsRatio": 0.0, "churn": 0.0, "status": "complete" }
+  ],
+  "convergenceScore": {
+    "latest": 0.3,
+    "stopReason": "maxIterationsReached",
+    "allDimensionsCovered": true,
+    "blockedByP0": false,
+    "stuckThresholdHit": false
+  },
+  "verdict": "CONDITIONAL",
+  "hasAdvisories": false
+}

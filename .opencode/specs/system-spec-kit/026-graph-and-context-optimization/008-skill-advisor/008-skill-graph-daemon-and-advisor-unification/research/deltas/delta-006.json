@@ -1,0 +1,10 @@
+{
+  "iteration": 6,
+  "track": "A",
+  "question": "A6",
+  "verdict": "prototype_later",
+  "confidence": "medium",
+  "newInfoRatio": 0.82,
+  "timestamp": "2026-04-20T05:53:30Z",
+  "iterationFile": "iterations/iteration-006.md"
+}

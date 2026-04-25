@@ -12,9 +12,9 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
-    last_updated_at: "2026-04-21T13:00:00Z"
-    last_updated_by: "codex-gpt-5"
-    recent_action: "Renumbered nested phases"
+    last_updated_at: "2026-04-25T12:10:00Z"
+    last_updated_by: "claude-opus-4-7"
+    recent_action: "Verified second-pass consolidation: 008-skill-advisor merge, 009-memory-causal-graph creation, 010-hook-parity rename"
     next_safe_action: "Use merged-phase-map.md and context indexes for navigation"
     blockers: []
     key_files:
@@ -63,9 +63,9 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Active phase map lists nine thematic wrappers. [EVIDENCE: spec.md]
-- [x] CHK-011 [P0] Original phase packet folders are preserved as direct children under their active wrapper, with phase `001` merged into its phase root. [EVIDENCE: merged-phase-map.md]
-- [x] CHK-012 [P1] Wrapper docs stay navigation-only and do not rewrite child packet narratives. [EVIDENCE: 001-research-and-baseline/spec.md; 009-hook-package/spec.md]
+- [x] CHK-010 [P0] Active phase map lists 11 thematic wrappers (intentional gaps at `006` and `011`). [EVIDENCE: spec.md]
+- [x] CHK-011 [P0] Original phase packet folders are preserved as direct children under their active wrapper across both consolidation passes, with phase `001` merged into its phase root. [EVIDENCE: merged-phase-map.md]
+- [x] CHK-012 [P1] Wrapper docs stay navigation-only and do not rewrite child packet narratives. [EVIDENCE: 001-research-and-baseline/spec.md; 008-skill-advisor/spec.md; 010-hook-parity/spec.md]
 - [x] CHK-013 [P1] Root support folders remain in place. [EVIDENCE: spec.md]
 <!-- /ANCHOR:code-quality -->
 
@@ -74,10 +74,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All old phases `001` through `029` are represented exactly once in `merged-phase-map.md`. [EVIDENCE: implementation-summary.md]
-- [x] CHK-021 [P0] All `description.json` and `graph-metadata.json` files parse after migration. [EVIDENCE: implementation-summary.md]
+- [x] CHK-020 [P0] All old phases `001` through `029` are represented exactly once in the first-pass section of `merged-phase-map.md`, and every second-pass move/rename appears exactly once in the appended second-pass section. [EVIDENCE: implementation-summary.md]
+- [x] CHK-021 [P0] All `description.json` and `graph-metadata.json` files parse after both consolidation passes. [EVIDENCE: implementation-summary.md]
 - [x] CHK-022 [P0] Strict validation was run on root and active wrappers. [EVIDENCE: implementation-summary.md]
-- [x] CHK-023 [P1] Old trigger phrases remain available through context indexes or source metadata. [EVIDENCE: implementation-summary.md]
+- [x] CHK-023 [P1] Old trigger phrases (including `006-search-routing-advisor` and `010-hook-package` aliases) remain available through context indexes or source metadata. [EVIDENCE: implementation-summary.md]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -105,9 +105,14 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P0] Root direct phase folders are `001` through `009` only. [EVIDENCE: implementation-summary.md]
-- [x] CHK-051 [P1] Child phase folders live under their active wrapper roots. [EVIDENCE: merged-phase-map.md]
+- [x] CHK-050 [P0] Root direct phase folders are exactly the 11 approved wrappers (`000`, `001`, `002`, `003`, `004`, `005`, `007`, `008`, `009`, `010-hook-parity`, `012`); intentional gaps at `006` and `011`. [EVIDENCE: implementation-summary.md]
+- [x] CHK-051 [P1] Child phase folders live under their active wrapper roots after both consolidation passes. [EVIDENCE: merged-phase-map.md]
 - [x] CHK-052 [P2] Findings saved to wrapper context indexes instead of a new root memory folder. [EVIDENCE: 001-research-and-baseline/context-index.md]
+- [x] CHK-053 [P0] Second-pass moves match `scratch/reorg-2026-04-25/mapping.json` exactly. [EVIDENCE: merged-phase-map.md] - VERIFIED 2026-04-25
+- [x] CHK-054 [P1] `008-skill-advisor/spec.md` records `migration_aliases` for `006-search-routing-advisor`. [EVIDENCE: 008-skill-advisor/spec.md] - VERIFIED 2026-04-25
+- [x] CHK-055 [P1] `010-hook-parity/spec.md` records `migration_aliases` for both `009-hook-package` and `010-hook-package`. [EVIDENCE: 010-hook-parity/spec.md] - VERIFIED 2026-04-25
+- [x] CHK-056 [P1] `009-memory-causal-graph/` exists as a Level-2 documentation packet with no children and no code changes. [EVIDENCE: 009-memory-causal-graph/spec.md] - VERIFIED 2026-04-25
+- [x] CHK-057 [P1] `007-code-graph/` has five children including the second-pass additions `004-code-graph-hook-improvements/` and `005-code-graph-advisor-refinement/`. [EVIDENCE: 007-code-graph/] - VERIFIED 2026-04-25
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -117,11 +122,11 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 10 | 10/10 |
-| P1 Items | 9 | 9/9 |
+| P0 Items | 11 | 11/11 |
+| P1 Items | 13 | 13/13 |
 | P2 Items | 1 | 1/1 |
 
-**Verification Date**: 2026-04-21
+**Verification Date**: 2026-04-25 (second pass; first-pass items remain valid as recorded 2026-04-21)
 <!-- /ANCHOR:summary -->
 
 ---
@@ -140,7 +145,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 <!-- ANCHOR:perf-verify -->
 ## L3+: PERFORMANCE VERIFICATION
 
-- [x] CHK-110 [P1] Navigation surface reduced from 29 to 9 active phase folders. [EVIDENCE: implementation-summary.md]
+- [x] CHK-110 [P1] Navigation surface reduced from 29 chronological siblings to 11 thematic wrappers across two topical consolidation passes. [EVIDENCE: implementation-summary.md]
 - [x] CHK-111 [P1] Throughput targets not applicable for docs-only work. [EVIDENCE: spec.md]
 - [x] CHK-112 [P2] Load testing not applicable for docs-only work. [EVIDENCE: spec.md]
 - [x] CHK-113 [P2] Performance benchmark documented as folder-count reduction. [EVIDENCE: implementation-summary.md]
@@ -187,7 +192,9 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| Codex consolidation pass | Documentation migration | [x] Approved | 2026-04-21 |
-| Strict validation pass | Verification | [x] Approved | 2026-04-21 |
-| Map coverage check | Continuity | [x] Approved | 2026-04-21 |
+| Codex consolidation pass | Documentation migration (first pass 29→9) | [x] Approved | 2026-04-21 |
+| Strict validation pass | Verification (first pass) | [x] Approved | 2026-04-21 |
+| Map coverage check | Continuity (first pass) | [x] Approved | 2026-04-21 |
+| Claude second consolidation pass | Documentation migration (second pass: advisor unification, code-graph expansion, hook-parity rename, causal-graph creation) | [x] Approved | 2026-04-25 |
+| Map coverage check | Continuity (second pass) | [x] Approved | 2026-04-25 |
 <!-- /ANCHOR:sign-off -->

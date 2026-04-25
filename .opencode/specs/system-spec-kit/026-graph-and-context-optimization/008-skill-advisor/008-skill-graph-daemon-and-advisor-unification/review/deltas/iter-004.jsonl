@@ -1,0 +1,2 @@
+{"type":"iteration","iteration":4,"dimensions":["maintainability"],"filesReviewed":9,"findingsSummary":{"P0":0,"P1":5,"P2":3},"findingsNew":["R4-P2-001"],"traceabilityChecks":{"packageBoundaryClean":false,"testsColocated":true,"todoScanClean":true,"regressionSuitesPreserved":true},"newFindingsRatio":0.33,"graphEvents":[]}
+{"type":"finding","id":"R4-P2-001","severity":"P2","file":".opencode/plugins/spec-kit-skill-advisor.js:23","title":"Compat entrypoints are pinned to private dist internals","iteration":4}

@@ -1,0 +1,58 @@
+{
+  "openFindings": [
+    {
+      "id": "R1-P1-001",
+      "severity": "P1",
+      "dimension": "correctness",
+      "title": "Startup brief collapses graph probe errors into absent trust",
+      "prSource": "PR-4",
+      "iteration": 1,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts:245"
+    },
+    {
+      "id": "R1-P1-002",
+      "severity": "P1",
+      "dimension": "traceability",
+      "title": "Delete sweep left a task-listed promotion test file on disk",
+      "prSource": "PR-3",
+      "iteration": 1,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/tests/promotion-positive-validation-semantics.vitest.ts:1"
+    },
+    {
+      "id": "R1-P1-003",
+      "severity": "P1",
+      "dimension": "security",
+      "title": "Metrics cardinality envelope is not enforced for env-derived labels",
+      "prSource": "PR-5",
+      "iteration": 1,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/lib/scorer/fusion.ts:320"
+    },
+    {
+      "id": "R1-P2-001",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "title": "Stale manual evidence still claims deleted promotion suite passed",
+      "prSource": "PR-3",
+      "iteration": 1,
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/manual_testing_playbook/SCENARIO_RUN_2026-04-21.md:30"
+    }
+  ],
+  "resolvedFindings": [],
+  "p0Findings": [],
+  "p1Findings": [
+    "R1-P1-001",
+    "R1-P1-002",
+    "R1-P1-003"
+  ],
+  "p2Findings": [
+    "R1-P2-001"
+  ],
+  "metrics": {
+    "iterationsCompleted": 1,
+    "totalP0": 0,
+    "totalP1": 3,
+    "totalP2": 1,
+    "newFindingsRatioRolling": 1,
+    "verdict": "pending"
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "phase": "030-code-graph-gap-investigation-pt-01",
+  "findings": [
+    {
+      "id": "F-001",
+      "severity": "P1",
+      "category": "docs",
+      "summary": "The central MCP server README still documents `code_graph_status` and `code_graph_context` at the pre-013 contract level, so operators do not see `graphQualitySummary`, blocked-read payloads, or structured `partialOutput` in the main reference.",
+      "evidence": [
+        "iterations/iteration-01.md#Missed-Files-Found",
+        ".opencode/skill/system-spec-kit/mcp_server/README.md:540",
+        ".opencode/skill/system-spec-kit/mcp_server/README.md:1049",
+        ".opencode/skill/system-spec-kit/mcp_server/README.md:1139",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/status.ts:47",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts:141",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts:37"
+      ],
+      "recommended_fix": "Refresh the README sections for `code_graph_status` and `code_graph_context` so they name `graphQualitySummary`, blocked-read payloads, and `partialOutput` metadata.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/README.md"
+      ],
+      "related_findings": [
+        "F-003",
+        "F-004",
+        "F-007",
+        "F-008",
+        "F-009"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-002",
+      "severity": "P1",
+      "category": "docs",
+      "summary": "The code-graph subsystem README still presents the older status/readiness surface and omits the post-013 status, blocked-read, and startup-quality details.",
+      "evidence": [
+        "iterations/iteration-01.md#Missed-Files-Found",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/README.md:35",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/README.md:58",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/README.md:121",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/README.md:138",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts:42",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:640"
+      ],
+      "recommended_fix": "Update the subsystem README to cover `graphQualitySummary`, blocked full-scan payloads, and structured context metadata alongside the existing readiness overview.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/README.md"
+      ],
+      "related_findings": [
+        "F-001",
+        "F-010"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-003",
+      "severity": "P1",
+      "category": "docs",
+      "summary": "The install guide still explains only freshness/full-scan behavior, so operators do not get the newer 013-era status/context vocabulary in the troubleshooting path.",
+      "evidence": [
+        "iterations/iteration-01.md#Missed-Files-Found",
+        ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md:124",
+        ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md:799",
+        ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md:203"
+      ],
+      "recommended_fix": "Extend the install guide's code-graph sections so they mention `graphQualitySummary` and the blocked-read/context metadata operators will actually encounter.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md"
+      ],
+      "related_findings": [
+        "F-001",
+        "F-007",
+        "F-008"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-004",
+      "severity": "P1",
+      "category": "other",
+      "summary": "The public tool-schema descriptions still describe the old `code_graph_status` and `code_graph_context` outputs, so generated tool docs and downstream consumers inherit stale contract text.",
+      "evidence": [
+        "iterations/iteration-01.md#Missed-Files-Found",
+        ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:591",
+        ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:597",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/status.ts:47",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts:171"
+      ],
+      "recommended_fix": "Update the tool descriptions so `code_graph_status` advertises `graphQualitySummary` and `code_graph_context` advertises blocked-read plus `partialOutput` behavior.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts"
+      ],
+      "related_findings": [
+        "F-001",
+        "F-008",
+        "F-009"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-005",
+      "severity": "P1",
+      "category": "docs",
+      "summary": "The feature-catalog page for code-graph storage/query still points at the old indexer test path and describes `code_graph_status` generically, so the curated feature reference is stale.",
+      "evidence": [
+        "iterations/iteration-02.md#Missed-Files-Found",
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/08-code-graph-storage-query.md:13",
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/08-code-graph-storage-query.md:32",
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/08-code-graph-storage-query.md:40",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-indexer.vitest.ts"
+      ],
+      "recommended_fix": "Correct the test path and refresh the feature description so it matches the live `code_graph_status` and `code_graph_context` contract.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/08-code-graph-storage-query.md"
+      ],
+      "related_findings": [
+        "F-006",
+        "F-008"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-006",
+      "severity": "P1",
+      "category": "docs",
+      "summary": "The CocoIndex bridge feature page still points at the old seed-resolver test path and does not capture the richer post-013 context contract.",
+      "evidence": [
+        "iterations/iteration-02.md#Missed-Files-Found",
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/09-cocoindex-bridge-context.md:13",
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/09-cocoindex-bridge-context.md:37",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-seed-resolver.vitest.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts:56"
+      ],
+      "recommended_fix": "Correct the test path and extend the bridge description so it reflects seed-fidelity plus blocked/partial-output behavior in `code_graph_context`.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/09-cocoindex-bridge-context.md"
+      ],
+      "related_findings": [
+        "F-005",
+        "F-009"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-007",
+      "severity": "P1",
+      "category": "testing",
+      "summary": "The startup manual-testing playbook still validates only the old tool-listing and budget contract, even though packet 013 added startup payload and graph-quality assertions in the hook test suite.",
+      "evidence": [
+        "iterations/iteration-03.md#Missed-Files-Found",
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/250-session-start-startup.md:18",
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/250-session-start-startup.md:24",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/hook-session-start.vitest.ts:245"
+      ],
+      "recommended_fix": "Refresh the startup playbook so manual validation covers startup payload/graph-quality assertions in addition to tool listing and token budget.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/250-session-start-startup.md"
+      ],
+      "related_findings": [
+        "F-001",
+        "F-003"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-008",
+      "severity": "P1",
+      "category": "testing",
+      "summary": "The storage/query playbook still uses the old `tests/code-graph-indexer.vitest.ts` path and validates counts-only status behavior, so the operator scenario lags the live packet 013 contract.",
+      "evidence": [
+        "iterations/iteration-03.md#Missed-Files-Found",
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/254-code-graph-scan-query.md:17",
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/254-code-graph-scan-query.md:23",
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/254-code-graph-scan-query.md:103",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-indexer.vitest.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md:203"
+      ],
+      "recommended_fix": "Move the playbook to the real test path and add `graphQualitySummary` expectations for `code_graph_status`.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/254-code-graph-scan-query.md"
+      ],
+      "related_findings": [
+        "F-004",
+        "F-005"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-009",
+      "severity": "P1",
+      "category": "testing",
+      "summary": "The semantic-vs-structural routing playbook still uses the old indexer test path and never mentions the 013-era `partialOutput` or blocked-read contract for `code_graph_context`.",
+      "evidence": [
+        "iterations/iteration-03.md#Missed-Files-Found",
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/255-cocoindex-code-graph-routing.md:17",
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/255-cocoindex-code-graph-routing.md:104",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts:56",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts:117"
+      ],
+      "recommended_fix": "Point the playbook at the real suites and extend it so routing validation covers `partialOutput` plus blocked-read expectations, not only non-empty mode output.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/255-cocoindex-code-graph-routing.md"
+      ],
+      "related_findings": [
+        "F-004",
+        "F-006"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-010",
+      "severity": "P2",
+      "category": "docs",
+      "summary": "The handler-local README for `code-graph/handlers/` still summarizes `status.ts` and `context.ts` generically after packet 013 changed those surfaces materially.",
+      "evidence": [
+        "iterations/iteration-04.md#Missed-Files-Found",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/README.md:11",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/README.md:13",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/README.md:14"
+      ],
+      "recommended_fix": "Tighten the handler README so it calls out the richer status/context behavior or links directly to the updated subsystem docs.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/README.md"
+      ],
+      "related_findings": [
+        "F-002"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-011",
+      "severity": "P2",
+      "category": "docs",
+      "summary": "The readiness-contract feature page still stops at shared helper fields and an old sibling-readiness test path, even though callers now see richer blocked-read payloads on top of that layer.",
+      "evidence": [
+        "iterations/iteration-02.md#Missed-Files-Found",
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md:10",
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md:29",
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md:53",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:647",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts:147"
+      ],
+      "recommended_fix": "Refresh the page so it distinguishes shared readiness helpers from the user-visible blocked payloads now layered on top by query/context handlers, and fix the test path.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md"
+      ],
+      "related_findings": [
+        "F-012",
+        "F-013"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-012",
+      "severity": "P2",
+      "category": "docs",
+      "summary": "The auto-trigger feature page still frames stale/empty handling purely as helper actions, not as the explicit blocked query/context payloads that operators now encounter after packet 013.",
+      "evidence": [
+        "iterations/iteration-02.md#Missed-Files-Found",
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/15-code-graph-auto-trigger.md:11",
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/15-code-graph-auto-trigger.md:13",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:640",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts:141"
+      ],
+      "recommended_fix": "Decide whether the feature page should remain helper-centric or be expanded so it explicitly links auto-trigger outcomes to the blocked read payload users now see.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/15-code-graph-auto-trigger.md"
+      ],
+      "related_findings": [
+        "F-011",
+        "F-013"
+      ],
+      "negative_if_ruled_out": null
+    },
+    {
+      "id": "F-013",
+      "severity": "P2",
+      "category": "testing",
+      "summary": "The auto-trigger manual-testing playbook still validates action-only helper outcomes and the old indexer-suite path instead of the newer blocked query/context contract.",
+      "evidence": [
+        "iterations/iteration-03.md#Missed-Files-Found",
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/260-code-graph-auto-trigger.md:17",
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/260-code-graph-auto-trigger.md:22",
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/260-code-graph-auto-trigger.md:39",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/query.ts:648",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts:148"
+      ],
+      "recommended_fix": "Update the playbook to the real test path and decide whether it should validate the caller-visible blocked payloads that now sit on top of ensure-ready outcomes.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/260-code-graph-auto-trigger.md"
+      ],
+      "related_findings": [
+        "F-011",
+        "F-012"
+      ],
+      "negative_if_ruled_out": null
+    }
+  ]
+}

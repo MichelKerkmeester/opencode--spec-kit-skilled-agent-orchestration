@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/008-skill-graph-daemon-and-advisor-unification",
+  "description": "Feature Specification: 027 - Skill Graph Daemon and Advisor Unification",
+  "keywords": [
+    "feature",
+    "specification",
+    "027",
+    "skill",
+    "graph",
+    "daemon",
+    "advisor",
+    "unification"
+  ],
+  "lastUpdated": "2026-04-25T12:03:26.583Z",
+  "specId": "008",
+  "folderSlug": "skill-graph-daemon-and-advisor-unification",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-skill-advisor"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

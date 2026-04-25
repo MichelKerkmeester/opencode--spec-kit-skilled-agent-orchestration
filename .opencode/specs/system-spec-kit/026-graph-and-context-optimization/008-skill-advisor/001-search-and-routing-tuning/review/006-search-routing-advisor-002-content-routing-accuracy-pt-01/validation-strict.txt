@@ -1,0 +1,967 @@
+Auto-enabled recursive validation: phase child folders detected.
+
+───────────────────────────────────────────────────────────────
+
+  Spec Folder Validation v2.0.0
+───────────────────────────────────────────────────────────────
+
+
+  Folder: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/002-content-routing-accuracy
+  Level:  3 (explicit)
+
+───────────────────────────────────────────────────────────────
+
+
+✗ FILE_EXISTS: Missing 2 required file(s)
+    - implementation-summary.md (required after implementation)
+    - decision-record.md
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+⚠ SECTIONS_PRESENT: Missing 8 recommended section(s)
+    - spec.md: Problem Statement
+    - spec.md: Requirements
+    - spec.md: Scope
+    - plan.md: Technical Context
+    - plan.md: Architecture
+    - plan.md: Implementation
+    - checklist.md: Verification Protocol
+    - checklist.md: Code Quality
+✓ LEVEL_DECLARED: Level 3 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+⚠ EVIDENCE_CITED: Found 3 completed item(s) without evidence
+    - P1:13: `metadata_only` saves always land in the implem...
+    - P1:14: Zero mentions of `SPECKIT_TIER3_ROUTING` as con...
+    - P1:15: Sub-phases 001-003 pass `validate.sh --strict`....
+✗ ANCHORS_VALID: ANCHOR tags missing in 4 major spec document(s); 28 required anchor(s) missing
+    - spec.md: No ANCHOR tags found (required for structured retrieval)
+    - plan.md: No ANCHOR tags found (required for structured retrieval)
+    - tasks.md: No ANCHOR tags found (required for structured retrieval)
+    - checklist.md: No ANCHOR tags found (required for structured retrieval)
+    - spec.md: Missing required anchor 'metadata'
+    - spec.md: Missing required anchor 'problem'
+    - spec.md: Missing required anchor 'scope'
+    - spec.md: Missing required anchor 'requirements'
+    - spec.md: Missing required anchor 'success-criteria'
+    - spec.md: Missing required anchor 'risks'
+    - spec.md: Missing required anchor 'questions'
+    - plan.md: Missing required anchor 'summary'
+    - plan.md: Missing required anchor 'quality-gates'
+    - plan.md: Missing required anchor 'architecture'
+    - plan.md: Missing required anchor 'phases'
+    - plan.md: Missing required anchor 'testing'
+    - plan.md: Missing required anchor 'dependencies'
+    - plan.md: Missing required anchor 'rollback'
+    - tasks.md: Missing required anchor 'notation'
+    - tasks.md: Missing required anchor 'phase-1'
+    - tasks.md: Missing required anchor 'phase-2'
+    - tasks.md: Missing required anchor 'phase-3'
+    - tasks.md: Missing required anchor 'completion'
+    - tasks.md: Missing required anchor 'cross-refs'
+    - checklist.md: Missing required anchor 'protocol'
+    - checklist.md: Missing required anchor 'pre-impl'
+    - checklist.md: Missing required anchor 'code-quality'
+    - checklist.md: Missing required anchor 'testing'
+    - checklist.md: Missing required anchor 'security'
+    - checklist.md: Missing required anchor 'docs'
+    - checklist.md: Missing required anchor 'file-org'
+    - checklist.md: Missing required anchor 'summary'
+⚠ FRONTMATTER_MEMORY_BLOCK: 4 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: checklist.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+⚠ PHASE_LINKS: 12 phase link issue(s) found
+    - Parent spec.md missing 'PHASE DOCUMENTATION MAP' section
+    - 004-doc-surface-alignment/spec.md missing parent back-reference (expected: '| **Parent Spec** | ../spec.md |' or 'parent:' field)
+    - 002-fix-handover-drop-confusion/spec.md missing predecessor reference (001-fix-delivery-progress-confusion)
+    - 003-wire-tier3-llm-classifier/spec.md missing predecessor reference (002-fix-handover-drop-confusion)
+    - 004-doc-surface-alignment/spec.md missing predecessor reference (003-wire-tier3-llm-classifier)
+    - 005-task-update-merge-safety/spec.md missing predecessor reference (004-doc-surface-alignment)
+    - 006-tier3-prompt-enrichment/spec.md missing predecessor reference (005-task-update-merge-safety)
+    - 001-fix-delivery-progress-confusion/spec.md missing successor reference (002-fix-handover-drop-confusion)
+    - 002-fix-handover-drop-confusion/spec.md missing successor reference (003-wire-tier3-llm-classifier)
+    - 003-wire-tier3-llm-classifier/spec.md missing successor reference (004-doc-surface-alignment)
+    - 004-doc-surface-alignment/spec.md missing successor reference (005-task-update-merge-safety)
+    - 005-task-update-merge-safety/spec.md missing successor reference (006-tier3-prompt-enrichment)
+⚠ AI_PROTOCOL: AI protocol incomplete (0/4 components)
+    - Level 3 should include AI Execution Protocol section
+    - Missing Pre-Task Checklist
+    - Missing Execution Rules table
+    - Missing Status Reporting Format
+    - Missing Blocked Task Protocol
+⚠ COMPLEXITY_MATCH: Content metrics may not match declared Level 3
+    - Phases (0) below minimum (2) for Level 3
+    - Tasks (4) below minimum (5) for Level 3
+✓ FOLDER_NAMING: Folder name '002-content-routing-accuracy' follows naming convention
+✗ FRONTMATTER_VALID: Found 18 frontmatter issue(s)
+    - spec.md: Empty required frontmatter field: description
+    - spec.md: Empty required frontmatter field: importance_tier
+    - spec.md: Empty required frontmatter field: contextType
+    - spec.md: Empty required frontmatter field: trigger_phrases
+    - spec.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - plan.md: Empty required frontmatter field: description
+    - plan.md: Empty required frontmatter field: importance_tier
+    - plan.md: Empty required frontmatter field: contextType
+    - plan.md: Empty required frontmatter field: trigger_phrases
+    - plan.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - tasks.md: Empty required frontmatter field: description
+    - tasks.md: Empty required frontmatter field: importance_tier
+    - tasks.md: Empty required frontmatter field: contextType
+    - tasks.md: Empty required frontmatter field: trigger_phrases
+    - checklist.md: Empty required frontmatter field: description
+    - checklist.md: Empty required frontmatter field: importance_tier
+    - checklist.md: Empty required frontmatter field: contextType
+    - checklist.md: Empty required frontmatter field: trigger_phrases
+✗ LEVEL_MATCH: Level consistency errors
+    - Required file missing for Level 3: decision-record.md
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+⚠ SECTION_COUNTS: Section counts below expectations for Level 3
+    - spec.md has 5 sections, expected at least 10 for Level 3
+    - plan.md has 3 sections, expected at least 8 for Level 3
+    - Found 0 requirements, expected at least 8 for Level 3
+    - Found 0 acceptance scenarios, expected at least 6 for Level 3
+    - Level 3 should include decision-record.md
+✗ SPEC_DOC_INTEGRITY: 3 spec documentation integrity issue(s) found
+    - checklist.md references missing markdown file: implementation-summary.md
+    - checklist.md references missing markdown file: implementation-summary.md
+    - tasks.md references missing markdown file: implementation-summary.md
+✗ TEMPLATE_SOURCE: Template source header missing in 2 file(s)
+    - spec.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+    - plan.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+✗ TEMPLATE_HEADERS: 35 structural template deviation(s) found in 4 file(s)
+    - spec.md: Missing required section header matching 'EXECUTIVE SUMMARY'
+    - spec.md: Missing required section header matching '1. METADATA'
+    - spec.md: Missing required section header matching '2. PROBLEM & PURPOSE'
+    - spec.md: Missing required section header matching '3. SCOPE'
+    - spec.md: Missing required section header matching '4. REQUIREMENTS'
+    - spec.md: Missing required section header matching '5. SUCCESS CRITERIA'
+    - spec.md: Missing required section header matching '6. RISKS & DEPENDENCIES'
+    - spec.md: Missing required section header matching '7. NON-FUNCTIONAL REQUIREMENTS'
+    - spec.md: Missing required section header matching '8. EDGE CASES'
+    - spec.md: Missing required section header matching '9. COMPLEXITY ASSESSMENT'
+    - spec.md: Missing required section header matching '10. RISK MATRIX'
+    - spec.md: Missing required section header matching '11. USER STORIES'
+    - spec.md: Missing required section header matching '12. OPEN QUESTIONS'
+    - spec.md: Missing required section header matching 'RELATED DOCUMENTS'
+    - plan.md: Missing required section header matching '1. SUMMARY'
+    - plan.md: Missing required section header matching '2. QUALITY GATES'
+    - plan.md: Missing required section header matching '3. ARCHITECTURE'
+    - plan.md: Missing required section header matching '4. IMPLEMENTATION PHASES'
+    - plan.md: Missing required section header matching '5. TESTING STRATEGY'
+    - plan.md: Missing required section header matching '6. DEPENDENCIES'
+    - plan.md: Missing required section header matching '7. ROLLBACK PLAN'
+    - tasks.md: Missing required section header matching 'Task Notation'
+    - tasks.md: Missing required section header matching 'Phase 1: Setup'
+    - tasks.md: Missing required section header matching 'Phase 2: Implementation'
+    - tasks.md: Missing required section header matching 'Phase 3: Verification'
+    - tasks.md: Missing required section header matching 'Completion Criteria'
+    - tasks.md: Missing required section header matching 'Cross-References'
+    - checklist.md: Missing required section header matching 'Verification Protocol'
+    - checklist.md: Missing required section header matching 'Pre-Implementation'
+    - checklist.md: Missing required section header matching 'Code Quality'
+    - checklist.md: Missing required section header matching 'Testing'
+    - checklist.md: Missing required section header matching 'Security'
+    - checklist.md: Missing required section header matching 'Documentation'
+    - checklist.md: Missing required section header matching 'File Organization'
+    - checklist.md: Missing required section header matching 'Verification Summary'
+    - spec.md: Extra custom section header '## Background' does not exist in the active template
+    - spec.md: Extra custom section header '## Research Questions' does not exist in the active template
+    - spec.md: Extra custom section header '## Key Files to Investigate' does not exist in the active template
+    - spec.md: Extra custom section header '## Research Approach' does not exist in the active template
+    - spec.md: Extra custom section header '## Exit Criteria' does not exist in the active template
+    - plan.md: Extra custom section header '## Approach' does not exist in the active template
+    - plan.md: Extra custom section header '## Child Packet Rollup' does not exist in the active template
+    - plan.md: Extra custom section header '## Verification' does not exist in the active template
+    - checklist.md: Extra custom section header '## P1 (Should Fix)' does not exist in the active template
+    - checklist.md: Extra custom section header '## P2 (Advisory)' does not exist in the active template
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Live packet root exposes a canonical spec.md surface
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Live packet root graph metadata has non-empty derived.source_docs
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is present for the refreshed graph metadata
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✓ EVIDENCE_MARKER_LINT: Evidence marker lint passed: all markers closed with balanced brackets
+    - filesScanned=38
+    - totalMarkers=19
+
+───────────────────────────────────────────────────────────────
+
+  Recursive Phase Validation (6 phases found)
+───────────────────────────────────────────────────────────────
+
+
+  Phase: 001-fix-delivery-progress-confusion
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+⚠ SECTIONS_PRESENT: Missing 7 recommended section(s)
+    - spec.md: Problem Statement
+    - spec.md: Requirements
+    - plan.md: Technical Context
+    - plan.md: Architecture
+    - plan.md: Implementation
+    - checklist.md: Verification Protocol
+    - checklist.md: Code Quality
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+⚠ EVIDENCE_CITED: Found 6 completed item(s) without evidence
+    - P0:7: `mcp_server/lib/routing/content-router.ts:345-3...
+    - P0:8: Regression tests prove delivery text with imple...
+    - P0:9: The router still uses the existing category set...
+    - P1:11: `routing-prototypes.json` strengthens the resea...
+    - P1:12: Verification notes show the change fixed cue as...
+    - P1:13: `content-router.vitest.ts` covers both the heur...
+✗ ANCHORS_VALID: ANCHOR tags missing in 5 major spec document(s); 28 required anchor(s) missing
+    - spec.md: No ANCHOR tags found (required for structured retrieval)
+    - plan.md: No ANCHOR tags found (required for structured retrieval)
+    - tasks.md: No ANCHOR tags found (required for structured retrieval)
+    - checklist.md: No ANCHOR tags found (required for structured retrieval)
+    - decision-record.md: No ANCHOR tags found (required for structured retrieval)
+    - spec.md: Missing required anchor 'metadata'
+    - spec.md: Missing required anchor 'problem'
+    - spec.md: Missing required anchor 'scope'
+    - spec.md: Missing required anchor 'requirements'
+    - spec.md: Missing required anchor 'success-criteria'
+    - spec.md: Missing required anchor 'risks'
+    - spec.md: Missing required anchor 'questions'
+    - plan.md: Missing required anchor 'summary'
+    - plan.md: Missing required anchor 'quality-gates'
+    - plan.md: Missing required anchor 'architecture'
+    - plan.md: Missing required anchor 'phases'
+    - plan.md: Missing required anchor 'testing'
+    - plan.md: Missing required anchor 'dependencies'
+    - plan.md: Missing required anchor 'rollback'
+    - tasks.md: Missing required anchor 'notation'
+    - tasks.md: Missing required anchor 'phase-1'
+    - tasks.md: Missing required anchor 'phase-2'
+    - tasks.md: Missing required anchor 'phase-3'
+    - tasks.md: Missing required anchor 'completion'
+    - tasks.md: Missing required anchor 'cross-refs'
+    - checklist.md: Missing required anchor 'protocol'
+    - checklist.md: Missing required anchor 'pre-impl'
+    - checklist.md: Missing required anchor 'code-quality'
+    - checklist.md: Missing required anchor 'testing'
+    - checklist.md: Missing required anchor 'security'
+    - checklist.md: Missing required anchor 'docs'
+    - checklist.md: Missing required anchor 'file-org'
+    - checklist.md: Missing required anchor 'summary'
+⚠ FRONTMATTER_MEMORY_BLOCK: 5 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: checklist.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: decision-record.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+⚠ COMPLEXITY_MATCH: Content metrics may not match declared Level 2
+    - Phases (0) below minimum (2) for Level 2
+✓ FOLDER_NAMING: Folder name '001-fix-delivery-progress-confusion' follows naming convention
+✗ FRONTMATTER_VALID: Found 25 frontmatter issue(s)
+    - spec.md: Empty required frontmatter field: description
+    - spec.md: Empty required frontmatter field: importance_tier
+    - spec.md: Empty required frontmatter field: contextType
+    - spec.md: Empty required frontmatter field: trigger_phrases
+    - spec.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - plan.md: Empty required frontmatter field: description
+    - plan.md: Empty required frontmatter field: importance_tier
+    - plan.md: Empty required frontmatter field: contextType
+    - plan.md: Empty required frontmatter field: trigger_phrases
+    - plan.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - tasks.md: Empty required frontmatter field: description
+    - tasks.md: Empty required frontmatter field: importance_tier
+    - tasks.md: Empty required frontmatter field: contextType
+    - tasks.md: Empty required frontmatter field: trigger_phrases
+    - tasks.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - checklist.md: Empty required frontmatter field: description
+    - checklist.md: Empty required frontmatter field: importance_tier
+    - checklist.md: Empty required frontmatter field: contextType
+    - checklist.md: Empty required frontmatter field: trigger_phrases
+    - checklist.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - decision-record.md: Empty required frontmatter field: description
+    - decision-record.md: Empty required frontmatter field: importance_tier
+    - decision-record.md: Empty required frontmatter field: contextType
+    - decision-record.md: Empty required frontmatter field: trigger_phrases
+    - decision-record.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+⚠ LEVEL_MATCH: Level consistency warnings
+    - checklist.md does not declare a level (expected Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+⚠ SECTION_COUNTS: Section counts below expectations for Level 2
+    - spec.md has 3 sections, expected at least 7 for Level 2
+    - plan.md has 4 sections, expected at least 6 for Level 2
+    - Found 0 requirements, expected at least 5 for Level 2
+    - Found 0 acceptance scenarios, expected at least 4 for Level 2
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✗ TEMPLATE_SOURCE: Template source header missing in 5 file(s)
+    - spec.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+    - plan.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+    - tasks.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+    - checklist.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+    - decision-record.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+✗ TEMPLATE_HEADERS: 28 structural template deviation(s) found in 6 file(s)
+    - spec.md: Missing required section header matching '1. METADATA'
+    - spec.md: Missing required section header matching '2. PROBLEM & PURPOSE'
+    - spec.md: Missing required section header matching '4. REQUIREMENTS'
+    - spec.md: Missing required section header matching '5. SUCCESS CRITERIA'
+    - spec.md: Missing required section header matching '6. RISKS & DEPENDENCIES'
+    - spec.md: Missing required section header matching '10. OPEN QUESTIONS'
+    - plan.md: Missing required section header matching '1. SUMMARY'
+    - plan.md: Missing required section header matching '2. QUALITY GATES'
+    - plan.md: Missing required section header matching '3. ARCHITECTURE'
+    - plan.md: Missing required section header matching '4. IMPLEMENTATION PHASES'
+    - plan.md: Missing required section header matching '5. TESTING STRATEGY'
+    - plan.md: Missing required section header matching '6. DEPENDENCIES'
+    - plan.md: Missing required section header matching '7. ROLLBACK PLAN'
+    - tasks.md: Missing required section header matching 'Task Notation'
+    - tasks.md: Missing required section header matching 'Phase 1: Setup'
+    - tasks.md: Missing required section header matching 'Phase 2: Implementation'
+    - tasks.md: Missing required section header matching 'Phase 3: Verification'
+    - tasks.md: Missing required section header matching 'Completion Criteria'
+    - tasks.md: Missing required section header matching 'Cross-References'
+    - checklist.md: Missing required section header matching 'Verification Protocol'
+    - checklist.md: Missing required section header matching 'Pre-Implementation'
+    - checklist.md: Missing required section header matching 'Code Quality'
+    - checklist.md: Missing required section header matching 'Testing'
+    - checklist.md: Missing required section header matching 'Security'
+    - checklist.md: Missing required section header matching 'Documentation'
+    - checklist.md: Missing required section header matching 'File Organization'
+    - checklist.md: Missing required section header matching 'Verification Summary'
+    - checklist.md: H1 should start with '# Verification Checklist:' (found: '# Verification Checklist')
+    - spec.md: Extra custom section header '## Key Files' does not exist in the active template
+    - spec.md: Extra custom section header '## Out of Scope' does not exist in the active template
+    - plan.md: Extra custom section header '## Approach' does not exist in the active template
+    - plan.md: Extra custom section header '## Steps' does not exist in the active template
+    - plan.md: Extra custom section header '## Verification' does not exist in the active template
+    - plan.md: Extra custom section header '## Risks' does not exist in the active template
+    - tasks.md: Extra custom section header '## Verification' does not exist in the active template
+    - checklist.md: Extra custom section header '## P0 (Blocking)' does not exist in the active template
+    - checklist.md: Extra custom section header '## P1 (Should Fix)' does not exist in the active template
+    - checklist.md: Extra custom section header '## P2 (Advisory)' does not exist in the active template
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is present for the refreshed graph metadata
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion/[0-9][0-9][0-9]-*'
+
+  Phase: 002-fix-handover-drop-confusion
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+⚠ SECTIONS_PRESENT: Missing 7 recommended section(s)
+    - spec.md: Problem Statement
+    - spec.md: Requirements
+    - plan.md: Technical Context
+    - plan.md: Architecture
+    - plan.md: Implementation
+    - checklist.md: Verification Protocol
+    - checklist.md: Code Quality
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+⚠ EVIDENCE_CITED: Found 5 completed item(s) without evidence
+    - P0:7: `mcp_server/lib/routing/content-router.ts:369-3...
+    - P0:8: `mcp_server/lib/routing/content-router.ts:868-8...
+    - P0:9: Router regression tests prove handover notes ar...
+    - P1:11: `extractHardNegativeFlags()` remains focused on...
+    - P1:12: Handover prototypes lead with state, blockers, ...
+✗ ANCHORS_VALID: ANCHOR tags missing in 5 major spec document(s); 28 required anchor(s) missing
+    - spec.md: No ANCHOR tags found (required for structured retrieval)
+    - plan.md: No ANCHOR tags found (required for structured retrieval)
+    - tasks.md: No ANCHOR tags found (required for structured retrieval)
+    - checklist.md: No ANCHOR tags found (required for structured retrieval)
+    - decision-record.md: No ANCHOR tags found (required for structured retrieval)
+    - spec.md: Missing required anchor 'metadata'
+    - spec.md: Missing required anchor 'problem'
+    - spec.md: Missing required anchor 'scope'
+    - spec.md: Missing required anchor 'requirements'
+    - spec.md: Missing required anchor 'success-criteria'
+    - spec.md: Missing required anchor 'risks'
+    - spec.md: Missing required anchor 'questions'
+    - plan.md: Missing required anchor 'summary'
+    - plan.md: Missing required anchor 'quality-gates'
+    - plan.md: Missing required anchor 'architecture'
+    - plan.md: Missing required anchor 'phases'
+    - plan.md: Missing required anchor 'testing'
+    - plan.md: Missing required anchor 'dependencies'
+    - plan.md: Missing required anchor 'rollback'
+    - tasks.md: Missing required anchor 'notation'
+    - tasks.md: Missing required anchor 'phase-1'
+    - tasks.md: Missing required anchor 'phase-2'
+    - tasks.md: Missing required anchor 'phase-3'
+    - tasks.md: Missing required anchor 'completion'
+    - tasks.md: Missing required anchor 'cross-refs'
+    - checklist.md: Missing required anchor 'protocol'
+    - checklist.md: Missing required anchor 'pre-impl'
+    - checklist.md: Missing required anchor 'code-quality'
+    - checklist.md: Missing required anchor 'testing'
+    - checklist.md: Missing required anchor 'security'
+    - checklist.md: Missing required anchor 'docs'
+    - checklist.md: Missing required anchor 'file-org'
+    - checklist.md: Missing required anchor 'summary'
+⚠ FRONTMATTER_MEMORY_BLOCK: 5 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: checklist.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: decision-record.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+⚠ COMPLEXITY_MATCH: Content metrics may not match declared Level 2
+    - Phases (0) below minimum (2) for Level 2
+✓ FOLDER_NAMING: Folder name '002-fix-handover-drop-confusion' follows naming convention
+✗ FRONTMATTER_VALID: Found 25 frontmatter issue(s)
+    - spec.md: Empty required frontmatter field: description
+    - spec.md: Empty required frontmatter field: importance_tier
+    - spec.md: Empty required frontmatter field: contextType
+    - spec.md: Empty required frontmatter field: trigger_phrases
+    - spec.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - plan.md: Empty required frontmatter field: description
+    - plan.md: Empty required frontmatter field: importance_tier
+    - plan.md: Empty required frontmatter field: contextType
+    - plan.md: Empty required frontmatter field: trigger_phrases
+    - plan.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - tasks.md: Empty required frontmatter field: description
+    - tasks.md: Empty required frontmatter field: importance_tier
+    - tasks.md: Empty required frontmatter field: contextType
+    - tasks.md: Empty required frontmatter field: trigger_phrases
+    - tasks.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - checklist.md: Empty required frontmatter field: description
+    - checklist.md: Empty required frontmatter field: importance_tier
+    - checklist.md: Empty required frontmatter field: contextType
+    - checklist.md: Empty required frontmatter field: trigger_phrases
+    - checklist.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - decision-record.md: Empty required frontmatter field: description
+    - decision-record.md: Empty required frontmatter field: importance_tier
+    - decision-record.md: Empty required frontmatter field: contextType
+    - decision-record.md: Empty required frontmatter field: trigger_phrases
+    - decision-record.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+⚠ LEVEL_MATCH: Level consistency warnings
+    - checklist.md does not declare a level (expected Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+⚠ SECTION_COUNTS: Section counts below expectations for Level 2
+    - spec.md has 3 sections, expected at least 7 for Level 2
+    - plan.md has 4 sections, expected at least 6 for Level 2
+    - Found 0 requirements, expected at least 5 for Level 2
+    - Found 0 acceptance scenarios, expected at least 4 for Level 2
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✗ TEMPLATE_SOURCE: Template source header missing in 5 file(s)
+    - spec.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+    - plan.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+    - tasks.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+    - checklist.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+    - decision-record.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+✗ TEMPLATE_HEADERS: 28 structural template deviation(s) found in 6 file(s)
+    - spec.md: Missing required section header matching '1. METADATA'
+    - spec.md: Missing required section header matching '2. PROBLEM & PURPOSE'
+    - spec.md: Missing required section header matching '4. REQUIREMENTS'
+    - spec.md: Missing required section header matching '5. SUCCESS CRITERIA'
+    - spec.md: Missing required section header matching '6. RISKS & DEPENDENCIES'
+    - spec.md: Missing required section header matching '10. OPEN QUESTIONS'
+    - plan.md: Missing required section header matching '1. SUMMARY'
+    - plan.md: Missing required section header matching '2. QUALITY GATES'
+    - plan.md: Missing required section header matching '3. ARCHITECTURE'
+    - plan.md: Missing required section header matching '4. IMPLEMENTATION PHASES'
+    - plan.md: Missing required section header matching '5. TESTING STRATEGY'
+    - plan.md: Missing required section header matching '6. DEPENDENCIES'
+    - plan.md: Missing required section header matching '7. ROLLBACK PLAN'
+    - tasks.md: Missing required section header matching 'Task Notation'
+    - tasks.md: Missing required section header matching 'Phase 1: Setup'
+    - tasks.md: Missing required section header matching 'Phase 2: Implementation'
+    - tasks.md: Missing required section header matching 'Phase 3: Verification'
+    - tasks.md: Missing required section header matching 'Completion Criteria'
+    - tasks.md: Missing required section header matching 'Cross-References'
+    - checklist.md: Missing required section header matching 'Verification Protocol'
+    - checklist.md: Missing required section header matching 'Pre-Implementation'
+    - checklist.md: Missing required section header matching 'Code Quality'
+    - checklist.md: Missing required section header matching 'Testing'
+    - checklist.md: Missing required section header matching 'Security'
+    - checklist.md: Missing required section header matching 'Documentation'
+    - checklist.md: Missing required section header matching 'File Organization'
+    - checklist.md: Missing required section header matching 'Verification Summary'
+    - checklist.md: H1 should start with '# Verification Checklist:' (found: '# Verification Checklist')
+    - spec.md: Extra custom section header '## Key Files' does not exist in the active template
+    - spec.md: Extra custom section header '## Out of Scope' does not exist in the active template
+    - plan.md: Extra custom section header '## Approach' does not exist in the active template
+    - plan.md: Extra custom section header '## Steps' does not exist in the active template
+    - plan.md: Extra custom section header '## Verification' does not exist in the active template
+    - plan.md: Extra custom section header '## Risks' does not exist in the active template
+    - tasks.md: Extra custom section header '## Verification' does not exist in the active template
+    - checklist.md: Extra custom section header '## P0 (Blocking)' does not exist in the active template
+    - checklist.md: Extra custom section header '## P1 (Should Fix)' does not exist in the active template
+    - checklist.md: Extra custom section header '## P2 (Advisory)' does not exist in the active template
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is present for the refreshed graph metadata
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion/[0-9][0-9][0-9]-*'
+
+  Phase: 003-wire-tier3-llm-classifier
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+⚠ SECTIONS_PRESENT: Missing 7 recommended section(s)
+    - spec.md: Problem Statement
+    - spec.md: Requirements
+    - plan.md: Technical Context
+    - plan.md: Architecture
+    - plan.md: Implementation
+    - checklist.md: Verification Protocol
+    - checklist.md: Code Quality
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+⚠ EVIDENCE_CITED: Found 5 completed item(s) without evidence
+    - P0:7: The save handler injects a real Tier3 classifie...
+    - P0:8: Tier3 calls are fail-open: timeout, null, or in...
+    - P0:9: Natural-routing tests prove Tier3 can run witho...
+    - P1:11: The adapter reuses the OpenAI-compatible env an...
+    - P1:12: Router tests cover cache reuse, timeout handlin...
+✗ ANCHORS_VALID: ANCHOR tags missing in 5 major spec document(s); 28 required anchor(s) missing
+    - spec.md: No ANCHOR tags found (required for structured retrieval)
+    - plan.md: No ANCHOR tags found (required for structured retrieval)
+    - tasks.md: No ANCHOR tags found (required for structured retrieval)
+    - checklist.md: No ANCHOR tags found (required for structured retrieval)
+    - decision-record.md: No ANCHOR tags found (required for structured retrieval)
+    - spec.md: Missing required anchor 'metadata'
+    - spec.md: Missing required anchor 'problem'
+    - spec.md: Missing required anchor 'scope'
+    - spec.md: Missing required anchor 'requirements'
+    - spec.md: Missing required anchor 'success-criteria'
+    - spec.md: Missing required anchor 'risks'
+    - spec.md: Missing required anchor 'questions'
+    - plan.md: Missing required anchor 'summary'
+    - plan.md: Missing required anchor 'quality-gates'
+    - plan.md: Missing required anchor 'architecture'
+    - plan.md: Missing required anchor 'phases'
+    - plan.md: Missing required anchor 'testing'
+    - plan.md: Missing required anchor 'dependencies'
+    - plan.md: Missing required anchor 'rollback'
+    - tasks.md: Missing required anchor 'notation'
+    - tasks.md: Missing required anchor 'phase-1'
+    - tasks.md: Missing required anchor 'phase-2'
+    - tasks.md: Missing required anchor 'phase-3'
+    - tasks.md: Missing required anchor 'completion'
+    - tasks.md: Missing required anchor 'cross-refs'
+    - checklist.md: Missing required anchor 'protocol'
+    - checklist.md: Missing required anchor 'pre-impl'
+    - checklist.md: Missing required anchor 'code-quality'
+    - checklist.md: Missing required anchor 'testing'
+    - checklist.md: Missing required anchor 'security'
+    - checklist.md: Missing required anchor 'docs'
+    - checklist.md: Missing required anchor 'file-org'
+    - checklist.md: Missing required anchor 'summary'
+⚠ FRONTMATTER_MEMORY_BLOCK: 5 frontmatter_memory_block issue(s) found
+    - SPECDOC_FRONTMATTER_002: spec.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: plan.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: tasks.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: checklist.md: missing _memory block
+    - SPECDOC_FRONTMATTER_002: decision-record.md: missing _memory block
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+⚠ COMPLEXITY_MATCH: Content metrics may not match declared Level 2
+    - Phases (0) below minimum (2) for Level 2
+✓ FOLDER_NAMING: Folder name '003-wire-tier3-llm-classifier' follows naming convention
+✗ FRONTMATTER_VALID: Found 25 frontmatter issue(s)
+    - spec.md: Empty required frontmatter field: description
+    - spec.md: Empty required frontmatter field: importance_tier
+    - spec.md: Empty required frontmatter field: contextType
+    - spec.md: Empty required frontmatter field: trigger_phrases
+    - spec.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - plan.md: Empty required frontmatter field: description
+    - plan.md: Empty required frontmatter field: importance_tier
+    - plan.md: Empty required frontmatter field: contextType
+    - plan.md: Empty required frontmatter field: trigger_phrases
+    - plan.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - tasks.md: Empty required frontmatter field: description
+    - tasks.md: Empty required frontmatter field: importance_tier
+    - tasks.md: Empty required frontmatter field: contextType
+    - tasks.md: Empty required frontmatter field: trigger_phrases
+    - tasks.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - checklist.md: Empty required frontmatter field: description
+    - checklist.md: Empty required frontmatter field: importance_tier
+    - checklist.md: Empty required frontmatter field: contextType
+    - checklist.md: Empty required frontmatter field: trigger_phrases
+    - checklist.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+    - decision-record.md: Empty required frontmatter field: description
+    - decision-record.md: Empty required frontmatter field: importance_tier
+    - decision-record.md: Empty required frontmatter field: contextType
+    - decision-record.md: Empty required frontmatter field: trigger_phrases
+    - decision-record.md: Missing SPECKIT_TEMPLATE_SOURCE marker (may not be from template)
+⚠ LEVEL_MATCH: Level consistency warnings
+    - checklist.md does not declare a level (expected Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+⚠ SECTION_COUNTS: Section counts below expectations for Level 2
+    - spec.md has 3 sections, expected at least 7 for Level 2
+    - plan.md has 4 sections, expected at least 6 for Level 2
+    - Found 0 requirements, expected at least 5 for Level 2
+    - Found 0 acceptance scenarios, expected at least 4 for Level 2
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✗ TEMPLATE_SOURCE: Template source header missing in 5 file(s)
+    - spec.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+    - plan.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+    - tasks.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+    - checklist.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+    - decision-record.md: Missing <!-- SPECKIT_TEMPLATE_SOURCE: ... --> header
+✗ TEMPLATE_HEADERS: 28 structural template deviation(s) found in 6 file(s)
+    - spec.md: Missing required section header matching '1. METADATA'
+    - spec.md: Missing required section header matching '2. PROBLEM & PURPOSE'
+    - spec.md: Missing required section header matching '4. REQUIREMENTS'
+    - spec.md: Missing required section header matching '5. SUCCESS CRITERIA'
+    - spec.md: Missing required section header matching '6. RISKS & DEPENDENCIES'
+    - spec.md: Missing required section header matching '10. OPEN QUESTIONS'
+    - plan.md: Missing required section header matching '1. SUMMARY'
+    - plan.md: Missing required section header matching '2. QUALITY GATES'
+    - plan.md: Missing required section header matching '3. ARCHITECTURE'
+    - plan.md: Missing required section header matching '4. IMPLEMENTATION PHASES'
+    - plan.md: Missing required section header matching '5. TESTING STRATEGY'
+    - plan.md: Missing required section header matching '6. DEPENDENCIES'
+    - plan.md: Missing required section header matching '7. ROLLBACK PLAN'
+    - tasks.md: Missing required section header matching 'Task Notation'
+    - tasks.md: Missing required section header matching 'Phase 1: Setup'
+    - tasks.md: Missing required section header matching 'Phase 2: Implementation'
+    - tasks.md: Missing required section header matching 'Phase 3: Verification'
+    - tasks.md: Missing required section header matching 'Completion Criteria'
+    - tasks.md: Missing required section header matching 'Cross-References'
+    - checklist.md: Missing required section header matching 'Verification Protocol'
+    - checklist.md: Missing required section header matching 'Pre-Implementation'
+    - checklist.md: Missing required section header matching 'Code Quality'
+    - checklist.md: Missing required section header matching 'Testing'
+    - checklist.md: Missing required section header matching 'Security'
+    - checklist.md: Missing required section header matching 'Documentation'
+    - checklist.md: Missing required section header matching 'File Organization'
+    - checklist.md: Missing required section header matching 'Verification Summary'
+    - checklist.md: H1 should start with '# Verification Checklist:' (found: '# Verification Checklist')
+    - spec.md: Extra custom section header '## Key Files' does not exist in the active template
+    - spec.md: Extra custom section header '## Out of Scope' does not exist in the active template
+    - plan.md: Extra custom section header '## Approach' does not exist in the active template
+    - plan.md: Extra custom section header '## Steps' does not exist in the active template
+    - plan.md: Extra custom section header '## Verification' does not exist in the active template
+    - plan.md: Extra custom section header '## Risks' does not exist in the active template
+    - tasks.md: Extra custom section header '## Verification' does not exist in the active template
+    - checklist.md: Extra custom section header '## P0 (Blocking)' does not exist in the active template
+    - checklist.md: Extra custom section header '## P1 (Should Fix)' does not exist in the active template
+    - checklist.md: Extra custom section header '## P2 (Advisory)' does not exist in the active template
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is present for the refreshed graph metadata
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier/[0-9][0-9][0-9]-*'
+
+  Phase: 004-doc-surface-alignment
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+✓ SECTIONS_PRESENT: All required sections found
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+✓ EVIDENCE_CITED: All completed P0/P1 items have evidence
+✓ ANCHORS_VALID: All anchor pairs valid in 5 file(s)
+✓ FRONTMATTER_MEMORY_BLOCK: All spec-doc frontmatter memory blocks are structurally valid
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✓ SPEC_DOC_SUFFICIENCY: All targeted spec-doc anchors meet the sufficiency baseline
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 2; phases=3, tasks=14, stories=0, scenarios=4)
+✓ FOLDER_NAMING: Folder name '004-doc-surface-alignment' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+✓ LEVEL_MATCH: Level consistent across all files (Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 2
+✗ SPEC_DOC_INTEGRITY: 4 spec documentation integrity issue(s) found
+    - checklist.md references missing markdown file: .opencode/agent/speckit.md
+    - checklist.md references missing markdown file: .opencode/agent/speckit.md
+    - implementation-summary.md references missing markdown file: .opencode/agent/speckit.md
+    - tasks.md references missing markdown file: .opencode/agent/speckit.md
+✓ TEMPLATE_SOURCE: Template source headers present in all 5 spec files
+✓ TEMPLATE_HEADERS: All template headers match in 5 file(s)
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is present for the refreshed graph metadata
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment/[0-9][0-9][0-9]-*'
+
+  Phase: 005-task-update-merge-safety
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+⚠ SECTIONS_PRESENT: Missing 3 recommended section(s)
+    - spec.md: Problem Statement
+    - plan.md: Technical Context
+    - checklist.md: Verification Protocol
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+✓ EVIDENCE_CITED: All completed P0/P1 items have evidence
+✓ ANCHORS_VALID: All anchor pairs valid in 5 file(s)
+✓ FRONTMATTER_MEMORY_BLOCK: All spec-doc frontmatter memory blocks are structurally valid
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✗ SPEC_DOC_SUFFICIENCY: 23 spec_doc_sufficiency issue(s) found
+    - SPECDOC_SUFFICIENCY_001: spec.md: anchor parse failure: line 18: unclosed anchor 'metadata'
+    - SPECDOC_SUFFICIENCY_001: spec.md: anchor parse failure: line 19: unclosed anchor 'problem'
+    - SPECDOC_SUFFICIENCY_001: spec.md: anchor parse failure: line 20: unclosed anchor 'scope'
+    - SPECDOC_SUFFICIENCY_001: spec.md: anchor parse failure: line 35: unclosed anchor 'risks'
+    - SPECDOC_SUFFICIENCY_001: spec.md: anchor parse failure: line 36: unclosed anchor 'questions'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 15: unclosed anchor 'summary'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 16: unclosed anchor 'quality-gates'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 17: unclosed anchor 'architecture'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 18: unclosed anchor 'phases'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 23: unclosed anchor 'testing'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 24: unclosed anchor 'dependencies'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 25: unclosed anchor 'rollback'
+    - SPECDOC_SUFFICIENCY_001: tasks.md: anchor parse failure: line 14: unclosed anchor 'notation'
+    - SPECDOC_SUFFICIENCY_001: tasks.md: anchor parse failure: line 28: unclosed anchor 'completion'
+    - SPECDOC_SUFFICIENCY_001: tasks.md: anchor parse failure: line 29: unclosed anchor 'cross-refs'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 14: unclosed anchor 'protocol'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 15: unclosed anchor 'pre-impl'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 16: unclosed anchor 'code-quality'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 17: unclosed anchor 'testing'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 18: unclosed anchor 'security'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 19: unclosed anchor 'docs'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 20: unclosed anchor 'file-org'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 21: unclosed anchor 'summary'
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 2; phases=2, tasks=7, stories=0, scenarios=4)
+✓ FOLDER_NAMING: Folder name '005-task-update-merge-safety' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+⚠ LEVEL_MATCH: Level consistency warnings
+    - checklist.md does not declare a level (expected Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 2
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 5 spec files
+✗ TEMPLATE_HEADERS: 29 structural template deviation(s) found in 5 file(s)
+    - spec.md: Missing required section header matching '1. METADATA'
+    - spec.md: Missing required section header matching '2. PROBLEM & PURPOSE'
+    - spec.md: Missing required section header matching '3. SCOPE'
+    - spec.md: Missing required section header matching '4. REQUIREMENTS'
+    - spec.md: Missing required section header matching '5. SUCCESS CRITERIA'
+    - spec.md: Missing required section header matching '6. RISKS & DEPENDENCIES'
+    - spec.md: Missing required section header matching '10. OPEN QUESTIONS'
+    - plan.md: Missing required section header matching '1. SUMMARY'
+    - plan.md: Missing required section header matching '2. QUALITY GATES'
+    - plan.md: Missing required section header matching '3. ARCHITECTURE'
+    - plan.md: Missing required section header matching '4. IMPLEMENTATION PHASES'
+    - plan.md: Missing required section header matching '5. TESTING STRATEGY'
+    - plan.md: Missing required section header matching '6. DEPENDENCIES'
+    - plan.md: Missing required section header matching '7. ROLLBACK PLAN'
+    - tasks.md: Missing required section header matching 'Task Notation'
+    - tasks.md: Missing required section header matching 'Phase 1: Setup'
+    - tasks.md: Missing required section header matching 'Phase 2: Implementation'
+    - tasks.md: Missing required section header matching 'Phase 3: Verification'
+    - tasks.md: Missing required section header matching 'Completion Criteria'
+    - tasks.md: Missing required section header matching 'Cross-References'
+    - checklist.md: Missing required section header matching 'Verification Protocol'
+    - checklist.md: Missing required section header matching 'Pre-Implementation'
+    - checklist.md: Missing required section header matching 'Code Quality'
+    - checklist.md: Missing required section header matching 'Testing'
+    - checklist.md: Missing required section header matching 'Security'
+    - checklist.md: Missing required section header matching 'Documentation'
+    - checklist.md: Missing required section header matching 'File Organization'
+    - checklist.md: Missing required section header matching 'Verification Summary'
+    - checklist.md: H1 should start with '# Verification Checklist:' (found: '# Verification Checklist')
+    - spec.md: Extra custom section header '## Metadata <!-- ANCHOR:metadata -->Parent `002-content-routing-accuracy`; Level 2; status complete; created 2026-04-13.<!-- /ANCHOR:metadata -->' does not exist in the active template
+    - spec.md: Extra custom section header '## Problem <!-- ANCHOR:problem -->`task_update` routing can still risk ambiguous checklist matching, and the failure path is not explicit enough for operators.<!-- /ANCHOR:problem -->' does not exist in the active template
+    - spec.md: Extra custom section header '## Scope <!-- ANCHOR:scope -->In scope: exact structured-line validation and loud user-facing rejections in `anchor-merge-operation.ts` and `memory-save.ts`. Out of scope: non-`task_update` merge modes and Tier 3 classifier redesign.<!-- /ANCHOR:scope -->' does not exist in the active template
+    - spec.md: Extra custom section header '## Requirements <!-- ANCHOR:requirements -->' does not exist in the active template
+    - spec.md: Extra custom section header '## Success Criteria <!-- ANCHOR:success-criteria -->' does not exist in the active template
+    - spec.md: Extra custom section header '## Risks <!-- ANCHOR:risks -->A loose regex or post-mutation check would preserve the ambiguity bug, and unclear rejection text would leave operators guessing how to repair the input.<!-- /ANCHOR:risks -->' does not exist in the active template
+    - spec.md: Extra custom section header '## Questions <!-- ANCHOR:questions -->No open questions remain. The shipped guard lives at the merge/save seam and is covered by the focused merge plus handler tests cited in the implementation summary.<!-- /ANCHOR:questions -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Summary <!-- ANCHOR:summary -->Add an exact-match guard for `task_update` before canonical writes reach the merge transform.<!-- /ANCHOR:summary -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Quality Gates <!-- ANCHOR:quality-gates -->The phase only closes if no ambiguous task update can mutate a document and the refusal message is explicit.<!-- /ANCHOR:quality-gates -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Architecture <!-- ANCHOR:architecture -->Keep the fix local to the save/merge seam by resolving eligible structured lines before `update-in-place` mutates content.<!-- /ANCHOR:architecture -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Phases <!-- ANCHOR:phases -->This plan separates guard implementation from error-surfacing and regression coverage.<!-- /ANCHOR:phases -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Phase 1' does not exist in the active template
+    - plan.md: Extra custom section header '## Phase 2' does not exist in the active template
+    - plan.md: Extra custom section header '## Testing <!-- ANCHOR:testing -->Run `npx tsc --noEmit` plus `npx vitest run tests/handler-memory-save.vitest.ts tests/anchor-merge-operation.vitest.ts`.<!-- /ANCHOR:testing -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Dependencies <!-- ANCHOR:dependencies -->Depends on current `targetId` extraction, structured-line matching, and targeted Vitest coverage for save and merge behavior.<!-- /ANCHOR:dependencies -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Rollback <!-- ANCHOR:rollback -->If the guard causes false refusals, revert the helper and surfaced error path together to restore the prior save behavior.<!-- /ANCHOR:rollback -->' does not exist in the active template
+    - tasks.md: Extra custom section header '## Notation <!-- ANCHOR:notation -->`[ ]` pending, `[x]` complete, `T-V*` verification-only.<!-- /ANCHOR:notation -->' does not exist in the active template
+    - tasks.md: Extra custom section header '## Phase 1 <!-- ANCHOR:phase-1 -->' does not exist in the active template
+    - tasks.md: Extra custom section header '## Phase 2 <!-- ANCHOR:phase-2 -->' does not exist in the active template
+    - tasks.md: Extra custom section header '## Phase 3 <!-- ANCHOR:phase-3 -->' does not exist in the active template
+    - tasks.md: Extra custom section header '## Completion <!-- ANCHOR:completion -->Close when ambiguous `task_update` writes fail before mutation and the message is operator-readable.<!-- /ANCHOR:completion -->' does not exist in the active template
+    - tasks.md: Extra custom section header '## Cross-Refs <!-- ANCHOR:cross-refs -->See `spec.md` for safety requirements and `plan.md` for the two-phase implementation order.<!-- /ANCHOR:cross-refs -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Protocol <!-- ANCHOR:protocol -->Prioritize pre-mutation safety, explicit rejection messaging, and targeted regression coverage.<!-- /ANCHOR:protocol -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Pre-Impl <!-- ANCHOR:pre-impl -->- [x] Confirm the current save path extracts `targetId` before merge execution.<!-- /ANCHOR:pre-impl -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Code Quality <!-- ANCHOR:code-quality -->- [x] Keep the guard limited to `task_update` and structured checklist/task lines.<!-- /ANCHOR:code-quality -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Testing <!-- ANCHOR:testing -->- [x] `npx tsc --noEmit` plus `npx vitest run tests/anchor-merge-operation.vitest.ts` and `npx vitest run tests/handler-memory-save.vitest.ts -t "task updates"` pass.<!-- /ANCHOR:testing -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Security <!-- ANCHOR:security -->- [x] Rejected task updates never mutate packet docs before the error returns.<!-- /ANCHOR:security -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Docs <!-- ANCHOR:docs -->- [x] The refusal message tells the operator whether the match was missing or ambiguous.<!-- /ANCHOR:docs -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## File Org <!-- ANCHOR:file-org -->- [x] Changes stay within the save/merge runtime and focused tests named in `spec.md`.<!-- /ANCHOR:file-org -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Summary <!-- ANCHOR:summary -->- [x] Closure evidence proves the single-match success path and both refusal paths.<!-- /ANCHOR:summary -->' does not exist in the active template
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is present for the refreshed graph metadata
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/[0-9][0-9][0-9]-*'
+
+  Phase: 006-tier3-prompt-enrichment
+✓ FILE_EXISTS: All required files present for Level 2
+✓ PLACEHOLDER_FILLED: No unfilled placeholders found
+⚠ SECTIONS_PRESENT: Missing 4 recommended section(s)
+    - spec.md: Problem Statement
+    - plan.md: Technical Context
+    - plan.md: Implementation
+    - checklist.md: Verification Protocol
+✓ LEVEL_DECLARED: Level 2 explicitly declared
+✓ PRIORITY_TAGS: All checklist items have priority context
+✓ EVIDENCE_CITED: All completed P0/P1 items have evidence
+✓ ANCHORS_VALID: All anchor pairs valid in 5 file(s)
+✓ FRONTMATTER_MEMORY_BLOCK: All spec-doc frontmatter memory blocks are structurally valid
+✓ MERGE_LEGALITY: No merge plan supplied; legality check skipped
+✗ SPEC_DOC_SUFFICIENCY: 23 spec_doc_sufficiency issue(s) found
+    - SPECDOC_SUFFICIENCY_001: spec.md: anchor parse failure: line 18: unclosed anchor 'metadata'
+    - SPECDOC_SUFFICIENCY_001: spec.md: anchor parse failure: line 19: unclosed anchor 'problem'
+    - SPECDOC_SUFFICIENCY_001: spec.md: anchor parse failure: line 20: unclosed anchor 'scope'
+    - SPECDOC_SUFFICIENCY_001: spec.md: anchor parse failure: line 35: unclosed anchor 'risks'
+    - SPECDOC_SUFFICIENCY_001: spec.md: anchor parse failure: line 36: unclosed anchor 'questions'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 15: unclosed anchor 'summary'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 16: unclosed anchor 'quality-gates'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 17: unclosed anchor 'architecture'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 18: unclosed anchor 'phases'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 23: unclosed anchor 'testing'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 24: unclosed anchor 'dependencies'
+    - SPECDOC_SUFFICIENCY_001: plan.md: anchor parse failure: line 25: unclosed anchor 'rollback'
+    - SPECDOC_SUFFICIENCY_001: tasks.md: anchor parse failure: line 14: unclosed anchor 'notation'
+    - SPECDOC_SUFFICIENCY_001: tasks.md: anchor parse failure: line 28: unclosed anchor 'completion'
+    - SPECDOC_SUFFICIENCY_001: tasks.md: anchor parse failure: line 29: unclosed anchor 'cross-refs'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 14: unclosed anchor 'protocol'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 15: unclosed anchor 'pre-impl'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 16: unclosed anchor 'code-quality'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 17: unclosed anchor 'testing'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 18: unclosed anchor 'security'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 19: unclosed anchor 'docs'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 20: unclosed anchor 'file-org'
+    - SPECDOC_SUFFICIENCY_001: checklist.md: anchor parse failure: line 21: unclosed anchor 'summary'
+✓ CROSS_ANCHOR_CONTAMINATION: No routing payload supplied; contamination check skipped
+✓ POST_SAVE_FINGERPRINT: No post-save payload supplied; fingerprint check skipped
+✓ TOC_POLICY: TOC policy passed: no TOC headings in non-research spec documents
+✓ PHASE_LINKS: No phase folders detected (non-phased spec)
+✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 2; phases=2, tasks=7, stories=0, scenarios=4)
+✓ FOLDER_NAMING: Folder name '006-tier3-prompt-enrichment' follows naming convention
+✓ FRONTMATTER_VALID: Frontmatter validation passed
+⚠ LEVEL_MATCH: Level consistency warnings
+    - checklist.md does not declare a level (expected Level 2)
+✓ GRAPH_METADATA_PRESENT: graph-metadata.json is present and passes the rollout shape check
+✓ NORMALIZER_LINT: No local normalizeScope*/getOptionalString declarations found outside allowed files
+✓ LINKS_VALID: Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)
+✓ SECTION_COUNTS: Section counts appropriate for Level 2
+✓ SPEC_DOC_INTEGRITY: Spec doc references, metadata, and handover targets resolve cleanly
+✓ TEMPLATE_SOURCE: Template source headers present in all 5 spec files
+✗ TEMPLATE_HEADERS: 29 structural template deviation(s) found in 5 file(s)
+    - spec.md: Missing required section header matching '1. METADATA'
+    - spec.md: Missing required section header matching '2. PROBLEM & PURPOSE'
+    - spec.md: Missing required section header matching '3. SCOPE'
+    - spec.md: Missing required section header matching '4. REQUIREMENTS'
+    - spec.md: Missing required section header matching '5. SUCCESS CRITERIA'
+    - spec.md: Missing required section header matching '6. RISKS & DEPENDENCIES'
+    - spec.md: Missing required section header matching '10. OPEN QUESTIONS'
+    - plan.md: Missing required section header matching '1. SUMMARY'
+    - plan.md: Missing required section header matching '2. QUALITY GATES'
+    - plan.md: Missing required section header matching '3. ARCHITECTURE'
+    - plan.md: Missing required section header matching '4. IMPLEMENTATION PHASES'
+    - plan.md: Missing required section header matching '5. TESTING STRATEGY'
+    - plan.md: Missing required section header matching '6. DEPENDENCIES'
+    - plan.md: Missing required section header matching '7. ROLLBACK PLAN'
+    - tasks.md: Missing required section header matching 'Task Notation'
+    - tasks.md: Missing required section header matching 'Phase 1: Setup'
+    - tasks.md: Missing required section header matching 'Phase 2: Implementation'
+    - tasks.md: Missing required section header matching 'Phase 3: Verification'
+    - tasks.md: Missing required section header matching 'Completion Criteria'
+    - tasks.md: Missing required section header matching 'Cross-References'
+    - checklist.md: Missing required section header matching 'Verification Protocol'
+    - checklist.md: Missing required section header matching 'Pre-Implementation'
+    - checklist.md: Missing required section header matching 'Code Quality'
+    - checklist.md: Missing required section header matching 'Testing'
+    - checklist.md: Missing required section header matching 'Security'
+    - checklist.md: Missing required section header matching 'Documentation'
+    - checklist.md: Missing required section header matching 'File Organization'
+    - checklist.md: Missing required section header matching 'Verification Summary'
+    - checklist.md: H1 should start with '# Verification Checklist:' (found: '# Verification Checklist')
+    - spec.md: Extra custom section header '## Metadata <!-- ANCHOR:metadata -->Parent `002-content-routing-accuracy`; Level 2; status complete; created 2026-04-13.<!-- /ANCHOR:metadata -->' does not exist in the active template
+    - spec.md: Extra custom section header '## Problem <!-- ANCHOR:problem -->The Tier 3 classifier prompt lists categories and merge rules, but it does not currently explain the continuity model that resume routing follows.<!-- /ANCHOR:problem -->' does not exist in the active template
+    - spec.md: Extra custom section header '## Scope <!-- ANCHOR:scope -->In scope: one continuity-model paragraph in `mcp_server/lib/routing/content-router.ts` plus prompt-shape coverage. Out of scope: K-sweep evaluation, new categories, or Tier 3 wiring changes.<!-- /ANCHOR:scope -->' does not exist in the active template
+    - spec.md: Extra custom section header '## Requirements <!-- ANCHOR:requirements -->' does not exist in the active template
+    - spec.md: Extra custom section header '## Success Criteria <!-- ANCHOR:success-criteria -->' does not exist in the active template
+    - spec.md: Extra custom section header '## Risks <!-- ANCHOR:risks -->The new paragraph could accidentally contradict existing routing language or reintroduce older `_memory.continuity` targeting phrasing.<!-- /ANCHOR:risks -->' does not exist in the active template
+    - spec.md: Extra custom section header '## Questions <!-- ANCHOR:questions -->No open questions remain. The continuity paragraph is now guarded by the existing focused router prompt-shape coverage.<!-- /ANCHOR:questions -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Summary <!-- ANCHOR:summary -->Enrich `buildTier3Prompt()` with a short continuity-model paragraph and verify the prompt shape directly.<!-- /ANCHOR:summary -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Quality Gates <!-- ANCHOR:quality-gates -->The phase only closes if the paragraph lands without altering category count, refusal guidance, or merge-mode guidance.<!-- /ANCHOR:quality-gates -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Architecture <!-- ANCHOR:architecture -->Keep the change inside the Tier 3 prompt text so classifier behavior shifts only through better context, not runtime rewiring.<!-- /ANCHOR:architecture -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Phases <!-- ANCHOR:phases -->This plan separates prompt text changes from verification updates.<!-- /ANCHOR:phases -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Phase 1' does not exist in the active template
+    - plan.md: Extra custom section header '## Phase 2' does not exist in the active template
+    - plan.md: Extra custom section header '## Testing <!-- ANCHOR:testing -->Run `npx tsc --noEmit` and `npx vitest run tests/content-router.vitest.ts` from `.opencode/skill/system-spec-kit/mcp_server`.<!-- /ANCHOR:testing -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Dependencies <!-- ANCHOR:dependencies -->Depends on the current prompt contract in `content-router.ts` and focused router test coverage in the mcp server package.<!-- /ANCHOR:dependencies -->' does not exist in the active template
+    - plan.md: Extra custom section header '## Rollback <!-- ANCHOR:rollback -->If the prompt wording causes confusion or test churn, revert the paragraph and its assertions together.<!-- /ANCHOR:rollback -->' does not exist in the active template
+    - tasks.md: Extra custom section header '## Notation <!-- ANCHOR:notation -->`[ ]` pending, `[x]` complete, `T-V*` verification-only.<!-- /ANCHOR:notation -->' does not exist in the active template
+    - tasks.md: Extra custom section header '## Phase 1 <!-- ANCHOR:phase-1 -->' does not exist in the active template
+    - tasks.md: Extra custom section header '## Phase 2 <!-- ANCHOR:phase-2 -->' does not exist in the active template
+    - tasks.md: Extra custom section header '## Phase 3 <!-- ANCHOR:phase-3 -->' does not exist in the active template
+    - tasks.md: Extra custom section header '## Completion <!-- ANCHOR:completion -->Close when the continuity paragraph is asserted by tests and the 8-category contract is unchanged.<!-- /ANCHOR:completion -->' does not exist in the active template
+    - tasks.md: Extra custom section header '## Cross-Refs <!-- ANCHOR:cross-refs -->See `spec.md` for the prompt contract and `plan.md` for the two-phase rollout.<!-- /ANCHOR:cross-refs -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Protocol <!-- ANCHOR:protocol -->Treat prompt-contract parity and targeted router tests as the blocking closure signals.<!-- /ANCHOR:protocol -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Pre-Impl <!-- ANCHOR:pre-impl -->- [x] Confirm the current Tier 3 prompt already exposes the 8-category contract before editing it.<!-- /ANCHOR:pre-impl -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Code Quality <!-- ANCHOR:code-quality -->- [x] Keep the change to one continuity paragraph and its test assertions.<!-- /ANCHOR:code-quality -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Testing <!-- ANCHOR:testing -->- [x] `npx tsc --noEmit` and `npx vitest run tests/content-router.vitest.ts` pass.<!-- /ANCHOR:testing -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Security <!-- ANCHOR:security -->- [x] The prompt does not introduce secrets, endpoints, or model-contract drift.<!-- /ANCHOR:security -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Docs <!-- ANCHOR:docs -->- [x] The new paragraph names the resume ladder, `implementation-summary.md`, and the `metadata_only` target rule.<!-- /ANCHOR:docs -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## File Org <!-- ANCHOR:file-org -->- [x] Runtime and test edits stay within the prompt file and focused router tests.<!-- /ANCHOR:file-org -->' does not exist in the active template
+    - checklist.md: Extra custom section header '## Summary <!-- ANCHOR:summary -->- [x] Closure evidence proves the paragraph landed without changing the 8-category router contract.<!-- /ANCHOR:summary -->' does not exist in the active template
+✓ CANONICAL_SAVE_ROOT_SPEC_REQUIRED: Canonical-save root-spec check not applicable to this folder
+✓ CANONICAL_SAVE_SOURCE_DOCS_REQUIRED: Canonical-save source-doc check not applicable to this folder
+✓ CANONICAL_SAVE_LINEAGE_REQUIRED: save_lineage is present for the refreshed graph metadata
+✓ CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED: Packet identity is normalized across continuity, description, and graph surfaces
+✓ CONTINUITY_FRESHNESS: Continuity freshness skipped: implementation-summary.md missing
+✗ EVIDENCE_MARKER_LINT: Evidence marker lint validator failed to execute
+    - ENOENT: no such file or directory, scandir '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment/[0-9][0-9][0-9]-*'
+
+  Phase Summary: 6 phases, 23 errors, 22 warnings
+
+───────────────────────────────────────────────────────────────
+
+
+  Summary: Errors: 30  Warnings: 29
+
+  RESULT: FAILED
+
+___BEGIN___COMMAND_DONE_MARKER___2

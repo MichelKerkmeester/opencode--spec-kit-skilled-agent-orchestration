@@ -1,0 +1,183 @@
+{
+  "generatedAt": "2026-04-19T21:14:58Z",
+  "target": "skill-advisor-phase-stack",
+  "verdict": "PASS",
+  "hasAdvisories": true,
+  "totals": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 2,
+    "iterations": 40
+  },
+  "byDimension": {
+    "D1": {
+      "P0": [],
+      "P1": [
+        "DR-P1-001"
+      ],
+      "P2": []
+    },
+    "D2": {
+      "P0": [],
+      "P1": [
+        "DR-P1-002"
+      ],
+      "P2": []
+    },
+    "D3": {
+      "P0": [],
+      "P1": [
+        "DR-P1-003"
+      ],
+      "P2": []
+    },
+    "D4": {
+      "P0": [],
+      "P1": [],
+      "P2": [
+        "DR-P2-001"
+      ]
+    },
+    "D5": {
+      "P0": [],
+      "P1": [
+        "DR-P1-004"
+      ],
+      "P2": []
+    },
+    "D6": {
+      "P0": [],
+      "P1": [],
+      "P2": [
+        "DR-P2-002"
+      ]
+    },
+    "D7": {
+      "P0": [],
+      "P1": [
+        "DR-P1-005"
+      ],
+      "P2": []
+    }
+  },
+  "findings": [
+    {
+      "id": "DR-P1-001",
+      "severity": "P1",
+      "dimension": "D1",
+      "iteration": 1,
+      "headline": "Prompt-boundary hardening is incomplete",
+      "evidence": [
+        "Consolidates raw findings P1-001-01, P1-008-01, P1-022-01, and P1-029-01 from iterations 001, 008, 022, 029, and 036.",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/subprocess.ts:136 spawns the advisor with stdin ignored, while subprocess.ts:231 passes the canonical prompt as argv.",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/skill-advisor-brief.ts:189-205 copies producer brief and top.skill into shared payload metadata.",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts:203-205 promises a sanitized skillLabel, but shared-payload.ts:490-503 rejects only empty/control-character labels.",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/render.ts:50-65 has the stronger instruction-label sanitizer used by model-visible rendering."
+      ],
+      "impact": "Prompts containing sensitive data can be transiently exposed through process arguments, and instruction-shaped labels can cross shared-payload or diagnostic surfaces even when the renderer blocks them from final hook text.",
+      "remediation": "Move prompt input to stdin or a temp file descriptor, keep argv prompt-free, centralize skill-label sanitization before shared-payload and diagnostic emission, and add regression tests for prompt-safe spawn args plus single-line instruction-shaped labels.",
+      "status": "open"
+    },
+    {
+      "id": "DR-P1-002",
+      "severity": "P1",
+      "dimension": "D2",
+      "iteration": 2,
+      "headline": "Advisor renderer/cache contract can return stale or wrong metadata",
+      "evidence": [
+        "Consolidates raw findings P1-002-01, P1-009-01, P1-023-01, and related coverage finding P2-006-02 from iterations 002, 006, 009, 016, 023, 030, and 037.",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/skill-advisor-brief.ts:401 raises tokenCap for ambiguity, while render.ts:123 only emits ambiguous output when tokenCap exceeds the default.",
+        "Runtime hooks call renderAdvisorBrief(result) without the producer token-cap context in Claude, Gemini, Copilot, and Codex hook files.",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/skill-advisor-brief.ts:354-359 builds the prompt-cache key without maxTokens, and skill-advisor-brief.ts:360-373 returns cached values with only top-level metrics/generatedAt updated.",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts:856-858 makes provenance.generatedAt part of the envelope contract."
+      ],
+      "impact": "Ambiguous recommendations can appear as confident single-skill advice, different token-cap calls can reuse incompatible cached briefs, and cache hits can advertise fresh top-level timestamps while retaining stale shared-payload provenance.",
+      "remediation": "Make one renderer authoritative or pass producer tokenCap to every hook, include normalized maxTokens in the cache key, rebuild or restamp shared payload provenance on cache hits, and add cross-runtime ambiguity/cache-hit regression tests.",
+      "status": "open"
+    },
+    {
+      "id": "DR-P1-003",
+      "severity": "P1",
+      "dimension": "D3",
+      "iteration": 3,
+      "headline": "Live-session telemetry is not yet session-accurate",
+      "evidence": [
+        "Consolidates raw findings P1-003-01, P1-010-01, P1-017-01, P1-024-01, P1-031-01, and P1-038-01 from iterations 003, 010, 017, 024, 031, and 038.",
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement.ts:597-631 writes static measurement compliance records to the same default telemetry stream used by the live analyzer.",
+        ".opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:76-95 derives observed skill/resource identities, but live-session-wrapper.ts:146-153 emits only selectedSkill and a bare resource path.",
+        ".opencode/skill/system-spec-kit/scripts/observability/live-session-wrapper.ts:98-154 keeps one active session and records one event per Read callback.",
+        ".opencode/skill/system-spec-kit/scripts/observability/smart-router-telemetry.ts:160-179 and smart-router-analyze.ts:125-147 classify and aggregate raw records instead of prompt-level sessions."
+      ],
+      "impact": "Compliance rates can miss no-read under-load sessions, overcount multi-read prompts, misattribute overlapping prompts, under-report cross-skill overload, over-report baseline SKILL.md reads, and mix synthetic corpus runs with live telemetry.",
+      "remediation": "Separate static and live telemetry defaults, add a prompt finalization/flush API, preserve skill-qualified actual reads, key wrapper state by prompt/session, collapse analyzer scoring by promptId, and include baseline SKILL.md handling in the route model.",
+      "status": "open"
+    },
+    {
+      "id": "DR-P1-004",
+      "severity": "P1",
+      "dimension": "D5",
+      "iteration": 5,
+      "headline": "OpenCode plugin diverges from native hook guarantees",
+      "evidence": [
+        "Consolidates raw findings P1-005-01, P1-019-01, P1-033-01, and related parity advisory P2-012-01 from iterations 005, 012, 019, 026, 033, 034, and 040.",
+        ".opencode/plugins/spec-kit-skill-advisor.js:171-212 resolves timeout fail-open after SIGTERM without waiting for or escalating child exit.",
+        ".opencode/plugins/spec-kit-skill-advisor.js:18 and spec-kit-skill-advisor.js:42-43 use SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED instead of the shared hook disable flag used by native hooks.",
+        ".opencode/plugins/spec-kit-skill-advisor.js:63-83 and spec-kit-skill-advisor.js:243-265 implement a host cache keyed without source-signature invalidation.",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/advisor-runtime-parity.vitest.ts:21-27 and advisor-runtime-parity.vitest.ts:119-135 exclude the OpenCode plugin path."
+      ],
+      "impact": "The plugin can leave bridge children running after timeout, keep injecting when operators disable native hooks, serve stale briefs after source changes, and drift from native hook output without failing the canonical parity guard.",
+      "remediation": "Honor SPECKIT_SKILL_ADVISOR_HOOK_DISABLED in the plugin, wait and escalate child termination after timeout, include source signatures in host-cache invalidation, and add plugin-normalized parity tests against native hook fixtures.",
+      "status": "open"
+    },
+    {
+      "id": "DR-P1-005",
+      "severity": "P1",
+      "dimension": "D7",
+      "iteration": 7,
+      "headline": "Operator docs and playbooks contain stale or non-executable guidance",
+      "evidence": [
+        "Consolidates raw findings P1-007-01, P1-014-01, P1-021-01, P2-007-01, and P2-021-01 from iterations 007, 014, 021, and 035.",
+        ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md:89, .opencode/skill/skill-advisor/README.md:100, and the hook-routing smoke playbook publish npm run --workspace=@spec-kit/mcp-server build from repo root, but package.json:5-6 does not define that workspace and the package-local build exists under .opencode/skill/system-spec-kit/mcp_server/package.json:16.",
+        ".opencode/skill/system-spec-kit/scripts/observability/LIVE_SESSION_WRAPPER_SETUP.md:114-121 describes Copilot integration as callback-based, while catalog/playbook text collapses runtime setup into a settings-file model.",
+        ".opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md:35-53 and manual_testing_playbook.md:145-149 retain stale scenario/category counts.",
+        "Codex registration and measurement-artifact names conflict across hook reference, feature catalog, and manual testing playbook surfaces."
+      ],
+      "impact": "Operators can fail before validating hook behavior, apply the wrong Copilot integration model, use stale release-readiness denominators, or look for the wrong validation artifact.",
+      "remediation": "Replace the root workspace build command with a checkout-valid command or add the actual workspace contract, update runtime-specific registration guidance, regenerate playbook counts, align Codex status, and correct the measurement artifact name.",
+      "status": "open"
+    },
+    {
+      "id": "DR-P2-001",
+      "severity": "P2",
+      "dimension": "D4",
+      "iteration": 3,
+      "headline": "Advisor API hygiene and exported-surface documentation are uneven",
+      "evidence": [
+        "Consolidates raw findings P2-003-01, P2-004-01, P2-018-01, P2-025-01, and P2-032-01 from iterations 003, 004, 018, 025, 032, and 039.",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/prompt-cache.ts:60-84 stores unbounded prompt-cache entries and only evicts expired entries on get.",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/skill-advisor/normalize-adapter-output.ts:62-118 exposes normalizeRuntimeOutput plus normalizeAdapterOutput for the same contract while in-repo consumers use the canonical name.",
+        "Exported helper surfaces in source-cache.ts, prompt-cache.ts, generation.ts, prompt-policy.ts, subprocess.ts, skill-advisor-brief.ts, and metrics.ts lack the JSDoc/TSDoc coverage expected by the local sk-code-opencode checklist."
+      ],
+      "impact": "Runtime behavior is not blocked, but maintainers inherit a broader and less documented public surface than necessary, with cache hygiene that is harder to reason about in long-lived hosts.",
+      "remediation": "Add prompt-cache insertion sweeps and a size cap, remove or document the normalizer alias, and add concise doc comments or internal markings for exported advisor helper APIs.",
+      "status": "open"
+    },
+    {
+      "id": "DR-P2-002",
+      "severity": "P2",
+      "dimension": "D6",
+      "iteration": 6,
+      "headline": "Negative-path and artifact-writer test coverage is incomplete",
+      "evidence": [
+        "Consolidates raw findings P2-006-01, P2-013-01, P2-020-01, P2-020-02, P2-027-01, P2-027-02, and P2-034-01 from iterations 006, 013, 020, 027, and 034.",
+        "The plugin suite covers timeout and spawn error behavior but omits invalid bridge stdout, nonzero close, session-isolation, and targeted session-eviction cases.",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/advisor-subprocess.vitest.ts:57-139 omits schema-invalid JSON, non-busy nonzero exit, and exhausted SQLITE_BUSY retry budget cases.",
+        "Telemetry/analyzer tests do not cover explicit file override precedence or markdown report writing.",
+        "advisor-runtime-parity.vitest.ts:78-135 stubs buildBrief and asserts visible text only, leaving full normalized output and real hook-to-builder paths outside the canonical parity guard."
+      ],
+      "impact": "Important fail-open diagnostics, filesystem artifact paths, cache isolation, and parity integration branches can regress while focused unit suites remain green.",
+      "remediation": "Add plugin negative-path/session-cache tests, table-driven subprocess error-code tests, telemetry path-precedence and report-writer filesystem tests, and at least one end-to-end hook-to-builder parity case.",
+      "status": "open"
+    }
+  ]
+}

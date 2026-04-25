@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/001-hook-parity-remediation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/001-hook-parity-remediation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/010-hook-parity",
+  "children_ids": [],
+  "migrated": true,
+  "manual": {
+    "depends_on": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/008-skill-graph-daemon-and-advisor-unification",
+        "reason": "depends_on relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/008-skill-graph-daemon-and-advisor-unification"
+      },
+      {
+        "packet_id": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin",
+        "reason": "depends_on relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin"
+      },
+      {
+        "packet_id": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring",
+        "reason": "depends_on relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring"
+      }
+    ],
+    "supersedes": [],
+    "related_to": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface",
+        "reason": "related_to relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/008-skill-graph-daemon-and-advisor-unification",
+        "reason": "related_to relationship preserved during phase consolidation",
+        "source": "026-phase-consolidation",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/008-skill-graph-daemon-and-advisor-unification"
+      }
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "029",
+      "hook parity remediation",
+      "opencode plugin bridge",
+      "codex user-prompt-submit",
+      "codex hook policy",
+      "copilot session start wiring",
+      "session_bootstrap",
+      "pre-tool-use policy",
+      "session_resume minimal",
+      "opencodeTransport",
+      "bash_denylist alias",
+      "codex lifecycle docs"
+    ],
+    "key_topics": [
+      "hook",
+      "parity",
+      "remediation",
+      "opencode",
+      "plugin",
+      "bridge",
+      "transport",
+      "codex",
+      "advisor",
+      "copilot",
+      "session-start"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/pre-tool-use.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md",
+      ".opencode/plugins/spec-kit-compact-code-graph.js",
+      ".opencode/plugins/spec-kit-compact-code-graph-bridge.mjs",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/opencode-plugin.vitest.ts",
+      "review/remediation-summary.md",
+      ".github/hooks/superset-notify.json",
+      ".github/hooks/scripts/session-start.sh",
+      ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+      ".codex/settings.json",
+      ".codex/policy.json"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "manual"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "manual"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "manual"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "manual"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "manual"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts",
+        "source": "manual"
+      },
+      {
+        "name": "user-prompt-submit.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts",
+        "source": "manual"
+      },
+      {
+        "name": "pre-tool-use.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/pre-tool-use.ts",
+        "source": "manual"
+      },
+      {
+        "name": "codex-hook-policy.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts",
+        "source": "manual"
+      },
+      {
+        "name": "spec-kit-compact-code-graph.js",
+        "kind": "code",
+        "path": ".opencode/plugins/spec-kit-compact-code-graph.js",
+        "source": "manual"
+      },
+      {
+        "name": "spec-kit-compact-code-graph-bridge.mjs",
+        "kind": "code",
+        "path": ".opencode/plugins/spec-kit-compact-code-graph-bridge.mjs",
+        "source": "manual"
+      },
+      {
+        "name": "superset-notify.json",
+        "kind": "config",
+        "path": ".github/hooks/superset-notify.json",
+        "source": "manual"
+      },
+      {
+        "name": "session-start.sh",
+        "kind": "code",
+        "path": ".github/hooks/scripts/session-start.sh",
+        "source": "manual"
+      },
+      {
+        "name": ".codex/settings.json",
+        "kind": "config",
+        "path": ".codex/settings.json",
+        "source": "manual"
+      },
+      {
+        "name": ".codex/policy.json",
+        "kind": "config",
+        "path": ".codex/policy.json",
+        "source": "manual"
+      }
+    ],
+    "causal_summary": "Phase 029 remediates hook findings across Codex, Copilot, and OpenCode runtime hook surfaces. Current 2026-04-21 P1 remediation closes strict validation, task evidence, session_bootstrap startup truth-sync, OpenCode plugin diagnostics, and continuity metadata while retaining known deferrals.",
+    "created_at": "2026-04-21T10:15:00.000Z",
+    "last_save_at": "2026-04-21T15:42:05Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "review/remediation-summary.md"
+    ]
+  },
+  "_memory": {
+    "continuity": {
+      "recent_action": "Deferred Vitest baseline failures closed",
+      "next_safe_action": "Run full verification gate and write review remediation summary",
+      "completion_pct": 100,
+      "status": "complete",
+      "last_updated_at": "2026-04-21T15:42:05Z",
+      "last_updated_by": "codex-gpt-5.4"
+    }
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/001-hook-parity-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/001-hook-parity-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/001-hook-parity-remediation"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/001-hook-parity-remediation",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/001-hook-parity-remediation",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/001-hook-parity-remediation",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/001-hook-parity-remediation",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/001-hook-parity-remediation",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/001-hook-parity-remediation",
+    "local_phase_slug": "003-hook-parity-remediation",
+    "original_phase_slug": "003-hook-parity-remediation",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migration_source": "legacy"
+}

@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface",
+  "description": "Feature Specification: Skill-Advisor Hook Surface",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill-advisor",
+    "hook",
+    "surface"
+  ],
+  "lastUpdated": "2026-04-25T12:03:26.479Z",
+  "specId": "007",
+  "folderSlug": "skill-advisor-hook-surface",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-skill-advisor"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

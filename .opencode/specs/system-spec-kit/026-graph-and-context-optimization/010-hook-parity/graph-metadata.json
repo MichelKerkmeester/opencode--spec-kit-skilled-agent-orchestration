@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/010-hook-parity",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-hook-parity",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/001-hook-parity-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/002-copilot-hook-parity-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/003-codex-hook-parity-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/004-claude-hook-findings-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/005-opencode-plugin-loader-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/006-copilot-wrapper-schema-fix",
+    "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/007-copilot-writer-wiring",
+    "system-spec-kit/026-graph-and-context-optimization/010-hook-parity/008-docs-impact-remediation"
+  ],
+  "migrated": true,
+  "migration_source": "legacy",
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "010-hook-parity",
+      "hook-package",
+      "hook daemon parity",
+      "skill graph daemon, hook parity, plugin/runtime parity, and parity remediation",
+      "001-skill-advisor-hook-surface",
+      "002-skill-graph-daemon-and-advisor-unification",
+      "003-hook-parity-remediation",
+      "004-copilot-hook-parity-remediation",
+      "005-codex-hook-parity-remediation",
+      "006-claude-hook-findings-remediation",
+      "007-opencode-plugin-loader-remediation",
+      "008-skill-advisor-plugin-hardening"
+    ],
+    "key_topics": [
+      "010-hook-parity",
+      "hook-package",
+      "hook",
+      "daemon",
+      "parity",
+      "skill",
+      "graph",
+      "plugin",
+      "runtime",
+      "remediation",
+      "001-skill-advisor-hook-surface",
+      "002-skill-graph-daemon-and-advisor-unification"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      ".claude/settings.local.json",
+      "spec.md",
+      "plan.md",
+      ".codex/config.toml",
+      ".codex/settings.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-hook-parity/spec.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-hook-parity/implementation-summary.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-hook-parity/006-copilot-wrapper-schema-fix/implementation-summary.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-hook-parity/007-copilot-writer-wiring/implementation-summary.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-hook-parity/008-docs-impact-remediation/implementation-summary.md",
+      ".gemini/settings.json",
+      ".github/hooks/superset-notify.json",
+      ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/user-prompt-submit.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts",
+      ".opencode/plugins/spec-kit-skill-advisor.js"
+    ],
+    "entities": [
+      {
+        "name": "settings.local.json",
+        "kind": "config",
+        "path": ".claude/settings.local.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-hook-parity/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "config.toml",
+        "kind": "file",
+        "path": ".codex/config.toml",
+        "source": "derived"
+      },
+      {
+        "name": "settings.json",
+        "kind": "config",
+        "path": ".codex/settings.json",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-hook-parity/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "superset-notify.json",
+        "kind": "config",
+        "path": ".github/hooks/superset-notify.json",
+        "source": "derived"
+      },
+      {
+        "name": "hook_system.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+        "source": "derived"
+      },
+      {
+        "name": "codex-hook-policy.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/codex-hook-policy.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "user-prompt-submit.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/user-prompt-submit.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec-kit-skill-advisor.js",
+        "kind": "code",
+        "path": ".opencode/plugins/spec-kit-skill-advisor.js",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Hook Package",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Hook Daemon Parity",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The first consolidation preserved old packets behind an extra archive layer, which made the active phase surface harder to browse.",
+    "created_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-25T10:34:49.732Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

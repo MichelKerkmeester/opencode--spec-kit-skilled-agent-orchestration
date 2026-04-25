@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor",
+  "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "026/009/001 skill advisor hook",
+      "skill advisor hook surface",
+      "proactive skill routing",
+      "cross-runtime skill advisor",
+      "skill advisor context injection",
+      "skill advisor brief",
+      "026/009/001 skill advisor hook plan",
+      "026/009/001 tasks",
+      "020 checklist",
+      "020 adr",
+      "skill advisor hook decisions",
+      "026/009/001 implementation summary"
+    ],
+    "key_topics": [
+      "026",
+      "009",
+      "001",
+      "skill",
+      "advisor",
+      "hook",
+      "surface",
+      "proactive",
+      "routing",
+      "cross-runtime",
+      "context",
+      "injection"
+    ],
+    "importance_tier": "critical",
+    "status": "in_progress",
+    "key_files": [
+      "lib/context/shared-payload.ts",
+      "hooks/claude/user-prompt-submit.ts",
+      ".claude/settings.local.json",
+      "hooks/gemini/user-prompt-submit.ts",
+      "hooks/copilot/user-prompt-submit.ts",
+      "lib/codex-hook-policy.ts",
+      "hooks/codex/user-prompt-submit.ts",
+      "hooks/codex/pre-tool-use.ts",
+      ".codex/policy.json",
+      "hooks/codex/prompt-wrapper.ts",
+      "shared/unicode-normalization.ts",
+      "decision-record.md",
+      "implementation-summary.md",
+      ".opencode/skill/.advisor-state/generation.json",
+      ".gemini/settings.json",
+      ".codex/settings.json",
+      "mcp_server/hooks/claude/session-prime.ts",
+      "mcp_server/hooks/gemini/session-prime.ts",
+      "mcp_server/hooks/copilot/session-prime.ts",
+      "mcp_server/hooks/claude/user-prompt-submit.ts"
+    ],
+    "entities": [
+      {
+        "name": "shared-payload.ts",
+        "kind": "code",
+        "path": "lib/context/shared-payload.ts",
+        "source": "derived"
+      },
+      {
+        "name": "user-prompt-submit.ts",
+        "kind": "code",
+        "path": "hooks/claude/user-prompt-submit.ts",
+        "source": "derived"
+      },
+      {
+        "name": "settings.local.json",
+        "kind": "config",
+        "path": ".claude/settings.local.json",
+        "source": "derived"
+      },
+      {
+        "name": "codex-hook-policy.ts",
+        "kind": "code",
+        "path": "lib/codex-hook-policy.ts",
+        "source": "derived"
+      },
+      {
+        "name": "pre-tool-use.ts",
+        "kind": "code",
+        "path": "hooks/codex/pre-tool-use.ts",
+        "source": "derived"
+      },
+      {
+        "name": "policy.json",
+        "kind": "config",
+        "path": ".codex/policy.json",
+        "source": "derived"
+      },
+      {
+        "name": "prompt-wrapper.ts",
+        "kind": "code",
+        "path": "hooks/codex/prompt-wrapper.ts",
+        "source": "derived"
+      },
+      {
+        "name": "unicode-normalization.ts",
+        "kind": "code",
+        "path": "shared/unicode-normalization.ts",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "generation.json",
+        "kind": "config",
+        "path": ".opencode/skill/.advisor-state/generation.json",
+        "source": "derived"
+      },
+      {
+        "name": "settings.json",
+        "kind": "config",
+        "path": ".gemini/settings.json",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/claude/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Advisor Hook Surface",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Claude Code",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Runtimes Targeted",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Reference",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Today's skill-advisor (Gate 2) runs **only** when the AI explicitly invokes `skill_advisor.py` in a shell command. That limits its impact to three ways: (1) the AI remembering to call it, (2) a Claude Code harness running it before turns, (3) manual developer invocation. Codex, Gemini, and Copilot runtimes don't benefit from proactive routing at all \u2014 even when they're perfectly positioned to use the same skill catalog. Meanwhile the advisor's full JSON output is verbose (often 200-400 tokens with multiple candidates, uncertainty fields, graph-boost explanations). If it ran on every prompt and dumped full output, context would balloon quickly.",
+    "created_at": "2026-04-19T05:20:26.002Z",
+    "last_save_at": "2026-04-25T10:34:50.437Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "handover.md"
+    ]
+  }
+}

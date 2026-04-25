@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/009-memory-causal-graph",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-memory-causal-graph",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "009-memory-causal-graph",
+      "memory causal graph",
+      "memory causal infrastructure",
+      "causal_edges schema",
+      "memory_causal_link",
+      "memory_causal_unlink",
+      "memory_causal_stats",
+      "memory_drift_why",
+      "causal relation taxonomy",
+      "memory vs code graph vs skill graph ownership"
+    ],
+    "key_topics": [],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "decision-record.md"
+    ]
+  }
+}

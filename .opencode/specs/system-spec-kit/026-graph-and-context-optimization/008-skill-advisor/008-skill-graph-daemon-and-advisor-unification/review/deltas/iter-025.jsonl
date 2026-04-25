@@ -1,0 +1,2 @@
+{"type":"iteration","iteration":25,"dimensions":["correctness"],"filesReviewed":21,"findingsSummary":{"P0":0,"P1":1,"P2":0},"findingsNew":["R25-P1-001"],"traceabilityChecks":{"deterministicGatesStillEnforced":true,"nativeCliCompatFilteringParity":false,"compatLifecycleBehaviorPreserved":true},"newFindingsRatio":1,"graphEvents":[]}
+{"type":"finding","id":"R25-P1-001","severity":"P1","file":".opencode/skill/skill-advisor/scripts/skill_advisor.py:3170-3176","title":"Native shim path ignores caller-provided threshold filters","iteration":25}

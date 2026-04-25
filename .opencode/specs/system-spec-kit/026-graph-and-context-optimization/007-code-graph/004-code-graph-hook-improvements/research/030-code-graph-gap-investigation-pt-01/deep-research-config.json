@@ -1,0 +1,17 @@
+{
+  "research_topic": "Packet 013 gap investigation: missed repo surfaces for code-graph + hooks interconnected contracts after the 013 closeout. Focus on docs, tests, configs, and shared metadata surfaces that still describe pre-013 behavior or point at stale code-graph paths.",
+  "spec_folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements",
+  "research_dir": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01",
+  "theme": "code-graph + hooks interconnected surfaces",
+  "max_iterations": 4,
+  "convergence_threshold": 0.05,
+  "stuck_threshold": 2,
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.4",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "timeoutSeconds": 900
+  },
+  "created_at": "2026-04-24T10:55:00Z"
+}

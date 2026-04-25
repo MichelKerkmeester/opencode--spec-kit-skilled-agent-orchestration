@@ -1,0 +1,12 @@
+{"type":"init","timestamp":"2026-04-24T09:51:45Z","max_iterations":10,"status":"initialized"}
+{"type":"iteration","iteration":1,"newInfoRatio":0.64,"status":"new-territory","focus":"Packet scope and spec-to-implementation alignment","timestamp":"2026-04-24T09:53:00Z","findings_count":{"P0":0,"P1":1,"P2":2}}
+{"type":"iteration","iteration":2,"newInfoRatio":0.52,"status":"new-territory","focus":"Evidence ledger and applied report integrity","timestamp":"2026-04-24T09:56:00Z","findings_count":{"P0":0,"P1":3,"P2":0}}
+{"type":"iteration","iteration":3,"newInfoRatio":0.41,"status":"new-territory","focus":"advisor_recommend correctness and cache isolation","timestamp":"2026-04-24T09:59:00Z","findings_count":{"P0":1,"P1":1,"P2":1}}
+{"type":"iteration","iteration":4,"newInfoRatio":0.33,"status":"new-territory","focus":"Shared builder vs shared renderer contract","timestamp":"2026-04-24T10:02:00Z","findings_count":{"P0":0,"P1":2,"P2":1}}
+{"type":"iteration","iteration":5,"newInfoRatio":0.24,"status":"new-territory","focus":"Codex verification evidence and success-path traceability","timestamp":"2026-04-24T10:05:00Z","findings_count":{"P0":0,"P1":2,"P2":1}}
+{"type":"iteration","iteration":6,"newInfoRatio":0.18,"status":"new-territory","focus":"Durable telemetry corruption handling","timestamp":"2026-04-24T10:08:00Z","findings_count":{"P0":0,"P1":2,"P2":1}}
+{"type":"iteration","iteration":7,"newInfoRatio":0.12,"status":"converging","focus":"skillSlug validation semantics vs telemetry scope","timestamp":"2026-04-24T10:11:00Z","findings_count":{"P0":0,"P1":1,"P2":2}}
+{"type":"iteration","iteration":8,"newInfoRatio":0.08,"status":"converging","focus":"Resource-map quality and lineage hygiene","timestamp":"2026-04-24T10:14:00Z","findings_count":{"P0":0,"P1":1,"P2":2}}
+{"type":"iteration","iteration":9,"newInfoRatio":0.06,"status":"converging","focus":"Privacy and prompt-safety stabilization pass","timestamp":"2026-04-24T10:17:00Z","findings_count":{"P0":0,"P1":0,"P2":0}}
+{"type":"iteration","iteration":10,"newInfoRatio":0.05,"status":"converging","focus":"Final convergence pass across target files and packet docs","timestamp":"2026-04-24T10:20:00Z","findings_count":{"P0":0,"P1":0,"P2":0}}
+{"type":"synthesis","status":"complete","total_iterations":10,"stop_reason":"max_iterations_reached","timestamp":"2026-04-24T10:23:00Z"}

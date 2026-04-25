@@ -1,0 +1,127 @@
+{
+  "phase": "013-code-graph-hook-improvements",
+  "findings": [
+    {
+      "id": "F-001",
+      "severity": "P0",
+      "category": "correctness",
+      "summary": "Manual `code_graph_scan(rootDir=...)` can narrow the graph to a subtree and then delete out-of-scope rows while status/startup surfaces still present the remaining graph as healthy.",
+      "evidence": [
+        "iteration-02.md#Findings",
+        "iteration-03.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts:128",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts:196",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/status.ts:13",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts:131"
+      ],
+      "recommended_fix": "Either reject non-root scans by default or persist explicit scan-scope metadata and limit cleanup/readiness/status claims to that same scope.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/status.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-scan.vitest.ts"
+      ]
+    },
+    {
+      "id": "F-002",
+      "severity": "P1",
+      "category": "correctness",
+      "summary": "The bounded inline refresh path caches readiness decisions for five seconds without an invalidation hook, so stale or failed read-path results can survive a successful manual scan.",
+      "evidence": [
+        "iteration-04.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ensure-ready.ts:255",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ensure-ready.ts:291",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts:186"
+      ],
+      "recommended_fix": "Export readiness-cache invalidation from `ensure-ready.ts`, call it after successful scan persistence, and reconsider caching failure results for the full debounce window.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/ensure-ready.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/scan.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-siblings-readiness.vitest.ts"
+      ]
+    },
+    {
+      "id": "F-003",
+      "severity": "P1",
+      "category": "correctness",
+      "summary": "`code_graph_context` still carries a second freshness/provenance contract, so one payload can combine readiness-derived `stale` with metadata derived only from `indexed_at` age and a placeholder provenance object.",
+      "evidence": [
+        "iteration-05.md#Findings",
+        "iteration-06.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts:97",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts:162",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts:178",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/readiness-contract.ts:129"
+      ],
+      "recommended_fix": "Route context freshness/provenance through the shared readiness helper and stop emitting a reduced placeholder `graphMetadata` object when provenance is unavailable.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/readiness-contract.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts"
+      ]
+    },
+    {
+      "id": "F-004",
+      "severity": "P1",
+      "category": "ergonomics",
+      "summary": "The context surface advertises deadline-aware bounded work, but the handler never passes a deadline and only `impact` mode enforces one.",
+      "evidence": [
+        "iteration-07.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts:13",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts:178",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts:166"
+      ],
+      "recommended_fix": "Define a real default `deadlineMs` for handler calls and apply the same elapsed-budget breaker to `neighborhood` and `outline` expansion paths.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/context.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-context.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/tests/code-graph-context-handler.vitest.ts"
+      ]
+    },
+    {
+      "id": "F-005",
+      "severity": "P2",
+      "category": "observability",
+      "summary": "Scan-time detector-provenance and edge-enrichment summaries are persisted but dropped from `code_graph_status` and startup surfaces.",
+      "evidence": [
+        "iteration-08.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts:226",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts:243",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts:652",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/status.ts:13",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts:88"
+      ],
+      "recommended_fix": "Expose a compact graph-quality summary through `getStats()` or a dedicated status helper, then surface it in `code_graph_status` and startup priming.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/code-graph-db.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/handlers/status.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md"
+      ]
+    },
+    {
+      "id": "F-006",
+      "severity": "P2",
+      "category": "cross-runtime",
+      "summary": "`buildStartupBrief()` already produces a structured startup payload, but the Claude/Gemini/Copilot/Codex startup adapters still down-convert everything to text-only sections.",
+      "evidence": [
+        "iteration-09.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts:200",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:235",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:170",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:192",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:155"
+      ],
+      "recommended_fix": "Choose whether startup graph metadata should remain text-only or be propagated as a compact structured contract through runtime diagnostics or adapter-specific side channels.",
+      "target_files": [
+        ".opencode/skill/system-spec-kit/mcp_server/code-graph/lib/startup-brief.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts"
+      ]
+    }
+  ]
+}

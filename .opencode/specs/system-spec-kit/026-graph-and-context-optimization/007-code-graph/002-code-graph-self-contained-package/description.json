@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package",
+  "description": "Feature Specification: 028 \u2014 Code-Graph Self-Contained Package Migration",
+  "keywords": [
+    "feature",
+    "specification",
+    "028",
+    "code-graph",
+    "self-contained",
+    "package",
+    "migration"
+  ],
+  "lastUpdated": "2026-04-25T12:03:27.129Z",
+  "specId": "002",
+  "folderSlug": "code-graph-self-contained-package",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

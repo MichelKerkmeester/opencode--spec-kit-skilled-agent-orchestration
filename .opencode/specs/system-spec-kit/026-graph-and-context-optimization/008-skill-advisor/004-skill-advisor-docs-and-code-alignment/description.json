@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/004-skill-advisor-docs-and-code-alignment",
+  "description": "Feature Specification: Skill-Advisor Docs + Phase 020 Code Alignment",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill-advisor",
+    "docs",
+    "phase",
+    "020",
+    "code",
+    "alignment"
+  ],
+  "lastUpdated": "2026-04-25T12:03:26.149Z",
+  "specId": "004",
+  "folderSlug": "skill-advisor-docs-and-code-alignment",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-skill-advisor"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

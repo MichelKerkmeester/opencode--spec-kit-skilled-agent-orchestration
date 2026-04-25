@@ -12,9 +12,9 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
-    last_updated_at: "2026-04-21T13:00:00Z"
-    last_updated_by: "codex-gpt-5"
-    recent_action: "Renumbered nested phases"
+    last_updated_at: "2026-04-25T12:10:00Z"
+    last_updated_by: "claude-opus-4-7"
+    recent_action: "Second topical consolidation: 008-skill-advisor + 009-memory-causal-graph created; 010 renamed to 010-hook-parity; 007-code-graph expanded to 5 children"
     next_safe_action: "Use merged-phase-map.md and context indexes for navigation"
     blockers: []
     key_files:
@@ -40,11 +40,11 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 
 ## EXECUTIVE SUMMARY
 
-Packet `026-graph-and-context-optimization` now presents a nine-phase active navigation surface instead of twenty-nine top-level sibling packets. The original phase packets `001` through `029` remain preserved as direct child folders under each active wrapper, with metadata aliases recording their former packet IDs and paths.
+Packet `026-graph-and-context-optimization` presents an 11-wrapper active navigation surface after two topical consolidation passes. The first pass (2026-04-21) collapsed 29 chronological phase folders into nine thematic wrappers with originals preserved as child packets. The second pass (2026-04-25) merged `006-search-routing-advisor/` into `008-skill-advisor/`, redistributed children of the former `010-hook-package/` across `007-code-graph/`, `008-skill-advisor/`, and the renamed `010-hook-parity/`, and added `009-memory-causal-graph/` as a post-hoc Level-2 documentation packet for live infrastructure.
 
 **Key Decisions**: Consolidate by theme rather than chronology, keep root `research/`, `review/`, and `scratch/` folders in place, and use `merged-phase-map.md` plus per-phase context index files as the bridge from old paths to active homes.
 
-**Critical Dependencies**: The preserved child packets remain the authority for historical implementation details. The active nine wrappers own navigation, status rollup, and continuity pointers only.
+**Critical Dependencies**: The preserved child packets remain the authority for historical implementation details. The 11 active wrappers own navigation, status rollup, and continuity pointers only.
 
 ---
 
@@ -57,7 +57,7 @@ Packet `026-graph-and-context-optimization` now presents a nine-phase active nav
 | **Priority** | P1 |
 | **Status** | In Progress |
 | **Created** | 2026-04-08 |
-| **Updated** | 2026-04-21 |
+| **Updated** | 2026-04-25 |
 | **Branch** | `026-graph-and-context-optimization` |
 <!-- /ANCHOR:metadata -->
 
@@ -67,10 +67,10 @@ Packet `026-graph-and-context-optimization` now presents a nine-phase active nav
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The root packet still described an older 19-phase map while the filesystem exposed 29 direct top-level phases. New follow-up packets were added as siblings even when they belonged to established thematic tracks, which made resume, validation, and memory lookup noisier than the actual program structure.
+The root packet originally described a 19-phase map while the filesystem exposed 29 direct top-level phases, and follow-up work continued to be added as new siblings even when it belonged to existing thematic tracks. The first consolidation reduced this to nine thematic wrappers, but a subsequent topical pass found that advisor work was split across two wrappers (`006-search-routing-advisor/` and parts of `010-hook-package/`), code-graph hook work was hidden inside the hook package, and the live memory-causal-graph infrastructure had no canonical documentation home.
 
 ### Purpose
-Provide one canonical nine-phase active map while preserving every original packet as child phase folders with clear old-to-new bridges.
+Provide one canonical 11-wrapper active map after two topical consolidation passes while preserving every original packet as a child phase folder with clear old-to-new bridges in `merged-phase-map.md`.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -79,10 +79,10 @@ Provide one canonical nine-phase active map while preserving every original pack
 ## 3. SCOPE
 
 ### In Scope
-- Consolidate the active direct-child phase surface from 29 folders to 9 thematic wrappers.
-- Move original phase packets into direct child folders under their new thematic home.
-- Update root docs, metadata, `merged-phase-map.md`, and per-wrapper context indexes bridge docs.
-- Refresh moved packet metadata with new paths plus migration aliases for old packet IDs.
+- Maintain the 11-wrapper active surface produced by both consolidation passes.
+- Keep original phase packets as direct child folders under their thematic wrapper.
+- Update root docs, metadata, `merged-phase-map.md`, and per-wrapper context indexes bridge docs as further moves happen.
+- Refresh moved packet metadata with new paths plus migration aliases for old packet IDs (including second-pass aliases from `006-search-routing-advisor/` and `010-hook-package/`).
 
 ### Out of Scope
 - Changing runtime code.
@@ -104,19 +104,21 @@ Provide one canonical nine-phase active map while preserving every original pack
 <!-- ANCHOR:phase-map -->
 ## PHASE DOCUMENTATION MAP
 
-> Active children are the nine thematic wrappers below. Historical phases `001` through `029` are preserved as direct child folders under each wrapper and mapped in `merged-phase-map.md`. The `Status` column tracks wrapper activity only; use the current-state model below to distinguish implemented, narrowed, reopened, and still-open follow-on work.
+> Active children are the 11 thematic wrappers below. Historical phase folders are preserved as direct child folders under each wrapper and mapped in `merged-phase-map.md`. Numbering gaps at `006` and `011` are intentional and reflect prior consolidation passes (do not renumber). The `Status` column tracks wrapper activity only; use the current-state model below to distinguish implemented, narrowed, reopened, and still-open follow-on work.
 
-| Phase | Folder | Theme | Child Phase Location | Status |
-|-------|--------|-------|----------------------|--------|
-| 001 | `001-research-and-baseline/` | External research, adoption decisions, and initial graph/context baselines | Merged into phase root | In Progress |
-| 002 | `002-continuity-memory-runtime/` | Cache hooks, memory quality, continuity refactor, and memory-save rewrite | `002-continuity-memory-runtime/001-cache-warning-hooks/`, `002-continuity-memory-runtime/002-memory-quality-remediation/`, `002-continuity-memory-runtime/003-continuity-refactor-gates/`, `002-continuity-memory-runtime/004-memory-save-rewrite/` | In Progress |
-| 003 | `003-code-graph-package/` | Code graph upgrades and self-contained package migration | `003-code-graph-package/001-code-graph-upgrades/`, `003-code-graph-package/002-code-graph-self-contained-package/` | In Progress |
-| 004 | `004-agent-governance-and-commands/` | AGENTS guardrails, canonical intake, and command cleanup | `004-agent-governance-and-commands/001-agent-execution-guardrails/`, `004-agent-governance-and-commands/002-command-graph-consolidation/` | In Progress |
-| 005 | `005-release-cleanup-playbooks/` | Release alignment, cleanup/audit, and playbook repair/remediation | `005-release-cleanup-playbooks/001-release-alignment-revisits/`, `005-release-cleanup-playbooks/002-cleanup-and-audit/`, `005-release-cleanup-playbooks/003-playbook-and-remediation/` | In Progress |
-| 006 | `006-search-routing-advisor/` | Search/routing tuning, skill advisor graph, phrase boosters, and smart-router work | `006-search-routing-advisor/001-search-and-routing-tuning/`, `006-search-routing-advisor/002-skill-advisor-graph/`, `006-search-routing-advisor/003-advisor-phrase-booster-tailoring/`, `006-search-routing-advisor/004-smart-router-context-efficacy/`, `006-search-routing-advisor/005-skill-advisor-docs-and-code-alignment/`, `006-search-routing-advisor/006-smart-router-remediation-and-opencode-plugin/`, `006-search-routing-advisor/007-deferred-remediation-and-telemetry-run/` | In Progress |
-| 007 | `007-deep-review-remediation/` | Deep review waves and post-review remediation | `007-deep-review-remediation/001-deep-review-and-remediation/`, `007-deep-review-remediation/002-cli-executor-remediation/`, `007-deep-review-remediation/003-deep-review-remediation/`, `007-deep-review-remediation/004-r03-post-remediation/` | In Progress |
-| 008 | `008-runtime-executor-hardening/` | Foundational runtime, CLI executor matrix, and system hardening | `008-runtime-executor-hardening/001-foundational-runtime/`, `008-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/`, `008-runtime-executor-hardening/003-system-hardening/` | In Progress |
-| 009 | `009-hook-package/` | Skill graph daemon, hook parity, plugin/runtime parity, and parity remediation | `009-hook-package/001-skill-advisor-hook-surface/`, `009-hook-package/002-skill-graph-daemon-and-advisor-unification/`, `009-hook-package/003-hook-parity-remediation/` | In Progress |
+| Folder | Theme | Notes |
+|--------|-------|-------|
+| `000-release-cleanup-playbooks/` | Release alignment, cleanup/audit, and playbook repair/remediation (root-only Phase 5 merge) | No child phases — three former sub-packets merged into root docs. |
+| `001-research-and-baseline/` | External research, adoption decisions, and initial graph/context baselines | Original phase `001-research-graph-context-systems/` merged into the wrapper root. |
+| `002-resource-map-template/` | Resource-map template introduction, deep-loop integration, and reverse parent folder restoration | Three child phases. |
+| `003-continuity-memory-runtime/` | Cache hooks, memory quality, continuity refactor, and memory-save rewrite | Four child phases preserved intact. |
+| `004-runtime-executor-hardening/` | Foundational runtime, CLI executor matrix, and system hardening | Three child phases preserved intact. |
+| `005-memory-indexer-invariants/` | Memory indexer lineage fix and constitutional-tier index-scope invariants (root-only merge) | No child phases — both tracks merged into root docs. |
+| `007-code-graph/` | Code graph upgrades, self-contained package migration, context/scan scope, and code-graph hook/advisor refinement | Five child phases (last two added in second pass from former `010-hook-package/013` and `010-hook-package/015`). |
+| `008-skill-advisor/` | Skill advisor system: search/routing tuning, advisor graph, phrase boosters, smart-router, advisor docs/standards, hook surface, daemon unification, plugin hardening, and hook improvements | 11 child phases (six absorbed from `006-search-routing-advisor/` plus five from former `010-hook-package/{001,002,008,009,014}`). |
+| `009-memory-causal-graph/` | Post-hoc canonical documentation home for the live causal-graph infrastructure (four MCP tools, `causal_edges` schema, six-relation taxonomy, ownership boundary) | Level-2 documentation packet, no children, no code changes. |
+| `010-hook-parity/` | Runtime hook parity across Claude / Codex / Copilot / OpenCode plugin: schema fixes, wrapper wiring fixes, parity remediations | Eight child phases renumbered 001-008 after second-pass migrations out. |
+| `012-graph-impact-and-affordance-uplift/` | GitNexus pt-01 + pt-02 adoption: phase-DAG runner, edge explanation/impact uplift, advisor affordance evidence, memory causal trust display, docs/catalogs rollup | Six child phases. |
 
 ### Current State Model
 
@@ -135,19 +137,18 @@ Research convergence in the archived `001-research-and-baseline` corpus means sy
 - Historical child packets preserved as direct children remain evidence and are not flattened into the wrapper docs.
 - Root `research/`, `review/`, and `scratch/` folders remain root-level support surfaces.
 - New follow-up work should attach to the relevant active wrapper unless it starts a genuinely new top-level theme.
+- Numbering gaps at `006` and `011` are deliberate audit markers from consolidation passes; never renumber to fill them.
 
 ### Phase Handoff Criteria
 
 | From | To | Criteria | Verification |
 |------|----|----------|--------------|
-| `001-research-and-baseline` | `002-continuity-memory-runtime` | Research and baseline findings remain available before runtime/memory consolidation. | Both wrappers validate and expose context indexes. |
-| `002-continuity-memory-runtime` | `003-code-graph-package` | Continuity and memory surfaces are stable enough for graph-package migration context. | Child packets `002`, `003`, `006`, `014`, `005`, and `028` are mapped. |
-| `003-code-graph-package` | `004-agent-governance-and-commands` | Code graph package work remains distinct from command/governance policy. | Wrappers preserve old packet metadata aliases. |
-| `004-agent-governance-and-commands` | `005-release-cleanup-playbooks` | Governance and command cleanup feed release and playbook repair work. | Context indexes list old statuses and open items. |
-| `005-release-cleanup-playbooks` | `006-search-routing-advisor` | Cleanup/playbook outcomes precede advisor and routing follow-ups. | Old phases `010`, `011`, `013`, and `021`-`024` are nested under phase 006. |
-| `006-search-routing-advisor` | `007-deep-review-remediation` | Search/advisor work is the main target surface for later review remediation. | Old phases `015`, `018`, `025`, and `026` are nested under phase 007. |
-| `007-deep-review-remediation` | `008-runtime-executor-hardening` | Remediation findings inform foundational runtime and executor hardening. | Old phases `016`, `017`, and `019` are nested under phase 008. |
-| `008-runtime-executor-hardening` | `009-hook-package` | Runtime/executor hardening precedes hook, daemon, and parity remediation. | Old phases `020`, `027`, and `029` are nested under phase 009. |
+| `001-research-and-baseline` | `003-continuity-memory-runtime` | Research and baseline findings remain available before runtime/memory consolidation. | Both wrappers validate and expose context indexes. |
+| `003-continuity-memory-runtime` | `007-code-graph` | Continuity and memory surfaces are stable enough for graph-package and graph-context work. | Child packets covering memory/runtime are preserved with metadata aliases. |
+| `007-code-graph` | `008-skill-advisor` | Code-graph upgrades and hook/advisor refinement land before advisor system unification. | Second-pass code-graph children (`004`, `005`) carry migration aliases from `010-hook-package/{013,015}`. |
+| `008-skill-advisor` | `009-memory-causal-graph` | Advisor consolidation precedes documenting the causal-graph infrastructure that informs trust display. | `008-skill-advisor` has 11 children; `009-memory-causal-graph` is post-hoc documentation only. |
+| `009-memory-causal-graph` | `010-hook-parity` | Causal-graph documentation precedes runtime hook parity work that touches advisor + memory hooks. | `010-hook-parity` retains migration aliases for `010-hook-package/` and `009-hook-package/`. |
+| `010-hook-parity` | `012-graph-impact-and-affordance-uplift` | Runtime hook parity precedes the GitNexus adoption uplift program. | `012-graph-impact-and-affordance-uplift` consumes graph and advisor surfaces in display-only mode. |
 <!-- /ANCHOR:phase-map -->
 
 ---
@@ -159,9 +160,9 @@ Research convergence in the archived `001-research-and-baseline` corpus means sy
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Reduce active top-level phase navigation to nine thematic wrappers. | Root direct phase folders are `001` through `009` only. |
-| REQ-002 | Preserve every original phase packet. | Every old phase `001` through `029` appears exactly once in `merged-phase-map.md` and exists in its mapped wrapper root or is merged into the phase `001` root. |
-| REQ-003 | Keep metadata resolvable after moves. | All migrated `description.json` and `graph-metadata.json` files parse and record migration aliases or source fields. |
+| REQ-001 | Maintain a topical-thematic active phase surface. | Root direct phase folders are exactly the 11 approved wrappers; numbering gaps at `006` and `011` are intentional and documented. |
+| REQ-002 | Preserve every original phase packet across both consolidation passes. | Every old phase `001` through `029` appears exactly once in the first-pass section of `merged-phase-map.md`, and every second-pass move/rename appears exactly once in the appended second-pass section. |
+| REQ-003 | Keep metadata resolvable after moves. | All migrated `description.json` and `graph-metadata.json` files parse and record migration aliases or source fields, including second-pass aliases for `006-search-routing-advisor/` and `010-hook-package/`. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -178,9 +179,9 @@ Research convergence in the archived `001-research-and-baseline` corpus means sy
 
 ### Acceptance Scenarios
 
-**Given** a maintainer opens the root packet, **when** they inspect the phase map, **then** they see nine active thematic wrappers instead of twenty-nine siblings.
+**Given** a maintainer opens the root packet, **when** they inspect the phase map, **then** they see 11 active thematic wrappers instead of the original 29 siblings, with both consolidation passes recorded in `merged-phase-map.md`.
 
-**Given** a maintainer needs an old phase, **when** they search `merged-phase-map.md`, **then** they can find its current wrapper or phase-root path.
+**Given** a maintainer needs an old phase, **when** they search `merged-phase-map.md`, **then** they can find its current wrapper or phase-root path across both first-pass (29→9) and second-pass (9→11) tables.
 
 **Given** memory tooling reads moved metadata, **when** it sees aliases and migration fields, **then** the old packet ID remains traceable to the new path.
 
@@ -195,8 +196,8 @@ Research convergence in the archived `001-research-and-baseline` corpus means sy
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Root direct child phase folders are the nine approved thematic wrappers.
-- **SC-002**: Every old phase `001` through `029` is represented exactly once in `merged-phase-map.md`.
+- **SC-001**: Root direct child phase folders are the 11 approved thematic wrappers (with intentional gaps at `006` and `011`).
+- **SC-002**: Every old phase `001` through `029` is represented exactly once in the first-pass section of `merged-phase-map.md`, and every second-pass move/rename appears exactly once in the appended second-pass section.
 - **SC-003**: JSON metadata parse checks pass for all descriptions and graph metadata under the packet.
 - **SC-004**: Strict validation passes for the root packet and each active wrapper.
 <!-- /ANCHOR:success-criteria -->
@@ -246,7 +247,7 @@ Research convergence in the archived `001-research-and-baseline` corpus means sy
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 23/25 | Twenty-nine historical phase folders consolidated into nine wrappers |
+| Scope | 24/25 | Twenty-nine historical phase folders consolidated into 11 wrappers across two topical passes |
 | Risk | 14/25 | Metadata and memory continuity can drift if old IDs vanish |
 | Research | 12/20 | Existing research/review/scratch support folders remain root references |
 | Multi-Agent | 4/15 | Documentation and metadata only |
@@ -267,10 +268,10 @@ Research convergence in the archived `001-research-and-baseline` corpus means sy
 
 ### US-001: Maintainer needs a smaller active map (Priority: P0)
 
-**As a** maintainer, **I want** nine thematic phase folders, **so that** I can navigate the packet without scanning twenty-nine sibling folders.
+**As a** maintainer, **I want** thematic phase folders, **so that** I can navigate the packet without scanning the original twenty-nine sibling folders.
 
 **Acceptance Criteria**:
-1. Given the root packet folder is listed, When I inspect direct numeric children, Then I see phases `001` through `009` only.
+1. Given the root packet folder is listed, When I inspect direct numeric children, Then I see the 11 approved wrappers (`000`, `001`, `002`, `003`, `004`, `005`, `007`, `008`, `009`, `010-hook-parity`, `012`) and no others.
 
 ---
 

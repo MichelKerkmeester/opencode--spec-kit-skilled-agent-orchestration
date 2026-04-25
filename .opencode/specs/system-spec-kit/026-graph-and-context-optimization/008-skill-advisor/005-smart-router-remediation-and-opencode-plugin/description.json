@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/005-smart-router-remediation-and-opencode-plugin",
+  "description": "Feature Specification: Smart-Router Remediation + OpenCode Plugin",
+  "keywords": [
+    "feature",
+    "specification",
+    "smart-router",
+    "remediation",
+    "opencode",
+    "plugin"
+  ],
+  "lastUpdated": "2026-04-25T12:03:26.261Z",
+  "specId": "005",
+  "folderSlug": "smart-router-remediation-and-opencode-plugin",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-skill-advisor"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

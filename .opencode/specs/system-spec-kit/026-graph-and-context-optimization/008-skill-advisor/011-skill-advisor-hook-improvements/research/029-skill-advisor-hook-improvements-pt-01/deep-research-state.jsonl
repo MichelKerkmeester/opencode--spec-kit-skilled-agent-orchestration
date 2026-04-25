@@ -1,0 +1,10 @@
+{"type":"iteration","iteration":1,"newInfoRatio":0.7,"status":"new-territory","focus":"Scope recovery, already-closed CF-019, and surviving advisor/hook surfaces","timestamp":"2026-04-24T08:20:00Z"}
+{"type":"iteration","iteration":2,"newInfoRatio":0.42,"status":"new-territory","focus":"OpenCode threshold parity and thresholdConfidence drift","timestamp":"2026-04-24T08:24:00Z"}
+{"type":"iteration","iteration":3,"newInfoRatio":0.33,"status":"new-territory","focus":"OpenCode cache invalidation and freshness parity","timestamp":"2026-04-24T08:28:00Z"}
+{"type":"iteration","iteration":4,"newInfoRatio":0.26,"status":"new-territory","focus":"Codex native fast-path divergence from the shared brief pipeline","timestamp":"2026-04-24T08:33:00Z"}
+{"type":"iteration","iteration":5,"newInfoRatio":0.21,"status":"converging","focus":"advisor_status laneWeights surface versus promotion/live-weight claims","timestamp":"2026-04-24T08:38:00Z"}
+{"type":"iteration","iteration":6,"newInfoRatio":0.17,"status":"converging","focus":"Hook telemetry sink, health rollups, and alert-threshold wiring","timestamp":"2026-04-24T08:43:00Z"}
+{"type":"iteration","iteration":7,"newInfoRatio":0.13,"status":"converging","focus":"Recommendation quality versus actual activation/correction outcomes","timestamp":"2026-04-24T08:48:00Z"}
+{"type":"iteration","iteration":8,"newInfoRatio":0.1,"status":"converging","focus":"advisor_validate tool-surface gaps for runtime parity and corpus portability","timestamp":"2026-04-24T08:53:00Z"}
+{"type":"iteration","iteration":9,"newInfoRatio":0.08,"status":"converging","focus":"Promotion telemetry persistence versus documented restart durability","timestamp":"2026-04-24T08:58:00Z"}
+{"type":"iteration","iteration":10,"newInfoRatio":0.06,"status":"converging","focus":"Operator-documentation parity and residual low-severity gaps","timestamp":"2026-04-24T09:02:00Z"}

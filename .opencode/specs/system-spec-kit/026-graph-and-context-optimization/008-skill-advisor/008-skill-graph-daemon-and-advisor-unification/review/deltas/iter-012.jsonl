@@ -1,0 +1,1 @@
+{"type":"iteration","iteration":12,"dimensions":["maintainability"],"filesReviewed":17,"findingsSummary":{"P0":0,"P1":9,"P2":4},"findingsNew":[],"traceabilityChecks":{"packageBoundaryDriftNew":false,"importPathsConsistent":true,"testsColocated":true,"regressionSuitesPreserved":true,"deadCodeMarkersFound":false},"newFindingsRatio":0,"graphEvents":[]}

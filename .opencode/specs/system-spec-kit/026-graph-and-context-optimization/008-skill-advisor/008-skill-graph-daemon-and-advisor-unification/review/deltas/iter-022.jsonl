@@ -1,0 +1,2 @@
+{"type":"iteration","iteration":22,"dimensions":["security"],"filesReviewed":25,"findingsSummary":{"P0":0,"P1":1,"P2":0},"findingsNew":["R22-P1-001"],"traceabilityChecks":{"a7SanitizerWritePath":true,"adversarialStuffingBlocked":true,"mcpRedirectEnvelopePromptSafe":false},"newFindingsRatio":1,"graphEvents":[]}
+{"type":"finding","id":"R22-P1-001","severity":"P1","file":".opencode/skill/system-spec-kit/mcp_server/skill-advisor/handlers/advisor-recommend.ts:79","title":"Native advisor metadata bypasses prompt-safe redirect sanitization","iteration":22}

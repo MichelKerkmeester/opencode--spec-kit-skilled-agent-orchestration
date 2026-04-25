@@ -1,0 +1,13 @@
+{
+  "executor": {
+    "kind": "manual-codex",
+    "runtime": "codex-cli-session",
+    "note": "Packet-local focused investigation executed inside the active Codex workspace session."
+  },
+  "max_iterations": 4,
+  "theme": "skill-advisor + hooks interconnected surfaces",
+  "packet_slug": "014",
+  "source_resource_map": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/011-skill-advisor-hook-improvements/resource-map.md",
+  "source_spec": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/011-skill-advisor-hook-improvements/spec.md",
+  "source_implementation_summary": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/011-skill-advisor-hook-improvements/implementation-summary.md"
+}

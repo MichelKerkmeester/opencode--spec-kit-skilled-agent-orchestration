@@ -1,0 +1,10 @@
+{
+  "iteration": 2,
+  "track": "A",
+  "question": "A2",
+  "verdict": "adopt_now",
+  "confidence": "high",
+  "newInfoRatio": 0.78,
+  "timestamp": "2026-04-20T05:38:11Z",
+  "iterationFile": "iterations/iteration-002.md"
+}

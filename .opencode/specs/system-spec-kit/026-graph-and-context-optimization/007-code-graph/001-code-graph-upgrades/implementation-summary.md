@@ -1,0 +1,117 @@
+---
+title: "...em-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades/implementation-summary]"
+description: "Implementation closeout for 005-code-graph-upgrades."
+trigger_phrases:
+  - "005-code-graph-upgrades"
+  - "implementation"
+  - "summary"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades"
+    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_by: "copilot-gpt-5-4"
+    recent_action: "Reviewed packet docs"
+    next_safe_action: "Run strict validation"
+    key_files: ["implementation-summary.md"]
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
+---
+# Implementation Summary: Code Graph Upgrades
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+
+---
+
+<!-- ANCHOR:metadata -->
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 005-code-graph-upgrades |
+| **Completed** | 2026-04-09 |
+| **Level** | 3 |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:what-built -->
+## What Was Built
+
+Packet `014` now ships the adopt-now code-graph runtime lane instead of staying planning-only. The implementation added a dedicated detector provenance vocabulary, fixed blast-radius depth handling at traversal time, exposed explicit multi-file union mode, and surfaced low-authority hot-file breadcrumbs on graph-owned outputs.
+
+The payload layer now carries additive `edgeEvidenceClass` and `numericConfidence` metadata on graph-local owner contracts. That enrichment lands on code-graph outputs and shared-payload validators without expanding `session_resume` or `session_bootstrap`.
+
+### Detector Provenance and Serialization
+
+`shared-payload.ts` now exports `DetectorProvenance`, guards, assertions, and a compatibility mapper back to packet `006`'s `ParserProvenance` vocabulary. Scan and context handlers serialize detector provenance summary data instead of relying on loose strings or implicit parser labels.
+
+### Bounded Blast Radius and Advisory Breadcrumbs
+
+`code_graph_query` now stops traversal before nodes beyond `maxDepth` are included. Explicit `unionMode: 'multi'` merges multiple source files without duplicating results, and high-degree files now get an advisory `hotFileBreadcrumb` that says to change carefully without introducing any new authority score.
+
+### Additive Edge Evidence Enrichment
+
+Shared payload sections can now carry `graphEdgeEnrichment` with `edgeEvidenceClass` and `numericConfidence`. Query responses emit the fields directly, scan stores the latest summary, and shared-payload validators enforce the shape for graph-local owners.
+
+### Frozen Regression Floor
+
+The packet adds a dedicated script-side regression floor for provenance honesty and blast-radius depth behavior. That keeps detector regressions and traversal regressions frozen under the same discipline packet `007` established.
+<!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The work started by lifting the planning-only fence in `spec.md`, then implementing the required lanes in order. Lane A added the detector provenance contract and scan/context serialization hooks. Lane B corrected blast-radius traversal and made multi-file union explicit. Lane C layered advisory hot-file breadcrumbs on the same graph-owned response shape. Lane D added additive edge evidence metadata on graph-local payload owners without extending the resume/bootstrap contracts. Lane E closed the loop with a frozen regression-floor fixture under the scripts-side harness.
+
+After the runtime work was stable, the packet docs were rewritten to match what actually shipped, what stayed deferred, and how the boundaries with packets `007`, `008`, and `011` were preserved.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Reuse packet `006` trust axes instead of extending them directly | `DetectorProvenance` needed a richer graph-local vocabulary, but packet `011` still expects the existing `ParserProvenance` contract. The compatibility mapper keeps both truths intact. |
+| Enforce blast-radius depth in the traversal loop | A post-filter would still walk out-of-bound nodes and could leak them through future response shapes. Cutting traversal at `maxDepth` fixes the root cause instead of the symptom. |
+| Keep hot-file breadcrumbs advisory only | The breadcrumb is meant to warn about blast radius, not to compete with packet `011`'s trust envelope or invent a new authority scale. |
+| Keep edge enrichment scoped to graph-local payload owners | The packet improves graph-local richness without reopening the resume/bootstrap authority surfaces or claiming carriage that the runtime does not ship. |
+| Defer lexical fallback cascades, clustering, and export work | `code_graph_query` has no lexical fallback cascade today, and ADR-003 keeps clustering and export work prototype-later so the adopt-now lane stays bounded. |
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
+## Verification
+
+| Check | Result |
+|-------|--------|
+| `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/tsc-tmp npm run typecheck` | PASS |
+| `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/shared-payload-certainty.vitest.ts tests/structural-trust-axis.vitest.ts tests/graph-payload-validator.vitest.ts tests/graph-first-routing-nudge.vitest.ts tests/sqlite-fts.vitest.ts tests/hook-state.vitest.ts tests/hook-session-start.vitest.ts tests/handler-memory-search.vitest.ts tests/publication-gate.vitest.ts tests/code-graph-query-handler.vitest.ts tests/code-graph-context-handler.vitest.ts tests/code-graph-scan.vitest.ts` | PASS |
+| `cd .opencode/skill/system-spec-kit/scripts && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/detector-regression-floor.vitest.ts.test.ts tests/session-cached-consumer.vitest.ts.test.ts tests/warm-start-bundle-benchmark.vitest.ts.test.ts tests/graph-upgrades-regression-floor.vitest.ts.test.ts` | PASS |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-code-graph-package/001-code-graph-upgrades` | PASS |
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+1. `code_graph_query` still has no lexical fallback cascade, so Lane F stayed not applicable in this run. If a lexical fallback is added later, it still needs its own capability selector and forced-degrade matrix.
+2. Clustering, routing facade, GraphML or Cypher export, and rationale-node support remain prototype-later per ADR-003 and did not ship here.
+3. Packet `014` enriches graph-local outputs only. Resume/bootstrap trust preservation stays with packet `011`, and startup, compact, and response-surface routing nudges still belong to packet `008`.
+<!-- /ANCHOR:limitations -->
+
+---
+
+<!--
+CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
+Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
+HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+-->
